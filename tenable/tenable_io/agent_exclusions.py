@@ -1,5 +1,4 @@
-from .base import APIEndpoint
-from .utils import checktype
+from tenable.base import APIEndpoint
 from .models import ExclusionSchedule
 
 class AgentExclusionsAPI(APIEndpoint):
@@ -58,11 +57,11 @@ class AgentExclusionsAPI(APIEndpoint):
             )
 
         # Lets start constructing the payload to be sent to the API...
-        payload = {'name': checktype(name, str)}
+        payload = {'name': self._check('name', name, str)}
 
         # As the description and schedule are optional, we will only add 
         # them into the payload if one was specified.
-        if checktype(description, str):
+        if self._check('description', description, str):
             payload['description'] = description
         if sched_obj:
             payload['schedule'] = sched_obj.json()
@@ -71,7 +70,8 @@ class AgentExclusionsAPI(APIEndpoint):
         # documentation requests and if we don't raise an error, then lets make
         # the call.
         return self._api.post(
-            'scanners/{}/agents/exclusions'.format(checktype(scanner_id, int)), json=payload)
+            'scanners/{}/agents/exclusions'.format(
+                self._check('scanner_id', scanner_id, int)), json=payload)
 
     def delete(self, scanner_id, exclusion_id):
         '''
@@ -87,8 +87,8 @@ class AgentExclusionsAPI(APIEndpoint):
         '''
         return self._api.delete(
             'scanners/{}/agents/exclusions/{}'.format(
-                checktype(scanner_id, int),
-                checktype(exclusion_id, int)
+                self._check('scanner_id', scanner_id, int),
+                self._check('exclusion_id', exclusion_id, int)
             ))
 
     def details(self, scanner_id, exclusion_id):
@@ -105,8 +105,8 @@ class AgentExclusionsAPI(APIEndpoint):
         '''
         return self._api.delete(
             'scanners/{}/agents/exclusions/{}'.format(
-                checktype(scanner_id, int),
-                checktype(exclusion_id, int)
+                self._check('scanner_id', scanner_id, int),
+                self._check('exclusion_id', exclusion_id, int)
             ))
 
     def edit(self, scanner_id, exclusion_id, name=None, starttime=None, 
@@ -162,13 +162,13 @@ class AgentExclusionsAPI(APIEndpoint):
             )
 
         # Lets start constructing the payload to be sent to the API...
-        payload = {'name': checktype(name, str)}
+        payload = {}
 
         # As the description, name, and schedule are optional, we will only add 
         # them into the payload if one was specified.
-        if checktype(description, str):
+        if self._check('description', description, str):
             payload['description'] = description
-        if checktype(name, str):
+        if self._check('name', name, str):
             payload['name'] = name
         if sched_obj:
             payload['schedule'] = sched_obj.json()
@@ -178,8 +178,8 @@ class AgentExclusionsAPI(APIEndpoint):
         # error, then lets make the call.
         return self._api.put(
             'scanners/{}/agents/exclusions/{}'.format(
-                checktype(scanner_id, int),
-                checktype(exclusion_id, int)
+                self._check('scanner_id', scanner_id, int),
+                self._check('exclusion_id', exclusion_id, int)
         ), json=payload)
 
 

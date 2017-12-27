@@ -1,5 +1,4 @@
-from .base import APIEndpoint
-from .utils import checktype
+from tenable.base import APIEndpoint
 
 class AgentConfigAPI(APIEndpoint):
     def edit(self, scanner_id, software_update=None, auto_unlink=None, 
@@ -27,20 +26,19 @@ class AgentConfigAPI(APIEndpoint):
             dict: Dictionary of the applied settings is returned if successfully
                 applied.
         '''
-        checktype(scanner_id, int)
-
         # Lets build the dictionary that we will present to the API...
         payload = {'auto_unlink': {}}
-        if checktype(software_update, bool):
+        if self._check('software_update', software_update, bool):
             payload['software_update'] = software_update
-        if checktype(auto_unlink, bool):
+        if self._check('auto_unlink', auto_unlink, bool):
             payload['auto_unlink']['enabled'] = auto_unlink
-        if checktype(unlink_exp, int, range(1, 366)):
+        if self._check('unlink_exp', unlink_exp, int, range(1, 366)):
             payload['auto_unlink']['expiration'] = unlink_exp
 
         # Now to run the API call and get the response
         return self._api.put(
-            'scanners/{}/agents/config'.format(scanner_id), json=payload).json()
+            'scanners/{}/agents/config'.format(
+                self._check('scanner_id', scanner_id))).json()
 
     def details(self, scanner_id):
         '''
@@ -53,6 +51,6 @@ class AgentConfigAPI(APIEndpoint):
         Returns:
             dict: Dictionary of the current settings.
         '''
-        checktype(scanner_id, int)
         return self._api.get(
-            'scanners/{}/agents/config'.format(scanner_id)).json()
+            'scanners/{}/agents/config'.format(
+                self._check('scanner_id', scanner_id))).json()
