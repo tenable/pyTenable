@@ -50,7 +50,16 @@ class SecurityCenter(APISession):
         return response
 
     def login(self, user, passwd):
-        '''Logs the user into SecurityCenter and stores the needed token and cookies.'''
+        '''
+        Logs the user into SecurityCenter
+
+        Args:
+            user (str): Username
+            passwd (str): Password
+
+        Returns:
+            None
+        '''
         resp = self.post('token', json={'username': user, 'password': passwd})
         self._session.headers.update({
             'X-SecurityCenter': resp.json()['response']['token']
@@ -62,40 +71,64 @@ class SecurityCenter(APISession):
         self.build_session()
 
     def upload(self, fileobj):
-        '''Uploads a file to SecurityCenter'''
+        '''
+        Uploads a file to SecurityCenter
+
+        Args:
+            fileobj (obj): The file object to upload into SecurityCenter.
+        '''
         return self.post('file/upload', files={'Filedata': fileobj})
 
     def analysis(self, *filters, **kwargs):
         '''Analysis
-        A thin wrapper to handle vuln/event/mobile/log analysis through the API.  This
-        function handles expanding multiple filters and will translate arbitrary arguments
-        into the format that SecurityCenter's analysis call expect them to be in.
+        A thin wrapper to handle vuln/event/mobile/log analysis through the API.
+        This function handles expanding multiple filters and will translate 
+        arbitrary arguments into the format that SecurityCenter's analysis call
+        expect them to be in.
 
-        In order to make the filter expander more useful for SecurityCenter5 verses the
-        SecurityCenter4 class, filters are no longer done as kwargs, and instead are done
-        as a list of tuples.  For example, to get the IP Summary of all of the hosts in
-        the 10.10.0.0/16 network, we would make the following call:
+        In order to make the filter expander more useful for SecurityCenter5
+        verses the SecurityCenter4 class, filters are no longer done as kwargs,
+        and instead are done as a list of tuples.  For example, to get the IP 
+        Summary of all of the hosts in the 10.10.0.0/16 network, we would make
+        the following call:
 
         vulns = sc.analysis(('ip','=','10.10.0.0/16'), tool='sumip')
 
-        If multiple filters are desired, then it's simply a matter of entering multiple tuples.
+        If multiple filters are desired, then it's simply a matter of entering
+        multiple tuples.
 
-        The Analysis function also has a few functions that are sligly deviated from the API
-        guides.  All of these options are optional, however can significantly change the how
-        the API is being called.
+        The Analysis function also has a few functions that are sligly deviated
+        from the API guides.  All of these options are optional, however can
+        significantly change the how the API is being called.
 
-        page         - Default "all"                The current page in the pagination sequence.
-        page_size    - Default 1000                 The page size (number of returned results)
-        page_obj     - Default "return_results"     The class thats called after every API pull.
-        page_kwargs  - Default {}                   Any additional arguments that need to be passed
-                                                    to the page_obj class when instantiated.
-        type         - Default "vuln"               This is the type of data that will be returned.
-                                                    As all of the LCE and Vuln calls have been
-                                                    collapsed into "analysis" in the API, each filter
-                                                    needs to have these specified.  This module does
-                                                    that legwork for you.
-        sourceType   - Default "cumulative"         This is how we specify individual scans, LCE archive
-                                                    silos, and other datasets that stand outside the norm.
+        Args:
+            filters (tuple, optional):
+                The analysis module provides a more compact way to write filters
+                to the analysis endpoint.  The purpose here is to aid in more
+                readable code and reduce the amount of boilerplate that must be
+                written to support a filtered call to analysis.  The format is
+                simply a list of tuples.  Each tuple is broken down into
+                (field, operator, value).
+            page (int, optional): 
+                The current page in the pagination sequence.  Default is 'all'.
+            page_size (int, optional): 
+                The page size (number of returned results).  Default is 1000.
+            page_func (func, optional):
+                Overload the default behavior and use the provided function 
+                instead.
+            page_func_kw (dict, optional): 
+                If arguments need to be passed to the provided page_func, then
+                provide them as a keyword dictionary.
+            type (str, optional):
+                The type of data that we desire to query against.  While the
+                default is to look at vulnerability data with the 'vuln' type,
+                it's possible you may want to look at event data from the LCE or
+                mobile device data from an MDM repository.  If this is the case,
+                simply overload the type with the expected data to be returned.
+            sourceType (str, optional):
+                Change the type of data within the source to be queried.  The
+                default is to look at the cumulative data-store with the
+                sourceType set to 'cumulative'.
         '''
         output = []
         def return_results(**kwargs):
@@ -105,9 +138,9 @@ class SecurityCenter(APISession):
             for item in kwargs['resp'].json()['response']['results']:
                 yield item
 
-        # These values are commonly used and/or are generally not changed from the default.
-        # If we do not see them specified by the user then we will need to add these in
-        # for later parsing...
+        # These values are commonly used and/or are generally not changed from 
+        # the default. If we do not see them specified by the user then we will
+        # need to add these in for later parsing...
         if 'page' not in kwargs: kwargs['page'] = 'all'
         if 'page_size' not in kwargs: kwargs['page_size'] = 1000
         if 'page_obj' not in kwargs: kwargs['page_obj'] = return_results
@@ -116,17 +149,17 @@ class SecurityCenter(APISession):
         if 'sourceType' not in kwargs: kwargs['sourceType'] = 'cumulative'
         if 'generator' in kwargs: kwargs['generator'] = return_generator
 
-        # New we need to pull out the options from kwargs as we will be using hwargs as
-        # the basis for the query that will be sent to SecurityCenter.
+        # New we need to pull out the options from kwargs as we will be using 
+        # kwargs as the basis for the query that will be sent to SecurityCenter.
         opts = {}
         for opt in ['page', 'page_size', 'page_obj', 'page_kwargs', 'generator']:
             if opt in kwargs:
                 opts[opt] = kwargs[opt]
                 del kwargs[opt]
 
-        # If a query option was not set, then we will have to.  The hope here is that
-        # we can make a lot of the pain of building the query pretty easy by simply
-        # accepting tuples of the filters.
+        # If a query option was not set, then we will have to.  The hope here is
+        # that we can make a lot of the pain of building the query pretty easy 
+        # by simply accepting tuples of the filters.
         if 'query' not in kwargs:
             kwargs['query'] = {
                 'tool': kwargs['tool'],
