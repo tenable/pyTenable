@@ -2,23 +2,33 @@ import weakref, requests
 
 
 class UnexpectedValueError(Exception):
-    pass
+    def __init__(self, msg):
+        self.msg = msg
+
+    def __str__(self):
+        return repr(self.msg)
 
 
 class APIError(Exception):
-    pass
+    def __init__(self, msg, code=None):
+        if code:
+            self.code = code
+        self.msg = msg
+
+    def __str__(self):
+        return repr('[%s]: %s' % (self.code, self.msg))
 
 
 class PermissionError(APIError):
-    pass
+    self.code = 403
 
 
 class NotFoundError(APIError):
-    pass
+    self.code = 404
 
 
 class ServerError(APIError):
-    pass
+    self.code = 500
 
 
 class UnknownError(APIError):
@@ -101,9 +111,12 @@ class APISession(object):
             self.RETRIES = retries
         if backoff and isinstance(backoff, float):
             self.RETRY_BACKOFF = backoff
-        self.build_session()
+        self._build_session()
 
-    def build_session(self):
+    def _build_session(self):
+        '''
+        Requests session builder
+        '''
         # Sets the retry adaptor with the ability to properly backoff if we get 429s
         retries = Retry(
             total=self.RETRIES,
@@ -122,6 +135,12 @@ class APISession(object):
             'User-Agent': 'Tenable/{} Python/{}'.format(__version__, '.'.join([str(i) for i in sys.version_info][0:3])),
         })
 
+    def _resp_error_check(self, response):
+        '''
+        A more general response error checker that can be overloaded if needed.
+        '''
+        return response
+
 
     def _request(self, method, path, **kwargs):
         '''
@@ -131,7 +150,9 @@ class APISession(object):
 
         status = resp.status_code
         if status == 200:
-            return resp
+            # As everything looks ok, lets pass the response on to the error
+            # checker and then return the response.
+            return self._resp_error_check(resp)
         elif status == 403:
             raise PermissionError(resp)
         elif status == 404:
