@@ -1,5 +1,5 @@
 from tenable.base import APIEndpoint
-from .models import ExclusionSchedule
+from tenable.tenable_io.models import ExclusionSchedule
 
 class AgentExclusionsAPI(APIEndpoint):
     def create(self, scanner_id, name, starttime=None, endtime=None, 
@@ -182,4 +182,16 @@ class AgentExclusionsAPI(APIEndpoint):
                 self._check('exclusion_id', exclusion_id, int)
         ), json=payload)
 
+    def list(self, scanner_id):
+        '''
+        agent-exclusions: list
+        https://cloud.tenable.com/api#/resources/agent-exclusions/list
 
+        Args:
+            scanner_id (int): The scanner identifier to be used.
+
+        Returns:
+            list: List of agent exclusions.
+        '''
+        return self._api.get('scanners/{}/agent/exclusions'.format(
+            self._check('scanner_id', scanner_id, int)))['exclusions']
