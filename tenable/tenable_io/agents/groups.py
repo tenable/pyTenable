@@ -14,10 +14,12 @@ class AgentGroupsAPI(APIEndpoint):
         Returns:
             None: Agent added successfully
         '''
-        return self._api.put('scanners/{}/agent-groups/{}/agents/{}'.format(
-            self._check('scanner_id', scanner_id, int),
-            self._check('group_id', group_id, int),
-            self._check('agent_id', agent_id, int)))
+        return self._api.put(
+            'scanners/{}/agent-groups/{}/agents/{}'.format(
+                self._check('scanner_id', scanner_id, int),
+                self._check('group_id', group_id, int),
+                self._check('agent_id', agent_id, int)
+            )).json()
 
     def configure(self, scanner_id, group_id, name):
         '''
@@ -32,10 +34,11 @@ class AgentGroupsAPI(APIEndpoint):
         Returns:
             None: Agent group updated successfully
         '''
-        return self._api.put('scanners/{}/agent-groups/{}'.format(
-            self._check('scanner_id', scanner_id, int),
-            self._check('group_id', group_id, int)), 
-            json={'name': self_check('name', name, str)})
+        return self._api.put(
+            'scanners/{}/agent-groups/{}'.format(
+                self._check('scanner_id', scanner_id, int),
+                self._check('group_id', group_id, int)
+            ), json={'name': self_check('name', name, str)})
 
     def create(self, scanner_id, name):
         '''
@@ -49,9 +52,10 @@ class AgentGroupsAPI(APIEndpoint):
         Returns:
             None: Agent group created successfully
         '''
-        return self._api.post('scanners/{}/agent-groups'.format(
-            self._check('scanner_id', scanner_id, int)),
-            json={'name': self_check('name', name, str)})
+        return self._api.post(
+            'scanners/{}/agent-groups'.format(
+                self._check('scanner_id', scanner_id, int)
+            ), json={'name': self_check('name', name, str)})
 
     def delete(self, scanner_id, group_id):
         '''
@@ -65,9 +69,11 @@ class AgentGroupsAPI(APIEndpoint):
         Returns:
             None: Agent group deleted successfully
         '''
-        return self._api.delete('scanners/{}/agent-groups/{}'.format(
-            self._check('scanner_id', scanner_id, int),
-            self._check('group_id', group_id, int)))
+        return self._api.delete(
+            'scanners/{}/agent-groups/{}'.format(
+                self._check('scanner_id', scanner_id, int),
+                self._check('group_id', group_id, int)
+            ))
 
     def delete_agent(self, scanner_id, group_id, agent_id):
         '''
@@ -82,10 +88,12 @@ class AgentGroupsAPI(APIEndpoint):
         Returns:
             None
         '''
-        return self._api.delete('scanners/{}/agent-groups/{}/agents/{}'.format(
-            self._check('scanner_id', scanner_id, int),
-            self._check('group_id', group_id, int),
-            self._check('agent_id', agent_id, int)))
+        return self._api.delete(
+            'scanners/{}/agent-groups/{}/agents/{}'.format(
+                self._check('scanner_id', scanner_id, int),
+                self._check('group_id', group_id, int),
+                self._check('agent_id', agent_id, int)
+            ))
 
     def details(self, scanner_id, group_id):
         '''

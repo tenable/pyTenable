@@ -1,7 +1,7 @@
 from tenable.base import APIEndpoint
 
 class AgentConfigAPI(APIEndpoint):
-    def edit(self, scanner_id, software_update=None, auto_unlink=None, 
+    def edit(self, scanner_id=None, software_update=None, auto_unlink=None, 
              unlink_exp=None):
         '''
         agent-config: edit
@@ -28,6 +28,8 @@ class AgentConfigAPI(APIEndpoint):
         '''
         # Lets build the dictionary that we will present to the API...
         payload = {'auto_unlink': {}}
+        if not scanner_id:
+            scanner_id = 1
         if self._check('software_update', software_update, bool):
             payload['software_update'] = software_update
         if self._check('auto_unlink', auto_unlink, bool):
@@ -38,9 +40,10 @@ class AgentConfigAPI(APIEndpoint):
         # Now to run the API call and get the response
         return self._api.put(
             'scanners/{}/agents/config'.format(
-                self._check('scanner_id', scanner_id))).json()
+                self._check('scanner_id', scanner_id, int)
+            )).json()
 
-    def details(self, scanner_id):
+    def details(self, scanner_id=None):
         '''
         agent-config: details
         https://cloud.tenable.com/api#/resources/agent-config/details
@@ -51,6 +54,9 @@ class AgentConfigAPI(APIEndpoint):
         Returns:
             dict: Dictionary of the current settings.
         '''
+        if not scanner_id:
+            scanner_id = 1
         return self._api.get(
             'scanners/{}/agents/config'.format(
-                self._check('scanner_id', scanner_id))).json()
+                self._check('scanner_id', scanner_id, int)
+            )).json()

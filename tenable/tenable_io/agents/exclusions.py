@@ -2,7 +2,7 @@ from tenable.base import APIEndpoint
 from tenable.tenable_io.models import ExclusionSchedule
 
 class AgentExclusionsAPI(APIEndpoint):
-    def create(self, scanner_id, name, starttime=None, endtime=None, 
+    def create(self, name, scanner_id=None, starttime=None, endtime=None, 
                timezone=None, description=None, freq=None, 
                interval=None, weekdays=None, dayofmonth=None,
                enabled=None, sched_obj=None):
@@ -11,8 +11,8 @@ class AgentExclusionsAPI(APIEndpoint):
         https://cloud.tenable.com/api#/resources/agent-exclusions/create
 
         Args:
-            scanner_id (int): The scanner id.
             name (str): The name of the exclusion to create.
+            scanner_id (int, optional): The scanner id.
             description (str, optional): 
                 Some further detail about the exclusion.
             starttime (datetime, optional): When the exclusion should start.
@@ -40,6 +40,8 @@ class AgentExclusionsAPI(APIEndpoint):
         Returns:
             dict: Dictionary of the newly minted exclusion. 
         '''
+        if not scanner_id:
+            scanner_id = 1
 
         # If an ExclusionSchedule object was not passed in, then we will have to
         # construct one using all of the available parameters.
@@ -71,20 +73,24 @@ class AgentExclusionsAPI(APIEndpoint):
         # the call.
         return self._api.post(
             'scanners/{}/agents/exclusions'.format(
-                self._check('scanner_id', scanner_id, int)), json=payload)
+                self._check('scanner_id', scanner_id, int)
+            ), json=payload).json()
 
-    def delete(self, scanner_id, exclusion_id):
+    def delete(self, exclusion_id, scanner_id=None):
         '''
         agent-exclusions: delete
         https://cloud.tenable.com/api#/resources/agent-exclusions/delete
 
         Args:
-            scanner_id (int): The id of the scanner
             exclusion_id (int): The id of the exclusion object in Tenable.io
+            scanner_id (int, optional): The id of the scanner
 
         Returns:
             Unknown.
         '''
+        if not scanner_id:
+            scanner_id = 1
+
         return self._api.delete(
             'scanners/{}/agents/exclusions/{}'.format(
                 self._check('scanner_id', scanner_id, int),
@@ -107,7 +113,7 @@ class AgentExclusionsAPI(APIEndpoint):
             'scanners/{}/agents/exclusions/{}'.format(
                 self._check('scanner_id', scanner_id, int),
                 self._check('exclusion_id', exclusion_id, int)
-            ))
+            )).json()
 
     def edit(self, scanner_id, exclusion_id, name=None, starttime=None, 
             endtime=None, timezone=None, description=None, freq=None, 
@@ -180,7 +186,7 @@ class AgentExclusionsAPI(APIEndpoint):
             'scanners/{}/agents/exclusions/{}'.format(
                 self._check('scanner_id', scanner_id, int),
                 self._check('exclusion_id', exclusion_id, int)
-        ), json=payload)
+        ), json=payload).json()
 
     def list(self, scanner_id):
         '''
@@ -193,5 +199,7 @@ class AgentExclusionsAPI(APIEndpoint):
         Returns:
             list: List of agent exclusions.
         '''
-        return self._api.get('scanners/{}/agent/exclusions'.format(
-            self._check('scanner_id', scanner_id, int)))['exclusions']
+        return self._api.get(
+            'scanners/{}/agent/exclusions'.format(
+                self._check('scanner_id', scanner_id, int)
+            )).json()['exclusions']
