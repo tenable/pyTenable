@@ -1,8 +1,9 @@
 from tenable.base import APISession, APIError, ServerError
+import warnings
 
 
 class SecurityCenter(APISession):
-    def __init__(self, host, port=443, ssl_verify=False, 
+    def __init__(self, host, port=443, ssl_verify=False, cert=None,
                  scheme='https', retries=None, backoff=None):
         '''SecurityCenter 5 API Wrapper
         This class is designed to handle authentication management for the
@@ -18,20 +19,24 @@ class SecurityCenter(APISession):
         # As we will always be passing a URL to the APISession class, we will
         # want to construct a URL that APISession (and further requests) 
         # understands.
-        url = '{}://{}:{}'.format(scheme, host, port)
-
-        # Also, as SecurityCenter is generally installed without a certificate
-        # chain that we can validate, we will want to turn off the warnings if
-        # ssl_verify is set to False.  As requests vendors urllib3, we will
-        # need to disable it like so:
-        if not ssl_verify:
-            from requests.packages.urllib3.exceptions import InsecureRequestWarning
-            import requests
-            requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+        url = '{}://{}:{}/rest'.format(scheme, host, port)
 
         # Now lets pass the relevent parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
         APISession.__init__(self, url, retries, backoff)
+
+        # Also, as SecurityCenter is generally installed without a certificate
+        # chain that we can validate, we will want to turn off verification 
+        # and the associated warnings unless told to otherwise:
+        self._session.verify = ssl_verify
+        if not ssl_verify:
+            warnings.filterwarnings('ignore', 'Unverified HTTPS request')
+
+        # If a client-side certificate is specified, then we will want to add
+        # it into the session object as well.  The cert parameter is expecting
+        # a path pointing to the client certificate file.
+        if cert:
+            self._session.cert = cert
 
         # We will attempt to make the first call to the SecurityCenter instance
         # and get the system information.  If this call fails, then we likely
@@ -40,9 +45,10 @@ class SecurityCenter(APISession):
         try:
             d = self.get('system').json()
         except:
-            raise ServerError('No SecurityCenter Instance at {}'.format(self.host))
+            raise ServerError('No SecurityCenter Instance at {}'.format(host))
 
-        # Now we will try to interpret the 
+        # Now we will try to interpret the SecurityCenter information into
+        # something usable.
         try:
             self.version = d['response']['version']
             self.build_id = d['response']['buildID']
@@ -73,7 +79,7 @@ class SecurityCenter(APISession):
         '''
         resp = self.post('token', json={'username': user, 'password': passwd})
         self._session.headers.update({
-            'X-SecurityCenter': resp.json()['response']['token']
+            'X-SecurityCenter': str(resp.json()['response']['token'])
         })
 
     def logout(self):
@@ -112,6 +118,8 @@ class SecurityCenter(APISession):
         from the API guides.  All of these options are optional, however can
         significantly change the how the API is being called.
 
+        https://docs.tenable.com/sccv/api/Analysis.html
+
         Args:
             filters (tuple, optional):
                 The analysis module provides a more compact way to write filters
@@ -121,13 +129,13 @@ class SecurityCenter(APISession):
                 simply a list of tuples.  Each tuple is broken down into
                 (field, operator, value).
             page (int, optional): 
-                The current page in the pagination sequence.  Default is 'all'.
+                The current page in the pagination sequence.  Default is `all`.
             page_size (int, optional): 
                 The page size (number of returned results).  Default is 1000.
-            page_func (func, optional):
+            func (func, optional):
                 Overload the default behavior and use the provided function 
                 instead.
-            page_func_kw (dict, optional): 
+            func_kw (dict, optional): 
                 If arguments need to be passed to the provided page_func, then
                 provide them as a keyword dictionary.
             type (str, optional):
@@ -136,17 +144,108 @@ class SecurityCenter(APISession):
                 it's possible you may want to look at event data from the LCE or
                 mobile device data from an MDM repository.  If this is the case,
                 simply overload the type with the expected data to be returned.
+                Available types are: ``vuln``, ``event``, ``user``, ``scLog``, 
+                ``mobile``.
             sourceType (str, optional):
                 Change the type of data within the source to be queried.  The
                 default is to look at the cumulative data-store with the
-                sourceType set to 'cumulative'.
+                sourceType set to 'cumulative'.  Available sourceTypes are:
+                ``individual``, ``cumulative``, ``patched``, ``lce``, 
+                ``archive``.
+            sortDir (str, optional):
+                The sorting direction for the sortField.  Must be `ASC` 
+                or `DESC`.
+            sortField (str, optional):
+                The field to sort the results on.  Any valid field returned by
+                the results can be sorted.
+            scanID (int, optional):
+                If the sourceType is set to ``individual``, then a Scan ID must 
+                be specified to inform SecurityCenter what scan to query against.
+            lceID (int, optional):
+                If the sourceType is ``lce`` or ``archive``, then an lceID can 
+                be specified to explicitly define 1 LCE to query from.
+            view (string, optional):
+                If the sourceType is ``archive``, then the archived Silo ID must
+                be specified in order to inform the LCE which silo to query.
+            tool (string, optional):
+                The analysis tool to use for parsing the data.  Available
+                tool types are as follows:
+                
+                * ``vuln`` DataType
+                    - ``cceipdetail``
+                    - ``cveipdetail``
+                    - ``iavmipdetail``
+                    - ``iplist``
+                    - ``listmailclients``
+                    - ``listservices``
+                    - ``listos``
+                    - ``listsoftware``
+                    - ``listsshservers``
+                    - ``listvuln``
+                    - ``listwebclients``
+                    - ``listwebservers``
+                    - ``popcount``
+                    - ``sumasset``
+                    - ``sumcce``
+                    - ``sumclassa``
+                    - ``sumclassb``
+                    - ``sumclassc``
+                    - ``sumcve``
+                    - ``sumdnsname``
+                    - ``sumfamily``
+                    - ``sumiavm``
+                    - ``sumid``
+                    - ``sumip``
+                    - ``summsbulletin``
+                    - ``sumprotocol``
+                    - ``sumremediation``
+                    - ``sumseverity``
+                    - ``sumuserresponsibility``
+                    - ``support``
+                    - ``trend``
+                    - ``vulndetails``
+                    - ``vulnipdetail``
+                    - ``vulnipsummary``
+                * ``event`` DataType
+                    - ``listdata``
+                    - ``sumasset``
+                    - ``sumclassa``
+                    - ``sumclassb``
+                    - ``sumclassc``
+                    - ``sumconns``
+                    - ``sumdate``
+                    - ``sumdstip``
+                    - ``sumevent``
+                    - ``sumevent2``
+                    - ``sumip``
+                    - ``sumport``
+                    - ``sumprotocol``
+                    - ``sumsrcip``
+                    - ``sumtime``
+                    - ``sumtype``
+                    - ``sumuser``
+                    - ``syslog``
+                    - ``timedist``
+                * ``mobile`` DataType
+                    - ``listmodel``
+                    - ``listoscpe``
+                    - ``listvuln``
+                    - ``sumdeviceid``
+                    - ``summdmuser``
+                    - ``summodel``
+                    - ``sumoscpe``
+                    - ``sumpluginid``
+                    - ``sumprotocol``
+                    - ``sumseverity``
+                    - ``support``
+                    - ``vulndetails``
         '''
         output = []
-        def return_results(**kwargs):
-            return kwargs['resp'].json()['response']['results']
+        def return_results(**kw):
+            return kw['resp']['response']['results']
 
-        def return_generator(**kwargs):
-            for item in kwargs['resp'].json()['response']['results']:
+        def return_generator(**kw):
+            for item in kw['resp']['response']['results']:
                 yield item
 
         # These values are commonly used and/or are generally not changed from 
@@ -154,8 +253,8 @@ class SecurityCenter(APISession):
         # need to add these in for later parsing...
         if 'page' not in kwargs: kwargs['page'] = 'all'
         if 'page_size' not in kwargs: kwargs['page_size'] = 1000
-        if 'page_obj' not in kwargs: kwargs['page_obj'] = return_results
-        if 'page_kwargs' not in kwargs: kwargs['page_kwargs'] = {}
+        if 'func' not in kwargs: kwargs['func'] = return_results
+        if 'func_kw' not in kwargs: kwargs['func_kw'] = {}
         if 'type' not in kwargs: kwargs['type'] = 'vuln'
         if 'sourceType' not in kwargs: kwargs['sourceType'] = 'cumulative'
         if 'generator' in kwargs: kwargs['generator'] = return_generator
@@ -163,7 +262,7 @@ class SecurityCenter(APISession):
         # New we need to pull out the options from kwargs as we will be using 
         # kwargs as the basis for the query that will be sent to SecurityCenter.
         opts = {}
-        for opt in ['page', 'page_size', 'page_obj', 'page_kwargs', 'generator']:
+        for opt in ['page', 'page_size', 'func', 'func_kw', 'generator']:
             if opt in kwargs:
                 opts[opt] = kwargs[opt]
                 del kwargs[opt]
@@ -175,7 +274,12 @@ class SecurityCenter(APISession):
             kwargs['query'] = {
                 'tool': kwargs['tool'],
                 'type': kwargs['type'],
-                'filters': [{'filterName': f[0], 'operator': f[1], 'value': f[2], 'type': kwargs['type']} for f in filters]
+                'filters': [{
+                    'filterName': f[0], 
+                    'operator': f[1], 
+                    'value': f[2], 
+                    'type': kwargs['type']
+                } for f in filters]
             }
             del kwargs['tool']
             if opts['page'] == 'all':
@@ -189,9 +293,9 @@ class SecurityCenter(APISession):
         total_records = opts['page_size']
         while total_records > count:
             # Here we actually make the calls.
-            resp = self.post('analysis', json=kwargs)
-            opts['page_kwargs']['resp'] = resp
-            out = opts['page_obj'](**opts['page_kwargs'])
+            resp = self.post('analysis', json=kwargs).json()
+            opts['func_kw']['resp'] = resp
+            out = opts['func'](**opts['func_kw'])
             if isinstance(out, list):
                 for item in out:
                     output.append(item)
