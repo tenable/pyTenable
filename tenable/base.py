@@ -1,4 +1,7 @@
-import weakref, requests
+import weakref, requests, sys
+from requests.packages.urllib3.util.retry import Retry
+
+__version__ = '0.0.1'
 
 
 class UnexpectedValueError(Exception):
@@ -10,25 +13,25 @@ class UnexpectedValueError(Exception):
 
 
 class APIError(Exception):
-    def __init__(self, msg, code=None):
-        if code:
-            self.code = code
-        self.msg = msg
+    def __init__(self, r):
+        self.code = r.status_code
+        self.body = r.content
+        self.uuid = r.headers['X-Request-Uuid'] if 'X-Request-Uuid' in r.headers else ''
 
     def __str__(self):
-        return repr('[%s]: %s' % (self.code, self.msg))
+        return repr('{}:{} {}'.format(self.uuid, self.code, self.body))
 
 
 class PermissionError(APIError):
-    self.code = 403
+    pass
 
 
 class NotFoundError(APIError):
-    self.code = 404
+    pass
 
 
 class ServerError(APIError):
-    self.code = 500
+    pass
 
 
 class UnknownError(APIError):
@@ -39,7 +42,8 @@ class APIEndpoint(object):
     def __init__(self, parent):
         self._api = weakref.ref(parent)
 
-    def _check(self, name, obj, expected_type, valid_values=None, default=None):
+    def _check(self, name, obj, expected_type, 
+               valid_values=None, default=None, hard=True):
         '''
         Internal function for validating thet inputs we are receiving are of
         the right type, have the expected values, and can handle defaults as
@@ -57,6 +61,12 @@ class APIEndpoint(object):
             default (obj, optional):
                 if we want to return a default setting if the object is None,
                 we can set one here.
+            hard (bool, optional):
+                Is this a hard check or a soft one?  If this is a soft check
+                (typically used in if statements) then return a NoneType if
+                the check fails.  If we are looking for a hard check, then
+                we will throw a TypeError or an UnexpectedValueError should
+                the check fail. Default is True
 
         Returns:
              obj: Either the object or the default object depending.
@@ -72,17 +82,24 @@ class APIEndpoint(object):
         # Lets check to make sure that the object is of the right type and raise
         # a TypeError if we get something we weren't expecting.
         if not isinstance(obj, expected_type):
-            raise TypeError('{} is of type {}.  Expected {}.'.format(
-                name, obj.__class__.__name__, expected_type.__name__
-            ))
+            if hard:
+                raise TypeError('{} is of type {}.  Expected {}.'.format(
+                    name, obj.__class__.__name__, expected_type.__name__
+                ))
+            else:
+                return None
 
         # if the object is only expected to have one of a finite set of values,
         # we should check against that and raise an exception if the the actual
         # value is outside of what we expect.
         if isinstance(valid_values, list) and obj not in valid_values:
-            raise UnexpectedValueError('{} has value of {}.  Expected one of {}'.format(
-                name, obj, ','.join(valid_values)
-            ))
+            if hard:
+                raise UnexpectedValueError(
+                    '{} has value of {}.  Expected one of {}'.format(
+                        name, obj, ','.join(valid_values)
+                ))
+            else:
+                return None
 
         # if we made it this fire without an exception being raised, then assume
         # everything is good to go and return the object passed to us initially.
@@ -105,8 +122,8 @@ class APISession(object):
     RETRY_BACKOFF = 0.1
 
     def __init__(self, url=None, retries=None, backoff=None):
-        if basepath:
-            self.URL = basepath
+        if url:
+            self.URL = url
         if retries and isinstance(retries, int):
             self.RETRIES = retries
         if backoff and isinstance(backoff, float):
@@ -146,7 +163,7 @@ class APISession(object):
         '''
         Request call builder
         '''
-        resp = self._session.request(method, '{}/{}'.format(self._url, path), **kwargs)
+        resp = self._session.request(method, '{}/{}'.format(self.URL, path), **kwargs)
 
         status = resp.status_code
         if status == 200:
