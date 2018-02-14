@@ -1,8 +1,7 @@
 from tenable.base import APIEndpoint
 
 class AgentConfigAPI(APIEndpoint):
-    def edit(self, scanner_id, software_update=None, auto_unlink=None, 
-             unlink_exp=None):
+    def edit(self, scanner_id, software_update=None, auto_unlink=None):
         '''
         agent-config: edit
         https://cloud.tenable.com/api#/resources/agent-config/edit
@@ -13,13 +12,10 @@ class AgentConfigAPI(APIEndpoint):
                 If True, software updates are enabled for agents (exclusions may
                 override this).  If false, software updates for all agents are
                 disabled.
-            auto_unlink (:obj:`bool`, optional):
+            auto_unlink (int, optional):
                 If true, agent auto-unlinking is enabled, allowing agents to
                 automatically unlink themselves after a given period of time.
-            unkink_exp (:obj:`int`, optional):
-                The expiration time for agents to auto-unlink in days. Agents
-                will be removed from Tenable.io automatically after the
-                inactivity age of the agent crosses this threshold.  Valid
+                If the value is 0 or false, auto-unlinking is disabled.  True
                 values are between 1 and 365.
 
         Returns:
@@ -32,10 +28,12 @@ class AgentConfigAPI(APIEndpoint):
             scanner_id = 1
         if self._check('software_update', software_update, bool):
             payload['software_update'] = software_update
-        if self._check('auto_unlink', auto_unlink, bool):
-            payload['auto_unlink']['enabled'] = auto_unlink
-        if self._check('unlink_exp', unlink_exp, int, range(1, 366)):
-            payload['auto_unlink']['expiration'] = unlink_exp
+        if auto_unlink:
+            payload['auto_unlink']['enabled'] = True
+            payload['auto_unlink']['expiration'] = self._check(
+                'auto_unlink', auto_unlink, int, [False] + range(1, 366))
+        elif auto_unlink in [False, 0]:
+            payload['auto_unlink']['enabled'] = False
 
         # Now to run the API call and get the response
         return self._api.put(
