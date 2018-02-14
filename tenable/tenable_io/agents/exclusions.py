@@ -4,7 +4,7 @@ from datetime import date, datetime
 class AgentExclusionsAPI(APIEndpoint):
     def create(self, scanner_id, name, start_time=None, end_time=None, 
                timezone=None, description=None, frequency=None, 
-               interval=None, weekdays=None, dayofmonth=None,
+               interval=None, weekdays=None, day_of_month=None,
                enabled=True):
         '''
         agent-exclusions: create
@@ -15,8 +15,8 @@ class AgentExclusionsAPI(APIEndpoint):
             scanner_id (int, optional): The scanner id.
             description (str, optional): 
                 Some further detail about the exclusion.
-            start_time (datetime, optional): When the exclusion should start.
-            end_time (datetime, optional): When the exclusion should end.
+            start_time (datetime): When the exclusion should start.
+            end_time (datetime): When the exclusion should end.
             timezone (str, optional): 
                 The timezone to use for the exclusion.  The default if none is 
                 specified is to use UTC.  For the list of usable timezones,
@@ -24,26 +24,33 @@ class AgentExclusionsAPI(APIEndpoint):
                 https://cloud.tenable.com/api#/resources/scans/timezones
             frequency (str, optional):
                 The frequency of the rule. The string inputted will be upcased.
-                Valid values are: *ONETIME, DAILY, WEEKLY, MONTHLY, YEARLY*.
-            interval (int, optional): The interval of the rule.
+                Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``, 
+                ``MONTHLY``, ``YEARLY``.
+                Default value is ``ONETIME``.
+            interval (int, optional): 
+                The interval of the rule.  The default interval is 1
             weekdays (list, optional):
                 List of 2-character representations of the days of the week to
                 repeate the frequency rule on.  Valied values are:
                 *SU, MO, TU, WE, TH, FR, SA*
                 Default values: ``['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']``
-            dayofmonth (int, optional):
+            day_of_month (int, optional):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
+                The default is today.
+            enabled (bool, optional):
+                Is the exclusion enabled?  The default is ``True``
 
         Returns:
             dict: Dictionary of the newly minted exclusion. 
         '''
         # Starting with the innermost part of the payload, lets construct the
         # rrules dictionary.
-        frequency = frequency.upper()
-        rrules = {
-            'freq': self._check('frequency', frequency, str, 
+        frequency = self._check('frequency', frequency, str, 
                 choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-                default='ONETIME'),
+                default='ONETIME', 
+                insensitive=True).upper()
+        rrules = {
+            'freq': frequency,
             'interval': self._check('interval', interval, int, default=1)
         }
 
@@ -52,22 +59,24 @@ class AgentExclusionsAPI(APIEndpoint):
         if frequency == 'WEEKLY':
             rrules['byweekday'] = ','.join(self._check('weekdays', weekdays, list,
                 choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                default=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']))
+                default=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                insensitive=True))
 
         # if the requency is monthly, then we will need to specify the day of
         # the month that the rule will run on.
         if frequency == 'MONTHLY':
-            rrules['bymonthday'] = self._check('dayofmonth', dayofmonth, int,
-                choices=range(1,32))
+            rrules['bymonthday'] = self._check('day_of_month', day_of_month, int,
+                choices=range(1,32),
+                default=datetime.today().day)
 
         # Next we need to construct the rest of the payload
         payload = {
             'name': self._check('name', name, str),
             'description': self._check('description', description, str, default=''),
             'schedule': {
-                'enabled': self._check('enabled', enabled, bool),
-                'starttime': self._check('start_time'. start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'endtime': self._check('end_time'. end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
+                'enabled': self._check('enabled', enabled, bool, default=True),
+                'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
+                'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
                 'timezone': self._check('timezone', timezone, str, default='Etc/UTC'),
                 'rrules': rrules
             }
