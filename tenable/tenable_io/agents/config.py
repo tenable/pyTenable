@@ -1,7 +1,7 @@
 from tenable.base import APIEndpoint
 
 class AgentConfigAPI(APIEndpoint):
-    def edit(self, scanner_id=None, software_update=None, auto_unlink=None, 
+    def edit(self, scanner_id, software_update=None, auto_unlink=None, 
              unlink_exp=None):
         '''
         agent-config: edit
@@ -43,7 +43,7 @@ class AgentConfigAPI(APIEndpoint):
                 self._check('scanner_id', scanner_id, int)
             )).json()
 
-    def details(self, scanner_id=None):
+    def details(self, scanner_id):
         '''
         agent-config: details
         https://cloud.tenable.com/api#/resources/agent-config/details
