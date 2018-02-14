@@ -6,6 +6,6 @@
 * Code readability is paramount (if something is complicated, then we want to break it down into readable & manageable components)
 * Code should be commented not only to describe what it is, but should also tell the story of what we are doing and why.
 * We should avoid complicating code beyond whats necessary.
-* We should generally try to conform to DRY whenever possible.
+* We should generally try to conform to DRY when appropriate.
 * All classes should be CamelCase
 * Function names and variables should use underscore notation, like `word1_word2`.
