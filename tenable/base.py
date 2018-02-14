@@ -1,49 +1,16 @@
-import weakref, requests, sys
+import requests, sys
+from .errors import *
 from requests.packages.urllib3.util.retry import Retry
 
 __version__ = '0.0.1'
 
 
-class UnexpectedValueError(Exception):
-    def __init__(self, msg):
-        self.msg = msg
-
-    def __str__(self):
-        return repr(self.msg)
-
-
-class APIError(Exception):
-    def __init__(self, r):
-        self.code = r.status_code
-        self.body = r.content
-        self.uuid = r.headers['X-Request-Uuid'] if 'X-Request-Uuid' in r.headers else ''
-
-    def __str__(self):
-        return repr('{}:{} {}'.format(self.uuid, self.code, self.body))
-
-
-class PermissionError(APIError):
-    pass
-
-
-class NotFoundError(APIError):
-    pass
-
-
-class ServerError(APIError):
-    pass
-
-
-class UnknownError(APIError):
-    pass
-
-
 class APIEndpoint(object):
     def __init__(self, parent):
-        self._api = weakref.ref(parent)
+        self._api = parent
 
     def _check(self, name, obj, expected_type, 
-               valid_values=None, default=None, hard=True):
+               choices=None, default=None, insensitive=False):
         '''
         Internal function for validating thet inputs we are receiving are of
         the right type, have the expected values, and can handle defaults as
@@ -54,19 +21,13 @@ class APIEndpoint(object):
             obj (obj): The object that we will be checking
             expected_type (type): 
                 The expected type of object that we will check against.
-            valid_values (list, optional):
+            choices (list, optional):
                 if the object is only expected to have a finite number of values
                 then we can check to make sure that our input is one of these
                 values.
             default (obj, optional):
                 if we want to return a default setting if the object is None,
                 we can set one here.
-            hard (bool, optional):
-                Is this a hard check or a soft one?  If this is a soft check
-                (typically used in if statements) then return a NoneType if
-                the check fails.  If we are looking for a hard check, then
-                we will throw a TypeError or an UnexpectedValueError should
-                the check fail. Default is True
 
         Returns:
              obj: Either the object or the default object depending.
@@ -82,24 +43,40 @@ class APIEndpoint(object):
         # Lets check to make sure that the object is of the right type and raise
         # a TypeError if we get something we weren't expecting.
         if not isinstance(obj, expected_type):
-            if hard:
-                raise TypeError('{} is of type {}.  Expected {}.'.format(
-                    name, obj.__class__.__name__, expected_type.__name__
-                ))
-            else:
-                return None
+            raise TypeError('{} is of type {}.  Expected {}.'.format(
+                name, obj.__class__.__name__, expected_type.__name__
+            ))
 
         # if the object is only expected to have one of a finite set of values,
         # we should check against that and raise an exception if the the actual
         # value is outside of what we expect.
-        if isinstance(valid_values, list) and obj not in valid_values:
-            if hard:
-                raise UnexpectedValueError(
-                    '{} has value of {}.  Expected one of {}'.format(
-                        name, obj, ','.join(valid_values)
-                ))
-            else:
-                return None
+        if insensitive:
+            ichoices = [str(i).lower() for i in choices]
+
+        if isinstance(obj, list):
+            for item in obj:
+                if insensitive and isinstance(choices, list) and item.lower() not in ichoices:
+                    raise UnexpectedValueError(
+                        '{} has value of {}.  Expected one of {}'.format(
+                            name, obj, ','.join([str(i) for i in ichoices])
+                    ))               
+                elif not insensitive and isinstance(choices, list) and item not in choices:
+                    raise UnexpectedValueError(
+                        '{} has value of {}.  Expected one of {}'.format(
+                            name, obj, ','.join([str(i) for i in choices])
+                    ))
+
+        elif not insensitive and isinstance(choices, list) and obj not in choices:
+            raise UnexpectedValueError(
+                '{} has value of {}.  Expected one of {}'.format(
+                    name, obj, ','.join([str(i) for i in choices])
+            ))
+        elif insensitive and isinstance(choices, list) and obj.lower() not in ichoices:
+            raise UnexpectedValueError(
+                '{} has value of {}.  Expected one of {}'.format(
+                    name, obj, ','.join([str(i) for i in ichoices])
+            ))
+
 
         # if we made it this fire without an exception being raised, then assume
         # everything is good to go and return the object passed to us initially.
