@@ -1,6 +1,6 @@
 import unittest
 from datetime import datetime, timedelta
-from test.tenable_io.base import APITest
+from test.tenable_io import APITest
 from tenable.errors import *
 
 

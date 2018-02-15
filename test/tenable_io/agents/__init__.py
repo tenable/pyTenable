@@ -1,10 +1,10 @@
 import unittest
-import test_config
-import test_exclusions
+import config
+import exclusions
 
 
 def suite():
     return unittest.TestSuite([
-        test_config.suite(),
-        test_exclusions.suite(),
+        config.suite(),
+        exclusions.suite(),
     ])

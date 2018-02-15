@@ -1,5 +1,5 @@
 import unittest
-from test.tenable_io.base import APITest
+from test.tenable_io import APITest
 from tenable.errors import *
 
 
