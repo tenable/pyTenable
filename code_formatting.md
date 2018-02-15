@@ -8,4 +8,4 @@
 * We should avoid complicating code beyond whats necessary.
 * We should generally try to conform to DRY when appropriate.
 * All classes should be CamelCase
-* Function names and variables should use underscore notation, like `word1_word2`.
+* Function names and variables should use underscore notation, AKA Snake case, like `snake_case`.
