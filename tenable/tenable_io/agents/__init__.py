@@ -4,10 +4,10 @@ from .groups import AgentGroupsAPI
 from tenable.base import APIEndpoint
 
 class AgentsAPI(APIEndpoint):
-    def __init__(self, parent):
-        APIEndpoint.__init__(self, parent)
+    def __init__(self, api):
+        APIEndpoint.__init__(self, api)
 
         # Now lets graft on Agent Endpoints
-        self.config = AgentConfigAPI(parent)
-        self.exclusions = AgentExclusionsAPI(parent)
-        #self.groups = AgentGroupsAPI(parent)
+        self.config = AgentConfigAPI(api)
+        self.exclusions = AgentExclusionsAPI(api)
+        #self.groups = AgentGroupsAPI(api)

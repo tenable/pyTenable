@@ -1,7 +1,7 @@
 from tenable.base import APIEndpoint
 
 class AgentGroupsAPI(APIEndpoint):
-    def add_agent(self, scanner_id, group_id, agent_id):
+    def add_agent(self, group_id, agent_id, scanner_id=1):
         '''
         agent-groups: add-agent
         https://cloud.tenable.com/api#/resources/agent-groups/add-agent
@@ -40,7 +40,7 @@ class AgentGroupsAPI(APIEndpoint):
                 self._check('group_id', group_id, int)
             ), json={'name': self_check('name', name, str)})
 
-    def create(self, scanner_id, name):
+    def create(self, name, scanner_id=1):
         '''
         agent-groups: create
         https://cloud.tenable.com/api#/resources/agent-groups/create
@@ -57,7 +57,7 @@ class AgentGroupsAPI(APIEndpoint):
                 self._check('scanner_id', scanner_id, int)
             ), json={'name': self_check('name', name, str)})
 
-    def delete(self, scanner_id, group_id):
+    def delete(self, group_id, scanner_id=1):
         '''
         agent-groups: delete
         https://cloud.tenable.com/api#/resources/agent-groups/delete
@@ -75,7 +75,7 @@ class AgentGroupsAPI(APIEndpoint):
                 self._check('group_id', group_id, int)
             ))
 
-    def delete_agent(self, scanner_id, group_id, agent_id):
+    def delete_agent(self, group_id, agent_id, scanner_id=1):
         '''
         agent-groups: delete-agent
         https://cloud.tenable.com/api#/resources/agent-groups/delete-agent
@@ -95,7 +95,7 @@ class AgentGroupsAPI(APIEndpoint):
                 self._check('agent_id', agent_id, int)
             ))
 
-    def details(self, scanner_id, group_id):
+    def details(self, group_id, scanner_id=1):
         '''
         agent-groups: details
         https://cloud.tenable.com/api#/resources/agent-groups/details

@@ -197,6 +197,8 @@ class APISession(object):
             # As everything looks ok, lets pass the response on to the error
             # checker and then return the response.
             return self._resp_error_check(resp)
+        elif status == 400:
+            raise InvalidInputError(resp)
         elif status == 403:
             raise PermissionError(resp)
         elif status == 404:

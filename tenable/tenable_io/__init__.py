@@ -1,4 +1,5 @@
 from tenable.tenable_io.agents import AgentsAPI
+from tenable.tenable_io.scans import ScansAPI
 from tenable.base import APISession
 
 
@@ -14,6 +15,13 @@ class TenableIO(APISession):
 
         # Graft on the API Components
         self.agents = AgentsAPI(self)
+
+        self.scans = ScansAPI(self)
+
+        # As we will be using the timezone listing in a lot of parameter
+        # checking, we should probably cache the response as a private
+        # attribute to speed up checking times.
+        self._tz = self.scans.timezones()
 
     def _build_session(self):
         '''

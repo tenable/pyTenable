@@ -8,21 +8,21 @@ class AgentConfigTests(APITest):
         with self.assertRaises(TypeError):
             self.api.agents.config.edit('nope')
         with self.assertRaises(TypeError):
-            self.api.agents.config.edit(1, software_update='nope')
+            self.api.agents.config.edit(software_update='nope')
         with self.assertRaises(TypeError):
-            self.api.agents.config.edit(1, auto_unlink='nope')
+            self.api.agents.config.edit(auto_unlink='nope')
         with self.assertRaises(UnexpectedValueError):
-            self.api.agents.config.edit(1, auto_unlink=500)
+            self.api.agents.config.edit(auto_unlink=500)
         self.assertTrue(isinstance(
-            self.api.agents.config.edit(1, auto_unlink=30), dict))
+            self.api.agents.config.edit(auto_unlink=30), dict))
         self.assertTrue(isinstance(
-            self.api.agents.config.edit(1, auto_unlink=False), dict))
+            self.api.agents.config.edit(auto_unlink=False), dict))
 
     def test_details(self):
         with self.assertRaises(TypeError):
             self.api.agents.config.details(scanner_id='nope')
         self.assertTrue(isinstance(
-            self.api.agents.config.details(1), dict))
+            self.api.agents.config.details(), dict))
 
 
 def suite():

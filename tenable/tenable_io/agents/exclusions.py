@@ -2,13 +2,12 @@ from tenable.base import APIEndpoint
 from datetime import date, datetime
 
 class AgentExclusionsAPI(APIEndpoint):
-    def create(self, scanner_id, name, start_time=None, end_time=None, 
+    def create(self, name, scanner_id=1, start_time=None, end_time=None, 
                timezone=None, description=None, frequency=None, 
                interval=None, weekdays=None, day_of_month=None,
                enabled=True):
         '''
-        agent-exclusions: create
-        https://cloud.tenable.com/api#/resources/agent-exclusions/create
+        `agent-exclusions: create <https://cloud.tenable.com/api#/resources/agent-exclusions/create>`_
 
         Args:
             name (str): The name of the exclusion to create.
@@ -49,6 +48,11 @@ class AgentExclusionsAPI(APIEndpoint):
                 choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
                 default='ONETIME', 
                 insensitive=True).upper()
+        # The frequency check is interesting as, for the purposes of
+        # humanization, we're making it case insensitive for the checks.
+        # Afterwards however, we're making sure that the result is upper-cased
+        # so that the API understands it.
+
         rrules = {
             'freq': frequency,
             'interval': self._check('interval', interval, int, default=1)
@@ -57,10 +61,15 @@ class AgentExclusionsAPI(APIEndpoint):
         # if the frequency is a weekly one, then we will need to specify the
         # days of the week that the exclusion is run on.
         if frequency == 'WEEKLY':
-            rrules['byweekday'] = ','.join(self._check('weekdays', weekdays, list,
+            rrules['byweekday'] = ','.join([i.upper() for i in self._check(
+                'weekdays', weekdays, list,
                 choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
                 default=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                insensitive=True))
+                insensitive=True)])
+            # In the same vein as the frequency check, we're accepting
+            # case-insensitive input, comparing it to our known list of
+            # acceptable responses, then upper-casing each item in the list
+            # before joining them all together into a comma-seperated string.
 
         # if the requency is monthly, then we will need to specify the day of
         # the month that the rule will run on.
@@ -77,7 +86,9 @@ class AgentExclusionsAPI(APIEndpoint):
                 'enabled': self._check('enabled', enabled, bool, default=True),
                 'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
                 'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'timezone': self._check('timezone', timezone, str, default='Etc/UTC'),
+                'timezone': self._check('timezone', timezone, str, 
+                    choices=self._api._tz,
+                    default='Etc/UTC'),
                 'rrules': rrules
             }
         }
@@ -90,10 +101,9 @@ class AgentExclusionsAPI(APIEndpoint):
                 self._check('scanner_id', scanner_id, int)
             ), json=payload).json()
 
-    def delete(self, scanner_id, exclusion_id):
+    def delete(self, exclusion_id, scanner_id=1):
         '''
-        agent-exclusions: delete
-        https://cloud.tenable.com/api#/resources/agent-exclusions/delete
+        `agent-exclusions: delete <https://cloud.tenable.com/api#/resources/agent-exclusions/delete>`_
 
         Args:
             exclusion_id (int): The id of the exclusion object in Tenable.io
@@ -108,10 +118,9 @@ class AgentExclusionsAPI(APIEndpoint):
                 self._check('exclusion_id', exclusion_id, int)
             ))
 
-    def details(self, scanner_id, exclusion_id):
+    def details(self, exclusion_id, scanner_id=1):
         '''
-        agent-exclusion: details
-        https://cloud.tenable.com/api#/resources/agent-exclusions/details
+        `agent-exclusion: details <https://cloud.tenable.com/api#/resources/agent-exclusions/details>`_
 
         Args:
             scanner_id (int): The id of the scanner
@@ -120,29 +129,34 @@ class AgentExclusionsAPI(APIEndpoint):
         Returns:
             dict: The exclusion resource dictionary.
         '''
-        return self._api.delete(
+        return self._api.get(
             'scanners/{}/agents/exclusions/{}'.format(
                 self._check('scanner_id', scanner_id, int),
                 self._check('exclusion_id', exclusion_id, int)
             )).json()
 
-    def edit(self, scanner_id, exclusion_id, name=None, starttime=None, 
-            endtime=None, timezone=None, description=None, freq=None, 
-            interval=None, weekdays=None, dayofmonth=None, enabled=None, 
-            sched_obj=None):
+    def edit(self, exclusion_id, scanner_id=1, name=None, start_time=None, 
+            end_time=None, timezone=None, description=None, frequency=None, 
+            interval=None, weekdays=None, day_of_month=None, enabled=None):
         '''
+        `agent-exclusions: edit <https://cloud.tenable.com/api#/resources/agent-exclusions/edit>`_
+
+        The edit function will first gather the details of the exclusion that
+        will be edited and will overlay the changes on top.  The result will
+        then be pushed back to the API to modify the exclusion.
+
         Args:
             scanner_id (int): The scanner id.
             exclusion_id (int): The id of the exclusion object in Tenable.io
             name (str, optional): The name of the exclusion to create.
             description (str, optional): 
                 Some further detail about the exclusion.
-            starttime (datetime, optional): When the exclusion should start.
-            endtime (datetime, optional): When the exclusion should end.
+            start_time (datetime, optional): When the exclusion should start.
+            end_time (datetime, optional): When the exclusion should end.
             timezone (str, optional): 
                 The timezone to use for the exclusion.  The default if none is 
                 specified is to use UTC.
-            freq (str, optional):
+            frequency (str, optional):
                 The frequency of the rule. The string inputted will be upcased.
                 Valid values are: *ONETIME, DAILY, WEEKLY, MONTHLY, YEARLY*.
             interval (int, optional): The interval of the rule.
@@ -151,39 +165,64 @@ class AgentExclusionsAPI(APIEndpoint):
                 repeate the frequency rule on.  Valied values are:
                 *SU, MO, TU, WE, TH, FR, SA*
                 Default values: ``['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']``
-            dayofmonth (int, optional):
+            day_of_month (int, optional):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
 
         Returns:
             dict: Dictionary of the newly minted exclusion. 
         '''
 
-        # If an ExclusionSchedule object was not passed in, then we will have to
-        # construct one using all of the available parameters.
-        if not sched_obj and (starttime or endtime or timezone or freq 
-          or interval or weekdays or dayofmonth or enabled):
-            sched_obj = ExclusionSchedule(
-                starttime=starttime, 
-                endtime=endtime,
-                timezone=timezone,
-                enabled=enabled,
-                freq=freq,
-                interval=interval,
-                weekdays=weekdays,
-                dayofmonth=dayofmonth
-            )
-
         # Lets start constructing the payload to be sent to the API...
-        payload = {}
+        payload = self.details(exclusion_id, scanner_id=scanner_id)
 
-        # As the description, name, and schedule are optional, we will only add 
-        # them into the payload if one was specified.
-        if self._check('description', description, str):
-            payload['description'] = description
-        if self._check('name', name, str):
-            payload['name'] = name
-        if sched_obj:
-            payload['schedule'] = sched_obj.json()
+        if name:
+            payload['name'] = self._check('name', name, str)
+
+        if description:
+            payload['description'] = self._check('description', description, str)
+
+        if enabled is not None:
+            payload['schedule']['enabled'] = self._check('enabled', enabled, bool)
+
+        if start_time:
+            payload['schedule']['starttime'] = self._check(
+                'start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+
+        if end_time:
+            payload['schedule']['endtime'] = self._check(
+                'end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+
+        if timezone:
+            payload['schedule']['timezone'] = self._check(
+                'timezone', timezone, str, choices=self._api._tz)
+
+        if frequency:
+            payload['schedule']['rrules']['freq'] = self._check(
+                'frequency', frequency, str, 
+                choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
+                insensitive=True).upper()
+            # The frequency check is interesting as, for the purposes of
+            # humanization, we're making it case insensitive for the checks.
+            # Afterwards however, we're making sure that the result is upper-cased
+            # so that the API understands it.
+
+        if interval:
+            payload['schedule']['rrules']['interval'] = self._check(
+                'interval', interval, int)
+
+        if weekdays:
+            payload['schedule']['rrules']['byweekday'] = ','.join(
+                [i.upper() for i in self._check('weekdays', weekdays, list,
+                choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                insensitive=True)])
+            # In the same vein as the frequency check, we're accepting
+            # case-insensitive input, comparing it to our known list of
+            # acceptable responses, then upper-casing each item in the list
+            # before joining them all together into a comma-seperated string.
+            
+        if day_of_month is not None:
+            payload['schedule']['rrules']['bymonthday'] = self._check(
+                'day_of_month', day_of_month, int, choices=range(1,32))
 
         # Lests check to make sure that the scanner_id  and exclusion_id are 
         # integers as the API documentation requests and if we don't raise an 
@@ -194,10 +233,9 @@ class AgentExclusionsAPI(APIEndpoint):
                 self._check('exclusion_id', exclusion_id, int)
         ), json=payload).json()
 
-    def list(self, scanner_id):
+    def list(self, scanner_id=1):
         '''
-        agent-exclusions: list
-        https://cloud.tenable.com/api#/resources/agent-exclusions/list
+        `agent-exclusions: list <https://cloud.tenable.com/api#/resources/agent-exclusions/list>`_
 
         Args:
             scanner_id (int): The scanner identifier to be used.
@@ -206,6 +244,6 @@ class AgentExclusionsAPI(APIEndpoint):
             list: List of agent exclusions.
         '''
         return self._api.get(
-            'scanners/{}/agent/exclusions'.format(
+            'scanners/{}/agents/exclusions'.format(
                 self._check('scanner_id', scanner_id, int)
             )).json()['exclusions']
