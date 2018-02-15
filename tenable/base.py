@@ -1,13 +1,27 @@
-import requests, sys
+import requests, sys, logging
 from .errors import *
 from requests.packages.urllib3.util.retry import Retry
+'''
+'''
 
 __version__ = '0.0.1'
 
 
 class APIEndpoint(object):
-    def __init__(self, parent):
-        self._api = parent
+    '''
+    APIEndpoint is the base model for which all API endpoint classes are
+    sired from.  The main benefit is the addition of the ``_check()``
+    function from which it's possible to check the type & content of a
+    variable to ensure that we are passing good data to the API.
+
+    Args:
+        api (APISession): 
+            The APISession (or sired child) instance that the endpoint will
+            be using to perform calls to the API.
+    '''
+
+    def __init__(self, api):
+        self._api = api
 
     def _check(self, name, obj, expected_type, 
                choices=None, default=None, insensitive=False):
@@ -83,20 +97,56 @@ class APIEndpoint(object):
         return obj
 
 
-class APIModel(object):
-    def __init__(self, api_session=None, **entries):
-        self._api = api_session
-        self.__dict__.update(entries)
-    def __str__(self):
-        return str(self.id)
-    def dict(self):
-        return self.__dict__   
+#class APIModel(object):
+#    def __init__(self, api_session=None, **entries):
+#        self._api = api_session
+#        self.__dict__.update(entries)
+#    def __str__(self):
+#        return str(self.id)
+#    def dict(self):
+#        return self.__dict__   
 
 
 class APISession(object):
+    '''
+    The APISession class is the base model for APISessions for different
+    products and applications.  This is the model that the APIEndpoints
+    will be grafted onto and supports some basic wrapping of standard HTTP
+    methods on it's own.
+
+    Args:
+        url (str, optional):
+            The base URL that the paths will be appended onto.  
+
+            For example, if you want to override the default URL base with 
+            _http://a.b.c/api_, you could then make a GET requests with 
+            self.get('item').  This would then inform APISession to 
+            construct a GET request to _http://ab.c./api/item_ and use
+            whatever parameters you wanted to pass to the Requests Session
+            object.
+        retries (int, optional):
+            The number of retries to make before failing a request.  The
+            default is 3.
+        backoff (float, optional):
+            If a 429 response is returned, how much do we want to backoff
+            if the response didn't send a Retry-After header.
+    '''
+
     URL = None
+    '''
+    str: URL Base path
+    '''
+
     RETRIES = 3
+    '''
+    int: Number of retries to attempt to make before failing the HTTP request
+    '''
+
     RETRY_BACKOFF = 0.1
+    '''
+    float: The backoff timer to use if a 429 response was returned and no
+    Retry-After header was returned.
+    '''
 
     def __init__(self, url=None, retries=None, backoff=None):
         if url:
@@ -158,36 +208,138 @@ class APISession(object):
 
     def get(self, path, **kwargs):
         '''
-        Calls the specified path with a GET method
+        Initiates an HTTP GET request using the specified path.  Refer to the
+        `Requests documentation`_ for more detailed information on what keyword
+        arguments can be passed: 
+
+        Args:
+            path (str):
+                The path to be appented onto the base URL for the request.
+            **kwargs (dict):
+                Keyword arguments to be passed to the Requests Sessions request
+                method.
+
+        Returns:
+            `requests.Response`_: 
+
+        .. _requests.Response:
+            http://docs.python-requests.org/en/master/api/#requests.Response
+        .. _Requests documentation:
+            http://docs.python-requests.org/en/master/api/#requests.request
         '''
         return self._request('GET', path, **kwargs)
 
     def post(self, path, **kwargs):
         '''
-        Calls the specified path with a POST method
+        Initiates an HTTP POST request using the specified path.  Refer to the
+        `Requests documentation`_ for more detailed information on what keyword
+        arguments can be passed: 
+
+        Args:
+            path (str):
+                The path to be appented onto the base URL for the request.
+            **kwargs (dict):
+                Keyword arguments to be passed to the Requests Sessions request
+                method.
+
+        Returns:
+            `requests.Response`_: 
+
+        .. _requests.Response:
+            http://docs.python-requests.org/en/master/api/#requests.Response
+        .. _Requests documentation:
+            http://docs.python-requests.org/en/master/api/#requests.request
         '''
         return self._request('POST', path, **kwargs)
 
     def put(self, path, **kwargs):
         '''
-        Calls the specified path with a PUT method
+        Initiates an HTTP PUT request using the specified path.  Refer to the
+        `Requests documentation`_ for more detailed information on what keyword
+        arguments can be passed: 
+
+        Args:
+            path (str):
+                The path to be appented onto the base URL for the request.
+            **kwargs (dict):
+                Keyword arguments to be passed to the Requests Sessions request
+                method.
+
+        Returns:
+            `requests.Response`_: 
+
+        .. _requests.Response:
+            http://docs.python-requests.org/en/master/api/#requests.Response
+        .. _Requests documentation:
+            http://docs.python-requests.org/en/master/api/#requests.request
         '''
         return self._request('PUT', path, **kwargs)
 
     def patch(self, path, **kwargs):
         '''
-        Calls the specified path with a PATCH method
+        Initiates an HTTP PATCH request using the specified path.  Refer to the
+        `Requests documentation`_ for more detailed information on what keyword
+        arguments can be passed: 
+
+        Args:
+            path (str):
+                The path to be appented onto the base URL for the request.
+            **kwargs (dict):
+                Keyword arguments to be passed to the Requests Sessions request
+                method.
+
+        Returns:
+            `requests.Response`_: 
+
+        .. _requests.Response:
+            http://docs.python-requests.org/en/master/api/#requests.Response
+        .. _Requests documentation:
+            http://docs.python-requests.org/en/master/api/#requests.request
         '''
         return self._request('PATCH', path, **kwargs)
 
     def delete(self, path, **kwargs):
         '''
-        Calls the specified path with a DELETE method
+        Initiates an HTTP DELETE request using the specified path.  Refer to the
+        `Requests documentation`_ for more detailed information on what keyword
+        arguments can be passed: 
+
+        Args:
+            path (str):
+                The path to be appented onto the base URL for the request.
+            **kwargs (dict):
+                Keyword arguments to be passed to the Requests Sessions request
+                method.
+
+        Returns:
+            `requests.Response`_: 
+
+        .. _requests.Response:
+            http://docs.python-requests.org/en/master/api/#requests.Response
+        .. _Requests documentation:
+            http://docs.python-requests.org/en/master/api/#requests.request
         '''
         return self._request('DELETE', path, **kwargs)
 
     def head(self, path, **kwargs):
         '''
-        Calls the specified path with a HEAD method
+        Initiates an HTTP HEAD request using the specified path.  Refer to the
+        `Requests documentation`_ for more detailed information on what keyword
+        arguments can be passed: 
+
+        Args:
+            path (str):
+                The path to be appented onto the base URL for the request.
+            **kwargs (dict):
+                Keyword arguments to be passed to the Requests Sessions request
+                method.
+
+        Returns:
+            `requests.Response`_: 
+
+        .. _requests.Response:
+            http://docs.python-requests.org/en/master/api/#requests.Response
+        .. _Requests documentation:
+            http://docs.python-requests.org/en/master/api/#requests.request
         '''
         return self._request('HEAD', path, **kwargs)
