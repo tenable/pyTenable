@@ -3,13 +3,12 @@ from tenable.base import APIEndpoint
 class AgentGroupsAPI(APIEndpoint):
     def add_agent(self, group_id, agent_id, scanner_id=1):
         '''
-        agent-groups: add-agent
-        https://cloud.tenable.com/api#/resources/agent-groups/add-agent
+        `agent-groups: add-agent <https://cloud.tenable.com/api#/resources/agent-groups/add-agent>`_
 
         Args:
-            scanner_id (int): The id of the scanner
             group_id (int): The id of the group
             agent_id (int): The id of the agent
+            scanner_id (int, optional): The id of the scanner
 
         Returns:
             None: Agent added successfully
@@ -21,15 +20,14 @@ class AgentGroupsAPI(APIEndpoint):
                 self._check('agent_id', agent_id, int)
             )).json()
 
-    def configure(self, scanner_id, group_id, name):
+    def configure(self, group_id, name, scanner_id=1):
         '''
-        agent-groups: configure
-        https://cloud.tenable.com/api#/resources/agent-groups/configure
+        `agent-groups: configure <https://cloud.tenable.com/api#/resources/agent-groups/configure>`_
 
         Args:
-            scanner_id (int): The id of the scanner
             group_id (int): The id of the group
             name (str): The new name for the agent group
+            scanner_id (int, optional): The id of the scanner
 
         Returns:
             None: Agent group updated successfully
@@ -38,33 +36,33 @@ class AgentGroupsAPI(APIEndpoint):
             'scanners/{}/agent-groups/{}'.format(
                 self._check('scanner_id', scanner_id, int),
                 self._check('group_id', group_id, int)
-            ), json={'name': self_check('name', name, str)})
+            ), json={'name': self._check('name', name, str)}).json()
 
     def create(self, name, scanner_id=1):
         '''
-        agent-groups: create
-        https://cloud.tenable.com/api#/resources/agent-groups/create
+        `agent-groups: create <https://cloud.tenable.com/api#/resources/agent-groups/create>`_
 
         Args:
-            scanner_id (int): The id of the scanner to add the agent group to
             name (str): The name of the agent group
+            scanner_id (int, optional): 
+                The id of the scanner to add the agent group to
 
         Returns:
-            None: Agent group created successfully
+            dict: 
+                The dictionary object representing the newly minted agent group 
         '''
         return self._api.post(
             'scanners/{}/agent-groups'.format(
                 self._check('scanner_id', scanner_id, int)
-            ), json={'name': self_check('name', name, str)})
+            ), json={'name': self. _check('name', name, str)}).json()
 
     def delete(self, group_id, scanner_id=1):
         '''
-        agent-groups: delete
-        https://cloud.tenable.com/api#/resources/agent-groups/delete
+        `agent-groups: delete <https://cloud.tenable.com/api#/resources/agent-groups/delete>`_
 
         Args:
-            scanner_id (int): The id of the scanner
             group_id (int): The id of the agent group to delete
+            scanner_id (int, optional): The id of the scanner
 
         Returns:
             None: Agent group deleted successfully
@@ -77,13 +75,12 @@ class AgentGroupsAPI(APIEndpoint):
 
     def delete_agent(self, group_id, agent_id, scanner_id=1):
         '''
-        agent-groups: delete-agent
-        https://cloud.tenable.com/api#/resources/agent-groups/delete-agent
+        `agent-groups: delete-agent <https://cloud.tenable.com/api#/resources/agent-groups/delete-agent>`_
 
         Args:
-            scanner_id (int): The id of the scanner
             group_id (int): The id of the agent group to remove the agent from
             agent_id (int): The id of the agent to be removed
+            scanner_id (int, optional): The id of the scanner
 
         Returns:
             None
@@ -97,10 +94,18 @@ class AgentGroupsAPI(APIEndpoint):
 
     def details(self, group_id, scanner_id=1):
         '''
-        agent-groups: details
-        https://cloud.tenable.com/api#/resources/agent-groups/details
+        `agent-groups: details <https://cloud.tenable.com/api#/resources/agent-groups/details>`_
 
         Args:
-            
+            group_id (int): The id of the agent group to remove the agent from
+            scanner_id (int, optional): The id of the scanner
+
+        Returns:
+            dict:
+                The dictionary object representing the requested agent group
         '''
-        pass
+        return self._api.get(
+            'scanners/{}/agent-groups/{}'.format(
+                self._check('scanner_id', scanner_id, int),
+                self._check('group_id', group_id, int)
+            )).json()

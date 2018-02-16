@@ -123,8 +123,8 @@ class AgentExclusionsAPI(APIEndpoint):
         `agent-exclusion: details <https://cloud.tenable.com/api#/resources/agent-exclusions/details>`_
 
         Args:
-            scanner_id (int): The id of the scanner
             exclusion_id (int): The id of the exclusion object in Tenable.io
+            scanner_id (int, optional): The id of the scanner
 
         Returns:
             dict: The exclusion resource dictionary.
@@ -146,8 +146,8 @@ class AgentExclusionsAPI(APIEndpoint):
         then be pushed back to the API to modify the exclusion.
 
         Args:
-            scanner_id (int): The scanner id.
             exclusion_id (int): The id of the exclusion object in Tenable.io
+            scanner_id (int, optional): The scanner id.
             name (str, optional): The name of the exclusion to create.
             description (str, optional): 
                 Some further detail about the exclusion.
@@ -238,7 +238,7 @@ class AgentExclusionsAPI(APIEndpoint):
         `agent-exclusions: list <https://cloud.tenable.com/api#/resources/agent-exclusions/list>`_
 
         Args:
-            scanner_id (int): The scanner identifier to be used.
+            scanner_id (int, optional): The scanner identifier to be used.
 
         Returns:
             list: List of agent exclusions.

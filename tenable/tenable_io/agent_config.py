@@ -6,8 +6,8 @@ class AgentConfigAPI(APIEndpoint):
         agent-config: edit (`API Documentation <https://cloud.tenable.com/api#/resources/agent-config/edit>`_)
 
         Args:
-            scanner_id (int): The scanner ID.
-            software_update (:obj:`bool`, optional): 
+            scanner_id (int, optional): The scanner ID.
+            software_update (bool, optional): 
                 If True, software updates are enabled for agents (exclusions may
                 override this).  If false, software updates for all agents are
                 disabled.
@@ -46,7 +46,7 @@ class AgentConfigAPI(APIEndpoint):
         agent-config: details (`API Documentation <https://cloud.tenable.com/api#/resources/agent-config/details>`_)
 
         Args:
-            scanner_id (int): The scanner ID.
+            scanner_id (int, optional): The scanner ID.
 
         Returns:
             dict: Dictionary of the current settings.

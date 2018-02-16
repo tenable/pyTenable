@@ -12,8 +12,12 @@ class APITest(unittest.TestCase):
         )
 
 def suites():
-    import agents
+    import agent_config
+    import agent_exclusions
+    import agent_groups
 
     return unittest.TestSuite([
-        agents.suite(),
+        agent_config.suite(),
+        agent_exclusions.suite(),
+        agent_groups.suite(),
     ])
