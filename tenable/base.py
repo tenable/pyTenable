@@ -164,7 +164,7 @@ class APISession(object):
         # Sets the retry adaptor with the ability to properly backoff if we get 429s
         retries = Retry(
             total=self.RETRIES,
-            status_forcelist={429, 501, 502, 503, 504}, 
+            status_forcelist={429, 500, 501, 502, 503, 504}, 
             backoff_factor=self.RETRY_BACKOFF, 
             respect_retry_after_header=True
         )

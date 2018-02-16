@@ -85,18 +85,19 @@ class AgentGroupTests(APITest):
         with self.assertRaises(TypeError):
             self.api.agent_groups.details('nope')
         with self.assertRaises(TypeError):
-            self.apit.agent_groups.details(1, scanner_id='nope')
+            self.api.agent_groups.details(1, scanner_id='nope')
 
         with self.assertRaises(NotFoundError):
-            self.api.agent_groups.details(1)
+            self.api.agent_groups.details(999999)
 
         with self.assertRaises(PermissionError):
-            self.api.agent_groups.details(1)
+            self.api.agent_groups.details(999999)
 
         group = self.api.agent_groups.create('Example DETAIL TEST')
-        detail = self.api.agent_groups.detail(group['id'])
+        detail = self.api.agent_groups.details(group['id'])
 
         self.assertTrue(group['name'] == detail['name'])
+        self.api.agent_groups.delete(group['id'])
 
 
 def suite():
@@ -105,4 +106,5 @@ def suite():
     suite.addTest(AgentGroupTests('test_configure_agent_group'))
     suite.addTest(AgentGroupTests('test_delete_agent_group'))
     suite.addTest(AgentGroupTests('test_delete_agent_from_group'))
+    suite.addTest(AgentGroupTests('test_agent_group_details'))
     return suite
