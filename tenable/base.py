@@ -24,7 +24,7 @@ class APIEndpoint(object):
         self._api = api
 
     def _check(self, name, obj, expected_type, 
-               choices=None, default=None, insensitive=False):
+               choices=None, default=None, case=None):
         '''
         Internal function for validating thet inputs we are receiving are of
         the right type, have the expected values, and can handle defaults as
@@ -42,10 +42,39 @@ class APIEndpoint(object):
             default (obj, optional):
                 if we want to return a default setting if the object is None,
                 we can set one here.
+            case (string, optional):
+                if we want to force the object values to be upper or lower case,
+                then we will want to set this to either ``upper`` or ``lower``
+                depending on the desired outcome.  The returned object will then
+                also be in the specified case.
 
         Returns:
              obj: Either the object or the default object depending.
         '''
+
+        # We have a simple function to convert the case of string values so that
+        # we can ensure correct output. 
+        def conv(obj, case):
+            '''
+            Case conversion function
+            '''
+            if case == 'lower':
+                if isinstance(obj, list):
+                    return [i.lower() for i in obj if isinstance(i, str)]
+                elif isinstance(obj, str):
+                    return obj.lower()
+            elif case == 'upper':
+                if isinstance(obj, list):
+                    return [i.upper() for i in obj if isinstance(i, str)]
+                elif isinstance(obj, str):
+                    return obj.upper()
+            return obj
+
+        # Convert the case of the inputs.
+        obj = conv(obj, case)
+        choices = conv(choices, case)
+        default = conv(default, case)
+
         # If the object sent to us has a None value, then we will return None.
         # If a default was set, then we will return the default value.
         if obj == None:
@@ -64,32 +93,19 @@ class APIEndpoint(object):
         # if the object is only expected to have one of a finite set of values,
         # we should check against that and raise an exception if the the actual
         # value is outside of what we expect.
-        if insensitive:
-            ichoices = [str(i).lower() for i in choices]
 
         if isinstance(obj, list):
             for item in obj:
-                if insensitive and isinstance(choices, list) and item.lower() not in ichoices:
-                    raise UnexpectedValueError(
-                        '{} has value of {}.  Expected one of {}'.format(
-                            name, obj, ','.join([str(i) for i in ichoices])
-                    ))               
-                elif not insensitive and isinstance(choices, list) and item not in choices:
+                if isinstance(choices, list) and item not in choices:
                     raise UnexpectedValueError(
                         '{} has value of {}.  Expected one of {}'.format(
                             name, obj, ','.join([str(i) for i in choices])
                     ))
-
-        elif not insensitive and isinstance(choices, list) and obj not in choices:
+        elif isinstance(choices, list) and obj not in choices:
             raise UnexpectedValueError(
                 '{} has value of {}.  Expected one of {}'.format(
                     name, obj, ','.join([str(i) for i in choices])
-            ))
-        elif insensitive and isinstance(choices, list) and obj.lower() not in ichoices:
-            raise UnexpectedValueError(
-                '{} has value of {}.  Expected one of {}'.format(
-                    name, obj, ','.join([str(i) for i in ichoices])
-            ))
+            ))            
 
 
         # if we made it this fire without an exception being raised, then assume

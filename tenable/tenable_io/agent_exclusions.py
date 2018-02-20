@@ -45,13 +45,9 @@ class AgentExclusionsAPI(APIEndpoint):
         # Starting with the innermost part of the payload, lets construct the
         # rrules dictionary.
         frequency = self._check('frequency', frequency, str, 
-                choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-                default='ONETIME', 
-                insensitive=True).upper()
-        # The frequency check is interesting as, for the purposes of
-        # humanization, we're making it case insensitive for the checks.
-        # Afterwards however, we're making sure that the result is upper-cased
-        # so that the API understands it.
+            choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
+            default='ONETIME', 
+            case='upper')
 
         rrules = {
             'freq': frequency,
@@ -61,15 +57,15 @@ class AgentExclusionsAPI(APIEndpoint):
         # if the frequency is a weekly one, then we will need to specify the
         # days of the week that the exclusion is run on.
         if frequency == 'WEEKLY':
-            rrules['byweekday'] = ','.join([i.upper() for i in self._check(
+            rrules['byweekday'] = ','.join(self._check(
                 'weekdays', weekdays, list,
                 choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
                 default=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                insensitive=True)])
+                case='upper'))
             # In the same vein as the frequency check, we're accepting
             # case-insensitive input, comparing it to our known list of
-            # acceptable responses, then upper-casing each item in the list
-            # before joining them all together into a comma-seperated string.
+            # acceptable responses, then joining them all together into a 
+            # comma-seperated string.
 
         # if the requency is monthly, then we will need to specify the day of
         # the month that the rule will run on.
@@ -200,25 +196,21 @@ class AgentExclusionsAPI(APIEndpoint):
             payload['schedule']['rrules']['freq'] = self._check(
                 'frequency', frequency, str, 
                 choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-                insensitive=True).upper()
-            # The frequency check is interesting as, for the purposes of
-            # humanization, we're making it case insensitive for the checks.
-            # Afterwards however, we're making sure that the result is upper-cased
-            # so that the API understands it.
+                case='upper')
 
         if interval:
             payload['schedule']['rrules']['interval'] = self._check(
                 'interval', interval, int)
 
         if weekdays:
-            payload['schedule']['rrules']['byweekday'] = ','.join(
-                [i.upper() for i in self._check('weekdays', weekdays, list,
+            payload['schedule']['rrules']['byweekday'] = ','.join(self._check(
+                'weekdays', weekdays, list,
                 choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                insensitive=True)])
+                case='upper'))
             # In the same vein as the frequency check, we're accepting
             # case-insensitive input, comparing it to our known list of
-            # acceptable responses, then upper-casing each item in the list
-            # before joining them all together into a comma-seperated string.
+            # acceptable responses, then joining them all together into a 
+            # comma-seperated string.
             
         if day_of_month is not None:
             payload['schedule']['rrules']['bymonthday'] = self._check(
