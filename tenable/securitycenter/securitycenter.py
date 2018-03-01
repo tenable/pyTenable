@@ -171,74 +171,27 @@ class SecurityCenter(APISession):
                 The analysis tool to use for parsing the data.  Available
                 tool types are as follows:
                 
-                * ``vuln`` DataType
-                    - ``cceipdetail``
-                    - ``cveipdetail``
-                    - ``iavmipdetail``
-                    - ``iplist``
-                    - ``listmailclients``
-                    - ``listservices``
-                    - ``listos``
-                    - ``listsoftware``
-                    - ``listsshservers``
-                    - ``listvuln``
-                    - ``listwebclients``
-                    - ``listwebservers``
-                    - ``popcount``
-                    - ``sumasset``
-                    - ``sumcce``
-                    - ``sumclassa``
-                    - ``sumclassb``
-                    - ``sumclassc``
-                    - ``sumcve``
-                    - ``sumdnsname``
-                    - ``sumfamily``
-                    - ``sumiavm``
-                    - ``sumid``
-                    - ``sumip``
-                    - ``summsbulletin``
-                    - ``sumprotocol``
-                    - ``sumremediation``
-                    - ``sumseverity``
-                    - ``sumuserresponsibility``
-                    - ``support``
-                    - ``trend``
-                    - ``vulndetails``
-                    - ``vulnipdetail``
-                    - ``vulnipsummary``
-                * ``event`` DataType
-                    - ``listdata``
-                    - ``sumasset``
-                    - ``sumclassa``
-                    - ``sumclassb``
-                    - ``sumclassc``
-                    - ``sumconns``
-                    - ``sumdate``
-                    - ``sumdstip``
-                    - ``sumevent``
-                    - ``sumevent2``
-                    - ``sumip``
-                    - ``sumport``
-                    - ``sumprotocol``
-                    - ``sumsrcip``
-                    - ``sumtime``
-                    - ``sumtype``
-                    - ``sumuser``
-                    - ``syslog``
-                    - ``timedist``
-                * ``mobile`` DataType
-                    - ``listmodel``
-                    - ``listoscpe``
-                    - ``listvuln``
-                    - ``sumdeviceid``
-                    - ``summdmuser``
-                    - ``summodel``
-                    - ``sumoscpe``
-                    - ``sumpluginid``
-                    - ``sumprotocol``
-                    - ``sumseverity``
-                    - ``support``
-                    - ``vulndetails``
+                * ``vuln`` DataType Tools:
+                    ``cceipdetail``, ``cveipdetail``, ``iavmipdetail``, 
+                    ``iplist``, ``listmailclients``, ``listservices``, 
+                    ``listos``, ``listsoftware``, ``listsshservers``,
+                    ``listvuln``, ``listwebclients``, ``listwebservers``,
+                    ``popcount``, ``sumasset``, ``sumcce``, ``sumclassa``,
+                    ``sumclassb``, ``sumclassc``, ``sumcve``, ``sumdnsname``,
+                    ``sumfamily``, ``sumiavm``, ``sumid``, ``sumip``,
+                    ``summsbulletin``, ``sumprotocol``, ``sumremediation``,
+                    ``sumseverity``, ``sumuserresponsibility``, ``support``,
+                    ``trend``, ``vulndetails``, ``vulnipdetail``, ``vulnipsummary``
+                * ``event`` DataType Tools:
+                    ``listdata``, ``sumasset``, ``sumclassa``, ``sumclassb``,
+                    ``sumclassc``, ``sumconns``, ``sumdate``, ``sumdstip``,
+                    ``sumevent``, ``sumevent2``, ``sumip``, ``sumport``,
+                    ``sumprotocol``, ``sumsrcip``, ``sumtime``, ``sumtype``,
+                    ``sumuser``, ``syslog``, ``timedist``
+                * ``mobile`` DataType Tools:
+                    ``listmodel``, ``listoscpe``, ``listvuln``, ``sumdeviceid``,
+                    ``summdmuser``, ``summodel``, ``sumoscpe``, ``sumpluginid``,
+                    ``sumprotocol``, ``sumseverity``, ``support``, ``vulndetails``
         '''
         output = []
         def return_results(**kw):
