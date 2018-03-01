@@ -1,6 +1,14 @@
 from tenable.tenable_io.agent_config import AgentConfigAPI
 from tenable.tenable_io.agent_exclusions import AgentExclusionsAPI
 from tenable.tenable_io.agent_groups import AgentGroupsAPI
+from tenable.tenable_io.agents import AgentsAPI
+from tenable.tenable_io.assets import AssetsAPI
+from tenable.tenable_io.audit_log import AuditLogAPI
+from tenable.tenable_io.editor import EditorAPI
+from tenable.tenable_io.exclusions import ExclusionsAPI
+from tenable.tenable_io.file import FileAPI
+from tenable.tenable_io.filters import FiltersAPI
+from tenable.tenable_io.folders import FoldersAPI
 from tenable.tenable_io.scans import ScansAPI
 from tenable.base import APISession
 
@@ -42,7 +50,14 @@ class TenableIO(APISession):
         self.agent_config = AgentConfigAPI(self)
         self.agent_groups = AgentGroupsAPI(self)
         self.agent_exclusions = AgentExclusionsAPI(self)
-
+        self.agents = AgentsAPI(self)
+        self.assets = AssetsAPI(self)
+        self.audit_log = AuditLogAPI(self)
+        self.editor = EditorAPI(self)
+        self.exclusions = ExclusionsAPI(self)
+        self.file = FileAPI(self)
+        self.filters = FiltersAPI(self)
+        self.folders = FoldersAPI(self)
 
         self.scans = ScansAPI(self)
 

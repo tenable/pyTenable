@@ -1,17 +1,16 @@
 from tenable.base import APIEndpoint
-from datetime import date, datetime
 
-class AgentExclusionsAPI(APIEndpoint):
-    def create(self, name, scanner_id=1, start_time=None, end_time=None, 
+class ExclusionsAPI(APIEndpoint):
+    def create(self, name, members, start_time=None, end_time=None, 
                timezone=None, description=None, frequency=None, 
                interval=None, weekdays=None, day_of_month=None,
                enabled=True):
         '''
-        `agent-exclusions: create <https://cloud.tenable.com/api#/resources/agent-exclusions/create>`_
+        `exclusions: create <https://cloud.tenable.com/api#/resources/exclusions/create>`_
 
         Args:
             name (str): The name of the exclusion to create.
-            scanner_id (int, optional): The scanner id.
+            members (str): The exclusions members.
             description (str, optional): 
                 Some further detail about the exclusion.
             start_time (datetime): When the exclusion should start.
@@ -77,6 +76,7 @@ class AgentExclusionsAPI(APIEndpoint):
         # Next we need to construct the rest of the payload
         payload = {
             'name': self._check('name', name, str),
+            'mambers': self._check('members', members, str),
             'description': self._check('description', description, str, default=''),
             'schedule': {
                 'enabled': self._check('enabled', enabled, bool, default=True),
@@ -89,59 +89,46 @@ class AgentExclusionsAPI(APIEndpoint):
             }
         }
 
-        # Lests check to make sure that the scanner_id is an integer as the API
-        # documentation requests and if we don't raise an error, then lets make
-        # the call.
-        return self._api.post(
-            'scanners/{}/agents/exclusions'.format(
-                self._check('scanner_id', scanner_id, int)
-            ), json=payload).json()
+        # And now to make the call and return the data.
+        return self._api.post('exclusions', json=payload).json()
 
-    def delete(self, exclusion_id, scanner_id=1):
+    def delete(self, id):
         '''
-        `agent-exclusions: delete <https://cloud.tenable.com/api#/resources/agent-exclusions/delete>`_
+        `exclusions: delete <https://cloud.tenable.com/api#/resources/exclusions/delete>`_
 
         Args:
-            exclusion_id (int): The id of the exclusion object in Tenable.io
-            scanner_id (int, optional): The id of the scanner
+            id (int): The exclusion identifier to delete
 
         Returns:
-            None: The Eeclusion was successfully deleted
+            None: The exclusion was successfully deleted.
         '''
-        self._api.delete('scanners/{}/agents/exclusions/{}'.format(
-            self._check('scanner_id', scanner_id, int),
-            self._check('exclusion_id', exclusion_id, int)
-        ))
+        self._api.delete('exclusions/{}'.format(self._check('id', id, int)))
 
-    def details(self, exclusion_id, scanner_id=1):
+    def details(self, id):
         '''
-        `agent-exclusion: details <https://cloud.tenable.com/api#/resources/agent-exclusions/details>`_
-
+        `exclusions: details <https://cloud.tenable.com/api#/resources/exclusions/details>`_
+        
         Args:
-            exclusion_id (int): The id of the exclusion object in Tenable.io
-            scanner_id (int, optional): The id of the scanner
+            id (int): The exclusion identifier.
 
         Returns:
-            dict: The exclusion resource dictionary.
+            dict: The exclusion record requested.
         '''
-        return self._api.get(
-            'scanners/{}/agents/exclusions/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('exclusion_id', exclusion_id, int)
-            )).json()
+        return self._api.get('exclusions/{}'.format(self._check('id', id, int)))
 
-    def edit(self, exclusion_id, scanner_id=1, name=None, start_time=None, 
-            end_time=None, timezone=None, description=None, frequency=None, 
-            interval=None, weekdays=None, day_of_month=None, enabled=None):
+    def edit(self, id, name=None, members=None, start_time=None, 
+             end_time=None, timezone=None, description=None, frequency=None, 
+             interval=None, weekdays=None, day_of_month=None, enabled=None):
         '''
-        `agent-exclusions: edit <https://cloud.tenable.com/api#/resources/agent-exclusions/edit>`_
+        `exclusions: edit <https://cloud.tenable.com/api#/resources/exclusions/edit>`_
 
         The edit function will first gather the details of the exclusion that
         will be edited and will overlay the changes on top.  The result will
         then be pushed back to the API to modify the exclusion.
 
         Args:
-            exclusion_id (int): The id of the exclusion object in Tenable.io
+            id (int): The id of the exclusion object in Tenable.io
+
             scanner_id (int, optional): The scanner id.
             name (str, optional): The name of the exclusion to create.
             description (str, optional): 
@@ -168,10 +155,13 @@ class AgentExclusionsAPI(APIEndpoint):
         '''
 
         # Lets start constructing the payload to be sent to the API...
-        payload = self.details(exclusion_id, scanner_id=scanner_id)
+        payload = self.details(id)
 
         if name:
             payload['name'] = self._check('name', name, str)
+
+        if members:
+            payload['members'] = self._check('members', description, str)
 
         if description:
             payload['description'] = self._check('description', description, str)
@@ -219,22 +209,15 @@ class AgentExclusionsAPI(APIEndpoint):
         # integers as the API documentation requests and if we don't raise an 
         # error, then lets make the call.
         return self._api.put(
-            'scanners/{}/agents/exclusions/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('exclusion_id', exclusion_id, int)
-        ), json=payload).json()
+            'exclusions/{}'.format(
+                self._check('id', id, int)
+            ), json=payload).json()
 
-    def list(self, scanner_id=1):
+    def list(self):
         '''
-        `agent-exclusions: list <https://cloud.tenable.com/api#/resources/agent-exclusions/list>`_
-
-        Args:
-            scanner_id (int, optional): The scanner identifier to be used.
+        `exclusions: list <https://cloud.tenable.com/api#/resources/exclusions/list>`_
 
         Returns:
-            list: List of agent exclusions.
+            list: List of exclusion resource records.
         '''
-        return self._api.get(
-            'scanners/{}/agents/exclusions'.format(
-                self._check('scanner_id', scanner_id, int)
-            )).json()['exclusions']
+        return self._api.get('exclusions').json()['exclusions']
