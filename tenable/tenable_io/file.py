@@ -1,4 +1,4 @@
-from tenable.basic import APIEndpoint
+from tenable.base import APIEndpoint
 
 class FileAPI(APIEndpoint):
     def upload(self, fobj, encrypted=False):

@@ -9,6 +9,9 @@ from tenable.tenable_io.exclusions import ExclusionsAPI
 from tenable.tenable_io.file import FileAPI
 from tenable.tenable_io.filters import FiltersAPI
 from tenable.tenable_io.folders import FoldersAPI
+from tenable.tenable_io.groups import GroupsAPI
+from tenable.tenable_io.permissions import PermissionsAPI
+from tenable.tenable_io.plugins import PluginsAPI
 from tenable.tenable_io.scans import ScansAPI
 from tenable.base import APISession
 
@@ -58,7 +61,9 @@ class TenableIO(APISession):
         self.file = FileAPI(self)
         self.filters = FiltersAPI(self)
         self.folders = FoldersAPI(self)
-
+        self.groups = GroupsAPI(self)
+        self.permissions = PermissionsAPI(self)
+        self.plugins = PluginsAPI(self)
         self.scans = ScansAPI(self)
 
         # As we will be using the timezone listing in a lot of parameter

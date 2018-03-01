@@ -33,7 +33,7 @@ class AssetsAPI(APIEndpoint):
         Imports a list of asset definition dictionaries.  Each asset record must
         contain at least one of the following attributes: ``fqdn``, ``ipv4``,
         ``netbios_name``, ``mac_address``.  Each record may also contain
-        additional properties as mentioned in the `asset resource `_
+        additional properties as mentioned in the `asset resource`_
         documentation.
 
         Args:
