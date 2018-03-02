@@ -3,7 +3,7 @@ from tenable.base import APIEndpoint
 class AgentConfigAPI(APIEndpoint):
     def edit(self, scanner_id=1, software_update=None, auto_unlink=None):
         '''
-        agent-config: edit (`API Documentation <https://cloud.tenable.com/api#/resources/agent-config/edit>`_)
+        `agent-config: edit <https://cloud.tenable.com/api#/resources/agent-config/edit>`_
 
         Args:
             scanner_id (int, optional): The scanner ID.
@@ -43,7 +43,7 @@ class AgentConfigAPI(APIEndpoint):
 
     def details(self, scanner_id=1):
         '''
-        agent-config: details (`API Documentation <https://cloud.tenable.com/api#/resources/agent-config/details>`_)
+        `agent-config: details <https://cloud.tenable.com/api#/resources/agent-config/details>`_
 
         Args:
             scanner_id (int, optional): The scanner ID.

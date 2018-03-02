@@ -10,6 +10,9 @@ Welcome to pyTenable's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   securitycenter
+   tenable_io
+
 
 
 Indices and tables

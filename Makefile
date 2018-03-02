@@ -1,3 +1,15 @@
+#.PHONY: build-docs
+#build-docs:
+#	docker build -t pytenable-docs -f Dockerfile-docs .
+##		--build-arg uid=$(shell id -u) \
+##		--build-arg gid=$(shell id -g) .
+#
+#.PHONY: docs
+#docs: build-docs
+#	docker run --rm -t \
+#	-v "`pwd`":/src pytenable-docs \
+#	sphinx-build docs docs/_build
+
 # Minimal makefile for Sphinx documentation
 #
 

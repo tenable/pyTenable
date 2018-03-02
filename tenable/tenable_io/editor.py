@@ -1,5 +1,9 @@
 from tenable.base import APIEndpoint
-from StringIO import StringIO
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 class EditorAPI(APIEndpoint):
     def audits(self, etype, object_id, file_id, fobj=None):
