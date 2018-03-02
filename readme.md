@@ -8,7 +8,7 @@ pyTenable is a library designed to provide a simple & easy-to-understand library
 
 **WARNING:** Currently in a pre-alpha state and not suitable for general consumption yet.
 
-Further Documentation will be forthcoming once the library is further down the line.
+For further documentation, please refer to the [online documentation](http://pytenable.readthedocs.io).
 
 ## TODO:
 
