@@ -39,7 +39,7 @@ class TenableIO(APISession):
             backoff is ``0.1`` seconds.
     '''
     
-
+    _TZ = None
     URL = 'https://cloud.tenable.com'
 
     @property
@@ -249,15 +249,21 @@ class TenableIO(APISession):
         '''
         return None
 
+    @property
+    def _tz(self):
+        '''
+        As we will be using the timezone listing in a lot of parameter checking,
+        we should probably cache the response as a private attribute to speed 
+        up checking times.
+        '''
+        if not self._TZ:
+            self._TZ = self.scans.timezones()
+        return self._TZ
+
     def __init__(self, access_key, secret_key, url=None, retries=None, backoff=None):
         self._access_key = access_key
         self._secret_key = secret_key
         APISession.__init__(self, url, retries, backoff)
-
-        # As we will be using the timezone listing in a lot of parameter
-        # checking, we should probably cache the response as a private
-        # attribute to speed up checking times.
-        self._tz = self.scans.timezones()
 
     def _build_session(self):
         '''

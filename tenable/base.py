@@ -230,12 +230,12 @@ class APISession(object):
     str: URL Base path
     '''
 
-    RETRIES = 3
+    RETRIES = 5
     '''
     int: Number of retries to attempt to make before failing the HTTP request
     '''
 
-    RETRY_BACKOFF = 0.1
+    RETRY_BACKOFF = 0.2
     '''
     float: The backoff timer to use if a 429 response was returned and no
     Retry-After header was returned.

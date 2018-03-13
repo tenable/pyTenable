@@ -6,6 +6,9 @@
 Welcome to pyTenable's documentation!
 =====================================
 
+.. image:: https://travis-ci.org/tenable/pyTenable.svg?branch=master
+    :target: https://travis-ci.org/tenable/pyTenable
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
