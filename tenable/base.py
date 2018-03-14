@@ -72,16 +72,15 @@ class APIResultsIterator(object):
         # If we have worked through the current page of records and we still
         # haven't hit to the total number of available records, then we should
         # query the next page of records.
-        elif self.page_count >= len(self.page) and self.count <= self.total:
+        if self.page_count >= len(self.page) and self.count <= self.total:
             self._get_page()
 
         # Get the relevant record, increment the counters, and return the
         # record.
-        else:
-            item = self.page[self.page_count]
-            self.count += 1
-            self.page_count += 1
-            return item
+        item = self.page[self.page_count]
+        self.count += 1
+        self.page_count += 1
+        return item
 
 
 class APIEndpoint(object):

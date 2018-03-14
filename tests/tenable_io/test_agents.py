@@ -15,15 +15,15 @@ def test_list_limit_typeerror(api):
 
 def test_list_sort_field_typeerror(api):
     with pytest.raises(TypeError):
-        api.agents.list(sort=(1, 'asc'))
+        api.agents.list(sort=((1, 'asc'),))
 
 def test_list_sort_direction_typeerror(api):
     with pytest.raises(TypeError):
-        api.agents.list(sort=('uuid', 1))
+        api.agents.list(sort=(('uuid', 1),))
 
 def test_list_sort_direction_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
-        api.agents.list(sort=('uuid', 'nope'))
+        api.agents.list(sort=(('uuid', 'nope'),))
 
 def test_list_filter_name_typeerror(api):
     with pytest.raises(TypeError):

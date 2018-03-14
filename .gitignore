@@ -4,3 +4,5 @@
 /docs/source/modules.rst
 docs/source/tenable*.rst
 /docs/_build
+/.pytest_cache
+env_builder

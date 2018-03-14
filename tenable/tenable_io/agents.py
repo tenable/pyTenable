@@ -115,7 +115,7 @@ class AgentsAPI(APIEndpoint):
 
         # If the offset was set to something other than the default starting
         # point of 0, then we will update offset to reflect that.
-        if 'offset' in kw and self._check('offset', kw['limit'], int):
+        if 'offset' in kw and self._check('offset', kw['offset'], int):
             offset = kw['offset']
 
         # The limit parameter affects how many records at a time we will pull
@@ -136,11 +136,10 @@ class AgentsAPI(APIEndpoint):
         #   sort=field1:asc,field2:desc
         #
         if 'sort' in kw and self._check('sort', kw['sort'], tuple):
-            for item in kw['sort']:
-                query['sort'] = ','.join(['{}:{}'.format(
-                    self._check('sort_field', i[0], str),
-                    self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
-                ) for i in kw['sort']])
+            query['sort'] = ','.join(['{}:{}'.format(
+                self._check('sort_field', i[0], str),
+                self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
+            ) for i in kw['sort']])
 
         # For the filters, we are converting the tuples provided into multiple
         # filter strings.  The filter strings are in the format of name:op:value.

@@ -17,7 +17,7 @@ class AgentGroupsAPI(APIEndpoint):
             self._check('scanner_id', scanner_id, int),
             self._check('group_id', group_id, int),
             self._check('agent_id', agent_id, int)
-        )).json()
+        ))
 
     def configure(self, group_id, name, scanner_id=1):
         '''

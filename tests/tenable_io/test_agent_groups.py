@@ -13,6 +13,9 @@ def agentgroup(request, api):
     request.addfinalizer(teardown)
     return group
 
+@pytest.fixture
+def agent(request, api):
+    return api.agents.list().next()
 
 def test_add_agent_to_group_group_id_typeerror(api):
     with pytest.raises(TypeError):
@@ -34,9 +37,8 @@ def test_add_agent_to_group_standard_user_permissionerror(stdapi):
     with pytest.raises(PermissionError):
         stdapi.agent_groups.add_agent(1, 1)
 
-### 
-### Need mock agents to test further
-###
+def test_add_agent_to_group(api, agentgroup, agent):
+    api.agent_groups.add_agent(agentgroup['id'], agent['id'])
 
 def test_configure_group_id_typeerror(api):
     with pytest.raises(TypeError):
@@ -110,9 +112,9 @@ def test_delete_agent_from_group_standard_user_permissionerror(stdapi):
     with pytest.raises(PermissionError):
         stdapi.agent_groups.delete_agent(1, 1)
 
-### 
-### Need mock agents to test further
-###
+def test_delete_agent_from_group(api, agent, agentgroup):
+    api.agent_groups.add_agent(agentgroup['id'], agent['id'])
+    api.agent_groups.delete_agent(agentgroup['id'], agent['id'])
 
 def test_details_group_id_typeerror(api):
     with pytest.raises(TypeError):
