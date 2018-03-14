@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from fixtures import *
+from .fixtures import *
 from tenable.errors import *
 import uuid
 

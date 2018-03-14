@@ -31,7 +31,7 @@ class AgentConfigAPI(APIEndpoint):
         if auto_unlink:
             payload['auto_unlink']['enabled'] = True
             payload['auto_unlink']['expiration'] = self._check(
-                'auto_unlink', auto_unlink, int, [False] + range(1, 366))
+                'auto_unlink', auto_unlink, int, [False] + list(range(1, 366)))
         elif auto_unlink in [False, 0]:
             payload['auto_unlink']['enabled'] = False
 

@@ -1,4 +1,4 @@
-from fixtures import *
+from .fixtures import *
 from tenable.errors import *
 import uuid
 
@@ -55,7 +55,7 @@ def test_configure_standard_user_permissionerror(stdapi, agentgroup):
         stdapi.agent_groups.configure(agentgroup['id'], str(uuid.uuid4()))
 
 def test_configure_change_name(api, agentgroup):
-    api.agent_groups.configure(agentgroup['id'], name)
+    api.agent_groups.configure(agentgroup['id'], str(uuid.uuid4()))
 
 def test_create_name_typeerror(api):
     with pytest.raises(TypeError):

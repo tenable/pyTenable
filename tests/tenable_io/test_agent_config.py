@@ -1,5 +1,5 @@
 from tenable.errors import *
-from fixtures import *
+from .fixtures import *
 
 def test_edit_scanner_id_typeerror(api):
     with pytest.raises(TypeError):
