@@ -53,9 +53,12 @@ def test_list_standard_users_permissionerror(stdapi):
     with pytest.raises(PermissionError):
         stdapi.agents.list()
 
-### 
-### Need mock agents to test further
-###
+def test_list(api):
+    count = 0
+    agents = api.agents.list()
+    for i in agents:
+        count += 1
+    assert count == agents.total
 
 def test_get_scanner_id_typeerror(api):
     with pytest.raises(TypeError):
@@ -65,6 +68,6 @@ def test_get_agent_id_typeerror(api):
     with pytest.raises(TypeError):
         api.agents.get('nope')
 
-### 
-### Need mock agents to test further
-###
+def test_get_agent_details(api, agent):
+    resp = api.agents.get(agent['id'])
+    assert resp['id'] == agent['id']
