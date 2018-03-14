@@ -2,21 +2,6 @@ from .fixtures import *
 from tenable.errors import *
 import uuid
 
-@pytest.fixture
-def agentgroup(request, api):
-    group = api.agent_groups.create(str(uuid.uuid4()))
-    def teardown():
-        try:
-            api.agent_groups.delete(group['id'])
-        except NotFoundError:
-            pass
-    request.addfinalizer(teardown)
-    return group
-
-@pytest.fixture
-def agent(request, api):
-    return api.agents.list().next()
-
 def test_add_agent_to_group_group_id_typeerror(api):
     with pytest.raises(TypeError):
         api.agent_groups.add_agent('nope', 1)
