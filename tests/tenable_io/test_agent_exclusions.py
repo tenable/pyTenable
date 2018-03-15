@@ -4,7 +4,7 @@ from tenable.errors import *
 import uuid
 
 @pytest.fixture
-def exclusion(request, api):
+def agentexclusion(request, api):
     excl = api.agent_exclusions.create(str(uuid.uuid4()),
         start_time=datetime.utcnow(),
         end_time=datetime.utcnow() + timedelta(hours=1))
@@ -170,12 +170,12 @@ def test_delete_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.agent_exclusions.delete(123)
 
-def test_delete_exclusion(api, exclusion):
-    api.agent_exclusions.delete(exclusion['id'])
+def test_delete_exclusion(api, agentexclusion):
+    api.agent_exclusions.delete(agentexclusion['id'])
 
-def test_delete_standard_user_fail(stdapi, exclusion):
+def test_delete_standard_user_fail(stdapi, agentexclusion):
     with pytest.raises(PermissionError):
-        stdapi.agent_exclusions.delete(exclusion['id'])
+        stdapi.agent_exclusions.delete(agentexclusion['id'])
 
 def test_edit_no_exclusion_id_typeerror(api):
     with pytest.raises(TypeError):
@@ -185,66 +185,66 @@ def test_edit_exclusion_id_typeerror(api):
     with pytest.raises(TypeError):
         api.agent_exclusions.edit('nope')
 
-def test_edit_scanner_id_typeerror(api, exclusion):
+def test_edit_scanner_id_typeerror(api, agentexclusion):
     with pytest.raises(TypeError):
-        api.agent_exclusions.edit(exclusion['id'], scanner_id='nope')
+        api.agent_exclusions.edit(agentexclusion['id'], scanner_id='nope')
 
-def test_edit_name_typeerror(api, exclusion):
+def test_edit_name_typeerror(api, agentexclusion):
     with pytest.raises(TypeError):
-        api.agent_exclusions.edit(exclusion['id'], name=1.02)
+        api.agent_exclusions.edit(agentexclusion['id'], name=1.02)
 
-def test_edit_starttime_typerror(api, exclusion):
+def test_edit_starttime_typerror(api, agentexclusion):
     with pytest.raises(TypeError):
-        api.agent_exclusions.edit(exclusion['id'], start_time='nope')
+        api.agent_exclusions.edit(agentexclusion['id'], start_time='nope')
 
-def test_edit_timezone_typerror(api, exclusion):
+def test_edit_timezone_typerror(api, agentexclusion):
     with pytest.raises(TypeError):
-        api.agent_exclusions.edit(exclusion['id'], timezone=1)
+        api.agent_exclusions.edit(agentexclusion['id'], timezone=1)
 
-def test_edit_timezone_unexpectedvalue(api, exclusion):
+def test_edit_timezone_unexpectedvalue(api, agentexclusion):
     with pytest.raises(UnexpectedValueError):
-        api.agent_exclusions.edit(exclusion['id'], timezone='nope')
+        api.agent_exclusions.edit(agentexclusion['id'], timezone='nope')
 
-def test_edit_description_typerror(api, exclusion):
+def test_edit_description_typerror(api, agentexclusion):
     with pytest.raises(TypeError):
-        api.agent_exclusions.edit(exclusion['id'], description=1)
+        api.agent_exclusions.edit(agentexclusion['id'], description=1)
 
-def test_edit_frequency_typerror(api, exclusion):
+def test_edit_frequency_typerror(api, agentexclusion):
     with pytest.raises(TypeError):
-        api.agent_exclusions.edit(exclusion['id'], frequency=1)
+        api.agent_exclusions.edit(agentexclusion['id'], frequency=1)
 
-def test_edit_frequency_unexpectedvalue(api, exclusion):
+def test_edit_frequency_unexpectedvalue(api, agentexclusion):
     with pytest.raises(UnexpectedValueError):
-        api.agent_exclusions.edit(exclusion['id'], frequency='nope')
+        api.agent_exclusions.edit(agentexclusion['id'], frequency='nope')
 
-def test_edit_interval_typerror(api, exclusion):
+def test_edit_interval_typerror(api, agentexclusion):
     with pytest.raises(TypeError):
-        api.agent_exclusions.edit(exclusion['id'], interval='nope')
+        api.agent_exclusions.edit(agentexclusion['id'], interval='nope')
 
-def test_edit_weekdays_typerror(api, exclusion):
+def test_edit_weekdays_typerror(api, agentexclusion):
     with pytest.raises(TypeError):
-        api.agent_exclusions.edit(exclusion['id'], weekdays='nope')
+        api.agent_exclusions.edit(agentexclusion['id'], weekdays='nope')
 
-def test_edit_weekdays_unexpectedvalue(api, exclusion):
+def test_edit_weekdays_unexpectedvalue(api, agentexclusion):
     with pytest.raises(UnexpectedValueError):
-        api.agent_exclusions.edit(exclusion['id'], weekdays=['MO', 'WE', 'nope'])
+        api.agent_exclusions.edit(agentexclusion['id'], weekdays=['MO', 'WE', 'nope'])
 
-def test_edit_dayofmonth_typerror(api, exclusion):
+def test_edit_dayofmonth_typerror(api, agentexclusion):
     with pytest.raises(TypeError):
-        api.agent_exclusions.edit(exclusion['id'], day_of_month='nope')
+        api.agent_exclusions.edit(agentexclusion['id'], day_of_month='nope')
 
-def test_edit_dayofmonth_unexpectedvalue(api, exclusion):
+def test_edit_dayofmonth_unexpectedvalue(api, agentexclusion):
     with pytest.raises(UnexpectedValueError):
-        api.agent_exclusions.edit(exclusion['id'], day_of_month=0)
+        api.agent_exclusions.edit(agentexclusion['id'], day_of_month=0)
 
-def test_edit_standard_user_permission_error(stdapi, exclusion):
+def test_edit_standard_user_permission_error(stdapi, agentexclusion):
     with pytest.raises(PermissionError):
-        stdapi.agent_exclusions.edit(exclusion['id'], name=str(uuid.uuid4()))
+        stdapi.agent_exclusions.edit(agentexclusion['id'], name=str(uuid.uuid4()))
 
-def test_edit_success(api, exclusion):
-    api.agent_exclusions.edit(exclusion['id'], name=str(uuid.uuid4()))
+def test_edit_success(api, agentexclusion):
+    api.agent_exclusions.edit(agentexclusion['id'], name=str(uuid.uuid4()))
 
-def test_list_blackouts(api, exclusion):
+def test_list_blackouts(api, agentexclusion):
     items = api.agent_exclusions.list()
     assert isinstance(items, list)
-    assert exclusion in items
+    assert agentexclusion in items

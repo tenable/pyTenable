@@ -1,4 +1,4 @@
-import pytest, os
+import pytest, os, uuid
 from tenable.tenable_io import TenableIO
 
 @pytest.fixture(scope='session', autouse=True)

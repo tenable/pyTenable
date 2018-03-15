@@ -1,4 +1,5 @@
 from tenable.base import APIEndpoint
+from datetime import datetime
 
 class ExclusionsAPI(APIEndpoint):
     def create(self, name, members, start_time=None, end_time=None, 
@@ -10,7 +11,9 @@ class ExclusionsAPI(APIEndpoint):
 
         Args:
             name (str): The name of the exclusion to create.
-            members (str): The exclusions members.
+            members (list): 
+                The exclusions members.  Each member should be a string with
+                either a FQDN, IP Address, IP Range, or CIDR.
             description (str, optional): 
                 Some further detail about the exclusion.
             start_time (datetime): When the exclusion should start.
@@ -70,13 +73,13 @@ class ExclusionsAPI(APIEndpoint):
         # the month that the rule will run on.
         if frequency == 'MONTHLY':
             rrules['bymonthday'] = self._check('day_of_month', day_of_month, int,
-                choices=range(1,32),
+                choices=list(range(1,32)),
                 default=datetime.today().day)
 
         # Next we need to construct the rest of the payload
         payload = {
             'name': self._check('name', name, str),
-            'mambers': self._check('members', members, str),
+            'members': ','.join(self._check('members', members, list)),
             'description': self._check('description', description, str, default=''),
             'schedule': {
                 'enabled': self._check('enabled', enabled, bool, default=True),
@@ -114,7 +117,8 @@ class ExclusionsAPI(APIEndpoint):
         Returns:
             dict: The exclusion record requested.
         '''
-        return self._api.get('exclusions/{}'.format(self._check('id', id, int)))
+        return self._api.get(
+            'exclusions/{}'.format(self._check('id', id, int))).json()
 
     def edit(self, id, name=None, members=None, start_time=None, 
              end_time=None, timezone=None, description=None, frequency=None, 
@@ -161,7 +165,7 @@ class ExclusionsAPI(APIEndpoint):
             payload['name'] = self._check('name', name, str)
 
         if members:
-            payload['members'] = self._check('members', description, str)
+            payload['members'] = ','.join(self._check('members', members, list))
 
         if description:
             payload['description'] = self._check('description', description, str)
