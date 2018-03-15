@@ -159,9 +159,32 @@ class APIEndpoint(object):
             else:
                 return None
 
-        # Lets check to make sure that the object is of the right type and raise
-        # a TypeError if we get something we weren't expecting.
-        if not isinstance(obj, expected_type):
+        # As we can support a singular expected type, or multiple types, we need
+        # to check to see if the expected types was a list of types.  If so, we
+        # will just pass expected_types into the etypes list.  If not, then this
+        # is a singular type, and we will want to wrap it into a list before
+        # passing to the etypes list.
+        if isinstance(expected_type, list) and len(expected_type) > 0:
+            etypes = expected_type
+        else:
+            etypes = [expected_type,]
+
+        # If we are checking for a string type, we will also want to check for
+        # unicode type transparently, so add the unicode type to the expected
+        # types list.
+        if str in etypes:
+            etypes.append(unicode)
+
+        # iterate through the expected types and flag as passing if any of the
+        # types match.
+        type_pass = False
+        for etype in etypes:
+            if isinstance(obj, etype):
+                type_pass = True
+
+        # If the object is none of the right types then we want to raise a
+        # TypeError as it was something we weren't expecting.
+        if not type_pass:
             raise TypeError('{} is of type {}.  Expected {}.'.format(
                 name, obj.__class__.__name__, expected_type.__name__
             ))

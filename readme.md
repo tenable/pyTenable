@@ -15,7 +15,6 @@ For further documentation, please refer to the [online documentation](http://pyt
 ## Tenable.io package
 
 - bulk-operations endpoints should be interlaced into the relevant APIEndpoints
-- _check should support multiple object types for checking
 - _check should allow for passing a checking function for further validation.
   + Example would be validating filters.
 - 
