@@ -8,4 +8,4 @@ class FiltersAPI(APIEndpoint):
         Returns:
             dict: Filter resource dictionary
         '''
-        return self._api.get('filters/scans/agents').json()
+        return self._api.get('filters/scans/agents').json()['filters']
