@@ -1,5 +1,5 @@
 from tenable.base import APIEndpoint
-from datetime import date as d
+
 
 class AuditLogAPI(APIEndpoint):
     def events(self, *filters, **kw):
@@ -30,5 +30,5 @@ class AuditLogAPI(APIEndpoint):
                 self._check('filter_field_name', f[0], str),
                 self._check('filter_operator', f[1], str),
                 self._check('filter_value', f[2], str)) for f in filters],
-            'limit': kw['limit'] if 'limit' in kw else 50
-        }).json()['audit-log']
+            'limit': self._check('limit', kw['limit'], int) if 'limit' in kw else 50
+        }).json()['events']
