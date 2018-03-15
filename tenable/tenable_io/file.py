@@ -16,4 +16,4 @@ class FileAPI(APIEndpoint):
         '''
         return self._api.post('file/upload', 
             data={'no_enc': int(encrypted)},
-            files=[fobj]).json()['fileuploaded']
+            files={'Filedata': fobj}).json()['fileuploaded']
