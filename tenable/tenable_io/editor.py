@@ -27,7 +27,7 @@ class EditorAPI(APIEndpoint):
         '''
         # If no file object was givent to us, then lets create a new StringIO
         # object to dump the data into.
-        if not file_obj:
+        if not fobj:
             fobj = StringIO()
 
         # Now we need to make the actual call.
@@ -60,7 +60,7 @@ class EditorAPI(APIEndpoint):
         Returns:
             dict: Details on the requested template
         '''
-        return self_api.get(
+        return self._api.get(
             'editor/{}/templates/{}'.format(
                 self._check('etype', etype, str, choices=['scan', 'policy']),
                 self._check('uuid', uuid, str)
