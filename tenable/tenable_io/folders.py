@@ -14,7 +14,7 @@ class FoldersAPI(APIEndpoint):
         '''
         return self._api.post('folders', json={
             'name': self._check('name', name, str)
-        }).json()
+        }).json()['id']
 
     def delete(self, id):
         '''

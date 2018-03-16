@@ -1,5 +1,6 @@
 import pytest, os, uuid
 from tenable.tenable_io import TenableIO
+from tenable.errors import *
 
 @pytest.fixture(scope='session', autouse=True)
 def api():
@@ -12,16 +13,16 @@ def stdapi():
         os.environ['TIO_TEST_STD_ACCESS'], os.environ['TIO_TEST_STD_SECRET'])
 
 @pytest.fixture
-def agentgroup(request, api):
-    group = api.agent_groups.create(str(uuid.uuid4()))
+def agent(request, api):
+    return api.agents.list().next()
+
+@pytest.fixture
+def folder(request, api):
+    folder = api.folders.create(str(uuid.uuid4())[:20])
     def teardown():
         try:
-            api.agent_groups.delete(group['id'])
+            api.folders.delete(folder)
         except NotFoundError:
             pass
     request.addfinalizer(teardown)
-    return group
-
-@pytest.fixture
-def agent(request, api):
-    return api.agents.list().next()
+    return folder
