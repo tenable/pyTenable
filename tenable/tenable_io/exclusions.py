@@ -207,7 +207,7 @@ class ExclusionsAPI(APIEndpoint):
             
         if day_of_month is not None:
             payload['schedule']['rrules']['bymonthday'] = self._check(
-                'day_of_month', day_of_month, int, choices=range(1,32))
+                'day_of_month', day_of_month, int, choices=list(range(1,32)))
 
         # Lests check to make sure that the scanner_id  and exclusion_id are 
         # integers as the API documentation requests and if we don't raise an 
