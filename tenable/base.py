@@ -171,9 +171,13 @@ class APIEndpoint(object):
 
         # If we are checking for a string type, we will also want to check for
         # unicode type transparently, so add the unicode type to the expected
-        # types list.
+        # types list.  NOTE this is for Python2 only, as Python3 treats all
+        # strings as type string.
         if str in etypes:
-            etypes.append(unicode)
+            try:
+                etypes.append(unicode)
+            except NameError:
+                pass
 
         # iterate through the expected types and flag as passing if any of the
         # types match.
