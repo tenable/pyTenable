@@ -1,9 +1,5 @@
 from tenable.base import APIEndpoint
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+from io import BytesIO
 
 class EditorAPI(APIEndpoint):
     def audits(self, etype, object_id, file_id, fobj=None):
@@ -20,15 +16,15 @@ class EditorAPI(APIEndpoint):
                 The unique identifier of the file to export.
             fobj (FileObject):
                 An optional File-like object to write the file to.  If none is
-                provided a StringIO object will be returned.
+                provided a BytesIO object will be returned.
 
         Returns:
             FileObject: A File-like object of of the audit file.
         '''
-        # If no file object was givent to us, then lets create a new StringIO
+        # If no file object was givent to us, then lets create a new BytesIO
         # object to dump the data into.
         if not fobj:
-            fobj = StringIO()
+            fobj = BytesIO()
 
         # Now we need to make the actual call.
         resp = self._api.get(

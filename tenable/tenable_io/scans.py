@@ -1,11 +1,7 @@
 from tenable.base import APIEndpoint
 from datetime import datetime
+from io import BytesIO
 import time
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 class ScansAPI(APIEndpoint):
     def attachment(self, scan_id, attachment_id, key, fobj=None):
@@ -17,16 +13,16 @@ class ScansAPI(APIEndpoint):
             attachment_id (int): The unique identifier for the attachement
             key (str): The attachement access token.
             fobj (FileObject, optional): a file-like object you wish for the
-                attachement to be written to.  If none is specified, a StringIO
+                attachement to be written to.  If none is specified, a BytesIO
                 object will be returned with the contents of the attachment.
 
         Returns:
             FileObject: A file-like object with the attachement written into it.
         '''
         if not fobj:
-            # if no file-like object is specified, then assign a StringIO object
+            # if no file-like object is specified, then assign a BytesIO object
             # to the variable.
-            fobj = StringIO()
+            fobj = BytesIO()
 
         # Make the HTTP call and stream the data into the file object.
         resp = self._api.get('scans/{}/attachments/{}'.format(
@@ -183,10 +179,10 @@ class ScansAPI(APIEndpoint):
                 default setting is `and`.
             fobj (FileObject, optional):
                 The file-like object to be returned with the exported data.  If
-                no object is specified, a StringIO object is returned with the
+                no object is specified, a BytesIO object is returned with the
                 data.  While this is an optional parameter, it is highly
                 recommended to use this paramater as exported files can be quite
-                large, and StringIO objects are stored in memory, not on disk.
+                large, and BytesIO objects are stored in memory, not on disk.
 
         Returns:
             FileObject: The file-like object of the requested export.
@@ -232,12 +228,12 @@ class ScansAPI(APIEndpoint):
                     'filter_type', kw['filter_type'], str)
 
         # Now we need to set the FileObject.  If one was passed to us, then lets
-        # just use that, otherwise we will need to instantiate a StingIO object
+        # just use that, otherwise we will need to instantiate a BytesIO object
         # to push the data into.
         if 'fobj' in kw:
             fobj = kw['fobj']
         else:
-            fobj = StringIO()
+            fobj = BytesIO()
 
         # The first thing that we need to do is make the request and get the
         # File id for the job.

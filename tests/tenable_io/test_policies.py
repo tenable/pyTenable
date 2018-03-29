@@ -1,11 +1,6 @@
 from .fixtures import *
 from tenable.errors import *
-import uuid
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+import uuid, io
 
 def test_configure_id_typeerror(api):
     with pytest.raises(TypeError):
@@ -75,7 +70,7 @@ def test_policy_export_notfounderror(api):
 
 def test_policy_export(api, policy):
     pobj = api.policies.policy_export(policy['policy_id'])
-    assert isinstance(pobj, StringIO)
+    assert isinstance(pobj, io.BytesIO)
 
 def test_policy_import(api, policy):
     pobj = api.policies.policy_export(policy['policy_id'])

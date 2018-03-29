@@ -1,9 +1,5 @@
 from tenable.base import APIEndpoint
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+from io import BytesIO
 
 class PoliciesAPI(APIEndpoint):
     def configure(self, id, policy):
@@ -99,17 +95,17 @@ class PoliciesAPI(APIEndpoint):
             id (int): The unique identifier of the policy to export.
             fobj (FileObject, optional):
                 A file-like object to write the contents of the policy to.  If
-                none is provided a StringIO object will be returned with the
+                none is provided a BytesIO object will be returned with the
                 policy.
 
         Returns:
             FileObject: A file-like object containing the contents of the policy
             in XML format.
         '''
-        # If no file object was givent to us, then lets create a new StringIO
+        # If no file object was givent to us, then lets create a new BytesIO
         # object to dump the data into.
         if not fobj:
-            fobj = StringIO()
+            fobj = BytesIO()
 
         # make the call to get the file.
         resp = self._api.get('policies/{}/export'.format(

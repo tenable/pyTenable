@@ -18,6 +18,7 @@ from .scanner_groups import ScannerGroupsAPI
 from .scanners import ScannersAPI
 from .scans import ScansAPI
 from .server import ServerAPI
+from .session import SessionAPI
 
 
 class TenableIO(APISession):
@@ -224,7 +225,7 @@ class TenableIO(APISession):
         :doc:`session documentation <tenable_io.session>` 
         for full details.
         '''
-        return None
+        return SessionAPI(self)
 
     @property
     def target_groups(self):

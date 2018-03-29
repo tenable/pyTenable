@@ -126,6 +126,25 @@ class ServerError(APIError):
         return repr('{}:{} {}'.format(self.uuid, self.code, self.response.content))
 
 
+class ImpersonationError(APIError):
+    '''
+    An ImpersonationError exists when there is an issue with user impersonation.
+
+    Attributes:
+        code (int):
+            The HTTP response code from the offending response.
+        response (request.Response):
+            This is the Response object that had caused the Exception to fire.
+        uuid (str):
+            The Request UUID of the request.  This can be used for the purpose
+            of tracking the request and the response through the Tenable.io
+            infrastructure.  In the case of Non-Tenable.io products, is simply
+            an empty string.
+    '''
+    def __str__(self):
+        return repr('{}:{} {}'.format(self.uuid, self.code, self.response.content))
+
+
 class UnknownError(APIError):
     '''
     If the package is unable to determine what categorization the Exception
