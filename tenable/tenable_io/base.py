@@ -1,4 +1,9 @@
-from tenable.base import APIResultsIterator
+from tenable.base import APIResultsIterator, APIEndpoint
+
+
+class TIOEndPoint(APIEndpoint):
+    pass
+
 
 class TIOIterator(APIResultsIterator):
     def _get_data(self):

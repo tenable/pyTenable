@@ -1,19 +1,23 @@
-from tenable.tenable_io.agent_config import AgentConfigAPI
-from tenable.tenable_io.agent_exclusions import AgentExclusionsAPI
-from tenable.tenable_io.agent_groups import AgentGroupsAPI
-from tenable.tenable_io.agents import AgentsAPI
-from tenable.tenable_io.assets import AssetsAPI
-from tenable.tenable_io.audit_log import AuditLogAPI
-from tenable.tenable_io.editor import EditorAPI
-from tenable.tenable_io.exclusions import ExclusionsAPI
-from tenable.tenable_io.file import FileAPI
-from tenable.tenable_io.filters import FiltersAPI
-from tenable.tenable_io.folders import FoldersAPI
-from tenable.tenable_io.groups import GroupsAPI
-from tenable.tenable_io.permissions import PermissionsAPI
-from tenable.tenable_io.plugins import PluginsAPI
-from tenable.tenable_io.scans import ScansAPI
 from tenable.base import APISession
+from .agent_config import AgentConfigAPI
+from .agent_exclusions import AgentExclusionsAPI
+from .agent_groups import AgentGroupsAPI
+from .agents import AgentsAPI
+from .assets import AssetsAPI
+from .audit_log import AuditLogAPI
+from .editor import EditorAPI
+from .exclusions import ExclusionsAPI
+from .file import FileAPI
+from .filters import FiltersAPI
+from .folders import FoldersAPI
+from .groups import GroupsAPI
+from .permissions import PermissionsAPI
+from .plugins import PluginsAPI
+from .policies import PoliciesAPI
+from .scanner_groups import ScannerGroupsAPI
+from .scanners import ScannersAPI
+from .scans import ScansAPI
+from .server import ServerAPI
 
 
 class TenableIO(APISession):
@@ -175,7 +179,7 @@ class TenableIO(APISession):
         :doc:`policies documentation <tenable_io.policies>` 
         for full details.
         '''
-        return None
+        return PoliciesAPI(self)
 
     @property
     def scanner_groups(self):
@@ -184,7 +188,7 @@ class TenableIO(APISession):
         :doc:`scanner_groups documentation <tenable_io.scanner_groups>` 
         for full details.
         '''
-        return None
+        return ScannerGroupsAPI(self)
 
     @property
     def scanners(self):
@@ -193,7 +197,7 @@ class TenableIO(APISession):
         :doc:`scanners documentation <tenable_io.scanners>` 
         for full details.
         '''
-        return None
+        return ScannersAPI(self)
 
     @property
     def scans(self):
@@ -211,7 +215,7 @@ class TenableIO(APISession):
         :doc:`server documentation <tenable_io.server>` 
         for full details.
         '''
-        return None
+        return ServerAPI(self)
 
     @property
     def session(self):

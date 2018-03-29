@@ -23,7 +23,7 @@ class EditorAPI(APIEndpoint):
                 provided a StringIO object will be returned.
 
         Returns:
-            StringIO: A File-like object of of the audit file.
+            FileObject: A File-like object of of the audit file.
         '''
         # If no file object was givent to us, then lets create a new StringIO
         # object to dump the data into.
@@ -42,6 +42,7 @@ class EditorAPI(APIEndpoint):
         for chunk in resp.iter_content(chunk_size=1024):
             if chunk:
                 fobj.write(chunk)
+        fobj.seek(0)
 
         # lastly return the file object.
         return fobj

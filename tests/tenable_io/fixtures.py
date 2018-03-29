@@ -26,3 +26,39 @@ def folder(request, api):
             pass
     request.addfinalizer(teardown)
     return folder
+
+@pytest.fixture
+def policy(request, api):
+    policy = api.policies.create({
+        'credentials': {'add': {}, 'delete': [], 'edit': {}},
+        'settings': {
+            'name': str(uuid.uuid4()),
+        },
+        'uuid': '731a8e52-3ea6-a291-ec0a-d2ff0619c19d7bd788d6be818b65'
+    })
+    def teardown():
+        try:
+            api.policies.delete(policy['policy_id'])
+        except NotFoundError:
+            pass
+    request.addfinalizer(teardown)
+    return policy
+
+@pytest.fixture
+def scanner(request, api):
+    scanners = api.scanners.list()
+    for scanner in scanners:
+        if scanner['user_permissions'] == 128:
+            return scanner
+
+
+@pytest.fixture
+def scannergroup(request, api):
+    scannergroup = api.scanner_groups.create(str(uuid.uuid4()))
+    def teardown():
+        try:
+            api.scanner_groups.delete(scannergroup['id'])
+        except NotFoundError:
+            pass
+    request.addfinalizer(teardown)
+    return scannergroup

@@ -8,7 +8,7 @@ class PluginsAPI(APIEndpoint):
         Returns:
             list: List of plugin familiy resource records.
         '''
-        return self._api.get('plugins').json()['families']
+        return self._api.get('plugins/families').json()['families']
 
     def family_details(self, id):
         '''
