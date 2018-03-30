@@ -82,7 +82,6 @@ def test_delete_scanner_id_typerror(api):
     with pytest.raises(TypeError):
         api.agent_groups.delete(1, scanner_id='nope')
 
-@pytest.mark.xfail(raises=ServerError)
 def test_delete_agent_group(api, agentgroup):
     api.agent_groups.delete(agentgroup['id'])
     with pytest.raises(NotFoundError):
@@ -120,7 +119,6 @@ def test_details_scanner_id_typeerror(api):
     with pytest.raises(TypeError):
         api.agent_groups.details(1, scanner_id='nope')
 
-@pytest.mark.xfail(raises=ServerError)
 def test_details_nonexistant_group(api):
     with pytest.raises(NotFoundError):
         api.agent_groups.details(1)
