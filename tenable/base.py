@@ -1,4 +1,4 @@
-import requests, sys, logging
+import requests, sys, logging, re
 from .errors import *
 from requests.packages.urllib3.util.retry import Retry
 '''
@@ -181,9 +181,13 @@ class APIEndpoint(object):
 
         # iterate through the expected types and flag as passing if any of the
         # types match.
+        up = r'[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12,}'
         type_pass = False
         for etype in etypes:
-            if isinstance(obj, etype):
+            if 'etype' == 'uuid':
+                if len(re.findall(up)) == 1:
+                    type_pass = True
+            elif isinstance(obj, etype):
                 type_pass = True
 
         # If the object is none of the right types then we want to raise a
@@ -295,7 +299,7 @@ class APISession(object):
 
         # we need to make sure to identify ourselves.
         self._session.headers.update({
-            'User-Agent': 'Tenable/{} Python/{}'.format(__version__, '.'.join([str(i) for i in sys.version_info][0:3])),
+            'User-Agent': 'pyTenable/{} Python/{}'.format(__version__, '.'.join([str(i) for i in sys.version_info][0:3])),
         })
 
     def _resp_error_check(self, response):

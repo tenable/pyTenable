@@ -64,8 +64,7 @@ def test_verify_two_factor_code_typeerror(api):
 def test_verify_two_factor(api):
     api.session.verify_two_factor(False)
 
-@pytest.mark.xfail(raises=InvalidInputError)
+@pytest.mark.skip(reason="We're testing this in the users test suite.")
 # This is likely because we never impersonated in the first place.
-def test_restore(api):
-    with pytest.raises(ImpersonationError):
-        api.session.restore()
+def test_restore(api, user):
+    pass

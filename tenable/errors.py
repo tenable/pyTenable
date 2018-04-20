@@ -58,8 +58,7 @@ class InvalidInputError(APIError):
             infrastructure.  In the case of Non-Tenable.io products, is simply
             an empty string.
     '''
-    def __str__(self):
-        return repr('{}:{} {}'.format(self.uuid, self.code, self.response.content))
+    pass
 
 
 class PermissionError(APIError):
@@ -80,8 +79,7 @@ class PermissionError(APIError):
             infrastructure.  In the case of Non-Tenable.io products, is simply
             an empty string.
     '''
-    def __str__(self):
-        return repr('{}:{} {}'.format(self.uuid, self.code, self.response.content))
+    pass
 
 
 class NotFoundError(APIError):
@@ -101,8 +99,7 @@ class NotFoundError(APIError):
             infrastructure.  In the case of Non-Tenable.io products, is simply
             an empty string.
     '''
-    def __str__(self):
-        return repr('{}:{} {}'.format(self.uuid, self.code, self.response.content))
+    pass
 
 
 class ServerError(APIError):
@@ -122,8 +119,7 @@ class ServerError(APIError):
             infrastructure.  In the case of Non-Tenable.io products, is simply
             an empty string.
     '''
-    def __str__(self):
-        return repr('{}:{} {}'.format(self.uuid, self.code, self.response.content))
+    pass
 
 
 class ImpersonationError(APIError):
@@ -141,8 +137,26 @@ class ImpersonationError(APIError):
             infrastructure.  In the case of Non-Tenable.io products, is simply
             an empty string.
     '''
-    def __str__(self):
-        return repr('{}:{} {}'.format(self.uuid, self.code, self.response.content))
+    pass
+
+
+class PasswordComplexityError(APIError):
+    '''
+    PasswordComplexityError is thrown when attempting to change a password and
+    the password complexity is insufficient.
+
+    Attributes:
+        code (int):
+            The HTTP response code from the offending response.
+        response (request.Response):
+            This is the Response object that had caused the Exception to fire.
+        uuid (str):
+            The Request UUID of the request.  This can be used for the purpose
+            of tracking the request and the response through the Tenable.io
+            infrastructure.  In the case of Non-Tenable.io products, is simply
+            an empty string.
+    '''
+    pass
 
 
 class UnknownError(APIError):
@@ -162,5 +176,4 @@ class UnknownError(APIError):
             infrastructure.  In the case of Non-Tenable.io products, is simply
             an empty string.
     '''
-    def __str__(self):
-        return repr('{}:{} {}'.format(self.uuid, self.code, self.response.content))
+    pass

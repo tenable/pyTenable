@@ -111,10 +111,7 @@ class SessionAPI(APIEndpoint):
         Returns:
             None: The session has properly been restored to the original user.
         '''
-        try:
-            self._api.post('session/restore', json={})
-        except UnknownError as err:
-            if err.code == 401:
-                raise ImpersonationError(err.r)
-            else:
-                raise UnknownError(err.r)
+        self._api._session.headers.update({
+            'X-Impersonate': None
+        })
+        

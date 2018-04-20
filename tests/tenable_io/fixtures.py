@@ -2,12 +2,12 @@ import pytest, os, uuid
 from tenable.tenable_io import TenableIO
 from tenable.errors import *
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(autouse=True)
 def api():
     return TenableIO(
         os.environ['TIO_TEST_ADMIN_ACCESS'], os.environ['TIO_TEST_ADMIN_SECRET'])
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(autouse=True)
 def stdapi():
     return TenableIO(
         os.environ['TIO_TEST_STD_ACCESS'], os.environ['TIO_TEST_STD_SECRET'])
@@ -43,6 +43,20 @@ def policy(request, api):
             pass
     request.addfinalizer(teardown)
     return policy
+
+@pytest.fixture
+def user(request, api):
+    user = api.users.create(
+        '{}@pytenable.io'.format(uuid.uuid4()),
+        '{}Tt!'.format(uuid.uuid4()),
+        64)
+    def teardown():
+        try:
+            api.users.delete(user['id'])
+        except NotFoundError:
+            pass
+    request.addfinalizer(teardown)
+    return user
 
 @pytest.fixture
 def scanner(request, api):
