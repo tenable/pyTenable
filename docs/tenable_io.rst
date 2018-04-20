@@ -45,6 +45,7 @@ Client reference
    tenable_io.agent_groups
    tenable_io.agent_exclusions
    tenable_io.agents
+   tenable_io.asset_groups
    tenable_io.assets
    tenable_io.audit_log
    tenable_io.editor
@@ -60,7 +61,6 @@ Client reference
    tenable_io.scanners
    tenable_io.scans
    tenable_io.server
-   tenable_io.target_groups
    tenable_io.users
    tenable_io.workbenches
 

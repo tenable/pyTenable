@@ -8,7 +8,7 @@ The following methods allow for interaction into the Tenable.io
 .. _filters:
     https://cloud.tenable.com/api#/resources/filters
 
-Methods available on ``tenable_io.agents``:
+Methods available on ``tenable_io.filters``:
 
 .. rst-class:: hide-signature
 .. py:class:: FiltersAPI

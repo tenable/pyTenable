@@ -8,7 +8,7 @@ The following methods allow for interaction into the Tenable.io
 .. _audit log:
     https://cloud.tenable.com/api#/resources/audit-log
 
-Methods available on ``tenable_io.agents``:
+Methods available on ``tenable_io.audit_log``:
 
 .. rst-class:: hide-signature
 .. py:class:: AuditLogAPI

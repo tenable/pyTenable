@@ -6,3 +6,7 @@ docs/source/tenable*.rst
 /docs/_build
 /.pytest_cache
 env_builder
+*.json
+*.log
+/manual_test.py
+/Dockerfile-docs

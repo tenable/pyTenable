@@ -96,11 +96,11 @@ class TenableIO(APISession):
 
     @property
     def asset_groups(self):
-    #    '''
-    #    An object for interfacing to the target groups API.  See the
-    #    :doc:`asset_groups documentation <tenable_io.asset_groups>` 
-    #    for full details.
-    #    '''
+        '''
+        An object for interfacing to the asset groups API.  See the
+        :doc:`asset_groups documentation <tenable_io.asset_groups>` 
+        for full details.
+        '''
         return AssetGroupsAPI(self)
 
     @property

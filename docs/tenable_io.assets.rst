@@ -1,4 +1,4 @@
-Agents
+Assets
 ======
 .. py:module:: tenable.tenable_io.assets
 

@@ -8,7 +8,7 @@ The following methods allow for interaction into the Tenable.io
 .. _editor:
     https://cloud.tenable.com/api#/resources/editor
 
-Methods available on ``tenable_io.agents``:
+Methods available on ``tenable_io.editor``:
 
 .. rst-class:: hide-signature
 .. py:class:: EditorAPI

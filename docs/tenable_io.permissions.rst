@@ -8,7 +8,7 @@ The following methods allow for interaction into the Tenable.io
 .. _permissions:
     https://cloud.tenable.com/api#/resources/permissions
 
-Methods available on ``tenable_io.agents``:
+Methods available on ``tenable_io.permissions``:
 
 .. rst-class:: hide-signature
 .. py:class:: PermissionsAPI

@@ -98,7 +98,7 @@ class AssetGroupsAPI(APIEndpoint):
         if 'type' in kw:
             payload['type'] = self._check('type', kw['type'], str,
                 choices=['system', 'user'])
-        if 'members' in kw and kw['members'] > 0:
+        if 'members' in kw and len(kw['members']) > 0:
             payload['members'] = ','.join(self._check('members', kw['members'], list))
 
         # We need to get the current asset group and then merge in the modified
@@ -114,7 +114,6 @@ class AssetGroupsAPI(APIEndpoint):
             'members': craw['members'],
         }
         payload = dict_merge(current, payload)
-        print payload
 
         return self._api.put('target-groups/{}'.format(id), json=payload).json()  
 

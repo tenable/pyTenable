@@ -8,7 +8,7 @@ The following methods allow for interaction into the Tenable.io
 .. _agent exclusions:
     https://cloud.tenable.com/api#/resources/agent-exclusions
 
-Methods available on ``tenable_io.agent_config``:
+Methods available on ``tenable_io.agent_exclusions``:
 
 .. rst-class:: hide-signature
 .. py:class:: AgentExclusionsAPI
