@@ -2,6 +2,33 @@ from tenable.base import APIEndpoint
 from io import BytesIO
 
 class PoliciesAPI(APIEndpoint):
+    @property
+    def templates(self):
+        '''
+        returns a dictionary of the scan policy templates using the
+        format of dict['name'] = 'UUID'.  This is useful for being able to
+        define scan policy templates w/o having to remember the UUID for each
+        individual one.
+        '''
+        policies = dict()
+        for item in self.list('policy'):
+            policies[item['name']] = item['uuid']
+        return policies
+
+    def template_details(self, name):
+        '''
+        Returns the default settings for a given policy template.
+
+        Args:
+            name (str): The name of the policy template
+
+        Returns:
+            dict: A dictionary of the default settings
+        '''
+        return self._api.editor.parse_vals(
+            self._api.editor.details('policy', 
+                self.templates[self._check('name', name, str)]))
+
     def configure(self, id, policy):
         '''
         `policies: configure <https://cloud.tenable.com/api#/resources/policies/configure>`_

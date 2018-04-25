@@ -1,4 +1,5 @@
 from tenable.base import APIEndpoint
+from tenable.utils import dict_merge
 from datetime import datetime
 from io import BytesIO
 import time
@@ -81,21 +82,32 @@ class ScansAPI(APIEndpoint):
         return self._api.post('scans/{}/copy'.format(self._check('scan_id', scan_id, int)),
             json=payload).json()
 
-#    def create(self, uuid, *credentials, **settings):
-#        '''
-#        `scans: create <https://cloud.tenable.com/api#/resources/scans/create>`_
-#
-#        Args:
-#            **params (dict):
-#                The various parameters that can be passed to the scan creation
-#                API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
-#                more detailed informatiom, please refer to the API documentation
-#                linked above.
-#
-#        Returns:
-#            dict: The scan resource record of the newly created scan.
-#        '''
-#        self._api.post('scans', json=params).json()
+    def create(self, **kw):
+        '''
+        `scans: create <https://cloud.tenable.com/api#/resources/scans/create>`_
+
+        Args:
+            template (str, optional): 
+                The scan policy template to use.  If no template is specified
+                then the default of `basic` will be used.
+            targets (list, optional):
+                If defined, then a list of targets can be specified and will
+                be formatted to an appropriate text_target attribute.
+            credentials (list, optional):
+                A list of credentials to use.
+            compliance (list, optional):
+                A list of compliance audiots to use.
+            **kw (dict, optional):
+                The various parameters that can be passed to the scan creation
+                API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
+                more detailed informatiom, please refer to the API documentation
+                linked above.
+
+        Returns:
+            dict: The scan resource record of the newly created scan.
+        '''
+
+        self._api.post('scans', json=params).json()
 
     def delete(self, scan_id):
         '''
@@ -124,7 +136,89 @@ class ScansAPI(APIEndpoint):
             self._check('scan_id', scan_id, int),
             self._check('history_id', history_id, int)))
 
-    def details(self, scan_id, history_id=None):
+    def details(self, scan_id):
+        '''
+        Calls the editor API and parses the scan config details to return a
+        document that closely matches what the API expects to be POSTed or PUTed
+        via the create and configure methods.  The compliance audits and
+        credentials are populated into the 'current' sub-document for the
+        relevent resources.
+
+        Args:
+            scan_id (int): The unique identifier for the scan.
+
+        Returns:
+            dict: The scan configuration resource.
+
+        Please note that flatten_scan is reverse-engineered from the responses
+        from the editor API and isn't guaranteed to work. 
+        '''
+
+        # Get the editor object
+        editor = self._api.get('editor/scan/{}'.format(
+            self._check('scan_id', scan_id, int))).json()
+
+        # define the initial skeleton of the scan object
+        scan = {
+            'settings': self._api.editor.parse_vals(editor['settings']),
+            'uuid': editor['uuid']
+        }
+
+        # graft on the basic settings that aren't stored in any input sections.
+        for item in editor['settings']['basic']['groups']:
+            for setting in item.keys():
+                if setting not in ['name', 'title', 'inputs']:
+                    scan['settings'][setting] = item[setting]
+
+        if 'credentials' in editor:
+            # if the credentials sub-document exists, then lets walk down the
+            # credentials dataset
+            scan['credentials'] = {
+                'current': self._api.editor.parse_creds(
+                    editor['credentials']['data'])
+            }
+
+            # We also need to gather the settings from the various credential
+            # settings that are unique to the scan.
+            for ctype in editor['credentials']['data']:
+                for citem in ctype['types']:
+                    if 'settings' in citem and citem['settings']:
+                        scan['settings'] = dict_merge(
+                            scan['settings'], self._api.editor.parse_vals(
+                                citem['settings']))
+
+        if 'compliance' in editor:
+            # if the audits sub-document exists, then lets walk down the
+            # audits dataset.
+            scan['compliance'] = {
+                'current': self._api.editor.parse_audits(
+                    editor['compliance']['data'])
+            }
+
+            # We also need to add in the "compliance" settings into the scan
+            # settings.
+            for item in editor['compliance']['data']:
+                if 'settings' in item:
+                    scan['settings'] = dict_merge(
+                        scan['settings'], self._api.editor.parse_vals(
+                            item['settings']))
+
+        if 'plugins' in editor:
+            # if the plugins sub-document exists, then lets walk down the
+            # plugins dataset.
+            scan['plugins'] = self._api.editor.parse_plugins(
+                editor['plugins']['families'], scan_id)
+
+        # We next need to do a little post-parsing of the ACLs to find the
+        # owner and put ownder_id attribute into the appropriate location.
+        for acl in scan['settings']['acls']:
+            if acl['owner'] == 1:
+                scan['settings']['owner_id'] = acl['id']
+
+        # return the scan document to the caller.
+        return scan
+
+    def results(self, scan_id, history_id=None):
         '''
         `scans: details <https://cloud.tenable.com/api#/resources/scans/details>`_
 
@@ -267,7 +361,7 @@ class ScansAPI(APIEndpoint):
 
         Args:
             scan_id (int): The unique identifier for the scan.
-            host_id (int): THe unique identifier for the host within the scan.
+            host_id (int): The unique identifier for the host within the scan.
             histort_id (int, optional):
                 The unique identifier for the instance of the scan.
 
