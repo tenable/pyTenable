@@ -11,7 +11,7 @@ class PoliciesAPI(APIEndpoint):
         individual one.
         '''
         policies = dict()
-        for item in self.list('policy'):
+        for item in self._api.editor.list('policy'):
             policies[item['name']] = item['uuid']
         return policies
 
