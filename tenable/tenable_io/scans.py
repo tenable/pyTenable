@@ -38,25 +38,36 @@ class ScansAPI(APIEndpoint):
         # Return the file object to the ccaller.
         return fobj
 
-#    def configure(self, id, json=None, **params):
-#        '''
-#        `scans: configure <https://cloud.tenable.com/api#/resources/scans/configure>`_
-#
-#        Args:
-#            id (int): The unique identifier for the scan.
-#            json (dict, optional):
-#                A raw dictionary to push to the 
-#            **params (dict, optional): 
-#                The various parameters that can be passed to the scan 
-#                configuration.  Examples would include `name`, `emails`, etc.
-#                Please refer to the API documentation linked above for more
-#                details.
-#
-#        Returns:
-#            dict: The scan resource record.
-#        '''
-#        return self._api.put('scans/{}'.format(self._check('id', id, int)),
-#                    json=params).json()
+    def configure(self, id, scan):
+        '''
+        `scans: configure <https://cloud.tenable.com/api#/resources/scans/configure>`_
+
+        Args:
+            id (int): The unique identifier for the scan.
+            json (dict, optional):
+                A raw dictionary to push to the 
+            scan (dict, optional): 
+                The scan configuration to pass to the configuration endpoint.
+                This should generally be a modified version of the data
+                retreived from the :func:`~.tenable.tenable_io.ScansAPI.details` 
+                method.
+
+        Returns:
+            dict: The scan resource record.
+        '''
+        self._check('scan', scan, dict)
+
+        # we need to delete the 'current' subdocuments if they exist.  This was
+        # part of the document if retreived using the 
+        # :func:`~.tenable.tenable_io.ScansAPI.details` method, however is not 
+        # valid for the PUT call.
+        if 'credentials' in scan and 'current' in scan['credentials']:
+            del(scan['credentials']['current'])
+        if 'compliance' in scan and 'current' in scan['compliance']:
+            del(scan['compliance']['current'])
+
+        return self._api.put('scans/{}'.format(self._check('id', id, int)),
+                    json=scan).json()
 
     def copy(self, scan_id, folder_id=None, name=None):
         '''
@@ -90,12 +101,16 @@ class ScansAPI(APIEndpoint):
             template (str, optional): 
                 The scan policy template to use.  If no template is specified
                 then the default of `basic` will be used.
+            policy (str, optional):
+                The UUID of the scan policy to use (if not using one of the
+                pre-defined templates).  Specifying a a policy UUID will
+                override the the template parameter.
             targets (list, optional):
                 If defined, then a list of targets can be specified and will
                 be formatted to an appropriate text_target attribute.
-            credentials (list, optional):
+            credentials (dict, optional):
                 A list of credentials to use.
-            compliance (list, optional):
+            compliance (dict, optional):
                 A list of compliance audiots to use.
             **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
@@ -106,8 +121,52 @@ class ScansAPI(APIEndpoint):
         Returns:
             dict: The scan resource record of the newly created scan.
         '''
+        scan = {
+            'settings': dict(),
+        }
 
-        self._api.post('scans', json=params).json()
+        # If a template is specified, then we will pull the listing of available
+        # templates and set the policy UUID to match the template name given.
+        if 'template' in kw:
+            templates = self._api.policies.templates()
+            scan['uuid'] = templates[self._check(
+                'template', kw['template'], str, choices=templates.keys())]
+            del(kw['template'])
+
+        # If a policy UUID is sent, then we will set the scan template UUID to
+        # be the UUID that was specified.
+        if 'policy' in kw:
+            scan['uuid'] = self._check('policy', kw['policy'], 'uuid')
+            del(kw['policy'])
+
+        # If the targets parameter is specified, then we will need to convert
+        # the list of targets to a comma-delimited string and then set the
+        # text_targets paramater with the result.
+        if 'targets' in kw:
+            scan['settings']['text_targets'] = ','.join(self._check(
+                'targets', targets, list))
+            del(kw['targets'])
+
+        # For credentials, we will simply push the dictionary as-is into the
+        # the credentials.add subdocument.
+        if 'credentials' in kw:
+            scan['credentials'] = {'add': dict()}
+            scan['credentials']['add'] = self._check(
+                'credentials', kw['credentials'], dict)
+            del(kw['credentials'])
+
+        # Just like with credentials, we will push the dictionary as-is into the
+        # correct subdocument of the scan definition.
+        if 'compliance' in kw:
+            scan['audits'] = self._check('compliance', compliance, dict)
+            del(kw['compliance'])
+
+        # any other remaining keyword arguments will be passed into the settings
+        # subdocument.  The bulk of the data should go here...
+        scan['settings'] = dict_merge(scan['settings'], kw)
+
+        # Run the API call and return the result to the caller.
+        return self._api.post('scans', json=scan).json()['scan']
 
     def delete(self, scan_id):
         '''

@@ -2,7 +2,6 @@ from tenable.base import APIEndpoint
 from io import BytesIO
 
 class PoliciesAPI(APIEndpoint):
-    @property
     def templates(self):
         '''
         returns a dictionary of the scan policy templates using the
@@ -17,17 +16,89 @@ class PoliciesAPI(APIEndpoint):
 
     def template_details(self, name):
         '''
-        Returns the default settings for a given policy template.
+        Calls the editor API and parses the policy template config to return a
+        document that closely matches what the API expects to be POSTed or PUTed
+        via the policy create and configure methods.  The compliance audits and
+        credentials are populated into the 'current' sub-document for the
+        relevent resources.
 
         Args:
-            name (str): The name of the policy template
+            name (str): The name of the scan .
 
         Returns:
-            dict: A dictionary of the default settings
+            dict: The policy configuration resource.
+
+        Please note that template_details is reverse-engineered from the 
+        responses from the editor API and isn't guaranteed to work. 
         '''
-        return self._api.editor.parse_vals(
-            self._api.editor.details('policy', 
-                self.templates[self._check('name', name, str)]))
+
+        # Get the policy template UUID
+        tmpl = self.templates()
+        tmpl_uuid = tmpl[self._check('name', name, str, choices=tmpl.keys())]
+
+        # Get the editor object
+        editor = self._api.get('editor/policy/{}'.format(
+            self._check('scan_id', scan_id, int))).json()
+
+        # define the initial skeleton of the scan object
+        scan = {
+            'settings': self._api.editor.parse_vals(editor['settings']),
+            'uuid': editor['uuid']
+        }
+
+        # graft on the basic settings that aren't stored in any input sections.
+        for item in editor['settings']['basic']['groups']:
+            for setting in item.keys():
+                if setting not in ['name', 'title', 'inputs']:
+                    scan['settings'][setting] = item[setting]
+
+        if 'credentials' in editor:
+            # if the credentials sub-document exists, then lets walk down the
+            # credentials dataset
+            scan['credentials'] = {
+                'current': self._api.editor.parse_creds(
+                    editor['credentials']['data'])
+            }
+
+            # We also need to gather the settings from the various credential
+            # settings that are unique to the scan.
+            for ctype in editor['credentials']['data']:
+                for citem in ctype['types']:
+                    if 'settings' in citem and citem['settings']:
+                        scan['settings'] = dict_merge(
+                            scan['settings'], self._api.editor.parse_vals(
+                                citem['settings']))
+
+        if 'compliance' in editor:
+            # if the audits sub-document exists, then lets walk down the
+            # audits dataset.
+            scan['compliance'] = {
+                'current': self._api.editor.parse_audits(
+                    editor['compliance']['data'])
+            }
+
+            # We also need to add in the "compliance" settings into the scan
+            # settings.
+            for item in editor['compliance']['data']:
+                if 'settings' in item:
+                    scan['settings'] = dict_merge(
+                        scan['settings'], self._api.editor.parse_vals(
+                            item['settings']))
+
+        if 'plugins' in editor:
+            # if the plugins sub-document exists, then lets walk down the
+            # plugins dataset.
+            scan['plugins'] = self._api.editor.parse_plugins(
+                editor['plugins']['families'], scan_id)
+
+        # We next need to do a little post-parsing of the ACLs to find the
+        # owner and put ownder_id attribute into the appropriate location.
+        for acl in scan['settings']['acls']:
+            if acl['owner'] == 1:
+                scan['settings']['owner_id'] = acl['id']
+
+        # return the scan document to the caller.
+        return scan
 
     def configure(self, id, policy):
         '''
