@@ -1,6 +1,6 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 
-class PluginsAPI(APIEndpoint):
+class PluginsAPI(TIOEndpoint):
     def families(self):
         '''
         `plugins: families <https://cloud.tenable.com/api#/resources/plugins/families>`_

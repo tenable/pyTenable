@@ -1,7 +1,6 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 
-
-class AuditLogAPI(APIEndpoint):
+class AuditLogAPI(TIOEndpoint):
     def events(self, *filters, **kw):
         '''
         `audit-log: events <https://cloud.tenable.com/api#/resources/audit-log/events>`_

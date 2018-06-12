@@ -1,6 +1,6 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 
-class PermissionsAPI(APIEndpoint):
+class PermissionsAPI(TIOEndpoint):
     def change(self, otype, id, *acls):
         '''
         `permissions: change <https://cloud.tenable.com/api#/resources/permissions/change>`_

@@ -1,43 +1,81 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 
-class FiltersAPI(APIEndpoint):
-    def _filter_conversion(self, filterset):
-        return filterset
+class FiltersAPI(TIOEndpoint):
+    def _normalize(self, filterset):
+        '''
+        Converts the filters into an easily parsable dictionary
+        '''
+        filters = dict()
+        for item in filterset:
+            f = {
+                'operators': item['operators'],
+                'choices': None,
+                'pattern': None,
+            }
 
-    def agents_filters(self):
+            # If there is a list of choices available, then we need to parse
+            # them out and only pull back the usable values as a list
+            if 'list' in item['control']:
+                # There is a lack of consistancy here.  In some cases the "list"
+                # is a list of dictionary items, and in other cases the "list"
+                # is a list of string values.
+                if isinstance(item['control']['list'][0], dict):
+                    key = 'value' if 'value' in item['control']['list'][0] else 'id'
+                    f['choices'] = [i[key] for i in item['control']['list']]
+                elif isinstance(item['control']['list'], list):
+                    f['choices'] = item['control']['list']
+            if 'regex' in item['control']:
+                f['pattern'] = item['control']['regex']
+            filters[item['name']] = f
+        return filters
+
+
+    def agents_filters(self, normalize=True):
         '''
         `filters: agents-filters <https://cloud.tenable.com/api#/resources/filters/agents-filters>`_
 
         Returns:
             dict: Filter resource dictionary
         '''
-        return self._filter_conversion(
-            self._api.get('filters/scans/agents').json()['filters'])
+        f = self._api.get('filters/scans/agents').json()['filters']
+        if normalize:
+            return self._normalize(f)
+        else:
+            return f
 
-    def workbench_vuln_filters(self):
+    def workbench_vuln_filters(self, normalize=True):
         '''
         `workbenches: vulnerabilities-filters <https://cloud.tenable.com/api#/resources/workbenches/vulnerabilities-filters>`_
 
         Returns:
             dict: Filter resource dictionary
         '''
-        return self._filter_conversion(
-            self._api.get('filters/workbench/vulnerabilities').json()['filters'])
+        f = self._api.get('filters/workbenches/vulnerabilities').json()['filters']
+        if normalize:
+            return self._normalize(f)
+        else:
+            return f
 
-    def workbench_asset_filters(self):
+    def workbench_asset_filters(self, normalize=True):
         '''
         `workbenches: assets-filters <https://cloud.tenable.com/api#/resources/workbenches/assets-filters>`_
 
         Returns:
             dict: Filter resource dictionary
         '''
-        return self._filter_conversion(
-            self._api.get('filters/workbench/assets').json()['filters'])
+        f = self._api.get('filters/workbenches/assets').json()['filters']
+        if normalize:
+            return self._normalize(f)
+        else:
+            return f
 
-    def scan_filters(self):
+    def scan_filters(self, normalize=True):
         '''
         Returns:
             dict: Filter resource dictionary
         '''
-        return self._filter_conversion(
-            self._api.get('filters/scans/reports').json()['filters'])
+        f = self._api.get('filters/scans/reports').json()['filters']
+        if normalize:
+            return self._normalize(f)
+        else:
+            return f

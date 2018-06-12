@@ -1,7 +1,7 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 from datetime import date, datetime
 
-class AgentExclusionsAPI(APIEndpoint):
+class AgentExclusionsAPI(TIOEndpoint):
     def create(self, name, scanner_id=1, start_time=None, end_time=None, 
                timezone=None, description=None, frequency=None, 
                interval=None, weekdays=None, day_of_month=None,

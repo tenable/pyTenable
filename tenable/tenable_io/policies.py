@@ -1,7 +1,7 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 from io import BytesIO
 
-class PoliciesAPI(APIEndpoint):
+class PoliciesAPI(TIOEndpoint):
     def templates(self):
         '''
         returns a dictionary of the scan policy templates using the

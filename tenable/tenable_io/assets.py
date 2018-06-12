@@ -1,6 +1,6 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 
-class AssetsAPI(APIEndpoint):
+class AssetsAPI(TIOEndpoint):
     def list(self):
         '''
         `assets: list-assets <https://cloud.tenable.com/api#/resources/assets/list-assets>`_

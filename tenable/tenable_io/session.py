@@ -1,7 +1,7 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 from tenable.errors import ImpersonationError, UnknownError
 
-class SessionAPI(APIEndpoint):
+class SessionAPI(TIOEndpoint):
     def edit(self, name, email):
         '''
         `session: edit <https://cloud.tenable.com/api#/resources/session/edit>`_

@@ -1,6 +1,6 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 
-class GroupsAPI(APIEndpoint):
+class GroupsAPI(TIOEndpoint):
     def add_user(self, group_id, user_id):
         '''
         `groups: add-user <https://cloud.tenable.com/api#/resources/groups/add-user>`_

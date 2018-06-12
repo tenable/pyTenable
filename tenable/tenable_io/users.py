@@ -1,8 +1,8 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 from tenable.errors import UnknownError, PasswordComplexityError
 from tenable.utils import dict_merge
 
-class UsersAPI(APIEndpoint):
+class UsersAPI(TIOEndpoint):
     def create(self, username, password, permissions, 
             name=None, email=None, account_type=None):
         '''

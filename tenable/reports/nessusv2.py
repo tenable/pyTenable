@@ -43,7 +43,10 @@ class NessusReportv2(object):
     def next(self):
         '''
         Get the next ReportItem from the nessus file and return it as a
-        python dictionary. 
+        python dictionary.  
+
+        Generally speaking this method is not called directly, but is instead
+        called as part of a loop.
         '''
         for event, elem in self._iter:
             if event == 'start' and elem.tag == 'ReportHost':

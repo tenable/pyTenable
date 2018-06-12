@@ -1,6 +1,6 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 
-class ScannersAPI(APIEndpoint):
+class ScannersAPI(TIOEndpoint):
 
     @property
     def linking_key(self):

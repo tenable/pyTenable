@@ -1,6 +1,6 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 
-class FoldersAPI(APIEndpoint):
+class FoldersAPI(TIOEndpoint):
     def create(self, name):
         '''
         `folders: create <https://cloud.tenable.com/api#/resources/folders/create>`_

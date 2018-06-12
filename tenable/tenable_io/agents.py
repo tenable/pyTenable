@@ -1,5 +1,4 @@
-from tenable.base import APIEndpoint
-from tenable.tenable_io.base import TIOIterator
+from tenable.tenable_io.base import TIOIterator, TIOEndpoint
 
 class AgentsIterator(TIOIterator):
     '''
@@ -39,7 +38,7 @@ class AgentsIterator(TIOIterator):
         return resp, 'agents'
             
 
-class AgentsAPI(APIEndpoint):
+class AgentsAPI(TIOEndpoint):
     def delete(self, agent_id, scanner_id=1):
         '''
         `agents: delete <https://cloud.tenable.com/api#/resources/agents/delete>`_
@@ -106,7 +105,8 @@ class AgentsAPI(APIEndpoint):
         limit = 50
         offset = 0
         pages = None
-        query = {'f': []}
+        query = self._parse_filters(filters,
+            self._api.filters.agents_filters(), rtype='colon')
 
         # Overload the scanner_id with a new value if it has been requested
         # to do so.
@@ -140,27 +140,6 @@ class AgentsAPI(APIEndpoint):
                 self._check('sort_field', i[0], str),
                 self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
             ) for i in kw['sort']])
-
-        # For the filters, we are converting the tuples provided into multiple
-        # filter strings.  The filter strings are in the format of name:op:value.
-        # Down the road this should likely be refactored to pull the filter
-        # options and actually validate the input beyond proving that it's a
-        # string, however for now this will do.
-        # https://cloud.tenable.com/api#/resources/filters
-        #
-        # Example filter tuple:
-        #
-        #    ('distro', 'match', 'win')
-        #
-        # would generate the following string:
-        #
-        #    'distro:match:win'
-        #
-        query['f'] = ['{}:{}:{}'.format(
-            self._check('filter_name', f[0], str),
-            self._check('filter_operator', f[1], str),
-            self._check('filter_value', f[2], str)
-        ) for f in filters]
 
         # The filter_type determines how the filters are combined together.
         # The default is 'and', however you can always explicitly define 'and'

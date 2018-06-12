@@ -1,6 +1,6 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 
-class ServerAPI(APIEndpoint):
+class ServerAPI(TIOEndpoint):
     def properties(self):
         '''
         `server: properties <https://cloud.tenable.com/api#/resources/server/properties>`_

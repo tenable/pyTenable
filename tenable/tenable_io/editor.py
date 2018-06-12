@@ -1,8 +1,8 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 from tenable.utils import dict_merge
 from io import BytesIO
 
-class EditorAPI(APIEndpoint):
+class EditorAPI(TIOEndpoint):
     def parse_vals(self, item):
         '''
         Recursive function to attempt to pull out the various settings from

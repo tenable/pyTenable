@@ -1,6 +1,6 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 
-class AgentGroupsAPI(APIEndpoint):
+class AgentGroupsAPI(TIOEndpoint):
     def add_agent(self, group_id, agent_id, scanner_id=1):
         '''
         `agent-groups: add-agent <https://cloud.tenable.com/api#/resources/agent-groups/add-agent>`_

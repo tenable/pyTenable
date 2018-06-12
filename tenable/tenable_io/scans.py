@@ -1,10 +1,10 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 from tenable.utils import dict_merge
 from datetime import datetime
 from io import BytesIO
 import time
 
-class ScansAPI(APIEndpoint):
+class ScansAPI(TIOEndpoint):
     def attachment(self, scan_id, attachment_id, key, fobj=None):
         '''
         `scans: attachments <https://cloud.tenable.com/api#/resources/scans/attachments>`_
@@ -342,23 +342,9 @@ class ScansAPI(APIEndpoint):
         '''
 
         # initiate the payload and parameters dictionaries.
-        payload = dict()
+        payload = self._parse_filters(filters,
+            self._api.filters.scan_filters(), rtype='json')
         params = dict()
-
-
-        # Interpret the filters into their native format.  The API docs are a
-        # little off base here, as the filter format is actually filter.N.Y
-        # instead of a list of dictionaries like the documentation states.
-        if len(filters) > 0:
-            payload['filters'] = []
-            for f in filters:
-                i = filters.index(f)
-                payload['filter.{}.filter'.format(i)] = self._check(
-                    'filter_name', f[0], str)
-                payload['filter.{}.quality'.format(i)] = self._check(
-                    'filter_quality', f[1], str)
-                payload['filter.{}.value'.format(i)] = self._check(
-                    'filter_value', f[2], str)
 
         if 'history_id' in kw:
             params['history_id'] = self._check(
@@ -391,7 +377,8 @@ class ScansAPI(APIEndpoint):
         # The first thing that we need to do is make the request and get the
         # File id for the job.
         fid = self._api.post('scans/{}/export'.format(
-            self._check('scan_id', scan_id, int))).json()['file']
+            self._check('scan_id', scan_id, int)), 
+            params=params, json=payload).json()['file']
 
         # Next we will wait for the statif of the export request to become
         # ready.  We will query the API every half a second until we get the

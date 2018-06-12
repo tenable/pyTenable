@@ -1,6 +1,6 @@
-from tenable.base import APIEndpoint
+from tenable.tenable_io.base import TIOEndpoint
 
-class FileAPI(APIEndpoint):
+class FileAPI(TIOEndpoint):
     def upload(self, fobj, encrypted=False):
         '''
         `file: upload <https://cloud.tenable.com/api#/resources/file/upload>`_

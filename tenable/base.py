@@ -100,7 +100,7 @@ class APIEndpoint(object):
         self._api = api
 
     def _check(self, name, obj, expected_type, 
-               choices=None, default=None, case=None):
+               choices=None, default=None, case=None, pattern=None):
         '''
         Internal function for validating thet inputs we are receiving are of
         the right type, have the expected values, and can handle defaults as
@@ -123,6 +123,9 @@ class APIEndpoint(object):
                 then we will want to set this to either ``upper`` or ``lower``
                 depending on the desired outcome.  The returned object will then
                 also be in the specified case.
+            pattern (string, optional):
+                If we want to validate the input based on a regex pattern, then
+                we should specify one here.
 
         Returns:
              obj: Either the object or the default object depending.
@@ -169,6 +172,16 @@ class APIEndpoint(object):
         else:
             etypes = [expected_type,]
 
+        # If the type is of "uuid", then we will specify a pattern and then
+        # overload the type to be a type of str.
+        if 'uuid' in etypes:
+            pattern = r'[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+            etypes[etypes.index('uuid')] = str
+
+        if 'scanner-uuid' in etypes:
+            pattern = r'[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12,32}'
+            etypes[etypes.index('uuid')] = str         
+
         # If we are checking for a string type, we will also want to check for
         # unicode type transparently, so add the unicode type to the expected
         # types list.  NOTE this is for Python2 only, as Python3 treats all
@@ -181,13 +194,9 @@ class APIEndpoint(object):
 
         # iterate through the expected types and flag as passing if any of the
         # types match.
-        up = r'[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12,}'
         type_pass = False
         for etype in etypes:
-            if 'etype' == 'uuid':
-                if len(re.findall(up)) == 1:
-                    type_pass = True
-            elif isinstance(obj, etype):
+            if isinstance(obj, etype):
                 type_pass = True
 
         # If the object is none of the right types then we want to raise a
@@ -212,7 +221,14 @@ class APIEndpoint(object):
             raise UnexpectedValueError(
                 '{} has value of {}.  Expected one of {}'.format(
                     name, obj, ','.join([str(i) for i in choices])
-            ))            
+            ))
+
+        if pattern and isinstance(obj, str):
+            if len(re.findall(pattern, str(obj))) <= 0:
+                raise UnexpectedValueError(
+                    '{} has value of {}.  Does not match pattern {}'.format(
+                        name, obj, pattern)
+                )
 
 
         # if we made it this fire without an exception being raised, then assume
@@ -307,7 +323,6 @@ class APISession(object):
         A more general response error checker that can be overloaded if needed.
         '''
         return response
-
 
     def _request(self, method, path, **kwargs):
         '''
