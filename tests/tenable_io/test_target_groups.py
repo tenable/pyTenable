@@ -2,11 +2,11 @@ from .fixtures import *
 from tenable.errors import *
 
 @pytest.fixture
-def assetgroup(request, api):
-    group = api.asset_groups.create(str(uuid.uuid4()), ['192.168.0.1'])
+def targetgroup(request, api):
+    group = api.target_groups.create(str(uuid.uuid4()), ['192.168.0.1'])
     def teardown():
         try:
-            api.asset_groups.delete(group['id'])
+            api.target_groups.delete(group['id'])
         except NotFoundError:
             pass
     request.addfinalizer(teardown)
@@ -14,68 +14,68 @@ def assetgroup(request, api):
 
 def test_create_name_typeerror(api):
     with pytest.raises(TypeError):
-        api.asset_groups.create(False, [])
+        api.target_groups.create(False, [])
 
 def test_create_type_typeerror(api):
     with pytest.raises(TypeError):
-        api.asset_groups.create('nope', [], type=1)
+        api.target_groups.create('nope', [], type=1)
 
 def test_create_type_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
-        api.asset_groups.create('nope', [], type='nope')
+        api.target_groups.create('nope', [], type='nope')
 
 def test_create_acls_typeerror(api):
     with pytest.raises(TypeError):
-        api.asset_groups.create('nope', [], acls='nope')
+        api.target_groups.create('nope', [], acls='nope')
 
 def test_create_members_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
-        api.asset_groups.create('nope', [])
+        api.target_groups.create('nope', [])
 
-def test_create(api, assetgroup):
+def test_create(api, targetgroup):
     pass
 
 def test_delete_id_typeerror(api):
     with pytest.raises(TypeError):
-        api.asset_groups.delete('nope')
+        api.target_groups.delete('nope')
 
-def test_delete(api, assetgroup):
+def test_delete(api, targetgroup):
     pass
 
 def test_details_id_typeerror(api):
     with pytest.raises(TypeError):
-        api.asset_groups.details('nope')
+        api.target_groups.details('nope')
 
-def test_details(api, assetgroup):
-    group = api.asset_groups.details(assetgroup['id'])
+def test_details(api, targetgroup):
+    group = api.target_groups.details(targetgroup['id'])
     assert isinstance(group, dict)
-    assert group['id'] == assetgroup['id']
+    assert group['id'] == targetgroup['id']
 
 def test_edit_id_typeerror(api):
     with pytest.raises(TypeError):
-        api.asset_groups.delete('nope')
+        api.target_groups.delete('nope')
 
 def test_edit_name_typeerror(api):
     with pytest.raises(TypeError):
-        api.asset_groups.edit(1, 1)
+        api.target_groups.edit(1, 1)
 
 def test_edit_acls_typeerror(api):
     with pytest.raises(TypeError):
-        api.asset_groups.edit(1, acls=False)
+        api.target_groups.edit(1, acls=False)
 
 def test_edit_type_typeerror(api):
     with pytest.raises(TypeError):
-        api.asset_groups.edit(1, type=False)
+        api.target_groups.edit(1, type=False)
 
 def test_edit_type_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
-        api.asset_groups.edit(1, type='nope')
+        api.target_groups.edit(1, type='nope')
 
-def test_edit(api, assetgroup):
-    members = assetgroup['members'].split(',')
+def test_edit(api, targetgroup):
+    members = targetgroup['members'].split(',')
     members.append('192.168.0.2')
-    mod = api.asset_groups.edit(assetgroup['id'], members=members)
+    mod = api.target_groups.edit(targetgroup['id'], members=members)
     assert mod['members'] == ', '.join(members)
 
 def test_list(api):
-    assert isinstance(api.asset_groups.list(), list)
+    assert isinstance(api.target_groups.list(), list)
