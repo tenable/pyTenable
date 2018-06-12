@@ -4,7 +4,6 @@ from .agent_exclusions import AgentExclusionsAPI
 from .agent_groups import AgentGroupsAPI
 from .agents import AgentsAPI
 from .assets import AssetsAPI
-from .asset_groups import AssetGroupsAPI
 from .audit_log import AuditLogAPI
 from .editor import EditorAPI
 from .exclusions import ExclusionsAPI
@@ -20,7 +19,9 @@ from .scanners import ScannersAPI
 from .scans import ScansAPI
 from .server import ServerAPI
 from .session import SessionAPI
+from .target_groups import TargetGroupsAPI
 from .users import UsersAPI
+from .workbenches import WorkbenchesAPI
 
 
 class TenableIO(APISession):
@@ -93,15 +94,6 @@ class TenableIO(APISession):
         for full details.
         '''
         return AssetsAPI(self)
-
-    @property
-    def asset_groups(self):
-        '''
-        An object for interfacing to the asset groups API.  See the
-        :doc:`asset_groups documentation <tenable_io.asset_groups>` 
-        for full details.
-        '''
-        return AssetGroupsAPI(self)
 
     @property
     def audit_log(self):
@@ -242,10 +234,10 @@ class TenableIO(APISession):
     def target_groups(self):
         '''
         An object for interfacing to the target groups API.  See the
-        :doc:`agent_groups documentation <tenable_io.asset_groups>` 
+        :doc:`target_groups documentation <tenable_io.target_groups>` 
         for full details.
         '''
-        return AgentGroupsAPI(self)
+        return TargetGroupsAPI(self)
 
     @property
     def users(self):
@@ -263,7 +255,7 @@ class TenableIO(APISession):
         :doc:`workbenches documentation <tenable_io.workbenches>` 
         for full details.
         '''
-        return None
+        return WorkbenchesAPI(self)
 
     @property
     def _tz(self):
