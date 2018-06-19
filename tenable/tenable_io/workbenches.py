@@ -1,7 +1,7 @@
 from tenable.tenable_io.base import TIOEndpoint
 
 class WorkbenchesAPI(TIOEndpoint):
-    def _workbench_query(filters, kw, filterdefs):
+    def _workbench_query(self, filters, kw, filterdefs):
         '''
         '''
         # Initiate the query dictionary with the filters parser.
@@ -222,7 +222,7 @@ class WorkbenchesAPI(TIOEndpoint):
         return self._api.get(
             'workbenches/assets/vulnerabilities', params=query).json()['assets']
 
-def export(self, *filters, **kw):
+    def export(self, *filters, **kw):
         '''
         `workbenches: export <https://cloud.tenable.com/api#/resources/workbenches/export-request>`_
 
@@ -320,5 +320,111 @@ def export(self, *filters, **kw):
                 fobj.write(chunk)
         fobj.seek(0)
 
+    def vulns(self, *filters, **kw):
+        '''
+        `workbenches: vulnerability-info <https://cloud.tenable.com/api#/resources/workbenches/vulnerability-info>`_
 
+        Args:
+            age (int, optional):
+                The maximum age of the data to be returned.
+            authenticated (bool, optional):
+                If set to true will only return authenticated vulnerabilities.
+            exploitable (bool, optional):
+                If set to true will only return exploitable vulnerabilities.
+            *filters (list, optional):
+                 A list of tuples detailing the filters that wish to be applied
+                the response data.  Each tuple is constructed as 
+                ('filter', 'operator', 'value') and would look like the 
+                following example: `('host.hostname', 'match', 'asset.com')`.  
+                For a complete list of the available filters and options, please
+                refer to the API documentation linked above.
+            filter_type (str, optional):
+                Are the filters exclusive (this AND this AND this) or inclusive
+                (this OR this OR this).  Valid values are `and` and `or`.  The
+                default setting is `and`.
+            resolvable (bool, optional):
+                If set to true will only return vulnerabilities with a
+                remediation path.
+            severity (str, optional):
+                Only return results of a specific severity 
+                (critical, high, medium, or low).
 
+        Returns:
+            dict: Vulnerability info resource
+        '''
+        # Call the query builder to handle construction
+        query = self._workbench_query(filters, kw,
+            self._api.filters.workbench_vuln_filters())
+
+        if 'authenticated' in kw and self._check('authenticated', kw['authenticated'], bool):
+            query['authenticated'] = True
+        if 'exploitable' in kw and self._check('exploitable', kw['exploitable'], bool):
+            query['exploitable'] = True
+        if 'resolvable' in kw and self._check('resolvable', kw['resolvable'], bool):
+            query['resolvable'] = True
+        if 'severity' in kw and self._check('severity', kw['severity'], str, 
+                choices=['critical', 'high', 'medium', 'low']):
+            query['severity'] = kw['severity']
+
+        return self._api.get(
+            'workbenches/vulnerabilities', params=query).json()['vulnerabilities']
+
+    def vuln_info(self, plugin_id, *filters, **kw):
+        '''
+        `workbenches: vulnerability-info <https://cloud.tenable.com/api#/resources/workbenches/vulnerability-info>`_
+
+        Args:
+            age (int, optional):
+                The maximum age of the data to be returned.
+            *filters (list, optional):
+                 A list of tuples detailing the filters that wish to be applied
+                the response data.  Each tuple is constructed as 
+                ('filter', 'operator', 'value') and would look like the 
+                following example: `('host.hostname', 'match', 'asset.com')`.  
+                For a complete list of the available filters and options, please
+                refer to the API documentation linked above.
+            filter_type (str, optional):
+                Are the filters exclusive (this AND this AND this) or inclusive
+                (this OR this OR this).  Valid values are `and` and `or`.  The
+                default setting is `and`.
+
+        Returns:
+            dict: Vulnerability info resource
+        '''
+        # Call the query builder to handle construction
+        query = self._workbench_query(filters, kw,
+            self._api.filters.workbench_vuln_filters())
+
+        return self._api.get(
+            'workbenches/vulnerabilities/{}/info'.format(
+                self._check('plugin_id', plugin_id, int)), params=query).json()['info']
+
+    def vuln_outputs(self, plugin_id, *filters, **kw):
+        '''
+        `workbenches: vulnerability-output <https://cloud.tenable.com/api#/resources/workbenches/vulnerability-output>`_
+
+        Args:
+            age (int, optional):
+                The maximum age of the data to be returned.
+            *filters (list, optional):
+                 A list of tuples detailing the filters that wish to be applied
+                the response data.  Each tuple is constructed as 
+                ('filter', 'operator', 'value') and would look like the 
+                following example: `('host.hostname', 'match', 'asset.com')`.  
+                For a complete list of the available filters and options, please
+                refer to the API documentation linked above.
+            filter_type (str, optional):
+                Are the filters exclusive (this AND this AND this) or inclusive
+                (this OR this OR this).  Valid values are `and` and `or`.  The
+                default setting is `and`.
+
+        Returns:
+            dict: Vulnerability outputs resource
+        '''
+        # Call the query builder to handle construction
+        query = self._workbench_query(filters, kw,
+            self._api.filters.workbench_vuln_filters())
+
+        return self._api.get(
+            'workbenches/vulnerabilities/{}/outputs'.format(
+                self._check('plugin_id', plugin_id, int)), params=query).json()['outputs']
