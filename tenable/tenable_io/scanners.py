@@ -45,7 +45,7 @@ class ScannersAPI(TIOEndpoint):
         Returns:
             None: The scanner was successfully deleted.
         '''
-        self._api.get('scanners/{}'.format(self._check('id', id, int)))
+        self._api.delete('scanners/{}'.format(self._check('id', id, int)))
 
     def details(self, id):
         '''
