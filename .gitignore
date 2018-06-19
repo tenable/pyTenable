@@ -10,3 +10,4 @@ env_builder
 *.log
 /manual_test.py
 /Dockerfile-docs
+/manual.sh
