@@ -186,3 +186,35 @@ class AgentsAPI(TIOEndpoint):
                 self._check('scanner_id', scanner_id, int),
                 self._check('agent_id', agent_id, int)
             )).json()
+
+    def bulk_unlink(self, agent_ids, scanner_id=1):
+        '''
+        `bulk-operations: bulk-unlink-agent <https://cloud.tenable.com/api#/resources/bulk-operations/bulk-unlink-agent>`_
+
+        Args:
+            agent_id (int): The id of the agent
+            scanner_id (int, optional): The id of the scanner
+
+        Returns:
+            dict: Task resource
+        '''
+        self._api.post('scanners/{}/agents/_bulk/unlink'.format(
+            self._check('scanner_id', scanner_id, int)),
+            json={'items': self._check('agent_ids', agent_ids, list)})
+
+    def bulk_status(self, task_uuid, scanner_id=1):
+        '''
+        `bulk-operations: bulk-agent-status <https://cloud.tenable.com/api#/resources/bulk-operations/bulk-agent-status>`_
+
+        Args:
+            task_uuid (str): The id of the agent
+            scanner_id (int, optional): The id of the scanner
+
+        Returns:
+            dict: Task resource
+        '''
+        return self._api.get(
+            'scanners/{}/agents/_bulk/{}'.format(
+                self._check('scanner_id', scanner_id, int),
+                self._check('task_uuid', task_uuid, 'uuid')
+            )).json()

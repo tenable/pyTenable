@@ -19,6 +19,24 @@ class AgentGroupsAPI(TIOEndpoint):
             self._check('agent_id', agent_id, int)
         ))
 
+    def bulk_add_agent(self, group_id, agent_ids, scanner_id=1):
+        '''
+        `bulk-operations: bulk-add-agent <https://cloud.tenable.com/api#/resources/bulk-operations/bulk-add-agent>`_
+
+        Args:
+            group_id (int): The id of the group
+            agent_id (int): The id of the agent
+            scanner_id (int, optional): The id of the scanner
+
+        Returns:
+            dict: Task resource
+        '''
+        self._api.post('scanners/{}/agent-groups/{}/agents/_bulk/add'.format(
+            self._check('scanner_id', scanner_id, int),
+            self._check('group_id', group_id, int)),
+            json={'items': self._check('agent_ids', agent_ids, list)})
+
+
     def configure(self, group_id, name, scanner_id=1):
         '''
         `agent-groups: configure <https://cloud.tenable.com/api#/resources/agent-groups/configure>`_
@@ -88,6 +106,23 @@ class AgentGroupsAPI(TIOEndpoint):
             self._check('agent_id', agent_id, int)
         ))
 
+    def bulk_delete_agent(self, group_id, agent_ids, scanner_id=1):
+        '''
+        `bulk-operations: bulk-add-agent <https://cloud.tenable.com/api#/resources/bulk-operations/bulk-remove-agent>`_
+
+        Args:
+            group_id (int): The id of the group
+            agent_id (int): The id of the agent
+            scanner_id (int, optional): The id of the scanner
+
+        Returns:
+            dict: Task resource
+        '''
+        self._api.post('scanners/{}/agent-groups/{}/agents/_bulk/add'.format(
+            self._check('scanner_id', scanner_id, int),
+            self._check('group_id', group_id, int)),
+            json={'items': self._check('agent_ids', agent_ids, list)})
+
     def details(self, group_id, scanner_id=1):
         '''
         `agent-groups: details <https://cloud.tenable.com/api#/resources/agent-groups/details>`_
@@ -104,4 +139,23 @@ class AgentGroupsAPI(TIOEndpoint):
             'scanners/{}/agent-groups/{}'.format(
                 self._check('scanner_id', scanner_id, int),
                 self._check('group_id', group_id, int)
+            )).json()
+
+    def bulk_status(self, group_id, task_uuid, scanner_id=1):
+        '''
+        `bulk-operations: bulk-agent-group-status <https://cloud.tenable.com/api#/resources/bulk-operations/bulk-agent-group-status>`_
+
+        Args:
+            group_id (int): The id of the group
+            task_uuid (str): The id of the agent
+            scanner_id (int, optional): The id of the scanner
+
+        Returns:
+            dict: Task resource
+        '''
+        return self._api.get(
+            'scanners/{}/agent-groups/{}/agents/_bulk/{}'.format(
+                self._check('scanner_id', scanner_id, int),
+                self._check('group_id', group_id, int),
+                self._check('task_uuid', task_uuid, 'uuid')
             )).json()
