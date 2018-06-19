@@ -37,9 +37,9 @@ class TIOEndpoint(APIEndpoint):
                 # For the serialized JSON format, we will need to generate the
                 # expanded input for each filter
                 i = finput.index(f)
-                resp['filters.{}.filter'.format(i)] = fname
-                resp['filters.{}.quality'.format(i)] = foper
-                resp['filters.{}.value'.format(i)] = fval
+                resp['filter.{}.filter'.format(i)] = fname
+                resp['filter.{}.quality'.format(i)] = foper
+                resp['filter.{}.value'.format(i)] = fval
             if rtype == 'json':
                 # for standard JSON formats, we will simply build a 'filters'
                 # list and store the information there.

@@ -1,6 +1,8 @@
 from tenable.tenable_io.base import TIOEndpoint
 
 class FiltersAPI(TIOEndpoint):
+    _cache = dict()
+
     def _normalize(self, filterset):
         '''
         Converts the filters into an easily parsable dictionary
@@ -29,6 +31,17 @@ class FiltersAPI(TIOEndpoint):
             filters[item['name']] = f
         return filters
 
+    def _use_cache(self, name, path, normalize=True):
+        '''
+        Leverages the filter cache and will return the results as expected.
+        '''
+        if name not in self._cache:
+            self._cache[name] = self._api.get(path).json()['filters']
+
+        if normalize:
+            return self._normalize(self._cache[name])
+        else:
+            return self._cache[name]
 
     def agents_filters(self, normalize=True):
         '''
@@ -37,11 +50,7 @@ class FiltersAPI(TIOEndpoint):
         Returns:
             dict: Filter resource dictionary
         '''
-        f = self._api.get('filters/scans/agents').json()['filters']
-        if normalize:
-            return self._normalize(f)
-        else:
-            return f
+        return self._use_cache('agents', 'filters/scans/agents', normalize)
 
     def workbench_vuln_filters(self, normalize=True):
         '''
@@ -50,11 +59,7 @@ class FiltersAPI(TIOEndpoint):
         Returns:
             dict: Filter resource dictionary
         '''
-        f = self._api.get('filters/workbenches/vulnerabilities').json()['filters']
-        if normalize:
-            return self._normalize(f)
-        else:
-            return f
+        return self._use_cache('agents', 'filters/workbenches/vulnerabilities', normalize)
 
     def workbench_asset_filters(self, normalize=True):
         '''
@@ -63,19 +68,11 @@ class FiltersAPI(TIOEndpoint):
         Returns:
             dict: Filter resource dictionary
         '''
-        f = self._api.get('filters/workbenches/assets').json()['filters']
-        if normalize:
-            return self._normalize(f)
-        else:
-            return f
+        return self._use_cache('agents', 'filters/workbenches/assets', normalize)
 
     def scan_filters(self, normalize=True):
         '''
         Returns:
             dict: Filter resource dictionary
         '''
-        f = self._api.get('filters/scans/reports').json()['filters']
-        if normalize:
-            return self._normalize(f)
-        else:
-            return f
+        return self._use_cache('agents', 'filters/scans/reports', normalize)
