@@ -1,0 +1,199 @@
+from tenable.tenable_io.base import TIOEndpoint, APIResultsIterator
+import time
+
+class ExportsIterator(APIResultsIterator):
+    _type = None
+    _uuid = None
+    _chunks = list()
+    _processed = list()
+
+    def _get_page(self):
+        '''
+        Get the next chunk
+        '''
+        def get_status():       
+            # Query the API for the status of the export.
+            status = self._api.get('{}/export/{}/status'.format(self._type, self._uuid)).json()
+
+            # We need to get the list of chunks that we haven't completed yet and are
+            # available for download.
+            unfinished = [c for c in status['chunks_available'] if c not in self._processed]
+            
+            # Add the chunks_unfinished key with the unfinished list as the
+            # associated value and then return the status to the caller.
+            status['chunks_unfinished'] = unfinished
+            return status
+
+        # If there are no chunks in our local queue, then we will need to query
+        # the status API for more chunks to to work on.
+        if len(self._chunks) < 1:
+            status = get_status()
+
+            # if there are no more chunks to process and the export status is 
+            # set to finished, then we will break the iteration.
+            if (status['status'] == 'FINISHED' 
+                    and len(status['chunks_unfinished']) < 1):
+                raise StopIteration()
+
+            # if the export is still processing, but there arent any chunks for 
+            # us to process yet, then we will wait here in a loop and call for 
+            # status once a second until we get something else to work on.
+            while len(status['chunks_unfinished']) < 1:
+                time.sleep(1)   # wait 1 second
+                status = get_status()
+
+            # now that we have some chunks to work on, lets refresh the local
+            # chunk cache and continue.
+            self._chunks = status['chunks_unfinished']
+
+        # now to take the first chunk off the local queue, move it to the 
+        # processed list, and then set store the results to the page attribute.
+        chunk_id = self.chunks[0]
+        self._chunks.pop(0)
+        self._processed.append(chunk_id)
+        self.page = self._api.get('{}/export/{}/chunks/{}'.format(
+            self._type, self._uuid, chunk_id)).json()
+
+    def next(self):
+        '''
+        Ask for the next object
+        '''
+        # If we have worked through the current page of records then we should
+        # query the next page of records.
+        if self.page_count >= len(self.page):
+            self.page_count = 0
+            self._get_page()
+
+        # Get the relevant record, increment the counters, and return the
+        # record.
+        item = self.page[self.page_count]
+        self.count += 1
+        self.page_count += 1
+        return item
+
+
+class ExportsAPI(TIOEndpoint):
+    def vulns(self, **kw):
+        '''
+        `exports: vulns-request-export <https://cloud.tenable.com/api#/resources/exports/vulns-request-export>`_
+
+        Args:
+            chunk_size (int, optional):
+                Specifies the number of objects returned per-chunk.  If nothing is
+                specified, it will default to 100 objects.
+            severity (list, optional):
+                list of severities to include as part of the export.  Supported
+                values are `info`, `low`, `medium`, `high`, and `critical`.
+            state (list, optional):
+                list of object states to be returned.  Supported values are
+                `open`, `reopened`, and `fixed`.
+            plugin_family (list, optional):
+                list of plugin families to restrict the export to.  values are
+                interpreted with an insensitivity to case.
+            since (int, optional):
+                Returned results will be bounded to only respond with objects
+                that are new or updated between this specified value and current.
+                If no since filter is specified, then the results will be unbounded
+                and return all results.
+
+        Returns:
+            ExportIterator: an iterator to walk through the results.
+        '''
+        payload = {'filters': dict()}
+
+        if 'chunk_size' in kw and self._check(
+                'chunk_size', kw['chunk_size'], int, default=100):
+            payload['num_assets'] = kw['chunk_size']
+
+        if 'severity' in kw and self._check('severity', kw['severity'], list, 
+                choices=['info', 'low', 'medium', 'high', 'critical'], case='lower'):
+            payload['filters']['severity'] = kw['severity']
+
+        if 'state' in kw and self._check('state', kw['state'], list, 
+                choices=['open', 'reopened', 'closed'], case='lower'):
+            payload['filters']['state'] = kw['state']
+
+        if 'plugin_family' in kw and self._check(
+                'plugin_family', kw['plugin_family'], list):
+            payload['filters']['plugin_family'] = kw['plugin_family']
+
+        if 'since' in kw and self._check('since', kw['since'], int):
+            payload['filters']['since'] = kw['since']
+
+        return ExportIterator(self._api,
+            _type='vuln',
+            _uuid=self._api.get('vulns/export', json=payload).json()['export_uuid']
+        )
+
+    def assets(self, **kw):
+        '''
+        `exports: assets-request-export <https://cloud.tenable.com/api#/resources/exports/assets-request-export>`_
+
+        Args:
+            chunk_size (int, optional):
+                Specifies the number of objects returned per-chunk.  If nothing is
+                specified, it will default to 100 objects.
+            created_at (int, optional):
+                Returns all assets created after the specified unix timestamp.
+            updated_at (int, optional):
+                Returns all assets updated after the specified unix timestamp.
+            terminated_at (int, optional):
+                Returns all assets terminated after the specified unix timestamp.
+            deleted_at (int, optional):
+                Returns all assets deleted after the specified unix timestamp.
+            first_scan_time (int, optional):
+                Returns all assets first scanned after the specified unix
+                timestamp.
+            last_authenticated_scan_time (int, optional):
+                Returns all assets that have completed an authenticated scan
+                after the specified unix timestamp.
+            last_assessed (int, optional):
+                Returns all assets that have been assessed after the specified
+                unix timestamp.
+            servicenow_sysid (bool, optional):
+                If set to True, will return only assets that have a ServiceNow
+                Sys ID.  If set to False, then returns only assets that do not
+                have a ServiceNow Sys ID.
+            sources (list, optional):
+                Returns assets that have the specified source.  If multiple
+                sources are listed, then the results will be assets that have
+                been observices by any of the sources.
+            has_plugin_results (bool, optional):
+                If True, returns only assets that have plugin results.  If False,
+                returns only assets that do not have any plugin results.  Assets
+                thats would not have plugin results would be assets created from
+                a connector, or a discovery scan.
+
+        Returns:
+            ExportIterator: an iterator to walk through the results.
+        '''
+        payload = {'filters': dict()}
+
+        if 'chunk_size' in kw and self._check(
+                'chunk_size', kw['chunk_size'], int, default=100):
+            payload['chunk_size'] = kw['chunk_size']
+
+        
+        # Instead of a long and drawn-out series of if statements for all of
+        # these integer filters, lets instead just loop through all of them
+        # instead.  As they all have the same logic, there isn't any reason
+        # not to shorten up the madness.
+        for option in ['created_at', 'updated_at', 'terminated_at', 
+                       'deleted_at', 'first_scan_time', 
+                       'last_authenticated_scan_time', 'last_assessed']:
+            if option in kw and self._check(option, kw[option], int):
+                payload['filters'][option] = kw[option]
+
+        # Lets to the same thing we did above for integer checks for the boolean
+        # ones as well.
+        for option in ['servicenow_sysid', 'has_plugin_results']:
+            if option in kw:
+                payload['filters'][option] = self._check(option, kw[option], bool)
+
+        if 'sources' in kw and self._check('sources', kw['sources'], list):
+            payload['filters']['sources'] = kw['sources']
+
+        return ExportIterator(self._api,
+            _type='assets',
+            _uuid=self._api.get('assets/export', json=payload).json()['export_uuid']
+        )

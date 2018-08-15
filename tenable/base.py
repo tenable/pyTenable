@@ -62,7 +62,7 @@ class APIResultsIterator(object):
 
     def next(self):
         '''
-        Ask for the next Agent record
+        Ask for the next record
         '''
         # If there are no more agent records to return, then we should raise
         # a StopIteration exception to end the madness.
