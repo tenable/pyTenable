@@ -144,7 +144,7 @@ class ScansAPI(TIOEndpoint):
         # text_targets paramater with the result.
         if 'targets' in kw:
             scan['settings']['text_targets'] = ','.join(self._check(
-                'targets', targets, list))
+                'targets', kw['targets'], list))
             del(kw['targets'])
 
         # For credentials, we will simply push the dictionary as-is into the
@@ -158,7 +158,7 @@ class ScansAPI(TIOEndpoint):
         # Just like with credentials, we will push the dictionary as-is into the
         # correct subdocument of the scan definition.
         if 'compliance' in kw:
-            scan['audits'] = self._check('compliance', compliance, dict)
+            scan['audits'] = self._check('compliance', kw['compliance'], dict)
             del(kw['compliance'])
 
         # any other remaining keyword arguments will be passed into the settings
