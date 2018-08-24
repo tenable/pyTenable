@@ -134,9 +134,10 @@ class ScansAPI(TIOEndpoint):
             del(kw['template'])
 
         # If a policy UUID is sent, then we will set the scan template UUID to
-        # be the UUID that was specified.
+        # be the UUID of a custom scan, and attach the policy id to it
         if 'policy' in kw:
-            scan['uuid'] = self._check('policy', kw['policy'], 'uuid')
+            scan['uuid'] = self._get_custom_scan_uuid()
+            scan['settings']['policy_id'] = self._check('policy', kw['policy'], int)
             del(kw['policy'])
 
         # If the targets parameter is specified, then we will need to convert
@@ -144,7 +145,7 @@ class ScansAPI(TIOEndpoint):
         # text_targets paramater with the result.
         if 'targets' in kw:
             scan['settings']['text_targets'] = ','.join(self._check(
-                'targets', targets, list))
+                'targets', kw['targets'], list))
             del(kw['targets'])
 
         # For credentials, we will simply push the dictionary as-is into the
@@ -605,4 +606,20 @@ class ScansAPI(TIOEndpoint):
         '''
         resp = self._api.get('scans/timezones').json()['timezones']
         return [i['value'] for i in resp]
+
+    def _get_custom_scan_uuid(self):
+        '''
+        Internal function to retreive the uuid for custom scan tempalte.  This
+        is required for the use of policies on scan creation.
+
+        Returns:
+            str: UUID of the custom scan
+        '''
+        template_uuid = ''
+
+        resp = self._api.get('editor/scan/templates').json()['templates']
+        for template in resp:
+            if template['title'] == 'Custom Scan':
+                template_uuid = template['uuid']
+        return template_uuid
 
