@@ -5,9 +5,9 @@ python:
     - "3.5"
     - "3.6"
 install:
-  - pip install -r requirements.txt
+  - pip install requests pytest-cov
 script:
-  - pytest
+  - pytest --cov=tenable
 branches:
   only:
   - master

@@ -1,5 +1,6 @@
 from tenable.tenable_io.base import TIOEndpoint
 from tenable.utils import dict_merge
+from tenable.errors import UnexpectedValueError
 from datetime import datetime
 from io import BytesIO
 import time
@@ -101,9 +102,9 @@ class ScansAPI(TIOEndpoint):
             template (str, optional): 
                 The scan policy template to use.  If no template is specified
                 then the default of `basic` will be used.
-            policy (str, optional):
-                The UUID of the scan policy to use (if not using one of the
-                pre-defined templates).  Specifying a a policy UUID will
+            policy (int, optional):
+                The id or title of the scan policy to use (if not using one of 
+                the pre-defined templates).  Specifying a a policy id will
                 override the the template parameter.
             targets (list, optional):
                 If defined, then a list of targets can be specified and will
@@ -112,6 +113,8 @@ class ScansAPI(TIOEndpoint):
                 A list of credentials to use.
             compliance (dict, optional):
                 A list of compliance audiots to use.
+            scanner (str, optional):
+                Define the scanner or scanner group uuid or name.
             **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
@@ -130,14 +133,71 @@ class ScansAPI(TIOEndpoint):
         if 'template' in kw:
             templates = self._api.policies.templates()
             scan['uuid'] = templates[self._check(
-                'template', kw['template'], str, choices=templates.keys())]
+                'template', kw['template'], str, 
+                default='basic',
+                choices=templates.keys()
+            )]
             del(kw['template'])
 
         # If a policy UUID is sent, then we will set the scan template UUID to
         # be the UUID that was specified.
         if 'policy' in kw:
-            scan['uuid'] = self._check('policy', kw['policy'], 'uuid')
+            try:
+                # at first we are going to assume that the information that was
+                # relayed to use for the scan policy was the policy ID.  As
+                # this is the least expensive thing to check for, it's a logical
+                # starting point.
+                scan['settings']['policy_id'] = self._check(
+                    'policy', kw['policy'], int)
+
+            except UnexpectedValueError:
+                # Now we are going to attempt to find the scan policy based on
+                # the title of the policy before giving up and throwing. an
+                # UnexpectedValueError
+                policies = self._api.policies.list()
+                match = False
+                for item in policies:
+                    if kw['policy'] == item['title']:
+                        scan['uuid'] = item['template_uuid']
+                        scan['settings']['policy_id'] = item['id']
+                        match = True
+                if not match:
+                    raise UnexpectedValueError('policy setting is invalid.')
             del(kw['policy'])
+
+        # if the scanner attribute was set, then we will attempt to figure out
+        # what scanner to use.
+        if 'scanner' in kw:
+            try:
+                # we will always want to attempt to use the UUID first as it's
+                # the cheapest check that we can run.
+                scan['settings']['scanner_id'] = self._check(
+                    'scanner', kw['scanner'], 'scanner-uuid')
+
+            except UnexpectedValueError:
+                # as an UnexpectedValueError was raised, the data may just be
+                # the name of a scanner.  If this is the case, then we will want
+                # to attempt to enumerate the scanner list and if we see a match,
+                # use that scanner's UUID instead.
+                
+                # to start, we want to get the scanners that are avilable for
+                # scanning.  To do so, we will want to pull the information from
+                # the scan template.
+                tmpl_id = self._api.policies.templates()['advanced']
+                template = self._api.editor.details('scan', tmpl_id)
+                for item in template['settings']['basic']['inputs']:
+                    if item['id'] == 'scanner_id':
+                        scanners = item['options']
+
+                # Now that we have the scanner listing, we will iterate through
+                # the scanners and see if we can find a match based on the name.
+                for item in scanners:
+                    if item['name'] == kw['scanner']:
+                        scan['settings']['scanner_id'] = item['id']
+
+                if 'scanner_id' not in scan['settings']:
+                    raise UnexpectedValueError('scanner setting is invalid.')
+            del(kw['scanner'])
 
         # If the targets parameter is specified, then we will need to convert
         # the list of targets to a comma-delimited string and then set the

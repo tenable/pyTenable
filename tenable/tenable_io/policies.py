@@ -225,4 +225,4 @@ class PoliciesAPI(TIOEndpoint):
         Returns:
             list: List of policy resource documents.
         '''
-        return self._api.get('policies').json()
+        return self._api.get('policies').json()['policies']
