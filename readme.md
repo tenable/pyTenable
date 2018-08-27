@@ -14,9 +14,13 @@ For further documentation, please refer to the [online documentation](http://pyt
 
 ## TODO:
 
-## Tenable.io package
-
-- bulk-operations endpoints should be interlaced into the relevant APIEndpoints
 - _check should allow for passing a checking function for further validation.
   + Example would be validating filters.
+- scans.create and scans.configure should have naturalization of all of the parameters mentioned in the api: https://cloud.tenable.com/api#/resources/scans/create
+- scans module needs to be fully tested out.
+- workbenches need to be fully tested out.
+- container_security needs to be fully tested out.
+- SecurityCenter.analysis module needs to be completed to at least have parity with pySecurityCenter for full deprecation of pySC.
+- The SecurityCenter library needs to be written based on the public API docs.
+- A basic Nessus module needs to be written to handle authorization.
 - 
