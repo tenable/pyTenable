@@ -6,6 +6,118 @@ from io import BytesIO
 import time
 
 class ScansAPI(TIOEndpoint):
+    def _create_scan_document(self, kw):
+        '''
+        Takes the keyworded arguments and will provide a scan settings document
+        based on the values inputted.
+
+        Args:
+            kw (dict): The keyword dict passed from the user
+
+        Returns:
+            scan (dict): The resulting scan document based on the kw provided.
+        '''
+        scan = {
+            'settings': dict(),
+        }
+
+        # If a template is specified, then we will pull the listing of available
+        # templates and set the policy UUID to match the template name given.
+        if 'template' in kw:
+            templates = self._api.policies.templates()
+            scan['uuid'] = templates[self._check(
+                'template', kw['template'], str, 
+                default='basic',
+                choices=templates.keys()
+            )]
+            del(kw['template'])
+
+        # If a policy UUID is sent, then we will set the scan template UUID to
+        # be the UUID that was specified.
+        if 'policy' in kw:
+            try:
+                # at first we are going to assume that the information that was
+                # relayed to use for the scan policy was the policy ID.  As
+                # this is the least expensive thing to check for, it's a logical
+                # starting point.
+                scan['settings']['policy_id'] = self._check(
+                    'policy', kw['policy'], int)
+
+            except (UnexpectedValueError, TypeError):
+                # Now we are going to attempt to find the scan policy based on
+                # the title of the policy before giving up and throwing. an
+                # UnexpectedValueError
+                policies = self._api.policies.list()
+                match = False
+                for item in policies:
+                    if kw['policy'] == item['name']:
+                        scan['uuid'] = item['template_uuid']
+                        scan['settings']['policy_id'] = item['id']
+                        match = True
+                if not match:
+                    raise UnexpectedValueError('policy setting is invalid.')
+            del(kw['policy'])
+
+        # if the scanner attribute was set, then we will attempt to figure out
+        # what scanner to use.
+        if 'scanner' in kw:
+            try:
+                # we will always want to attempt to use the UUID first as it's
+                # the cheapest check that we can run.
+                scan['settings']['scanner_id'] = self._check(
+                    'scanner', kw['scanner'], 'scanner-uuid')
+
+            except (UnexpectedValueError, TypeError):
+                # as an UnexpectedValueError was raised, the data may just be
+                # the name of a scanner.  If this is the case, then we will want
+                # to attempt to enumerate the scanner list and if we see a match,
+                # use that scanner's UUID instead.
+                
+                # to start, we want to get the scanners that are avilable for
+                # scanning.  To do so, we will want to pull the information from
+                # the scan template.
+                tmpl_id = self._api.policies.templates()['advanced']
+                template = self._api.editor.details('scan', tmpl_id)
+                for item in template['settings']['basic']['inputs']:
+                    if item['id'] == 'scanner_id':
+                        scanners = item['options']
+
+                # Now that we have the scanner listing, we will iterate through
+                # the scanners and see if we can find a match based on the name.
+                for item in scanners:
+                    if item['name'] == kw['scanner']:
+                        scan['settings']['scanner_id'] = item['id']
+
+                if 'scanner_id' not in scan['settings']:
+                    raise UnexpectedValueError('scanner setting is invalid.')
+            del(kw['scanner'])
+
+        # If the targets parameter is specified, then we will need to convert
+        # the list of targets to a comma-delimited string and then set the
+        # text_targets paramater with the result.
+        if 'targets' in kw:
+            scan['settings']['text_targets'] = ','.join(self._check(
+                'targets', kw['targets'], list))
+            del(kw['targets'])
+
+        # For credentials, we will simply push the dictionary as-is into the
+        # the credentials.add subdocument.
+        if 'credentials' in kw:
+            scan['credentials'] = {'add': dict()}
+            scan['credentials']['add'] = self._check(
+                'credentials', kw['credentials'], dict)
+            del(kw['credentials'])
+
+        # Just like with credentials, we will push the dictionary as-is into the
+        # correct subdocument of the scan definition.
+        if 'compliance' in kw:
+            scan['audits'] = self._check('compliance', compliance, dict)
+            del(kw['compliance'])
+
+        # any other remaining keyword arguments will be passed into the settings
+        # subdocument.  The bulk of the data should go here...
+        scan['settings'] = dict_merge(scan['settings'], kw)
+
     def attachment(self, scan_id, attachment_id, key, fobj=None):
         '''
         `scans: attachments <https://cloud.tenable.com/api#/resources/scans/attachments>`_
@@ -39,34 +151,48 @@ class ScansAPI(TIOEndpoint):
         # Return the file object to the ccaller.
         return fobj
 
-    def configure(self, id, scan):
+    def configure(self, id, **kw):
         '''
+        Overwrite the prameters specified on top of the existing scan record.
+
         `scans: configure <https://cloud.tenable.com/api#/resources/scans/configure>`_
 
         Args:
             id (int): The unique identifier for the scan.
-            json (dict, optional):
-                A raw dictionary to push to the 
-            scan (dict, optional): 
-                The scan configuration to pass to the configuration endpoint.
-                This should generally be a modified version of the data
-                retreived from the :func:`~.tenable.tenable_io.ScansAPI.details` 
-                method.
+            template (str, optional): 
+                The scan policy template to use.  If no template is specified
+                then the default of `basic` will be used.
+            policy (int, optional):
+                The id or title of the scan policy to use (if not using one of 
+                the pre-defined templates).  Specifying a a policy id will
+                override the the template parameter.
+            targets (list, optional):
+                If defined, then a list of targets can be specified and will
+                be formatted to an appropriate text_target attribute.
+            credentials (dict, optional):
+                A list of credentials to use.
+            compliance (dict, optional):
+                A list of compliance audiots to use.
+            scanner (str, optional):
+                Define the scanner or scanner group uuid or name.
+            **kw (dict, optional):
+                The various parameters that can be passed to the scan creation
+                API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
+                more detailed informatiom, please refer to the API documentation
+                linked above.            
 
         Returns:
             dict: The scan resource record.
         '''
-        self._check('scan', scan, dict)
 
-        # we need to delete the 'current' subdocuments if they exist.  This was
-        # part of the document if retreived using the 
-        # :func:`~.tenable.tenable_io.ScansAPI.details` method, however is not 
-        # valid for the PUT call.
-        if 'credentials' in scan and 'current' in scan['credentials']:
-            del(scan['credentials']['current'])
-        if 'compliance' in scan and 'current' in scan['compliance']:
-            del(scan['compliance']['current'])
+        # We will get the current scan record, generate the new paramaters in
+        # the correct format, and then merge them together to create the new
+        # scan record that we will be pushing to the API.
+        current = self.details(id)
+        updated = self._create_scan_document(kw)
+        scan = dict_merge(current, updated)
 
+        # Performing the actual call to the API with the updated scan record.
         return self._api.put('scans/{}'.format(self._check('id', id, int)),
                     json=scan).json()
 
@@ -124,102 +250,7 @@ class ScansAPI(TIOEndpoint):
         Returns:
             dict: The scan resource record of the newly created scan.
         '''
-        scan = {
-            'settings': dict(),
-        }
-
-        # If a template is specified, then we will pull the listing of available
-        # templates and set the policy UUID to match the template name given.
-        if 'template' in kw:
-            templates = self._api.policies.templates()
-            scan['uuid'] = templates[self._check(
-                'template', kw['template'], str, 
-                default='basic',
-                choices=templates.keys()
-            )]
-            del(kw['template'])
-
-        # If a policy UUID is sent, then we will set the scan template UUID to
-        # be the UUID that was specified.
-        if 'policy' in kw:
-            try:
-                # at first we are going to assume that the information that was
-                # relayed to use for the scan policy was the policy ID.  As
-                # this is the least expensive thing to check for, it's a logical
-                # starting point.
-                scan['settings']['policy_id'] = self._check(
-                    'policy', kw['policy'], int)
-
-            except TypeError:
-                # Now we are going to attempt to find the scan policy based on
-                # the title of the policy before giving up and throwing. an
-                # UnexpectedValueError
-                policies = self._api.policies.list()
-                match = False
-                for item in policies:
-                    if kw['policy'] == item['name']:
-                        scan['uuid'] = item['template_uuid']
-                        scan['settings']['policy_id'] = item['id']
-                        match = True
-                if not match:
-                    raise UnexpectedValueError('policy setting is invalid.')
-            del(kw['policy'])
-
-        # if the scanner attribute was set, then we will attempt to figure out
-        # what scanner to use.
-        if 'scanner' in kw:
-            try:
-                # we will always want to attempt to use the UUID first as it's
-                # the cheapest check that we can run.
-                scan['settings']['scanner_id'] = self._check(
-                    'scanner', kw['scanner'], 'scanner-uuid')
-
-            except UnexpectedValueError:
-                # as an UnexpectedValueError was raised, the data may just be
-                # the name of a scanner.  If this is the case, then we will want
-                # to attempt to enumerate the scanner list and if we see a match,
-                # use that scanner's UUID instead.
-                
-                # to start, we want to get the scanners that are avilable for
-                # scanning.  To do so, we will want to pull the information from
-                # the scan template.
-                scanners = self._api.scanners.list()
-
-                # Now that we have the scanner listing, we will iterate through
-                # the scanners and see if we can find a match based on the name.
-                for item in scanners:
-                    if item['name'] == kw['scanner']:
-                        scan['settings']['scanner_id'] = item['id']
-
-                if 'scanner_id' not in scan['settings']:
-                    raise UnexpectedValueError('scanner setting is invalid.')
-            del(kw['scanner'])
-
-        # If the targets parameter is specified, then we will need to convert
-        # the list of targets to a comma-delimited string and then set the
-        # text_targets paramater with the result.
-        if 'targets' in kw:
-            scan['settings']['text_targets'] = ','.join(self._check(
-                'targets', kw['targets'], list))
-            del(kw['targets'])
-
-        # For credentials, we will simply push the dictionary as-is into the
-        # the credentials.add subdocument.
-        if 'credentials' in kw:
-            scan['credentials'] = {'add': dict()}
-            scan['credentials']['add'] = self._check(
-                'credentials', kw['credentials'], dict)
-            del(kw['credentials'])
-
-        # Just like with credentials, we will push the dictionary as-is into the
-        # correct subdocument of the scan definition.
-        if 'compliance' in kw:
-            scan['audits'] = self._check('compliance', compliance, dict)
-            del(kw['compliance'])
-
-        # any other remaining keyword arguments will be passed into the settings
-        # subdocument.  The bulk of the data should go here...
-        scan['settings'] = dict_merge(scan['settings'], kw)
+        scan = self._create_scan_document(kw)
 
         # Run the API call and return the result to the caller.
         return self._api.post('scans', json=scan).json()['scan']
