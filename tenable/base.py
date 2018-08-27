@@ -180,7 +180,7 @@ class APIEndpoint(object):
 
         if 'scanner-uuid' in etypes:
             pattern = r'[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12,32}'
-            etypes[etypes.index('uuid')] = str         
+            etypes[etypes.index('scanner-uuid')] = str         
 
         # If we are checking for a string type, we will also want to check for
         # unicode type transparently, so add the unicode type to the expected
