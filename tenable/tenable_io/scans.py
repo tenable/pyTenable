@@ -150,14 +150,14 @@ class ScansAPI(TIOEndpoint):
                 scan['settings']['policy_id'] = self._check(
                     'policy', kw['policy'], int)
 
-            except UnexpectedValueError:
+            except TypeError:
                 # Now we are going to attempt to find the scan policy based on
                 # the title of the policy before giving up and throwing. an
                 # UnexpectedValueError
                 policies = self._api.policies.list()
                 match = False
                 for item in policies:
-                    if kw['policy'] == item['title']:
+                    if kw['policy'] == item['name']:
                         scan['uuid'] = item['template_uuid']
                         scan['settings']['policy_id'] = item['id']
                         match = True
@@ -183,11 +183,7 @@ class ScansAPI(TIOEndpoint):
                 # to start, we want to get the scanners that are avilable for
                 # scanning.  To do so, we will want to pull the information from
                 # the scan template.
-                tmpl_id = self._api.policies.templates()['advanced']
-                template = self._api.editor.details('scan', tmpl_id)
-                for item in template['settings']['basic']['inputs']:
-                    if item['id'] == 'scanner_id':
-                        scanners = item['options']
+                scanners = self._api.scanners.list()
 
                 # Now that we have the scanner listing, we will iterate through
                 # the scanners and see if we can find a match based on the name.
@@ -204,7 +200,7 @@ class ScansAPI(TIOEndpoint):
         # text_targets paramater with the result.
         if 'targets' in kw:
             scan['settings']['text_targets'] = ','.join(self._check(
-                'targets', targets, list))
+                'targets', kw['targets'], list))
             del(kw['targets'])
 
         # For credentials, we will simply push the dictionary as-is into the
