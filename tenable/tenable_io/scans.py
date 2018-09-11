@@ -380,8 +380,8 @@ class ScansAPI(TIOEndpoint):
         if history_id:
             params['history_id'] = self._check('history_id', history_id, int)
 
-        self._api.get('scans/{}'.format(self._check('scan_id', scan_id, int)),
-            params=params).json()
+        return self._api.get('scans/{}'.format(
+            self._check('scan_id', scan_id, int)), params=params).json()
 
 
     def export(self, scan_id, *filters, **kw):
