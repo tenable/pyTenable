@@ -187,6 +187,7 @@ class ScansAPI(TIOEndpoint):
 
         # We will get the current scan record, generate the new paramaters in
         # the correct format, and then merge them together to create the new
+        # :func:`~.tenable.tenable_io.ScansAPI.details` method, however is not 
         # scan record that we will be pushing to the API.
         current = self.details(id)
         updated = self._create_scan_document(kw)
