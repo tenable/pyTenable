@@ -3,8 +3,8 @@ from .compliance import ComplianceAPI
 from .containers import ContainersAPI
 from .imports import ImportAPI
 from .jobs import JobsAPI
+from .registry import RegistryAPI
 from .reports import ReportsAPI
-from .repositories import RepositoriesAPI
 from .uploads import UploadAPI
 
 class ContainerSecurity(APISession):
@@ -72,6 +72,15 @@ class ContainerSecurity(APISession):
         return JobsAPI(self)
 
     @property
+    def registry(self):
+        '''
+        An object for interfacing to the image repositories API.  See the
+        :doc:`repositories documentation <container_security.repositories>` 
+        for full details.
+        '''
+        return RegistryAPI(self)
+
+    @property
     def reports(self):
         '''
         An object for interfacing to the image reports API.  See the
@@ -79,15 +88,6 @@ class ContainerSecurity(APISession):
         for full details.
         '''
         return ReportsAPI(self)
-
-    @property
-    def repositories(self):
-        '''
-        An object for interfacing to the image repositories API.  See the
-        :doc:`repositories documentation <container_security.repositories>` 
-        for full details.
-        '''
-        return RepositoriesAPI(self)
 
     @property
     def uploads(self):
