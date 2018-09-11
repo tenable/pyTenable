@@ -21,7 +21,7 @@ class RegistryAPI(CSEndpoint):
 
         return self._api.get('v1/repositories', params=payload).json()
 
-    def repos(self, repo_id, limit=None, offset=None):
+    def images(self, repo_id, limit=None, offset=None):
         '''
         `container-security-repositories: list-images <https://cloud.tenable.com/api#/resources/container-security-repositories/list-images>`_
 
