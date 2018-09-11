@@ -60,9 +60,6 @@ class TIOEndpoint(APIEndpoint):
         return resp
 
 
-
-
-
 class TIOIterator(APIResultsIterator):
     def _get_data(self):
         '''
