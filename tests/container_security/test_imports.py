@@ -119,7 +119,7 @@ def test_create(api):
 
 def test_update_host_typeerror(api):
     with pytest.raises(TypeError):
-        api.imports.update(0
+        api.imports.update(0,
             host=1,
             port=443,
             username='someone',
@@ -129,7 +129,7 @@ def test_update_host_typeerror(api):
 
 def test_update_port_typeerror(api):
     with pytest.raises(TypeError):
-        api.imports.update(0
+        api.imports.update(0,
             host='registry.hub.docker.com',
             port='something',
             username='someone',
@@ -139,7 +139,7 @@ def test_update_port_typeerror(api):
 
 def test_update_username_typeerror(api):
     with pytest.raises(TypeError):
-        api.imports.update(0
+        api.imports.update(0,
             host='registry.hub.docker.com',
             port=443,
             username=1,
@@ -149,7 +149,7 @@ def test_update_username_typeerror(api):
 
 def test_update_password_typeerror(api):
     with pytest.raises(TypeError):
-        api.imports.update(0
+        api.imports.update(0,
             host='registry.hub.docker.com',
             port=443,
             username='someone',
@@ -159,7 +159,7 @@ def test_update_password_typeerror(api):
 
 def test_update_provider_typeerror(api):
     with pytest.raises(TypeError):
-        api.imports.update(0
+        api.imports.update(0,
             host='registry.hub.docker.com',
             port=443,
             username='someone',
@@ -169,7 +169,7 @@ def test_update_provider_typeerror(api):
 
 def test_update_provider_invalidinput(api):
     with pytest.raises(InvalidInput):
-        api.imports.update(0
+        api.imports.update(0,
             host='registry.hub.docker.com',
             port=443,
             username='someone',
@@ -179,7 +179,7 @@ def test_update_provider_invalidinput(api):
 
 def test_update_ssl_typeerror(api):
     with pytest.raises(TypeError):
-        api.imports.update(0
+        api.imports.update(0,
             host='registry.hub.docker.com',
             port=443,
             username='someone',
@@ -190,7 +190,7 @@ def test_update_ssl_typeerror(api):
 
 def test_update_active_typeerror(api):
     with pytest.raises(TypeError):
-        api.imports.update(0
+        api.imports.update(0,
             host='registry.hub.docker.com',
             port=443,
             username='someone',
@@ -200,7 +200,7 @@ def test_update_active_typeerror(api):
         )
 
 def test_create(api, import_id):
-    resp = api.imports.create(import_id
+    resp = api.imports.create(import_id,
         host='registry.hub.docker.com',
         port=443,
         username='someone',

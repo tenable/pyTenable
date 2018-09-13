@@ -7,7 +7,7 @@ python:
 install:
   - pip install requests pytest-cov python-dateutil
 script:
-  - pytest --cov=tenable
+  - pytest --cov=tenable/tenable_io tests/tenable_io
 branches:
   only:
   - master
