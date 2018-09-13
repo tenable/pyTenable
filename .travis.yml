@@ -5,7 +5,7 @@ python:
     - "3.5"
     - "3.6"
 install:
-  - pip install requests pytest-cov
+  - pip install requests pytest-cov python-dateutil
 script:
   - pytest --cov=tenable
 branches:
