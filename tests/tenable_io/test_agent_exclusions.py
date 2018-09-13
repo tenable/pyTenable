@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime as dtime, timedelta
 from .fixtures import *
 from tenable.errors import *
 import uuid
@@ -6,8 +6,8 @@ import uuid
 @pytest.fixture
 def agentexclusion(request, api):
     excl = api.agent_exclusions.create(str(uuid.uuid4()),
-        start_time=datetime.utcnow(),
-        end_time=datetime.utcnow() + timedelta(hours=1))
+        start_time=dtime.utcnow(),
+        end_time=dtime.utcnow() + timedelta(hours=1))
     def teardown():
         try:
             api.agent_exclusions.delete(excl['id'])
@@ -24,120 +24,120 @@ def test_create_scanner_id_typeerror(api):
     with pytest.raises(TypeError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             scanner_id='nope',
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_name_typeerror(api):
     with pytest.raises(TypeError):
         api.agent_exclusions.create(1.02,
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_starttime_typerror(api):
     with pytest.raises(TypeError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             start_time='fail', 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_endtime_typerror(api):
     with pytest.raises(TypeError):
         api.agent_exclusions.create(str(uuid.uuid4()),
-            start_time=datetime.utcnow(), 
+            start_time=dtime.utcnow(), 
             end_time='nope')
 
 def test_create_timezone_typerror(api):
     with pytest.raises(TypeError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             timezone=1,
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_timezone_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             timezone='not a real timezone',
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_description_typeerror(api):
     with pytest.raises(TypeError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             description=True,
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_frequency_typeerror(api):
     with pytest.raises(TypeError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             frequency=True,
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_frequency_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             frequency='nope',
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_interval_typeerror(api):
     with pytest.raises(TypeError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             interval='nope',
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_weekdays_typerror(api):
     with pytest.raises(TypeError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             weekdays='nope',
             frequency='weekly',
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_weekdays_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             weekdays=['MO', 'TU', 'nope'],
             frequency='weekly',
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_dayofmonth_typeerror(api):
     with pytest.raises(TypeError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             day_of_month='nope',
             frequency='monthly',
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_dayofmonth_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
         api.agent_exclusions.create(str(uuid.uuid4()),
             day_of_month=0,
             frequency='monthly',
-            start_time=datetime.utcnow(), 
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(), 
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_create_onetime_exclusion(api):
     resp = api.agent_exclusions.create(str(uuid.uuid4()),
-        start_time=datetime.utcnow(),
-        end_time=datetime.utcnow() + timedelta(hours=1))
+        start_time=dtime.utcnow(),
+        end_time=dtime.utcnow() + timedelta(hours=1))
     assert isinstance(resp, dict)
     api.agent_exclusions.delete(resp['id'])
 
 def test_create_daily_exclusion(api):
     resp = api.agent_exclusions.create(str(uuid.uuid4()),
-        start_time=datetime.utcnow(),
-        end_time=datetime.utcnow() + timedelta(hours=1),
+        start_time=dtime.utcnow(),
+        end_time=dtime.utcnow() + timedelta(hours=1),
         frequency='daily')
     assert isinstance(resp, dict)
     api.agent_exclusions.delete(resp['id'])
 
 def test_create_weekly_exclusion(api):
     resp = api.agent_exclusions.create(str(uuid.uuid4()),
-        start_time=datetime.utcnow(),
-        end_time=datetime.utcnow() + timedelta(hours=1),
+        start_time=dtime.utcnow(),
+        end_time=dtime.utcnow() + timedelta(hours=1),
         frequency='weekly',
         weekdays=['mo', 'we', 'fr'])
     assert isinstance(resp, dict)
@@ -145,8 +145,8 @@ def test_create_weekly_exclusion(api):
 
 def test_create_monthly_exclusion(api):
     resp = api.agent_exclusions.create(str(uuid.uuid4()),
-        start_time=datetime.utcnow(),
-        end_time=datetime.utcnow() + timedelta(hours=1),
+        start_time=dtime.utcnow(),
+        end_time=dtime.utcnow() + timedelta(hours=1),
         frequency='monthly',
         day_of_month=15)
     assert isinstance(resp, dict)
@@ -154,8 +154,8 @@ def test_create_monthly_exclusion(api):
 
 def test_create_yearly_exclusion(api):
     resp = api.agent_exclusions.create(str(uuid.uuid4()),
-        start_time=datetime.utcnow(),
-        end_time=datetime.utcnow() + timedelta(hours=1),
+        start_time=dtime.utcnow(),
+        end_time=dtime.utcnow() + timedelta(hours=1),
         frequency='yearly')
     assert isinstance(resp, dict)
     api.agent_exclusions.delete(resp['id'])
@@ -163,8 +163,8 @@ def test_create_yearly_exclusion(api):
 def test_create_standard_users_cant_create(stdapi):
     with pytest.raises(PermissionError):
         stdapi.agent_exclusions.create(str(uuid.uuid4()),
-            start_time=datetime.utcnow(),
-            end_time=datetime.utcnow() + timedelta(hours=1))
+            start_time=dtime.utcnow(),
+            end_time=dtime.utcnow() + timedelta(hours=1))
 
 def test_delete_notfounderror(api):
     with pytest.raises(NotFoundError):
