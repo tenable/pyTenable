@@ -30,7 +30,6 @@ def test_scanner_delete_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scanners.delete('nope')
 
-@pytest.mark.xfail(raises=ServerError)
 def test_scanner_delete_notfound(api):
     with pytest.raises(NotFoundError):
         api.scanners.delete(1)
@@ -46,7 +45,6 @@ def test_scanner_details_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scanners.details('nope')
 
-@pytest.mark.xfail(raises=ServerError)
 def test_scanner_details_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scanners.details(1)
