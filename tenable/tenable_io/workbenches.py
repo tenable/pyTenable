@@ -1,4 +1,7 @@
 from tenable.tenable_io.base import TIOEndpoint
+from tenable.errors import UnexpectedValueError
+from io import BytesIO
+import time
 
 class WorkbenchesAPI(TIOEndpoint):
     def _workbench_query(self, filters, kw, filterdefs):
@@ -64,7 +67,7 @@ class WorkbenchesAPI(TIOEndpoint):
 
         return self._api.get('workbenches/assets', params=query).json()['assets']
 
-    def asset_info(self, id, all_fields=True):
+    def asset_info(self, uuid, all_fields=True):
         '''
         `workbenches: asset-info <https://cloud.tenable.com/api#/resources/workbenches/asset-info>`_
 
@@ -89,14 +92,14 @@ class WorkbenchesAPI(TIOEndpoint):
             del(query['all_fields'])
 
         return self._api.get('workbenches/assets/{}/info'.format(
-            self._check('id', id, 'uuid')), params=query).json()['info']
+            self._check('uuid', uuid, 'uuid')), params=query).json()['info']
 
-    def asset_vulns(self, id, *filters, **kw):
+    def asset_vulns(self, uuid, *filters, **kw):
         '''
         `workbenches: asset-vulnerabilities <https://cloud.tenable.com/api#/resources/workbenches/asset-vulnerabilities>`_
 
         Args:
-            id (str):
+            uuid (str):
                 The unique identifier of the asset to query.
             age (int, optional):
                 The maximum age of the data to be returned.
@@ -121,7 +124,7 @@ class WorkbenchesAPI(TIOEndpoint):
 
         return self._api.get(
             'workbenches/assets/{}/vulnerabilities'.format(
-                self._check('id', id, 'uuid')), params=query).json()['vulnerabilities']
+                self._check('uuid', uuid, 'uuid')), params=query).json()['vulnerabilities']
 
     def asset_vuln_info(self, uuid, plugin_id, *filters, **kw):
         '''
@@ -155,8 +158,8 @@ class WorkbenchesAPI(TIOEndpoint):
 
         return self._api.get(
             'workbenches/assets/{}/vulnerabilities/{}/info'.format(
-                self._check('uuid', id, 'uuid'),
-                self._check('plugin_id', plugin_id, int)), params=query).json()['vulnerabilities']
+                self._check('uuid', uuid, 'uuid'),
+                self._check('plugin_id', plugin_id, int)), params=query).json()['info']
 
     def asset_vuln_output(self, uuid, plugin_id, *filters, **kw):
         '''
@@ -190,8 +193,8 @@ class WorkbenchesAPI(TIOEndpoint):
 
         return self._api.get(
             'workbenches/assets/{}/vulnerabilities/{}/outputs'.format(
-                self._check('uuid', id, 'uuid'),
-                self._check('plugin_id', plugin_id, int)), params=query).json()['vulnerabilities']
+                self._check('uuid', uuid, 'uuid'),
+                self._check('plugin_id', plugin_id, int)), params=query).json()['outputs']
 
     def assets_with_vulns(self, *filters, **kw):
         '''
@@ -241,7 +244,7 @@ class WorkbenchesAPI(TIOEndpoint):
             format (str, optional):
                 What format would you like the resulting data to be in.  The
                 default would be nessus output.  Available options are `nessus`,
-                `csv`, `html`, `pdf`.
+                `csv`, `html`, `pdf`.  Default is 'nessus'
             chapters (list, optional):
                 A list of the chapters to write for the report.  The chapters
                 list is only required for PDF and HTML exports.  Available
@@ -265,8 +268,10 @@ class WorkbenchesAPI(TIOEndpoint):
 
         # initiate the payload and parameters dictionaries.
         params = self._parse_filters(filters,
-            self._api.filters.workbench_vuln_filters(), rtype='json')
-        #params = dict()
+            self._api.filters.workbench_vuln_filters())
+        params['report'] = 'vulnerabilities'
+        params['chapter'] = 'vuln_by_asset'
+        params['format'] = 'nessus'
 
         if 'plugin_id' in kw:
             params['plugin_id'] = self._check(
@@ -276,18 +281,34 @@ class WorkbenchesAPI(TIOEndpoint):
             params['asset_id'] = self._check(
                 'asset_uuid', kw['asset_uuid'], 'uuid')   
 
-        if 'chapters' in kw:
-            # The chapters are sent to us in a list, and we need to collapse
-            # that down to a comma-delimited string.
-            params['chapter'] = ';'.join(
-                self._check('chapters', kw['chapters'], list, choices=[
-                    'vuln_hosts_summary', 'vuln_by_host', 'vuln_by_plugin',
-                    'compliance_exec', 'compliance', 'remediations'
-                ]))
+        if 'format' in kw:
+            params['format'] = self._check('format', kw['format'], str, 
+                default='nessus',
+                choices=[
+                'nessus', 'csv', 'html', 'pdf'
+            ])
+            if kw['format'] not in ['nessus',]:
+                # The chapters are sent to us in a list, and we need to collapse
+                # that down to a comma-delimited string.  Note that if the nessus
+                # format is specified, we must use the vuln_by_asset report, so
+                # will ignore the chapters attribute in those cases.
+                if 'chapters' not in kw:
+                    raise UnexpectedValueError('no chapters were specified')
+                else:
+                    params['chapter'] = ','.join(
+                        self._check('chapters', kw['chapters'], list, 
+                            default='vuln_by_asset',
+                            choices=[
+                                'diff',
+                                'exec_summary',
+                                'vuln_by_host',
+                                'vuln_by_plugin',
+                                'vuln_hosts_summary', 
+                        ]))
 
         if 'filter_type' in kw:
             params['filter.search_type'] = self._check(
-                    'filter_type', kw['filter_type'], str)
+                    'filter_type', kw['filter_type'], str, choices=['and', 'or'])
 
         # Now we need to set the FileObject.  If one was passed to us, then lets
         # just use that, otherwise we will need to instantiate a BytesIO object
@@ -299,10 +320,10 @@ class WorkbenchesAPI(TIOEndpoint):
 
         # The first thing that we need to do is make the request and get the
         # File id for the job.
-        fid = self._api.post('workbenches/export', 
+        fid = self._api.get('workbenches/export', 
             params=params).json()['file']
 
-        # Next we will wait for the statif of the export request to become
+        # Next we will wait for the state of the export request to become
         # ready.  We will query the API every half a second until we get the
         # response we're looking for.
         while 'ready' != self._api.get('workbenches/export/{}/status'.format(
@@ -319,6 +340,7 @@ class WorkbenchesAPI(TIOEndpoint):
             if chunk:
                 fobj.write(chunk)
         fobj.seek(0)
+        return fobj
 
     def vulns(self, *filters, **kw):
         '''

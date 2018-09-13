@@ -1,6 +1,23 @@
 import pytest, os, uuid
 from tenable.tenable_io import TenableIO
 from tenable.errors import *
+from dateutil.parser import parse as dateparse
+import uuid, datetime, sys
+
+def check(i, name, val_type, allow_none=False):
+    assert name in i
+    if not allow_none:
+        assert i[name] != None
+
+    if i[name] != None:
+        if val_type == 'datetime':
+            assert isinstance(dateparse(i[name]), datetime.datetime)
+        elif val_type == 'uuid':
+            assert isinstance(uuid.UUID(i[name]), uuid.UUID)
+        elif sys.version_info.major == 2 and val_type == str:
+            assert isinstance(i[name], unicode)
+        else:
+            assert isinstance(i[name], val_type)
 
 @pytest.fixture(autouse=True)
 def api():

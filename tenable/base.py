@@ -4,7 +4,7 @@ from requests.packages.urllib3.util.retry import Retry
 '''
 '''
 
-__version__ = '0.0.1'
+__version__ = '0.0.4'
 
 
 class APIResultsIterator(object):
@@ -175,11 +175,11 @@ class APIEndpoint(object):
         # If the type is of "uuid", then we will specify a pattern and then
         # overload the type to be a type of str.
         if 'uuid' in etypes:
-            pattern = r'[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}'
+            pattern = r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
             etypes[etypes.index('uuid')] = str
 
         if 'scanner-uuid' in etypes:
-            pattern = r'[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12,32}'
+            pattern = r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12,32}$'
             etypes[etypes.index('scanner-uuid')] = str         
 
         # If we are checking for a string type, we will also want to check for
@@ -203,7 +203,9 @@ class APIEndpoint(object):
         # TypeError as it was something we weren't expecting.
         if not type_pass:
             raise TypeError('{} is of type {}.  Expected {}.'.format(
-                name, obj.__class__.__name__, expected_type.__name__
+                name, 
+                obj.__class__.__name__, 
+                expected_type.__name__ if hasattr(expected_type, '__name__') else expected_type
             ))
 
         # if the object is only expected to have one of a finite set of values,

@@ -59,7 +59,7 @@ class FiltersAPI(TIOEndpoint):
         Returns:
             dict: Filter resource dictionary
         '''
-        return self._use_cache('agents', 'filters/workbenches/vulnerabilities', normalize)
+        return self._use_cache('vulns', 'filters/workbenches/vulnerabilities', normalize)
 
     def workbench_asset_filters(self, normalize=True):
         '''
@@ -68,11 +68,11 @@ class FiltersAPI(TIOEndpoint):
         Returns:
             dict: Filter resource dictionary
         '''
-        return self._use_cache('agents', 'filters/workbenches/assets', normalize)
+        return self._use_cache('asset', 'filters/workbenches/assets', normalize)
 
     def scan_filters(self, normalize=True):
         '''
         Returns:
             dict: Filter resource dictionary
         '''
-        return self._use_cache('agents', 'filters/scans/reports', normalize)
+        return self._use_cache('scan', 'filters/scans/reports', normalize)

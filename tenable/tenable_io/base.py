@@ -1,5 +1,5 @@
 from tenable.base import APIResultsIterator, APIEndpoint
-
+from tenable.errors import UnexpectedValueError
 
 class TIOEndpoint(APIEndpoint):
     def _parse_filters(self, finput, filterset, rtype='sjson'):
@@ -27,6 +27,8 @@ class TIOEndpoint(APIEndpoint):
             # by comparing the filter to the filterset data we have and compare
             # the operators and values to make sure that the input is expected.
             fname = self._check('filter_name', f[0], str)
+            if f[0] not in filterset:
+                raise UnexpectedValueError('{} is not a filterable option'.format(f[0]))
             foper = self._check('filter_operator', f[1], str, 
                 choices=filterset[f[0]]['operators'])
             fval = self._check('filter_value', f[2], str,
