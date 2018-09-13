@@ -13,6 +13,8 @@ Methods available on ``tenable_io.agents``:
 .. rst-class:: hide-signature
 .. py:class:: AgentsAPI
 
+    .. automethod:: bulk_status
+    .. automethod:: bulk_unlink
     .. automethod:: delete
     .. automethod:: list
     .. automethod:: get

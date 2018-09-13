@@ -14,8 +14,11 @@ Methods available on ``tenable_io.agent_groups``:
 .. py:class:: AgentGroupsAPI
 
     .. automethod:: add_agent
+    .. automethod:: bulk_add_agent
     .. automethod:: configure
     .. automethod:: create
     .. automethod:: delete
     .. automethod:: delete_agent
+    .. automethod:: bulk_delete_agent
     .. automethod:: details
+    .. automethod:: bulk_status
