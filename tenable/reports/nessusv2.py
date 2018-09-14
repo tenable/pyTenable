@@ -25,20 +25,26 @@ class NessusReportv2(object):
         return self.next()
 
     def _defs(self, name, value):
-        return value
         if name in ['cvss_vector', 'cvss_temporal_vector']:
             # Return a list of the Vectors instead of having everything in a
             # flat string.  This should allow for much easier parsing later.
             return value.split('/')
 
-        if name in ['cvss_base_score', 'cvss_temporal_score']:
+        elif name in ['cvss_base_score', 'cvss_temporal_score']:
             # CVSS scores are floats, so lets return them as such.
             return float(value)
 
-        if name in ['first_found', 'last_found']:
+        elif name in ['first_found', 'last_found', 'plugin_modification_date',
+                      'plugin_publication_date', 'HOST_END', 'HOST_START']:
             # The first and last found attributes use a datetime timestamp
             # format that we should convert into a unix timestamp.
-            return time.mktime(dateutil.parser.parse(value).timetuple())
+            return dateutil.parser.parse(value)
+
+        elif name in ['port', 'pluginID', 'severity']:
+            return int(value)
+
+        else:
+            return value
 
     def next(self):
         '''
@@ -47,6 +53,15 @@ class NessusReportv2(object):
 
         Generally speaking this method is not called directly, but is instead
         called as part of a loop.
+
+        Examples:
+            For example, if we wanted to load a Nessus report from disk and
+            iterate through the contents, it would simply be a matter of:
+
+            >>> with open('example.nessus') as nessus_file:
+            ...     report = NessusReportv2(nessus_file)
+            ...     for item in report:
+            ...         print(item) 
         '''
         for event, elem in self._iter:
             if event == 'start' and elem.tag == 'ReportHost':
@@ -79,12 +94,21 @@ class NessusReportv2(object):
                 # return the data as a python dictionary.
                 vuln = dict(elem.attrib)
                 vuln.update(self._cache)
+
+                # all of the information we have passed into the vuln dictionary
+                # needs to be normalized.  Here we will pass each item through
+                # the definition parser to make sure any known values are
+                # formatted properly.
+                for k in vuln.keys():
+                    vuln[k] = self._defs(k, vuln[k])
+
                 for c in elem.getchildren():
                     # iterate through each child element and add it to the vuln
                     # dictionary.  We will also check to see if we have seen
                     # the tag before, and if so, convert the stored value to a 
                     # list of values.  The need to return a list is common for
                     # things like CVEs, BIDs, See-Alsos, etc.
+
                     if c.tag in vuln:
                         if not isinstance(vuln[c.tag], list):
                             vuln[c.tag] = [vuln[c.tag],]

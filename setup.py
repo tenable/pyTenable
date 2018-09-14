@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyTenable',
-    version='0.0.4',
+    version='0.0.5',
     description='Python library to interface into Tenable\'s products and applications',
     #long_description=long_description,
     author='Tenable\, Inc.',
@@ -29,6 +29,7 @@ setup(
     keywords='tenable tenable_io securitycenter containersecurity',
     packages=find_packages(exclude=['docs', 'tests']),
     install_requires=[
-        'requests',
+        'requests<=2.19',
+        'python-dateutil<=2.6',
     ],
 )
