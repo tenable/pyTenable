@@ -11,3 +11,4 @@ env_builder
 /manual_test.py
 /Dockerfile-docs
 /manual.sh
+/.coverage
