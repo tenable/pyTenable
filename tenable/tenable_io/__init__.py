@@ -7,6 +7,7 @@ from .assets import AssetsAPI
 from .audit_log import AuditLogAPI
 from .editor import EditorAPI
 from .exclusions import ExclusionsAPI
+from .exports import ExportsAPI
 from .file import FileAPI
 from .filters import FiltersAPI
 from .folders import FoldersAPI
@@ -121,6 +122,15 @@ class TenableIO(APISession):
         for full details.
         '''
         return ExclusionsAPI(self)
+
+    @property
+    def exports(self):
+        '''
+        An object for interfacing to the exports API.  See the
+        :doc:`exports documentation <tenable_io.exports>` 
+        for full details.
+        '''
+        return ExportsAPI(self)
 
     @property
     def file(self):

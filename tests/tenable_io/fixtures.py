@@ -93,3 +93,7 @@ def scannergroup(request, api):
             pass
     request.addfinalizer(teardown)
     return scannergroup
+
+@pytest.fixture
+def scan(request, api):
+    res = api.scan.create()
