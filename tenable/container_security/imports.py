@@ -14,24 +14,13 @@ class ImportAPI(CSEndpoint):
             'username': self._check('username', kw['username'], str),
             'password': self._check('password', kw['password'], str),
             'provider': self._check('provider', kw['provider'], str, choices=[
-
+                'dr',   # Docker Registry
+                'dre',  # Docker Enterprise Edition Registry
+                'ecr',  # Amazon ECR
+                'jfa',  # jFrog Artifactory
             ]),
             'ssl': self._check('ssl', kw['ssl'], bool) if 'ssl' in kw and kw['ssl'] != None else True,
         }
-
-        # Optional paramaters
-        if 'org_id' in kw and kw['org_id']:
-            payload['org_id'] = self._check('org_id', kw['org_id'], int)
-        if 'user_uuid' in kw and kw['user_uuid']:
-            payload['user_uuid'] = self._check('user_uuid', kw['user_uuid'], 'uuid')
-        if 'id' in kw and kw['id']:
-            payload['id'] = self._check('id', kw['id'], int)
-        if 'hour_between' in kw and kw['hour_between']:
-            payload['hourBetween'] = self._check('hour_between', kw['hour_between'], int)
-        if 'started_at' in kw and kw['started_at']:
-            payload['started_at'] = self._check('started_at', kw['started_at'], str)
-        if 'finished_at' in kw and kw['finished_at']:
-            paylaod['finished_at'] = self._check('finished_at', kw['finished_at'], str)
 
         # return the completed payload
         return payload
@@ -69,13 +58,6 @@ class ImportAPI(CSEndpoint):
             password (str): The password to authenticate to the registry with.
             provider (str): The registry provider to use.
             ssl (bool): Is SSL used for communication?  Default is True.
-            org_id (int, optional): Organization unique identifier.
-            user_uuid (str, optional): User UUID.
-            active (bool, optional): Is the import active?
-            id (int, optional): ???
-            started_at (str, optional): ???
-            finished_at (str, optional): ???
-            hour_between (int, optional): ???
 
         Returns:
             dict: The id and status of the specified request.
@@ -95,12 +77,6 @@ class ImportAPI(CSEndpoint):
             password (str): The password to authenticate to the registry with.
             provider (str): The registry provider to use.
             ssl (bool): Is SSL used for communication?  Default is True.
-            org_id (int, optional): Organization unique identifier.
-            user_uuid (str, optional): User UUID.
-            active (bool, optional): Is the import active?
-            started_at (str, optional): ???
-            finished_at (str, optional): ???
-            hour_between (int, optional): ???
 
         Returns:
             dict: The id and status of the specified request.
@@ -121,7 +97,7 @@ class ImportAPI(CSEndpoint):
         '''
         return self._api.delete('v1/import/{}'.format(self._check('id', id, int))).json()
 
-    def delete(self, id):
+    def run(self, id):
         '''
         `container-security-import: run-import-by-id <https://cloud.tenable.com/api#/resources/container-security-import/run-import-by-id>`_
 

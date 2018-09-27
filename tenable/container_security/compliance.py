@@ -28,7 +28,7 @@ class ComplianceAPI(CSEndpoint):
 
         if id:
             return self._api.get('v1/policycompliance', params={
-                'image_id': self._check('id', id, int)}).json()
+                'image_id': self._check('id', id, str)}).json()
         elif name:
             return self._api.get('v1/compliancebyname', params={
                 'image': self._check('name', name, str),

@@ -25,12 +25,13 @@ class UploadAPI(CSEndpoint):
         import docker
         d = docker.from_env()
 
-        if not tag:
-            tag = 'latest'
         if not cs_name:
             cs_name = 'library/{}'.format(name)
-        if not cs_tag:
+        
+        if not cs_tag and tag:
             cs_tag = tag
+        elif not cs_tag:
+            cs_tag = 'latest'
 
         # get the image from the docker daemon.
         image = d.images.get('{}:{}'.format(name, tag) if tag else name)
