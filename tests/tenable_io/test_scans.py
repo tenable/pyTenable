@@ -2,6 +2,65 @@ from tenable.errors import *
 from .fixtures import *
 import uuid
 
+def test_create_scan_document_template_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans._create_scan_document({'template': 123})
+
+def test_create_scan_document_template_unexpected_value_error(api):
+    with pytest.raises(UnexpectedValueError):
+        api.scans._create_scan_document({'template': 'nothing_here'})
+
+def test_create_scan_socument_template_pass(api):
+    templates = api.policies.templates()
+    resp = api.scans._create_scan_document({'template': 'basic'})
+    assert isinstance(resp, dict)
+    check(resp, 'uuid', 'scanner-uuid')
+    assert resp['uuid'] == templates['basic']
+
+def test_create_scan_document_policies_id_pass(api):
+    policies = api.policies.list()
+    p = policies[0]
+    resp = api.scans._create_scan_document({'policy': p['id']})
+    assert isinstance(resp, dict)
+    check(resp, 'settings', dict)
+    check(resp['settings'], 'policy_id', int)
+    assert resp['settings']['policy_id'] == p['id']
+
+def test_create_scan_document_policies_name_pass(api):
+    policies = api.policies.list()
+    p = policies[0]
+    resp = api.scans._create_scan_document({'policy': p['name']})
+    assert isinstance(resp, dict)
+    check(resp, 'uuid', 'scanner-uuid')
+    check(resp, 'settings', dict)
+    check(resp['settings'], 'policy_id', int)
+    assert resp['settings']['policy_id'] == p['id']
+    assert resp['uuid'] == p['template_uuid']
+
+#def test_create_scan_document_targets
+
+def test_create_scan_document_scanner_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.scans._create_scan_document({'scanner': 'nothing to see here'})
+
+def test_create_scan_document_scanner_uuid_pass(api):
+    scanners = api.scanners.allowed_scanners()
+    s = scanners[0]
+    resp = api.scans._create_scan_document({'scanner': s['id']})
+    assert isinstance(resp, dict)
+    check(resp, 'settings', dict)
+    check(resp['settings'], 'scanner_id', 'scanner-uuid')
+    assert resp['settings']['scanner_id'] == s['id']
+
+def test_create_scan_document_scanner_name_pass(api):
+    scanners = api.scanners.allowed_scanners()
+    s = scanners[0]
+    resp = api.scans._create_scan_document({'scanner': s['name']})
+    assert isinstance(resp, dict)
+    check(resp, 'settings', dict)
+    check(resp['settings'], 'scanner_id', str)
+    assert resp['settings']['scanner_id'] == s['id']
+
 def test_attachment_scan_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.attachment('nope', 1)
@@ -14,6 +73,12 @@ def test_attachment_attachement_id_typeerror(api):
 def test_attachement_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scans.attachment(1, 1, 'none')
+
+def test_configure_id_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.configure('abc123')
+
+
 
 #def test_configure_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
