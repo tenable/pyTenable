@@ -60,7 +60,7 @@ class ContainerSecurity(APISession):
         :doc:`imports documentation <container_security.imports>` 
         for full details.
         '''
-        return ImportsAPI(self)
+        return ImportAPI(self)
 
     @property
     def jobs(self):

@@ -61,29 +61,19 @@ class ScansAPI(TIOEndpoint):
         # if the scanner attribute was set, then we will attempt to figure out
         # what scanner to use.
         if 'scanner' in kw:
+            scanners = self._api.scanners.allowed_scanners()
             try:
                 # we will always want to attempt to use the UUID first as it's
                 # the cheapest check that we can run.
                 scan['settings']['scanner_id'] = self._check(
-                    'scanner', kw['scanner'], 'scanner-uuid')
+                    'scanner', kw['scanner'], 'scanner-uuid', 
+                    choices=[s['id'] for s in scanners])
 
             except (UnexpectedValueError, TypeError):
                 # as an UnexpectedValueError was raised, the data may just be
                 # the name of a scanner.  If this is the case, then we will want
                 # to attempt to enumerate the scanner list and if we see a match,
                 # use that scanner's UUID instead.
-                
-                # to start, we want to get the scanners that are avilable for
-                # scanning.  To do so, we will want to pull the information from
-                # the scan template.
-                tmpl_id = self._api.policies.templates()['advanced']
-                template = self._api.editor.details('scan', tmpl_id)
-                for item in template['settings']['basic']['inputs']:
-                    if item['id'] == 'scanner_id':
-                        scanners = item['options']
-
-                # Now that we have the scanner listing, we will iterate through
-                # the scanners and see if we can find a match based on the name.
                 for item in scanners:
                     if item['name'] == kw['scanner']:
                         scan['settings']['scanner_id'] = item['id']
@@ -111,12 +101,17 @@ class ScansAPI(TIOEndpoint):
         # Just like with credentials, we will push the dictionary as-is into the
         # correct subdocument of the scan definition.
         if 'compliance' in kw:
-            scan['audits'] = self._check('compliance', compliance, dict)
+            scan['audits'] = self._check('compliance', kw['compliance'], dict)
             del(kw['compliance'])
+
+        if 'plugins' in kw:
+            scan['plugins'] = self._check('plugins', kw['plugins'], dict)
+            del(kw['plugins'])
 
         # any other remaining keyword arguments will be passed into the settings
         # subdocument.  The bulk of the data should go here...
         scan['settings'] = dict_merge(scan['settings'], kw)
+        return scan
 
     def attachment(self, scan_id, attachment_id, key, fobj=None):
         '''

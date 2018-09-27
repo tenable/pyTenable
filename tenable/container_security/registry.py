@@ -19,7 +19,7 @@ class RegistryAPI(CSEndpoint):
         if offset:
             payload['offset'] = self._check('offset', offset, int)
 
-        return self._api.get('v1/repositories', params=payload).json()
+        return self._api.get('v1/repositories', params=payload).json()['items']
 
     def images(self, repo_id, limit=None, offset=None):
         '''
@@ -41,4 +41,4 @@ class RegistryAPI(CSEndpoint):
             payload['offset'] = self._check('offset', offset, int)
 
         return self._api.get('v1/repositories/{}/images'.format(
-            self._check('repo_id', repo_id, int)), params=payload).json()
+            self._check('repo_id', repo_id, int)), params=payload).json()['items']
