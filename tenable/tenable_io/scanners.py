@@ -12,6 +12,29 @@ class ScannersAPI(TIOEndpoint):
             if scanner['uuid'] == '00000000-0000-0000-0000-00000000000000000000000000001':
                 return scanner['key']
 
+    def allowed_scanners(self):
+        '''
+        A simple convenience function that returns the list of scanners that the
+        current user is allowed to use.
+
+        Returns:
+            list: List of scanner documents.
+        '''
+        # We want to get the scanners that are avilable for scanning.  To do so,
+        # we will want to pull the information from the scan template.  This
+        # isn't the prettiest way to handle this, however it will consistently
+        # return the results that we are looking for.
+        def get_scanners(tmpl):
+            for item in tmpl['settings']['basic']['inputs']:
+                if item['id'] == 'scanner_id':
+                    return item['options']
+
+        vm_tmpl = self._api.policies.templates()['advanced']
+        was_tmpl = self._api.policies.templates()['was_scan']
+        vm_scanners = get_scanners(self._api.editor.details('scan', vm_tmpl))
+        was_scanners = get_scanners(self._api.editor.details('scan', was_tmpl))
+        return vm_scanners + was_scanners
+
     def control_scan(self, scanner_id, scan_uuid, action):
         '''
         `scanners: control-scans <https://cloud.tenable.com/api#/resources/scanners/control-scans>`_
