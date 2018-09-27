@@ -8,7 +8,7 @@ class ContainersAPI(CSEndpoint):
         Returns:
             list: List of container resource records
         '''
-        return self._api.get('v1/containers/list').json()
+        return self._api.get('v1/container/list').json()
 
     def inventory(self, id):
         '''
