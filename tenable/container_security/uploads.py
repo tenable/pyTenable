@@ -28,7 +28,7 @@ class UploadAPI(CSEndpoint):
         if not cs_name:
             cs_name = 'library/{}'.format(name)
         
-        if not cs_tag and tag:
+        if not cs_tag and tag is not None:
             cs_tag = tag
         elif not cs_tag:
             cs_tag = 'latest'
@@ -37,15 +37,15 @@ class UploadAPI(CSEndpoint):
         image = d.images.get('{}:{}'.format(name, tag) if tag else name)
 
         # build the remote tag
-        remote = '{}/{}:{}'.format(self._api._registry, cs_name, cs_tag)
+        remote = '{}/{}'.format(self._api._registry, cs_name)
 
         # upload the image to CS
-        image.tag(remote)
-        d.images.push(remote, auth_config={
+        image.tag(remote, tag=cs_tag)
+        d.images.push(remote, tag=cs_tag, auth_config={
             'username': self._api._access_key,
             'password': self._api._secret_key
         })
-        d.images.remove(remote)
+        d.images.remove('{}:{}'.format(remote, tag))
 
         # return the image id
         return image.id.split(':')[1][:12]
