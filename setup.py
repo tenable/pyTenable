@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyTenable',
-    version='0.0.5',
+    version='0.0.6',
     description='Python library to interface into Tenable\'s products and applications',
     #long_description=long_description,
     author='Tenable\, Inc.',
