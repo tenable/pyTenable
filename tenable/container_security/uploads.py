@@ -28,10 +28,11 @@ class UploadAPI(CSEndpoint):
         if not cs_name:
             cs_name = 'library/{}'.format(name)
         
-        if not cs_tag and tag is not None:
-            cs_tag = tag
-        elif not cs_tag:
-            cs_tag = 'latest'
+        if not cs_tag:
+            if not tag:
+                cs_tag = tag
+            else:
+                cs_tag = 'latest'
 
         # get the image from the docker daemon.
         image = d.images.get('{}:{}'.format(name, tag) if tag else name)
@@ -40,6 +41,7 @@ class UploadAPI(CSEndpoint):
         remote = '{}/{}'.format(self._api._registry, cs_name)
 
         # upload the image to CS
+
         image.tag(remote, tag=cs_tag)
         d.images.push(remote, tag=cs_tag, auth_config={
             'username': self._api._access_key,
