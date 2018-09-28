@@ -23,7 +23,7 @@ class UploadAPI(CSEndpoint):
         # as we may not need to perform this action, we will import and initiate
         # the docker environment at the time of the push.
         import docker
-        d = docker.from_env()
+        d = docker.from_env(version='auto')
 
         if not cs_name:
             cs_name = 'library/{}'.format(name)
