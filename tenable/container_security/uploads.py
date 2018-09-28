@@ -47,7 +47,7 @@ class UploadAPI(CSEndpoint):
             'username': self._api._access_key,
             'password': self._api._secret_key
         })
-        d.images.remove('{}:{}'.format(remote, tag))
+        d.images.remove('{}:{}'.format(remote, cs_tag))
 
         # return the image id
         return image.id.split(':')[1][:12]
