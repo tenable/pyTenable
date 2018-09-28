@@ -33,7 +33,7 @@ class JobsAPI(CSEndpoint):
 
         if job_id:
             return self._api.get('v1/jobs/status', params={
-                'job_id': self._check('job_id', job_id, int)}).json()
+                'job_id': self._check('job_id', job_id, str)}).json()
         elif image_id:
             return self._api.get('v1/jobs/image_status', params={
                 'image_id': self._check('image_id', image_id, str)}).json()
