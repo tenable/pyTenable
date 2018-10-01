@@ -7,10 +7,13 @@ class UnexpectedValueError(Exception):
     should be thrown by the package.
     '''
     def __init__(self, msg):
-        self.msg = msg
+        self.msg = str(msg)
 
     def __str__(self):
-        return repr(self.msg)
+        return self.msg
+
+    def __repr__(self):
+        return repr(self.__str__())
 
 
 class APIError(Exception):
@@ -31,14 +34,24 @@ class APIError(Exception):
             infrastructure.  In the case of Non-Tenable.io products, is simply
             an empty string.
     '''
+    uuid = '00000000-0000-0000-0000-000000000000'
+    
     def __init__(self, r):
         Exception.__init__(self)
         self.response = r
         self.code = r.status_code
-        self.uuid = r.headers['X-Request-Uuid'] if 'X-Request-Uuid' in r.headers else ''
+
+        if 'X-Request-Uuid' in r.headers:
+            self.uuid = r.headers['X-Request-Uuid']
 
     def __str__(self):
-        return repr('{}:{} {}'.format(self.uuid, self.code, self.response.body))
+        return '{}:{} {}'.format(
+            str(self.uuid),
+            str(self.code),
+            str(self.response.text))
+
+    def __repr__(self):
+        return repr(self.__str__())
 
 
 class InvalidInputError(APIError):
