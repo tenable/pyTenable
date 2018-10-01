@@ -398,7 +398,7 @@ class ScansAPI(TIOEndpoint):
             format (str, optional):
                 What format would you like the resulting data to be in.  The
                 default would be nessus output.  Available options are `nessus`,
-                `csv`, `html`, `pdf`, `db`.
+                `csv`, `html`, `pdf`, `db`.  Default is `nessus`.
             password (str, optional):
                 If the export format is `db`, then what is the password used to
                 encrypt the NessusDB file.  This is a require parameter for
@@ -408,7 +408,8 @@ class ScansAPI(TIOEndpoint):
                 list is only required for PDF and HTML exports.  Available
                 chapters are `vuln_hosts_summary`, `vuln_by_host`, 
                 `compliance_exec`, `remediations`, `vuln_by_plugin`, and
-                `compliance`.  List order will denote output order.
+                `compliance`.  List order will denote output order.  Default is
+                `vuln_by_host`.
             filter_type (str, optional):
                 Are the filters exclusive (this AND this AND this) or inclusive
                 (this OR this OR this).  Valid values are `and` and `or`.  The
@@ -436,14 +437,20 @@ class ScansAPI(TIOEndpoint):
         if 'password' in kw:
             payload['password'] = self._check('password', kw['password'], str)
 
-        if 'chapters' in kw:
-            # The chapters are sent to us in a list, and we need to collapse
-            # that down to a comma-delimited string.
-            payload['chapters'] = ','.join(
-                self._check('chapters', kw['chapters'], list, choices=[
-                    'vuln_hosts_summary', 'vuln_by_host', 'vuln_by_plugin',
-                    'compliance_exec', 'compliance', 'remediations'
-                ]))
+        payload['format'] = self._check('format', 
+            kw['format'] if 'format' in kw else None,
+            str, choices=['nessus', 'html', 'pdf', 'csv', 'db'],
+            default='nessus')
+
+        # The chapters are sent to us in a list, and we need to collapse that
+        # down to a comma-delimited string.
+        payload['chapters'] = ','.join(
+            self._check('chapters', 
+                kw['chapters'] if 'chapters' in kw else None, 
+                list, 
+                choices=['vuln_hosts_summary', 'vuln_by_host', 'vuln_by_plugin', 
+                    'compliance_exec', 'compliance', 'remediations'],
+                default=['vuln_by_host']))
 
         if 'filter_type' in kw:
             payload['filter.search_type'] = self._check(
@@ -571,7 +578,7 @@ class ScansAPI(TIOEndpoint):
                 specified.
 
         Returns:
-            dict: A dictionary containing the folder list and the scan list
+            list: A list containing the list of scan resource records.
         '''
         params = dict()
         if folder_id:
@@ -582,7 +589,7 @@ class ScansAPI(TIOEndpoint):
             params['last_modified'] = int(time.mktime(self._check(
                 'last_modified', last_modified, datetime)))
 
-        return self._api.get('scans', params=params).json()
+        return self._api.get('scans', params=params).json()['scans']
 
     def pause(self, scan_id):
         '''
