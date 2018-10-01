@@ -587,7 +587,7 @@ class ScansAPI(TIOEndpoint):
             # for the last_modified datetime attribute, we will want to convert
             # that into a timestamp integer before passing it to the API.
             params['last_modified'] = int(time.mktime(self._check(
-                'last_modified', last_modified, datetime)))
+                'last_modified', last_modified, datetime).timetuple()))
 
         return self._api.get('scans', params=params).json()['scans']
 
