@@ -234,18 +234,20 @@ class ScansAPI(TIOEndpoint):
             credentials (dict, optional):
                 A list of credentials to use.
             compliance (dict, optional):
-                A list of compliance audiots to use.
+                A list of compliance audits to use.
             scanner (str, optional):
                 Define the scanner or scanner group uuid or name.
             **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
-                more detailed informatiom, please refer to the API documentation
+                more detailed information, please refer to the API documentation
                 linked above.
 
         Returns:
             dict: The scan resource record of the newly created scan.
         '''
+        if 'template' not in kw:
+            kw['template'] = 'basic'
         scan = self._create_scan_document(kw)
 
         # Run the API call and return the result to the caller.
