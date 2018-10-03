@@ -74,8 +74,8 @@ class ContainerSecurity(APISession):
     @property
     def registry(self):
         '''
-        An object for interfacing to the image repositories API.  See the
-        :doc:`repositories documentation <container_security.repositories>` 
+        An object for interfacing to the image registry API.  See the
+        :doc:`registry documentation <container_security.registry>` 
         for full details.
         '''
         return RegistryAPI(self)
