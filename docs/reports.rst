@@ -12,7 +12,6 @@ The Nessus version 2 format is a XML-based format that allows for a wide range o
 
 .. py:module:: tenable.reports.nessusv2
 
-.. rst-class:: hide-signature
 .. py:class:: NessusReportv2
 
     .. automethod:: next

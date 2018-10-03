@@ -13,7 +13,8 @@ Welcome to pyTenable's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   reports
+   container_security
+   nessus
    securitycenter
    tenable_io
 

@@ -21,6 +21,7 @@ Client reference
     .. autoattribute:: audit_log
     .. autoattribute:: editor
     .. autoattribute:: exclusions
+    .. autoattribute:: exports
     .. autoattribute:: file
     .. autoattribute:: filters
     .. autoattribute:: folders
@@ -50,6 +51,7 @@ Client reference
    tenable_io.audit_log
    tenable_io.editor
    tenable_io.exclusions
+   tenable_io.exports
    tenable_io.file
    tenable_io.filters
    tenable_io.folders

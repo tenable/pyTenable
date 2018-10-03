@@ -1,11 +1,11 @@
-Users
-=====
+Workbenches
+===========
 .. py:module:: tenable.tenable_io.workbenches
 
 The following methods allow for interaction into the Tenable.io 
 `workbenches`_ API.
 
-.. _users:
+.. _workbenches:
     https://cloud.tenable.com/api#/resources/workbenches
 
 Methods available on ``tenable_io.workbenches``:
