@@ -1,4 +1,5 @@
 from tenable.tenable_io.base import TIOEndpoint
+import uuid
 
 class FileAPI(TIOEndpoint):
     def upload(self, fobj, encrypted=False):
@@ -14,6 +15,15 @@ class FileAPI(TIOEndpoint):
         Returns:
             str: The fileuploaded attribute
         '''
+
+        # We will attempt to discover the name of the file stored within the
+        # file object.  If none exists however, we will generate a random
+        # uuid string to use instead.
+        try:
+            name = fobj.name
+        except AttributeError:
+            name = str(uuid.uuid4())
+
         return self._api.post('file/upload', 
             data={'no_enc': int(encrypted)},
-            files={'Filedata': fobj}).json()['fileuploaded']
+            files={'Filedata': (name, fobj)}).json()['fileuploaded']
