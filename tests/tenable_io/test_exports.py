@@ -27,6 +27,12 @@ def test_vuln_since_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(since='nothing here')
 
+@pytest.mark.skip(reason='''
+    Depending on site load, this may take some time for the first chunk to
+    become available for testing.  As a result, for normal testing we will skip
+    this test, however we will keep it here in-case we ever want to run some
+    consistency checking.
+''')
 def test_vulns(api):
     vulns = api.exports.vulns()
     assert isinstance(vulns, ExportsIterator)
@@ -109,6 +115,12 @@ def test_assets_has_plugin_results_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(has_plugin_results='something')
 
+@pytest.mark.skip(reason='''
+    Depending on site load, this may take some time for the first chunk to
+    become available for testing.  As a result, for normal testing we will skip
+    this test, however we will keep it here in-case we ever want to run some
+    consistency checking.
+''')
 def test_assets(api):
     assets = api.exports.assets()
     assert isinstance(assets, ExportsIterator)
