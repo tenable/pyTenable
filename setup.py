@@ -29,7 +29,8 @@ setup(
     keywords='tenable tenable_io securitycenter containersecurity',
     packages=find_packages(exclude=['docs', 'tests']),
     install_requires=[
-        'requests<=2.19',
-        'python-dateutil<=2.6',
+        'requests>=2.19',
+        'python-dateutil>=2.6',
+        'lxml>=4.1.1'
     ],
 )

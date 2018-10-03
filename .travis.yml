@@ -5,7 +5,7 @@ python:
     - "3.5"
     - "3.6"
 install:
-  - pip install requests pytest-cov pytest-datafiles python-dateutil
+  - pip install requests pytest-cov pytest-datafiles python-dateutil lxml
 script:
   - pytest --cov=tenable/tenable_io tests/tenable_io
 branches:
