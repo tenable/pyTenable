@@ -1,10 +1,10 @@
-Tenable.io
-==========
+Container Security
+==================
 .. py:module:: tenable.container_security
 
 
-Connecting to Tenable.io
-------------------------
+Connecting to Tenable.io Container Security
+-------------------------------------------
 
 Some stuff here....
 
