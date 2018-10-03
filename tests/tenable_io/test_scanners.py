@@ -38,6 +38,7 @@ def test_scanner_delete_permissionerror(stdapi, scanner):
     with pytest.raises(PermissionError):
         stdapi.scanners.delete(scanner['id'])
 
+@pytest.mark.skip(reason="We don't want to actually delete scanners.")
 def test_scanner_delete(api, scanner):
     api.scanners.delete(scanner['id'])
 
