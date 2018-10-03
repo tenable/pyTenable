@@ -333,7 +333,7 @@ class APISession(object):
         resp = self._session.request(method, '{}/{}'.format(self.URL, path), **kwargs)
 
         status = resp.status_code
-        if status == 200:
+        if status >= 200 and status <= 299:
             # As everything looks ok, lets pass the response on to the error
             # checker and then return the response.
             return self._resp_error_check(resp)
@@ -343,6 +343,8 @@ class APISession(object):
             raise PermissionError(resp)
         elif status == 404:
             raise NotFoundError(resp)
+        elif status == 409:
+            raise UnsupportedError(resp)
         elif status == 500:
             raise ServerError(resp)
         else:

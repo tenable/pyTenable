@@ -172,6 +172,25 @@ class PasswordComplexityError(APIError):
     pass
 
 
+class UnsupportedError(APIError):
+    '''
+    UnsupportedError is thrown when an unsupported call is thrown.  The HTTP
+    response code generally associated to this Exception is 409.
+
+    Attributes:
+        code (int):
+            The HTTP response code from the offending response.
+        response (request.Response):
+            This is the Response object that had caused the Exception to fire.
+        uuid (str):
+            The Request UUID of the request.  This can be used for the purpose
+            of tracking the request and the response through the Tenable.io
+            infrastructure.  In the case of Non-Tenable.io products, is simply
+            an empty string.
+    '''
+    pass
+
+
 class UnknownError(APIError):
     '''
     If the package is unable to determine what categorization the Exception
