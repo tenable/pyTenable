@@ -2,9 +2,13 @@ import pytest, os, uuid
 from tenable.tenable_io import TenableIO
 from tenable.errors import *
 from dateutil.parser import parse as dateparse
-import uuid, datetime, sys
+import datetime, sys, re
+
+SCAN_ID_WITH_RESULTS = 1805
 
 def check(i, name, val_type, allow_none=False):
+    reuuid = r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
+    reuuids = r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12,32}$'
     assert name in i
     if not allow_none:
         assert i[name] != None
@@ -13,9 +17,11 @@ def check(i, name, val_type, allow_none=False):
         if val_type == 'datetime':
             assert isinstance(dateparse(i[name]), datetime.datetime)
         elif val_type == 'uuid':
-            assert isinstance(uuid.UUID(i[name]), uuid.UUID)
+            assert len(re.findall(reuuid, i[name])) > 0
+        elif val_type == 'scanner-uuid':
+            assert len(re.findall(reuuids, i[name])) > 0
         elif sys.version_info.major == 2 and val_type == str:
-            assert isinstance(i[name], unicode)
+            assert isinstance(i[name], unicode) or isinstance(i[name], str)
         else:
             assert isinstance(i[name], val_type)
 
@@ -96,4 +102,18 @@ def scannergroup(request, api):
 
 @pytest.fixture
 def scan(request, api):
-    res = api.scan.create()
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        template='basic',
+        targets=['127.0.0.1'])
+    def teardown():
+        try:
+            api.scans.delete(scan['id'])
+        except NotFoundError:
+            pass
+    request.addfinalizer(teardown)
+    return scan
+
+@pytest.fixture
+def scan_results(request, api):
+    return api.scans.results(SCAN_ID_WITH_RESULTS)

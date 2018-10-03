@@ -1,11 +1,24 @@
 from tenable.tenable_io.base import TIOEndpoint
 from tenable.utils import dict_merge
 from tenable.errors import UnexpectedValueError
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import BytesIO
 import time
 
 class ScansAPI(TIOEndpoint):
+    def _block_while_running(self, scan_id, sleeper=5):
+        '''
+        A simple function to block while the scan_id specified is still in a
+        running state.
+        '''
+        running = True
+        while running:
+            status = self.results(scan_id)['info']['status']
+            if status[-2:].lower() == 'ed':
+                running = False
+            if running:
+                time.sleep(sleeper)
+
     def _create_scan_document(self, kw):
         '''
         Takes the keyworded arguments and will provide a scan settings document
@@ -456,7 +469,7 @@ class ScansAPI(TIOEndpoint):
 
         if 'filter_type' in kw:
             payload['filter.search_type'] = self._check(
-                    'filter_type', kw['filter_type'], str)
+                'filter_type', kw['filter_type'], str, choices=['and', 'or'])
 
         # Now we need to set the FileObject.  If one was passed to us, then lets
         # just use that, otherwise we will need to instantiate a BytesIO object
@@ -593,18 +606,22 @@ class ScansAPI(TIOEndpoint):
 
         return self._api.get('scans', params=params).json()['scans']
 
-    def pause(self, scan_id):
+    def pause(self, scan_id, block=False):
         '''
         `scans: pause <https://cloud.tenable.com/api#/resources/scans/pause>`_
 
         Args:  
             scan_id (int): The unique identifier fo the scan to pause.
+            block (bool, optional): 
+                Block until the scan is actually paused.  Default is False.
 
         Returns:
             None: The scan was successfully requested to be paused.
         '''
         self._api.post('scans/{}/pause'.format(
             self._check('scan_id', scan_id, int)), json={})
+        if block:
+            self._block_while_running(scan_id)
 
     def plugin_output(self, scan_id, host_id, plugin_id, history_id=None):
         '''
@@ -675,18 +692,22 @@ class ScansAPI(TIOEndpoint):
                 self._check('scan_id', scan_id, int)), json={
             'enabled': self._check('enabled', enabled, bool)}).json()
 
-    def stop(self, scan_id):
+    def stop(self, scan_id, block=False):
         '''
         `scans: stop <https://cloud.tenable.com/api#/resources/scans/stop>`_
 
         Args:
             scan_id (int): The unique identifier for the scan.
+            block (bool, optional):
+                Block until the scan is actually stopped.  Default is False.
 
         Returns:
             None: The scan was successfully requested to stop.
         '''
         self._api.post('scans/{}/stop'.format(
             self._check('scan_id', scan_id, int)))
+        if block:
+            self._block_while_running(scan_id)
 
     def timezones(self):
         '''
