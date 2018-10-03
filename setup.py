@@ -1,16 +1,12 @@
 from setuptools import setup, find_packages
 
-#here = path.abspath(path.dirname(__file__))
-#with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
-#    long_description = f.read()
-
 setup(
     name='pyTenable',
     version='0.1.0',
     description='Python library to interface into Tenable\'s products and applications',
-    #long_description=long_description,
+    long_description='For more info on pyTenable, please refer to the `documentation site <https://pytenable.readthedocs.io>`_',
     author='Tenable\, Inc.',
-    author_email='pip-noreply@tenable.com',
+    author_email='smcgrath@tenable.com',
     license='MIT',
     classifiers=[
         'Development Status :: 3 - Alpha',
