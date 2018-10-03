@@ -48,7 +48,7 @@ class ExportsIterator(APIResultsIterator):
 
         # now to take the first chunk off the local queue, move it to the 
         # processed list, and then set store the results to the page attribute.
-        chunk_id = self.chunks[0]
+        chunk_id = self._chunks[0]
         self._chunks.pop(0)
         self._processed.append(chunk_id)
         self.page = self._api.get('{}/export/{}/chunks/{}'.format(
@@ -78,9 +78,9 @@ class ExportsAPI(TIOEndpoint):
         `exports: vulns-request-export <https://cloud.tenable.com/api#/resources/exports/vulns-request-export>`_
 
         Args:
-            chunk_size (int, optional):
-                Specifies the number of objects returned per-chunk.  If nothing is
-                specified, it will default to 100 objects.
+            num_assets (int, optional):
+                Specifies the number of assets returned per-chunk.  If nothing is
+                specified, it will default to 50 assets.
             severity (list, optional):
                 list of severities to include as part of the export.  Supported
                 values are `info`, `low`, `medium`, `high`, and `critical`.
@@ -101,16 +101,15 @@ class ExportsAPI(TIOEndpoint):
         '''
         payload = {'filters': dict()}
 
-        if 'chunk_size' in kw and self._check(
-                'chunk_size', kw['chunk_size'], int, default=100):
-            payload['num_assets'] = kw['chunk_size']
+        payload['num_assets'] = str(self._check('num_assets', 
+            kw['num_assets'] if 'num_assets' in kw else None, int, default=50))
 
         if 'severity' in kw and self._check('severity', kw['severity'], list, 
                 choices=['info', 'low', 'medium', 'high', 'critical'], case='lower'):
             payload['filters']['severity'] = kw['severity']
 
         if 'state' in kw and self._check('state', kw['state'], list, 
-                choices=['open', 'reopened', 'closed'], case='lower'):
+                choices=['OPEN', 'REOPENED', 'FIXED'], case='upper'):
             payload['filters']['state'] = kw['state']
 
         if 'plugin_family' in kw and self._check(
@@ -120,9 +119,9 @@ class ExportsAPI(TIOEndpoint):
         if 'since' in kw and self._check('since', kw['since'], int):
             payload['filters']['since'] = kw['since']
 
-        return ExportIterator(self._api,
-            _type='vuln',
-            _uuid=self._api.get('vulns/export', json=payload).json()['export_uuid']
+        return ExportsIterator(self._api,
+            _type='vulns',
+            _uuid=self._api.post('vulns/export', json=payload).json()['export_uuid']
         )
 
     def assets(self, **kw):
@@ -132,7 +131,7 @@ class ExportsAPI(TIOEndpoint):
         Args:
             chunk_size (int, optional):
                 Specifies the number of objects returned per-chunk.  If nothing is
-                specified, it will default to 100 objects.
+                specified, it will default to 50 objects.
             created_at (int, optional):
                 Returns all assets created after the specified unix timestamp.
             updated_at (int, optional):
@@ -168,10 +167,9 @@ class ExportsAPI(TIOEndpoint):
             ExportIterator: an iterator to walk through the results.
         '''
         payload = {'filters': dict()}
-
-        if 'chunk_size' in kw and self._check(
-                'chunk_size', kw['chunk_size'], int, default=100):
-            payload['chunk_size'] = kw['chunk_size']
+        payload['chunk_size'] = self._check('chunk_size', 
+            kw['chunk_size'] if 'chunk_size' in kw else None,
+            int, default=100)
 
         
         # Instead of a long and drawn-out series of if statements for all of
@@ -193,7 +191,7 @@ class ExportsAPI(TIOEndpoint):
         if 'sources' in kw and self._check('sources', kw['sources'], list):
             payload['filters']['sources'] = kw['sources']
 
-        return ExportIterator(self._api,
+        return ExportsIterator(self._api,
             _type='assets',
-            _uuid=self._api.get('assets/export', json=payload).json()['export_uuid']
+            _uuid=self._api.post('assets/export', json=payload).json()['export_uuid']
         )
