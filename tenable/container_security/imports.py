@@ -45,7 +45,7 @@ class ImportAPI(CSEndpoint):
             dict: The response with the status and id.
         '''
         self._api.get('v1/import/{}/test'.format(
-            self._check('id', id, int))).json()
+            self._check('id', id, 'uuid'))).json()
 
     def create(self, **kw):
         '''
@@ -83,7 +83,7 @@ class ImportAPI(CSEndpoint):
         '''
         payload = self._gen_import_payload(kw)
         return self._api.post('v1/import/{}'.format(
-            self._check('id', id, int)), json=payload).json()
+            self._check('id', id, 'uuid')), json=payload).json()
 
     def delete(self, id):
         '''
@@ -95,7 +95,7 @@ class ImportAPI(CSEndpoint):
         Returns:
             dict: Returns the status and id of the deleted import.
         '''
-        return self._api.delete('v1/import/{}'.format(self._check('id', id, int))).json()
+        return self._api.delete('v1/import/{}'.format(self._check('id', id, 'uuid'))).json()
 
     def run(self, id):
         '''
@@ -107,6 +107,6 @@ class ImportAPI(CSEndpoint):
         Returns:
             dict: Returns the status and id of the run import.
         '''
-        return self._api.post('v1/import/{}/run'.format(self._check('id', id, int)), json={}).json()
+        return self._api.post('v1/import/{}/run'.format(self._check('id', id, 'uuid')), json={}).json()
 
       
