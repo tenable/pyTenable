@@ -41,7 +41,7 @@ class ScansAPI(TIOEndpoint):
             scan['uuid'] = templates[self._check(
                 'template', kw['template'], str, 
                 default='basic',
-                choices=templates.keys()
+                choices=list(templates.keys())
             )]
             del(kw['template'])
 

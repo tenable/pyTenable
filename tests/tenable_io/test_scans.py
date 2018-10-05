@@ -402,7 +402,7 @@ def test_export_file_object(api):
     with open(fn, 'wb') as fobj:
         api.scans.export(SCAN_ID_WITH_RESULTS, fobj=fobj)
 
-    with open(fn) as fobj:
+    with open(fn, 'rb') as fobj:
         counter = 0
         for i in NessusReportv2(fobj):
             counter += 1
