@@ -9,8 +9,6 @@ def check(i, name, val_type, allow_none=False):
         assert i[name] != None
 
     if i[name] != None:
-        if val_type == 'datestring':
-            assert isinstance(dateparse(i[name]), datetime.datetime)
         if val_type == 'datetime':
             assert isinstance(dateparse(i[name]), datetime.datetime)
         elif val_type == 'uuid':

@@ -4,7 +4,8 @@ from requests.packages.urllib3.util.retry import Retry
 '''
 '''
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
+__author__ = 'Steve McGrath <smcgrath@tenable.com>'
 
 
 class APIResultsIterator(object):
@@ -272,6 +273,14 @@ class APISession(object):
             If a 429 response is returned, how much do we want to backoff
             if the response didn't send a Retry-After header.
     '''
+    _error_codes = {
+        400: InvalidInputError,
+        401: PermissionError,
+        403: PermissionError,
+        404: NotFoundError,
+        409: UnsupportedError,
+        500: ServerError,
+    }
 
     URL = None
     '''
@@ -337,16 +346,8 @@ class APISession(object):
             # As everything looks ok, lets pass the response on to the error
             # checker and then return the response.
             return self._resp_error_check(resp)
-        elif status == 400:
-            raise InvalidInputError(resp)
-        elif status == 403:
-            raise PermissionError(resp)
-        elif status == 404:
-            raise NotFoundError(resp)
-        elif status == 409:
-            raise UnsupportedError(resp)
-        elif status == 500:
-            raise ServerError(resp)
+        elif status in self._error_codes.keys():
+            raise self._error_codes[status](resp)
         else:
             raise UnknownError(resp)
 

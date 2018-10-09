@@ -49,10 +49,10 @@ For more detailed examples, please refer to the specific applications listed bel
    :maxdepth: 1
    :caption: Supported Applications:
 
-   container_security
+   cs
+   io
    nessus
-   securitycenter
-   tenable_io
+   sc
 
 Contribute
 ----------
