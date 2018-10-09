@@ -29,7 +29,7 @@ Lets assume that we want to get the list of scans that have been run on our Tena
 .. code-block:: python
    :linenos:
 
-   from tenable.tenable_io import TenableIO
+   from tenable.io import TenableIO
    tio = TenableIO('TIO_ACCESS_KEY', 'TIO_SECRET_KEY')
    for scan in tio.scans.list():
       print('{status}: {id}/{uuid} - {name}'.format(**scan))

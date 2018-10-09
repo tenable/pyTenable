@@ -55,7 +55,7 @@ class TenableIO(APISession):
     def agent_config(self):
         '''
         An object for interfacing to the agent configurations API.  See the
-        :doc:`agent_config documentation <tenable_io.agent_config>` 
+        :doc:`agent_config documentation <io.agent_config>` 
         for full details.
         '''
         return AgentConfigAPI(self)
@@ -64,7 +64,7 @@ class TenableIO(APISession):
     def agent_groups(self):
         '''
         An object for interfacing to the agent groups API.  See the
-        :doc:`agent_groups documentation <tenable_io.agent_groups>` 
+        :doc:`agent_groups documentation <io.agent_groups>` 
         for full details.
         '''
         return AgentGroupsAPI(self)
@@ -73,7 +73,7 @@ class TenableIO(APISession):
     def agent_exclusions(self):
         '''
         An object for interfacing to the agent exclusions API.  See the
-        :doc:`agent_exclusions documentation <tenable_io.agent_exclusions>` 
+        :doc:`agent_exclusions documentation <io.agent_exclusions>` 
         for full details.
         '''
         return AgentExclusionsAPI(self)
@@ -82,7 +82,7 @@ class TenableIO(APISession):
     def agents(self):
         '''
         An object for interfacing to the agents API.  See the
-        :doc:`agents documentation <tenable_io.agents>` 
+        :doc:`agents documentation <io.agents>` 
         for full details.
         '''
         return AgentsAPI(self)
@@ -91,7 +91,7 @@ class TenableIO(APISession):
     def assets(self):
         '''
         An object for interfacing to the assets API.  See the
-        :doc:`assets documentation <tenable_io.assets>` 
+        :doc:`assets documentation <io.assets>` 
         for full details.
         '''
         return AssetsAPI(self)
@@ -100,7 +100,7 @@ class TenableIO(APISession):
     def audit_log(self):
         '''
         An object for interfacing to the audit log API.  See the
-        :doc:`audit_log documentation <tenable_io.audit_log>` 
+        :doc:`audit_log documentation <io.audit_log>` 
         for full details.
         '''
         return AuditLogAPI(self)
@@ -109,7 +109,7 @@ class TenableIO(APISession):
     def editor(self):
         '''
         An object for interfacing to the editor API.  See the
-        :doc:`editor documentation <tenable_io.editor>` 
+        :doc:`editor documentation <io.editor>` 
         for full details.
         '''
         return EditorAPI(self)
@@ -118,7 +118,7 @@ class TenableIO(APISession):
     def exclusions(self):
         '''
         An object for interfacing to the exclusions API.  See the
-        :doc:`exclusions documentation <tenable_io.exclusions>` 
+        :doc:`exclusions documentation <io.exclusions>` 
         for full details.
         '''
         return ExclusionsAPI(self)
@@ -127,7 +127,7 @@ class TenableIO(APISession):
     def exports(self):
         '''
         An object for interfacing to the exports API.  See the
-        :doc:`exports documentation <tenable_io.exports>` 
+        :doc:`exports documentation <io.exports>` 
         for full details.
         '''
         return ExportsAPI(self)
@@ -136,7 +136,7 @@ class TenableIO(APISession):
     def file(self):
         '''
         An object for interfacing to the file API.  See the
-        :doc:`file documentation <tenable_io.file>` 
+        :doc:`file documentation <io.file>` 
         for full details.
         '''
         return FileAPI(self)
@@ -145,7 +145,7 @@ class TenableIO(APISession):
     def filters(self):
         '''
         An object for interfacing to the filters API.  See the
-        :doc:`filters documentation <tenable_io.filters>` 
+        :doc:`filters documentation <io.filters>` 
         for full details.
         '''
         return FiltersAPI(self)
@@ -154,7 +154,7 @@ class TenableIO(APISession):
     def folders(self):
         '''
         An object for interfacing to the folders API.  See the
-        :doc:`folders documentation <tenable_io.folders>` 
+        :doc:`folders documentation <io.folders>` 
         for full details.
         '''
         return FoldersAPI(self)
@@ -163,7 +163,7 @@ class TenableIO(APISession):
     def groups(self):
         '''
         An object for interfacing to the groups API.  See the
-        :doc:`groups documentation <tenable_io.groups>` 
+        :doc:`groups documentation <io.groups>` 
         for full details.
         '''
         return GroupsAPI(self)
@@ -172,7 +172,7 @@ class TenableIO(APISession):
     def permissions(self):
         '''
         An object for interfacing to the permissions API.  See the
-        :doc:`permissions documentation <tenable_io.permissions>` 
+        :doc:`permissions documentation <io.permissions>` 
         for full details.
         '''
         return PermissionsAPI(self)
@@ -181,7 +181,7 @@ class TenableIO(APISession):
     def plugins(self):
         '''
         An object for interfacing to the plugins API.  See the
-        :doc:`plugins documentation <tenable_io.plugins>` 
+        :doc:`plugins documentation <io.plugins>` 
         for full details.
         '''
         return PluginsAPI(self)
@@ -190,7 +190,7 @@ class TenableIO(APISession):
     def policies(self):
         '''
         An object for interfacing to the policies API.  See the
-        :doc:`policies documentation <tenable_io.policies>` 
+        :doc:`policies documentation <io.policies>` 
         for full details.
         '''
         return PoliciesAPI(self)
@@ -199,7 +199,7 @@ class TenableIO(APISession):
     def scanner_groups(self):
         '''
         An object for interfacing to the scanner groups API.  See the
-        :doc:`scanner_groups documentation <tenable_io.scanner_groups>` 
+        :doc:`scanner_groups documentation <io.scanner_groups>` 
         for full details.
         '''
         return ScannerGroupsAPI(self)
@@ -208,7 +208,7 @@ class TenableIO(APISession):
     def scanners(self):
         '''
         An object for interfacing to the scanners API.  See the
-        :doc:`scanners documentation <tenable_io.scanners>` 
+        :doc:`scanners documentation <io.scanners>` 
         for full details.
         '''
         return ScannersAPI(self)
@@ -217,7 +217,7 @@ class TenableIO(APISession):
     def scans(self):
         '''
         An object for interfacing to the scans API.  See the
-        :doc:`scans documentation <tenable_io.scans>` 
+        :doc:`scans documentation <io.scans>` 
         for full details.
         '''
         return ScansAPI(self)
@@ -226,7 +226,7 @@ class TenableIO(APISession):
     def server(self):
         '''
         An object for interfacing to the server API.  See the
-        :doc:`server documentation <tenable_io.server>` 
+        :doc:`server documentation <io.server>` 
         for full details.
         '''
         return ServerAPI(self)
@@ -235,7 +235,7 @@ class TenableIO(APISession):
     def session(self):
         '''
         An object for interfacing to the session API.  See the
-        :doc:`session documentation <tenable_io.session>` 
+        :doc:`session documentation <io.session>` 
         for full details.
         '''
         return SessionAPI(self)
@@ -244,7 +244,7 @@ class TenableIO(APISession):
     def target_groups(self):
         '''
         An object for interfacing to the target groups API.  See the
-        :doc:`target_groups documentation <tenable_io.target_groups>` 
+        :doc:`target_groups documentation <io.target_groups>` 
         for full details.
         '''
         return TargetGroupsAPI(self)
@@ -253,7 +253,7 @@ class TenableIO(APISession):
     def users(self):
         '''
         An object for interfacing to the users API.  See the
-        :doc:`users documentation <tenable_io.users>` 
+        :doc:`users documentation <io.users>` 
         for full details.
         '''
         return UsersAPI(self)
@@ -262,7 +262,7 @@ class TenableIO(APISession):
     def workbenches(self):
         '''
         An object for interfacing to the workbenches API.  See the
-        :doc:`workbenches documentation <tenable_io.workbenches>` 
+        :doc:`workbenches documentation <io.workbenches>` 
         for full details.
         '''
         return WorkbenchesAPI(self)
