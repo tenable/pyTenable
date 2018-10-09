@@ -63,60 +63,66 @@ class NessusReportv2(object):
             ...     for item in report:
             ...         print(item) 
         '''
-        for event, elem in self._iter:
-            if event == 'start' and elem.tag == 'ReportHost':
-                # If we detect a new ReportHost, then we will want to rebuild
-                # the host information cache, starting with the ReportHost's
-                # name for the host.
-                self._cache = {'host-report-name': elem.get('name')}
+        try:
+            for event, elem in self._iter:
+                if event == 'start' and elem.tag == 'ReportHost':
+                    # If we detect a new ReportHost, then we will want to rebuild
+                    # the host information cache, starting with the ReportHost's
+                    # name for the host.
+                    self._cache = {'host-report-name': elem.get('name')}
 
-            if event == 'end' and elem.tag == 'HostProperties':
-                # Once we have finished parsing out all of the host properties,
-                # we need to update the host cache with this new information.
-                for child in elem.getchildren():
-                    self._cache[child.get('name')] = child.text
-                elem.clear()
+                if event == 'end' and elem.tag == 'HostProperties':
+                    # Once we have finished parsing out all of the host properties,
+                    # we need to update the host cache with this new information.
+                    for child in elem.getchildren():
+                        self._cache[child.get('name')] = child.text
+                    elem.clear()
 
-            if event == 'end' and elem.tag == 'ReportHost':
-                # If we reach the end of the ReportHost tree, then clear out
-                # the element.
-                elem.clear()
-            if event == 'end' and elem.tag == 'NessusClientData_v2':
-                # If we reach the end of the Nessus file, then we need to raise
-                # a StopIteration exception to inform the code downstream that
-                # we have reached the end of the file.
-                raise StopIteration()
+                if event == 'end' and elem.tag == 'ReportHost':
+                    # If we reach the end of the ReportHost tree, then clear out
+                    # the element.
+                    elem.clear()
+                if event == 'end' and elem.tag == 'NessusClientData_v2':
+                    # If we reach the end of the Nessus file, then we need to raise
+                    # a StopIteration exception to inform the code downstream that
+                    # we have reached the end of the file.
+                    raise StopIteration()
 
-            if event == 'end' and elem.tag == 'ReportItem':
-                # Once we have finished gathering all of the information for a
-                # ReportItem, lets go ahead and parse out the ReportItem, graft
-                # on the cached HostProperties that we gathered before, and then
-                # return the data as a python dictionary.
-                vuln = dict(elem.attrib)
-                vuln.update(self._cache)
+                if event == 'end' and elem.tag == 'ReportItem':
+                    # Once we have finished gathering all of the information for a
+                    # ReportItem, lets go ahead and parse out the ReportItem, graft
+                    # on the cached HostProperties that we gathered before, and then
+                    # return the data as a python dictionary.
+                    vuln = dict(elem.attrib)
+                    vuln.update(self._cache)
 
-                # all of the information we have passed into the vuln dictionary
-                # needs to be normalized.  Here we will pass each item through
-                # the definition parser to make sure any known values are
-                # formatted properly.
-                for k in vuln.keys():
-                    vuln[k] = self._defs(k, vuln[k])
+                    # all of the information we have passed into the vuln dictionary
+                    # needs to be normalized.  Here we will pass each item through
+                    # the definition parser to make sure any known values are
+                    # formatted properly.
+                    for k in vuln.keys():
+                        vuln[k] = self._defs(k, vuln[k])
 
-                for c in elem.getchildren():
-                    # iterate through each child element and add it to the vuln
-                    # dictionary.  We will also check to see if we have seen
-                    # the tag before, and if so, convert the stored value to a 
-                    # list of values.  The need to return a list is common for
-                    # things like CVEs, BIDs, See-Alsos, etc.
+                    for c in elem.getchildren():
+                        # iterate through each child element and add it to the vuln
+                        # dictionary.  We will also check to see if we have seen
+                        # the tag before, and if so, convert the stored value to a 
+                        # list of values.  The need to return a list is common for
+                        # things like CVEs, BIDs, See-Alsos, etc.
 
-                    if c.tag in vuln:
-                        if not isinstance(vuln[c.tag], list):
-                            vuln[c.tag] = [vuln[c.tag],]
-                        vuln[c.tag].append(self._defs(c.tag, c.text))
-                    else:
-                        vuln[c.tag] = self._defs(c.tag, c.text)
+                        if c.tag in vuln:
+                            if not isinstance(vuln[c.tag], list):
+                                vuln[c.tag] = [vuln[c.tag],]
+                            vuln[c.tag].append(self._defs(c.tag, c.text))
+                        else:
+                            vuln[c.tag] = self._defs(c.tag, c.text)
 
-                # Clear out the element from the element tree and return the
-                # vuln dictionary.
-                elem.clear()
-                return vuln
+                    # Clear out the element from the element tree and return the
+                    # vuln dictionary.
+                    elem.clear()
+                    return vuln
+        except TypeError as err:
+            if err.args[0] == 'reading file objects must return bytes objects':
+                raise TypeError('File object not opened in binary mode.')
+            else:
+                raise err
