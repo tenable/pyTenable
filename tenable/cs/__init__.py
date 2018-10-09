@@ -39,7 +39,7 @@ class ContainerSecurity(APISession):
     def compliance(self):
         '''
         An object for interfacing to the image compliance API.  See the
-        :doc:`compliance documentation <container_security.compliance>` 
+        :doc:`compliance documentation <cs.compliance>` 
         for full details.
         '''
         return ComplianceAPI(self)
@@ -48,7 +48,7 @@ class ContainerSecurity(APISession):
     def containers(self):
         '''
         An object for interfacing to the containers API.  See the
-        :doc:`containers documentation <container_security.containers>` 
+        :doc:`containers documentation <cs.containers>` 
         for full details.
         '''
         return ContainersAPI(self)
@@ -57,7 +57,7 @@ class ContainerSecurity(APISession):
     def imports(self):
         '''
         An object for interfacing to the imports API.  See the
-        :doc:`imports documentation <container_security.imports>` 
+        :doc:`imports documentation <cs.imports>` 
         for full details.
         '''
         return ImportAPI(self)
@@ -66,7 +66,7 @@ class ContainerSecurity(APISession):
     def jobs(self):
         '''
         An object for interfacing to the jobs API.  See the
-        :doc:`jobs documentation <container_security.jobs>` 
+        :doc:`jobs documentation <cs.jobs>` 
         for full details.
         '''
         return JobsAPI(self)
@@ -75,7 +75,7 @@ class ContainerSecurity(APISession):
     def registry(self):
         '''
         An object for interfacing to the image registry API.  See the
-        :doc:`registry documentation <container_security.registry>` 
+        :doc:`registry documentation <cs.registry>` 
         for full details.
         '''
         return RegistryAPI(self)
@@ -84,7 +84,7 @@ class ContainerSecurity(APISession):
     def reports(self):
         '''
         An object for interfacing to the image reports API.  See the
-        :doc:`reports documentation <container_security.reports>` 
+        :doc:`reports documentation <cs.reports>` 
         for full details.
         '''
         return ReportsAPI(self)
@@ -93,7 +93,7 @@ class ContainerSecurity(APISession):
     def uploads(self):
         '''
         An object for interfacing to the image uploading API.  See the
-        :doc:`uploads documentation <container_security.uploads>` 
+        :doc:`uploads documentation <cs.uploads>` 
         for full details.
         '''
         return UploadAPI(self)

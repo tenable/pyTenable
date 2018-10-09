@@ -43,15 +43,16 @@ Another example would be to export the vulnerability data that Tenable.io has st
    for item in vulns:
       print(item['plugin']['name'])
 
-For more detailed examples, please refer to the specific applications listed below.
+For more detailed examples, please refer to the specific modules listed below.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Supported Applications:
+   :caption: Supported Modules:
 
    cs
    io
    nessus
+   reports
    sc
 
 Contribute
