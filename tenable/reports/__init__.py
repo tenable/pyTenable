@@ -1,1 +1,1 @@
-from nessusv2 import NessusReportv2
+from .nessusv2 import NessusReportv2
