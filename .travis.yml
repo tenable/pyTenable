@@ -5,7 +5,14 @@ python:
     - "3.5"
     - "3.6"
 install:
-  - pip install requests pytest-cov pytest-datafiles python-dateutil lxml
+  -| 
+   pip install       \
+   requests          \
+   "pytest>=3.6"     \
+   pytest-cov        \
+   pytest-datafiles  \
+   python-dateutil   \
+   lxml
 script:
   - pytest --cov=tenable tests/io tests/reports
 branches:
