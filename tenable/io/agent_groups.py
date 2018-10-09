@@ -1,4 +1,4 @@
-from tenable.tenable_io.base import TIOEndpoint
+from .base import TIOEndpoint
 
 class AgentGroupsAPI(TIOEndpoint):
     def add_agent(self, group_id, agent_id, scanner_id=1):

@@ -1,4 +1,4 @@
-from tenable.tenable_io.base import TIOEndpoint
+from .base import TIOEndpoint
 
 class AgentConfigAPI(TIOEndpoint):
     def edit(self, scanner_id=1, software_update=None, auto_unlink=None):

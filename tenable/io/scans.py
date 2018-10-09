@@ -1,4 +1,4 @@
-from tenable.tenable_io.base import TIOEndpoint
+from .base import TIOEndpoint
 from tenable.utils import dict_merge
 from tenable.errors import UnexpectedValueError
 from datetime import datetime, timedelta

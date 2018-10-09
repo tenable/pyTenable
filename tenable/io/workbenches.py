@@ -1,4 +1,4 @@
-from tenable.tenable_io.base import TIOEndpoint
+from .base import TIOEndpoint
 from tenable.errors import UnexpectedValueError
 from io import BytesIO
 import time

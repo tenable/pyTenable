@@ -1,4 +1,4 @@
-from tenable.tenable_io.base import TIOEndpoint
+from .base import TIOEndpoint
 
 class ScannerGroupsAPI(TIOEndpoint):
     def add_scanner(self, group_id, scanner_id):

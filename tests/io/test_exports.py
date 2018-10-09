@@ -1,7 +1,7 @@
 from .fixtures import *
 from datetime import datetime, timedelta
 from tenable.errors import *
-from tenable.tenable_io.exports import ExportsIterator
+from tenable.io.exports import ExportsIterator
 
 def test_vuln_num_assets_typeerror(api):
     with pytest.raises(TypeError):

@@ -4,7 +4,7 @@ from requests.packages.urllib3.util.retry import Retry
 '''
 '''
 
-__version__ = '0.1.1'
+__version__ = '0.2.0'
 __author__ = 'Steve McGrath <smcgrath@tenable.com>'
 
 

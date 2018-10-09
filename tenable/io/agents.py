@@ -1,4 +1,4 @@
-from tenable.tenable_io.base import TIOIterator, TIOEndpoint
+from .base import TIOIterator, TIOEndpoint
 
 class AgentsIterator(TIOIterator):
     '''

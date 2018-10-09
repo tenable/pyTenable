@@ -1,4 +1,4 @@
-from tenable.tenable_io.base import TIOEndpoint, APIResultsIterator
+from .base import TIOEndpoint, APIResultsIterator
 import time
 
 class ExportsIterator(APIResultsIterator):

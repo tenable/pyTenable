@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pyTenable',
-    version='0.1.1',
+    version='0.2.0',
     description='Python library to interface into Tenable\'s products and applications',
     long_description='For more info on pyTenable, please refer to the `documentation site <https://pytenable.readthedocs.io>`_',
     author='Tenable\, Inc.',

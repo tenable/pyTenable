@@ -1,4 +1,4 @@
-from tenable.tenable_io.base import TIOEndpoint
+from .base import TIOEndpoint
 
 class FiltersAPI(TIOEndpoint):
     _cache = dict()
