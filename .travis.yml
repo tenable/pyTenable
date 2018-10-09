@@ -7,7 +7,7 @@ python:
 install:
   - pip install requests pytest-cov pytest-datafiles python-dateutil lxml
 script:
-  - pytest --cov=tenable/tenable_io tests/tenable_io
+  - pytest --cov=tenable tests/io tests/reports
 branches:
   only:
   - master

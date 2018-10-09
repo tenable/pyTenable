@@ -8,7 +8,5 @@ docs/source/tenable*.rst
 env_builder
 *.json
 *.log
-/manual_test.py
-/Dockerfile-docs
 /manual.sh
 /.coverage
