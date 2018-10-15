@@ -1,5 +1,7 @@
 from tenable.base import APISession, APIError, ServerError
-from .analysis import SCAnalysisAPI
+from .analysis import AnalysisAPI
+from .files import FilesAPI
+from .feeds import FeedsAPI
 import warnings
 
 
@@ -69,9 +71,11 @@ class SecurityCenter(APISession):
     def login(self, user, passwd):
         '''
         Logs the user into SecurityCenter
+
         Args:
             user (str): Username
             passwd (str): Password
+
         Returns:
             None
         '''
@@ -85,19 +89,31 @@ class SecurityCenter(APISession):
         resp = self.delete('token')
         self._build_session()
 
-    def upload(self, fileobj):
-        '''
-        Uploads a file to SecurityCenter
-        Args:
-            fileobj (obj): The file object to upload into SecurityCenter.
-        '''
-        return self.post('file/upload', files={'Filedata': fileobj})
-
     @property
     def analysis(self):
         '''
-        An object for interfacing to the agent exclusions API.  See the
+        An object for interfacing to the analysis API.  See the
         :doc:`analysis documentation <securitycenter.analysis>` 
         for full details.
         '''
-        return SCAnalysisAPI(self)
+        return AnalysisAPI(self)
+
+    @property
+    def feed(self):
+        '''
+        An object for interfacing to the feeds API.  See the
+        :doc:`analysis documentation <securitycenter.feed>` 
+        for full details.
+        '''
+        return FeedAPI(self)
+    
+
+    @property
+    def file(self):
+        '''
+        An object for interfacing to the files API.  See the
+        :doc:`analysis documentation <securitycenter.file>` 
+        for full details.
+        '''
+        return FileAPI(self)
+    

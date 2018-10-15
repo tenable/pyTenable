@@ -1,8 +1,8 @@
-from tenable.base import APIEndpoint, APIResultsIterator
+from .base import SCEndpoint, SCResultsIterator
 from tenable.utils import dict_merge
 
 
-class AnalysisResultsIterator(APIResultsIterator):
+class AnalysisResultsIterator(SCResultsIterator):
     def _get_page(self):
         '''
         Retreives the next page of results when the current page has been
@@ -33,7 +33,7 @@ class AnalysisResultsIterator(APIResultsIterator):
         self.total = int(resp['response']['totalRecords'])
 
 
-class SCAnalysisAPI(APIEndpoint):
+class AnalysisAPI(SCEndpoint):
     '''
     '''
 
