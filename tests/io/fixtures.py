@@ -1,7 +1,7 @@
 import pytest, os, uuid
 from tenable.io import TenableIO
 from tenable.errors import *
-from tests.checker import check
+from tests.checker import check, single
 
 SCAN_ID_WITH_RESULTS = 6799
 
