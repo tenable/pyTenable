@@ -23,3 +23,23 @@ def test_events_standard_user_permissionerror(stdapi):
 
 def test_events(api):
     events = api.audit_log.events(('date', 'gt', '2018-01-01'), limit=100)
+    assert isinstance(events, list)
+    e = events[-1]
+    check(e, 'action', str)
+    check(e, 'actor', dict)
+    check(e['actor'], 'id', 'uuid')
+    check(e['actor'], 'name', str, allow_none=True)
+    check(e, 'crud', str)
+    check(e, 'description', str, allow_none=True)
+    check(e, 'fields', list)
+    for d in e['fields']:
+        check(d, 'key', str)
+        check(d, 'value', str)
+    check(e, 'id', str)
+    check(e, 'is_anonymous', bool, allow_none=True)
+    check(e, 'is_failure', bool, allow_none=True)
+    check(e, 'received', 'datetime')
+    check(e, 'target', dict)
+    check(e['target'], 'id', 'uuid')
+    check(e['target'], 'name', str)
+    check(e['target'], 'type', str)

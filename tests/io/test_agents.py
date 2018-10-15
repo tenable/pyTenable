@@ -58,6 +58,14 @@ def test_list(api):
     agents = api.agents.list()
     for i in agents:
         count += 1
+        check(i, 'distro', str)
+        check(i, 'id', int)
+        check(i, 'ip', str)
+        check(i, 'linked_on', int)
+        check(i, 'name', str)
+        check(i, 'platform', str)
+        check(i, 'status', str)
+        check(i, 'uuid', 'uuid')
     assert count == agents.total
 
 def test_get_scanner_id_typeerror(api):
@@ -70,4 +78,12 @@ def test_get_agent_id_typeerror(api):
 
 def test_get_agent_details(api, agent):
     resp = api.agents.get(agent['id'])
+    check(resp, 'distro', str)
+    check(resp, 'id', int)
+    check(resp, 'ip', str)
+    check(resp, 'linked_on', int)
+    check(resp, 'name', str)
+    check(resp, 'platform', str)
+    check(resp, 'status', str)
+    check(resp, 'uuid', 'uuid')
     assert resp['id'] == agent['id']

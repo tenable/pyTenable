@@ -69,6 +69,18 @@ def test_create_standard_user_permissionerror(stdapi):
 
 def test_create_agent_group(api, agentgroup):
     assert isinstance(agentgroup, dict)
+    check(agentgroup, 'creation_date', int)
+    check(agentgroup, 'id', int)
+    check(agentgroup, 'last_modification_date', int)
+    check(agentgroup, 'name', str)
+    check(agentgroup, 'owner', str)
+    check(agentgroup, 'owner_id', int)
+    check(agentgroup, 'owner_name', str)
+    check(agentgroup, 'owner_uuid', 'uuid')
+    check(agentgroup, 'shared', int)
+    check(agentgroup, 'timestamp', int)
+    check(agentgroup, 'user_permissions', int)
+    check(agentgroup, 'uuid', 'uuid')
 
 def test_delete_attributeerror(api):
     with pytest.raises(TypeError):
@@ -129,4 +141,16 @@ def test_details_standard_user_permissionserror(stdapi, agentgroup):
 
 def test_details_of_an_agent_group(api, agentgroup):
     group = api.agent_groups.details(agentgroup['id'])
+    check(group, 'creation_date', int)
+    check(group, 'id', int)
+    check(group, 'last_modification_date', int)
+    check(group, 'name', str)
+    check(group, 'owner', str)
+    check(group, 'owner_id', int)
+    check(group, 'owner_name', str)
+    check(group, 'owner_uuid', 'uuid')
+    check(group, 'shared', int)
+    check(group, 'timestamp', int)
+    check(group, 'user_permissions', int)
+    check(group, 'uuid', 'uuid')
     assert group['id'] == agentgroup['id']
