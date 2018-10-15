@@ -1,6 +1,5 @@
-import requests, sys, logging, re
+import requests, sys, logging, re, time
 from .errors import *
-from requests.packages.urllib3.util.retry import Retry
 '''
 '''
 
@@ -282,17 +281,17 @@ class APISession(object):
         500: ServerError,
     }
 
-    URL = None
+    _url = None
     '''
     str: URL Base path
     '''
 
-    RETRIES = 5
+    _retries = 5
     '''
     int: Number of retries to attempt to make before failing the HTTP request
     '''
 
-    RETRY_BACKOFF = 0.2
+    _backoff = 5
     '''
     float: The backoff timer to use if a 429 response was returned and no
     Retry-After header was returned.
@@ -300,56 +299,80 @@ class APISession(object):
 
     def __init__(self, url=None, retries=None, backoff=None):
         if url:
-            self.URL = url
+            self._url = url
         if retries and isinstance(retries, int):
-            self.RETRIES = retries
+            self._retries = retries
         if backoff and isinstance(backoff, float):
-            self.RETRY_BACKOFF = backoff
+            self._backoff = backoff
         self._build_session()
 
     def _build_session(self):
         '''
         Requests session builder
         '''
-        # Sets the retry adaptor with the ability to properly backoff if we get 429s
-        retries = Retry(
-            total=self.RETRIES,
-            status_forcelist={429, 501, 502, 503, 504}, 
-            backoff_factor=self.RETRY_BACKOFF, 
-            respect_retry_after_header=True
-        )
-        adapter = requests.adapters.HTTPAdapter(max_retries=retries)
-
-        # initiate the session and then attach the Retry adaptor.
         self._session = requests.Session()
-        self._session.mount('https://', adapter)
-
-        # we need to make sure to identify ourselves.
         self._session.headers.update({
-            'User-Agent': 'pyTenable/{} Python/{}'.format(__version__, '.'.join([str(i) for i in sys.version_info][0:3])),
+            'User-Agent': 'pyTenable/{} Python/{}'.format(
+                __version__, '.'.join([str(i) for i in sys.version_info][0:3])),
         })
 
-    def _resp_error_check(self, response):
+    def _resp_error_check(self, response): #stub
         '''
         A more general response error checker that can be overloaded if needed.
         '''
         return response
 
+    def _retry_request(self, response, retries, kwargs): #stub
+        '''
+        A method to be overloaded to return any modifications to the request
+        upon retries.  By default just passes back what was send in the same
+        order.
+        '''
+        return kwargs
+
     def _request(self, method, path, **kwargs):
         '''
         Request call builder
         '''
-        resp = self._session.request(method, '{}/{}'.format(self.URL, path), **kwargs)
+        retries = 0
+        while retries <= self._retries:
+            resp = self._session.request(method, 
+                '{}/{}'.format(self._url, path), **kwargs)
+            status = resp.status_code
 
-        status = resp.status_code
-        if status >= 200 and status <= 299:
-            # As everything looks ok, lets pass the response on to the error
-            # checker and then return the response.
-            return self._resp_error_check(resp)
-        elif status in self._error_codes.keys():
-            raise self._error_codes[status](resp)
-        else:
-            raise UnknownError(resp)
+            if status in [429, 501, 502, 503]:
+                # Under the following return codes, we will want to attempt to
+                # retry our call.  If we see the "Retry-After" header, then we
+                # will respect that.  If no "Retry-After" header exists, then
+                # we will use the _backoff attribute to build a back-off timer
+                # based on the number of retries we have already performed.
+                retries += 1
+                if 'Retry-After' in resp.headers:
+                    sleeper = int(resp.headers['Retry-After'])
+                else:
+                    sleeper = retries * self._backoff
+                time.sleep(sleeper)
+
+                # The need to potentially modify the request for subsequent
+                # calls if the whole reason that we aren't using the default
+                # Retry logic that urllib3 supports.
+                kwargs = self._retry_request(resp, retries, kwargs)
+                continue
+
+            elif status >= 200 and status <= 299:
+                # As everything looks ok, lets pass the response on to the error
+                # checker and then return the response.
+                return self._resp_error_check(resp)
+
+            elif status in self._error_codes.keys():
+                # If a status code that we know about has returned, then we will
+                # want to raise the appropriate Error.
+                raise self._error_codes[status](resp)
+
+            else:
+                # If all else fails, raise an error stating that we don't even
+                # know whats happening.
+                raise UnknownError(resp)
 
     def get(self, path, **kwargs):
         '''

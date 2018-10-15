@@ -48,8 +48,8 @@ class TenableIO(APISession):
             backoff is ``0.1`` seconds.
     '''
     
-    _TZ = None
-    URL = 'https://cloud.tenable.com'
+    _tzcache = None
+    _url = 'https://cloud.tenable.com'
 
     @property
     def agent_config(self):
@@ -274,14 +274,33 @@ class TenableIO(APISession):
         we should probably cache the response as a private attribute to speed 
         up checking times.
         '''
-        if not self._TZ:
-            self._TZ = self.scans.timezones()
-        return self._TZ
+        if not self._tzcache:
+            self._tzcache = self.scans.timezones()
+        return self._tzcache
 
     def __init__(self, access_key, secret_key, url=None, retries=None, backoff=None):
         self._access_key = access_key
         self._secret_key = secret_key
         APISession.__init__(self, url, retries, backoff)
+
+    def _retry_request(self, response, retries, kwargs):
+        '''
+        If the call is retried, we will need to set some additional headers
+        '''
+        if 'headers' not in kwargs:
+            kwargs['headers'] = dict()
+
+        if 'X-Request-Uuid' in response.headers:
+            # if the request uuid exists in the response, then we will sent the
+            # uuid back so that there is solid requesty chain in any subsiquent
+            # logs.
+            kwargs['headers']['X-Tio-Last-Request-Uuid'] = response.headers['X-Request-Uuid']
+
+        # We also need to return the number of times that we have attempted to
+        # retry this call.
+        kwargs['headers']['X-Tio-Retry-Count'] = retries
+        return kwargs
+
 
     def _build_session(self):
         '''

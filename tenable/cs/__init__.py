@@ -32,7 +32,7 @@ class ContainerSecurity(APISession):
             if the response didn't send a Retry-After header.  The default
             backoff is ``0.1`` seconds.
     '''
-    URL = 'https://cloud.tenable.com/container-security/api'
+    _url = 'https://cloud.tenable.com/container-security/api'
     _registry = 'registry.cloud.tenable.com'
 
     @property

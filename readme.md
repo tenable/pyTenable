@@ -17,8 +17,22 @@ For further documentation, please refer to the [online documentation](http://pyt
 - _check should allow for passing a checking function for further validation.
   + Example would be validating filters.
 - TenableIO should use a consistent date format.  some items are using datetime while others are using timestamp.  Suggested to use timestamp for everything for consistency.
-- complete testing of all outputs for TenableIO
-- container_security needs to be fully tested out.
+- complete testing of all outputs for TenableIO.  The following do not have output tests yet:
+  + exclusions
+  + file
+  + filters
+  + folders
+  + groups
+  + permissions
+  + plugins
+  + policies
+  + scanner_groups
+  + scanners
+  + server
+  + session
+  + target_groups
+  + users
+- container_security needs to be refactored to v2 APIs and tested out.
 - SecurityCenter.analysis module needs to be completed to at least have parity with pySecurityCenter for full deprecation of pySC.
 - The SecurityCenter library needs to be written based on the public API docs.
 - A basic Nessus module needs to be written to handle authorization.
