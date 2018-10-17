@@ -3,9 +3,9 @@ from .fixtures import *
 
 
 def get_vulns(sc, **kw):
+    kw['pages'] = 2
+    kw['limit'] = 50
     vulns = sc.analysis.vulns(**kw)
-    if vulns.total > 100:
-        vulns.total = 100
     return vulns
 
 
@@ -21,15 +21,15 @@ def test_vulns_cveipdetail_tool(sc):
         check(v, 'cveID', str)
         check(v, 'total', str)
         check(v, 'hosts', list)
-        for i in v['hosts']:
-            check(i, 'iplist', list)
-            check(i, 'repositoryID', str)
-            for j in i['iplist']:
-                check(j, 'ip', str)
-                check(j, 'netbiosName', str)
-                check(j, 'dnsName', str)
-                check(j, 'uuid', str)
-                check(j, 'macAddress', str)
+        i = v['hosts'][0]
+        check(i, 'iplist', list)
+        check(i, 'repositoryID', str)
+        for j in i['iplist']:
+            check(j, 'ip', str)
+            check(j, 'netbiosName', str)
+            check(j, 'dnsName', str)
+            check(j, 'uuid', str)
+            check(j, 'macAddress', str)
 
 def test_vulns_iavmipdetail_tool(sc):
     vulns = get_vulns(sc, tool='iavmipdetail')
@@ -38,21 +38,21 @@ def test_vulns_iavmipdetail_tool(sc):
         check(v, 'iavmID', str)
         check(v, 'total', str)
         check(v, 'hosts', list)
-        for i in v['hosts']:
-            check(i, 'iplist', list)
-            check(i, 'repositoryID', str)
-            for j in i['iplist']:
-                check(j, 'ip', str)
-                check(j, 'netbiosName', str)
-                check(j, 'dnsName', str)
-                check(j, 'uuid', str)
-                check(j, 'macAddress', str)
+        i = v['hosts'][0]
+        check(i, 'iplist', list)
+        check(i, 'repositoryID', str)
+        for j in i['iplist']:
+            check(j, 'ip', str)
+            check(j, 'netbiosName', str)
+            check(j, 'dnsName', str)
+            check(j, 'uuid', str)
+            check(j, 'macAddress', str)
 
-@pytest.mark.xfail(raises=KeyError)
 def test_vulns_iplist_tool(sc):
     vulns = get_vulns(sc, tool='iplist')
-    for v in vulns:
-        assert isinstance(v, dict)
+    assert isinstance(vulns, dict)
+    for i in vulns:
+        check(vulns, i, str)
 
 def test_vulns_listmailclients_tool(sc):
     vulns = get_vulns(sc, tool='listmailclients')
@@ -474,19 +474,19 @@ def test_vulns_vulnipdetail_tool(sc):
         check(v['family'], 'id', str)
         check(v['family'], 'name', str)
         check(v, 'hosts', list)
-        for i in v['hosts']:
-            check(i, 'iplist', list)
-            check(i, 'repository', dict)
-            check(i['repository'], 'dataFormat', str)
-            check(i['repository'], 'description', str)
-            check(i['repository'], 'id', str)
-            check(i['repository'], 'name', str)
-            for j in i['iplist']:
-                check(j, 'ip', str)
-                check(j, 'netbiosName', str)
-                check(j, 'dnsName', str)
-                check(j, 'uuid', str)
-                check(j, 'macAddress', str)
+        i = v['hosts'][0]
+        check(i, 'iplist', list)
+        check(i, 'repository', dict)
+        check(i['repository'], 'dataFormat', str)
+        check(i['repository'], 'description', str)
+        check(i['repository'], 'id', str)
+        check(i['repository'], 'name', str)
+        for j in i['iplist']:
+            check(j, 'ip', str)
+            check(j, 'netbiosName', str)
+            check(j, 'dnsName', str)
+            check(j, 'uuid', str)
+            check(j, 'macAddress', str)
         check(v, 'name', str)
         check(v, 'pluginDescription', str)
         check(v, 'pluginID', str)
@@ -504,13 +504,13 @@ def test_vulns_vulnipsummary_tool(sc):
         check(v['family'], 'id', str)
         check(v['family'], 'name', str)
         check(v, 'hosts', list)
-        for i in v['hosts']:
-            check(i, 'iplist', str)
-            check(i, 'repository', dict)
-            check(i['repository'], 'dataFormat', str)
-            check(i['repository'], 'description', str)
-            check(i['repository'], 'id', str)
-            check(i['repository'], 'name', str)
+        i = v['hosts'][0]
+        check(i, 'iplist', str)
+        check(i, 'repository', dict)
+        check(i['repository'], 'dataFormat', str)
+        check(i['repository'], 'description', str)
+        check(i['repository'], 'id', str)
+        check(i['repository'], 'name', str)
         check(v, 'name', str)
         check(v, 'pluginDescription', str)
         check(v, 'pluginID', str)
@@ -519,3 +519,29 @@ def test_vulns_vulnipsummary_tool(sc):
         check(v['severity'], 'id', str)
         check(v['severity'], 'name', str)
         check(v, 'total', str)
+
+def test_console_logs(sc):
+    logs = sc.analysis.console(limit=50, pages=2)
+    for i in logs:
+        assert isinstance(i, dict)
+        check(i, 'initiator', dict)
+        check(i['initiator'], 'username', str)
+        check(i['initiator'], 'firstname', str)
+        check(i['initiator'], 'lastname', str)
+        try:
+            check(i['initiator'], 'id', int)
+        except AssertionError:
+            check(i['initiator'], 'id', str)
+        check(i, 'severity', dict)
+        check(i['severity'], 'description', str)
+        check(i['severity'], 'id', str)
+        check(i['severity'], 'name', str)
+        check(i, 'rawLog', str)
+        check(i, 'module', str)
+        check(i, 'date', 'datetime')
+        check(i, 'organization', dict)
+        check(i['organization'], 'description', str)
+        check(i['organization'], 'id', str)
+        check(i['organization'], 'name', str)
+        check(i, 'message', str)
+

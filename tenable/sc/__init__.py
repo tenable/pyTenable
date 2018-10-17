@@ -1,7 +1,7 @@
 from tenable.base import APISession, APIError, ServerError
 from .analysis import AnalysisAPI
-from .files import FilesAPI
-from .feeds import FeedsAPI
+from .files import FileAPI
+from .feeds import FeedAPI
 import warnings
 
 
@@ -90,6 +90,11 @@ class SecurityCenter(APISession):
         self._build_session()
 
     @property
+    def alerts(self):
+        pass
+    
+
+    @property
     def analysis(self):
         '''
         An object for interfacing to the analysis API.  See the
@@ -99,6 +104,26 @@ class SecurityCenter(APISession):
         return AnalysisAPI(self)
 
     @property
+    def arcs(self):
+        pass
+        # Houses the ARC and ARC Templates endpoints
+
+    @property
+    def asset_lists(self):
+        pass
+        # Houses the Asset and Asset Template endpoints
+    
+    @property
+    def blackouts(self):
+        pass
+        # houses the Blackout Window endpoints
+
+    @property
+    def dashboards(self):
+        pass
+        # houses the Dashboard Tabs, Dashboard Templates, Dashboard Components endpoints
+
+    @property
     def feed(self):
         '''
         An object for interfacing to the feeds API.  See the
@@ -106,7 +131,6 @@ class SecurityCenter(APISession):
         for full details.
         '''
         return FeedAPI(self)
-    
 
     @property
     def file(self):
@@ -116,4 +140,52 @@ class SecurityCenter(APISession):
         for full details.
         '''
         return FileAPI(self)
+
+    @property
+    def reports(self):
+        pass
+        # houses Report, Report Definition, Report Image, Report Template, Style, StyleFamily endpoints
+
+    @property
+    def repository(self):
+        pass
+        # houses Repository endpoint
+
+    @property
+    def risk(self):
+        pass
+        # houses Accept Risk, Recast Risk endpoints
+
+    @property
+    def scans(self):
+        pass
+        # houses Scan, Scan Policy. Scan Policy Templates, Scan Result endpoints
+
+    @property
+    def sensors(self):
+        pass
+        # houses NNM, LCE, LCE CLient, LCE Policy, Scanners, Scan Zones, MDM endpoints
+
+    @property
+    def system(self):
+        pass
+        # houses Configuration, System, Status, LDAP, SSH Key endpoints
+
+    @property
+    def ticket(self):
+        pass
+        # houses Ticket endpoint
+
+    @property
+    def users(self):
+        pass
+        # houses User, Group, Role endpoints
+    
+    
+    
+    
+    
+    
+    
+    
     

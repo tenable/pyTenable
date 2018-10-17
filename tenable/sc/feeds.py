@@ -86,5 +86,5 @@ class FeedAPI(SCEndpoint):
 
         self._api.post('feed/{}/update'.format(
             self._check('feed_type', feed_type, str, choices=[
-                'active', 'passive', 'lce', 'sc']), 
+                'active', 'passive', 'lce', 'sc'])), 
             json={'filename': filename})
