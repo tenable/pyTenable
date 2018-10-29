@@ -291,7 +291,7 @@ class APISession(object):
     int: Number of retries to attempt to make before failing the HTTP request
     '''
 
-    _backoff = 5
+    _backoff = 1
     '''
     float: The backoff timer to use if a 429 response was returned and no
     Retry-After header was returned.
@@ -373,6 +373,7 @@ class APISession(object):
                 # If all else fails, raise an error stating that we don't even
                 # know whats happening.
                 raise UnknownError(resp)
+        raise RetryError(resp, retries)
 
     def get(self, path, **kwargs):
         '''

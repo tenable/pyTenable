@@ -54,6 +54,35 @@ class APIError(Exception):
         return repr(self.__str__())
 
 
+class RetryError(APIError):
+    '''
+    A RetryError is thrown when too many retry attempts have been made.
+
+    Attributes:
+        code (int):
+            The HTTP response code from the offending response.
+        response (request.Response):
+            This is the Response object that had caused the Exception to fire.
+        uuid (str):
+            The Request UUID of the request.  This can be used for the purpose
+            of tracking the request and the response through the Tenable.io
+            infrastructure.  In the case of Non-Tenable.io products, is simply
+            an empty string.
+        attempts (int):
+            The number of attempts that were made before bailing.    
+    '''
+    def __init__(self, r, retries):
+        APIError.__init__(self, r)
+        self.attempts = retries
+
+    def __str__(self):
+        return '{} attempts made, last returned {}:{} {}'.format(
+            str(self.attempts),
+            str(self.uuid),
+            str(self.code),
+            str(self.response.text))
+
+
 class InvalidInputError(APIError):
     '''
     A InvalidInputError is thrown if there is either incomplete or invalid

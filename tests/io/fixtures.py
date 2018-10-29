@@ -65,7 +65,7 @@ def user(request, api):
 def scanner(request, api):
     scanners = api.scanners.list()
     for scanner in scanners:
-        if scanner['user_permissions'] == 128:
+        if scanner['user_permissions'] == 128 and not scanner['pool']:
             return scanner
 
 

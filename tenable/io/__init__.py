@@ -298,7 +298,7 @@ class TenableIO(APISession):
 
         # We also need to return the number of times that we have attempted to
         # retry this call.
-        kwargs['headers']['X-Tio-Retry-Count'] = retries
+        kwargs['headers']['X-Tio-Retry-Count'] = str(retries)
         return kwargs
 
 
