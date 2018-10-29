@@ -1,10 +1,21 @@
 from setuptools import setup, find_packages
+import os
+
+try:
+    long_description = open(
+        os.path.join(
+            os.path.abspath(os.path.dirname(__file__)),
+            'README.rst')).read()
+except:
+    long_description = 'Please refer to https://pytenable.readthedocs.io'
+    print('! could not read README.rst file.')
 
 setup(
     name='pyTenable',
-    version='0.2.1',
+    version='0.2.2',
     description='Python library to interface into Tenable\'s products and applications',
     author='Tenable\, Inc.',
+    long_description=long_description,
     author_email='smcgrath@tenable.com',
     url='https://github.com/tenable/pytenable',
     license='MIT',
