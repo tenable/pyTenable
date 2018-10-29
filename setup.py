@@ -1,10 +1,19 @@
 from setuptools import setup, find_packages
+import os
+
+long_description = 'For more info on pyTenable, please refer to the `documentation site <https://pytenable.readthedocs.io>`_'
+try:
+    from pypandoc import convert
+    if os.path.exists('README.md'):
+        long_description = convert('README.md', 'rst')
+except ImportError:
+    print("warning: pypandoc module not found, could not convert README.md to RST")
 
 setup(
     name='pyTenable',
     version='0.2.0',
     description='Python library to interface into Tenable\'s products and applications',
-    long_description='For more info on pyTenable, please refer to the `documentation site <https://pytenable.readthedocs.io>`_',
+    long_description=long_description,
     author='Tenable\, Inc.',
     author_email='smcgrath@tenable.com',
     license='MIT',
