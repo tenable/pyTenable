@@ -359,15 +359,15 @@ class APISession(object):
                 kwargs = self._retry_request(resp, retries, kwargs)
                 continue
 
-            elif status >= 200 and status <= 299:
-                # As everything looks ok, lets pass the response on to the error
-                # checker and then return the response.
-                return self._resp_error_check(resp)
-
             elif status in self._error_codes.keys():
                 # If a status code that we know about has returned, then we will
                 # want to raise the appropriate Error.
                 raise self._error_codes[status](resp)
+
+            elif status >= 200 and status <= 299:
+                # As everything looks ok, lets pass the response on to the error
+                # checker and then return the response.
+                return self._resp_error_check(resp)
 
             else:
                 # If all else fails, raise an error stating that we don't even
