@@ -1,4 +1,4 @@
-Tenable.io
+SecurityCenter
 ==========
 .. py:module:: tenable.sc
 
