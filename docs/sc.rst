@@ -13,6 +13,8 @@ Client reference
 
 .. autoclass:: SecurityCenter
 
+    .. autoattribute:: login
+    .. autoattribute:: logout
     .. autoattribute:: agents
     .. autoattribute:: alerts
     .. autoattribute:: analysis
@@ -21,8 +23,6 @@ Client reference
     .. autoattribute:: blackouts
     .. autoattribute:: dashboards
     .. autoattribute:: jobs
-    .. autoattribute:: login
-    .. autoattribute:: logout
     .. autoattribute:: notifications
     .. autoattribute:: reports
     .. autoattribute:: repository

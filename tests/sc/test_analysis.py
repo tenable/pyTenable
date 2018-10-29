@@ -400,6 +400,20 @@ def test_vulns_sumuserresponsibility_tool(sc):
     vulns = get_vulns(sc, tool='sumuserresponsibility')
     for v in vulns:
         assert isinstance(v, dict)
+        check(v, 'score', str)
+        check(v, 'total', str)
+        check(v, 'severityCritical', str)
+        check(v, 'severityHigh', str)
+        check(v, 'severityMedium', str)
+        check(v, 'severityLow', str)
+        check(v, 'severityInfo', str)
+        check(v, 'userList', list)
+        for i in v['userList']:
+            check(i, 'firstname', str)
+            check(i, 'id', str)
+            check(i, 'lastname', str)
+            check(i, 'status', str)
+            check(i, 'username', str)
 
 def test_vulns_trend_tool(sc):
     vulns = get_vulns(sc, tool='trend')

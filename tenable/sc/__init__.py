@@ -85,7 +85,9 @@ class SecurityCenter(APISession):
         })
 
     def logout(self):
-        '''Logs out of SecurityCenter and removed the cookies and token.'''
+        '''
+        Logs out of SecurityCenter and resets the session.
+        '''
         resp = self.delete('token')
         self._build_session()
 

@@ -224,7 +224,9 @@ class AnalysisAPI(SCEndpoint):
         Returns:
             AnalysisResultsIterator: 
                 an iterator object handling data pagination.
-            dict
+            dict:
+                The iplist tool returns a dictionary of the IPs matching the 
+                query and not a list of items like the rest of the tools. 
 
         Examples:
             A quick example showing how to get all of the information stored in
@@ -232,7 +234,24 @@ class AnalysisAPI(SCEndpoint):
             data from the vulndetails tool, we can handle this without actually
             doing anything other than calling 
 
-            >>> for vuln 
+            >>> from pprint import pprint
+            >>> for vuln in sc.analysis.vulns():
+            ...     pprint(vuln)
+
+            To ask for a specific subset of information (like only critical and
+            exploitable vulns) you'd want to pass the filter tuples into the
+            query like so:
+
+            >>> vulns = sc.analysis.vulns(
+            ...    ('severity', '=', '4'), ('exploit'),
+            ...    ('exploitAvailable', '=', 'true'))
+
+            To request a different data format (like maybe an IP summary of 
+            vulns) you just need to specify the appropriate tool:
+
+            >>> ips = sc.analysis.vulns(
+            ...    ('severity', '=', '4'), ('exploit'),
+            ...    ('exploitAvailable', '=', 'true'), tool='sumip')
         '''
         payload = {
             'type': 'vuln', 
