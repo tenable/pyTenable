@@ -1,5 +1,5 @@
-Users
-=====
+Analysis
+========
 .. py:module:: tenable.sc.analysis
 
 The following methods allow for interaction into the SecurityCenter `analysis`_ API.
