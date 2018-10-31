@@ -12,21 +12,23 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
+import os, sys, datetime
 sys.path.insert(0, os.path.abspath('..'))
+
+import tenable
 
 
 # -- Project information -----------------------------------------------------
 
 project = u'pyTenable'
-copyright = u'2018, Tenable, Inc.'
+year = datetime.datetime.now().year
+copyright = u'{}, Tenable Inc.'.format(year)
 author = u'Tenable, Inc.'
 
 # The short X.Y version
-version = u''
+version = tenable.__version__
 # The full version, including alpha/beta/rc tags
-release = u'0.0.1a'
+release = version
 
 
 # -- General configuration ---------------------------------------------------
@@ -48,7 +50,7 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+#templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -83,15 +85,15 @@ napoleon_numpy_docstring = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'alabaster'
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 html_theme_options = {
-    'navigation_depth': 4,
+    'description': 'A Python library for Tenable application APIs',
+    'fixed_sidebar': True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -108,13 +110,12 @@ html_static_path = ['_static']
 # 'searchbox.html']``.
 #
 # html_sidebars = {}
-html_sidebars = { 
+html_sidebars = {
     '**': [
-        'globaltoc.html',
-        'relations.html', 
-        'sourcelink.html', 
-        'searchbox.html'
-    ], 
+        'about.html',
+        'navigation.html',
+        'searchbox.html',
+    ]
 }
 
 
