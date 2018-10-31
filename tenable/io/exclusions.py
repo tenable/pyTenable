@@ -1,11 +1,26 @@
+'''
+exclusions
+==========
+
+The following methods allow for interaction into the Tenable.io 
+`exclusions <https://cloud.tenable.com/api#/resources/exclusions>`_ 
+API endpoints.
+
+Methods available on ``tio.exclusions``:
+
+.. rst-class:: hide-signature
+.. autoclass:: ExclusionsAPI
+
+    .. automethod:: create
+    .. automethod:: delete
+    .. automethod:: details
+    .. automethod:: edit
+    .. automethod:: list
+'''
 from .base import TIOEndpoint
 from datetime import datetime
 
 class ExclusionsAPI(TIOEndpoint):
-    '''
-    Scan target exclusions allow for restricting scanning to specific targets.
-    '''
-
     def create(self, name, members, start_time=None, end_time=None, 
                timezone=None, description=None, frequency=None, 
                interval=None, weekdays=None, day_of_month=None,
@@ -38,7 +53,7 @@ class ExclusionsAPI(TIOEndpoint):
                 The interval of the rule.  The default interval is 1
             weekdays (list, optional):
                 List of 2-character representations of the days of the week to
-                repeate the frequency rule on.  Valied values are:
+                repeat the frequency rule on.  Valid values are:
                 *SU, MO, TU, WE, TH, FR, SA*
                 Default values: ``['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']``
             day_of_month (int, optional):
@@ -54,14 +69,16 @@ class ExclusionsAPI(TIOEndpoint):
             Creating a one-time exclusion:
 
             >>> from datetime import datetime, timedelta
-            >>> exclusion = tio.exclusions.create('Example One-Time Exclusion',
+            >>> exclusion = tio.exclusions.create(
+            ...     'Example One-Time Exclusion',
             ...     ['127.0.0.1'],
             ...     start_time=datetime.utcnow(),
             ...     end_time=datetime.utcnow() + timedelta(hours=1))
 
             Creating a daily exclusion:
 
-            >>> exclusion = tio.exclusions.create('Example One-Time Exclusion',
+            >>> exclusion = tio.exclusions.create(
+            ...     'Example Daily Exclusion',
             ...     ['127.0.0.1'],
             ...     frequency='daily',
             ...     start_time=datetime.utcnow(),
@@ -69,7 +86,8 @@ class ExclusionsAPI(TIOEndpoint):
 
             Creating a weekly exclusion:
 
-            >>> exclusion = tio.exclusions.create('Example One-Time Exclusion',
+            >>> exclusion = tio.exclusions.create(
+            ...     'Example Weekly Exclusion',
             ...     ['127.0.0.1'],
             ...     frequency='weekly',
             ...     weekdays=['mo', 'we', 'fr'],
@@ -78,7 +96,8 @@ class ExclusionsAPI(TIOEndpoint):
 
             Creating a monthly esxclusion:
 
-            >>> exclusion = tio.exclusions.create('Example One-Time Exclusion',
+            >>> exclusion = tio.exclusions.create(
+            ...     'Example Monthly Exclusion',
             ...     ['127.0.0.1'],
             ...     frequency='monthly',
             ...     day_of_month=1,
@@ -87,7 +106,8 @@ class ExclusionsAPI(TIOEndpoint):
 
             Creating a yearly exclusion:
 
-            >>> exclusion = tio.exclusions.create('Example One-Time Exclusion',
+            >>> exclusion = tio.exclusions.create(
+            ...     'Example Yearly Exclusion',
             ...     ['127.0.0.1'],
             ...     frequency='yearly',
             ...     start_time=datetime.utcnow(),
@@ -116,9 +136,9 @@ class ExclusionsAPI(TIOEndpoint):
             # In the same vein as the frequency check, we're accepting
             # case-insensitive input, comparing it to our known list of
             # acceptable responses, then joining them all together into a 
-            # comma-seperated string.
+            # comma-separated string.
 
-        # if the requency is monthly, then we will need to specify the day of
+        # if the frequency is monthly, then we will need to specify the day of
         # the month that the rule will run on.
         if frequency == 'MONTHLY':
             rrules['bymonthday'] = self._check('day_of_month', day_of_month, int,
@@ -163,7 +183,7 @@ class ExclusionsAPI(TIOEndpoint):
 
     def details(self, id):
         '''
-        Retreive the details for a specific scan target exclusion.
+        Retrieve the details for a specific scan target exclusion.
 
         `exclusions: details <https://cloud.tenable.com/api#/resources/exclusions/details>`_
         
@@ -174,7 +194,6 @@ class ExclusionsAPI(TIOEndpoint):
             dict: The exclusion record requested.
 
         Examples:
-            >>> from pprint import pprint
             >>> exclusion = tio.exclusions.details(1)
             >>> pprint(exclusion)
         '''
@@ -211,7 +230,7 @@ class ExclusionsAPI(TIOEndpoint):
             interval (int, optional): The interval of the rule.
             weekdays (list, optional):
                 List of 2-character representations of the days of the week to
-                repeate the frequency rule on.  Valied values are:
+                repeat the frequency rule on.  Valid values are:
                 *SU, MO, TU, WE, TH, FR, SA*
                 Default values: ``['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']``
             day_of_month (int, optional):
@@ -277,7 +296,7 @@ class ExclusionsAPI(TIOEndpoint):
             payload['schedule']['rrules']['bymonthday'] = self._check(
                 'day_of_month', day_of_month, int, choices=list(range(1,32)))
 
-        # Lests check to make sure that the scanner_id  and exclusion_id are 
+        # Lets check to make sure that the scanner_id  and exclusion_id are 
         # integers as the API documentation requests and if we don't raise an 
         # error, then lets make the call.
         return self._api.put(
