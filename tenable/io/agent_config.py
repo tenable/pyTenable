@@ -1,8 +1,26 @@
+'''
+agent_config
+============
+
+The following methods allow for interaction into the Tenable.io 
+`agent config <https://cloud.tenable.com/api#/resources/agent-config>`_ 
+API endpoints.
+
+Methods available on ``tio.agent_config``:
+
+.. rst-class:: hide-signature
+.. autoclass:: AgentConfigAPI
+
+    .. automethod:: edit
+    .. automethod:: details
+'''
 from .base import TIOEndpoint
 
 class AgentConfigAPI(TIOEndpoint):
     def edit(self, scanner_id=1, software_update=None, auto_unlink=None):
         '''
+        Edits the agent configuration.
+
         `agent-config: edit <https://cloud.tenable.com/api#/resources/agent-config/edit>`_
 
         Args:
@@ -21,6 +39,18 @@ class AgentConfigAPI(TIOEndpoint):
             dict: Dictionary of the applied settings is returned if successfully
                 applied.
 
+        Examples:
+            Enabling auto-unlinking for agents after 30 days:
+
+            >>> tio.agent_config.edit(auto_unlink=30)
+
+            Disabling auto-unlinking for agents:
+
+            >>> tio.agent_config.edit(auto_unlink=False)
+
+            Enabling software updates for agents:
+
+            >>> tio.agent_config.edit(software_update=True)
         '''
         # Lets build the dictionary that we will present to the API...
         payload = {'auto_unlink': {}}
@@ -43,6 +73,8 @@ class AgentConfigAPI(TIOEndpoint):
 
     def details(self, scanner_id=1):
         '''
+        Returns the current agent configuration.
+
         `agent-config: details <https://cloud.tenable.com/api#/resources/agent-config/details>`_
 
         Args:
@@ -50,6 +82,10 @@ class AgentConfigAPI(TIOEndpoint):
 
         Returns:
             dict: Dictionary of the current settings.
+
+        Examples:
+            >>> details = tio.agent_config.details()
+            >>> pprint(details)
         '''
         if not scanner_id:
             scanner_id = 1
