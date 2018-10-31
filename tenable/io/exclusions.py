@@ -2,11 +2,17 @@ from .base import TIOEndpoint
 from datetime import datetime
 
 class ExclusionsAPI(TIOEndpoint):
+    '''
+    Scan target exclusions allow for restricting scanning to specific targets.
+    '''
+
     def create(self, name, members, start_time=None, end_time=None, 
                timezone=None, description=None, frequency=None, 
                interval=None, weekdays=None, day_of_month=None,
                enabled=True):
         '''
+        Create a scan target exclusion.
+
         `exclusions: create <https://cloud.tenable.com/api#/resources/exclusions/create>`_
 
         Args:
@@ -43,6 +49,49 @@ class ExclusionsAPI(TIOEndpoint):
 
         Returns:
             dict: Dictionary of the newly minted exclusion. 
+
+        Examples:
+            Creating a one-time exclusion:
+
+            >>> from datetime import datetime, timedelta
+            >>> exclusion = tio.exclusions.create('Example One-Time Exclusion',
+            ...     ['127.0.0.1'],
+            ...     start_time=datetime.utcnow(),
+            ...     end_time=datetime.utcnow() + timedelta(hours=1))
+
+            Creating a daily exclusion:
+
+            >>> exclusion = tio.exclusions.create('Example One-Time Exclusion',
+            ...     ['127.0.0.1'],
+            ...     frequency='daily',
+            ...     start_time=datetime.utcnow(),
+            ...     end_time=datetime.utcnow() + timedelta(hours=1))
+
+            Creating a weekly exclusion:
+
+            >>> exclusion = tio.exclusions.create('Example One-Time Exclusion',
+            ...     ['127.0.0.1'],
+            ...     frequency='weekly',
+            ...     weekdays=['mo', 'we', 'fr'],
+            ...     start_time=datetime.utcnow(),
+            ...     end_time=datetime.utcnow() + timedelta(hours=1))
+
+            Creating a monthly esxclusion:
+
+            >>> exclusion = tio.exclusions.create('Example One-Time Exclusion',
+            ...     ['127.0.0.1'],
+            ...     frequency='monthly',
+            ...     day_of_month=1,
+            ...     start_time=datetime.utcnow(),
+            ...     end_time=datetime.utcnow() + timedelta(hours=1))
+
+            Creating a yearly exclusion:
+
+            >>> exclusion = tio.exclusions.create('Example One-Time Exclusion',
+            ...     ['127.0.0.1'],
+            ...     frequency='yearly',
+            ...     start_time=datetime.utcnow(),
+            ...     end_time=datetime.utcnow() + timedelta(hours=1)) 
         '''
         # Starting with the innermost part of the payload, lets construct the
         # rrules dictionary.
@@ -97,6 +146,8 @@ class ExclusionsAPI(TIOEndpoint):
 
     def delete(self, id):
         '''
+        Delete a scan target exclusion.
+
         `exclusions: delete <https://cloud.tenable.com/api#/resources/exclusions/delete>`_
 
         Args:
@@ -104,11 +155,16 @@ class ExclusionsAPI(TIOEndpoint):
 
         Returns:
             None: The exclusion was successfully deleted.
+
+        Examples:
+            >>> tio.exclusions.delete(1)
         '''
         self._api.delete('exclusions/{}'.format(self._check('id', id, int)))
 
     def details(self, id):
         '''
+        Retreive the details for a specific scan target exclusion.
+
         `exclusions: details <https://cloud.tenable.com/api#/resources/exclusions/details>`_
         
         Args:
@@ -116,6 +172,11 @@ class ExclusionsAPI(TIOEndpoint):
 
         Returns:
             dict: The exclusion record requested.
+
+        Examples:
+            >>> from pprint import pprint
+            >>> exclusion = tio.exclusions.details(1)
+            >>> pprint(exclusion)
         '''
         return self._api.get(
             'exclusions/{}'.format(self._check('id', id, int))).json()
@@ -124,6 +185,8 @@ class ExclusionsAPI(TIOEndpoint):
              end_time=None, timezone=None, description=None, frequency=None, 
              interval=None, weekdays=None, day_of_month=None, enabled=None):
         '''
+        Edit an existing scan target exclusion.
+
         `exclusions: edit <https://cloud.tenable.com/api#/resources/exclusions/edit>`_
 
         The edit function will first gather the details of the exclusion that
@@ -155,7 +218,12 @@ class ExclusionsAPI(TIOEndpoint):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
 
         Returns:
-            dict: Dictionary of the newly minted exclusion. 
+            dict: Dictionary of the newly minted exclusion.
+
+        Examples:
+            Modifying the name of an exclusion:
+
+            >>> exclusion = tio.exclusions.edit(1, name='New Name')
         '''
 
         # Lets start constructing the payload to be sent to the API...
@@ -219,9 +287,15 @@ class ExclusionsAPI(TIOEndpoint):
 
     def list(self):
         '''
+        List the currently configured scan target exclusions.
+
         `exclusions: list <https://cloud.tenable.com/api#/resources/exclusions/list>`_
 
         Returns:
             list: List of exclusion resource records.
+
+        Examples:
+            >>> for exclusion in tio.exclusions.list():
+            ...     pprint(exclusion)
         '''
         return self._api.get('exclusions').json()['exclusions']

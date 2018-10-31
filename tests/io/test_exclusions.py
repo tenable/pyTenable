@@ -124,6 +124,19 @@ def test_create_onetime_exclusion(api):
         start_time=datetime.utcnow(),
         end_time=datetime.utcnow() + timedelta(hours=1))
     assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
     api.exclusions.delete(resp['id'])
 
 def test_create_daily_exclusion(api):
@@ -132,6 +145,19 @@ def test_create_daily_exclusion(api):
         end_time=datetime.utcnow() + timedelta(hours=1),
         frequency='daily')
     assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
     api.exclusions.delete(resp['id'])
 
 def test_create_weekly_exclusion(api):
@@ -141,6 +167,20 @@ def test_create_weekly_exclusion(api):
         frequency='weekly',
         weekdays=['mo', 'we', 'fr'])
     assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'byweekday', str)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
     api.exclusions.delete(resp['id'])
 
 def test_create_monthly_exclusion(api):
@@ -150,6 +190,20 @@ def test_create_monthly_exclusion(api):
         frequency='monthly',
         day_of_month=15)
     assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'bymonthday', int)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
     api.exclusions.delete(resp['id'])
 
 def test_create_yearly_exclusion(api):
@@ -158,6 +212,19 @@ def test_create_yearly_exclusion(api):
         end_time=datetime.utcnow() + timedelta(hours=1),
         frequency='yearly')
     assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
     api.exclusions.delete(resp['id'])
 
 def test_delete_notfounderror(api):
@@ -236,9 +303,36 @@ def test_edit_standard_user_permission_error(stdapi, exclusion):
         stdapi.exclusions.edit(exclusion['id'], name=str(uuid.uuid4()))
 
 def test_edit_success(api, exclusion):
-    api.exclusions.edit(exclusion['id'], name=str(uuid.uuid4()))
+    resp = api.exclusions.edit(exclusion['id'], name=str(uuid.uuid4()))
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
 
-def test_list(api, exclusion):
+def test_list(api):
     items = api.exclusions.list()
     assert isinstance(items, list)
-    assert exclusion in items
+    for exclusion in items:
+        check(exclusion, 'description', str, allow_none=True)
+        check(exclusion, 'id', int)
+        check(exclusion, 'last_modification_date', int)
+        check(exclusion, 'members', str)
+        check(exclusion, 'name', str)
+        check(exclusion, 'schedule', dict)
+        check(exclusion['schedule'], 'enabled', bool)
+        check(exclusion['schedule'], 'endtime', 'datetime')
+        check(exclusion['schedule'], 'rrules', dict)
+        check(exclusion['schedule']['rrules'], 'freq', str)
+        check(exclusion['schedule']['rrules'], 'interval', int)
+        check(exclusion['schedule'], 'starttime', 'datetime')
+        check(exclusion['schedule'], 'timezone', str)
