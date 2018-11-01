@@ -1,3 +1,26 @@
+'''
+scanners
+========
+
+The following methods allow for interaction into the Tenable.io 
+`scanners <https://cloud.tenable.com/api#/resources/scanners>`_ API.
+
+Methods available on ``tio.scanners``:
+
+.. rst-class:: hide-signature
+.. autoclass:: PoliciesAPI
+
+    .. automethod:: control_scan
+    .. automethod:: delete
+    .. automethod:: details
+    .. automethod:: edit
+    .. automethod:: get_aws_targets
+    .. automethod:: get_scanner_key
+    .. automethod:: get_scans
+    .. automethod:: linking_key
+    .. automethod:: list
+    .. automethod:: toggle_link_state
+'''
 from .base import TIOEndpoint
 
 class ScannersAPI(TIOEndpoint):
@@ -6,6 +29,9 @@ class ScannersAPI(TIOEndpoint):
     def linking_key(self):
         '''
         The linking key for the Tenable.io instance.
+
+        Examples:
+            >>> print(tio.scanners.linking_key)
         '''
         scanners = self.list()
         for scanner in scanners:
@@ -19,8 +45,12 @@ class ScannersAPI(TIOEndpoint):
 
         Returns:
             list: List of scanner documents.
+
+        Examples:
+            >>> for scanner in tio.scanners.allowed_scanners():
+            ...     pprint(scanner)
         '''
-        # We want to get the scanners that are avilable for scanning.  To do so,
+        # We want to get the scanners that are available for scanning.  To do so,
         # we will want to pull the information from the scan template.  This
         # isn't the prettiest way to handle this, however it will consistently
         # return the results that we are looking for.
@@ -37,6 +67,8 @@ class ScannersAPI(TIOEndpoint):
 
     def control_scan(self, scanner_id, scan_uuid, action):
         '''
+        Perform actions against scans on a given scanner.
+
         `scanners: control-scans <https://cloud.tenable.com/api#/resources/scanners/control-scans>`_
 
         Args:
@@ -50,6 +82,11 @@ class ScannersAPI(TIOEndpoint):
 
         Returns:
             None: The action was sent to the scan successfully.
+
+        Examples:
+            Stop a scan running on the scanner:
+
+            >>> tio.scanners.control_scan(1, '00000000-0000-0000-0000-000000000000', 'stop')
         '''
         self._api.post('scanners/{}/scans/{}/control'.format(
             self._check('scanner_id', scanner_id, int),
@@ -59,6 +96,8 @@ class ScannersAPI(TIOEndpoint):
 
     def delete(self, id):
         '''
+        Delete a scanner from Tenable.io.
+
         `scanners: delete <https://cloud.tenable.com/api#/resources/scanners/delete>`_
 
         Args:
@@ -67,11 +106,16 @@ class ScannersAPI(TIOEndpoint):
 
         Returns:
             None: The scanner was successfully deleted.
+
+        Examples:
+            >>> tio.scanners.delete(1)
         '''
         self._api.delete('scanners/{}'.format(self._check('id', id, int)))
 
     def details(self, id):
         '''
+        Retrieve the details for a specified scanner.
+
         `scanners: details <https://cloud.tenable.com/api#/resources/scanners/details>`_
 
         Args:
@@ -80,12 +124,18 @@ class ScannersAPI(TIOEndpoint):
 
         Returns:
             dict: The scanner resource record.
+
+        Examples:
+            >>> scanner = tio.scanners.details(1)
+            >>> pprint(scanner)
         '''
         return self._api.get('scanners/{}'.format(
             self._check('id', id, int))).json()
 
     def edit(self, id, **kwargs):
         '''
+        Modify the scanner.
+
         `scanners: edit <https://cloud.tenable.com/api#/resources/scanners/edit>`_
 
         Args:
@@ -106,6 +156,11 @@ class ScannersAPI(TIOEndpoint):
 
         Returns:
             None: The operation was requested successfully.
+
+        Examples:
+            Force a plugin update on a scanner:
+
+            >>> tio.scanners.edit(1, force_plugin_update=True)
         '''
         payload = dict()
         if ('force_plugin_update' in kwargs 
@@ -129,6 +184,8 @@ class ScannersAPI(TIOEndpoint):
 
     def get_aws_targets(self, id):
         '''
+        Returns the list of AWS targets the scanner can reach.
+
         `scanners: get-aws-targets <https://cloud.tenable.com/api#/resources/scanners/get-aws-targets>`_
 
         Args:
@@ -136,12 +193,18 @@ class ScannersAPI(TIOEndpoint):
 
         Returns:
             list: List of aws target resource records.
+
+        Examples:
+            >>> for target in tio.scanners.get_aws_targets(1):
+            ...      pprint(target)
         '''
         return self._api.get('scanners/{}/aws-targets'.format(
                     self._check('id', id, int))).json()['targets']
 
     def get_scanner_key(self, id):
         '''
+        Return the key associated with the scanner.
+
         `scanners: get-scanner-key <https://cloud.tenable.com/api#/resources/scanners/get-scanner-key>`_
 
         Args:
@@ -149,44 +212,66 @@ class ScannersAPI(TIOEndpoint):
 
         Returns:
             str: The scanner key
+
+        Examples:
+            >>> print(tio.scanners.get_scanner_key(1))
         '''
         return str(self._api.get('scanners/{}/key'.format(
             self._check('id', id, int))).json()['key'])
 
     def get_scans(self, id):
         '''
+        Retrieves the scans associated to the scanner.
+
         `scanners: get-scans <https://cloud.tenable.com/api#/resources/scanners/get-scans>`_
 
         Args:
             id (int): The unique identifier for the scanner.
 
         Returns:
-            list: List of scan resource records associated ot the scanner.
+            list: List of scan resource records associated to the scanner.
+
+        Examples:
+            >>> for scan in tio.scanners.get_scans(1):
+            ...     pprint(scan)
         '''
         return self._api.get('scanners/{}/scans'.format(
             self._check('id', id, int))).json()['scans']
 
     def list(self):
         '''
+        Retrieves the list of scanners.
+
         `scanners: list <https://cloud.tenable.com/api#/resources/scanners/list>`_
 
         Returns:
             list: List of scanner resource records.
+
+        Examples:
+            >>> for scanner in tio.scanners.list():
+            ...     pprint(scanner)
         '''
         return self._api.get('scanners').json()['scanners']
 
     def toggle_link_state(self, id, linked):
         '''
+        Toggles the scanner's activated state.
+
         `scanners: toggle-link-state <https://cloud.tenable.com/api#/resources/scanners/toggle-link-state>`_
 
         Args:
             id (int): The unique identifier for the scanner
             linked (bool): 
                 The link status of the scanner.  Setting to `False` will disable
-                the link, whereas seting to `True` will enable the link.
+                the link, whereas setting to `True` will enable the link.
 
         Returns:
             None: The status change was successful.
+
+        Examples:
+            to deactivate a linked scanner:
+
+            >>> tio.scanners.toggle_link_state(1, False)
         '''
         self._api.put('scanners/{}/link'.format(self._check('id', id, int)), 
             json={'link': int(self._check('linked', linked, bool))})
