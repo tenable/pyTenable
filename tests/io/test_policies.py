@@ -31,11 +31,16 @@ def test_copy_policy_notfounderror(api):
 
 def test_copy_policy(api, policy):
     new = api.policies.copy(policy['policy_id'])
+    assert isinstance(new, dict)
+    check(new, 'id', int)
+    check(new, 'name', str)
     assert 'Copy of' in new['name']
     api.policies.delete(new['id'])
 
 def test_create_policy(api, policy):
     assert isinstance(policy, dict)
+    check(policy, 'policy_id', int)
+    check(policy, 'policy_name', str)
 
 def test_delete_policy_id_typeerror(api):
     with pytest.raises(TypeError):
@@ -57,8 +62,10 @@ def test_policy_details_notfounderror(api):
         api.policies.details(1)
 
 def test_policy_details(api, policy):
-    check = api.policies.details(policy['policy_id'])
-    assert isinstance(check, dict)
+    policy = api.policies.details(policy['policy_id'])
+    assert isinstance(policy, dict)
+    check(policy, 'uuid', 'scanner-uuid')
+    check(policy, 'settings', dict)
 
 def test_policy_export_id_typeerror(api):
     with pytest.raises(TypeError):
@@ -75,7 +82,32 @@ def test_policy_export(api, policy):
 def test_policy_import(api, policy):
     pobj = api.policies.policy_export(policy['policy_id'])
     resp = api.policies.policy_import(pobj)
-    assert isinstance(resp['id'], int)
+    assert isinstance(resp, dict)
+    check(resp, 'creation_date', int)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'name', str)
+    check(resp, 'no_target', str)
+    check(resp, 'owner', str)
+    check(resp, 'owner_id', int)
+    check(resp, 'shared', int)
+    check(resp, 'template_uuid', 'scanner-uuid')
+    check(resp, 'user_permissions', int)
 
-def policy_list(api):
-    assert isinstance(api.policies.list(), list)
+def test_policy_list(api, policy):
+    policies = api.policies.list()
+    assert isinstance(policies, list)
+    for p in policies:
+        check(p, 'creation_date', int)
+        check(p, 'description', str, allow_none=True)
+        check(p, 'id', int)
+        check(p, 'last_modification_date', int)
+        check(p, 'name', str)
+        check(p, 'no_target', str)
+        check(p, 'owner', str)
+        check(p, 'owner_id', int)
+        check(p, 'shared', int)
+        check(p, 'template_uuid', 'scanner-uuid')
+        check(p, 'user_permissions', int)
+        check(p, 'visibility', str)
