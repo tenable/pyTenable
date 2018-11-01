@@ -13,7 +13,7 @@
 .. automodule:: tenable.io.files
 .. automodule:: tenable.io.filters
 .. automodule:: tenable.io.folders
-.. automodule:: tenable.io.group
+.. automodule:: tenable.io.groups
 .. automodule:: tenable.io.permissions
 .. automodule:: tenable.io.plugins
 .. automodule:: tenable.io.policies

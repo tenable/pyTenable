@@ -16,7 +16,7 @@ Methods available on ``tio.users``:
     .. automethod:: details
     .. automethod:: edit
     .. automethod:: enabled
-    .. automethod:: get_api_keys
+    .. automethod:: gen_api_keys
     .. automethod:: two_factor
     .. automethod:: enable_two_factor
     .. automethod:: verify_two_factor

@@ -8,7 +8,7 @@ The following methods allow for interaction into the Tenable.io
 Methods available on ``tio.scanners``:
 
 .. rst-class:: hide-signature
-.. autoclass:: PoliciesAPI
+.. autoclass:: ScannersAPI
 
     .. automethod:: control_scan
     .. automethod:: delete

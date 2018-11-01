@@ -1,10 +1,13 @@
+'''
+.. autoclass:: NessusReportv2
+'''
 from lxml import etree
 import dateutil.parser, time
 
 
 class NessusReportv2(object):
     '''
-    The NessusReport generator will return vulnerability items from any
+    The NessusReportv2 generator will return vulnerability items from any
     Nessus version 2 formatted Nessus report file.  The returned data will be
     a python dictionary representation of the ReportItem with the relevent
     host properties attached.  The ReportItem's structure itself will determine
@@ -14,6 +17,15 @@ class NessusReportv2(object):
         fobj (File object or string path):
             Either a File-like object or a string path pointing to the file to
             be parsed.
+
+    Examples:
+        For example, if we wanted to load a Nessus report from disk and iterate 
+        through the contents, it would simply be a matter of:
+
+        >>> with open('example.nessus') as nessus_file:
+        ...     report = NessusReportv2(nessus_file)
+        ...     for item in report:
+        ...         print(item) 
     '''
     def __init__(self, fobj):
         self._iter = etree.iterparse(fobj, events=('start', 'end'))
@@ -53,15 +65,6 @@ class NessusReportv2(object):
 
         Generally speaking this method is not called directly, but is instead
         called as part of a loop.
-
-        Examples:
-            For example, if we wanted to load a Nessus report from disk and
-            iterate through the contents, it would simply be a matter of:
-
-            >>> with open('example.nessus') as nessus_file:
-            ...     report = NessusReportv2(nessus_file)
-            ...     for item in report:
-            ...         print(item) 
         '''
         try:
             for event, elem in self._iter:
