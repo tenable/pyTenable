@@ -1,8 +1,26 @@
+'''
+permissions
+===========
+
+The following methods allow for interaction into the Tenable.io 
+`permissions <https://cloud.tenable.com/api#/resources/permissions>`_ 
+API endpoints.
+
+Methods available on ``tio.permissions``:
+
+.. rst-class:: hide-signature
+.. autoclass:: PermissionsAPI
+
+    .. automethod:: change
+    .. automethod:: list
+'''
 from .base import TIOEndpoint
 
 class PermissionsAPI(TIOEndpoint):
     def change(self, otype, id, *acls):
         '''
+        Modify the permission of a specific object.
+
         `permissions: change <https://cloud.tenable.com/api#/resources/permissions/change>`_
 
         Args:
@@ -37,11 +55,13 @@ class PermissionsAPI(TIOEndpoint):
 
     def list(self, otype, id):
         '''
+        List the permissions of a specific object.
+
         `permissions: list <https://cloud.tenable.com/api#/resources/permissions/list>`_
 
         Args:
             otype (str):
-                The type of object being quried.
+                The type of object being queried.
             id (int):
                 The unique identifier of the object.
 
