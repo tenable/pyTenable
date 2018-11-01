@@ -39,6 +39,18 @@ def test_create_scanner_group_permissionerror(stdapi):
 
 def test_create_scanner_group(api, scannergroup):
     assert isinstance(scannergroup, dict)
+    s = scannergroup
+    check(s, 'default_permissions', int)
+    check(s, 'id', int)
+    check(s, 'last_modification_date', int)
+    check(s, 'name', str)
+    check(s, 'owner', str)
+    check(s, 'owner_id', int)
+    check(s, 'owner_name', str)
+    check(s, 'owner_uuid', 'uuid')
+    check(s, 'scan_count', int)
+    check(s, 'type', str)
+    check(s, 'uuid', 'uuid')
 
 def test_delete_scanner_group_id_typeerror(api):
     with pytest.raises(TypeError):
@@ -89,8 +101,20 @@ def test_details_permissionerror(stdapi):
         stdapi.scanner_groups.details(1)
 
 def test_details(api, scannergroup):
-    dets = api.scanner_groups.details(scannergroup['id'])
-    assert dets['id'] == scannergroup['id']
+    s = api.scanner_groups.details(scannergroup['id'])
+    assert s['id'] == scannergroup['id']
+    s = scannergroup
+    check(s, 'default_permissions', int)
+    check(s, 'id', int)
+    check(s, 'last_modification_date', int)
+    check(s, 'name', str)
+    check(s, 'owner', str)
+    check(s, 'owner_id', int)
+    check(s, 'owner_name', str)
+    check(s, 'owner_uuid', 'uuid')
+    check(s, 'scan_count', int)
+    check(s, 'type', str)
+    check(s, 'uuid', 'uuid')
 
 def test_edit_scanner_group_id_typeerror(api):
     with pytest.raises(TypeError):
@@ -112,7 +136,26 @@ def test_edit_scanner_group(api, scannergroup):
     api.scanner_groups.edit(scannergroup['id'], str(uuid.uuid4()))
 
 def test_list_scanner_groups(api):
-    assert isinstance(api.scanner_groups.list(), list)
+    groups = api.scanner_groups.list()
+    assert isinstance(groups, list)
+    for s in groups:
+        check(s, 'creation_date', int)
+        check(s, 'default_permissions', int)
+        check(s, 'id', int)
+        check(s, 'last_modification_date', int)
+        check(s, 'name', str)
+        check(s, 'owner', str)
+        check(s, 'owner_id', int)
+        check(s, 'owner_name', str)
+        check(s, 'owner_uuid', 'uuid')
+        check(s, 'scan_count', int)
+        check(s, 'scanner_count', int)
+        check(s, 'scanner_id', int)
+        check(s, 'scanner_uuid', 'uuid')
+        check(s, 'shared', int)
+        check(s, 'type', str)
+        check(s, 'user_permissions', int)
+        check(s, 'uuid', 'uuid')
 
 def test_list_scanner_groups_permissionerror(stdapi):
     with pytest.raises(PermissionError):
@@ -126,5 +169,37 @@ def test_list_scanners_in_scanner_group_permissionerror(stdapi, scannergroup):
     with pytest.raises(PermissionError):
         stdapi.scanner_groups.list_scanners(scannergroup['id'])
 
-def test_list_scanners_in_scanner_group(api, scannergroup):
-    assert isinstance(api.scanner_groups.list_scanners(scannergroup['id']), list)
+def test_list_scanners_in_scanner_group(api, scannergroup, scanner):
+    api.scanner_groups.add_scanner(scannergroup['id'], scanner['id'])
+    scanners = api.scanner_groups.list_scanners(scannergroup['id'])
+    assert isinstance(scanners, list)
+    for s in scanners:
+        check(s, 'distro', str, allow_none=True)
+        check(s, 'engine_version', str)
+        check(s, 'group', bool)
+        check(s, 'id', int)
+        check(s, 'key', str)
+        check(s, 'last_connect', int)
+        check(s, 'last_modification_date', int)
+        check(s, 'linked', int)
+        check(s, 'loaded_plugin_set', str)
+        check(s, 'name', str)
+        check(s, 'num_hosts', int)
+        check(s, 'num_scans', int)
+        check(s, 'num_sessions', int)
+        check(s, 'num_tcp_sessions', int)
+        check(s, 'owner', str)
+        check(s, 'owner_id', int)
+        check(s, 'owner_name', str)
+        check(s, 'owner_uuid', 'uuid')
+        check(s, 'platform', str)
+        check(s, 'pool', bool)
+        check(s, 'scan_count', int)
+        check(s, 'source', str)
+        check(s, 'status', str)
+        check(s, 'timestamp', int)
+        check(s, 'type', str)
+        check(s, 'ui_build', str)
+        check(s, 'ui_version', str)
+        check(s, 'uuid', 'uuid')
+    api.scanner_groups.delete_scanner(scannergroup['id'], scanner['id'])
