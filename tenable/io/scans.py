@@ -1,3 +1,36 @@
+'''
+scans
+=====
+
+The following methods allow for interaction into the Tenable.io 
+`scans <https://cloud.tenable.com/api#/resources/scans>`_ API endpoints.
+
+Methods available on ``tio.scans``:
+
+.. rst-class:: hide-signature
+.. autoclass:: ScansAPI
+
+    .. automethod:: attachment
+    .. automethod:: configure
+    .. automethod:: copy
+    .. automethod:: create
+    .. automethod:: delete
+    .. automethod:: delete_history
+    .. automethod:: details
+    .. automethod:: results
+    .. automethod:: export
+    .. automethod:: host_details
+    .. automethod:: import_scan
+    .. automethod:: launch
+    .. automethod:: list
+    .. automethod:: pause
+    .. automethod:: plugin_output
+    .. automethod:: set_read_status
+    .. automethod:: resume
+    .. automethod:: schedule
+    .. automethod:: stop
+    .. automethod:: timezones
+'''
 from .base import TIOEndpoint
 from tenable.utils import dict_merge
 from tenable.errors import UnexpectedValueError
@@ -21,7 +54,7 @@ class ScansAPI(TIOEndpoint):
 
     def _create_scan_document(self, kw):
         '''
-        Takes the keyworded arguments and will provide a scan settings document
+        Takes the key-worded arguments and will provide a scan settings document
         based on the values inputted.
 
         Args:
@@ -97,14 +130,14 @@ class ScansAPI(TIOEndpoint):
 
         # If the targets parameter is specified, then we will need to convert
         # the list of targets to a comma-delimited string and then set the
-        # text_targets paramater with the result.
+        # text_targets parameter with the result.
         if 'targets' in kw:
             scan['settings']['text_targets'] = ','.join(self._check(
                 'targets', kw['targets'], list))
             del(kw['targets'])
 
         # For credentials, we will simply push the dictionary as-is into the
-        # the credentials.add subdocument.
+        # the credentials.add sub-document.
         if 'credentials' in kw:
             scan['credentials'] = {'add': dict()}
             scan['credentials']['add'] = self._check(
@@ -112,7 +145,7 @@ class ScansAPI(TIOEndpoint):
             del(kw['credentials'])
 
         # Just like with credentials, we will push the dictionary as-is into the
-        # correct subdocument of the scan definition.
+        # correct sub-document of the scan definition.
         if 'compliance' in kw:
             scan['audits'] = self._check('compliance', kw['compliance'], dict)
             del(kw['compliance'])
@@ -122,12 +155,14 @@ class ScansAPI(TIOEndpoint):
             del(kw['plugins'])
 
         # any other remaining keyword arguments will be passed into the settings
-        # subdocument.  The bulk of the data should go here...
+        # sub-document.  The bulk of the data should go here...
         scan['settings'] = dict_merge(scan['settings'], kw)
         return scan
 
     def attachment(self, scan_id, attachment_id, key, fobj=None):
         '''
+        Retrieve an attachment  associated to a scan.
+
         `scans: attachments <https://cloud.tenable.com/api#/resources/scans/attachments>`_
 
         Args:
@@ -140,6 +175,10 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             FileObject: A file-like object with the attachement written into it.
+
+        Examples:
+            >>> with open('example.file', 'wb') as fobj:
+            ...     tio.scans.attachement(1, 1, 'abc', fobj)
         '''
         if not fobj:
             # if no file-like object is specified, then assign a BytesIO object
@@ -156,12 +195,12 @@ class ScansAPI(TIOEndpoint):
                 fobj.write(chunk)
         fobj.seek(0)
 
-        # Return the file object to the ccaller.
+        # Return the file object to the caller.
         return fobj
 
     def configure(self, id, **kw):
         '''
-        Overwrite the prameters specified on top of the existing scan record.
+        Overwrite the parameters specified on top of the existing scan record.
 
         `scans: configure <https://cloud.tenable.com/api#/resources/scans/configure>`_
 
@@ -186,14 +225,17 @@ class ScansAPI(TIOEndpoint):
             **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
-                more detailed informatiom, please refer to the API documentation
+                more detailed information, please refer to the API documentation
                 linked above.            
 
         Returns:
             dict: The scan resource record.
+
+        Examples:
+            >>> tio.scans.configure(1, name='New Scan Name')
         '''
 
-        # We will get the current scan record, generate the new paramaters in
+        # We will get the current scan record, generate the new parameters in
         # the correct format, and then merge them together to create the new
         # :func:`~.tenable.tenable_io.ScansAPI.details` method, however is not 
         # scan record that we will be pushing to the API.
@@ -207,6 +249,8 @@ class ScansAPI(TIOEndpoint):
 
     def copy(self, scan_id, folder_id=None, name=None):
         '''
+        Duplicates a scan and returns the details of the copy.
+
         `scans: copy <https://cloud.tenable.com/api#/resources/scans/copy>`_
 
         Args:
@@ -216,6 +260,9 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             dict: The scan resource record for the copied scan.
+
+        Examples:
+            >>> new_scan = tio.scans.copy(1, 'New Scan Name')
         '''
 
         # Construct the request payload.
@@ -231,6 +278,8 @@ class ScansAPI(TIOEndpoint):
 
     def create(self, **kw):
         '''
+        Create a new scan.
+
         `scans: create <https://cloud.tenable.com/api#/resources/scans/create>`_
 
         Args:
@@ -258,6 +307,11 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             dict: The scan resource record of the newly created scan.
+
+        Examples:
+            Create an un-credentialed basic scan:
+
+            >>> scan = tio.scans.create(targets=['127.0.0.1'])
         '''
         if 'template' not in kw:
             kw['template'] = 'basic'
@@ -268,6 +322,8 @@ class ScansAPI(TIOEndpoint):
 
     def delete(self, scan_id):
         '''
+        Remove a scan.
+
         `scans: delete <https://cloud.tenable.com/api#/resources/scans/delete>`_
 
         Args:
@@ -275,11 +331,16 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             None: scan successfully deleted.
+
+        Examples:
+            >>> tio.scans.delete(1)
         '''
         self._api.delete('scans/{}'.format(self._check('scan_id', scan_id, int)))
 
     def delete_history(self, scan_id, history_id):
         '''
+        Remove an instance of a scan from a scan history.
+
         `scans: delete-history <https://cloud.tenable.com/api#/resources/scans/delete-history>`_
 
         Args:
@@ -288,6 +349,9 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             None: Scan history successfully deleted.
+
+        Examples:
+            >>> tio.scans.delete_history(1, 1)
         '''
         self._api.delete('scans/{}/hostory/{}'.format(
             self._check('scan_id', scan_id, int),
@@ -299,13 +363,17 @@ class ScansAPI(TIOEndpoint):
         document that closely matches what the API expects to be POSTed or PUTed
         via the create and configure methods.  The compliance audits and
         credentials are populated into the 'current' sub-document for the
-        relevent resources.
+        relevant resources.
 
         Args:
             scan_id (int): The unique identifier for the scan.
 
         Returns:
             dict: The scan configuration resource.
+
+        Examples:
+            >>> scan = tio.scans.details(1)
+            >>> pprint(scan)
 
         Please note that flatten_scan is reverse-engineered from the responses
         from the editor API and isn't guaranteed to work. 
@@ -377,6 +445,9 @@ class ScansAPI(TIOEndpoint):
 
     def results(self, scan_id, history_id=None):
         '''
+        Return the scan results from either the latest scan or a specific scan
+        instance in the history.
+
         `scans: details <https://cloud.tenable.com/api#/resources/scans/details>`_
 
         Args:
@@ -386,6 +457,15 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             dict: The scan result dictionary.
+
+        Examples:
+            Retrieve the latest results:
+
+            >>> results = tio.scans.results(1)
+
+            Retrieve a specific instance of the result set:
+
+            >>> results = tio.scans.results(1, 1)
         '''
         params = dict()
         if history_id:
@@ -397,6 +477,8 @@ class ScansAPI(TIOEndpoint):
 
     def export(self, scan_id, *filters, **kw):
         '''
+        Export the scan report.
+
         `scans: export <https://cloud.tenable.com/api#/resources/scans/export-request>`_
 
         Args:
@@ -433,11 +515,22 @@ class ScansAPI(TIOEndpoint):
                 The file-like object to be returned with the exported data.  If
                 no object is specified, a BytesIO object is returned with the
                 data.  While this is an optional parameter, it is highly
-                recommended to use this paramater as exported files can be quite
+                recommended to use this parameter as exported files can be quite
                 large, and BytesIO objects are stored in memory, not on disk.
 
         Returns:
             FileObject: The file-like object of the requested export.
+
+        Examples:
+            Export the full report of the latest instance of the scan:
+
+            >>> with open('example.nessus', 'wb') as reportobj:
+            ...     tio.scans.export(1, fobj=reportobj)
+
+            Export a specific instance of the scan:
+
+            >>> with open('example.nessus', 'wb') as reportobj:
+            ...     tio.scans.export(1, history_id=1, fobj=reportobj)
         '''
 
         # initiate the payload and parameters dictionaries.
@@ -485,7 +578,7 @@ class ScansAPI(TIOEndpoint):
             self._check('scan_id', scan_id, int)), 
             params=params, json=payload).json()['file']
 
-        # Next we will wait for the statif of the export request to become
+        # Next we will wait for the status of the export request to become
         # ready.  We will query the API every half a second until we get the
         # response we're looking for.
         while 'ready' != self._api.get('scans/{}/export/{}/status'.format(
@@ -508,6 +601,8 @@ class ScansAPI(TIOEndpoint):
 
     def host_details(self, scan_id, host_id, history_id=None):
         '''
+        Retrieve the host details from a specific scan.
+
         `scans: host-details <https://cloud.tenable.com/api#/resources/scans/host-details>`_
 
         Args:
@@ -518,6 +613,9 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             dict: The information related to the host requested.
+
+        Examples:
+            >>> host = tio.scans.host_details(1, 1)
         '''
         params = dict()
         if history_id:
@@ -531,6 +629,8 @@ class ScansAPI(TIOEndpoint):
 
     def import_scan(self, fobj, folder_id=None, password=None):
         '''
+        Import a scan report into Tenable.io.
+
         `scans: import <https://cloud.tenable.com/api#/resources/scans/import>`_
 
         Args:
@@ -543,6 +643,17 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             dict: The scan resource record for the imported scan.
+
+        Examples:
+            Import a .nessusv2 report:
+
+            >>> with open('example.nessus') as reportobj:
+            ...     tio.scans.import(reportobj)
+
+            Import a NessusDB report.
+
+            >>> with open('example.db') as reportobj:
+            ...     tio.scans.import(reportobj, password='sekret')
         '''
         # First lets verify that the folder_id and password are typed correctly
         # before initiating any uploads.
@@ -562,6 +673,8 @@ class ScansAPI(TIOEndpoint):
 
     def launch(self, scan_id, targets=None):
         '''
+        Launches a scan.
+
         `scans: launch <https://cloud.tenable.com/api#/resources/scans/launch>`_
 
         Args:
@@ -572,6 +685,15 @@ class ScansAPI(TIOEndpoint):
 
         Response:
             str: The uuid of the scan instance (history).
+
+        Examples:
+            Launch the scan with the configured targets:
+
+            >>> tio.scans.launch(1)
+
+            Launch the scan with some custom targets:
+
+            >>> tio.scans.launch(1, targets=['127.0.0.1'])
         '''
         payload = dict()
         if targets:
@@ -584,6 +706,8 @@ class ScansAPI(TIOEndpoint):
 
     def list(self, folder_id=None, last_modified=None):
         '''
+        Retrieve the list of configured scans.
+
         `scans: list <https://cloud.tenable.com/api#/resources/scans/list>`_
 
         Args:
@@ -594,6 +718,10 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             list: A list containing the list of scan resource records.
+
+        Examples:
+            >>> for scan in tio.scans.list():
+            ...     pprint(scan)
         '''
         params = dict()
         if folder_id:
@@ -608,6 +736,8 @@ class ScansAPI(TIOEndpoint):
 
     def pause(self, scan_id, block=False):
         '''
+        Pauses a running scan.
+
         `scans: pause <https://cloud.tenable.com/api#/resources/scans/pause>`_
 
         Args:  
@@ -617,6 +747,9 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             None: The scan was successfully requested to be paused.
+
+        Examples:
+            >>> tio.scans.pause(1)
         '''
         self._api.post('scans/{}/pause'.format(
             self._check('scan_id', scan_id, int)), json={})
@@ -625,6 +758,9 @@ class ScansAPI(TIOEndpoint):
 
     def plugin_output(self, scan_id, host_id, plugin_id, history_id=None):
         '''
+        Retrieve the plugin output for a specific instance of a vulnerability
+        on a host.
+
         `scans: plugin-output <https://cloud.tenable.com/api#/resources/scans/plugin-output>`_
 
         Args:
@@ -636,6 +772,10 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             dict: The plugin resource record for that plugin on that host.
+
+        Examples:
+            >>> output = tio.scans.plugin_output(1, 1, 1)
+            >>> pprint(output)
         '''
         params = dict()
         if history_id:
@@ -648,6 +788,9 @@ class ScansAPI(TIOEndpoint):
 
     def set_read_status(self, scan_id, read_status):
         '''
+        Sets the read status of the scan.  This is generally used to toggle the
+        unread status of the scan within the UI.
+
         `scans: read-status <https://cloud.tenable.com/api#/resources/scans/read-status>`_
 
         Args:
@@ -658,6 +801,11 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             None: The status of the scan was updated.
+
+        Examples:
+            Set a scan to unread:
+
+            >>> tio.scans.set_read_status(1, False)
         '''
         self._api.put('scans/{}/status'.format(
                 self._check('scan_id', scan_id, int)), json={
@@ -666,6 +814,8 @@ class ScansAPI(TIOEndpoint):
 
     def resume(self, scan_id):
         '''
+        Resume a paused scan.
+
         `scans: resume <https://cloud.tenable.com/api#/resources/scans/resume>`_
 
         Args:
@@ -673,12 +823,17 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             None: The scan was successfully requested to resume.
+
+        Examples:
+            >>> tio.scans.resume(1)
         '''
         self._api.post('scans/{}/resume'.format(
             self._check('scan_id', scan_id, int)))
 
     def schedule(self, scan_id, enabled):
         '''
+        Enables or disables the scan schedule.
+
         `scans: schedule <https://cloud.tenable.com/api#/resources/scans/schedule>`_
 
         Args:
@@ -687,6 +842,11 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             dict: The schedule resource record for the scan.
+
+        Examples:
+            Enable a scan schedule:
+
+            >>> tio.scans.schedule(1, True)
         '''
         return self._api.put('scans/{}/schedule'.format(
                 self._check('scan_id', scan_id, int)), json={
@@ -694,6 +854,8 @@ class ScansAPI(TIOEndpoint):
 
     def stop(self, scan_id, block=False):
         '''
+        Stop a running scan.
+
         `scans: stop <https://cloud.tenable.com/api#/resources/scans/stop>`_
 
         Args:
@@ -703,6 +865,15 @@ class ScansAPI(TIOEndpoint):
 
         Returns:
             None: The scan was successfully requested to stop.
+
+        Examples:
+            Stop the scan asynchronously:
+
+            >>> tio.scans.stop(1)
+
+            Stop the scan and wait for the scan to stop:
+
+            >>> tio.scans.stop(1, True)
         '''
         self._api.post('scans/{}/stop'.format(
             self._check('scan_id', scan_id, int)))
@@ -711,10 +882,16 @@ class ScansAPI(TIOEndpoint):
 
     def timezones(self):
         '''
+        Retrieves the list of timezones.
+
         `scans: timezones <https://cloud.tenable.com/api#/resources/scans/timezones>`_
 
         Returns:
             list: List of allowed timezone strings accepted by Tenable.IO
+
+        Examples:
+            >>> for item in tio.scans.timezones():
+            ...     pprint(item)
         '''
         resp = self._api.get('scans/timezones').json()['timezones']
         return [i['value'] for i in resp]
