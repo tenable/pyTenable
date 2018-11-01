@@ -1,3 +1,25 @@
+'''
+editor
+======
+
+The following methods allow for interaction into the Tenable.io 
+`editor <https://cloud.tenable.com/api#/resources/editor>`_ 
+API endpoints.  While these endpoints are pythonized for completeness within
+pyTenable, the Editor API endpoints should generally be avoided unless absolutely
+necessary.  These endpoints are used to drive the Tenable.io UI, and not
+designed to be used programmatically.
+
+Methods available on ``io.editor``:
+
+.. rst-class:: hide-signature
+.. autoclass:: EditorAPI
+
+    .. automethod:: audits
+    .. automethod:: details
+    .. automethod:: edit
+    .. automethod:: list
+    .. automethod:: plugin_description
+'''
 from .base import TIOEndpoint
 from tenable.utils import dict_merge
 from io import BytesIO
@@ -140,6 +162,8 @@ class EditorAPI(TIOEndpoint):
 
     def audits(self, etype, object_id, file_id, fobj=None):
         '''
+        Retrieves an audit file from Tenable.io
+
         `editor: audits <https://cloud.tenable.com/api#/resources/editor/audits>`_
 
         Args:
@@ -181,6 +205,8 @@ class EditorAPI(TIOEndpoint):
 
     def details(self, etype, uuid):
         '''
+        Retrieves details about a specific object.
+
         `editor: details <https://cloud.tenable.com/api#/resources/editor/details>`_
 
         Args:
@@ -201,6 +227,8 @@ class EditorAPI(TIOEndpoint):
 
     def edit(self, etype, id):
         '''
+        Edits an object.
+
         `editor: edit <https://cloud.tenable.com/api#/resources/editor/edit>`_
 
         Args:
@@ -221,6 +249,8 @@ class EditorAPI(TIOEndpoint):
 
     def list(self, etype):
         '''
+        List objects.
+
         `editor: list <https://cloud.tenable.com/api#/resources/editor/list>`_
 
         Args:
@@ -238,6 +268,8 @@ class EditorAPI(TIOEndpoint):
 
     def plugin_description(self, policy_id, family_id, plugin_id):
         '''
+        Retrieves the plugin description for the specified plugin.
+
         `editor: plugin-description <https://cloud.tenable.com/api#/resources/editor/plugin-description>`_
 
         Args:
