@@ -1,3 +1,22 @@
+'''
+target_groups
+=============
+
+The following methods allow for interaction into the Tenable.io 
+`target_groups <https://cloud.tenable.com/api#/resources/target-groups>`_ 
+API endpoints.
+
+Methods available on ``tio.target_groups``:
+
+.. rst-class:: hide-signature
+.. autoclass:: TargetGroupsAPI
+
+    .. automethod:: create
+    .. automethod:: delete
+    .. automethod:: details
+    .. automethod:: edit
+    .. automethod:: list
+'''
 from .base import TIOEndpoint
 from tenable.errors import UnexpectedValueError
 from tenable.utils import dict_merge
@@ -5,6 +24,8 @@ from tenable.utils import dict_merge
 class TargetGroupsAPI(TIOEndpoint):
     def create(self, name, members, **kw):
         '''
+        Create a target-group.
+
         `target-groups: create <https://cloud.tenable.com/api#/resources/target-groups/create>`_
 
         Args:
@@ -22,6 +43,9 @@ class TargetGroupsAPI(TIOEndpoint):
         
         Returns:
             dict: The resource record of the newly created target group.
+
+        Examples:
+            >>> tg = tio.target_groups.create('Example', ['192.168.0.0/24'])
         '''
         payload = {
             'name': self._check('name', name, str)
@@ -41,6 +65,8 @@ class TargetGroupsAPI(TIOEndpoint):
 
     def delete(self, id):
         '''
+        Delete a target group.
+
         `target-groups: delete <https://cloud.tenable.com/api#/resources/target-groups/delete>`_
 
         Args:
@@ -48,11 +74,16 @@ class TargetGroupsAPI(TIOEndpoint):
 
         Returns:
             None: The target group was successfully deleted.
+
+        Examples:
+            >>> tio.target_groups.delete(1)
         '''
         self._api.delete('target-groups/{}'.format(self._check('id', id, int)))
 
     def details(self, id):
         '''
+        Retrieve the details of a target group.
+
         `target-groups: details <https://cloud.tenable.com/api#/resources/target-groups/details>`_
 
         Args:
@@ -60,12 +91,17 @@ class TargetGroupsAPI(TIOEndpoint):
 
         Returns:
             dict: The resource record for the target group.
+
+        Examples:
+            >>> tg = tio.target_groups.details(1)
         '''
         return self._api.get('target-groups/{}'.format(
             self._check('id', id, int))).json()
 
     def edit(self, id, **kw):
         '''
+        Edit an existing target group.
+
         `target-groups: edit <https://cloud.tenable.com/api#/resources/target-groups/edit>`_
 
         Args:
@@ -88,6 +124,9 @@ class TargetGroupsAPI(TIOEndpoint):
 
         Returns:
             None: The target group has been successfully modified.
+
+        Examples:
+            >>> tio.target_groups.edit(1, name='Updated TG Name')
         '''
         payload = dict()
 
@@ -114,14 +153,19 @@ class TargetGroupsAPI(TIOEndpoint):
             'members': craw['members'],
         }
         payload = dict_merge(current, payload)
-
-        return self._api.put('target-groups/{}'.format(id), json=payload).json()  
+        self._api.put('target-groups/{}'.format(id), json=payload).json()  
 
     def list(self):
         '''
+        Retrieve the list of target groups configured.
+
         target-groups: list <https://cloud.tenable.com/api#/resources/target-groups/list>`_
 
         Returns:
             list: Listing of target group resource records.
+
+        Examples:
+            >>> for tg in tio.target_groups.list():
+            ...     pprint(tg)
         '''
         return self._api.get('target-groups').json()['target_groups']               
