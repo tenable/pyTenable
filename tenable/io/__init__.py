@@ -10,7 +10,7 @@
 .. automodule:: tenable.io.editor
 .. automodule:: tenable.io.exclusions
 .. automodule:: tenable.io.exports
-.. automodule:: tenable.io.file
+.. automodule:: tenable.io.files
 .. automodule:: tenable.io.filters
 .. automodule:: tenable.io.folders
 .. automodule:: tenable.io.group
@@ -62,7 +62,7 @@ from .audit_log import AuditLogAPI
 from .editor import EditorAPI
 from .exclusions import ExclusionsAPI
 from .exports import ExportsAPI
-from .file import FileAPI
+from .files import FileAPI
 from .filters import FiltersAPI
 from .folders import FoldersAPI
 from .groups import GroupsAPI
@@ -146,7 +146,7 @@ class TenableIO(APISession):
         return ExportsAPI(self)
 
     @property
-    def file(self):
+    def files(self):
         return FileAPI(self)
 
     @property
