@@ -166,20 +166,20 @@ def test_impersonate_id_typeerror(api):
 def test_impersonate_notfounderror(api):
     with pytest.raises(PermissionError):
         api.users.impersonate(guser())
-        api.session.get()
+        api.session.details()
         api.session.restore()
 
 def test_impersonate_permissionerror(stdapi, user):
     with pytest.raises(PermissionError):
         stdapi.users.impersonate(user['username'])
-        stdapi.session.get()
+        stdapi.session.details()
         stdapi.session.restore()
 
 def test_impersonate(api, user):
     api.users.impersonate(user['username'])
-    assert api.session.get()['username'] == user['username']
+    assert api.session.details()['username'] == user['username']
     api.session.restore()
-    assert api.session.get()['username'] != user['username']
+    assert api.session.details()['username'] != user['username']
 
 def test_list_users(api, user):
     users = api.users.list()

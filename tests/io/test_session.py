@@ -13,8 +13,27 @@ def test_session_edit_email_typeerror(api):
 def test_session_edit(api):
     api.session.edit(str(uuid.uuid4()), 'noreply@pytenable.test')
 
-def test_session_get(api):
-    assert isinstance(api.session.get(), dict)
+def test_session_details(api):
+    session = api.session.details()
+    assert isinstance(session, dict)
+    check(session, 'container_id', int)
+    check(session, 'container_uuid', 'uuid')
+    check(session, 'container_name', str)
+    check(session, 'email', str)
+    check(session, 'enabled', bool)
+    check(session, 'group_uuids', list)
+    check(session, 'groups', list)
+    check(session, 'id', int)
+    check(session, 'login_fail_count', int)
+    check(session, 'login_fail_total', int)
+    check(session, 'name', str)
+    check(session, 'user_name', str)
+    check(session, 'username', str)
+    check(session, 'uuid', 'uuid')
+    check(session, 'uuid_id', str)
+    check(session, 'features', dict)
+    for item in session['features'].keys():
+        check(session['features'], item, bool)
 
 def test_session_change_password_old_password_typeerror(api):
     with pytest.raises(TypeError):
