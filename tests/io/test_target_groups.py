@@ -33,7 +33,26 @@ def test_create_members_unexpectedvalue(api):
         api.target_groups.create('nope', [])
 
 def test_create(api, targetgroup):
-    pass
+    assert isinstance(targetgroup, dict)
+    t = targetgroup
+    check(t, 'acls', list)
+    for a in t['acls']:
+        check(a, 'display_name', str, allow_none=True)
+        check(a, 'id', int, allow_none=True)
+        check(a, 'name', str, allow_none=True)
+        check(a, 'owner', int, allow_none=True)
+        check(a, 'permissions', int)
+        check(a, 'type', str)
+    check(t, 'creation_date', int)
+    check(t, 'default_group', int)
+    check(t, 'id', int)
+    check(t, 'last_modification_date', int)
+    check(t, 'members', str)
+    check(t, 'name', str)
+    check(t, 'owner', str)
+    check(t, 'owner_id', int)
+    check(t, 'shared', int)
+    check(t, 'user_permissions', int)
 
 def test_delete_id_typeerror(api):
     with pytest.raises(TypeError):
@@ -50,6 +69,25 @@ def test_details(api, targetgroup):
     group = api.target_groups.details(targetgroup['id'])
     assert isinstance(group, dict)
     assert group['id'] == targetgroup['id']
+    t = group
+    check(t, 'acls', list)
+    for a in t['acls']:
+        check(a, 'display_name', str, allow_none=True)
+        check(a, 'id', int, allow_none=True)
+        check(a, 'name', str, allow_none=True)
+        check(a, 'owner', int, allow_none=True)
+        check(a, 'permissions', int)
+        check(a, 'type', str)
+    check(t, 'creation_date', int)
+    check(t, 'default_group', int)
+    check(t, 'id', int)
+    check(t, 'last_modification_date', int)
+    check(t, 'members', str)
+    check(t, 'name', str)
+    check(t, 'owner', str)
+    check(t, 'owner_id', int)
+    check(t, 'shared', int)
+    check(t, 'user_permissions', int)
 
 def test_edit_id_typeerror(api):
     with pytest.raises(TypeError):
@@ -75,6 +113,26 @@ def test_edit(api, targetgroup):
     members = targetgroup['members'].split(',')
     members.append('192.168.0.2')
     mod = api.target_groups.edit(targetgroup['id'], members=members)
+    assert isinstance(mod, dict)
+    t = mod
+    check(t, 'acls', list)
+    for a in t['acls']:
+        check(a, 'display_name', str, allow_none=True)
+        check(a, 'id', int, allow_none=True)
+        check(a, 'name', str, allow_none=True)
+        check(a, 'owner', int, allow_none=True)
+        check(a, 'permissions', int)
+        check(a, 'type', str)
+    check(t, 'creation_date', int)
+    check(t, 'default_group', int)
+    check(t, 'id', int)
+    check(t, 'last_modification_date', int)
+    check(t, 'members', str)
+    check(t, 'name', str)
+    check(t, 'owner', str)
+    check(t, 'owner_id', int)
+    check(t, 'shared', int)
+    check(t, 'user_permissions', int)
     assert mod['members'] == ', '.join(members)
 
 def test_list(api):

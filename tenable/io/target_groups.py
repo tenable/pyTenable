@@ -123,7 +123,7 @@ class TargetGroupsAPI(TIOEndpoint):
                 `system`.
 
         Returns:
-            None: The target group has been successfully modified.
+            dict: The modified target group resource record.
 
         Examples:
             >>> tio.target_groups.edit(1, name='Updated TG Name')
@@ -153,7 +153,7 @@ class TargetGroupsAPI(TIOEndpoint):
             'members': craw['members'],
         }
         payload = dict_merge(current, payload)
-        self._api.put('target-groups/{}'.format(id), json=payload).json()  
+        return self._api.put('target-groups/{}'.format(id), json=payload).json()  
 
     def list(self):
         '''
