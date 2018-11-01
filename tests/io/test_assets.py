@@ -2,41 +2,59 @@ from .fixtures import *
 from tenable.errors import *
 
 def test_list(api):
-    assert isinstance(api.assets.list(), list)
+    assets = api.assets.list()
+    assert isinstance(assets, list)
+    a = assets[0]
+    check(a, 'aws_ec2_name', list)
+    check(a, 'fqdn', list)
+    check(a, 'has_agent', bool)
+    check(a, 'id', 'uuid')
+    check(a, 'ipv4', list)
+    check(a, 'ipv6', list)
+    check(a, 'last_seen', 'datetime')
+    check(a, 'mac_address', list)
+    check(a, 'netbios_name', list)
+    check(a, 'operating_system', list)
+    check(a, 'sources', list)
+    for s in a['sources']:
+        check(s, 'first_seen', 'datetime')
+        check(s, 'last_seen', 'datetime')
+        check(s, 'name', str)
+
 
 def test_import_assets_typeerror(api):
     with pytest.raises(TypeError):
-        api.assets.asset_import(1, 'pytest')
+        api.assets.asset_import('pytest', 1)
 
 def test_import_source_typeerror(api):
     with pytest.raises(TypeError):
-        api.assets.asset_import([{
+        api.assets.asset_import(1, {
             'fqdn': ['example.py.test'], 
             'ipv4': ['192.168.254.1'], 
             'netbios_name': '', 
             'mac_address': []
-        }], 1)
+        })
 
 def test_import_standard_user_permissionerror(stdapi):
     with pytest.raises(PermissionError):
-        stdapi.assets.asset_import([{
+        stdapi.assets.asset_import( 'pytest', {
             'fqdn': ['example.py.test'], 
             'ipv4': ['192.168.254.1'], 
             'netbios_name': '', 
             'mac_address': []
-        }], 'pytest')   
+        })   
 
 def test_import(api):
-    resp = api.assets.asset_import([{
+    resp = api.assets.asset_import('pytest', {
         'fqdn': ['example.py.test'], 
         'ipv4': ['192.168.254.1'], 
         'netbios_name': '', 
         'mac_address': []
-    }], 'pytest')
+    })
     single(resp, 'uuid')
 
 def test_import_jobs(api):
-    jobs = api.assets.import_jobs()
+    jobs = api.assets.list_import_jobs()
     assert isinstance(jobs, list)
     for i in jobs:
         check(i, 'batches', int)
@@ -52,9 +70,9 @@ def test_import_jobs(api):
         check(i, 'uploaded_assets', int)
 
 def test_import_job_info(api):
-    jobs = api.assets.import_jobs()
+    jobs = api.assets.list_import_jobs()
     if len(jobs) > 0:
-        job = api.assets.import_job_info(jobs[0]['job_id'])
+        job = api.assets.import_job_details(jobs[0]['job_id'])
         check(job, 'batches', int)
         check(job, 'container_id', 'uuid')
         check(job, 'end_time', int)
