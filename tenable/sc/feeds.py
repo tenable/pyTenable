@@ -1,3 +1,19 @@
+'''
+feeds
+=====
+
+The following methods allow for interaction into the SecurityCenter 
+`Feed <https://docs.tenable.com/sccv/api/Feed.html>`_ API.
+
+Methods available on ``sc.feeds``:
+
+.. rst-class:: hide-signature
+.. autoclass:: FeedAPI
+
+    .. automethod:: process
+    .. automethod:: status
+    .. automethod:: update
+'''
 from .base import SCEndpoint
 
 class FeedAPI(SCEndpoint):
@@ -82,7 +98,7 @@ class FeedAPI(SCEndpoint):
             >>> with open('sc-plugins-diff.tar.gz', 'rb') as plugfile:
             ...     sc.feed.process('active', plugfile)
         '''
-        filename = self._api.file.upload(fobj)
+        filename = self._api.files.upload(fobj)
 
         self._api.post('feed/{}/update'.format(
             self._check('feed_type', feed_type, str, choices=[

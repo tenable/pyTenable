@@ -387,6 +387,30 @@ class AnalysisAPI(SCEndpoint):
 
         Returns:
             AnalysisResultsIterator: an iterator object handling data pagination.
+
+        Examples:
+            A quick example showing how to get the information for a specific
+            scan from SecurityCenter.  As the default is for the scan method to 
+            return data from the vulndetails tool, we can handle this without 
+            actually doing anything other than calling 
+
+            >>> for vuln in sc.analysis.scan(1):
+            ...     pprint(vuln)
+
+            To ask for a specific subset of information (like only critical and
+            exploitable vulns) you'd want to pass the filter tuples into the
+            query like so:
+
+            >>> vulns = sc.analysis.scan(1
+            ...    ('severity', '=', '4'), ('exploit'),
+            ...    ('exploitAvailable', '=', 'true'))
+
+            To request a different data format (like maybe an IP summary of 
+            vulns) you just need to specify the appropriate tool:
+
+            >>> ips = sc.analysis.scan(1
+            ...    ('severity', '=', '4'), ('exploit'),
+            ...    ('exploitAvailable', '=', 'true'), tool='sumip')
         '''
         kw['scan_id'] = self._check('scan_id', scan_id, int)
         return self.vuln(*filters, **kw)

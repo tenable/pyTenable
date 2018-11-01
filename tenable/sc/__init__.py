@@ -11,6 +11,8 @@
 .. automodule:: tenable.sc.asset_lists
 .. automodule:: tenable.sc.blackouts
 .. automodule:: tenable.sc.dashboards
+.. automodule:: tenable.sc.feeds
+.. automodule:: tenable.sc.files
 .. automodule:: tenable.sc.jobs
 .. automodule:: tenable.sc.notifications
 .. automodule:: tenable.sc.reports
@@ -38,7 +40,7 @@ Example:
 
 .. code-block:: python
 
-   resp = tio.get('feed')
+   resp = sc.get('feed')
 
 .. py:module:: tenable.sc
 .. rst-class:: hide-signature
@@ -193,7 +195,7 @@ class SecurityCenter(APISession):
         # houses the Dashboard Tabs, Dashboard Templates, Dashboard Components endpoints
 
     @property
-    def feed(self):
+    def feeds(self):
         '''
         An object for interfacing to the feeds API.  See the
         :doc:`analysis documentation <securitycenter.feed>` 
@@ -202,7 +204,7 @@ class SecurityCenter(APISession):
         return FeedAPI(self)
 
     @property
-    def file(self):
+    def files(self):
         '''
         An object for interfacing to the files API.  See the
         :doc:`analysis documentation <securitycenter.file>` 
@@ -241,7 +243,7 @@ class SecurityCenter(APISession):
         # houses Configuration, System, Status, LDAP, SSH Key endpoints
 
     @property
-    def ticket(self):
+    def tickets(self):
         pass
         # houses Ticket endpoint
 

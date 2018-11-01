@@ -1,3 +1,18 @@
+'''
+files
+=====
+
+The following methods allow for interaction into the SecurityCenter 
+`File <https://docs.tenable.com/sccv/api/File.html>`_ API.
+
+Methods available on ``sc.feeds``:
+
+.. rst-class:: hide-signature
+.. autoclass:: FileAPI
+
+    .. automethod:: clear
+    .. automethod:: upload
+'''
 from .base import SCEndpoint
 
 class FileAPI(SCEndpoint):

@@ -7,24 +7,29 @@ Welcome to pyTenable's documentation!
 .. image:: https://img.shields.io/pypi/v/pytenable.svg
    :target: https://pypi.org/project/pyTenable/
 .. image:: https://img.shields.io/pypi/pyversions/pyTenable.svg
-   :target: #
+   :target: https://pypi.org/project/pyTenable/
 .. image:: https://img.shields.io/pypi/dm/pyTenable.svg
-   :target: #
+   :target: https://github.com/tenable/pytenable
 .. image:: https://img.shields.io/github/license/tenable/pyTenable.svg
-   :target: #
+   :target: https://github.com/tenable/pytenable
 
-pyTenable is intended to be a pythonic interface into the Tenable application APIs.  Further by providing a common interface and a common structure between all of the various applications, we can ease the transition from the vastly different APIs between some of the products.
+pyTenable is intended to be a pythonic interface into the Tenable application 
+APIs.  Further by providing a common interface and a common structure between 
+all of the various applications, we can ease the transition from the vastly 
+different APIs between some of the products.
 
 Installation
 ------------
 
-To install the most recent published version to pypi, its simply a matter of installing via pip:
+To install the most recent published version to pypi, its simply a matter of 
+installing via pip:
 
 .. code-block:: bash
    
    pip install pytenable
 
-If your looking for bleeding-edge, then feel free to install directly from the github repository like so:
+If your looking for bleeding-edge, then feel free to install directly from the 
+github repository like so:
 
 .. code-block:: bash
 
@@ -33,7 +38,8 @@ If your looking for bleeding-edge, then feel free to install directly from the g
 Getting Started
 ---------------
 
-Lets assume that we want to get the list of scans that have been run on our Tenable.io application.  Performing this action is as simple as the following:
+Lets assume that we want to get the list of scans that have been run on our 
+Tenable.io application.  Performing this action is as simple as the following:
 
 .. code-block:: python
    :linenos:
@@ -43,16 +49,19 @@ Lets assume that we want to get the list of scans that have been run on our Tena
    for scan in tio.scans.list():
       print('{status}: {id}/{uuid} - {name}'.format(**scan))
 
-Another example would be to export the vulnerability data that Tenable.io has stored.  Again, just a few lines:
+Getting started with SecurityCenter is equally as easy:
 
 .. code-block:: python
    :linenos:
 
-   vulns = tio.exports.vulns()
-   for item in vulns:
-      print(item['plugin']['name'])
+   from tenable.sc import SecurityCenter
+   sc = SecurityCenter('SECURITYCENTER_NETWORK_ADDRESS')
+   sc.login('SC_USERNAME', 'SC_PASSWORD')
+   for vuln in sc.analysis.vulns():
+      print('{ip}:{pluginID}:{pluginName}'.format(**vuln))
 
-For more detailed examples, please refer to the specific modules listed below.
+For more detailed information on whats available, please refer to the navigation
+section for the Tenable application you're looking 
 
 Contribute
 ----------
