@@ -1,8 +1,25 @@
+'''
+audit_log
+=========
+
+The following methods allow for interaction into the Tenable.io 
+`audit log <https://cloud.tenable.com/api#/resources/audit-log>`_ 
+API endpoints.
+
+Methods available on ``io.audit_log``:
+
+.. rst-class:: hide-signature
+.. autoclass:: AuditLogAPI
+
+    .. automethod:: events
+'''
 from .base import TIOEndpoint
 
 class AuditLogAPI(TIOEndpoint):
     def events(self, *filters, **kw):
         '''
+        Retrieve audit logs from Tenable.io.
+
         `audit-log: events <https://cloud.tenable.com/api#/resources/audit-log/events>`_
 
         Args:
@@ -19,10 +36,16 @@ class AuditLogAPI(TIOEndpoint):
 
             limit (int, optional):
                 The limit of how many events to return.  The API will default to
-                50 unless otherwise specifified.
+                50 unless otherwise specified.
 
         Returns:
             list: List of event records
+
+        Examples:
+            >>> events = api.audit_log.events(
+            ...     ('date', 'gt', '2018-01-01'), limit=100)
+            >>> for e in events:
+            ...     pprint(e)
         '''
         return self._api.get('audit-log/v1/events', params={
             'f': ['{}:{}:{}'.format(
