@@ -1,3 +1,20 @@
+'''
+filters
+=======
+
+The following methods allow for interaction into the Tenable.io 
+`filters <https://cloud.tenable.com/api#/resources/filters>`_ API endpoints.
+
+Methods available on ``tio.filters``:
+
+.. rst-class:: hide-signature
+.. autoclass:: FiltersAPI
+
+    .. automethod:: agents_filters
+    .. automethod:: scan_filters
+    .. automethod:: workbench_asset_filters
+    .. automethod:: workbench_vuln_filters
+'''
 from .base import TIOEndpoint
 
 class FiltersAPI(TIOEndpoint):
@@ -5,7 +22,7 @@ class FiltersAPI(TIOEndpoint):
 
     def _normalize(self, filterset):
         '''
-        Converts the filters into an easily parsable dictionary
+        Converts the filters into an easily pars-able dictionary
         '''
         filters = dict()
         for item in filterset:
@@ -18,7 +35,7 @@ class FiltersAPI(TIOEndpoint):
             # If there is a list of choices available, then we need to parse
             # them out and only pull back the usable values as a list
             if 'list' in item['control']:
-                # There is a lack of consistancy here.  In some cases the "list"
+                # There is a lack of consistency here.  In some cases the "list"
                 # is a list of dictionary items, and in other cases the "list"
                 # is a list of string values.
                 if isinstance(item['control']['list'][0], dict):
@@ -45,34 +62,53 @@ class FiltersAPI(TIOEndpoint):
 
     def agents_filters(self, normalize=True):
         '''
+        Returns agent filters.
+
         `filters: agents-filters <https://cloud.tenable.com/api#/resources/filters/agents-filters>`_
 
         Returns:
             dict: Filter resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.agents_filters()
         '''
         return self._use_cache('agents', 'filters/scans/agents', normalize)
 
     def workbench_vuln_filters(self, normalize=True):
         '''
+        Returns the vulnerability workbench filters
         `workbenches: vulnerabilities-filters <https://cloud.tenable.com/api#/resources/workbenches/vulnerabilities-filters>`_
 
         Returns:
             dict: Filter resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.workbench_vuln_filters()
         '''
         return self._use_cache('vulns', 'filters/workbenches/vulnerabilities', normalize)
 
     def workbench_asset_filters(self, normalize=True):
         '''
+        Returns the asset workbench filters.
+
         `workbenches: assets-filters <https://cloud.tenable.com/api#/resources/workbenches/assets-filters>`_
 
         Returns:
             dict: Filter resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.workbench_asset_filters()
         '''
         return self._use_cache('asset', 'filters/workbenches/assets', normalize)
 
     def scan_filters(self, normalize=True):
         '''
+        Returns the individual scan filters.
+
         Returns:
             dict: Filter resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.scan_filters()
         '''
         return self._use_cache('scan', 'filters/scans/reports', normalize)
