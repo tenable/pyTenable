@@ -1,3 +1,54 @@
+'''
+.. autoclass:: SecurityCenter
+
+    .. automethod:: login
+    .. automethod:: logout
+
+.. automodule:: tenable.sc.agents
+.. automodule:: tenable.sc.alerts
+.. automodule:: tenable.sc.analysis
+.. automodule:: tenable.sc.arcs
+.. automodule:: tenable.sc.asset_lists
+.. automodule:: tenable.sc.blackouts
+.. automodule:: tenable.sc.dashboards
+.. automodule:: tenable.sc.jobs
+.. automodule:: tenable.sc.notifications
+.. automodule:: tenable.sc.reports
+.. automodule:: tenable.sc.repository
+.. automodule:: tenable.sc.risk
+.. automodule:: tenable.sc.scans
+.. automodule:: tenable.sc.sensors
+.. automodule:: tenable.sc.system
+.. automodule:: tenable.sc.tickets
+.. automodule:: tenable.sc.users
+
+Raw HTTP Calls
+==============
+
+Even though the ``SecurityCenter`` object pythonizes the SecurityCenter API for 
+you, there may still bee the occasional need to make raw HTTP calls to the 
+SecurityCenter API.  The methods listed below aren't run through any 
+naturalization by the library aside from the response code checking.  These 
+methods effectively route directly into the requests session.  The responses 
+will be Response objects from the ``requests`` library.  In all cases, the path 
+is appended to the base ``url`` paramater that the ``SecurityCenter`` object was
+instantiated with.
+
+Example:
+
+.. code-block:: python
+
+   resp = tio.get('feed')
+
+.. py:module:: tenable.sc
+.. rst-class:: hide-signature
+.. autoclass:: SecurityCenter
+
+    .. automethod:: get
+    .. automethod:: post
+    .. automethod:: put
+    .. automethod:: delete
+'''
 from tenable.base import APISession, APIError, ServerError
 from .analysis import AnalysisAPI
 from .files import FileAPI
@@ -6,18 +57,24 @@ import warnings
 
 
 class SecurityCenter(APISession):
+    '''SecurityCenter 5 API Wrapper
+    This class is designed to handle authentication management for the
+    SecurityCenter 5.x API.  This is by no means a complete model of
+    everything that the API can handle, it is simply meant to be a thin
+    wrapper into the API.  Convenience functions will be added as time
+    passes and there is a desire to develop them.
+    
+    For more information, please See Tenable's `SC API documentation`_ and
+    the `SC API Best Practices Guide`_.
+
+    .. _SC API documentation:
+        https://docs.tenable.com/sccv/api/index.html
+    .. _SC API Best Practices Guide:
+        https://docs.tenable.com/sccv/api_best_practices/Content/ScApiBestPractices/AboutScApiBestPrac.htm
+    '''
+
     def __init__(self, host, port=443, ssl_verify=False, cert=None,
                  scheme='https', retries=None, backoff=None):
-        '''SecurityCenter 5 API Wrapper
-        This class is designed to handle authentication management for the
-        SecurityCenter 5.x API.  This is by no means a complete model of
-        everything that the API can handle, it is simply meant to be a thin
-        wrapper into the API.  Convenience functions will be added as time
-        passes and there is a desire to develop them.
-        For more information, please See Tenable's official API documentation
-        at: https://support.tenable.com/support-center/cerberus-support-center/includes/widgets/sc_api/index.html
-        '''
-
         # As we will always be passing a URL to the APISession class, we will
         # want to construct a URL that APISession (and further requests) 
         # understands.
@@ -78,6 +135,10 @@ class SecurityCenter(APISession):
 
         Returns:
             None
+
+        Examples:
+            >>> sc = SecurityCenter('127.0.0.1', port=8443)
+            >>> sc.login('username', 'password')
         '''
         resp = self.post('token', json={'username': user, 'password': passwd})
         self._session.headers.update({
@@ -87,6 +148,12 @@ class SecurityCenter(APISession):
     def logout(self):
         '''
         Logs out of SecurityCenter and resets the session.
+
+        Returns:
+            None
+
+        Examples:
+            >>> sc.logout()
         '''
         resp = self.delete('token')
         self._build_session()
@@ -100,7 +167,7 @@ class SecurityCenter(APISession):
     def analysis(self):
         '''
         An object for interfacing to the analysis API.  See the
-        :doc:`analysis documentation <securitycenter.analysis>` 
+        :doc:`analysis documentation <sc.analysis>` 
         for full details.
         '''
         return AnalysisAPI(self)
