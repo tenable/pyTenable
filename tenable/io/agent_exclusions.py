@@ -43,7 +43,7 @@ class AgentExclusionsAPI(TIOEndpoint):
                 please refer to:
                 https://cloud.tenable.com/api#/resources/scans/timezones
             frequency (str, optional):
-                The frequency of the rule. The string inputted will be upcased.
+                The frequency of the rule. The string inputted will be up-cased.
                 Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``, 
                 ``MONTHLY``, ``YEARLY``.
                 Default value is ``ONETIME``.
@@ -233,7 +233,7 @@ class AgentExclusionsAPI(TIOEndpoint):
                 The timezone to use for the exclusion.  The default if none is 
                 specified is to use UTC.
             frequency (str, optional):
-                The frequency of the rule. The string inputted will be upcased.
+                The frequency of the rule. The string inputted will be up-cased.
                 Valid values are: *ONETIME, DAILY, WEEKLY, MONTHLY, YEARLY*.
             interval (int, optional): The interval of the rule.
             weekdays (list, optional):

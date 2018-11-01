@@ -1,3 +1,22 @@
+'''
+agents
+======
+
+The following methods allow for interaction into the Tenable.io 
+`agents <https://cloud.tenable.com/api#/resources/agents>`_ 
+API endpoints.
+
+Methods available on ``tio.agents``:
+
+.. rst-class:: hide-signature
+.. autoclass:: AgentsAPI
+
+    .. automethod:: details
+    .. automethod:: list
+    .. automethod:: unlink
+    .. automethod:: task_status
+
+'''
 from .base import TIOIterator, TIOEndpoint
 
 class AgentsIterator(TIOIterator):
@@ -39,26 +58,10 @@ class AgentsIterator(TIOIterator):
             
 
 class AgentsAPI(TIOEndpoint):
-    def delete(self, agent_id, scanner_id=1):
-        '''
-        `agents: delete <https://cloud.tenable.com/api#/resources/agents/delete>`_
-
-        Args:
-            agent_id (int):
-                The ID fo the agent to delete
-            scanner_id (int, optional):
-                The identifier the scanner that the agent communicates to.
-
-        Returns:
-            None
-        '''
-        self._api.delete('scanners/{}/agents/{}'.format(
-            self._check('scanner_id', scanner_id, int),
-            self._check('agent_id', agent_id, int)    
-        ))
-
     def list(self, *filters, **kw):
         '''
+        Get the listing of configured agents from Tenable.io.
+
         `agents: list <https://cloud.tenable.com/api#/resources/agents/list>`_
 
         Args:
@@ -93,13 +96,24 @@ class AgentsAPI(TIOEndpoint):
             wildcard (str, optional):
                 A string to pattern match against all available fields returned.
             wildcard_fields (list, optional):
-                A list of fields to optionally restrict the wildcard matching
+                A list of fields to optionally restrict the wild-card matching
                 to.
 
         Returns:
             AgentsIterator: 
                 An iterator that handles the page management of the requested
                 records.
+
+        Examples:
+            Getting the listing of all agents:
+
+            >>> for agent in tio.agents.list():
+            ...     pprint(agent)
+
+            Retrieving all of the windows agents:
+
+            >>> for agent in tio.agents.list(('distro', 'match', 'win')):
+            ...     pprint(agent)
         '''
         scanner_id = 1
         limit = 50
@@ -148,13 +162,13 @@ class AgentsAPI(TIOEndpoint):
             'filter_type', kw['filter_type'], str, choices=['and', 'or']):
             query['ft'] = kw['filter_type']
 
-        # The wildcard filter text refers to how the API will pattern match
+        # The wild-card filter text refers to how the API will pattern match
         # within all fields, or specific fields using the wildcard_fields param.
         if 'wildcard' in kw and self._check('wildcard', kw['wildcard'], str):
             query['w'] = kw['wildcard']
 
         # The wildcard_fields parameter allows the user to restrict the fields
-        # that the wildcard pattern match pertains to.
+        # that the wild-card pattern match pertains to.
         if 'wildcard_fields' in kw and self._check(
             'wildcard_fields', kw['wildcard_fields'], list):
             query['wf'] = ','.join(kw['wildcard_fields'])
@@ -168,8 +182,10 @@ class AgentsAPI(TIOEndpoint):
             _query=query
         )
 
-    def get(self, agent_id, scanner_id=1):
+    def details(self, agent_id, scanner_id=1):
         '''
+        Retrieves the details of an agent.
+
         `agents: get <https://cloud.tenable.com/api#/resources/agents/get>`_
 
         Args:
@@ -180,6 +196,10 @@ class AgentsAPI(TIOEndpoint):
 
         Returns:
             dict: The agent dictionary record.
+
+        Examples:
+            >>> agent = tio.agents.details(1)
+            >>> pprint(agent)
         '''
         return self._api.get(
             'scanners/{}/agents/{}'.format(
@@ -187,23 +207,47 @@ class AgentsAPI(TIOEndpoint):
                 self._check('agent_id', agent_id, int)
             )).json()
 
-    def bulk_unlink(self, agent_ids, scanner_id=1):
+    def unlink(self, scanner_id=1, *agent_ids):
         '''
-        `bulk-operations: bulk-unlink-agent <https://cloud.tenable.com/api#/resources/bulk-operations/bulk-unlink-agent>`_
+        Unlink one or multiple agents from the Tenable.io instance.
+
+        `agents: delete <https://cloud.tenable.com/api#/resources/agents/delete>`_
 
         Args:
-            agent_id (int): The id of the agent
-            scanner_id (int, optional): The id of the scanner
+            *agent_ids (int):
+                The ID of the agent to delete
+            scanner_id (int, optional):
+                The identifier the scanner that the agent communicates to.
 
         Returns:
-            dict: Task resource
-        '''
-        self._api.post('scanners/{}/agents/_bulk/unlink'.format(
-            self._check('scanner_id', scanner_id, int)),
-            json={'items': self._check('agent_ids', agent_ids, list)})
+            None: A singular agent was successfully unlinked.
+            dict: A task record if multiple agents were requested to be unlinked.
 
-    def bulk_status(self, task_uuid, scanner_id=1):
+        Examples:
+            Unlink a singular agent:
+
+            >>> tio.agents.unlink(1)
+
+            Unlink many agents:
+
+            >>> tio.agents.unlink(1, 2, 3)
         '''
+        if len(agent_ids) <= 1:
+            # as only a singular agent_id was sent over, we can call the delete
+            # API
+            self._api.delete('scanners/{}/agents/{}'.format(
+                self._check('scanner_id', scanner_id, int),
+                self._check('agent_id', agent_id[0], int)    
+            ))
+        else:
+            return self._api.post('scanners/{}/agents/_bulk/unlink'.format(
+                self._check('scanner_id', scanner_id, int)),
+                json={'items': [self._check('agent_ids', i, int) for i in agent_ids]}).json()
+
+    def task_status(self, task_uuid, scanner_id=1):
+        '''
+        Retrieves the current status of the task requested.
+
         `bulk-operations: bulk-agent-status <https://cloud.tenable.com/api#/resources/bulk-operations/bulk-agent-status>`_
 
         Args:
@@ -212,6 +256,11 @@ class AgentsAPI(TIOEndpoint):
 
         Returns:
             dict: Task resource
+
+        Examples:
+            >>> item = tio.agents.unlink(21, 22, 23)
+            >>> task = tio.agent.task_status(item['task_uuid'])
+            >>> pprint(task)
         '''
         return self._api.get(
             'scanners/{}/agents/_bulk/{}'.format(
