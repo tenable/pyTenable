@@ -22,7 +22,7 @@ Methods available on ``tio.agent_groups``:
 from .base import TIOEndpoint
 
 class AgentGroupsAPI(TIOEndpoint):
-    def add_agent(self, group_id, scanner_id=1, *agent_ids):
+    def add_agent(self, group_id, *agent_ids, **kw):
         '''
         Adds an agent or multiple agents to the agent group specified.
 
@@ -46,6 +46,10 @@ class AgentGroupsAPI(TIOEndpoint):
 
             >>> tio.agent_groups.add_agent(1, 1, 2, 3)
         '''
+        scanner_id = 1
+        if 'scanner_id' in kw:
+            scanner_id = kw['scanner_id']
+
         if len(agent_ids) <= 1:
             # if there is only 1 agent id, we will perform a singular add.
             self._api.put('scanners/{}/agent-groups/{}/agents/{}'.format(
@@ -128,7 +132,7 @@ class AgentGroupsAPI(TIOEndpoint):
             self._check('group_id', group_id, int)
         ))
 
-    def delete_agent(self, group_id, scanner_id=1, *agent_ids):
+    def delete_agent(self, group_id, *agent_ids, **kw):
         '''
         Delete one or many agents from an agent group.
 
@@ -152,12 +156,16 @@ class AgentGroupsAPI(TIOEndpoint):
 
             >>> tio.agent_groups.delete(1, 1, 2, 3)
         '''
+        scanner_id = 1
+        if 'scanner_id' in kw:
+            scanner_id = kw['scanner_id']
+
         if len(agent_ids) <= 1:
             # if only a singular agent_id was passed, then we will want to
             self._api.delete('scanners/{}/agent-groups/{}/agents/{}'.format(
                 self._check('scanner_id', scanner_id, int),
                 self._check('group_id', group_id, int),
-                self._check('agent_id', agent_id[0], int)
+                self._check('agent_id', agent_ids[0], int)
             ))
         else:
             # if multiple agent ids were requested to be deleted, then we will

@@ -665,7 +665,7 @@ class ScansAPI(TIOEndpoint):
 
         # Upload the file to the Tenable.io and store the resulting filename in
         # the payload.
-        payload['file'] = self._api.file.upload(fobj)
+        payload['file'] = self._api.files.upload(fobj)
 
         # make the call to Tenable.io to import and then return the result to
         # the caller.

@@ -38,10 +38,10 @@ def test_add_agent_to_group(api, agentgroup, agent):
 
 def test_add_mult_agents_to_group(api, agentgroup):
     agents = api.agents.list()
-    task = api.agent_groups.add_agent(agentgroup['id'], [
+    task = api.agent_groups.add_agent(agentgroup['id'],
         agents.next()['id'],
         agents.next()['id']
-    ])
+    )
     assert isinstance(task, dict)
     check(task, 'container_uuid', str)
     check(task, 'status', str)
@@ -137,9 +137,9 @@ def test_delete_agent_from_group(api, agent, agentgroup):
 def test_delete_mult_agents_from_group(api, agentgroup):
     agents = api.agents.list()
     alist = [agents.next()['id'], agents.next()['id']]
-    api.agent_groups.add_agent(agentgroup['id'], alist)
+    api.agent_groups.add_agent(agentgroup['id'], *alist)
     time.sleep(1)
-    task = api.agent_groups.delete_agent(agentgroup['id'], alist)
+    task = api.agent_groups.delete_agent(agentgroup['id'], *alist)
     assert isinstance(task, dict)
     check(task, 'container_uuid', str)
     check(task, 'status', str)
@@ -191,10 +191,10 @@ def test_task_status_task_uuid_unexpectedvalueerror(api):
 
 def test_task_status(api, agentgroup):
     agents = api.agents.list()
-    t1 = api.agent_groups.add_agent(agentgroup['id'], [
+    t1 = api.agent_groups.add_agent(agentgroup['id'], 
         agents.next()['id'],
         agents.next()['id']
-    ])
+    )
     task = api.agent_groups.task_status(agentgroup['id'], t1['task_id'])
     assert isinstance(task, dict)
     check(task, 'container_uuid', str)

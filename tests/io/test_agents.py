@@ -68,16 +68,16 @@ def test_list(api):
         check(i, 'uuid', 'uuid')
     assert count == agents.total
 
-def test_get_scanner_id_typeerror(api):
+def test_details_scanner_id_typeerror(api):
     with pytest.raises(TypeError):
-        api.agents.get(scanner_id='nope')
+        api.agents.details(scanner_id='nope')
 
-def test_get_agent_id_typeerror(api):
+def test_details_agent_id_typeerror(api):
     with pytest.raises(TypeError):
-        api.agents.get('nope')
+        api.agents.details('nope')
 
-def test_get_agent_details(api, agent):
-    resp = api.agents.get(agent['id'])
+def test_details_agent_details(api, agent):
+    resp = api.agents.details(agent['id'])
     check(resp, 'distro', str)
     check(resp, 'id', int)
     check(resp, 'ip', str)
@@ -87,3 +87,6 @@ def test_get_agent_details(api, agent):
     check(resp, 'status', str)
     check(resp, 'uuid', 'uuid')
     assert resp['id'] == agent['id']
+
+# Add tests for singular & bulk agent deletion.
+# att tests for task_status.

@@ -207,7 +207,7 @@ class AgentsAPI(TIOEndpoint):
                 self._check('agent_id', agent_id, int)
             )).json()
 
-    def unlink(self, scanner_id=1, *agent_ids):
+    def unlink(self, *agent_ids, **kw):
         '''
         Unlink one or multiple agents from the Tenable.io instance.
 
@@ -232,12 +232,16 @@ class AgentsAPI(TIOEndpoint):
 
             >>> tio.agents.unlink(1, 2, 3)
         '''
+        scanner_id = 1
+        if 'scanner_id' in kw:
+            scanner_id = kw['scanner_id']
+
         if len(agent_ids) <= 1:
             # as only a singular agent_id was sent over, we can call the delete
             # API
             self._api.delete('scanners/{}/agents/{}'.format(
                 self._check('scanner_id', scanner_id, int),
-                self._check('agent_id', agent_id[0], int)    
+                self._check('agent_id', agent_ids[0], int)    
             ))
         else:
             return self._api.post('scanners/{}/agents/_bulk/unlink'.format(

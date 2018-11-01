@@ -242,7 +242,7 @@ class PoliciesAPI(TIOEndpoint):
             >>> with open('example.nessus') as policy:
             ...     tio.policies.import(policy)
         '''
-        fid = self._api.file.upload(fobj)
+        fid = self._api.files.upload(fobj)
         return self._api.post('policies/import', json={'file': fid}).json()
 
     def policy_export(self, id, fobj=None):
