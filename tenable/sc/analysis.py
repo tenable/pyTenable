@@ -1,7 +1,25 @@
+'''
+analysis
+========
+
+The following methods allow for interaction into the SecurityCenter 
+`analysis <https://docs.tenable.com/sccv/api/Analysis.html>`_ API.
+
+Methods available on ``sc.analysis``:
+
+.. rst-class:: hide-signature
+.. autoclass:: AnalysisAPI
+
+    .. automethod:: console
+    .. automethod:: events
+    .. automethod:: mobile
+    .. automethod:: scan
+    .. automethod:: user
+    .. automethod:: vulns
+'''
 from .base import SCEndpoint, SCResultsIterator
 from tenable.utils import dict_merge
 from tenable.errors import *
-
 
 class AnalysisResultsIterator(SCResultsIterator):
     def _get_page(self):
@@ -51,9 +69,6 @@ class AnalysisResultsIterator(SCResultsIterator):
 
 
 class AnalysisAPI(SCEndpoint):
-    '''
-    '''
-
     def _expass(self, item):
         '''
         Expands the asset combination expressions from nested tuples to the
@@ -222,10 +237,8 @@ class AnalysisAPI(SCEndpoint):
                 ``trend``, ``vulndetails``, ``vulnipdetail``, ``vulnipsummary``
 
         Returns:
-            AnalysisResultsIterator: 
-                an iterator object handling data pagination.
-            dict:
-                The iplist tool returns a dictionary of the IPs matching the 
+            AnalysisResultsIterator: an iterator object handling data pagination.
+            dict: The iplist tool returns a dictionary of the IPs matching the 
                 query and not a list of items like the rest of the tools. 
 
         Examples:
@@ -373,8 +386,7 @@ class AnalysisAPI(SCEndpoint):
                 ``trend``, ``vulndetails``, ``vulnipdetail``, ``vulnipsummary``
 
         Returns:
-            AnalysisResultsIterator: 
-                an iterator object handling data pagination.
+            AnalysisResultsIterator: an iterator object handling data pagination.
         '''
         kw['scan_id'] = self._check('scan_id', scan_id, int)
         return self.vuln(*filters, **kw)
@@ -421,8 +433,7 @@ class AnalysisAPI(SCEndpoint):
                 ``sumuser``, ``syslog``, ``timedist``
 
         Returns:
-            AnalysisResultsIterator: 
-                an iterator object handling data pagination.
+            AnalysisResultsIterator: an iterator object handling data pagination.
         '''
         payload = {'type': 'event', 'sourceType': 'lce'}
 
@@ -505,8 +516,7 @@ class AnalysisAPI(SCEndpoint):
                 ``asc`` and ``desc``.  The default is ``asc``.
 
         Returns:
-            AnalysisResultsIterator: 
-                an iterator object handling data pagination.
+            AnalysisResultsIterator: an iterator object handling data pagination.
         '''
         kw['payload'] = {
             'type': 'scLog', 
