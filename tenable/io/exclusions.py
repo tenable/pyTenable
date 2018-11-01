@@ -45,7 +45,7 @@ class ExclusionsAPI(TIOEndpoint):
                 please refer to:
                 https://cloud.tenable.com/api#/resources/scans/timezones
             frequency (str, optional):
-                The frequency of the rule. The string inputted will be upcased.
+                The frequency of the rule. The string inputted will be up-cased.
                 Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``, 
                 ``MONTHLY``, ``YEARLY``.
                 Default value is ``ONETIME``.
@@ -290,7 +290,7 @@ class ExclusionsAPI(TIOEndpoint):
             # In the same vein as the frequency check, we're accepting
             # case-insensitive input, comparing it to our known list of
             # acceptable responses, then joining them all together into a 
-            # comma-seperated string.
+            # comma-separated string.
             
         if day_of_month is not None:
             payload['schedule']['rrules']['bymonthday'] = self._check(

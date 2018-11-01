@@ -1,7 +1,27 @@
+'''
+exports
+=======
+The following methods allow for interaction into the Tenable.io 
+`exports <https://cloud.tenable.com/api#/resources/exports>`_ 
+API endpoints.
+
+Methods available on ``tio.exports``:
+
+.. rst-class:: hide-signature
+.. autoclass:: ExportsAPI
+
+    .. automethod:: vulns
+    .. automethod:: assets
+'''
 from .base import TIOEndpoint, APIResultsIterator
 import time
 
 class ExportsIterator(APIResultsIterator):
+    '''
+    The exports iterator handles the chunk status and retrieval management
+    functions in order to provide a simplistic iterator that can be used with
+    minimal effort in the calling application.
+    '''
     _type = None
     _uuid = None
     _chunks = list()
@@ -35,7 +55,7 @@ class ExportsIterator(APIResultsIterator):
                     and len(status['chunks_unfinished']) < 1):
                 raise StopIteration()
 
-            # if the export is still processing, but there arent any chunks for 
+            # if the export is still processing, but there aren't any chunks for 
             # us to process yet, then we will wait here in a loop and call for 
             # status once a second until we get something else to work on.
             while len(status['chunks_unfinished']) < 1:
@@ -75,6 +95,8 @@ class ExportsIterator(APIResultsIterator):
 class ExportsAPI(TIOEndpoint):
     def vulns(self, **kw):
         '''
+        Initiate an vulnerability export.
+
         `exports: vulns-request-export <https://cloud.tenable.com/api#/resources/exports/vulns-request-export>`_
 
         Args:
@@ -98,6 +120,18 @@ class ExportsAPI(TIOEndpoint):
 
         Returns:
             ExportIterator: an iterator to walk through the results.
+
+        Examples:
+            Export all of the vulnerability data:
+
+            >>> vulns = tio.exports.vulns()
+            >>> for vuln in vulns:
+            ...     pprint(vuln)
+
+            Export only the critical vulnerabilities:
+
+            >>> for vuln in tio.exports.vulns(severity=['critical']):
+            ...     pprint(vuln)
         '''
         payload = {'filters': dict()}
 
@@ -126,6 +160,8 @@ class ExportsAPI(TIOEndpoint):
 
     def assets(self, **kw):
         '''
+        Export asset data from Tenable.io.
+
         `exports: assets-request-export <https://cloud.tenable.com/api#/resources/exports/assets-request-export>`_
 
         Args:
@@ -156,7 +192,7 @@ class ExportsAPI(TIOEndpoint):
             sources (list, optional):
                 Returns assets that have the specified source.  If multiple
                 sources are listed, then the results will be assets that have
-                been observices by any of the sources.
+                been observed by any of the sources listed.
             has_plugin_results (bool, optional):
                 If True, returns only assets that have plugin results.  If False,
                 returns only assets that do not have any plugin results.  Assets
@@ -165,6 +201,20 @@ class ExportsAPI(TIOEndpoint):
 
         Returns:
             ExportIterator: an iterator to walk through the results.
+
+        Examples:
+            Export all of the asset data within Tenable.io:
+
+            >>> assets = tio.exports.assets()
+            >>> for asset in assets:
+            ...     pprint(asset)
+
+            Export only the assets updated in the last week:
+
+            >>> import time
+            >>> last_week = int(time.time()) - 604800
+            >>> for asset in tio.exports.assets(updated_at=last_week):
+            ...     pprint(asset)
         '''
         payload = {'filters': dict()}
         payload['chunk_size'] = self._check('chunk_size', 
