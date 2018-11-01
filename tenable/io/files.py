@@ -1,9 +1,25 @@
+'''
+files
+=====
+
+The following methods allow for interaction into the Tenable.io 
+`file <https://cloud.tenable.com/api#/resources/file>`_ API endpoints.
+
+Methods available on ``tio.files``:
+
+.. rst-class:: hide-signature
+.. autoclass:: FileAPI
+
+    .. automethod:: upload
+'''
 from .base import TIOEndpoint
 import uuid
 
 class FileAPI(TIOEndpoint):
     def upload(self, fobj, encrypted=False):
         '''
+        Uploads a file into Tenable.io.
+
         `file: upload <https://cloud.tenable.com/api#/resources/file/upload>`_
 
         Args:
@@ -14,6 +30,10 @@ class FileAPI(TIOEndpoint):
 
         Returns:
             str: The fileuploaded attribute
+
+        Examples:
+            >>> with open('file.txt') as fobj:
+            ...     file_id = tio.files.upload(fobj)
         '''
 
         # We will attempt to discover the name of the file stored within the
