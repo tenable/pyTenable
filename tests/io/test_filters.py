@@ -1,8 +1,6 @@
 from .fixtures import *
 from tenable.errors import *
 
-from pprint import pprint
-
 def test_agent_filters(api):
     filters = api.filters.agents_filters()
     assert isinstance(filters, dict)

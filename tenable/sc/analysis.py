@@ -151,6 +151,9 @@ class AnalysisAPI(SCEndpoint):
                     # return the value parameter assigned to the "value" attribute
                     item['value'] = f[2]
 
+                # Add the newly expanded filter to the filters list.
+                kw['query']['filters'].append(item)
+
         payload = kw['payload'] if 'payload' in kw else dict()
         payload['query'] = kw['query']
 
