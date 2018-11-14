@@ -52,6 +52,7 @@ Example:
     .. automethod:: delete
 '''
 from tenable.base import APISession, APIError, ServerError
+from .alerts import AlertAPI
 from .analysis import AnalysisAPI
 from .files import FileAPI
 from .feeds import FeedAPI
@@ -162,16 +163,11 @@ class SecurityCenter(APISession):
 
     @property
     def alerts(self):
-        pass
+        return AlertAPI(self)
     
 
     @property
     def analysis(self):
-        '''
-        An object for interfacing to the analysis API.  See the
-        :doc:`analysis documentation <sc.analysis>` 
-        for full details.
-        '''
         return AnalysisAPI(self)
 
     @property
