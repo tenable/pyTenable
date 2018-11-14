@@ -118,20 +118,12 @@ class AnalysisAPI(SCEndpoint):
         # return the response to the caller.
         return resp
 
-
-    def _analysis(self, *filters, **kw):
+    def _query_constructor(self, *filters, **kw):
         '''
-        The base wrapper function handling the calls to the analysis API 
-        endpoint.  As this singular endpopint is used as the common API for all
-        data export, much of the common handling can be centrally handled and
-        only the unique elements for a given sub-type is handled by the
-        individual methods.
+        Constructs an analysis query.  This part has been pulled out of the
+        _analysis method and placed here so that it can be re-used in other
+        part of the library.
         '''
-
-        offset = 0
-        limit = 200
-        pages = None
-
         if 'query' not in kw:
             kw['query'] = {
                 'tool': kw['tool'],
@@ -153,6 +145,24 @@ class AnalysisAPI(SCEndpoint):
 
                 # Add the newly expanded filter to the filters list.
                 kw['query']['filters'].append(item)
+        return kw
+
+
+    def _analysis(self, *filters, **kw):
+        '''
+        The base wrapper function handling the calls to the analysis API 
+        endpoint.  As this singular endpopint is used as the common API for all
+        data export, much of the common handling can be centrally handled and
+        only the unique elements for a given sub-type is handled by the
+        individual methods.
+        '''
+
+        offset = 0
+        limit = 200
+        pages = None
+
+        # Call the query constructor to build the query if necessary./
+        kw = self._query_constructor(*filters, **kw)
 
         payload = kw['payload'] if 'payload' in kw else dict()
         payload['query'] = kw['query']
@@ -259,14 +269,14 @@ class AnalysisAPI(SCEndpoint):
             query like so:
 
             >>> vulns = sc.analysis.vulns(
-            ...    ('severity', '=', '4'), ('exploit'),
+            ...    ('severity', '=', '4'),
             ...    ('exploitAvailable', '=', 'true'))
 
             To request a different data format (like maybe an IP summary of 
             vulns) you just need to specify the appropriate tool:
 
             >>> ips = sc.analysis.vulns(
-            ...    ('severity', '=', '4'), ('exploit'),
+            ...    ('severity', '=', '4'),
             ...    ('exploitAvailable', '=', 'true'), tool='sumip')
         '''
         payload = {
@@ -405,14 +415,14 @@ class AnalysisAPI(SCEndpoint):
             query like so:
 
             >>> vulns = sc.analysis.scan(1
-            ...    ('severity', '=', '4'), ('exploit'),
+            ...    ('severity', '=', '4'),
             ...    ('exploitAvailable', '=', 'true'))
 
             To request a different data format (like maybe an IP summary of 
             vulns) you just need to specify the appropriate tool:
 
             >>> ips = sc.analysis.scan(1
-            ...    ('severity', '=', '4'), ('exploit'),
+            ...    ('severity', '=', '4'),
             ...    ('exploitAvailable', '=', 'true'), tool='sumip')
         '''
         kw['scan_id'] = self._check('scan_id', scan_id, int)
