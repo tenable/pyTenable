@@ -17,9 +17,9 @@ Methods available on ``sc.alerts``:
     .. automethod:: list
     .. automethod:: update
 
-.. iCal Date-Time:
+.. _iCal Date-Time:
     https://tools.ietf.org/html/rfc5545#section-3.3.5
-.. iCal Recurrance Rule:
+.. _iCal Recurrance Rule:
     https://tools.ietf.org/html/rfc5545#section-3.3.10
 '''
 from .base import SCEndpoint
@@ -138,7 +138,7 @@ class AlertAPI(SCEndpoint):
 
         Args:
             id (int): The identifier for the alert.
-            fields (list, optional): A list of attributed to return.
+            fields (list, optional): A list of attributes to return.
 
         Returns:
             dict: The alert resource record.
