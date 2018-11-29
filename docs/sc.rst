@@ -1,4 +1,4 @@
-SecurityCenter
-==============
+Tenable.sc
+==========
 
 .. automodule:: tenable.sc
