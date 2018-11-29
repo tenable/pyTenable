@@ -56,6 +56,8 @@ from .alerts import AlertAPI
 from .analysis import AnalysisAPI
 from .files import FileAPI
 from .feeds import FeedAPI
+from .scans import ScanAPI
+from .scan_instances import ScanResultAPI
 import warnings
 
 
@@ -191,20 +193,10 @@ class TenableSC(APISession):
 
     @property
     def feeds(self):
-        '''
-        An object for interfacing to the feeds API.  See the
-        :doc:`analysis documentation <securitycenter.feed>` 
-        for full details.
-        '''
         return FeedAPI(self)
 
     @property
     def files(self):
-        '''
-        An object for interfacing to the files API.  See the
-        :doc:`analysis documentation <securitycenter.file>` 
-        for full details.
-        '''
         return FileAPI(self)
 
     @property
@@ -224,11 +216,11 @@ class TenableSC(APISession):
 
     @property
     def scans(self):
-        pass
+        return ScanAPI(self)
 
     @property
     def scan_instances(self):
-        pass
+        return ScanResultAPI(self)
 
     @property
     def sensors(self):
