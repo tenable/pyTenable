@@ -2,7 +2,7 @@
 alerts
 ======
 
-The following methods allow for interaction into the SecurityCenter 
+The following methods allow for interaction into the Tenable.sc 
 `Alert <https://docs.tenable.com/sccv/api/Alert.html>`_ API.
 
 Methods available on ``sc.alerts``:

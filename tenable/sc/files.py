@@ -2,7 +2,7 @@
 files
 =====
 
-The following methods allow for interaction into the SecurityCenter 
+The following methods allow for interaction into the Tenable.sc 
 `File <https://docs.tenable.com/sccv/api/File.html>`_ API.
 
 Methods available on ``sc.feeds``:
@@ -27,14 +27,14 @@ class FileAPI(SCEndpoint):
         Returns:
             str: 
                 The filename identifier to use for subsiquent calls in 
-                SecurityCenter.
+                Tenable.sc.
         '''
         return self.post('file/upload', files={
             'Filedata': fileobj}).json()['response']['filename']
 
     def clear(self, filename):
         '''
-        Removes the requested file from SecurityCenter.
+        Removes the requested file from Tenable.sc.
 
         Args:
             filename (str): The file identifier associated to the file.

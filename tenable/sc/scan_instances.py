@@ -1,11 +1,11 @@
 '''
-scan_results
-============
+scan_instances
+==============
 
 The following methods allow for interaction into the SecurityCenter 
 `Scan Result <https://docs.tenable.com/sccv/api/Scan-Result.html>`_ API.
 
-Methods available on ``sc.scan_results``:
+Methods available on ``sc.scan_instances``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScanResultAPI

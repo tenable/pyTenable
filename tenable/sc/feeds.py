@@ -2,7 +2,7 @@
 feeds
 =====
 
-The following methods allow for interaction into the SecurityCenter 
+The following methods allow for interaction into the Tenable.sc 
 `Feed <https://docs.tenable.com/sccv/api/Feed.html>`_ API.
 
 Methods available on ``sc.feeds``:

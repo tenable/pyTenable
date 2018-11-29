@@ -2,7 +2,7 @@
 analysis
 ========
 
-The following methods allow for interaction into the SecurityCenter 
+The following methods allow for interaction into the Tenable.sc 
 `analysis <https://docs.tenable.com/sccv/api/Analysis.html>`_ API.
 
 Methods available on ``sc.analysis``:

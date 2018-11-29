@@ -1,5 +1,5 @@
 '''
-.. autoclass:: SecurityCenter
+.. autoclass:: TenableSC
 
     .. automethod:: login
     .. automethod:: logout
@@ -27,13 +27,13 @@
 Raw HTTP Calls
 ==============
 
-Even though the ``SecurityCenter`` object pythonizes the SecurityCenter API for 
+Even though the ``TenableSC`` object pythonizes the Tenable.sc API for 
 you, there may still bee the occasional need to make raw HTTP calls to the 
-SecurityCenter API.  The methods listed below aren't run through any 
+Tenable.sc API.  The methods listed below aren't run through any 
 naturalization by the library aside from the response code checking.  These 
 methods effectively route directly into the requests session.  The responses 
 will be Response objects from the ``requests`` library.  In all cases, the path 
-is appended to the base ``url`` paramater that the ``SecurityCenter`` object was
+is appended to the base ``url`` paramater that the ``TenableSC`` object was
 instantiated with.
 
 Example:
@@ -44,7 +44,7 @@ Example:
 
 .. py:module:: tenable.sc
 .. rst-class:: hide-signature
-.. autoclass:: SecurityCenter
+.. autoclass:: TenableSC
 
     .. automethod:: get
     .. automethod:: post
@@ -59,13 +59,13 @@ from .feeds import FeedAPI
 import warnings
 
 
-class SecurityCenter(APISession):
-    '''SecurityCenter 5 API Wrapper
+class TenableSC(APISession):
+    '''TenableSC API Wrapper
     This class is designed to handle authentication management for the
-    SecurityCenter 5.x API.  This is by no means a complete model of
-    everything that the API can handle, it is simply meant to be a thin
-    wrapper into the API.  Convenience functions will be added as time
-    passes and there is a desire to develop them.
+    TenableSC API.  This is by no means a complete model of everything that 
+    the API can handle, it is simply meant to be a thin wrapper into the API.  
+    Convenience functions will be added as time passes and there is a desire 
+    to develop them.
     
     For more information, please See Tenable's `SC API documentation`_ and
     the `SC API Best Practices Guide`_.
@@ -87,7 +87,7 @@ class SecurityCenter(APISession):
         # to make sure we have everything lined up as we expect.
         APISession.__init__(self, url, retries, backoff)
 
-        # Also, as SecurityCenter is generally installed without a certificate
+        # Also, as Tenable.sc is generally installed without a certificate
         # chain that we can validate, we will want to turn off verification 
         # and the associated warnings unless told to otherwise:
         self._session.verify = ssl_verify
@@ -100,16 +100,16 @@ class SecurityCenter(APISession):
         if cert:
             self._session.cert = cert
 
-        # We will attempt to make the first call to the SecurityCenter instance
+        # We will attempt to make the first call to the Tenable.sc instance
         # and get the system information.  If this call fails, then we likely
         # aren't pointing to a SecurityCenter at all and should throw an error
         # stating this.
         try:
             d = self.get('system').json()
         except:
-            raise ServerError('No SecurityCenter Instance at {}'.format(host))
+            raise ServerError('No Tenable.sc Instance at {}'.format(host))
 
-        # Now we will try to interpret the SecurityCenter information into
+        # Now we will try to interpret the Tenable.sc information into
         # something usable.
         try:
             self.version = d['response']['version']
@@ -117,7 +117,7 @@ class SecurityCenter(APISession):
             self.license = d['response']['licenseStatus']
             self.uuid = d['response']['uuid']
         except:
-            raise ServerError('Invalid SecurityCenter Instance')
+            raise ServerError('Invalid Tenable.sc Instance')
 
     def _resp_error_check(self, response):
         try:
@@ -130,7 +130,7 @@ class SecurityCenter(APISession):
 
     def login(self, user, passwd):
         '''
-        Logs the user into SecurityCenter
+        Logs the user into Tenable.sc
 
         Args:
             user (str): Username
@@ -140,7 +140,7 @@ class SecurityCenter(APISession):
             None
 
         Examples:
-            >>> sc = SecurityCenter('127.0.0.1', port=8443)
+            >>> sc = TenableSC('127.0.0.1', port=8443)
             >>> sc.login('username', 'password')
         '''
         resp = self.post('token', json={'username': user, 'password': passwd})
@@ -150,7 +150,7 @@ class SecurityCenter(APISession):
 
     def logout(self):
         '''
-        Logs out of SecurityCenter and resets the session.
+        Logs out of Tenable.sc and resets the session.
 
         Returns:
             None
@@ -164,7 +164,6 @@ class SecurityCenter(APISession):
     @property
     def alerts(self):
         return AlertAPI(self)
-    
 
     @property
     def analysis(self):
@@ -226,7 +225,10 @@ class SecurityCenter(APISession):
     @property
     def scans(self):
         pass
-        # houses Scan, Scan Policy. Scan Policy Templates, Scan Result endpoints
+
+    @property
+    def scan_instances(self):
+        pass
 
     @property
     def sensors(self):
@@ -247,6 +249,24 @@ class SecurityCenter(APISession):
     def users(self):
         pass
         # houses User, Group, Role endpoints
+
+
+class SecurityCenter(TenableSC):
+    '''
+    The historical name for TenableSC prior to the rename in Nov 2018.  Usage is
+    identical to using TenableSC, however we will throw a deprication warning
+    when using the SecurityCenter class.  Please use ``TenableSC``.
+    '''
+    def __init__(self, host, port=443, ssl_verify=False, cert=None,
+                 scheme='https', retries=None, backoff=None):
+        warnings.warn(
+            ' '.join([
+                'The SecurityCenter class has been replaced by the TenableSC',
+                'class.  The existing SecurityCenter class will be removed in',
+                'the first stable version (1.0).']), 
+            Warning)
+        TenableSC.__init__(self, host, port, ssl_verify, 
+            cert, scheme, retries, backoff)
     
     
     
