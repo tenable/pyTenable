@@ -178,6 +178,7 @@ class AlertAPI(SCEndpoint):
                 examples lay out each type of action as an example:
 
                 * Email action type:
+
                 .. code-block:: python
                     
                     {'type': 'email',
@@ -188,6 +189,7 @@ class AlertAPI(SCEndpoint):
                      'includeResults': 'true'}
 
                 * Notification action type:
+
                 .. code-block:: python
 
                     {'type': 'notification',
@@ -195,18 +197,21 @@ class AlertAPI(SCEndpoint):
                      'users': [{'id': 1}, {'id': 2}]}
 
                 * Report action type:
+
                 .. code-block:: python
 
                     {'type': 'report',
                      'report': {'id': 1}}
 
                 * Scan action type:
+
                 .. code-block:: python
 
                     {'type': 'scan',
                      'scan': {'id': 1}}
 
                 * Syslog action type:
+
                 .. code-block:: python
 
                     {'type': 'syslog',
@@ -216,6 +221,7 @@ class AlertAPI(SCEndpoint):
                      'severity': 'Critical'}
 
                 * Ticket action type:
+                
                 .. code-block:: python
 
                     {'type': 'ticket',
