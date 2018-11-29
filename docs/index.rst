@@ -3,9 +3,9 @@
    :hidden:
    
    cs
-   io
    nessus
    reports
+   io
    sc
 
 .. automodule:: tenable
