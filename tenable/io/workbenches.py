@@ -21,9 +21,9 @@ Methods available on ``tio.workbenches``:
     .. automethod:: asset_vulns
     .. automethod:: asset_vuln_info
     .. automethod:: asset_vuln_output
-    .. automethod:: assets_with_vulns
     .. automethod:: export
     .. automethod:: vulns
+    .. automethod:: vuln_assets
     .. automethod:: vuln_info
     .. automethod:: vuln_outputs
 '''
@@ -289,9 +289,9 @@ class WorkbenchesAPI(TIOEndpoint):
                 self._check('uuid', uuid, 'uuid'),
                 self._check('plugin_id', plugin_id, int)), params=query).json()['outputs']
 
-    def assets_with_vulns(self, *filters, **kw):
+    def vuln_assets(self, *filters, **kw):
         '''
-        Retrieve only assets with vulnerability data.
+        Retrieve assets based on the vulnerability data.
 
         `workbenches: assets-vulnerabilities <https://cloud.tenable.com/api#/resources/workbenches/assets-vulnerabilities>`_
 
@@ -319,7 +319,7 @@ class WorkbenchesAPI(TIOEndpoint):
         '''
         # Call the query builder to handle construction
         query = self._workbench_query(filters, kw,
-            self._api.filters.workbench_asset_filters())
+            self._api.filters.workbench_vuln_filters())
 
         return self._api.get(
             'workbenches/assets/vulnerabilities', params=query).json()['assets']
