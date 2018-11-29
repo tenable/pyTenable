@@ -4,26 +4,26 @@
     .. automethod:: login
     .. automethod:: logout
 
-.. automodule:: tenable.sc.agents
+.. .. automodule:: tenable.sc.agents
 .. automodule:: tenable.sc.alerts
-.. automodule:: tenable.sc.analysis
-.. automodule:: tenable.sc.arcs
-.. automodule:: tenable.sc.asset_lists
-.. automodule:: tenable.sc.blackouts
-.. automodule:: tenable.sc.dashboards
+.. .. automodule:: tenable.sc.analysis
+.. .. automodule:: tenable.sc.arcs
+.. .. automodule:: tenable.sc.asset_lists
+.. .. automodule:: tenable.sc.blackouts
+.. .. automodule:: tenable.sc.dashboards
 .. automodule:: tenable.sc.feeds
 .. automodule:: tenable.sc.files
-.. automodule:: tenable.sc.jobs
-.. automodule:: tenable.sc.notifications
-.. automodule:: tenable.sc.reports
-.. automodule:: tenable.sc.repository
-.. automodule:: tenable.sc.risk
+.. .. automodule:: tenable.sc.jobs
+.. .. automodule:: tenable.sc.notifications
+.. .. automodule:: tenable.sc.reports
+.. .. automodule:: tenable.sc.repository
+.. .. automodule:: tenable.sc.risk
 .. automodule:: tenable.sc.scans
-.. automodule:: tenable.sc.scan_instances
-.. automodule:: tenable.sc.sensors
-.. automodule:: tenable.sc.system
-.. automodule:: tenable.sc.tickets
-.. automodule:: tenable.sc.users
+.. .. automodule:: tenable.sc.scan_instances
+.. .. automodule:: tenable.sc.sensors
+.. .. automodule:: tenable.sc.system
+.. .. automodule:: tenable.sc.tickets
+.. .. automodule:: tenable.sc.users
 
 Raw HTTP Calls
 ==============

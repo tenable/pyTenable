@@ -1,3 +1,7 @@
+'''
+Documentation pending rewrite of the ContainerSecurity package to take advantage
+of the v2 APIs.
+'''
 from tenable.base import APISession
 from .compliance import ComplianceAPI
 from .containers import ContainersAPI

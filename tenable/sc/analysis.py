@@ -251,8 +251,6 @@ class AnalysisAPI(SCEndpoint):
 
         Returns:
             AnalysisResultsIterator: an iterator object handling data pagination.
-            dict: The iplist tool returns a dictionary of the IPs matching the 
-                query and not a list of items like the rest of the tools. 
 
         Examples:
             A quick example showing how to get all of the information stored in
