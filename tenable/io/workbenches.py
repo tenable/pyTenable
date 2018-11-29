@@ -16,6 +16,7 @@ Methods available on ``tio.workbenches``:
 .. autoclass:: WorkbenchesAPI
 
     .. automethod:: assets
+    .. automethod:: asset_activity
     .. automethod:: asset_info
     .. automethod:: asset_vulns
     .. automethod:: asset_vuln_info
