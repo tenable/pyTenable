@@ -111,6 +111,25 @@ class WorkbenchesAPI(TIOEndpoint):
 
         return self._api.get('workbenches/assets', params=query).json()['assets']
 
+    def asset_activity(self, uuid):
+        '''
+        Query for the asset activity (when was the asset was seen, were there
+        changes, etc.).
+
+        Args:
+            uuid (str): The asset unique identifier.
+
+        Returns:
+            list: the activity list of the asset specified.
+
+        Examples:
+            >>> asset_id = '00000000-0000-0000-0000-000000000000'
+            >>> for entry in tio.workbenches.asset_activity(asset_id):
+            ...     pprint(entry)
+        '''
+        return self._api.get('workbenches/assets/{}/activity'.format(
+            self._check('uuid', uuid, 'uuid'))).json()['activity']
+
     def asset_info(self, uuid, all_fields=True):
         '''
         Query for the information for a specific asset within the asset

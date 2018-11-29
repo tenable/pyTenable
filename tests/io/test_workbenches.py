@@ -82,6 +82,51 @@ def test_assets_bad_filter(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.assets(('operating_system', 'contains', 'Linux'))
 
+def test_asset_activity_uuid_typeerror(api):
+    with pytest.raises(TypeError):
+        api.workbenches.asset_activity(1)
+
+def test_asset_activity_uuid_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.workbenches.asset_activity('This should fail')
+
+def test_asset_activity(api):
+    assets = api.workbenches.assets()
+    history = api.workbenches.asset_activity(assets[0]['id'])
+    assert isinstance(history, list)
+    for i in history:
+        check(i, 'timestamp', 'datetime')
+        check(i, 'type', str)
+        if i['type'] in ['tagging', 'updated']:
+            check(i, 'updates', list)
+            for j in i['updates']:
+                check(j, 'method', str)
+                check(j, 'property', str)
+                check(j, 'value', str)
+        if i['type'] == 'discovered':
+            check(i, 'details', dict)
+            check(i['details'], 'assetId', 'uuid')
+            check(i['details'], 'createdAt', 'datetime')
+            check(i['details'], 'firstScanTime', 'datetime')
+            check(i['details'], 'hasAgent', bool)
+            check(i['details'], 'hasPluginResults', bool)
+            check(i['details'], 'lastLicensedScanTime', 'datetime')
+            check(i['details'], 'lastScanTime', 'datetime')
+            check(i['details'], 'properties', dict)
+            for j in i['details']['properties'].keys():
+                check(i['details']['properties'][j], 'lastObserved', 'datetime')
+                check(i['details']['properties'][j], 'values', list)
+            check(i['details'], 'sources', list)
+            for j in i['details']['sources']:
+                check(j, 'firstSeen', 'datetime')
+                check(j, 'lastSeen', 'datetime')
+                check(j, 'name', str)
+            check(i['details'], 'updatedAt', 'datetime')
+        if i['type'] in ['discovered', 'seen', 'updated']:
+            check(i, 'scan_id', 'scanner-uuid')
+            check(i, 'schedule_id', 'scanner-uuid')
+            check(i, 'source', str)
+
 def test_asset_info_uuid_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_info(1)
