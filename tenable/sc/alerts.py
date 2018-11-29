@@ -26,7 +26,7 @@ from .base import SCEndpoint
 from tenable.utils import dict_merge
 
 class AlertAPI(SCEndpoint):
-    def _alert_creator(self, *filters, **kw):
+    def _constructor(self, *filters, **kw):
         '''
         Handles building an alert document.
         '''
@@ -74,38 +74,13 @@ class AlertAPI(SCEndpoint):
                 'triggerValue', kw['trigger'][2], str)
             del(kw['trigger'])
 
-        if ('schedule_type' in kw and kw['schedule_type'] == 'ical'
-            and 'schedule_start' in kw 
-            and 'schedule_repeat' in kw):
-            # effectively here we are flattening the schedule subdocument on the
-            # developer end and reconstructing it for the SecurityCenter end.
-            #
-            # FR: eventually we should start checking the repeating rule and the
-            #     datetime against the ical format.
-            kw['schedule'] = {
-                'type': 'ical',
-                'start': self._check(
-                    'schedule_start', kw['schedule_start'], str),
-                'repeatRule': self._check(
-                    'schedule_repeat', kw['schedule_repeat'], str),
-            }
-            del(kw['schedule_type'])
-            del(kw['schedule_start'])
-            del(kw['schedule_repeat'])
-
-        elif 'schedule_type' in kw:
-            # if the schedule type is not an ical repeating rule, then we will
-            # populate a schedule document with just the type.
-            kw['schedule'] = {'type': self._check('schedule_type', 
-                kw['schedule_type'], str, choices=[
-                    'dependent', 'never', 'rollover', 'template'])}
-            del(kw['schedule_type'])
+        # hand off the building the schedule sub-document to the schedule 
+        # document builder.
+        kw = self._schedule_document_creator(kw)
 
         # FR: at some point we should start looking into checking and 
         #     normalizing the action document.
         return kw
-
-
 
     def list(self, fields=None):
         '''
@@ -262,7 +237,7 @@ class AlertAPI(SCEndpoint):
             ...     action=[{'type': 'notification', 'users': [{'id': 1}]}]
             ... )
         '''
-        payload = self._alert_creator(*filters, **kw)
+        payload = self._constructor(*filters, **kw)
         return self._api.post('alert', json=payload).json()['response']
 
     def update(self, id, *filters, **kw):
@@ -316,7 +291,7 @@ class AlertAPI(SCEndpoint):
         Examples:
             >>> sc.alerts.update(1, name='New Alert Name')
         '''
-        payload = self._alert_creator(*filters, **kw)
+        payload = self._constructor(*filters, **kw)
         return self._api.patch('alert/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
