@@ -55,7 +55,7 @@ class ScanAPI(SCEndpoint):
             # similarly to the repository, the API expects the zone to be
             # defined as a sub-dictionary with just the id field.
             kw['zone'] = {'id': self._check(
-                'scan_zone', kw[scan_'zone'], int, default=0)}
+                'scan_zone', kw['scan_zone'], int, default=0)}
             del(kw['scan_zone'])
 
         if 'email_complete' in kw:

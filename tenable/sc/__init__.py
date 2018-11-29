@@ -19,6 +19,7 @@
 .. automodule:: tenable.sc.repository
 .. automodule:: tenable.sc.risk
 .. automodule:: tenable.sc.scans
+.. automodule:: tenable.sc.scan_instances
 .. automodule:: tenable.sc.sensors
 .. automodule:: tenable.sc.system
 .. automodule:: tenable.sc.tickets
