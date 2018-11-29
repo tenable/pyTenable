@@ -316,8 +316,8 @@ def test_asset_vuln_output(api):
             check(j, 'severity', int)
             check(j, 'transport_protocol', str)
 
-def test_assets_with_vulns(api):
-    assets = api.workbenches.assets_with_vulns()
+def test_vuln_assets(api):
+    assets = api.workbenches.vuln_assets()
     assert isinstance(assets, list)
     a = assets[0]
     check(a, 'agent_name', list)
