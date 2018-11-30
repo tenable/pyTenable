@@ -4,26 +4,12 @@
     .. automethod:: login
     .. automethod:: logout
 
-.. .. automodule:: tenable.sc.agents
 .. automodule:: tenable.sc.alerts
-.. .. automodule:: tenable.sc.analysis
-.. .. automodule:: tenable.sc.arcs
-.. .. automodule:: tenable.sc.asset_lists
-.. .. automodule:: tenable.sc.blackouts
-.. .. automodule:: tenable.sc.dashboards
+.. automodule:: tenable.sc.analysis
 .. automodule:: tenable.sc.feeds
 .. automodule:: tenable.sc.files
-.. .. automodule:: tenable.sc.jobs
-.. .. automodule:: tenable.sc.notifications
-.. .. automodule:: tenable.sc.reports
-.. .. automodule:: tenable.sc.repository
-.. .. automodule:: tenable.sc.risk
 .. automodule:: tenable.sc.scans
-.. .. automodule:: tenable.sc.scan_instances
-.. .. automodule:: tenable.sc.sensors
-.. .. automodule:: tenable.sc.system
-.. .. automodule:: tenable.sc.tickets
-.. .. automodule:: tenable.sc.users
+.. automodule:: tenable.sc.scan_instances
 
 Raw HTTP Calls
 ==============
@@ -173,26 +159,6 @@ class TenableSC(APISession):
         return AnalysisAPI(self)
 
     @property
-    def arcs(self):
-        pass
-        # Houses the ARC and ARC Templates endpoints
-
-    @property
-    def asset_lists(self):
-        pass
-        # Houses the Asset and Asset Template endpoints
-    
-    @property
-    def blackouts(self):
-        pass
-        # houses the Blackout Window endpoints
-
-    @property
-    def dashboards(self):
-        pass
-        # houses the Dashboard Tabs, Dashboard Templates, Dashboard Components endpoints
-
-    @property
     def feeds(self):
         return FeedAPI(self)
 
@@ -201,47 +167,12 @@ class TenableSC(APISession):
         return FileAPI(self)
 
     @property
-    def reports(self):
-        pass
-        # houses Report, Report Definition, Report Image, Report Template, Style, StyleFamily endpoints
-
-    @property
-    def repository(self):
-        pass
-        # houses Repository endpoint
-
-    @property
-    def risk(self):
-        pass
-        # houses Accept Risk, Recast Risk endpoints
-
-    @property
     def scans(self):
         return ScanAPI(self)
 
     @property
     def scan_instances(self):
         return ScanResultAPI(self)
-
-    @property
-    def sensors(self):
-        pass
-        # houses NNM, LCE, LCE CLient, LCE Policy, Scanners, Scan Zones, MDM endpoints
-
-    @property
-    def system(self):
-        pass
-        # houses Configuration, System, Status, LDAP, SSH Key endpoints
-
-    @property
-    def tickets(self):
-        pass
-        # houses Ticket endpoint
-
-    @property
-    def users(self):
-        pass
-        # houses User, Group, Role endpoints
 
 
 class SecurityCenter(TenableSC):
