@@ -3,7 +3,7 @@ from .errors import *
 '''
 '''
 
-__version__ = '0.3.2'
+__version__ = '0.3.3'
 __author__ = 'Steve McGrath <smcgrath@tenable.com>'
 
 
