@@ -3,7 +3,11 @@ scans
 =====
 
 The following methods allow for interaction into the Tenable.sc 
-`Scan <https://docs.tenable.com/sccv/api/Scan.html>`_ API.
+`Scan <https://docs.tenable.com/sccv/api/Scan.html>`_ API.  While the api 
+endpoints obliquely refers to the model in which this collection of actions
+modifies as "Scans", Tenable.sc is actually refering to the scan *definitions*,
+which are the un-launched and/or scheduled scans typically seen within the
+**Active Scans** section within Tenable.sc.
 
 Methods available on ``sc.scans``:
 
@@ -114,6 +118,15 @@ class ScanAPI(SCEndpoint):
             kw['maxScanTime'] = str(self._check('max_time', kw['max_time'], int))
             del(kw['max_time'])
 
+        if 'auto_mitigation' in kw:
+            # As classifyMitigatedAge is effectively a string interpretation of 
+            # an int value, if the snake case equivilent is used, we will 
+            # convert it into the expected paramater and remove the snake cased
+            # version.
+            kw['classifyMitigatedAge'] = str(self._check(
+                'auto_mitigation', kw['auto_mitigation'], int, default=0))
+            del(kw['auto_mitigation'])
+
         # hand off the building the schedule sub-document to the schedule 
         # document builder.
         kw = self._schedule_document_creator(kw)
@@ -183,7 +196,7 @@ class ScanAPI(SCEndpoint):
 
         Args:
             fields (list, optional): 
-                A list of attributed to return for each scan.
+                A list of attributes to return for each scan.
 
         Returns:
             list: A list of scan resources.
@@ -194,7 +207,8 @@ class ScanAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) 
+                for f in fields])
 
         return self._api.get('scan', params=params).json()['response']
 
@@ -209,8 +223,8 @@ class ScanAPI(SCEndpoint):
             repo (int):
                 The repository id for the scan.
             auto_mitigation (int, optional):
-                How long to hold on to data before mitigating it?  The default
-                value is 0.
+                How many days to hold on to data before mitigating it?  The 
+                default value is 0.
             asset_lists (list, optional):
                 A list of asset list ids to run the scan against.  A logical OR
                 will be performed to comupute what hosts to scan against.
@@ -320,7 +334,7 @@ class ScanAPI(SCEndpoint):
         Args:
             id (int): The identifier for the scan.
             auto_mitigation (int, optional):
-                How long to hold on to data before mitigating it?
+                How many days to hold on to data before mitigating it?
             asset_lists (list, optional):
                 A list of asset list ids to run the scan against.  A logical OR
                 will be performed to comupute what hosts to scan against.
