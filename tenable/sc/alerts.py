@@ -90,7 +90,7 @@ class AlertAPI(SCEndpoint):
 
         Args:
             fields (list, optional): 
-                A list of attributed to return for each alert.
+                A list of attributes to return for each alert.
 
         Returns:
             list: A list of alert resources.
@@ -101,7 +101,8 @@ class AlertAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) 
+                for f in fields])
 
         return self._api.get('alert', params=params).json()['response']
 
@@ -221,7 +222,7 @@ class AlertAPI(SCEndpoint):
                      'severity': 'Critical'}
 
                 * Ticket action type:
-                
+
                 .. code-block:: python
 
                     {'type': 'ticket',
