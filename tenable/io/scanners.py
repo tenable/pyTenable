@@ -25,13 +25,12 @@ from .base import TIOEndpoint
 
 class ScannersAPI(TIOEndpoint):
 
-    @property
     def linking_key(self):
         '''
         The linking key for the Tenable.io instance.
 
         Examples:
-            >>> print(tio.scanners.linking_key)
+            >>> print(tio.scanners.linking_key())
         '''
         scanners = self.list()
         for scanner in scanners:
