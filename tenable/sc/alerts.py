@@ -2,6 +2,8 @@
 alerts
 ======
 
+NOTE: not currently tested code.
+
 The following methods allow for interaction into the Tenable.sc 
 `Alert <https://docs.tenable.com/sccv/api/Alert.html>`_ API.
 
