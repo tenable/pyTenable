@@ -5,6 +5,7 @@
     .. automethod:: logout
 
 .. automodule:: tenable.sc.alerts
+.. automodule:: tenable.sc.accept_risks
 .. automodule:: tenable.sc.analysis
 .. automodule:: tenable.sc.feeds
 .. automodule:: tenable.sc.files
@@ -39,6 +40,7 @@ Example:
     .. automethod:: delete
 '''
 from tenable.base import APISession, APIError, ServerError
+from .accept_risks import AcceptRiskAPI
 from .alerts import AlertAPI
 from .analysis import AnalysisAPI
 from .files import FileAPI
@@ -149,6 +151,10 @@ class TenableSC(APISession):
         '''
         resp = self.delete('token')
         self._build_session()
+
+    @property
+    def accept_risks(self):
+        return AcceptRiskAPI(self)
 
     @property
     def alerts(self):
