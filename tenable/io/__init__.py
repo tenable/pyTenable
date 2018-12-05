@@ -100,6 +100,9 @@ class TenableIO(APISession):
             If a 429 response is returned, how much do we want to backoff
             if the response didn't send a Retry-After header.  The default
             backoff is ``1`` second.
+        ua_identity (str, optional):
+            An application identifier to be added into the User-Agent string
+            for the purposes of application identification.
 
     Examples:
         >>> from tenable.io import TenableIO
@@ -216,10 +219,11 @@ class TenableIO(APISession):
             self._tzcache = self.scans.timezones()
         return self._tzcache
 
-    def __init__(self, access_key, secret_key, url=None, retries=None, backoff=None):
+    def __init__(self, access_key, secret_key, url=None, retries=None, 
+            backoff=None, ua_identity=None):
         self._access_key = access_key
         self._secret_key = secret_key
-        APISession.__init__(self, url, retries, backoff)
+        APISession.__init__(self, url, retries, backoff, ua_identity)
 
     def _retry_request(self, response, retries, kwargs):
         '''

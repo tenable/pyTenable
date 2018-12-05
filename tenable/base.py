@@ -271,7 +271,11 @@ class APISession(object):
         backoff (float, optional):
             If a 429 response is returned, how much do we want to backoff
             if the response didn't send a Retry-After header.
+        ua_identity (str, optional):
+            An optional identifier for the application to discern it amongst
+            other API calls.
     '''
+    _ua_identity = None
     _error_codes = {
         400: InvalidInputError,
         401: PermissionError,
@@ -297,22 +301,29 @@ class APISession(object):
     Retry-After header was returned.
     '''
 
-    def __init__(self, url=None, retries=None, backoff=None):
+    def __init__(self, url=None, retries=None, backoff=None, ua_identity=None):
         if url:
             self._url = url
         if retries and isinstance(retries, int):
             self._retries = retries
         if backoff and isinstance(backoff, float):
             self._backoff = backoff
+        if ua_identity and isinstance(ua_identity, str):
+            self._ua_identity = ua_identity
         self._build_session()
 
     def _build_session(self):
         '''
         Requests session builder
         '''
+        if self._ua_identity:
+            identity = self._ua_identity
+        else:
+            identity = 'pyTenable/{}'.format(__version__)
+
         self._session = requests.Session()
         self._session.headers.update({
-            'User-Agent': 'pyTenable/{} Python/{}'.format(
+            'User-Agent': '{} (pyTenable/{}; Python/{})'.format(identity,
                 __version__, '.'.join([str(i) for i in sys.version_info][0:3])),
         })
 
