@@ -111,7 +111,7 @@ class ScanAPI(SCEndpoint):
             # isn't any oddities, such as extra spaces, between the commas.
             kw['ipList'] = ','.join([self._check('target', i.strip(), str) 
                 for i in self._check('targets', kw['targets'], list)])
-            del(kw['trargets'])
+            del(kw['targets'])
 
         if 'max_time' in kw:
             # maxScanTime is a integer encased in a string value.  the snake
