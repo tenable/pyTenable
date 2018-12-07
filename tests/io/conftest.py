@@ -5,15 +5,25 @@ from tests.checker import check, single
 
 SCAN_ID_WITH_RESULTS = 6799
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(scope='module')
+def vcr_config():
+    return {
+        'filter_headers': [
+            ('X-APIKeys', 'accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY'),
+        ],
+    }
+
+@pytest.fixture
 def api():
     return TenableIO(
-        os.environ['TIO_TEST_ADMIN_ACCESS'], os.environ['TIO_TEST_ADMIN_SECRET'])
+        os.environ['TIO_TEST_ADMIN_ACCESS'], 
+        os.environ['TIO_TEST_ADMIN_SECRET'])
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def stdapi():
     return TenableIO(
-        os.environ['TIO_TEST_STD_ACCESS'], os.environ['TIO_TEST_STD_SECRET'])
+        os.environ['TIO_TEST_STD_ACCESS'], 
+        os.environ['TIO_TEST_STD_SECRET'])
 
 @pytest.fixture
 def agent(request, api):
