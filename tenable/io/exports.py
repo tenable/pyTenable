@@ -42,18 +42,19 @@ class ExportsIterator(APIResultsIterator):
             # Add the chunks_unfinished key with the unfinished list as the
             # associated value and then return the status to the caller.
             status['chunks_unfinished'] = unfinished
-            return status
-
-        # If there are no chunks in our local queue, then we will need to query
-        # the status API for more chunks to to work on.
-        if len(self._chunks) < 1:
-            status = get_status()
 
             # if there are no more chunks to process and the export status is 
             # set to finished, then we will break the iteration.
             if (status['status'] == 'FINISHED' 
                     and len(status['chunks_unfinished']) < 1):
                 raise StopIteration()
+
+            return status
+
+        # If there are no chunks in our local queue, then we will need to query
+        # the status API for more chunks to to work on.
+        if len(self._chunks) < 1:
+            status = get_status()
 
             # if the export is still processing, but there aren't any chunks for 
             # us to process yet, then we will wait here in a loop and call for 
