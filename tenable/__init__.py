@@ -55,7 +55,7 @@ Getting started with SecurityCenter is equally as easy:
    :linenos:
 
    from tenable.sc import TenableSC
-   sc = TemnableSC('SECURITYCENTER_NETWORK_ADDRESS')
+   sc = TenableSC('SECURITYCENTER_NETWORK_ADDRESS')
    sc.login('SC_USERNAME', 'SC_PASSWORD')
    for vuln in sc.analysis.vulns():
       print('{ip}:{pluginID}:{pluginName}'.format(**vuln))
