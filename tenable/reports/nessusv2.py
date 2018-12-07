@@ -1,7 +1,14 @@
 '''
 .. autoclass:: NessusReportv2
 '''
-from lxml import etree
+from tenable.errors import PackageMissingError
+
+try:
+    from lxml import etree
+except ImportError:
+    raise PackageMissingError(
+        'The python package lxml is required for NessusReportv2')
+
 import dateutil.parser, time
 
 
@@ -12,6 +19,9 @@ class NessusReportv2(object):
     a python dictionary representation of the ReportItem with the relevent
     host properties attached.  The ReportItem's structure itself will determine
     the resulting dictionary, what attributes are returned, and what is not.
+
+    Please note that in order to use this generator, you must install the python
+    ``lxml`` package.
 
     Args:
         fobj (File object or string path):

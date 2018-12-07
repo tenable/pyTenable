@@ -1,11 +1,4 @@
-class UnexpectedValueError(Exception):
-    '''
-    An unexpected value error is thrown whenever the value specified for a
-    parameter is outside the bounds of what is expected.  For example, if the
-    parameter **a** is expected to have a value of 1, 2, or 3, and it is instead
-    passed a value of 0, then it is an unexpected value, and this Exception
-    should be thrown by the package.
-    '''
+class TenableException(Exception):
     def __init__(self, msg):
         self.msg = str(msg)
 
@@ -14,6 +7,35 @@ class UnexpectedValueError(Exception):
 
     def __repr__(self):
         return repr(self.__str__())
+
+
+class UnexpectedValueError(TenableException):
+    '''
+    An unexpected value error is thrown whenever the value specified for a
+    parameter is outside the bounds of what is expected.  For example, if the
+    parameter **a** is expected to have a value of 1, 2, or 3, and it is instead
+    passed a value of 0, then it is an unexpected value, and this Exception
+    should be thrown by the package.
+    '''
+    pass
+
+
+class ConnectionError(TenableException):
+    '''
+    A connection-error is thrown only for products like Tenable.sc or Nessus,
+    where the application may be installed anywhere.  This error is thrown if
+    we are unable to complete the initial connection or gather the basic
+    information about the application that is necessary.
+    '''
+    pass
+
+
+class PackageMissingError(TenableException):
+    '''
+    In situations where an optional library is needed, this exception will be
+    thrown if the optional library is needed, howerver is unavailable.
+    '''
+    pass
 
 
 class APIError(Exception):
