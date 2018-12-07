@@ -39,7 +39,7 @@ Example:
     .. automethod:: put
     .. automethod:: delete
 '''
-from tenable.base import APISession, APIError, ServerError
+from tenable.base import APISession, APIError, ConnectionError
 from .accept_risks import AcceptRiskAPI
 from .alerts import AlertAPI
 from .analysis import AnalysisAPI
@@ -67,16 +67,18 @@ class TenableSC(APISession):
         https://docs.tenable.com/sccv/api_best_practices/Content/ScApiBestPractices/AboutScApiBestPrac.htm
     '''
 
-    def __init__(self, host, port=443, ssl_verify=False, cert=None,
-                 scheme='https', retries=None, backoff=None, ua_identity=None):
+    def __init__(self, host, port=443, ssl_verify=False, cert=None, adapter=None,
+                 scheme='https', retries=None, backoff=None, ua_identity=None,
+                 session=None):
         # As we will always be passing a URL to the APISession class, we will
         # want to construct a URL that APISession (and further requests) 
         # understands.
-        url = '{}://{}:{}/rest'.format(scheme, host, port)
+        base = '{}://{}:{}'.format(scheme, host, port)
+        url = '{}/rest'.format(base)
 
         # Now lets pass the relevent parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
-        APISession.__init__(self, url, retries, backoff, ua_identity)
+        APISession.__init__(self, url, retries, backoff, ua_identity, session)
 
         # Also, as Tenable.sc is generally installed without a certificate
         # chain that we can validate, we will want to turn off verification 
@@ -91,6 +93,11 @@ class TenableSC(APISession):
         if cert:
             self._session.cert = cert
 
+        # If an adapter for requests was provided, we should pull that in as
+        # well.
+        if adapter:
+            self._session.mount(base, adapter)
+
         # We will attempt to make the first call to the Tenable.sc instance
         # and get the system information.  If this call fails, then we likely
         # aren't pointing to a SecurityCenter at all and should throw an error
@@ -98,7 +105,7 @@ class TenableSC(APISession):
         try:
             d = self.get('system').json()
         except:
-            raise ServerError('No Tenable.sc Instance at {}'.format(host))
+            raise ConnectionError('No Tenable.sc Instance at {}:{}'.format(host, port))
 
         # Now we will try to interpret the Tenable.sc information into
         # something usable.
@@ -107,8 +114,14 @@ class TenableSC(APISession):
             self.build_id = d['response']['buildID']
             self.license = d['response']['licenseStatus']
             self.uuid = d['response']['uuid']
+            if 'token' in d['response']:
+                # if a token was passed in the system info page, then we should
+                # update the X-SecurityCenter header with the token info.
+                self._session.headers.update({
+                    'X-SecurityCenter': str(d['response']['token'])
+                })
         except:
-            raise ServerError('Invalid Tenable.sc Instance')
+            raise ConnectionError('Invalid Tenable.sc Instance')
 
     def _resp_error_check(self, response):
         try:

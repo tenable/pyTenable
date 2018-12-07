@@ -301,7 +301,8 @@ class APISession(object):
     Retry-After header was returned.
     '''
 
-    def __init__(self, url=None, retries=None, backoff=None, ua_identity=None):
+    def __init__(self, url=None, retries=None, backoff=None, 
+                 ua_identity=None, session=None):
         if url:
             self._url = url
         if retries and isinstance(retries, int):
@@ -312,7 +313,7 @@ class APISession(object):
             self._ua_identity = ua_identity
         self._build_session()
 
-    def _build_session(self):
+    def _build_session(self, session=None):
         '''
         Requests session builder
         '''
@@ -321,7 +322,10 @@ class APISession(object):
         else:
             identity = 'pyTenable/{}'.format(__version__)
 
-        self._session = requests.Session()
+        if session:
+            self._session = session
+        else:
+            self._session = requests.Session()
         self._session.headers.update({
             'User-Agent': '{} (pyTenable/{}; Python/{})'.format(identity,
                 __version__, '.'.join([str(i) for i in sys.version_info][0:3])),

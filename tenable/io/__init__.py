@@ -220,10 +220,10 @@ class TenableIO(APISession):
         return self._tzcache
 
     def __init__(self, access_key, secret_key, url=None, retries=None, 
-            backoff=None, ua_identity=None):
+                 backoff=None, ua_identity=None, session=None):
         self._access_key = access_key
         self._secret_key = secret_key
-        APISession.__init__(self, url, retries, backoff, ua_identity)
+        APISession.__init__(self, url, retries, backoff, ua_identity, session)
 
     def _retry_request(self, response, retries, kwargs):
         '''
