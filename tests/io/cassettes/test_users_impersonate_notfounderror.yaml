@@ -1,0 +1,30 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+      X-Impersonate: [username=c173bcb8-9a14-4124-a53a-558a64f2dfd4@pytenable.io]
+    method: GET
+    uri: https://cloud.tenable.com/session
+  response:
+    body: {string: !!python/unicode '{"statusCode":403,"error":"Forbidden","message":"Forbidden"}'}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['60']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 06 Dec 2018 23:22:38 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
+          path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-a-prod-us-east-2]
+      x-request-uuid: [4aeecf1ace5f48728d1524d2eb7270b7]
+    status: {code: 403, message: Forbidden}
+version: 1

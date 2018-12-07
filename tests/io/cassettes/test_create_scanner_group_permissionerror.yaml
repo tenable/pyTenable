@@ -1,0 +1,35 @@
+interactions:
+- request:
+    body: !!python/unicode '{"type": "load_balancing", "name": "92699f4e-295c-4387-b92a-d92b98fb5cf3"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['74']
+      Content-Type: [application/json]
+      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: POST
+    uri: https://cloud.tenable.com/scanner-groups
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWKi5JLCktds5PSVWyMjEw1lFKLSrKL1KyUnLLL0rKTElJzVPSUcpNLS5OTAeq
+        UPLMKy5NS8tMzkzNK1EoTs4vSFWqBQChW+L4RQAAAA==
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 06 Dec 2018 23:20:36 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
+          path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-c-prod-us-east-2]
+      x-request-uuid: [c28b1853c128dade980f6b642361a2a8]
+    status: {code: 403, message: Forbidden}
+version: 1
