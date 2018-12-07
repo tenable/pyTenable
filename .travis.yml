@@ -16,7 +16,7 @@ install:
       lxml              \
       m2r
 script:
-  - pytest --cov=tenable tests/io tests/reports
+  - pytest --vcr-record=none --cov=tenable tests/io tests/reports
 branches:
   only:
   - master
