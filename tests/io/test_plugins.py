@@ -1,6 +1,8 @@
-from .fixtures import *
 from tenable.errors import *
+from ..checker import check, single
+import pytest
 
+@pytest.mark.vcr()
 def test_families(api):
     families = api.plugins.families()
     assert isinstance(families, list)
@@ -9,10 +11,12 @@ def test_families(api):
         check(f, 'id', int)
         check(f, 'name', str)
 
+@pytest.mark.vcr()
 def test_family_details_family_id_typeerror(api):
     with pytest.raises(TypeError):
         api.plugins.family_details('nope')
 
+@pytest.mark.vcr()
 def test_family_details(api):
     f = api.plugins.family_details(27)
     assert isinstance(f, dict)
@@ -28,6 +32,7 @@ def test_plugin_details_plugin_id_typerror(api):
     with pytest.raises(TypeError):
         api.plugins.plugin_details('nope')
 
+@pytest.mark.vcr()
 def test_plugin_details(api):
     p = api.plugins.plugin_details(19506)
     assert isinstance(p, dict)

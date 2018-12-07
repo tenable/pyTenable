@@ -1,6 +1,7 @@
-from .fixtures import *
 from tenable.errors import *
-import uuid
+from ..checker import check, single
+import uuid, pytest
 
-def test_upload(api):
+@pytest.mark.vcr()
+def test_files_upload(api):
     api.files.upload('ExampleDataGoesHere')

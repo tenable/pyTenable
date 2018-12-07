@@ -1,20 +1,25 @@
-from .fixtures import *
 from tenable.errors import *
+from ..checker import check, single
 from io import BytesIO
+import uuid, pytest
 
-def test_assets_age_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_assets_age_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.assets(age='123')
 
-def test_assets_filter_tyype_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_assets_filter_tyype_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.assets(filter_type=1)
 
-def test_assets_filter_type_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_assets_filter_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.assets(filter_type='NOT')
 
-def test_assets(api):
+@pytest.mark.vcr()
+def test_workbench_assets(api):
     assets = api.workbenches.assets()
     assert isinstance(assets, list)
     a = assets[0]
@@ -74,23 +79,28 @@ def test_assets(api):
     check(a, 'terminated_by', str, allow_none=True)
     check(a, 'updated_at', 'datetime')
 
-def test_assets_filtered(api):
+@pytest.mark.vcr()
+def test_workbench_assets_filtered(api):
     assets = api.workbenches.assets(('operating_system', 'match', 'Linux'))
     assert isinstance(assets, list)
 
-def test_assets_bad_filter(api):
+@pytest.mark.vcr()
+def test_workbench_assets_bad_filter(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.assets(('operating_system', 'contains', 'Linux'))
 
-def test_asset_activity_uuid_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_activity_uuid_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_activity(1)
 
-def test_asset_activity_uuid_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_activity_uuid_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.asset_activity('This should fail')
 
-def test_asset_activity(api):
+@pytest.mark.vcr()
+def test_workbench_asset_activity(api):
     assets = api.workbenches.assets()
     history = api.workbenches.asset_activity(assets[0]['id'])
     assert isinstance(history, list)
@@ -127,44 +137,54 @@ def test_asset_activity(api):
             check(i, 'schedule_id', 'scanner-uuid')
             check(i, 'source', str)
 
-def test_asset_info_uuid_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_info_uuid_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_info(1)
 
-def test_asset_info_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_info_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.asset_info('abnc-1234-somethinginvalid')
 
-def test_asset_info_all_fields_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_info_all_fields_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_info('', all_fields='1')
 
-def test_asset_info(api):
+@pytest.mark.vcr()
+def test_workbench_asset_info(api):
     assets = api.workbenches.assets()
     asset = api.workbenches.asset_info(assets[0]['id'])
 
-def test_asset_vulns_uuid_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vulns_uuid_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_vulns(1)
 
-def test_asset_vulns_age_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vulns_age_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_vulns(str(uuid.uuid4()), age='none')
 
-def test_asset_vulns_filter_type_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vulns_filter_type_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_vulns(str(uuid.uuid4()), filter_type=123)
 
-def test_asset_vulns_filter_type_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vulns_filter_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.asset_vulns(str(uuid.uuid4()), filter_type='NOT')
 
-def test_asset_vulns_invalid_filter(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vulns_invalid_filter(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.asset_vulns(str(uuid.uuid4()), 
             ('operating_system', 'contains', 'Linux'))
 
-def test_asset_vulns(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vulns(api):
     assets = api.workbenches.assets()
     vulns = api.workbenches.asset_vulns(assets[0]['id'])
     assert isinstance(vulns, list)
@@ -181,7 +201,8 @@ def test_asset_vulns(api):
     check(v, 'severity', int)
     check(v, 'vulnerability_state', str)
 
-def test_asset_vulns_filtered(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vulns_filtered(api):
     assets = api.workbenches.assets()
     vulns = api.workbenches.asset_vulns(assets[0]['id'],
         ('severity', 'eq', 'Info'))
@@ -199,36 +220,44 @@ def test_asset_vulns_filtered(api):
     check(v, 'severity', int)
     check(v, 'vulnerability_state', str)
 
-def test_asset_vuln_info_uuid_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_info_uuid_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_vuln_info(1, 1)
 
-def test_asset_vuln_info_uuid_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_info_uuid_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.asset_vuln_info('this is not a valid UUID', 1234)
 
-def test_asset_vuln_info_plugin_id_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_info_plugin_id_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_vuln_info(str(uuid.uuid4()), 'something here')
 
-def test_asset_vuln_info_age_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_info_age_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_vuln_info(str(uuid.uuid4()), 19506, age='none')
 
-def test_asset_vuln_info_filter_type_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_info_filter_type_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_vuln_info(str(uuid.uuid4()), 19506, filter_type=123)
 
-def test_asset_vuln_info_filter_type_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_info_filter_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.asset_vuln_info(str(uuid.uuid4()), 19506, filter_type='NOT')
 
-def test_asset_vuln_info_invalid_filter(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_info_invalid_filter(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.asset_vuln_info(str(uuid.uuid4()), 19506,
             ('operating_system', 'contains', 'Linux'))
 
-def test_asset_vuln_info(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_info(api):
     assets = api.workbenches.assets()
     info = api.workbenches.asset_vuln_info(assets[0]['id'], 19506)
     check(info, 'count', int)
@@ -261,36 +290,44 @@ def test_asset_vuln_info(api):
     check(info, 'synopsis', str)
     check(info, 'vuln_count', int)
 
-def test_asset_vuln_output_uuid_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_output_uuid_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_vuln_output(1, 1)
 
-def test_asset_vuln_output_uuid_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_output_uuid_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.asset_vuln_output('this is not a valid UUID', 1234)
 
-def test_asset_vuln_output_plugin_id_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_output_plugin_id_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_vuln_output(str(uuid.uuid4()), 'something here')
 
-def test_asset_vuln_output_age_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_output_age_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_vuln_output(str(uuid.uuid4()), 19506, age='none')
 
-def test_asset_vuln_output_filter_type_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_output_filter_type_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.asset_vuln_output(str(uuid.uuid4()), 19506, filter_type=123)
 
-def test_asset_vuln_output_filter_type_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_output_filter_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.asset_vuln_output(str(uuid.uuid4()), 19506, filter_type='NOT')
 
-def test_asset_vuln_output_invalid_filter(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_output_invalid_filter(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.asset_vuln_output(str(uuid.uuid4()), 19506,
             ('operating_system', 'contains', 'Linux'))
 
-def test_asset_vuln_output(api):
+@pytest.mark.vcr()
+def test_workbench_asset_vuln_output(api):
     assets = api.workbenches.assets()
     outputs = api.workbenches.asset_vuln_output(assets[0]['id'], 19506)
     assert isinstance(outputs, list)
@@ -316,7 +353,8 @@ def test_asset_vuln_output(api):
             check(j, 'severity', int)
             check(j, 'transport_protocol', str)
 
-def test_vuln_assets(api):
+@pytest.mark.vcr()
+def test_workbench_vuln_assets(api):
     assets = api.workbenches.vuln_assets()
     assert isinstance(assets, list)
     a = assets[0]
@@ -334,96 +372,119 @@ def test_vuln_assets(api):
         check(i, 'name', str)
     check(a, 'total', int)
 
-def test_export_asset_uuid_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_export_asset_uuid_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.export(asset_uuid=123)
 
-def test_export_asset_uuid_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_export_asset_uuid_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.export(asset_uuid='something')
 
-def test_export_plugin_id_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_export_plugin_id_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.export(plugin_id='something')
 
-def test_export_format_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_export_format_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.export(format=1234)
 
-def test_export_format_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_export_format_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.export(format='something else')
 
-def test_export_chapters_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_export_chapters_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.export(format='html', chapters='diff')
 
-def test_export_chapters_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_export_chapters_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.export(format='html', chapters=['something'])
 
-def test_export_missing_chapters(api):
+@pytest.mark.vcr()
+def test_workbench_export_missing_chapters(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.export(format='html')
 
-def test_export_filter_type_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_export_filter_type_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.export(filter_type=1)
 
-def test_export_filter_type_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_export_filter_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.export(filter_type='NOT')
 
-def test_export(api):
+@pytest.mark.vcr()
+def test_workbench_export(api):
     fobj = api.workbenches.export()
     assert isinstance(fobj, BytesIO)
 
-def test_export_plugin_id(api):
+@pytest.mark.vcr()
+def test_workbench_export_plugin_id(api):
     fobj = api.workbenches.export(plugin_id=19506)
     assert isinstance(fobj, BytesIO)
 
-def test_export_asset_uuid(api):
+@pytest.mark.vcr()
+def test_workbench_export_asset_uuid(api):
     assets = api.workbenches.assets()
     fobj = api.workbenches.export(asset_uuid=assets[0]['id'])
     assert isinstance(fobj, BytesIO)
 
-def test_vulns_age_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vulns_age_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vulns(age='none')
 
-def test_vulns_filter_type_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vulns_filter_type_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vulns(filter_type=123)
 
-def test_vulns_filter_type_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_vulns_filter_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.vulns(filter_type='NOT')
 
-def test_vulns_invalid_filter(api):
+@pytest.mark.vcr()
+def test_workbench_vulns_invalid_filter(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.vulns(('nothing here', 'contains', 'Linux'))
 
-def test_vulns_authenticated_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vulns_authenticated_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vulns(authenticated='FALSE')
 
-def test_vulns_exploitable_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vulns_exploitable_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vulns(exploitable='FALSE')
 
-def test_vulns_resolvable_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vulns_resolvable_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vulns(resolvable='FALSE')
 
-def test_vulns_severity_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vulns_severity_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vulns(severity=['low'])
 
-def test_vulns_severity_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_vulns_severity_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.vulns(severity='something else')
 
-def test_vulns(api):
+@pytest.mark.vcr()
+def test_workbench_vulns(api):
     vulns = api.workbenches.vulns()
     assert isinstance(vulns, list)
     v = vulns[0]
@@ -438,23 +499,28 @@ def test_vulns(api):
     check(v, 'recasted_count', int)
     check(v, 'vulnerability_state', str)
 
-def test_vuln_info_age_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vuln_info_age_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vuln_info(19506, age='none')
 
-def test_vuln_info_filter_type_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vuln_info_filter_type_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vuln_info(19506, filter_type=123)
 
-def test_vuln_info_filter_type_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_vuln_info_filter_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.vuln_info(19506, filter_type='NOT')
 
-def test_vuln_info_plugin_id_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vuln_info_plugin_id_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vuln_info('something')
 
-def test_vuln_info(api):
+@pytest.mark.vcr()
+def test_workbench_vuln_info(api):
     info = api.workbenches.vuln_info(19506)
     assert isinstance(info, dict)
     check(info, 'count', int)
@@ -487,23 +553,28 @@ def test_vuln_info(api):
     check(info, 'synopsis', str)
     check(info, 'vuln_count', int)
 
-def test_vuln_outputs_age_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vuln_outputs_age_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vuln_outputs(19506, age='none')
 
-def test_vuln_outputs_filter_type_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vuln_outputs_filter_type_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vuln_outputs(19506, filter_type=123)
 
-def test_vuln_outputs_filter_type_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_workbench_vuln_outputs_filter_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.workbenches.vuln_outputs(19506, filter_type='NOT')
 
-def test_vuln_outputs_plugin_id_typeerror(api):
+@pytest.mark.vcr()
+def test_workbench_vuln_outputs_plugin_id_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.vuln_outputs('something')
 
-def test_vuln_outputs(api):
+@pytest.mark.vcr()
+def test_workbench_vuln_outputs(api):
     outputs = api.workbenches.vuln_outputs(19506)
     assert isinstance(outputs, list)
     o = outputs[0]

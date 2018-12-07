@@ -1,7 +1,9 @@
-from .fixtures import *
 from tenable.errors import *
+from ..checker import check, single
+import pytest
 
-def test_list(api):
+@pytest.mark.vcr()
+def test_assets_list(api):
     assets = api.assets.list()
     assert isinstance(assets, list)
     a = assets[0]
@@ -21,12 +23,13 @@ def test_list(api):
         check(s, 'last_seen', 'datetime')
         check(s, 'name', str)
 
-
-def test_import_assets_typeerror(api):
+@pytest.mark.vcr()
+def test_assets_import_assets_typeerror(api):
     with pytest.raises(TypeError):
         api.assets.asset_import('pytest', 1)
 
-def test_import_source_typeerror(api):
+@pytest.mark.vcr()
+def test_assets_import_source_typeerror(api):
     with pytest.raises(TypeError):
         api.assets.asset_import(1, {
             'fqdn': ['example.py.test'], 
@@ -35,7 +38,8 @@ def test_import_source_typeerror(api):
             'mac_address': []
         })
 
-def test_import_standard_user_permissionerror(stdapi):
+@pytest.mark.vcr()
+def test_assets_import_standard_user_permissionerror(stdapi):
     with pytest.raises(PermissionError):
         stdapi.assets.asset_import( 'pytest', {
             'fqdn': ['example.py.test'], 
@@ -44,7 +48,8 @@ def test_import_standard_user_permissionerror(stdapi):
             'mac_address': []
         })   
 
-def test_import(api):
+@pytest.mark.vcr()
+def test_assets_import(api):
     resp = api.assets.asset_import('pytest', {
         'fqdn': ['example.py.test'], 
         'ipv4': ['192.168.254.1'], 
@@ -53,7 +58,8 @@ def test_import(api):
     })
     single(resp, 'uuid')
 
-def test_import_jobs(api):
+@pytest.mark.vcr()
+def test_assets_import_jobs(api):
     jobs = api.assets.list_import_jobs()
     assert isinstance(jobs, list)
     for i in jobs:
@@ -69,7 +75,8 @@ def test_import_jobs(api):
         check(i, 'status_message', str)
         check(i, 'uploaded_assets', int)
 
-def test_import_job_info(api):
+@pytest.mark.vcr()
+def test_assets_import_job_info(api):
     jobs = api.assets.list_import_jobs()
     if len(jobs) > 0:
         job = api.assets.import_job_details(jobs[0]['job_id'])

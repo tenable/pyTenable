@@ -1,39 +1,47 @@
-from .fixtures import *
 from datetime import datetime, timedelta
 from tenable.errors import *
+from ..checker import check, single
 from tenable.io.exports import ExportsIterator
+import pytest
 
-def test_vuln_num_assets_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_vuln_num_assets_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(num_assets='nope')
 
-def test_vuln_severity_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_vuln_severity_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(severity='info')
 
-def test_vuln_state_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_vuln_state_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(state=1)
 
-def test_vuln_state_unexpectedvalueerror(api):
+@pytest.mark.vcr()
+def test_exports_vuln_state_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.exports.vulns(state=['nothing here'])
 
-def test_vuln_plugin_family_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_vuln_plugin_family_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(plugin_family='yes')
 
-def test_vuln_since_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_vuln_since_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(since='nothing here')
 
-@pytest.mark.skip(reason='''
-    Depending on site load, this may take some time for the first chunk to
-    become available for testing.  As a result, for normal testing we will skip
-    this test, however we will keep it here in-case we ever want to run some
-    consistency checking.
-''')
-def test_vulns(api):
+#@pytest.mark.skip(reason='''
+#    Depending on site load, this may take some time for the first chunk to
+#    become available for testing.  As a result, for normal testing we will skip
+#    this test, however we will keep it here in-case we ever want to run some
+#    consistency checking.
+#''')
+@pytest.mark.vcr()
+def test_exports_vulns(api):
     vulns = api.exports.vulns()
     assert isinstance(vulns, ExportsIterator)
 
@@ -75,53 +83,64 @@ def test_vulns(api):
     check(v, 'severity_modification_type', str)
     check(v, 'state', str)
 
-def test_assets_chunk_size_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_assets_chunk_size_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(chunk_size='something')
 
-def test_assets_created_at_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_assets_created_at_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(created_at='nope')
 
-def test_assets_updated_at_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_assets_updated_at_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(updated_at='something')
 
-def test_assets_terminated_at_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_assets_terminated_at_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(terminated_at='something')
 
-def test_assets_deleted_at_typerror(api):
+@pytest.mark.vcr()
+def test_exports_assets_deleted_at_typerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(deleted_at='something')
 
-def test_assets_last_authenticated_scan_time_typerror(api):
+@pytest.mark.vcr()
+def test_exports_assets_last_authenticated_scan_time_typerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(last_authenticated_scan_time='something')
 
-def test_assets_last_assessed_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_assets_last_assessed_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(last_assessed='something')
 
-def test_assets_servicenow_sysid_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_assets_servicenow_sysid_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(servicenow_sysid='something')
 
-def test_assets_sources_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_assets_sources_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(sources=1)
 
-def test_assets_has_plugin_results_typeerror(api):
+@pytest.mark.vcr()
+def test_exports_assets_has_plugin_results_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(has_plugin_results='something')
 
-@pytest.mark.skip(reason='''
-    Depending on site load, this may take some time for the first chunk to
-    become available for testing.  As a result, for normal testing we will skip
-    this test, however we will keep it here in-case we ever want to run some
-    consistency checking.
-''')
-def test_assets(api):
+#@pytest.mark.skip(reason='''
+#    Depending on site load, this may take some time for the first chunk to
+#    become available for testing.  As a result, for normal testing we will skip
+#    this test, however we will keep it here in-case we ever want to run some
+#    consistency checking.
+#''')
+@pytest.mark.vcr()
+def test_exports_assets(api):
     assets = api.exports.assets()
     assert isinstance(assets, ExportsIterator)
 

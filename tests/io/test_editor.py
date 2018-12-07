@@ -1,5 +1,6 @@
-from .fixtures import *
 from tenable.errors import *
+from ..checker import check, single
+import pytest
 
 ###
 ### As the editor endpoints are really meant to drive the UI, the tests here
@@ -9,66 +10,82 @@ from tenable.errors import *
 ### for the list command.
 ###
 
-def test_audits_etype_typeerror(api):
+@pytest.mark.vcr()
+def test_editor_audits_etype_typeerror(api):
     with pytest.raises(TypeError):
         api.editor.audits(1, 1, 1)
 
-def test_audits_etype_unexpectedvalue(api):
+@pytest.mark.vcr()
+def test_editor_audits_etype_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
         api.editor.audits('nope', 1, 1)
 
-def test_audits_object_id_typeerror(api):
+@pytest.mark.vcr()
+def test_editor_audits_object_id_typeerror(api):
     with pytest.raises(TypeError):
         api.editor.audits('scan', 'nope', 1)
 
-def test_audits_file_id_typeerror(api):
+@pytest.mark.vcr()
+def test_editor_audits_file_id_typeerror(api):
     with pytest.raises(TypeError):
         api.editor.audits('scan', 1, 'nope')
 
-def test_details_etype_typeerror(api):
+@pytest.mark.vcr()
+def test_editor_details_etype_typeerror(api):
     with pytest.raises(TypeError):
         api.editor.details(1, 'uuid')
 
-def test_details_etype_unexpectedvalue(api):
+@pytest.mark.vcr()
+def test_editor_details_etype_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
         api.editor.details('nope', 'uuid')
 
-def test_details_id_typeerror(api):
+@pytest.mark.vcr()
+def test_editor_details_id_typeerror(api):
     with pytest.raises(TypeError):
         api.editor.details('scan', 1)
 
-def test_edit_etype_typeerror(api):
+@pytest.mark.vcr()
+def test_editor_edit_etype_typeerror(api):
     with pytest.raises(TypeError):
         api.editor.edit(1, 'uuid')
 
-def test_edit_etype_unexpectedvalue(api):
+@pytest.mark.vcr()
+def test_editor_edit_etype_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
         api.editor.edit('nope', 'uuid')
 
-def test_edit_id_typeerror(api):
+@pytest.mark.vcr()
+def test_editor_edit_id_typeerror(api):
     with pytest.raises(TypeError):
         api.editor.edit('scan', 'nope')
 
-def test_list_etype_typeerror(api):
+@pytest.mark.vcr()
+def test_editor_list_etype_typeerror(api):
     with pytest.raises(TypeError):
         api.editor.list(1)
 
-def test_list_etype_unexpectedvalue(api):
+@pytest.mark.vcr()
+def test_editor_list_etype_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
         api.editor.list('nope')
 
-def test_list(api):
+@pytest.mark.vcr()
+def test_editor_list(api):
     items = api.editor.list('scan')
     assert isinstance(items, list)
 
-def test_plugin_desc_policy_id_typeerror(api):
+@pytest.mark.vcr()
+def test_editor_plugin_desc_policy_id_typeerror(api):
     with pytest.raises(TypeError):
         api.editor.plugin_description('nope', 1, 1)
 
-def test_plugin_desc_family_id_typeerror(api):
+@pytest.mark.vcr()
+def test_editor_plugin_desc_family_id_typeerror(api):
     with pytest.raises(TypeError):
         api.editor.plugin_description(1, 'nope', 1)
 
-def test_plugin_desc_plugin_id_typeerror(api):
+@pytest.mark.vcr()
+def test_editor_plugin_desc_plugin_id_typeerror(api):
     with pytest.raises(TypeError):
         api.editor.plugin_description(1, 1, 'nope')

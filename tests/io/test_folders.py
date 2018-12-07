@@ -1,26 +1,32 @@
-from .fixtures import *
 from tenable.errors import *
-import uuid
+from ..checker import check, single
+import uuid, pytest
 
-def test_folder_name_typeerror(api):
+@pytest.mark.vcr()
+def test_folders_folder_name_typeerror(api):
     with pytest.raises(TypeError):
         api.folders.create(1)
 
-def test_create(api, folder):
+@pytest.mark.vcr()
+def test_folders_create(api, folder):
     assert isinstance(folder, int)
 
-def test_delete(api, folder):
+@pytest.mark.vcr()
+def test_folders_delete(api, folder):
     api.folders.delete(folder)
     assert folder not in [f['id'] for f in api.folders.list()]
 
-def test_edit_name_typeerror(api, folder):
+@pytest.mark.vcr()
+def test_folders_edit_name_typeerror(api, folder):
     with pytest.raises(TypeError):
         api.folders.edit(folder, 1)
 
-def test_edit(api, folder):
+@pytest.mark.vcr()
+def test_folders_edit(api, folder):
     api.folders.edit(folder, str(uuid.uuid4())[:20])
 
-def test_list(api, folder):
+@pytest.mark.vcr()
+def test_folders_list(api, folder):
     folders = api.folders.list()
     assert isinstance(folders, list)
     for f in folders:
