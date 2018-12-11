@@ -204,7 +204,7 @@ class ScanResultAPI(SCEndpoint):
             ...     sc.scan_instances.import_scan(fobj, 1)
         '''
         kw['repo'] = repo
-        payload = self._api.scans._constructor(kw)
+        payload = self._api.scans._constructor(**kw)
         payload['filename'] = self._api.files.upload(fobj)
         return self._api.post(
             'scanResult/import', json=payload).json()['response']

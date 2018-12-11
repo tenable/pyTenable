@@ -22,7 +22,7 @@ Methods available on ``sc.accept_risks``:
 from .base import SCEndpoint
 
 class AcceptRiskAPI(SCEndpoint):
-    def _constructor(self, kw):
+    def _constructor(self, **kw):
         '''
         document creator for acceptRisk creation and update calls.
         '''
@@ -219,7 +219,7 @@ class AcceptRiskAPI(SCEndpoint):
         '''
         kw['plugin_id'] = plugin_id
         kw['repos'] = repos
-        payload = self._constructor(kw)
+        payload = self._constructor(**kw)
 
         return self._api.post('acceptRisk', json=payload).json()['response']
 
@@ -270,7 +270,7 @@ class AcceptRiskAPI(SCEndpoint):
             >>> rule = sc.accept_risks.update(1,
             ...     ips=['192.168.0.101', '192.168.0.102'], expires=90)
         '''
-        payload = self._constructor(kw)
+        payload = self._constructor(**kw)
 
         return self._api.patch('acceptRisk/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
