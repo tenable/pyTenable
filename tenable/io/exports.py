@@ -101,23 +101,39 @@ class ExportsAPI(TIOEndpoint):
         `exports: vulns-request-export <https://cloud.tenable.com/api#/resources/exports/vulns-request-export>`_
 
         Args:
+            cidr_range (str, optional):
+                Restrict the export to only vulns assigned to assets within the
+                CIDR range specified.
+            first_found (int, optional):
+                Specifies the earliest time for a vulnerability to have been
+                discovered.  Format is a unix timestamp integer.
+            last_fixed (int, optional):
+                Specifies the earliest time that vulnerabilitis may have been
+                fixed.  Format is a unix timestamp integer.
+            last_found (int, optional):
+                Specifies the earliest time that a vulnerability may have been
+                last seen.  Format is a unix timestamp integer.
             num_assets (int, optional):
                 Specifies the number of assets returned per-chunk.  If nothing is
                 specified, it will default to 50 assets.
-            severity (list, optional):
-                list of severities to include as part of the export.  Supported
-                values are `info`, `low`, `medium`, `high`, and `critical`.
-            state (list, optional):
-                list of object states to be returned.  Supported values are
-                `open`, `reopened`, and `fixed`.
             plugin_family (list, optional):
                 list of plugin families to restrict the export to.  values are
                 interpreted with an insensitivity to case.
+            severity (list, optional):
+                list of severities to include as part of the export.  Supported
+                values are `info`, `low`, `medium`, `high`, and `critical`.
             since (int, optional):
                 Returned results will be bounded to only respond with objects
                 that are new or updated between this specified value and current.
                 If no since filter is specified, then the results will be unbounded
                 and return all results.
+            state (list, optional):
+                list of object states to be returned.  Supported values are
+                `open`, `reopened`, and `fixed`.
+            tags (list, optional):
+                List of tag key-value pairs that must be associated to the
+                vulnerability data to be returned.  Key-value pairs are tuples
+                if ``('key', 'value')`` and are case-sensitive.
 
         Returns:
             ExportIterator: an iterator to walk through the results.
@@ -153,6 +169,37 @@ class ExportsAPI(TIOEndpoint):
 
         if 'since' in kw and self._check('since', kw['since'], int):
             payload['filters']['since'] = kw['since']
+
+        if 'cidr_range' in kw and self._check('cidr_range', kw['cidr_range'], str):
+            payload['filters']['cidr_range'] = kw['cidr_range']
+
+        if 'first_found' in kw and self._check('first_found', kw['first_found'], int):
+            payload['filters']['first_found'] = kw['first_found']
+
+        if 'last_found' in kw and self._check('last_found', kw['last_found'], int):
+            payload['filters']['last_found'] = kw['last_found']
+
+        if 'last_fixed' in kw and self._check('last_fixed', kw['last_fixed'], int):
+            payload['filters']['last_fixed'] = kw['last_fixed']
+
+        if 'tags' in kw and self._check('tags', kw['tags'], list):
+            # if any tags were specified, then we will iterate through the list
+            # and handle each 
+            for tag in kw['tags']:
+                # check to see if the tag is a tuple and also construct the
+                # filter name.
+                self._check('tags:tag', tag, tuple)
+                name = 'tag.{}'.format(
+                    self._check('tag:name', tag[0], str))
+                
+                # If the tag filter doesn't yet exist, then we need to create it
+                # and associate an empty list to it.
+                if name not in payload['filters']:
+                    payload['filters'][name] = list()
+
+                # add the tag value to the tag filter.
+                payload['filters'][name].append(
+                    self._check('tag:value', tag[1], str))
 
         return ExportsIterator(self._api,
             _type='vulns',
