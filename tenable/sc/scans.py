@@ -423,7 +423,7 @@ class ScanAPI(SCEndpoint):
             >>> sc.scans.delete(1)
         '''
         return self._api.delete('scan/{}'.format(self._check('id', id, int))
-            ).json()['response']['scans']
+            ).json()['response']
 
     def copy(self, id, name=None, user_id=None):
         '''
