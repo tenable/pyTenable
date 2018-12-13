@@ -14,7 +14,7 @@ setup(
     name='pyTenable',
     version='0.3.5',
     description='Python library to interface into Tenable\'s products and applications',
-    author='Tenable\, Inc.',
+    author='Tenable, Inc.',
     long_description=long_description,
     author_email='smcgrath@tenable.com',
     url='https://github.com/tenable/pytenable',
