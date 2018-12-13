@@ -211,11 +211,3 @@ class SecurityCenter(TenableSC):
         TenableSC.__init__(self, host, port, ssl_verify, 
             cert, scheme, retries, backoff)
     
-    
-    
-    
-    
-    
-    
-    
-    

@@ -3,7 +3,7 @@ from .errors import *
 '''
 '''
 
-__version__ = '0.3.4'
+__version__ = '0.3.5'
 __author__ = 'Steve McGrath <smcgrath@tenable.com>'
 
 
@@ -28,7 +28,7 @@ class APIResultsIterator(object):
     '''
     count = 0
     page_count = 0
-    total = 0
+    total = 1
     page = []
 
     # The API will be grafted on here.
@@ -49,7 +49,6 @@ class APIResultsIterator(object):
     def __init__(self, api, **kw):
         self._api = api
         self.__dict__.update(kw)
-        self._get_page()
 
     def _get_page(self):
         pass
