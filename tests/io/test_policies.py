@@ -20,11 +20,10 @@ def test_configure_policy_notfounderror(api):
 @pytest.mark.vcr()
 def test_configure_policy(api, policy):
     details = api.policies.details(policy['policy_id'])
-    details['settings']['name'] = str(uuid.uuid4())
+    details['settings']['name'] = 'MODIFIED'
     api.policies.configure(policy['policy_id'], details)
     updated = api.policies.details(policy['policy_id'])
-    assert (details['settings']['name'] == updated['settings']['name']
-        or updated['settings']['name'] == 'a8ca88bf-75c0-47b4-ab4c-d00cc8e64b17')
+    assert updated['settings']['name'] == 'MODIFIED'
 
 @pytest.mark.vcr()
 def test_copy_policy_id_typeerror(api):

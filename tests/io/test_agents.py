@@ -63,11 +63,6 @@ def test_agents_list_wildcard_fields_typeerror(api):
         api.agents.list(wildcard_fields='nope')
 
 @pytest.mark.vcr()
-def test_agents_list_standard_users_permissionerror(stdapi):
-    with pytest.raises(PermissionError):
-        stdapi.agents.list()
-
-@pytest.mark.vcr()
 def test_agents_list(api):
     count = 0
     agents = api.agents.list()

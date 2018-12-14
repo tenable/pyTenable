@@ -119,10 +119,8 @@ def test_users_edit_permissionerror(stdapi, user):
 
 @pytest.mark.vcr()
 def test_users_edit(api, user):
-    name = guser()
-    modded = api.users.edit(user['id'], name=name)
-    assert (modded['name'] == name 
-        or modded['name'] == 'db21daba-c87a-4641-8105-ed3b046102c8@pytenable.io')
+    modded = api.users.edit(user['id'], name='MODDED NAME')
+    assert modded['name'] == 'MODDED NAME' 
 
 @pytest.mark.vcr()
 def test_users_enabled_id_typeerror(api):

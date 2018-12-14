@@ -10,6 +10,7 @@ def vcr_config():
     return {
         'filter_headers': [
             ('X-APIKeys', 'accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY'),
+            ('x-request-uuid', 'ffffffffffffffffffffffffffffffff'),
         ],
     }
 

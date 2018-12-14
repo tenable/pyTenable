@@ -103,11 +103,9 @@ def test_scan_configure_notfounderror(api):
 
 @pytest.mark.vcr()
 def test_scan_configure(api, scan):
-    name = 'pytest: {}'.format(uuid.uuid4())
-    mod = api.scans.configure(scan['id'], name=name)
+    mod = api.scans.configure(scan['id'], name='MODIFIED')
     assert mod['id'] == scan['id']
-    assert (mod['name'] == name 
-        or mod['name'] == 'pytest: e384b265-a644-456d-b8d9-93a0175ca493')
+    assert mod['name'] == 'MODIFIED' 
 
 @pytest.mark.vcr()
 def test_scan_copy_scan_id_typeerror(api):
