@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: !!python/unicode '{"query": {"tool": "sumdate", "type": "event", "startOffset":
+      0, "filters": [], "endOffset": 5}, "type": "event", "sourceType": "lce"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['134']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":1,"returnedRecords":1,"startOffset":0,"endOffset":5,"matchingDataElementCount":48208,"results":[{"date":"Dec
+        17, 2018","time block start":"1545022800","time block stop":"1545109199","count":"48208","24-hour
+        plot":"0,0,0,0,0,0,0,0,0,0,0,0,804,34828,6422,6154,0,0,0,0,0,0,0,0"}],"startTime":1544993858,"endTime":1545080258},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080258}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['435']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:57:38 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

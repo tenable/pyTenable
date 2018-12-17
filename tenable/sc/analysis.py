@@ -3,7 +3,43 @@ analysis
 ========
 
 The following methods allow for interaction into the Tenable.sc 
-`analysis <https://docs.tenable.com/sccv/api/Analysis.html>`_ API.
+`analysis <https://docs.tenable.com/sccv/api/Analysis.html>`_ API.  The analysis
+area in Tenable.sc is highly complex and allows for a wide range of varied
+inputs and outputs.  This single endpoint has been broken down in pyTenable to
+several methods in order to apply some defaults to the expected datatypes and
+options most likely to be returned.  As the filters are dependent on the tool
+and datatype that is being referenced, the best solution to understanding what
+filters are available when getting started is to simply pass a known bad filter
+string and use the resulting error as an indicator of whats available.  For
+example, you could perform the following action below while attempting to see
+the available filters for the mobile datatype when using the ``vulndetails``
+tool:
+
+.. code-block:: python
+    >>> x = sc.analysis.mobile(('something', '=', ''))
+    >>> x.next()
+    Traceback (most recent call last):
+      File "<input>", line 1, in <module>
+        x.next()
+      File "tenable/base.py", line 75, in next
+        self._get_page()
+      File "tenable/sc/analysis.py", line 43, in _get_page
+        resp = self._api.post('analysis', json=query).json()
+      File "tenable/base.py", line 436, in post
+        return self._request('POST', path, **kwargs)
+      File "tenable/base.py", line 379, in _request
+        raise self._error_codes[status](resp)
+    PermissionError: 00000000-0000-0000-0000-000000000000:403 {"type":"regular",
+    "response":"","error_code":146,"error_msg":"Invalid parameters specified for
+    mobile vuln query.\nThe filter 'something' is invalid (valid filters: 
+    repositoryIDs, port, pluginID, familyID, pluginOutput, lastSeen, 
+    lastMitigated, severity, protocol, pluginName, baseCVSSScore, 
+    exploitAvailable, pluginPublished, pluginModified, vulnPublished, 
+    patchPublished, deviceID, mdmType, deviceModel, serialNumber, deviceUser, 
+    deviceVersion, osCPE).\n","warnings":[],"timestamp":1545060739}
+    >>>
+
+The resulting error details specifically what filters can be set.
 
 Methods available on ``sc.analysis``:
 
@@ -14,7 +50,6 @@ Methods available on ``sc.analysis``:
     .. automethod:: events
     .. automethod:: mobile
     .. automethod:: scan
-    .. automethod:: user
     .. automethod:: vulns
 '''
 from .base import SCEndpoint, SCResultsIterator
@@ -52,9 +87,9 @@ class AnalysisResultsIterator(SCResultsIterator):
 
         # sadly the totalRecords attribute isn't always returned.  If it is
         # returned, then we will simply update our total with the value of
-        # totalRecords.  In the absense of a totalRecords, we will simply want
-        # to check to see if the number of records equalled the page limiter.
-        # if it did, then we will assume that therte is likely another page
+        # totalRecords.  In the absence of a totalRecords, we will simply want
+        # to check to see if the number of records equaled the page limiter.
+        # if it did, then we will assume that there is likely another page
         # ahead of this one and set the total count to be the limit + count + 1.
         # If the page size is less than the page limit, then we can likely
         # assume that this is the last page, and just set the total to be the
@@ -135,7 +170,7 @@ class AnalysisAPI(SCEndpoint):
 
                 if isinstance(f[2], tuple) and f[1] == '~' and f[0] == 'asset':
                     # if this is a asset combination, then we will want to
-                    # expand the tuple into the expected dictionary struicture
+                    # expand the tuple into the expected dictionary structure
                     # that the API is expecting.
                     item['value'] = self._expass(f[2])
                 else:
@@ -145,13 +180,14 @@ class AnalysisAPI(SCEndpoint):
 
                 # Add the newly expanded filter to the filters list.
                 kw['query']['filters'].append(item)
+            del(kw['analysis_type'])
         return kw
 
 
     def _analysis(self, *filters, **kw):
         '''
         The base wrapper function handling the calls to the analysis API 
-        endpoint.  As this singular endpopint is used as the common API for all
+        endpoint.  As this singular endpoint is used as the common API for all
         data export, much of the common handling can be centrally handled and
         only the unique elements for a given sub-type is handled by the
         individual methods.
@@ -242,8 +278,8 @@ class AnalysisAPI(SCEndpoint):
                 ``iplist``, ``listmailclients``, ``listservices``, 
                 ``listos``, ``listsoftware``, ``listsshservers``,
                 ``listvuln``, ``listwebclients``, ``listwebservers``,
-                ``popcount``, ``sumasset``, ``sumcce``, ``sumclassa``,
-                ``sumclassb``, ``sumclassc``, ``sumcve``, ``sumdnsname``,
+                ``sumasset``, ``sumcce``, ``sumclassa``, ``sumclassb``, 
+                ``sumclassc``, ``sumcve``, ``sumdnsname``,
                 ``sumfamily``, ``sumiavm``, ``sumid``, ``sumip``,
                 ``summsbulletin``, ``sumprotocol``, ``sumremediation``,
                 ``sumseverity``, ``sumuserresponsibility``, ``sumport``,
@@ -300,7 +336,6 @@ class AnalysisAPI(SCEndpoint):
                 'listvuln',
                 'listwebclients',
                 'listwebservers',
-                'popcount', # not sure if we should remove this...
                 'sumasset',
                 'sumcce',
                 'sumclassa',
@@ -389,8 +424,8 @@ class AnalysisAPI(SCEndpoint):
                 ``iplist``, ``listmailclients``, ``listservices``, 
                 ``listos``, ``listsoftware``, ``listsshservers``,
                 ``listvuln``, ``listwebclients``, ``listwebservers``,
-                ``popcount``, ``sumasset``, ``sumcce``, ``sumclassa``,
-                ``sumclassb``, ``sumclassc``, ``sumcve``, ``sumdnsname``,
+                ``sumasset``, ``sumcce``, ``sumclassa``, ``sumclassb``, 
+                ``sumclassc``, ``sumcve``, ``sumdnsname``,
                 ``sumfamily``, ``sumiavm``, ``sumid``, ``sumip``,
                 ``summsbulletin``, ``sumprotocol``, ``sumremediation``,
                 ``sumseverity``, ``sumuserresponsibility``, ``sumport``,
@@ -513,18 +548,21 @@ class AnalysisAPI(SCEndpoint):
         return self._analysis(*filters, **kw)
 
 
-    def user(self, *filters, **kw):
-        '''
-        '''
-        payload = {'type': 'user'}
-        kw['payload'] = payload
-        kw['tool'] = 'user'
-        kw['analysis_type'] = 'user'
-        return self._analysis(*filters, **kw)
+    # not sure what the user datatype is, however I haven't seen any use-cases
+    # for this datatype.  leaving the method here, just commented out in-case
+    # it needs some love and attention at a later date.
+    #def user(self, *filters, **kw):
+    #    '''
+    #    '''
+    #    payload = {'type': 'user'}
+    #    kw['payload'] = payload
+    #    kw['tool'] = 'user'
+    #    kw['analysis_type'] = 'user'
+    #    return self._analysis(*filters, **kw)
 
     def console(self, *filters, **kw):
         '''
-        Queries the analysis API for event data from the Log Correlation Engine
+        Queries the analysis API for log data from the Tenable.sc Console itself.
 
         `SC Analysis: scLog Type <https://docs.tenable.com/sccv/api/Analysis.html#AnalysisRESTReference-SCLogType.1>`_
 
@@ -563,22 +601,51 @@ class AnalysisAPI(SCEndpoint):
 
     def mobile(self, *filters, **kw):
         '''
+        Queries the analysis API for mobile data collected from querying one or
+        many MDM solutions.
+
+        `SC Analysis: Mobile Type <https://docs.tenable.com/sccv/api/Analysis.html#AnalysisRESTReference-MobileType>`_
+
+        Args:
+            filters (tuple, optional):
+                The analysis module provides a more compact way to write filters
+                to the analysis endpoint.  The purpose here is to aid in more
+                readable code and reduce the amount of boilerplate that must be
+                written to support a filtered call to analysis.  The format is
+                simply a list of tuples.  Each tuple is broken down into
+                (field, operator, value).
+            pages (int, optional):
+                The number of pages to query.  Default is all.
+            limit (int, optional):
+                How many entries should be in each page?  Default is 200.
+            offset (int, optional):
+                How many entries to skip before processing.  Default is 0.
+            sort_field (str, optional):
+                The field to sort the results on.
+            sort_direction (str, optional):
+                The direction in which to sort the results.  Valid settings are
+                ``asc`` and ``desc``.  The default is ``asc``.
+            tool (str, optional):
+                The analysis tool for formatting and returning a specific view
+                into the information.  If no tool is specified, the default will
+                be ``vulndetails``.  Available tools are:
+                ``listvuln``, ``sumdeviceid``, ``summdmuser``, ``summodel``, 
+                ``sumoscpe``, ``sumpluginid``, ``sumseverity``, ``vulndetails``
+
+        Returns:
+            AnalysisResultsIterator: an iterator object handling data pagination.
         '''
         payload = {'type': 'mobile', 'sourceType': 'cumulative'}
 
         if 'tool' in kw:
             self._check('tool', kw['tool'], str, choices=[
-                'listmodel',
-                'listoscpe',
                 'listvuln',
                 'sumdeviceid',
                 'summdmuser',
                 'summodel',
                 'sumoscpe',
                 'sumpluginid',
-                'sumprotocol',
                 'sumseverity',
-                'support',
                 'vulndetails'
             ],  case='lower')
         else:
