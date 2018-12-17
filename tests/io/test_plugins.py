@@ -28,6 +28,7 @@ def test_family_details(api):
         check(p, 'name', str)
     assert f['id'] == 27
 
+@pytest.mark.vcr()
 def test_plugin_details_plugin_id_typerror(api):
     with pytest.raises(TypeError):
         api.plugins.plugin_details('nope')

@@ -73,6 +73,8 @@ class APIResultsIterator(object):
         # query the next page of records.
         if self.page_count >= len(self.page) and self.count <= self.total:
             self._get_page()
+            if len(self.page) == 0:
+                raise StopIteration()
 
         # Get the relevant record, increment the counters, and return the
         # record.

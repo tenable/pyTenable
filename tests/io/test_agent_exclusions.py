@@ -347,4 +347,5 @@ def test_agentexclusions_edit_success(api, agentexclusion):
 def test_agentexclusions_list_blackouts(api, agentexclusion):
     items = api.agent_exclusions.list()
     assert isinstance(items, list)
-    assert agentexclusion in items
+    a = items[0]
+    
