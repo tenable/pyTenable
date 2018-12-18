@@ -6,16 +6,17 @@ The following methods allow for interaction into the Tenable.sc
 `analysis <https://docs.tenable.com/sccv/api/Analysis.html>`_ API.  The analysis
 area in Tenable.sc is highly complex and allows for a wide range of varied
 inputs and outputs.  This single endpoint has been broken down in pyTenable to
-several methods in order to apply some defaults to the expected datatypes and
+several methods in order to apply some defaults to the expected data-types and
 options most likely to be returned.  As the filters are dependent on the tool
-and datatype that is being referenced, the best solution to understanding what
+and data-type that is being referenced, the best solution to understanding what
 filters are available when getting started is to simply pass a known bad filter
 string and use the resulting error as an indicator of whats available.  For
 example, you could perform the following action below while attempting to see
-the available filters for the mobile datatype when using the ``vulndetails``
+the available filters for the mobile data-type when using the ``vulndetails``
 tool:
 
 .. code-block:: python
+
     >>> x = sc.analysis.mobile(('something', '=', ''))
     >>> x.next()
     Traceback (most recent call last):
@@ -31,15 +32,43 @@ tool:
         raise self._error_codes[status](resp)
     PermissionError: 00000000-0000-0000-0000-000000000000:403 {"type":"regular",
     "response":"","error_code":146,"error_msg":"Invalid parameters specified for
-    mobile vuln query.\nThe filter 'something' is invalid (valid filters: 
+    mobile vuln query.  The filter 'something' is invalid (valid filters: 
     repositoryIDs, port, pluginID, familyID, pluginOutput, lastSeen, 
     lastMitigated, severity, protocol, pluginName, baseCVSSScore, 
     exploitAvailable, pluginPublished, pluginModified, vulnPublished, 
     patchPublished, deviceID, mdmType, deviceModel, serialNumber, deviceUser, 
-    deviceVersion, osCPE).\n","warnings":[],"timestamp":1545060739}
-    >>>
+    deviceVersion, osCPE).","warnings":[],"timestamp":1545060739}
+
 
 The resulting error details specifically what filters can be set.
+
+When it comes to constructing filters, TenableSC uses a common filter structure
+for the collapsed filter-set.  This format is in the form of a 3 entry tuple
+consisting of ('filtername', 'operator', 'value').  For example, if you're
+looking to set the ``pluginID`` filter to ``19506`` the filter would look like
+``('pluginID', '=', '19506')``.  Severities are in level of criticality, from 0
+(informational) to 4 (critical).  Filters like these can be a string of comma-
+separated values to indicate multiple items.  So for high and critical vulns,
+``('severity', '=', '3,4')`` would return only what your looking for.
+
+Asset list calculations in filters are a bit more complex, but still shouldn't 
+be too difficult.  Tenable.sc leverages nested pairs for the asset calculations
+combined with a operator to define how that pair are to be combined.  Each of
+the elements within the pair can further be nested, allowing for some quite
+complex asset list math to happen.  
+
+On the simple side, if you just want to look for The the combined results of 
+asset lists 1 or 2, you would perform:
+``('asset', '~', ('or', 1, 2))``.  
+Note the tilda, informing the filtering engine that it will need to perform some
+sort of calculation first.  The tilda is only used when using the asset filter.  
+
+Now for a more complex calculation, you could look for the IPs that exist in
+both 1 or 2, but not 3:
+``('asset', '~', ('and', ('or', 1, 2), ('not', 3)))``
+As you can see it's just a matter of nesting out from "1 or 2".  The only new
+concept here is the paired tuple for not.  asking for the inverse of an asset
+list requires that you wrap it in a tuple with the not operator.
 
 Methods available on ``sc.analysis``:
 
@@ -180,7 +209,6 @@ class AnalysisAPI(SCEndpoint):
 
                 # Add the newly expanded filter to the filters list.
                 kw['query']['filters'].append(item)
-            del(kw['analysis_type'])
         return kw
 
 
