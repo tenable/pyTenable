@@ -209,6 +209,7 @@ class AnalysisAPI(SCEndpoint):
 
                 # Add the newly expanded filter to the filters list.
                 kw['query']['filters'].append(item)
+            del(kw['analysis_type'])
         return kw
 
 
