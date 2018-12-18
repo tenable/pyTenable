@@ -535,7 +535,7 @@ class ScansAPI(TIOEndpoint):
 
         # initiate the payload and parameters dictionaries.
         payload = self._parse_filters(filters,
-            self._api.filters.scan_filters(), rtype='json')
+            self._api.filters.scan_filters(), rtype='sjson')
         params = dict()
 
         if 'history_id' in kw:
