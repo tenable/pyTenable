@@ -14,10 +14,14 @@ from tenable.errors import *
 
 @pytest.fixture(autouse=True, scope='module')
 def sc(request, vcr):
-    with vcr.use_cassette('sc_login', filter_post_data_parameters=['username', 'password']):
-        sc = TenableSC(os.getenv('SC_TEST_HOST'), 
-            port=int(os.getenv('SC_TEST_PORT')))
+    if os.getenv('SC_TEST_HOST'):
+        sc = TenableSC(os.getenv('SC_TEST_HOST'))
         sc.login(os.getenv('SC_TEST_USER'), os.getenv('SC_TEST_PASS'))
+    else:
+        with vcr.use_cassette('sc_login', 
+            filter_post_data_parameters=['username', 'password']):
+            sc = TenableSC('securitycenter.home.cugnet.net')
+            sc.login('username', 'password')
     def teardown():
         with vcr.use_cassette('sc_logout'):
             sc.logout()
