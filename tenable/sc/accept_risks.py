@@ -101,7 +101,7 @@ class AcceptRiskAPI(SCEndpoint):
             params['fields'] = ','.join([self._check('field', f, str) 
                 for f in fields])
 
-        return self._api.get('acceptRisk', params=params).json()['response']
+        return self._api.get('acceptRiskRule', params=params).json()['response']
 
     def details(self, id, fields=None):
         '''
@@ -126,7 +126,7 @@ class AcceptRiskAPI(SCEndpoint):
             params['fields'] = ','.join([self._check('field', f, str) 
                 for f in fields])
 
-        return self._api.get('acceptRisk/{}'.format(self._check('id', id, int)),
+        return self._api.get('acceptRiskRule/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
     def delete(self, id):
@@ -144,7 +144,7 @@ class AcceptRiskAPI(SCEndpoint):
         Examples:
             >>> sc.accept_risks.delete(1)
         '''
-        return self._api.delete('acceptRisk/{}'.format(
+        return self._api.delete('acceptRiskRule/{}'.format(
             self._check('id', id, int))).json()['response']
 
     def apply(self, id, repo=None):
@@ -170,7 +170,7 @@ class AcceptRiskAPI(SCEndpoint):
         if repo:
             payload['repository'] = {'id': self._check('repo', repo, int)}
 
-        return self._api.post('acceptRisk/{}/apply'.format(
+        return self._api.post('acceptRiskRule/{}/apply'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
     def create(self, plugin_id, repos, **kw):
@@ -221,7 +221,7 @@ class AcceptRiskAPI(SCEndpoint):
         kw['repos'] = repos
         payload = self._constructor(**kw)
 
-        return self._api.post('acceptRisk', json=payload).json()['response']
+        return self._api.post('acceptRiskRule', json=payload).json()['response']
 
     def update(self, id, **kw):
         '''
@@ -272,5 +272,5 @@ class AcceptRiskAPI(SCEndpoint):
         '''
         payload = self._constructor(**kw)
 
-        return self._api.patch('acceptRisk/{}'.format(
+        return self._api.patch('acceptRiskRule/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
