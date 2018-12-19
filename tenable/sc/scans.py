@@ -20,9 +20,9 @@ Methods available on ``sc.scans``:
     .. automethod:: create
     .. automethod:: delete
     .. automethod:: details
+    .. automethod:: edit
     .. automethod:: launch
     .. automethod:: list
-    .. automethod:: update
 
 .. iCal Date-Time:
     https://tools.ietf.org/html/rfc5545#section-3.3.5
@@ -56,6 +56,7 @@ class ScanAPI(SCEndpoint):
             # attribute to be a dictionary item with just the ID (per API docs)
             kw['repository'] = {'id': self._check(
                 'repo', kw['repo'], int)}
+            del(kw['repo'])
 
         if 'scan_zone' in kw:
             # similarly to the repository, the API expects the zone to be
@@ -126,7 +127,7 @@ class ScanAPI(SCEndpoint):
             # convert it into the expected paramater and remove the snake cased
             # version.
             kw['classifyMitigatedAge'] = str(self._check(
-                'auto_mitigation', kw['auto_mitigation'], int, default=0))
+                'auto_mitigation', kw['auto_mitigation'], int, default=0)).lower()
             del(kw['auto_mitigation'])
 
         # hand off the building the schedule sub-document to the schedule 
@@ -327,9 +328,9 @@ class ScanAPI(SCEndpoint):
         return self._api.get('scan/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
 
-    def update(self, id, **kw):
+    def edit(self, id, **kw):
         '''
-        Updates an existing scan definition.
+        Edits an existing scan definition.
 
         + `SC Scan Update <https://docs.tenable.com/sccv/api/Scan.html#scan_id_PATCH>`_
 
@@ -401,7 +402,7 @@ class ScanAPI(SCEndpoint):
         Examples:
             Creating a scan for a single host:
 
-            >>> sc.scans.update(1, name='Example scan')
+            >>> sc.scans.edit(1, name='Example scan')
         '''
         scan = self._constructor(**kw)
         return self._api.patch('scan/{}'.format(self._check('id', id, int)), 
@@ -425,7 +426,7 @@ class ScanAPI(SCEndpoint):
         return self._api.delete('scan/{}'.format(self._check('id', id, int))
             ).json()['response']
 
-    def copy(self, id, name=None, user_id=None):
+    def copy(self, id, name, user_id):
         '''
         Copies an existing scan definition.
 
@@ -433,8 +434,8 @@ class ScanAPI(SCEndpoint):
 
         Args:
             id (int): The scan definition identifier to copy.
-            name (str, optional): The name of the copy thats created.
-            user_id (int, optional): 
+            name (str): The name of the copy thats created.
+            user_id (int): 
                 The user id to assign as the owner of the new scan definition.
 
         Returns:
@@ -443,11 +444,10 @@ class ScanAPI(SCEndpoint):
         Examples:
             >>> sc.scans.copy(1, name='Cloned Scan')
         '''
-        payload = dict()
-        if name:
-            payload['name'] = self._check('name', name, str)
-        if user_id:
-            payload['targetUser'] = {'id': self._check('user_id', user_id, int)}
+        payload = {
+            'name': self._check('name', name, str),
+            'targetUser': {'id': self._check('user_id', user_id, int)}
+        }
 
         return self._api.post('scan/{}/copy'.format(
             self._check('id', id, int)), json=payload).json()['response']['scan']
