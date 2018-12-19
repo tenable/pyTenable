@@ -18,6 +18,9 @@ APIs.  Further by providing a common interface and a common structure between
 all of the various applications, we can ease the transition from the vastly 
 different APIs between some of the products.
 
+- Issue Tracker: https://github.com/tenable/pyTenable/issues
+- Github Repository: https://github.com/tenable/pyTenable
+
 Installation
 ------------
 
@@ -42,7 +45,6 @@ Lets assume that we want to get the list of scans that have been run on our
 Tenable.io application.  Performing this action is as simple as the following:
 
 .. code-block:: python
-   :linenos:
 
    from tenable.io import TenableIO
    tio = TenableIO('TIO_ACCESS_KEY', 'TIO_SECRET_KEY')
@@ -52,7 +54,6 @@ Tenable.io application.  Performing this action is as simple as the following:
 Getting started with SecurityCenter is equally as easy:
 
 .. code-block:: python
-   :linenos:
 
    from tenable.sc import TenableSC
    sc = TenableSC('SECURITYCENTER_NETWORK_ADDRESS')
@@ -61,13 +62,18 @@ Getting started with SecurityCenter is equally as easy:
       print('{ip}:{pluginID}:{pluginName}'.format(**vuln))
 
 For more detailed information on whats available, please refer to the navigation
-section for the Tenable application you're looking 
+section for the Tenable application you're looking
 
-Contribute
-----------
+Logging
+-------
 
-- Issue Tracker: https://github.com/tenable/pyTenable/issues
-- Github Repository: https://github.com/tenable/pyTenable
+Enabling logging for pyTenable is a simple matter of enabling debug logs through
+the python logging package.  An easy example is detailed here:
+
+.. code-block:: python
+
+   import logging
+   logging.basicConfig(level=logging.DEBUG)
 
 License
 -------
