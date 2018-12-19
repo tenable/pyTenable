@@ -488,7 +488,7 @@ class AnalysisAPI(SCEndpoint):
             ...    ('exploitAvailable', '=', 'true'), tool='sumip')
         '''
         kw['scan_id'] = self._check('scan_id', scan_id, int)
-        return self.vuln(*filters, **kw)
+        return self.vulns(*filters, **kw)
 
     def events(self, *filters, **kw):
         '''
