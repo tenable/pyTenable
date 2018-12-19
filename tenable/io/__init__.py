@@ -52,6 +52,7 @@ Example:
     .. automethod:: put
     .. automethod:: delete
 '''
+import logging
 from tenable.base import APISession
 from .agent_config import AgentConfigAPI
 from .agent_exclusions import AgentExclusionsAPI
@@ -224,6 +225,7 @@ class TenableIO(APISession):
         self._access_key = access_key
         self._secret_key = secret_key
         APISession.__init__(self, url, retries, backoff, ua_identity, session)
+        self._log = logging.getLogger('tenable.io.TenableIO')
 
     def _retry_request(self, response, retries, kwargs):
         '''

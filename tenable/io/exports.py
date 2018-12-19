@@ -201,10 +201,10 @@ class ExportsAPI(TIOEndpoint):
                 payload['filters'][name].append(
                     self._check('tag:value', tag[1], str))
 
-        return ExportsIterator(self._api,
-            _type='vulns',
-            _uuid=self._api.post('vulns/export', json=payload).json()['export_uuid']
-        )
+        uuid = self._api.post('vulns/export', json=payload).json()['export_uuid']
+        self._api._log.debug('Initiated vuln export {}'.format(uuid))
+
+        return ExportsIterator(self._api, _type='vulns', _uuid=uuid)
 
     def assets(self, **kw):
         '''
@@ -289,7 +289,7 @@ class ExportsAPI(TIOEndpoint):
         if 'sources' in kw and self._check('sources', kw['sources'], list):
             payload['filters']['sources'] = kw['sources']
 
-        return ExportsIterator(self._api,
-            _type='assets',
-            _uuid=self._api.post('assets/export', json=payload).json()['export_uuid']
-        )
+        uuid = self._api.post('assets/export', json=payload).json()['export_uuid']
+        self._api._log.debug('Initiated vuln export {}'.format(uuid))
+
+        return ExportsIterator(self._api, _type='assets', _uuid=uuid)

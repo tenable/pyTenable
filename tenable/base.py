@@ -1,4 +1,4 @@
-import requests, sys, logging, re, time
+import requests, sys, logging, re, time, logging
 from .errors import *
 '''
 '''
@@ -312,6 +312,7 @@ class APISession(object):
             self._backoff = backoff
         if ua_identity and isinstance(ua_identity, str):
             self._ua_identity = ua_identity
+        self._log = logging.getLogger('tenable.base.APISession')
         self._build_session()
 
     def _build_session(self, session=None):
@@ -352,6 +353,12 @@ class APISession(object):
         '''
         retries = 0
         while retries <= self._retries:
+            if (('params' in kwargs and kwargs['params']) 
+              or ('json' in kwargs and kwargs['json'])):
+                self._log.debug('query={}, body={}'.format(
+                    kwargs['params'] if 'params' in kwargs else dict(),
+                    kwargs['json'] if 'json' in kwargs else dict(),
+                ))
             resp = self._session.request(method, 
                 '{}/{}'.format(self._url, path), **kwargs)
             status = resp.status_code

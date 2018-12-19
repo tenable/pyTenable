@@ -429,6 +429,7 @@ class WorkbenchesAPI(TIOEndpoint):
         # File id for the job.
         fid = self._api.get('workbenches/export', 
             params=params).json()['file']
+        self._api._log.debug('Initiated workbench export {}'.format(fid))
 
         # Next we will wait for the state of the export request to become
         # ready.  We will query the API every half a second until we get the

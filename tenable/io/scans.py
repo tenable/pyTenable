@@ -577,6 +577,7 @@ class ScansAPI(TIOEndpoint):
         fid = self._api.post('scans/{}/export'.format(
             self._check('scan_id', scan_id, int)), 
             params=params, json=payload).json()['file']
+        self._api._log.debug('Initiated scan export {}'.format(fid))
 
         # Next we will wait for the status of the export request to become
         # ready.  We will query the API every half a second until we get the

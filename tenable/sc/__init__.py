@@ -39,7 +39,8 @@ Example:
     .. automethod:: put
     .. automethod:: delete
 '''
-from tenable.base import APISession, APIError, ConnectionError
+from tenable.base import APISession
+from tenable.errors import *
 from .accept_risks import AcceptRiskAPI
 from .alerts import AlertAPI
 from .analysis import AnalysisAPI
@@ -47,7 +48,7 @@ from .files import FileAPI
 from .feeds import FeedAPI
 from .scans import ScanAPI
 from .scan_instances import ScanResultAPI
-import warnings
+import warnings, logging
 
 
 class TenableSC(APISession):
@@ -66,6 +67,12 @@ class TenableSC(APISession):
     .. _SC API Best Practices Guide:
         https://docs.tenable.com/sccv/api_best_practices/Content/ScApiBestPractices/AboutScApiBestPrac.htm
     '''
+    _error_codes = {
+        400: InvalidInputError,
+        403: APIError,
+        404: NotFoundError,
+        500: ServerError,
+    }
 
     def __init__(self, host, port=443, ssl_verify=False, cert=None, adapter=None,
                  scheme='https', retries=None, backoff=None, ua_identity=None,
@@ -79,6 +86,7 @@ class TenableSC(APISession):
         # Now lets pass the relevent parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
         APISession.__init__(self, url, retries, backoff, ua_identity, session)
+        self._log = logging.getLogger('tenable.sc.TenableSC')
 
         # Also, as Tenable.sc is generally installed without a certificate
         # chain that we can validate, we will want to turn off verification 
