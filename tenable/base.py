@@ -312,7 +312,8 @@ class APISession(object):
             self._backoff = backoff
         if ua_identity and isinstance(ua_identity, str):
             self._ua_identity = ua_identity
-        self._log = logging.getLogger('tenable.base.APISession')
+        self._log = logging.getLogger('{}.{}'.format(
+            self.__module__, self.__class__.__name__))
         self._build_session()
 
     def _build_session(self, session=None):

@@ -7,5 +7,6 @@
    reports
    io
    sc
+   errors
 
 .. automodule:: tenable

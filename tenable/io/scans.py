@@ -28,6 +28,7 @@ Methods available on ``tio.scans``:
     .. automethod:: set_read_status
     .. automethod:: resume
     .. automethod:: schedule
+    .. automethod:: status
     .. automethod:: stop
     .. automethod:: timezones
 '''
@@ -880,6 +881,23 @@ class ScansAPI(TIOEndpoint):
             self._check('scan_id', scan_id, int)))
         if block:
             self._block_while_running(scan_id)
+
+    def status(self, scan_id):
+        '''
+        Get the status of the latest instance of the scan.
+
+        Args:
+            scan_id (int): The unique identifier for the scan.
+
+        Returns:
+            str: The current status of the last instance.
+
+        Examples:
+            >>> tio.scans.status(1)
+            u'completed'
+        '''
+        return self._api.get('scans/{}/latest-status'.format(
+            self._check('scan_id', scan_id, int))).json()['status']
 
     def timezones(self):
         '''

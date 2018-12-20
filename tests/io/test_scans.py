@@ -707,5 +707,15 @@ def test_scan_stop(api, scan):
     api.scans.stop(scan['id'])
 
 @pytest.mark.vcr()
+def test_scan_status_scan_id_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.status('no')
+
+@pytest.mark.vcr()
+def test_scan_status(api, scan):
+    status = api.scans.status(scan['id'])
+    single(status, str)
+
+@pytest.mark.vcr()
 def test_scan_timezones(api):
     assert isinstance(api.scans.timezones(), list)

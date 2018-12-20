@@ -86,7 +86,6 @@ class TenableSC(APISession):
         # Now lets pass the relevent parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
         APISession.__init__(self, url, retries, backoff, ua_identity, session)
-        self._log = logging.getLogger('tenable.sc.TenableSC')
 
         # Also, as Tenable.sc is generally installed without a certificate
         # chain that we can validate, we will want to turn off verification 

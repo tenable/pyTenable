@@ -225,7 +225,6 @@ class TenableIO(APISession):
         self._access_key = access_key
         self._secret_key = secret_key
         APISession.__init__(self, url, retries, backoff, ua_identity, session)
-        self._log = logging.getLogger('tenable.io.TenableIO')
 
     def _retry_request(self, response, retries, kwargs):
         '''

@@ -1,6 +1,30 @@
+'''
+.. autoclass:: APIError
+.. autoclass:: ConnectionError
+.. autoclass:: ImpersonationError
+.. autoclass:: NotFoundError
+.. autoclass:: PackageMissingError
+.. autoclass:: PasswordComplexityError
+.. autoclass:: RetryError
+.. autoclass:: ServerError
+.. autoclass:: TenableException
+.. autoclass:: UnexpectedValueError
+.. autoclass:: UnknownError
+.. autoclass:: UnsupportedError
+'''
+import logging
+
 class TenableException(Exception):
+    '''
+    Base exception class that sets up logging and handles some basic scaffolding
+    for all other exception classes.  This exception should never be directly
+    seen.
+    '''
     def __init__(self, msg):
+        self._log = logging.getLogger('{}.{}'.format(
+            self.__module__, self.__class__.__name__))
         self.msg = str(msg)
+        self._log.error(self.msg)
 
     def __str__(self):
         return self.msg
@@ -38,7 +62,7 @@ class PackageMissingError(TenableException):
     pass
 
 
-class APIError(Exception):
+class APIError(TenableException):
     '''
     The APIError Exception is a generic Exception for handling responses from
     the API that aren't whats expected.  The APIError Exception iself attempts
@@ -56,24 +80,25 @@ class APIError(Exception):
             infrastructure.  In the case of Non-Tenable.io products, is simply
             an empty string.
     '''
-    uuid = '00000000-0000-0000-0000-000000000000'
+    uuid = None
     
     def __init__(self, r):
-        Exception.__init__(self)
         self.response = r
         self.code = r.status_code
 
         if 'X-Request-Uuid' in r.headers:
             self.uuid = r.headers['X-Request-Uuid']
 
+        TenableException.__init__(self, '{} {} >> {}'.format(
+            self.response.request.method,
+            self.response.request.url,
+            self.__str__()))
+
     def __str__(self):
         return '{}:{} {}'.format(
             str(self.uuid),
             str(self.code),
             str(self.response.text))
-
-    def __repr__(self):
-        return repr(self.__str__())
 
 
 class RetryError(APIError):
