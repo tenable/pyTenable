@@ -21,7 +21,7 @@ Tenable.sc API.  The methods listed below aren't run through any
 naturalization by the library aside from the response code checking.  These 
 methods effectively route directly into the requests session.  The responses 
 will be Response objects from the ``requests`` library.  In all cases, the path 
-is appended to the base ``url`` paramater that the ``TenableSC`` object was
+is appended to the base ``url`` parameter that the ``TenableSC`` object was
 instantiated with.
 
 Example:
@@ -204,7 +204,7 @@ class TenableSC(APISession):
 class SecurityCenter(TenableSC):
     '''
     The historical name for TenableSC prior to the rename in Nov 2018.  Usage is
-    identical to using TenableSC, however we will throw a deprication warning
+    identical to using TenableSC, however we will throw a deprecation warning
     when using the SecurityCenter class.  Please use ``TenableSC``.
     '''
     def __init__(self, host, port=443, ssl_verify=False, cert=None,

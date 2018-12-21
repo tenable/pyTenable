@@ -135,8 +135,8 @@ class AlertAPI(SCEndpoint):
     def create(self, *filters, **kw):
         '''
         Creates a new alert.  The fields below are explicitly checked, however
-        any attitional parameters mentioned in the API docs can be passed to the
-        document constructer.
+        any additional parameters mentioned in the API docs can be passed to the
+        document constructor.
 
         + `SC Alert Create <https://docs.tenable.com/sccv/api/Alert.html#alert_POST>`_
 
@@ -169,7 +169,7 @@ class AlertAPI(SCEndpoint):
                 ``ical``.
             schedule_repeat (str, optional):
                 The rule that dictates the frequency and timing that the alert
-                will run.  This value must conform to the `iCal Recurrance Rule`_
+                will run.  This value must conform to the `iCal Recurrence Rule`_
                 format.  Further this parameter is only required when specifying
                 the schedule_type as ``ical``.
             action (list):
@@ -242,7 +242,7 @@ class AlertAPI(SCEndpoint):
             ...     ('exploitAvailable', '=', 'true'),
             ...     analysis_type
             ...     trigger=('sumip', '>=', '100'),
-            ...     name='Too many Hig or Critical and Exploitables',
+            ...     name='Too many High or Critical and Exploitable',
             ...     action=[{'type': 'notification', 'users': [{'id': 1}]}]
             ... )
         '''
@@ -286,7 +286,7 @@ class AlertAPI(SCEndpoint):
                 ``ical``.
             schedule_repeat (str, optional):
                 The rule that dictates the frequency and timing that the alert
-                will run.  This value must conform to the `iCal Recurrance Rule`_
+                will run.  This value must conform to the `iCal Recurrence Rule`_
                 format.  Further this parameter is only required when specifying
                 the schedule_type as ``ical``.
             action (list):

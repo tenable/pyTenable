@@ -8,6 +8,7 @@
 .. autoclass:: RetryError
 .. autoclass:: ServerError
 .. autoclass:: TenableException
+.. autoclass:: TioExportsError
 .. autoclass:: UnexpectedValueError
 .. autoclass:: UnknownError
 .. autoclass:: UnsupportedError
@@ -57,7 +58,7 @@ class ConnectionError(TenableException):
 class PackageMissingError(TenableException):
     '''
     In situations where an optional library is needed, this exception will be
-    thrown if the optional library is needed, howerver is unavailable.
+    thrown if the optional library is needed, however is unavailable.
     '''
     pass
 
@@ -65,7 +66,7 @@ class PackageMissingError(TenableException):
 class TioExportsError(TenableException):
     '''
     When the exports APIs throw an error when processing an export, pyTenable
-    will throw this error in turn to relay that contect to the user.
+    will throw this error in turn to relay that context to the user.
     '''
     def __init__(self, export, uuid):
         self.export = export
@@ -77,7 +78,7 @@ class TioExportsError(TenableException):
 class APIError(TenableException):
     '''
     The APIError Exception is a generic Exception for handling responses from
-    the API that aren't whats expected.  The APIError Exception iself attempts
+    the API that aren't whats expected.  The APIError Exception itself attempts
     to provide the developer with enough information around the response to
     ascertain what went wrong.
 
@@ -186,7 +187,7 @@ class PermissionError(APIError):
 class NotFoundError(APIError):
     '''
     A NotFoundError Exception is thrown when the requested object either
-    doesn't exist, or cannot be retreived.  The HTTP response code generally
+    doesn't exist, or cannot be retrieved.  The HTTP response code generally
     associated to this Exception is 404.
 
     Attributes:

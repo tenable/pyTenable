@@ -1,9 +1,7 @@
 import requests, sys, logging, re, time, logging
 from .errors import *
-'''
-'''
 
-__version__ = '0.3.7'
+__version__ = '0.3.8'
 __author__ = 'Steve McGrath <smcgrath@tenable.com>'
 
 
@@ -103,7 +101,7 @@ class APIEndpoint(object):
     def _check(self, name, obj, expected_type, 
                choices=None, default=None, case=None, pattern=None):
         '''
-        Internal function for validating thet inputs we are receiving are of
+        Internal function for validating that inputs we are receiving are of
         the right type, have the expected values, and can handle defaults as
         necessary.
 
@@ -407,7 +405,7 @@ class APISession(object):
 
         Args:
             path (str):
-                The path to be appented onto the base URL for the request.
+                The path to be appended onto the base URL for the request.
             **kwargs (dict):
                 Keyword arguments to be passed to the Requests Sessions request
                 method.
@@ -453,7 +451,7 @@ class APISession(object):
 
         Args:
             path (str):
-                The path to be appented onto the base URL for the request.
+                The path to be appended onto the base URL for the request.
             **kwargs (dict):
                 Keyword arguments to be passed to the Requests Sessions request
                 method.
@@ -476,7 +474,7 @@ class APISession(object):
 
         Args:
             path (str):
-                The path to be appented onto the base URL for the request.
+                The path to be appended onto the base URL for the request.
             **kwargs (dict):
                 Keyword arguments to be passed to the Requests Sessions request
                 method.
@@ -499,7 +497,7 @@ class APISession(object):
 
         Args:
             path (str):
-                The path to be appented onto the base URL for the request.
+                The path to be appended onto the base URL for the request.
             **kwargs (dict):
                 Keyword arguments to be passed to the Requests Sessions request
                 method.
@@ -522,7 +520,7 @@ class APISession(object):
 
         Args:
             path (str):
-                The path to be appented onto the base URL for the request.
+                The path to be appended onto the base URL for the request.
             **kwargs (dict):
                 Keyword arguments to be passed to the Requests Sessions request
                 method.

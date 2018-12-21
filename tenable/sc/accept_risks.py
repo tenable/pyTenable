@@ -81,7 +81,7 @@ class AcceptRiskAPI(SCEndpoint):
 
     def list(self, fields=None):
         '''
-        Retreives the list of accepted risk rules.
+        Retrieves the list of accepted risk rules.
 
         + `SC Accept Risk List <https://docs.tenable.com/sccv/api/Accept-Risk-Rule.html#AcceptRiskRuleRESTReference-/acceptRiskRule>`_
 
@@ -105,7 +105,7 @@ class AcceptRiskAPI(SCEndpoint):
 
     def details(self, id, fields=None):
         '''
-        Retreives the details of an accepted risk rule.
+        Retrieves the details of an accepted risk rule.
 
         + `SC Accept Risk Details <https://docs.tenable.com/sccv/api/Accept-Risk-Rule.html#AcceptRiskRuleRESTReference-/acceptRiskRule/{id}>`_
 
@@ -139,7 +139,7 @@ class AcceptRiskAPI(SCEndpoint):
             id (int): The identifier for the accept risk rule.
 
         Returns:
-            str: Empty string reponse from the API.
+            str: Empty string response from the API.
 
         Examples:
             >>> sc.accept_risks.delete(1)
@@ -161,7 +161,7 @@ class AcceptRiskAPI(SCEndpoint):
                 specified is all repositories (``0``).
 
         Returns:
-            str: Empty string reponse from the API.
+            str: Empty string response from the API.
 
         Examples:
             >>> sc.accept_risks.apply(1)

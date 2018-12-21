@@ -83,7 +83,7 @@ class ScanResultAPI(SCEndpoint):
         + `SC ScanResult <https://docs.tenable.com/sccv/api/Scan-Result.html#scanResult_id_GET>`_
 
         Args:
-            id (int): The identifier for the scan instance to be retrived.
+            id (int): The identifier for the scan instance to be retrieved.
             fields (list, optional): 
                 List of fields to return.  Refer to the API documentation
                 referenced above for a list of available fields.
@@ -149,7 +149,7 @@ class ScanResultAPI(SCEndpoint):
                 no file-like object is provided, a BytesIO objects with the
                 downloaded file will be returned.  Be aware that the default
                 option of using a BytesIO object means that the file will be
-                stiored in memory, and it's generally recommended to pass an
+                stored in memory, and it's generally recommended to pass an
                 actual file-object to write to instead.
 
         Returns:
@@ -211,7 +211,7 @@ class ScanResultAPI(SCEndpoint):
 
     def reimport_scan(self, id, **kw):
         '''
-        Re-imports an existing scan into the cumulatibvbe repository.
+        Re-imports an existing scan into the cumulative repository.
 
         + `SC Scan Re-Import <https://docs.tenable.com/sccv/api/Scan-Result.html#ScanResultRESTReference-/scanResult/{id}/import>`_
 

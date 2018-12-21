@@ -5,7 +5,7 @@ scans
 The following methods allow for interaction into the Tenable.sc 
 `Scan <https://docs.tenable.com/sccv/api/Scan.html>`_ API.  While the api 
 endpoints obliquely refers to the model in which this collection of actions
-modifies as "Scans", Tenable.sc is actually refering to the scan *definitions*,
+modifies as "Scans", Tenable.sc is actually referring to the scan *definitions*,
 which are the un-launched and/or scheduled scans typically seen within the
 **Active Scans** section within Tenable.sc.
 
@@ -65,16 +65,16 @@ class ScanAPI(SCEndpoint):
 
         if 'email_complete' in kw:
             # As emailOnFinish is effectively a string interpretation of a bool
-            # value, if the snake case equivilent is used, we will convert it
-            # into the expected paramater and remove the snake cased version.
+            # value, if the snake case equivalent is used, we will convert it
+            # into the expected parameter and remove the snake cased version.
             kw['emailOnFinish'] = str(self._check(
                 'email_complete', kw['email_complete'], bool, default=False)).lower()
             del(kw['email_complete'])
 
         if 'email_launch' in kw:
             # As emailOnLaunch is effectively a string interpretation of a bool
-            # value, if the snake case equivilent is used, we will convert it
-            # into the expected paramater and remove the snake cased version.
+            # value, if the snake case equivalent is used, we will convert it
+            # into the expected parameter and remove the snake cased version.
             kw['emailOnLaunch'] = str(self._check(
                 'email_launch', kw['email_launch'], bool, default=False)).lower()
             del(kw['email_launch'])
@@ -89,8 +89,8 @@ class ScanAPI(SCEndpoint):
 
         if 'vhosts' in kw:
             # As scanningVirtualHosts is effectively a string interpretation of 
-            # a bool value, if the snake case equivilent is used, we will 
-            # convert it into the expected paramater and remove the snake cased
+            # a bool value, if the snake case equivalent is used, we will 
+            # convert it into the expected parameter and remove the snake cased
             # version.
             kw['scanningVirtualHosts'] = str(self._check(
                 'vhosts', kw['vhosts'], bool, default=False)).lower()
@@ -104,9 +104,9 @@ class ScanAPI(SCEndpoint):
             del(kw['rollover'])
 
         if 'targets' in kw:
-            # targets is list representation of a comma-seperated string of
+            # targets is list representation of a comma-separated string of
             # values for the ipList attribute.  By handling as a list instead of
-            # the raw string varient the API expects, we can ensure that there
+            # the raw string variant the API expects, we can ensure that there
             # isn't any oddities, such as extra spaces, between the commas.
             kw['ipList'] = ','.join([self._check('target', i.strip(), str) 
                 for i in self._check('targets', kw['targets'], list)])
@@ -115,14 +115,14 @@ class ScanAPI(SCEndpoint):
         if 'max_time' in kw:
             # maxScanTime is a integer encased in a string value.  the snake
             # cased version of that expects an integer and converts it into the
-            # string equivilent.
+            # string equivalent.
             kw['maxScanTime'] = str(self._check('max_time', kw['max_time'], int))
             del(kw['max_time'])
 
         if 'auto_mitigation' in kw:
             # As classifyMitigatedAge is effectively a string interpretation of 
-            # an int value, if the snake case equivilent is used, we will 
-            # convert it into the expected paramater and remove the snake cased
+            # an int value, if the snake case equivalent is used, we will 
+            # convert it into the expected parameter and remove the snake cased
             # version.
             kw['classifyMitigatedAge'] = str(self._check(
                 'auto_mitigation', kw['auto_mitigation'], int, default=0)).lower()
@@ -149,7 +149,7 @@ class ScanAPI(SCEndpoint):
         if 'asset_lists' in kw:
             # asset_lists is the collapsed list of id documents that the API
             # expects to see.  We will check each item in the list to make sure
-            # its in the right type and then expand it into a subdocument.
+            # its in the right type and then expand it into a sub-document.
             kw['assets'] = [{'id': self._check('asset_list:id', i, int)} 
                 for i in self._check('assets_lists', kw['asset_lists'], list)]
             del(kw['asset_lists'])
@@ -157,7 +157,7 @@ class ScanAPI(SCEndpoint):
         if 'creds' in kw:
             # creds is the collapsed list of id documents that the API expects 
             # to see.  We will check each item in the list to make sure its in 
-            # the right type and then expand it into a subdocument.
+            # the right type and then expand it into a sub-document.
             kw['credentials'] = [{'id': self._check('cred:id', i, int)} 
                 for i in self._check('creds', kw['creds'], list)]
             del(kw['creds'])
@@ -172,7 +172,7 @@ class ScanAPI(SCEndpoint):
         elif 'plugin_id' in kw:
             # If just the plugin_id is specified, then we are safe to assume
             # that this is a plugin-based scan.  set the pluginID attribute as
-            # the API would expect and remove the snake cased varient that was
+            # the API would expect and remove the snake cased variant that was
             # inputted.
             kw['type'] = 'plugin'
             kw['pluginID'] = self._check('plugin_id', kw['plugin_id'], int)
@@ -182,7 +182,7 @@ class ScanAPI(SCEndpoint):
             # If just the policy_id is specified, then we are safe to assume
             # that this is a policy-based scan.  set the policy id attribute 
             # within the policy document as the API would expect and remove the 
-            # snake cased varient that was inputted.
+            # snake cased variant that was inputted.
             kw['type'] = 'policy'
             kw['policy'] = {'id': self._check('policy_id', kw['policy_id'], int)}
             del(kw['policy_id'])
@@ -191,7 +191,7 @@ class ScanAPI(SCEndpoint):
 
     def list(self, fields=None):
         '''
-        Retreives the list of scan definitions.
+        Retrieves the list of scan definitions.
 
         + `SC Scan List <https://docs.tenable.com/sccv/api/Scan.html#scan_GET>`_
 
@@ -228,9 +228,9 @@ class ScanAPI(SCEndpoint):
                 default value is 0.
             asset_lists (list, optional):
                 A list of asset list ids to run the scan against.  A logical OR
-                will be performed to comupute what hosts to scan against.
+                will be performed to compute what hosts to scan against.
             credential_ids (list, optional):
-                A list of credential ids to use for tue purposes of this scan.
+                A list of credential ids to use for the purposes of this scan.
                 This list should be treated as an un-ordered list of credentials.
             description (str, optional): A description for the scan.
             email_complete (bool, optional):
@@ -274,7 +274,7 @@ class ScanAPI(SCEndpoint):
                 ``ical``.
             schedule_repeat (str, optional):
                 The rule that dictates the frequency and timing that the alert
-                will run.  This value must conform to the `iCal Recurrance Rule`_
+                will run.  This value must conform to the `iCal Recurrence Rule`_
                 format.  Further this parameter is only required when specifying
                 the schedule_type as ``ical``.
             targets (list, optional):
@@ -338,9 +338,9 @@ class ScanAPI(SCEndpoint):
                 How many days to hold on to data before mitigating it?
             asset_lists (list, optional):
                 A list of asset list ids to run the scan against.  A logical OR
-                will be performed to comupute what hosts to scan against.
+                will be performed to compute what hosts to scan against.
             creds (list, optional):
-                A list of credential ids to use for tue purposes of this scan.
+                A list of credential ids to use for the purposes of this scan.
                 This list should be treated as an un-ordered list of credentials.
             description (str, optional): A description for the scan.
             email_complete (bool, optional):
@@ -382,7 +382,7 @@ class ScanAPI(SCEndpoint):
                 ``ical``.
             schedule_repeat (str, optional):
                 The rule that dictates the frequency and timing that the alert
-                will run.  This value must conform to the `iCal Recurrance Rule`_
+                will run.  This value must conform to the `iCal Recurrence Rule`_
                 format.  Further this parameter is only required when specifying
                 the schedule_type as ``ical``.
             targets (list, optional):

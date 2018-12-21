@@ -19,14 +19,14 @@ class FileAPI(SCEndpoint):
     def upload(self, fobj):
         '''
         Uploads a file into SecurityCenter and returns the file identifier
-        to be used for subsiquent calls.
+        to be used for subsequent calls.
 
         Args:
             fobj (FileObj): The file object to upload into SecurityCenter.
 
         Returns:
             str: 
-                The filename identifier to use for subsiquent calls in 
+                The filename identifier to use for subsequent calls in 
                 Tenable.sc.
         '''
         return self.post('file/upload', files={

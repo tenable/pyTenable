@@ -3,16 +3,16 @@ from tenable.base import APIEndpoint, APIResultsIterator
 class SCEndpoint(APIEndpoint):
     def _schedule_document_creator(self, kw):
         '''
-        Handles creation of the schedule subdocument.
+        Handles creation of the schedule sub-document.
         '''
         if ('schedule_type' in kw and kw['schedule_type'] == 'ical'
             and 'schedule_start' in kw 
             and 'schedule_repeat' in kw):
-            # effectively here we are flattening the schedule subdocument on the
+            # effectively here we are flattening the schedule sub-document on the
             # developer end and reconstructing it for the SecurityCenter end.
             #
             # FR: eventually we should start checking the repeating rule and the
-            #     datetime against the ical format.
+            #     date-time against the ical format.
             kw['schedule'] = {
                 'type': 'ical',
                 'start': self._check(

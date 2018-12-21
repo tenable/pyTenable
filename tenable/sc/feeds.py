@@ -35,7 +35,7 @@ class FeedAPI(SCEndpoint):
         Returns:
             dict: 
                 If no specific feed type is specified, then a dictionary with
-                each type listed with a subdictionary detailing the status is
+                each type listed with a sub-dictionary detailing the status is
                 returned.  If a specific feed type is requested, then only the
                 status information for that feed type is returned.
 
@@ -58,7 +58,7 @@ class FeedAPI(SCEndpoint):
 
     def update(self, feed_type=None):
         '''
-        Initiates an online feed update based on the specified feed_type.  If
+        Initiates an on-line feed update based on the specified feed_type.  If
         no feed type is specified, then it will default to initiating an update
         for all feed types.
 
@@ -78,7 +78,7 @@ class FeedAPI(SCEndpoint):
 
     def process(self, feed_type, fobj):
         '''
-        Initiates an offline feed update based on the specified feed_type using
+        Initiates an off-line feed update based on the specified feed_type using
         the file object passed as the update file.
 
         + `SC Feed Process <https://docs.tenable.com/sccv/api/Feed.html#FeedRESTReference-FeedUpdatePOSTProcess>`_

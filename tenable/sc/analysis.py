@@ -402,7 +402,7 @@ class AnalysisAPI(SCEndpoint):
         #             the iterator.  The iplist dataset is instead a dictionary
         #             and not a list.
         if kw['tool'] == 'iplist':
-            # set the json_result flaf to True and call the _analysis method.
+            # set the json_result flag to True and call the _analysis method.
             kw['json_result'] = True
             resp = self._analysis(*filters, **kw)
 
@@ -411,7 +411,7 @@ class AnalysisAPI(SCEndpoint):
             del(resp['results'])
             return resp
 
-        # call the _analysis method and return tyhe results to the caller.
+        # call the _analysis method and return the results to the caller.
         return self._analysis(*filters, **kw)
 
     def scan(self, scan_id, *filters, **kw):
