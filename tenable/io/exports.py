@@ -14,6 +14,7 @@ Methods available on ``tio.exports``:
     .. automethod:: assets
 '''
 from .base import TIOEndpoint, APIResultsIterator
+from tenable.errors import TioExportsError
 import time
 
 class ExportsIterator(APIResultsIterator):
@@ -22,10 +23,12 @@ class ExportsIterator(APIResultsIterator):
     functions in order to provide a simplistic iterator that can be used with
     minimal effort in the calling application.
     '''
-    _type = None
-    _uuid = None
-    _chunks = list()
-    _processed = list()
+    def __init__(self, api, **kw):
+        self._type = None
+        self._uuid = None
+        self._chunks = list()
+        self._processed = list()
+        APIResultsIterator.__init__(self, api, **kw)
 
     def _get_page(self):
         '''
@@ -48,6 +51,9 @@ class ExportsIterator(APIResultsIterator):
             if (status['status'] == 'FINISHED' 
                     and len(status['chunks_unfinished']) < 1):
                 raise StopIteration()
+
+            if status['status'] == 'ERROR':
+                raise TioExportsError(self._type, self._uuid)
 
             return status
 
@@ -133,7 +139,7 @@ class ExportsAPI(TIOEndpoint):
             tags (list, optional):
                 List of tag key-value pairs that must be associated to the
                 vulnerability data to be returned.  Key-value pairs are tuples
-                if ``('key', 'value')`` and are case-sensitive.
+                ``('key', 'value')`` and are case-sensitive.
 
         Returns:
             ExportIterator: an iterator to walk through the results.
@@ -246,6 +252,10 @@ class ExportsAPI(TIOEndpoint):
                 returns only assets that do not have any plugin results.  Assets
                 thats would not have plugin results would be assets created from
                 a connector, or a discovery scan.
+            tags (list, optional):
+                List of tag key-value pairs that must be associated to the
+                asset data to be returned.  Key-value pairs are tuples
+                ``('key', 'value')`` and are case-sensitive.
 
         Returns:
             ExportIterator: an iterator to walk through the results.
@@ -289,7 +299,26 @@ class ExportsAPI(TIOEndpoint):
         if 'sources' in kw and self._check('sources', kw['sources'], list):
             payload['filters']['sources'] = kw['sources']
 
+        if 'tags' in kw and self._check('tags', kw['tags'], list):
+            # if any tags were specified, then we will iterate through the list
+            # and handle each 
+            for tag in kw['tags']:
+                # check to see if the tag is a tuple and also construct the
+                # filter name.
+                self._check('tags:tag', tag, tuple)
+                name = 'tag.{}'.format(
+                    self._check('tag:name', tag[0], str))
+                
+                # If the tag filter doesn't yet exist, then we need to create it
+                # and associate an empty list to it.
+                if name not in payload['filters']:
+                    payload['filters'][name] = list()
+
+                # add the tag value to the tag filter.
+                payload['filters'][name].append(
+                    self._check('tag:value', tag[1], str))
+
         uuid = self._api.post('assets/export', json=payload).json()['export_uuid']
-        self._api._log.debug('Initiated vuln export {}'.format(uuid))
+        self._api._log.debug('Initiated asset export {}'.format(uuid))
 
         return ExportsIterator(self._api, _type='assets', _uuid=uuid)

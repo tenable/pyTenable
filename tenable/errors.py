@@ -62,6 +62,18 @@ class PackageMissingError(TenableException):
     pass
 
 
+class TioExportsError(TenableException):
+    '''
+    When the exports APIs throw an error when processing an export, pyTenable
+    will throw this error in turn to relay that contect to the user.
+    '''
+    def __init__(self, export, uuid):
+        self.export = export
+        self.uuid = uuid
+        TenableException.__init__(self, '{} export {} has errored.'.format(
+            export, uuid))
+
+
 class APIError(TenableException):
     '''
     The APIError Exception is a generic Exception for handling responses from
