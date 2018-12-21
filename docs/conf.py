@@ -24,7 +24,7 @@ import tenable
 
 project = u'pyTenable'
 year = datetime.datetime.now().year
-copyright = u'{}, Tenable Inc.'.format(year)
+copyright = u'{}, Tenable, Inc.'.format(year)
 author = u'Tenable, Inc.'
 
 # The short X.Y version
@@ -96,6 +96,10 @@ html_theme = 'alabaster'
 html_theme_options = {
     'description': 'A Python library for Tenable application APIs',
     'fixed_sidebar': True,
+    'github_user': 'tenable',
+    'github_repo': 'pyTenable',
+    'travis_button': True,
+    'analytics_id': 'UA-131275974-1',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -119,7 +123,6 @@ html_sidebars = {
         'searchbox.html',
     ]
 }
-
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

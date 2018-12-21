@@ -421,6 +421,9 @@ class AnalysisAPI(SCEndpoint):
         `SC Analysis: Vuln Type <https://docs.tenable.com/sccv/api/Analysis.html#AnalysisRESTReference-VulnType>`_
 
         Args:
+            scan_id (int):
+                If a scan id is specified, then the results fetched will be from
+                the scan specified and not from the cumulative result set.
             filters (tuple, optional):
                 The analysis module provides a more compact way to write filters
                 to the analysis endpoint.  The purpose here is to aid in more
@@ -437,9 +440,6 @@ class AnalysisAPI(SCEndpoint):
             source (str, optional):
                 The data source location.  Allowed sources are ``cumulative`` 
                 and ``patched``.  Defaults to ``cumulative``.
-            scan_id (int, optional):
-                If a scan id is specified, then the results fetched will be from
-                the scan specified and not from the cumulative result set.
             sort_field (str, optional):
                 The field to sort the results on.
             sort_direction (str, optional):
