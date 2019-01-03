@@ -10,3 +10,4 @@ env_builder
 *.log
 /manual.sh
 /.coverage
+/test_certs
