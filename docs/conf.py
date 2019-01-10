@@ -95,7 +95,7 @@ html_theme = 'alabaster'
 #
 html_theme_options = {
     'description': 'A Python library for Tenable application APIs',
-    'fixed_sidebar': True,
+    'fixed_sidebar': False,
     'github_user': 'tenable',
     'github_repo': 'pyTenable',
     'travis_button': True,
