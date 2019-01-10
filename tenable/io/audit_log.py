@@ -42,7 +42,7 @@ class AuditLogAPI(TIOEndpoint):
             list: List of event records
 
         Examples:
-            >>> events = api.audit_log.events(
+            >>> events = tio.audit_log.events(
             ...     ('date', 'gt', '2018-01-01'), limit=100)
             >>> for e in events:
             ...     pprint(e)

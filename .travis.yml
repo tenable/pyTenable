@@ -6,15 +6,7 @@ python:
   - "3.6"
 install:
   - |
-    pip install         \
-      requests          \
-      "pytest>=3.6"     \
-      pytest-cov        \
-      pytest-vcr        \
-      pytest-datafiles  \
-      python-dateutil   \
-      lxml              \
-      m2r
+    pip install -r dev-requirements.txt
 script:
   - pytest --vcr-record=none --cov=tenable tests
 branches:
