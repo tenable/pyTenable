@@ -21,6 +21,7 @@ Methods available on ``tio.agent_groups``:
 '''
 from .base import TIOEndpoint
 
+
 class AgentGroupsAPI(TIOEndpoint):
     def add_agent(self, group_id, *agent_ids, **kw):
         '''
@@ -150,11 +151,11 @@ class AgentGroupsAPI(TIOEndpoint):
         Examples:
             Delete a singular agent from an agent group:
 
-            >>> tio.agent_groups.delete(1, 1)
+            >>> tio.agent_groups.delete_agent(1, 1)
 
             Delete multiple agents from an agent group:
 
-            >>> tio.agent_groups.delete(1, 1, 2, 3)
+            >>> tio.agent_groups.delete_agent(1, 1, 2, 3)
         '''
         scanner_id = 1
         if 'scanner_id' in kw:
@@ -171,7 +172,7 @@ class AgentGroupsAPI(TIOEndpoint):
             # if multiple agent ids were requested to be deleted, then we will
             # call the bulk deletion API.
             return self._api.post(
-                'scanners/{}/agent-groups/{}/agents/_bulk/add'.format(
+                'scanners/{}/agent-groups/{}/agents/_bulk/remove'.format(
                     self._check('scanner_id', scanner_id, int),
                     self._check('group_id', group_id, int)),
                 json={'items': [self._check('agent_ids', i, int) for i in agent_ids]}).json()
