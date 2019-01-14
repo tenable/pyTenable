@@ -7,8 +7,8 @@ export TIO_TEST_STD_SECRET=""
 export NESSUS_LICENSE=""
 export TIO_REG_ACCESS_KEY=""
 export TIO_REG_SECRET_KEY=""
-export SC_TEST_HOST="securitycenter.home.cugnet.net"
-export SC_TEST_PORT=443
+export SC_TEST_HOST=""
+export SC_TEST_PORT=""
 export SC_TEST_USER=""
 export SC_TEST_PASS=""
 

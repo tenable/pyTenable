@@ -70,8 +70,18 @@ def test_scanner_details_permissionerror(stdapi, scanner):
 
 @pytest.mark.vcr()
 def test_scanner_details(api, scanner):
-    check = api.scanners.details(scanner['id'])
-    assert check['id'] == scanner['id']
+    s = api.scanners.details(scanner['id'])
+    check(s, 'id', int)
+    check(s, 'uuid', 'scanner-uuid')
+    check(s, 'name', str)
+    check(s, 'type', str)
+    check(s, 'status', str)
+    check(s, 'scan_count', int)
+    check(s, 'engine_version', str)
+    check(s, 'platform', str)
+    check(s, 'loaded_plugin_set', str)
+    check(s, 'owner', str)
+    check(s, 'pool', bool)
 
 @pytest.mark.vcr()
 def test_scanner_edit_id_typeerror(api):
