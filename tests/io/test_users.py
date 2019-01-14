@@ -45,7 +45,17 @@ def test_users_create_permissionserror(stdapi):
 
 @pytest.mark.vcr()
 def test_users_create(api, user):
-    pass
+    assert isinstance(user, dict)
+    check(user, 'id', int)
+    check(user, 'username', str)
+    check(user, 'name', str)
+    check(user, 'email', str)
+    check(user, 'permissions', int)
+    check(user, 'type', str)
+    check(user, 'login_fail_count', int)
+    check(user, 'login_fail_total', int)
+    check(user, 'enabled', bool)
+    check(user, 'uuid_id', 'uuid')
 
 @pytest.mark.vcr()
 def test_users_delete_id_typeerror(api):
@@ -78,9 +88,18 @@ def test_users_details_notfounderror(api):
 
 @pytest.mark.vcr()
 def test_users_details(api, user):
-    dets = api.users.details(user['id'])
-    assert isinstance(dets, dict)
-    assert dets['id'] == user['id']
+    u = api.users.details(user['id'])
+    assert isinstance(user, dict)
+    check(u, 'id', int)
+    check(u, 'username', str)
+    check(u, 'name', str)
+    check(u, 'email', str)
+    check(u, 'permissions', int)
+    check(u, 'type', str)
+    check(u, 'login_fail_count', int)
+    check(u, 'login_fail_total', int)
+    check(u, 'enabled', bool)
+    check(u, 'uuid_id', 'uuid')
 
 @pytest.mark.vcr()
 def test_users_edit_id_typeerror(api):
@@ -119,8 +138,19 @@ def test_users_edit_permissionerror(stdapi, user):
 
 @pytest.mark.vcr()
 def test_users_edit(api, user):
-    modded = api.users.edit(user['id'], name='MODDED NAME')
-    assert modded['name'] == 'MODDED NAME' 
+    u = api.users.edit(user['id'], name='MODDED NAME')
+    assert isinstance(user, dict)
+    check(u, 'id', int)
+    check(u, 'username', str)
+    check(u, 'name', str)
+    check(u, 'email', str)
+    check(u, 'permissions', int)
+    check(u, 'type', str)
+    check(u, 'login_fail_count', int)
+    check(u, 'login_fail_total', int)
+    check(u, 'enabled', bool)
+    check(u, 'uuid_id', 'uuid')
+    assert u['name'] == 'MODDED NAME'
 
 @pytest.mark.vcr()
 def test_users_enabled_id_typeerror(api):
