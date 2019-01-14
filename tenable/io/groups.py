@@ -41,7 +41,7 @@ class GroupsAPI(TIOEndpoint):
         '''
         self._api.post('groups/{}/users/{}'.format(
             self._check('group_id', group_id, int),
-            self._check('user_id', user_id, int)
+            self._check('user_id', user_id, int), json={}
         ))
 
     def create(self, name):
@@ -122,8 +122,8 @@ class GroupsAPI(TIOEndpoint):
         Examples:
             >>> tio.groups.edit(1, 'Updated name')
         '''
-        return self._api.put('groups/{}'.format(self._check('id', id, int), 
-            json={'name': self._check('name', name, str)})).json()
+        return self._api.put('groups/{}'.format(self._check('id', id, int)), 
+            json={'name': self._check('name', name, str)}).json()
 
     def list(self):
         '''
