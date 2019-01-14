@@ -274,3 +274,36 @@ class ScannersAPI(TIOEndpoint):
         '''
         self._api.put('scanners/{}/link'.format(self._check('id', id, int)), 
             json={'link': int(self._check('linked', linked, bool))})
+    
+    def get_permissions(self, id):
+        '''
+        Returns the permission list for a given scanner.
+
+        Args:
+            id (int): The unique identifier for the scanner.
+        
+        Returns:
+            dict: The permissions resource for the scanner
+        
+        Examples:
+            >>> tio.scanners.get_permissions(1)
+        '''
+        return self._api.permissions.list('scanner', self._check('id', id, int))
+    
+    def edit_permissions(self, id, *acls):
+        '''
+        Modifies the permissions list for the given scanner.
+
+        Args:
+            id (int):The unique identifier for the scanner.
+            *acls (dict): The permissions record(s) for the scanner.
+        
+        Returns:
+            None: The permissions have been updated successfully.
+        
+        Examples:
+            >>> tio.scanners.edit_permissions(1, 
+            ...     {'type': 'default, 'permissions': 16},
+            ...     {'type': 'user', 'id': 2, 'permissions': 16})
+        '''
+        self._api.permissions.change('scanner', self._check('id', id, int), *acls)

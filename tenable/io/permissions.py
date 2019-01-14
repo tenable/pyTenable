@@ -73,4 +73,4 @@ class PermissionsAPI(TIOEndpoint):
             'permissions/{}/{}'.format(
                 self._check('otype', otype, str),
                 self._check('id', id, int)
-            )).json()
+            )).json()['acls']

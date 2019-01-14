@@ -195,3 +195,17 @@ def test_link_state_permissionerror(stdapi, scanner):
 @pytest.mark.vcr()
 def test_link_state(api, scanner):
     api.scanners.toggle_link_state(scanner['id'], True)
+
+@pytest.mark.vcr()
+def test_scanners_get_permissions(api, scanner):
+    perms = api.scanners.get_permissions(scanner['id'])
+    assert isinstance(perms, list)
+    for p in perms:
+        check(p, 'type', str)
+        check(p, 'permissions', int)
+
+@pytest.mark.vcr()
+def test_scanner_edit_permissions(api, scanner, user):
+    api.scanners.edit_permissions(scanner['id'], 
+        {'type': 'default', 'permissions': 16},
+        {'type': 'user', 'id': user['id'], 'permissions': 16})
