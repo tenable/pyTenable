@@ -53,11 +53,64 @@ import warnings, logging
 
 class TenableSC(APISession):
     '''TenableSC API Wrapper
-    This class is designed to handle authentication management for the
-    TenableSC API.  This is by no means a complete model of everything that 
-    the API can handle, it is simply meant to be a thin wrapper into the API.  
-    Convenience functions will be added as time passes and there is a desire 
-    to develop them.
+    The Tenable.sc object is the primary interaction point for users to
+    interface with Tenable.sc via the pyTenable library.  All of the API
+    endpoint classes that have been written will be grafted onto this class.
+
+    Args:
+        host (str):
+            The address of the Tenable.sc instance to connect to.
+        adapter (requests.Adaptor, optional):
+            If a requests session adaptor is needed to ensure connectivity
+            to the Tenable.sc host, one can be provided here.
+        backoff (float, optional):
+            If a 429 response is returned, how much do we want to backoff
+            if the response didn't send a Retry-After header.  The default
+            backoff is ``1`` second.
+        cert (tuple, optional):
+            The client-side SSL certificate to use for authentication.  This
+            format could be either a tuple or a string pointing to the
+            certificate.  For more details, please refer to the 
+            `Requests Client-Side Certificates`_ documentation.
+        port (int, optional):
+            The port number to connect to on the specified host.  The
+            default is port ``443``.
+        retries (int, optional):
+            The number of retries to make before failing a request.  The
+            default is ``3``.
+        scheme (str, optional):
+            What HTTP scheme should be used for URI path construction.  The
+            default is ``https``.
+        session (requests.Session, optional):
+            If a requests Session is provided, the provided session will be used
+            instead of constructing one during initialization.
+        ssl_verify (bool, optional): 
+            Should the SSL certificate on the Tenable.sc instance be verified?
+            Default is False.
+        ua_identity (str, optional):
+            An application identifier to be added into the User-Agent string
+            for the purposes of application identification.
+        
+
+    Examples:
+        A direct connection to TenableSC:
+
+        >>> from tenable.io import TenableSC
+        >>> sc = TenableSC('securitycenter.company.tld')
+
+        A connection to TenableSC using SSL certificates:
+
+        >>> sc = TenableSC('securitycenter.company.tld', 
+        ...     cert=('/path/client.cert', '/path/client.key'))
+
+        Using an adaptor to use a passworded certificate (via the immensely 
+        useful `requests_pkcs12`_ adaptor):
+
+        >>> from requests_pkcs12 import Pkcs12Adapter
+        >>> adapter = Pkcs12Adapter(
+        ...     pkcs12_filename='certificate.p12', 
+        ...     pkcs12_password='omgwtfbbq!')
+        >>> sc = TenableSC('securitycenter.company.tld', adapter=adapter)
     
     For more information, please See Tenable's `SC API documentation`_ and
     the `SC API Best Practices Guide`_.
@@ -66,6 +119,10 @@ class TenableSC(APISession):
         https://docs.tenable.com/sccv/api/index.html
     .. _SC API Best Practices Guide:
         https://docs.tenable.com/sccv/api_best_practices/Content/ScApiBestPractices/AboutScApiBestPrac.htm
+    .. _Requests Client-Side Certificates:
+        http://docs.python-requests.org/en/master/user/advanced/#client-side-certificates
+    .. _requests_pkcs12:
+        https://github.com/m-click/requests_pkcs12
     '''
     _error_codes = {
         400: InvalidInputError,
