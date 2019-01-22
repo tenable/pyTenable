@@ -98,7 +98,7 @@ class APIEndpoint(object):
     def __init__(self, api):
         self._api = api
 
-    def _check(self, name, obj, expected_type, 
+    def _check(self, name, obj, expected_type,
                choices=None, default=None, case=None, pattern=None):
         '''
         Internal function for validating that inputs we are receiving are of
@@ -179,7 +179,7 @@ class APIEndpoint(object):
 
         if 'scanner-uuid' in etypes:
             pattern = r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12,32}$'
-            etypes[etypes.index('scanner-uuid')] = str         
+            etypes[etypes.index('scanner-uuid')] = str
 
         # If we are checking for a string type, we will also want to check for
         # unicode type transparently, so add the unicode type to the expected
@@ -202,8 +202,8 @@ class APIEndpoint(object):
         # TypeError as it was something we weren't expecting.
         if not type_pass:
             raise TypeError('{} is of type {}.  Expected {}.'.format(
-                name, 
-                obj.__class__.__name__, 
+                name,
+                obj.__class__.__name__,
                 expected_type.__name__ if hasattr(expected_type, '__name__') else expected_type
             ))
 
@@ -300,7 +300,7 @@ class APISession(object):
     Retry-After header was returned.
     '''
 
-    def __init__(self, url=None, retries=None, backoff=None, 
+    def __init__(self, url=None, retries=None, backoff=None,
                  ua_identity=None, session=None):
         if url:
             self._url = url
@@ -352,14 +352,16 @@ class APISession(object):
         '''
         retries = 0
         while retries <= self._retries:
-            if (('params' in kwargs and kwargs['params']) 
-              or ('json' in kwargs and kwargs['json'])):
-                self._log.debug('query={}, body={}'.format(
-                    kwargs['params'] if 'params' in kwargs else dict(),
-                    kwargs['json'] if 'json' in kwargs else dict(),
-                ))
-            resp = self._session.request(method, 
-                '{}/{}'.format(self._url, path), **kwargs)
+            if ('params' in kwargs and kwargs['params']) or ('json' in kwargs and kwargs['json']):
+                # If Tenable.SC authentication request, hide the body which contains the password for the account
+                if 'token' in path.lower():
+                    self._log.debug('query={}, body=HIDDEN'.format(kwargs['params'] if 'params' in kwargs else dict()))
+                else:
+                    self._log.debug('query={}, body={}'.format(
+                        kwargs['params'] if 'params' in kwargs else dict(),
+                        kwargs['json'] if 'json' in kwargs else dict(),
+                    ))
+            resp = self._session.request(method, '{}/{}'.format(self._url, path), **kwargs)
             status = resp.status_code
 
             if status in [429, 501, 502, 503]:
