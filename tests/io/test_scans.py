@@ -536,7 +536,12 @@ def test_scan_launch(api, scan):
     api.scans.launch(scan['id'])
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
-    #api.scans._block_while_running(scan['id'])
+
+@pytest.mark.skip(reason='Switching between scan states this quickly can be trixsy')
+def test_scan_launch_alt_targets(api, scan):
+    api.scans.launch(scan['id'], targets=['127.0.0.2'])
+    time.sleep(5)
+    api.scans.stop(scan['id'], block=True)
 
 @pytest.mark.vcr()
 def test_scan_list_folder_id_typeerror(api):

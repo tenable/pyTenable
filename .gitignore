@@ -12,3 +12,4 @@ env_builder
 /.coverage
 /test_certs
 /local.settings.sh
+/.python-version

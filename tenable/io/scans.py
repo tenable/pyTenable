@@ -699,8 +699,7 @@ class ScansAPI(TIOEndpoint):
         '''
         payload = dict()
         if targets:
-            payload['alt_targets'] = ','.join(
-                self._check('targets', targets, list))
+            payload['alt_targets'] = self._check('targets', targets, list)
 
         return self._api.post('scans/{}/launch'.format(
                 self._check('scan_id', scan_id, int)), 
