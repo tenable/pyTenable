@@ -194,6 +194,16 @@ class AnalysisAPI(SCEndpoint):
                 'type': kw['analysis_type'],
                 'filters': list()
             }
+            if 'query_id' in kw:
+                # Request the specific query ID provided and fetch only the filters
+                query_response = self._api.get('query/{}?fields=filters'.format(kw['query_id'])).json()['response']
+
+                # Extract the filters or set to null if nothing is returned
+                query_filters = query_response['filters'] if query_response.get('filters') else list()
+
+                kw['query']['filters'] = query_filters
+                return kw
+
             for f in filters:
                 item = {'filterName': f[0], 'operator': f[1]}
 
@@ -282,6 +292,9 @@ class AnalysisAPI(SCEndpoint):
                 written to support a filtered call to analysis.  The format is
                 simply a list of tuples.  Each tuple is broken down into
                 (field, operator, value).
+            query_id (int, optional):
+                The ID number of the SC Query where filters should be pulled from in place of the tuple filters. This is
+                mutually exclusive with the tuple filters.
             pages (int, optional):
                 The number of pages to query.  Default is all.
             limit (int, optional):
