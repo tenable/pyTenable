@@ -50,14 +50,14 @@ class TagsAPI(TIOEndpoint):
         'value': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
         'category_name': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
         'description': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'updated_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\d+', 'choices': None},
+        'updated_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None},
         'updated_by': {'operators': ['eq'], 'pattern': None} # Add UUID regex here
     }
     _filterset_categories = {
         'name': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
         'description': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'created_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\d+', 'choices': None},
-        'updated_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\d+', 'choices': None},
+        'created_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None},
+        'updated_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None},
         'updated_by': {'operators': ['eq'], 'pattern': None, 'choices': None} # Add UUID regex here
     }
 
@@ -283,7 +283,7 @@ class TagsAPI(TIOEndpoint):
                 choices=['AND', 'OR'], case='upper')
         if sort:
             query['sort'] = self._check('sort', sort, str, 
-                choices=filterdefs.keys())
+                choices=[k for k in filterdefs.keys()])
         return query
 
     def list(self, *filters, **kw):

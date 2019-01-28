@@ -296,6 +296,11 @@ def test_tags_list_category_success(api, tagcat):
     #check(t, 'reserved', bool)
 
 @pytest.mark.vcr()
+def test_tags_list_date_failure(api):
+    with pytest.raises(UnexpectedValueError):
+        api.tags.list(('updated_at', 'eq', 'something_else'))
+
+@pytest.mark.vcr()
 def test_tags_assign_assets_typeerror_list(api):
     with pytest.raises(TypeError):
         api.tags.assign(1, [])
