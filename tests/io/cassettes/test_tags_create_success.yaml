@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: !!python/unicode '{"value": "Test", "category_name": "Example"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['45']
+      Content-Type: [application/json]
+      User-Agent: [pyTenable/0.3.8 (pyTenable/0.3.8; Python/2.7.15)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: POST
+    uri: https://cloud.tenable.com/tags/values
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42PSwrCQBBE7zJrW3o+cSZZufEGrtyE+fRIIIlBJ2IQ724LCu50WdSrB3UX89wl
+        0QiTnc5B1WAJKzAVOggxakAnETcqKmetWIl4Jl8otb7wRqGsASUot5e2Qdsos7YGD19cWJgrdCmt
+        T0M3bqel0OhDT+vuxNg8pb90H+6HLjJ0PJ2X9n1KUlBkdAVZKwmmJgshZeRnuY6ajEWJPLv6fibG
+        9yzmWJbplS7Fly5+W0c/vIrdzQ9TT+LxBNuzgVs9AQAA
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 28 Jan 2019 17:07:24 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-b-prod-us-east-1]
+      x-request-uuid: [9f6d4e309774f444517aa8d22598a8e7]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Cookie: [nginx-cloud-site-id=us-2b]
+      User-Agent: [pyTenable/0.3.8 (pyTenable/0.3.8; Python/2.7.15)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: DELETE
+    uri: https://cloud.tenable.com/tags/values/4f83fb29-7e05-4508-bcc3-0810062c2877
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['0']
+      content-type: [application/octet-stream]
+      date: ['Mon, 28 Jan 2019 17:07:25 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-b-prod-us-east-1]
+      x-request-uuid: [25d9cf735054db22c9bbed5eeefa6816]
+    status: {code: 200, message: OK}
+version: 1
