@@ -124,6 +124,7 @@ class TenableSC(APISession):
     .. _requests_pkcs12:
         https://github.com/m-click/requests_pkcs12
     '''
+    _restricted_paths = ['token']
     _error_codes = {
         400: InvalidInputError,
         403: APIError,

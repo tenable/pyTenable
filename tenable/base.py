@@ -1,3 +1,6 @@
+'''
+.. autoclass:: APIResultsIterator
+'''
 import requests, sys, logging, re, time, logging
 from .errors import *
 
@@ -7,12 +10,16 @@ __author__ = 'Steve McGrath <smcgrath@tenable.com>'
 
 class APIResultsIterator(object):
     '''
-    The agents iterator provides a scalable way to work through agent result
-    sets of any size.  The iterator will walk through each page of data,
-    returning one record at a time.  If it reaches the end of a page of
-    records, then it will request the next page of information and then continue
-    to return records from the next page (and the next, and the next) until the
-    counter reaches the total number of records that the API has reported.
+    The API iterator provides a scalable way to work through result sets of any 
+    size.  The iterator will walk through each page of data, returning one 
+    record at a time.  If it reaches the end of a page of records, then it will 
+    request the next page of information and then continue to return records 
+    from the next page (and the next, and the next) until the counter reaches 
+    the total number of records that the API has reported.
+
+    Note that this Iterator is used as a base model for all of the iterators,
+    and while the mechanics of each iterator may vary, they should all behave
+    to the user in a similar manner.
 
     Attributes:
         count (int): The current number of records that have been returned
@@ -274,6 +281,7 @@ class APISession(object):
             An optional identifier for the application to discern it amongst
             other API calls.
     '''
+    _restricted_paths = dict()
     _ua_identity = None
     _error_codes = {
         400: InvalidInputError,
@@ -354,10 +362,22 @@ class APISession(object):
         while retries <= self._retries:
             if (('params' in kwargs and kwargs['params']) 
               or ('json' in kwargs and kwargs['json'])):
-                self._log.debug('query={}, body={}'.format(
-                    kwargs['params'] if 'params' in kwargs else dict(),
-                    kwargs['json'] if 'json' in kwargs else dict(),
-                ))
+                if path not in self._restricted_paths:
+                    # If the path is not one of the paths that would contain
+                    # sensitive data (such as login information) then pass the
+                    # log on unredacted.
+                    self._log.debug('path={}, query={}, body={}'.format(
+                        path,
+                        kwargs['params'] if 'params' in kwargs else dict(),
+                        kwargs['json'] if 'json' in kwargs else dict(),
+                    ))
+                else:
+                    # The path was a restricted path, generate the log, however
+                    # redact the information.
+                    self._log.debug('path={}, query={}, body={}'.format(
+                        path, 'REDACTED', 'REDACTED'))
+            
+            # Make the call to the API and pull the status code.
             resp = self._session.request(method, 
                 '{}/{}'.format(self._url, path), **kwargs)
             status = resp.status_code

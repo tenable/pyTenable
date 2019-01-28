@@ -38,23 +38,7 @@ class AgentsIterator(TIOIterator):
         total (int): 
             The total number of records that exist for the current request.
     '''
-    def _get_data(self):
-        '''
-        Request the next page of data
-        '''
-        # The first thing that we need to do is construct the query with the
-        # current offset and limits
-        query = self._query
-        query['limit'] = self._limit
-        query['offset'] = self._offset
-
-        # Lets make the actual call at this point.
-        resp = self._api.get(
-            'scanners/{}/agents'.format(self._scanner_id), params=query).json()
-
-        # Lastly we need to return the data from the response and the data key
-        # so that _get_page() knows where the information is stored.
-        return resp, 'agents'
+    pass
             
 
 class AgentsAPI(TIOEndpoint):
@@ -178,8 +162,9 @@ class AgentsAPI(TIOEndpoint):
             _limit=limit,
             _offset=offset,
             _pages_total=pages,
-            _scanner_id=scanner_id,
-            _query=query
+            _query=query,
+            _path='scanners/{}/agents'.format(scanner_id),
+            _resource='agents'
         )
 
     def details(self, agent_id, scanner_id=1):
