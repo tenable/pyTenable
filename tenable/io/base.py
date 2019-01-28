@@ -1,8 +1,11 @@
+'''
+
+'''
 from tenable.base import APIResultsIterator, APIEndpoint
 from tenable.errors import UnexpectedValueError
 
 class TIOEndpoint(APIEndpoint):
-    def _parse_filters(self, finput, filterset, rtype='sjson'):
+    def _parse_filters(self, finput, filterset=None, rtype='sjson'):
         '''
         A centralized method to parse and munge the filter tuples into the
         anticipates response.
@@ -30,9 +33,9 @@ class TIOEndpoint(APIEndpoint):
             if f[0] not in filterset:
                 raise UnexpectedValueError('{} is not a filterable option'.format(f[0]))
             foper = self._check('filter_operator', f[1], str, 
-                choices=filterset[f[0]]['operators'])
+                choices=filterset[f[0]]['operators'] if filterset else None)
             fval = self._check('filter_value', f[2], str,
-                choices=filterset[f[0]]['choices'],
+                choices=filterset[f[0]]['choices'] if filterset else None,
                 pattern=filterset[f[0]]['pattern'])
 
             if rtype == 'sjson':
@@ -63,11 +66,25 @@ class TIOEndpoint(APIEndpoint):
 
 
 class TIOIterator(APIResultsIterator):
+    _path = None
+    _resource = None
+
     def _get_data(self):
         '''
         Request the next page of data
         '''
-        return None, None
+        # The first thing that we need to do is construct the query with the
+        # current offset and limits
+        query = self._query
+        query['limit'] = self._limit
+        query['offset'] = self._offset
+
+        # Lets make the actual call at this point.
+        resp = self._api.get(self._path, params=query).json()
+
+        # Lastly we need to return the data from the response and the data key
+        # so that _get_page() knows where the information is stored.
+        return resp, self._resource
 
     def _get_page(self):
         '''

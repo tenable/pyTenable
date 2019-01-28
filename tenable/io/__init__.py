@@ -197,6 +197,10 @@ class TenableIO(APISession):
     @property
     def session(self):
         return SessionAPI(self)
+    
+    @property
+    def tags(self):
+        return TagsAPI(self)
 
     @property
     def target_groups(self):
