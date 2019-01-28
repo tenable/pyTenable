@@ -12,11 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added testing for permissions #34
 - Added testing for groups #35
 - Adjusted the doc format to no longer pin the sidebar #61
+- Added redaction to sensitive pathways #66
+- Added tagging support #44
 
 ### Changed
 - Launching a scan with alt_targets sends an array instead of a string #64
 - Tenable.sc Analysis will now handle Query IDs #63
 - Agent-Delete within Tenable.io Was using the wrong Endpoint #59
+- Refactored TIOIterator to use less code when subclassing.
+- Documented iterators and other common models.
 
 
 ## [0.3.8]

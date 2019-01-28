@@ -75,6 +75,7 @@ from .scanners import ScannersAPI
 from .scans import ScansAPI
 from .server import ServerAPI
 from .session import SessionAPI
+from .tags import TagsAPI
 from .target_groups import TargetGroupsAPI
 from .users import UsersAPI
 from .workbenches import WorkbenchesAPI
