@@ -5,7 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.3.9]
 ### Added
+- Added the `aggregate` parameter for scan import.
 - Added Changelog and backfilled changes from 0.1.0 to current
 - Added testing for user outputs #26
 - Added testing for scanner outputs #30
@@ -16,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added tagging support #44
 
 ### Changed
+- Tenable.sc files module was incorrectly pointing to self.post instead of self._api.post
 - Launching a scan with alt_targets sends an array instead of a string #64
 - Tenable.sc Analysis will now handle Query IDs #63
 - Agent-Delete within Tenable.io Was using the wrong Endpoint #59
@@ -153,7 +157,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.8...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.9...master
+[0.3.9]: https://github.com/tenable/pyTenable/compare/0.3.8...0.3.9
 [0.3.8]: https://github.com/tenable/pyTenable/compare/0.3.7...0.3.8
 [0.3.7]: https://github.com/tenable/pyTenable/compare/0.3.6...0.3.7
 [0.3.6]: https://github.com/tenable/pyTenable/compare/0.3.5...0.3.6
