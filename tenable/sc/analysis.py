@@ -188,6 +188,13 @@ class AnalysisAPI(SCEndpoint):
         _analysis method and placed here so that it can be re-used in other
         part of the library.
         '''
+        if 'filters' in kw:
+            # if filters are explicitly called, then we will replace the
+            # implicit filters with the explicit ones and remove the entry from
+            # the keywords dictionary
+            filters = self._check('filters', kw['filters'], list)
+            del(kw['filters'])
+
         if 'query' not in kw:
             kw['query'] = {
                 'tool': kw['tool'],
