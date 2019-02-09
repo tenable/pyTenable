@@ -629,7 +629,7 @@ class ScansAPI(TIOEndpoint):
             params=params).json()
 
 
-    def import_scan(self, fobj, folder_id=None, password=None):
+    def import_scan(self, fobj, folder_id=None, password=None, aggregate=None):
         '''
         Import a scan report into Tenable.io.
 
@@ -642,6 +642,9 @@ class ScansAPI(TIOEndpoint):
             password (str, optional):
                 The password needed to decrypt the file.  This is only necessary
                 for NessusDB files uploaded.
+            aggregate (bool, optional):
+                should the Nessus report be aggregated into the aggregate
+                results?  The default is True.
 
         Returns:
             dict: The scan resource record for the imported scan.
@@ -664,6 +667,8 @@ class ScansAPI(TIOEndpoint):
             payload['folder_id'] = self._check('folder_id', folder_id, int)
         if password:
             payload['password'] = self._check('password', password, str)
+        if aggregate == None:
+            aggregate = True
 
         # Upload the file to the Tenable.io and store the resulting filename in
         # the payload.
@@ -671,7 +676,8 @@ class ScansAPI(TIOEndpoint):
 
         # make the call to Tenable.io to import and then return the result to
         # the caller.
-        return self._api.post('scans/import', json=payload).json()
+        return self._api.post('scans/import', json=payload, params={
+            'include_aggregate': int(aggregate)}).json()
 
     def launch(self, scan_id, targets=None):
         '''

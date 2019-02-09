@@ -213,8 +213,6 @@ class TagsAPI(TIOEndpoint):
         '''
         return self._api.get('tags/categories/{}'.format(self._check(
             'tag_category_uuid', tag_category_uuid, 'uuid'))).json()
-
-
     
     def edit(self, tag_value_uuid, value=None, description=None):
         '''
