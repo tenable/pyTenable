@@ -29,8 +29,8 @@ class FileAPI(SCEndpoint):
                 The filename identifier to use for subsequent calls in 
                 Tenable.sc.
         '''
-        return self.post('file/upload', files={
-            'Filedata': fileobj}).json()['response']['filename']
+        return self._api.post('file/upload', files={
+            'Filedata': fobj}).json()['response']['filename']
 
     def clear(self, filename):
         '''
@@ -42,6 +42,6 @@ class FileAPI(SCEndpoint):
         Returns:
             str: The file location on disk that was removed.
         '''
-        return self.post('file/clear', json={
+        return self._api.post('file/clear', json={
             'filename': self._check('filename', filename, str)
         }).json()['response']['filename']
