@@ -381,8 +381,10 @@ class APISession(object):
             resp = self._session.request(method, 
                 '{}/{}'.format(self._url, path), **kwargs)
             status = resp.status_code
-            self._log.debug('Request-UUID {} for {}'.format(
-                resp.headers['X-Request-Uuid'], '{}/{}'.format(self._url, path)))
+            if 'X-Request-Uuid' in resp.headers:
+                self._log.debug('Request-UUID {} for {}'.format(
+                    resp.headers['X-Request-Uuid'], 
+                    '{}/{}'.format(self._url, path)))
 
             if status in [429, 501, 502, 503]:
                 # Under the following return codes, we will want to attempt to
