@@ -34,9 +34,10 @@ class TIOEndpoint(APIEndpoint):
                 raise UnexpectedValueError('{} is not a filterable option'.format(f[0]))
             foper = self._check('filter_operator', f[1], str, 
                 choices=filterset[f[0]]['operators'] if filterset else None)
-            fval = self._check('filter_value', f[2], str,
+            fval = ','.join([self._check('filter_value', i, str,
                 choices=filterset[f[0]]['choices'] if filterset else None,
-                pattern=filterset[f[0]]['pattern'])
+                pattern=filterset[f[0]]['pattern']) for i in 
+                    self._check('filter_value', f[2], str).split(',')])
 
             if rtype == 'sjson':
                 # For the serialized JSON format, we will need to generate the
