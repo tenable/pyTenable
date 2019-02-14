@@ -1,7 +1,7 @@
 '''
 .. autoclass:: APIResultsIterator
 '''
-import requests, sys, logging, re, time, logging
+import requests, sys, logging, re, time, logging, warnings, json
 from .errors import *
 
 __version__ = '0.3.9'
@@ -101,8 +101,14 @@ class APIEndpoint(object):
             The APISession (or sired child) instance that the endpoint will
             be using to perform calls to the API.
     '''
+    _code_status = None
 
     def __init__(self, api):
+        if self._code_status and self._code_status != 'stable':
+            warnings.warn(
+                ' '.join([
+                    'These endpoints are not considered "stable", may not be'
+                    'tested, and and may change']))
         self._api = api
 
     def _check(self, name, obj, expected_type, 
