@@ -33,8 +33,8 @@ Methods available on ``tio.scans``:
     .. automethod:: timezones
 '''
 from .base import TIOEndpoint
-from tenable.utils import dict_merge
-from tenable.errors import UnexpectedValueError
+from tenable.utils import dict_merge, policy_settings
+from tenable.errors import UnexpectedValueError, FileDownloadError
 from datetime import datetime, timedelta
 from io import BytesIO
 import time
@@ -386,7 +386,7 @@ class ScansAPI(TIOEndpoint):
 
         # define the initial skeleton of the scan object
         scan = {
-            'settings': self._api.editor.parse_vals(editor['settings']),
+            'settings': policy_settings(editor['settings']),
             'uuid': editor['uuid']
         }
 
@@ -410,7 +410,7 @@ class ScansAPI(TIOEndpoint):
                 for citem in ctype['types']:
                     if 'settings' in citem and citem['settings']:
                         scan['settings'] = dict_merge(
-                            scan['settings'], self._api.editor.parse_vals(
+                            scan['settings'], policy_settings(
                                 citem['settings']))
 
         if 'compliance' in editor:
@@ -426,7 +426,7 @@ class ScansAPI(TIOEndpoint):
             for item in editor['compliance']['data']:
                 if 'settings' in item:
                     scan['settings'] = dict_merge(
-                        scan['settings'], self._api.editor.parse_vals(
+                        scan['settings'], policy_settings(
                             item['settings']))
 
         if 'plugins' in editor:
@@ -583,9 +583,17 @@ class ScansAPI(TIOEndpoint):
         # Next we will wait for the status of the export request to become
         # ready.  We will query the API every half a second until we get the
         # response we're looking for.
-        while 'ready' != self._api.get('scans/{}/export/{}/status'.format(
-                                        scan_id, fid)).json()['status']:
+        status = self._api.get('scans/{}/export/{}/status'.format(
+                               scan_id, fid)).json()['status']
+        while status not in ['error', 'ready']:
             time.sleep(0.5)
+            status = self._api.get('scans/{}/export/{}/status'.format(
+                                   scan_id, fid)).json()['status']
+
+        # If the status that has been reported back is "error", then we will
+        # need to throw the appropriate error back to the user.
+        if status == 'error':
+            raise FileDownloadError('scans', scan_id, fid)
 
         # Now that the status has reported back as "ready", we can actually
         # download the file.

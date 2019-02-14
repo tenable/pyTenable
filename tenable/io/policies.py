@@ -20,6 +20,7 @@ Methods available on ``tio.policies``:
     .. automethod:: list
 '''
 from .base import TIOEndpoint
+from tenable.utils import policy_settings
 from io import BytesIO
 
 class PoliciesAPI(TIOEndpoint):
@@ -67,7 +68,7 @@ class PoliciesAPI(TIOEndpoint):
 
         # define the initial skeleton of the scan object
         scan = {
-            'settings': self._api.editor.parse_vals(editor['settings']),
+            'settings': policy_settings(editor['settings']),
             'uuid': editor['uuid']
         }
 
@@ -91,7 +92,7 @@ class PoliciesAPI(TIOEndpoint):
                 for citem in ctype['types']:
                     if 'settings' in citem and citem['settings']:
                         scan['settings'] = dict_merge(
-                            scan['settings'], self._api.editor.parse_vals(
+                            scan['settings'], policy_settings(
                                 citem['settings']))
 
         if 'compliance' in editor:
@@ -107,7 +108,7 @@ class PoliciesAPI(TIOEndpoint):
             for item in editor['compliance']['data']:
                 if 'settings' in item:
                     scan['settings'] = dict_merge(
-                        scan['settings'], self._api.editor.parse_vals(
+                        scan['settings'], policy_settings(
                             item['settings']))
 
         if 'plugins' in editor:
