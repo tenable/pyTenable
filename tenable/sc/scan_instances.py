@@ -157,7 +157,7 @@ class ScanResultAPI(SCEndpoint):
 
         Examples:
             >>> with open('example.nessus', 'wb') as fobj:
-            ...     sc.scan_instances.export(1, fobj)
+            ...     sc.scan_instances.export_scan(1, fobj)
         '''
         resp = self._api.post('scanResult/{}/download'.format(
             self._check('id', id, int)), stream=True, json={
@@ -197,7 +197,7 @@ class ScanResultAPI(SCEndpoint):
                 is ``False``.
 
         Returns:
-            str: An emty string response.
+            str: An empty string response.
 
         Examples:
             >>> with open('example.nessus') as fobj:
