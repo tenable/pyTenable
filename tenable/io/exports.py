@@ -158,6 +158,16 @@ class ExportsAPI(TIOEndpoint):
             ...     pprint(vuln)
         '''
         payload = {'filters': dict()}
+    
+        # Instead of a long and drawn-out series of if statements for all of
+        # these integer filters, lets instead just loop through all of them
+        # instead.  As they all have the same logic, there isn't any reason
+        # not to shorten up the madness.
+        for option in ['since', 'first_found', 'last_found', 
+                       'last_fixed', 'first_scan_time', 
+                       'last_authenticated_scan_time', 'last_assessed']:
+            if option in kw:
+                payload['filters'][option] = self._check(option, kw[option], int)
 
         payload['num_assets'] = str(self._check('num_assets', 
             kw['num_assets'] if 'num_assets' in kw else None, int, default=50))
@@ -174,20 +184,8 @@ class ExportsAPI(TIOEndpoint):
                 'plugin_family', kw['plugin_family'], list):
             payload['filters']['plugin_family'] = kw['plugin_family']
 
-        if 'since' in kw and self._check('since', kw['since'], int):
-            payload['filters']['since'] = kw['since']
-
         if 'cidr_range' in kw and self._check('cidr_range', kw['cidr_range'], str):
             payload['filters']['cidr_range'] = kw['cidr_range']
-
-        if 'first_found' in kw and self._check('first_found', kw['first_found'], int):
-            payload['filters']['first_found'] = kw['first_found']
-
-        if 'last_found' in kw and self._check('last_found', kw['last_found'], int):
-            payload['filters']['last_found'] = kw['last_found']
-
-        if 'last_fixed' in kw and self._check('last_fixed', kw['last_fixed'], int):
-            payload['filters']['last_fixed'] = kw['last_fixed']
 
         if 'tags' in kw and self._check('tags', kw['tags'], list):
             # if any tags were specified, then we will iterate through the list
@@ -288,8 +286,8 @@ class ExportsAPI(TIOEndpoint):
         for option in ['created_at', 'updated_at', 'terminated_at', 
                        'deleted_at', 'first_scan_time', 
                        'last_authenticated_scan_time', 'last_assessed']:
-            if option in kw and self._check(option, kw[option], int):
-                payload['filters'][option] = kw[option]
+            if option in kw:
+                payload['filters'][option] = self._check(option, kw[option], int)
 
         # Lets to the same thing we did above for integer checks for the boolean
         # ones as well.
