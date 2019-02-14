@@ -2,7 +2,7 @@
 alerts
 ======
 
-NOTE: not currently tested code.
+.. warning:: This module is flagged as "beta", and may change.
 
 The following methods allow for interaction into the Tenable.sc 
 `Alert <https://docs.tenable.com/sccv/api/Alert.html>`_ API.
@@ -28,6 +28,7 @@ from .base import SCEndpoint
 from tenable.utils import dict_merge
 
 class AlertAPI(SCEndpoint):
+    _code_status = 'beta'
     def _constructor(self, *filters, **kw):
         '''
         Handles building an alert document.

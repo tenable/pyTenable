@@ -2,7 +2,7 @@
 accept_risks
 ============
 
-NOTE: not currently tested code.
+.. warning:: This module is flagged as "beta", and may change.
 
 The following methods allow for interaction into the Tenable.sc 
 `Accept Risk <https://docs.tenable.com/sccv/api/Accept-Risk-Rule.html>`_ API.
@@ -22,6 +22,7 @@ Methods available on ``sc.accept_risks``:
 from .base import SCEndpoint
 
 class AcceptRiskAPI(SCEndpoint):
+    _code_status = 'beta'
     def _constructor(self, **kw):
         '''
         document creator for acceptRisk creation and update calls.
