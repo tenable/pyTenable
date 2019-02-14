@@ -9,5 +9,6 @@
    sc
    common
    errors
+   testing
 
 .. automodule:: tenable
