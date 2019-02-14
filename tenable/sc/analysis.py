@@ -133,55 +133,6 @@ class AnalysisResultsIterator(SCResultsIterator):
 
 
 class AnalysisAPI(SCEndpoint):
-    def _expass(self, item):
-        '''
-        Expands the asset combination expressions from nested tuples to the
-        nested dictionary structure that's expected.
-        '''
-
-        # the operator conversion dictionary.  The UI uses "and", "or", and
-        # "not" whereas the API uses "intersection", "union", and "compliment".
-        # if the user is passing us the tuples, lets assume that they are using
-        # the UI definitions and not the API ones.
-        oper = {
-            'and': 'intersection',
-            'or': 'union',
-            'not': 'complement'
-        }
-
-        # some simple checking to ensure that we are being passed good data
-        # before we expand the tuple.
-        if len(item) < 2 or len(item) > 3:
-            raise TypeError('{} must be exactly 1 operator and 1-2 items'.format(item))
-        self._check('operator', item[0], str, choices=oper.keys())
-        self._check('operand1', item[1], [int, tuple])
-        if len(item) == 3:
-            self._check('operand2', item[2], [int, tuple])
-
-        resp = {'operator': oper[item[0].lower()]}
-
-        # we need to expand the operand.  If the item is a nested tuple, then
-        # we will call ourselves and pass the tuple.  If not, then we will
-        # simply return a dictionary with the id value set to the integer that
-        # was passed.
-        if isinstance(item[1], tuple):
-            resp['operand1'] = self._expass(item[1])
-        else:
-            resp['operand1'] = {'id': str(item[1])}
-
-        # if there are 2 operators in the tuple, then we will want to expand the
-        # second one as well. If the item is a nested tuple, then we will call 
-        # ourselves and pass the tuple.  If not, then we will simply return a 
-        # dictionary with the id value set to the integer that was passed.
-        if len(item) == 3:
-            if isinstance(item[2], tuple):
-                resp['operand2'] = self._expass(item[2])
-            else:
-                resp['operand2'] = {'id': str(item[2])}
-
-        # return the response to the caller.
-        return resp
-
     def _query_constructor(self, *filters, **kw):
         '''
         Constructs an analysis query.  This part has been pulled out of the
@@ -203,10 +154,12 @@ class AnalysisAPI(SCEndpoint):
             }
             if 'query_id' in kw:
                 # Request the specific query ID provided and fetch only the filters
-                query_response = self._api.get('query/{}?fields=filters'.format(kw['query_id'])).json()['response']
+                query_response = self._api.get(
+                    'query/{}?fields=filters'.format(
+                        kw['query_id'])).json()['response']
 
                 # Extract the filters or set to null if nothing is returned
-                query_filters = query_response['filters'] if query_response.get('filters') else list()
+                query_filters = query_response.get('filters', list())
 
                 kw['query']['filters'] = query_filters
                 return kw
@@ -218,7 +171,7 @@ class AnalysisAPI(SCEndpoint):
                     # if this is a asset combination, then we will want to
                     # expand the tuple into the expected dictionary structure
                     # that the API is expecting.
-                    item['value'] = self._expass(f[2])
+                    item['value'] = self._combo_expansion(f[2])
                 else:
                     # if we dont have any specific conditions set, then simply
                     # return the value parameter assigned to the "value" attribute
