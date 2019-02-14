@@ -34,6 +34,28 @@ class TenableException(Exception):
         return repr(self.__str__())
 
 
+class FileDownloadError(TenableException):
+    '''
+    FileDownloadError is thrown when a file fails to download.
+
+    Attributes:
+        msg (str):
+            The error message
+        filename (str):
+            The Filename or file id that was requested.
+        resource (str):
+            The resource that the file was requested from (e.g. "scans")
+        resource_id (str):
+            The identifier for the resource that was requested.
+    '''
+    def __init__(self, resource, resource_id, filename):
+        self.resource = str(resource)
+        self.resource_id = str(resource_id)
+        self.filename = str(filename)
+        self.msg = 'resource {}:{} requested file {} and has failed.'.format(
+            self.resource, self.resource_id, self.filename)
+
+
 class UnexpectedValueError(TenableException):
     '''
     An unexpected value error is thrown whenever the value specified for a
