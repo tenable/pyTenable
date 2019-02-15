@@ -1,0 +1,438 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/1.0.0 (pyTenable/1.0.0; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/policyTemplate/1
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"id":"1","name":"Advanced
+        Scan","description":"Configure a scan without using any recommendations.","editor":"{\"plugins\":\"true\",\"compliance\":\"true\",\"globalSettings\":[{\"id\":\"hpprocurve\",\"name\":\"HP
+        ProCurve\",\"preferenceID\":\"procurve_config_to_audit\"},{\"id\":\"cisco\",\"name\":\"Cisco
+        IOS\",\"preferenceID\":\"cisco_config_to_audit\"}],\"credentials\":\"{\\\"groups\\\":[{\\\"id\\\":\\\"host\\\",\\\"name\\\":\\\"Host\\\",\\\"credentials\\\":[{\\\"name\\\":\\\"SNMPv3\\\",\\\"max\\\":1,\\\"id\\\":\\\"snmpv3\\\",\\\"showSectionIDs\\\":[\\\"snmp\\\"],\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"},{\\\"label\\\":\\\"Security\\\",\\\"inputID\\\":\\\"security_level\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Port\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"default\\\":\\\"161\\\",\\\"id\\\":\\\"port\\\"},{\\\"type\\\":\\\"dropdown\\\",\\\"name\\\":\\\"Security
+        Level\\\",\\\"default\\\":\\\"Authentication and privacy\\\",\\\"id\\\":\\\"security_level\\\",\\\"options\\\":[\\\"No
+        authentication and no privacy\\\",\\\"Authentication without privacy\\\",\\\"Authentication
+        and privacy\\\"],\\\"conditionalSettings\\\":{\\\"Authentication without privacy\\\":{\\\"inputs\\\":[{\\\"type\\\":\\\"dropdown\\\",\\\"name\\\":\\\"Authentication
+        algorithm\\\",\\\"default\\\":\\\"SHA1\\\",\\\"options\\\":[\\\"SHA1\\\",\\\"MD5\\\"],\\\"id\\\":\\\"auth_algorithm\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Authentication
+        password\\\",\\\"id\\\":\\\"auth_password\\\"}]},\\\"Authentication and privacy\\\":{\\\"inputs\\\":[{\\\"type\\\":\\\"dropdown\\\",\\\"name\\\":\\\"Authentication
+        algorithm\\\",\\\"default\\\":\\\"SHA1\\\",\\\"options\\\":[\\\"SHA1\\\",\\\"MD5\\\"],\\\"id\\\":\\\"auth_algorithm\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Authentication
+        password\\\",\\\"id\\\":\\\"auth_password\\\"},{\\\"type\\\":\\\"dropdown\\\",\\\"name\\\":\\\"Privacy
+        algorithm\\\",\\\"default\\\":\\\"AES\\\",\\\"options\\\":[\\\"AES\\\",\\\"DES\\\"],\\\"id\\\":\\\"privacy_algorithm\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Privacy
+        password\\\",\\\"id\\\":\\\"privacy_password\\\"}]}}}]}]},{\\\"id\\\":\\\"database\\\",\\\"name\\\":\\\"Database\\\",\\\"credentials\\\":[{\\\"id\\\":\\\"mongodb\\\",\\\"name\\\":\\\"MongoDB\\\",\\\"max\\\":1,\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"showSectionIDs\\\":[\\\"windows_auth\\\"],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Database\\\",\\\"id\\\":\\\"database\\\",\\\"default\\\":\\\"admin\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"small-entry\\\",\\\"name\\\":\\\"Port\\\",\\\"id\\\":\\\"port\\\",\\\"default\\\":\\\"27017\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"required\\\":\\\"true\\\"}]}]},{\\\"id\\\":\\\"miscellaneous\\\",\\\"name\\\":\\\"Miscellaneous\\\",\\\"credentials\\\":[{\\\"id\\\":\\\"adsi\\\",\\\"name\\\":\\\"ADSI\\\",\\\"max\\\":\\\"5\\\",\\\"showSectionIDs\\\":[\\\"ssh\\\"],\\\"displayFields\\\":[{\\\"label\\\":\\\"Domain\\\",\\\"inputID\\\":\\\"domain\\\"},{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"domain_admin\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Domain
+        Controller\\\",\\\"id\\\":\\\"domain_controller\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Domain\\\",\\\"id\\\":\\\"domain\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Domain
+        Admin\\\",\\\"id\\\":\\\"domain_admin\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Domain
+        Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"}]},{\\\"id\\\":\\\"ibm_iseries\\\",\\\"name\\\":\\\"IBM
+        iSeries\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"}]},{\\\"id\\\":\\\"rhev\\\",\\\"name\\\":\\\"RHEV\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"small-entry\\\",\\\"name\\\":\\\"Port\\\",\\\"id\\\":\\\"port\\\",\\\"default\\\":\\\"443\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Verify
+        SSL Certificate\\\",\\\"required\\\":\\\"true\\\",\\\"default\\\":\\\"yes\\\",\\\"id\\\":\\\"verify_ssl\\\"}]},{\\\"id\\\":\\\"panos\\\",\\\"name\\\":\\\"Palo
+        Alto Networks PAN-OS\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"small-entry\\\",\\\"name\\\":\\\"Port\\\",\\\"id\\\":\\\"port\\\",\\\"default\\\":\\\"443\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Verify
+        SSL Certificate\\\",\\\"required\\\":\\\"true\\\",\\\"default\\\":\\\"yes\\\",\\\"id\\\":\\\"verify_ssl\\\"}]},{\\\"id\\\":\\\"vmware_esx\\\",\\\"name\\\":\\\"VMware
+        ESX SOAP API\\\",\\\"max\\\":\\\"5\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Do
+        Not Verify SSL Certificate\\\",\\\"required\\\":\\\"true\\\",\\\"default\\\":\\\"no\\\",\\\"id\\\":\\\"dont_verify_ssl\\\"}]},{\\\"id\\\":\\\"vmware_vcenter\\\",\\\"name\\\":\\\"VMware
+        vCenter SOAP API\\\",\\\"max\\\":\\\"5\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"Host\\\",\\\"inputID\\\":\\\"host\\\"},{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"vCenter
+        Host\\\",\\\"id\\\":\\\"host\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"small-entry\\\",\\\"name\\\":\\\"vCenter
+        Port\\\",\\\"id\\\":\\\"port\\\",\\\"default\\\":\\\"443\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"HTTPS\\\",\\\"id\\\":\\\"https\\\",\\\"default\\\":\\\"yes\\\",\\\"conditionalSettings\\\":{\\\"yes\\\":{\\\"inputs\\\":[{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Verify
+        SSL Certificate\\\",\\\"required\\\":\\\"true\\\",\\\"default\\\":\\\"yes\\\",\\\"id\\\":\\\"verify_ssl\\\"}]}}}]},{\\\"id\\\":\\\"x509\\\",\\\"name\\\":\\\"X.509\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"client_cert\\\",\\\"inputID\\\":\\\"Client
+        Cert\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"file\\\",\\\"name\\\":\\\"Client
+        Certificate\\\",\\\"id\\\":\\\"client_cert\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"file\\\",\\\"name\\\":\\\"Client
+        Key\\\",\\\"id\\\":\\\"client_key\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"file\\\",\\\"name\\\":\\\"CA
+        Certificate to Trust\\\",\\\"id\\\":\\\"ca_cert\\\",\\\"required\\\":\\\"true\\\"}]}]},{\\\"id\\\":\\\"plaintext\\\",\\\"name\\\":\\\"Plaintext
+        Authentication\\\",\\\"credentials\\\":[{\\\"id\\\":\\\"telnet\\\",\\\"name\\\":\\\"telnet\\\/rsh\\\/rexec\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"showSectionIDs\\\":[\\\"plaintext_patch_audit\\\"],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password
+        (Unsafe!)\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"}]},{\\\"id\\\":\\\"nntp\\\",\\\"name\\\":\\\"NNTP\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"}]},{\\\"id\\\":\\\"ftp\\\",\\\"name\\\":\\\"FTP\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"default\\\":\\\"anonymous\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"default\\\":\\\"nessus@nessus.org\\\",\\\"required\\\":\\\"true\\\"}]},{\\\"id\\\":\\\"pop2\\\",\\\"name\\\":\\\"POP2\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"}]},{\\\"id\\\":\\\"pop3\\\",\\\"name\\\":\\\"POP3\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"}]},{\\\"id\\\":\\\"imap\\\",\\\"name\\\":\\\"IMAP\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"}]},{\\\"id\\\":\\\"ipmi\\\",\\\"name\\\":\\\"IPMI\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password
+        (Sent In Clear)\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"}]},{\\\"id\\\":\\\"http\\\",\\\"name\\\":\\\"HTTP\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"Method\\\",\\\"inputID\\\":\\\"auth_method\\\"},{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"showSectionIDs\\\":[\\\"http_login\\\"],\\\"inputs\\\":[{\\\"type\\\":\\\"dropdown\\\",\\\"name\\\":\\\"Authentication
+        Method\\\",\\\"id\\\":\\\"auth_method\\\",\\\"default\\\":\\\"HTTP login form\\\",\\\"options\\\":[\\\"Automatic
+        authentication\\\",\\\"Basic\\\/Digest authentication\\\",\\\"HTTP login form\\\",\\\"HTTP
+        cookies import\\\"],\\\"conditionalSettings\\\":{\\\"Automatic authentication\\\":{\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"placeholder\\\":\\\"admin\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\"}]},\\\"Basic\\\/Digest
+        authentication\\\":{\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"placeholder\\\":\\\"admin\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\",\\\"required\\\":\\\"true\\\"}]},\\\"HTTP
+        login form\\\":{\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"id\\\":\\\"username\\\",\\\"placeholder\\\":\\\"admin\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"id\\\":\\\"password\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Login
+        page\\\",\\\"placeholder\\\":\\\"\\\/login.php\\\",\\\"id\\\":\\\"login_page\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Login
+        submission page\\\",\\\"placeholder\\\":\\\"\\\/process_login.php\\\",\\\"id\\\":\\\"login_submission_page\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Login
+        parameters\\\",\\\"placeholder\\\":\\\"user=%USER%&pass=%PASS%\\\",\\\"hint\\\":\\\"If
+        the keywords %USER% and %PASS% are used, they will be substituted with the
+        username and password provided above.\\\",\\\"id\\\":\\\"login_params\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Check
+        authentication on page\\\",\\\"placeholder\\\":\\\"\\\/user\\\/profile.php\\\",\\\"id\\\":\\\"auth_check_page\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Regex
+        to verify successful authentication\\\",\\\"id\\\":\\\"auth_regex\\\"}]},\\\"HTTP
+        cookies import\\\":{\\\"inputs\\\":[{\\\"type\\\":\\\"file\\\",\\\"name\\\":\\\"Cookies
+        file\\\",\\\"hint\\\":\\\"This file must be in the Netscape cookies.txt format.\\\",\\\"id\\\":\\\"cookies_file\\\"}]}}}]}]},{\\\"id\\\":\\\"patch_management\\\",\\\"name\\\":\\\"Patch
+        Management\\\",\\\"credentials\\\":[{\\\"id\\\":\\\"k1000\\\",\\\"name\\\":\\\"Dell
+        KACE K1000\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"Server\\\",\\\"inputID\\\":\\\"server\\\"},{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Server\\\",\\\"placeholder\\\":\\\"k1000.example.net\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"server\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Database
+        Port\\\",\\\"default\\\":\\\"3306\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"port\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Organization
+        Database Name\\\",\\\"default\\\":\\\"ORG1\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"org_db_name\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Database
+        Username\\\",\\\"default\\\":\\\"R1\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"username\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Database
+        Password\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"password\\\"}]},{\\\"id\\\":\\\"ibm_tem\\\",\\\"name\\\":\\\"IBM
+        Tivoli Endpoint Manager (BigFix)\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"Server\\\",\\\"inputID\\\":\\\"server\\\"},{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Web
+        Reports Server\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"server\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Web
+        Reports Port\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"port\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Web
+        Reports Username\\\",\\\"default\\\":\\\"R1\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"username\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Web
+        Reports Password\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"password\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"HTTPS\\\",\\\"id\\\":\\\"https\\\",\\\"default\\\":\\\"yes\\\",\\\"conditionalSettings\\\":{\\\"yes\\\":{\\\"inputs\\\":[{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Verify
+        SSL Certificate\\\",\\\"required\\\":\\\"true\\\",\\\"default\\\":\\\"yes\\\",\\\"id\\\":\\\"verify_ssl\\\"}]}}}]},{\\\"id\\\":\\\"satellite\\\",\\\"name\\\":\\\"Red
+        Hat Satellite Server\\\",\\\"max\\\":\\\"200\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"Server\\\",\\\"inputID\\\":\\\"server\\\"},{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Satellite
+        Server\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"server\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Port\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"default\\\":\\\"443\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"port\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Verify
+        SSL Certificate\\\",\\\"required\\\":\\\"true\\\",\\\"default\\\":\\\"yes\\\",\\\"id\\\":\\\"verify_ssl\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"username\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"password\\\"}]},{\\\"id\\\":
+        \\\"satellite_6\\\",\\\"name\\\": \\\"Red Hat Satellite 6 Server\\\",\\\"max\\\":
+        \\\"1\\\",\\\"displayFields\\\": [{\\\"label\\\": \\\"Server\\\",\\\"inputID\\\":
+        \\\"server\\\"}, {\\\"label\\\": \\\"User\\\",\\\"inputID\\\": \\\"username\\\"}],\\\"inputs\\\":
+        [{\\\"type\\\": \\\"entry\\\",\\\"name\\\": \\\"Satellite Server\\\",\\\"required\\\":
+        \\\"true\\\",\\\"id\\\": \\\"server\\\"}, {\\\"type\\\": \\\"entry\\\",\\\"name\\\":
+        \\\"Port\\\",\\\"regex\\\": \\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"default\\\":
+        \\\"443\\\",\\\"required\\\": \\\"true\\\",\\\"id\\\": \\\"port\\\"}, {\\\"type\\\":
+        \\\"checkbox\\\",\\\"name\\\": \\\"HTTPS\\\",\\\"required\\\": true,\\\"default\\\":
+        \\\"yes\\\",\\\"id\\\": \\\"https\\\",\\\"conditionalSettings\\\": {\\\"yes\\\":{\\\"inputs\\\":
+        [{\\\"type\\\": \\\"checkbox\\\",\\\"name\\\": \\\"Verify SSL Certificate\\\",\\\"default\\\":
+        \\\"yes\\\",\\\"required\\\": true,\\\"id\\\": \\\"verify_ssl\\\"}]}}}, {\\\"type\\\":
+        \\\"entry\\\",\\\"name\\\": \\\"Username\\\",\\\"required\\\": \\\"true\\\",\\\"id\\\":
+        \\\"username\\\"}, {\\\"type\\\": \\\"password\\\",\\\"name\\\": \\\"Password\\\",\\\"required\\\":
+        \\\"true\\\",\\\"id\\\": \\\"password\\\"}]},{\\\"id\\\":\\\"sccm\\\",\\\"name\\\":\\\"Microsoft
+        SCCM\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"Domain\\\",\\\"inputID\\\":\\\"domain\\\"},{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Server\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"server\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Domain\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"domain\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"username\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"password\\\"}]},{\\\"id\\\":\\\"wsus\\\",\\\"name\\\":\\\"Microsoft
+        WSUS\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"Server\\\",\\\"inputID\\\":\\\"server\\\"},{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Server\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"server\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Port\\\",\\\"default\\\":\\\"8530\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"port\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Username\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"username\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Password\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"password\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"HTTPS\\\",\\\"id\\\":\\\"https\\\",\\\"default\\\":\\\"yes\\\",\\\"conditionalSettings\\\":{\\\"yes\\\":{\\\"inputs\\\":[{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Verify
+        SSL Certificate\\\",\\\"required\\\":\\\"true\\\",\\\"default\\\":\\\"yes\\\",\\\"id\\\":\\\"verify_ssl\\\"}]}}}]},{\\\"id\\\":\\\"altiris\\\",\\\"name\\\":\\\"Symantec
+        Altiris\\\",\\\"max\\\":\\\"1\\\",\\\"displayFields\\\":[{\\\"label\\\":\\\"Server\\\",\\\"inputID\\\":\\\"server\\\"},{\\\"label\\\":\\\"User\\\",\\\"inputID\\\":\\\"username\\\"}],\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Server\\\",\\\"placeholder\\\":\\\"altiris.example.net\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"server\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Port\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"default\\\":\\\"5690\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"port\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Database
+        Name\\\",\\\"required\\\":\\\"true\\\",\\\"default\\\":\\\"Symantec_CMDB\\\",\\\"id\\\":\\\"db_name\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Database
+        Username\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"username\\\"},{\\\"type\\\":\\\"password\\\",\\\"name\\\":\\\"Database
+        Password\\\",\\\"required\\\":\\\"true\\\",\\\"id\\\":\\\"password\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Use
+        Windows Authentication\\\",\\\"required\\\":\\\"true\\\",\\\"default\\\":\\\"yes\\\",\\\"id\\\":\\\"use_windows_auth\\\"}]}]}],\\\"optionalSections\\\":[{\\\"id\\\":\\\"snmp\\\",\\\"name\\\":\\\"SNMP\\\",\\\"inputs\\\":[{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"UDP
+        port\\\",\\\"id\\\":\\\"snmp_port\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"default\\\":\\\"161\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Additional
+        UDP port #1\\\",\\\"id\\\":\\\"additional_snmp_port1\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"default\\\":\\\"161\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Additional
+        UDP port #2\\\",\\\"id\\\":\\\"additional_snmp_port2\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"default\\\":\\\"161\\\",\\\"required\\\":\\\"true\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Additional
+        UDP port #3\\\",\\\"id\\\":\\\"additional_snmp_port3\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"default\\\":\\\"161\\\",\\\"required\\\":\\\"true\\\"}]},{\\\"id\\\":\\\"ssh\\\",\\\"name\\\":\\\"SSH\\\",\\\"inputs\\\":[{\\\"type\\\":\\\"file\\\",\\\"name\\\":\\\"known_hosts
+        file\\\",\\\"id\\\":\\\"ssh_known_hosts\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Preferred
+        port\\\",\\\"id\\\":\\\"ssh_port\\\",\\\"regex\\\":\\\"^([0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$\\\",\\\"default\\\":\\\"22\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Client
+        version\\\",\\\"id\\\":\\\"ssh_client_banner\\\",\\\"default\\\":\\\"OpenSSH_5.0\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Attempt
+        least privilege (experimental, Nessus >= 6.11, may cause up to 20-30% slowdown)\\\",\\\"id\\\":\\\"attempt_least_privilege\\\",\\\"default\\\":\\\"no\\\",\\\"hint\\\":\\\"Enable
+        dynamic privilege escalation. If the working credentials for the target include
+        privilege escalation, commands will first be attempted without privilege escalation.
+        Commands will be run again with privilege escalation only if needed.\\\"}]},{\\\"id\\\":\\\"windows_auth\\\",\\\"name\\\":\\\"Windows\\\",\\\"inputs\\\":[{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Never
+        send credentials in the clear\\\",\\\"id\\\":\\\"never_send_win_creds_in_the_clear\\\",\\\"default\\\":\\\"yes\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Do
+        not use NTLMv1 authentication\\\",\\\"default\\\":\\\"yes\\\",\\\"id\\\":\\\"dont_use_ntlmv1\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Start
+        the Remote Registry service during the scan\\\",\\\"id\\\":\\\"start_remote_registry\\\",\\\"default\\\":\\\"no\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Enable
+        administrative shares during the scan\\\",\\\"id\\\":\\\"enable_admin_shares\\\",\\\"default\\\":\\\"no\\\"}]},{\\\"id\\\":\\\"plaintext_patch_audit\\\",\\\"name\\\":\\\"Plaintext
+        Authentication\\\",\\\"inputs\\\":[{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Perform
+        patch audits over telnet\\\",\\\"default\\\":\\\"no\\\",\\\"id\\\":\\\"patch_audit_over_telnet\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Perform
+        patch audits over rsh\\\",\\\"required\\\":\\\"true\\\",\\\"default\\\":\\\"no\\\",\\\"id\\\":\\\"patch_audit_over_rsh\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Perform
+        patch audits over rexec\\\",\\\"required\\\":\\\"true\\\",\\\"default\\\":\\\"no\\\",\\\"id\\\":\\\"patch_audit_over_rexec\\\"}]},{\\\"id\\\":\\\"http_login\\\",\\\"name\\\":\\\"HTTP\\\",\\\"inputs\\\":[{\\\"type\\\":\\\"dropdown\\\",\\\"name\\\":\\\"Login
+        method\\\",\\\"id\\\":\\\"http_login_method\\\",\\\"default\\\":\\\"POST\\\",\\\"options\\\":[\\\"POST\\\",\\\"GET\\\"]},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Re-authenticate
+        delay (seconds)\\\",\\\"id\\\":\\\"http_reauth_delay\\\",\\\"regex\\\":\\\"^\\\\\\\\d+$\\\",\\\"default\\\":\\\"0\\\",\\\"hint\\\":\\\"The
+        time delay between authentication attempts. This is useful to avoid triggering
+        brute force lockout mechanisms.\\\"},{\\\"type\\\":\\\"entry\\\",\\\"name\\\":\\\"Follow
+        30x redirections (# of levels)\\\",\\\"id\\\":\\\"http_login_max_redir\\\",\\\"default\\\":\\\"0\\\",\\\"regex\\\":\\\"^\\\\\\\\d+$\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Invert
+        authenticated regex\\\",\\\"id\\\":\\\"http_login_invert_auth_regex\\\",\\\"default\\\":\\\"no\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Use
+        authenticated regex on HTTP headers\\\",\\\"id\\\":\\\"http_login_auth_regex_on_headers\\\",\\\"default\\\":\\\"no\\\"},{\\\"type\\\":\\\"checkbox\\\",\\\"name\\\":\\\"Case
+        insensitive authenticated regex\\\",\\\"id\\\":\\\"http_login_auth_regex_nocase\\\",\\\"default\\\":\\\"no\\\"}]}]}\",\"sections\":[{\"name\":\"Setup\",\"id\":\"setup\",\"subsections\":[{\"id\":\"setup_general\",\"name\":\"General\",\"inputs\":[{\"id\":\"name\",\"type\":\"entry\",\"name\":\"Name\",\"required\":\"true\",\"preferenceID\":\"name\"},{\"id\":\"description\",\"type\":\"textarea\",\"name\":\"Description\",\"preferenceID\":\"description\"}]},{\"id\":\"setup_modes\",\"name\":\"Configuration\",\"inputs\":[]}],\"section\":\"setup\"},{\"name\":\"Advanced\",\"subsections\":[{\"name\":\"General
+        Settings\",\"inputs\":[{\"id\":\"safe_checks\",\"type\":\"checkbox\",\"name\":\"Enable
+        safe checks\",\"default\":\"yes\",\"preferenceID\":\"safe_checks\"},{\"id\":\"stop_scan_on_disconnect\",\"type\":\"checkbox\",\"name\":\"Stop
+        scanning hosts that become unresponsive during the scan\",\"default\":\"no\",\"preferenceID\":\"stop_scan_on_disconnect\"}],\"id\":\"advanced_advanced\"},{\"name\":\"Performance
+        Options\",\"inputs\":[{\"id\":\"reduce_connections_on_congestion\",\"type\":\"checkbox\",\"name\":\"Slow
+        down the scan when network congestion is detected\",\"default\":\"no\",\"preferenceID\":\"reduce_connections_on_congestion\"},{\"id\":\"use_kernel_congestion_detection\",\"type\":\"checkbox\",\"name\":\"Use
+        Linux kernel congestion detection\",\"default\":\"no\",\"preferenceID\":\"use_kernel_congestion_detection\"},{\"id\":\"network_receive_timeout\",\"type\":\"small-entry\",\"default\":\"5\",\"name\":\"Network
+        timeout (in seconds)\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"checks_read_timeout\"},{\"id\":\"max_checks_per_host\",\"type\":\"small-entry\",\"name\":\"Max
+        simultaneous checks per host\",\"default\":\"5\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"max_checks\"},{\"id\":\"max_hosts_per_scan\",\"type\":\"small-entry\",\"name\":\"Max
+        simultaneous hosts per scan\",\"default\":\"30\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"max_hosts\"},{\"id\":\"max_simult_tcp_sessions_per_host\",\"type\":\"medium-entry\",\"name\":\"Max
+        number of concurrent TCP sessions per host\",\"preferenceID\":\"host.max_simult_tcp_sessions\"},{\"id\":\"max_simult_tcp_sessions_per_scan\",\"type\":\"medium-entry\",\"name\":\"Max
+        number of concurrent TCP sessions per scan\",\"preferenceID\":\"max_simult_tcp_sessions\"}],\"id\":\"advanced_performance\",\"section\":\"advanced\"}],\"id\":\"advanced\",\"section\":\"advanced\"},{\"name\":\"Host
+        Discovery\",\"subsections\":[{\"id\":\"discovery_host_discovery_inputs\",\"inputs\":[{\"id\":\"ping_the_remote_host\",\"type\":\"checkbox\",\"name\":\"Ping
+        the remote host\",\"default\":\"yes\",\"preferenceID\":\"portscan.ping\",\"conditionalSettings\":{\"yes\":{\"subsections\":[{\"name\":\"General
+        Settings\",\"inputs\":[{\"id\":\"test_local_nessus_host\",\"type\":\"checkbox\",\"name\":\"Test
+        the local Nessus host\",\"default\":\"yes\",\"hint\":\"This setting specifies
+        whether the local Nessus host should be scanned when it falls within the target
+        range specified for the scan.\",\"preferenceID\":\"Ping the remote host[checkbox]:Test
+        the local Nessus host\"},{\"id\":\"fast_network_discovery\",\"type\":\"checkbox\",\"name\":\"Use
+        fast network discovery\",\"hint\":\"If a host responds to ping, Nessus attempts
+        to avoid false positives, performing additional tests to verify the response
+        did not come from a proxy or load balancer. Fast network discovery bypasses
+        those additional tests.\",\"default\":\"yes\",\"preferenceID\":\"Ping the
+        remote host[checkbox]:Fast network discovery\"}],\"id\":\"ping_the_remote_host_general\"},{\"name\":\"Ping
+        Methods\",\"inputs\":[{\"id\":\"arp_ping\",\"type\":\"checkbox\",\"name\":\"ARP\",\"default\":\"yes\",\"preferenceID\":\"Ping
+        the remote host[checkbox]:Do an ARP ping\"},{\"id\":\"tcp_ping\",\"type\":\"checkbox\",\"name\":\"TCP\",\"default\":\"yes\",\"preferenceID\":\"Ping
+        the remote host[checkbox]:Do a TCP ping\",\"conditionalSettings\":{\"yes\":{\"inputs\":[{\"id\":\"tcp_ping_dest_ports\",\"type\":\"medium-entry\",\"name\":\"Destination
+        ports\",\"default\":\"built-in\",\"preferenceID\":\"Ping the remote host[entry]:TCP
+        ping destination port(s) :\"}]}}},{\"id\":\"icmp_ping\",\"type\":\"checkbox\",\"name\":\"ICMP\",\"default\":\"yes\",\"preferenceID\":\"Ping
+        the remote host[checkbox]:Do an ICMP ping\",\"conditionalSettings\":{\"yes\":{\"inputs\":[{\"id\":\"icmp_unreach_means_host_down\",\"type\":\"checkbox\",\"name\":\"Assume
+        ICMP unreachable from the gateway means the host is down\",\"default\":\"no\",\"preferenceID\":\"Ping
+        the remote host[checkbox]:Interpret ICMP unreach from gateway\"},{\"id\":\"icmp_ping_retries\",\"type\":\"medium-entry\",\"name\":\"Maximum
+        number of retries\",\"default\":\"2\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"Ping
+        the remote host[entry]:Number of retries (ICMP) :\"}]}}},{\"id\":\"udp_ping\",\"type\":\"checkbox\",\"name\":\"UDP\",\"default\":\"no\",\"preferenceID\":\"Ping
+        the remote host[checkbox]:Do an applicative UDP ping (DNS,RPC...)\"}],\"id\":\"ping_the_remote_host_protocols\"}]}}}]},{\"name\":\"Fragile
+        Devices\",\"inputs\":[{\"id\":\"scan_network_printers\",\"type\":\"checkbox\",\"name\":\"Scan
+        Network Printers\",\"default\":\"no\",\"preferenceID\":\"Do not scan fragile
+        devices[checkbox]:Scan Network Printers\"},{\"id\":\"scan_netware_hosts\",\"type\":\"checkbox\",\"name\":\"Scan
+        Novell Netware hosts\",\"default\":\"no\",\"preferenceID\":\"Do not scan fragile
+        devices[checkbox]:Scan Novell Netware hosts\"},{\"id\":\"scan_ot_devices\",\"type\":\"checkbox\",\"name\":\"Scan
+        Operational Technology devices\",\"default\":\"no\",\"preferenceID\":\"Do
+        not scan fragile devices[checkbox]:Scan Operational Technology devices\"}],\"id\":\"discovery_host_discovery_fragile_devices\"},{\"name\":\"Wake-on-LAN\",\"inputs\":[{\"id\":\"wol_mac_addresses\",\"type\":\"file\",\"name\":\"List
+        of MAC addresses\",\"preferenceID\":\"Wake-on-LAN[file]:List of MAC addresses
+        for Wake-on-LAN:\"},{\"id\":\"wol_wait_time\",\"type\":\"medium-entry\",\"name\":\"Boot
+        time wait (in minutes)\",\"default\":\"5\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"Wake-on-LAN[entry]:Time
+        to wait (in minutes) for the systems to boot:\"}],\"id\":\"discovery_host_discovery_wol\"},{\"name\":\"Network
+        Type\",\"inputs\":[{\"id\":\"network_type\",\"type\":\"dropdown\",\"name\":\"Network
+        Type\",\"options\":[\"Mixed (use RFC 1918)\",\"Private LAN\",\"Public WAN
+        (Internet)\"],\"default\":\"Mixed (use RFC 1918)\",\"preferenceID\":\"Global
+        variable settings[radio]:Network type\"}],\"id\":\"discovery_host_discovery_network_type\"}],\"id\":\"discovery_host_discovery\",\"section\":\"discovery\"},{\"name\":\"Port
+        Scanning\",\"id\":\"discovery_network_discovery\",\"section\":\"discovery\",\"subsections\":[{\"name\":\"Ports\",\"inputs\":[{\"id\":\"unscanned_closed\",\"type\":\"checkbox\",\"name\":\"Consider
+        unscanned ports as closed\",\"default\":\"no\",\"preferenceID\":\"unscanned_closed\"},{\"id\":\"portscan_range\",\"type\":\"medium-entry\",\"name\":\"Port
+        scan range:\",\"default\":\"default\",\"preferenceID\":\"port_range\"}],\"id\":\"discovery_network_discovery_ports\",\"section\":\"discovery_network_discovery\"},{\"name\":\"Local
+        Port Enumerators\",\"inputs\":[{\"id\":\"ssh_netstat_scanner\",\"type\":\"checkbox\",\"name\":\"SSH
+        (netstat)\",\"default\":\"yes\",\"preferenceID\":\"local_portscan.netstat_ssh\"},{\"id\":\"wmi_netstat_scanner\",\"type\":\"checkbox\",\"name\":\"WMI
+        (netstat)\",\"default\":\"yes\",\"preferenceID\":\"local_portscan.netstat_wmi\"},{\"id\":\"snmp_scanner\",\"type\":\"checkbox\",\"name\":\"SNMP\",\"default\":\"yes\",\"preferenceID\":\"local_portscan.snmp\"},{\"id\":\"only_portscan_if_enum_failed\",\"type\":\"checkbox\",\"name\":\"Only
+        run network port scanners if local port enumeration failed\",\"default\":\"yes\",\"preferenceID\":\"Port
+        scanners settings[checkbox]:Only run network port scanners if local port enumeration
+        failed\"},{\"id\":\"verify_open_ports\",\"type\":\"checkbox\",\"name\":\"Verify
+        open TCP ports found by local port enumerators\",\"default\":\"no\",\"preferenceID\":\"Port
+        scanners settings[checkbox]:Check open TCP ports found by local port enumerators\"}],\"id\":\"discovery_network_discovery_local_scanners\",\"section\":\"discovery_network_discovery\"},{\"name\":\"Network
+        Port Scanners\",\"inputs\":[{\"id\":\"tcp_scanner\",\"type\":\"checkbox\",\"name\":\"TCP\",\"default\":\"no\",\"preferenceID\":\"network_scanners.tcp\",\"conditionalSettings\":{\"yes\":{\"inputs\":[{\"id\":\"tcp_firewall_detection\",\"type\":\"dropdown\",\"name\":\"Override
+        automatic firewall detection\",\"default\":\"Automatic (normal)\",\"options\":[{\"name\":\"Automatic
+        (normal)\",\"hint\":\"\"},{\"name\":\"Do not detect RST rate limitation (soft)\",\"hint\":\"Use
+        soft detection\"},{\"name\":\"Ignore closed ports (aggressive)\",\"hint\":\"Use
+        aggressive detection\"},{\"name\":\"Disabled (softer)\",\"hint\":\"Disable
+        detection\"}],\"preferenceID\":\"Nessus TCP scanner[radio]:Firewall detection
+        :\"}]}}},{\"id\":\"syn_scanner\",\"type\":\"checkbox\",\"name\":\"SYN\",\"default\":\"yes\",\"preferenceID\":\"network_scanners.syn\",\"conditionalSettings\":{\"yes\":{\"inputs\":[{\"id\":\"syn_firewall_detection\",\"type\":\"dropdown\",\"name\":\"Override
+        automatic firewall detection\",\"default\":\"Automatic (normal)\",\"options\":[{\"name\":\"Automatic
+        (normal)\",\"hint\":\"\"},{\"name\":\"Do not detect RST rate limitation (soft)\",\"hint\":\"Use
+        soft detection\"},{\"name\":\"Ignore closed ports (aggressive)\",\"hint\":\"Use
+        aggressive detection\"},{\"name\":\"Disabled (softer)\",\"hint\":\"Disable
+        detection\"}],\"preferenceID\":\"Nessus SYN scanner[radio]:Firewall detection
+        :\"}]}}},{\"id\":\"udp_scanner\",\"type\":\"checkbox\",\"name\":\"UDP\",\"default\":\"no\",\"hint\":\"Due
+        to the nature of the protocol, it is generally not possible for a port scanner
+        to tell the difference between open and filtered UDP ports.  Enabling the
+        UDP port scanner may dramatically increase the scan time and produce unreliable
+        results. Consider using the netstat or SNMP port enumeration options instead
+        if possible.\",\"preferenceID\":\"network_scanners.udp\"}],\"id\":\"discovery_network_discovery_network_scanners\",\"section\":\"discovery_network_discovery\"}]},{\"name\":\"Service
+        Discovery\",\"subsections\":[{\"name\":\"General Settings\",\"inputs\":[{\"id\":\"svc_detection_on_all_ports\",\"type\":\"checkbox\",\"name\":\"Probe
+        all ports to find services\",\"default\":\"yes\",\"hint\":\"Attempts to map
+        each open port with the service that is running on that port. Note that in
+        some rare cases, this might disrupt some services and cause unforeseen side
+        effects.\",\"preferenceID\":\"Global variable settings[checkbox]:Probe services
+        on every port\"},{\"id\":\"detect_ssl\",\"type\":\"checkbox\",\"name\":\"Search
+        for SSL\\\/TLS services\",\"default\":\"yes\",\"preferenceID\":\"service_detection.search_for_ssl\",\"conditionalSettings\":{\"yes\":{\"inputs\":[{\"id\":\"ssl_prob_ports\",\"type\":\"dropdown\",\"name\":\"Search
+        for SSL\\\/TLS on\",\"default\":\"Known SSL ports\",\"options\":[{\"name\":\"Known
+        SSL ports\",\"hint\":\"Known SSL\\\/TLS ports\"},{\"name\":\"All ports\",\"hint\":\"All
+        ports\"}],\"preferenceID\":\"Service Detection[radio]:Test SSL based services\"},{\"id\":\"cert_expiry_warning_days\",\"type\":\"small-entry\",\"name\":\"Identify
+        certificates expiring within x days\",\"default\":\"60\",\"regex\":\"^[0-9]\\\\d*$\",\"preferenceID\":\"SSL
+        Certificate Expiry[entry]:Identify certificates that expire within x days\"},{\"id\":\"enumerate_all_ciphers\",\"type\":\"checkbox\",\"name\":\"Enumerate
+        all SSL\\\/TLS ciphers\",\"default\":\"yes\",\"hint\":\"When selected, Nessus
+        ignores the list of ciphers advertised by SSL\\\/TLS services, and enumerates
+        them by attempting to establish connections using all possible ciphers.\",\"preferenceID\":\"Global
+        variable settings[checkbox]:Enumerate all SSL ciphers\"},{\"id\":\"check_crl\",\"type\":\"checkbox\",\"name\":\"Enable
+        CRL checking (connects to the Internet)\",\"default\":\"no\",\"preferenceID\":\"Global
+        variable settings[checkbox]:Enable CRL checking (connects to Internet)\"}]}}}],\"id\":\"discovery_service_discovery_service_discovery\"}],\"id\":\"discovery_service_discovery\",\"section\":\"discovery\"},{\"name\":\"Assessment\",\"id\":\"assessment_general\",\"section\":\"assessment\",\"subsections\":[{\"name\":\"Accuracy\",\"inputs\":[{\"id\":\"report_paranoia\",\"type\":\"dropdown\",\"name\":\"Override
+        normal accuracy\",\"default\":\"Normal\",\"options\":[{\"name\":\"Normal\",\"hint\":\"\"},{\"name\":\"Avoid
+        false alarms\",\"hint\":\"Avoid potential false alarms\"},{\"name\":\"Paranoid
+        (more false alarms)\",\"hint\":\"Show potential false alarms\"}],\"preferenceID\":\"Global
+        variable settings[radio]:Report paranoia\"},{\"id\":\"thorough_tests\",\"type\":\"checkbox\",\"name\":\"Perform
+        thorough tests (may disrupt your network or impact scan speed)\",\"default\":\"no\",\"preferenceID\":\"Global
+        variable settings[checkbox]:Thorough tests (slow)\"}],\"id\":\"assessment_general_accuracy\",\"section\":\"assessment_general\"},{\"name\":\"Antivirus\",\"inputs\":[{\"id\":\"av_grace_period\",\"type\":\"dropdown\",\"name\":\"Antivirus
+        definition grace period (in days):\",\"default\":\"0\",\"options\":[\"0\",\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\"],\"preferenceID\":\"Antivirus
+        Software Check[entry]:Delay (in days, between 0 and 7) :\"}],\"id\":\"assessment_general_antivirus\",\"section\":\"assessment_general\"},{\"name\":\"SMTP\",\"inputs\":[{\"id\":\"smtp_domain\",\"type\":\"entry\",\"name\":\"Third
+        party domain\",\"default\":\"example.com\",\"hint\":\"This domain must be
+        outside the range of the site being scanned or the site performing the scan.
+        Otherwise, the test might be aborted by the SMTP server.\",\"preferenceID\":\"SMTP
+        settings[entry]:Third party domain :\"},{\"id\":\"smtp_from\",\"type\":\"entry\",\"name\":\"From
+        address\",\"default\":\"nobody@example.com\",\"preferenceID\":\"SMTP settings[entry]:From
+        address :\"},{\"id\":\"smtp_to\",\"type\":\"entry\",\"name\":\"To address\",\"default\":\"postmaster@[AUTO_REPLACED_IP]\",\"preferenceID\":\"SMTP
+        settings[entry]:To address :\"}],\"id\":\"assessment_general_smtp\",\"section\":\"assessment_general\"}]},{\"name\":\"Brute
+        Force\",\"subsections\":[{\"name\":\"General Settings\",\"inputs\":[{\"id\":\"provided_creds_only\",\"type\":\"checkbox\",\"name\":\"Only
+        use credentials provided by the user\",\"default\":\"yes\",\"hint\":\"Used
+        to prevent account lockouts if your password policy is set to lock out accounts
+        after several invalid attempts.\",\"preferenceID\":\"Global variable settings[checkbox]:Do
+        not log in with user accounts not specified in the policy\"}],\"id\":\"assessment_brute_force_general\",\"section\":\"assessment_brute_force\"},{\"name\":\"Oracle
+        Database\",\"inputs\":[{\"id\":\"test_default_oracle_accounts\",\"type\":\"checkbox\",\"name\":\"Test
+        default accounts (slow)\",\"default\":\"no\",\"preferenceID\":\"Oracle Settings[checkbox]:Test
+        default accounts (slow)\"}],\"id\":\"assessment_brute_force_oracle\"},{\"name\":\"Hydra\",\"inputs\":[{\"id\":\"hydra_always_enable\",\"type\":\"checkbox\",\"name\":\"Always
+        enable Hydra (slow)\",\"default\":\"no\",\"hint\":\"Nessus uses Hydra to attempt
+        brute force attacks when either this setting or the \\\"Perform thorough tests\\\"
+        setting in the \\\"Assessment \\\/ General\\\" section is enabled.\",\"preferenceID\":\"Hydra
+        (NASL wrappers options)[checkbox]:Always enable Hydra (slow)\"},{\"id\":\"hydra_logins_file\",\"type\":\"file\",\"name\":\"Logins
+        file\",\"preferenceID\":\"Hydra (NASL wrappers options)[file]:Logins file
+        :\"},{\"id\":\"hydra_passwords_file\",\"type\":\"file\",\"name\":\"Passwords
+        file\",\"preferenceID\":\"Hydra (NASL wrappers options)[file]:Passwords file
+        :\"},{\"id\":\"hydra_parallel_tasks\",\"type\":\"small-entry\",\"name\":\"Number
+        of parallel tasks\",\"default\":\"16\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"Hydra
+        (NASL wrappers options)[entry]:Number of parallel tasks :\"},{\"id\":\"hydra_timeout\",\"type\":\"small-entry\",\"name\":\"Timeout
+        (in seconds)\",\"default\":\"30\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"Hydra
+        (NASL wrappers options)[entry]:Timeout (in seconds) :\"},{\"id\":\"hydra_empty_passwords\",\"type\":\"checkbox\",\"name\":\"Try
+        empty passwords\",\"default\":\"yes\",\"preferenceID\":\"Hydra (NASL wrappers
+        options)[checkbox]:Try empty passwords\"},{\"id\":\"hydra_login_as_pw\",\"type\":\"checkbox\",\"name\":\"Try
+        login as password\",\"default\":\"yes\",\"preferenceID\":\"Hydra (NASL wrappers
+        options)[checkbox]:Try login as password\"},{\"id\":\"hydra_exit_on_success\",\"type\":\"checkbox\",\"name\":\"Stop
+        brute forcing after the first success\",\"default\":\"no\",\"preferenceID\":\"Hydra
+        (NASL wrappers options)[checkbox]:Exit as soon as an account is found\"},{\"id\":\"hydra_add_other_accounts\",\"type\":\"checkbox\",\"name\":\"Add
+        accounts found by other plugins to the login file\",\"default\":\"yes\",\"preferenceID\":\"Hydra
+        (NASL wrappers options)[checkbox]:Add accounts found by other plugins to login
+        file\"},{\"id\":\"hydra_postgresql_db_name\",\"type\":\"entry\",\"name\":\"PostgreSQL
+        database name\",\"preferenceID\":\"Hydra: PostgreSQL[entry]:Database name
+        (optional) :\"},{\"id\":\"hydra_client_id\",\"type\":\"small-entry\",\"name\":\"SAP
+        R3 Client ID (0 - 99)\",\"regex\":\"^.*$\",\"preferenceID\":\"Hydra: SAP R3[entry]:Client
+        ID (between 0 and 99) :\"},{\"id\":\"hydra_win_account_type\",\"type\":\"dropdown\",\"name\":\"Windows
+        accounts to test\",\"default\":\"Local accounts\",\"options\":[\"Local accounts\",\"Domain
+        Accounts\",\"Either\"],\"preferenceID\":\"Hydra: SMB[radio]:Check local \\\/
+        domain accounts\"},{\"id\":\"hydra_win_pw_as_hash\",\"type\":\"checkbox\",\"name\":\"Interpret
+        passwords as NTLM hashes\",\"default\":\"no\",\"preferenceID\":\"Hydra: SMB[checkbox]:Interpret
+        passwords as NTLM hashes\"},{\"id\":\"hydra_cisco_logon_pw\",\"type\":\"entry\",\"name\":\"Cisco
+        login password\",\"hint\":\"This password is used to login to a Cisco system
+        before brute forcing enable passwords. If no password is provided here, Hydra
+        will attempt to login using credentials that were successfully brute forced
+        earlier in the scan.\",\"preferenceID\":\"Hydra: Cisco enable[entry]:Logon
+        password :\"},{\"id\":\"hydra_web_page\",\"type\":\"entry\",\"name\":\"Web
+        page to brute force\",\"placeholder\":\"\\\/private\\\/\",\"hint\":\"Enter
+        a web page that is protected by HTTP basic or digest authentication. If a
+        web page is not provided here, Hydra will attempt to brute force a page discovered
+        by the Nessus web crawler that requires HTTP authentication.\",\"preferenceID\":\"Hydra:
+        HTTP[entry]:Web page :\"},{\"id\":\"hydra_proxy_test_site\",\"type\":\"entry\",\"name\":\"HTTP
+        proxy test website\",\"placeholder\":\"http:\\\/\\\/www.example.com\\\/\",\"hint\":\"If
+        Hydra successfully brute forces an HTTP proxy, it will attempt to access the
+        website provided here via the brute forced proxy.\",\"preferenceID\":\"Hydra:
+        HTTP proxy[entry]:Web site (optional) :\"},{\"id\":\"hydra_ldap_dn\",\"type\":\"entry\",\"name\":\"LDAP
+        DN\",\"preferenceID\":\"Hydra: LDAP[entry]:DN :\"}],\"id\":\"assessment_brute_force_hydra\"}],\"id\":\"assessment_brute_force\",\"section\":\"assessment\"},{\"name\":\"Malware\",\"id\":\"assessment_malware_scan\",\"section\":\"assessment\",\"subsections\":[{\"name\":\"Malware
+        Scan Settings\",\"inputs\":[{\"id\":\"scan_malware\",\"type\":\"checkbox\",\"name\":\"Malware
+        scan\",\"default\":\"no\",\"prefenceID\":\"Malicious Process Detection[checkbox]:enable_malware_scanning\",\"conditionalSettings\":{\"yes\":{\"subsections\":[{\"name\":\"General
+        Settings\",\"inputs\":[{\"id\":\"disable_dns_resolution\",\"type\":\"checkbox\",\"name\":\"Disable
+        DNS resolution\",\"default\":\"no\",\"hint\":\"Checking this option will prevent
+        Nessus from using the cloud to compare scan findings against known malware.\",\"preferenceID\":\"Malicious
+        Process Detection[checkbox]:disable_dns_resolution\"}],\"id\":\"assessment_malware_scan_general\",\"section\":\"assessment_malware_scan\"},{\"name\":\"Hash
+        and Whitelist Files\",\"inputs\":[{\"id\":\"win_known_bad_hashes\",\"type\":\"file\",\"name\":\"Provide
+        your own list of known bad MD5 hashes:\",\"hint\":\"Each line in the file
+        must begin with an MD5 hash, and can optionally be followed by a comma delimiter
+        and a description.  Blank lines and lines beginning with # are ignored.\",\"preferenceID\":\"Malicious
+        Process Detection[file]:Additional MD5 hashes (optional) :\"},{\"id\":\"win_known_good_hashes\",\"type\":\"file\",\"name\":\"Provide
+        your own list of known good MD5 hashes:\",\"hint\":\"Each line in the file
+        must begin with an MD5 hash, and can optionally be followed by a comma delimiter
+        and a description.  Blank lines and lines beginning with # are ignored.\",\"preferenceID\":\"Malicious
+        Process Detection[file]:Known good MD5 hashes (optional) :\"},{\"id\":\"host_whitelist\",\"type\":\"file\",\"name\":\"Hosts
+        file whitelist\",\"hint\":\"Abnormalities in a system''s hosts file indicate
+        that it may have been compromised. This setting allows whitelisting entries
+        in the hosts file that would otherwise be flagged as abnormalities. This whitelist
+        file should contain one hostname per line.\",\"preferenceID\":\"Hosts File
+        Whitelisted Entries[file]:Upload file with custom hosts entries :\"}],\"id\":\"assessment_malware_scan_files\",\"section\":\"assessment_malware_scan\"},{\"name\":\"File
+        System Scanning\",\"inputs\":[{\"id\":\"enable_file_scanning\",\"type\":\"checkbox\",\"name\":\"Scan
+        file system\",\"hint\":\"WARNING: Enabling this setting in scans targeting
+        10 or more hosts could result in performance degradation.\",\"default\":\"no\",\"preferenceID\":\"Malicious
+        Process Detection[checkbox]:enable_file_scanning\"}],\"id\":\"assessment_malware_scan_malware_file_scan_settings\",\"section\":\"assessment_malware_scan\"},{\"name\":\"Directories\",\"inputs\":[{\"id\":\"enable_filescan_systemroot\",\"type\":\"checkbox\",\"name\":\"Scan
+        %Systemroot%\",\"default\":\"no\",\"hint\":\"Enable file system scanning to
+        scan %Systemroot%\",\"preferenceID\":\"Malicious Process Detection[checkbox]:enable_filescan_systemroot\"},{\"id\":\"enable_filescan_programfiles\",\"type\":\"checkbox\",\"name\":\"Scan
+        %ProgramFiles%\",\"default\":\"no\",\"hint\":\"Enable file system scanning
+        to scan %ProgramFiles%\",\"preferenceID\":\"Malicious Process Detection[checkbox]:enable_filescan_programfiles\"},{\"id\":\"enable_filescan_programfilesx86\",\"type\":\"checkbox\",\"name\":\"Scan
+        %ProgramFiles(x86)%\",\"default\":\"no\",\"hint\":\"Enable file system scanning
+        to scan %ProgramFiles(x86)%\",\"preferenceID\":\"Malicious Process Detection[checkbox]:enable_filescan_programfilesx86\"},{\"id\":\"enable_filescan_programdata\",\"type\":\"checkbox\",\"name\":\"Scan
+        %ProgramData%\",\"default\":\"no\",\"hint\":\"Enable file system scanning
+        to scan %ProgramData%\",\"preferenceID\":\"Malicious Process Detection[checkbox]:enable_filescan_programdata\"},{\"id\":\"enable_filescan_userprofiles\",\"type\":\"checkbox\",\"name\":\"Scan
+        User Profiles\",\"default\":\"no\",\"hint\":\"Enable file system scanning
+        to scan user profiles\",\"preferenceID\":\"Malicious Process Detection[checkbox]:enable_filescan_userprofiles\"},{\"id\":\"filescan_custom_dir\",\"type\":\"file\",\"name\":\"Custom
+        Filescan Directories\",\"hint\":\"List directories for malware file scanning
+        on each line. Root directories such as ''C:\\\\'' or ''D:\\\\'' are not accepted.\",\"preferenceID\":\"Malicious
+        Process Detection[file]:filescan_custom_dir\"},{\"id\":\"yarascan_rules_file\",\"type\":\"file\",\"name\":\"Yara
+        Rules Files\",\"hint\":\"Enable yara file system scanning.\",\"preferenceID\":\"Malicious
+        Process Detection[file]: Yara rules file :\"}],\"id\":\"assessment_malware_scan_directories\",\"section\":\"assessment_malware_scan\"}]}}}]}]},{\"name\":\"SCADA\",\"subsections\":[{\"name\":\"Modbus\\\/TCP
+        Coil Access\",\"inputs\":[{\"id\":\"modbus_start_reg\",\"type\":\"medium-entry\",\"name\":\"Start
+        at register\",\"default\":\"0\",\"preferenceID\":\"Modbus\\\/TCP Coil Access[entry]:Start
+        reg :\"},{\"id\":\"modbus_end_reg\",\"type\":\"medium-entry\",\"name\":\"End
+        at register\",\"default\":\"16\",\"preferenceID\":\"Modbus\\\/TCP Coil Access[entry]:End
+        reg :\"}],\"id\":\"assessment_scada_modbus_coil_access\"},{\"name\":\"ICCP\\\/COTP
+        TSAP Addressing Weakness\",\"inputs\":[{\"id\":\"start_cotp_tsap\",\"type\":\"medium-entry\",\"name\":\"Start
+        COTP TSAP\",\"default\":\"8\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"ICCP\\\/COTP
+        TSAP Addressing Weakness[entry]:Start COTP TSAP :\"},{\"id\":\"stop_cotp_tsap\",\"type\":\"medium-entry\",\"name\":\"Stop
+        COTP TSAP\",\"default\":\"8\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"ICCP\\\/COTP
+        TSAP Addressing Weakness[entry]:Stop COTP TSAP :\"}],\"id\":\"assessment_scada_iccp_cotp_tsap\"}],\"id\":\"assessment_scada\",\"section\":\"assessment\"},{\"name\":\"Web
+        Applications\",\"id\":\"assessment_webapp\",\"section\":\"assessment\",\"subsections\":[{\"name\":\"Web
+        Application Settings\",\"inputs\":[{\"id\":\"scan_webapps\",\"type\":\"checkbox\",\"name\":\"Scan
+        web applications\",\"default\":\"no\",\"preferenceID\":\"Global variable settings[checkbox]:Enable
+        CGI scanning\",\"conditionalSettings\":{\"yes\":{\"subsections\":[{\"name\":\"General
+        Settings\",\"inputs\":[{\"id\":\"user_agent_string\",\"type\":\"entry\",\"name\":\"Use
+        a custom User-Agent\",\"default\":\"Mozilla\\\/4.0 (compatible; MSIE 8.0;
+        Windows NT 5.1; Trident\\\/4.0)\",\"preferenceID\":\"Global variable settings[entry]:HTTP
+        User-Agent\"}],\"id\":\"scan_webapps_general\"},{\"name\":\"Web Crawler\",\"inputs\":[{\"id\":\"webcrawler_start_page\",\"type\":\"entry\",\"name\":\"Start
+        crawling from\",\"default\":\"\\\/\",\"regex\":\"\\\/[^:]*(:\\\/[^:])*\",\"preferenceID\":\"Web
+        mirroring[entry]:Start page :\"},{\"id\":\"webcrawl_exclude_regex\",\"type\":\"entry\",\"name\":\"Excluded
+        pages (regex)\",\"default\":\"\\\/server_privileges\\\\.php|logout\",\"preferenceID\":\"Web
+        mirroring[entry]:Excluded items regex :\"},{\"id\":\"webcrawler_max_pages\",\"type\":\"medium-entry\",\"name\":\"Maximum
+        pages to crawl\",\"default\":\"1000\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"Web
+        mirroring[entry]:Number of pages to mirror :\"},{\"id\":\"webcrawl_max_depth\",\"type\":\"medium-entry\",\"name\":\"Maximum
+        depth to crawl\",\"default\":\"6\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"Web
+        mirroring[entry]:Maximum depth :\"},{\"id\":\"webcrawl_follow_dynamic_pages\",\"type\":\"checkbox\",\"name\":\"Follow
+        dynamically generated pages\",\"default\":\"no\",\"preferenceID\":\"Web mirroring[checkbox]:Follow
+        dynamic pages :\"}],\"id\":\"scan_webapps_web_crawler\"},{\"name\":\"Application
+        Test Settings\",\"inputs\":[{\"id\":\"generic_webapp_tests\",\"type\":\"checkbox\",\"name\":\"Enable
+        generic web application tests\",\"default\":\"no\",\"preferenceID\":\"Web
+        Application Tests Settings[checkbox]:Enable web applications tests\",\"conditionalSettings\":{\"yes\":{\"inputs\":[{\"id\":\"abort_generic_webapp_if_login_fails\",\"type\":\"checkbox\",\"name\":\"Abort
+        web application tests if HTTP login fails\",\"default\":\"no\",\"preferenceID\":\"HTTP
+        login page[checkbox]:Abort web application tests if login fails\"},{\"id\":\"try_all_http_methods\",\"type\":\"checkbox\",\"name\":\"Try
+        all HTTP methods\",\"default\":\"no\",\"preferenceID\":\"Web Application Tests
+        Settings[checkbox]:Try all HTTP methods\"},{\"id\":\"http_param_pollution\",\"type\":\"checkbox\",\"name\":\"Attempt
+        HTTP Parameter Pollution\",\"default\":\"no\",\"preferenceID\":\"Web Application
+        Tests Settings[checkbox]:HTTP Parameter Pollution\"},{\"id\":\"test_embedded_web_servers\",\"type\":\"checkbox\",\"name\":\"Test
+        embedded web servers\",\"default\":\"no\",\"preferenceID\":\"Web Application
+        Tests Settings[checkbox]:Test embedded web servers\"},{\"id\":\"combo_arg_values\",\"type\":\"dropdown\",\"name\":\"Test
+        more than one parameter at a time per form\",\"default\":\"one value\",\"options\":[{\"name\":\"one
+        value\",\"hint\":\"\"},{\"name\":\"some pairs\",\"hint\":\"Test random pairs
+        of parameters\"},{\"name\":\"all pairs (slower but efficient)\",\"hint\":\"Test
+        all pairs of parameters (slow)\"},{\"name\":\"some combinations\",\"hint\":\"Test
+        random combinations of three or more parameters (slower)\"},{\"name\":\"all
+        combinations (extremely slow)\",\"hint\":\"Test all combinations of parameters
+        (slowest)\"}],\"preferenceID\":\"Web Application Tests Settings[radio]:Combinations
+        of arguments values\"},{\"id\":\"stop_at_first_flaw\",\"type\":\"dropdown\",\"name\":\"Do
+        not stop after the first flaw is found per web page\",\"default\":\"per CGI\",\"options\":[{\"name\":\"per
+        CGI\",\"hint\":\"\"},{\"name\":\"per port (quicker)\",\"hint\":\"Stop after
+        one flaw is found per web server (fastest)\"},{\"name\":\"per parameter (slow)\",\"hint\":\"Stop
+        after one flaw is found per parameter (slow)\"},{\"name\":\"look for all flaws
+        (slower)\",\"hint\":\"Look for all flaws (slowest)\"}],\"preferenceID\":\"Web
+        Application Tests Settings[radio]:Stop at first flaw\"},{\"id\":\"url_for_rfi\",\"type\":\"entry\",\"name\":\"URL
+        for Remote File Inclusion\",\"default\":\"http:\\\/\\\/rfi.nessus.org\\\/rfi.txt\",\"hint\":\"If
+        the target(s) being scanned cannot reach the Internet, the default URL can
+        be replaced by an internally hosted file. The file must contain PHP source
+        code that displays \\\"NessusCodeExecTest\\\" when executed.\",\"preferenceID\":\"Web
+        Application Tests Settings[entry]:URL for Remote File Inclusion :\"},{\"id\":\"generic_webapp_tests_max_time\",\"type\":\"medium-entry\",\"name\":\"Maximum
+        run time (minutes)\",\"hint\":\"This limit refers to the maximum amount of
+        time spent attempting each individual generic web attack type (e.g., XSS,
+        SQL injection).\",\"default\":\"5\",\"regex\":\"^\\\\d+$\",\"preferenceID\":\"Web
+        Application Tests Settings[entry]:Maximum run time (min) :\"}]}}}],\"id\":\"scan_webapps_webapp_scanner\"}]}}}],\"id\":\"assessment_webapp_web_scan\",\"section\":\"assessment_webapp\"}]},{\"name\":\"Windows\",\"subsections\":[{\"name\":\"General
+        Settings\",\"inputs\":[{\"id\":\"request_windows_domain_info\",\"type\":\"checkbox\",\"name\":\"Request
+        information about the SMB Domain\",\"default\":\"yes\",\"preferenceID\":\"SMB
+        Scope[checkbox]:Request information about the domain\"}],\"id\":\"assessment_windows_cred_scan_general\",\"section\":\"assessment_windows_cred_scan\"},{\"name\":\"Enumerate
+        Domain Users\",\"inputs\":[{\"id\":\"enum_domain_users_start_uid\",\"type\":\"medium-entry\",\"name\":\"Start
+        UID\",\"default\":\"1000\",\"regex\":\"^\\\\d+$\",\"hint\":\"The beginning
+        of a range of IDs where Nessus will attempt to enumerate domain users\",\"preferenceID\":\"SMB
+        Use Domain SID to Enumerate Users[entry]:Start UID :\"},{\"id\":\"enum_domain_users_end_uid\",\"type\":\"medium-entry\",\"name\":\"End
+        UID\",\"default\":\"1200\",\"regex\":\"^\\\\d+$\",\"hint\":\"The end of a
+        range of IDs where Nessus will attempt to enumerate domain users\",\"preferenceID\":\"SMB
+        Use Domain SID to Enumerate Users[entry]:End UID :\"}],\"id\":\"assessment_windows_cred_scan_enum_domain_users\",\"section\":\"assessment_windows_cred_scan\"},{\"name\":\"Enumerate
+        Local Users\",\"inputs\":[{\"id\":\"enum_local_users_start_uid\",\"type\":\"medium-entry\",\"name\":\"Start
+        UID\",\"default\":\"1000\",\"regex\":\"^\\\\d+$\",\"hint\":\"The beginning
+        of a range of IDs where Nessus will attempt to enumerate local users\",\"preferenceID\":\"SMB
+        Use Host SID to Enumerate Local Users[entry]:Start UID :\"},{\"id\":\"enum_local_users_end_uid\",\"type\":\"medium-entry\",\"name\":\"End
+        UID\",\"default\":\"1200\",\"regex\":\"^\\\\d+$\",\"hint\":\"The end of a
+        range of IDs where Nessus will attempt to enumerate local users\",\"preferenceID\":\"SMB
+        Use Host SID to Enumerate Local Users[entry]:End UID :\"}],\"id\":\"assessment_windows_cred_scan_enum_local_users\",\"section\":\"assessment_windows_cred_scan\"}],\"id\":\"assessment_windows_cred_scan\",\"section\":\"assessment\"},{\"name\":\"Report\",\"subsections\":[{\"name\":\"Processing\",\"inputs\":[{\"id\":\"report_verbosity\",\"type\":\"dropdown\",\"name\":\"Override
+        normal verbosity\",\"default\":\"Normal\",\"options\":[{\"name\":\"Normal\",\"hint\":\"\"},{\"name\":\"Quiet\",\"hint\":\"I
+        have limited disk space. Report as little information as possible\"},{\"name\":\"Verbose\",\"hint\":\"Report
+        as much information as possible\"}],\"preferenceID\":\"Global variable settings[radio]:Report
+        verbosity\"},{\"id\":\"report_superseded_patches\",\"type\":\"checkbox\",\"name\":\"Show
+        missing patches that have been superseded\",\"default\":\"yes\",\"preferenceID\":\"Patch
+        Report[checkbox]:Display the superseded patches in the report\"},{\"id\":\"silent_dependencies\",\"type\":\"checkbox\",\"name\":\"Hide
+        results from plugins initiated as a dependency\",\"default\":\"yes\",\"preferenceID\":\"silent_dependencies\"}],\"id\":\"report_report_processing\",\"section\":\"report\"},{\"name\":\"Output\",\"inputs\":[{\"id\":\"reverse_lookup\",\"type\":\"checkbox\",\"name\":\"Designate
+        hosts by their DNS name\",\"default\":\"no\",\"preferenceID\":\"reverse_lookup\"},{\"id\":\"log_live_hosts\",\"type\":\"checkbox\",\"name\":\"Display
+        hosts that respond to ping\",\"default\":\"no\",\"preferenceID\":\"Ping the
+        remote host[checkbox]:Log live hosts in the report\"},{\"id\":\"display_unreachable_hosts\",\"type\":\"checkbox\",\"name\":\"Display
+        unreachable hosts\",\"default\":\"no\",\"preferenceID\":\"Ping the remote
+        host[checkbox]:Make the dead hosts appear in the report\"},{\"id\":\"generateXCCDFResults\",\"name\":\"Generate
+        SCAP XML Results\",\"type\":\"checkbox\",\"default\":\"no\"}],\"id\":\"report_report_output\",\"section\":\"report\"}],\"id\":\"report\",\"section\":\"report\"}]}","createdTime":"1406151204","modifiedTime":"1547791860","templateModTime":"1547743926","templatePubTime":"1406151204","templateDefModTime":"1547743926"},"error_code":0,"error_msg":"","warnings":[],"timestamp":1550265920}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-type: [application/json]
+      date: ['Fri, 15 Feb 2019 21:25:20 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1
