@@ -1,5 +1,4 @@
 from tenable.reports.nessusv2 import NessusReportv2
-from .fixtures import *
 from ..checker import check
 import datetime, sys, pytest
 
