@@ -22,6 +22,7 @@
 .. automodule:: tenable.io.scans
 .. automodule:: tenable.io.server
 .. automodule:: tenable.io.session
+.. automodule:: tenable.io.tags
 .. automodule:: tenable.io.target_groups
 .. automodule:: tenable.io.users
 .. automodule:: tenable.io.workbenches

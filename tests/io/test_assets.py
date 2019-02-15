@@ -92,3 +92,13 @@ def test_assets_import_job_info(api):
         check(job, 'status_message', str)
         check(job, 'uploaded_assets', int)
         assert job['job_id'] == jobs[0]['job_id']
+
+@pytest.mark.vcr()
+def test_assets_tags_uuid_typeerror(api):
+    with pytest.raises(TypeError):
+        api.assets.tags(1)
+
+@pytest.mark.vcr()
+def test_assets_tags_uuid_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.assets.tags('somethign else')
