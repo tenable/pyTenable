@@ -5,6 +5,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Added example for Workbench CSV Downloads for IO
+- Added support for multi-value filters in IO.
+- Added Request-UUID logging for all responses when available.
+- Added TenableSC scan_instances endpoints and associated tests #19.
+- Added TenableSC scan policies endpoints and associated tests #20.
+- TenableIO can now pull API keys directly from environment variables as well.
+- Added doc page detailing how to run the tests.
+
+### Fixed
+- Exports methods in TenableIO now respect 0 integers being passed #69.
+- Errored scan exports in TenableIO will no longer wait forever.
+
+### Removed
+- schedule_* parameters in scans have been removed in favor of direct checking
+    and documentation of the schedule dictionary.  THis has larger implications
+    down the line with repositories, alerts, etc.
+
 
 ## [0.3.9]
 ### Added

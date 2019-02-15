@@ -45,13 +45,13 @@ Example:
 '''
 from tenable.base import APISession
 from tenable.errors import *
-from .accept_risks import AcceptRiskAPI
-from .alerts import AlertAPI
+#from .accept_risks import AcceptRiskAPI
+#from .alerts import AlertAPI
 from .analysis import AnalysisAPI
 from .files import FileAPI
 from .feeds import FeedAPI
 from .policies import ScanPolicyAPI
-from .repositories import RepositoryAPI
+#from .repositories import RepositoryAPI
 from .scans import ScanAPI
 from .scan_instances import ScanResultAPI
 import warnings, logging
@@ -236,13 +236,13 @@ class TenableSC(APISession):
         resp = self.delete('token')
         self._build_session()
 
-    @property
-    def accept_risks(self):
-        return AcceptRiskAPI(self)
-
-    @property
-    def alerts(self):
-        return AlertAPI(self)
+#    @property
+#    def accept_risks(self):
+#        return AcceptRiskAPI(self)
+#
+#    @property
+#    def alerts(self):
+#        return AlertAPI(self)
 
     @property
     def analysis(self):
@@ -260,9 +260,9 @@ class TenableSC(APISession):
     def policies(self):
         return ScanPolicyAPI(self)
     
-    @property
-    def repositories(self):
-        return RepositoryAPI(self)
+#    @property
+#    def repositories(self):
+#        return RepositoryAPI(self)
 
     @property
     def scans(self):
