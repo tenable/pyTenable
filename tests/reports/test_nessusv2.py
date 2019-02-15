@@ -7,9 +7,7 @@ import datetime, sys, pytest
                     reason="requires python3.4 or higher")
 @pytest.mark.datafiles(os.path.join(
     os.path.dirname(os.path.realpath(__file__)), 
-    'test_files', 
-    'example.nessus'
-))
+    '..', 'test_files', 'example.nessus'))
 def test_nessus_report_typeerror(datafiles):
     with open(os.path.join(str(datafiles), 'example.nessus')) as nobj:
         with pytest.raises(TypeError):
@@ -18,9 +16,7 @@ def test_nessus_report_typeerror(datafiles):
 
 @pytest.mark.datafiles(os.path.join(
     os.path.dirname(os.path.realpath(__file__)), 
-    'test_files', 
-    'example.nessus'
-))
+    '..', 'test_files', 'example.nessus'))
 def test_nessus_report(datafiles):
     with open(os.path.join(str(datafiles), 'example.nessus'), 'rb') as nobj:
         for item in NessusReportv2(nobj):

@@ -1,0 +1,1300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NessusClientData_v2>
+	<Policy>
+		<policyName>Example Policy</policyName>
+		<policyOwner>Tenable Policy Distribution Service</policyOwner>
+		<visibility>private</visibility>
+		<policyComments>Nessus Policy exported from SecurityCenter</policyComments>
+		<Preferences>
+			<ServerPreferences>
+				<preference>
+					<name>policy_name</name>
+					<value>Example Policy</value>
+				</preference>
+				<preference>
+					<name>policy_shared</name>
+					<value>0</value>
+				</preference>
+				<preference>
+					<name>policy_description</name>
+					<value></value>
+				</preference>
+				<preference>
+					<name>sc_version</name>
+					<value>5.8.0</value>
+				</preference>
+				<preference>
+					<name>sc_policy_type</name>
+					<value>1</value>
+				</preference>
+				<preference>
+					<name>safe_checks</name>
+					<value>yes</value>
+				</preference>
+				<preference>
+					<name>stop_scan_on_disconnect</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>reduce_connections_on_congestion</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>use_kernel_congestion_detection</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>checks_read_timeout</name>
+					<value>5</value>
+				</preference>
+				<preference>
+					<name>max_checks</name>
+					<value>5</value>
+				</preference>
+				<preference>
+					<name>max_hosts</name>
+					<value>30</value>
+				</preference>
+				<preference>
+					<name>host.max_simult_tcp_sessions</name>
+					<value></value>
+				</preference>
+				<preference>
+					<name>max_simult_tcp_sessions</name>
+					<value>unlimited</value>
+				</preference>
+				<preference>
+					<name>unscanned_closed</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>port_range</name>
+					<value>1-5,7,9,11,13,15,17-25,27,29,31,33,35,37-39,41-59,61-224,242-248,256-268,280-287,308-322,333,344-700,702,704-707,709-711,721,723,729-731,737,740-742,744,747-754,758-765,767,769-777,779-783,786,787,799-801,808,810,828,829,847,848,860,871,873,886-888,898,900-904,911-913,927,950,953,975,989-1002,1005,1008,1010,1012,1023-1036,1040,1042,1045,1047-1112,1114-1117,1119,1120,1122-1127,1139,1154,1155,1161,1162,1167-1170,1178,1180,1181,1183-1188,1192,1194,1199-1231,1233-1286,1288-1774,1776-2028,2030,2032-2035,2037,2038,2040-2065,2067-2083,2086,2087,2089-2152,2155,2159-2167,2170-2177,2180,2181,2190,2191,2199-2202,2207,2213,2220-2224,2232-2246,2248-2255,2260,2273,2279-2289,2294-2311,2313-2371,2381-2824,2826-2854,2856-3096,3098-3403,3405-3545,3547-3707,3709-3765,3767-3800,3802,3845-3871,3875,3876,3885,3900,3928,3929,3939,3959,3970,3971,3984-3987,3994,3996-4036,4040-4042,4045,4080,4081,4092,4096-4100,4105,4111,4114,4132-4134,4138,4141-4145,4154,4160,4199-4201,4242,4274,4300,4321,4333,4343-4351,4353-4358,4369,4400,4442-4457,4480,4500,4501,4545-4547,4555,4557,4559,4567-4569,4600,4601,4658-4662,4665,4672,4711,4747,4752,4800-4802,4827,4837-4839,4848,4849,4868,4869,4885,4888,4894,4899,4950,4983,4987-4989,4998,5000-5011,5020-5025,5031,5042,5050-5057,5060,5061,5064-5066,5069,5071,5081,5093,5099-5102,5108,5137,5145,5150-5152,5154,5165,5168,5177,5178,5190-5193,5200-5203,5222,5223,5225,5226,5232,5236,5250,5251,5264,5265,5269,5272,5282,5300-5311,5314,5315,5321,5347,5351-5355,5400-5432,5435,5444,5454-5456,5461-5463,5465,5485,5500-5504,5510,5520,5521,5530,5540,5550,5553-5556,5566,5569,5595-5605,5631,5632,5666,5673-5680,5688,5690,5713-5717,5720,5727,5729,5730,5741,5742,5745,5746,5755,5757,5766-5768,5771,5800-5803,5813,5858,5859,5881,5882,5888,5889,5900-5903,5968,5969,5977-5979,5987-5991,5997-6073,6080,6085,6100-6112,6123,6129,6141-6150,6175-6177,6200,6253,6255,6257,6270,6284,6300,6321,6322,6343,6346,6347,6373,6382,6389,6400-6402,6404-6406,6443,6455,6456,6471,6500-6503,6505-6510,6543,6547-6550,6558,6566,6580-6582,6588,6620,6621,6623,6628,6631,6660,6665-6670,6672,6673,6680,6688,6699-6701,6714,6723,6767,6768,6776-6778,6788-6790,6831,6841,6842,6850,6881-6889,6891,6900,6901,6939,6961-6966,6969,6970,6998-7015,7020,7021,7030,7070,7080,7099-7101,7111,7121,7144,7161,7170,7174,7200,7201,7205,7210,7211,7269,7273,7280,7281,7283,7300-7308,7320,7323,7326,7391,7392,7395,7426-7431,7437,7461,7464,7491,7500,7501,7505,7510,7511,7544,7545,7560,7566,7570,7575,7580,7585,7588,7597,7624,7626,7627,7633,7634,7648-7651,7666,7674-7676,7743,7775-7779,7781,7786,7789,7797,7798,7800,7801,7845,7846,7875,7902,7913,7932,7933,7938,7955,7967,7979,7980,7999-8005,8007-8010,8019,8022,8028,8030,8032,8033,8044,8060,8074,8077,8080-8083,8088-8090,8098,8100,8115,8116,8118,8121-8123,8129-8132,8160,8161,8180-8194,8199-8201,8204-8208,8216,8224,8225,8245,8300,8302,8310,8311,8351,8376-8380,8383,8390,8400-8403,8416,8417,8431,8443-8445,8450,8473,8484,8500,8530,8554,8555,8649,8733,8763-8765,8786,8787,8804,8834,8863,8864,8866,8875,8880,8887-8894,8900,8901,8910,8911,8954,8987,8989,8999-9002,9006,9009,9020-9026,9043,9050,9080,9090,9091,9099-9103,9110,9111,9131,9152,9160-9164,9200-9207,9210,9211,9216,9217,9281-9285,9287,9292,9321,9343,9344,9346,9359,9370,9374,9390-9393,9396,9397,9400,9418,9433,9443,9495,9500,9535-9537,9593-9595,9600,9612,9704,9747,9753,9797,9800-9802,9872,9875,9876,9888,9889,9898-9901,9909,9911,9943,9945,9950-9952,9990-10012,10051,10067,10080-10083,10101-10103,10113-10116,10128,10167,10168,10202-10204,10252,10260,10288,10607,10616,10617,10626,10628,10666,10752,10990,11000,11001,11111,11201,11211,11223,11319-11321,11367,11371,11600,11720,11751,11965,11967,11999-12006,12076,12109,12168,12172,12174,12223,12321,12345,12346,12361,12362,12468,12701,12753,12754,13160,13223,13224,13324,13325,13666,13701,13702,13705,13706,13708-13718,13720-13722,13724,13782,13783,13818-13822,14001,14002,14033,14034,14141,14145,14149,14194,14237,14238,14936,14937,14942,15000,15104,15126,15345,15363,15858,16360,16361,16367,16368,16384,16660,16661,16959,16969,16991,17007,17185,17219,17300,17770-17772,17990,18000,18181-18187,18190,18241,18264,18463,18769,18888,18889,19191,19194,19226,19283,19315,19398,19410-19412,19540,19541,19638,19726,20000,20001,20005,20011,20012,20020,20031,20034,20168,20200,20202,20203,20221,20222,20670,20999,21000,21064,21065,21071,21227,21300,21317,21490,21544,21554,21590,21700,21800,21845-21849,22000-22003,22222,22273,22289,22305,22321,22370,22555,22800,22951,23456,23945,24000-24006,24242,24249,24345-24347,24386,24554,24677,24678,24922,25000-25009,25378,25445,25544,25793,25867,25901,25903,26000,26208,26260-26264,26274,26740,26900,27000-27010,27015-27050,27345,27374,27444,27500,27504,27665,27901,27910,27960,27961,27999,28001,28017,28070,28431,28910,29559,29760,29891,30001,30002,30100-30102,30303,30999,31333,31335,31337-31339,31416,31457,31554,31556,31620,31666,31765,31785-31787,31789-31791,32000,32123,32261,32666,32768-32780,32786,32787,32896,33270,33331,33434,33567,33568,33911,34012,34249,34324,34567,34952,36079,36794,36865,37475,37651,38037,38201,38292,38293,39213,39681,40001,40412,40421-40426,40841-40843,41002,41080,41111,41170,41443,41508,41794,41795,42508-42510,42800,43118,43188-43190,44321,44322,44333,44334,44337,44442,44443,44818,45000,45054,45678,45966,47000,47262,47557,47624,47806,47808,47891,48000-48003,48556,49400,50000-50004,50013,50123,50505,50776,51051,51210,53001,54320,54321,54345,56768,57341,59595,60008,60177,60179,61439-61441,61446,62078,65000,65301,65534</value>
+				</preference>
+				<preference>
+					<name>silent_dependencies</name>
+					<value>yes</value>
+				</preference>
+				<preference>
+					<name>reverse_lookup</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>optimize_test</name>
+					<value>yes</value>
+				</preference>
+				<preference>
+					<name>cgi_path</name>
+					<value>/cgi-bin:/scripts</value>
+				</preference>
+				<preference>
+					<name>language</name>
+					<value>english</value>
+				</preference>
+				<preference>
+					<name>non_simult_ports</name>
+					<value>139, 445, 3389</value>
+				</preference>
+				<preference>
+					<name>plugins_timeout</name>
+					<value>320</value>
+				</preference>
+				<preference>
+					<name>auto_enable_dependencies</name>
+					<value>yes</value>
+				</preference>
+				<preference>
+					<name>use_mac_addr</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>save_knowledge_base</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>kb_restore</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>only_test_hosts_whose_kb_we_dont_have</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>only_test_hosts_whose_kb_we_have</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>kb_dont_replay_scanners</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>kb_dont_replay_info_gathering</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>kb_dont_replay_attacks</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>kb_dont_replay_denials</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>kb_max_age</name>
+					<value>864000</value>
+				</preference>
+				<preference>
+					<name>plugin_upload</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>plugin_upload_suffixes</name>
+					<value>.nasl</value>
+				</preference>
+				<preference>
+					<name>save_session</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>save_empty_sessions</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>host_expansion</name>
+					<value>ip</value>
+				</preference>
+				<preference>
+					<name>detached_scan</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>continuous_scan</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>diff_scan</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>log_whole_attack</name>
+					<value>no</value>
+				</preference>
+				<preference>
+					<name>ntp_escape_crlf</name>
+					<value>yes</value>
+				</preference>
+				<preference>
+					<name>ntp_opt_show_end</name>
+					<value>yes</value>
+				</preference>
+				<preference>
+					<name>ntp_client_accepts_notes</name>
+					<value>yes</value>
+				</preference>
+				<preference>
+					<name>generateXCCDFResults</name>
+					<value>no</value>
+				</preference>
+			</ServerPreferences>
+			<PluginsPreferences>
+				<item>
+					<pluginName>Do not scan fragile devices</pluginName>
+					<pluginId>22481</pluginId>
+					<fullName>Do not scan fragile devices[checkbox]:Scan Network Printers</fullName>
+					<preferenceName>Scan Network Printers</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Do not scan fragile devices</pluginName>
+					<pluginId>22481</pluginId>
+					<fullName>Do not scan fragile devices[checkbox]:Scan Novell Netware hosts</fullName>
+					<preferenceName>Scan Novell Netware hosts</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Do not scan fragile devices</pluginName>
+					<pluginId>22481</pluginId>
+					<fullName>Do not scan fragile devices[checkbox]:Scan Operational Technology devices</fullName>
+					<preferenceName>Scan Operational Technology devices</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Wake-on-LAN</pluginName>
+					<pluginId>52616</pluginId>
+					<fullName>Wake-on-LAN[file]:List of MAC addresses for Wake-on-LAN:</fullName>
+					<preferenceName>List of MAC addresses for Wake-on-LAN:</preferenceName>
+					<preferenceType>file</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Wake-on-LAN</pluginName>
+					<pluginId>52616</pluginId>
+					<fullName>Wake-on-LAN[entry]:Time to wait (in minutes) for the systems to boot:</fullName>
+					<preferenceName>Time to wait (in minutes) for the systems to boot:</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>5</preferenceValues>
+					<selectedValue>5</selectedValue>
+				</item>
+				<item>
+					<pluginName>Global variable settings</pluginName>
+					<pluginId>12288</pluginId>
+					<fullName>Global variable settings[radio]:Network type</fullName>
+					<preferenceName>Network type</preferenceName>
+					<preferenceType>radio</preferenceType>
+					<preferenceValues>Mixed (use RFC 1918)</preferenceValues>
+					<selectedValue>Mixed (use RFC 1918)</selectedValue>
+				</item>
+				<item>
+					<pluginName>Port scanners settings</pluginName>
+					<pluginId>33812</pluginId>
+					<fullName>Port scanners settings[checkbox]:Only run network port scanners if local port enumeration failed</fullName>
+					<preferenceName>Only run network port scanners if local port enumeration failed</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Port scanners settings</pluginName>
+					<pluginId>33812</pluginId>
+					<fullName>Port scanners settings[checkbox]:Check open TCP ports found by local port enumerators</fullName>
+					<preferenceName>Check open TCP ports found by local port enumerators</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Global variable settings</pluginName>
+					<pluginId>12288</pluginId>
+					<fullName>Global variable settings[checkbox]:Probe services on every port</fullName>
+					<preferenceName>Probe services on every port</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Global variable settings</pluginName>
+					<pluginId>12288</pluginId>
+					<fullName>Global variable settings[radio]:Report paranoia</fullName>
+					<preferenceName>Report paranoia</preferenceName>
+					<preferenceType>radio</preferenceType>
+					<preferenceValues>Normal</preferenceValues>
+					<selectedValue>Normal</selectedValue>
+				</item>
+				<item>
+					<pluginName>Global variable settings</pluginName>
+					<pluginId>12288</pluginId>
+					<fullName>Global variable settings[checkbox]:Thorough tests (slow)</fullName>
+					<preferenceName>Thorough tests (slow)</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Antivirus Software Check</pluginName>
+					<pluginId>16193</pluginId>
+					<fullName>Antivirus Software Check[entry]:Delay (in days, between 0 and 7) :</fullName>
+					<preferenceName>Delay (in days, between 0 and 7) :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>0</preferenceValues>
+					<selectedValue>0</selectedValue>
+				</item>
+				<item>
+					<pluginName>SMTP settings</pluginName>
+					<pluginId>11038</pluginId>
+					<fullName>SMTP settings[entry]:Third party domain :</fullName>
+					<preferenceName>Third party domain :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>example.com</preferenceValues>
+					<selectedValue>example.com</selectedValue>
+				</item>
+				<item>
+					<pluginName>SMTP settings</pluginName>
+					<pluginId>11038</pluginId>
+					<fullName>SMTP settings[entry]:From address :</fullName>
+					<preferenceName>From address :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>nobody@example.com</preferenceValues>
+					<selectedValue>nobody@example.com</selectedValue>
+				</item>
+				<item>
+					<pluginName>SMTP settings</pluginName>
+					<pluginId>11038</pluginId>
+					<fullName>SMTP settings[entry]:To address :</fullName>
+					<preferenceName>To address :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>postmaster@[AUTO_REPLACED_IP]</preferenceValues>
+					<selectedValue>postmaster@[AUTO_REPLACED_IP]</selectedValue>
+				</item>
+				<item>
+					<pluginName>Global variable settings</pluginName>
+					<pluginId>12288</pluginId>
+					<fullName>Global variable settings[checkbox]:Do not log in with user accounts not specified in the policy</fullName>
+					<preferenceName>Do not log in with user accounts not specified in the policy</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Oracle Settings</pluginName>
+					<pluginId>22076</pluginId>
+					<fullName>Oracle Settings[checkbox]:Test default accounts (slow)</fullName>
+					<preferenceName>Test default accounts (slow)</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra (NASL wrappers options)</pluginName>
+					<pluginId>15868</pluginId>
+					<fullName>Hydra (NASL wrappers options)[checkbox]:Always enable Hydra (slow)</fullName>
+					<preferenceName>Always enable Hydra (slow)</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra (NASL wrappers options)</pluginName>
+					<pluginId>15868</pluginId>
+					<fullName>Hydra (NASL wrappers options)[file]:Logins file :</fullName>
+					<preferenceName>Logins file :</preferenceName>
+					<preferenceType>file</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra (NASL wrappers options)</pluginName>
+					<pluginId>15868</pluginId>
+					<fullName>Hydra (NASL wrappers options)[file]:Passwords file :</fullName>
+					<preferenceName>Passwords file :</preferenceName>
+					<preferenceType>file</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra (NASL wrappers options)</pluginName>
+					<pluginId>15868</pluginId>
+					<fullName>Hydra (NASL wrappers options)[entry]:Number of parallel tasks :</fullName>
+					<preferenceName>Number of parallel tasks :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>16</preferenceValues>
+					<selectedValue>16</selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra (NASL wrappers options)</pluginName>
+					<pluginId>15868</pluginId>
+					<fullName>Hydra (NASL wrappers options)[entry]:Timeout (in seconds) :</fullName>
+					<preferenceName>Timeout (in seconds) :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>30</preferenceValues>
+					<selectedValue>30</selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra (NASL wrappers options)</pluginName>
+					<pluginId>15868</pluginId>
+					<fullName>Hydra (NASL wrappers options)[checkbox]:Try empty passwords</fullName>
+					<preferenceName>Try empty passwords</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra (NASL wrappers options)</pluginName>
+					<pluginId>15868</pluginId>
+					<fullName>Hydra (NASL wrappers options)[checkbox]:Try login as password</fullName>
+					<preferenceName>Try login as password</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra (NASL wrappers options)</pluginName>
+					<pluginId>15868</pluginId>
+					<fullName>Hydra (NASL wrappers options)[checkbox]:Exit as soon as an account is found</fullName>
+					<preferenceName>Exit as soon as an account is found</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra (NASL wrappers options)</pluginName>
+					<pluginId>15868</pluginId>
+					<fullName>Hydra (NASL wrappers options)[checkbox]:Add accounts found by other plugins to login file</fullName>
+					<preferenceName>Add accounts found by other plugins to login file</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra: PostgreSQL</pluginName>
+					<pluginId>18660</pluginId>
+					<fullName>Hydra: PostgreSQL[entry]:Database name (optional) :</fullName>
+					<preferenceName>Database name (optional) :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra: SAP R3</pluginName>
+					<pluginId>15883</pluginId>
+					<fullName>Hydra: SAP R3[entry]:Client ID (between 0 and 99) :</fullName>
+					<preferenceName>Client ID (between 0 and 99) :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra: SMB</pluginName>
+					<pluginId>15884</pluginId>
+					<fullName>Hydra: SMB[radio]:Check local / domain accounts</fullName>
+					<preferenceName>Check local / domain accounts</preferenceName>
+					<preferenceType>radio</preferenceType>
+					<preferenceValues>Local accounts</preferenceValues>
+					<selectedValue>Local accounts</selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra: SMB</pluginName>
+					<pluginId>15884</pluginId>
+					<fullName>Hydra: SMB[checkbox]:Interpret passwords as NTLM hashes</fullName>
+					<preferenceName>Interpret passwords as NTLM hashes</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra: Cisco enable</pluginName>
+					<pluginId>15870</pluginId>
+					<fullName>Hydra: Cisco enable[entry]:Logon password :</fullName>
+					<preferenceName>Logon password :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra: HTTP</pluginName>
+					<pluginId>15873</pluginId>
+					<fullName>Hydra: HTTP[entry]:Web page :</fullName>
+					<preferenceName>Web page :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra: HTTP proxy</pluginName>
+					<pluginId>15874</pluginId>
+					<fullName>Hydra: HTTP proxy[entry]:Web site (optional) :</fullName>
+					<preferenceName>Web site (optional) :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Hydra: LDAP</pluginName>
+					<pluginId>15877</pluginId>
+					<fullName>Hydra: LDAP[entry]:DN :</fullName>
+					<preferenceName>DN :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[checkbox]:enable_malware_scanning</fullName>
+					<preferenceName>enable_malware_scanning</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Modbus/TCP Coil Access</pluginName>
+					<pluginId>23817</pluginId>
+					<fullName>Modbus/TCP Coil Access[entry]:Start reg :</fullName>
+					<preferenceName>Start reg :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>0</preferenceValues>
+					<selectedValue>0</selectedValue>
+				</item>
+				<item>
+					<pluginName>Modbus/TCP Coil Access</pluginName>
+					<pluginId>23817</pluginId>
+					<fullName>Modbus/TCP Coil Access[entry]:End reg :</fullName>
+					<preferenceName>End reg :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>16</preferenceValues>
+					<selectedValue>16</selectedValue>
+				</item>
+				<item>
+					<pluginName>ICCP/COTP TSAP Addressing Weakness</pluginName>
+					<pluginId>23812</pluginId>
+					<fullName>ICCP/COTP TSAP Addressing Weakness[entry]:Start COTP TSAP :</fullName>
+					<preferenceName>Start COTP TSAP :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>8</preferenceValues>
+					<selectedValue>8</selectedValue>
+				</item>
+				<item>
+					<pluginName>ICCP/COTP TSAP Addressing Weakness</pluginName>
+					<pluginId>23812</pluginId>
+					<fullName>ICCP/COTP TSAP Addressing Weakness[entry]:Stop COTP TSAP :</fullName>
+					<preferenceName>Stop COTP TSAP :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>8</preferenceValues>
+					<selectedValue>8</selectedValue>
+				</item>
+				<item>
+					<pluginName>Global variable settings</pluginName>
+					<pluginId>12288</pluginId>
+					<fullName>Global variable settings[checkbox]:Enable CGI scanning</fullName>
+					<preferenceName>Enable CGI scanning</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>SMB Scope</pluginName>
+					<pluginId>10917</pluginId>
+					<fullName>SMB Scope[checkbox]:Request information about the domain</fullName>
+					<preferenceName>Request information about the domain</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>SMB Use Domain SID to Enumerate Users</pluginName>
+					<pluginId>10399</pluginId>
+					<fullName>SMB Use Domain SID to Enumerate Users[entry]:Start UID :</fullName>
+					<preferenceName>Start UID :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>1000</preferenceValues>
+					<selectedValue>1000</selectedValue>
+				</item>
+				<item>
+					<pluginName>SMB Use Domain SID to Enumerate Users</pluginName>
+					<pluginId>10399</pluginId>
+					<fullName>SMB Use Domain SID to Enumerate Users[entry]:End UID :</fullName>
+					<preferenceName>End UID :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>1200</preferenceValues>
+					<selectedValue>1200</selectedValue>
+				</item>
+				<item>
+					<pluginName>SMB Use Host SID to Enumerate Local Users</pluginName>
+					<pluginId>10860</pluginId>
+					<fullName>SMB Use Host SID to Enumerate Local Users[entry]:Start UID :</fullName>
+					<preferenceName>Start UID :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>1000</preferenceValues>
+					<selectedValue>1000</selectedValue>
+				</item>
+				<item>
+					<pluginName>SMB Use Host SID to Enumerate Local Users</pluginName>
+					<pluginId>10860</pluginId>
+					<fullName>SMB Use Host SID to Enumerate Local Users[entry]:End UID :</fullName>
+					<preferenceName>End UID :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>1200</preferenceValues>
+					<selectedValue>1200</selectedValue>
+				</item>
+				<item>
+					<pluginName>Global variable settings</pluginName>
+					<pluginId>12288</pluginId>
+					<fullName>Global variable settings[radio]:Report verbosity</fullName>
+					<preferenceName>Report verbosity</preferenceName>
+					<preferenceType>radio</preferenceType>
+					<preferenceValues>Normal</preferenceValues>
+					<selectedValue>Normal</selectedValue>
+				</item>
+				<item>
+					<pluginName>Patch Report</pluginName>
+					<pluginId>66334</pluginId>
+					<fullName>Patch Report[checkbox]:Display the superseded patches in the report</fullName>
+					<preferenceName>Display the superseded patches in the report</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Ping the remote host</pluginName>
+					<pluginId>10180</pluginId>
+					<fullName>Ping the remote host[checkbox]:Log live hosts in the report</fullName>
+					<preferenceName>Log live hosts in the report</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Ping the remote host</pluginName>
+					<pluginId>10180</pluginId>
+					<fullName>Ping the remote host[checkbox]:Make the dead hosts appear in the report</fullName>
+					<preferenceName>Make the dead hosts appear in the report</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>HTTP login page</pluginName>
+					<pluginId>11149</pluginId>
+					<fullName>HTTP login page[checkbox]:Abort web application tests if login fails</fullName>
+					<preferenceName>Abort web application tests if login fails</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Ping the remote host</pluginName>
+					<pluginId>10180</pluginId>
+					<fullName>Ping the remote host[checkbox]:Do an ARP ping</fullName>
+					<preferenceName>Do an ARP ping</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>SSL Certificate Expiry</pluginName>
+					<pluginId>15901</pluginId>
+					<fullName>SSL Certificate Expiry[entry]:Identify certificates that expire within x days</fullName>
+					<preferenceName>Identify certificates that expire within x days</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>60</preferenceValues>
+					<selectedValue>60</selectedValue>
+				</item>
+				<item>
+					<pluginName>Global variable settings</pluginName>
+					<pluginId>12288</pluginId>
+					<fullName>Global variable settings[checkbox]:Enable CRL checking (connects to Internet)</fullName>
+					<preferenceName>Enable CRL checking (connects to Internet)</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Web Application Tests Settings</pluginName>
+					<pluginId>39471</pluginId>
+					<fullName>Web Application Tests Settings[radio]:Combinations of arguments values</fullName>
+					<preferenceName>Combinations of arguments values</preferenceName>
+					<preferenceType>radio</preferenceType>
+					<preferenceValues>one value</preferenceValues>
+					<selectedValue>one value</selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[checkbox]:disable_dns_resolution</fullName>
+					<preferenceName>disable_dns_resolution</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[checkbox]:enable_file_scanning</fullName>
+					<preferenceName>enable_file_scanning</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[checkbox]:enable_filescan_programdata</fullName>
+					<preferenceName>enable_filescan_programdata</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[checkbox]:enable_filescan_programfiles</fullName>
+					<preferenceName>enable_filescan_programfiles</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[checkbox]:enable_filescan_programfilesx86</fullName>
+					<preferenceName>enable_filescan_programfilesx86</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[checkbox]:enable_filescan_systemroot</fullName>
+					<preferenceName>enable_filescan_systemroot</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[checkbox]:enable_filescan_userprofiles</fullName>
+					<preferenceName>enable_filescan_userprofiles</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Global variable settings</pluginName>
+					<pluginId>12288</pluginId>
+					<fullName>Global variable settings[checkbox]:Enumerate all SSL ciphers</fullName>
+					<preferenceName>Enumerate all SSL ciphers</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Ping the remote host</pluginName>
+					<pluginId>10180</pluginId>
+					<fullName>Ping the remote host[checkbox]:Fast network discovery</fullName>
+					<preferenceName>Fast network discovery</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[file]:filescan_custom_dir</fullName>
+					<preferenceName>filescan_custom_dir</preferenceName>
+					<preferenceType>file</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Web Application Tests Settings</pluginName>
+					<pluginId>39471</pluginId>
+					<fullName>Web Application Tests Settings[checkbox]:Enable web applications tests</fullName>
+					<preferenceName>Enable web applications tests</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Web Application Tests Settings</pluginName>
+					<pluginId>39471</pluginId>
+					<fullName>Web Application Tests Settings[entry]:Maximum run time (min) :</fullName>
+					<preferenceName>Maximum run time (min) :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>5</preferenceValues>
+					<selectedValue>5</selectedValue>
+				</item>
+				<item>
+					<pluginName>Hosts File Whitelisted Entries</pluginName>
+					<pluginId>73980</pluginId>
+					<fullName>Hosts File Whitelisted Entries[file]:Upload file with custom hosts entries :</fullName>
+					<preferenceName>Upload file with custom hosts entries :</preferenceName>
+					<preferenceType>file</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Web Application Tests Settings</pluginName>
+					<pluginId>39471</pluginId>
+					<fullName>Web Application Tests Settings[checkbox]:HTTP Parameter Pollution</fullName>
+					<preferenceName>HTTP Parameter Pollution</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Ping the remote host</pluginName>
+					<pluginId>10180</pluginId>
+					<fullName>Ping the remote host[checkbox]:Do an ICMP ping</fullName>
+					<preferenceName>Do an ICMP ping</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Ping the remote host</pluginName>
+					<pluginId>10180</pluginId>
+					<fullName>Ping the remote host[entry]:Number of retries (ICMP) :</fullName>
+					<preferenceName>Number of retries (ICMP) :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>2</preferenceValues>
+					<selectedValue>2</selectedValue>
+				</item>
+				<item>
+					<pluginName>Ping the remote host</pluginName>
+					<pluginId>10180</pluginId>
+					<fullName>Ping the remote host[checkbox]:Interpret ICMP unreach from gateway</fullName>
+					<preferenceName>Interpret ICMP unreach from gateway</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Service Detection</pluginName>
+					<pluginId>22964</pluginId>
+					<fullName>Service Detection[radio]:Test SSL based services</fullName>
+					<preferenceName>Test SSL based services</preferenceName>
+					<preferenceType>radio</preferenceType>
+					<preferenceValues>Known SSL ports</preferenceValues>
+					<selectedValue>Known SSL ports</selectedValue>
+				</item>
+				<item>
+					<pluginName>Web Application Tests Settings</pluginName>
+					<pluginId>39471</pluginId>
+					<fullName>Web Application Tests Settings[radio]:Stop at first flaw</fullName>
+					<preferenceName>Stop at first flaw</preferenceName>
+					<preferenceType>radio</preferenceType>
+					<preferenceValues>per CGI</preferenceValues>
+					<selectedValue>per CGI</selectedValue>
+				</item>
+				<item>
+					<pluginName>Nessus SYN scanner</pluginName>
+					<pluginId>11219</pluginId>
+					<fullName>Nessus SYN scanner[radio]:Firewall detection :</fullName>
+					<preferenceName>Firewall detection :</preferenceName>
+					<preferenceType>radio</preferenceType>
+					<preferenceValues>Automatic (normal)</preferenceValues>
+					<selectedValue>Automatic (normal)</selectedValue>
+				</item>
+				<item>
+					<pluginName>Nessus TCP scanner</pluginName>
+					<pluginId>10335</pluginId>
+					<fullName>Nessus TCP scanner[radio]:Firewall detection :</fullName>
+					<preferenceName>Firewall detection :</preferenceName>
+					<preferenceType>radio</preferenceType>
+					<preferenceValues>Automatic (normal)</preferenceValues>
+					<selectedValue>Automatic (normal)</selectedValue>
+				</item>
+				<item>
+					<pluginName>Ping the remote host</pluginName>
+					<pluginId>10180</pluginId>
+					<fullName>Ping the remote host[checkbox]:Do a TCP ping</fullName>
+					<preferenceName>Do a TCP ping</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Ping the remote host</pluginName>
+					<pluginId>10180</pluginId>
+					<fullName>Ping the remote host[entry]:TCP ping destination port(s) :</fullName>
+					<preferenceName>TCP ping destination port(s) :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>built-in</preferenceValues>
+					<selectedValue>built-in</selectedValue>
+				</item>
+				<item>
+					<pluginName>Web Application Tests Settings</pluginName>
+					<pluginId>39471</pluginId>
+					<fullName>Web Application Tests Settings[checkbox]:Test embedded web servers</fullName>
+					<preferenceName>Test embedded web servers</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Ping the remote host</pluginName>
+					<pluginId>10180</pluginId>
+					<fullName>Ping the remote host[checkbox]:Test the local Nessus host</fullName>
+					<preferenceName>Test the local Nessus host</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>yes</preferenceValues>
+					<selectedValue>yes</selectedValue>
+				</item>
+				<item>
+					<pluginName>Web Application Tests Settings</pluginName>
+					<pluginId>39471</pluginId>
+					<fullName>Web Application Tests Settings[checkbox]:Try all HTTP methods</fullName>
+					<preferenceName>Try all HTTP methods</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Ping the remote host</pluginName>
+					<pluginId>10180</pluginId>
+					<fullName>Ping the remote host[checkbox]:Do an applicative UDP ping (DNS,RPC...)</fullName>
+					<preferenceName>Do an applicative UDP ping (DNS,RPC...)</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Web Application Tests Settings</pluginName>
+					<pluginId>39471</pluginId>
+					<fullName>Web Application Tests Settings[entry]:URL for Remote File Inclusion :</fullName>
+					<preferenceName>URL for Remote File Inclusion :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>http://rfi.nessus.org/rfi.txt</preferenceValues>
+					<selectedValue>http://rfi.nessus.org/rfi.txt</selectedValue>
+				</item>
+				<item>
+					<pluginName>Global variable settings</pluginName>
+					<pluginId>12288</pluginId>
+					<fullName>Global variable settings[entry]:HTTP User-Agent</fullName>
+					<preferenceName>HTTP User-Agent</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)</preferenceValues>
+					<selectedValue>Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)</selectedValue>
+				</item>
+				<item>
+					<pluginName>Web mirroring</pluginName>
+					<pluginId>10662</pluginId>
+					<fullName>Web mirroring[entry]:Excluded items regex :</fullName>
+					<preferenceName>Excluded items regex :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>/server_privileges\.php|logout</preferenceValues>
+					<selectedValue>/server_privileges\.php|logout</selectedValue>
+				</item>
+				<item>
+					<pluginName>Web mirroring</pluginName>
+					<pluginId>10662</pluginId>
+					<fullName>Web mirroring[checkbox]:Follow dynamic pages :</fullName>
+					<preferenceName>Follow dynamic pages :</preferenceName>
+					<preferenceType>checkbox</preferenceType>
+					<preferenceValues>no</preferenceValues>
+					<selectedValue>no</selectedValue>
+				</item>
+				<item>
+					<pluginName>Web mirroring</pluginName>
+					<pluginId>10662</pluginId>
+					<fullName>Web mirroring[entry]:Maximum depth :</fullName>
+					<preferenceName>Maximum depth :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>6</preferenceValues>
+					<selectedValue>6</selectedValue>
+				</item>
+				<item>
+					<pluginName>Web mirroring</pluginName>
+					<pluginId>10662</pluginId>
+					<fullName>Web mirroring[entry]:Number of pages to mirror :</fullName>
+					<preferenceName>Number of pages to mirror :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>1000</preferenceValues>
+					<selectedValue>1000</selectedValue>
+				</item>
+				<item>
+					<pluginName>Web mirroring</pluginName>
+					<pluginId>10662</pluginId>
+					<fullName>Web mirroring[entry]:Start page :</fullName>
+					<preferenceName>Start page :</preferenceName>
+					<preferenceType>entry</preferenceType>
+					<preferenceValues>/</preferenceValues>
+					<selectedValue>/</selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[file]:Additional MD5 hashes (optional) :</fullName>
+					<preferenceName>Additional MD5 hashes (optional) :</preferenceName>
+					<preferenceType>file</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[file]:Known good MD5 hashes (optional) :</fullName>
+					<preferenceName>Known good MD5 hashes (optional) :</preferenceName>
+					<preferenceType>file</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+				<item>
+					<pluginName>Malicious Process Detection</pluginName>
+					<pluginId>59275</pluginId>
+					<fullName>Malicious Process Detection[file]:Yara rules file :</fullName>
+					<preferenceName>Yara rules file :</preferenceName>
+					<preferenceType>file</preferenceType>
+					<preferenceValues></preferenceValues>
+					<selectedValue></selectedValue>
+				</item>
+			</PluginsPreferences>
+		</Preferences>
+		<FamilySelection>
+			<FamilyItem>
+				<FamilyName>Red Hat Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>HP-UX Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Debian Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Solaris Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Fedora Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>CGI abuses</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Gentoo Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>SuSE Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>AIX Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Windows : Microsoft Bulletins</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Web Servers</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>SMTP problems</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>FreeBSD Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Ubuntu Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Slackware Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Mandrake Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Remote file access</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>CentOS Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>FTP</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Windows</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>MacOS X Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Denial of Service</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Misc.</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Service detection</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Default Unix Accounts</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>CGI abuses : XSS</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Gain root remotely</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>RPC</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Windows : User management</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>General</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Databases</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Peer-To-Peer File Sharing</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>CISCO</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Firewalls</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Backdoors</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>SCADA</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>DNS</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Useless services</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Policy Compliance</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Gain a shell remotely</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Settings</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Port scanners</FamilyName>
+				<Status>mixed</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Netware</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Finger abuses</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>SNMP</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>NIS</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Mandriva Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>VMware ESX Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Brute force attacks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Junos Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Scientific Linux Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Mobile Devices</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Oracle Linux Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Amazon Linux Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Palo Alto Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Huawei Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>F5 Networks Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>OracleVM Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Incident Response</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>Virtuozzo Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+			<FamilyItem>
+				<FamilyName>PhotonOS Local Security Checks</FamilyName>
+				<Status>disabled</Status>
+			</FamilyItem>
+		</FamilySelection>
+		<IndividualPluginSelection>
+			<PluginItem>
+				<PluginId>10180</PluginId>
+				<PluginName>Ping the remote host</PluginName>
+				<Family>Port scanners</Family>
+				<Status>enabled</Status>
+			</PluginItem>
+			<PluginItem>
+				<PluginId>14272</PluginId>
+				<PluginName>Netstat Portscanner (SSH)</PluginName>
+				<Family>Port scanners</Family>
+				<Status>enabled</Status>
+			</PluginItem>
+			<PluginItem>
+				<PluginId>34220</PluginId>
+				<PluginName>Netstat Portscanner (WMI)</PluginName>
+				<Family>Port scanners</Family>
+				<Status>enabled</Status>
+			</PluginItem>
+			<PluginItem>
+				<PluginId>14274</PluginId>
+				<PluginName>Nessus SNMP Scanner</PluginName>
+				<Family>Port scanners</Family>
+				<Status>enabled</Status>
+			</PluginItem>
+			<PluginItem>
+				<PluginId>11219</PluginId>
+				<PluginName>Nessus SYN scanner</PluginName>
+				<Family>Port scanners</Family>
+				<Status>enabled</Status>
+			</PluginItem>
+		</IndividualPluginSelection>
+	</Policy>
+</NessusClientData_v2>
