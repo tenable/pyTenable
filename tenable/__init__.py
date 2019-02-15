@@ -51,7 +51,7 @@ Tenable.io application.  Performing this action is as simple as the following:
    for scan in tio.scans.list():
       print('{status}: {id}/{uuid} - {name}'.format(**scan))
 
-Getting started with SecurityCenter is equally as easy:
+Getting started with Tenable.sc is equally as easy:
 
 .. code-block:: python
 
