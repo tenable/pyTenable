@@ -156,7 +156,7 @@ def test_scan_instances_export_scan_success(sc, scaninstance):
 @pytest.mark.vcr()
 @pytest.mark.datafiles(os.path.join(
     os.path.dirname(os.path.realpath(__file__)), 
-    '..', 'reports', 'test_files', 'example.nessus'))
+    '..', 'test_files', 'example.nessus'))
 def test_scan_instances_import_scan_success(sc, datafiles):
     with open(os.path.join(str(datafiles), 'example.nessus'), 'rb') as fobj:
         sc.scan_instances.import_scan(fobj, 1)
