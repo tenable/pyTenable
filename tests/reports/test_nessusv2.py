@@ -1,6 +1,7 @@
 from tenable.reports.nessusv2 import NessusReportv2
 from .fixtures import *
-import datetime, sys
+from ..checker import check
+import datetime, sys, pytest
 
 @pytest.mark.skipif(sys.version_info < (3,4),
                     reason="requires python3.4 or higher")
