@@ -1,0 +1,42 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/1.0.0 (pyTenable/1.0.0; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/scanResult
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"usable":[{"id":"120","name":"Daily
+        Agent Scan [Agent Scan Import]","description":"","status":"Completed"},{"id":"121","name":"Daily
+        Internal Scan","description":"","status":"Completed"},{"id":"122","name":"Daily
+        Agent Scan [Agent Scan Import]","description":"","status":"Completed"},{"id":"123","name":"Daily
+        Internal Scan","description":"","status":"Partial"},{"id":"124","name":"Daily
+        Agent Scan [Agent Scan Import]","description":"","status":"Completed"}],"manageable":[{"id":"120","name":"Daily
+        Agent Scan [Agent Scan Import]","description":"","status":"Completed"},{"id":"121","name":"Daily
+        Internal Scan","description":"","status":"Completed"},{"id":"122","name":"Daily
+        Agent Scan [Agent Scan Import]","description":"","status":"Completed"},{"id":"123","name":"Daily
+        Internal Scan","description":"","status":"Partial"},{"id":"124","name":"Daily
+        Agent Scan [Agent Scan Import]","description":"","status":"Completed"}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1550189100}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['1023']
+      content-type: [application/json]
+      date: ['Fri, 15 Feb 2019 00:05:00 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}

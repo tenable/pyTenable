@@ -2,6 +2,24 @@ from tenable.errors import *
 from ..checker import check, single
 import pytest
 
+def test_schedule_constructor_type_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.scans._schedule_constructor({'type': 1})
+
+def test_schedule_constructor_type_unexpected_value(sc):
+    with pytest.raises(UnexpectedValueError):
+        sc.scans._schedule_constructor({'type': 'nothing here'})
+
+def test_schdeule_constructor_start_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.scans._schedule_constructor(
+            {'type': 'ical', 'start': 1, 'repeatRule': ''})
+
+def test_schedule_constructor_rrule_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.scans._schedule_constructor(
+            {'type': 'ical', 'start': '', 'repeatRule': 1}) 
+
 def test_scans_constructor_name_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scans._constructor(name=1)

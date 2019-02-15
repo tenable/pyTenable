@@ -21,11 +21,6 @@ Methods available on ``sc.scans``:
     .. automethod:: edit
     .. automethod:: launch
     .. automethod:: list
-
-.. iCal Date-Time:
-    https://tools.ietf.org/html/rfc5545#section-3.3.5
-.. iCal Recurrance Rule:
-    https://tools.ietf.org/html/rfc5545#section-3.3.10
 '''
 from .base import SCEndpoint
 from tenable.utils import dict_merge
@@ -130,7 +125,8 @@ class ScanAPI(SCEndpoint):
 
         # hand off the building the schedule sub-document to the schedule 
         # document builder.
-        kw = self._schedule_document_creator(kw)
+        if 'schedule' in kw:
+            kw['schedule'] = self._schedule_constructor(kw['schedule'])
 
         if 'reports' in kw:
             # as the reports list should already be in a format that the API
@@ -263,20 +259,9 @@ class ScanAPI(SCEndpoint):
             scan_zone (int, optional):
                 The zone identifier to use for the scan.  If non is selected
                 then the default of "0" or "All Zones" is selected.
-            schedule_type (str, optional):
-                What type of scan schedule shall this be?  Available supported
-                values are ``dependent``, ``ical``, ``never``, ``rollover``, and
-                ``template``.  The default value if unspecified is ``never``.
-            schedule_start (str, optional):
-                The time in which the trigger should start firing.  This value
-                must conform to the `iCal Date-Time`_ standard.  Further this
-                parameter is only required when specifying the schedule_type as
-                ``ical``.
-            schedule_repeat (str, optional):
-                The rule that dictates the frequency and timing that the alert
-                will run.  This value must conform to the `iCal Recurrence Rule`_
-                format.  Further this parameter is only required when specifying
-                the schedule_type as ``ical``.
+            schedule (dict, optional):
+                A dictionary detailing the repeating schedule of the scan.  
+                For more information refer to `Schedule Dictionaries`_
             targets (list, optional):
                 A list of valid targets.  These targets could be IPs, FQDNs,
                 CIDRs, or IP ranges.
