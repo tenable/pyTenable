@@ -6,7 +6,7 @@
 
 .. automodule:: tenable.sc.base
 
-.. commented automodule:: tenable.sc.alerts
+.. automodule:: tenable.sc.alerts
 .. commented automodule:: tenable.sc.accept_risks
 .. automodule:: tenable.sc.analysis
 .. automodule:: tenable.sc.feeds
@@ -46,7 +46,7 @@ Example:
 from tenable.base import APISession
 from tenable.errors import *
 #from .accept_risks import AcceptRiskAPI
-#from .alerts import AlertAPI
+from .alerts import AlertAPI
 from .analysis import AnalysisAPI
 from .files import FileAPI
 from .feeds import FeedAPI
@@ -240,9 +240,9 @@ class TenableSC(APISession):
 #    def accept_risks(self):
 #        return AcceptRiskAPI(self)
 #
-#    @property
-#    def alerts(self):
-#        return AlertAPI(self)
+    @property
+    def alerts(self):
+        return AlertAPI(self)
 
     @property
     def analysis(self):
