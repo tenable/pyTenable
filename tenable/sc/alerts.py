@@ -2,8 +2,6 @@
 alerts
 ======
 
-.. warning:: This module is flagged as "beta", and may change.
-
 The following methods allow for interaction into the Tenable.sc 
 `Alert <https://docs.tenable.com/sccv/api/Alert.html>`_ API.
 
@@ -166,7 +164,8 @@ class AlertAPI(SCEndpoint):
             schedule (dict, optional):
                 This is the schedule dictionary that will inform Tenable.sc how 
                 often to run the alert.  If left unspecified then we will 
-                default to ``{'type': 'never'}``.
+                default to ``{'type': 'never'}``.  For more information refer to
+                `Schedule Dictionaries`_
             action (list):
                 The action(s) that will be performed when the alert trigger
                 fires.  Each action is a dictionary detailing what type of
@@ -275,7 +274,8 @@ class AlertAPI(SCEndpoint):
             schedule (dict, optional):
                 This is the schedule dictionary that will inform Tenable.sc how 
                 often to run the alert.  If left unspecified then we will 
-                default to ``{'type': 'never'}``.
+                default to ``{'type': 'never'}``.  For more information refer to
+                `Schedule Dictionaries`_
             action (list):
                 The action(s) that will be performed when the alert trigger
                 fires.  Each action is a dictionary detailing what type of

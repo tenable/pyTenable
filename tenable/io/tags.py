@@ -8,7 +8,7 @@ The following methods allow for interaction into the Tenable.io
 Methods available on ``tio.tags``:
 
 .. rst-class:: hide-signature
-.. autoclass:: SessionAPI
+.. autoclass:: TagsAPI
 
     .. automethod:: create
     .. automethod:: create_category

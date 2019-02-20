@@ -1,6 +1,30 @@
 '''
-Common Components and Themes for Tenable.sc
-===========================================
+Common Themes
+=============
+
+Tenable.sc CRUD within pyTenable
+--------------------------------
+
+pyTenable allows for the ability to leverage both the naturalized inputs as well
+as passing the raw parameters within the same structure.  In some cases this
+doesn't seem immediately obvious, however allows for the ability to pass
+parameters that either haven't yet been, or in some cases, may never be
+interpreted by the library.  For example, in the alerts API, you could pass
+the snake_cased ``always_exec_on_trigger`` or you could pass what the API
+endpoint itself expects, which is ``executeOnEveryTrigger``.  The snake-cased
+version expects a boolean value, which will be converted into the string value
+that camelCased variant expects.  You'll see this behavior a lot throughout the
+library, and is intended to allow you to sidestep most things should you need
+to.  For example, in the alerts API again, you may not want to pass a trigger
+as ``trigger=('sumip', '>=', '100')`` and instead pass as the parameters that
+are to be written into the JSON request: 
+``triggerName='sumip', triggerOperator='>=', triggerValue='100'``.  Both of
+these methods will produce the same JSON request, and the the option is yours
+to use the right way for the job.  Along these same lines, its possible to see
+how the JSON documents are being constructed by simply looking at the
+``_constructor`` methods for each APIEndpoint class.  If pyTenable is getting in
+your way with the, you can almost always sidestep it and pass the exact 
+dictionary you wish to pass on to the API.
 
 Schedule Dictionaries
 ---------------------
@@ -106,10 +130,12 @@ class SCEndpoint(APIEndpoint):
 
         # return the response to the caller.
         return resp
+    
     def _schedule_constructor(self, item):
         '''
         Handles creation of the schedule sub-document.
         '''
+        self._check('schedule:item', item, dict)
         resp = {'type': self._check('schedule:type', item['type'], str, 
             choices=['ical', 'dependent', 'never', 'rollover', 'template'],
             default='never')}

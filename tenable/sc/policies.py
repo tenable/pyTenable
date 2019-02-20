@@ -2,8 +2,6 @@
 policies
 ========
 
-.. warning:: This module is flagged as "beta", and may change.
-
 The following methods allow for interaction into the Tenable.sc 
 `Scan Policies <https://docs.tenable.com/sccv/api/Scan-Policy.html>`_ API.  
 These items are typically seen under the **Scan Policies** section of Tenable.sc.

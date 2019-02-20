@@ -356,20 +356,9 @@ class ScanAPI(SCEndpoint):
                 to generate a rollover ``template``.
             scan_zone (int, optional):
                 The zone identifier to use for the scan.
-            schedule_type (str, optional):
-                What type of scan schedule shall this be?  Available supported
-                values are ``dependent``, ``ical``, ``never``, ``rollover``, and
-                ``template``.
-            schedule_start (str, optional):
-                The time in which the trigger should start firing.  This value
-                must conform to the `iCal Date-Time`_ standard.  Further this
-                parameter is only required when specifying the schedule_type as
-                ``ical``.
-            schedule_repeat (str, optional):
-                The rule that dictates the frequency and timing that the alert
-                will run.  This value must conform to the `iCal Recurrence Rule`_
-                format.  Further this parameter is only required when specifying
-                the schedule_type as ``ical``.
+            schedule (dict, optional):
+                A dictionary detailing the repeating schedule of the scan.  
+                For more information refer to `Schedule Dictionaries`_
             targets (list, optional):
                 A list of valid targets.  These targets could be IPs, FQDNs,
                 CIDRs, or IP ranges.
