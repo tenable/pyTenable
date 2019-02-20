@@ -4,17 +4,19 @@
     .. automethod:: login
     .. automethod:: logout
 
-.. automodule:: tenable.sc.base
-
 .. automodule:: tenable.sc.alerts
 .. commented automodule:: tenable.sc.accept_risks
 .. automodule:: tenable.sc.analysis
 .. automodule:: tenable.sc.feeds
 .. automodule:: tenable.sc.files
+.. automodule:: tenable.sc.plugins
 .. automodule:: tenable.sc.policies
 .. commented automodule:: tenable.sc.repositories
 .. automodule:: tenable.sc.scans
 .. automodule:: tenable.sc.scan_instances
+
+.. automodule:: tenable.sc.base
+
 
 Raw HTTP Calls
 ==============
@@ -50,6 +52,7 @@ from .alerts import AlertAPI
 from .analysis import AnalysisAPI
 from .files import FileAPI
 from .feeds import FeedAPI
+from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
 #from .repositories import RepositoryAPI
 from .scans import ScanAPI
@@ -255,6 +258,10 @@ class TenableSC(APISession):
     @property
     def files(self):
         return FileAPI(self)
+    
+    @property
+    def plugins(self):
+        return PluginAPI(self)
     
     @property
     def policies(self):
