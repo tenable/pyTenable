@@ -13,3 +13,5 @@ env_builder
 /test_certs
 /local.settings.sh
 /.python-version
+/loader.py
+/build
