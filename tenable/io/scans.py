@@ -553,7 +553,7 @@ class ScansAPI(TIOEndpoint):
 
         # The chapters are sent to us in a list, and we need to collapse that
         # down to a comma-delimited string.
-        payload['chapters'] = ','.join(
+        payload['chapters'] = ';'.join(
             self._check('chapters', 
                 kw['chapters'] if 'chapters' in kw else None, 
                 list, 
