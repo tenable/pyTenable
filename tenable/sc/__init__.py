@@ -54,7 +54,7 @@ from .files import FileAPI
 from .feeds import FeedAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
-#from .repositories import RepositoryAPI
+from .repositories import RepositoryAPI
 from .scans import ScanAPI
 from .scan_instances import ScanResultAPI
 import warnings, logging
@@ -267,9 +267,9 @@ class TenableSC(APISession):
     def policies(self):
         return ScanPolicyAPI(self)
     
-#    @property
-#    def repositories(self):
-#        return RepositoryAPI(self)
+    @property
+    def repositories(self):
+        return RepositoryAPI(self)
 
     @property
     def scans(self):
