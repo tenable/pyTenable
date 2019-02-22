@@ -13,14 +13,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added TenableSC scan policies endpoints and associated tests #20.
 - TenableIO can now pull API keys directly from environment variables as well.
 - Added doc page detailing how to run the tests.
+- Added TenableSC repositories endpoint and associated tests #17
 
 ### Fixed
 - Exports methods in TenableIO now respect 0 integers being passed #69.
 - Errored scan exports in TenableIO will no longer wait forever.
+- Scan Exports using multiple chapters now works as expected #71 #70
 
 ### Removed
 - schedule_* parameters in scans have been removed in favor of direct checking
-    and documentation of the schedule dictionary.  THis has larger implications
+    and documentation of the schedule dictionary.  This has larger implications
     down the line with repositories, alerts, etc.
 
 
