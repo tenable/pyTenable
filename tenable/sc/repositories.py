@@ -76,7 +76,7 @@ class RepositoryAPI(SCEndpoint):
         if 'trending' in kw:
             # Trending should be between 0 and 365.
             kw['trendingDays'] = self._check('trending', kw['trending'], int,
-                choices=range(366))
+                choices=list(range(366)))
             del(kw['trending'])
         
         if 'fulltext_search' in kw:
