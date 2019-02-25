@@ -4,7 +4,7 @@
 import requests, sys, logging, re, time, logging, warnings, json
 from .errors import *
 
-__version__ = '1.0.0'
+__version__ = '0.3.10'
 __author__ = 'Steve McGrath <smcgrath@tenable.com>'
 
 
