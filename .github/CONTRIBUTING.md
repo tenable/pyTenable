@@ -4,12 +4,10 @@ I'm really glad you're reading this, because we need volunteer developers to hel
 
 Here are some important resources:
 
-  * [OpenGovernment for Developers](http://opengovernment.org/pages/developer) tells you where we are,
-  * [Our roadmap](http://opengovernment.org/pages/wish-list) is the 10k foot view of where we're going, and
-  * [Pivotal Tracker](http://pivotaltracker.com/projects/64842) is our day-to-day project management space.
-  * Mailing list: Join our [developer list](http://groups.google.com/group/opengovernment/)
-  * Bugs? [Lighthouse](https://participatorypolitics.lighthouseapp.com/projects/47665-opengovernment/overview) is where to report them
-  * IRC: chat.freenode.net channel [#opengovernment](irc://chat.freenode.net/opengovernment). We're usually there during business hours.
+  * [Our Documentation](https://pytenable.rtfd.io) is a good resource as to what is currently considered stable.
+  * [Our roadmap](https://github.com/tenable/pyTenable/milestones) is a 10k ft. view of where we're headed.
+  * [The Tenable Community Integrations Secrtion](https://community.tenable.com/s/topic/0TOf2000000HPDKGA4) is a great place to discuss working with the Tenable APIs in general.
+  * Bugs? [Github Issues](https://github.com/tenable/pyTenable/issues) is where to report them
 
 ## Testing
 
