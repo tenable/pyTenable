@@ -6,7 +6,7 @@ Here are some important resources:
 
   * [Our Documentation](https://pytenable.rtfd.io) is a good resource as to what is currently considered stable.
   * [Our roadmap](https://github.com/tenable/pyTenable/milestones) is a 10k ft. view of where we're headed.
-  * [The Tenable Community Integrations Secrtion](https://community.tenable.com/s/topic/0TOf2000000HPDKGA4) is a great place to discuss working with the Tenable APIs in general.
+  * [The Tenable Community Integrations Section](https://community.tenable.com/s/topic/0TOf2000000HPDKGA4) is a great place to discuss working with the Tenable APIs in general.
   * Bugs? [Github Issues](https://github.com/tenable/pyTenable/issues) is where to report them
 
 ## Testing
