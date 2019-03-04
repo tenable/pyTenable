@@ -4,7 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.11]
+### Added
+- Added proxy support for the IO, SC, etc. #72
+
+### Fixed
+- Fixed issue where supplied sessions weren't being properly passed to _build_session.
+
+## [0.3.10]
 ### Added
 - Added example for Workbench CSV Downloads for IO
 - Added support for multi-value filters in IO.
@@ -177,7 +184,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.9...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.11...master
+[0.3.11]: https://github.com/tenable/pyTenable/compare/0.3.10...0.3.11
+[0.3.10]: https://github.com/tenable/pyTenable/compare/0.3.9...0.3.10
 [0.3.9]: https://github.com/tenable/pyTenable/compare/0.3.8...0.3.9
 [0.3.8]: https://github.com/tenable/pyTenable/compare/0.3.7...0.3.8
 [0.3.7]: https://github.com/tenable/pyTenable/compare/0.3.6...0.3.7
