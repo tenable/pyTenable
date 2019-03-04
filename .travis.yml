@@ -13,8 +13,6 @@ branches:
   only:
   - master
   - stable
-before_deploy:
-  - m2r README.md
 deploy:
   provider: pypi
   user: stevemcgrath
