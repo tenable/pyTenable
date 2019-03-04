@@ -4,7 +4,7 @@
 import requests, sys, logging, re, time, logging, warnings, json
 from .errors import *
 
-__version__ = '0.3.10'
+__version__ = '0.3.11'
 __author__ = 'Steve McGrath <smcgrath@tenable.com>'
 
 
@@ -289,6 +289,7 @@ class APISession(object):
     '''
     _restricted_paths = dict()
     _ua_identity = None
+    _proxies = None
     _error_codes = {
         400: InvalidInputError,
         401: PermissionError,
@@ -315,7 +316,7 @@ class APISession(object):
     '''
 
     def __init__(self, url=None, retries=None, backoff=None, 
-                 ua_identity=None, session=None):
+                 ua_identity=None, session=None, proxies=None):
         if url:
             self._url = url
         if retries and isinstance(retries, int):
@@ -324,9 +325,11 @@ class APISession(object):
             self._backoff = backoff
         if ua_identity and isinstance(ua_identity, str):
             self._ua_identity = ua_identity
+        if proxies and isinstance(proxies, dict):
+            self._proxies = proxies
         self._log = logging.getLogger('{}.{}'.format(
             self.__module__, self.__class__.__name__))
-        self._build_session()
+        self._build_session(session)
 
     def _build_session(self, session=None):
         '''
@@ -341,6 +344,8 @@ class APISession(object):
             self._session = session
         else:
             self._session = requests.Session()
+        if self._proxies:
+            self._session.proxies.update(self._proxies)
         self._session.headers.update({
             'User-Agent': '{} (pyTenable/{}; Python/{})'.format(identity,
                 __version__, '.'.join([str(i) for i in sys.version_info][0:3])),

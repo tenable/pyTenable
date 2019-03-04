@@ -143,7 +143,7 @@ class TenableSC(APISession):
 
     def __init__(self, host, port=443, ssl_verify=False, cert=None, adapter=None,
                  scheme='https', retries=None, backoff=None, ua_identity=None,
-                 session=None):
+                 session=None, proxies=None):
         # As we will always be passing a URL to the APISession class, we will
         # want to construct a URL that APISession (and further requests) 
         # understands.
@@ -152,7 +152,12 @@ class TenableSC(APISession):
 
         # Now lets pass the relevent parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
-        APISession.__init__(self, url, retries, backoff, ua_identity, session)
+        APISession.__init__(self, url, 
+            retries=retries, 
+            backoff=backoff, 
+            ua_identity=ua_identity, 
+            session=session,
+            proxies=proxies)
 
         # Also, as Tenable.sc is generally installed without a certificate
         # chain that we can validate, we will want to turn off verification 
@@ -238,7 +243,7 @@ class TenableSC(APISession):
         '''
         resp = self.delete('token')
         self._build_session()
-
+    
 #    @property
 #    def accept_risks(self):
 #        return AcceptRiskAPI(self)
