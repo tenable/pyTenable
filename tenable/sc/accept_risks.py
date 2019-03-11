@@ -2,7 +2,8 @@
 accept_risks
 ============
 
-.. warning:: This module is flagged as "beta", and may change.
+.. warning:: This module is flagged as "beta", and may change, 
+             and may not bet tested.
 
 The following methods allow for interaction into the Tenable.sc 
 `Accept Risk <https://docs.tenable.com/sccv/api/Accept-Risk-Rule.html>`_ API.
