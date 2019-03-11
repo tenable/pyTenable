@@ -220,7 +220,7 @@ class AnalysisAPI(SCEndpoint):
         if 'pages' in kw:
             pages = self._check('pages', kw['pages'], int)
         
-        if payload['sourceType'] in ['individual']:
+        if payload.get('sourceType') in ['individual']:
             payload['query']['view'] = self._check(
                 'view', kw.get('view', 'all'), str, 
                 choices=['all', 'new', 'patched'], default='all')

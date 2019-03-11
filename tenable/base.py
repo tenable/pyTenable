@@ -247,17 +247,7 @@ class APIEndpoint(object):
 
         # if we made it this fire without an exception being raised, then assume
         # everything is good to go and return the object passed to us initially.
-        return obj
-
-
-#class APIModel(object):
-#    def __init__(self, api_session=None, **entries):
-#        self._api = api_session
-#        self.__dict__.update(entries)
-#    def __str__(self):
-#        return str(self.id)
-#    def dict(self):
-#        return self.__dict__   
+        return obj 
 
 
 class APISession(object):
