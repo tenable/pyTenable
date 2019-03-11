@@ -219,6 +219,11 @@ class AnalysisAPI(SCEndpoint):
 
         if 'pages' in kw:
             pages = self._check('pages', kw['pages'], int)
+        
+        if payload['sourceType'] in ['individual']:
+            payload['query']['view'] = self._check(
+                'view', kw.get('view', 'all'), str, 
+                choices=['all', 'new', 'patched'], default='all')
 
         if 'json_result' in kw and kw['json_result']:
             # if the json_result flag is set, then we do not want to return an
@@ -432,6 +437,10 @@ class AnalysisAPI(SCEndpoint):
                 ``summsbulletin``, ``sumprotocol``, ``sumremediation``,
                 ``sumseverity``, ``sumuserresponsibility``, ``sumport``,
                 ``trend``, ``vulndetails``, ``vulnipdetail``, ``vulnipsummary``
+            view (str, optional):
+                The type of vulnerability slice you'd like to have returned.
+                The returned data can be either ``all``, ``new``, or ``patched``.
+                If no view is specified, then the default will be ``all``.
 
         Returns:
             AnalysisResultsIterator: an iterator object handling data pagination.

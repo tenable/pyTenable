@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Added view parameter for TenableSC.analysis.scan #73
+
+### Fixed
+- Fixed issue with TenableSC.analysis.scan not properly passing a view. #73
+
 ## [0.3.11]
 ### Added
 - Added proxy support for the IO, SC, etc. #72
