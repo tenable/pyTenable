@@ -225,7 +225,7 @@ class ScanAPI(SCEndpoint):
             asset_lists (list, optional):
                 A list of asset list ids to run the scan against.  A logical OR
                 will be performed to compute what hosts to scan against.
-            credential_ids (list, optional):
+            creds (list, optional):
                 A list of credential ids to use for the purposes of this scan.
                 This list should be treated as an un-ordered list of credentials.
             description (str, optional): A description for the scan.
