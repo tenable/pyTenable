@@ -2,8 +2,6 @@
 scan_instances
 ==============
 
-NOTE: not currently tested code.
-
 The following methods allow for interaction into the Tenable.sc 
 `Scan Result <https://docs.tenable.com/sccv/api/Scan-Result.html>`_ API.  While
 the Tenable.sc API refers to the model these endpoints interact with as 
