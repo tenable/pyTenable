@@ -11,8 +11,8 @@ Methods available on ``tio.exports``:
 .. rst-class:: hide-signature
 .. autoclass:: ExportsAPI
 
-    .. automethod:: vulns
     .. automethod:: assets
+    .. automethod:: vulns
 '''
 from .base import TIOEndpoint, APIResultsIterator
 from tenable.errors import TioExportsError
@@ -115,7 +115,7 @@ class ExportsAPI(TIOEndpoint):
                 Specifies the earliest time for a vulnerability to have been
                 discovered.  Format is a unix timestamp integer.
             last_fixed (int, optional):
-                Specifies the earliest time that vulnerabilitis may have been
+                Specifies the earliest time that vulnerabilities may have been
                 fixed.  Format is a unix timestamp integer.
             last_found (int, optional):
                 Specifies the earliest time that a vulnerability may have been
@@ -130,10 +130,19 @@ class ExportsAPI(TIOEndpoint):
                 list of severities to include as part of the export.  Supported
                 values are `info`, `low`, `medium`, `high`, and `critical`.
             since (int, optional):
-                Returned results will be bounded to only respond with objects
-                that are new or updated between this specified value and current.
-                If no since filter is specified, then the results will be unbounded
-                and return all results.
+                Returned results will be bounded based on the state of the
+                vulnerability instance detailed below.  This parameter expects a
+                unix timestamp.
+
+                * Vulns in the **open** state are bounded by ``first_found``.
+                * Vulns in the **reopened** state are bounded by ``last_found``.
+                * Vulns in the **fixed** state are bounded by ``last_fixed``.
+
+                In short it'll return active vulnerabilities based on when they
+                were first discovered, and fixed and resurfaced vulnerabilities
+                based on when they were last observed.  The idea is to relay
+                state changes of a vulnerability and use a singular export to
+                track all of these state changes.
             state (list, optional):
                 list of object states to be returned.  Supported values are
                 `open`, `reopened`, and `fixed`.
