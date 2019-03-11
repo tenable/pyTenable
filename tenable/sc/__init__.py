@@ -5,15 +5,20 @@
     .. automethod:: logout
 
 .. automodule:: tenable.sc.alerts
-.. commented automodule:: tenable.sc.accept_risks
+.. automodule:: tenable.sc.accept_risks
 .. automodule:: tenable.sc.analysis
 .. automodule:: tenable.sc.feeds
 .. automodule:: tenable.sc.files
 .. automodule:: tenable.sc.plugins
 .. automodule:: tenable.sc.policies
-.. commented automodule:: tenable.sc.repositories
+.. automodule:: tenable.sc.repositories
+.. automodule:: tenable.sc.roles
+.. automodule:: tenable.sc.scan_zones
 .. automodule:: tenable.sc.scans
 .. automodule:: tenable.sc.scan_instances
+.. automodule:: tenable.sc.scanners
+.. automodule:: tenable.sc.status
+.. automodule:: tenable.sc.system
 
 .. automodule:: tenable.sc.base
 
@@ -55,8 +60,12 @@ from .feeds import FeedAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
 from .repositories import RepositoryAPI
+from .scanners import ScannerAPI
 from .scans import ScanAPI
 from .scan_instances import ScanResultAPI
+from .scan_zones import ScanZoneAPI
+from .status import StatusAPI
+from .system import SystemAPI
 import warnings, logging
 
 
@@ -182,18 +191,18 @@ class TenableSC(APISession):
         # aren't pointing to a SecurityCenter at all and should throw an error
         # stating this.
         try:
-            d = self.get('system').json()
+            self.info = self.system.details()
         except:
             raise ConnectionError('No Tenable.sc Instance at {}:{}'.format(host, port))
 
         # Now we will try to interpret the Tenable.sc information into
         # something usable.
         try:
-            self.version = d['response']['version']
-            self.build_id = d['response']['buildID']
-            self.license = d['response']['licenseStatus']
-            self.uuid = d['response']['uuid']
-            if 'token' in d['response']:
+            self.version = self.info['version']
+            self.build_id = self.info['buildID']
+            self.license = self.info['licenseStatus']
+            self.uuid = self.info['uuid']
+            if 'token' in self.info:
                 # if a token was passed in the system info page, then we should
                 # update the X-SecurityCenter header with the token info.
                 self._session.headers.update({
@@ -275,6 +284,14 @@ class TenableSC(APISession):
     @property
     def repositories(self):
         return RepositoryAPI(self)
+    
+    @property
+    def roles(self):
+        return RoleAPI(self)
+    
+    @property
+    def scanners(self):
+        return ScannerAPI(self)
 
     @property
     def scans(self):
@@ -283,6 +300,18 @@ class TenableSC(APISession):
     @property
     def scan_instances(self):
         return ScanResultAPI(self)
+    
+    @property
+    def scan_zones(self):
+        return ScanZoneAPI(self)
+    
+    @property
+    def status(self):
+        return StatusAPI(self)
+    
+    @property
+    def system(self):
+        return SystemAPI(self)
 
 
 class SecurityCenter(TenableSC):
