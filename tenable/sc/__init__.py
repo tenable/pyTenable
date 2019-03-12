@@ -113,7 +113,7 @@ class TenableSC(APISession):
     Examples:
         A direct connection to TenableSC:
 
-        >>> from tenable.io import TenableSC
+        >>> from tenable.sc import TenableSC
         >>> sc = TenableSC('securitycenter.company.tld')
 
         A connection to TenableSC using SSL certificates:
