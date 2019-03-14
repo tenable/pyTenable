@@ -253,10 +253,10 @@ class TenableSC(APISession):
         resp = self.delete('token')
         self._build_session()
     
-#    @property
-#    def accept_risks(self):
-#        return AcceptRiskAPI(self)
-#
+    @property
+    def accept_risks(self):
+        return AcceptRiskAPI(self)
+
     @property
     def alerts(self):
         return AlertAPI(self)
