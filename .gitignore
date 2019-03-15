@@ -15,3 +15,4 @@ env_builder
 /.python-version
 /loader.py
 /build
+.idea

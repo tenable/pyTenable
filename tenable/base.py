@@ -4,7 +4,7 @@
 import requests, sys, logging, re, time, logging, warnings, json
 from .errors import *
 
-__version__ = '0.3.11'
+__version__ = '0.3.12'
 __author__ = 'Steve McGrath <smcgrath@tenable.com>'
 
 
@@ -107,8 +107,11 @@ class APIEndpoint(object):
         if self._code_status and self._code_status != 'stable':
             warnings.warn(
                 ' '.join([
-                    'These endpoints are not considered "stable", may not be'
-                    'tested, and and may change']))
+                    'The {}.{}'.format(self.__module__, self.__class__.__name__),
+                    'is in a {} state'.format(self._code_status),
+                    'endpoints not considered "stable", may not be tested,', 
+                    'and may change'
+            ]))
         self._api = api
 
     def _check(self, name, obj, expected_type, 
@@ -368,10 +371,7 @@ class APISession(object):
                     # sensitive data (such as login information) then pass the
                     # log on unredacted.
                     self._log.debug('path={}, query={}, body={}'.format(
-                        path,
-                        kwargs['params'] if 'params' in kwargs else dict(),
-                        kwargs['json'] if 'json' in kwargs else dict(),
-                    ))
+                        path, kwargs.get('params', {}), kwargs.get('json', {})))
                 else:
                     # The path was a restricted path, generate the log, however
                     # redact the information.
@@ -382,9 +382,9 @@ class APISession(object):
             resp = self._session.request(method, 
                 '{}/{}'.format(self._url, path), **kwargs)
             status = resp.status_code
-            if 'X-Request-Uuid' in resp.headers:
+            if resp.headers.get('x-request-uuid'):
                 self._log.debug('Request-UUID {} for {}'.format(
-                    resp.headers['X-Request-Uuid'], 
+                    resp.headers.get('x-request-uuid'), 
                     '{}/{}'.format(self._url, path)))
 
             if status in [429, 501, 502, 503]:
@@ -394,11 +394,8 @@ class APISession(object):
                 # we will use the _backoff attribute to build a back-off timer
                 # based on the number of retries we have already performed.
                 retries += 1
-                if 'Retry-After' in resp.headers:
-                    sleeper = int(resp.headers['Retry-After'])
-                else:
-                    sleeper = retries * self._backoff
-                time.sleep(sleeper)
+                time.sleep(resp.headers.get(
+                    'retry-after', retries * self._backoff))
 
                 # The need to potentially modify the request for subsequent
                 # calls if the whole reason that we aren't using the default

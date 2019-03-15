@@ -4,9 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.12]
 ### Added
 - Added view parameter for TenableSC.analysis.scan #73
+- Added accept_risks module #18 (untested)
+- Added system module and converted the TenableSC motule to use it over a raw call #22
+- Added status module #22 (untested)
 
 ### Fixed
 - Fixed issue with TenableSC.analysis.scan not properly passing a view. #73
@@ -191,7 +194,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.11...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.12...master
+[0.3.11]: https://github.com/tenable/pyTenable/compare/0.3.11...0.3.12
 [0.3.11]: https://github.com/tenable/pyTenable/compare/0.3.10...0.3.11
 [0.3.10]: https://github.com/tenable/pyTenable/compare/0.3.9...0.3.10
 [0.3.9]: https://github.com/tenable/pyTenable/compare/0.3.8...0.3.9
