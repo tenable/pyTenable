@@ -153,9 +153,11 @@ class RetryError(APIError):
         attempts (int):
             The number of attempts that were made before bailing.    
     '''
-    def __init__(self, r, retries):
+    attempts = 0
+    
+    def __init__(self, r, attempts):
         APIError.__init__(self, r)
-        self.attempts = retries
+        self.attempts = attempts
 
     def __str__(self):
         return '{} attempts made, last returned {}:{} {}'.format(
