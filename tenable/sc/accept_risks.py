@@ -23,7 +23,7 @@ Methods available on ``sc.accept_risks``:
 from .base import SCEndpoint
 
 class AcceptRiskAPI(SCEndpoint):
-    _code_status = 'beta'
+    _code_status = 'untested'
     def _constructor(self, **kw):
         '''
         document creator for acceptRisk creation and update calls.

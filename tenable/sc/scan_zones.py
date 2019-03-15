@@ -23,6 +23,7 @@ Methods available on ``sc.scan_zones``:
 from .base import SCEndpoint
 
 class ScanZoneAPI(SCEndpoint):
+    _code_status = 'untested'
     def _constructor(self, **kw):
         '''
         Handles parsing the keywords and returns a scan zone definition document

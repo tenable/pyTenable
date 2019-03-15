@@ -23,6 +23,7 @@ Methods available on ``sc.roles``:
 from .base import SCEndpoint
 
 class RoleAPI(SCEndpoint):
+    _code_status = 'untested'
     def _constructor(self, **kw):
         '''
         Handles parsing the keywords and returns a role definition document
