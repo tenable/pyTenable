@@ -127,7 +127,7 @@ class ScanZoneAPI(SCEndpoint):
             ...     ips=['127.0.0.1'], scanner_ids=[1])
         '''
         payload = self._constructor(**kw)
-        return self._api.post('zone', json=payload).json()['response']
+        return self._api.patch('zone', json=payload).json()['response']
 
     
     def list(self, fields=None):
