@@ -117,17 +117,31 @@ class SystemAPI(SCEndpoint):
         fobj.seek(0)
         return fobj
 
-    def get_locales(self):
+    def current_locale(self):
         '''
-        Retreives the available system locales that Tenable.sc can be set to.
+        Retreives the current system locale that Tenable.sc has been set to.
 
         + `system: locale <https://docs.tenable.com/sccv/api/System.html#SystemRESTReference-/system/locale>`_
 
         Returns:
-            dict: locale dictionary
+            dict: locale resource
         
         Examples:
-            >>> sc.system.get_locales()
+            >>> sc.system.current_locale()
+        '''
+        return self._api.get('system/locale').json()['response']
+
+    def list_locales(self):
+        '''
+        Retreives the available system locales that Tenable.sc can be set to.
+
+        + `system: locales <https://docs.tenable.com/sccv/api/System.html#SystemRESTReference-/system/locales>`_
+
+        Returns:
+            dict: locales dictionary
+        
+        Examples:
+            >>> sc.system.list_locales()
         '''
         return self._api.get('system/locales').json()['response']
     
