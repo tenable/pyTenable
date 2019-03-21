@@ -422,8 +422,8 @@ class APISession(object):
     def get(self, path, **kwargs):
         '''
         Initiates an HTTP GET request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed:
 
         Args:
             path (str):
@@ -433,20 +433,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('GET', path, **kwargs)
 
     def post(self, path, **kwargs):
         '''
         Initiates an HTTP POST request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed:
 
         Args:
             path (str):
@@ -456,20 +451,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('POST', path, **kwargs)
 
     def put(self, path, **kwargs):
         '''
         Initiates an HTTP PUT request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed:
 
         Args:
             path (str):
@@ -479,20 +469,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('PUT', path, **kwargs)
 
     def patch(self, path, **kwargs):
         '''
         Initiates an HTTP PATCH request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed:
 
         Args:
             path (str):
@@ -502,20 +487,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('PATCH', path, **kwargs)
 
     def delete(self, path, **kwargs):
         '''
         Initiates an HTTP DELETE request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed:
 
         Args:
             path (str):
@@ -525,20 +505,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('DELETE', path, **kwargs)
 
     def head(self, path, **kwargs):
         '''
         Initiates an HTTP HEAD request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed: 
 
         Args:
             path (str):
@@ -548,11 +523,6 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('HEAD', path, **kwargs)
