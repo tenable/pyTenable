@@ -150,10 +150,10 @@ class ScanResultAPI(SCEndpoint):
                 actual file-object to write to instead.
 
         Returns:
-            FileObject: The file-like object with the resulting export.
+            FileObject: The file-like object with the resulting zipped report.
 
         Examples:
-            >>> with open('example.nessus', 'wb') as fobj:
+            >>> with open('example.zip', 'wb') as fobj:
             ...     sc.scan_instances.export_scan(1, fobj)
         '''
         resp = self._api.post('scanResult/{}/download'.format(
