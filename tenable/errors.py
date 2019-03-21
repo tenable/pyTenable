@@ -156,8 +156,8 @@ class RetryError(APIError):
     attempts = 0
     
     def __init__(self, r, attempts):
-        APIError.__init__(self, r)
         self.attempts = attempts
+        APIError.__init__(self, r)
 
     def __str__(self):
         return '{} attempts made, last returned {}:{} {}'.format(
