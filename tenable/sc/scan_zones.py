@@ -2,9 +2,6 @@
 scan_zones
 ==========
 
-.. warning:: This module is flagged as "beta", and may change, 
-             and may not bet tested.
-
 The following methods allow for interaction into the Tenable.sc 
 `Scan Zone <https://docs.tenable.com/sccv/api/Scan-Zone.html>`_ API.  These 
 items are typically seen under the **Scan Zones** section of Tenable.sc.
@@ -23,7 +20,6 @@ Methods available on ``sc.scan_zones``:
 from .base import SCEndpoint
 
 class ScanZoneAPI(SCEndpoint):
-    _code_status = 'untested'
     def _constructor(self, **kw):
         '''
         Handles parsing the keywords and returns a scan zone definition document
@@ -46,8 +42,8 @@ class ScanZoneAPI(SCEndpoint):
         if 'scanner_ids' in kw:
             # convert the list of scanner ids into a list of documents 
             # containing the scanner id.
-            kw['scanners'] = [{'id': self._check('id', i, int) 
-                for i in self._check('scanner_ids', kw['scanner_ids'], list)}]
+            kw['scanners'] = [{'id': self._check('id', i, int)} 
+                for i in self._check('scanner_ids', kw['scanner_ids'], list)]
             del(kw['scanner_ids'])
         
         return kw
@@ -127,7 +123,8 @@ class ScanZoneAPI(SCEndpoint):
             ...     ips=['127.0.0.1'], scanner_ids=[1])
         '''
         payload = self._constructor(**kw)
-        return self._api.patch('zone/{}'.format(id), json=payload).json()['response']
+        return self._api.patch('zone/{}'.format(self._check('id', id, int)), 
+            json=payload).json()['response']
 
     
     def list(self, fields=None):

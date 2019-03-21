@@ -2,9 +2,6 @@
 status
 ======
 
-.. warning:: This module is flagged as "beta", and may change, 
-             and may not bet tested.
-
 The following methods allow for interaction into the Tenable.sc 
 `Statuis <https://docs.tenable.com/sccv/api/Status.html>`_ API.  These API calls
 are typically used to understand the current job and license statuses.
