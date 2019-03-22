@@ -45,6 +45,10 @@ class ScannerAPI(SCEndpoint):
         elif 'cert' in kw:
             kw['authType'] = 'certificate'
         
+        if 'cert' in kw:
+            # Validate that the cert parameter is a string.
+            self._check('cert', kw['cert'], str)
+        
         if 'username' in kw:
             # Validate that the username parameter is a string.
             self._check('username', kw['username'], str)
@@ -101,8 +105,8 @@ class ScannerAPI(SCEndpoint):
             # Validate that the zone_ids parameter is a list and expand it to
             # list of dictionaries with the id attribute set to each of the
             # scan zone integer ids.  Store this in the zones parameter.
-            kw['zones'] = [{'id': self._check('zone:id', i, int)
-                for i in self._check('zone_id', kw['zone_ids'], list)}]
+            kw['zones'] = [{'id': self._check('zone:id', i, int)}
+                for i in self._check('zone_id', kw['zone_ids'], list)]
             del(kw['zone_ids'])
         
         if 'orgs' in kw:
@@ -110,8 +114,8 @@ class ScannerAPI(SCEndpoint):
             # list of dictionaries with the id attribute set to each of the
             # organization integer ids.  Store this in the nessusManagerOrgs
             # parameter.
-            kw['nessusManagerOrgs'] = [{'id': self._check('orgs:id', i, int)
-                for i in self._check('orgs', kw['orgs'], list)}]
+            kw['nessusManagerOrgs'] = [{'id': self._check('orgs:id', i, int)}
+                for i in self._check('orgs', kw['orgs'], list)]
             del(kw['orgs'])
         
         return kw
@@ -232,9 +236,10 @@ class ScannerAPI(SCEndpoint):
         Examples:
             >>> scanner = sc.scanners.create(1, enabled=True)
         '''
+        base = self.details(self._check('id', id, int))
         payload = self._constructor(**kw)
-        return self._api.post('scanner/{}'.format(self._check('id', id, int)),
-            json=payload).json()['response']
+        return self._api.patch('scanner/{}'.format(id),
+            json=dict_merge(base, payload)).json()['response']
 
     def delete(self, id):
         '''
@@ -317,4 +322,5 @@ class ScannerAPI(SCEndpoint):
         Examples:
             >>> status = sc.scanners.update_status()
         '''
-        return self._api.post('scanner/updateStatus', json={}).json()['response']
+        return self._api.post('scanner/updateStatus', 
+            json={}).json()['response']['status']
