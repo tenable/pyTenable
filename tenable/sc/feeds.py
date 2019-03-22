@@ -2,8 +2,6 @@
 feeds
 =====
 
-NOTE: not currently tested code.
-
 The following methods allow for interaction into the Tenable.sc 
 `Feed <https://docs.tenable.com/sccv/api/Feed.html>`_ API.
 
@@ -19,7 +17,6 @@ Methods available on ``sc.feeds``:
 from .base import SCEndpoint
 
 class FeedAPI(SCEndpoint):
-    _code_status = 'untested'
     def status(self, feed_type=None):
         '''
         Returns the status of either a specific feed type (if requested) or all
