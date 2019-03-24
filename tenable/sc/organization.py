@@ -24,6 +24,7 @@ Methods available on ``sc.organization``:
 from tenable.sc.base import SCEndpoint
 
 
+
 class OrganizationAPI(SCEndpoint):
 
     def _constructor(self, **kw):
