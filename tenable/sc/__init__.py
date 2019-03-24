@@ -57,6 +57,7 @@ from .alerts import AlertAPI
 from .analysis import AnalysisAPI
 from .files import FileAPI
 from .feeds import FeedAPI
+from .organization import OrganizationAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
 from .repositories import RepositoryAPI
@@ -273,6 +274,10 @@ class TenableSC(APISession):
     def files(self):
         return FileAPI(self)
     
+    @property
+    def organization(self):
+        return OrganizationAPI(self)
+
     @property
     def plugins(self):
         return PluginAPI(self)
