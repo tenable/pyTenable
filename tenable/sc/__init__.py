@@ -52,7 +52,7 @@ Example:
 '''
 from tenable.base import APISession
 from tenable.errors import *
-#from .accept_risks import AcceptRiskAPI
+from .accept_risks import AcceptRiskAPI
 from .alerts import AlertAPI
 from .analysis import AnalysisAPI
 from .files import FileAPI

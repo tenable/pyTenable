@@ -1,0 +1,198 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/0.3.12 (pyTenable/0.3.12; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/acceptRiskRule
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":[{"id":"5","hostType":"ip","hostValue":"192.168.100.1,192.168.101.1,192.168.102.1,192.168.103.1,192.168.104.1,192.168.105.1,192.168.106.1,192.168.199.1","port":"0","protocol":"TCP","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"1","username":"steve","firstname":"Steve","lastname":"McGrath"},"plugin":{"id":"33850","name":"Unix
+        Operating System Unsupported Version Detection","description":"According to
+        its self-reported version number, the Unix operating system running on the
+        remote host is no longer supported.\n\nLack of support implies that no new
+        security patches for the product will be released by the vendor. As a result,
+        it is likely to contain security vulnerabilities."}},{"id":"6","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"7","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"8","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"9","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"10","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"11","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"12","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"13","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"14","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"15","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"16","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"17","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"18","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"19","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"20","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"21","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"22","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"23","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"24","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","expires":"-1","status":"0","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},{"id":"1","hostType":"uuid","hostValue":"c2d9e0b8-d88e-46ed-b7f4-86062e3ab42b","port":"445","protocol":"TCP","expires":"1545372000","status":"0","repository":{"id":"2","name":"Agents","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"1","username":"steve","firstname":"Steve","lastname":"McGrath"},"plugin":{"id":"80908","name":"Oracle
+        Java SE Multiple Vulnerabilities (January 2015 CPU) (POODLE)","description":"The
+        version of Oracle Java SE or Java for Business installed on the remote host
+        is prior to 8 Update 31, 7 Update 75, 6 Update 91, or 5 Update 81. It is,
+        therefore, affected by security vulnerabilities in the following components
+        :\n\n  - 2D\n  - Deployment\n  - Hotspot\n  - Install\n  - JAX-WS\n  - JSSE\n  -
+        Libraries\n  - RMI\n  - Security\n  - Serviceability\n  - Swing"}},{"id":"3","hostType":"asset","hostValue":{"id":"19","name":"Bad
+        Credentials","description":"The Nessus scanner testing the remote host has
+        been given SMB credentials to log into the remote host, however these credentials
+        do not have administrative privileges.  Local security checks have been disabled
+        for this host because either the credentials supplied in the scan policy did
+        not allow Nessus to log into it or some other problem occurred.\n\nThis will
+        be helpful for those getting started with SecurityCenter."},"port":"any","protocol":"any","expires":"1545372000","status":"0","repository":{"id":"2","name":"Agents","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"1","username":"steve","firstname":"Steve","lastname":"McGrath"},"plugin":{"id":"93650","name":"Dropbear
+        SSH Server < 2016.72 Multiple Vulnerabilities","description":"According to
+        its self-reported version in its banner, Dropbear SSH running on the remote
+        host is prior to 2016.74. It is, therefore, affected by the following vulnerabilities
+        :\n\n  - A format string flaw exists due to improper handling of     string
+        format specifiers (e.g., %s and %x) in usernames     and host arguments. An
+        unauthenticated, remote attacker     can exploit this to execute arbitrary
+        code with root     privileges. (CVE-2016-7406)\n\n  - A flaw exists in dropbearconvert
+        due to improper     handling of specially crafted OpenSSH key files. An     unauthenticated,
+        remote attacker can exploit this to     execute arbitrary code. (CVE-2016-7407)\n\n  -
+        A flaw exists in dbclient when handling the -m or -c     arguments in scripts.
+        An unauthenticated, remote attacker     can exploit this, via a specially
+        crafted script, to     execute arbitrary code. (CVE-2016-7408)\n\n  - A flaw
+        exists in dbclient or dropbear server if they are     compiled with the DEBUG_TRACE
+        option and then run using     the -v switch. A local attacker can exploit
+        this to     disclose process memory. (CVE-2016-7409)"}}],"error_code":0,"error_msg":"","warnings":[],"timestamp":1553612053}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-type: [application/json]
+      date: ['Tue, 26 Mar 2019 14:54:13 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1
