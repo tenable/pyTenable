@@ -354,7 +354,7 @@ class ScansAPI(TIOEndpoint):
         Examples:
             >>> tio.scans.delete_history(1, 1)
         '''
-        self._api.delete('scans/{}/hostory/{}'.format(
+        self._api.delete('scans/{}/history/{}'.format(
             self._check('scan_id', scan_id, int),
             self._check('history_id', history_id, int)))
 
