@@ -4,12 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.14]
+### Fixed
+- Corrected Doc Issue where the downloads API was incorrectly referencing sc.alerts
+- Fixed issue with scan history deletion where the path was incorrect #101
+
+## [0.3.13]
 ### Added
 - Tested out TenableSC StatusAPI #22
 - Tested out TenableSC SystemAPI #22
 - Tested out TenableSC ScanZoneAPI #21
 - Tested out TenableSC ScannerAPI #21
+- Tested out Downloads API
 
 ### Fixed
 - RetryError no longer itself throws an error due to logging.
@@ -209,7 +215,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.12...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.14...master
+[0.3.14]: https://github.com/tenable/pyTenable/compare/0.3.13...0.3.14
+[0.3.13]: https://github.com/tenable/pyTenable/compare/0.3.12...0.3.13
 [0.3.12]: https://github.com/tenable/pyTenable/compare/0.3.11...0.3.12
 [0.3.11]: https://github.com/tenable/pyTenable/compare/0.3.10...0.3.11
 [0.3.10]: https://github.com/tenable/pyTenable/compare/0.3.9...0.3.10
