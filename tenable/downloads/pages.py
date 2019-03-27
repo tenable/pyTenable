@@ -62,8 +62,9 @@ class PageAPI(APIEndpoint):
             FileObject
         
         Examples:
-            >>> with open('nessus.rpm', 'wb') as pkgfile:
-            ...     downloads.pages.download('nessus', '')
+            >>> with open('Nessus-latest.x86_64.rpm', 'wb') as pkgfile:
+            ...     downloads.pages.download('nessus', 
+            ...         'Nessus-8.3.0-es7.x86_64.rpm', pkgfile)
         '''
         if not fobj:
             fobj = BytesIO()

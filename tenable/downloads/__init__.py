@@ -1,6 +1,6 @@
 '''
 .. autoclass:: Downloads
-.. automodule:: tenable.downloads.page
+.. automodule:: tenable.downloads.pages
 
 Raw HTTP Calls
 ==============
@@ -40,12 +40,10 @@ class Downloads(APISession):
 
     Args:
         api_key (str, optional):
-            The user's API access key for Tenable.io  If an access key isn't
-            specified, then the library will attempt to read the environment
-            variable ``TIO_ACCESS_KEY`` to acquire the key.
+            The user's API access key for the Downloads API.
         url (str, optional):
             The base URL that the paths will be appended onto.  The default
-            is ``https://tenable.com/downloads/api/v2`` 
+            is ``https://www.tenable.com/downloads/api/v2`` 
         retries (int, optional):
             The number of retries to make before failing a request.  The
             default is ``3``.
@@ -61,7 +59,7 @@ class Downloads(APISession):
         >>> from tenable.downloads import Downloads
         >>> downloads = Downloads({DL_API_KEY})
     '''
-    _url = 'https://tenable.com/downloads/api/v2'
+    _url = 'https://www.tenable.com/downloads/api/v2'
 
     def __init__(self, api_key=None, url=None, retries=None, backoff=None, 
                  ua_identity=None, session=None):
