@@ -4,7 +4,7 @@ pages
 
 The following methods allow for interaction into the Downloads Pages API
 
-Methods available on ``sc.alerts``:
+Methods available on ``downloads.pages``:
 
 .. rst-class:: hide-signature
 .. autoclass:: PageAPI
