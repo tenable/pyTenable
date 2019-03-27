@@ -231,10 +231,10 @@ class ScannerAPI(SCEndpoint):
                 List of scan zones that this scanner is to be a member of.  
         
         Returns:
-            dict: The newly updated scan zone. 
+            dict: The newly updated scanner.
         
         Examples:
-            >>> scanner = sc.scanners.create(1, enabled=True)
+            >>> scanner = sc.scanners.edit(1, enabled=True)
         '''
         base = self.details(self._check('id', id, int))
         payload = self._constructor(**kw)
@@ -261,7 +261,7 @@ class ScannerAPI(SCEndpoint):
     
     def list(self, fields=None):
         '''
-        Retrieves the list of scan zone definitions.
+        Retrieves the list of scanner definitions.
 
         + `scanner: list <https://docs.tenable.com/sccv/api/Scanner.html#scanner_GET>`_
 
@@ -270,10 +270,10 @@ class ScannerAPI(SCEndpoint):
                 A list of attributes to return for each scanner.
 
         Returns:
-            list: A list of scan zone resources.
+            list: A list of scanner resources.
 
         Examples:
-            >>> for scanner in sc.scan_zones.list():
+            >>> for scanner in sc.scanners.list():
             ...     pprint(scanner)
         '''
         params = dict()
