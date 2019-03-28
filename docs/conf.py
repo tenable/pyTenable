@@ -101,8 +101,12 @@ html_theme = 'alabaster'
 html_theme_options = {
     'description': 'A Python library for Tenable application APIs',
     'fixed_sidebar': False,
+    'logo': 'logo.png',
+    'touch_icon': 'logo.png',
+    'logo_name': 'pyTenable',
     'github_user': 'tenable',
     'github_repo': 'pyTenable',
+    'github_button': True,
     'travis_button': True,
     'analytics_id': 'UA-131275974-1',
 }
