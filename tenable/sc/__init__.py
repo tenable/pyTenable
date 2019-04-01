@@ -60,6 +60,7 @@ from .feeds import FeedAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
 from .repositories import RepositoryAPI
+from .roles import RoleAPI
 from .scanners import ScannerAPI
 from .scans import ScanAPI
 from .scan_instances import ScanResultAPI

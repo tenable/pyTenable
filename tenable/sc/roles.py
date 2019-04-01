@@ -23,7 +23,6 @@ Methods available on ``sc.roles``:
 from .base import SCEndpoint
 
 class RoleAPI(SCEndpoint):
-    _code_status = 'untested'
     def _constructor(self, **kw):
         '''
         Handles parsing the keywords and returns a role definition document
@@ -66,8 +65,8 @@ class RoleAPI(SCEndpoint):
         # lowercased strings values that the API expects to see.
         for key in mapping.keys():
             if key in kw:
-                kw[mapping[key]] = str(self._check(key, kw[kwy], bool)).lower()
-            del(kw[key])
+                kw[mapping[key]] = str(self._check(key, kw[key], bool)).lower()
+                del(kw[key])
         
         return kw
     
@@ -253,7 +252,8 @@ class RoleAPI(SCEndpoint):
             >>> role = sc.roles.create()
         '''
         payload = self._constructor(**kw)
-        return self._api.post('role', json=payload).json()['response']
+        return self._api.patch('role/{}'.format(
+            self._check('id', id, int)), json=payload).json()['response']
     
     def delete(self, id):
         '''
