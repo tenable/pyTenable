@@ -29,7 +29,7 @@ class SCEndpoint(APIEndpoint):
             # populate a schedule document with just the type.
             kw['schedule'] = {'type': self._check('schedule_type', 
                 kw['schedule_type'], str, choices=[
-                    'dependent', 'never', 'rollover', 'template'])}
+                    'dependent', 'never', 'rollover', 'template', 'now'])}
             del(kw['schedule_type'])
         return kw
 
