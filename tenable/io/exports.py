@@ -175,8 +175,8 @@ class ExportsAPI(TIOEndpoint):
         for option in ['since', 'first_found', 'last_found', 
                        'last_fixed', 'first_scan_time', 
                        'last_authenticated_scan_time', 'last_assessed']:
-            if option in kw:
-                payload['filters'][option] = self._check(option, kw[option], int)
+            if option in kw and self._check(option, kw[option], int):
+                payload['filters'][option] = kw[option]
 
         payload['num_assets'] = str(self._check('num_assets', 
             kw['num_assets'] if 'num_assets' in kw else None, int, default=50))
