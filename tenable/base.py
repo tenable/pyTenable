@@ -382,6 +382,9 @@ class APISession(object):
             resp = self._session.request(method, 
                 '{}/{}'.format(self._url, path), **kwargs)
             status = resp.status_code
+
+            # If there is a Request UUID then we will want to log the UUID just
+            # incase we may need it for tracking down what happened within the
             if resp.headers.get('x-request-uuid'):
                 self._log.debug('Request-UUID {} for {}'.format(
                     resp.headers.get('x-request-uuid'), 
@@ -394,8 +397,8 @@ class APISession(object):
                 # we will use the _backoff attribute to build a back-off timer
                 # based on the number of retries we have already performed.
                 retries += 1
-                time.sleep(resp.headers.get(
-                    'retry-after', retries * self._backoff))
+                time.sleep(float(resp.headers.get(
+                    'retry-after', float(retries) * float(self._backoff))))
 
                 # The need to potentially modify the request for subsequent
                 # calls if the whole reason that we aren't using the default
