@@ -242,10 +242,6 @@ def test_agentgroups_task_status(api, agentgroup):
 
 @pytest.mark.vcr()
 def test_agentgroups_list(api):
-    assert isinstance(api.agent_groups.list(), list)
-
-@pytest.mark.vcr()
-def test_agentgroups_list_response(api):
     agentgroups = api.agent_groups.list()
     assert isinstance(agentgroups, list)
     for ag in agentgroups:

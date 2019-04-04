@@ -216,9 +216,8 @@ class AgentGroupsAPI(TIOEndpoint):
             ...     pprint(agent_group)
 
         '''
-
-        return self._api.get('scanners/{}/agent-groups'.format(self._check('scanner_id',
-                                                                           scanner_id, int))).json()['groups']
+        return self._api.get('scanners/{}/agent-groups'.format(
+            self._check('scanner_id', scanner_id, int))).json()['groups']
 
     def task_status(self, group_id, task_uuid, scanner_id=1):
         '''
