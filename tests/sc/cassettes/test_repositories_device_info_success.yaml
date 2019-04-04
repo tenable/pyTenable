@@ -1,0 +1,67 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/1.0.0 (pyTenable/1.0.0; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/repository/6/deviceInfo?dnsName=server
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"ip":"192.168.0.1","uuid":"16ee04f6-e9fa-4394-a9d9-f3823c3b1919","score":"1","total":"98","severityInfo":"97","severityLow":"1","severityMedium":"0","severityHigh":"0","severityCritical":"0","macAddress":"00:0c:29:91:cc:a3","policyName":"6d32dff0-2e6e-5fef-982f-80b05a31fcad-54229\/Full
+        Safe Scan","pluginSet":"201902181242","netbiosName":"UNKNOWN\\server","dnsName":"server","osCPE":"cpe:\/o:centos:centos:7:update6","biosGUID":"564d0761-89f2-b58d-b62a-bf54b191cca3","tpmID":"","mcafeeGUID":"","lastAuthRun":"1550643025","lastUnauthRun":"1550184636","uniqueness":"repositoryID,ip,dnsName","severityAll":"0,0,0,1,97","os":"Linux
+        Kernel 3.10.0-862.14.4.el7.x86_64 on CentOS Linux release 7.6.1810 (Core)","hasPassive":"No","hasCompliance":"No","lastScan":"1550647873","links":[],"repository":{"id":"1","name":"Default","description":""}},"error_code":0,"error_msg":"","warnings":[],"timestamp":1550766130}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['967']
+      content-type: [application/json]
+      date: ['Thu, 21 Feb 2019 16:22:10 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/1.0.0 (pyTenable/1.0.0; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: DELETE
+    uri: https://securitycenter.home.cugnet.net/rest/repository/6
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":"","error_code":0,"error_msg":"","warnings":[],"timestamp":1550707450}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['100']
+      content-type: [application/json]
+      date: ['Thu, 21 Feb 2019 00:04:10 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

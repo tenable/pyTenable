@@ -13,3 +13,9 @@ env_builder
 /test_certs
 /local.settings.sh
 /.python-version
+/loader.py
+/build
+.idea
+/tests/sc/cassettes/sc_login.yaml-backup
+/tests/sc/cassettes/sc_logout.yaml-backup
+/tests/sc/cassettes/scan_policy.yml-backup

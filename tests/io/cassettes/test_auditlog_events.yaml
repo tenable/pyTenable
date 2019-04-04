@@ -8,7 +8,7 @@ interactions:
       User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
       X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
     method: GET
-    uri: https://cloud.tenable.com/audit-log/v1/events?limit=100&f=date%3Agt%3A2018-01-01
+    uri: https://cloud.tenable.com/audit-log/v1/events?limit=100&f=date.gt%3A2018-01-01
   response:
     body:
       string: !!binary |

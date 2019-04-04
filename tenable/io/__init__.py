@@ -22,6 +22,7 @@
 .. automodule:: tenable.io.scans
 .. automodule:: tenable.io.server
 .. automodule:: tenable.io.session
+.. automodule:: tenable.io.tags
 .. automodule:: tenable.io.target_groups
 .. automodule:: tenable.io.users
 .. automodule:: tenable.io.workbenches
@@ -52,7 +53,8 @@ Example:
     .. automethod:: put
     .. automethod:: delete
 '''
-import logging
+import logging, os
+from tenable.errors import UnexpectedValueError
 from tenable.base import APISession
 from .agent_config import AgentConfigAPI
 from .agent_exclusions import AgentExclusionsAPI
@@ -88,10 +90,14 @@ class TenableIO(APISession):
     endpoint classes that have been written will be grafted onto this class.
 
     Args:
-        access_key (str):
-            The user's API access key for Tenable.io
-        secret_key (str):
-            The user's API secret key for Tenable.io
+        access_key (str, optional):
+            The user's API access key for Tenable.io  If an access key isn't
+            specified, then the library will attempt to read the environment
+            variable ``TIO_ACCESS_KEY`` to acquire the key.
+        secret_key (str, optional):
+            The user's API secret key for Tenable.io  If a secret key isn't
+            specified, then the library will attempt to read the environment
+            variable ``TIO_SECRET_KEY`` to acquire the key.
         url (str, optional):
             The base URL that the paths will be appended onto.  The default
             is ``https://cloud.tenable.com`` 
@@ -225,11 +231,27 @@ class TenableIO(APISession):
             self._tzcache = self.scans.timezones()
         return self._tzcache
 
-    def __init__(self, access_key, secret_key, url=None, retries=None, 
-                 backoff=None, ua_identity=None, session=None):
-        self._access_key = access_key
-        self._secret_key = secret_key
-        APISession.__init__(self, url, retries, backoff, ua_identity, session)
+    def __init__(self, access_key=None, secret_key=None, url=None, retries=None, 
+                 backoff=None, ua_identity=None, session=None, proxies=None):
+        if access_key:
+            self._access_key = access_key
+        else:
+            self._access_key = os.getenv('TIO_ACCESS_KEY')
+        
+        if secret_key:
+            self._secret_key = secret_key
+        else:
+            self._secret_key = os.getenv('TIO_SECRET_KEY')
+        
+        if not self._access_key or not self._secret_key:
+            raise UnexpectedValueError('No valid API Keypair Defined')
+        
+        APISession.__init__(self, url, 
+            retries=retries, 
+            backoff=backoff, 
+            ua_identity=ua_identity, 
+            session=session,
+            proxies=proxies)
 
     def _retry_request(self, response, retries, kwargs):
         '''
@@ -250,11 +272,11 @@ class TenableIO(APISession):
         return kwargs
 
 
-    def _build_session(self):
+    def _build_session(self, session=None):
         '''
         Build the session and add the API Keys into the session
         '''
-        APISession._build_session(self)
+        APISession._build_session(self, session)
         self._session.headers.update({
             'X-APIKeys': 'accessKey={}; secretKey={};'.format(
                 self._access_key, self._secret_key)

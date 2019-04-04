@@ -12,7 +12,7 @@ except:
 
 setup(
     name='pyTenable',
-    version='0.3.9',
+    version='0.3.15',
     description='Python library to interface into Tenable\'s products and applications',
     author='Tenable, Inc.',
     long_description=long_description,
@@ -20,7 +20,7 @@ setup(
     url='https://github.com/tenable/pytenable',
     license='MIT',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Topic :: Software Development',
         'Topic :: Software Development :: Libraries',
@@ -39,6 +39,7 @@ setup(
     install_requires=[
         'requests>=2.19',
         'python-dateutil>=2.6',
+        'semver>=2.8.1',
     ],
     extras_require={
         'NessusReportv2': 'lxml>=4.1.1',

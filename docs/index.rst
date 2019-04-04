@@ -7,7 +7,9 @@
    reports
    io
    sc
+   downloads
    common
    errors
+   testing
 
 .. automodule:: tenable

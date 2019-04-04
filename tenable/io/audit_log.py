@@ -48,7 +48,7 @@ class AuditLogAPI(TIOEndpoint):
             ...     pprint(e)
         '''
         return self._api.get('audit-log/v1/events', params={
-            'f': ['{}:{}:{}'.format(
+            'f': ['{}.{}:{}'.format(
                 self._check('filter_field_name', f[0], str),
                 self._check('filter_operator', f[1], str),
                 self._check('filter_value', f[2], str)) for f in filters],

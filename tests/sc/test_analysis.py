@@ -3,7 +3,7 @@ from ..checker import check, single
 import pytest
 
 def test_analysis_asset_excpansion_simple(sc):
-    resp = sc.analysis._expass(('or', 1, 2))
+    resp = sc.analysis._combo_expansion(('or', 1, 2))
     assert resp == {
         'operator': 'union',
         'operand1': {'id': '1'},
@@ -11,7 +11,8 @@ def test_analysis_asset_excpansion_simple(sc):
     }
 
 def test_analysis_asset_expansion_complex(sc):
-    resp = sc.analysis._expass(('or', ('and', 1, 2), ('not', ('or', 3, 4))))
+    resp = sc.analysis._combo_expansion(
+        ('or', ('and', 1, 2), ('not', ('or', 3, 4))))
     assert resp == {
         'operator': 'union',
         'operand1': {

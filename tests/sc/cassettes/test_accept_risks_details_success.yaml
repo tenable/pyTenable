@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/0.3.12 (pyTenable/0.3.12; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/acceptRiskRule/24
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"id":"26","hostType":"ip","hostValue":"127.0.0.1","port":"any","protocol":"any","comments":"","expires":"-1","status":"0","createdTime":"1553612055","modifiedTime":"1553612055","repository":{"id":"1","name":"Default","description":""},"organization":{"id":"1","name":"HomeNet","description":""},"user":{"id":"2","username":"api","firstname":"api","lastname":"user"},"plugin":{"id":"19506","name":"Nessus
+        Scan Information","description":"This plugin displays, for each tested host,
+        information about the scan itself :\n\n  - The version of the plugin set.\n  -
+        The type of scanner (Nessus or Nessus Home).\n  - The version of the Nessus
+        Engine.\n  - The port scanner(s) used.\n  - The port range scanned.\n  - Whether
+        credentialed or third-party patch management     checks are possible.\n  -
+        The date of the scan.\n  - The duration of the scan.\n  - The number of hosts
+        scanned in parallel.\n  - The number of checks done in parallel."}},"error_code":0,"error_msg":"","warnings":[],"timestamp":1553612055}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['1036']
+      content-type: [application/json]
+      date: ['Tue, 26 Mar 2019 14:54:15 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

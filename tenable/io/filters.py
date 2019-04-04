@@ -40,9 +40,9 @@ class FiltersAPI(TIOEndpoint):
                 # is a list of string values.
                 if isinstance(item['control']['list'][0], dict):
                     key = 'value' if 'value' in item['control']['list'][0] else 'id'
-                    f['choices'] = [i[key] for i in item['control']['list']]
+                    f['choices'] = [str(i[key]) for i in item['control']['list']]
                 elif isinstance(item['control']['list'], list):
-                    f['choices'] = item['control']['list']
+                    f['choices'] = [str(i) for i in item['control']['list']]
             if 'regex' in item['control']:
                 f['pattern'] = item['control']['regex']
             filters[item['name']] = f

@@ -198,15 +198,18 @@ def test_users_two_factor_phone_typeerror(api):
     with pytest.raises(TypeError):
         api.users.two_factor(False, False, 8675309)
 
+@pytest.mark.vcr()
 @pytest.mark.xfail(raises=InvalidInputError)
 def test_users_two_factor(api, user):
     api.users.two_factor(user['id'], False, False)
 
 @pytest.mark.vcr()
+@pytest.mark.vcr()
 def test_users_enable_two_factor_phone_typeerror(api):
     with pytest.raises(TypeError):
         api.users.enable_two_factor(False)
 
+@pytest.mark.vcr()
 @pytest.mark.skip(reason="Don't want to enable two-facor on the user.")
 def test_users_enable_two_factor(api):
     api.users.enable_two_factor('867-5309')
@@ -216,6 +219,7 @@ def test_users_verify_two_factor_code_typeerror(api):
     with pytest.raises(TypeError):
         api.users.verify_two_factor(False)
 
+@pytest.mark.vcr()
 @pytest.mark.skip(reason="Don't want to enable two-facor on the user.")
 def test_users_verify_two_factor(api):
     api.users.verify_two_factor(False)

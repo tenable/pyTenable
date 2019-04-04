@@ -5,6 +5,68 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Added and tested out support for TenableSC RoleAPI #24
+
+## [0.3.14]
+### Fixed
+- Corrected Doc Issue where the downloads API was incorrectly referencing sc.alerts
+- Fixed issue with scan history deletion where the path was incorrect #101
+
+## [0.3.13]
+### Added
+- Tested out TenableSC StatusAPI #22
+- Tested out TenableSC SystemAPI #22
+- Tested out TenableSC ScanZoneAPI #21
+- Tested out TenableSC ScannerAPI #21
+- Tested out Downloads API
+
+### Fixed
+- RetryError no longer itself throws an error due to logging.
+- Fixed type mismatch bug in IO workbench filters #97
+- Corrected issue with ScanZone updates using the wrong HTTP method #95
+- Corrected doc issue with ScanResultAPI.export not referring to the fact that the exported scan is zipped.
+- Corrected the raw HTTP method docs
+
+
+## [0.3.12]
+### Added
+- Added view parameter for TenableSC.analysis.scan #73
+- Added accept_risks module #18 (untested)
+- Added system module and converted the TenableSC motule to use it over a raw call #22
+- Added status module #22 (untested)
+
+### Fixed
+- Fixed issue with TenableSC.analysis.scan not properly passing a view. #73
+
+## [0.3.11]
+### Added
+- Added proxy support for the IO, SC, etc. #72
+
+### Fixed
+- Fixed issue where supplied sessions weren't being properly passed to _build_session.
+
+## [0.3.10]
+### Added
+- Added example for Workbench CSV Downloads for IO
+- Added support for multi-value filters in IO.
+- Added Request-UUID logging for all responses when available.
+- Added TenableSC scan_instances endpoints and associated tests #19.
+- Added TenableSC scan policies endpoints and associated tests #20.
+- TenableIO can now pull API keys directly from environment variables as well.
+- Added doc page detailing how to run the tests.
+- Added TenableSC repositories endpoint and associated tests #17
+
+### Fixed
+- Exports methods in TenableIO now respect 0 integers being passed #69.
+- Errored scan exports in TenableIO will no longer wait forever.
+- Scan Exports using multiple chapters now works as expected #71 #70
+
+### Removed
+- schedule_* parameters in scans have been removed in favor of direct checking
+    and documentation of the schedule dictionary.  This has larger implications
+    down the line with repositories, alerts, etc.
+
 
 ## [0.3.9]
 ### Added
@@ -157,7 +219,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.9...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.14...master
+[0.3.14]: https://github.com/tenable/pyTenable/compare/0.3.13...0.3.14
+[0.3.13]: https://github.com/tenable/pyTenable/compare/0.3.12...0.3.13
+[0.3.12]: https://github.com/tenable/pyTenable/compare/0.3.11...0.3.12
+[0.3.11]: https://github.com/tenable/pyTenable/compare/0.3.10...0.3.11
+[0.3.10]: https://github.com/tenable/pyTenable/compare/0.3.9...0.3.10
 [0.3.9]: https://github.com/tenable/pyTenable/compare/0.3.8...0.3.9
 [0.3.8]: https://github.com/tenable/pyTenable/compare/0.3.7...0.3.8
 [0.3.7]: https://github.com/tenable/pyTenable/compare/0.3.6...0.3.7

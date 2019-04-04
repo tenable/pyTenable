@@ -28,7 +28,7 @@ csvdownload -f plugin.id:eq:19506 -f severity:eq:Info --csv-file scan_reports.cs
 Download a report of the High & Critical Vulns and email that off to someone
 
 ```bash
-csvdownload -f severity:eq:Critical -f severity:eq:Critical --filter-type or \
+csvdownload -f severity:eq:High -f severity:eq:Critical --filter-type or \
     --csv-file high_and_crit.csv
 mail -s 'High & Critical Vulns Report' user@company.tld -A high_and_crit.csv
 ```

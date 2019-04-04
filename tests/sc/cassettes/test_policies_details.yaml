@@ -1,0 +1,74 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/1.0.0 (pyTenable/1.0.0; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/policy/1000007
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"id":"1000009","name":"Example
+        Policy","description":"","tags":"","createdTime":"1550266947","modifiedTime":"1550266947","generateXCCDFResults":"false","context":"","auditFiles":[],"preferences":{"abort_generic_webapp_if_login_fails":"no","arp_ping":"yes","av_grace_period":"0","cert_expiry_warning_days":"60","check_crl":"no","combo_arg_values":"one
+        value","detect_ssl":"yes","disable_dns_resolution":"no","display_unreachable_hosts":"no","enable_file_scanning":"no","enable_filescan_programdata":"no","enable_filescan_programfiles":"no","enable_filescan_programfilesx86":"no","enable_filescan_systemroot":"no","enable_filescan_userprofiles":"no","enum_domain_users_end_uid":"1200","enum_domain_users_start_uid":"1000","enum_local_users_end_uid":"1200","enum_local_users_start_uid":"1000","enumerate_all_ciphers":"yes","fast_network_discovery":"yes","filescan_custom_dir":"","generateXCCDFResults":"no","generic_webapp_tests":"no","generic_webapp_tests_max_time":"5","host_whitelist":"","http_param_pollution":"no","hydra_add_other_accounts":"yes","hydra_always_enable":"no","hydra_cisco_logon_pw":"","hydra_empty_passwords":"yes","hydra_exit_on_success":"no","hydra_ldap_dn":"","hydra_login_as_pw":"yes","hydra_logins_file":"","hydra_parallel_tasks":"16","hydra_passwords_file":"","hydra_postgresql_db_name":"","hydra_proxy_test_site":"","hydra_timeout":"30","hydra_web_page":"","hydra_win_account_type":"Local
+        accounts","hydra_win_pw_as_hash":"no","icmp_ping":"yes","icmp_ping_retries":"2","icmp_unreach_means_host_down":"no","log_live_hosts":"no","max_checks_per_host":"5","max_hosts_per_scan":"30","modbus_end_reg":"16","modbus_start_reg":"0","network_receive_timeout":"5","network_type":"Mixed
+        (use RFC 1918)","only_portscan_if_enum_failed":"yes","ping_the_remote_host":"yes","portscan_range":"default","provided_creds_only":"yes","reduce_connections_on_congestion":"no","report_paranoia":"Normal","report_superseded_patches":"yes","report_verbosity":"Normal","request_windows_domain_info":"yes","reverse_lookup":"no","safe_checks":"yes","scan_malware":"no","scan_netware_hosts":"no","scan_network_printers":"no","scan_ot_devices":"no","scan_webapps":"no","silent_dependencies":"yes","smtp_domain":"example.com","smtp_from":"nobody@example.com","smtp_to":"postmaster@[AUTO_REPLACED_IP]","snmp_scanner":"yes","ssh_netstat_scanner":"yes","ssl_prob_ports":"Known
+        SSL ports","start_cotp_tsap":"8","stop_at_first_flaw":"per CGI","stop_cotp_tsap":"8","stop_scan_on_disconnect":"no","svc_detection_on_all_ports":"yes","syn_firewall_detection":"Automatic
+        (normal)","syn_scanner":"yes","tcp_firewall_detection":"Automatic (normal)","tcp_ping":"yes","tcp_ping_dest_ports":"built-in","tcp_scanner":"no","test_default_oracle_accounts":"no","test_embedded_web_servers":"no","test_local_nessus_host":"yes","thorough_tests":"no","try_all_http_methods":"no","udp_ping":"no","udp_scanner":"no","unscanned_closed":"no","url_for_rfi":"http:\/\/rfi.nessus.org\/rfi.txt","use_kernel_congestion_detection":"no","user_agent_string":"Mozilla\/4.0
+        (compatible; MSIE 8.0; Windows NT 5.1; Trident\/4.0)","verify_open_ports":"no","webcrawl_exclude_regex":"\/server_privileges\\.php|logout","webcrawl_follow_dynamic_pages":"no","webcrawl_max_depth":"6","webcrawler_max_pages":"1000","webcrawler_start_page":"\/","win_known_bad_hashes":"","win_known_good_hashes":"","wmi_netstat_scanner":"yes","wol_mac_addresses":"","wol_wait_time":"5","yarascan_rules_file":""},"families":[],"status":"0","groups":[],"canUse":"true","canManage":"true","creator":{"id":"2","username":"api","firstname":"api","lastname":"user"},"owner":{"id":"2","username":"api","firstname":"api","lastname":"user"},"ownerGroup":{"id":"0","name":"Full
+        Access","description":"Full Access group"},"targetGroup":{"id":-1,"name":"","description":""},"policyTemplate":{"id":"1","name":"Advanced
+        Scan","description":"Configure a scan without using any recommendations."}},"error_code":0,"error_msg":"","warnings":[],"timestamp":1550266947}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['4007']
+      content-type: [application/json]
+      date: ['Fri, 15 Feb 2019 21:42:27 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/1.0.0 (pyTenable/1.0.0; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: DELETE
+    uri: https://securitycenter.home.cugnet.net/rest/policy/1000007
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":"","error_code":0,"error_msg":"","warnings":[],"timestamp":1550266948}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['100']
+      content-type: [application/json]
+      date: ['Fri, 15 Feb 2019 21:42:28 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

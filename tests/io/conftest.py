@@ -17,14 +17,14 @@ def vcr_config():
 @pytest.fixture
 def api():
     return TenableIO(
-        os.getenv('TIO_TEST_ADMIN_ACCESS'), 
-        os.getenv('TIO_TEST_ADMIN_SECRET'))
+        os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'), 
+        os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'))
 
 @pytest.fixture
 def stdapi():
     return TenableIO(
-        os.getenv('TIO_TEST_STD_ACCESS'), 
-        os.getenv('TIO_TEST_STD_SECRET'))
+        os.getenv('TIO_TEST_STD_ACCESS', 'ffffffffffffffffffffffffffffffff'), 
+        os.getenv('TIO_TEST_STD_SECRET', 'ffffffffffffffffffffffffffffffff'))
 
 @pytest.fixture
 def agent(request, api):

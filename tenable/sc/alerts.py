@@ -2,8 +2,6 @@
 alerts
 ======
 
-NOTE: not currently tested code.
-
 The following methods allow for interaction into the Tenable.sc 
 `Alert <https://docs.tenable.com/sccv/api/Alert.html>`_ API.
 
@@ -15,9 +13,9 @@ Methods available on ``sc.alerts``:
     .. automethod:: create
     .. automethod:: delete
     .. automethod:: details
+    .. automethod:: edit
     .. automethod:: execute
     .. automethod:: list
-    .. automethod:: update
 
 .. _iCal Date-Time:
     https://tools.ietf.org/html/rfc5545#section-3.3.5
@@ -40,10 +38,14 @@ class AlertAPI(SCEndpoint):
             if 'data_type' not in kw:
                 kw['data_type'] = 'vuln'
             kw['analysis_type'] = kw['data_type']
-            kw['query'] = self._api.analysis._query_constructor(*filters, **kw)
-            del(kw['analysis_type'])
+            kw['tool'] = ''
+            kw = self._api.analysis._query_constructor(*filters, **kw)
             del(kw['data_type'])
-
+            del(kw['query']['tool'])
+            del(kw['tool'])
+        elif 'query_id' in kw:
+            kw = self._api.analysis._query_constructor(*filters, **kw)
+        
         if 'name' in kw:
             kw['name'] = self._check('name', kw['name'], str)
 
@@ -52,7 +54,7 @@ class AlertAPI(SCEndpoint):
                 'description', kw['description'], str)
 
         if 'query' in kw:
-            doc['query'] = self._check('query', kw['query'], dict)
+            kw['query'] = self._check('query', kw['query'], dict)
 
         if 'always_exec_on_trigger' in kw:
             # executeOnEveryTrigger expected a boolean response as a lower-case
@@ -78,7 +80,8 @@ class AlertAPI(SCEndpoint):
 
         # hand off the building the schedule sub-document to the schedule 
         # document builder.
-        kw = self._schedule_document_creator(kw)
+        if 'schedule' in kw:
+            kw['schedule'] = self._schedule_constructor(kw['schedule'])
 
         # FR: at some point we should start looking into checking and 
         #     normalizing the action document.
@@ -95,10 +98,10 @@ class AlertAPI(SCEndpoint):
                 A list of attributes to return for each alert.
 
         Returns:
-            list: A list of alert resources.
+            dict: A list of alert resources.
 
         Examples:
-            >>> for alert in sc.alerts.list():
+            >>> for alert in sc.alerts.list()['manageable']:
             ...     pprint(alert)
         '''
         params = dict()
@@ -158,20 +161,11 @@ class AlertAPI(SCEndpoint):
                 Should the trigger always execute when the trigger fires, or
                 only execute when the returned data changes?  
                 Default is ``False``.
-            schedule_type (str, optional):
-                What type of alert schedule shall this be?  Available supported
-                values are ``dependent``, ``ical``, ``never``, ``rollover``, and
-                ``template``.  The default value if unspecified is ``never``.
-            schedule_start (str, optional):
-                The time in which the trigger should start firing.  This value
-                must conform to the `iCal Date-Time`_ standard.  Further this
-                parameter is only required when specifying the schedule_type as
-                ``ical``.
-            schedule_repeat (str, optional):
-                The rule that dictates the frequency and timing that the alert
-                will run.  This value must conform to the `iCal Recurrence Rule`_
-                format.  Further this parameter is only required when specifying
-                the schedule_type as ``ical``.
+            schedule (dict, optional):
+                This is the schedule dictionary that will inform Tenable.sc how 
+                often to run the alert.  If left unspecified then we will 
+                default to ``{'type': 'never'}``.  For more information refer to
+                `Schedule Dictionaries`_
             action (list):
                 The action(s) that will be performed when the alert trigger
                 fires.  Each action is a dictionary detailing what type of
@@ -240,16 +234,18 @@ class AlertAPI(SCEndpoint):
             >>> sc.alerts.create(
             ...     ('severity', '=', '3,4'),
             ...     ('exploitAvailable', '=', 'true'),
-            ...     analysis_type
             ...     trigger=('sumip', '>=', '100'),
             ...     name='Too many High or Critical and Exploitable',
-            ...     action=[{'type': 'notification', 'users': [{'id': 1}]}]
-            ... )
+            ...     action=[{
+            ...         'type': 'notification', 
+            ...         'message': 'Too many High or Crit Exploitable Vulns',
+            ...         'users': [{'id': 1}]
+            ...     }])
         '''
         payload = self._constructor(*filters, **kw)
         return self._api.post('alert', json=payload).json()['response']
 
-    def update(self, id, *filters, **kw):
+    def edit(self, id, *filters, **kw):
         '''
         Updates an existing alert.  All fields are optional and will overwrite
         the existing value.
@@ -275,20 +271,11 @@ class AlertAPI(SCEndpoint):
                 Should the trigger always execute when the trigger fires, or
                 only execute when the returned data changes?  
                 Default is ``False``.
-            schedule_type (str, optional):
-                What type of alert schedule shall this be?  Available supported
-                values are ``dependent``, ``ical``, ``never``, ``rollover``, and
-                ``template``.  The default value if unspecified is ``never``.
-            schedule_start (str, optional):
-                The time in which the trigger should start firing.  This value
-                must conform to the `iCal Date-Time`_ standard.  Further this
-                parameter is only required when specifying the schedule_type as
-                ``ical``.
-            schedule_repeat (str, optional):
-                The rule that dictates the frequency and timing that the alert
-                will run.  This value must conform to the `iCal Recurrence Rule`_
-                format.  Further this parameter is only required when specifying
-                the schedule_type as ``ical``.
+            schedule (dict, optional):
+                This is the schedule dictionary that will inform Tenable.sc how 
+                often to run the alert.  If left unspecified then we will 
+                default to ``{'type': 'never'}``.  For more information refer to
+                `Schedule Dictionaries`_
             action (list):
                 The action(s) that will be performed when the alert trigger
                 fires.  Each action is a dictionary detailing what type of

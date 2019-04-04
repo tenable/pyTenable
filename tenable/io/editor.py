@@ -21,46 +21,10 @@ Methods available on ``io.editor``:
     .. automethod:: plugin_description
 '''
 from .base import TIOEndpoint
-from tenable.utils import dict_merge
+from tenable.utils import dict_merge, policy_settings
 from io import BytesIO
 
 class EditorAPI(TIOEndpoint):
-    def parse_vals(self, item):
-        '''
-        Recursive function to attempt to pull out the various settings from
-        the scan editor.
-        '''
-        resp = dict()
-        if 'id' in item and ('default' in item
-            or ('type' in item and item['type'] in [
-                'file', 
-                'checkbox', 
-                'entry', 
-                'medium-fixed-entry'])):
-            # if we find both an 'id' and a 'default' attribute, or if we find
-            # a 'type' attribute matching one of the known attribute types, then
-            # we will parse out the data and append it to the response dictionary 
-            if not 'default' in item:
-                item['default'] = ""
-            resp[item['id']] = item['default']
-
-        for key in item.keys():
-            # here we will attempt to recurse down both a list of sub-
-            # documents and an explicitly defined sub-document within the
-            # editor data-structure.
-            if key == 'modes':
-                continue
-            if (isinstance(item[key], list) 
-              and len(item[key]) > 0 
-              and isinstance(item[key][0], dict)):
-                for i in item[key]:
-                    resp = dict_merge(resp, self.parse_vals(i))
-            if isinstance(item[key], dict):
-                resp = dict_merge(resp, self.parse_vals(item[key]))
-
-        # Return the key-value pair.
-        return resp
-
     def parse_creds(self, data):
         '''
         Walks through the credential data list and returns the configured 
@@ -72,7 +36,7 @@ class EditorAPI(TIOEndpoint):
                 if len(item['instances']) > 0:
                     for i in item['instances']:
                         # Get the settings from the inputs.
-                        settings = self.parse_vals(i)
+                        settings = policy_settings(i)
                         settings['id'] = i['id']
                         settings['summary'] = i['summary']
 
@@ -125,7 +89,7 @@ class EditorAPI(TIOEndpoint):
                             resp['feed'][atype['name']] = list()
                         resp['feed'][atype['name']].append({
                             'id': audit['id'],
-                            'variables': self.parse_vals(audit)
+                            'variables': policy_settings(audit)
                         })
         return resp 
 

@@ -9,8 +9,19 @@
 .. automodule:: tenable.sc.analysis
 .. automodule:: tenable.sc.feeds
 .. automodule:: tenable.sc.files
+.. automodule:: tenable.sc.plugins
+.. automodule:: tenable.sc.policies
+.. automodule:: tenable.sc.repositories
+.. automodule:: tenable.sc.roles
+.. automodule:: tenable.sc.scan_zones
 .. automodule:: tenable.sc.scans
 .. automodule:: tenable.sc.scan_instances
+.. automodule:: tenable.sc.scanners
+.. automodule:: tenable.sc.status
+.. automodule:: tenable.sc.system
+
+.. automodule:: tenable.sc.base
+
 
 Raw HTTP Calls
 ==============
@@ -46,8 +57,16 @@ from .alerts import AlertAPI
 from .analysis import AnalysisAPI
 from .files import FileAPI
 from .feeds import FeedAPI
+from .plugins import PluginAPI
+from .policies import ScanPolicyAPI
+from .repositories import RepositoryAPI
+from .roles import RoleAPI
+from .scanners import ScannerAPI
 from .scans import ScanAPI
 from .scan_instances import ScanResultAPI
+from .scan_zones import ScanZoneAPI
+from .status import StatusAPI
+from .system import SystemAPI
 import warnings, logging
 
 
@@ -95,7 +114,7 @@ class TenableSC(APISession):
     Examples:
         A direct connection to TenableSC:
 
-        >>> from tenable.io import TenableSC
+        >>> from tenable.sc import TenableSC
         >>> sc = TenableSC('securitycenter.company.tld')
 
         A connection to TenableSC using SSL certificates:
@@ -134,7 +153,7 @@ class TenableSC(APISession):
 
     def __init__(self, host, port=443, ssl_verify=False, cert=None, adapter=None,
                  scheme='https', retries=None, backoff=None, ua_identity=None,
-                 session=None):
+                 session=None, proxies=None):
         # As we will always be passing a URL to the APISession class, we will
         # want to construct a URL that APISession (and further requests) 
         # understands.
@@ -143,7 +162,12 @@ class TenableSC(APISession):
 
         # Now lets pass the relevent parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
-        APISession.__init__(self, url, retries, backoff, ua_identity, session)
+        APISession.__init__(self, url, 
+            retries=retries, 
+            backoff=backoff, 
+            ua_identity=ua_identity, 
+            session=session,
+            proxies=proxies)
 
         # Also, as Tenable.sc is generally installed without a certificate
         # chain that we can validate, we will want to turn off verification 
@@ -168,18 +192,18 @@ class TenableSC(APISession):
         # aren't pointing to a SecurityCenter at all and should throw an error
         # stating this.
         try:
-            d = self.get('system').json()
+            self.info = self.system.details()
         except:
             raise ConnectionError('No Tenable.sc Instance at {}:{}'.format(host, port))
 
         # Now we will try to interpret the Tenable.sc information into
         # something usable.
         try:
-            self.version = d['response']['version']
-            self.build_id = d['response']['buildID']
-            self.license = d['response']['licenseStatus']
-            self.uuid = d['response']['uuid']
-            if 'token' in d['response']:
+            self.version = self.info['version']
+            self.build_id = self.info['buildID']
+            self.license = self.info['licenseStatus']
+            self.uuid = self.info['uuid']
+            if 'token' in self.info:
                 # if a token was passed in the system info page, then we should
                 # update the X-SecurityCenter header with the token info.
                 self._session.headers.update({
@@ -229,7 +253,7 @@ class TenableSC(APISession):
         '''
         resp = self.delete('token')
         self._build_session()
-
+    
     @property
     def accept_risks(self):
         return AcceptRiskAPI(self)
@@ -249,6 +273,26 @@ class TenableSC(APISession):
     @property
     def files(self):
         return FileAPI(self)
+    
+    @property
+    def plugins(self):
+        return PluginAPI(self)
+    
+    @property
+    def policies(self):
+        return ScanPolicyAPI(self)
+    
+    @property
+    def repositories(self):
+        return RepositoryAPI(self)
+    
+    @property
+    def roles(self):
+        return RoleAPI(self)
+    
+    @property
+    def scanners(self):
+        return ScannerAPI(self)
 
     @property
     def scans(self):
@@ -257,6 +301,18 @@ class TenableSC(APISession):
     @property
     def scan_instances(self):
         return ScanResultAPI(self)
+    
+    @property
+    def scan_zones(self):
+        return ScanZoneAPI(self)
+    
+    @property
+    def status(self):
+        return StatusAPI(self)
+    
+    @property
+    def system(self):
+        return SystemAPI(self)
 
 
 class SecurityCenter(TenableSC):

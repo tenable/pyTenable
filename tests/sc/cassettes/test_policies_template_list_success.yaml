@@ -1,0 +1,55 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/1.0.0 (pyTenable/1.0.0; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/policyTemplate
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":[{"id":"1","name":"Advanced
+        Scan","description":"Configure a scan without using any recommendations."},{"id":"2","name":"Host
+        Discovery","description":"A simple scan to discover live hosts and open ports."},{"id":"3","name":"Basic
+        Network Scan","description":"A full system scan suitable for any host."},{"id":"4","name":"Credentialed
+        Patch Audit","description":"Authenticate to hosts and enumerate missing updates."},{"id":"5","name":"Web
+        Application Tests","description":"Scan for published and unknown web vulnerabilities."},{"id":"6","name":"Malware
+        Scan","description":"Scan for malware on Windows and Unix systems."},{"id":"7","name":"Policy
+        Compliance Auditing","description":"Audit system configurations against a
+        known baseline."},{"id":"8","name":"Internal PCI Network Scan","description":"Perform
+        an internal PCI DSS (11.2.1) vulnerability scan."},{"id":"9","name":"SCAP
+        and OVAL Auditing","description":"Audit systems using SCAP and OVAL definitions."},{"id":"10","name":"Bash
+        Shellshock Detection","description":"Remote and local checks for CVE-2014-6271
+        and CVE-2014-7169."},{"id":"11","name":"GHOST (glibc) Detection","description":"Local
+        checks for CVE-2015-0235."},{"id":"12","name":"PCI Quarterly External Scan","description":"Approved
+        for quarterly external scanning as required by PCI."},{"id":"13","name":"DROWN
+        Detection","description":"Remote checks for CVE-2016-0800."},{"id":"14","name":"Badlock
+        Detection","description":"Remote and local checks for CVE-2016-2118 and CVE-2016-0128."},{"id":"15","name":"Intel
+        AMT Security Bypass Detection","description":"Remote and local checks for
+        CVE-2017-5689."},{"id":"16","name":"WannaCry Ransomware Detection","description":"WannaCry
+        Detection"},{"id":"17","name":"Shadow Brokers Scan","description":"Scan for
+        vulnerabilities disclosed in the Shadow Brokers leaks."},{"id":"18","name":"Spectre
+        and Meltdown Detection","description":"Remote and local checks for CVE-2017-5753,
+        CVE-2017-5715, and CVE-2017-5754"}],"error_code":0,"error_msg":"","warnings":[],"timestamp":1550265920}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['2075']
+      content-type: [application/json]
+      date: ['Fri, 15 Feb 2019 21:25:20 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

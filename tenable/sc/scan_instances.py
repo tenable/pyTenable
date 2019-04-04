@@ -2,8 +2,6 @@
 scan_instances
 ==============
 
-NOTE: not currently tested code.
-
 The following methods allow for interaction into the Tenable.sc 
 `Scan Result <https://docs.tenable.com/sccv/api/Scan-Result.html>`_ API.  While
 the Tenable.sc API refers to the model these endpoints interact with as 
@@ -20,7 +18,7 @@ Methods available on ``sc.scan_instances``:
     .. automethod:: copy
     .. automethod:: delete
     .. automethod:: details
-    .. .. automethod:: email
+    .. automethod:: email
     .. automethod:: export_scan
     .. automethod:: import_scan
     .. automethod:: list
@@ -34,7 +32,7 @@ from tenable.utils import dict_merge
 from io import BytesIO
 
 class ScanResultAPI(SCEndpoint):
-    def copy(self, id, users=None):
+    def copy(self, id, *users):
         '''
         Clones the scan instance.
 
@@ -42,8 +40,8 @@ class ScanResultAPI(SCEndpoint):
 
         Args:
             id (int): The identifier of the scan instance to clone.
-            users (list, optional): 
-                A list of user ids to associate to the scan instance.
+            *users (int): 
+                A user id to associate to the scan instance.
 
         Returns:
             dict
@@ -53,8 +51,7 @@ class ScanResultAPI(SCEndpoint):
         '''
         payload = dict()
         if users:
-            payload['users'] = [{'id': self_check('user:id', u, int)} 
-                for u in self._check('users', users, list)]
+            payload['users'] = [{'id': self._check('user:id', u, int)} for u in users]
         return self._api.post('scanResult/{}/copy'.format(
             self._check('id', id, int)), json=payload).json()['response']
 
@@ -113,24 +110,24 @@ class ScanResultAPI(SCEndpoint):
 
     def email(self, id, *emails):
         '''
-        DOC-ISSUE: SC Api Docs do not explain what this does.
+        Emails the scan results of the requested scan to the email addresses
+        defined.
 
         + `SC ScanResult Email <https://docs.tenable.com/sccv/api/Scan-Result.html#ScanResultRESTReference-/scanResult/{id}/email>`_
 
         Args:
             id (int): The identifier for the specified scan instance.
-            *emails (str): Valid email
+            *emails (str): Valid email address.
 
         Returns:
-            dict
+            str: Empty string response.
 
         Examples:
-            >>> sc.scan_instances.email(1, )
+            >>> sc.scan_instances.email(1, 'email@company.tld')
         '''
         return self._api.post('scanResult/{}/email'.format(
             self._check('id', id, int)), json={'email': ','.join(
-                [self._check('address', e, str) 
-                    for e in self._check('emails', emails, list)])}).json()['response']
+                [self._check('address', e, str) for e in emails])}).json()['response']
 
     def export_scan(self, id, fobj=None, export_format=None):
         '''
@@ -153,11 +150,11 @@ class ScanResultAPI(SCEndpoint):
                 actual file-object to write to instead.
 
         Returns:
-            FileObject: The file-like object with the resulting export.
+            FileObject: The file-like object with the resulting zipped report.
 
         Examples:
-            >>> with open('example.nessus', 'wb') as fobj:
-            ...     sc.scan_instances.export(1, fobj)
+            >>> with open('example.zip', 'wb') as fobj:
+            ...     sc.scan_instances.export_scan(1, fobj)
         '''
         resp = self._api.post('scanResult/{}/download'.format(
             self._check('id', id, int)), stream=True, json={
@@ -197,7 +194,7 @@ class ScanResultAPI(SCEndpoint):
                 is ``False``.
 
         Returns:
-            str: An emty string response.
+            str: An empty string response.
 
         Examples:
             >>> with open('example.nessus') as fobj:
@@ -233,7 +230,7 @@ class ScanResultAPI(SCEndpoint):
         Examples:
             >>> sc.scan_instances.reimport_scan(1)
         '''
-        payload = self._api.scans._constructor(kw)
+        payload = self._api.scans._constructor(**kw)
         return self._api.post('scanResult/{}/import'.format(self._check(
             'id', id, int)), json=payload).json()['response']
 
@@ -248,10 +245,12 @@ class ScanResultAPI(SCEndpoint):
                 A list of attributes to return.
 
         Returns:
-            list: A list of scan instance resources.
+            dict: A list of scan instance resources.
 
         Examples:
-            >>> for scan in sc.scan_instances.list():
+            * Retreiving all of the manageable scans instances:
+
+            >>> for scan in sc.scan_instances.list()['manageable']:
             ...     pprint(scan)
         '''
         params = dict()
@@ -272,13 +271,13 @@ class ScanResultAPI(SCEndpoint):
             id (int): The unique identifier for the scan instance.
 
         Returns:
-            list: List of scan instances modified.
+            dict: The Scan instance state
 
         Examples:
             >>> sc.scan_instances.pause(1)
         '''
         return self._api.post('scanResult/{}/pause'.format(self._check(
-            'id', id, int))).json()['response']['scanResults']
+            'id', id, int))).json()['response']
 
     def resume(self, id):
         '''
@@ -291,13 +290,13 @@ class ScanResultAPI(SCEndpoint):
             id (int): The unique identifier for the scan instance.
 
         Returns:
-            list: List of scan instances modified.
+            dict: The Scan instance state
 
         Examples:
             >>> sc.scan_instances.resume(1)
         '''
         return self._api.post('scanResult/{}/resume'.format(self._check(
-            'id', id, int))).json()['response']['scanResults']
+            'id', id, int))).json()['response']
 
     def stop(self, id):
         '''
@@ -310,7 +309,7 @@ class ScanResultAPI(SCEndpoint):
             id (int): The unique identifier for the scan instance.
 
         Returns:
-            dict: Response dictionary
+            dict: The Scan instance state
 
         Examples:
             >>> sc.scan_instances.stop(1)

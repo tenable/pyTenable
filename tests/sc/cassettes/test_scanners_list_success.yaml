@@ -5,22 +5,22 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      Content-Length: ['0']
-      Cookie: [TNS_SESSIONID=62a35777703ad7fdce4645f99c5d8e5b]
-      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
-      X-SecurityCenter: ['2105320532']
-    method: DELETE
-    uri: https://securitycenter.home.cugnet.net/rest/token
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/0.3.12 (pyTenable/0.3.12; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/scanner
   response:
-    body: {string: !!python/unicode '{"type":"regular","response":"","error_code":0,"error_msg":"","warnings":[],"timestamp":1545085135}
+    body: {string: !!python/unicode '{"type":"regular","response":[{"id":"1","name":"Internal
+        Scanner","description":"","agentCapable":"false","status":"1"},{"id":"2","name":"Tenable.io","description":"","agentCapable":"true","status":"1"},{"id":"13","name":"Example","description":"","agentCapable":"false","status":"8192"}],"error_code":0,"error_msg":"","warnings":[],"timestamp":1553266988}
 
 '}
     headers:
       cache-control: ['no-store, no-cache, must-revalidate']
       connection: [Keep-Alive]
-      content-length: ['100']
+      content-length: ['357']
       content-type: [application/json]
-      date: ['Mon, 17 Dec 2018 22:18:55 GMT']
+      date: ['Fri, 22 Mar 2019 15:03:08 GMT']
       expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
       keep-alive: ['timeout=15, max=100']
       pragma: [no-cache]

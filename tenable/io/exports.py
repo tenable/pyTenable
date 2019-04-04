@@ -11,8 +11,8 @@ Methods available on ``tio.exports``:
 .. rst-class:: hide-signature
 .. autoclass:: ExportsAPI
 
-    .. automethod:: vulns
     .. automethod:: assets
+    .. automethod:: vulns
 '''
 from .base import TIOEndpoint, APIResultsIterator
 from tenable.errors import TioExportsError
@@ -115,7 +115,7 @@ class ExportsAPI(TIOEndpoint):
                 Specifies the earliest time for a vulnerability to have been
                 discovered.  Format is a unix timestamp integer.
             last_fixed (int, optional):
-                Specifies the earliest time that vulnerabilitis may have been
+                Specifies the earliest time that vulnerabilities may have been
                 fixed.  Format is a unix timestamp integer.
             last_found (int, optional):
                 Specifies the earliest time that a vulnerability may have been
@@ -130,10 +130,19 @@ class ExportsAPI(TIOEndpoint):
                 list of severities to include as part of the export.  Supported
                 values are `info`, `low`, `medium`, `high`, and `critical`.
             since (int, optional):
-                Returned results will be bounded to only respond with objects
-                that are new or updated between this specified value and current.
-                If no since filter is specified, then the results will be unbounded
-                and return all results.
+                Returned results will be bounded based on the state of the
+                vulnerability instance detailed below.  This parameter expects a
+                unix timestamp.
+
+                * Vulns in the **open** state are bounded by ``first_found``.
+                * Vulns in the **reopened** state are bounded by ``last_found``.
+                * Vulns in the **fixed** state are bounded by ``last_fixed``.
+
+                In short it'll return active vulnerabilities based on when they
+                were first discovered, and fixed and resurfaced vulnerabilities
+                based on when they were last observed.  The idea is to relay
+                state changes of a vulnerability and use a singular export to
+                track all of these state changes.
             state (list, optional):
                 list of object states to be returned.  Supported values are
                 `open`, `reopened`, and `fixed`.
@@ -158,6 +167,16 @@ class ExportsAPI(TIOEndpoint):
             ...     pprint(vuln)
         '''
         payload = {'filters': dict()}
+    
+        # Instead of a long and drawn-out series of if statements for all of
+        # these integer filters, lets instead just loop through all of them
+        # instead.  As they all have the same logic, there isn't any reason
+        # not to shorten up the madness.
+        for option in ['since', 'first_found', 'last_found', 
+                       'last_fixed', 'first_scan_time', 
+                       'last_authenticated_scan_time', 'last_assessed']:
+            if option in kw and self._check(option, kw[option], int):
+                payload['filters'][option] = kw[option]
 
         payload['num_assets'] = str(self._check('num_assets', 
             kw['num_assets'] if 'num_assets' in kw else None, int, default=50))
@@ -174,20 +193,8 @@ class ExportsAPI(TIOEndpoint):
                 'plugin_family', kw['plugin_family'], list):
             payload['filters']['plugin_family'] = kw['plugin_family']
 
-        if 'since' in kw and self._check('since', kw['since'], int):
-            payload['filters']['since'] = kw['since']
-
         if 'cidr_range' in kw and self._check('cidr_range', kw['cidr_range'], str):
             payload['filters']['cidr_range'] = kw['cidr_range']
-
-        if 'first_found' in kw and self._check('first_found', kw['first_found'], int):
-            payload['filters']['first_found'] = kw['first_found']
-
-        if 'last_found' in kw and self._check('last_found', kw['last_found'], int):
-            payload['filters']['last_found'] = kw['last_found']
-
-        if 'last_fixed' in kw and self._check('last_fixed', kw['last_fixed'], int):
-            payload['filters']['last_fixed'] = kw['last_fixed']
 
         if 'tags' in kw and self._check('tags', kw['tags'], list):
             # if any tags were specified, then we will iterate through the list
@@ -288,8 +295,8 @@ class ExportsAPI(TIOEndpoint):
         for option in ['created_at', 'updated_at', 'terminated_at', 
                        'deleted_at', 'first_scan_time', 
                        'last_authenticated_scan_time', 'last_assessed']:
-            if option in kw and self._check(option, kw[option], int):
-                payload['filters'][option] = kw[option]
+            if option in kw:
+                payload['filters'][option] = self._check(option, kw[option], int)
 
         # Lets to the same thing we did above for integer checks for the boolean
         # ones as well.

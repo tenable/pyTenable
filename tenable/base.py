@@ -1,10 +1,10 @@
 '''
 .. autoclass:: APIResultsIterator
 '''
-import requests, sys, logging, re, time, logging
+import requests, sys, logging, re, time, logging, warnings, json
 from .errors import *
 
-__version__ = '0.3.9'
+__version__ = '0.3.15'
 __author__ = 'Steve McGrath <smcgrath@tenable.com>'
 
 
@@ -101,8 +101,17 @@ class APIEndpoint(object):
             The APISession (or sired child) instance that the endpoint will
             be using to perform calls to the API.
     '''
+    _code_status = None
 
     def __init__(self, api):
+        if self._code_status and self._code_status != 'stable':
+            warnings.warn(
+                ' '.join([
+                    'The {}.{}'.format(self.__module__, self.__class__.__name__),
+                    'is in a {} state'.format(self._code_status),
+                    'endpoints not considered "stable", may not be tested,', 
+                    'and may change'
+            ]))
         self._api = api
 
     def _check(self, name, obj, expected_type, 
@@ -241,17 +250,7 @@ class APIEndpoint(object):
 
         # if we made it this fire without an exception being raised, then assume
         # everything is good to go and return the object passed to us initially.
-        return obj
-
-
-#class APIModel(object):
-#    def __init__(self, api_session=None, **entries):
-#        self._api = api_session
-#        self.__dict__.update(entries)
-#    def __str__(self):
-#        return str(self.id)
-#    def dict(self):
-#        return self.__dict__   
+        return obj 
 
 
 class APISession(object):
@@ -283,6 +282,7 @@ class APISession(object):
     '''
     _restricted_paths = dict()
     _ua_identity = None
+    _proxies = None
     _error_codes = {
         400: InvalidInputError,
         401: PermissionError,
@@ -309,7 +309,7 @@ class APISession(object):
     '''
 
     def __init__(self, url=None, retries=None, backoff=None, 
-                 ua_identity=None, session=None):
+                 ua_identity=None, session=None, proxies=None):
         if url:
             self._url = url
         if retries and isinstance(retries, int):
@@ -318,9 +318,11 @@ class APISession(object):
             self._backoff = backoff
         if ua_identity and isinstance(ua_identity, str):
             self._ua_identity = ua_identity
+        if proxies and isinstance(proxies, dict):
+            self._proxies = proxies
         self._log = logging.getLogger('{}.{}'.format(
             self.__module__, self.__class__.__name__))
-        self._build_session()
+        self._build_session(session)
 
     def _build_session(self, session=None):
         '''
@@ -335,6 +337,8 @@ class APISession(object):
             self._session = session
         else:
             self._session = requests.Session()
+        if self._proxies:
+            self._session.proxies.update(self._proxies)
         self._session.headers.update({
             'User-Agent': '{} (pyTenable/{}; Python/{})'.format(identity,
                 __version__, '.'.join([str(i) for i in sys.version_info][0:3])),
@@ -367,10 +371,7 @@ class APISession(object):
                     # sensitive data (such as login information) then pass the
                     # log on unredacted.
                     self._log.debug('path={}, query={}, body={}'.format(
-                        path,
-                        kwargs['params'] if 'params' in kwargs else dict(),
-                        kwargs['json'] if 'json' in kwargs else dict(),
-                    ))
+                        path, kwargs.get('params', {}), kwargs.get('json', {})))
                 else:
                     # The path was a restricted path, generate the log, however
                     # redact the information.
@@ -381,9 +382,12 @@ class APISession(object):
             resp = self._session.request(method, 
                 '{}/{}'.format(self._url, path), **kwargs)
             status = resp.status_code
-            if 'X-Request-Uuid' in resp.headers:
+
+            # If there is a Request UUID then we will want to log the UUID just
+            # incase we may need it for tracking down what happened within the
+            if resp.headers.get('x-request-uuid'):
                 self._log.debug('Request-UUID {} for {}'.format(
-                    resp.headers['X-Request-Uuid'], 
+                    resp.headers.get('x-request-uuid'), 
                     '{}/{}'.format(self._url, path)))
 
             if status in [429, 501, 502, 503]:
@@ -393,11 +397,8 @@ class APISession(object):
                 # we will use the _backoff attribute to build a back-off timer
                 # based on the number of retries we have already performed.
                 retries += 1
-                if 'Retry-After' in resp.headers:
-                    sleeper = int(resp.headers['Retry-After'])
-                else:
-                    sleeper = retries * self._backoff
-                time.sleep(sleeper)
+                time.sleep(float(resp.headers.get(
+                    'retry-after', float(retries) * float(self._backoff))))
 
                 # The need to potentially modify the request for subsequent
                 # calls if the whole reason that we aren't using the default
@@ -424,8 +425,8 @@ class APISession(object):
     def get(self, path, **kwargs):
         '''
         Initiates an HTTP GET request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed:
 
         Args:
             path (str):
@@ -435,20 +436,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('GET', path, **kwargs)
 
     def post(self, path, **kwargs):
         '''
         Initiates an HTTP POST request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed:
 
         Args:
             path (str):
@@ -458,20 +454,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('POST', path, **kwargs)
 
     def put(self, path, **kwargs):
         '''
         Initiates an HTTP PUT request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed:
 
         Args:
             path (str):
@@ -481,20 +472,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('PUT', path, **kwargs)
 
     def patch(self, path, **kwargs):
         '''
         Initiates an HTTP PATCH request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed:
 
         Args:
             path (str):
@@ -504,20 +490,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('PATCH', path, **kwargs)
 
     def delete(self, path, **kwargs):
         '''
         Initiates an HTTP DELETE request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed:
 
         Args:
             path (str):
@@ -527,20 +508,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('DELETE', path, **kwargs)
 
     def head(self, path, **kwargs):
         '''
         Initiates an HTTP HEAD request using the specified path.  Refer to the
-        `Requests documentation`_ for more detailed information on what keyword
-        arguments can be passed: 
+        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
+        for more detailed information on what keyword arguments can be passed: 
 
         Args:
             path (str):
@@ -550,11 +526,6 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response`_: 
-
-        .. _requests.Response:
-            http://docs.python-requests.org/en/master/api/#requests.Response
-        .. _Requests documentation:
-            http://docs.python-requests.org/en/master/api/#requests.request
+            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
         '''
         return self._request('HEAD', path, **kwargs)

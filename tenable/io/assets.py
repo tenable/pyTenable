@@ -16,6 +16,7 @@ Methods available on ``tio.assets``:
     .. automethod:: import_job_details
     .. automethod:: list
     .. automethod:: list_import_jobs
+    .. automethod:: tags
 '''
 from .base import TIOEndpoint
 
@@ -54,6 +55,27 @@ class AssetsAPI(TIOEndpoint):
         return self._api.get(
             'assets/{}'.format(
                 self._check('uuid', uuid, str)
+            )).json()
+
+    def tags(self, uuid):
+        '''
+        Retrieves the details about a specific asset.
+
+        `tags: asset-tags <https://developer.tenable.com/tenableio/reference#tags-list-asset-tags-1>`_
+
+        Args:
+            uuid (str):
+                The UUID (unique identifier) for the asset.
+
+        Returns:
+            dict: Asset resource definition.
+
+        Examples:
+            >>> asset = tio.assets.tags('00000000-0000-0000-0000-000000000000')
+        '''
+        return self._api.get(
+            'tags/assets/{}/assignments'.format(
+                self._check('uuid', uuid, 'uuid')
             )).json()
 
     def asset_import(self, source, *assets):

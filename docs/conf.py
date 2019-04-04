@@ -12,7 +12,12 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-autodoc_mock_imports = ['lxml', 'dateutil', 'dateutil.parser']
+autodoc_mock_imports = [
+    'lxml', 
+    'dateutil', 
+    'dateutil.parser', 
+    'semver'
+]
 
 import os, sys, datetime
 sys.path.insert(0, os.path.abspath('..'))
@@ -96,8 +101,12 @@ html_theme = 'alabaster'
 html_theme_options = {
     'description': 'A Python library for Tenable application APIs',
     'fixed_sidebar': False,
+    'logo': 'logo.png',
+    'touch_icon': 'logo.png',
+    'logo_name': 'pyTenable',
     'github_user': 'tenable',
     'github_repo': 'pyTenable',
+    'github_button': True,
     'travis_button': True,
     'analytics_id': 'UA-131275974-1',
 }
