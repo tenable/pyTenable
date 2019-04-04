@@ -137,7 +137,7 @@ class SCEndpoint(APIEndpoint):
         '''
         self._check('schedule:item', item, dict)
         resp = {'type': self._check('schedule:type', item['type'], str, 
-            choices=['ical', 'dependent', 'never', 'rollover', 'template'],
+            choices=['ical', 'dependent', 'never', 'rollover', 'template', 'now'],
             default='never')}
         
         if resp['type'] == 'ical' and 'start' in item and 'repeatRule' in item:
