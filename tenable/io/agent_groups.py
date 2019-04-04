@@ -201,6 +201,25 @@ class AgentGroupsAPI(TIOEndpoint):
                 self._check('group_id', group_id, int)
             )).json()
 
+    def list(self, scanner_id=1):
+        '''
+        Retrieves the list of agent groups configured
+
+        Args:
+            scanner_id (int, optional): The id of the scanner
+
+        Returns:
+             list: Listing of agent group resource records
+
+        Examples:
+            >>>> for agent_group in tio.agent_groups.list():
+            ...     pprint(agent_group)
+
+        '''
+
+        return self._api.get('scanners/{}/agent-groups'.format(self._check('scanner_id',
+                                                                           scanner_id, int))).json()['groups']
+
     def task_status(self, group_id, task_uuid, scanner_id=1):
         '''
         Retrieves the current status of a bulk task.
