@@ -19,3 +19,8 @@ env_builder
 /tests/sc/cassettes/sc_login.yaml-backup
 /tests/sc/cassettes/sc_logout.yaml-backup
 /tests/sc/cassettes/scan_policy.yml-backup
+/local.settings.sh.bak
+/6
+/120.zip
+/1000007.xml
+/*.nessus

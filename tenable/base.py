@@ -3,9 +3,7 @@
 '''
 import requests, sys, logging, re, time, logging, warnings, json
 from .errors import *
-
-__version__ = '0.3.15'
-__author__ = 'Steve McGrath <smcgrath@tenable.com>'
+from . import __version__, __author__
 
 
 class APIResultsIterator(object):

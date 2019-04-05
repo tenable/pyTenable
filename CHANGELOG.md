@@ -4,9 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.16]
+### Added
+- Added and tested out support for TenableSC UserAPI #24
+- Added and tested out support for TenableSC GroupAPI #24
+- Added and tested TenableIO.agent_groups.list() #105
+
+### Fixed
+- Tenable.sc Schedule document validation extended to support `now` for scans #102
+
+
+## [0.3.15]
 ### Added
 - Added and tested out support for TenableSC RoleAPI #24
+
+### Fixed
+- Retries would throw an error as they weren't floats.
+- Exports would erroneously set an option if set to none.
+- The scan history test cassette was modified to match the new call.
 
 ## [0.3.14]
 ### Fixed
@@ -219,7 +234,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.14...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.16...master
+[0.3.16]: https://github.com/tenable/pyTenable/compare/0.3.15...0.3.16
+[0.3.15]: https://github.com/tenable/pyTenable/compare/0.3.14...0.3.15
 [0.3.14]: https://github.com/tenable/pyTenable/compare/0.3.13...0.3.14
 [0.3.13]: https://github.com/tenable/pyTenable/compare/0.3.12...0.3.13
 [0.3.12]: https://github.com/tenable/pyTenable/compare/0.3.11...0.3.12

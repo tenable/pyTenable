@@ -9,6 +9,7 @@
 .. automodule:: tenable.sc.analysis
 .. automodule:: tenable.sc.feeds
 .. automodule:: tenable.sc.files
+.. automodule:: tenable.sc.groups
 .. automodule:: tenable.sc.plugins
 .. automodule:: tenable.sc.policies
 .. automodule:: tenable.sc.repositories
@@ -57,6 +58,7 @@ from .alerts import AlertAPI
 from .analysis import AnalysisAPI
 from .files import FileAPI
 from .feeds import FeedAPI
+from .groups import GroupAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
 from .repositories import RepositoryAPI
@@ -67,6 +69,7 @@ from .scan_instances import ScanResultAPI
 from .scan_zones import ScanZoneAPI
 from .status import StatusAPI
 from .system import SystemAPI
+from .users import UserAPI
 import warnings, logging
 
 
@@ -275,6 +278,10 @@ class TenableSC(APISession):
         return FileAPI(self)
     
     @property
+    def groups(self):
+        return GroupAPI(self)
+    
+    @property
     def plugins(self):
         return PluginAPI(self)
     
@@ -313,6 +320,10 @@ class TenableSC(APISession):
     @property
     def system(self):
         return SystemAPI(self)
+    
+    @property
+    def users(self):
+        return UserAPI(self)
 
 
 class SecurityCenter(TenableSC):
