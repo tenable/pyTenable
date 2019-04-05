@@ -109,24 +109,19 @@ class ScansAPI(TIOEndpoint):
         # what scanner to use.
         if 'scanner' in kw:
             scanners = self._api.scanners.allowed_scanners()
-            try:
-                # we will always want to attempt to use the UUID first as it's
-                # the cheapest check that we can run.
-                scan['settings']['scanner_id'] = self._check(
-                    'scanner', kw['scanner'], 'scanner-uuid', 
-                    choices=[s['id'] for s in scanners])
 
-            except (UnexpectedValueError, TypeError):
-                # as an UnexpectedValueError was raised, the data may just be
-                # the name of a scanner.  If this is the case, then we will want
-                # to attempt to enumerate the scanner list and if we see a match,
-                # use that scanner's UUID instead.
-                for item in scanners:
-                    if item['name'] == kw['scanner']:
-                        scan['settings']['scanner_id'] = item['id']
-
-                if 'scanner_id' not in scan['settings']:
-                    raise UnexpectedValueError('scanner setting is invalid.')
+            # We will want to attempt to enumerate the scanner list and if 
+            # we see a name match, replace the scanner name with the UUID 
+            # of the scanner instead.
+            for item in scanners:
+                if item['name'] == kw['scanner']:
+                    kw['scanner'] = item['id']
+            
+            # we will always want to attempt to use the UUID first as it's
+            # the cheapest check that we can run.
+            scan['settings']['scanner_id'] = self._check(
+                'scanner', kw['scanner'], 'scanner-uuid', 
+                choices=[s['id'] for s in scanners])
             del(kw['scanner'])
 
         # If the targets parameter is specified, then we will need to convert
