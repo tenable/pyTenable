@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Fixed
+- Addressed issue where UnexpectedValueError was sometimes raised when specifying a scanner by name in tio.scans._create_scan_document.
+
 ## [0.3.16]
 ### Added
 - Added and tested out support for TenableSC UserAPI #24
