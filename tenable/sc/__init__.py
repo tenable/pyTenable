@@ -61,6 +61,7 @@ from .feeds import FeedAPI
 from .groups import GroupAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
+from .recast_risks import RecastRiskAPI
 from .repositories import RepositoryAPI
 from .roles import RoleAPI
 from .scanners import ScannerAPI
@@ -288,6 +289,10 @@ class TenableSC(APISession):
     @property
     def policies(self):
         return ScanPolicyAPI(self)
+    
+    @property
+    def recast_risks(self):
+        return RecastRiskAPI(self)
     
     @property
     def repositories(self):
