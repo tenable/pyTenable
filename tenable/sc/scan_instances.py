@@ -234,7 +234,7 @@ class ScanResultAPI(SCEndpoint):
         return self._api.post('scanResult/{}/import'.format(self._check(
             'id', id, int)), json=payload).json()['response']
 
-    def list(self, fields=None):
+    def list(self, fields=None, start_time=None, end_time=None):
         '''
         Retreives the list of scan instances.
 
@@ -243,6 +243,12 @@ class ScanResultAPI(SCEndpoint):
         Args:
             fields (list, optional): 
                 A list of attributes to return.
+
+            start_time (int, optional):
+                Epoch time to start search (searches against createdTime and defaults to now-30d)
+
+            end_time (int, optional):
+                Epoch time to end search (searches against createdTime and defaults to now)
 
         Returns:
             dict: A list of scan instance resources.
@@ -257,6 +263,12 @@ class ScanResultAPI(SCEndpoint):
         if fields:
             params['fields'] = ','.join([self._check('field', f, str) 
                 for f in fields])
+
+        if start_time:
+            params['startTime'] = str(start_time)
+
+        if end_time:
+            params['endTime'] = str(end_time)
 
         return self._api.get('scanResult', params=params).json()['response']
 
