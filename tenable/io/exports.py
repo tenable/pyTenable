@@ -25,10 +25,11 @@ class ExportsIterator(APIResultsIterator):
     minimal effort in the calling application.
     '''
     def __init__(self, api, **kw):
-        self._type = None
-        self._uuid = None
-        self._chunks = list()
-        self._processed = list()
+        self.type = None
+        self.uuid = None
+        self.chunk_id = None
+        self.chunks = list()
+        self.processed = list()
         APIResultsIterator.__init__(self, api, **kw)
 
     def _get_page(self):
@@ -37,11 +38,11 @@ class ExportsIterator(APIResultsIterator):
         '''
         def get_status():       
             # Query the API for the status of the export.
-            status = self._api.get('{}/export/{}/status'.format(self._type, self._uuid)).json()
+            status = self._api.get('{}/export/{}/status'.format(self.type, self.uuid)).json()
 
             # We need to get the list of chunks that we haven't completed yet and are
             # available for download.
-            unfinished = [c for c in status['chunks_available'] if c not in self._processed]
+            unfinished = [c for c in status['chunks_available'] if c not in self.processed]
             
             # Add the chunks_unfinished key with the unfinished list as the
             # associated value and then return the status to the caller.
@@ -54,13 +55,13 @@ class ExportsIterator(APIResultsIterator):
                 raise StopIteration()
 
             if status['status'] == 'ERROR':
-                raise TioExportsError(self._type, self._uuid)
+                raise TioExportsError(self.type, self.uuid)
 
             return status
 
         # If there are no chunks in our local queue, then we will need to query
         # the status API for more chunks to to work on.
-        if len(self._chunks) < 1:
+        if len(self.chunks) < 1:
             status = get_status()
 
             # if the export is still processing, but there aren't any chunks for 
@@ -72,15 +73,15 @@ class ExportsIterator(APIResultsIterator):
 
             # now that we have some chunks to work on, lets refresh the local
             # chunk cache and continue.
-            self._chunks = status['chunks_unfinished']
+            self.chunks = status['chunks_unfinished']
 
         # now to take the first chunk off the local queue, move it to the 
         # processed list, and then set store the results to the page attribute.
-        chunk_id = self._chunks[0]
-        self._chunks.pop(0)
-        self._processed.append(chunk_id)
+        self.chunk_id = self.chunks[0]
+        self.chunks.pop(0)
+        self.processed.append(self.chunk_id)
         self.page = self._api.get('{}/export/{}/chunks/{}'.format(
-            self._type, self._uuid, chunk_id)).json()
+            self.type, self.uuid, self.chunk_id)).json()
 
     def next(self):
         '''
@@ -218,7 +219,7 @@ class ExportsAPI(TIOEndpoint):
         uuid = self._api.post('vulns/export', json=payload).json()['export_uuid']
         self._api._log.debug('Initiated vuln export {}'.format(uuid))
 
-        return ExportsIterator(self._api, _type='vulns', _uuid=uuid)
+        return ExportsIterator(self._api, type='vulns', uuid=uuid)
 
     def assets(self, **kw):
         '''
@@ -329,4 +330,4 @@ class ExportsAPI(TIOEndpoint):
         uuid = self._api.post('assets/export', json=payload).json()['export_uuid']
         self._api._log.debug('Initiated asset export {}'.format(uuid))
 
-        return ExportsIterator(self._api, _type='assets', _uuid=uuid)
+        return ExportsIterator(self._api, type='assets', uuid=uuid)

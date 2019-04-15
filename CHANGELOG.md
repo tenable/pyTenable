@@ -5,8 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Tenable.io Exports iterator now has **uuid**, **chunk_id**, **chunks**, and
+  **processed** publicly exposed.
+
 ### Fixed
-- Addressed issue where UnexpectedValueError was sometimes raised when specifying a scanner by name in tio.scans._create_scan_document.
+- Addressed issue where UnexpectedValueError was sometimes raised when 
+  specifying a scanner by name in tio.scans._create_scan_document.
 
 ## [0.3.16]
 ### Added
@@ -15,7 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added and tested TenableIO.agent_groups.list() #105
 
 ### Fixed
-- Tenable.sc Schedule document validation extended to support `now` for scans #102
+- Tenable.sc Schedule document validation extended to support `now` for 
+  scans #102
 
 
 ## [0.3.15]
@@ -29,7 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.14]
 ### Fixed
-- Corrected Doc Issue where the downloads API was incorrectly referencing sc.alerts
+- Corrected Doc Issue where the downloads API was incorrectly referencing 
+  sc.alerts
 - Fixed issue with scan history deletion where the path was incorrect #101
 
 ## [0.3.13]
@@ -44,7 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - RetryError no longer itself throws an error due to logging.
 - Fixed type mismatch bug in IO workbench filters #97
 - Corrected issue with ScanZone updates using the wrong HTTP method #95
-- Corrected doc issue with ScanResultAPI.export not referring to the fact that the exported scan is zipped.
+- Corrected doc issue with ScanResultAPI.export not referring to the fact that 
+  the exported scan is zipped.
 - Corrected the raw HTTP method docs
 
 
@@ -52,7 +60,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added view parameter for TenableSC.analysis.scan #73
 - Added accept_risks module #18 (untested)
-- Added system module and converted the TenableSC motule to use it over a raw call #22
+- Added system module and converted the TenableSC motule to use it over a raw 
+  call #22
 - Added status module #22 (untested)
 
 ### Fixed
@@ -63,7 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added proxy support for the IO, SC, etc. #72
 
 ### Fixed
-- Fixed issue where supplied sessions weren't being properly passed to _build_session.
+- Fixed issue where supplied sessions weren't being properly passed to 
+  _build_session.
 
 ## [0.3.10]
 ### Added
@@ -100,7 +110,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added tagging support #44
 
 ### Changed
-- Tenable.sc files module was incorrectly pointing to self.post instead of self._api.post
+- Tenable.sc files module was incorrectly pointing to self.post instead of 
+  self._api.post
 - Launching a scan with alt_targets sends an array instead of a string #64
 - Tenable.sc Analysis will now handle Query IDs #63
 - Agent-Delete within Tenable.io Was using the wrong Endpoint #59
@@ -184,7 +195,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Re-pointed all SecurityCenter references to TenableSC instead
-- Refactored schedule sub-document creation into a separate constructor for re-use
+- Refactored schedule sub-document creation into a separate constructor for 
+  re-use
 - Documentation improvements
 
 
