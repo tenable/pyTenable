@@ -51,6 +51,8 @@ class APIResultsIterator(object):
 
     def __init__(self, api, **kw):
         self._api = api
+        self._log = logging.getLogger('{}.{}'.format(
+            self.__module__, self.__class__.__name__))
         self.__dict__.update(kw)
 
     def _get_page(self):
