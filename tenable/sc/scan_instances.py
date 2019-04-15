@@ -265,10 +265,10 @@ class ScanResultAPI(SCEndpoint):
                 for f in fields])
 
         if start_time:
-            params['startTime'] = str(start_time)
+            params['startTime'] = self._check('start_time', start_time, int)
 
         if end_time:
-            params['endTime'] = str(end_time)
+            params['endTime'] = self._check('end_time', end_time, int)
 
         return self._api.get('scanResult', params=params).json()['response']
 
