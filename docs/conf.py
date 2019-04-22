@@ -13,9 +13,9 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 autodoc_mock_imports = [
-    'lxml', 
-    'dateutil', 
-    'dateutil.parser', 
+    'lxml',
+    'dateutil',
+    'dateutil.parser',
     'semver'
 ]
 
