@@ -7,6 +7,7 @@
 .. automodule:: tenable.sc.alerts
 .. automodule:: tenable.sc.accept_risks
 .. automodule:: tenable.sc.analysis
+.. automodule:: tenable.sc.audit_files
 .. automodule:: tenable.sc.feeds
 .. automodule:: tenable.sc.files
 .. automodule:: tenable.sc.groups
@@ -27,12 +28,12 @@
 Raw HTTP Calls
 ==============
 
-Even though the ``TenableSC`` object pythonizes the Tenable.sc API for 
-you, there may still bee the occasional need to make raw HTTP calls to the 
-Tenable.sc API.  The methods listed below aren't run through any 
-naturalization by the library aside from the response code checking.  These 
-methods effectively route directly into the requests session.  The responses 
-will be Response objects from the ``requests`` library.  In all cases, the path 
+Even though the ``TenableSC`` object pythonizes the Tenable.sc API for
+you, there may still bee the occasional need to make raw HTTP calls to the
+Tenable.sc API.  The methods listed below aren't run through any
+naturalization by the library aside from the response code checking.  These
+methods effectively route directly into the requests session.  The responses
+will be Response objects from the ``requests`` library.  In all cases, the path
 is appended to the base ``url`` parameter that the ``TenableSC`` object was
 instantiated with.
 
@@ -56,6 +57,7 @@ from tenable.errors import *
 from .accept_risks import AcceptRiskAPI
 from .alerts import AlertAPI
 from .analysis import AnalysisAPI
+from .audit_files import AuditFileAPI
 from .files import FileAPI
 from .feeds import FeedAPI
 from .groups import GroupAPI
@@ -93,7 +95,7 @@ class TenableSC(APISession):
         cert (tuple, optional):
             The client-side SSL certificate to use for authentication.  This
             format could be either a tuple or a string pointing to the
-            certificate.  For more details, please refer to the 
+            certificate.  For more details, please refer to the
             `Requests Client-Side Certificates`_ documentation.
         port (int, optional):
             The port number to connect to on the specified host.  The
@@ -107,13 +109,13 @@ class TenableSC(APISession):
         session (requests.Session, optional):
             If a requests Session is provided, the provided session will be used
             instead of constructing one during initialization.
-        ssl_verify (bool, optional): 
+        ssl_verify (bool, optional):
             Should the SSL certificate on the Tenable.sc instance be verified?
             Default is False.
         ua_identity (str, optional):
             An application identifier to be added into the User-Agent string
             for the purposes of application identification.
-        
+
 
     Examples:
         A direct connection to TenableSC:
@@ -123,18 +125,18 @@ class TenableSC(APISession):
 
         A connection to TenableSC using SSL certificates:
 
-        >>> sc = TenableSC('securitycenter.company.tld', 
+        >>> sc = TenableSC('securitycenter.company.tld',
         ...     cert=('/path/client.cert', '/path/client.key'))
 
-        Using an adaptor to use a passworded certificate (via the immensely 
+        Using an adaptor to use a passworded certificate (via the immensely
         useful `requests_pkcs12`_ adaptor):
 
         >>> from requests_pkcs12 import Pkcs12Adapter
         >>> adapter = Pkcs12Adapter(
-        ...     pkcs12_filename='certificate.p12', 
+        ...     pkcs12_filename='certificate.p12',
         ...     pkcs12_password='omgwtfbbq!')
         >>> sc = TenableSC('securitycenter.company.tld', adapter=adapter)
-    
+
     For more information, please See Tenable's `SC API documentation`_ and
     the `SC API Best Practices Guide`_.
 
@@ -159,22 +161,22 @@ class TenableSC(APISession):
                  scheme='https', retries=None, backoff=None, ua_identity=None,
                  session=None, proxies=None):
         # As we will always be passing a URL to the APISession class, we will
-        # want to construct a URL that APISession (and further requests) 
+        # want to construct a URL that APISession (and further requests)
         # understands.
         base = '{}://{}:{}'.format(scheme, host, port)
         url = '{}/rest'.format(base)
 
         # Now lets pass the relevent parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
-        APISession.__init__(self, url, 
-            retries=retries, 
-            backoff=backoff, 
-            ua_identity=ua_identity, 
+        APISession.__init__(self, url,
+            retries=retries,
+            backoff=backoff,
+            ua_identity=ua_identity,
             session=session,
             proxies=proxies)
 
         # Also, as Tenable.sc is generally installed without a certificate
-        # chain that we can validate, we will want to turn off verification 
+        # chain that we can validate, we will want to turn off verification
         # and the associated warnings unless told to otherwise:
         self._session.verify = ssl_verify
         if not ssl_verify:
@@ -257,7 +259,7 @@ class TenableSC(APISession):
         '''
         resp = self.delete('token')
         self._build_session()
-    
+
     @property
     def accept_risks(self):
         return AcceptRiskAPI(self)
@@ -271,37 +273,41 @@ class TenableSC(APISession):
         return AnalysisAPI(self)
 
     @property
+    def audit_files(self):
+        return AuditFileAPI(self)
+
+    @property
     def feeds(self):
         return FeedAPI(self)
 
     @property
     def files(self):
         return FileAPI(self)
-    
+
     @property
     def groups(self):
         return GroupAPI(self)
-    
+
     @property
     def plugins(self):
         return PluginAPI(self)
-    
+
     @property
     def policies(self):
         return ScanPolicyAPI(self)
-    
+
     @property
     def recast_risks(self):
         return RecastRiskAPI(self)
-    
+
     @property
     def repositories(self):
         return RepositoryAPI(self)
-    
+
     @property
     def roles(self):
         return RoleAPI(self)
-    
+
     @property
     def scanners(self):
         return ScannerAPI(self)
@@ -313,19 +319,19 @@ class TenableSC(APISession):
     @property
     def scan_instances(self):
         return ScanResultAPI(self)
-    
+
     @property
     def scan_zones(self):
         return ScanZoneAPI(self)
-    
+
     @property
     def status(self):
         return StatusAPI(self)
-    
+
     @property
     def system(self):
         return SystemAPI(self)
-    
+
     @property
     def users(self):
         return UserAPI(self)
@@ -343,8 +349,7 @@ class SecurityCenter(TenableSC):
             ' '.join([
                 'The SecurityCenter class has been replaced by the TenableSC',
                 'class.  The existing SecurityCenter class will be removed in',
-                'the first stable version (1.0).']), 
+                'the first stable version (1.0).']),
             Warning)
-        TenableSC.__init__(self, host, port, ssl_verify, 
+        TenableSC.__init__(self, host, port, ssl_verify,
             cert, scheme, retries, backoff)
-    
