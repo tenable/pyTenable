@@ -1,14 +1,15 @@
 language: python
 python:
-  - "2.7"
-  - "3.4"
-  - "3.5"
-  - "3.6"
+- '2.7'
+- '3.4'
+- '3.5'
+- '3.6'
 install:
-  - |
-    pip install -r dev-requirements.txt
+- 'pip install -r dev-requirements.txt
+
+'
 script:
-  - pytest --vcr-record=none --cov=tenable tests
+- pytest --vcr-record=none --cov=tenable tests
 branches:
   only:
   - master
@@ -17,7 +18,7 @@ deploy:
   provider: pypi
   user: stevemcgrath
   password:
-    secure: qV8Oku7KmlkxZwbgwYvs7mEH767L0DpHEx7OrMWz9YMAMVJdlFNyEGsAB3sgu8yE7alN2Y2QxIvmImpZqpbN+4dtOLf15/NrT1+jZqjiRkiodouzXFR+oJVlnO5CIgoJ4psWRKXRv3aBcnW0PSt7SAxmGTPUy6zh60HMYO7dGkpla9dkH07hh/7fCmnsrzhfEbqxZP9gBRJgvdSUqS+VSqFvGRBIQbfE+DJEbMqIqezIBVlC3WggEAGJzLpSmuzBOsVCwDRtKjHEb/u7t+n1S/zFacXkEEfBs8r04vtLp1tKVcfwo/u08W+uBecJqDpkWAmRAvih5iSnQaQmL4lWVP+wxl7mDKng1n3Vd5M6+O0tGF01gzqVy7l3DMFCdDpc9fPdzrbnb2Iqby7/W5Bx28v2QkwGeHANYskpgxnmqwEek18J6TppDt1Fe4H9kZslZFb+6bRxzGy2cO+344sJO8NFMirqfSh1wPdn5RdrDeLz/C/JKqu1UoiGiLMwZIKCimka7I4Cd5RC9v2GT1ota4Yuq1b9Q113rqHcZ1yh9f4e6XBimyq/r2RvE9GSI/7tPI0CL2oM+3MhXtAMuQCWLco9G9WrUx+Bkfy2YbU61JptwQCO+pZgkKl7wF/x4djD9k0JomYGT2H76Mz/AaWQd8u42oLwWXLGrxIx1hAu4p4=
+    secure: oqakiyseiKO3b2xoOLxCPDNJI/kPrrjk06OQG7GzbbjI1D8lMgQB6TnIW1qEv2MdXlDuQd4ViqAV5UQyt1mnibjEpdI2ECAtGi+CJSrmmQxiEuiNGJE35p+7slc5GKoBOkV7CEu2o4fKvAQXCWtIgN0DDF0IFpeCol2FtKVo9V2Iw8jl//WL9IEis+56SxccUXf2bHMkwOuYh/pHv27JdMvox7/hhiG3FmHgGA1GunAlbiUrOhz6+wTXJNFlIBjDHnwstTP1MmdmCJNlsftzE3hD0CA8BS1FtiJY0UlSbMfZv8wwwDAnaZqmO1la8za/0aYIKaTUkvTW9rxckv+aZi2/Up73osdQ4Lw2EydRaUweYPAPqHthsa1rDFAvteGBm8y3JfJoFWaO4Z+dxc02+LMv+oxZwXd3QFZMniEBV/YOYB6tCUifKjD/n+RT/CVLVEjaGBT3kUIF6G1rI8O9HgiCiTLWifQ1xLRy1KNxtdJvDO6GmmAs4XhbZy1vrerygp0OXBT65b1HV/9GJwvyTNeuhztdXARslJGS7tA6KCFG0NoiU+G82nJ8mzm+5yBE3uf+gBW+413dLMoD+vSeCjPM7cUZ2cGdkktFT/Vse0LHg0tM6aqIeODm47toS1Cbix81G4L/SHbHiKJ5zCsO3GgLPlO2YdU9dx92PFRnMSY=
   skip_existing: true
   on:
     tags: true
