@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.18]
+### Added
+- Added and tested out support for TenavleSC Credentials #76
+
+### Fixed
+- Various documentation issues reported by sphinx addressed
+
 ## [0.3.17]
 ### Added
 - Analysis filters now allow for collapsing lists if id dicts into lists of
@@ -255,8 +262,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.17...master
-[0.3.16]: https://github.com/tenable/pyTenable/compare/0.3.16...0.3.17
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.18...master
+[0.3.18]: https://github.com/tenable/pyTenable/compare/0.3.17...0.3.18
+[0.3.17]: https://github.com/tenable/pyTenable/compare/0.3.16...0.3.17
 [0.3.16]: https://github.com/tenable/pyTenable/compare/0.3.15...0.3.16
 [0.3.15]: https://github.com/tenable/pyTenable/compare/0.3.14...0.3.15
 [0.3.14]: https://github.com/tenable/pyTenable/compare/0.3.13...0.3.14
