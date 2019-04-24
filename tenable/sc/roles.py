@@ -2,11 +2,8 @@
 roles
 =====
 
-.. warning:: This module is flagged as "beta", and may change, 
-             and may not bet tested.
-
-The following methods allow for interaction into the Tenable.sc 
-`Roles <https://docs.tenable.com/sccv/api/Role.html>`_ API.  These 
+The following methods allow for interaction into the Tenable.sc
+`Roles <https://docs.tenable.com/sccv/api/Role.html>`_ API.  These
 items are typically seen under the **User Roles** section of Tenable.sc.
 
 Methods available on ``sc.roles``:
@@ -30,11 +27,11 @@ class RoleAPI(SCEndpoint):
         if 'name' in kw:
             # Validate that the name parameter is a string.
             self._check('name', kw['name'], str)
-        
+
         if 'description' in kw:
             # Validate that the description parameter is a string.
             self._check('description', kw['description'], str)
-        
+
         # Snake-cased boolean role mapping to the API attributes.
         mapping = {
             'manage_groups': 'permManageGroups',
@@ -61,15 +58,15 @@ class RoleAPI(SCEndpoint):
             'manage_recast_risk_rules': 'permManageRecastRiskRules',
         }
 
-        # iterate through the keys, converting the boolean values to the 
+        # iterate through the keys, converting the boolean values to the
         # lowercased strings values that the API expects to see.
         for key in mapping.keys():
             if key in kw:
                 kw[mapping[key]] = str(self._check(key, kw[key], bool)).lower()
                 del(kw[key])
-        
+
         return kw
-    
+
     def create(self, name, **kw):
         '''
         Creates a role.
@@ -78,7 +75,7 @@ class RoleAPI(SCEndpoint):
 
         Args:
             name (str): The name of the new role to create.
-            descrioption (str, optional): 
+            descrioption (str, optional):
                 A description for the role to be created.
             can_agent_scan (bool, optional):
                 Are members of this role allowed to perform agent scans? If left
@@ -87,20 +84,20 @@ class RoleAPI(SCEndpoint):
                 Are members of this role allowed to perform feed updates? If
                 left unspecified, the default is ``False``.
             can_import_scan (bool, optional):
-                Are members of this role allowed to import scans?  If left 
+                Are members of this role allowed to import scans?  If left
                 unspecified, the default is ``False``.
             can_scan (bool, optional):
-                Are members of this role allowed to perform scans?  If left 
+                Are members of this role allowed to perform scans?  If left
                 unspecified, the default is ``False``.
             can_share (bool, optional):
                 Are members of this role allowed to share objects with other
                 groups?  If left unspecified, the default is ``False``.
             can_view_logs (bool, optional):
                 Are members of this role allowed to view the organizational
-                logs from Tenable.sc?  If left unspecified, the default is 
+                logs from Tenable.sc?  If left unspecified, the default is
                 ``False``.
             create_alerts (bool, optional):
-                Are members of this role allowed to create alerts? If left 
+                Are members of this role allowed to create alerts? If left
                 unspecified, the default is ``False``.
             create_auditfiles (bool, optional):
                 Are members of this role allowed to create their own audit
@@ -112,7 +109,7 @@ class RoleAPI(SCEndpoint):
                 Are members of this role allowed to create scan policies?
                 If left unspecified, the default is ``False``.
             create_tickets (bool, optional):
-                Are members of this role allowed to create tickets?  If left 
+                Are members of this role allowed to create tickets?  If left
                 unspecified, the default is ``False``.
             manage_accepted_risk_rules (bool, optional):
                 Are members of this role allowed to manage accepted risk rules?
@@ -138,10 +135,10 @@ class RoleAPI(SCEndpoint):
             manage_roles (bool, optional):
                 Are members of this role allowed to manage group role
                 configurations?  If left unspecified, the default is ``False``.
-        
+
         Returns:
-            dict: The newly created role. 
-        
+            dict: The newly created role.
+
         Examples:
             >>> role = sc.roles.create('Example Role',
             ...     can_scan=True, can_import_scan=True)
@@ -149,7 +146,7 @@ class RoleAPI(SCEndpoint):
         kw['name'] = name
         payload = self._constructor(**kw)
         return self._api.post('role', json=payload).json()['response']
-    
+
     def details(self, id, fields=None):
         '''
         Returns the details for a specific role.
@@ -173,18 +170,18 @@ class RoleAPI(SCEndpoint):
 
         return self._api.get('role/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
-    
+
     def edit(self, id, **kw):
         '''
         Edits a role.
 
-        + `role: edit <>https://docs.tenable.com/sccv/api/Role.html#role_id_PATCH`_
+        + `role: edit <https://docs.tenable.com/sccv/api/Role.html#role_id_PATCH>`_
 
         Args:
             id (int): The numeric identifier for the role.
-            name (str, optional): 
+            name (str, optional):
                 The name of the new role to create.
-            descrioption (str, optional): 
+            descrioption (str, optional):
                 A description for the role to be created.
             can_agent_scan (bool, optional):
                 Are members of this role allowed to perform agent scans? If left
@@ -193,20 +190,20 @@ class RoleAPI(SCEndpoint):
                 Are members of this role allowed to perform feed updates? If
                 left unspecified, the default is ``False``.
             can_import_scan (bool, optional):
-                Are members of this role allowed to import scans?  If left 
+                Are members of this role allowed to import scans?  If left
                 unspecified, the default is ``False``.
             can_scan (bool, optional):
-                Are members of this role allowed to perform scans?  If left 
+                Are members of this role allowed to perform scans?  If left
                 unspecified, the default is ``False``.
             can_share (bool, optional):
                 Are members of this role allowed to share objects with other
                 groups?  If left unspecified, the default is ``False``.
             can_view_logs (bool, optional):
                 Are members of this role allowed to view the organizational
-                logs from Tenable.sc?  If left unspecified, the default is 
+                logs from Tenable.sc?  If left unspecified, the default is
                 ``False``.
             create_alerts (bool, optional):
-                Are members of this role allowed to create alerts? If left 
+                Are members of this role allowed to create alerts? If left
                 unspecified, the default is ``False``.
             create_auditfiles (bool, optional):
                 Are members of this role allowed to create their own audit
@@ -218,7 +215,7 @@ class RoleAPI(SCEndpoint):
                 Are members of this role allowed to create scan policies?
                 If left unspecified, the default is ``False``.
             create_tickets (bool, optional):
-                Are members of this role allowed to create tickets?  If left 
+                Are members of this role allowed to create tickets?  If left
                 unspecified, the default is ``False``.
             manage_accepted_risk_rules (bool, optional):
                 Are members of this role allowed to manage accepted risk rules?
@@ -244,17 +241,17 @@ class RoleAPI(SCEndpoint):
             manage_roles (bool, optional):
                 Are members of this role allowed to manage group role
                 configurations?  If left unspecified, the default is ``False``.
-        
+
         Returns:
-            dict: The newly updated scan zone. 
-        
+            dict: The newly updated scan zone.
+
         Examples:
             >>> role = sc.roles.create()
         '''
         payload = self._constructor(**kw)
         return self._api.patch('role/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
-    
+
     def delete(self, id):
         '''
         Removes a role.
@@ -263,17 +260,17 @@ class RoleAPI(SCEndpoint):
 
         Args:
             id (int): The numeric identifier for the role to remove.
-        
+
         Returns:
             str: An empty response.
-        
+
         Examples:
             >>> sc.roles.delete(1)
         '''
         return self._api.delete('role/{}'.format(
             self._check('id', id, int))).json()['response']
 
-    
+
     def list(self, fields=None):
         '''
         Retrieves the list of scan zone definitions.
@@ -281,7 +278,7 @@ class RoleAPI(SCEndpoint):
         + `role: list <https://docs.tenable.com/sccv/api/Role.html#role_GET>`_
 
         Args:
-            fields (list, optional): 
+            fields (list, optional):
                 A list of attributes to return for each role.
 
         Returns:
@@ -293,7 +290,7 @@ class RoleAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
-        
+
         return self._api.get('role', params=params).json()['response']

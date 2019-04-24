@@ -54,6 +54,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
+    'sphinx.ext.extlinks',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -195,4 +196,12 @@ texinfo_documents = [
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {
+    'https://docs.python.org/': None,
+    'requests': ('http://docs.python-requests.org/en/master/', None)
+}
+
+extlinks = {
+    'devportal': ('https://developer.tenable.com/reference#%s', 'devportal'),
+    'sccv-api': ('https://docs.tenable.com/sccv/api/%s', 'sccv-api'),
+}

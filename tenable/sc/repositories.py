@@ -2,11 +2,9 @@
 repositories
 ============
 
-.. warning:: This module is flagged as "beta", and may change.
-
 The following methods allow for interaction with the Tenable.sc
 `Repositories <https://docs.tenable.com/sccv/api/Repository.html>`_ API.  These
-items are typically seen under the **Repositories** section of Tenable.sc. 
+items are typically seen under the **Repositories** section of Tenable.sc.
 
 Methods available on ``sc.repositories``:
 
@@ -14,7 +12,7 @@ Methods available on ``sc.repositories``:
 .. autoclass:: RepositoryAPI
 
     .. automethod:: accept_risk_rules
-    .. automethod:: asset_list_intersections
+    .. automethod:: asset_intersections
     .. automethod:: create
     .. automethod:: delete
     .. automethod:: details
@@ -50,84 +48,84 @@ class RepositoryAPI(SCEndpoint):
         if 'name' in kw:
             # Validate the name is a string
             self._check('name', kw['name'], str)
-        
+
         if 'description' in kw:
             # Verify that the description is a string
             self._check('description', kw['description'], str)
-        
+
         if 'format' in kw:
             # The data format for the repository.
-            kw['dataFormat'] = self._check('format', kw['format'], str, 
+            kw['dataFormat'] = self._check('format', kw['format'], str,
                 choices=['agent', 'IPv4', 'IPv6', 'mobile'])
             del(kw['format'])
-        
+
         if 'repo_type' in kw:
             # The type of repository
             kw['type'] = self._check('repo_type', kw['repo_type'], str,
                 choices=['Local', 'Remote', 'Offline'])
             del(kw['repo_type'])
-        
+
         if 'orgs' in kw:
             # Validate all of the organizational sub-documents.
-            kw['organizations'] = [{'id': self._check('org_id', o, int)} 
+            kw['organizations'] = [{'id': self._check('org_id', o, int)}
                 for o in self._check('orgs', kw['orgs'], list)]
             del(kw['orgs'])
-            
+
         if 'trending' in kw:
             # Trending should be between 0 and 365.
             kw['trendingDays'] = self._check('trending', kw['trending'], int,
                 choices=list(range(366)))
             del(kw['trending'])
-        
+
         if 'fulltext_search' in kw:
             # trendWithRaw is the backend paramater name for "Full Text Search"
             # within the UI.  We will be calling it fulltest_search to more
             # closely align with what the frontend calls this feature.
-            kw['trendWithRaw'] = str(self._check('fulltext_search', 
+            kw['trendWithRaw'] = str(self._check('fulltext_search',
                 kw['fulltext_search'], bool)).lower()
             del(kw['fulltext_search'])
-        
+
         if 'lce_correlation' in kw:
             # The correlation parameter isn't well named here, we will call it
             # out as LCE correlation to specifically note what it is for.
-            kw['correlation'] = [{'id': self._check('lce_id', l, int)} 
+            kw['correlation'] = [{'id': self._check('lce_id', l, int)}
                 for l in self._check('lce_correlation', kw['lce_correlation'], list)]
             del(kw['lce_correlation'])
-        
+
         if 'allowed_ips' in kw:
             # Using valid IPs here instead of ipRange to again more closely
             # align to the frontend and to more explicitly call out the
             # function of this paramater
-            kw['ipRange'] = ','.join([self._check('ip', i, str) 
+            kw['ipRange'] = ','.join([self._check('ip', i, str)
                 for i in self._check('allowed_ips', kw['allowed_ips'], list)])
             del(kw['allowed_ips'])
-        
+
         if 'remote_ip' in kw:
             kw['remoteIP'] = self._check('remote_ip', kw['remote_ip'], str)
             del(kw['remote_ip'])
-        
+
         if 'remote_repo' in kw:
             kw['remoteID'] = self._check('remote_repo', kw['remote_repo'], int)
             del(kw['remote_repo'])
-        
+
         if 'preferences' in kw:
             # Validate that all of the preferences are K:V pairs of strings.
             for key in self._check('preferences', kw['preferences'], dict):
                 self._check('preference:{}'.format(key), key, str)
-                self._check('preference:{}:value'.format(key), 
+                self._check('preference:{}:value'.format(key),
                     kw['preferences'][key], str)
-        
+
         if 'mdm_id' in kw:
             kw['mdm'] = {'id': self._check('mdm_id', kw['mdm_id'], int)}
             del(kw['mdm_id'])
-        
+
         if 'scanner_id' in kw:
             kw['scanner'] = {'id': self._check(
                 'scanner_id', kw['scanner_id'], int)}
             del(kw['scanner_id'])
-        
+
         return kw
-    
+
     def _rules_constructor(self, **kw):
         '''
         Accept/Recast Rule Query Creator
@@ -148,7 +146,7 @@ class RepositoryAPI(SCEndpoint):
         if 'fields' in kw:
             # convert the list of field names into the comma-separated string
             # that the API expects.
-            kw['fields'] = ','.join([self._check('field', f, str) 
+            kw['fields'] = ','.join([self._check('field', f, str)
                 for f in kw['fields']])
         return kw
 
@@ -156,10 +154,10 @@ class RepositoryAPI(SCEndpoint):
         '''
         Retrieves a list of repositories.
 
-        + `SC Repository List <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository>`_
+        + `repository: list <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository>`_
 
         Args:
-            fields (list, optional): 
+            fields (list, optional):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
                 request within the repository list API doc.
@@ -167,10 +165,10 @@ class RepositoryAPI(SCEndpoint):
                 Restrict the response to a specific type of repository.  If not
                 set, then all repository types will be returned.  Allowed types
                 are ``All``, ``Local``, ``Remote``, and ``Offline``.
-        
+
         Returns:
             list: List of repository definitions.
-        
+
         Examples:
             Retrieve all of all of the repositories:
 
@@ -185,15 +183,15 @@ class RepositoryAPI(SCEndpoint):
             params['type'] = self._check('repo_type', repo_type, str, choices=[
                 'All', 'Local', 'Remote', 'Offline'])
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
         return self._api.get('repository', params=params).json()['response']
-    
+
     def create(self, **kw):
         '''
         Creates a new repository
 
-        + `SC Repository Create <https://docs.tenable.com/sccv/api/Repository.html#repository_POST>`_
+        + `repository: create <https://docs.tenable.com/sccv/api/Repository.html#repository_POST>`_
 
         Args:
             name (str): The name for the respository.
@@ -229,11 +227,11 @@ class RepositoryAPI(SCEndpoint):
             mobile_sched (dict, optional):
                 When using the mobile repository format, this option will inform
                 Tenable.sc how often to perform the MDM synchronization into the
-                repository.  If left unspecified, it will default to 
-                ``{'type': 'never'}``.  For more information refer to 
+                repository.  If left unspecified, it will default to
+                ``{'type': 'never'}``.  For more information refer to
                 `Schedule Dictionaries`_
             orgs (list, optional):
-                A list of Organization IDs used to assign the repository to 1 or 
+                A list of Organization IDs used to assign the repository to 1 or
                 many organizations.
             preferences (dict, optional):
                 When using a mobile repository type, this dictionary details
@@ -250,11 +248,11 @@ class RepositoryAPI(SCEndpoint):
                 When the Remote repository type is used, this is the schedule
                 dictionary that will inform Tenable.sc how often to synchronize
                 with the downstream Tenable.sc instance.  If left unspecified
-                then we will default to ``{'type': 'never'}``.  For more 
+                then we will default to ``{'type': 'never'}``.  For more
                 information refer to `Schedule Dictionaries`_
             repo_type (str, optional):
                 What type of repository is this?  Valid choices are ``Local``,
-                ``Remote``, and ``Offline``.  The default if unspecified is 
+                ``Remote``, and ``Offline``.  The default if unspecified is
                 ``Local``.
             scanner_id (int, optional):
                 When using the mobile repository format, we must specify the
@@ -263,13 +261,13 @@ class RepositoryAPI(SCEndpoint):
                 How many days of trending snapshots should be created for this
                 repository.  This value is only used for IPv4, IPv6, and agent
                 repositories.  If not supplied, the default will be 0.
-            
+
         Returns:
             dict: The repository resource record for the newly created Repo.
-        
+
         Examples:
             Creating a new IPv4 Repository leveraging the defaults:
-            
+
             >>> repo = sc.repositories.create(name='Example IPv4')
 
             Creating a new IPv4 Repository with 90 days of trending and linked
@@ -326,44 +324,44 @@ class RepositoryAPI(SCEndpoint):
         kw = self._constructor(**kw)
         kw['dataFormat'] = kw.get('dataFormat', 'IPv4')
         kw['type'] = kw.get('type', 'Local')
-        
+
         if kw['dataFormat'] in ['IPv4', 'IPv6', 'agent']:
             kw['trendingDays'] = kw.get('trendingDays', 0)
             kw['trendWithRaw'] = kw.get('trendWithRaw', 'false')
-        
+
         if kw['dataFormat'] in ['IPv4', 'IPv6']:
             kw['nessusSchedule'] = kw.get('nessusSchedule', {'type': 'never'})
-        
+
         if kw['dataFormat'] == 'IPv4':
             kw['ipRange'] = kw.get('ipRange', '0.0.0.0/0')
-        
+
         if kw['dataFormat'] == 'IPv6':
             kw['ipRange'] = kw.get('ipRange', '::/0')
-        
+
         if kw['dataFormat'] == 'mobile':
             kw['mobileSchedule'] = kw.get('mobileSchedule', {'type': 'never'})
-        
+
         if kw['type'] == 'remote':
             kw['remoteSchedule'] = kw.get('remoteSchedule', {'type': 'never'})
-        
+
         return self._api.post('repository', json=kw).json()['response']
-    
+
     def details(self, id, fields=None):
         '''
         Retrieves the details for the specified repository.
 
-        + `SC Repository Details <https://docs.tenable.com/sccv/api/Repository.html#repository_id_GET>`_
+        + `repository: details <https://docs.tenable.com/sccv/api/Repository.html#repository_id_GET>`_
 
         Args:
             id (int): The numeric id of the repository.
-            fields (list, optional): 
+            fields (list, optional):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
                 request within the repository details API doc.
-        
+
         Returns:
             dict: The repository resource record.
-        
+
         Examples:
             >>> repo = sc.repositories.details(1)
         '''
@@ -373,19 +371,19 @@ class RepositoryAPI(SCEndpoint):
 
         return self._api.get('repository/{}'.format(
             self._check('id', id, int)), params=params).json()['response']
-    
+
     def delete(self, id):
         '''
         Remove the specified repository from Tenable.sc
 
-        + `SC Repository Delete <https://docs.tenable.com/sccv/api/Repository.html#repository_id_DELETE>`_
+        + `repository: delete <https://docs.tenable.com/sccv/api/Repository.html#repository_id_DELETE>`_
 
         Args:
             id (int): The numeric id of the repository to delete.
-        
+
         Returns:
             str: Empty response string
-        
+
         Examples:
             >>> sc.repositories.delete(1)
         '''
@@ -396,7 +394,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Updates an existing repository
 
-        + `SC Repository Edit <https://docs.tenable.com/sccv/api/Repository.html#repository_id_PATCH>`_
+        + `repository: edit <https://docs.tenable.com/sccv/api/Repository.html#repository_id_PATCH>`_
 
         Args:
             id (int): The numeric id of the repository to edit.
@@ -420,10 +418,10 @@ class RepositoryAPI(SCEndpoint):
             mobile_sched (dict, optional):
                 When using the mobile repository format, this option will inform
                 Tenable.sc how often to perform the MDM synchronization into the
-                repository.  For more information refer to 
+                repository.  For more information refer to
                 `Schedule Dictionaries`_
             orgs (list, optional):
-                A list of Organization IDs used to assign the repository to 1 or 
+                A list of Organization IDs used to assign the repository to 1 or
                 many organizations.
             preferences (dict, optional):
                 When using a mobile repository type, this dictionary details
@@ -439,7 +437,7 @@ class RepositoryAPI(SCEndpoint):
             remote_sched (dict, optional):
                 When the Remote repository type is used, this is the schedule
                 dictionary that will inform Tenable.sc how often to synchronize
-                with the downstream Tenable.sc instance.  For more 
+                with the downstream Tenable.sc instance.  For more
                 information refer to `Schedule Dictionaries`_
             scanner_id (int, optional):
                 When using the mobile repository format, we must specify the
@@ -448,34 +446,34 @@ class RepositoryAPI(SCEndpoint):
                 How many days of trending snapshots should be created for this
                 repository.  This value is only used for IPv4, IPv6, and agent
                 repositories.
-            
+
         Returns:
             dict: The repository resource record for the newly created Repo.
-        
-        Examples:            
+
+        Examples:
             >>> repo = sc.repositories.edit(1, name='Example IPv4')
         '''
         kw = self._constructor(**kw)
         return self._api.patch('repository/{}'.format(
             self._check('id', id, int)), json=kw).json()['response']
-    
+
     def accept_risk_rules(self, id, **kw):
         '''
         Retrieves the accepted risk rules associated with the specified
         repository.
 
-        + `SC Repository Accept Risk Rules <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/acceptRiskRule>`_
+        + `repository: accept rules <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/acceptRiskRule>`_
 
         Args:
             id (int): The numeric id of the repository.
-            fields (list, optional): 
+            fields (list, optional):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
                 request within the repository accept risk rules API doc.
-        
+
         Returns:
-            list: List of the accepted risk rules that apply to the repo. 
-        
+            list: List of the accepted risk rules that apply to the repo.
+
         Examples:
             >>> rules = sc.repositories.accept_risk_rules(1)
         '''
@@ -488,46 +486,43 @@ class RepositoryAPI(SCEndpoint):
         Retrieves the recast risk rules associated with the specified
         repository.
 
-        + `SC Repository Recast Risk Rules <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/recastRiskRule>`_
+        + `repository: recast rules <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/recastRiskRule>`_
 
         Args:
             id (int): The numeric id of the repository.
-            fields (list, optional): 
+            fields (list, optional):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
                 request within the repository recast risk rules API doc.
-        
+
         Returns:
-            list: List of the recast risk rules that apply to the repo. 
-        
+            list: List of the recast risk rules that apply to the repo.
+
         Examples:
             >>> rules = sc.repositories.recast_risk_rules(1)
         '''
         params = self._rules_constructor(**kw)
         return self._api.get('repository/{}/recastRiskRule'.format(
             self._check('id', id, int)), params=params).json()['response']
-    
+
     def asset_intersections(self, id, uuid=None, ip=None, dns=None):
         '''
         Retrieves the asset lists that a UUID, DNS address, or IP exists in.
 
-        + `SC Repository Asset Intersections`_
+        + `repository: asst intersections <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/assetIntersections>`_
 
         Args:
             id (int): The numeric identifier of the repository to query.
             dns (str): The DNS name to query
             ip (str): The IP address to query
             uuid (str): The UUID to query.
-        
+
         Returns:
             list: The list of assets matching the criteria.
-        
+
         Examples:
-            >>> assetlists = sc.repositories.asset_intersection(1, 
+            >>> assetlists = sc.repositories.asset_intersection(1,
             ...     ip='192.168.0.1')
-        
-        .. SC Repository Asset Intersections:
-            https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/assetIntersections
         '''
         params = dict()
         if dns:
@@ -537,56 +532,50 @@ class RepositoryAPI(SCEndpoint):
         if uuid:
             params['uuid'] = self._check('uuid', uuid, 'uuid')
         return self._api.get('repository/{}/assetIntersections'.format(
-            self._check('id', id, int)), 
+            self._check('id', id, int)),
             params=params).json()['response'].get('assets')
-    
+
     def import_repository(self, id, fobj):
         '''
         Imports the repository archive for an offline repository.
 
-        + `SC Repository Import`_
+        + `repository: import <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/import>`_
 
         Args:
-            id (int): The numeric id associated to the offline repository. 
-            fobj (FileObject): 
+            id (int): The numeric id associated to the offline repository.
+            fobj (FileObject):
                 The file-like object containing the repository archive.
-        
+
         Returns:
             dict: The import response record.
-        
+
         Example:
             >>> with open('repo.tar.gz', 'rb') as archive:
             ...     sc.repositories.import_repository(1, archive)
-        
-        .. SC Repository Import:
-            https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/import
         '''
         return self._api.post('repository/{}/import'.format(
             self._check('id', id, int)), json={
                 'file': self._api.files.upload(fobj)
             }).json()['response']
-    
+
     def export_repository(self, id, fobj):
         '''
         Exports the repository and writes the archive tarball into the file
         object passed.
 
-        + `SC Repository Export`_
+        + `repository: export <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/export>`_
 
         Args:
-            id (int): The numeric id associated to the repository. 
-            fobj (FileObject): 
+            id (int): The numeric id associated to the repository.
+            fobj (FileObject):
                 The file-like object for the repository archive.
-        
+
         Returns:
             dict: The export response record.
-        
+
         Example:
             >>> with open('repo.tar.gz', 'wb') as archive:
             ...     sc.repositories.export_repository(1, archive)
-        
-        .. SC Repository Export:
-            https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/export
         '''
         resp = self._api.get('repository/{}/export'.format(
             self._check('id', id, int)), stream=True)
@@ -597,72 +586,66 @@ class RepositoryAPI(SCEndpoint):
                 fobj.write(chunk)
         fobj.seek(0)
         return fobj
-    
+
     def remote_sync(self, id):
         '''
         Initiates a remote synchronization with a downstream Tenable.sc
         instance.  This action can only be performed on an offline repository.
 
-        + `SC Repository Sync`_
+        + `repository: sync <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/sync>`_
 
         Args:
             id (int): The numeric id for the remote repository.
-        
+
         Returns:
             dict: The sync response record.
-        
+
         Examples:
             >>> sc.repositories.remote_sync(1)
-        
-        .. SC Repository Sync:
-            https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/sync
         '''
         return self._api.post('repository/{}/sync'.format(
             self._check('id', id, int)), json={}).json()['response']
-    
+
     def mobile_sync(self, id):
         '''
         Initiates a MDM synchronization with the configured MDM source on the
         mobile repository specified.
 
-        + `SC Repository Update Mobile Data`_
+        + `repository: update mobile data <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/updateMobileData>`_
 
         Args:
             id (int): The numeric id for the mobile repository to run the sync.
-        
+
         Returns:
             dict: The sync response record.
-        
+
         Examples:
             >>> sc.repositories.mobile_sync(1)
-        
-        .. SC Repository Update Mobile Data:
-            https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/updateMobileData
         '''
         return self._api.post('repository/{}/updateMobileData'.format(
             self._check('id', id, int)), json={}).json()['response']
-    
+
     def device_info(self, id, dns=None, ip=None, uuid=None, fields=None):
         '''
         Retrieves the device information for the requested device on the
-        associated repository. 
+        associated repository.
 
-        + `SC Repository Device Info <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/deviceInfo>`_
-        + `SC Repository IP Info <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/ipInfo>`_
+        + `repository: device info <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/deviceInfo>`_
+        + `repository: ip info <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/ipInfo>`_
 
         Args:
-            id (int): The numeric id for the repository to query. 
+            id (int): The numeric id for the repository to query.
             dns (str): The DNS name to query
-            fields (list, optional): 
+            fields (list, optional):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
                 request within the repository device info API doc.
             ip (str): The IP address to query
             uuid (str): The UUID to query.
-        
+
         Returns:
-            dict: The device resource. 
-        
+            dict: The device resource.
+
         Examples:
             >>> host = sc.repositories.device_info(1, ip='192.168.0.1')
         '''
@@ -672,7 +655,7 @@ class RepositoryAPI(SCEndpoint):
         method = 'deviceInfo'
         if semver.match(self._api.version, '<5.7.0'):
             method = 'ipInfo'
-        
+
         params = dict()
         if fields:
             params['fields'] = ','.join([self._check('field', f, str) for f in fields])
@@ -682,55 +665,49 @@ class RepositoryAPI(SCEndpoint):
             params['ip'] = self._check('ip', ip, str)
         if uuid:
             params['uuid'] = self._check('uuid', uuid, 'uuid')
-        
+
         return self._api.get('repository/{}/{}'.format(
             self._check('id', id, int), method), params=params).json()['response']
-    
+
     def remote_authorize(self, host, username, password):
         '''
         Authorized communication to a downstream Tenable.sc instance with the
         provided username and password.
 
-        + `SC Repository Authorize`_
+        + `repository: authorize <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/authorize>`_
 
         Args:
-            host (str): The downstream Tenable.sc instance ip address. 
-            username (str): The username to authenticate with. 
-            password (str); The password to authenticate with. 
-        
+            host (str): The downstream Tenable.sc instance ip address.
+            username (str): The username to authenticate with.
+            password (str); The password to authenticate with.
+
         Returns:
-            str: Empty response object 
-        
+            str: Empty response object
+
         Examples:
             >>> sc.repositories.remote_authorize(
             ...     '192.168.0.101', 'admin', 'password')
-        
-        .. SC Repository Authorize:
-            https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/authorize
         '''
         return self._api.post('repository/authorize', json={
             'host': self._check('host', host, str),
             'username': self._check('username', username, str),
             'password': self._check('password', password, str)
         }).json()['response']
-    
+
     def remote_fetch(self, host):
         '''
         Retrieves the list of repositories from the specified downstream
         Tenable.sc instance.
 
-        + `SC Repository Fetch Remote`_
+        + `repository: fetch remote <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/fetchRemote>`_
 
         Args:
             host (str): The downstream Tenable.sc instance ip address.
-        
+
         Returns:
             list: The list of repositories on the downstream Tenable.sc instance.
-        
-        .. SC Repository Fetch Remote:
-            https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/fetchRemote
         '''
         return self._api.get('repository/fetchRemote', params={
             'host': self._check('host', host, str)}).json()['response']
 
-    
+

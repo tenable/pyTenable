@@ -2,10 +2,10 @@
 audit_files
 ===========
 
-The following methods allow for interaction into the Tenable.sc 
+The following methods allow for interaction into the Tenable.sc
 `Audit File <https://docs.tenable.com/sccv/api/AuditFile.html>`_ API and the
-`Audit File Template <https://docs.tenable.com/sccv/api/AuditFile-Template.html>`_ 
-API.  These items are typically seen under the **Scans: Audit Files** section 
+`Audit File Template <https://docs.tenable.com/sccv/api/AuditFile-Template.html>`_
+API.  These items are typically seen under the **Scans: Audit Files** section
 of Tenable.sc.
 
 Methods available on ``sc.audit_files``:
@@ -41,16 +41,16 @@ class AuditFileAPI(SCEndpoint):
         if 'type' in kw:
             # Validate that the type is one of the 3 possible audit file types:
             # "", "scapWindows", or "scapLinux".
-            self._check('type', kw['type'], str, 
+            self._check('type', kw['type'], str,
                 choices=['', 'scapWindows', 'scapLinux'])
-        
+
         if 'template' in kw:
             # Convert the template parameter into the auditFileTemplate
             # sub-document and verify that the input is an integer value.
             kw['auditFileTemplate'] = {'id': self._check(
                 'template', kw['template'], int)}
             del(kw['template'])
-        
+
         if 'vars' in kw:
             # expand the the vars dict into a series of key/value documents.
             kw['variables'] = [{
@@ -58,43 +58,43 @@ class AuditFileAPI(SCEndpoint):
                     'value': self._check('var:value', v, str)
                 } for k,v in self._check('vars', kw['vars'], dict).items()]
             del(kw['vars'])
-        
+
         if 'filename' in kw:
             # Validate that the filename parameter is a string.
             self._check('filename', kw['filename'], str)
-        
+
         if 'orig_filename' in kw:
             # validate the the original_filename parameter is of type string and
             # then store it in the CamelCase equiv:
             kw['originalFilename'] = self._check(
                 'orig_filename', kw['orig_filename'], str)
             del(kw['orig_filename'])
-        
+
         if 'version' in kw:
             # Validate that the version parameter is of type string and falls
             # within the expected range of values
-            self._check('version', kw['version'], str, 
+            self._check('version', kw['version'], str,
                 choices=['1.0', '1.1', '1.2'])
-        
+
         if 'benchmark' in kw:
             # Validate that the benchmark name is a string and then store it
             # in the benchmarkName attribute.
             kw['benchmarkName'] = self._check('benchmark', kw['benchmark'], str)
             del(kw['benchmark'])
-        
+
         if 'profile' in kw:
             # Validate that the profile name is a string and then store it in
             # the profileName attribute.
             kw['profileName'] = self._check('profile', kw['profile'], str)
             del(kw['profile'])
-    
+
         if 'data_stream' in kw:
             # Validate that the profile_stream attribute is a string and then
             # store it in the dataStreamName attribute.
             kw['dataStreamName'] = self._check(
                 'data_stream', kw['data_stream'], str)
             del(kw['data_stream'])
-        
+
         if 'tailoring_filename' in kw:
             kw['tailoringFilename'] = self._check(
                 'tailoring_filename', kw['tailoring_filename'], str)
@@ -106,12 +106,12 @@ class AuditFileAPI(SCEndpoint):
             del(kw['tailoring_orig_filename'])
 
         return kw
-    
+
     def create(self, name, audit_file=None, tailoring_file=None, **kw):
         '''
         Creates a audit file.
 
-        + `audit file: create <>`_
+        + `audit file: create <https://docs.tenable.com/sccv/api/AuditFile.html#auditFile_POST>`_
 
         Args:
             name (str):
@@ -150,10 +150,10 @@ class AuditFileAPI(SCEndpoint):
                 When specifying a SCAP datatype, this informs Tenable.sc what
                 version of SCAP this audit checklist is.  Supported values are
                 ``1.0``, ``1.1``, and ``1.2``.
-        
+
         Returns:
-            dict: The newly created audit file. 
-        
+            dict: The newly created audit file.
+
         Examples:
             >>> audit = sc.audit_files.create()
         '''
@@ -166,7 +166,7 @@ class AuditFileAPI(SCEndpoint):
                 kw['orig_filename'] = audit_file.name
             kw['filename'] = self._api.files.upload(audit_file)
 
-        # Upload and store the relevent information on the tailoring file that 
+        # Upload and store the relevent information on the tailoring file that
         # has been provided.
         if tailoring_file:
             if hasattr(tailoring_file, 'name'):
@@ -175,7 +175,7 @@ class AuditFileAPI(SCEndpoint):
 
         payload = self._constructor(**kw)
         return self._api.post('auditFile', json=payload).json()['response']
-    
+
     def details(self, id, fields=None):
         '''
         Returns the details for a specific audit file.
@@ -199,7 +199,7 @@ class AuditFileAPI(SCEndpoint):
 
         return self._api.get('auditFile/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
-    
+
     def edit(self, id, audit_file=None, tailoring_file=None, **kw):
         '''
         Edits a audit file.
@@ -243,10 +243,10 @@ class AuditFileAPI(SCEndpoint):
                 When specifying a SCAP datatype, this informs Tenable.sc what
                 version of SCAP this audit checklist is.  Supported values are
                 ``1.0``, ``1.1``, and ``1.2``.
-        
+
         Returns:
-            dict: The newly updated audit file. 
-        
+            dict: The newly updated audit file.
+
         Examples:
             >>> audit = sc.audit_files.edit()
         '''
@@ -258,7 +258,7 @@ class AuditFileAPI(SCEndpoint):
                 kw['orig_filename'] = audit_file.name
             kw['filename'] = self._api.files.upload(audit_file)
 
-        # Upload and store the relevent information on the tailoring file that 
+        # Upload and store the relevent information on the tailoring file that
         # has been provided.
         if tailoring_file:
             if hasattr(tailoring_file, 'name'):
@@ -273,20 +273,20 @@ class AuditFileAPI(SCEndpoint):
         '''
         Removes a audit file.
 
-        + `audit file: delete <>`_
+        + `audit file: delete <https://docs.tenable.com/sccv/api/AuditFile.html#auditFile_id_DELETE>`_
 
         Args:
             id (int): The numeric identifier for the audit file to remove.
-        
+
         Returns:
             str: An empty response.
-        
+
         Examples:
             >>> sc.audit_files.delete(1)
         '''
         return self._api.delete('auditFile/{}'.format(
             self._check('id', id, int))).json()['response']
-    
+
     def list(self, fields=None):
         '''
         Retrieves the list of scan zone definitions.
@@ -294,7 +294,7 @@ class AuditFileAPI(SCEndpoint):
         + `audit file: list <https://docs.tenable.com/sccv/api/AuditFile.html#AuditFileRESTReference-/auditFile>`_
 
         Args:
-            fields (list, optional): 
+            fields (list, optional):
                 A list of attributes to return for each audit file.
 
         Returns:
@@ -306,9 +306,9 @@ class AuditFileAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
-        
+
         return self._api.get('auditFile', params=params).json()['response']
 
     def export_audit(self, id, fobj=None):
@@ -348,60 +348,66 @@ class AuditFileAPI(SCEndpoint):
                 fobj.write(chunk)
         fobj.seek(0)
         return fobj
-    
+
     def template_categories(self):
         '''
         Returns the audit file template categories
 
+        + `audit template: categories <https://docs.tenable.com/sccv/api/AuditFile-Template.html#auditFileTemplate_categories_GET>`_
+
         Returns:
             list: List of audit file category listing dicts.
-        
+
         Exmaples:
             >>> for cat in sc.audit_files.template_categorties():
             ...     pprint(cat)
         '''
         return self._api.get('auditFileTemplate/categories').json()['response']
-    
+
     def template_details(self, id, fields=None):
         '''
         Returns the details for the specified audit file template id.
 
+        + `audit template: details <https://docs.tenable.com/sccv/api/AuditFile-Template.html#auditFileTemplate_id_GET>`_
+
         Args:
             id (int):
                 The numeric identifier for the audit file template.
-            fields (list, optional): 
+            fields (list, optional):
                 A list of attributes to return.
-            
+
         Returns:
             dict: The audit file template record.
-        
+
         Exmaples:
             >>> tmpl = sc.audit_files.template_details(1)
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
 
         return self._api.get('auditFileTemplate/{}'.format(
             self._check('id', id, int)), params=params).json()['response']
-    
-    def template_details(self, category=None, search=None, fields=None):
+
+    def template_list(self, category=None, search=None, fields=None):
         '''
-        Returns the list 
+        Returns the list of audit file templates.
+
+        + `audit templates: list <https://docs.tenable.com/sccv/api/AuditFile-Template.html#AuditFileTemplateRESTReference-/auditFileTemplate>`_
 
         Args:
             category (int, optional):
                 Restrict the results to only the specified category id.
-            fields (list, optional): 
+            fields (list, optional):
                 A list of attributes to return.
             search (str, optional):
                 Restrict the response to only audit file names that match the
                 search string specified.
-            
+
         Returns:
             list: List of audit file records.
-        
+
         Exmaples:
             >>> for tmpl in sc.audit_files.template_list():
             ...     pprint(tmpl)
@@ -410,12 +416,12 @@ class AuditFileAPI(SCEndpoint):
 
         if category:
             params['categoryID'] = self._check('category', category, int)
-        
+
         if search:
             params['searchString'] = self._check('search', search, str)
 
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
 
         return self._api.get('auditFileTemplate/{}'.format(
