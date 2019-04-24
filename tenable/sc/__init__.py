@@ -8,6 +8,7 @@
 .. automodule:: tenable.sc.accept_risks
 .. automodule:: tenable.sc.analysis
 .. automodule:: tenable.sc.audit_files
+.. automodule:: tenable.sc.credentials
 .. automodule:: tenable.sc.feeds
 .. automodule:: tenable.sc.files
 .. automodule:: tenable.sc.groups
@@ -21,7 +22,6 @@
 .. automodule:: tenable.sc.scanners
 .. automodule:: tenable.sc.status
 .. automodule:: tenable.sc.system
-
 .. automodule:: tenable.sc.base
 
 
@@ -45,7 +45,7 @@ Example:
 
 .. py:module:: tenable.sc
 .. rst-class:: hide-signature
-.. autoclass:: TenableSC
+.. py:class:: TenableSC
 
     .. automethod:: get
     .. automethod:: post
@@ -58,6 +58,7 @@ from .accept_risks import AcceptRiskAPI
 from .alerts import AlertAPI
 from .analysis import AnalysisAPI
 from .audit_files import AuditFileAPI
+from .credentials import CredentialAPI
 from .files import FileAPI
 from .feeds import FeedAPI
 from .groups import GroupAPI
@@ -275,6 +276,10 @@ class TenableSC(APISession):
     @property
     def audit_files(self):
         return AuditFileAPI(self)
+
+    @property
+    def credentials(self):
+        return CredentialAPI(self)
 
     @property
     def feeds(self):

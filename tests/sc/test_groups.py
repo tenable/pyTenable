@@ -55,18 +55,6 @@ def test_groups_constructor_success(sc):
         'auditFiles': [{'id': 1}, {'id': 2}]
     }
 
-@pytest.fixture
-def group(request, sc, vcr):
-    with vcr.use_cassette('test_groups_create_success'):
-        group = sc.groups.create('groupname')
-    def teardown():
-        try:
-            with vcr.use_cassette('test_groups_delete_success'):
-                sc.groups.delete(int(group['id']))
-        except APIError:
-            pass
-    request.addfinalizer(teardown)
-    return group
 
 @pytest.mark.vcr()
 def test_groups_create_success(sc, group):
