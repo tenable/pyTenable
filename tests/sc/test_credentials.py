@@ -202,6 +202,10 @@ def test_credentials_constructor_kdc_protocol_typeerror(sc):
     with pytest.raises(TypeError):
         sc.credentials._constructor(kdc_protocol=1)
 
+def test_credentials_constructor_kdc_protocol_unexpectedvalueerror(sc):
+    with pytest.raises(UnexpectedValueError):
+        sc.credentials._constructor(kdc_protocol='something')
+
 def test_credentials_constructor_kdc_realm_typeerror(sc):
     with pytest.raises(TypeError):
         sc.credentials._constructor(kdc_realm=1)
@@ -210,13 +214,25 @@ def test_credentials_constructor_oracle_auth_type_typeerror(sc):
     with pytest.raises(TypeError):
         sc.credentials._constructor(oracle_auth_type=1)
 
+def test_credentials_constructor_oracle_auth_type_unexpectedvalueerror(sc):
+    with pytest.raises(UnexpectedValueError):
+        sc.credentials._constructor(oracle_auth_type='something')
+
 def test_credentials_constructor_oracle_service_type_typeerror(sc):
     with pytest.raises(TypeError):
         sc.credentials._constructor(oracle_service_type=1)
 
+def test_credentials_constructor_oracle_service_type_unexpectedvalueerror(sc):
+    with pytest.raises(UnexpectedValueError):
+        sc.credentials._constructor(oracle_service_type='something')
+
 def test_credentials_constructor_sql_server_auth_type_typeerror(sc):
     with pytest.raises(TypeError):
         sc.credentials._constructor(sql_server_auth_type=1)
+
+def test_credentials_constructor_sql_server_auth_type_unexpectedvalueerror(sc):
+    with pytest.raises(UnexpectedValueError):
+        sc.credentials._constructor(sql_server_auth_type='something')
 
 def test_credentials_constructor_escalation_username_typeerror(sc):
     with pytest.raises(TypeError):
@@ -241,6 +257,38 @@ def test_credentials_constructor_community_string_typeerror(sc):
 def test_credentials_constructor_domain_typeerror(sc):
     with pytest.raises(TypeError):
         sc.credentials._constructor(domain=1)
+
+def test_credentials_constructor_thycotic_secret_name_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.credentials._constructor(thycotic_secret_name=1)
+
+def test_credentials_constructor_thycotic_url_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.credentials._constructor(thycotic_url=1)
+
+def test_credentials_constructor_thycotic_username_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.credentials._constructor(thycotic_username=1)
+
+def test_credentials_constructor_thycotic_password_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.credentials._constructor(thycotic_password=1)
+
+def test_credentials_constructor_thycotic_organization_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.credentials._constructor(thycotic_organization=1)
+
+def test_credentials_constructor_thycotic_domain_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.credentials._constructor(thycotic_domain=1)
+
+def test_credentials_constructor_thycotic_private_key_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.credentials._constructor(thycotic_private_key='nope')
+
+def test_credentials_constructor_thycotic_ssl_verify_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.credentials._constructor(thycotic_ssl_verify='nope')
 
 def test_credentials_constructor_success(sc):
     cred = sc.credentials._constructor(
@@ -286,16 +334,24 @@ def test_credentials_constructor_success(sc):
         beyondtrust_verify_ssl=False,
         beyondtrust_use_private_key=False,
         beyondtrust_use_escalation=False,
+        thycotic_secret_name='sekret',
+        thycotic_url='http://thycotic',
+        thycotic_username='username',
+        thycotic_password='password',
+        thycotic_organization='orgname',
+        thycotic_domain='dom',
+        thycotic_private_key=False,
+        thycotic_ssl_verify=False,
         public_key='ABCD',
         private_key='1234',
         privilege_escalation='none',
         kdc_ip='1.2.3.4',
         kdc_port=1234,
-        kdc_protocol='something',
+        kdc_protocol='tcp',
         kdc_realm='something',
-        oracle_auth_type='oracle',
-        oracle_service_type='service',
-        sql_server_auth_type='sql_server',
+        oracle_auth_type='normal',
+        oracle_service_type='service_name',
+        sql_server_auth_type='Windows',
         escalation_username='root',
         escalation_password='password',
         escalation_path='/usr/bin',
@@ -347,16 +403,24 @@ def test_credentials_constructor_success(sc):
         'beyondtrust_verify_ssl': 'no',
         'beyondtrust_use_private_key': 'no',
         'beyondtrust_use_escalation': 'no',
+        'thycotic_secret_name': 'sekret',
+        'thycotic_url': 'http://thycotic',
+        'thycotic_username': 'username',
+        'thycotic_password': 'password',
+        'thycotic_organization': 'orgname',
+        'thycotic_domain': 'dom',
+        'thycotic_private_key': 'no',
+        'thycotic_ssl_verify': 'no',
         'publicKey': 'ABCD',
         'privateKey': '1234',
         'privilegeEscalation': 'none',
         'kdc_ip': '1.2.3.4',
         'kdc_port': '1234',
-        'kdc_protocol': 'something',
+        'kdc_protocol': 'TCP',
         'kdc_realm': 'something',
-        'OracleAuthType': 'oracle',
-        'oracle_service_type': 'service',
-        'SQLServerAuthType': 'sql_server',
+        'OracleAuthType': 'NORMAL',
+        'oracle_service_type': 'SERVICE_NAME',
+        'SQLServerAuthType': 'Windows',
         'escalationUsername': 'root',
         'escalationPassword': 'password',
         'escalationPath': '/usr/bin',
