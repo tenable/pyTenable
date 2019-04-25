@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Changed
+- All Tenable.io API doc links have been re-pointed to the new developer portal. #111
+- tio.editor.edit has been renamed to tio.editor.template_details as it was misnamed.
+- tio.editor.list has been renamed to tio.editor.template_list to more accurately describe it's function.
+
 ## [0.3.18]
 ### Added
 - Added and tested out support for TenavleSC Credentials #76
