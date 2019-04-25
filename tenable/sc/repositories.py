@@ -3,7 +3,7 @@ repositories
 ============
 
 The following methods allow for interaction with the Tenable.sc
-`Repositories <https://docs.tenable.com/sccv/api/Repository.html>`_ API.  These
+`Repository <https://docs.tenable.com/sccv/api/Repository.html>`_ API.  These
 items are typically seen under the **Repositories** section of Tenable.sc.
 
 Methods available on ``sc.repositories``:
