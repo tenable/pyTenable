@@ -2,9 +2,8 @@
 agent_groups
 ============
 
-The following methods allow for interaction into the Tenable.io 
-`agent groups <https://cloud.tenable.com/api#/resources/agent-groups>`_ 
-API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`agent groups <agent-groups>` API endpoints.
 
 Methods available on ``tio.agent_groups``:
 
@@ -27,7 +26,7 @@ class AgentGroupsAPI(TIOEndpoint):
         '''
         Adds an agent or multiple agents to the agent group specified.
 
-        `agent-groups: add-agent <https://cloud.tenable.com/api#/resources/agent-groups/add-agent>`_
+        :devportal:`agent-groups: add-agent <agent-groups-add-agent>`
 
         Args:
             group_id (int): The id of the group
@@ -35,8 +34,10 @@ class AgentGroupsAPI(TIOEndpoint):
             scanner_id (int, optional): The id of the scanner
 
         Returns:
-            None: Single Agent added successfully
-            dict: Task resource if multiple Agents were added.
+            :obj:`dict` or :obj:`None`:
+                If adding a singular agent, a :obj:`None` response will be
+                returned.  If adding multiple agents, a :obj:`dict` response
+                will be returned with a task record.
 
         Examples:
             Adding a singular agent:
@@ -71,7 +72,7 @@ class AgentGroupsAPI(TIOEndpoint):
         '''
         Renames an existing agent group.
 
-        `agent-groups: configure <https://cloud.tenable.com/api#/resources/agent-groups/configure>`_
+        :devportal:`agent-groups: configure <agent-groups-configure>`
 
         Args:
             group_id (int): The id of the group
@@ -79,7 +80,7 @@ class AgentGroupsAPI(TIOEndpoint):
             scanner_id (int, optional): The id of the scanner
 
         Returns:
-            None: Agent group updated successfully
+            :obj:`None`
 
         Examples:
             >>> tio.agent_groups.configure(1, 'New Name')
@@ -93,15 +94,15 @@ class AgentGroupsAPI(TIOEndpoint):
         '''
         Creates a new agent group.
 
-        `agent-groups: create <https://cloud.tenable.com/api#/resources/agent-groups/create>`_
+        :devportal:`agent-groups: create <agent-groups-create>`
 
         Args:
             name (str): The name of the agent group
-            scanner_id (int, optional): 
+            scanner_id (int, optional):
                 The id of the scanner to add the agent group to
 
         Returns:
-            dict: 
+            :obj:`dict`:
                 The dictionary object representing the newly minted agent group
 
         Examples:
@@ -116,14 +117,14 @@ class AgentGroupsAPI(TIOEndpoint):
         '''
         Delete an agent group.
 
-        `agent-groups: delete <https://cloud.tenable.com/api#/resources/agent-groups/delete>`_
+        :devportal:`agent-groups: delete <agent-groups-delete>`
 
         Args:
             group_id (int): The id of the agent group to delete
             scanner_id (int, optional): The id of the scanner
 
         Returns:
-            None: Agent group deleted successfully
+            :obj:`None`
 
         Examples:
             >>> tio.agent_groups.delete(1)
@@ -137,7 +138,7 @@ class AgentGroupsAPI(TIOEndpoint):
         '''
         Delete one or many agents from an agent group.
 
-        `agent-groups: delete-agent <https://cloud.tenable.com/api#/resources/agent-groups/delete-agent>`_
+        :devportal:`agent-groups: delete-agent <agent-groups-delete-agent>`
 
         Args:
             group_id (int): The id of the agent group to remove the agent from
@@ -145,8 +146,10 @@ class AgentGroupsAPI(TIOEndpoint):
             scanner_id (int, optional): The id of the scanner
 
         Returns:
-            None: A singular agent was deleted from the group successfully.
-            dict: Task resource if multiple agents were requested to be deleted.
+            :obj:`dict` or :obj:`None`:
+                If deleting a singular agent, a :obj:`None` response will be
+                returned.  If deleting multiple agents, a :obj:`dict` response
+                will be returned with a Job resource record.
 
         Examples:
             Delete a singular agent from an agent group:
@@ -181,14 +184,14 @@ class AgentGroupsAPI(TIOEndpoint):
         '''
         Retrieve the details about the specified agent group.
 
-        `agent-groups: details <https://cloud.tenable.com/api#/resources/agent-groups/details>`_
+        :devportal:`agent-groups: details <agent-groups-details>`
 
         Args:
             group_id (int): The id of the agent group to remove the agent from
             scanner_id (int, optional): The id of the scanner
 
         Returns:
-            dict:
+            :obj:`dict`:
                 The dictionary object representing the requested agent group
 
         Examples:
@@ -205,11 +208,14 @@ class AgentGroupsAPI(TIOEndpoint):
         '''
         Retrieves the list of agent groups configured
 
+        :devportal:`agent-groups: list <agent-groups-list>`
+
         Args:
             scanner_id (int, optional): The id of the scanner
 
         Returns:
-             list: Listing of agent group resource records
+            :obj:`list`:
+                Listing of agent group resource records
 
         Examples:
             >>>> for agent_group in tio.agent_groups.list():
@@ -223,7 +229,7 @@ class AgentGroupsAPI(TIOEndpoint):
         '''
         Retrieves the current status of a bulk task.
 
-        `bulk-operations: bulk-agent-group-status <https://cloud.tenable.com/api#/resources/bulk-operations/bulk-agent-group-status>`_
+        :devportal:`bulk-operations: bulk-agent-group-status <bulk-task-agent-group-status>`
 
         Args:
             group_id (int): The id of the group
@@ -231,7 +237,8 @@ class AgentGroupsAPI(TIOEndpoint):
             scanner_id (int, optional): The id of the scanner
 
         Returns:
-            dict: Task resource
+            :obj:`dict`:
+                Task resource
 
         Examples:
             >>> item = tio.agent_groups.add_agent(1, 21, 22, 23)

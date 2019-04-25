@@ -2,13 +2,14 @@
 workbenches
 ===========
 
-The following methods allow for interaction into the Tenable.io 
-`workbenches <https://cloud.tenable.com/api#/resources/workbenches>`_ 
-API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`workbenches <workbenches>` API endpoints.
 
-Please note that the workbenches have an upper bound on the amount of data that
-they will return, so for larger result sets, it may make more sense to use the
-exports API.
+.. note::
+
+    Workbenches API endpoints have an upper bound on the amount of data that
+    they will return, so for larger result sets, it may make more sense to use
+    the exports API.
 
 Methods available on ``tio.workbenches``:
 
@@ -61,16 +62,16 @@ class WorkbenchesAPI(TIOEndpoint):
         asset data stored within Tenable.io.  There are a wide variety of
         filtering options available to find specific pieces of data.
 
-        `workbenches: assets <https://cloud.tenable.com/api#/resources/workbenches/assets>`_
+        :devportal:`workbenches: assets <workbenches-assets>`
 
         Args:
             age (int, optional):
                 The maximum age of the data to be returned.
             *filters (list, optional):
                  A list of tuples detailing the filters that wish to be applied
-                the response data.  Each tuple is constructed as 
-                ('filter', 'operator', 'value') and would look like the 
-                following example: `('host.hostname', 'match', 'asset.com')`.  
+                the response data.  Each tuple is constructed as
+                ('filter', 'operator', 'value') and would look like the
+                following example: `('host.hostname', 'match', 'asset.com')`.
                 For a complete list of the available filters and options, please
                 refer to the API documentation linked above.
             filter_type (str, optional):
@@ -84,7 +85,8 @@ class WorkbenchesAPI(TIOEndpoint):
                 detail as the workbenches: asset-info endpoint.
 
         Returns:
-            list: List of asset resource records.
+            :obj:`list`:
+                List of asset resource records.
 
         Examples:
             Query for all of the asset information:
@@ -99,7 +101,7 @@ class WorkbenchesAPI(TIOEndpoint):
             ...     pprint(asset)
         '''
         # Call the query builder to handle construction
-        query = self._workbench_query(filters, kw, 
+        query = self._workbench_query(filters, kw,
             self._api.filters.workbench_asset_filters())
 
         # If all_fields is set to true or is unspecified, then we will set the
@@ -117,11 +119,14 @@ class WorkbenchesAPI(TIOEndpoint):
         Query for the asset activity (when was the asset was seen, were there
         changes, etc.).
 
+        :devportal:`workbenches: asset-activity <workbenches-assets-activity>`
+
         Args:
             uuid (str): The asset unique identifier.
 
         Returns:
-            list: the activity list of the asset specified.
+            :obj:`list`:
+                The activity list of the asset specified.
 
         Examples:
             >>> asset_id = '00000000-0000-0000-0000-000000000000'
@@ -136,7 +141,7 @@ class WorkbenchesAPI(TIOEndpoint):
         Query for the information for a specific asset within the asset
         workbench.
 
-        `workbenches: asset-info <https://cloud.tenable.com/api#/resources/workbenches/asset-info>`_
+        :devportal:`workbenches: asset-info </workbenches-asset-info>`
 
         Args:
             id (str): The unique identifier (UUID) of the asset.
@@ -146,7 +151,8 @@ class WorkbenchesAPI(TIOEndpoint):
                 documentation (linked above).
 
         Returns:
-            dict: The resource record for the asset.
+            :obj:`dict`:
+                The resource record for the asset.
 
         Examples:
             >>> asset = tio.workbenches.asset_info('00000000-0000-0000-0000-000000000000')
@@ -168,7 +174,7 @@ class WorkbenchesAPI(TIOEndpoint):
         '''
         Return the vulnerabilities for a specific asset.
 
-        `workbenches: asset-vulnerabilities <https://cloud.tenable.com/api#/resources/workbenches/asset-vulnerabilities>`_
+        :devportal:`workbenches: asset-vulnerabilities workbenches-asset-vulnerabilities>`
 
         Args:
             uuid (str):
@@ -177,9 +183,9 @@ class WorkbenchesAPI(TIOEndpoint):
                 The maximum age of the data to be returned.
             *filters (list, optional):
                  A list of tuples detailing the filters that wish to be applied
-                the response data.  Each tuple is constructed as 
-                ('filter', 'operator', 'value') and would look like the 
-                following example: `('host.hostname', 'match', 'asset.com')`.  
+                the response data.  Each tuple is constructed as
+                ('filter', 'operator', 'value') and would look like the
+                following example: `('host.hostname', 'match', 'asset.com')`.
                 For a complete list of the available filters and options, please
                 refer to the API documentation linked above.
             filter_type (str, optional):
@@ -188,7 +194,8 @@ class WorkbenchesAPI(TIOEndpoint):
                 default setting is `and`.
 
         Returns:
-            list: List of vulnerability resource records.
+            :obj:`list`:
+                List of vulnerability resource records.
 
         Examples:
             >>> asset_id = '00000000-0000-0000-0000-000000000000'
@@ -208,7 +215,7 @@ class WorkbenchesAPI(TIOEndpoint):
         Retrieves the vulnerability information for a specific plugin on a
         specific asset within Tenable.io.
 
-        `workbenches: asset-vulnerability-info <https://cloud.tenable.com/api#/resources/workbenches/asset-vulnerability-info>`_
+        :devportal:`workbenches: asset-vulnerability-info <workbenches-asset-vulnerability-info>`
 
         Args:
             uuid (str):
@@ -219,9 +226,9 @@ class WorkbenchesAPI(TIOEndpoint):
                 The maximum age of the data to be returned.
             *filters (list, optional):
                  A list of tuples detailing the filters that wish to be applied
-                the response data.  Each tuple is constructed as 
-                ('filter', 'operator', 'value') and would look like the 
-                following example: `('host.hostname', 'match', 'asset.com')`.  
+                the response data.  Each tuple is constructed as
+                ('filter', 'operator', 'value') and would look like the
+                following example: `('host.hostname', 'match', 'asset.com')`.
                 For a complete list of the available filters and options, please
                 refer to the API documentation linked above.
             filter_type (str, optional):
@@ -230,7 +237,8 @@ class WorkbenchesAPI(TIOEndpoint):
                 default setting is `and`.
 
         Returns:
-            list: List of vulnerability resource records.
+            :obj:`list`:
+                List of vulnerability resource records.
 
         Examples:
             >>> asset_id = '00000000-0000-0000-0000-000000000000'
@@ -251,7 +259,7 @@ class WorkbenchesAPI(TIOEndpoint):
         Retrieves the vulnerability output for a specific vulnerability on a
         specific asset within Tenable.io.
 
-        `workbenches: asset-vulnerability-output <https://cloud.tenable.com/api#/resources/workbenches/asset-vulnerability-output>`_
+        :devportal:`workbenches: asset-vulnerability-output <workbenches-asset-vulnerability-output>`
 
         Args:
             uuid (str):
@@ -262,9 +270,9 @@ class WorkbenchesAPI(TIOEndpoint):
                 The maximum age of the data to be returned.
             *filters (list, optional):
                  A list of tuples detailing the filters that wish to be applied
-                the response data.  Each tuple is constructed as 
-                ('filter', 'operator', 'value') and would look like the 
-                following example: `('host.hostname', 'match', 'asset.com')`.  
+                the response data.  Each tuple is constructed as
+                ('filter', 'operator', 'value') and would look like the
+                following example: `('host.hostname', 'match', 'asset.com')`.
                 For a complete list of the available filters and options, please
                 refer to the API documentation linked above.
             filter_type (str, optional):
@@ -273,7 +281,8 @@ class WorkbenchesAPI(TIOEndpoint):
                 default setting is `and`.
 
         Returns:
-            list: List of vulnerability resource records.
+            :obj:`list`:
+                List of vulnerability resource records.
 
         Examples:
             >>> asset_id = '00000000-0000-0000-0000-000000000000'
@@ -293,16 +302,16 @@ class WorkbenchesAPI(TIOEndpoint):
         '''
         Retrieve assets based on the vulnerability data.
 
-        `workbenches: assets-vulnerabilities <https://cloud.tenable.com/api#/resources/workbenches/assets-vulnerabilities>`_
+        :devportal:`workbenches: assets-vulnerabilities <workbenches-assets-vulnerabilities>`
 
         Args:
             age (int, optional):
                 The maximum age of the data to be returned.
             *filters (list, optional):
                  A list of tuples detailing the filters that wish to be applied
-                the response data.  Each tuple is constructed as 
-                ('filter', 'operator', 'value') and would look like the 
-                following example: `('host.hostname', 'match', 'asset.com')`.  
+                the response data.  Each tuple is constructed as
+                ('filter', 'operator', 'value') and would look like the
+                following example: `('host.hostname', 'match', 'asset.com')`.
                 For a complete list of the available filters and options, please
                 refer to the API documentation linked above.
             filter_type (str, optional):
@@ -311,7 +320,8 @@ class WorkbenchesAPI(TIOEndpoint):
                 default setting is `and`.
 
         Returns:
-            list: List of asset resource records.
+            :obj:`list`:
+                List of asset resource records.
 
         Examples:
             >>> for asset in tio.workbenches.assets_with_vulns():
@@ -330,19 +340,19 @@ class WorkbenchesAPI(TIOEndpoint):
         a number of different formats, however the defaults are set to export
         a Nessusv2 report.
 
-        `workbenches: export <https://cloud.tenable.com/api#/resources/workbenches/export-request>`_
+        :devportal:`workbenches: export <workbenches-export-request>`
 
         Args:
             *filters (tuple, optional):
                 A list of tuples detailing the filters that wish to be applied
-                the response data.  Each tuple is constructed as 
-                ('filter', 'operator', 'value') and would look like the 
+                the response data.  Each tuple is constructed as
+                ('filter', 'operator', 'value') and would look like the
                 following example: `('plugin.id', 'eq', '19506')`.  For a
                 complete list of the available filters and options, please
                 refer to the API documentation linked above.
             asset_uuid (uuid, optional):
                 Restrict the output to the asset identifier specified.
-            plugin_id (int, optional): 
+            plugin_id (int, optional):
                 Restrict the output to the plugin identifier specified.
             format (str, optional):
                 What format would you like the resulting data to be in.  The
@@ -351,7 +361,7 @@ class WorkbenchesAPI(TIOEndpoint):
             chapters (list, optional):
                 A list of the chapters to write for the report.  The chapters
                 list is only required for PDF and HTML exports.  Available
-                chapters are `vuln_hosts_summary`, `vuln_by_host`, 
+                chapters are `vuln_hosts_summary`, `vuln_by_host`,
                 `compliance_exec`, `remediations`, `vuln_by_plugin`, and
                 `compliance`.  List order will denote output order.
             filter_type (str, optional):
@@ -366,7 +376,8 @@ class WorkbenchesAPI(TIOEndpoint):
                 large, and BytesIO objects are stored in memory, not on disk.
 
         Returns:
-            FileObject: The file-like object of the requested export.
+            :obj:`FileObject`:
+                The file-like object of the requested export.
 
         Examples:
             >>> with open('example.nessus', 'wb') as exportobj:
@@ -386,10 +397,10 @@ class WorkbenchesAPI(TIOEndpoint):
 
         if 'asset_uuid' in kw:
             params['asset_id'] = self._check(
-                'asset_uuid', kw['asset_uuid'], 'uuid')   
+                'asset_uuid', kw['asset_uuid'], 'uuid')
 
         if 'format' in kw:
-            params['format'] = self._check('format', kw['format'], str, 
+            params['format'] = self._check('format', kw['format'], str,
                 default='nessus',
                 choices=[
                 'nessus', 'csv', 'html', 'pdf'
@@ -403,14 +414,14 @@ class WorkbenchesAPI(TIOEndpoint):
                     raise UnexpectedValueError('no chapters were specified')
                 else:
                     params['chapter'] = ','.join(
-                        self._check('chapters', kw['chapters'], list, 
+                        self._check('chapters', kw['chapters'], list,
                             default='vuln_by_asset',
                             choices=[
                                 'diff',
                                 'exec_summary',
                                 'vuln_by_host',
                                 'vuln_by_plugin',
-                                'vuln_hosts_summary', 
+                                'vuln_hosts_summary',
                         ]))
 
         if 'filter_type' in kw:
@@ -427,7 +438,7 @@ class WorkbenchesAPI(TIOEndpoint):
 
         # The first thing that we need to do is make the request and get the
         # File id for the job.
-        fid = self._api.get('workbenches/export', 
+        fid = self._api.get('workbenches/export',
             params=params).json()['file']
         self._api._log.debug('Initiated workbench export {}'.format(fid))
 
@@ -452,12 +463,12 @@ class WorkbenchesAPI(TIOEndpoint):
 
     def vulns(self, *filters, **kw):
         '''
-        The vulnerability workbench allows for filtering and interactively 
-        querying the vulnerability data stored within Tenable.io.  There are a 
-        wide variety of filtering options available to find specific pieces 
+        The vulnerability workbench allows for filtering and interactively
+        querying the vulnerability data stored within Tenable.io.  There are a
+        wide variety of filtering options available to find specific pieces
         of data.
 
-        `workbenches: vulnerability-info <https://cloud.tenable.com/api#/resources/workbenches/vulnerability-info>`_
+        :devportal:`workbenches: vulnerability-info <workbenches-vulnerability-info>`
 
         Args:
             age (int, optional):
@@ -468,9 +479,9 @@ class WorkbenchesAPI(TIOEndpoint):
                 If set to true will only return exploitable vulnerabilities.
             *filters (list, optional):
                  A list of tuples detailing the filters that wish to be applied
-                the response data.  Each tuple is constructed as 
-                ('filter', 'operator', 'value') and would look like the 
-                following example: `('host.hostname', 'match', 'asset.com')`.  
+                the response data.  Each tuple is constructed as
+                ('filter', 'operator', 'value') and would look like the
+                following example: `('host.hostname', 'match', 'asset.com')`.
                 For a complete list of the available filters and options, please
                 refer to the API documentation linked above.
             filter_type (str, optional):
@@ -481,11 +492,12 @@ class WorkbenchesAPI(TIOEndpoint):
                 If set to true will only return vulnerabilities with a
                 remediation path.
             severity (str, optional):
-                Only return results of a specific severity 
+                Only return results of a specific severity
                 (critical, high, medium, or low).
 
         Returns:
-            dict: Vulnerability info resource
+            :obj:`dict`:
+                Vulnerability info resource
         '''
         # Call the query builder to handle construction
         query = self._workbench_query(filters, kw,
@@ -497,7 +509,7 @@ class WorkbenchesAPI(TIOEndpoint):
             query['exploitable'] = True
         if 'resolvable' in kw and self._check('resolvable', kw['resolvable'], bool):
             query['resolvable'] = True
-        if 'severity' in kw and self._check('severity', kw['severity'], str, 
+        if 'severity' in kw and self._check('severity', kw['severity'], str,
                 choices=['critical', 'high', 'medium', 'low']):
             query['severity'] = kw['severity']
 
@@ -508,16 +520,16 @@ class WorkbenchesAPI(TIOEndpoint):
         '''
         Retrieve the vulnerability information for a specific vulnerability.
 
-        `workbenches: vulnerability-info <https://cloud.tenable.com/api#/resources/workbenches/vulnerability-info>`_
+        :devportal:`workbenches: vulnerability-info <workbenches-vulnerability-info>`
 
         Args:
             age (int, optional):
                 The maximum age of the data to be returned.
             *filters (list, optional):
                  A list of tuples detailing the filters that wish to be applied
-                the response data.  Each tuple is constructed as 
-                ('filter', 'operator', 'value') and would look like the 
-                following example: `('host.hostname', 'match', 'asset.com')`.  
+                the response data.  Each tuple is constructed as
+                ('filter', 'operator', 'value') and would look like the
+                following example: `('host.hostname', 'match', 'asset.com')`.
                 For a complete list of the available filters and options, please
                 refer to the API documentation linked above.
             filter_type (str, optional):
@@ -526,7 +538,8 @@ class WorkbenchesAPI(TIOEndpoint):
                 default setting is `and`.
 
         Returns:
-            dict: Vulnerability info resource
+            :obj:`dict`:
+                Vulnerability info resource
 
         Examples:
             >>> info = tio.workbenches.vuln_info(19506)
@@ -544,16 +557,16 @@ class WorkbenchesAPI(TIOEndpoint):
         '''
         Retrieve the vulnerability output for a given vulnerability.
 
-        `workbenches: vulnerability-output <https://cloud.tenable.com/api#/resources/workbenches/vulnerability-output>`_
+        :devportal:`workbenches: vulnerability-output <workbenches-vulnerability-output>`
 
         Args:
             age (int, optional):
                 The maximum age of the data to be returned.
             *filters (list, optional):
                  A list of tuples detailing the filters that wish to be applied
-                the response data.  Each tuple is constructed as 
-                ('filter', 'operator', 'value') and would look like the 
-                following example: `('host.hostname', 'match', 'asset.com')`.  
+                the response data.  Each tuple is constructed as
+                ('filter', 'operator', 'value') and would look like the
+                following example: `('host.hostname', 'match', 'asset.com')`.
                 For a complete list of the available filters and options, please
                 refer to the API documentation linked above.
             filter_type (str, optional):
@@ -562,7 +575,8 @@ class WorkbenchesAPI(TIOEndpoint):
                 default setting is `and`.
 
         Returns:
-            dict: Vulnerability outputs resource
+            :obj:`dict`:
+                Vulnerability outputs resource
 
         Examples:
             >>> outputs = tio.workbenches.vuln_outputs(19506)

@@ -2,8 +2,8 @@
 users
 =====
 
-The following methods allow for interaction into the Tenable.io 
-`users <https://cloud.tenable.com/api#/resources/users>`_ API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`users <users>` API endpoints.
 
 Methods available on ``tio.users``:
 
@@ -28,18 +28,18 @@ from tenable.errors import UnknownError, PasswordComplexityError
 from tenable.utils import dict_merge
 
 class UsersAPI(TIOEndpoint):
-    def create(self, username, password, permissions, 
+    def create(self, username, password, permissions,
             name=None, email=None, account_type=None):
         '''
         Create a new user.
 
-        `users: create <https://cloud.tenable.com/api#/resources/users/create>`_
+        :devportal:`users: create <users-create>`
 
         Args:
             username (str): The username for the new user.
             password (str): The password for the new user.
-            permissions (int): 
-                The permissions role for the user.  The permissions integer 
+            permissions (int):
+                The permissions role for the user.  The permissions integer
                 is derived based on the desired role of the user.  For details
                 describing what permissions values mean what roles, please refer
                 to the `User Roles <https://cloud.tenable.com/api#/authorization>`_
@@ -50,7 +50,8 @@ class UsersAPI(TIOEndpoint):
                 The account type for the user.  The default is `local`.
 
         Returns:
-            dict: The resorce record fo the new user.
+            :obj:`dict`:
+                The resorce record fo the new user.
 
         Examples:
             Create a standard user:
@@ -81,13 +82,14 @@ class UsersAPI(TIOEndpoint):
         '''
         Removes a user from Tenable.io.
 
-        `users: delete <https://cloud.tenable.com/api#/resources/users/delete>`_
+        :devportal:`users: delete <users-delete>`
 
         Args:
             id (int): The unique identifier of the user.
 
         Returns:
-            None: The user was successfully deleted.
+            :obj:`None`:
+                The user was successfully deleted.
 
         Examples:
             >>> tio.users.delete(1)
@@ -98,13 +100,14 @@ class UsersAPI(TIOEndpoint):
         '''
         Retrieve the details of a user.
 
-        `users: details <https://cloud.tenable.com/api#/resources/users/details>`_
+        :devportal:`users: details <users-details>`
 
         Args:
             id (int): THe unique identifier for the user.
 
         Returns:
-            dict: The resource record for the user.
+            :obj:`dict`:
+                The resource record for the user.
 
         Examples:
             >>> user = tio.users.details(1)
@@ -115,12 +118,12 @@ class UsersAPI(TIOEndpoint):
         '''
         Modify an existing user.
 
-        `users: edit <https://cloud.tenable.com/api#/resources/users/edit>`_
+        :devportal:`users: edit <users-edit>`
 
         Args:
             id (int): The unique identifier for the user.
             permissions (int, optional):
-                The permissions role for the user.  The permissions integer 
+                The permissions role for the user.  The permissions integer
                 is derived based on the desired role of the user.  For details
                 describing what permissions values mean what roles, please refer
                 to the `User Roles <https://cloud.tenable.com/api#/authorization>`_
@@ -130,7 +133,8 @@ class UsersAPI(TIOEndpoint):
             enabled (bool, optional): Is the user account enabled?
 
         Returns:
-            dict: The modified user resource record.
+            :obj:`dict`:
+                The modified user resource record.
 
         Examples:
             >>> user = tio.users.edit(1, name='New Full Name')
@@ -160,14 +164,15 @@ class UsersAPI(TIOEndpoint):
         '''
         Enable the user account.
 
-        users: enabled <https://cloud.tenable.com/api#/resources/users/enabled>`_
+        :devportal:`users: enabled <users-enabled>`
 
         Args:
             id (int): The unique identifier for the user.
             enabled (bool): Is the user enabled?
 
         Returns:
-            dict: The modified user resource record.
+            :obj:`dict`:
+                The modified user resource record.
 
         Examples:
             Enable a user:
@@ -186,20 +191,21 @@ class UsersAPI(TIOEndpoint):
         '''
         Configure two-factor authorization for a specific user.
 
-        `users: two-factor <https://cloud.tenable.com/api#/resources/users/two-factor>`_
+        :devportal:`users: two-factor <users-two-factor>`
 
         Args:
             id (int): The unique identifier for the user.
-            email (bool): 
+            email (bool):
                 Whether two-factor should be additionally sent as an email.
             sms (bool):
                 Whether two-factor should be enabled.  This will send SMS codes.
             phone (str, optional):
                 The phone number to use for two-factor authentication.  Required
                 when sms is set to `True`.
-        
+
         Returns:
-            None: Setting changes were successfully updated.
+            :obj:`None`:
+                Setting changes were successfully updated.
 
         Examples:
             Enable email authorization for a user:
@@ -223,13 +229,14 @@ class UsersAPI(TIOEndpoint):
         '''
         Enable phone-based two-factor authorization for a specific user.
 
-        `users: two-factor-enable <https://cloud.tenable.com/api#/resources/users/two-factor-enable>`_
+        :devportal:`users: two-factor-enable <users-two-factor-enable>`
 
         Args:
             phone (str): The phone number to use for two-factor auth.
 
         Returns:
-            None: One-time activation code sent to the provided phone number.
+            :obj:`None`:
+                One-time activation code sent to the provided phone number.
 
         Examples:
             >>> tio.users.enable_two_factor(1, '9998887766')
@@ -242,13 +249,14 @@ class UsersAPI(TIOEndpoint):
         '''
         Send the verification code for two-factor authorization.
 
-        `users: two-factor-enable-verify <https://cloud.tenable.com/api#/resources/users/two-factor-enable-verify>`_
+        :devportal:`users: two-factor-enable-verify <users-two-factor-enable-verify>`
 
         Args:
             code (str): The verification code that was sent to the device.
 
         Returns:
-            None: The verification code was valid and two-factor is enabled.
+            :obj:`None`:
+                The verification code was valid and two-factor is enabled.
 
         Examples:
             >>> tio.users.verify_two_factor(1, 'abc123')
@@ -261,13 +269,14 @@ class UsersAPI(TIOEndpoint):
         '''
         Impersonate as a specific user.
 
-        `users: impersonate <https://cloud.tenable.com/api#/resources/users/impersonate>`_
+        :devportal:`users: impersonate <users/impersonate>`
 
         Args:
             name (str): The user-name of the user to impersonate.
 
         Returns:
-            None: Impersonation successful.
+            :obj:`None`:
+                Impersonation successful.
 
         Examples:
             >>> tio.users.impersonate('jdoe@company.com')
@@ -280,10 +289,11 @@ class UsersAPI(TIOEndpoint):
         '''
         Retrieves a list of users.
 
-        `users: list <https://cloud.tenable.com/api#/resources/users/list>`_
+        :devportal:`users: list <users-list>`
 
         Returns:
-            list: List of user resource records.
+            :obj:`list`:
+                List of user resource records.
 
         Examples:
             >>> for user in tio.users.list():
@@ -295,7 +305,7 @@ class UsersAPI(TIOEndpoint):
         '''
         Change the password for a specific user.
 
-        `users: password <https://cloud.tenable.com/api#/resources/users/password>`_
+        :devportal:`users: password <users-password>`
 
         Args:
             id (int): The unique identifier for the user.
@@ -303,7 +313,8 @@ class UsersAPI(TIOEndpoint):
             new_password (str): The new password.
 
         Returns:
-            None: The password has been successfully changed.
+            :obj:`None`:
+                The password has been successfully changed.
 
         Examples:
             >>> tio.users.change_password(1, 'old_pass', 'new_pass')
@@ -317,13 +328,14 @@ class UsersAPI(TIOEndpoint):
         '''
         Generate the API keys for a specific user.
 
-        `users: keys <https://cloud.tenable.com/api#/resources/user/keys>`_
+        :devportal:`users: keys <user-keys>`
 
         Args:
             id (int): The unique identifier for the user.
 
         Returns:
-            dict: A dictionary containing the new API Key-pair.
+            :obj:`dict`:
+                A dictionary containing the new API Key-pair.
 
         Examples:
             >>> keys = tio.users.gen_api_keys(1)

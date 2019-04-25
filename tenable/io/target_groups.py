@@ -2,9 +2,8 @@
 target_groups
 =============
 
-The following methods allow for interaction into the Tenable.io 
-`target_groups <https://cloud.tenable.com/api#/resources/target-groups>`_ 
-API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`target_groups <target-groups>` API endpoints.
 
 Methods available on ``tio.target_groups``:
 
@@ -26,23 +25,24 @@ class TargetGroupsAPI(TIOEndpoint):
         '''
         Create a target-group.
 
-        `target-groups: create <https://cloud.tenable.com/api#/resources/target-groups/create>`_
+        :devportal:`target-groups: create <target-groups-create>`
 
         Args:
             name (str): The name of the target group
-            members (list): 
+            members (list):
                 The members of the target group.  FQDNs, CIDRs, IPRanges, and
                 individual IPs are supported.
-            type (str, optional): 
+            type (str, optional):
                 The type of target group to create.  Valid types are `user` and
                 `system`.  The default if not specified is `system`.
             acls (list, optional):
                 A list of ACLs defining how the asset list can be used.  For
                 further information on how the ACL dictionaries should be
                 written, please refer to the API documentation.
-        
+
         Returns:
-            dict: The resource record of the newly created target group.
+            :obj:`dict`:
+                The resource record of the newly created target group.
 
         Examples:
             >>> tg = tio.target_groups.create('Example', ['192.168.0.0/24'])
@@ -67,13 +67,14 @@ class TargetGroupsAPI(TIOEndpoint):
         '''
         Delete a target group.
 
-        `target-groups: delete <https://cloud.tenable.com/api#/resources/target-groups/delete>`_
+        :devportal:`target-groups: delete <target-groups-delete>`
 
         Args:
             id (int): The unique identifier for the target group.
 
         Returns:
-            None: The target group was successfully deleted.
+            :obj:`None`:
+                The target group was successfully deleted.
 
         Examples:
             >>> tio.target_groups.delete(1)
@@ -84,13 +85,14 @@ class TargetGroupsAPI(TIOEndpoint):
         '''
         Retrieve the details of a target group.
 
-        `target-groups: details <https://cloud.tenable.com/api#/resources/target-groups/details>`_
+        :devportal:`target-groups: details <target-groups-details>`
 
         Args:
             id (int): The unique identifier for the target group.
 
         Returns:
-            dict: The resource record for the target group.
+            :obj:`dict`:
+                The resource record for the target group.
 
         Examples:
             >>> tg = tio.target_groups.details(1)
@@ -102,7 +104,7 @@ class TargetGroupsAPI(TIOEndpoint):
         '''
         Edit an existing target group.
 
-        `target-groups: edit <https://cloud.tenable.com/api#/resources/target-groups/edit>`_
+        :devportal:`target-groups: edit <target-groups-edit>`
 
         Args:
             id (int): The unique identifier for the target group.
@@ -123,7 +125,8 @@ class TargetGroupsAPI(TIOEndpoint):
                 `system`.
 
         Returns:
-            dict: The modified target group resource record.
+            :obj:`dict`:
+                The modified target group resource record.
 
         Examples:
             >>> tio.target_groups.edit(1, name='Updated TG Name')
@@ -153,13 +156,13 @@ class TargetGroupsAPI(TIOEndpoint):
             'members': craw['members'],
         }
         payload = dict_merge(current, payload)
-        return self._api.put('target-groups/{}'.format(id), json=payload).json()  
+        return self._api.put('target-groups/{}'.format(id), json=payload).json()
 
     def list(self):
         '''
         Retrieve the list of target groups configured.
 
-        target-groups: list <https://cloud.tenable.com/api#/resources/target-groups/list>`_
+        :devportal:`target-groups: list <target-groups-list>`
 
         Returns:
             list: Listing of target group resource records.
@@ -168,4 +171,4 @@ class TargetGroupsAPI(TIOEndpoint):
             >>> for tg in tio.target_groups.list():
             ...     pprint(tg)
         '''
-        return self._api.get('target-groups').json()['target_groups']               
+        return self._api.get('target-groups').json()['target_groups']

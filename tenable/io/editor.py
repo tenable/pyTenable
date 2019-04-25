@@ -2,12 +2,11 @@
 editor
 ======
 
-The following methods allow for interaction into the Tenable.io 
-`editor <https://cloud.tenable.com/api#/resources/editor>`_ 
-API endpoints.  While these endpoints are pythonized for completeness within
-pyTenable, the Editor API endpoints should generally be avoided unless absolutely
-necessary.  These endpoints are used to drive the Tenable.io UI, and not
-designed to be used programmatically.
+The following methods allow for interaction into the Tenable.io
+:devportal:`editor <editor>` API endpoints.  While these endpoints are
+pythonized for completeness within pyTenable, the Editor API endpoints should
+generally be avoided unless absolutely necessary.  These endpoints are used to
+drive the Tenable.io UI, and not designed to be used programmatically.
 
 Methods available on ``io.editor``:
 
@@ -16,9 +15,9 @@ Methods available on ``io.editor``:
 
     .. automethod:: audits
     .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
     .. automethod:: plugin_description
+    .. automethod:: template_details
+    .. automethod:: template_list
 '''
 from .base import TIOEndpoint
 from tenable.utils import dict_merge, policy_settings
@@ -27,7 +26,7 @@ from io import BytesIO
 class EditorAPI(TIOEndpoint):
     def parse_creds(self, data):
         '''
-        Walks through the credential data list and returns the configured 
+        Walks through the credential data list and returns the configured
         settings for a given scan policy/scan
         '''
         resp = dict()
@@ -46,7 +45,7 @@ class EditorAPI(TIOEndpoint):
 
                         if item['name'] not in resp[dtype['name']]:
                             # if the data subtype doesn't exist yet,
-                            # create it. 
+                            # create it.
                             resp[dtype['name']][item['name']] = list()
 
                         # Add the configured settings to the key-value
@@ -91,7 +90,7 @@ class EditorAPI(TIOEndpoint):
                             'id': audit['id'],
                             'variables': policy_settings(audit)
                         })
-        return resp 
+        return resp
 
     def parse_plugins(self, families, id, callfmt='editor/{id}/families/{fam}'):
         '''
@@ -128,7 +127,7 @@ class EditorAPI(TIOEndpoint):
         '''
         Retrieves an audit file from Tenable.io
 
-        `editor: audits <https://cloud.tenable.com/api#/resources/editor/audits>`_
+        :devportal:`editor: audits <editor-audits>`
 
         Args:
             etype (str):
@@ -143,7 +142,8 @@ class EditorAPI(TIOEndpoint):
                 provided a BytesIO object will be returned.
 
         Returns:
-            FileObject: A File-like object of of the audit file.
+            :obj:`file`:
+                A File-like object of of the audit file.
         '''
         # If no file object was given to us, then lets create a new BytesIO
         # object to dump the data into.
@@ -167,11 +167,11 @@ class EditorAPI(TIOEndpoint):
         # lastly return the file object.
         return fobj
 
-    def details(self, etype, uuid):
+    def template_details(self, etype, uuid):
         '''
-        Retrieves details about a specific object.
+        Retrieves details about a specific template.
 
-        `editor: details <https://cloud.tenable.com/api#/resources/editor/details>`_
+        :devportal:`editor: template-details <editor-template-details>`
 
         Args:
             etype (str):
@@ -181,7 +181,8 @@ class EditorAPI(TIOEndpoint):
                 The UUID (unique identifier) for the template.
 
         Returns:
-            dict: Details on the requested template
+            :obj:`dict`:
+                Details on the requested template
         '''
         return self._api.get(
             'editor/{}/templates/{}'.format(
@@ -189,11 +190,11 @@ class EditorAPI(TIOEndpoint):
                 self._check('uuid', uuid, str)
             )).json()
 
-    def edit(self, etype, id):
+    def details(self, etype, id):
         '''
-        Edits an object.
+        Retrieves details about a specific object.
 
-        `editor: edit <https://cloud.tenable.com/api#/resources/editor/edit>`_
+        :devportal:`editor: template-details <editor-template-details>`
 
         Args:
             etype (str):
@@ -203,7 +204,8 @@ class EditorAPI(TIOEndpoint):
                 The unique identifier of the object.
 
         Returns:
-            dict: Details of the requested object
+            :obj:`dict`:
+                Details of the requested object
         '''
         return self._api.get(
             'editor/{}/{}'.format(
@@ -211,11 +213,11 @@ class EditorAPI(TIOEndpoint):
                 self._check('id', id, int)
             )).json()
 
-    def list(self, etype):
+    def template_list(self, etype):
         '''
-        List objects.
+        List template objects.
 
-        `editor: list <https://cloud.tenable.com/api#/resources/editor/list>`_
+        :devportal:`editor: list <editor-list-templates>`
 
         Args:
             etype (str):
@@ -223,7 +225,8 @@ class EditorAPI(TIOEndpoint):
                 ``policy``.
 
         Returns:
-            list: Listing of template records.
+            :obj:`list`:
+                Listing of template records.
         '''
         return self._api.get(
             'editor/{}/templates'.format(
@@ -234,7 +237,7 @@ class EditorAPI(TIOEndpoint):
         '''
         Retrieves the plugin description for the specified plugin.
 
-        `editor: plugin-description <https://cloud.tenable.com/api#/resources/editor/plugin-description>`_
+        :devportal:`editor: plugin-description <editor-plugin-description>`
 
         Args:
             policy_id (int):
@@ -245,7 +248,8 @@ class EditorAPI(TIOEndpoint):
                 The identifier of the plugin within the family.
 
         Returns:
-            dict: Details of the plugin requested.
+            :obj:`dict`:
+                Details of the plugin requested.
         '''
         return self._api.get(
             'editor/policy/{}/families/{}/plugins/{}'.format(

@@ -2,8 +2,8 @@
 server
 ======
 
-The following methods allow for interaction into the Tenable.io 
-`server <https://cloud.tenable.com/api#/resources/server>`_ API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`server <server>` API endpoints.
 
 Methods available on ``tio.server``:
 
@@ -20,10 +20,11 @@ class ServerAPI(TIOEndpoint):
         '''
         Retrieves the various properties used within the Tenable.io instance.
 
-        `server: properties <https://cloud.tenable.com/api#/resources/server/properties>`_
+        :devportal:`server: properties <server-properties>`
 
         Returns:
-            dict: The server properties.
+            :obj:`dict`:
+                The server properties.
 
         Examples:
             >>> props = tio.server.properties()
@@ -35,10 +36,11 @@ class ServerAPI(TIOEndpoint):
         '''
         Retrieves the server status of the Tenable.io instance.
 
-        `server: status <https://cloud.tenable.com/api#/resources/server/status>`_
+        :devportal:`server: status <server-status>`
 
         Returns:
-            dict: The server status.
+            :obj:`dict`:
+                The server status.
 
         Examples:
             >>> status = tio.server.status()

@@ -2,9 +2,8 @@
 permissions
 ===========
 
-The following methods allow for interaction into the Tenable.io 
-`permissions <https://cloud.tenable.com/api#/resources/permissions>`_ 
-API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal`permissions <permissions-1>` API endpoints.
 
 Methods available on ``tio.permissions``:
 
@@ -21,7 +20,7 @@ class PermissionsAPI(TIOEndpoint):
         '''
         Modify the permission of a specific object.
 
-        `permissions: change <https://cloud.tenable.com/api#/resources/permissions/change>`_
+        :devportal:`permissions: change <permissions-change>`
 
         Args:
             otype (str):
@@ -30,18 +29,15 @@ class PermissionsAPI(TIOEndpoint):
                 The unique identifier fo the object.
             *acls (dict):
                 ACL dictionaries inform Tenable.io how to handle permissions of
-                the various objects within Tenable.io.  The permissions dict is
-                described on the `permissions resource`_ page.  Further the
-                integer values that represent the permissions granted are
-                detailed on the `authorization page`_ within the documentation.
+                the various objects within Tenable.io.  Please refer to the
+                `permissions documentation`_ for more details.
 
         Returns:
-            None: The object permissions were successfully changed.
+            :obj:`None`:
+                The object permissions were successfully changed.
 
-        .. _permissions resource:
-            https://cloud.tenable.com/api#/resources/permissions
-        .. _authorization page:
-            https://cloud.tenable.com/api#/authorization
+        .. _permissions documentation:
+            https://developer.tenable.com/docs/permissions
         '''
         # Check to make sure all of the ACLs are dictionaries.
         for item in acls:
@@ -57,7 +53,7 @@ class PermissionsAPI(TIOEndpoint):
         '''
         List the permissions of a specific object.
 
-        `permissions: list <https://cloud.tenable.com/api#/resources/permissions/list>`_
+        :devportal:`permissions: list <permissions-list>`
 
         Args:
             otype (str):
@@ -66,7 +62,7 @@ class PermissionsAPI(TIOEndpoint):
                 The unique identifier of the object.
 
         Returns:
-            list: 
+            :obj:`list`:
                 The permission recourse record listings for the specified object.
         '''
         return self._api.get(

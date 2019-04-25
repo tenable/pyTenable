@@ -2,8 +2,8 @@
 session
 =======
 
-The following methods allow for interaction into the Tenable.io 
-`session <https://cloud.tenable.com/api#/resources/session>`_ API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`session <session>` API endpoints.
 
 Methods available on ``tio.session``:
 
@@ -27,14 +27,15 @@ class SessionAPI(TIOEndpoint):
         '''
         Modify the currently logged-in user.
 
-        `session: edit <https://cloud.tenable.com/api#/resources/session/edit>`_
+        :devportal:`session: edit <session-edit>`
 
         Args:
             name (str): The full name of the user.
             email (str): The email address of the user.
 
         Returns:
-            dict: The session data for the current user.
+            :obj:`dict`:
+                The session data for the current user.
 
         Examples:
             >>> tio.session.edit('John Doe', 'joe@company.com')
@@ -48,10 +49,11 @@ class SessionAPI(TIOEndpoint):
         '''
         Retrieve the current users resource record.
 
-        `session: get <https://cloud.tenable.com/api#/resources/session/get>`_
+        :devportal:`session: get <session-get>`
 
         Returns:
-            dict: The user's session resource record.
+            :obj:`dict`:
+                The user's session resource record.
 
         Examples:
             >>> user = tio.session.details()
@@ -63,14 +65,15 @@ class SessionAPI(TIOEndpoint):
         '''
         Change the password of the current user.
 
-        `session: password <https://cloud.tenable.com/api#/resources/session/password>`_
+        :devportal:`session: password <session-password>`
 
         Args:
             old_password (str): The current password.
             new_password (str): The new password.
 
         Returns:
-            None: The password has been successfully changed.
+            :obj:`None`:
+                The password has been successfully changed.
 
         Examples:
             >>> tio.session.change_password('old_pass', 'new_pass')
@@ -84,10 +87,11 @@ class SessionAPI(TIOEndpoint):
         '''
         Generate new API keys for the current user.
 
-        `session: keys <https://cloud.tenable.com/api#/resources/session/keys>`_
+        :devportal:`session: keys <session-keys>`
 
         Returns:
-            dict: A dictionary containing the new API Keypair.
+            :obj:`dict`:
+                A dictionary containing the new API Keypair.
 
         Examples:
             >>> keys = tio.session.gen_api_keys()
@@ -98,19 +102,20 @@ class SessionAPI(TIOEndpoint):
         '''
         Configure two-factor authorization.
 
-        `session: two-factor <https://cloud.tenable.com/api#/resources/session/two-factor>`_
+        :devportal:`session: two-factor <session-two-factor-settings>`
 
         Args:
-            email (bool): 
+            email (bool):
                 Whether two-factor should be additionally sent as an email.
             sms (bool):
                 Whether two-factor should be enabled.  This will send SMS codes.
             phone (str, optional):
                 The phone number to use for two-factor authentication.  Required
                 when sms is set to `True`.
-        
+
         Returns:
-            None: Setting changes were successfully updated.
+            :obj:`None`:
+                Setting changes were successfully updated.
 
         Example:
             Configure email multi-factor auth:
@@ -131,15 +136,16 @@ class SessionAPI(TIOEndpoint):
 
     def enable_two_factor(self, phone):
         '''
-        Enable phone-based two-factor authorization.
+        Initiate the phone-based two-factor authorization verification process.
 
-        `session: two-factor-enable <https://cloud.tenable.com/api#/resources/session/two-factor-enable>`_
+        :devportal:`session: two-factor-enable <session-send-code>`
 
         Args:
             phone (str): The phone number to use for two-factor auth.
 
         Returns:
-            None: One-time activation code sent to the provided phone number.
+            :obj:`None`:
+                One-time activation code sent to the provided phone number.
 
         Examples:
             >>> tio.session.enable_two_factor('9998887766')
@@ -152,13 +158,14 @@ class SessionAPI(TIOEndpoint):
         '''
         Send the verification code for two-factor authorization.
 
-        `session: two-factor-enable-verify <https://cloud.tenable.com/api#/resources/session/two-factor-enable-verify>`_
+        :devportal:`session: verify-code <session-verify-code>`
 
         Args:
             code (str): The verification code that was sent to the device.
 
         Returns:
-            None: The verification code was valid and two-factor is enabled.
+            :obj:`None`:
+                The verification code was valid and two-factor is enabled.
 
         Examples:
             >>> tio.session.verify_two_factor('abc123')
@@ -172,10 +179,11 @@ class SessionAPI(TIOEndpoint):
         Restore the session to the logged-in user.  This will remove any user
         impersonation setting that have been set.
 
-        `session: restore <https://cloud.tenable.com/api#/resources/session/restore>`_
+        :devportal:`session: restore <session-restore>`
 
         Returns:
-            None: The session has properly been restored to the original user.
+            :obj:`None`:
+                The session has properly been restored to the original user.
 
         Example:
             >>> tio.session.restore()
@@ -183,4 +191,3 @@ class SessionAPI(TIOEndpoint):
         self._api._session.headers.update({
             'X-Impersonate': None
         })
-        

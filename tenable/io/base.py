@@ -69,6 +69,9 @@ class TIOEndpoint(APIEndpoint):
 class TIOIterator(APIResultsIterator):
     _path = None
     _resource = None
+    _size = 100
+    _page_num = 0
+    _api_version = 1
 
     def _get_data(self):
         '''
@@ -77,11 +80,21 @@ class TIOIterator(APIResultsIterator):
         # The first thing that we need to do is construct the query with the
         # current offset and limits
         query = self._query
-        query['limit'] = self._limit
-        query['offset'] = self._offset
+
+        if self._api_version == 2:
+            query['size'] = self._size
+            query['page'] = self._page_num
+        else:
+            query['limit'] = self._limit
+            query['offset'] = self._offset
 
         # Lets make the actual call at this point.
         resp = self._api.get(self._path, params=query).json()
+
+        if self._api_version == 2:
+            self._page_num += 1
+        else:
+            self._offset += self._limit
 
         # Lastly we need to return the data from the response and the data key
         # so that _get_page() knows where the information is stored.
@@ -104,9 +117,12 @@ class TIOIterator(APIResultsIterator):
         # and increment things like the page counter, offset, etc.
         self.page_count = 0
         self._pages_requested += 1
-        self._offset += self._limit
 
         # Lastly we want to refresh the page data and the total based on the
         # most recent data we have.
-        self.page = resp[key]
-        self.total = resp['pagination']['total']
+        if self._api_version == 2:
+            self.page = resp['data'][key]
+            self.total = resp['total_count']
+        else:
+            self.page = resp[key]
+            self.total = resp['pagination']['total']
