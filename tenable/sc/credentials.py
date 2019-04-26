@@ -3,7 +3,7 @@ credentials
 ===========
 
 The following methods allow for interaction into the Tenable.sc
-:sccv-api:`Scan Credentials <Credential.html>` API.  These
+:sc-api:`Scan Credentials <Credential.html>` API.  These
 items are typically seen under the **Scan Credentials** section of Tenable.sc.
 
 Methods available on ``sc.credentials``:
@@ -411,7 +411,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Creates a credential.
 
-        + :sccv-api:`credential: create <Credential.html#credential_POST>`
+        :sc-api:`credential: create <Credential.html#credential_POST>`
 
         Args:
             name (str): The name for the credential.
@@ -584,7 +584,8 @@ class CredentialAPI(SCEndpoint):
                 the vault?  If left unspecified, the default is ``False``.
 
         Returns:
-            dict: The newly created credential.
+            :obj:`dict`:
+                The newly created credential.
 
         Examples:
             Creating a Windows AD credential:
@@ -682,14 +683,15 @@ class CredentialAPI(SCEndpoint):
         '''
         Returns the details for a specific credential.
 
-        + :sccv-api:`credential: details <Credential.html#CredentialRESTReference-/credential/{id}>`
+        :sc-api:`credential: details <Credential.html#CredentialRESTReference-/credential/{id}>`
 
         Args:
             id (int): The identifier for the credential.
             fields (list, optional): A list of attributes to return.
 
         Returns:
-            dict: The credential resource record.
+            :obj:`dict`:
+                The credential resource record.
 
         Examples:
             >>> cred = sc.credentials.details(1)
@@ -706,7 +708,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Edits a credential.
 
-        + :sccv-api:`credential: edit <Credential.html#credential_id_PATCH>`
+        :sc-api:`credential: edit <Credential.html#credential_id_PATCH>`
 
         Args:
             auth_type (str, optional):
@@ -880,7 +882,8 @@ class CredentialAPI(SCEndpoint):
                 the vault?  If left unspecified, the default is ``False``.
 
         Returns:
-            dict: The newly updated credential.
+            :obj:`dict`:
+                The newly updated credential.
 
         Examples:
             >>> cred = sc.credentials.edit()
@@ -893,13 +896,14 @@ class CredentialAPI(SCEndpoint):
         '''
         Removes a credential.
 
-        + :sccv-api:`credential: delete <Credential.html#credential_id_DELETE>`
+        :sc-api:`credential: delete <Credential.html#credential_id_DELETE>`
 
         Args:
             id (int): The numeric identifier for the credential to remove.
 
         Returns:
-            str: An empty response.
+            :obj:`str`:
+                An empty response.
 
         Examples:
             >>> sc.credentials.delete(1)
@@ -918,7 +922,8 @@ class CredentialAPI(SCEndpoint):
                 A list of attributes to return for each credential.
 
         Returns:
-            list: A list of credential resources.
+            :obj:`list`:
+                A list of credential resources.
 
         Examples:
             >>> for cred in sc.credentials.list():
@@ -935,10 +940,11 @@ class CredentialAPI(SCEndpoint):
         '''
         Retrieves the list of unique tags associated to credentials.
 
-        + :sccv-api:`credential: tags <Credential.html#CredentialRESTReference-/credential/tag>`
+        :sc-api:`credential: tags <Credential.html#CredentialRESTReference-/credential/tag>`
 
         Returns:
-            list: List of tags
+            :obj:`list`:
+                List of tags
 
         Examples:
             >>> tags = sc.credentials.tags()
@@ -949,14 +955,15 @@ class CredentialAPI(SCEndpoint):
         '''
         Shares the specified credential to another user group.
 
-        + :sccv-api:`credential: share <Credential.html#CredentialRESTReference-/credential/{id}/share>`
+        :sc-api:`credential: share <Credential.html#CredentialRESTReference-/credential/{id}/share>`
 
         Args:
             id (int): The numeric id for the credential.
             *groups (int): The numeric id of the group(s) to share to.
 
         Returns:
-            dict: The updated credential resource.
+            :obj:`dict`:
+                The updated credential resource.
 
         Examples:
             >>> sc.credentials.share(1, group_1, group_2)

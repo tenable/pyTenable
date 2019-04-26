@@ -89,7 +89,7 @@ def test_plugins_constructor(sc):
 
 @pytest.mark.vcr()
 def test_plugins_list_success(sc):
-    plugins = sc.plugins.list(pages=2)
+    plugins = sc.plugins.list(pages=2, limit=200)
     assert isinstance(plugins, PluginResultsIterator)
     for plugin in plugins:
         assert isinstance(plugin, dict)
@@ -157,3 +157,30 @@ def test_plugins_details_success(sc):
     check(p, 'version', str)
     check(p, 'vulnPubDate', str)
     check(p, 'xrefs', str)
+
+@pytest.mark.vcr()
+def test_plugins_family_list_success(sc):
+    f = sc.plugins.family_list()
+    assert isinstance(f, list)
+    for i in f:
+        check(i, 'id', str)
+        check(i, 'name', str)
+
+@pytest.mark.vcr()
+def test_plugins_family_details_success(sc):
+    f = sc.plugins.family_details(10)
+    assert isinstance(f, dict)
+    check(f, 'id', str)
+    check(f, 'name', str)
+    check(f, 'type', str)
+    check(f, 'plugins', list)
+    check(f, 'count', int)
+
+@pytest.mark.vcr()
+def test_plugins_family_plugins_success(sc):
+    plugs = sc.plugins.family_plugins(10, limit=100, pages=2)
+    assert isinstance(plugs, PluginResultsIterator)
+    for p in plugs:
+        check(p, 'id', str)
+        check(p, 'name', str)
+        check(p, 'description', str)

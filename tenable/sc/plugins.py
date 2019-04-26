@@ -97,7 +97,7 @@ class PluginAPI(SCEndpoint):
         '''
         Retrieves the list of plugins.
 
-        + `SC Plugin List <https://docs.tenable.com/sccv/api/Plugin.html#PluginRESTReference-/plugin>`_
+        :sc-api:`plugins: list <Plugin.html#PluginRESTReference-/plugin>`
 
         Args:
             fields (list, optional):
@@ -108,7 +108,7 @@ class PluginAPI(SCEndpoint):
                 yet different format to the analysis filters.
             limit (int, optional):
                 How many records should be returned in each page of data.  If
-                none is specified, the default is 200 records.
+                none is specified, the default is 1000 records.
             offset (int, optional):
                 At what offset within the data should we start returning data.
                 If none is specified, the default is 0.
@@ -147,7 +147,7 @@ class PluginAPI(SCEndpoint):
             >>> plugins = sc.plugins.list(type='active')
         '''
         offset = self._check('offset', kw.get('offset', 0), int)
-        limit = self._check('limit', kw.get('limit', 200), int)
+        limit = self._check('limit', kw.get('limit', 1000), int)
         pages = self._check('pages', kw.get('pages'), int)
         json_result = kw.get('json_result', False)
         query = self._constructor(**kw)
@@ -166,7 +166,7 @@ class PluginAPI(SCEndpoint):
         '''
         Returns the details for a specific plugin.
 
-        + `SC Plugin Details <https://docs.tenable.com/sccv/api/Plugin.html#PluginRESTReference-/plugin/{id}>`_
+        :sc-api:`plugins: details< Plugin.html#PluginRESTReference-/plugin/{id}>`
 
         Args:
             id (int): The identifier for the plugin.
@@ -185,3 +185,121 @@ class PluginAPI(SCEndpoint):
 
         return self._api.get('plugin/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
+
+    def family_list(self, **kw):
+        '''
+        Returns the list of plugin families.
+
+        :sc-api:`plugin-families: list <Plugin-Family.html#PluginFamilyRESTReference-/pluginFamily>`
+
+        Args:
+            fields (list, optional):
+                A list of attributes to return.
+            filter (tuple, optional):
+                A filter tuple for which to filter the plugins.  Filter tuples
+                must be ``('name', 'operator', 'value')`` and follow a similar
+                yet different format to the analysis filters.
+            sort_field (str, optional):
+                The field to sort the results on.
+            sort_direction (str, optional):
+                The direction in which to sort the results.  Valid settings are
+                ``asc`` and ``desc``.  The default is ``asc``.
+            type (str, optional):
+                The type of plugins to return.  Available types are ``active``,
+                ``all``, ``compliance``, ``custom``, ``lce``, ``notPassive``, and
+                ``passive``.  If nothing is specified, then ``all`` is assumed.
+
+        Returns:
+            :obj:`list`:
+                List of plugin family records.
+
+        Examples:
+            >>> for fam in sc.plugins.family_list():
+            ...     pprint(fam)
+        '''
+        query = self._constructor(**kw)
+        return self._api.get('pluginFamily', params=query).json()['response']
+
+    def family_details(self, id, fields=None):
+        '''
+        Returns the details for the specified plugin family.
+
+        :sc-api:`plugin-family: details <https://docs.tenable.com/sccv/api/Plugin-Family.html#PluginFamilyRESTReference-/pluginFamily/{id}>`
+
+        Args:
+            id (int): The plugin family numeric identifier.
+            fields (list, optional):
+                A list of attributes to return.
+
+        Returns:
+            :obj:`dict`:
+                The plugin family resource.
+
+        Examples:
+            >>> family = sc.plugins.family_details(10)
+            >>> pprint(family)
+        '''
+        if fields:
+            params['fields'] = ','.join([self._check('field', f, str)
+                for f in fields])
+
+        return self._api.get('pluginFamily/{}'.format(
+            self._check('id', id, int))).json()['response']
+
+    def family_plugins(self, id, **kw):
+        '''
+        Retrieves the plugins for the specified family.
+
+        :sc-api:`plugin-family: plugins <Plugin-Family.html#PluginFamilyRESTReference-/pluginFamily/{id}/plugins::GET>`
+
+        Args:
+            id (int): The numberic identifier for the plugin family.
+            fields (list, optional):
+                A list of attributes to return.
+            filter (tuple, optional):
+                A filter tuple for which to filter the plugins.  Filter tuples
+                must be ``('name', 'operator', 'value')`` and follow a similar
+                yet different format to the analysis filters.
+            limit (int, optional):
+                How many records should be returned in each page of data.  If
+                none is specified, the default is 1000 records.
+            offset (int, optional):
+                At what offset within the data should we start returning data.
+                If none is specified, the default is 0.
+            pages (int, optional):
+                How many pages of data should we return.  If none is specified
+                then all pages will return.
+            sort_field (str, optional):
+                The field to sort the results on.
+            sort_direction (str, optional):
+                The direction in which to sort the results.  Valid settings are
+                ``asc`` and ``desc``.  The default is ``asc``.
+            type (str, optional):
+                The type of plugins to return.  Available types are ``active``,
+                ``all``, ``compliance``, ``custom``, ``lce``, ``notPassive``, and
+                ``passive``.  If nothing is specified, then ``all`` is assumed.
+
+        Returns:
+            PluginResultsIterator: an iterator object handling data pagination.
+
+        Examples:
+            >>> plugins = sc.plugins.family_plugins(10)
+            >>> for plugin in plugins:
+            ...     pprint(plugin)
+        '''
+        offset = self._check('offset', kw.get('offset', 0), int)
+        limit = self._check('limit', kw.get('limit', 1000), int)
+        pages = self._check('pages', kw.get('pages'), int)
+        json_result = kw.get('json_result', False)
+        query = self._constructor(**kw)
+
+        if json_result:
+            return self._api.get('plugin', params=query).json()['response']
+        else:
+            return PluginResultsIterator(self._api,
+                _resource='pluginFamily/{}/plugins'.format(
+                    self._check('id', id, int)),
+                _offset=offset,
+                _limit=limit,
+                _query=query,
+                _pages_total=pages)
