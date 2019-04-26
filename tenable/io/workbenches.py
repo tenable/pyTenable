@@ -298,6 +298,25 @@ class WorkbenchesAPI(TIOEndpoint):
                 self._check('uuid', uuid, 'uuid'),
                 self._check('plugin_id', plugin_id, int)), params=query).json()['outputs']
 
+    def asset_delete(self, asset_uuid):
+        '''
+        Deletes the asset.
+
+        :devportal:`workbenches: asset-delete <workbenches-asset-delete>`
+
+        Args:
+            asset_uuid (str): The unique identifier for the asset.
+
+        Returns:
+            :obj:`None`:
+
+        Examples:
+            >>> asset_id = '00000000-0000-0000-0000-000000000000'
+            >>> tio.workbenches.asset_delete(asset_id)
+        '''
+        self._api.delete('workbenches/assets/{}'.format(
+            self._check('asset_uuid', asset_uuid, 'uuid')))
+
     def vuln_assets(self, *filters, **kw):
         '''
         Retrieve assets based on the vulnerability data.

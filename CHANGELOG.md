@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.18]
 ### Added
 - Added and tested out support for TenavleSC Credentials #76
+- Added the asset delete method to the workbenches TenableIO module #110
 
 ### Fixed
 - Various documentation issues reported by sphinx addressed
