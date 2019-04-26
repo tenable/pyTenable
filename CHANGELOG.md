@@ -10,14 +10,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - tio.editor.edit has been renamed to tio.editor.template_details as it was misnamed.
 - tio.editor.list has been renamed to tio.editor.template_list to more accurately describe it's function.
 
-## [0.3.18]
 ### Added
-- Added and tested out support for TenavleSC Credentials #76
 - Added the asset delete method to the workbenches TenableIO module #110
+- Added and tested out the TenableSC plugin family additions to the plugins module #78
 
-### Fixed
+### Changed
 - Various documentation issues reported by sphinx addressed
 - TenableSC.scan_instances.list can now support non-standard timeframes #108
+
+## [0.3.18]
+### Added
+- Added and tested out support for TenableSC Credentials #76
 
 ## [0.3.17]
 ### Added
