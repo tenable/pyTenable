@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Various documentation issues reported by sphinx addressed
+- TenableSC.scan_instances.list can now support non-standard timeframes #108
 
 ## [0.3.17]
 ### Added

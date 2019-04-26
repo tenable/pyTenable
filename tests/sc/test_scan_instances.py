@@ -7,6 +7,7 @@ def scaninstance(request, vcr, sc):
     with vcr.use_cassette('scan_instance'):
         return sc.scan_instances.list()['manageable'][0]
 
+
 def test_scan_instance_copy_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.copy('nothing', 1)
@@ -72,7 +73,7 @@ def test_scan_instances_details_success(sc, scaninstance):
     check(s['ownerGroup'], 'description', str)
     check(s['ownerGroup'], 'id', str)
     check(s['ownerGroup'], 'name', str)
-    check(s, 'progress', dict) 
+    check(s, 'progress', dict)
     check(s['progress'], 'awaitingDownloadIPs', str)
     check(s['progress'], 'checksPerHost', str)
     check(s['progress'], 'completedChecks', str)
@@ -155,7 +156,7 @@ def test_scan_instances_export_scan_success(sc, scaninstance):
 
 @pytest.mark.vcr()
 @pytest.mark.datafiles(os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), 
+    os.path.dirname(os.path.realpath(__file__)),
     '..', 'test_files', 'example.nessus'))
 def test_scan_instances_import_scan_success(sc, datafiles):
     with open(os.path.join(str(datafiles), 'example.nessus'), 'rb') as fobj:
@@ -169,10 +170,18 @@ def test_scan_instances_reimport_scan_id_typeerror(sc):
 def test_scan_instances_reimport_success(sc, scaninstance):
     sc.scan_instances.reimport_scan(int(scaninstance['id']))
 
+def test_scan_instances_list_start_time_typerror(sc):
+    with pytest.raises(TypeError):
+        sc.scan_instances.list(start_time='none')
+
+def test_scan_instances_list_end_time_typerror(sc):
+    with pytest.raises(TypeError):
+        sc.scan_instances.list(end_time='none')
+
 @pytest.mark.vcr()
 def test_scan_instances_list(sc):
     r = sc.scan_instances.list()
-    assert isinstance(r, dict) 
+    assert isinstance(r, dict)
     check(r, 'manageable', list)
     for i in r['manageable']:
         check(i, 'id', str)
@@ -195,7 +204,7 @@ def test_scan_instances_pause_id_typeerror(sc):
 def test_scan_instances_pause_success(sc):
     scan = sc.scans.create('Example Scan', 1,
         schedule_type='template',
-        targets=['192.168.101.0/24'], 
+        targets=['192.168.101.0/24'],
         policy_id=1000001)
     instance = sc.scans.launch(int(scan['id']))
     time.sleep(120)
@@ -265,7 +274,7 @@ def test_scan_instances_resume_id_typeerror(sc):
 def test_scan_instances_resume_success(sc):
     scan = sc.scans.create('Example Scan', 1,
         schedule_type='template',
-        targets=['192.168.101.0/24'], 
+        targets=['192.168.101.0/24'],
         policy_id=1000001)
     instance = sc.scans.launch(int(scan['id']))
     time.sleep(120)
@@ -273,7 +282,7 @@ def test_scan_instances_resume_success(sc):
         s = sc.scan_instances.pause(int(instance['scanResult']['id']))
     except APIError as error:
         pass
-    
+
     time.sleep(30)
     try:
         s = sc.scan_instances.resume(int(instance['scanResult']['id']))
@@ -342,7 +351,7 @@ def test_scan_instances_stop_id_typeerror(sc):
 def test_scan_instances_stop_success(sc):
     scan = sc.scans.create('Example Scan', 1,
         schedule_type='template',
-        targets=['192.168.101.0/24'], 
+        targets=['192.168.101.0/24'],
         policy_id=1000001)
     instance = sc.scans.launch(int(scan['id']))
     time.sleep(120)
