@@ -2,8 +2,8 @@
 plugins
 =======
 
-The following methods allow for interaction into the Tenable.io 
-`plugins <https://cloud.tenable.com/api#/resources/plugins>`_ API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`plugins <plugins>` API endpoints.
 
 Methods available on ``tio.plugins``:
 
@@ -21,10 +21,11 @@ class PluginsAPI(TIOEndpoint):
         '''
         List the available plugin families.
 
-        `plugins: families <https://cloud.tenable.com/api#/resources/plugins/families>`_
+        :devportal:`plugins: families <plugins-families>`
 
         Returns:
-            list: List of plugin familiy resource records.
+            :obj:`list`:
+                List of plugin family resource records.
 
         Examples:
             >>> for family in tio.plugins.families():
@@ -36,13 +37,13 @@ class PluginsAPI(TIOEndpoint):
         '''
         Retrieve the details for a specific plugin family.
 
-        `plugins: family-details <https://cloud.tenable.com/api#/resources/plugins/family-details>`_
+        :devportal:`plugins: family-details plugins-family-details>`
 
         Args:
             id (int): The plugin family unique identifier.
 
         Returns:
-            dict: 
+            :obj:`dict`:
                 Returns a dictionary stating the id, name, and plugins that are
                 housed within the plugin family.
 
@@ -57,13 +58,13 @@ class PluginsAPI(TIOEndpoint):
             '''
             Retrieve the details for a specific plugin.
 
-            `plugins: plugin-details <https://cloud.tenable.com/api#/resources/plugins/plugin-details>`_
+            :devportal:`plugins: plugin-details <plugins-plugin-details>`
 
             Args:
                 id (int): The plugin id for the requested plugin.
 
             Returns:
-                dict:
+                :obj:`dict`:
                     A dictionary stating the id, name, family, and any other
                     relevant attributes associated to the plugin.
 

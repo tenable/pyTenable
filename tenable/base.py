@@ -3,18 +3,16 @@
 '''
 import requests, sys, logging, re, time, logging, warnings, json
 from .errors import *
-
-__version__ = '0.3.12'
-__author__ = 'Steve McGrath <smcgrath@tenable.com>'
+from . import __version__, __author__
 
 
 class APIResultsIterator(object):
     '''
-    The API iterator provides a scalable way to work through result sets of any 
-    size.  The iterator will walk through each page of data, returning one 
-    record at a time.  If it reaches the end of a page of records, then it will 
-    request the next page of information and then continue to return records 
-    from the next page (and the next, and the next) until the counter reaches 
+    The API iterator provides a scalable way to work through result sets of any
+    size.  The iterator will walk through each page of data, returning one
+    record at a time.  If it reaches the end of a page of records, then it will
+    request the next page of information and then continue to return records
+    from the next page (and the next, and the next) until the counter reaches
     the total number of records that the API has reported.
 
     Note that this Iterator is used as a base model for all of the iterators,
@@ -23,12 +21,12 @@ class APIResultsIterator(object):
 
     Attributes:
         count (int): The current number of records that have been returned
-        page (list): 
+        page (list):
             The current page of data being walked through.  pages will be
             cycled through as the iterator requests more information from the
             API.
         page_count (int): The number of record returned from the current page.
-        total (int): 
+        total (int):
             The total number of records that exist for the current request.
     '''
     count = 0
@@ -53,6 +51,8 @@ class APIResultsIterator(object):
 
     def __init__(self, api, **kw):
         self._api = api
+        self._log = logging.getLogger('{}.{}'.format(
+            self.__module__, self.__class__.__name__))
         self.__dict__.update(kw)
 
     def _get_page(self):
@@ -97,7 +97,7 @@ class APIEndpoint(object):
     variable to ensure that we are passing good data to the API.
 
     Args:
-        api (APISession): 
+        api (APISession):
             The APISession (or sired child) instance that the endpoint will
             be using to perform calls to the API.
     '''
@@ -109,12 +109,12 @@ class APIEndpoint(object):
                 ' '.join([
                     'The {}.{}'.format(self.__module__, self.__class__.__name__),
                     'is in a {} state'.format(self._code_status),
-                    'endpoints not considered "stable", may not be tested,', 
+                    'endpoints not considered "stable", may not be tested,',
                     'and may change'
             ]))
         self._api = api
 
-    def _check(self, name, obj, expected_type, 
+    def _check(self, name, obj, expected_type,
                choices=None, default=None, case=None, pattern=None):
         '''
         Internal function for validating that inputs we are receiving are of
@@ -124,7 +124,7 @@ class APIEndpoint(object):
         Args:
             name (str): The name of the object (for exception reporting)
             obj (obj): The object that we will be checking
-            expected_type (type): 
+            expected_type (type):
                 The expected type of object that we will check against.
             choices (list, optional):
                 if the object is only expected to have a finite number of values
@@ -147,7 +147,7 @@ class APIEndpoint(object):
         '''
 
         # We have a simple function to convert the case of string values so that
-        # we can ensure correct output. 
+        # we can ensure correct output.
         def conv(obj, case):
             '''
             Case conversion function
@@ -195,7 +195,7 @@ class APIEndpoint(object):
 
         if 'scanner-uuid' in etypes:
             pattern = r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12,32}$'
-            etypes[etypes.index('scanner-uuid')] = str         
+            etypes[etypes.index('scanner-uuid')] = str
 
         # If we are checking for a string type, we will also want to check for
         # unicode type transparently, so add the unicode type to the expected
@@ -218,8 +218,8 @@ class APIEndpoint(object):
         # TypeError as it was something we weren't expecting.
         if not type_pass:
             raise TypeError('{} is of type {}.  Expected {}.'.format(
-                name, 
-                obj.__class__.__name__, 
+                name,
+                obj.__class__.__name__,
                 expected_type.__name__ if hasattr(expected_type, '__name__') else expected_type
             ))
 
@@ -250,7 +250,7 @@ class APIEndpoint(object):
 
         # if we made it this fire without an exception being raised, then assume
         # everything is good to go and return the object passed to us initially.
-        return obj 
+        return obj
 
 
 class APISession(object):
@@ -262,11 +262,11 @@ class APISession(object):
 
     Args:
         url (str, optional):
-            The base URL that the paths will be appended onto.  
+            The base URL that the paths will be appended onto.
 
-            For example, if you want to override the default URL base with 
-            _http://a.b.c/api_, you could then make a GET requests with 
-            self.get('item').  This would then inform APISession to 
+            For example, if you want to override the default URL base with
+            _http://a.b.c/api_, you could then make a GET requests with
+            self.get('item').  This would then inform APISession to
             construct a GET request to _http://ab.c./api/item_ and use
             whatever parameters you wanted to pass to the Requests Session
             object.
@@ -308,7 +308,7 @@ class APISession(object):
     Retry-After header was returned.
     '''
 
-    def __init__(self, url=None, retries=None, backoff=None, 
+    def __init__(self, url=None, retries=None, backoff=None,
                  ua_identity=None, session=None, proxies=None):
         if url:
             self._url = url
@@ -364,7 +364,7 @@ class APISession(object):
         '''
         retries = 0
         while retries <= self._retries:
-            if (('params' in kwargs and kwargs['params']) 
+            if (('params' in kwargs and kwargs['params'])
               or ('json' in kwargs and kwargs['json'])):
                 if path not in self._restricted_paths:
                     # If the path is not one of the paths that would contain
@@ -377,14 +377,17 @@ class APISession(object):
                     # redact the information.
                     self._log.debug('path={}, query={}, body={}'.format(
                         path, 'REDACTED', 'REDACTED'))
-            
+
             # Make the call to the API and pull the status code.
-            resp = self._session.request(method, 
+            resp = self._session.request(method,
                 '{}/{}'.format(self._url, path), **kwargs)
             status = resp.status_code
+
+            # If there is a Request UUID then we will want to log the UUID just
+            # incase we may need it for tracking down what happened within the
             if resp.headers.get('x-request-uuid'):
                 self._log.debug('Request-UUID {} for {}'.format(
-                    resp.headers.get('x-request-uuid'), 
+                    resp.headers.get('x-request-uuid'),
                     '{}/{}'.format(self._url, path)))
 
             if status in [429, 501, 502, 503]:
@@ -394,8 +397,8 @@ class APISession(object):
                 # we will use the _backoff attribute to build a back-off timer
                 # based on the number of retries we have already performed.
                 retries += 1
-                time.sleep(resp.headers.get(
-                    'retry-after', retries * self._backoff))
+                time.sleep(float(resp.headers.get(
+                    'retry-after', float(retries) * float(self._backoff))))
 
                 # The need to potentially modify the request for subsequent
                 # calls if the whole reason that we aren't using the default
@@ -421,9 +424,9 @@ class APISession(object):
 
     def get(self, path, **kwargs):
         '''
-        Initiates an HTTP GET request using the specified path.  Refer to the
-        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
-        for more detailed information on what keyword arguments can be passed:
+        Initiates an HTTP GET request using the specified path.  Refer to
+        :obj:`requests.request` for more detailed information on what
+        keyword arguments can be passed:
 
         Args:
             path (str):
@@ -433,15 +436,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
+            :obj:`requests.Response`
         '''
         return self._request('GET', path, **kwargs)
 
     def post(self, path, **kwargs):
         '''
         Initiates an HTTP POST request using the specified path.  Refer to the
-        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
-        for more detailed information on what keyword arguments can be passed:
+        :obj:`requests.request` for more detailed information on what
+        keyword arguments can be passed:
 
         Args:
             path (str):
@@ -451,15 +454,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
+            :obj:`requests.Response`
         '''
         return self._request('POST', path, **kwargs)
 
     def put(self, path, **kwargs):
         '''
         Initiates an HTTP PUT request using the specified path.  Refer to the
-        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
-        for more detailed information on what keyword arguments can be passed:
+        :obj:`requests.request` for more detailed information on what
+        keyword arguments can be passed:
 
         Args:
             path (str):
@@ -469,15 +472,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
+            :obj:`requests.Response`
         '''
         return self._request('PUT', path, **kwargs)
 
     def patch(self, path, **kwargs):
         '''
         Initiates an HTTP PATCH request using the specified path.  Refer to the
-        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
-        for more detailed information on what keyword arguments can be passed:
+        :obj:`requests.request` for more detailed information on what
+        keyword arguments can be passed:
 
         Args:
             path (str):
@@ -487,15 +490,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
+            :obj:`requests.Response`
         '''
         return self._request('PATCH', path, **kwargs)
 
     def delete(self, path, **kwargs):
         '''
         Initiates an HTTP DELETE request using the specified path.  Refer to the
-        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
-        for more detailed information on what keyword arguments can be passed:
+        :obj:`requests.request` for more detailed information on what
+        keyword arguments can be passed:
 
         Args:
             path (str):
@@ -505,15 +508,15 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
+            :obj:`requests.Response`
         '''
         return self._request('DELETE', path, **kwargs)
 
     def head(self, path, **kwargs):
         '''
         Initiates an HTTP HEAD request using the specified path.  Refer to the
-        `Requests documentation <http://docs.python-requests.org/en/master/api/#requests.request>`_ 
-        for more detailed information on what keyword arguments can be passed: 
+        :obj:`requests.request` for more detailed information on what
+        keyword arguments can be passed:
 
         Args:
             path (str):
@@ -523,6 +526,6 @@ class APISession(object):
                 method.
 
         Returns:
-            `requests.Response <http://docs.python-requests.org/en/master/api/#requests.Response>`_ 
+            :obj:`requests.Response`
         '''
         return self._request('HEAD', path, **kwargs)

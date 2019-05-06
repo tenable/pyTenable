@@ -2,8 +2,8 @@
 tags
 ====
 
-The following methods allow for interaction into the Tenable.io 
-`tagging <https://developer.tenable.com/tenableio/reference#tags-1>`_ API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`tagging <tags>` API endpoints.
 
 Methods available on ``tio.tags``:
 
@@ -35,12 +35,12 @@ class TagsIterator(TIOIterator):
 
     Attributes:
         count (int): The current number of records that have been returned
-        page (list): 
+        page (list):
             The current page of data being walked through.  pages will be
             cycled through as the iterator requests more information from the
             API.
         page_count (int): The number of record returned from the current page.
-        total (int): 
+        total (int):
             The total number of records that exist for the current request.
     '''
     pass
@@ -65,7 +65,7 @@ class TagsAPI(TIOEndpoint):
         '''
         Create a tag category/value pair
 
-        `tags: create-tag-value <https://developer.tenable.com/tenableio/reference#tags-create-tag-value-1>`_
+        :devportal:`tags: create-tag-value <tags-create-tag-value-1>`
 
         Args:
             category (str):
@@ -78,13 +78,14 @@ class TagsAPI(TIOEndpoint):
                 optionally provided.
             description (str, optional):
                 A description for the Category/Value pair.
-        
+
         Returns:
-            dict: Tag value resource record
-        
+            :obj:`dict`:
+                Tag value resource record
+
         Examples:
             Creating a new tag & Category:
-            
+
             >>> tio.tags.create('Location', 'Chicago')
 
             Creating a new Tag value in the existing Location Category:
@@ -105,7 +106,7 @@ class TagsAPI(TIOEndpoint):
             payload['category_uuid'] = self._check('category', category, 'uuid')
         except UnexpectedValueError:
             payload['category_name'] = self._check('category', category, str)
-        
+
         payload['value'] = self._check('value', value, str)
 
         if description:
@@ -113,22 +114,23 @@ class TagsAPI(TIOEndpoint):
         if category_description:
             payload['category_description'] = self._check(
                 'category_description', category_description, str)
-            
+
         return self._api.post('tags/values', json=payload).json()
-    
+
     def create_category(self, name, description=None):
         '''
         Creates a new category
 
-        `tags: create-category <https://developer.tenable.com/tenableio/reference#tags-create-tag-category-1>`_
+        :devportal:`tags: create-category <tags-create-tag-category>`
 
         Args:
             name (str): The name of the category to create
             description (str, optional): Description for the category to create.
-        
+
         Returns:
-            dict: Tag category resource record
-        
+            :obj:`dict`:
+                Tag category resource record
+
         Examples:
             >>> tio.tags.create_category('Location')
         '''
@@ -137,88 +139,90 @@ class TagsAPI(TIOEndpoint):
         if description:
             payload['description'] = self._check('description', description, str)
         return self._api.post('tags/categories', json=payload).json()
-    
+
     def delete(self, tag_value_uuid):
         '''
         Deletes a tag category/value pair.
 
-        `tag: delete tag value <https://developer.tenable.com/tenableio/reference#tags-delete-tag-value-1>`_
+        :devportal:`tag: delete tag value <tags-delete-tag-value>`
 
         Args:
-            tag_value_uuid (str): 
+            tag_value_uuid (str):
                 The unique identifier for the c/v pair to be deleted.
-        
+
         Returns:
-            None
-        
+            :obj:`None`
+
         Examples:
             >>> tio.tags.delete('00000000-0000-0000-0000-000000000000')
         '''
         self._api.delete('tags/values/{}'.format(
             self._check('tag_value_uuid', tag_value_uuid, 'uuid')))
-    
+
     def delete_category(self, tag_category_uuid):
         '''
         Deletes a tag category.
 
-        `tag: delete tag category <https://developer.tenable.com/tenableio/reference#tags-delete-tag-category-1>`_
+        :devportal:`tag: delete tag category <tags-delete-tag-category>`
 
         Args:
-            tag_category_uuid (str): 
+            tag_category_uuid (str):
                 The unique identifier for the tag category to be deleted.
-        
+
         Returns:
-            None
-        
+            :obj:`None`
+
         Examples:
             >>> tio.tags.delete('00000000-0000-0000-0000-000000000000')
         '''
         self._api.delete('tags/categories/{}'.format(
             self._check('tag_category_uuid', tag_category_uuid, 'uuid')))
-    
+
     def details(self, tag_value_uuid):
         '''
         Retrieves the details for a specific tag category/value pair.
 
-        `tag: tag details <https://developer.tenable.com/tenableio/reference#tags-tag-value-details-1>`_
+        :devportal:`tag: tag details <tags-tag-value-details>`
 
         Args:
             tag_value_uuid (str):
                 The unique identifier for the c/v pair
-        
+
         Returns:
-            dict: Tag value resource record
-        
+            :obj:`dict`:
+                Tag value resource record
+
         Examples:
             >>> tio.tags.details('00000000-0000-0000-0000-000000000000')
         '''
         return self._api.get('tags/values/{}'.format(self._check(
             'tag_value_uuid', tag_value_uuid, 'uuid'))).json()
-    
+
     def details_category(self, tag_category_uuid):
         '''
         Retrieves the details for a specific tag category.
 
-        `tag: tag category details <https://developer.tenable.com/tenableio/reference#tags-tag-category-details-1>`_
+        :devportal:`tag: tag category details <tags-tag-category-details>`
 
         Args:
             tag_category_uuid (str):
                 The unique identifier for the category
-        
+
         Returns:
-            dict: Tag category resource record
-        
+            :obj:`dict`:
+                Tag category resource record
+
         Examples:
             >>> tio.tags.details_category('00000000-0000-0000-0000-000000000000')
         '''
         return self._api.get('tags/categories/{}'.format(self._check(
             'tag_category_uuid', tag_category_uuid, 'uuid'))).json()
-    
+
     def edit(self, tag_value_uuid, value=None, description=None):
         '''
         Updates Tag category/value pair information.
 
-        `tag: edit tag value <https://developer.tenable.com/tenableio/reference#tags-update-tag-value-1>`_
+        :devportal:`tag: edit tag value <tags-update-tag-value>`
 
         Args:
             tag_value_uuid (str):
@@ -226,11 +230,12 @@ class TagsAPI(TIOEndpoint):
             value (str, optional):
                 The new name for the category value.
             description (str, optional):
-                New description for the category value. 
-        
+                New description for the category value.
+
         Returns:
-            dict: Tag value resource record.
-        
+            :obj:`dict`:
+                Tag value resource record.
+
         Examples:
             >>> tio.tags.edit('00000000-0000-0000-0000-000000000000',
             ...     name='NewValueName')
@@ -241,12 +246,12 @@ class TagsAPI(TIOEndpoint):
             payload['description'] = self._check('description', description, str)
         return self._api.put('tags/values/{}'.format(self._check(
             'tag_value_uuid', tag_value_uuid, 'uuid')), json=payload).json()
-    
+
     def edit_category(self, tag_category_uuid, name=None, description=None):
         '''
         Updates Tag category information.
 
-        `tag: edit tag category <https://developer.tenable.com/tenableio/reference#tags-edit-tag-category-1>`_
+        :devportal:`tag: edit tag category <tags-edit-tag-category>`
 
         Args:
             tag_category_uuid (str):
@@ -254,11 +259,12 @@ class TagsAPI(TIOEndpoint):
             name (str, optional):
                 The new name for the category.
             description (str, optional):
-                New description for the category. 
-        
+                New description for the category.
+
         Returns:
-            dict: Tag category resource record.
-        
+            :obj:`dict`:
+                Tag category resource record.
+
         Examples:
             >>> tio.tags.edit_category('00000000-0000-0000-0000-000000000000',
             ...     name='NewValueName')
@@ -269,7 +275,7 @@ class TagsAPI(TIOEndpoint):
             payload['description'] = self._check('description', description, str)
         return self._api.put('tags/categories/{}'.format(self._check(
             'tag_category_uuid', tag_category_uuid, 'uuid')), json=payload).json()
-    
+
     def _tag_list_constructor(self, filters, filterdefs, filter_type, sort):
         '''
         A simple constructor to handle constructing the query parameters for the
@@ -280,7 +286,7 @@ class TagsAPI(TIOEndpoint):
             query['ft'] = self._check('filter_type', filter_type, str,
                 choices=['AND', 'OR'], case='upper')
         if sort:
-            query['sort'] = self._check('sort', sort, str, 
+            query['sort'] = self._check('sort', sort, str,
                 choices=[k for k in filterdefs.keys()])
         return query
 
@@ -289,7 +295,7 @@ class TagsAPI(TIOEndpoint):
         Retrieves a list of tag category/value pairs based off of the filters
         defined within the query.
 
-        `tags: list tags <https://developer.tenable.com/tenableio/reference#tags-list-tag-values-1>`_
+        :devportal:`tags: list tags <tags-list-tag-values>`
 
         Args:
             *filters (tuple, optional):
@@ -311,10 +317,11 @@ class TagsAPI(TIOEndpoint):
                 is set, it will default to 0.
             sort (str, optional):
                 What field to sort the results on.
-        
+
         Returns:
-            TagIterator: An iterator that handles the pagination of the results
-        
+            :obj:`TagIterator`:
+                An iterator that handles the pagination of the results
+
         Examples:
             Return all of the Tag Values:
 
@@ -326,8 +333,8 @@ class TagsAPI(TIOEndpoint):
             >>> for tag in tio.tags.list(('category_name', 'eq', 'Location')):
             ...     pprint(tag)
         '''
-        query = self._tag_list_constructor(filters, self._filterset_tags, 
-            kw['filter_type'] if 'filter_type' in kw else None, 
+        query = self._tag_list_constructor(filters, self._filterset_tags,
+            kw['filter_type'] if 'filter_type' in kw else None,
             kw['sort'] if 'sort' in kw else None)
         return TagsIterator(self._api,
             _limit=self._check('limit', kw['limit'], int) if 'limit' in kw else 1000,
@@ -340,10 +347,10 @@ class TagsAPI(TIOEndpoint):
 
     def list_categories(self, *filters, **kw):
         '''
-        Retrieves a list of tag categories based off of the filters defined 
+        Retrieves a list of tag categories based off of the filters defined
         within the query.
 
-        `tags: list categories <https://developer.tenable.com/tenableio/reference#tags-list-tag-categories-1>`_
+        :devportal:`tags: list categories <tags-list-tag-categories>`
 
         Args:
             *filters (tuple, optional):
@@ -365,10 +372,11 @@ class TagsAPI(TIOEndpoint):
                 is set, it will default to 0.
             sort (str, optional):
                 What field to sort the results on.
-        
+
         Returns:
-            TagIterator: An iterator that handles the pagination of the results
-        
+            :obj:`TagIterator`:
+                An iterator that handles the pagination of the results
+
         Examples:
             Return all of the Tag Categories:
 
@@ -381,8 +389,8 @@ class TagsAPI(TIOEndpoint):
             ...   ('category_name', 'eq', 'Location')):
             ...     pprint(tag)
         '''
-        query = self._tag_list_constructor(filters, self._filterset_categories, 
-            kw['filter_type'] if 'filter_type' in kw else None, 
+        query = self._tag_list_constructor(filters, self._filterset_categories,
+            kw['filter_type'] if 'filter_type' in kw else None,
             kw['sort'] if 'sort' in kw else None)
         return TagsIterator(self._api,
             _limit=self._check('limit', kw['limit'], int) if 'limit' in kw else 1000,
@@ -397,17 +405,18 @@ class TagsAPI(TIOEndpoint):
         '''
         Assigns the tag category/value pairs defined to the assets defined.
 
-        `tags: assign tags <https://developer.tenable.com/tenableio/reference#tags-assign-asset-tags-1>`_
+        :devportal:`tags: assign tags <tags-assign-asset-tags>`
 
         Args:
             assets (list):
                 A list of Asset UUIDs.
             tags (list):
                 A list of tag category/value pair UUIDs.
-        
+
         Returns:
-            str: Job UUID of the assignment job.
-        
+            :obj:`str`:
+                Job UUID of the assignment job.
+
         Examples:
             >>> tio.tags.assign(
             ...     assets=['00000000-0000-0000-0000-000000000000'],
@@ -425,17 +434,18 @@ class TagsAPI(TIOEndpoint):
         '''
         Un-assigns the tag category/value pairs defined to the assets defined.
 
-        `tags: assign tags <https://developer.tenable.com/tenableio/reference#tags-assign-asset-tags-1>`_
+        :devportal:`tags: assign tags <tags-assign-asset-tags>`
 
         Args:
             assets (list):
                 A list of Asset UUIDs.
             tags (list):
                 A list of tag category/value pair UUIDs.
-        
+
         Returns:
-            str: Job UUID of the un-assignment job.
-        
+            :obj:`str`:
+                Job UUID of the un-assignment job.
+
         Examples:
             >>> tio.tags.unassign(
             ...     assets=['00000000-0000-0000-0000-000000000000'],

@@ -2,8 +2,8 @@
 files
 =====
 
-The following methods allow for interaction into the Tenable.io 
-`file <https://cloud.tenable.com/api#/resources/file>`_ API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`file <file>` API endpoints.
 
 Methods available on ``tio.files``:
 
@@ -20,7 +20,7 @@ class FileAPI(TIOEndpoint):
         '''
         Uploads a file into Tenable.io.
 
-        `file: upload <https://cloud.tenable.com/api#/resources/file/upload>`_
+        :devportal:`file: upload <file-upload>`
 
         Args:
             fobj (FileObject):
@@ -29,7 +29,8 @@ class FileAPI(TIOEndpoint):
                 If the file is encrypted, set the flag to True.
 
         Returns:
-            str: The fileuploaded attribute
+            :obj:`str`:
+                The fileuploaded attribute
 
         Examples:
             >>> with open('file.txt') as fobj:

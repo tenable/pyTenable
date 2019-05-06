@@ -180,7 +180,7 @@ def test_workbench_asset_vulns_filter_type_unexpectedvalueerror(api):
 @pytest.mark.vcr()
 def test_workbench_asset_vulns_invalid_filter(api):
     with pytest.raises(UnexpectedValueError):
-        api.workbenches.asset_vulns(str(uuid.uuid4()), 
+        api.workbenches.asset_vulns(str(uuid.uuid4()),
             ('operating_system', 'contains', 'Linux'))
 
 @pytest.mark.vcr()
@@ -598,3 +598,13 @@ def test_workbench_vuln_outputs(api):
             check(j, 'port', int)
             check(j, 'severity', int)
             check(j, 'transport_protocol', str)
+
+@pytest.mark.vcr()
+def test_workbenches_asset_delete_asset_uuid_typeerror(api):
+    with pytest.raises(TypeError):
+        api.workbenches.asset_delete(1)
+
+@pytest.mark.vcr()
+def test_workbenches_asset_delete_success(api):
+    asset = api.workbenches.assets()[0]
+    api.workbenches.asset_delete(asset['id'])

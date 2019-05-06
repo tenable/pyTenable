@@ -5,17 +5,77 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- All Tenable.io API doc links have been re-pointed to the new developer portal. #111
+- tio.editor.edit has been renamed to tio.editor.template_details as it was misnamed.
+- tio.editor.list has been renamed to tio.editor.template_list to more accurately describe it's function.
+
+### Added
+- Added the asset delete method to the workbenches TenableIO module #110
+- Added and tested out the TenableSC plugin family additions to the plugins module #78
+
+### Changed
+- Various documentation issues reported by sphinx addressed
+- TenableSC.scan_instances.list can now support non-standard timeframes #108
+
+## [0.3.18]
+### Added
+- Added and tested out support for TenableSC Credentials #76
+
+## [0.3.17]
+### Added
+- Analysis filters now allow for collapsing lists if id dicts into lists of
+  integer ids.  e.g. `('name', '=', [{'id': 1}])` is now `('name', '=', [1])`
+- Added and tested out support for TenableSC AuditFileAPI #75
+
+### Changed
+- Tenable.io Exports iterator now has **uuid**, **chunk_id**, **chunks**, and
+  **processed** publicly exposed.
+
+### Fixed
+- Addressed issue where UnexpectedValueError was sometimes raised when
+  specifying a scanner by name in tio.scans._create_scan_document.
+
+## [0.3.16]
+### Added
+- Added and tested out support for TenableSC UserAPI #24
+- Added and tested out support for TenableSC GroupAPI #24
+- Added and tested TenableIO.agent_groups.list() #105
+
+### Fixed
+- Tenable.sc Schedule document validation extended to support `now` for
+  scans #102
+
+
+## [0.3.15]
+### Added
+- Added and tested out support for TenableSC RoleAPI #24
+
+### Fixed
+- Retries would throw an error as they weren't floats.
+- Exports would erroneously set an option if set to none.
+- The scan history test cassette was modified to match the new call.
+
+## [0.3.14]
+### Fixed
+- Corrected Doc Issue where the downloads API was incorrectly referencing
+  sc.alerts
+- Fixed issue with scan history deletion where the path was incorrect #101
+
+## [0.3.13]
 ### Added
 - Tested out TenableSC StatusAPI #22
 - Tested out TenableSC SystemAPI #22
 - Tested out TenableSC ScanZoneAPI #21
 - Tested out TenableSC ScannerAPI #21
+- Tested out Downloads API
 
 ### Fixed
 - RetryError no longer itself throws an error due to logging.
 - Fixed type mismatch bug in IO workbench filters #97
 - Corrected issue with ScanZone updates using the wrong HTTP method #95
-- Corrected doc issue with ScanResultAPI.export not referring to the fact that the exported scan is zipped.
+- Corrected doc issue with ScanResultAPI.export not referring to the fact that
+  the exported scan is zipped.
 - Corrected the raw HTTP method docs
 
 
@@ -23,7 +83,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added view parameter for TenableSC.analysis.scan #73
 - Added accept_risks module #18 (untested)
-- Added system module and converted the TenableSC motule to use it over a raw call #22
+- Added system module and converted the TenableSC module to use it over a raw
+  call #22
 - Added status module #22 (untested)
 
 ### Fixed
@@ -34,7 +95,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added proxy support for the IO, SC, etc. #72
 
 ### Fixed
-- Fixed issue where supplied sessions weren't being properly passed to _build_session.
+- Fixed issue where supplied sessions weren't being properly passed to
+  _build_session.
 
 ## [0.3.10]
 ### Added
@@ -71,7 +133,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added tagging support #44
 
 ### Changed
-- Tenable.sc files module was incorrectly pointing to self.post instead of self._api.post
+- Tenable.sc files module was incorrectly pointing to self.post instead of
+  self._api.post
 - Launching a scan with alt_targets sends an array instead of a string #64
 - Tenable.sc Analysis will now handle Query IDs #63
 - Agent-Delete within Tenable.io Was using the wrong Endpoint #59
@@ -155,7 +218,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Re-pointed all SecurityCenter references to TenableSC instead
-- Refactored schedule sub-document creation into a separate constructor for re-use
+- Refactored schedule sub-document creation into a separate constructor for
+  re-use
 - Documentation improvements
 
 
@@ -209,7 +273,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.12...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.18...master
+[0.3.18]: https://github.com/tenable/pyTenable/compare/0.3.17...0.3.18
+[0.3.17]: https://github.com/tenable/pyTenable/compare/0.3.16...0.3.17
+[0.3.16]: https://github.com/tenable/pyTenable/compare/0.3.15...0.3.16
+[0.3.15]: https://github.com/tenable/pyTenable/compare/0.3.14...0.3.15
+[0.3.14]: https://github.com/tenable/pyTenable/compare/0.3.13...0.3.14
+[0.3.13]: https://github.com/tenable/pyTenable/compare/0.3.12...0.3.13
 [0.3.12]: https://github.com/tenable/pyTenable/compare/0.3.11...0.3.12
 [0.3.11]: https://github.com/tenable/pyTenable/compare/0.3.10...0.3.11
 [0.3.10]: https://github.com/tenable/pyTenable/compare/0.3.9...0.3.10

@@ -2,8 +2,8 @@
 folders
 =======
 
-The following methods allow for interaction into the Tenable.io 
-`folders <https://cloud.tenable.com/api#/resources/folders>`_ API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`folders <folders>` API endpoints.
 
 Methods available on ``tio.folders``:
 
@@ -22,14 +22,15 @@ class FoldersAPI(TIOEndpoint):
         '''
         Create a folder.
 
-        `folders: create <https://cloud.tenable.com/api#/resources/folders/create>`_
+        :devportal:`folders: create <folders-create>`
 
         Args:
             name (str):
                 The name of the new folder.
 
         Returns:
-            int: The new folder id.
+            :obj:`int`:
+                The new folder id.
 
         Examples:
             >>> folder = tio.folders.create('New Folder Name')
@@ -42,13 +43,13 @@ class FoldersAPI(TIOEndpoint):
         '''
         Delete a folder.
 
-        `folders: delete <https://cloud.tenable.com/api#/resources/folders/delete>`_
+        :devportal:`folders: delete <folders-delete>`
 
         Args:
             id (int): The unique identifier for the folder.
 
         Returns:
-            None
+            :obj:`None`
 
         Examples:
             >>> tio.folders.delete(1)
@@ -59,14 +60,15 @@ class FoldersAPI(TIOEndpoint):
         '''
         Edit a folder.
 
-        `folders: edit <https://cloud.tenable.com/api#/resources/folders/edit>`_
+        :devportal:`folders: edit <folders-edit>`
 
         Args:
             id (int): The unique identifier for the folder.
             name (str): The new name for the folder.
 
         Returns:
-            None: The folder was successfully renamed.
+            :obj:`None`:
+                The folder was successfully renamed.
 
         Examples:
             >>> tio.folders.edit(1, 'Updated Folder Name')
@@ -79,10 +81,11 @@ class FoldersAPI(TIOEndpoint):
         '''
         Lists the available folders.
 
-        `folders: list <https://cloud.tenable.com/api#/resources/folders/list>`_
+        :devportal:`folders: list <folders-list>`
 
         Returns:
-            list: List of folder resource records.
+            :obj:`list`:
+                List of folder resource records.
 
         Examples:
             >>> for folder in tio.folders.list():

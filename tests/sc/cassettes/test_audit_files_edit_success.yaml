@@ -1,0 +1,54 @@
+interactions:
+- request:
+    body: !!python/unicode '{"name": "updates name"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['24']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/0.3.16 (pyTenable/0.3.16; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: PATCH
+    uri: https://securitycenter.home.cugnet.net/rest/auditFile/1000003
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"id":"1000008","name":"updates
+        name","description":"","version":"1.43","type":"unix","context":"","status":"0","filename":"scfile_ZiY8iP","originalFilename":"","createdTime":"1555946569","modifiedTime":"1555946570","lastRefreshedTime":"1555946569","editor":"[{\"id\":\"BANNER_TEXT\",\"name\":\"Banner
+        Text\",\"default\":\"All activities performed on this system will be monitored.\",\"hint\":\"This
+        is the text for the warning a user receives when logging onto the system.\",\"required\":\"true\",\"type\":\"entry\"},{\"id\":\"NTP_SERVER_1\",\"name\":\"First
+        NTP server IP address\",\"default\":\"192\\\\.168\\\\.0\\\\.1\",\"hint\":\"The
+        IP address of the first Network Time Protocol (NTP) server for your organization.\",\"required\":\"true\",\"type\":\"entry\"},{\"id\":\"INTERNAL_NETWORK\",\"name\":\"Hosts.allow
+        internal network entry\",\"default\":\"192\\\\.168\\\\.\",\"hint\":\"The IP
+        address and network mask allowed access to the system as it appears in hosts.allow
+        for internal hosts. If all systems are allowed use ''ALL''.\",\"required\":\"true\",\"type\":\"entry\"},{\"id\":\"HOSTS_ALLOW_NETWORK\",\"name\":\"Hosts.allow
+        network entry\",\"default\":\"192\\\\.168\\\\.\",\"hint\":\"The IP address
+        and network mask allowed access to the system as it appears in hosts.allow.
+        If all systems are allowed use ''ALL''.\",\"required\":\"true\",\"type\":\"entry\"},{\"id\":\"NTP_SERVER_2\",\"name\":\"Second
+        NTP server IP address\",\"default\":\"192\\\\.168\\\\.0\\\\.2\",\"hint\":\"The
+        IP address of the second Network Time Protocol (NTP) server for your organization.\",\"required\":\"true\",\"type\":\"entry\"},{\"id\":\"NTP_SERVER_3\",\"name\":\"Third
+        NTP server IP address\",\"default\":\"192\\\\.168\\\\.0\\\\.3\",\"hint\":\"The
+        IP address of the third Network Time Protocol (NTP) server for your organization.\",\"required\":\"true\",\"type\":\"entry\"},{\"id\":\"LOG_SERVER\",\"name\":\"rsyslog.conf
+        remote log server\",\"default\":\"10\\\\.10\\\\.10\\\\.1\",\"hint\":\"The
+        IP address of the remote logging server\",\"required\":\"true\",\"type\":\"entry\"}]","typeFields":{"variables":[{"name":"BANNER_TEXT","value":""},{"name":"INTERNAL_NETWORK","value":"192\\.168\\."},{"name":"LOG_SERVER","value":"192\\.168\\.0\\.1"},{"name":"NTP_SERVER_1","value":"4\\.2\\.2\\.2"},{"name":"NTP_SERVER_3","value":"192\\.168\\.0\\.1"},{"name":"NTP_SERVER_2","value":"192\\.168\\.0\\.1"},{"name":"HOSTS_ALLOW_NETWORK","value":"192\\.168\\."}]},"groups":[],"canUse":"true","canManage":"true","creator":{"id":"2","username":"api","firstname":"api","lastname":"user"},"owner":{"id":"2","username":"api","firstname":"api","lastname":"user"},"ownerGroup":{"id":"0","name":"Full
+        Access","description":"Full Access group"},"targetGroup":{"id":-1,"name":"","description":""},"auditFileTemplate":{"id":"162","name":"PCI
+        DSS 2.0\/3.0 - Red Hat Linux","categoryName":"Unix"}},"error_code":0,"error_msg":"","warnings":[],"timestamp":1555946569}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['2957']
+      content-type: [application/json]
+      date: ['Mon, 22 Apr 2019 15:22:49 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

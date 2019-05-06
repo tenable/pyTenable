@@ -123,11 +123,22 @@ class AnalysisResultsIterator(SCResultsIterator):
         # If the page size is less than the page limit, then we can likely
         # assume that this is the last page, and just set the total to be the
         # count + size of the page.
-        if 'totalRecords' in resp['response']:
-            self.total = int(resp['response']['totalRecords'])
+        total_records = resp['response'].get('totalRecords')
+        records = resp['response'].get('returnedRecords')
+        page_size = len(resp['response']['results'])
+
+        if page_size == records and total_records:
+            self.total = int(total_records)
         else:
-            if len(resp['response']['results']) < self._limit:
-                self.total = self.count + len(resp['response']['results'])
+            self._log.warn(' '.join([
+                'API Recordkeeping error.',
+                'api_total={},'.format(str(total_records)),
+                'api_count={},'.format(str(records)),
+                'page_size={},'.format(str(page_size)),
+                'iter_total={}'.format(str(self.total))
+            ]))
+            if page_size < self._limit:
+                self.total = self.count + page_size
             else:
                 self.total = self.count + self._limit + 1
 
@@ -172,6 +183,12 @@ class AnalysisAPI(SCEndpoint):
                     # expand the tuple into the expected dictionary structure
                     # that the API is expecting.
                     item['value'] = self._combo_expansion(f[2])
+                elif isinstance(f[2], list) and all(isinstance(i, int) for i in f[2]):
+                    # if the value is a list and al;l of the items within that
+                    # list are integers, then we can safely assume that this is
+                    # a list of integer ids that need to be expanded into a list
+                    # of dictionaries.
+                    item['value'] = [dict(id=str(i)) for i in f[2]]
                 else:
                     # if we dont have any specific conditions set, then simply
                     # return the value parameter assigned to the "value" attribute

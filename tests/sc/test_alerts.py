@@ -274,13 +274,13 @@ def test_alerts_create_success(sc, alert):
     check(a, 'triggerOperator', str)
     check(a, 'triggerValue', str)
 
-def test_alerts_update_id_typerror(sc):
+def test_alerts_edit_id_typerror(sc):
     with pytest.raises(TypeError):
-        sc.alerts.update('one')
+        sc.alerts.edit('one')
 
 @pytest.mark.vcr()
-def test_alerts_update_success(sc, alert):
-    a = sc.alerts.update(int(alert['id']), name='new name for example')
+def test_alerts_edit_success(sc, alert):
+    a = sc.alerts.edit(int(alert['id']), name='new name for example')
     assert isinstance(a, dict)
     check(a, 'action', list)
     for i in a['action']:

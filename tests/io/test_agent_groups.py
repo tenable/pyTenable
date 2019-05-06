@@ -239,3 +239,22 @@ def test_agentgroups_task_status(api, agentgroup):
     check(task, 'start_time', int)
     check(task, 'status', str)
     check(task, 'task_id', str)
+
+@pytest.mark.vcr()
+def test_agentgroups_list(api):
+    agentgroups = api.agent_groups.list()
+    assert isinstance(agentgroups, list)
+    for ag in agentgroups:
+        # check(ag, 'agents', list)
+        check(ag, 'creation_date', int)
+        check(ag, 'id', int)
+        check(ag, 'last_modification_date', int)
+        check(ag, 'name', str)
+        check(ag, 'owner', str)
+        check(ag, 'owner_id', int)
+        check(ag, 'owner_name', str)
+        check(ag, 'owner_uuid', str)
+        # check(ag, 'pagination', dict)
+        check(ag, 'shared', int)
+        check(ag, 'user_permissions', int)
+        check(ag, 'uuid', str)

@@ -13,9 +13,9 @@ Methods available on ``sc.alerts``:
     .. automethod:: create
     .. automethod:: delete
     .. automethod:: details
+    .. automethod:: edit
     .. automethod:: execute
     .. automethod:: list
-    .. automethod:: update
 
 .. _iCal Date-Time:
     https://tools.ietf.org/html/rfc5545#section-3.3.5
@@ -245,7 +245,7 @@ class AlertAPI(SCEndpoint):
         payload = self._constructor(*filters, **kw)
         return self._api.post('alert', json=payload).json()['response']
 
-    def update(self, id, *filters, **kw):
+    def edit(self, id, *filters, **kw):
         '''
         Updates an existing alert.  All fields are optional and will overwrite
         the existing value.

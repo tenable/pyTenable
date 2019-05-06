@@ -2,9 +2,9 @@
 scan_instances
 ==============
 
-The following methods allow for interaction into the Tenable.sc 
+The following methods allow for interaction into the Tenable.sc
 `Scan Result <https://docs.tenable.com/sccv/api/Scan-Result.html>`_ API.  While
-the Tenable.sc API refers to the model these endpoints interact with as 
+the Tenable.sc API refers to the model these endpoints interact with as
 *ScanResult*, were actually interacting with an instance of a scan definition
 stored within the *Scan* API endpoints.  These scan instances could be running
 scans, stopped scans, errored scans, or completed scans.  These items are
@@ -40,7 +40,7 @@ class ScanResultAPI(SCEndpoint):
 
         Args:
             id (int): The identifier of the scan instance to clone.
-            *users (int): 
+            *users (int):
                 A user id to associate to the scan instance.
 
         Returns:
@@ -81,7 +81,7 @@ class ScanResultAPI(SCEndpoint):
 
         Args:
             id (int): The identifier for the scan instance to be retrieved.
-            fields (list, optional): 
+            fields (list, optional):
                 List of fields to return.  Refer to the API documentation
                 referenced above for a list of available fields.
 
@@ -89,7 +89,7 @@ class ScanResultAPI(SCEndpoint):
             dict: The scan instance resource record.
 
         Examples:
-            Getting the details of a scan instance with just the 
+            Getting the details of a scan instance with just the
             default parameters:
 
             >>> scan = sc.scan_instances.details(1)
@@ -97,13 +97,13 @@ class ScanResultAPI(SCEndpoint):
 
             Specifying what fields you'd like to be returned:
 
-            >>> scan = sc.scan_instances.details(1, 
+            >>> scan = sc.scan_instances.details(1,
             ...     fields=['name', 'status', 'scannedIPs', 'startTime', 'finishTime'])
             >>> pprint(scan)
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in self._check('fields', fields, list)])
         return self._api.get('scanResult/{}'.format(self._check('id', id, int)),
             params=params).json()['response']
@@ -185,7 +185,7 @@ class ScanResultAPI(SCEndpoint):
             repo (int):
                 The repository id for the scan.
             auto_mitigation (int, optional):
-                How many days to hold on to data before mitigating it?  The 
+                How many days to hold on to data before mitigating it?  The
                 default value is 0.
             host_tracking (bool, optional):
                 Should DHCP host tracking be enabled?  The default is False.
@@ -216,7 +216,7 @@ class ScanResultAPI(SCEndpoint):
             id (int):
                 The scan instance identifier.
             auto_mitigation (int, optional):
-                How many days to hold on to data before mitigating it?  The 
+                How many days to hold on to data before mitigating it?  The
                 default value is 0.
             host_tracking (bool, optional):
                 Should DHCP host tracking be enabled?  The default is False.
@@ -234,15 +234,19 @@ class ScanResultAPI(SCEndpoint):
         return self._api.post('scanResult/{}/import'.format(self._check(
             'id', id, int)), json=payload).json()['response']
 
-    def list(self, fields=None):
+    def list(self, fields=None, start_time=None, end_time=None):
         '''
         Retreives the list of scan instances.
 
         + `SC ScanResult List <https://docs.tenable.com/sccv/api/Scan-Result.html#ScanResultRESTReference-/scanResult>`_
 
         Args:
-            fields (list, optional): 
+            fields (list, optional):
                 A list of attributes to return.
+            start_time (int, optional):
+                Epoch time to start search (searches against createdTime and defaults to now-30d)
+            end_time (int, optional):
+                Epoch time to end search (searches against createdTime and defaults to now)
 
         Returns:
             dict: A list of scan instance resources.
@@ -255,8 +259,14 @@ class ScanResultAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
+
+        if start_time:
+            params['startTime'] = self._check('start_time', start_time, int)
+
+        if end_time:
+            params['endTime'] = self._check('end_time', end_time, int)
 
         return self._api.get('scanResult', params=params).json()['response']
 

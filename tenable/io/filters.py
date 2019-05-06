@@ -2,8 +2,8 @@
 filters
 =======
 
-The following methods allow for interaction into the Tenable.io 
-`filters <https://cloud.tenable.com/api#/resources/filters>`_ API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`filters <filters-1>` API endpoints.
 
 Methods available on ``tio.filters``:
 
@@ -64,10 +64,11 @@ class FiltersAPI(TIOEndpoint):
         '''
         Returns agent filters.
 
-        `filters: agents-filters <https://cloud.tenable.com/api#/resources/filters/agents-filters>`_
+        :devportal:`filters: agents-filters <filters-agents-filters>`
 
         Returns:
-            dict: Filter resource dictionary
+            :obj:`dict`:
+                Filter resource dictionary
 
         Examples:
             >>> filters = tio.filters.agents_filters()
@@ -77,10 +78,12 @@ class FiltersAPI(TIOEndpoint):
     def workbench_vuln_filters(self, normalize=True):
         '''
         Returns the vulnerability workbench filters
-        `workbenches: vulnerabilities-filters <https://cloud.tenable.com/api#/resources/workbenches/vulnerabilities-filters>`_
+
+        :devportal:`workbenches: vulnerabilities-filters <workbenches-vulnerabilities-filters>`
 
         Returns:
-            dict: Filter resource dictionary
+            :obj:`dict`:
+                Filter resource dictionary
 
         Examples:
             >>> filters = tio.filters.workbench_vuln_filters()
@@ -91,10 +94,11 @@ class FiltersAPI(TIOEndpoint):
         '''
         Returns the asset workbench filters.
 
-        `workbenches: assets-filters <https://cloud.tenable.com/api#/resources/workbenches/assets-filters>`_
+        :devportal:`workbenches: assets-filters <filters-assets-filter>`
 
         Returns:
-            dict: Filter resource dictionary
+            :obj:`dict`:
+                Filter resource dictionary
 
         Examples:
             >>> filters = tio.filters.workbench_asset_filters()
@@ -106,9 +110,25 @@ class FiltersAPI(TIOEndpoint):
         Returns the individual scan filters.
 
         Returns:
-            dict: Filter resource dictionary
+            :obj:`dict`:
+                Filter resource dictionary
 
         Examples:
             >>> filters = tio.filters.scan_filters()
         '''
         return self._use_cache('scan', 'filters/scans/reports', normalize)
+
+    def credentials_filters(self, normalize=True):
+        '''
+        Returns the individual scan filters.
+
+        :devportal:`filters: credentials <credentials-filters>`
+
+        Returns:
+            :obj:`dict`:
+                Filter resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.scan_filters()
+        '''
+        return self._use_cache('scan', 'filters/credentials', normalize)

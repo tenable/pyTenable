@@ -2,9 +2,8 @@
 agent_exclusions
 ================
 
-The following methods allow for interaction into the Tenable.io 
-`agent exclusions <https://cloud.tenable.com/api#/resources/agent-exclusions>`_
-API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`agent exclusions <agent-exclusions>` API endpoints.
 
 Methods available on ``tio.agent_exclusions``:
 
@@ -21,33 +20,33 @@ from .base import TIOEndpoint
 from datetime import date, datetime
 
 class AgentExclusionsAPI(TIOEndpoint):
-    def create(self, name, scanner_id=1, start_time=None, end_time=None, 
-               timezone=None, description=None, frequency=None, 
+    def create(self, name, scanner_id=1, start_time=None, end_time=None,
+               timezone=None, description=None, frequency=None,
                interval=None, weekdays=None, day_of_month=None,
                enabled=True):
         '''
         Creates a new agent exclusion.
 
-        `agent-exclusions: create <https://cloud.tenable.com/api#/resources/agent-exclusions/create>`_
+        :devportal:`agent-exclusions: create <agent-exclusions-create>`
 
         Args:
             name (str): The name of the exclusion to create.
             scanner_id (int, optional): The scanner id.
-            description (str, optional): 
+            description (str, optional):
                 Some further detail about the exclusion.
             start_time (datetime): When the exclusion should start.
             end_time (datetime): When the exclusion should end.
-            timezone (str, optional): 
-                The timezone to use for the exclusion.  The default if none is 
+            timezone (str, optional):
+                The timezone to use for the exclusion.  The default if none is
                 specified is to use UTC.  For the list of usable timezones,
                 please refer to:
                 https://cloud.tenable.com/api#/resources/scans/timezones
             frequency (str, optional):
                 The frequency of the rule. The string inputted will be up-cased.
-                Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``, 
+                Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``,
                 ``MONTHLY``, ``YEARLY``.
                 Default value is ``ONETIME``.
-            interval (int, optional): 
+            interval (int, optional):
                 The interval of the rule.  The default interval is 1
             weekdays (list, optional):
                 List of 2-character representations of the days of the week to
@@ -109,13 +108,13 @@ class AgentExclusionsAPI(TIOEndpoint):
             ...     ['127.0.0.1'],
             ...     frequency='yearly',
             ...     start_time=datetime.utcnow(),
-            ...     end_time=datetime.utcnow() + timedelta(hours=1)) 
+            ...     end_time=datetime.utcnow() + timedelta(hours=1))
         '''
         # Starting with the innermost part of the payload, lets construct the
         # rrules dictionary.
-        frequency = self._check('frequency', frequency, str, 
+        frequency = self._check('frequency', frequency, str,
             choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-            default='ONETIME', 
+            default='ONETIME',
             case='upper')
 
         rrules = {
@@ -133,7 +132,7 @@ class AgentExclusionsAPI(TIOEndpoint):
                 case='upper'))
             # In the same vein as the frequency check, we're accepting
             # case-insensitive input, comparing it to our known list of
-            # acceptable responses, then joining them all together into a 
+            # acceptable responses, then joining them all together into a
             # comma-separated string.
 
         # if the frequency is monthly, then we will need to specify the day of
@@ -151,7 +150,7 @@ class AgentExclusionsAPI(TIOEndpoint):
                 'enabled': self._check('enabled', enabled, bool, default=True),
                 'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
                 'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'timezone': self._check('timezone', timezone, str, 
+                'timezone': self._check('timezone', timezone, str,
                     choices=self._api._tz,
                     default='Etc/UTC'),
                 'rrules': rrules
@@ -170,7 +169,7 @@ class AgentExclusionsAPI(TIOEndpoint):
         '''
         Delete an agent exclusion.
 
-        `agent-exclusions: delete <https://cloud.tenable.com/api#/resources/agent-exclusions/delete>`_
+        :devportal:`agent-exclusions: delete <agent-exclusions-delete>`
 
         Args:
             exclusion_id (int): The id of the exclusion object in Tenable.io
@@ -191,7 +190,7 @@ class AgentExclusionsAPI(TIOEndpoint):
         '''
         Retrieve the details for a specific agent exclusion.
 
-        `agent-exclusion: details <https://cloud.tenable.com/api#/resources/agent-exclusions/details>`_
+        :devportal:`agent-exclusion: details <agent-exclusions-details>`
 
         Args:
             exclusion_id (int): The id of the exclusion object in Tenable.io
@@ -209,13 +208,13 @@ class AgentExclusionsAPI(TIOEndpoint):
                 self._check('exclusion_id', exclusion_id, int)
             )).json()
 
-    def edit(self, exclusion_id, scanner_id=1, name=None, start_time=None, 
-            end_time=None, timezone=None, description=None, frequency=None, 
+    def edit(self, exclusion_id, scanner_id=1, name=None, start_time=None,
+            end_time=None, timezone=None, description=None, frequency=None,
             interval=None, weekdays=None, day_of_month=None, enabled=None):
         '''
         Edit an existing agent exclusion.
 
-        `agent-exclusions: edit <https://cloud.tenable.com/api#/resources/agent-exclusions/edit>`_
+        :devportal:`agent-exclusions: edit <agent-exclusions-edit>`
 
         The edit function will first gather the details of the exclusion that
         will be edited and will overlay the changes on top.  The result will
@@ -225,12 +224,12 @@ class AgentExclusionsAPI(TIOEndpoint):
             exclusion_id (int): The id of the exclusion object in Tenable.io
             scanner_id (int, optional): The scanner id.
             name (str, optional): The name of the exclusion to create.
-            description (str, optional): 
+            description (str, optional):
                 Some further detail about the exclusion.
             start_time (datetime, optional): When the exclusion should start.
             end_time (datetime, optional): When the exclusion should end.
-            timezone (str, optional): 
-                The timezone to use for the exclusion.  The default if none is 
+            timezone (str, optional):
+                The timezone to use for the exclusion.  The default if none is
                 specified is to use UTC.
             frequency (str, optional):
                 The frequency of the rule. The string inputted will be up-cased.
@@ -277,7 +276,7 @@ class AgentExclusionsAPI(TIOEndpoint):
 
         if frequency:
             payload['schedule']['rrules']['freq'] = self._check(
-                'frequency', frequency, str, 
+                'frequency', frequency, str,
                 choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
                 case='upper')
 
@@ -292,15 +291,15 @@ class AgentExclusionsAPI(TIOEndpoint):
                 case='upper'))
             # In the same vein as the frequency check, we're accepting
             # case-insensitive input, comparing it to our known list of
-            # acceptable responses, then joining them all together into a 
+            # acceptable responses, then joining them all together into a
             # comma-separated string.
-            
+
         if day_of_month is not None:
             payload['schedule']['rrules']['bymonthday'] = self._check(
                 'day_of_month', day_of_month, int, choices=list(range(1,32)))
 
-        # Lets check to make sure that the scanner_id  and exclusion_id are 
-        # integers as the API documentation requests and if we don't raise an 
+        # Lets check to make sure that the scanner_id  and exclusion_id are
+        # integers as the API documentation requests and if we don't raise an
         # error, then lets make the call.
         return self._api.put(
             'scanners/{}/agents/exclusions/{}'.format(
@@ -312,7 +311,7 @@ class AgentExclusionsAPI(TIOEndpoint):
         '''
         Lists all of the currently configured agent exclusions.
 
-        `agent-exclusions: list <https://cloud.tenable.com/api#/resources/agent-exclusions/list>`_
+        :devportal:`agent-exclusions: list <agent-exclusions-list>`
 
         Args:
             scanner_id (int, optional): The scanner identifier to be used.

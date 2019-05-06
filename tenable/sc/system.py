@@ -14,9 +14,10 @@ Methods available on ``sc.system``:
 .. rst-class:: hide-signature
 .. autoclass:: SystemAPI
 
+    .. automethod:: current_locale
     .. automethod:: details
     .. automethod:: diagnostics
-    .. automethod:: get_locales
+    .. automethod:: list_locales
     .. automethod:: set_locale
     .. automethod:: status
 '''

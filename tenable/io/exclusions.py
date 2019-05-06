@@ -2,8 +2,8 @@
 exclusions
 ==========
 
-The following methods allow for interaction into the Tenable.io 
-`exclusions <https://cloud.tenable.com/api#/resources/exclusions>`_ 
+The following methods allow for interaction into the Tenable.io
+:devportal:`exclusions <exclusions>`
 API endpoints.
 
 Methods available on ``tio.exclusions``:
@@ -21,35 +21,34 @@ from .base import TIOEndpoint
 from datetime import datetime
 
 class ExclusionsAPI(TIOEndpoint):
-    def create(self, name, members, start_time=None, end_time=None, 
-               timezone=None, description=None, frequency=None, 
+    def create(self, name, members, start_time=None, end_time=None,
+               timezone=None, description=None, frequency=None,
                interval=None, weekdays=None, day_of_month=None,
                enabled=True):
         '''
         Create a scan target exclusion.
 
-        `exclusions: create <https://cloud.tenable.com/api#/resources/exclusions/create>`_
+        :devportal:`exclusions: create <exclusions-create>`
 
         Args:
             name (str): The name of the exclusion to create.
-            members (list): 
+            members (list):
                 The exclusions members.  Each member should be a string with
                 either a FQDN, IP Address, IP Range, or CIDR.
-            description (str, optional): 
+            description (str, optional):
                 Some further detail about the exclusion.
             start_time (datetime): When the exclusion should start.
             end_time (datetime): When the exclusion should end.
-            timezone (str, optional): 
-                The timezone to use for the exclusion.  The default if none is 
+            timezone (str, optional):
+                The timezone to use for the exclusion.  The default if none is
                 specified is to use UTC.  For the list of usable timezones,
-                please refer to:
-                https://cloud.tenable.com/api#/resources/scans/timezones
+                please refer to :devportal:`scans-timezones`
             frequency (str, optional):
                 The frequency of the rule. The string inputted will be up-cased.
-                Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``, 
+                Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``,
                 ``MONTHLY``, ``YEARLY``.
                 Default value is ``ONETIME``.
-            interval (int, optional): 
+            interval (int, optional):
                 The interval of the rule.  The default interval is 1
             weekdays (list, optional):
                 List of 2-character representations of the days of the week to
@@ -63,7 +62,8 @@ class ExclusionsAPI(TIOEndpoint):
                 Is the exclusion enabled?  The default is ``True``
 
         Returns:
-            dict: Dictionary of the newly minted exclusion. 
+            :obj:`dict`:
+                Dictionary of the newly minted exclusion.
 
         Examples:
             Creating a one-time exclusion:
@@ -111,13 +111,13 @@ class ExclusionsAPI(TIOEndpoint):
             ...     ['127.0.0.1'],
             ...     frequency='yearly',
             ...     start_time=datetime.utcnow(),
-            ...     end_time=datetime.utcnow() + timedelta(hours=1)) 
+            ...     end_time=datetime.utcnow() + timedelta(hours=1))
         '''
         # Starting with the innermost part of the payload, lets construct the
         # rrules dictionary.
-        frequency = self._check('frequency', frequency, str, 
+        frequency = self._check('frequency', frequency, str,
             choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-            default='ONETIME', 
+            default='ONETIME',
             case='upper')
 
         rrules = {
@@ -135,7 +135,7 @@ class ExclusionsAPI(TIOEndpoint):
                 case='upper'))
             # In the same vein as the frequency check, we're accepting
             # case-insensitive input, comparing it to our known list of
-            # acceptable responses, then joining them all together into a 
+            # acceptable responses, then joining them all together into a
             # comma-separated string.
 
         # if the frequency is monthly, then we will need to specify the day of
@@ -154,7 +154,7 @@ class ExclusionsAPI(TIOEndpoint):
                 'enabled': self._check('enabled', enabled, bool, default=True),
                 'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
                 'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'timezone': self._check('timezone', timezone, str, 
+                'timezone': self._check('timezone', timezone, str,
                     choices=self._api._tz,
                     default='Etc/UTC'),
                 'rrules': rrules
@@ -168,13 +168,14 @@ class ExclusionsAPI(TIOEndpoint):
         '''
         Delete a scan target exclusion.
 
-        `exclusions: delete <https://cloud.tenable.com/api#/resources/exclusions/delete>`_
+        :devportal:`exclusions: delete <exclusions-delete>`
 
         Args:
             id (int): The exclusion identifier to delete
 
         Returns:
-            None: The exclusion was successfully deleted.
+            :obj:`None`:
+                The exclusion was successfully deleted.
 
         Examples:
             >>> tio.exclusions.delete(1)
@@ -185,13 +186,14 @@ class ExclusionsAPI(TIOEndpoint):
         '''
         Retrieve the details for a specific scan target exclusion.
 
-        `exclusions: details <https://cloud.tenable.com/api#/resources/exclusions/details>`_
-        
+        :devportal:`exclusions: details <exclusions-details>`
+
         Args:
             id (int): The exclusion identifier.
 
         Returns:
-            dict: The exclusion record requested.
+            :obj:`dict`:
+                The exclusion record requested.
 
         Examples:
             >>> exclusion = tio.exclusions.details(1)
@@ -200,13 +202,13 @@ class ExclusionsAPI(TIOEndpoint):
         return self._api.get(
             'exclusions/{}'.format(self._check('id', id, int))).json()
 
-    def edit(self, id, name=None, members=None, start_time=None, 
-             end_time=None, timezone=None, description=None, frequency=None, 
+    def edit(self, id, name=None, members=None, start_time=None,
+             end_time=None, timezone=None, description=None, frequency=None,
              interval=None, weekdays=None, day_of_month=None, enabled=None):
         '''
         Edit an existing scan target exclusion.
 
-        `exclusions: edit <https://cloud.tenable.com/api#/resources/exclusions/edit>`_
+        :devportal:`exclusions: edit <exclusions-edit>`
 
         The edit function will first gather the details of the exclusion that
         will be edited and will overlay the changes on top.  The result will
@@ -217,12 +219,12 @@ class ExclusionsAPI(TIOEndpoint):
 
             scanner_id (int, optional): The scanner id.
             name (str, optional): The name of the exclusion to create.
-            description (str, optional): 
+            description (str, optional):
                 Some further detail about the exclusion.
             start_time (datetime, optional): When the exclusion should start.
             end_time (datetime, optional): When the exclusion should end.
-            timezone (str, optional): 
-                The timezone to use for the exclusion.  The default if none is 
+            timezone (str, optional):
+                The timezone to use for the exclusion.  The default if none is
                 specified is to use UTC.
             frequency (str, optional):
                 The frequency of the rule. The string inputted will be upcased.
@@ -237,7 +239,8 @@ class ExclusionsAPI(TIOEndpoint):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
 
         Returns:
-            dict: Dictionary of the newly minted exclusion.
+            :obj:`dict`:
+                Dictionary of the newly minted exclusion.
 
         Examples:
             Modifying the name of an exclusion:
@@ -274,7 +277,7 @@ class ExclusionsAPI(TIOEndpoint):
 
         if frequency:
             payload['schedule']['rrules']['freq'] = self._check(
-                'frequency', frequency, str, 
+                'frequency', frequency, str,
                 choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
                 case='upper')
 
@@ -289,15 +292,15 @@ class ExclusionsAPI(TIOEndpoint):
                 case='upper'))
             # In the same vein as the frequency check, we're accepting
             # case-insensitive input, comparing it to our known list of
-            # acceptable responses, then joining them all together into a 
+            # acceptable responses, then joining them all together into a
             # comma-separated string.
-            
+
         if day_of_month is not None:
             payload['schedule']['rrules']['bymonthday'] = self._check(
                 'day_of_month', day_of_month, int, choices=list(range(1,32)))
 
-        # Lets check to make sure that the scanner_id  and exclusion_id are 
-        # integers as the API documentation requests and if we don't raise an 
+        # Lets check to make sure that the scanner_id  and exclusion_id are
+        # integers as the API documentation requests and if we don't raise an
         # error, then lets make the call.
         return self._api.put(
             'exclusions/{}'.format(
@@ -308,10 +311,11 @@ class ExclusionsAPI(TIOEndpoint):
         '''
         List the currently configured scan target exclusions.
 
-        `exclusions: list <https://cloud.tenable.com/api#/resources/exclusions/list>`_
+        :devportal:`exclusions: list <exclusions-list>`
 
         Returns:
-            list: List of exclusion resource records.
+            :obj:`list`:
+                List of exclusion resource records.
 
         Examples:
             >>> for exclusion in tio.exclusions.list():

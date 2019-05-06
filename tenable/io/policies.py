@@ -2,8 +2,8 @@
 policies
 ========
 
-The following methods allow for interaction into the Tenable.io 
-`policies <https://cloud.tenable.com/api#/resources/policies>`_ API.
+The following methods allow for interaction into the Tenable.io
+:devportal:`policies <policies>` API.
 
 Methods available on ``tio.policies``:
 
@@ -32,7 +32,7 @@ class PoliciesAPI(TIOEndpoint):
         individual one.
         '''
         policies = dict()
-        for item in self._api.editor.list('policy'):
+        for item in self._api.editor.template_list('policy'):
             policies[item['name']] = item['uuid']
         return policies
 
@@ -48,14 +48,15 @@ class PoliciesAPI(TIOEndpoint):
             name (str): The name of the scan .
 
         Returns:
-            dict: The policy configuration resource.
+            :obj:`dict`:
+                The policy configuration resource.
 
         Examples:
             >>> template = tio.policies.template('basic')
             >>> pprint(template)
 
-        Please note that template_details is reverse-engineered from the 
-        responses from the editor API and isn't guaranteed to work. 
+        Please note that template_details is reverse-engineered from the
+        responses from the editor API and isn't guaranteed to work.
         '''
 
         # Get the policy template UUID
@@ -130,7 +131,7 @@ class PoliciesAPI(TIOEndpoint):
         '''
         Configures an existing policy.
 
-        `policies: configure <https://cloud.tenable.com/api#/resources/policies/configure>`_
+        :devportal:`policies: configure <policies-configure>`
 
         Args:
             id (int): The policy unique identifier.
@@ -140,27 +141,29 @@ class PoliciesAPI(TIOEndpoint):
                 in the policies: configure page (linked above).
 
         Returns:
-            None: Policy successfully modified.
+            :obj:`None`:
+                Policy successfully modified.
 
         Examples:
             >>> policy = tio.policies.details(1)
             >>> policy['settings']['name'] = 'Updated Policy Name'
             >>> tio.policies.configure(policy)
         '''
-        self._api.put('policies/{}'.format(self._check('id', id, int)), 
+        self._api.put('policies/{}'.format(self._check('id', id, int)),
             json=self._check('policy', policy, dict))
 
     def copy(self, id):
         '''
         Duplicates a scan policy and returns the copy.
 
-        `policies: copy <https://cloud.tenable.com/api#/resources/policies/copy>`_
+        :devportal:`policies: copy <policies-copy>`
 
         Args:
             id (int): The unique identifier of the policy you wish to copy.
 
         Returns:
-            dict: A dictionary containing the name and id of the policy copy.
+            :obj:`dict`:
+                A dictionary containing the name and id of the policy copy.
 
         Example:
             >>> policy = tio.policies.copy(1)
@@ -172,7 +175,7 @@ class PoliciesAPI(TIOEndpoint):
         '''
         Creates a new scan policy based on the policy dictionary passed.
 
-        `policies: configure <https://cloud.tenable.com/api#/resources/policies/configure>`_
+        :devportal:`policies: configure <policies-configure>`
 
         Args:
             policy (dict):
@@ -181,27 +184,29 @@ class PoliciesAPI(TIOEndpoint):
                 in the policies: configure page (linked above).
 
         Returns:
-            dict: A dictionary containing the name and id of the new policy.
+            :obj:`dict`:
+                A dictionary containing the name and id of the new policy.
 
         Examples:
             >>> policy = tio.policies.template_details('basic')
             >>> policy['settings']['name'] = 'New Scan Policy'
             >>> info = tio.policies.create(policy)
         '''
-        return self._api.post('policies', 
+        return self._api.post('policies',
             json=self._check('policy', policy, dict)).json()
 
     def delete(self, id):
         '''
         Delete a custom policy.
 
-        `policies: delete <https://cloud.tenable.com/api#/resources/policies/delete>`_
+        :devportal:`policies: delete <policies-delete>`
 
         Args:
             id (int): The unique identifier of the policy to delete.
 
         Returns:
-            None: The policy was successfully deleted.
+            :obj:`None`:
+                The policy was successfully deleted.
 
         Examples:
             >>> tio.policies.delete(1)
@@ -212,13 +217,14 @@ class PoliciesAPI(TIOEndpoint):
         '''
         Retrieve the details for a specific policy.
 
-        `policies: details <https://cloud.tenable.com/api#/resources/policies/details>`_
+        :devportal:`policies: details <policies-details>`
 
         Args:
             id (int): The unique identifier of the policy.
 
         Returns:
-            dict: The dictionary definition of the policy.
+            :obj:`dict`:
+                The dictionary definition of the policy.
 
         Examples:
             >>> policy = tio.policies.details(1)
@@ -230,14 +236,15 @@ class PoliciesAPI(TIOEndpoint):
         '''
         Imports a policy into Tenable.io.
 
-        `policies: import <https://cloud.tenable.com/api#/resources/policies/import>`_
+        :devportal:`policies: import <policies-import>`
 
         Args:
-            fobj (FileObject): 
+            fobj (FileObject):
                 The file object of the scan policy you wish to import.
 
         Returns:
-            dict: The dictionary of the imported policy.
+            :obj:`dict`:
+                The dictionary of the imported policy.
 
         Examples:
             >>> with open('example.nessus') as policy:
@@ -250,7 +257,7 @@ class PoliciesAPI(TIOEndpoint):
         '''
         Exports a specified policy from Tenable.io.
 
-        `policies: export <https://cloud.tenable.com/api#/resources/policies/export>`_
+        :devportal:`policies: export <policies-export>`
 
         Args:
             id (int): The unique identifier of the policy to export.
@@ -260,8 +267,9 @@ class PoliciesAPI(TIOEndpoint):
                 policy.
 
         Returns:
-            FileObject: A file-like object containing the contents of the policy
-            in XML format.
+            :obj:`FileObject`:
+                A file-like object containing the contents of the policy
+                in XML format.
 
         Examples:
             >>> with open('example.nessus', 'wb') as policy:
@@ -289,10 +297,11 @@ class PoliciesAPI(TIOEndpoint):
         '''
         List the available custom policies.
 
-        `policies: list <https://cloud.tenable.com/api#/resources/policies/list>`_
+        :devportal:`policies: list <policies-list>`
 
         Returns:
-            list: List of policy resource documents.
+            :obj:`list`:
+                List of policy resource documents.
 
         Examples:
             >>> for policy in tio.policies.list():

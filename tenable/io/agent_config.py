@@ -2,9 +2,8 @@
 agent_config
 ============
 
-The following methods allow for interaction into the Tenable.io 
-`agent config <https://cloud.tenable.com/api#/resources/agent-config>`_ 
-API endpoints.
+The following methods allow for interaction into the Tenable.io
+:devportal:`agent config <agent-config>` API endpoints.
 
 Methods available on ``tio.agent_config``:
 
@@ -21,11 +20,11 @@ class AgentConfigAPI(TIOEndpoint):
         '''
         Edits the agent configuration.
 
-        `agent-config: edit <https://cloud.tenable.com/api#/resources/agent-config/edit>`_
+        :devportal:`agent-config: edit <agent-config-details>`
 
         Args:
             scanner_id (int, optional): The scanner ID.
-            software_update (bool, optional): 
+            software_update (bool, optional):
                 If True, software updates are enabled for agents (exclusions may
                 override this).  If false, software updates for all agents are
                 disabled.
@@ -36,7 +35,8 @@ class AgentConfigAPI(TIOEndpoint):
                 values are between 1 and 365.
 
         Returns:
-            dict: Dictionary of the applied settings is returned if successfully
+            :obj:`dict`:
+                Dictionary of the applied settings is returned if successfully
                 applied.
 
         Examples:
@@ -75,13 +75,14 @@ class AgentConfigAPI(TIOEndpoint):
         '''
         Returns the current agent configuration.
 
-        `agent-config: details <https://cloud.tenable.com/api#/resources/agent-config/details>`_
+        :devportal:`agent-config: details <agent-config-edit>`
 
         Args:
             scanner_id (int, optional): The scanner ID.
 
         Returns:
-            dict: Dictionary of the current settings.
+            :obj:`dict`:
+                Dictionary of the current settings.
 
         Examples:
             >>> details = tio.agent_config.details()

@@ -9,7 +9,7 @@ interactions:
       User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
       X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
     method: DELETE
-    uri: https://cloud.tenable.com/scans/1/hostory/1
+    uri: https://cloud.tenable.com/scans/1/history/1
   response:
     body:
       string: !!binary |
