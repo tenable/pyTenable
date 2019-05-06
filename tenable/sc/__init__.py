@@ -12,6 +12,7 @@
 .. automodule:: tenable.sc.feeds
 .. automodule:: tenable.sc.files
 .. automodule:: tenable.sc.groups
+.. automodule:: tenable.sc.organizations
 .. automodule:: tenable.sc.plugins
 .. automodule:: tenable.sc.policies
 .. automodule:: tenable.sc.repositories
@@ -64,6 +65,7 @@ from .feeds import FeedAPI
 from .groups import GroupAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
+from .organizations import OrganizationAPI
 from .recast_risks import RecastRiskAPI
 from .repositories import RepositoryAPI
 from .roles import RoleAPI
@@ -292,6 +294,10 @@ class TenableSC(APISession):
     @property
     def groups(self):
         return GroupAPI(self)
+
+    @property
+    def organization(self):
+        return OrganizationAPI(self)
 
     @property
     def plugins(self):
