@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.19]
 ### Changed
 - All Tenable.io API doc links have been re-pointed to the new developer portal. #111
 - tio.editor.edit has been renamed to tio.editor.template_details as it was misnamed.
@@ -13,8 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added the asset delete method to the workbenches TenableIO module #110
 - Added and tested out the TenableSC plugin family additions to the plugins module #78
+- Added and tested out the TenableSC OrganizationAPI module #77
+- Added and tested out the TenableSC QueryAPI module #79
 
-### Changed
+### Fixed
 - Various documentation issues reported by sphinx addressed
 - TenableSC.scan_instances.list can now support non-standard timeframes #108
 
@@ -273,7 +275,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.18...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.19...master
+[0.3.19]: https://github.com/tenable/pyTenable/compare/0.3.18...0.3.19
 [0.3.18]: https://github.com/tenable/pyTenable/compare/0.3.17...0.3.18
 [0.3.17]: https://github.com/tenable/pyTenable/compare/0.3.16...0.3.17
 [0.3.16]: https://github.com/tenable/pyTenable/compare/0.3.15...0.3.16
