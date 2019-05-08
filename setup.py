@@ -39,6 +39,7 @@ setup(
     install_requires=[
         'requests>=2.19',
         'python-dateutil>=2.6',
+        'lxml>=4.1.1',
         'semver>=2.8.1',
     ],
     extras_require={
