@@ -2,7 +2,7 @@
 analysis
 ========
 
-The following methods allow for interaction into the Tenable.sc 
+The following methods allow for interaction into the Tenable.sc
 `analysis <https://docs.tenable.com/sccv/api/Analysis.html>`_ API.  The analysis
 area in Tenable.sc is highly complex and allows for a wide range of varied
 inputs and outputs.  This single endpoint has been broken down in pyTenable to
@@ -32,11 +32,11 @@ tool:
         raise self._error_codes[status](resp)
     PermissionError: 00000000-0000-0000-0000-000000000000:403 {"type":"regular",
     "response":"","error_code":146,"error_msg":"Invalid parameters specified for
-    mobile vuln query.  The filter 'something' is invalid (valid filters: 
-    repositoryIDs, port, pluginID, familyID, pluginOutput, lastSeen, 
-    lastMitigated, severity, protocol, pluginName, baseCVSSScore, 
-    exploitAvailable, pluginPublished, pluginModified, vulnPublished, 
-    patchPublished, deviceID, mdmType, deviceModel, serialNumber, deviceUser, 
+    mobile vuln query.  The filter 'something' is invalid (valid filters:
+    repositoryIDs, port, pluginID, familyID, pluginOutput, lastSeen,
+    lastMitigated, severity, protocol, pluginName, baseCVSSScore,
+    exploitAvailable, pluginPublished, pluginModified, vulnPublished,
+    patchPublished, deviceID, mdmType, deviceModel, serialNumber, deviceUser,
     deviceVersion, osCPE).","warnings":[],"timestamp":1545060739}
 
 
@@ -51,17 +51,17 @@ looking to set the ``pluginID`` filter to ``19506`` the filter would look like
 separated values to indicate multiple items.  So for high and critical vulns,
 ``('severity', '=', '3,4')`` would return only what your looking for.
 
-Asset list calculations in filters are a bit more complex, but still shouldn't 
+Asset list calculations in filters are a bit more complex, but still shouldn't
 be too difficult.  Tenable.sc leverages nested pairs for the asset calculations
 combined with a operator to define how that pair are to be combined.  Each of
 the elements within the pair can further be nested, allowing for some quite
-complex asset list math to happen.  
+complex asset list math to happen.
 
-On the simple side, if you just want to look for The the combined results of 
+On the simple side, if you just want to look for The the combined results of
 asset lists 1 or 2, you would perform:
-``('asset', '~', ('or', 1, 2))``.  
+``('asset', '~', ('or', 1, 2))``.
 Note the tilda, informing the filtering engine that it will need to perform some
-sort of calculation first.  The tilda is only used when using the asset filter.  
+sort of calculation first.  The tilda is only used when using the asset filter.
 
 Now for a more complex calculation, you could look for the IPs that exist in
 both 1 or 2, but not 3:
@@ -97,7 +97,7 @@ class AnalysisResultsIterator(SCResultsIterator):
         if self._pages_total and self._pages_requested >= self._pages_total:
             raise StopIteration()
 
-        # Now we need to do is construct the query with the current offset 
+        # Now we need to do is construct the query with the current offset
         # and limits
         query = self._query
         query['query']['startOffset'] = self._offset
@@ -106,7 +106,7 @@ class AnalysisResultsIterator(SCResultsIterator):
         # Lets actually call the API for the data at this point.
         resp = self._api.post('analysis', json=query).json()
 
-        # Now that we have the response, lets reset any counters we need to, 
+        # Now that we have the response, lets reset any counters we need to,
         # and increment things like the page counter, offset, etc.
         self.page_count = 0
         self._pages_requested += 1
@@ -144,65 +144,9 @@ class AnalysisResultsIterator(SCResultsIterator):
 
 
 class AnalysisAPI(SCEndpoint):
-    def _query_constructor(self, *filters, **kw):
-        '''
-        Constructs an analysis query.  This part has been pulled out of the
-        _analysis method and placed here so that it can be re-used in other
-        part of the library.
-        '''
-        if 'filters' in kw:
-            # if filters are explicitly called, then we will replace the
-            # implicit filters with the explicit ones and remove the entry from
-            # the keywords dictionary
-            filters = self._check('filters', kw['filters'], list)
-            del(kw['filters'])
-
-        if 'query' not in kw:
-            kw['query'] = {
-                'tool': kw['tool'],
-                'type': kw['analysis_type'],
-                'filters': list()
-            }
-            if 'query_id' in kw:
-                # Request the specific query ID provided and fetch only the filters
-                query_response = self._api.get(
-                    'query/{}?fields=filters'.format(
-                        kw['query_id'])).json()['response']
-
-                # Extract the filters or set to null if nothing is returned
-                query_filters = query_response.get('filters', list())
-
-                kw['query']['filters'] = query_filters
-                return kw
-
-            for f in filters:
-                item = {'filterName': f[0], 'operator': f[1]}
-
-                if isinstance(f[2], tuple) and f[1] == '~' and f[0] == 'asset':
-                    # if this is a asset combination, then we will want to
-                    # expand the tuple into the expected dictionary structure
-                    # that the API is expecting.
-                    item['value'] = self._combo_expansion(f[2])
-                elif isinstance(f[2], list) and all(isinstance(i, int) for i in f[2]):
-                    # if the value is a list and al;l of the items within that
-                    # list are integers, then we can safely assume that this is
-                    # a list of integer ids that need to be expanded into a list
-                    # of dictionaries.
-                    item['value'] = [dict(id=str(i)) for i in f[2]]
-                else:
-                    # if we dont have any specific conditions set, then simply
-                    # return the value parameter assigned to the "value" attribute
-                    item['value'] = f[2]
-
-                # Add the newly expanded filter to the filters list.
-                kw['query']['filters'].append(item)
-            del(kw['analysis_type'])
-        return kw
-
-
     def _analysis(self, *filters, **kw):
         '''
-        The base wrapper function handling the calls to the analysis API 
+        The base wrapper function handling the calls to the analysis API
         endpoint.  As this singular endpoint is used as the common API for all
         data export, much of the common handling can be centrally handled and
         only the unique elements for a given sub-type is handled by the
@@ -225,7 +169,7 @@ class AnalysisAPI(SCEndpoint):
 
         if 'sort_direction' in kw:
             payload['sortDir'] = self._check(
-                'sort_direction', kw['sort_direction'], str, 
+                'sort_direction', kw['sort_direction'], str,
                 choices=['ASC', 'DESC'], case='upper')
 
         if 'offset' in kw:
@@ -236,10 +180,10 @@ class AnalysisAPI(SCEndpoint):
 
         if 'pages' in kw:
             pages = self._check('pages', kw['pages'], int)
-        
+
         if payload.get('sourceType') in ['individual']:
             payload['query']['view'] = self._check(
-                'view', kw.get('view', 'all'), str, 
+                'view', kw.get('view', 'all'), str,
                 choices=['all', 'new', 'patched'], default='all')
 
         if 'json_result' in kw and kw['json_result']:
@@ -284,7 +228,7 @@ class AnalysisAPI(SCEndpoint):
             offset (int, optional):
                 How many entries to skip before processing.  Default is 0.
             source (str, optional):
-                The data source location.  Allowed sources are ``cumulative`` 
+                The data source location.  Allowed sources are ``cumulative``
                 and ``patched``.  Defaults to ``cumulative``.
             scan_id (int, optional):
                 If a scan id is specified, then the results fetched will be from
@@ -298,11 +242,11 @@ class AnalysisAPI(SCEndpoint):
                 The analysis tool for formatting and returning a specific view
                 into the information.  If no tool is specified, the default will
                 be ``vulndetails``.  Available tools are:
-                ``cceipdetail``, ``cveipdetail``, ``iavmipdetail``, 
-                ``iplist``, ``listmailclients``, ``listservices``, 
+                ``cceipdetail``, ``cveipdetail``, ``iavmipdetail``,
+                ``iplist``, ``listmailclients``, ``listservices``,
                 ``listos``, ``listsoftware``, ``listsshservers``,
                 ``listvuln``, ``listwebclients``, ``listwebservers``,
-                ``sumasset``, ``sumcce``, ``sumclassa``, ``sumclassb``, 
+                ``sumasset``, ``sumcce``, ``sumclassa``, ``sumclassb``,
                 ``sumclassc``, ``sumcve``, ``sumdnsname``,
                 ``sumfamily``, ``sumiavm``, ``sumid``, ``sumip``,
                 ``summsbulletin``, ``sumprotocol``, ``sumremediation``,
@@ -316,7 +260,7 @@ class AnalysisAPI(SCEndpoint):
             A quick example showing how to get all of the information stored in
             SecurityCenter.  As the default is for the vulns method to return
             data from the vulndetails tool, we can handle this without actually
-            doing anything other than calling 
+            doing anything other than calling
 
             >>> from pprint import pprint
             >>> for vuln in sc.analysis.vulns():
@@ -330,7 +274,7 @@ class AnalysisAPI(SCEndpoint):
             ...    ('severity', '=', '4'),
             ...    ('exploitAvailable', '=', 'true'))
 
-            To request a different data format (like maybe an IP summary of 
+            To request a different data format (like maybe an IP summary of
             vulns) you just need to specify the appropriate tool:
 
             >>> ips = sc.analysis.vulns(
@@ -338,12 +282,12 @@ class AnalysisAPI(SCEndpoint):
             ...    ('exploitAvailable', '=', 'true'), tool='sumip')
         '''
         payload = {
-            'type': 'vuln', 
+            'type': 'vuln',
             'sourceType': 'cumulative',
         }
 
         if 'source' in kw:
-            payload['sourceType'] = self._check('source', kw['source'], str, 
+            payload['sourceType'] = self._check('source', kw['source'], str,
                 choices=['cumulative', 'patched'], case='lower')
 
         if 'tool' in kw:
@@ -369,7 +313,7 @@ class AnalysisAPI(SCEndpoint):
                 'sumdnsname',
                 'sumfamily',
                 'sumiavm',
-                'sumid', 
+                'sumid',
                 'sumip',
                 'summsbulletin',
                 'sumport',
@@ -390,7 +334,7 @@ class AnalysisAPI(SCEndpoint):
             payload['scanID'] = kw['scan_id']
 
         kw['payload'] = payload
-        kw['analysis_type'] = 'vuln'
+        kw['type'] = 'vuln'
 
         # DIRTYHACK - If the tool is set to 'iplist', then we will want to make
         #             sure to specify that the json_result flag is set to bypass
@@ -433,7 +377,7 @@ class AnalysisAPI(SCEndpoint):
             offset (int, optional):
                 How many entries to skip before processing.  Default is 0.
             source (str, optional):
-                The data source location.  Allowed sources are ``cumulative`` 
+                The data source location.  Allowed sources are ``cumulative``
                 and ``patched``.  Defaults to ``cumulative``.
             sort_field (str, optional):
                 The field to sort the results on.
@@ -444,11 +388,11 @@ class AnalysisAPI(SCEndpoint):
                 The analysis tool for formatting and returning a specific view
                 into the information.  If no tool is specified, the default will
                 be ``vulndetails``.  Available tools are:
-                ``cceipdetail``, ``cveipdetail``, ``iavmipdetail``, 
-                ``iplist``, ``listmailclients``, ``listservices``, 
+                ``cceipdetail``, ``cveipdetail``, ``iavmipdetail``,
+                ``iplist``, ``listmailclients``, ``listservices``,
                 ``listos``, ``listsoftware``, ``listsshservers``,
                 ``listvuln``, ``listwebclients``, ``listwebservers``,
-                ``sumasset``, ``sumcce``, ``sumclassa``, ``sumclassb``, 
+                ``sumasset``, ``sumcce``, ``sumclassa``, ``sumclassb``,
                 ``sumclassc``, ``sumcve``, ``sumdnsname``,
                 ``sumfamily``, ``sumiavm``, ``sumid``, ``sumip``,
                 ``summsbulletin``, ``sumprotocol``, ``sumremediation``,
@@ -464,9 +408,9 @@ class AnalysisAPI(SCEndpoint):
 
         Examples:
             A quick example showing how to get the information for a specific
-            scan from SecurityCenter.  As the default is for the scan method to 
-            return data from the vulndetails tool, we can handle this without 
-            actually doing anything other than calling 
+            scan from SecurityCenter.  As the default is for the scan method to
+            return data from the vulndetails tool, we can handle this without
+            actually doing anything other than calling
 
             >>> for vuln in sc.analysis.scan(1):
             ...     pprint(vuln)
@@ -479,7 +423,7 @@ class AnalysisAPI(SCEndpoint):
             ...    ('severity', '=', '4'),
             ...    ('exploitAvailable', '=', 'true'))
 
-            To request a different data format (like maybe an IP summary of 
+            To request a different data format (like maybe an IP summary of
             vulns) you just need to specify the appropriate tool:
 
             >>> ips = sc.analysis.scan(1
@@ -510,7 +454,7 @@ class AnalysisAPI(SCEndpoint):
             offset (int, optional):
                 How many entries to skip before processing.  Default is 0.
             source (str, optional):
-                The data source location.  Allowed sources are ``lce`` 
+                The data source location.  Allowed sources are ``lce``
                 and ``archive``.  Defaults to ``lce``.
             silo_id (int, optional):
                 If a silo id is specified, then the results fetched will be from
@@ -524,10 +468,10 @@ class AnalysisAPI(SCEndpoint):
                 The analysis tool for formatting and returning a specific view
                 into the information.  If no tool is specified, the default will
                 be ``vulndetails``.  Available tools are:
-                ``listdata``, ``sumasset``, ``sumclassa``, ``sumclassb``, 
-                ``sumclassc``, ``sumconns``, ``sumdate``, ``sumdstip``, 
-                ``sumevent``, ``sumevent2``, ``sumip``, ``sumport``, 
-                ``sumprotocol``, ``sumsrcip``, ``sumtime``, ``sumtype``, 
+                ``listdata``, ``sumasset``, ``sumclassa``, ``sumclassb``,
+                ``sumclassc``, ``sumconns``, ``sumdate``, ``sumdstip``,
+                ``sumevent``, ``sumevent2``, ``sumip``, ``sumport``,
+                ``sumprotocol``, ``sumsrcip``, ``sumtime``, ``sumtype``,
                 ``sumuser``, ``syslog``, ``timedist``
 
         Returns:
@@ -536,7 +480,7 @@ class AnalysisAPI(SCEndpoint):
         payload = {'type': 'event', 'sourceType': 'lce'}
 
         if 'source' in kw:
-            payload['sourceType'] = self._check('source', kw['source'], str, 
+            payload['sourceType'] = self._check('source', kw['source'], str,
                 choices=['lce', 'archive'], case='lower')
             if kw['source'] == 'archive':
                 if 'silo_id' in kw:
@@ -571,7 +515,7 @@ class AnalysisAPI(SCEndpoint):
             kw['tool'] = 'syslog'
 
         kw['payload'] = payload
-        kw['analysis_type'] = 'event'
+        kw['type'] = 'event'
 
         return self._analysis(*filters, **kw)
 
@@ -585,7 +529,7 @@ class AnalysisAPI(SCEndpoint):
     #    payload = {'type': 'user'}
     #    kw['payload'] = payload
     #    kw['tool'] = 'user'
-    #    kw['analysis_type'] = 'user'
+    #    kw['type'] = 'user'
     #    return self._analysis(*filters, **kw)
 
     def console(self, *filters, **kw):
@@ -620,11 +564,11 @@ class AnalysisAPI(SCEndpoint):
             AnalysisResultsIterator: an iterator object handling data pagination.
         '''
         kw['payload'] = {
-            'type': 'scLog', 
+            'type': 'scLog',
             'date': 'all' if 'date' not in kw else self._check('date', kw['date'], str)
         }
         kw['tool'] = 'scLog'
-        kw['analysis_type'] = 'scLog'
+        kw['type'] = 'scLog'
         return self._analysis(*filters, **kw)
 
     def mobile(self, *filters, **kw):
@@ -657,7 +601,7 @@ class AnalysisAPI(SCEndpoint):
                 The analysis tool for formatting and returning a specific view
                 into the information.  If no tool is specified, the default will
                 be ``vulndetails``.  Available tools are:
-                ``listvuln``, ``sumdeviceid``, ``summdmuser``, ``summodel``, 
+                ``listvuln``, ``sumdeviceid``, ``summdmuser``, ``summodel``,
                 ``sumoscpe``, ``sumpluginid``, ``sumseverity``, ``vulndetails``
 
         Returns:
@@ -678,8 +622,8 @@ class AnalysisAPI(SCEndpoint):
             ],  case='lower')
         else:
             kw['tool'] = 'vulndetails'
-        
+
         kw['payload'] = payload
-        kw['analysis_type'] = 'mobile'
+        kw['type'] = 'mobile'
 
         return self._analysis(*filters, **kw)

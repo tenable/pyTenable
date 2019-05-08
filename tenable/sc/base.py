@@ -131,6 +131,68 @@ class SCEndpoint(APIEndpoint):
         # return the response to the caller.
         return resp
 
+    def _query_constructor(self, *filters, **kw):
+        '''
+        Constructs an analysis query.  This part has been pulled out of the
+        _analysis method and placed here so that it can be re-used in other
+        part of the library.
+        '''
+        if 'filters' in kw:
+            # if filters are explicitly called, then we will replace the
+            # implicit filters with the explicit ones and remove the entry from
+            # the keywords dictionary
+            filters = self._check('filters', kw['filters'], list)
+            del(kw['filters'])
+
+        if 'query' not in kw and 'tool' in kw and 'type' in kw:
+            kw['query'] = {
+                'tool': kw['tool'],
+                'type': kw['type'],
+                'filters': list()
+            }
+            if 'query_id' in kw:
+                # Request the specific query ID provided and fetch only the filters
+                query_response = self._api.get(
+                    'query/{}?fields=filters'.format(
+                        kw['query_id'])).json()['response']
+
+                # Extract the filters or set to null if nothing is returned
+                query_filters = query_response.get('filters', list())
+
+                kw['query']['filters'] = query_filters
+                return kw
+
+            for f in filters:
+                if kw['type'] == 'ticket':
+                    item = {'filterName': f[0], 'value': f[1]}
+                else:
+                    item = {'filterName': f[0], 'operator': f[1]}
+
+                if len(f) >= 3:
+                    if (isinstance(f[2], tuple)
+                      and f[1] == '~' and f[0] == 'asset'):
+                        # if this is a asset combination, then we will want to
+                        # expand the tuple into the expected dictionary
+                        # structure that the API is expecting.
+                        item['value'] = self._combo_expansion(f[2])
+                    elif (isinstance(f[2], list)
+                      and all(isinstance(i, int) for i in f[2])):
+                        # if the value is a list and al;l of the items within
+                        # that list are integers, then we can safely assume that
+                        # this is a list of integer ids that need to be expanded
+                        # into a list of dictionaries.
+                        item['value'] = [dict(id=str(i)) for i in f[2]]
+                    else:
+                        # if we dont have any specific conditions set, then
+                        # simply return the value parameter assigned to the
+                        # "value" attribute
+                        item['value'] = f[2]
+
+                # Add the newly expanded filter to the filters list.
+                kw['query']['filters'].append(item)
+            del(kw['type'])
+        return kw
+
     def _schedule_constructor(self, item):
         '''
         Handles creation of the schedule sub-document.

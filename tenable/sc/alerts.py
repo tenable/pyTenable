@@ -2,7 +2,7 @@
 alerts
 ======
 
-The following methods allow for interaction into the Tenable.sc 
+The following methods allow for interaction into the Tenable.sc
 `Alert <https://docs.tenable.com/sccv/api/Alert.html>`_ API.
 
 Methods available on ``sc.alerts``:
@@ -37,15 +37,15 @@ class AlertAPI(SCEndpoint):
             # will set the value to the default of 'vuln'.
             if 'data_type' not in kw:
                 kw['data_type'] = 'vuln'
-            kw['analysis_type'] = kw['data_type']
+            kw['type'] = kw['data_type']
             kw['tool'] = ''
-            kw = self._api.analysis._query_constructor(*filters, **kw)
+            kw = self._query_constructor(*filters, **kw)
             del(kw['data_type'])
             del(kw['query']['tool'])
             del(kw['tool'])
         elif 'query_id' in kw:
-            kw = self._api.analysis._query_constructor(*filters, **kw)
-        
+            kw = self._query_constructor(*filters, **kw)
+
         if 'name' in kw:
             kw['name'] = self._check('name', kw['name'], str)
 
@@ -65,25 +65,25 @@ class AlertAPI(SCEndpoint):
             del(kw['always_exec_on_trigger'])
 
         if 'trigger' in kw:
-            # here we will be expanding the trigger from the common format of 
-            # tuples that we are using within pytenable into the native 
+            # here we will be expanding the trigger from the common format of
+            # tuples that we are using within pytenable into the native
             # supported format that SecurityCenter expects.
             self._check('trigger', kw['trigger'], tuple)
             kw['triggerName'] = self._check(
                 'triggerName', kw['trigger'][0], str)
             kw['triggerOperator'] = self._check(
-                'triggerOperator', kw['trigger'][1], str, 
+                'triggerOperator', kw['trigger'][1], str,
                 choices=['>=', '<=', '=', '!='])
             kw['triggerValue'] = self._check(
                 'triggerValue', kw['trigger'][2], str)
             del(kw['trigger'])
 
-        # hand off the building the schedule sub-document to the schedule 
+        # hand off the building the schedule sub-document to the schedule
         # document builder.
         if 'schedule' in kw:
             kw['schedule'] = self._schedule_constructor(kw['schedule'])
 
-        # FR: at some point we should start looking into checking and 
+        # FR: at some point we should start looking into checking and
         #     normalizing the action document.
         return kw
 
@@ -94,7 +94,7 @@ class AlertAPI(SCEndpoint):
         + `SC Alert List <https://docs.tenable.com/sccv/api/Alert.html#AlertRESTReference-/alert>`_
 
         Args:
-            fields (list, optional): 
+            fields (list, optional):
                 A list of attributes to return for each alert.
 
         Returns:
@@ -106,7 +106,7 @@ class AlertAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
 
         return self._api.get('alert', params=params).json()['response']
@@ -144,26 +144,26 @@ class AlertAPI(SCEndpoint):
         + `SC Alert Create <https://docs.tenable.com/sccv/api/Alert.html#alert_POST>`_
 
         Args:
-            *filters (tuple): 
+            *filters (tuple):
                 A filter expression.  Refer to the detailed description within
                 the analysis endpoint documentation for more details on how to
                 formulate filter expressions.
             data_type (str):
-                The type of filters being used.  Must be of type ``lce``, 
+                The type of filters being used.  Must be of type ``lce``,
                 ``ticket``, ``user``, or ``vuln``.  If no data-type is
                 specified, then the default of ``vuln`` will be set.
             name (str): The name of the alert.
             description (str, optional): A description for the alert.
-            trigger (tuple): 
+            trigger (tuple):
                 A tuple in the filter-tuple format detailing what would
                 constitute a trigger.  For example: ``('sumip', '=', '1000')``.
             always_exec_on_trigger (bool, optional):
                 Should the trigger always execute when the trigger fires, or
-                only execute when the returned data changes?  
+                only execute when the returned data changes?
                 Default is ``False``.
             schedule (dict, optional):
-                This is the schedule dictionary that will inform Tenable.sc how 
-                often to run the alert.  If left unspecified then we will 
+                This is the schedule dictionary that will inform Tenable.sc how
+                often to run the alert.  If left unspecified then we will
                 default to ``{'type': 'never'}``.  For more information refer to
                 `Schedule Dictionaries`_
             action (list):
@@ -177,7 +177,7 @@ class AlertAPI(SCEndpoint):
                 * Email action type:
 
                 .. code-block:: python
-                    
+
                     {'type': 'email',
                      'subject': 'Example Email Subject',
                      'message': 'Example Email Body'
@@ -237,7 +237,7 @@ class AlertAPI(SCEndpoint):
             ...     trigger=('sumip', '>=', '100'),
             ...     name='Too many High or Critical and Exploitable',
             ...     action=[{
-            ...         'type': 'notification', 
+            ...         'type': 'notification',
             ...         'message': 'Too many High or Crit Exploitable Vulns',
             ...         'users': [{'id': 1}]
             ...     }])
@@ -254,26 +254,26 @@ class AlertAPI(SCEndpoint):
 
         Args:
             if (int): The alert identifier.
-            *filters (tuple): 
+            *filters (tuple):
                 A filter expression.  Refer to the detailed description within
                 the analysis endpoint documentation for more details on how to
                 formulate filter expressions.
             data_type (str):
-                The type of filters being used.  Must be of type ``lce``, 
+                The type of filters being used.  Must be of type ``lce``,
                 ``ticket``, ``user``, or ``vuln``.  If no data-type is
                 specified, then the default of ``vuln`` will be set.
             name (str, optional): The name of the alert.
             description (str, optional): A description for the alert.
-            trigger (tuple, optional): 
+            trigger (tuple, optional):
                 A tuple in the filter-tuple format detailing what would
                 constitute a trigger.  For example: ``('sumip', '=', '1000')``.
             always_exec_on_trigger (bool, optional):
                 Should the trigger always execute when the trigger fires, or
-                only execute when the returned data changes?  
+                only execute when the returned data changes?
                 Default is ``False``.
             schedule (dict, optional):
-                This is the schedule dictionary that will inform Tenable.sc how 
-                often to run the alert.  If left unspecified then we will 
+                This is the schedule dictionary that will inform Tenable.sc how
+                often to run the alert.  If left unspecified then we will
                 default to ``{'type': 'never'}``.  For more information refer to
                 `Schedule Dictionaries`_
             action (list):

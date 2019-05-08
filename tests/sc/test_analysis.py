@@ -33,9 +33,9 @@ def test_analysis_asset_expansion_complex(sc):
 def test_analysis_query_constructor_simple(sc):
     resp = sc.analysis._query_constructor(
         ('filter1', 'operator1', 'value1'),
-        ('filter2', 'operator2', 'value2'), 
-        tool='tool_test', 
-        analysis_type='type_test')
+        ('filter2', 'operator2', 'value2'),
+        tool='tool_test',
+        type='type_test')
     assert resp == {
         'tool': 'tool_test',
         'query': {
@@ -55,7 +55,7 @@ def test_analysis_query_constructor_simple(sc):
 
 def test_analysis_query_constructor_asset(sc):
     resp = sc.analysis._query_constructor(('asset', '~', ('or', 1, 2)),
-        tool='tool', analysis_type='type')
+        tool='tool', type='type')
     assert resp == {
         'tool': 'tool',
         'query': {

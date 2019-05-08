@@ -15,6 +15,7 @@
 .. automodule:: tenable.sc.organizations
 .. automodule:: tenable.sc.plugins
 .. automodule:: tenable.sc.policies
+.. automodule:: tenable.sc.queries
 .. automodule:: tenable.sc.repositories
 .. automodule:: tenable.sc.roles
 .. automodule:: tenable.sc.scan_zones
@@ -63,9 +64,10 @@ from .credentials import CredentialAPI
 from .files import FileAPI
 from .feeds import FeedAPI
 from .groups import GroupAPI
+from .organizations import OrganizationAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
-from .organizations import OrganizationAPI
+from .queries import QueryAPI
 from .recast_risks import RecastRiskAPI
 from .repositories import RepositoryAPI
 from .roles import RoleAPI
@@ -296,7 +298,7 @@ class TenableSC(APISession):
         return GroupAPI(self)
 
     @property
-    def organization(self):
+    def organizations(self):
         return OrganizationAPI(self)
 
     @property
@@ -306,6 +308,10 @@ class TenableSC(APISession):
     @property
     def policies(self):
         return ScanPolicyAPI(self)
+
+    @property
+    def queries(self):
+        return QueryAPI(self)
 
     @property
     def recast_risks(self):
