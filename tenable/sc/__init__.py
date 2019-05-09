@@ -223,13 +223,14 @@ class TenableSC(APISession):
         except:
             raise ConnectionError('Invalid Tenable.sc Instance')
 
-    def _resp_error_check(self, response):
-        try:
-            d = response.json()
-            if d['error_code']:
-                raise APIError(d['error_code'], d['error_msg'])
-        except ValueError:
-            pass
+    def _resp_error_check(self, response, **kwargs):
+        if not kwargs.get('stream', False):
+            try:
+                d = response.json()
+                if d['error_code']:
+                    raise APIError(d['error_code'], d['error_msg'])
+            except ValueError:
+                pass
         return response
 
     def login(self, user, passwd):

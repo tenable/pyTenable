@@ -172,10 +172,7 @@ class APIEndpoint(object):
         # If the object sent to us has a None value, then we will return None.
         # If a default was set, then we will return the default value.
         if obj == None:
-            if default:
-                return default
-            else:
-                return None
+            return default
 
         # As we can support a singular expected type, or multiple types, we need
         # to check to see if the expected types was a list of types.  If so, we
@@ -344,7 +341,7 @@ class APISession(object):
                 __version__, '.'.join([str(i) for i in sys.version_info][0:3])),
         })
 
-    def _resp_error_check(self, response): #stub
+    def _resp_error_check(self, response, **kwargs): #stub
         '''
         A more general response error checker that can be overloaded if needed.
         '''
@@ -414,7 +411,7 @@ class APISession(object):
             elif status >= 200 and status <= 299:
                 # As everything looks ok, lets pass the response on to the error
                 # checker and then return the response.
-                return self._resp_error_check(resp)
+                return self._resp_error_check(resp, **kwargs)
 
             else:
                 # If all else fails, raise an error stating that we don't even
