@@ -289,6 +289,7 @@ class PoliciesAPI(TIOEndpoint):
             if chunk:
                 fobj.write(chunk)
         fobj.seek(0)
+        resp.close()
 
         # return the FileObject.
         return fobj

@@ -116,6 +116,7 @@ class SystemAPI(SCEndpoint):
             if chunk:
                 fobj.write(chunk)
         fobj.seek(0)
+        resp.close()
         return fobj
 
     def current_locale(self):

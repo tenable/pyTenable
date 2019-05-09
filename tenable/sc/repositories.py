@@ -585,6 +585,7 @@ class RepositoryAPI(SCEndpoint):
             if chunk:
                 fobj.write(chunk)
         fobj.seek(0)
+        resp.close()
         return fobj
 
     def remote_sync(self, id):

@@ -192,6 +192,7 @@ class ScansAPI(TIOEndpoint):
             if chunk:
                 fobj.write(chunk)
         fobj.seek(0)
+        resp.close()
 
         # Return the file object to the caller.
         return fobj
@@ -610,6 +611,7 @@ class ScansAPI(TIOEndpoint):
             if chunk:
                 fobj.write(chunk)
         fobj.seek(0)
+        resp.close()
 
         # Lastly lets return the FileObject to the caller.
         return fobj

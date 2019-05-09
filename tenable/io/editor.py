@@ -163,6 +163,7 @@ class EditorAPI(TIOEndpoint):
             if chunk:
                 fobj.write(chunk)
         fobj.seek(0)
+        resp.close()
 
         # lastly return the file object.
         return fobj

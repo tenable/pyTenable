@@ -171,6 +171,7 @@ class ScanResultAPI(SCEndpoint):
             if chunk:
                 fobj.write(chunk)
         fobj.seek(0)
+        resp.close()
         return fobj
 
     def import_scan(self, fobj, repo, **kw):

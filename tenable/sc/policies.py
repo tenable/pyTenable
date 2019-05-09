@@ -419,6 +419,7 @@ class ScanPolicyAPI(SCEndpoint):
             if chunk:
                 fobj.write(chunk)
         fobj.seek(0)
+        resp.close()
         return fobj
     
     def import_policy(self, name, fobj, description=None, tags=None):

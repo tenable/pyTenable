@@ -347,6 +347,7 @@ class AuditFileAPI(SCEndpoint):
             if chunk:
                 fobj.write(chunk)
         fobj.seek(0)
+        resp.close()
         return fobj
 
     def template_categories(self):
