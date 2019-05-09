@@ -85,7 +85,8 @@ class SCEndpoint(APIEndpoint):
             item
 
         Returns:
-            dict: The dictionary structure of the expanded asset list combinations.
+            :obj:`dict`:
+                The dictionary structure of the expanded asset list combinations.
         '''
 
         # the operator conversion dictionary.  The UI uses "and", "or", and
@@ -211,7 +212,7 @@ class SCEndpoint(APIEndpoint):
 class SCResultsIterator(APIResultsIterator):
     def _get_page(self):
         '''
-        Retreives the next page of results when the current page has been
+        Retrieves the next page of results when the current page has been
         exhausted.
         '''
         # First we need to see if there is a page limit and if there is, have

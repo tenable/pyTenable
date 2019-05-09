@@ -3,10 +3,9 @@ audit_files
 ===========
 
 The following methods allow for interaction into the Tenable.sc
-`Audit File <https://docs.tenable.com/sccv/api/AuditFile.html>`_ API and the
-`Audit File Template <https://docs.tenable.com/sccv/api/AuditFile-Template.html>`_
-API.  These items are typically seen under the **Scans: Audit Files** section
-of Tenable.sc.
+:sc-api:`Audit File <AuditFile.html>` API and the
+:sc-api:`Audit File Template <AuditFile-Template.html>` API.  These items are
+typically seen under the **Scans: Audit Files** section of Tenable.sc.
 
 Methods available on ``sc.audit_files``:
 
@@ -111,7 +110,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Creates a audit file.
 
-        + `audit file: create <https://docs.tenable.com/sccv/api/AuditFile.html#auditFile_POST>`_
+        :sc-api:`audit file: create <AuditFile.html#auditFile_POST>`
 
         Args:
             name (str):
@@ -152,7 +151,8 @@ class AuditFileAPI(SCEndpoint):
                 ``1.0``, ``1.1``, and ``1.2``.
 
         Returns:
-            dict: The newly created audit file.
+            :obj:`dict`:
+                The newly created audit file.
 
         Examples:
             >>> audit = sc.audit_files.create()
@@ -180,14 +180,15 @@ class AuditFileAPI(SCEndpoint):
         '''
         Returns the details for a specific audit file.
 
-        + `audit file: details <https://docs.tenable.com/sccv/api/AuditFile.html#AuditFileRESTReference-/auditFile/{id}>`_
+        :sc-api:`audit file: details <AuditFile.html#AuditFileRESTReference-/auditFile/{id}>`
 
         Args:
             id (int): The identifier for the audit file.
             fields (list, optional): A list of attributes to return.
 
         Returns:
-            dict: The audit file resource record.
+            :obj:`dict`:
+                The audit file resource record.
 
         Examples:
             >>> audit = sc.audit_files.details(1)
@@ -204,7 +205,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Edits a audit file.
 
-        + `audit file: edit <https://docs.tenable.com/sccv/api/AuditFile.html#auditFile_id_PATCH>`_
+        :sc-api:`audit file: edit <AuditFile.html#auditFile_id_PATCH>`
 
         Args:
             audit_file (FileObject, optional):
@@ -245,7 +246,8 @@ class AuditFileAPI(SCEndpoint):
                 ``1.0``, ``1.1``, and ``1.2``.
 
         Returns:
-            dict: The newly updated audit file.
+            :obj:`dict`:
+                The newly updated audit file.
 
         Examples:
             >>> audit = sc.audit_files.edit()
@@ -273,13 +275,14 @@ class AuditFileAPI(SCEndpoint):
         '''
         Removes a audit file.
 
-        + `audit file: delete <https://docs.tenable.com/sccv/api/AuditFile.html#auditFile_id_DELETE>`_
+        :sc-api:`audit file: delete <AuditFile.html#auditFile_id_DELETE>`
 
         Args:
             id (int): The numeric identifier for the audit file to remove.
 
         Returns:
-            str: An empty response.
+            :obj:`str`:
+                An empty response.
 
         Examples:
             >>> sc.audit_files.delete(1)
@@ -291,14 +294,15 @@ class AuditFileAPI(SCEndpoint):
         '''
         Retrieves the list of scan zone definitions.
 
-        + `audit file: list <https://docs.tenable.com/sccv/api/AuditFile.html#AuditFileRESTReference-/auditFile>`_
+        :sc-api:`audit file: list <AuditFile.html#AuditFileRESTReference-/auditFile>`
 
         Args:
             fields (list, optional):
                 A list of attributes to return for each audit file.
 
         Returns:
-            list: A list of audit file resources.
+            :obj:`list`:
+                A list of audit file resources.
 
         Examples:
             >>> for audit in sc.audit_files.list():
@@ -315,7 +319,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Exports an Audit File.
 
-        + `audit file: export <https://docs.tenable.com/sccv/api/AuditFile.html#AuditFileRESTReference-/auditFile/{id}/export>`_
+        :sc-api:`audit file: export <AuditFile.html#AuditFileRESTReference-/auditFile/{id}/export>`
 
         Args:
             id (int): The audit file numeric identifier.
@@ -328,7 +332,8 @@ class AuditFileAPI(SCEndpoint):
                 actual file-object to write to instead.
 
         Returns:
-            FileObject: The file-like object with the resulting zipped report.
+            :obj:`FileObject`:
+                The file-like object with the resulting zipped report.
 
         Examples:
             >>> with open('example.zip', 'wb') as fobj:
@@ -354,10 +359,11 @@ class AuditFileAPI(SCEndpoint):
         '''
         Returns the audit file template categories
 
-        + `audit template: categories <https://docs.tenable.com/sccv/api/AuditFile-Template.html#auditFileTemplate_categories_GET>`_
+        :sc-api:`audit template: categories <AuditFile-Template.html#auditFileTemplate_categories_GET>`
 
         Returns:
-            list: List of audit file category listing dicts.
+            :obj:`list`:
+                List of audit file category listing dicts.
 
         Exmaples:
             >>> for cat in sc.audit_files.template_categorties():
@@ -369,7 +375,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Returns the details for the specified audit file template id.
 
-        + `audit template: details <https://docs.tenable.com/sccv/api/AuditFile-Template.html#auditFileTemplate_id_GET>`_
+        :sc-api:`audit template: details <AuditFile-Template.html#auditFileTemplate_id_GET>`
 
         Args:
             id (int):
@@ -378,7 +384,8 @@ class AuditFileAPI(SCEndpoint):
                 A list of attributes to return.
 
         Returns:
-            dict: The audit file template record.
+            :obj:`dict`:
+                The audit file template record.
 
         Exmaples:
             >>> tmpl = sc.audit_files.template_details(1)
@@ -395,7 +402,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Returns the list of audit file templates.
 
-        + `audit templates: list <https://docs.tenable.com/sccv/api/AuditFile-Template.html#AuditFileTemplateRESTReference-/auditFileTemplate>`_
+        :sc-api:`audit templates: list <AuditFile-Template.html#AuditFileTemplateRESTReference-/auditFileTemplate>`
 
         Args:
             category (int, optional):
@@ -407,7 +414,8 @@ class AuditFileAPI(SCEndpoint):
                 search string specified.
 
         Returns:
-            list: List of audit file records.
+            :obj:`list`:
+                List of audit file records.
 
         Exmaples:
             >>> for tmpl in sc.audit_files.template_list():

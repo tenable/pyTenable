@@ -3,8 +3,8 @@ repositories
 ============
 
 The following methods allow for interaction with the Tenable.sc
-`Repository <https://docs.tenable.com/sccv/api/Repository.html>`_ API.  These
-items are typically seen under the **Repositories** section of Tenable.sc.
+:sc-api:`Repository <Repository.html>` API.  These items are typically seen
+under the **Repositories** section of Tenable.sc.
 
 Methods available on ``sc.repositories``:
 
@@ -154,7 +154,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Retrieves a list of repositories.
 
-        + `repository: list <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository>`_
+        :sc-api:`repository: list <Repository.html#RepositoryRESTReference-/repository>`
 
         Args:
             fields (list, optional):
@@ -167,7 +167,8 @@ class RepositoryAPI(SCEndpoint):
                 are ``All``, ``Local``, ``Remote``, and ``Offline``.
 
         Returns:
-            list: List of repository definitions.
+            :obj:`list`:
+                List of repository definitions.
 
         Examples:
             Retrieve all of all of the repositories:
@@ -191,7 +192,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Creates a new repository
 
-        + `repository: create <https://docs.tenable.com/sccv/api/Repository.html#repository_POST>`_
+        :sc-api:`repository: create <Repository.html#repository_POST>`
 
         Args:
             name (str): The name for the respository.
@@ -263,7 +264,8 @@ class RepositoryAPI(SCEndpoint):
                 repositories.  If not supplied, the default will be 0.
 
         Returns:
-            dict: The repository resource record for the newly created Repo.
+            :obj:`dict`:
+                The repository resource record for the newly created Repo.
 
         Examples:
             Creating a new IPv4 Repository leveraging the defaults:
@@ -350,7 +352,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Retrieves the details for the specified repository.
 
-        + `repository: details <https://docs.tenable.com/sccv/api/Repository.html#repository_id_GET>`_
+        :sc-api:`repository: details <Repository.html#repository_id_GET>`
 
         Args:
             id (int): The numeric id of the repository.
@@ -360,7 +362,8 @@ class RepositoryAPI(SCEndpoint):
                 request within the repository details API doc.
 
         Returns:
-            dict: The repository resource record.
+            :obj:`dict`:
+                The repository resource record.
 
         Examples:
             >>> repo = sc.repositories.details(1)
@@ -376,13 +379,14 @@ class RepositoryAPI(SCEndpoint):
         '''
         Remove the specified repository from Tenable.sc
 
-        + `repository: delete <https://docs.tenable.com/sccv/api/Repository.html#repository_id_DELETE>`_
+        :sc-api:`repository: delete <Repository.html#repository_id_DELETE>`
 
         Args:
             id (int): The numeric id of the repository to delete.
 
         Returns:
-            str: Empty response string
+            :obj:`str`:
+                Empty response string
 
         Examples:
             >>> sc.repositories.delete(1)
@@ -394,7 +398,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Updates an existing repository
 
-        + `repository: edit <https://docs.tenable.com/sccv/api/Repository.html#repository_id_PATCH>`_
+        :sc-api:`repository: edit <Repository.html#repository_id_PATCH>`
 
         Args:
             id (int): The numeric id of the repository to edit.
@@ -448,7 +452,8 @@ class RepositoryAPI(SCEndpoint):
                 repositories.
 
         Returns:
-            dict: The repository resource record for the newly created Repo.
+            :obj:`dict`:
+                The repository resource record for the newly created Repo.
 
         Examples:
             >>> repo = sc.repositories.edit(1, name='Example IPv4')
@@ -462,7 +467,7 @@ class RepositoryAPI(SCEndpoint):
         Retrieves the accepted risk rules associated with the specified
         repository.
 
-        + `repository: accept rules <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/acceptRiskRule>`_
+        :sc-api:`repository: accept rules <Repository.html#RepositoryRESTReference-/repository/{id}/acceptRiskRule>`
 
         Args:
             id (int): The numeric id of the repository.
@@ -472,7 +477,8 @@ class RepositoryAPI(SCEndpoint):
                 request within the repository accept risk rules API doc.
 
         Returns:
-            list: List of the accepted risk rules that apply to the repo.
+            :obj:`list`:
+                List of the accepted risk rules that apply to the repo.
 
         Examples:
             >>> rules = sc.repositories.accept_risk_rules(1)
@@ -486,7 +492,7 @@ class RepositoryAPI(SCEndpoint):
         Retrieves the recast risk rules associated with the specified
         repository.
 
-        + `repository: recast rules <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/recastRiskRule>`_
+        :sc-api:`repository: recast rules <Repository.html#RepositoryRESTReference-/repository/{id}/recastRiskRule>`
 
         Args:
             id (int): The numeric id of the repository.
@@ -496,7 +502,8 @@ class RepositoryAPI(SCEndpoint):
                 request within the repository recast risk rules API doc.
 
         Returns:
-            list: List of the recast risk rules that apply to the repo.
+            :obj:`list`:
+                List of the recast risk rules that apply to the repo.
 
         Examples:
             >>> rules = sc.repositories.recast_risk_rules(1)
@@ -509,7 +516,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Retrieves the asset lists that a UUID, DNS address, or IP exists in.
 
-        + `repository: asst intersections <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/assetIntersections>`_
+        :sc-api:`repository: asst intersections <Repository.html#RepositoryRESTReference-/repository/{id}/assetIntersections>`
 
         Args:
             id (int): The numeric identifier of the repository to query.
@@ -518,7 +525,8 @@ class RepositoryAPI(SCEndpoint):
             uuid (str): The UUID to query.
 
         Returns:
-            list: The list of assets matching the criteria.
+            :obj:`list`:
+                The list of assets matching the criteria.
 
         Examples:
             >>> assetlists = sc.repositories.asset_intersection(1,
@@ -539,7 +547,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Imports the repository archive for an offline repository.
 
-        + `repository: import <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/import>`_
+        :sc-api:`repository: import <Repository.html#RepositoryRESTReference-/repository/{id}/import>`
 
         Args:
             id (int): The numeric id associated to the offline repository.
@@ -547,7 +555,8 @@ class RepositoryAPI(SCEndpoint):
                 The file-like object containing the repository archive.
 
         Returns:
-            dict: The import response record.
+            :obj:`dict`:
+                The import response record.
 
         Example:
             >>> with open('repo.tar.gz', 'rb') as archive:
@@ -563,7 +572,7 @@ class RepositoryAPI(SCEndpoint):
         Exports the repository and writes the archive tarball into the file
         object passed.
 
-        + `repository: export <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/export>`_
+        :sc-api:`repository: export <Repository.html#RepositoryRESTReference-/repository/{id}/export>`
 
         Args:
             id (int): The numeric id associated to the repository.
@@ -571,7 +580,8 @@ class RepositoryAPI(SCEndpoint):
                 The file-like object for the repository archive.
 
         Returns:
-            dict: The export response record.
+            :obj:`dict`:
+                The export response record.
 
         Example:
             >>> with open('repo.tar.gz', 'wb') as archive:
@@ -593,13 +603,14 @@ class RepositoryAPI(SCEndpoint):
         Initiates a remote synchronization with a downstream Tenable.sc
         instance.  This action can only be performed on an offline repository.
 
-        + `repository: sync <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/sync>`_
+        :sc-api:`repository: sync <Repository.html#RepositoryRESTReference-/repository/{id}/sync>`
 
         Args:
             id (int): The numeric id for the remote repository.
 
         Returns:
-            dict: The sync response record.
+            :obj:`dict`:
+                The sync response record.
 
         Examples:
             >>> sc.repositories.remote_sync(1)
@@ -612,13 +623,14 @@ class RepositoryAPI(SCEndpoint):
         Initiates a MDM synchronization with the configured MDM source on the
         mobile repository specified.
 
-        + `repository: update mobile data <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/updateMobileData>`_
+        :sc-api:`repository: update mobile data <Repository.html#RepositoryRESTReference-/repository/{id}/updateMobileData>`
 
         Args:
             id (int): The numeric id for the mobile repository to run the sync.
 
         Returns:
-            dict: The sync response record.
+            :obj:`dict`:
+                The sync response record.
 
         Examples:
             >>> sc.repositories.mobile_sync(1)
@@ -631,8 +643,9 @@ class RepositoryAPI(SCEndpoint):
         Retrieves the device information for the requested device on the
         associated repository.
 
-        + `repository: device info <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/deviceInfo>`_
-        + `repository: ip info <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/{id}/ipInfo>`_
+        :sc-api:`repository: device info <Repository.html#RepositoryRESTReference-/repository/{id}/deviceInfo>`
+
+        `repository: ip info <Repository.html#RepositoryRESTReference-/repository/{id}/ipInfo>`
 
         Args:
             id (int): The numeric id for the repository to query.
@@ -645,7 +658,8 @@ class RepositoryAPI(SCEndpoint):
             uuid (str): The UUID to query.
 
         Returns:
-            dict: The device resource.
+            :obj:`dict`:
+                The device resource.
 
         Examples:
             >>> host = sc.repositories.device_info(1, ip='192.168.0.1')
@@ -675,7 +689,7 @@ class RepositoryAPI(SCEndpoint):
         Authorized communication to a downstream Tenable.sc instance with the
         provided username and password.
 
-        + `repository: authorize <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/authorize>`_
+        :sc-api:`repository: authorize <Repository.html#RepositoryRESTReference-/repository/authorize>`
 
         Args:
             host (str): The downstream Tenable.sc instance ip address.
@@ -683,7 +697,8 @@ class RepositoryAPI(SCEndpoint):
             password (str); The password to authenticate with.
 
         Returns:
-            str: Empty response object
+            :obj:`str`:
+                Empty response object
 
         Examples:
             >>> sc.repositories.remote_authorize(
@@ -700,13 +715,14 @@ class RepositoryAPI(SCEndpoint):
         Retrieves the list of repositories from the specified downstream
         Tenable.sc instance.
 
-        + `repository: fetch remote <https://docs.tenable.com/sccv/api/Repository.html#RepositoryRESTReference-/repository/fetchRemote>`_
+        :sc-api:`repository: fetch remote <Repository.html#RepositoryRESTReference-/repository/fetchRemote>`
 
         Args:
             host (str): The downstream Tenable.sc instance ip address.
 
         Returns:
-            list: The list of repositories on the downstream Tenable.sc instance.
+            :obj:`list`:
+                The list of repositories on the downstream Tenable.sc instance.
         '''
         return self._api.get('repository/fetchRemote', params={
             'host': self._check('host', host, str)}).json()['response']

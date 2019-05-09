@@ -2,8 +2,8 @@
 feeds
 =====
 
-The following methods allow for interaction into the Tenable.sc 
-`Feed <https://docs.tenable.com/sccv/api/Feed.html>`_ API.
+The following methods allow for interaction into the Tenable.sc
+:sc-api:`Feed <Feed.html>` API.
 
 Methods available on ``sc.feeds``:
 
@@ -22,16 +22,17 @@ class FeedAPI(SCEndpoint):
         Returns the status of either a specific feed type (if requested) or all
         of the feed types if nothing is specifically asked.
 
-        + `SC Feed <https://docs.tenable.com/sccv/api/Feed.html>`_
-        + `SC Feed-Type <https://docs.tenable.com/sccv/api/Feed.html#FeedRESTReference-FeedGETType>`_
+        :sc-api:`feed <Feed.html>`
+
+        :sc-api:`feed: feed-type <Feed.html#FeedRESTReference-FeedGETType>`
 
         Args:
-            feed_type (str, optional): 
+            feed_type (str, optional):
                 The feed type to specifically return.  Valid types are `active`,
                 `passive`, `lce`, `sc`, or `all`.
 
         Returns:
-            dict: 
+            :obj:`dict`:
                 If no specific feed type is specified, then a dictionary with
                 each type listed with a sub-dictionary detailing the status is
                 returned.  If a specific feed type is requested, then only the
@@ -60,7 +61,7 @@ class FeedAPI(SCEndpoint):
         no feed type is specified, then it will default to initiating an update
         for all feed types.
 
-        + `SC Feed Update <https://docs.tenable.com/sccv/api/Feed.html#FeedRESTReference-FeedUpdatePOSTType>`_
+        :sc-api:`feed: update <Feed.html#FeedRESTReference-FeedUpdatePOSTType>`
 
         Args:
             feed_type (str, optional);
@@ -68,7 +69,7 @@ class FeedAPI(SCEndpoint):
                 `passive`, `lce`, `sc`, or `all`.
 
         Returns:
-            None: Update successfully requested.
+            :obj:`None`: Update successfully requested.
         '''
         self._api.post('feed/{}/update'.format(
             self._check('feed_type', feed_type, str, default='all', choices=[
@@ -79,7 +80,7 @@ class FeedAPI(SCEndpoint):
         Initiates an off-line feed update based on the specified feed_type using
         the file object passed as the update file.
 
-        + `SC Feed Process <https://docs.tenable.com/sccv/api/Feed.html#FeedRESTReference-FeedUpdatePOSTProcess>`_
+        :sc-api:`feed: process <Feed.html#FeedRESTReference-FeedUpdatePOSTProcess>`
 
         Args:
             feed_type (str);
@@ -90,7 +91,8 @@ class FeedAPI(SCEndpoint):
                 update package.
 
         Returns:
-            None: Update successfully requested.
+            :obj:`None`:
+                Update successfully requested.
 
         Examples:
             updating the active plugins:
@@ -102,5 +104,5 @@ class FeedAPI(SCEndpoint):
 
         self._api.post('feed/{}/update'.format(
             self._check('feed_type', feed_type, str, choices=[
-                'active', 'passive', 'lce', 'sc'])), 
+                'active', 'passive', 'lce', 'sc'])),
             json={'filename': filename})

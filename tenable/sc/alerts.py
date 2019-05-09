@@ -91,14 +91,15 @@ class AlertAPI(SCEndpoint):
         '''
         Retreives the list of alerts.
 
-        + `SC Alert List <https://docs.tenable.com/sccv/api/Alert.html#AlertRESTReference-/alert>`_
+        :sc-api:`alert: list <Alert.html#AlertRESTReference-/alert>`
 
         Args:
             fields (list, optional):
                 A list of attributes to return for each alert.
 
         Returns:
-            dict: A list of alert resources.
+            :obj:`dict`:
+                A list of alert resources.
 
         Examples:
             >>> for alert in sc.alerts.list()['manageable']:
@@ -115,14 +116,15 @@ class AlertAPI(SCEndpoint):
         '''
         Returns the details for a specific alert.
 
-        + `SC Alert Details <https://docs.tenable.com/sccv/api/Alert.html#AlertRESTReference-/alert/{id}>`_
+        :sc-api:`alert: details <Alert.html#AlertRESTReference-/alert/{id}>`
 
         Args:
             id (int): The identifier for the alert.
             fields (list, optional): A list of attributes to return.
 
         Returns:
-            dict: The alert resource record.
+            :obj:`dict`:
+                The alert resource record.
 
         Examples:
             >>> alert = sc.alerts.detail(1)
@@ -141,7 +143,7 @@ class AlertAPI(SCEndpoint):
         any additional parameters mentioned in the API docs can be passed to the
         document constructor.
 
-        + `SC Alert Create <https://docs.tenable.com/sccv/api/Alert.html#alert_POST>`_
+        :sc-api:'alert: create <Alert.html#alert_POST>`
 
         Args:
             *filters (tuple):
@@ -228,7 +230,8 @@ class AlertAPI(SCEndpoint):
                      'notes': 'Example Ticket Notes'}
 
         Returns:
-            dict: The alert resource created.
+            :obj:`dict`:
+                The alert resource created.
 
         Examples:
             >>> sc.alerts.create(
@@ -250,7 +253,7 @@ class AlertAPI(SCEndpoint):
         Updates an existing alert.  All fields are optional and will overwrite
         the existing value.
 
-        + `SC Alert Update <https://docs.tenable.com/sccv/api/Alert.html#alert_id_PATCH>`_
+        :sc-api:`alert: update <Alert.html#alert_id_PATCH>`
 
         Args:
             if (int): The alert identifier.
@@ -282,7 +285,8 @@ class AlertAPI(SCEndpoint):
                 action to take, and the details surrounding that action.
 
         Returns:
-            dict: The modified alert resource.
+            :obj:`dict`:
+                The modified alert resource.
 
         Examples:
             >>> sc.alerts.update(1, name='New Alert Name')
@@ -295,13 +299,14 @@ class AlertAPI(SCEndpoint):
         '''
         Deletes the specified alert.
 
-        + `SC Alert Delete <https://docs.tenable.com/sccv/api/Alert.html#alert_id_DELETE>`_
+        :sc-api:`alert: delete <Alert.html#alert_id_DELETE>`
 
         Args:
             id (int): The alert identifier.
 
         Returns:
-            str: The response code of the action.
+            :obj:`str`:
+                The response code of the action.
 
         Examples:
             >>> sc.alerts.delete(1)
@@ -313,13 +318,14 @@ class AlertAPI(SCEndpoint):
         '''
         Executes the specified alert.
 
-        + `SC Alert Execute <https://docs.tenable.com/sccv/api/Alert.html#AlertRESTReference-/alert/{id}/execute>`_
+        :sc-api:`alert: execute <Alert.html#AlertRESTReference-/alert/{id}/execute>`
 
         Args:
             id (int): The alert identifier.
 
         Returns:
-            dict: The alert resource.
+            :obj:`dict`:
+                The alert resource.
         '''
         return self._api.post('alert/{}/execute'.format(
             self._check('id', id, int))).json()['response']

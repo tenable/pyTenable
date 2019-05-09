@@ -2,8 +2,8 @@
 accept_risks
 ============
 
-The following methods allow for interaction into the Tenable.sc 
-`Accept Risk <https://docs.tenable.com/sccv/api/Accept-Risk-Rule.html>`_ API.
+The following methods allow for interaction into the Tenable.sc
+:sc-api:`Accept Risk <Accept-Risk-Rule.html>` API.
 
 Methods available on ``sc.accept_risks``:
 
@@ -27,7 +27,7 @@ class AcceptRiskAPI(SCEndpoint):
             # as repositories are passed in the API as a series of sub-documents
             # with the ID attribute set, we will convert the simply list that
             # was passed to us into a series of documents as the API expects.
-            kw['repositories'] = [{'id': self._check('repo:id', r, int)} 
+            kw['repositories'] = [{'id': self._check('repo:id', r, int)}
                 for r in self._check('repos', kw['repos'], list)]
             del(kw['repos'])
 
@@ -60,15 +60,15 @@ class AcceptRiskAPI(SCEndpoint):
             self._check('expires', kw['expires'], int)
 
         if 'ips' in kw:
-            # if the ips list is passed, then 
+            # if the ips list is passed, then
             kw['hostType'] = 'ip'
-            kw['hostValue'] = ','.join([self._check('ip:item', i, str) 
+            kw['hostValue'] = ','.join([self._check('ip:item', i, str)
                 for i in self._check('ips', kw['ips'], list)])
             del(kw['ips'])
 
         if 'uuids' in kw:
             kw['hostType'] = 'uuid'
-            kw['hostValue'] = ','.join([self._check('uuid:item', i, str) 
+            kw['hostValue'] = ','.join([self._check('uuid:item', i, str)
                 for i in self._check('uuids', kw['uuids'], list)])
             del(kw['uuids'])
 
@@ -79,15 +79,15 @@ class AcceptRiskAPI(SCEndpoint):
 
         return kw
 
-    def list(self, repo_ids=None, plugin_id=None, port=None, 
+    def list(self, repo_ids=None, plugin_id=None, port=None,
              org_ids=None, fields=None):
         '''
         Retrieves the list of accepted risk rules.
 
-        + `accept-risk: list <https://docs.tenable.com/sccv/api/Accept-Risk-Rule.html#AcceptRiskRuleRESTReference-/acceptRiskRule>`_
+        :sc-api:`accept-risk: list <Accept-Risk-Rule.html#AcceptRiskRuleRESTReference-/acceptRiskRule>`
 
         Args:
-            fields (list, optional): 
+            fields (list, optional):
                 A list of attributes to return for each accepted risk rule.
             plugin_id (int, optional):
                 Plugin id to filter the response on.
@@ -99,7 +99,8 @@ class AcceptRiskAPI(SCEndpoint):
                 List of repository ids to filter the response on.
 
         Returns:
-            list: A list of accepted risk rules.
+            :obj:`list`:
+                A list of accepted risk rules.
 
         Examples:
             >>> for rule in sc.accept_risks.list():
@@ -107,26 +108,26 @@ class AcceptRiskAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
-        
+
         if plugin_id:
             # validating that the plugin_id is an integer and assigning it to
             # the appropriate query parameter.
             params['pluginID'] = self._check('plugin_id', plugin_id, int)
-    
+
         if port:
             # validating that port is an integer and assigning it to the
             # appropriate query parameter.
             params['port'] = self._check('port', port, int)
-        
+
         if org_ids:
             # validating that org_ids is a list of integer values, then
             # converting the result into a comma-seperated string and assigning
             # it to the appropriate query parameter.
             params['organizationIDs'] = ','.join([self._check('org:id', i, int)
                 for i in self._check('org_ids', org_ids, list)])
-        
+
         if repo_ids:
             # validating that repo_ids is a list of integer values, then
             # converting the result into a comma-seperated string and assigning
@@ -140,15 +141,16 @@ class AcceptRiskAPI(SCEndpoint):
         '''
         Retrieves the details of an accepted risk rule.
 
-        + `accept-riskL details <https://docs.tenable.com/sccv/api/Accept-Risk-Rule.html#AcceptRiskRuleRESTReference-/acceptRiskRule/{id}>`_
+        :sc-api:`accept-riskL details <Accept-Risk-Rule.html#AcceptRiskRuleRESTReference-/acceptRiskRule/{id}>`
 
         Args:
             id (int): The identifier for the accept risk rule.
-            fields (list, optional): 
+            fields (list, optional):
                 A list of attributes to return for each accepted risk rule.
 
         Returns:
-            dict: The accept risk rule details.
+            :obj:`dict`:
+                The accept risk rule details.
 
         Examples:
             >>> rule = sc.accept_risks.details(1)
@@ -156,7 +158,7 @@ class AcceptRiskAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
 
         return self._api.get('acceptRiskRule/{}'.format(self._check('id', id, int)),
@@ -166,13 +168,14 @@ class AcceptRiskAPI(SCEndpoint):
         '''
         Removes the accepted risk rule from Tenable.sc
 
-        + `accept-risk: delete <https://docs.tenable.com/sccv/api/Accept-Risk-Rule.html#acceptRiskRule_id_DELETE>`_
+        :sc-api:`accept-risk: delete <Accept-Risk-Rule.html#acceptRiskRule_id_DELETE>`
 
         Args:
             id (int): The identifier for the accept risk rule.
 
         Returns:
-            str: Empty string response from the API.
+            :obj:`str`:
+                Empty string response from the API.
 
         Examples:
             >>> sc.accept_risks.delete(1)
@@ -185,7 +188,7 @@ class AcceptRiskAPI(SCEndpoint):
         Applies the accept risk rule for either all repositories, or the
         repository specified.
 
-        + `accept-risk: apply <https://docs.tenable.com/sccv/api/Accept-Risk-Rule.html#AcceptRiskRuleRESTReference-/acceptRiskRule/apply>`_
+        :sc-api:`accept-risk: apply <Accept-Risk-Rule.html#AcceptRiskRuleRESTReference-/acceptRiskRule/apply>`
 
         Args:
             id (int): The identifier for the accept risk rule.
@@ -194,7 +197,8 @@ class AcceptRiskAPI(SCEndpoint):
                 specified is all repositories (``0``).
 
         Returns:
-            str: Empty string response from the API.
+            :obj:`str`:
+                Empty string response from the API.
 
         Examples:
             >>> sc.accept_risks.apply(1)
@@ -208,8 +212,8 @@ class AcceptRiskAPI(SCEndpoint):
         '''
         Creates a new accept risk rule.  Either ips, uuids, or asset_list must
         be specified.
-        
-        + `accept-risk: create <https://docs.tenable.com/sccv/api/Accept-Risk-Rule.html#acceptRiskRule_POST>`_
+
+        :sc-api:`accept-risk: create <Accept-Risk-Rule.html#acceptRiskRule_POST>`
 
         Args:
             plugin_id (int): The plugin to apply the accept risk rule to.
@@ -219,7 +223,7 @@ class AcceptRiskAPI(SCEndpoint):
                 The asset list id to apply the accept risk rule to.  Please note
                 that ``asset_list``, ``ips``, and ``uuids`` are mutually
                 exclusive.
-            comments (str, optional): 
+            comments (str, optional):
                 The comment associated to the accept risk rule.
             expires (int, optional):
                 When should the rule expire?  if no expiration is set, the rule
@@ -228,10 +232,10 @@ class AcceptRiskAPI(SCEndpoint):
                 A list of IPs to apply the accept risk rule to.  Please note
                 that ``asset_list``, ``ips``, and ``uuids`` are mutually
                 exclusive.
-            port (int, optional):  
+            port (int, optional):
                 The port to restrict this accept risk rule to.  The default is
                 unrestricted.
-            protocol (int, optional): 
+            protocol (int, optional):
                 The protocol to restrict the accept risk rule to.  The default
                 is unrestricted.
             uuids (list, optional):
@@ -240,7 +244,8 @@ class AcceptRiskAPI(SCEndpoint):
                 exclusive.
 
         Returns:
-            dict: The newly created accept risk rule definition.
+            :obj:`dict`:
+                The newly created accept risk rule definition.
 
         Examples:
             Create a rule to accept 97737 on 2 IPs for 90 days.

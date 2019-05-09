@@ -3,17 +3,16 @@ analysis
 ========
 
 The following methods allow for interaction into the Tenable.sc
-`analysis <https://docs.tenable.com/sccv/api/Analysis.html>`_ API.  The analysis
-area in Tenable.sc is highly complex and allows for a wide range of varied
-inputs and outputs.  This single endpoint has been broken down in pyTenable to
-several methods in order to apply some defaults to the expected data-types and
-options most likely to be returned.  As the filters are dependent on the tool
-and data-type that is being referenced, the best solution to understanding what
-filters are available when getting started is to simply pass a known bad filter
-string and use the resulting error as an indicator of whats available.  For
-example, you could perform the following action below while attempting to see
-the available filters for the mobile data-type when using the ``vulndetails``
-tool:
+:sc-api:`analysis <Analysis.html>` API.  The analysis area in Tenable.sc is
+highly complex and allows for a wide range of varied inputs and outputs.  This
+single endpoint has been broken down in pyTenable to several methods in order to
+apply some defaults to the expected data-types and options most likely to be
+returned.  As the filters are dependent on the tool and data-type that is being
+referenced, the best solution to understanding what filters are available when
+getting started is to simply pass a known bad filter string and use the
+resulting error as an indicator of whats available.  For example, you could
+perform the following action below while attempting to see the available filters
+for the mobile data-type when using the ``vulndetails`` tool:
 
 .. code-block:: python
 
@@ -88,7 +87,7 @@ from tenable.errors import *
 class AnalysisResultsIterator(SCResultsIterator):
     def _get_page(self):
         '''
-        Retreives the next page of results when the current page has been
+        Retrieves the next page of results when the current page has been
         exhausted.
         '''
         # First we need to see if there is a page limit and if there is, have
@@ -208,7 +207,7 @@ class AnalysisAPI(SCEndpoint):
         Query's the analysis API for vulnerability data within the cumulative
         repositories.
 
-        `SC Analysis: Vuln Type <https://docs.tenable.com/sccv/api/Analysis.html#AnalysisRESTReference-VulnType>`_
+        :sc-api:`analysis: vuln-type <Analysis.html#AnalysisRESTReference-VulnType>`
 
         Args:
             filters (tuple, optional):
@@ -254,7 +253,8 @@ class AnalysisAPI(SCEndpoint):
                 ``trend``, ``vulndetails``, ``vulnipdetail``, ``vulnipsummary``
 
         Returns:
-            AnalysisResultsIterator: an iterator object handling data pagination.
+            :obj:`AnalysisResultsIterator`:
+                An iterator object handling data pagination.
 
         Examples:
             A quick example showing how to get all of the information stored in
@@ -357,7 +357,7 @@ class AnalysisAPI(SCEndpoint):
         '''
         Queries the analysis API for vulnerability data from a specific scan.
 
-        `SC Analysis: Vuln Type <https://docs.tenable.com/sccv/api/Analysis.html#AnalysisRESTReference-VulnType>`_
+        :sc-api:`analysis: vuln-type <Analysis.html#AnalysisRESTReference-VulnType>`
 
         Args:
             scan_id (int):
@@ -404,7 +404,8 @@ class AnalysisAPI(SCEndpoint):
                 If no view is specified, then the default will be ``all``.
 
         Returns:
-            AnalysisResultsIterator: an iterator object handling data pagination.
+            :obj:`AnalysisResultsIterator`:
+                An iterator object handling data pagination.
 
         Examples:
             A quick example showing how to get the information for a specific
@@ -437,7 +438,7 @@ class AnalysisAPI(SCEndpoint):
         '''
         Queries the analysis API for event data from the Log Correlation Engine
 
-        `SC Analysis: Event Type <https://docs.tenable.com/sccv/api/Analysis.html#AnalysisRESTReference-EventType>`_
+        :sc-api:`analysis: event-type <Analysis.html#AnalysisRESTReference-EventType>`
 
         Args:
             filters (tuple, optional):
@@ -475,7 +476,8 @@ class AnalysisAPI(SCEndpoint):
                 ``sumuser``, ``syslog``, ``timedist``
 
         Returns:
-            AnalysisResultsIterator: an iterator object handling data pagination.
+            :obj:`AnalysisResultsIterator`:
+                An iterator object handling data pagination.
         '''
         payload = {'type': 'event', 'sourceType': 'lce'}
 
@@ -536,7 +538,7 @@ class AnalysisAPI(SCEndpoint):
         '''
         Queries the analysis API for log data from the Tenable.sc Console itself.
 
-        `SC Analysis: scLog Type <https://docs.tenable.com/sccv/api/Analysis.html#AnalysisRESTReference-SCLogType.1>`_
+        :sc-api:`analysis: sclog-type <Analysis.html#AnalysisRESTReference-SCLogType>`
 
         Args:
             filters (tuple, optional):
@@ -561,7 +563,8 @@ class AnalysisAPI(SCEndpoint):
                 ``asc`` and ``desc``.  The default is ``asc``.
 
         Returns:
-            AnalysisResultsIterator: an iterator object handling data pagination.
+            :obj:` AnalysisResultsIterator`:
+                An iterator object handling data pagination.
         '''
         kw['payload'] = {
             'type': 'scLog',
@@ -576,7 +579,7 @@ class AnalysisAPI(SCEndpoint):
         Queries the analysis API for mobile data collected from querying one or
         many MDM solutions.
 
-        `SC Analysis: Mobile Type <https://docs.tenable.com/sccv/api/Analysis.html#AnalysisRESTReference-MobileType>`_
+        :sc-api:`analysis: mobile-type <Analysis.html#AnalysisRESTReference-MobileType>`
 
         Args:
             filters (tuple, optional):
@@ -605,7 +608,8 @@ class AnalysisAPI(SCEndpoint):
                 ``sumoscpe``, ``sumpluginid``, ``sumseverity``, ``vulndetails``
 
         Returns:
-            AnalysisResultsIterator: an iterator object handling data pagination.
+            :obj:`AnalysisResultsIterator`:
+                An iterator object handling data pagination.
         '''
         payload = {'type': 'mobile', 'sourceType': 'cumulative'}
 

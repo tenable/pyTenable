@@ -2,12 +2,9 @@
 system
 ======
 
-.. warning:: This module is flagged as "beta", and may change, 
-             and may not bet tested.
-
-The following methods allow for interaction into the Tenable.sc 
-`System <https://docs.tenable.com/sccv/api/Scan.html>`_ API.  These API calls
-are typically used to understand timezones, system version, etc.
+The following methods allow for interaction into the Tenable.sc
+:sc-api:`System <System.html>` API.  These API calls are typically used to
+understand timezones, system version, etc.
 
 Methods available on ``sc.system``:
 
@@ -33,23 +30,25 @@ class SystemAPI(SCEndpoint):
         information within this call already happens upon instantiation, there
         should be little need to call this manually.
 
-        + 'system: get <https://docs.tenable.com/sccv/api/System.html#system_GET>`_
+        :sc-api:'system: get <System.html#system_GET>`
 
         Returns:
-            dict: The response dictionary
-        
+            :obj:`dict`:
+                The response dictionary
+
         Examples:
             >>> info = sc.system.details()
         '''
         return self._api.get('system').json()['response']
-    
+
     def diagnostics(self, task=None, options=None, fobj=None):
         '''
         Generates and downloads a diagnostic file for the purpose of
         troubleshooting an ailing Tenable.sc instance.
 
-        + `system: diagnostics-generate <https://docs.tenable.com/sccv/api/System.html#SystemRESTReference-/system/diagnostics/generate>`_
-        + `system: diagnostics-download <https://docs.tenable.com/sccv/api/System.html#SystemRESTReference-/system/diagnostics/download>`_
+        :sc-api:`system: diagnostics-generate <System.html#SystemRESTReference-/system/diagnostics/generate>`
+
+        :sc-api:`system: diagnostics-download <System.html#SystemRESTReference-/system/diagnostics/download>`
 
         Args:
             fobj (FileObject, optional):
@@ -60,37 +59,38 @@ class SystemAPI(SCEndpoint):
                 If performing a diagnostics generation, then which items
                 should be bundled into the diagnostics file?  Available options
                 are ``all``, ``apacheLog``, ``configuration``, ``dependencies``,
-                ``dirlist``, ``environment``, ``installLog``, ``logs``, 
+                ``dirlist``, ``environment``, ``installLog``, ``logs``,
                 ``sanitize``, ``scans``, ``serverConf``, ``setup``, ``sysinfo``,
                 and ``upgradeLog``.  If nothing is specified, it will default to
                 ``['all']``.
-            task (str, optional): 
+            task (str, optional):
                 Which task to perform.  Available options are ``appStatus`` and
                 ``diagnosticsFile``.  If nothing is specified, it will default
                 to ``diagnosticFile``.
-        
+
         Returns:
-            FileObject: A file-like object with the diagnostics file specified.
-        
+            :obj:`FileObject`:
+                A file-like object with the diagnostics file specified.
+
         Examples:
             >>> with open('diagnostics.tar.gz', 'wb') as fobj:
             ...     sc.system.diagnostics(fobj=fobj)
         '''
         payload = {
-            'task': self._check('task', task, str, 
-                choices=['diagnosticsFile', 'appStatus'], 
+            'task': self._check('task', task, str,
+                choices=['diagnosticsFile', 'appStatus'],
                 default='diagnosticsFile'),
         }
 
         # The available choices for the options.
-        opts = ['all', 'apacheLog', 'configuration', 'dependencies', 
+        opts = ['all', 'apacheLog', 'configuration', 'dependencies',
             'dirlist', 'environment', 'installLog', 'logs', 'sanitize', 'scans',
             'serverConf', 'setup', 'sysinfo']
-        
+
         # we only want to add the options to the generation call if the task is
         # a diagnostics file.
         if payload['task'] == 'diagnosticsFile':
-            payload['options'] = [self._check('option:item', o, str, choices=opts) 
+            payload['options'] = [self._check('option:item', o, str, choices=opts)
                 for o in self._check('options', options, list, default=['all'])]
         status = self.status()
 
@@ -123,11 +123,12 @@ class SystemAPI(SCEndpoint):
         '''
         Retreives the current system locale that Tenable.sc has been set to.
 
-        + `system: locale <https://docs.tenable.com/sccv/api/System.html#SystemRESTReference-/system/locale>`_
+        :sc-api:`system: locale <System.html#SystemRESTReference-/system/locale>`
 
         Returns:
-            dict: locale resource
-        
+            :obj:`dict`:
+                locale resource
+
         Examples:
             >>> sc.system.current_locale()
         '''
@@ -137,30 +138,32 @@ class SystemAPI(SCEndpoint):
         '''
         Retreives the available system locales that Tenable.sc can be set to.
 
-        + `system: locales <https://docs.tenable.com/sccv/api/System.html#SystemRESTReference-/system/locales>`_
+        :sc-api:`system: locales <System.html#SystemRESTReference-/system/locales>`
 
         Returns:
-            dict: locales dictionary
-        
+            :obj:`dict`:
+                locales dictionary
+
         Examples:
             >>> sc.system.list_locales()
         '''
         return self._api.get('system/locales').json()['response']
-    
+
     def set_locale(self, locale):
         '''
         Sets the system locale to be used.  This requires an administrator to
         perform this task and will be a global change.  The locale determines
         which pluginset language to use.
 
-        + `system: set-locale <https://docs.tenable.com/sccv/api/System.html#system_locale_PATCH>`_
+        :sc-api:`system: set-locale <System.html#system_locale_PATCH>`
 
         Args:
             locale (str): The plugin locale name
-        
+
         Returns:
-            str: The new plugin locale. 
-        
+            :obj:`str`:
+                The new plugin locale.
+
         Examples:
             Set the system locale to Japanese:
 
@@ -169,16 +172,17 @@ class SystemAPI(SCEndpoint):
         self._api.patch('system/locale', json={
                 'PluginLocale': self._check('locale', locale, str)
             }).json()['response']
-    
+
     def status(self):
         '''
         Retrieves the current system status
 
-        + `system: diagnostics <https://docs.tenable.com/sccv/api/System.html#SystemRESTReference-/system/diagnostics>`_
+        :sc-api:`system: diagnostics <System.html#SystemRESTReference-/system/diagnostics>`
 
         Returns:
-            dict: The status dictionary
-        
+            :obj:`dict`:
+                The status dictionary
+
         Examples:
             >>> status = sc.system.status()
         '''

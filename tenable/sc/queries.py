@@ -89,7 +89,7 @@ class QueryAPI(SCEndpoint):
         '''
         Creates a query.
 
-        + :sc-api:`query: create <Query.html#query_POST>`
+        :sc-api:`query: create <Query.html#query_POST>`
 
         Args:
             name (str):
@@ -129,7 +129,8 @@ class QueryAPI(SCEndpoint):
                 Tags definition for the query.
 
         Returns:
-            dict: The newly created query.
+            :obj:`dict`:
+                The newly created query.
 
         Examples:
             >>> query = sc.queries.create('New Query', 'vulndetails', 'vuln',
@@ -145,14 +146,15 @@ class QueryAPI(SCEndpoint):
         '''
         Returns the details for a specific query.
 
-        + `query: details <Query.html#QueryRESTReference-/query/{id}>`
+        :sc-api:`query: details <Query.html#QueryRESTReference-/query/{id}>`
 
         Args:
             id (int): The identifier for the query.
             fields (list, optional): A list of attributes to return.
 
         Returns:
-            dict: The query resource record.
+            :obj:`dict`:
+                The query resource record.
 
         Examples:
             >>> query = sc.queries.details(1)
@@ -169,7 +171,7 @@ class QueryAPI(SCEndpoint):
         '''
         Edits a query.
 
-        + `query: edit <Query.html#query_id_PATCH>`
+        :sc-api:`query: edit <Query.html#query_id_PATCH>`
 
         Args:
             *filters (tuple, optional):
@@ -208,7 +210,8 @@ class QueryAPI(SCEndpoint):
             type (str, optional):
                 The type of data to query.
         Returns:
-            dict: The newly updated query.
+           :obj:` dict`:
+                The newly updated query.
 
         Examples:
             >>> query = sc.queries.edit()
@@ -221,13 +224,14 @@ class QueryAPI(SCEndpoint):
         '''
         Removes a query.
 
-        + `query: delete <Query.html#query_id_DELETE>`
+        :sc-api:`query: delete <Query.html#query_id_DELETE>`
 
         Args:
             id (int): The numeric identifier for the query to remove.
 
         Returns:
-            str: An empty response.
+            :obj:`str`:
+                An empty response.
 
         Examples:
             >>> sc.queries.delete(1)
@@ -239,14 +243,15 @@ class QueryAPI(SCEndpoint):
         '''
         Retrieves the list of query definitions.
 
-        + `query: list <Query.html#QueryRESTReference-/query>`
+        :sc-api:`query: list <Query.html#QueryRESTReference-/query>`
 
         Args:
             fields (list, optional):
                 A list of attributes to return for each query.
 
         Returns:
-            list: A list of query resources.
+            :obj:`list`:
+                A list of query resources.
 
         Examples:
             >>> for query in sc.queries.list():

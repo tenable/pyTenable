@@ -2,8 +2,8 @@
 recast_risks
 ============
 
-The following methods allow for interaction into the Tenable.sc 
-`Recast Risk <https://docs.tenable.com/sccv/api/Recast-Risk-Rule.html>`_ API.
+The following methods allow for interaction into the Tenable.sc
+:sc-api:`Recast Risk <Recast-Risk-Rule.html>` API.
 
 Methods available on ``sc.recast_risks``:
 
@@ -27,7 +27,7 @@ class RecastRiskAPI(SCEndpoint):
             # as repositories are passed in the API as a series of sub-documents
             # with the ID attribute set, we will convert the simply list that
             # was passed to us into a series of documents as the API expects.
-            kw['repositories'] = [{'id': self._check('repo:id', r, int)} 
+            kw['repositories'] = [{'id': self._check('repo:id', r, int)}
                 for r in self._check('repos', kw['repos'], list)]
             del(kw['repos'])
 
@@ -63,15 +63,15 @@ class RecastRiskAPI(SCEndpoint):
             del(kw['severity_id'])
 
         if 'ips' in kw:
-            # if the ips list is passed, then 
+            # if the ips list is passed, then
             kw['hostType'] = 'ip'
-            kw['hostValue'] = ','.join([self._check('ip:item', i, str) 
+            kw['hostValue'] = ','.join([self._check('ip:item', i, str)
                 for i in self._check('ips', kw['ips'], list)])
             del(kw['ips'])
 
         if 'uuids' in kw:
             kw['hostType'] = 'uuid'
-            kw['hostValue'] = ','.join([self._check('uuid:item', i, str) 
+            kw['hostValue'] = ','.join([self._check('uuid:item', i, str)
                 for i in self._check('uuids', kw['uuids'], list)])
             del(kw['uuids'])
 
@@ -82,15 +82,15 @@ class RecastRiskAPI(SCEndpoint):
 
         return kw
 
-    def list(self, repo_ids=None, plugin_id=None, port=None, 
+    def list(self, repo_ids=None, plugin_id=None, port=None,
              org_ids=None, fields=None):
         '''
         Retrieves the list of recasted risk rules.
 
-        + `recast-risk: list <https://docs.tenable.com/sccv/api/Recast-Risk-Rule.html#RecastRiskRuleRESTReference-/recastRiskRule>`_
+        :sc-api:`recast-risk: list <Recast-Risk-Rule.html#RecastRiskRuleRESTReference-/recastRiskRule>`
 
         Args:
-            fields (list, optional): 
+            fields (list, optional):
                 A list of attributes to return for each recast risk rule.
             plugin_id (int, optional):
                 Plugin id to filter the response on.
@@ -102,7 +102,8 @@ class RecastRiskAPI(SCEndpoint):
                 List of repository ids to filter the response on.
 
         Returns:
-            list: A list of recast risk rules.
+            :obj:`list`:
+                A list of recast risk rules.
 
         Examples:
             >>> for rule in sc.recast_risks.list():
@@ -110,26 +111,26 @@ class RecastRiskAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
-        
+
         if plugin_id:
             # validating that the plugin_id is an integer and assigning it to
             # the appropriate query parameter.
             params['pluginID'] = self._check('plugin_id', plugin_id, int)
-    
+
         if port:
             # validating that port is an integer and assigning it to the
             # appropriate query parameter.
             params['port'] = self._check('port', port, int)
-        
+
         if org_ids:
             # validating that org_ids is a list of integer values, then
             # converting the result into a comma-seperated string and assigning
             # it to the appropriate query parameter.
             params['organizationIDs'] = ','.join([self._check('org:id', i, int)
                 for i in self._check('org_ids', org_ids, list)])
-        
+
         if repo_ids:
             # validating that repo_ids is a list of integer values, then
             # converting the result into a comma-seperated string and assigning
@@ -143,15 +144,16 @@ class RecastRiskAPI(SCEndpoint):
         '''
         Retrieves the details of an recast risk rule.
 
-        + `recast-risk: details <https://docs.tenable.com/sccv/api/Recast-Risk-Rule.html#RecastRiskRuleRESTReference-/recastRiskRule/{id}>`_
+        :sc-api:`recast-risk: details <Recast-Risk-Rule.html#RecastRiskRuleRESTReference-/recastRiskRule/{id}>`
 
         Args:
             id (int): The identifier for the recast risk rule.
-            fields (list, optional): 
+            fields (list, optional):
                 A list of attributes to return for each recast risk rule.
 
         Returns:
-            dict: The recast risk rule details.
+            :obj:`dict`:
+                The recast risk rule details.
 
         Examples:
             >>> rule = sc.recast_risks.details(1)
@@ -159,7 +161,7 @@ class RecastRiskAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
 
         return self._api.get('recastRiskRule/{}'.format(self._check('id', id, int)),
@@ -169,13 +171,14 @@ class RecastRiskAPI(SCEndpoint):
         '''
         Removes the recast risk rule from Tenable.sc
 
-        + `recast-risk: delete <https://docs.tenable.com/sccv/api/Recast-Risk-Rule.html#recastRiskRule_id_DELETE>`_
+        :sc-api:`recast-risk: delete <hRecast-Risk-Rule.html#recastRiskRule_id_DELETE>`
 
         Args:
             id (int): The identifier for the recast risk rule.
 
         Returns:
-            str: Empty string response from the API.
+            :obj:`str`:
+                Empty string response from the API.
 
         Examples:
             >>> sc.recast_risks.delete(1)
@@ -188,7 +191,7 @@ class RecastRiskAPI(SCEndpoint):
         Applies the recast risk rule for either all repositories, or the
         repository specified.
 
-        + `recast-risk: apply <https://docs.tenable.com/sccv/api/Recast-Risk-Rule.html#RecastRiskRuleRESTReference-/recastRiskRule/apply>`_
+        :sc-api:`recast-risk: apply <Recast-Risk-Rule.html#RecastRiskRuleRESTReference-/recastRiskRule/apply>`
 
         Args:
             id (int): The identifier for the recast risk rule.
@@ -197,7 +200,8 @@ class RecastRiskAPI(SCEndpoint):
                 specified is all repositories (``0``).
 
         Returns:
-            str: Empty string response from the API.
+            :obj:`str`:
+                Empty string response from the API.
 
         Examples:
             >>> sc.recast_risks.apply(1)
@@ -211,8 +215,8 @@ class RecastRiskAPI(SCEndpoint):
         '''
         Creates a new recast risk rule.  Either ips, uuids, or asset_list must
         be specified.
-        
-        + `recast-risk: create <https://docs.tenable.com/sccv/api/Recast-Risk-Rule.html#recastRiskRule_POST>`_
+
+        :sc-api:`recast-risk: create <Recast-Risk-Rule.html#recastRiskRule_POST>`
 
         Args:
             plugin_id (int): The plugin to apply the recast risk rule to.
@@ -226,16 +230,16 @@ class RecastRiskAPI(SCEndpoint):
                 The asset list id to apply the recast risk rule to.  Please note
                 that ``asset_list``, ``ips``, and ``uuids`` are mutually
                 exclusive.
-            comments (str, optional): 
+            comments (str, optional):
                 The comment associated to the recast risk rule.
             ips (list, optional):
                 A list of IPs to apply the recast risk rule to.  Please note
                 that ``asset_list``, ``ips``, and ``uuids`` are mutually
                 exclusive.
-            port (int, optional):  
+            port (int, optional):
                 The port to restrict this recast risk rule to.  The default is
                 unrestricted.
-            protocol (int, optional): 
+            protocol (int, optional):
                 The protocol to restrict the recast risk rule to.  The default
                 is unrestricted.
             uuids (list, optional):
@@ -244,7 +248,8 @@ class RecastRiskAPI(SCEndpoint):
                 exclusive.
 
         Returns:
-            dict: The newly created recast risk rule definition.
+            :obj:`dict`:
+                The newly created recast risk rule definition.
 
         Examples:
             Create a rule to recast 97737 on 2 IPs to informational.
@@ -257,5 +262,5 @@ class RecastRiskAPI(SCEndpoint):
         kw['severity_id'] = severity_id
         payload = self._constructor(**kw)
 
-        return self._api.post('recastRiskRule', 
+        return self._api.post('recastRiskRule',
             json=payload).json()['response'][0]

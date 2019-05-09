@@ -2,12 +2,12 @@
 scans
 =====
 
-The following methods allow for interaction into the Tenable.sc 
-`Scan <https://docs.tenable.com/sccv/api/Scan.html>`_ API.  While the api 
-endpoints obliquely refers to the model in which this collection of actions
-modifies as "Scans", Tenable.sc is actually referring to the scan *definitions*,
-which are the un-launched and/or scheduled scans typically seen within the
-**Active Scans** section within Tenable.sc.
+The following methods allow for interaction into the Tenable.sc
+:sc-api:`Scan <Scan.html>` API.  While the api endpoints obliquely refers to the
+model in which this collection of actions modifies as "Scans", Tenable.sc is
+actually referring to the scan *definitions*, which are the un-launched and/or
+scheduled scans typically seen within the **Active Scans** section within
+Tenable.sc.
 
 Methods available on ``sc.scans``:
 
@@ -78,13 +78,13 @@ class ScanAPI(SCEndpoint):
             # timeout is the checked version of timeoutAction.  If timeout is
             # specified, we will check to make sure that the action is a valid
             # one, put the result into timeoutAction, and remove timeout.
-            kw['timeoutAction'] = self._check('timeout', kw['timeout'], str, 
+            kw['timeoutAction'] = self._check('timeout', kw['timeout'], str,
                 choices=['discard', 'import', 'rollover'], default='import')
             del(kw['timeout'])
 
         if 'vhosts' in kw:
-            # As scanningVirtualHosts is effectively a string interpretation of 
-            # a bool value, if the snake case equivalent is used, we will 
+            # As scanningVirtualHosts is effectively a string interpretation of
+            # a bool value, if the snake case equivalent is used, we will
             # convert it into the expected parameter and remove the snake cased
             # version.
             kw['scanningVirtualHosts'] = str(self._check(
@@ -103,7 +103,7 @@ class ScanAPI(SCEndpoint):
             # values for the ipList attribute.  By handling as a list instead of
             # the raw string variant the API expects, we can ensure that there
             # isn't any oddities, such as extra spaces, between the commas.
-            kw['ipList'] = ','.join([self._check('target', i.strip(), str) 
+            kw['ipList'] = ','.join([self._check('target', i.strip(), str)
                 for i in self._check('targets', kw['targets'], list)])
             del(kw['targets'])
 
@@ -115,15 +115,15 @@ class ScanAPI(SCEndpoint):
             del(kw['max_time'])
 
         if 'auto_mitigation' in kw:
-            # As classifyMitigatedAge is effectively a string interpretation of 
-            # an int value, if the snake case equivalent is used, we will 
+            # As classifyMitigatedAge is effectively a string interpretation of
+            # an int value, if the snake case equivalent is used, we will
             # convert it into the expected parameter and remove the snake cased
             # version.
             kw['classifyMitigatedAge'] = str(self._check(
                 'auto_mitigation', kw['auto_mitigation'], int, default=0)).lower()
             del(kw['auto_mitigation'])
 
-        # hand off the building the schedule sub-document to the schedule 
+        # hand off the building the schedule sub-document to the schedule
         # document builder.
         if 'schedule' in kw:
             kw['schedule'] = self._schedule_constructor(kw['schedule'])
@@ -134,11 +134,11 @@ class ScanAPI(SCEndpoint):
             for item in self._check('reports', kw['reports'], list):
                 self._check('report:id', item['id'], int),
                 self._check('reportSource', item['reportSource'], str, choices=[
-                    'cumulative', 
-                    'patched', 
-                    'individual', 
-                    'lce', 
-                    'archive', 
+                    'cumulative',
+                    'patched',
+                    'individual',
+                    'lce',
+                    'archive',
                     'mobile'
                 ])
 
@@ -146,15 +146,15 @@ class ScanAPI(SCEndpoint):
             # asset_lists is the collapsed list of id documents that the API
             # expects to see.  We will check each item in the list to make sure
             # its in the right type and then expand it into a sub-document.
-            kw['assets'] = [{'id': self._check('asset_list:id', i, int)} 
+            kw['assets'] = [{'id': self._check('asset_list:id', i, int)}
                 for i in self._check('assets_lists', kw['asset_lists'], list)]
             del(kw['asset_lists'])
 
         if 'creds' in kw:
-            # creds is the collapsed list of id documents that the API expects 
-            # to see.  We will check each item in the list to make sure its in 
+            # creds is the collapsed list of id documents that the API expects
+            # to see.  We will check each item in the list to make sure its in
             # the right type and then expand it into a sub-document.
-            kw['credentials'] = [{'id': self._check('cred:id', i, int)} 
+            kw['credentials'] = [{'id': self._check('cred:id', i, int)}
                 for i in self._check('creds', kw['creds'], list)]
             del(kw['creds'])
 
@@ -164,7 +164,7 @@ class ScanAPI(SCEndpoint):
             # an exception.
             raise UnexpectedValueError(
                 'specify either a plugin_id or a policy_id for a scan, not both.')
-        
+
         elif 'plugin_id' in kw:
             # If just the plugin_id is specified, then we are safe to assume
             # that this is a plugin-based scan.  set the pluginID attribute as
@@ -176,8 +176,8 @@ class ScanAPI(SCEndpoint):
 
         elif 'policy_id' in kw:
             # If just the policy_id is specified, then we are safe to assume
-            # that this is a policy-based scan.  set the policy id attribute 
-            # within the policy document as the API would expect and remove the 
+            # that this is a policy-based scan.  set the policy id attribute
+            # within the policy document as the API would expect and remove the
             # snake cased variant that was inputted.
             kw['type'] = 'policy'
             kw['policy'] = {'id': self._check('policy_id', kw['policy_id'], int)}
@@ -189,14 +189,15 @@ class ScanAPI(SCEndpoint):
         '''
         Retrieves the list of scan definitions.
 
-        + `SC Scan List <https://docs.tenable.com/sccv/api/Scan.html#scan_GET>`_
+        :sc-api:scan: list <Scan.html#scan_GET>`
 
         Args:
-            fields (list, optional): 
+            fields (list, optional):
                 A list of attributes to return for each scan.
 
         Returns:
-            list: A list of scan resources.
+            :obj:`list`:
+                A list of scan resources.
 
         Examples:
             >>> for scan in sc.scans.list():
@@ -204,7 +205,7 @@ class ScanAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) 
+            params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
 
         return self._api.get('scan', params=params).json()['response']
@@ -213,14 +214,14 @@ class ScanAPI(SCEndpoint):
         '''
         Creates a scan definition.
 
-        + `SC Scan Create <https://docs.tenable.com/sccv/api/Scan.html#scan_POST>`_
+        :sc-api:`scan: create <Scan.html#scan_POST>`
 
         Args:
             name (str): The name of the scan.
             repo (int):
                 The repository id for the scan.
             auto_mitigation (int, optional):
-                How many days to hold on to data before mitigating it?  The 
+                How many days to hold on to data before mitigating it?  The
                 default value is 0.
             asset_lists (list, optional):
                 A list of asset list ids to run the scan against.  A logical OR
@@ -240,7 +241,7 @@ class ScanAPI(SCEndpoint):
             max_time (int, optional):
                 The maximum amount of time that the scan may run in seconds.
                 The default is ``3600`` seconds.
-            policy_id (int, optional): 
+            policy_id (int, optional):
                 The policy id to use for a policy-based scan.
             plugin_id (int, optional):
                 The plugin id to use for a plugin-based scan.
@@ -250,7 +251,7 @@ class ScanAPI(SCEndpoint):
                 the source for which to run the report against.  Example:
                 ``{'id': 1, 'reportSource': 'individual'}``.
             rollover (str, optional):
-                How should rollover scans be created (assuming the scan is 
+                How should rollover scans be created (assuming the scan is
                 configured to create a rollover scan with the timeout action).
                 The available actions are to automatically start the ``nextDay``
                 at the same time the scan was originally configured to run, and
@@ -260,7 +261,7 @@ class ScanAPI(SCEndpoint):
                 The zone identifier to use for the scan.  If non is selected
                 then the default of "0" or "All Zones" is selected.
             schedule (dict, optional):
-                A dictionary detailing the repeating schedule of the scan.  
+                A dictionary detailing the repeating schedule of the scan.
                 For more information refer to `Schedule Dictionaries`_
             targets (list, optional):
                 A list of valid targets.  These targets could be IPs, FQDNs,
@@ -272,9 +273,10 @@ class ScanAPI(SCEndpoint):
             vhosts (bool, optional):
                 Should virtual host logic be enabled for the scan?  The default
                 is ``False``.
-        
+
         Returns:
-            dict: The scan resource for the created scan.
+            :obj:`dict`:
+                The scan resource for the created scan.
 
         Examples:
             Creating a scan for a single host:
@@ -291,14 +293,15 @@ class ScanAPI(SCEndpoint):
         '''
         Returns the details for a specific scan.
 
-        + `SC Scan Details <https://docs.tenable.com/sccv/api/Scan.html#ScanRESTReference-/scan/{id}>`_
+        :sc-api:`scan: details <Scan.html#ScanRESTReference-/scan/{id}>`
 
         Args:
             id (int): The identifier for the scan.
             fields (list, optional): A list of attributes to return.
 
         Returns:
-            dict: The alert resource record.
+            :obj:`dict`:
+                The alert resource record.
 
         Examples:
             >>> alert = sc.alerts.detail(1)
@@ -315,7 +318,7 @@ class ScanAPI(SCEndpoint):
         '''
         Edits an existing scan definition.
 
-        + `SC Scan Update <https://docs.tenable.com/sccv/api/Scan.html#scan_id_PATCH>`_
+        :sc-api:`scan: update <Scan.html#scan_id_PATCH>`
 
         Args:
             id (int): The identifier for the scan.
@@ -337,7 +340,7 @@ class ScanAPI(SCEndpoint):
             max_time (int, optional):
                 The maximum amount of time that the scan may run in seconds.
             name (str, optional): The name of the scan.
-            policy (int, optional): 
+            policy (int, optional):
                 The policy id to use for a policy-based scan.
             plugin (int, optional):
                 The plugin id to use for a plugin-based scan.
@@ -349,7 +352,7 @@ class ScanAPI(SCEndpoint):
             repo (int, optional):
                 The repository id for the scan.
             rollover (str, optional):
-                How should rollover scans be created (assuming the scan is 
+                How should rollover scans be created (assuming the scan is
                 configured to create a rollover scan with the timeout action).
                 The available actions are to automatically start the ``nextDay``
                 at the same time the scan was originally configured to run, and
@@ -357,7 +360,7 @@ class ScanAPI(SCEndpoint):
             scan_zone (int, optional):
                 The zone identifier to use for the scan.
             schedule (dict, optional):
-                A dictionary detailing the repeating schedule of the scan.  
+                A dictionary detailing the repeating schedule of the scan.
                 For more information refer to `Schedule Dictionaries`_
             targets (list, optional):
                 A list of valid targets.  These targets could be IPs, FQDNs,
@@ -367,9 +370,10 @@ class ScanAPI(SCEndpoint):
                 are ``discard``, ``import``, and ``rollover``.
             vhosts (bool, optional):
                 Should virtual host logic be enabled for the scan?
-        
+
         Returns:
-            dict: The scan resource for the created scan.
+            :obj:`dict`:
+                The scan resource for the created scan.
 
         Examples:
             Creating a scan for a single host:
@@ -377,20 +381,21 @@ class ScanAPI(SCEndpoint):
             >>> sc.scans.edit(1, name='Example scan')
         '''
         scan = self._constructor(**kw)
-        return self._api.patch('scan/{}'.format(self._check('id', id, int)), 
+        return self._api.patch('scan/{}'.format(self._check('id', id, int)),
             json=scan).json()['response']
 
     def delete(self, id):
         '''
         Removes the specified scan from SecurityCenter.
 
-        + `SC Scan Delete <https://docs.tenable.com/sccv/api/Scan.html#scan_id_DELETE>`_
+        :sc-api:`scan: delete <Scan.html#scan_id_DELETE>`
 
         Args:
             id (int): The identifier for the scan to delete.
 
         Returns:
-            list: The list of scan id removed.
+            :obj:`list`:
+                The list of scan id removed.
 
         Examples:
             >>> sc.scans.delete(1)
@@ -402,16 +407,17 @@ class ScanAPI(SCEndpoint):
         '''
         Copies an existing scan definition.
 
-        + `SC Scan Copy <https://docs.tenable.com/sccv/api/Scan.html#ScanRESTReference-/scan/{id}/copyScanCopyPOST1>`_
+        :sc-api:`scan: copy <Scan.html#ScanRESTReference-/scan/{id}/copyScanCopyPOST>`
 
         Args:
             id (int): The scan definition identifier to copy.
             name (str): The name of the copy thats created.
-            user_id (int): 
+            user_id (int):
                 The user id to assign as the owner of the new scan definition.
 
         Returns:
-            dict: Scan definition resource.
+            :obj:`dict`:
+                Scan definition resource.
 
         Examples:
             >>> sc.scans.copy(1, name='Cloned Scan')
@@ -428,7 +434,7 @@ class ScanAPI(SCEndpoint):
         '''
         Launches a scan definition.
 
-        + `SC Scan <https://docs.tenable.com/sccv/api/Scan.html#ScanRESTReference-/scan/{id}/launch>`_
+        :sc-api:`scan: launch <Scan.html#ScanRESTReference-/scan/{id}/launch>`
 
         Args:
             id (int): The scan definition identifier to launch.
@@ -442,7 +448,8 @@ class ScanAPI(SCEndpoint):
                 parameter will be ignored.
 
         Returns:
-            dict: A scan result resource for the newly launched scan.
+            :obj:`dict`:
+                A scan result resource for the newly launched scan.
 
         Examples:
             >>> running = sc.scans.launch(1)

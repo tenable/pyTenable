@@ -3,8 +3,8 @@ plugins
 =======
 
 The following methods allow for interaction with the Tenable.sc
-`Repositories <https://docs.tenable.com/sccv/api/Plugin.html>`_ API.  These
-items are typically seen under the **Plugins** section of Tenable.sc.
+:sc-api:`Plugins <Plugin.html>` API.  These items are typically seen under the
+**Plugins** section of Tenable.sc.
 
 Methods available on ``sc.plugins``:
 
@@ -166,7 +166,7 @@ class PluginAPI(SCEndpoint):
         '''
         Returns the details for a specific plugin.
 
-        :sc-api:`plugins: details< Plugin.html#PluginRESTReference-/plugin/{id}>`
+        :sc-api:`plugins: details <Plugin.html#PluginRESTReference-/plugin/{id}>`
 
         Args:
             id (int): The identifier for the plugin.

@@ -2,8 +2,8 @@
 files
 =====
 
-The following methods allow for interaction into the Tenable.sc 
-`File <https://docs.tenable.com/sccv/api/File.html>`_ API.
+The following methods allow for interaction into the Tenable.sc
+:sc-api:`File <File.html>` API.
 
 Methods available on ``sc.feeds``:
 
@@ -21,12 +21,14 @@ class FileAPI(SCEndpoint):
         Uploads a file into SecurityCenter and returns the file identifier
         to be used for subsequent calls.
 
+        :sc-api:`file: upload <File.html#FileRESTReference-/file/upload>`
+
         Args:
             fobj (FileObj): The file object to upload into SecurityCenter.
 
         Returns:
-            str: 
-                The filename identifier to use for subsequent calls in 
+            :obj:`str`:
+                The filename identifier to use for subsequent calls in
                 Tenable.sc.
         '''
         return self._api.post('file/upload', files={
@@ -36,11 +38,14 @@ class FileAPI(SCEndpoint):
         '''
         Removes the requested file from Tenable.sc.
 
+        :sc-api:`file: clear <File.html#FileRESTReference-/file/clear>`
+
         Args:
             filename (str): The file identifier associated to the file.
 
         Returns:
-            str: The file location on disk that was removed.
+            :obj:`str`:
+                The file location on disk that was removed.
         '''
         return self._api.post('file/clear', json={
             'filename': self._check('filename', filename, str)

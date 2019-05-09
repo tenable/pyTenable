@@ -3,8 +3,8 @@ roles
 =====
 
 The following methods allow for interaction into the Tenable.sc
-`Roles <https://docs.tenable.com/sccv/api/Role.html>`_ API.  These
-items are typically seen under the **User Roles** section of Tenable.sc.
+:sc-api:`Roles <Role.html>` API.  These items are typically seen under the
+**User Roles** section of Tenable.sc.
 
 Methods available on ``sc.roles``:
 
@@ -71,7 +71,7 @@ class RoleAPI(SCEndpoint):
         '''
         Creates a role.
 
-        + `role: create <https://docs.tenable.com/sccv/api/Role.html#role_POST>`_
+        :sc-api:`role: create <Role.html#role_POST>`
 
         Args:
             name (str): The name of the new role to create.
@@ -137,7 +137,8 @@ class RoleAPI(SCEndpoint):
                 configurations?  If left unspecified, the default is ``False``.
 
         Returns:
-            dict: The newly created role.
+            :obj:`dict`:
+                The newly created role.
 
         Examples:
             >>> role = sc.roles.create('Example Role',
@@ -151,14 +152,15 @@ class RoleAPI(SCEndpoint):
         '''
         Returns the details for a specific role.
 
-        + `role: details <https://docs.tenable.com/sccv/api/Role.html#role_id_GET>`_
+        :sc-api:`role: details <Role.html#role_id_GET>`
 
         Args:
             id (int): The identifier for the role.
             fields (list, optional): A list of attributes to return.
 
         Returns:
-            dict: The role resource record.
+            :obj:`dict`:
+                The role resource record.
 
         Examples:
             >>> role = sc.roles.details(1)
@@ -175,13 +177,13 @@ class RoleAPI(SCEndpoint):
         '''
         Edits a role.
 
-        + `role: edit <https://docs.tenable.com/sccv/api/Role.html#role_id_PATCH>`_
+        :sc-api:`role: edit <Role.html#role_id_PATCH>`
 
         Args:
             id (int): The numeric identifier for the role.
             name (str, optional):
                 The name of the new role to create.
-            descrioption (str, optional):
+            description (str, optional):
                 A description for the role to be created.
             can_agent_scan (bool, optional):
                 Are members of this role allowed to perform agent scans? If left
@@ -243,7 +245,8 @@ class RoleAPI(SCEndpoint):
                 configurations?  If left unspecified, the default is ``False``.
 
         Returns:
-            dict: The newly updated scan zone.
+            :obj:`dict`:
+                The newly updated scan zone.
 
         Examples:
             >>> role = sc.roles.create()
@@ -256,13 +259,14 @@ class RoleAPI(SCEndpoint):
         '''
         Removes a role.
 
-        + `role: delete <https://docs.tenable.com/sccv/api/Role.html#role_id_DELETE>`_
+        :sc-api:`role: delete <Role.html#role_id_DELETE>`
 
         Args:
             id (int): The numeric identifier for the role to remove.
 
         Returns:
-            str: An empty response.
+            :obj:`str`:
+                An empty response.
 
         Examples:
             >>> sc.roles.delete(1)
@@ -275,14 +279,15 @@ class RoleAPI(SCEndpoint):
         '''
         Retrieves the list of scan zone definitions.
 
-        + `role: list <https://docs.tenable.com/sccv/api/Role.html#role_GET>`_
+        :sc-api:`role: list <Role.html#role_GET>`
 
         Args:
             fields (list, optional):
                 A list of attributes to return for each role.
 
         Returns:
-            list: A list of scan zone resources.
+            :obj:`list`:
+                A list of scan zone resources.
 
         Examples:
             >>> for role in sc.roles.list():

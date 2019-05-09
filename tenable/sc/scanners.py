@@ -3,8 +3,8 @@ scanners
 ========
 
 The following methods allow for interaction into the Tenable.sc
-`Scanner <https://docs.tenable.com/sccv/api/Scanner.html>`_ API.  These
-items are typically seen under the **Scanners** section of Tenable.sc.
+:sc-api:`Scanner <Scanner.html>` API.  These items are typically seen under the
+**Scanners** section of Tenable.sc.
 
 Methods available on ``sc.scanners``:
 
@@ -121,7 +121,7 @@ class ScannerAPI(SCEndpoint):
         '''
         Creates a scanner.
 
-        + `scanner: create <https://docs.tenable.com/sccv/api/Scanner.html#scanner_POST>`_
+        :sc-api:`scanner: create <Scanner.html#scanner_POST>`
 
         Args:
             address (str): The address of the scanner
@@ -151,7 +151,8 @@ class ScannerAPI(SCEndpoint):
                 List of scan zones that this scanner is to be a member of.
 
         Returns:
-            dict: The newly created scanner.
+            :obj:`dict`:
+                The newly created scanner.
 
         Examples:
             >>> scanner = sc.scanners.create('Example Scanner', '192.168.0.1')
@@ -173,14 +174,15 @@ class ScannerAPI(SCEndpoint):
         '''
         Returns the details for a specific scanner.
 
-        + `scanner: details <https://docs.tenable.com/sccv/api/Scanner.html#scanner_POST>`_
+        :sc-api:`scanner: details <Scanner.html#scanner_POST>`
 
         Args:
             id (int): The identifier for the scanner.
             fields (list, optional): A list of attributes to return.
 
         Returns:
-            dict: The scanner resource record.
+            :obj:`dict`:
+                The scanner resource record.
 
         Examples:
             >>> scanner = sc.scan_zones.details(1)
@@ -197,7 +199,7 @@ class ScannerAPI(SCEndpoint):
         '''
         Edits a scanner.
 
-        + `scanner: edit <https://docs.tenable.com/sccv/api/Scanner.html#scanner_id_PATCH>`_
+        :sc-api:`scanner: edit <Scanner.html#scanner_id_PATCH>`
 
         Args:
             id (int): The numeric identifier for the scanner.
@@ -228,7 +230,8 @@ class ScannerAPI(SCEndpoint):
                 List of scan zones that this scanner is to be a member of.
 
         Returns:
-            dict: The newly updated scanner.
+            :obj:`dict`:
+                The newly updated scanner.
 
         Examples:
             >>> scanner = sc.scanners.edit(1, enabled=True)
@@ -242,13 +245,14 @@ class ScannerAPI(SCEndpoint):
         '''
         Removes the specified scanner.
 
-        + `scanner: delete <https://docs.tenable.com/sccv/api/Scanner.html#scanner_id_DELETE>`_
+        :sc-api:`scanner: delete <Scanner.html#scanner_id_DELETE>`
 
         Args:
             id (int): The numeric identifier for the scanner to remove.
 
         Returns:
-            str: An empty response.
+            :obj:`str`:
+                An empty response.
 
         Examples:
             >>> sc.scanners.delete(1)
@@ -260,14 +264,15 @@ class ScannerAPI(SCEndpoint):
         '''
         Retrieves the list of scanner definitions.
 
-        + `scanner: list <https://docs.tenable.com/sccv/api/Scanner.html#scanner_GET>`_
+        :sc-api:`scanner: list <Scanner.html#scanner_GET>`
 
         Args:
             fields (list, optional):
                 A list of attributes to return for each scanner.
 
         Returns:
-            list: A list of scanner resources.
+            :obj:`list`:
+                A list of scanner resources.
 
         Examples:
             >>> for scanner in sc.scanners.list():
@@ -285,7 +290,7 @@ class ScannerAPI(SCEndpoint):
         Retrieves the list of agent scans that meed the specified search
         criteria.
 
-        + `scanner: test-scans-query <https://docs.tenable.com/sccv/api/Scanner.html#ScannerRESTReference-/scanner/{id}/testScansQuery>`_
+        :sc-api:`scanner: test-scans-query <Scanner.html#ScannerRESTReference-/scanner/{id}/testScansQuery>`
 
         Args:
             id (int): The numeric id of the scanner.
@@ -295,7 +300,8 @@ class ScannerAPI(SCEndpoint):
                 The list of results ids to test.
 
         Returns:
-            list: The list of scans that match the search criteria.
+            :obj:`list`:
+                The list of scans that match the search criteria.
 
         Examples:
             >>> scans = sc.scanners.agent_scans('*')
@@ -311,10 +317,11 @@ class ScannerAPI(SCEndpoint):
         '''
         Starts an on-demand scanner status update.
 
-        + `scannner: update-status <https://docs.tenable.com/sccv/api/Scanner.html#ScannerRESTReference-/scanner/updateStatus>`_
+        :sc-api:`scanner: update-status <Scanner.html#ScannerRESTReference-/scanner/updateStatus>`
 
         Returns:
-            list: The updated scanner status for all scanners.
+            :obj:`list`:
+                The updated scanner status for all scanners.
 
         Examples:
             >>> status = sc.scanners.update_status()
