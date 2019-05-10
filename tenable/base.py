@@ -360,6 +360,13 @@ class APISession(object):
         Request call builder
         '''
         retries = 0
+        retry_codes = [429, 501, 502, 503]
+        if 'retry_on' in kwargs:
+            # if the retry_on parameter is passed, then we will consume this
+            # to extend the codes that we will attempt to retry.
+            retry_codes += kwargs['retry_on']
+            del(kwargs['retry_on'])
+
         while retries <= self._retries:
             if (('params' in kwargs and kwargs['params'])
               or ('json' in kwargs and kwargs['json'])):
@@ -387,7 +394,7 @@ class APISession(object):
                     resp.headers.get('x-request-uuid'),
                     '{}/{}'.format(self._url, path)))
 
-            if status in [429, 501, 502, 503]:
+            if status in retry_codes:
                 # Under the following return codes, we will want to attempt to
                 # retry our call.  If we see the "Retry-After" header, then we
                 # will respect that.  If no "Retry-After" header exists, then
