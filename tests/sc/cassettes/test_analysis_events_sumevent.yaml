@@ -1,0 +1,86 @@
+interactions:
+- request:
+    body: !!python/unicode '{"query": {"tool": "sumevent", "type": "event", "startOffset":
+      0, "filters": [], "endOffset": 5}, "type": "event", "sourceType": "lce"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['135']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":76,"returnedRecords":5,"startOffset":0,"endOffset":5,"matchingDataElementCount":48208,"results":[{"event":"Apache-405_PUT","description":"The
+        Apache web server encountered an invalid web put which returned an Apache
+        error code in the 400 range.","file":"web_apache.prm","24-hour plot":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,4,0,0,0,0","count":"6"},{"event":"Apache-Content_CSS_Request","description":"This
+        Apache web server has detected a system browsing the network via HTTP with
+        a web request for a web site''s cascading style sheet file.","file":"web_apache.prm","24-hour
+        plot":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0","count":"3"},{"event":"Apache-GET_CGI_Request_PageNotFound","description":"This
+        Apache webserver had a request for an invalid or non-existent CGI script.","file":"web_apache.prm","24-hour
+        plot":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,258,474,0,0,0,0","count":"732"},{"event":"Daily_Host_Alert","description":"The
+        Log Correlation Engine has detected the first time a host was seen active
+        today.","file":"lce_tasl.prm","24-hour plot":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,18,12,1,2","count":"33"},{"event":"DHCP-Ack","description":"A
+        DHCP ACK was issued to, on or from an IP.","file":"dhcp.prm","24-hour plot":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,21,12,21,14,27,15","count":"116"}],"startTime":1544993862,"endTime":1545080262},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080262}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['1728']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:57:42 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"query": {"tool": "sumevent", "type": "event", "startOffset":
+      5, "filters": [], "endOffset": 10}, "type": "event", "sourceType": "lce"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['136']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":76,"returnedRecords":5,"startOffset":5,"endOffset":10,"matchingDataElementCount":48208,"results":[{"event":"DHCP-Discover","description":"A
+        DHCP Discover was issued.","file":"dhcp.prm","24-hour plot":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,36,17,0,1,0,0","count":"54"},{"event":"DHCP-Inform","description":"A
+        DHCP inform was issued.","file":"dhcp.prm","24-hour plot":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1","count":"5"},{"event":"DHCP-Offer","description":"A
+        DHCP Offer was issued.","file":"dhcp.prm","24-hour plot":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,35,17,0,1,0,0","count":"53"},{"event":"DHCP-Request","description":"A
+        DHCP request was logged by the dhcpd process.","file":"dhcp.prm","24-hour
+        plot":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,20,88,147,128,23,12","count":"424"},{"event":"DHCP-Unable_To_Add_Forward_Map","description":"A
+        DHCP was unable to add a forward map.","file":"dhcp.prm","24-hour plot":"0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,17,9,16,12,17,11","count":"88"}],"startTime":1544993863,"endTime":1545080263},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080263}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['1402']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:57:43 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

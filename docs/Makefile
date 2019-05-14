@@ -5,8 +5,8 @@
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 SPHINXPROJ    = pyTenable
-SOURCEDIR     = docs
-BUILDDIR      = docs/_build
+SOURCEDIR     = .
+BUILDDIR      = ./_build
 
 # Put it first so that "make" without argument is like "make help".
 help:

@@ -12,21 +12,30 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import os
-import sys
+autodoc_mock_imports = [
+    'lxml',
+    'dateutil',
+    'dateutil.parser',
+    'semver'
+]
+
+import os, sys, datetime
 sys.path.insert(0, os.path.abspath('..'))
+
+import tenable
 
 
 # -- Project information -----------------------------------------------------
 
 project = u'pyTenable'
-copyright = u'2018, Tenable, Inc.'
+year = datetime.datetime.now().year
+copyright = u'{}, Tenable, Inc.'.format(year)
 author = u'Tenable, Inc.'
 
 # The short X.Y version
-version = u''
+version = tenable.__version__
 # The full version, including alpha/beta/rc tags
-release = u'0.0.1a'
+release = version
 
 
 # -- General configuration ---------------------------------------------------
@@ -45,10 +54,11 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
+    'sphinx.ext.extlinks',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+#templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -83,15 +93,23 @@ napoleon_numpy_docstring = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'alabaster'
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 html_theme_options = {
-    'navigation_depth': 4,
+    'description': 'A Python library for Tenable application APIs',
+    'fixed_sidebar': False,
+    'logo': 'logo.png',
+    'touch_icon': 'logo.png',
+    'logo_name': 'pyTenable',
+    'github_user': 'tenable',
+    'github_repo': 'pyTenable',
+    'github_button': True,
+    'travis_button': True,
+    'analytics_id': 'UA-131275974-1',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -108,15 +126,13 @@ html_static_path = ['_static']
 # 'searchbox.html']``.
 #
 # html_sidebars = {}
-html_sidebars = { 
+html_sidebars = {
     '**': [
-        'globaltoc.html',
-        'relations.html', 
-        'sourcelink.html', 
-        'searchbox.html'
-    ], 
+        'about.html',
+        'navigation.html',
+        'searchbox.html',
+    ]
 }
-
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
@@ -180,4 +196,12 @@ texinfo_documents = [
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {
+    'https://docs.python.org/': None,
+    'requests': ('http://docs.python-requests.org/en/master/', None)
+}
+
+extlinks = {
+    'devportal': ('https://developer.tenable.com/reference#%s', 'devportal'),
+    'sc-api': ('https://docs.tenable.com/sccv/api/%s', 'sc-api'),
+}

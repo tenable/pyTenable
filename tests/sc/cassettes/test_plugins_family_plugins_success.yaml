@@ -1,0 +1,897 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/0.3.18 (pyTenable/0.3.18; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/pluginFamily/10/plugins?startOffset=0&endOffset=100
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":[{"id":"0","name":"Open
+        Port","description":"Port is open"},{"id":"1","name":"Passive OS Detection","description":"PVS
+        uses multiple passive fingerprinting techniques to identify operating systems.
+        This includes methods from TCP header analysis to application-level identification.
+        The accuracy of the detection should improve as more traffic is observed."},{"id":"2","name":"Client
+        side port usage","description":"PVS tracks which TCP ports a host has established
+        connections with and may help identify services in use by a host."},{"id":"3","name":"Internal
+        client trusted connection","description":"PVS identifies internal servers
+        that a host has connected to on a particular port. These connections are considered
+        \"trusted\" as they have occurred between hosts within the monitored network
+        range. This is the opposite of plugin 15 which reports on server trusted connections."},{"id":"4","name":"Internal
+        interactive sessions","description":"PVS detected one or more internal interactive
+        sessions. An interactive session uses timing and statistical profiling of
+        the packets in a session to determine if the session involves a human typing
+        at a command line prompt. Internal identifies that the session occurred between
+        hosts in the monitored network range."},{"id":"5","name":"Outbound interactive
+        sessions","description":"PVS detected one or more outbound interactive sessions.
+        An interactive session uses timing and statistical profiling of the packets
+        in a session to determine if the session involves a human typing at a command
+        line prompt. Outbound identifies that the session occurred from a host in
+        the monitored network range to an external host."},{"id":"6","name":"Inbound
+        interactive sessions","description":"PVS detected one or more inbound interactive
+        sessions. An interactive session uses timing and statistical profiling of
+        the packets in a session to determine if the session involves a human typing
+        at a command line prompt. Inbound identifies that the session occurred from
+        an external host to a host in the monitored network range."},{"id":"7","name":"Internal
+        encrypted sessions","description":"PVS detected one or more internal encrypted
+        sessions. An encrypted session is a TCP or UDP session that contains sufficiently
+        random payloads. Internal identifies that the session occurred between hosts
+        in the monitored network range."},{"id":"8","name":"Outbound encrypted sessions","description":"PVS
+        detected one or more outbound encrypted sessions. An encrypted session is
+        a TCP or UDP session that contains sufficiently random payloads. Outbound
+        identifies that the session occurred from a host in the monitored network
+        range to an external host."},{"id":"9","name":"Inbound encrypted sessions","description":"PVS
+        detected one or more inbound encrypted sessions. An encrypted session is a
+        TCP or UDP session that contains sufficiently random payloads. Inbound identifies
+        that the session occurred from an external host to a host in the monitored
+        network range."},{"id":"12","name":"Host TTL discovered","description":"PVS
+        has detected a host and identifies the number of hops aways from the sensor
+        the host is located."},{"id":"14","name":"Accepts external connections","description":"An
+        external connection was detected occurring to this host. Specific IP addresses
+        are not reported by this plugin but does track which destination port and
+        protocol was used. Full connection details can seen in the realtime event
+        log. This is the opposite of plugin 16 which reports on outbound connections."},{"id":"15","name":"Internal
+        server trusted connection","description":"This plugin identifies internal
+        clients that have connected to this host on a particular server port. These
+        connections are considered \"trusted\" as they have occurred between hosts
+        within the monitored network range. This is the opposite of plugin 3 which
+        reports on client trusted connections."},{"id":"16","name":"Outbound external
+        connection","description":"An outbound external connection from this host
+        was detected. Specific IP addresses are not reported by this plugin but does
+        track which destination port and protocol was used. Full connection details
+        can seen in the realtime event log. This is the opposite of plugin 14 which
+        reports on inbound connections."},{"id":"18","name":"Generic Protocol Detection","description":"This
+        plugin determines the IP protocols running on the remote machine."},{"id":"19","name":"VLAN
+        ID Detection","description":"PVS identifies VLAN ID(s) used to communicate
+        with this host."},{"id":"20","name":"Generic IPv6 Tunnel Traffic Detection","description":"This
+        plugin determines the IPv6 tunnel traffic from the remote machine."},{"id":"21","name":"Siemens
+        S7 Server Detection","description":"S7 is a Siemens proprietary communications
+        protocol. The S7 communications protocol is used extensively in the Siemens
+        S7 software and device product line including the S7-200, S7-300, and S7-400
+        programmable logic controllers (PLCs). S7 can be encapsulated in several different
+        protocols including PROFIBUS, MPI, and TCP. The S7 traffic detected here is
+        encapsulated in TCP using TPKT and COTP."},{"id":"22","name":"Siemens S7 Client
+        Detection","description":"S7 is a Siemens proprietary communications protocol.
+        The S7 communications protocol is used extensively in the Siemens S7 software
+        and device product line including the S7-200, S7-300, and S7-400 programmable
+        logic controllers (PLCs). S7 can be encapsulated in several different protocols
+        including PROFIBUS, MPI, and TCP. The S7 traffic detected here is encapsulated
+        in TCP using TPKT and COTP."},{"id":"23","name":"COTP Server Detection","description":"The
+        Connection-Oriented Transport Protocol (COTP) is an Open Systems Interconnection
+        (OSI) transport layer protocol. COTP is defined in ISO 8073. In this instance,
+        COTP is being transported via TCP using TPKT."},{"id":"24","name":"COTP Client
+        Detection","description":"The Connection-Oriented Transport Protocol (COTP)
+        is an Open Systems Interconnection (OSI) transport layer protocol. COTP is
+        defined in ISO 8073. In this instance, COTP is being transported via TCP using
+        TPKT."},{"id":"25","name":"Siemens S7-200 Series PLC Detection","description":"A
+        Siemens S7-200 Series PLC has been detected. The Siemens S7-200 Series is
+        a family of PLCs which supports the manufacturer''s own proprietary S7 protocol."},{"id":"26","name":"Siemens
+        S7-300 Series PLC Detection","description":"A Siemens S7-300 Series PLC has
+        been detected. The Siemens S7-300 Series is a family of PLCs which supports
+        the manufacturer''s own proprietary S7 protocol."},{"id":"27","name":"Siemens
+        S7-400 Series PLC Detection","description":"A Siemens S7-400 Series PLC has
+        been detected. The Siemens S7-400 Series is a family of PLCs which supports
+        the manufacturer''s own proprietary S7 protocol."},{"id":"28","name":"Siemens
+        S7-1200 Series PLC Detection","description":"A Siemens S7-1200 Series PLC
+        has been detected. The Siemens S7-1200 Series is a family of PLCs which supports
+        the manufacturer''s own proprietary S7 protocol."},{"id":"29","name":"Siemens
+        S7-1500 Series PLC Detection","description":"A Siemens S7-1500 Series PLC
+        has been detected. The Siemens S7-1500 Series is a family of PLCs which supports
+        the manufacturer''s own proprietary S7 protocol."},{"id":"30","name":"TPKT
+        Client Detection","description":"ISO Transport Service on top of TCP (TPKT)
+        is defined in RFCs 1006 and 2126. Open Systems Interconnection (OSI) protocols
+        as defined by the International Organization for Standardization (ISO) can
+        be encapsulated in TCP using TPKT. TPKT emulates the OSI protocol Transport
+        Service Access Point (TSAP). TCP port 102 is reserved for hosts which implement
+        TPKT; however, it is not required that port 102 be used for all connections.
+        One example of a protocol that uses TPKT but does not use port 102 is Microsoft''s
+        Remote Desktop Protocol (RDP) which uses TCP port 3389."},{"id":"31","name":"TPKT
+        Server Detection","description":"ISO Transport Service on top of TCP (TPKT)
+        is defined in RFCs 1006 and 2126. Open Systems Interconnection (OSI) protocols
+        as defined by the International Organization for Standardization (ISO) can
+        be encapsulated in TCP using TPKT. TPKT emulates the OSI protocol Transport
+        Service Access Point (TSAP). TCP port 102 is reserved for hosts which implement
+        TPKT; however, it is not required that port 102 be used for all connections.
+        One example of a protocol that uses TPKT but does not use port 102 is Microsoft''s
+        Remote Desktop Protocol (RDP) which uses TCP port 3389."},{"id":"32","name":"Siemens
+        S7-300 Series PLC CPU Firmware <= 3.2.11 DoS","description":"Siemens S7-300
+        PLC central processing units (CPUs) contain an unspecified flaw that may allow
+        a remote attacker to use a specially crafted packet to cause the device to
+        enter defect mode until a cold restart is performed."},{"id":"33","name":"MODBUS\/TCP
+        Device Identification Object Detection","description":"MODBUS Device Identification
+        objects provide information related to the physical and functional properties
+        of a device. Objects in the Basic Device Identification include vendor name,
+        product code, and revision number. Objects in the Regular Device Identification
+        category include the Basic Device Identification category objects in addition
+        to vendor URL, product name, model name, and user application name."},{"id":"34","name":"Schneider
+        Electric Modicon Quantum PLC Detection","description":"A Schneider Electric
+        Modicon Quantum PLC has been detected. The Schneider Electric Modicon Quantum
+        is a large programmable logic controller (PLC) for process applications and
+        high availability solutions."},{"id":"35","name":"Schneider Electric Modicon
+        M340 PLC Detection","description":"A Schneider Electric Modicon M340 PLC has
+        been detected. The Schneider Electric Modicon M340 is a compact programmable
+        logic controller (PLC) suitable for a wide range of automation applications.
+        The Modicon M340 is sometimes deployed in conjunction with the Modicon Premium
+        and Modicon Quantum PLCs."},{"id":"36","name":"Schneider Electric Modicon
+        Premium PLC Detection","description":"A Schneider Electric Modicon Premium
+        PLC has been detected. The Schneider Electric Modicon Premium is a large programmable
+        logic controller (PLC) for discrete or process applications and high availability
+        solutions."},{"id":"37","name":"Multiple Schneider Electric Modicon PLC Modules
+        Directory Traversal","description":"Schneider Electric Ethernet modules for
+        Modicon M340, Modicon Quantum, and Modicon Premium PLCs in addition to Modicon
+        Momentum, Modicon TSX Micro, and Modicon STB modules that provide HTTP services
+        contain a directory traversal vulnerability. Attackers can remotely bypass
+        web server authentication thereby achieving unauthenticated administrative
+        access and control of the device."},{"id":"38","name":"Multiple Schneider
+        Electric Modicon M340 Ethernet Modules Remote Denial of Service","description":"Certain
+        Schneider Electric Modicon M340 Programmable Logic Controller (PLC) Ethernet
+        modules contain a vulnerability that allows remote, authenticated users to
+        crash the Ethernet module via specially crafted FTP traffic. This vulnerability
+        has been demonstrated using the FileZilla FTP client. Affected M340 Ethernet
+        modules are the BMXNOE0100, BMXNOE0110, and BMXP342020."},{"id":"39","name":"MODBUS\/TCP
+        ''Return Query Data'' Function Code Detection (SCADA)","description":"The
+        MODBUS\/TCP client has sent a MODBUS server a Return Query Data request. The
+        Return Query Data request, function code 8 (0x08) and subfunction code 0 (0x00),
+        will cause the target server to echo the request sent to it. This function
+        is typically implemented only in serial devices."},{"id":"40","name":"MODBUS\/TCP
+        ''Restart Communications'' Function Code Detection (SCADA)","description":"The
+        MODBUS\/TCP client has sent a MODBUS server a Restart Communications request.
+        The Restart Communications request, function code 8 (0x08) and subfunction
+        code 1 (0x01), will cause the target server to reinitialize and restart its
+        communication port. This function is typically implemented only in serial
+        devices."},{"id":"41","name":"MODBUS\/TCP ''Force Listen Mode'' Function Code
+        Detection (SCADA)","description":"The MODBUS\/TCP client has sent a MODBUS
+        server a Force Listen Mode request. The Force Listen Mode request, function
+        code 8 (0x08) and subfunction code 4 (0x04), will cause the target server
+        into listen-only mode; i.e., it will not send any responses. This function
+        is typically implemented only in serial devices."},{"id":"42","name":"MODBUS\/TCP
+        ''Clear Counters and Diagnostic Register'' Function Code Detection (SCADA)","description":"The
+        MODBUS\/TCP client has sent a MODBUS server a Clear Counters and Diagnostic
+        Register request. The Clear Counters and Diagnostic Register request, function
+        code 8 (0x08) and subfunction code 10 (0x0A), will cause the target server
+        to clear its counters and the diagnostic register. This function is typically
+        implemented only in serial devices."},{"id":"43","name":"MODBUS\/TCP ''Report
+        Server ID'' Function Code Detection (SCADA)","description":"The MODBUS\/TCP
+        client has sent a MODBUS server a Report Server ID request. The Report Server
+        ID request, function code 17 (0x11), will cause the target server to respond
+        with the server ID, run indicator status, and other information. This function
+        is typically implemented only in serial devices."},{"id":"44","name":"MODBUS\/TCP
+        ''CANopen'' Function Code Detection (SCADA)","description":"The MODBUS\/TCP
+        client is transporting the CANopen protocol. Function code 43 (0x2B) and subfunction
+        code 13 (0x0D) indicate that the CANopen protocol is encapsulated in MODBUS."},{"id":"45","name":"MODBUS\/TCP
+        ''Device Identification'' Function Code Detection (SCADA)","description":"The
+        MODBUS\/TCP client has sent a MODBUS server a Device Identification request.
+        The Device Identification request, function code 43 (0x2B) and subfunction
+        code 14 (0x0E), will cause the target server to return device identification
+        information."},{"id":"46","name":"MODBUS\/TCP Server Detection","description":"A
+        MODBUS\/TCP server (also known as a MODBUS\/TCP slave) has been detected.
+        MODBUS\/TCP is a SCADA protocol widely used in industrial manufacturing and
+        other industries."},{"id":"47","name":"MODBUS\/TCP Client Detection","description":"A
+        MODBUS\/TCP client (also known as a MODBUS\/TCP master) has been detected.
+        MODBUS\/TCP is a SCADA protocol widely used in industrial manufacturing and
+        other industries."},{"id":"48","name":"DNP3\/TCP Master Detection","description":"A
+        DNP3\/TCP master has been detected. DNP3 is a communications protocol used
+        in SCADA systems primarily in the electric utility industry."},{"id":"49","name":"DNP3\/TCP
+        ''Cold Restart'' Function Code Detection (SCADA)","description":"The DNP3\/TCP
+        master has sent an outstation the Cold Restart command. The Cold Restart command,
+        function code 13 (0x0D), will cause the target outstation to perform a cold
+        restart."},{"id":"50","name":"DNP3\/TCP ''Warm Restart'' Function Code Detection
+        (SCADA)","description":"The DNP3\/TCP master has sent an outstation the Warm
+        Restart command. The Warm Restart command, function code 14 (0x0E), will cause
+        the target outstation to perform a warm restart."},{"id":"51","name":"DNP3\/TCP
+        ''Stop Application'' Function Code Detection (SCADA)","description":"The DNP3\/TCP
+        master has sent an outstation the Stop Application command. The Stop Application
+        command, function code 18 (0x12), will cause the target outstation to stop
+        an application."},{"id":"52","name":"DNP3\/TCP ''Disable Unsolicited Messages''
+        Function Code Detection (SCADA","description":"The DNP3\/TCP master has sent
+        an outstation the Disable Unsolicited Messages command. The Disable Unsolicited
+        Messages command, function code 21 (0x15), will cause the target outstation
+        to stop sending unsolicited messages."},{"id":"53","name":"Progea Movicon
+        Client Detection via TCP","description":"A Progea Movicon Client has been
+        detected. Progea Movicon is SCADA\/HMI software for industrial automation,
+        remote control, and building automation."},{"id":"54","name":"Progea Movicon
+        Server Detection via TCP","description":"A Progea Movicon Server has been
+        detected. Progea Movicon is SCADA\/HMI software for industrial automation,
+        remote control, and building automation."},{"id":"55","name":"Progea Movicon
+        Client Detection via HTTP","description":"A Progea Movicon Client has been
+        detected. Progea Movicon is SCADA\/HMI software for industrial automation,
+        remote control, and building automation. Movicon Clients use a proprietary
+        communications protocol to access real-time data from Movicon Servers. This
+        proprietary communications protocol may use TCP, UDP, or HTTP as a transport
+        protocol. The Movicon Client detected is using HTTP as a transport protocol."},{"id":"56","name":"Progea
+        Movicon Server Detection via HTTP","description":"A Progea Movicon Server
+        has been detected. Progea Movicon is SCADA\/HMI software for industrial automation,
+        remote control, and building automation. Movicon Clients use a proprietary
+        communications protocol to access real-time data from Movicon Servers. This
+        proprietary communications protocol may use TCP, UDP, or HTTP as a transport
+        protocol. The Movicon Server detected is using HTTP as a transport protocol."},{"id":"57","name":"Progea
+        Movicon Client Detection via UDP","description":"A Progea Movicon Client has
+        been detected. Progea Movicon is SCADA\/HMI software for industrial automation,
+        remote control, and building automation. Movicon Clients use a proprietary
+        communications protocol to access real-time data from Movicon Servers. This
+        proprietary communications protocol may use TCP, UDP, or HTTP as a transport
+        protocol. The Movicon Client detected is using UDP as a transport protocol."},{"id":"58","name":"Progea
+        Movicon Server Detection via UDP","description":"A Progea Movicon Server has
+        been detected. Progea Movicon is SCADA\/HMI software for industrial automation,
+        remote control, and building automation. Movicon Clients use a proprietary
+        communications protocol to access real-time data from Movicon Servers. This
+        proprietary communications protocol may use TCP, UDP, or HTTP as a transport
+        protocol. The Movicon Server detected is using UDP as a transport protocol."},{"id":"59","name":"Progea
+        Movicon < 11.4 Build 1150 Information Disclosure Vulnerability","description":"The
+        detected version of Progea Movicon contains an information disclosure vulnerability.
+        This vulnerability is related to the TCPUploader module which could allow
+        a remote and unauthenticated user to obtain OS version information."},{"id":"60","name":"Progea
+        Movicon < 11.3 Memory Corruption Vulnerability","description":"The detected
+        version of Progea Movicon contains a memory corruption vulnerability. This
+        vulnerability can be exploited by sending a specially crafted HTTP POST request
+        to the Movicon OPC server. The specially crafted HTTP POST will cause the
+        application to read out-of-bounds memory resulting in a denial of service."},{"id":"61","name":"Progea
+        Movicon < 11.2 Build 1086 Multiple Vulnerabilities","description":"The detected
+        version of Progea Movicon is affected by multiple vulnerabilities: There is
+        a remote heap-based buffer\u00a0overflow vulnerability related to erroneous
+        parsing of the Content-Length HTTP request header. (CVE-2011-3491) A remote
+        heap-based buffer overflow vulnerability exists related to HTTP requests.
+        (CVE-2011-3498) A remote denial of service vulnerability exists related to
+        an EIDP packet with too large of a size field. The specially crafted EIDP
+        packet will cause the application\u00a0to crash, and there is the possibility
+        of arbitrary code execution. (CVE-2011-3499)"},{"id":"62","name":"Accuenergy
+        Acuvim II AXM-NET 3.04 Multiple Vulnerabilities","description":"Accuenergy
+        Acuvim II AXM-NET module containing multiple vulnerabilities has been detected:
+        The Accuenergy Acuvim AXM-NET Ethernet module contains an authentication bypass
+        vulnerability which can be exploited remotely by accessing a specific web
+        server URL. An attacker could modify the network settings of the AXM-NET module,
+        but would not have access to the settings for the Acuvim II power meter. (CVE-2-14-2373)
+        The Accuenergy Acuvim AXM-NET Ethernet module contains a password disclosure
+        vulnerability related to JavaScript password validation. An authenticated
+        attacker could modify the network settings of the AXM-NET module, but would
+        not have access to the settings for the Acuvim II power meter. (CVE-2-14-2374)"},{"id":"63","name":"Rockwell
+        Automation\/Allen-Bradley MicroLogix 1400 Detection","description":"A Rockwell
+        Automation\/Allen-Bradley MicroLogix 1400 PLC has been detected. The MicroLogix
+        1400 is a PLC which supports EtherNet\/IP, DNP3\/TCP, Modbus\/TCP, Modbus\/RTU,
+        and DNP3\/ASCII."},{"id":"64","name":"Rockwell Automation\/Allen-Bradley MicroLogix
+        1400 Series A <= 7 and Series B <= 15.000 DNP3 Remote DoS","description":"Rockwell
+        Automation\/Allen-Bradley MicroLogix 1400 programmable logic controllers (PLCs)
+        contain a denial of service vulnerability related to the DNP3 protocol stack.
+        Successful exploitation of this vulnerability results in the PLC becoming
+        non-responsive, and recovery requires a power cycle. This vulnerability can
+        be exploited by sending a series of malformed DNP3 packets to the MicroLogix
+        1400''s DNP3 interface. The MicroLogix 1400''s DNP3 interface can be either
+        a serial or Ethernet port. Note that DNP3 is disabled by default in MicroLogix
+        1400 PLCs and that this vulnerability can be exploited only in devices that
+        have DNP3 enabled."},{"id":"65","name":"Rockwell Automation\/Allen-Bradley
+        MicroLogix 1100 Detection","description":"A Rockwell Automation\/Allen-Bradley
+        MicroLogix 1100 PLC has been detected. The MicroLogix 1100 is a PLC which
+        supports serial and networked communication over a built-in RS-232\/RS-485
+        combo port and Ethernet peer-to-peer commnications over its built-in EtherNet\/IP
+        port."},{"id":"66","name":"Rockwell Automation\/Allen-Bradley MicroLogix 1000
+        Detection","description":"A Rockwell Automation\/Allen-Bradley MicroLogix
+        1000 PLC has been detected. The MicroLogix 1000 is a PLC which supports serial
+        and networked communication over a built-in RS-232\/RS-485 combo port. The
+        MicroLogix 1000 can also support Ethernet peer-to-peer commnications when
+        outfitted with the 1761-NET-ENI communications module, which supports EtherNet\/IP."},{"id":"67","name":"Rockwell
+        Automation\/Allen-Bradley CompactLogix 1768 Detection","description":"A Rockwell
+        Automation\/Allen-Bradley CompactLogix 1768 PLC has been detected. The CompactLogix
+        1768 is a PLC which supports EtherNet\/IP and serial communications."},{"id":"68","name":"Rockwell
+        Automation\/Allen-Bradley CompactLogix 1769-Lx Detection","description":"A
+        Rockwell Automation\/Allen-Bradley CompactLogix 1769-Lx PLC has been detected.
+        The CompactLogix 1769-Lx is a PLC which supports integrated serial, EtherNet\/IP
+        and ControlNet communications, as well as modular extensibility for DeviceNet
+        support."},{"id":"69","name":"Rockwell Automation\/Allen-Bradley 1768-EWEB
+        Web Server Module Detection","description":"A Rockwell Automation\/Allen-Bradley
+        1768-EWEB Ethernet\/IP Enhanced Web Server Module has been detected.\u00a0"},{"id":"70","name":"Rockwell
+        Automation\/Allen-Bradley MicroLogix 1400 SNMP Remote Privilege Escalation","description":"Rockwell
+        Automation\/Allen-Bradley MicroLogix 1400 programmable logic controllers (PLCs)
+        contain an undocumented, high privileged SNMP community string. This may allow
+        an unauthorized remote attacker to make changes to the device''s configuration
+        or update the firmware."},{"id":"71","name":"Schneider Electric Modicon TSX
+        Micro Ethernet Communication Module Detection","description":"A Schneider
+        Electric Modicon TSX Micro Ethernet Communication Module has been detected.
+        The Schneider Electric Modicon TSX Micro Ethernet Communication Module provides
+        ethernet connectivity for the TSX Micro PLC, a web server for configuration,
+        SNMP capability for management, and Modbus TCP\/IP capability."},{"id":"72","name":"Ethernet
+        Industrial Protocol (EtherNet\/IP) Implicit Message Detection","description":"EtherNet\/IP
+        is a communications protocol used in industrial automation applications. EtherNet\/IP
+        implements the Common Industrial Protocol (CIP) at the session and application
+        layers and uses TCP as a transport protocol for CIP explicit messages and
+        UDP as a transport protocol for CIP implicit messages. CIP explicit messages
+        are typically used to transmit configuration, diagnostic, and event data.
+        CIP implicit messages are used for realtime I\/O data transfer. An EtherNet\/IP
+        implicit message has been detected."},{"id":"73","name":"Ethernet Industrial
+        Protocol (EtherNet\/IP) Client Explicit Message Detection","description":"EtherNet\/IP
+        is a communications protocol used in industrial automation applications. EtherNet\/IP
+        implements the Common Industrial Protocol (CIP) at the session and application
+        layers and uses TCP as a transport protocol for CIP explicit messages and
+        UDP as a transport protocol for CIP implicit messages. CIP explicit messages
+        are typically used to transmit configuration, diagnostic, and event data.
+        CIP implicit messages are used for realtime I\/O data transfer. An EtherNet\/IP
+        explicit message has been detected."},{"id":"74","name":"Ethernet Industrial
+        Protocol (EtherNet\/IP) Server Explicit Message Detection","description":"EtherNet\/IP
+        is a communications protocol used in industrial automation applications. EtherNet\/IP
+        implements the Common Industrial Protocol (CIP) at the session and application
+        layers and uses TCP as a transport protocol for CIP explicit messages and
+        UDP as a transport protocol for CIP implicit messages. CIP explicit messages
+        are typically used to transmit configuration, diagnostic, and event data.
+        CIP implicit messages are used for realtime I\/O data transfer. An EtherNet\/IP
+        explicit message has been detected."},{"id":"75","name":"Common Industrial
+        Protocol (CIP) Identity Object Detection","description":"The Common Industrial
+        Protocol (CIP) Identity Object provides identification of and general information
+        about a CIP-enabled device. The CIP Identity Object detected provides the
+        following information: Vendor ID, Device Type, Product Code, Revision, and
+        Product Name."},{"id":"76","name":"Rockwell Automation\/Allen-Bradley MicroLogix
+        1100 L16xxx < 10.000 HTTP Remote DoS","description":"Rockwell Automation MicroLogix
+        1100 PLCs contain an unspecified flaw in the password mechanism that may allow
+        a remote denial of service. The issue is only present when the HTTP server
+        is enabled. This may allow a remote attacker to cause the program to crash."},{"id":"77","name":"Rockwell
+        Automation\/Allen-Bradley MicroLogix 1400 1766-L32xxx Series A < 7.000 \/
+        Series B <= 11.000 HTTP Remote DoS","description":"Rockwell Automation MicroLogix
+        1400 PLCs contain an unspecified flaw in the password mechanism that may allow
+        a remote denial of service. The issue is only present when the HTTP server
+        is enabled. This may allow a remote attacker to cause the program to crash."},{"id":"78","name":"WellinTech
+        KingSCADA Client Detection via TCP","description":"WellinTech KingSCADA is
+        SCADA\/HMI software for industrial automation. KingSCADA is found in the transportation,
+        aerospace, electric power, oil and gas, petrochemical, and other industries.
+        KingSCADA Clients use a proprietary communications protocol to access real-time
+        data from KingSCADA Servers. A KingSCADA Client using this proprietary communications
+        protocol has been detected."},{"id":"79","name":"WellinTech KingSCADA Server
+        Detection via TCP","description":"WellinTech KingSCADA is SCADA\/HMI software
+        for industrial automation. KingSCADA is found in several industries including
+        transportation, aerospace, electric power, oil and gas, and petrochemical.
+        KingSCADA Clients use a proprietary communications protocol to access real-time
+        data from KingSCADA Servers. A KingSCADA Server using this proprietary communications
+        protocol has been detected."},{"id":"80","name":"DNP3\/TCP Outstation Detection","description":"A
+        DNP3\/TCP outstation has been detected. DNP3 is a communications protocol
+        used in SCADA systems primarily in the electric utility industry."},{"id":"81","name":"BACnet\/IP
+        Protocol Detection","description":"BACnet is a communications protocol for
+        building automation and control. BACnet applications include heating, ventilating,
+        air-conditioning control, lighting control, access control and fire detection
+        systems. There are several options for BACnet data link and physical layers.
+        BACnet\/IP (the protocol detected here) uses IP and UDP as a virtual data
+        link layer."},{"id":"82","name":"BACnet Device Object Detection","description":"Each
+        BACnet device has an associated Device object. Device objects contain properties
+        that represent the physical and functional properties of a device. Device
+        object properties include application software version, firmware version,
+        model name, object identifier, object name, vendor name, and vendor identifier."},{"id":"83","name":"WellinTech
+        KingView Client Detection","description":"WellinTech KingView is SCADA\/HMI
+        software for industrial automation. KingView is found in the transportation,
+        aerospace, electric power, oil and gas, petrochemical, and other industries.
+        KingView Clients use a proprietary communications protocol to access real-time
+        data from KingView Servers. A KingView Client using this proprietary communications
+        protocol has been detected."},{"id":"84","name":"WellinTech KingView Server
+        Detection","description":"WellinTech KingView is SCADA\/HMI software for industrial
+        automation. KingView is found in several industries including transportation,
+        aerospace, electric power, oil and gas, and petrochemical. KingView Servers
+        use a proprietary communications protocol to access real-time data from KingView
+        Servers. A KingView Server using this proprietary communications protocol
+        has been detected."},{"id":"85","name":"Synchrophaser (IEEE C37.118) Client
+        Detection via TCP","description":"The remote client is using the Synchrophaser
+        Protocol (IEEE C37.118) over TCP. The Synchrophaser Protocol is used by supervisory
+        clients to remotely configure, monitor and received data from synchrophaser
+        devices. A synchrophaser device is used to monitor, measure and analyze electrical
+        flows at key intersections of the bulk electric grid (such as substations)."},{"id":"86","name":"Synchrophaser
+        (IEEE C37.118) Server Detection via TCP","description":"he remote server is
+        using the Synchrophaser Protocol (IEEE C37.118) over TCP. The Synchrophaser
+        Protocol is used by synchrophaser devices to report data and receive remote
+        configuration commands from management clients. A synchrophaser device is
+        used to monitor, measure and analyze electrical flows at key intersections
+        of the bulk electric grid (such as substations)."},{"id":"87","name":"Synchrophaser
+        (IEEE C37.118) Client Detection via UDP","description":"The remote client
+        is using the Synchrophaser Protocol (IEEE C37.118) over UDP. The Synchrophaser
+        Protocol is used by supervisory clients to remotely configure, monitor and
+        received data from synchrophaser devices. A synchrophaser device is used to
+        monitor, measure and analyze electrical flows at key intersections of the
+        bulk electric grid (such as substations)."},{"id":"88","name":"Synchrophaser
+        (IEEE C37.118) Server Detection via UDP","description":"The remote server
+        is using the Synchrophaser Protocol (IEEE C37.118) over UDP. The Synchrophaser
+        Protocol is used by synchrophaser devices to report data and receive remote
+        configuration commands from management clients. A synchrophaser device is
+        used to monitor, measure and analyze electrical flows at key intersections
+        of the bulk electric grid (such as substations)."},{"id":"89","name":"DNP3\/TCP
+        Protocol Detection","description":"Distributed Network Protocol (DNP3\/TCP)
+        has been detected. DNP3 is a communications protocol used in SCADA systems
+        primarily in the electric utility industry. The detected variant of DNP3,
+        or DNP3\/TCP, is encapsulated within TCP for delivery over IP networks."},{"id":"90","name":"MODBUS\/TCP
+        Protocol Detection","description":"The Modbus\/TCP protocol has been detected.
+        Modbus is a SCADA protocol used in industrial manufacturing and other industries.
+        The detected variant of Modbus, or Modbus\/TCP, is encapsulated within TCP
+        for delivery over IP networks."},{"id":"91","name":"Ethernet\/IP Protocol
+        Detection","description":"The Ethernet Industrial Protocol (EtherNet\/IP)
+        has been detected. EtherNet\/IP is a communications protocol used in industrial
+        automation applications. EtherNet\/IP implements the Common Industrial Protocol
+        (CIP) at the session and application layers and uses TCP as a transport protocol
+        for CIP explicit messages and UDP as a transport protocol for CIP implicit
+        messages. CIP explicit messages are typically used to transmit configuration,
+        diagnostic, and event data. CIP implicit messages are used for realtime I\/O
+        data transfer."},{"id":"92","name":"IEC 60870-5-104 Protocol Detection","description":"The
+        IEC 60870-5-104 protocol has been detected. IEC 60870-5-104 is a Supervisory
+        Control and Data Acquisition (SCADA) protocol used in the power, petrochemical,
+        water treatment, and oil and gas production industries. IEC 60870-5-104 is
+        often used in power systems as a SCADA protocol between control stations and
+        substations. IEC 60870-5-104 is based on IEC 60870-5-101 but uses TCP\/IP
+        instead of serial communications."},{"id":"93","name":"Siemens S7 Protocol
+        Detection","description":"The Siemens S7 protocol has been detected. S7 is
+        a proprietary communications protocol developed by Siemens that runs between
+        programmable logic controllers (PLCs) of the Siemens S7 family. It is used
+        for PLC programming, exchanging data between PLCs, accessing PLC data from
+        SCADA (supervisory control and data acquisition) systems, and for diagnostic
+        purposes."},{"id":"94","name":"IEC 60870-5-104 Server Detection","description":"IEC
+        60870-5-104 is a Supervisory Control and Data Acquisition (SCADA) protocol
+        used in the power, petrochemical, water treatment, and oil and gas production
+        industries. IEC 60870-5-104 is often used in power systems as a SCADA protocol
+        between control stations and substations. IEC 60870-5-104 is based on IEC
+        60870-5-101 but uses TCP\/IP instead of serial."},{"id":"95","name":"IEC 60870-5-104
+        Client Detection","description":"IEC 60870-5-104 is a Supervisory Control
+        and Data Acquisition (SCADA) protocol used in the power, petrochemical, water
+        treatment, and oil and gas production industries. IEC 60870-5-104 is often
+        used in power systems as a SCADA protocol between control stations and substations.
+        IEC 60870-5-104 is based on IEC 60870-5-101 but uses TCP\/IP instead of serial."},{"id":"96","name":"Saia
+        Burgess Controls PCD Controllers Hard-Coded FTP Credentials Vulnerability","description":"One
+        or more of the following SBC controllers was detected to be running a version
+        of firmware earlier than 1.24.50 : - PCD1.M0xx0 - PCD1.M2xx0 - PCD2.M5xx0
+        - PCD3.Mxxx0 - PCD7.D4xxxT5F - PCD7.D4xxxWTPF - PCD7.D4xxxV - PCD7.D4xxxD.
+        Firmware versions prior to 1.24.50 are implemented with hard-coded FTP credentials.
+        An attacker who exploits this vulnerability would have administrative access
+        to the target device and resources."},{"id":"97","name":"TCP Session Bandwidth
+        (1 - 10 MB)","description":"PVS computes the bytes exchanged between each
+        TCP endpoint when the session ends. The total bytes exchanged during the lifetime
+        of this session is between 1 and 10 MB."},{"id":"98","name":"TCP Session Bandwidth
+        (10 - 100 MB)","description":"PVS computes the bytes exchanged between each
+        TCP endpoint when the session ends. The total bytes exchanged during the lifetime
+        of this session is more than 10 MB but less than or equal to 100 MB."},{"id":"99","name":"TCP
+        Session Bandwidth (100 - 1024 MB)","description":"PVS computes the bytes exchanged
+        between each TCP endpoint when the session ends. The total bytes exchanged
+        during the lifetime of this session is more than 100 MB but less than or equal
+        to 1 GB."},{"id":"100","name":"TCP Session Bandwidth (> 1 GB)","description":"PVS
+        computes the bytes exchanged between each TCP endpoint when the session ends.
+        The total bytes exchanged during the lifetime of this session is more than
+        1 GB."},{"id":"101","name":"TCP Session Duration (< 1 minute)","description":"PVS
+        computes the duration of each TCP session when the session ends. This TCP
+        session duration is less than 1 minute."},{"id":"102","name":"TCP Session
+        Duration (1 - 15 minutes)","description":"PVS computes the duration of each
+        TCP session when the session ends. This TCP session duration is between 1
+        minute and 15 minutes."},{"id":"103","name":"TCP Session Duration (15 - 25
+        minutes)","description":"PVS computes the duration of each TCP session when
+        the session ends. This TCP session duration is more than 15 but less than
+        or equal to 25 minutes."}],"error_code":0,"error_msg":"","warnings":[],"timestamp":1556296096}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-type: [application/json]
+      date: ['Fri, 26 Apr 2019 16:28:16 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/0.3.18 (pyTenable/0.3.18; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/pluginFamily/10/plugins?startOffset=100&endOffset=200
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":[{"id":"104","name":"TCP
+        Session Duration (25 - 40 minutes)","description":"PVS computes the duration
+        of each TCP session when the session ends. This TCP session duration is more
+        than 25 but less than or equal to 40 minutes."},{"id":"105","name":"TCP Session
+        Duration (40 - 55 minutes)","description":"PVS computes the duration of each
+        TCP session when the session ends. This TCP session duration is more than
+        40 but less than or equal to 55 minutes."},{"id":"106","name":"TCP Session
+        Duration (55 - 100 minutes)","description":"PVS computes the duration of each
+        TCP session when the session ends. This TCP session duration is more than
+        55 but less than or equal to 100 minutes."},{"id":"107","name":"TCP Session
+        Duration (100 minutes - 24 hours)","description":"PVS computes the duration
+        of each TCP session when the session ends. This TCP session duration is more
+        than 100 minutes but less than or equal to 24 hours."},{"id":"108","name":"TCP
+        Session Duration (24 - 47 hours)","description":"PVS computes the duration
+        of each TCP session when the session ends. This TCP session duration is more
+        than 24 hours but less than or equal to 47 hours."},{"id":"109","name":"TCP
+        Session Duration (> 47 hours)","description":"PVS computes the duration of
+        each TCP session when the session ends. This TCP session duration is more
+        than 47 hours."},{"id":"110","name":"UDP Activity","description":"UDP activity
+        observed"},{"id":"111","name":"ICMP Activity","description":"ICMP activity
+        observed"},{"id":"112","name":"IGMP Activity","description":"IGMP activity
+        observed"},{"id":"114","name":"MODBUS\/TCP ''Illegal Function Code'' Exception
+        Code Detection (SCADA)","description":"The MODBUS\/TCP server has sent a MODBUS
+        client a response with an Illegal Function Code exception. This means that
+        the function code of the query from the client is not an allowable action
+        for the server."},{"id":"115","name":"MODBUS\/TCP ''Illegal Data Address''
+        Exception Code Detection (SCADA)","description":"The MODBUS\/TCP server has
+        sent a MODBUS client a response with an Illegal Data Address exception. The
+        data address received in the query is not an allowable address for the server."},{"id":"116","name":"MODBUS\/TCP
+        ''Illegal Data Value'' Exception Code Detection (SCADA)","description":"The
+        MODBUS\/TCP server has sent a MODBUS client a response with an Illegal Data
+        Value exception. A value contained in the query data field is not an allowable
+        value for server."},{"id":"117","name":"MODBUS\/TCP ''Server Device Failure''
+        Exception Code Detection (SCADA)\u00a0","description":"The MODBUS\/TCP server
+        has sent a MODBUS client a response with a Server Device Failure exception.
+        An unrecoverable error occurred while the server was attempting to perform
+        the requested action."},{"id":"118","name":"MODBUS\/TCP ''Server Device Busy''
+        Exception Code Detection (SCADA)\u00a0","description":"The MODBUS\/TCP server
+        has sent a MODBUS client a response with a Service Device Busy exception.
+        Specialized use in conjunction with programming commands. The server is engaged
+        in processing a log-duration program command. The client should retransmit
+        the message later when the server is free."},{"id":"119","name":"MODBUS\/TCP
+        ''Memory Parity Error'' Exception Code Detection (SCADA)","description":"The
+        MODBUS\/TCP server has sent a MODBUS client a response with a Memory Parity
+        Error exception. Specialized use in conjunction with function codes 20 and
+        21 and reference type 6, to indicate that the extended file area failed to
+        pass a consistency check."},{"id":"120","name":"MODBUS\/TCP ''Gateway Path
+        Unavailable'' Exception Code Detection (SCADA)","description":"The MODBUS\/TCP
+        server has sent a MODBUS client a response with a Gateway Path Unavailable
+        exception. Specialized use in conjunction with gateways, indicates that the
+        gateway was unable to allocate an internal communication path from the input
+        port to the output port for processing the request. Usually means that the
+        gateway is misconfigured or overloaded."},{"id":"121","name":"MODBUS\/TCP
+        ''Gateway Target Device Failed to Respond'' Exception Code Detection (SCADA)","description":"The
+        MODBUS\/TCP server has sent a MODBUS client a response with a Gateway Target
+        Device Failed to Respond exception. Specialized use in conjunction with gateways,
+        indicates that no response was obtained from the target device. Usually means
+        that the device is not present on the network."},{"id":"122","name":"Ethernet\/IP
+        CIP List Identity Device Detection Response","description":"The Ethernet\/IP
+        CIP (Common Industrial Protocol) List Identity command provides identification
+        of and general information about an Ethernet\/IP-enabled device."},{"id":"123","name":"Ethernet\/IP
+        CIP SendRRData Get Attribute All Device Identity Response","description":"The
+        Ethernet\/IP CIP (Common Industrial Protocol) SendRRData command Get Attribute
+        All Device Identity response provides identification of and general information
+        about an Ethernet\/IP-enabled device."},{"id":"124","name":"DNP3\/TCP ''Write''
+        Function Code Detection (SCADA)","description":"The DNP3\/TCP master has sent
+        an outstation the Write command. The Write command, function code 2 (0x02),
+        is a\u00a0Transfer control function used to store control information at the
+        outstation."},{"id":"125","name":"DNP3\/TCP ''Select'' Function Code Detection
+        (SCADA)","description":"The DNP3\/TCP master has sent an outstation the Select
+        command. The Select command, function code 3 (0x03), is used to select, or
+        arm points to be operated on."},{"id":"126","name":"DNP3\/TCP ''Operate''
+        Function Code Detection (SCADA)","description":"The DNP3\/TCP master has sent
+        an outstation the Operate command. The Operate command, function code 4 (0x04),
+        is used to set or produce the output actions on the points previously selected."},{"id":"127","name":"DNP3\/TCP
+        ''Direct Operate'' Function Code Detection (SCADA)","description":"The DNP3\/TCP
+        master has sent an outstation the Direct Operate command. The Direct Operate
+        command, function code 5 (0x05),\u00a0lacks the security feature of SBO. Direct
+        operate forces selected points to execute the specified action without a verification
+        check of the selected outstations."},{"id":"128","name":"DNP3\/TCP ''Direct
+        Operate\/No Response'' Function Code Detection (SCADA)","description":"The
+        DNP3\/TCP master has sent an outstation the Direct Operate\/No Response command.
+        The Direct Operate\/No Response command, function code 6 (0x06), lacks the
+        security feature of SBO. Direct operate forces selected points to execute
+        the specified action without a verification check of the selected outstations."},{"id":"129","name":"DNP3\/TCP
+        ''Enable Unsolicited Messages'' Function Code Detection (SCADA)","description":"The
+        DNP3\/TCP master has sent an outstation the ''Enable Unsolicited Messages''
+        command. The Enable Unsolicitied Messages command, function code 20 (0x14),
+        enables spontaneous reporting of the specified objects."},{"id":"130","name":"Rockwell
+        Automation\/Allen-Bradley 1756 ControlLogix Controller Detection","description":"A\u00a0Rockwell
+        Automation\/Allen-Bradley 1756 ControlLogix Controller PLC has been detected.
+        The 1756 ControlLogix Controller is a scalable controller solution that is
+        capable of addressing many I\/O points."},{"id":"131","name":"Rockwell Automation\/Allen-Bradley
+        1756 ControlLogix Communication Module Detection","description":"A\u00a0Rockwell
+        Automation\/Allen-Bradley 1756 ControlLogix Communication Module communication
+        adapter has been detected. This 1756 ControlLogix Communication Module is
+        used to add Ethernet\/IP communication capabilities to a PLC."},{"id":"132","name":"Host
+        Attribute Enumeration","description":"PVS has identified the following attribute(s)
+        for the following host(s)."},{"id":"133","name":"Siemens SIMATIC S7 1500 Firmware
+        < 1.8.3 Multiple Vulnerabilities","description":"Siemens SIMATIC S7 1500 programmable
+        logic controllers (PLCs) prior to firmware version 1.8.3 are vulnerable to
+        a Denial of Service (DoS) condition (STOP mode transition) via a specially
+        crafted packet to TCP port 102. An attacker can also bypass a replay protection
+        mechanism via packets on TCP port 102."},{"id":"134","name":"Siemens SIMATIC
+        S7 1500 Firmware < 1.5.0 Multiple Vulnerabilities","description":"Siemens
+        SIMATIC S7 1500 programmable logic controllers (PLCs) prior to firmware version
+        1.5 have multiple vulnerabilities that may allow attackers to perform Denial
+        of Service (DoS) attacks with specially crafted HTTP(S), ISO-TSAP, or Profinet
+        network packets. The web server may also be vulnerable to cross-site request
+        forgery (CSRF), cross-site scripting (XSS), header injection, open redirect
+        attacks, and privilege escalation."},{"id":"135","name":"Siemens SIMATIC S7
+        1500 Firmware < 1.6.0 DoS Vulnerability","description":"Siemens SIMATIC S7
+        1500 programmable logic controllers (PLCs) prior to firmware version 1.6 are
+        vulnerable to a Denial of Service (DoS) via crafted TCP packets. Successful
+        exploitation causes the CPU to automatically restart and remain in the STOP
+        mode. The CPU would then need to be manually put in the RUN mode to restore
+        operations."},{"id":"136","name":"Siemens SIMATIC S7 400 Firmware 6.0.0 <
+        6.0.3 Denial of Service Vulnerability","description":"Siemens SIMATIC S7 400
+        programmable logic controllers (PLCs) versions 6.0.1 and 6.0.2 for specific
+        model families are vulnerable to a Denial of Service (DoS) via specially crafted
+        packets. Successful exploitation causes the CPU to default into defect mode
+        and the PLC will need to be manually reset to return to normal operation.
+        SIMATIC V5 PN CPUs are also vulnerable but no update exists as this version
+        has reached end-of-life and has been discontinued."},{"id":"137","name":"Siemens
+        SIMATIC CP 343-1, CP 443-1 Authentication Bypass Vulnerability","description":"Siemens
+        SIMATIC CP 443-1 and CP 443-1 Advanced Communication Processors with firmware
+        versions lower than 3.2.9, CP 343-1 Advanced with firmware less than 3.0.44,
+        and CP 343-1 Lean with firmware less than 3.1.1, have a flaw that allows an
+        unauthenticated remote user with access to port 102\/TCP to perform administrative
+        actions, if the CPs configuration is stored on its corresponding CPU."},{"id":"138","name":"Siemens
+        SIMATIC S7 400 Firmware < 3.2.17 Multiple Vulnerabilities","description":"Siemens
+        SIMATIC S7 400 CP 443-1 Advanced devices with firmware versions lower than
+        3.2.17 have a web server vulnerability that may allow remote attackers to
+        perform actions with the permissions of an authenticated user. The web server
+        also delivers cookies without the secure flag."},{"id":"139","name":"Siemens
+        S7-1200 Series PLC CPU < 4.0 Multiple Vulnerabilities","description":"Siemens
+        S7-1200 PLC central processing units (CPUs) prior to version 4.0 are vulnerable
+        to cross-site request forgery (CSRF) via the web interface. An attacker may
+        also be able to perform a Denial of Server (DoS) attack with specially crafted
+        HTTP(S), ISO-TSAP, or Profinet network packets. Due to low entropy in its
+        random number generator, the integrated web server\u2019s authentication method
+        (port 80\/tcp and port 443\/tcp) could allow attackers to hijack web sessions
+        over the network if the session token can be predicted."},{"id":"140","name":"Siemens
+        S7-1200 Series PLC CPU < 4.0 Multiple DoS Vulnerabilities","description":"Siemens
+        S7-1200 PLC central processing units (CPUs) prior to 4.0 are vulnerable to
+        a Denial of Service (DoS) condition via specially crafted packets on port
+        161\/udp (SNMP) and port 102\/tcp (ISO_TSAP)."},{"id":"141","name":"Siemens
+        S7-1200 Series PLC CPU CA Certificate Default Hardcoded Private Key","description":"Siemens
+        S7-1200 PLC central processing units (CPUs) contain a flaw that would allow
+        an attacker to intercept and decrypt encrypted traffic from any other S7-1200
+        PLC device through a man-in-the-middle (MiTM) attack using the SLL private
+        key of one device."},{"id":"142","name":"Siemens S7-1200 Series PLC CPU User
+        Program Block Protection Remote Bypass","description":"Siemens S7-1200 PLC
+        central processing units (CPUs) contain a flaw that flaw that may allow a
+        remote attacker to circumvent user program block protection."},{"id":"143","name":"Siemens
+        S7-1200 Series PLC CPU Recorded Frame Command Execution Replay","description":"Siemens
+        S7-1200 PLC central processing units (CPUs) contain a flaw that could allow
+        an attacker to trigger CPU functions by record and playback of legitimate
+        network communication."},{"id":"144","name":"Siemens S7-1200 Series PLC CPU
+        Web Server Network Request Saturation Remote DoS","description":"Siemens S7-1200
+        PLC central processing units (CPUs) contain a flaw that could allow an attacker
+        to place the controller in the stop\/defect state by causing a communication
+        error."},{"id":"145","name":"Siemens Devices Using Profinet DCP Multiple DoS
+        Vulnerabilities","description":"A wide variety of Siemens devices are vulnerable
+        to a Denial of Service (DoS) condition via specially crafted PROFINET DCP
+        network packets."},{"id":"146","name":"Siemens S7-400 CPU Packet Handling
+        Remote DoS","description":"A vulnerability in SIEMENS SIMATIC S7-400 PN CPUs
+        (V6 and V7) could allow a remote attacker to cause a Denial of Service condition
+        by sending specially crafted packets to port 80\/TCP."},{"id":"147","name":"Siemens
+        S7-400 CPU Protection-level 2 Configuration Unspecified Remote Credential
+        Disclosure","description":"A vulnerability in SIEMENS SIMATIC S7-400 PN CPUs
+        (all versions including V7) could allow a remote attacker to obtain credentials
+        from the PLC if protection-level 2 is configured on the affected devices."},{"id":"148","name":"Siemens
+        SCALANCE X-300 Switches HTTP Request Handling Remote DoS","description":"The
+        web server on Siemens SCALANCE X-300 switches with firmware before 4.0 allows
+        remote attackers to cause a denial of service (reboot) via malformed HTTP
+        requests."},{"id":"149","name":"Siemens SCALANCE X-300 Switches FTP Server
+        Network Packet Handling Remote DoS","description":"The FTP server on Siemens
+        SCALANCE X-300 switches with firmware before 4.0 allows remote authenticated
+        users to cause a denial of service (reboot) via crafted FTP packets."},{"id":"150","name":"Siemens
+        SCALANCE X-300 Product Family Switch Detection","description":"A Siemens SCALANCE
+        X-300 product family switch has been detected. The SCALANCE X-300 product
+        family are managed industrial ethernet switches."},{"id":"151","name":"Siemens
+        S7-300 CPU Packet Handling Remote DoS","description":"Siemens S7-300 central
+        processing units (CPUs) before version 3.X.14 have a vulnerability which could
+        allow a remote attacker to cause a Denial of Service condition by sending
+        specially crafted packets to port 80\/TCP."},{"id":"152","name":"Siemens S7-300
+        CPU Protection-level 2 Configuration Unspecified Remote Credential Disclosure","description":"Siemens
+        S7-300 central processing units (CPUs) for all versions including version
+        3.2.12 have a vulnerability which could allow a remote attacker to obtain
+        credentials from the PLC if protection-level 2 is configured on the affected
+        devices."},{"id":"153","name":"Siemens 44x-1 RNA CP Remote Administrative
+        Action Execution","description":"Siemens 44x-1 RNA Communication Processors
+        (CP), for all versions prior to 1.4.1, has a flaw that can allow an unauthenticated
+        remote attacker to perform adminstrative actions if network access to port
+        102\/TCP is available and the configuration file for the CP is stored on the
+        RNA''s CPU."},{"id":"154","name":"Siemens S7 Communication Setup Request","description":"The
+        S7 master has sent an S7 slave a Communication Setup request. The Communication
+        Setup request is used to establish an S7 session."},{"id":"155","name":"Siemens\u00a0S7
+        Read SZL Request","description":"The S7 master has sent an S7 slave a Read
+        SZL request. The SZL Read request is used for retrieving system status information."},{"id":"156","name":"Siemens\u00a0S7
+        Read SZL Response","description":"The S7 slave has sent an S7 master a Read
+        SZL response. The SZL Read response contains system status information."},{"id":"157","name":"Siemens
+        S7 Read Variable Request","description":"The S7 master has sent an S7 slave
+        a Read Variable request. The Read Variable request is used to query values
+        on the slave such as counters, flags, timers, and other values in memory."},{"id":"158","name":"Siemens
+        S7 Read Variable Response","description":"The S7 slave has sent an S7 master
+        a Read Variable response. The Read Variable response contains the data requested
+        by the master such as\u00a0counters, flags, timers, and other values in memory."},{"id":"159","name":"Siemens
+        S7 Write Variable Request","description":"The S7 master has sent an S7 slave
+        a Write Variable request. The Write Variable request is used to set values
+        on the slave such as counters, flags, timers, and other values in memory."},{"id":"160","name":"Siemens
+        S7 Write Variable Response","description":"The S7 slave has sent an S7 master
+        a Write Variable response. The Write Variable response is used to indicate
+        the status of the Write Variable request."},{"id":"161","name":"Siemens S7
+        PLC Hot Start Request","description":"The S7 master has sent an S7 slave a
+        PLC Hot Start request. The Hot Start command is used to restart the PLC without
+        clearing data in memory."},{"id":"162","name":"Siemens S7 PLC Cold Start Request","description":"The
+        S7 master has sent an S7 slave a PLC Cold Start request. The Cold Start command
+        is used to restart the PLC and clearing memory."},{"id":"163","name":"Siemens
+        S7 Start Upload Request","description":"The S7 master has sent an S7 slave
+        a Start Upload request. A Start Upload request is used to begin a data transfer
+        from the slave to the master and identifies the filename which specifies which
+        blocks will be uploaded."},{"id":"164","name":"Siemens S7 Upload Block Job
+        Request","description":"The S7 Master has sent an S7 slave an Upload Block
+        Job request. The Upload Block Job request is sent by the master to request
+        the next block of data."},{"id":"165","name":"Siemens S7 Upload Block Data
+        Message","description":"The S7 slave has sent an S7 master an Upload Block
+        Data Message. The Upload Block Data message is sent in response to an Upload
+        Block Job request and contains the requested block of data."},{"id":"166","name":"Siemens
+        S7 End Upload Request","description":"The S7 master has sent an S7 slave an
+        End\u00a0Upload\u00a0request message. The End\u00a0Upload\u00a0request is
+        sent to finish the upload."},{"id":"167","name":"Siemens S7 Start Download
+        Request","description":"The S7 master has sent an S7 slave a Start Download
+        Request. A Start Download request is used to begin a data transfer from the
+        master to the slave and identifies the filename which specifies which blocks
+        will be downloaded."},{"id":"168","name":"Siemens S7 Download Block Job Request","description":"The
+        S7 slave has sent an S7 master a Download Block Job request. The Download
+        Block Job request is sent by the slave to request the next block of data."},{"id":"169","name":"Siemens
+        S7 Download Block Data Message","description":"The S7 master has sent an S7
+        slave a Download Block Data message. The Download Block Data message is sent
+        in response to a Download Block Job request and contains the requested block
+        of data."},{"id":"170","name":"Siemens S7 End\u00a0DownloadRequest","description":"The
+        S7 master has sent an S7 slave an End\u00a0Download\u00a0request message.
+        The End\u00a0Download\u00a0request is sent to finish the download."},{"id":"171","name":"Siemens
+        S7 Set Password Request","description":"The S7 master has sent an S7 slave
+        a Set Password request. The Set Password request sends the encoded password
+        to the slave to login."},{"id":"172","name":"Profinet IO UDP Protocol Detection","description":"Profinet
+        is an open standard SCADA protocol for the control, monitoring, and diagnostic
+        analysis of industrial equipment in automation networks."},{"id":"173","name":"Siemens
+        SIMATIC KP8 HMI Detection","description":"The Siemens SIMATIC KP8 HMI has
+        a Profinet interface, 8 short-stroke keys, and is configurable with Step 7
+        V5.5 and later."},{"id":"174","name":"Siemens SIMATIC KTP700 HMI Detection","description":"The
+        Siemens SIMATIC KTP700 HMI has a Profinet interface, a 7 inch TFT display,
+        and is configurable with WinCC Basic V13\/Step7 Basic v13."},{"id":"175","name":"Siemens
+        S7-1500 Version Information Detected","description":"Version information for
+        a Siemens S7-1500 SIMATIC PLC was detected via HTTP management console."},{"id":"176","name":"HTTP
+        Server Detected on Industrial Network","description":"An industrial web server
+        is running on this port."},{"id":"177","name":"HTTP Client Detected on Industrial
+        Network","description":"A web client has connected to a web server on an industrial
+        network."},{"id":"178","name":"HTTP Protocol Detected on Industrial Network","description":"The
+        HTTP protocol was detected on an industrial network."},{"id":"179","name":"Siemens
+        TIA Portal Detected","description":"The TIA Portal software is used to manage
+        Siemens PLCs."},{"id":"180","name":"Siemens S7-1500 Device State Change Request
+        Detected","description":"A request to change a device state was sent via the
+        HTTP protocol. This requires administrative access to the S7-1500 HTTP server"},{"id":"181","name":"Siemens
+        S7-1200 Device State Change Request Detected","description":"A request to
+        change a device state was sent via the HTTP protocol. This requires administrative
+        access to the S7-1200 HTTP server."},{"id":"183","name":"OPC UA Client Detection
+        via Binary","description":"An OPC UA Server has been detected. OPC UA is a
+        platform-independent standard through which various systems and devices can
+        communicate by sending messages between clients and servers over various networks.
+        It supports robust, secure communication that assures the identity of clients
+        and servers and resists attacks. The three supported methods of communication
+        are Binary, SOAP\/HTTP, and Binary via SOAP\/HTTP."},{"id":"184","name":"OPC
+        UA Server Detection via Binary","description":"An OPC UA Server has been detected.
+        OPC UA is a platform-independent standard through which various systems and
+        devices can communicate by sending messages between clients and servers over
+        various networks. It supports robust, secure communication that assures the
+        identity of clients and servers and resists attacks. The three supported methods
+        of communication are Binary, SOAP\/HTTP, and Binary via SOAP\/HTTP."},{"id":"185","name":"OPC
+        UA Client Detection via HTTPS","description":"An OPC UA Client has been detected.
+        OPC UA is a platform-independent standard through which various systems and
+        devices can communicate by sending messages between clients and servers over
+        various networks. It supports robust, secure communication that assures the
+        identity of clients and servers and resists attacks. The three supported methods
+        of communication are Binary, SOAP\/HTTP, and Binary via SOAP\/HTTP."},{"id":"186","name":"OPC
+        UA Server Detection via HTTPS","description":"An OPC UA Server has been detected.
+        OPC UA is a platform-independent standard through which various systems and
+        devices can communicate by sending messages between clients and servers over
+        various networks. It supports robust, secure communication that assures the
+        identity of clients and servers and resists attacks. The three supported methods
+        of communication are Binary, SOAP\/HTTP, and Binary via SOAP\/HTTP."},{"id":"187","name":"OPC
+        UA Client Error Detection","description":"An OPC UA Client has encountered
+        an error. OPC UA is a platform-independent standard through which various
+        systems and devices can communicate by sending messages between clients and
+        servers over various networks. It supports robust, secure communication that
+        assures the identity of clients and servers and resists attacks."},{"id":"188","name":"OPC
+        UA Server Error Detection","description":"An OPC UA Server has encountered
+        an error. OPC UA is a platform-independent standard through which various
+        systems and devices can communicate by sending messages between clients and
+        servers over various networks. It supports robust, secure communication that
+        assures the identity of clients and servers and resists attacks."},{"id":"189","name":"OPC
+        UA Client Message Type Detection","description":"An OPC UA Client Message
+        has been detected. OPC UA is a platform-independent standard through which
+        various systems and devices can communicate by sending messages between clients
+        and servers over various networks. It supports robust, secure communication
+        that assures the identity of clients and servers and resists attacks."},{"id":"190","name":"OPC
+        UA Server Message Type Detection","description":"An OPC UA Server Message
+        has been detected. OPC UA is a platform-independent standard through which
+        various systems and devices can communicate by sending messages between clients
+        and servers over various networks. It supports robust, secure communication
+        that assures the identity of clients and servers and resists attacks."},{"id":"191","name":"Schneider
+        Electric Modicon TSX Premium Ethernet Communication Module Detection","description":"A
+        Schneider Electric Modicon TSX Premium Ethernet Communication Module has been
+        detected. The Schneider Electric Modicon TSX Premium Ethernet Communication
+        Module provides ethernet connectivity for the TSX Premium PLC, SNMP capability
+        for management, and Modbus TCP\/IP capability."},{"id":"192","name":"Rockwell
+        Automation\/Allen-Bradley 1734 POINT I\/O Communication Module Detection","description":"Rockwell
+        Automation\/Allen-Bradley 1734 POINT I\/O Communication Module communication
+        adapter has been detected. The 1734 POINT I\/O Communication Module is used
+        to add Ethernet\/IP communication capabilities to 1734 POINT I\/O input and
+        output field modules."},{"id":"193","name":"Rockwell Automation\/Allen-Bradley
+        1794 FLEX I\/O Communication Module Detection","description":"Rockwell Automation\/Allen-Bradley
+        1794 FLEX I\/O Communication Module communication adapter has been detected.
+        The 1794 FLEX I\/O Communication Module is used to add Ethernet\/IP communication
+        capabilities to 1794 FLEX I\/O input and output field modules."},{"id":"194","name":"Rockwell
+        Automation\/Allen-Bradley PanelView Plus 6 Human Machine Interface","description":"Rockwell
+        Automation\/Allen-Bradley PanelView Plus 6 Human Machine Interface has been
+        detected. The PanelView Plus 6 HMI is used to monitor, control, and display
+        status information graphically for industrial processes."},{"id":"195","name":"Rockwell
+        Automation\/Allen-Bradley PanelView Plus Human Machine Interface","description":"Rockwell
+        Automation\/Allen-Bradley PanelView Plus Human Machine Interface has been
+        detected. The PanelView Plus 7 Standard HMI is used to monitor, control, and
+        display status information graphically for industrial processes in a standard
+        ICS environment."},{"id":"196","name":"Rockwell Automation\/Allen-Bradley
+        PanelView Plus Human Machine Interface","description":"Rockwell Automation\/Allen-Bradley
+        PanelView Plus Human Machine Interface has been detected. The PanelView Plus
+        7 Performance HMI is used to monitor, control, and display status information
+        graphically for industrial processes in a performance-intensive ICS environment."},{"id":"197","name":"Rockwell
+        Automation\/Allen-Bradley SoftLogix 5800 Controller","description":"Rockwell
+        Automation\/Allen-Bradley SoftLogix 5800 Controller has been detected. The
+        SoftLogix 5800 takes the control functions normally found in dedicated programmable
+        logic controllers, encapsulates those functions in software and runs them
+        on a commercial operating system."},{"id":"198","name":"Mettler-Toledo IND-ETHIP
+        Communications Adapter","description":"Mettler-Toledo IND-ETHIP Communications
+        Adapter has been detected. The Mettler-Toledo IND-ETHIP is a communications
+        adapter that adds Ethernet\/IP connectivity."},{"id":"199","name":"Endress
+        and Hauser Proline Promass Coriolis Flowmeter","description":"Endress and
+        Hauser Proline Promass Coriolis Flowmeter has been detected. The device uses
+        the Coriolis principle (a change in fluid flow causes changes in the frequency,
+        phase shift or amplitude of vibrations) to measures the mass flow rate of
+        a fluid traveling through a tube."},{"id":"200","name":"Festo CPX-FB36 Communications
+        Adapter","description":"Festo CPX-FB36 Communications Adapter has been detected.
+        This adapter adds Ethernet\/IP and Modbus\/TCP support to Festo CPX terminals."},{"id":"201","name":"Emerson
+        Micro Motion 5700 Coriolis Field Mount Transmitter","description":"Emerson
+        Micro Motion 5700 Coriolis Field Mount Transmitter has been detected. This
+        device is a combination Coriolis mass flow meter and communications adapter
+        for transmitting mass flow data to monitoring stations over Ethernet\/IP,
+        Modbus\/TCP and PROFINET."},{"id":"202","name":"Prosoft Technology RLX2 Communications
+        Adapter","description":"Prosoft Technology RLX2 Communications Adapter has
+        been detected. The RLX2 family of communications adapters secure wireless
+        connectivity in industrial environments."},{"id":"203","name":"Siemens S7\u00a0PLC
+        Stop Request","description":"The S7 master has sent an S7 slave a PLC Stop
+        request. The PLC Stop request sets the Run state of the device to stopped."},{"id":"204","name":"Siemens
+        S7 Message Service Request","description":"The S7 master has sent an S7 slave
+        a Message Service Request. The Message Service request is used to subscribe
+        events on the PLC."},{"id":"205","name":"Siemens S7 Diagnostic Message Push","description":"The
+        S7 slave has pushed a Diagnostic message to an S7 master. The Diagnostic message
+        is used to notify the S7 master of events that occur on the PLC."}],"error_code":0,"error_msg":"","warnings":[],"timestamp":1556296097}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-type: [application/json]
+      date: ['Fri, 26 Apr 2019 16:28:17 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

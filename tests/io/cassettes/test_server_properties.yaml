@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: GET
+    uri: https://cloud.tenable.com/server/properties
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5VTy47cIBD8lYjzeATYHo/nuso1PxBFCEMzQWHA4rGT1Wj/PY0fu6McIuWGTXd1
+        dVH1IM7ebP7q5eRAk4uRLsGBuCA1aDG7crVeJMjkQjhlZ8Zpz3jPyIEkiK8QRSkW20jHhq4fzKlR
+        mk/NwAfV6LEzDT1NCtpOD50yfBjO49SOio8cjDohSJm1zEAuD/IzgiEXX5w7EA93gdjJBk8u9EAi
+        pCwjcqDvBwK/ZxtlXu7YeWxb2p0pFnlIqSRR7GcrYexIj10dtN3mtxmnkW9L7ZcXF4qulyFbY9UC
+        msjl+4/nKSLbG/Z0tGOoi1Xg00L4k4dYd3gmY2fEabBBXsHn7VxQsu2YlPT+4wtepSvbStsD7AUC
+        m1Bf3G9Fevqe64wHUcgZVD3dgq7LoVZey1gX+wdHVPIuF4D/a3uvT+AzxDnaKkSOBf0ivXRv2aoF
+        8Be8IQ2tTTfhOzdS9dB0AEMzUKabwWgmx35SXX+uFHfnrUDJZhCLo0pq+ERw2i3N+5jNc1Oxrpa8
+        cEp5iyAmRAX16SNU5+7lSs5yss5mC+umxWVbFYzYbNBq2Lr+2+TeGyPMIWYBN2mdQIGNve5X+R6E
+        kSoHxHiQfEf48EHvlpHq8oJVpn+lx2oHi7NCqdlq6adHcY19Qdb3NWmrWcQUQl7NyPqW8VN/PnEU
+        8Mk8j7/SvGqK2blCNSHvkRWuk6WteHp6jgoGpT1WGi7UzE/LzD2Rm/AfoSSn43hk5P0PFklHmT8E
+        AAA=
+    headers:
+      accept-ranges: [bytes]
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-length: ['572']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 06 Dec 2018 23:22:18 GMT']
+      expires: ['0']
+      pragma: ['']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
+          path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-gateway-site-id: [nginx-router-a-prod-us-east-2]
+      x-request-uuid: [b563065d1d84678d7315a76e0550e455]
+      x-xss-protection: [mode=block]
+    status: {code: 200, message: OK}
+version: 1

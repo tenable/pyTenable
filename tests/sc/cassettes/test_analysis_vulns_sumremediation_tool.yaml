@@ -1,0 +1,81 @@
+interactions:
+- request:
+    body: !!python/unicode '{"query": {"tool": "sumremediation", "type": "vuln", "startOffset":
+      0, "filters": [], "endOffset": 5}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['146']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"56","returnedRecords":5,"startOffset":"0","endOffset":"5","matchingDataElementCount":"1629:0:0:0:0:0:2780:33","results":[{"pluginID":"87892","cpe":"","solution":"Apply
+        MS16-005: Security Update for Windows Kernel-Mode Drivers to Address Remote
+        Code Execution (3124584)","remediationList":"87892,87890,87881,87878,87877,87264,87262,87261,87257,87254,87253,86828,86826,86825,86822,86820,86819,86818,86373,86367,86366,85845","total":"1","totalPctg":"0.06%","score":"10","scorePctg":"0.36%","hostTotal":"1","msbulletinTotal":"1","cveTotal":"30"},{"pluginID":"94017","cpe":"","solution":"Apply
+        MS16-120: Security Update for Microsoft Graphics Component (3192884)","remediationList":"94017,108808,94014,94013,94012,94011,94009,94008,93963,93470,93468,93464,92843,92823,92821,92819,92023,92021,92015,91601,91596,91012,91011,91010,91001,90433,90431,89757,89756,89754,89746,88650,88642,87892,87890,87881,87880,87877,87258,87257,87253,86849,86828,86823,86822,86819,86373,86367,85877,85845,85540,85348,85334,85333,85331,85324,84761,84748,84747,84059,83440,83363,83361,83360,83354,82774,81745,81739,81737,81268,81263,80490,79638,79311,79138,79134,79127,78433,74428,74422,72934,72932,71943,71316,71311,70339,70334,70333,69835,69328,69327,67211,67210,67209,66864,66422,65883,65878,65211,64578,64577,63643,63424,63423,63225,62907,62463,61530,60016,59912,59910,59459,59043,59042,58751,58657,58330,57942,57474,57469,57273,56737,56451,55570,55121,53391,51913,51912,51170,50528,49962,49950,48286,48285,46839,45508,44425,44424,42439,42114,39347,35823,35822,34406,31798,25484,25025,22191,20298","total":"1","totalPctg":"0.06%","score":"10","scorePctg":"0.36%","hostTotal":"1","msbulletinTotal":"1","cveTotal":"30"},{"pluginID":"94643","cpe":"","solution":"Apply
+        MS16-142: Cumulative Security Update for Internet Explorer (3198467)","remediationList":"94643,94641,94640,94639,94638,94636,94635,94633,94632,94631,94630,94011,93464,92819,92015,91602,91596,91001,90431,89749,89746,88642,87877,87253,86819,86367,85845,85540,85348,85334,85333,85331,85324,84882,84761,84746,81736,70333,63225,53389,51907,51163,49955,46844","total":"1","totalPctg":"0.06%","score":"10","scorePctg":"0.36%","hostTotal":"1","msbulletinTotal":"1","cveTotal":"30"},{"pluginID":"95631","cpe":"cpe:\/a:ietf:md5,cpe:\/a:ietf:x.509_certificate","solution":"Contact
+        the Certificate Authority to have the certificate reissued.","remediationList":"95631,35291","total":"3","totalPctg":"0.18%","score":"6","scorePctg":"0.22%","hostTotal":"3","msbulletinTotal":"0","cveTotal":"3"},{"pluginID":"95764","cpe":"","solution":"Apply
+        MS16-144: Cumulative Security Update for Internet Explorer (3204059)","remediationList":"95764,94011,93464,92819,92015,91596,91001,90431,89746,88642,87877,87253,86819,86367,85845,85540,85333,84761","total":"1","totalPctg":"0.06%","score":"10","scorePctg":"0.36%","hostTotal":"1","msbulletinTotal":"1","cveTotal":"30"}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080222}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['3003']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:57:02 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"query": {"tool": "sumremediation", "type": "vuln", "startOffset":
+      5, "filters": [], "endOffset": 10}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['147']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"56","returnedRecords":5,"startOffset":"5","endOffset":"10","matchingDataElementCount":"1629:0:0:0:0:0:2780:33","results":[{"pluginID":"97305","cpe":"p-cpe:\/a:centos:centos:openssl-devel,p-cpe:\/a:centos:centos:openssl-static,p-cpe:\/a:centos:centos:openssl-perl,p-cpe:\/a:centos:centos:openssl,p-cpe:\/a:centos:centos:openssl-libs","solution":"Update
+        the affected openssl packages.","remediationList":"97305,93777,91171,89059,87781,87357,84199,83994,81997,80867,78516,77187,74334,73387,71865,65061,59294,58852,58502,57731","total":"2","totalPctg":"0.12%","score":"6","scorePctg":"0.22%","hostTotal":"2","msbulletinTotal":"0","cveTotal":"4"},{"pluginID":"99380","cpe":"p-cpe:\/a:centos:centos:uuidd,p-cpe:\/a:centos:centos:libuuid,p-cpe:\/a:centos:centos:libmount-devel,p-cpe:\/a:centos:centos:libmount,p-cpe:\/a:centos:centos:libblkid-devel,p-cpe:\/a:centos:centos:util-linux,p-cpe:\/a:centos:centos:libuuid-devel,p-cpe:\/a:centos:centos:libblkid","solution":"Update
+        the affected util-linux packages.","remediationList":"99380,95351","total":"2","totalPctg":"0.12%","score":"6","scorePctg":"0.22%","hostTotal":"2","msbulletinTotal":"0","cveTotal":"2"},{"pluginID":"100326","cpe":"p-cpe:\/a:centos:centos:rpcbind","solution":"Update
+        the affected rpcbind package.","remediationList":"100326,87778","total":"2","totalPctg":"0.12%","score":"20","scorePctg":"0.72%","hostTotal":"2","msbulletinTotal":"0","cveTotal":"2"},{"pluginID":"100327","cpe":"p-cpe:\/a:centos:centos:libtirpc,p-cpe:\/a:centos:centos:libtirpc-devel","solution":"Update
+        the affected libtirpc packages.","remediationList":"100327","total":"2","totalPctg":"0.12%","score":"20","scorePctg":"0.72%","hostTotal":"2","msbulletinTotal":"0","cveTotal":"2"},{"pluginID":"101005","cpe":"p-cpe:\/a:centos:centos:sudo,p-cpe:\/a:centos:centos:sudo-devel","solution":"Update
+        the affected sudo packages.","remediationList":"101005,100558,95577,85017,79173,59981","total":"4","totalPctg":"0.25%","score":"26","scorePctg":"0.94%","hostTotal":"2","msbulletinTotal":"0","cveTotal":"4"}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080226}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['2149']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:57:06 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

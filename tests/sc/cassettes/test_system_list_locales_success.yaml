@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [TNS_SESSIONID=SESSIONID]
+      User-Agent: [pyTenable/0.3.12 (pyTenable/0.3.12; Python/2.7.15)]
+      X-SecurityCenter: ['0000000000']
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/system/locales
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"ja":{"code":"ja","name":"Japanese"},"zh_CN":{"code":"zh_CN","name":"Chinese
+        (Simplified)"},"zh_TW":{"code":"zh_TW","name":"Chinese (Traditional)"}},"error_code":0,"error_msg":"","warnings":[],"timestamp":1553201639}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['247']
+      content-type: [application/json]
+      date: ['Thu, 21 Mar 2019 20:53:59 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

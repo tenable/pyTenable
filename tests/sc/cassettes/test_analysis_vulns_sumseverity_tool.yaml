@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: !!python/unicode '{"query": {"tool": "sumseverity", "type": "vuln", "startOffset":
+      0, "filters": [], "endOffset": 5}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['143']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"5","returnedRecords":5,"startOffset":"0","endOffset":"5","matchingDataElementCount":"1629:19:146:176:32:1256","results":[{"severity":{"id":"4","name":"Critical","description":"Critical
+        Severity"},"count":"19"},{"severity":{"id":"3","name":"High","description":"High
+        Severity"},"count":"146"},{"severity":{"id":"2","name":"Medium","description":"Medium
+        Severity"},"count":"176"},{"severity":{"id":"1","name":"Low","description":"Low
+        Severity"},"count":"32"},{"severity":{"id":"0","name":"Info","description":"Informative"},"count":"1256"}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080229}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['654']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:57:09 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

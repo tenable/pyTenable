@@ -1,0 +1,93 @@
+interactions:
+- request:
+    body: !!python/unicode '{"query": {"tool": "listservices", "type": "vuln", "startOffset":
+      0, "filters": [], "endOffset": 5}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['144']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"47","returnedRecords":5,"startOffset":"0","endOffset":"5","matchingDataElementCount":"158","results":[{"count":"23","detectionMethod":"Active","name":"A
+        web server is running on this port."},{"count":"18","detectionMethod":"Active","name":"Process
+        ID   : 1022\n  Executable   : \/usr\/lib\/plexmediaserver\/Plex Media Server\n  Command
+        line : \/usr\/lib\/plexmediaserver\/Plex Media Server"},{"count":"13","detectionMethod":"Active","name":"An
+        SSH server is running on this port."},{"count":"11","detectionMethod":"Active","name":"The
+        Win32 process ''svchost.exe'' is listening on this port"},{"count":"6","detectionMethod":"Active","name":"Process
+        ID   : 897\n  Executable   : \/usr\/sbin\/dhclient\n  Command line : \/sbin\/dhclient
+        -d -q -sf \/usr\/libexec\/nm-dhcp-helper -pf \/var\/run\/dhclient-eno16777984.pid
+        -lf \/var\/lib\/NetworkManager\/dhclient-03fe4dbc-1bd4-4cce-b71d-7a91b49ebca7-eno16777984.lease
+        -cf \/var\/lib\/NetworkManager\/dhclient-eno16777984.conf eno16777984"}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080194}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['1099']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:56:34 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"query": {"tool": "listservices", "type": "vuln", "startOffset":
+      5, "filters": [], "endOffset": 10}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['145']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"47","returnedRecords":5,"startOffset":"5","endOffset":"10","matchingDataElementCount":"158","results":[{"count":"6","detectionMethod":"Active","name":"Process
+        ID   : 1088\n  Executable   : \/usr\/bin\/transmission-daemon\n  Command line
+        : \/usr\/bin\/transmission-daemon -f --log-error"},{"count":"6","detectionMethod":"Active","name":"Process
+        ID   : 830\n  Executable   : \/usr\/sbin\/dhclient\n  Command line : \/sbin\/dhclient
+        -d -q -sf \/usr\/libexec\/nm-dhcp-helper -pf \/var\/run\/dhclient-eno16780032.pid
+        -lf \/var\/lib\/NetworkManager\/dhclient-8ada6603-dbfd-439f-b185-05e10da77711-eno16780032.lease
+        -cf \/var\/lib\/NetworkManager\/dhclient-eno16780032.conf eno16780032"},{"count":"6","detectionMethod":"Active","name":"The
+        service closed the connection without sending any data.\nIt might be protected
+        by some sort of TCP wrapper."},{"count":"5","detectionMethod":"Active","name":"Process
+        ID   : 3011\n  Executable   : \/usr\/lib\/plexmediaserver\/Plex Script Host\n  Command
+        line : Plex Plug-in [com.plexapp.plugins.WebTools] \/usr\/lib\/plexmediaserver\/Resources\/Plug-ins-3497d6779\/Framework.bundle\/Contents\/Resources\/Versions\/2\/Python\/bootstrap.py
+        --server-version 1.8.4.4249-3497d6779 \/var\/lib\/plexmediaserver\/Library\/Application
+        Support\/Plex Media Server\/Plug-ins\/WebTools.bundle"},{"count":"5","detectionMethod":"Active","name":"Process
+        ID   : 20684\n  Executable   : \/opt\/lce\/daemons\/lced\n  Command line :
+        \/opt\/lce\/daemons\/\/lced"}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080195}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['1590']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:56:35 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

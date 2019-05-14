@@ -1,0 +1,36 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: GET
+    uri: https://cloud.tenable.com/scans/1/attachments/1?key=none
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWSi0qyi9SslLyzCtLzMlMUVDPTq1UV0jLTM1JsVLIhAoCxRTS8otyE0uUagHa
+        OiB3MwAAAA==
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 06 Dec 2018 23:21:24 GMT']
+      expires: ['0']
+      pragma: ['']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-gateway-site-id: [nginx-router-d-prod-us-east-1]
+      x-request-uuid: [51c6bbbe03a398c92d7b04fc5997db94]
+      x-xss-protection: [mode=block]
+    status: {code: 400, message: Bad Request}
+version: 1

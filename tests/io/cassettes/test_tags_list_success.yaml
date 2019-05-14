@@ -1,0 +1,101 @@
+interactions:
+- request:
+    body: !!python/unicode '{"value": "Test", "category_name": "Example"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['45']
+      Content-Type: [application/json]
+      User-Agent: [pyTenable/0.3.8 (pyTenable/0.3.8; Python/2.7.15)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: POST
+    uri: https://cloud.tenable.com/tags/values
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42PMW7DMAxF76K5DEhJrSVPXXqDTFkMSqIKA7ZjJHJRI+jdywAtkK0dP/77D+TN
+        bNtYTG8CO/ROKnQ1duA5RkhMASJHRF/Iu+dgnky+CDcpAzfdWKQISGDDkUJP2FM4vFh7euDSrlyT
+        axu4zOPyuu5NFk6THMazYtta/qX75f7QZYXez5d9+HmKJFnRy6E6S+CjdJBKRUi5xuzEd0iosw+e
+        NlH8qGKNbV/v6dq4jfnRuvB8L94+eV4nMV/fFXXi6z0BAAA=
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 28 Jan 2019 18:10:18 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
+          path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [ip-10-1-177-140]
+      x-request-uuid: [4ea2311c64f40082a49ee2e523198c21]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [nginx-cloud-site-id=us-2b]
+      User-Agent: [pyTenable/0.3.8 (pyTenable/0.3.8; Python/2.7.15)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: GET
+    uri: https://cloud.tenable.com/tags/values?limit=1000&offset=0
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62Ry2rDMBBF/2XWVhjJSixp1U3/IKuWEsbSKBj8IpZLjfG/VykthEJpKN3pojOH
+        0dUKr9TOPIF7XmGemwAODJWoS46iirYSmqwVNUkjLFlEHaQu9wYK8BemxOFEKc8olFagFMocpXES
+        nTS7g1JPN1y9ZC7xlE4UuqZ/GJfEPdUt75ohY/MY7tJ9cb/ofIbOw2U5fT5Kcq04by5iqaTQlitR
+        h4ii9tH6knWFEvPYRxsZP2ZxjmkZr2lKlBp/a+2pu148vlE3tgxbsf7cx8HttZNqp/Ff+vim+2Mf
+        tvJo7D4KjsoI7T0K4vzn2hzY+KCCl9X9BSjYXgoY6dz0GRx6cCsMMU6cl8cC2qZr8kki5pCGRC04
+        tW3vl1Ruin0CAAA=
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 28 Jan 2019 18:10:19 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
+          path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [ip-10-1-177-140]
+      x-request-uuid: [7fcf4feefdd99983a5dd4545a2c68141]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Cookie: [nginx-cloud-site-id=us-2b]
+      User-Agent: [pyTenable/0.3.8 (pyTenable/0.3.8; Python/2.7.15)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: DELETE
+    uri: https://cloud.tenable.com/tags/values/8a3043ef-7f97-4a99-ba18-9a9004d14358
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['0']
+      content-type: [application/octet-stream]
+      date: ['Mon, 28 Jan 2019 18:10:19 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
+          path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [ip-10-1-177-140]
+      x-request-uuid: [07f5d896e2549d34a59953a656abfe7e]
+    status: {code: 200, message: OK}
+version: 1

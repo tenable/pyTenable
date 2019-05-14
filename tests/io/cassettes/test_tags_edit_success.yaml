@@ -1,0 +1,98 @@
+interactions:
+- request:
+    body: !!python/unicode '{"value": "Test", "category_name": "Example"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['45']
+      Content-Type: [application/json]
+      User-Agent: [pyTenable/0.3.8 (pyTenable/0.3.8; Python/2.7.15)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: POST
+    uri: https://cloud.tenable.com/tags/values
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42PzYrCMBSF3yVrr9ykSdN05cY3cDWbcpPcSKF/aDpMGXx3Iyi40+XhfOeD8y/W
+        tY+iFTp5x8bWYGrjQUsdwFlJEDFF7Z1qmtqInQgXpsyxo1w2CqUDlKCak7Qt2la5PVb488b5rXCZ
+        r7mjOPbTYdkyT+QH3vdzwdYlfqV7cR90oUDn+bJ1z1OSvWJdGUiVkqAdW/AxIfiQXKhYW5RYZr80
+        rFzwUxGXmLflka6Zch/erRONj+L4R+MysLjdAcRj/iA9AQAA
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 28 Jan 2019 17:07:29 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-b-prod-us-east-1]
+      x-request-uuid: [a7584b886c02f7ff202a64dc2c696675]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"value": "Edited"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['19']
+      Content-Type: [application/json]
+      Cookie: [nginx-cloud-site-id=us-2b]
+      User-Agent: [pyTenable/0.3.8 (pyTenable/0.3.8; Python/2.7.15)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: PUT
+    uri: https://cloud.tenable.com/tags/values/4fb9e576-565b-414c-971a-d0fd4b928865
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4XPMW7DMAwF0LtoLgNKlizLU5bcIFMWg5KoQoDtGIkcxAhy96pFB0/tSOL9T/Al
+        1jVH0QudvGNjWzCt8aClDuCsJIiYovZOdV1rxIcIN6bCcaBSMwqlA5SgurO0PdpeuQM2eNk5v1VX
+        +F4GilOej8tWeCY/8iFfK1uX+HedUfKyc//UhYo+r7dt+H1KslesGwOpURK0Yws+JgQfkgsNa4sS
+        a+xB48qVn2KuR+qibMv3fC9Uctj3zjT9wCdNy8ji/QUcZIwwPwEAAA==
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 28 Jan 2019 17:07:29 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-b-prod-us-east-1]
+      x-request-uuid: [a154839e978ddba8131879db205bc12e]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Cookie: [nginx-cloud-site-id=us-2b]
+      User-Agent: [pyTenable/0.3.8 (pyTenable/0.3.8; Python/2.7.15)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: DELETE
+    uri: https://cloud.tenable.com/tags/values/4fb9e576-565b-414c-971a-d0fd4b928865
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['0']
+      content-type: [application/octet-stream]
+      date: ['Mon, 28 Jan 2019 17:07:29 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-b-prod-us-east-1]
+      x-request-uuid: [17cc6a630414e4442ba766d0bfd4509e]
+    status: {code: 200, message: OK}
+version: 1

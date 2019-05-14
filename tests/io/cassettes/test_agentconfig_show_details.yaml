@@ -1,0 +1,33 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: GET
+    uri: https://cloud.tenable.com/scanners/1/agents/config
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwXBQQrAIAwEwL/s2UOht3xGIkaQShRNaEH8e2c22K1H11b1AW2IcmqSQYXbkgD5
+        Rp1stSvovk7A6sVenhJ9ZDYB2XQ5P+9utAdIAAAA
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 06 Dec 2018 23:17:29 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
+          path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-d-prod-us-east-2]
+      x-request-uuid: [3c8a6618d03cedb0e91d1b936f4928a6]
+    status: {code: 200, message: OK}
+version: 1

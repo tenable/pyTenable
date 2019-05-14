@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: GET
+    uri: https://cloud.tenable.com/workbenches/vulnerabilities/19506/info
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA31TTYvbMBD9K4PYwy7EQbbT3dT3QnvpoRsobLcYxR7HYmXJaORACPnvHSVOk+wm
+        a3yQ5z29efPhrdC2caLYisoNNohilk3EejC2PPuukSqv+6CdFYVYtJqgN8NKW6g19UZtaAKN84Cq
+        aiEgBayhdRQmEMV9p+JNUEs3BAgtAlXKgg6EpoHi1b5agAQWDKzRU6S6Zs8bkxCG6YkTNj1GQhSx
+        6OH+JxINBJx/PH13HT5Mb6qOrG+WtfGM1jsfjqr39AADYf0e9squcCQdwd8tsqyHymONNmhluHx2
+        E1rt66RXPmygV4Fb0ymrVtgxCeJTtVi9ESgfxYn00pzbqVXAo+WY8Bwa/KGl12E7dEv2w2AcAh3t
+        8jDYh1fGoLnKHv3UzuIFV0wEbazrSdON8d+Y89jpvT0WYXbleBibuG6EaMtGe+IdE5lM54nMk3S2
+        yGQxy4s8m0opX2LmyDPqREszZi7kU5E+FvlsOp9nL2IXeaysA2vLiTjYK2sMShuK6RrVacOgeMYQ
+        tF0RS3eu1o2u9q7L2O5DiqcklUn2uJCy2L/RhVVdRMeCnuP+/jiVzIR+WJoPUvJLIufvpeL+MkpD
+        1yluBf9th/Xk2N0vXOt4LiCdfpVwJy7q4io9NujRVliedVwUf/4ypOntMro9xBpVBeejex4sK1Zr
+        onKNh6AdjBlDS0VY8oQ8XoQDdrz6yly78h/7cC2/Qs9vpMg/y5HfSEJBr8pTc2JwvwVYKkMutmS3
+        +weuNH203QQAAA==
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 06 Dec 2018 23:23:19 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
+          path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-gateway-site-id: [nginx-router-a-prod-us-east-2]
+      x-request-uuid: [a4f9e32d5fc6b7374e439e4301d78eac]
+      x-xss-protection: [mode=block]
+    status: {code: 200, message: OK}
+version: 1

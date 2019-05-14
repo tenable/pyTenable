@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: !!python/unicode '{"query": {"tool": "iavmipdetail", "type": "vuln", "startOffset":
+      0, "filters": [], "endOffset": 5}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['144']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"15","returnedRecords":5,"startOffset":"0","endOffset":"5","matchingDataElementCount":"15","results":[{"iavmID":"2017-A-0165","total":"2","hosts":[{"repositoryID":"1","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"UNKNOWN\\torrents.home.cugnet.net","dnsName":"torrents.home.cugnet.net"}]},{"repositoryID":"2","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"","dnsName":"torrents.home.cugnet.net"}]}]},{"iavmID":"2017-B-0075","total":"2","hosts":[{"repositoryID":"1","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"UNKNOWN\\torrents.home.cugnet.net","dnsName":"torrents.home.cugnet.net"}]},{"repositoryID":"2","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"","dnsName":"torrents.home.cugnet.net"}]}]},{"iavmID":"2017-A-0284","total":"2","hosts":[{"repositoryID":"1","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"UNKNOWN\\torrents.home.cugnet.net","dnsName":"torrents.home.cugnet.net"}]},{"repositoryID":"2","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"","dnsName":"torrents.home.cugnet.net"}]}]},{"iavmID":"2017-A-0310","total":"2","hosts":[{"repositoryID":"1","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"UNKNOWN\\torrents.home.cugnet.net","dnsName":"torrents.home.cugnet.net"}]},{"repositoryID":"2","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"","dnsName":"torrents.home.cugnet.net"}]}]},{"iavmID":"2018-A-0020","total":"2","hosts":[{"repositoryID":"1","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"UNKNOWN\\torrents.home.cugnet.net","dnsName":"torrents.home.cugnet.net"}]},{"repositoryID":"2","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"","dnsName":"torrents.home.cugnet.net"}]}]}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080190}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['2517']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:56:30 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"query": {"tool": "iavmipdetail", "type": "vuln", "startOffset":
+      5, "filters": [], "endOffset": 10}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['145']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"15","returnedRecords":5,"startOffset":"5","endOffset":"10","matchingDataElementCount":"15","results":[{"iavmID":"2018-A-0019","total":"2","hosts":[{"repositoryID":"1","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"UNKNOWN\\torrents.home.cugnet.net","dnsName":"torrents.home.cugnet.net"}]},{"repositoryID":"2","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"","dnsName":"torrents.home.cugnet.net"}]}]},{"iavmID":"2018-B-0034","total":"2","hosts":[{"repositoryID":"1","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"UNKNOWN\\torrents.home.cugnet.net","dnsName":"torrents.home.cugnet.net"}]},{"repositoryID":"2","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"","dnsName":"torrents.home.cugnet.net"}]}]},{"iavmID":"2018-A-0162","total":"4","hosts":[{"repositoryID":"1","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"UNKNOWN\\torrents.home.cugnet.net","dnsName":"torrents.home.cugnet.net"},{"ip":"192.168.101.140","uuid":"dd1e509a-1ff4-49ec-afe9-20603321c3e1","macAddress":"00:0c:29:1a:07:6f","netbiosName":"UNKNOWN\\herfio.home.cugnet.net","dnsName":"herfio.home.cugnet.net"}]},{"repositoryID":"2","iplist":[{"ip":"192.168.101.140","uuid":"dd1e509a-1ff4-49ec-afe9-20603321c3e1","macAddress":"00:0c:29:1a:07:6f","netbiosName":"","dnsName":"herfio.home.cugnet.net"},{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"","dnsName":"torrents.home.cugnet.net"}]}]},{"iavmID":"2018-A-0174","total":"4","hosts":[{"repositoryID":"1","iplist":[{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"UNKNOWN\\torrents.home.cugnet.net","dnsName":"torrents.home.cugnet.net"},{"ip":"192.168.101.140","uuid":"dd1e509a-1ff4-49ec-afe9-20603321c3e1","macAddress":"00:0c:29:1a:07:6f","netbiosName":"UNKNOWN\\herfio.home.cugnet.net","dnsName":"herfio.home.cugnet.net"}]},{"repositoryID":"2","iplist":[{"ip":"192.168.101.140","uuid":"dd1e509a-1ff4-49ec-afe9-20603321c3e1","macAddress":"00:0c:29:1a:07:6f","netbiosName":"","dnsName":"herfio.home.cugnet.net"},{"ip":"192.168.101.130","uuid":"eb6c151b-166f-44ee-8e40-4db763d3a43d","macAddress":"00:0c:29:99:4f:e9","netbiosName":"","dnsName":"torrents.home.cugnet.net"}]}]},{"iavmID":"2018-A-0147","total":"1","hosts":[{"repositoryID":"2","iplist":[{"ip":"192.168.100.114","uuid":"c2d9e0b8-d88e-46ed-b7f4-86062e3ab42b","macAddress":"62:45:b4:ed:2f:1c","netbiosName":"UNKNOWN\\FREELANCER","dnsName":"freelancer"}]}]}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080192}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['2986']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:56:32 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

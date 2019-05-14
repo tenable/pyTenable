@@ -1,0 +1,112 @@
+interactions:
+- request:
+    body: !!python/unicode '{"query": {"tool": "vulnipsummary", "type": "vuln", "startOffset":
+      0, "filters": [], "endOffset": 5}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['145']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"358","returnedRecords":5,"startOffset":"0","endOffset":"5","matchingDataElementCount":"1629","results":[{"pluginID":"10092","total":"1","severity":{"id":"0","name":"Info","description":"Informative"},"name":"FTP
+        Server Detection","pluginDescription":"It is possible to obtain the banner
+        of the remote FTP server by connecting to a remote port.","repositoryID":"1","hosts":[{"iplist":"192.168.101.30","uuidIPsList":"","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}}],"family":{"id":"24","name":"Service
+        detection","type":"active"}},{"pluginID":"10107","total":"19","severity":{"id":"0","name":"Info","description":"Informative"},"name":"HTTP
+        Server Type and Version","pluginDescription":"This plugin attempts to determine
+        the type and the version of the   remote web server.","repositoryID":"1","hosts":[{"iplist":"192.168.100.1,192.168.100.1,192.168.100.5,192.168.100.5,192.168.100.10,192.168.100.10,192.168.101.1,192.168.101.30,192.168.101.30,192.168.101.30,192.168.101.30,192.168.101.115,192.168.101.117,192.168.101.130,192.168.101.133,192.168.101.177-192.168.101.178,192.168.101.189,192.168.102.1,192.168.102.1,192.168.104.106,192.168.104.109,192.168.104.114-192.168.104.115,192.168.104.126-192.168.104.127","uuidIPsList":"","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}}],"family":{"id":"11","name":"Web
+        Servers","type":"active"}},{"pluginID":"10114","total":"22","severity":{"id":"0","name":"Info","description":"Informative"},"name":"ICMP
+        Timestamp Request Remote Date Disclosure","pluginDescription":"The remote
+        host answers to an ICMP timestamp request.  This allows an attacker to know
+        the date that is set on the targeted machine, which may assist an unauthenticated,
+        remote attacker in defeating time-based authentication protocols.\n\nTimestamps
+        returned from machines running Windows Vista \/ 7 \/ 2008 \/ 2008 R2 are deliberately
+        incorrect, but usually within 1000 seconds of the actual system time.","repositoryID":"1","hosts":[{"iplist":"192.168.100.1,192.168.100.5,192.168.100.10,192.168.101.1,192.168.101.30,192.168.101.115,192.168.101.117,192.168.101.130,192.168.101.133,192.168.101.140,192.168.101.146,192.168.101.177-192.168.101.178,192.168.101.189,192.168.101.191,192.168.102.1,192.168.104.106,192.168.104.109,192.168.104.114-192.168.104.115,192.168.104.126-192.168.104.127","uuidIPsList":"","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}}],"family":{"id":"30","name":"General","type":"active"}},{"pluginID":"10150","total":"2","severity":{"id":"0","name":"Info","description":"Informative"},"name":"Windows
+        NetBIOS \/ SMB Remote Host Information Disclosure","pluginDescription":"The
+        remote host is listening on UDP port 137 or TCP port 445, and replies to NetBIOS
+        nbtscan or SMB requests.\n\nNote that this plugin gathers information to be
+        used in other plugins, but does not itself generate a report.","repositoryID":"1","hosts":[{"iplist":"192.168.101.30,192.168.104.124","uuidIPsList":"","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}}],"family":{"id":"20","name":"Windows","type":"active"}},{"pluginID":"10223","total":"1","severity":{"id":"0","name":"Info","description":"Informative"},"name":"RPC
+        portmapper Service Detection","pluginDescription":"The RPC portmapper is running
+        on this port.\n\nThe portmapper allows someone to get the port number of each
+        RPC service running on the remote host by sending either multiple lookup requests
+        or a DUMP request.","repositoryID":"1","hosts":[{"iplist":"192.168.101.30","uuidIPsList":"","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}}],"family":{"id":"28","name":"RPC","type":"active"}}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080233}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['3831']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:57:13 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"query": {"tool": "vulnipsummary", "type": "vuln", "startOffset":
+      5, "filters": [], "endOffset": 10}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['146']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"358","returnedRecords":5,"startOffset":"5","endOffset":"10","matchingDataElementCount":"1629","results":[{"pluginID":"10267","total":"14","severity":{"id":"0","name":"Info","description":"Informative"},"name":"SSH
+        Server Type and Version Information","pluginDescription":"It is possible to
+        obtain information about the remote SSH server by sending an empty authentication
+        request.","repositoryID":"1","hosts":[{"iplist":"192.168.100.5,192.168.100.10,192.168.101.30,192.168.101.115,192.168.101.117,192.168.101.130,192.168.101.133,192.168.101.140,192.168.101.146,192.168.101.177-192.168.101.179,192.168.101.189,192.168.101.191","uuidIPsList":"","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}}],"family":{"id":"24","name":"Service
+        detection","type":"active"}},{"pluginID":"10281","total":"2","severity":{"id":"0","name":"Info","description":"Informative"},"name":"Telnet
+        Server Detection","pluginDescription":"The remote host is running a Telnet
+        server, a remote terminal server.","repositoryID":"1","hosts":[{"iplist":"192.168.100.5,192.168.100.10","uuidIPsList":"","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}}],"family":{"id":"24","name":"Service
+        detection","type":"active"}},{"pluginID":"10287","total":"24","severity":{"id":"0","name":"Info","description":"Informative"},"name":"Traceroute
+        Information","pluginDescription":"Makes a traceroute to the remote host.","repositoryID":"1","hosts":[{"iplist":"192.168.100.1,192.168.100.3-192.168.100.5,192.168.100.10,192.168.101.30,192.168.101.115,192.168.101.117,192.168.101.130,192.168.101.133,192.168.101.140,192.168.101.146,192.168.101.177-192.168.101.178,192.168.101.189,192.168.101.191,192.168.102.1,192.168.104.106,192.168.104.109,192.168.104.114-192.168.104.115,192.168.104.123,192.168.104.126-192.168.104.127","uuidIPsList":"","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}}],"family":{"id":"30","name":"General","type":"active"}},{"pluginID":"10302","total":"2","severity":{"id":"0","name":"Info","description":"Informative"},"name":"Web
+        Server robots.txt Information Disclosure","pluginDescription":"The remote
+        host contains a file named ''robots.txt'' that is intended to prevent web
+        ''robots'' from visiting certain directories in a website for maintenance
+        or indexing purposes.  A malicious user may also be able to use the contents
+        of this file to learn of sensitive documents or directories on the affected
+        site and either retrieve them directly or target them for other attacks.","repositoryID":"1","hosts":[{"iplist":"192.168.101.30,192.168.101.115","uuidIPsList":"","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}}],"family":{"id":"11","name":"Web
+        Servers","type":"active"}},{"pluginID":"10386","total":"10","severity":{"id":"0","name":"Info","description":"Informative"},"name":"Web
+        Server No 404 Error Code Check","pluginDescription":"The remote web server
+        is configured such that it does not return ''404 Not Found'' error codes when
+        a nonexistent file is requested, perhaps returning instead a site map, search
+        page or authentication page.\n\nNessus has enabled some counter measures for
+        this.  However, they might be insufficient.  If a great number of security
+        holes are produced for this port, they might not all be accurate.","repositoryID":"1","hosts":[{"iplist":"192.168.100.1,192.168.100.3-192.168.100.4,192.168.101.1,192.168.101.30,192.168.101.30,192.168.101.130,192.168.101.133,192.168.101.177,192.168.101.191,192.168.102.1","uuidIPsList":"","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}}],"family":{"id":"11","name":"Web
+        Servers","type":"active"}}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080234}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['3793']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:57:14 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

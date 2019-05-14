@@ -1,0 +1,37 @@
+interactions:
+- request:
+    body: !!python/unicode '{"username": "7afc24ad-9ae7-4bee-8e9e-f5686902fbf8@pytenable.io",
+      "password": "99ff0d48-36c8-4c72-8421-58487802ffb7Tt!", "type": "local", "permissions":
+      16}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['156']
+      Content-Type: [application/json]
+      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: POST
+    uri: https://cloud.tenable.com/users
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWKi5JLCktds5PSVWyMjEw1lFKLSrKL1KyUnLLL0rKTElJzVPSUcpNLS5OTAeq
+        UPLMKy5NS8tMzkzNK1EoTs4vSFWqBQChW+L4RQAAAA==
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Fri, 07 Dec 2018 00:07:31 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
+          path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-d-prod-us-east-2]
+      x-request-uuid: [fcdcd5194bb11e396410869f73261b47]
+    status: {code: 403, message: Forbidden}
+version: 1

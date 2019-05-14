@@ -1,0 +1,96 @@
+interactions:
+- request:
+    body: !!python/unicode '{"value": "Test", "category_name": "Example"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['45']
+      Content-Type: [application/json]
+      User-Agent: [pyTenable/0.3.8 (pyTenable/0.3.8; Python/2.7.15)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: POST
+    uri: https://cloud.tenable.com/tags/values
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42PwQrCMBBE/yVnt2STSJqevPgHPXkpm2QrhbYWTcUi/rspKPSmx2HePJinmOcu
+        ikqUxqAOLgCXHMF4G8FLRiCjpXFoSaEVOxGuTIljQylvlEQHEkGVNdpK2krZAlV52nB+yVziW2oo
+        Dt14mJbEI/mei+6SsXmKf+m+3A9dyND5cl2azylkr9joPbRaIRjHFnxsJfjQuqDZWIkyz+7Uz5zx
+        OotzTMu0plui1IWtdaRhLY4PGqaexesNH54O3T0BAAA=
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 28 Jan 2019 17:07:27 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-a-prod-us-east-1]
+      x-request-uuid: [fa1eb9a9468ead0e482fd6dd537433d1]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Cookie: [nginx-cloud-site-id=us-2b]
+      User-Agent: [pyTenable/0.3.8 (pyTenable/0.3.8; Python/2.7.15)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: GET
+    uri: https://cloud.tenable.com/tags/values/84413c9c-e8ed-4b7d-b0e1-a4304917a217
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42PwQrCMBBE/yVnt2STSJqevPgHPXkpm2QrhbYWTcUi/rspKPSmx2HePJinmOcu
+        ikqUxqAOLgCXHMF4G8FLRiCjpXFoSaEVOxGuTIljQylvlEQHEkGVNdpK2krZAlV52nB+yVziW2oo
+        Dt14mJbEI/mei+6SsXmKf+m+3A9dyND5cl2azylkr9joPbRaIRjHFnxsJfjQuqDZWIkyz+7Uz5zx
+        OotzTMu0plui1IWtdaRhLY4PGqaexesNH54O3T0BAAA=
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 28 Jan 2019 17:07:27 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-a-prod-us-east-1]
+      x-request-uuid: [be5a9ee57cb42458c8993a07ef97aec5]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Cookie: [nginx-cloud-site-id=us-2b]
+      User-Agent: [pyTenable/0.3.8 (pyTenable/0.3.8; Python/2.7.15)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: DELETE
+    uri: https://cloud.tenable.com/tags/values/84413c9c-e8ed-4b7d-b0e1-a4304917a217
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['0']
+      content-type: [application/octet-stream]
+      date: ['Mon, 28 Jan 2019 17:07:28 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-a-prod-us-east-1]
+      x-request-uuid: [acc152d98c08cf6abf64937bcd4bfe00]
+    status: {code: 200, message: OK}
+version: 1

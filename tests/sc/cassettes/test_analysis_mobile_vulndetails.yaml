@@ -1,0 +1,357 @@
+interactions:
+- request:
+    body: !!python/unicode '{"query": {"tool": "vulndetails", "type": "mobile", "startOffset":
+      0, "filters": [], "endOffset": 5}, "type": "mobile", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['147']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"244","returnedRecords":5,"startOffset":"0","endOffset":"5","matchingDataElementCount":"-1
+        ","results":[{"pluginID":"60035","severity":{"id":"0","name":"Info","description":"Informative"},"identifier":"iPad\/roL89WeF21YvMYPryaT8KileVoCFnintNfh515lk","model":"iPad","serial":"BnvalFZVrSMQTLbOmmTWgi9Qdi2jMgtdxGI6cEdC","deviceVersion":"6.1.3","port":"0","protocol":"tcp","pluginName":"MDM
+        Mobile Device Reporting","user":"John Doe","mdmType":"","osCPE":"","lastSeen":"-1","pluginOutput":"Serial
+        Number : BnvalFZVrSMQTLbOmmTWgi9Qdi2jMgtdxGI6cEdC\\nDevice : iPad 4th generation
+        (WiFi)\\nModel : iPad\\nVersion : 6.1.3\\nTimestamp : No Timestamp (Good MDM)\\nUser
+        : John Doe\\nManaged By :\\n    Good MDM","exploitAvailable":"No","exploitEase":"","exploitFrameworks":"","synopsis":"Gathers
+        mobile device information from MDMs and reports settings.","description":"This
+        plugin gathers the information provided from mobile device management systems
+        around the network and reports the devices, information, and where they are
+        managed.","solution":"n\/a","seeAlso":"","riskFactor":"None","stigSeverity":"","baseScore":"0.0","temporalScore":"0.0","cvssVector":"","cvssV3BaseScore":"0.0","cvssV3TemporalScore":"0.0","cvssV3Vector":"","cpe":"","vulnPubDate":"-1","patchPubDate":"-1","pluginPubDate":"1338480000","pluginModDate":"1544806800","checkType":"local","version":"1.52","cve":"","bid":"","xref":"","repository":{"id":"3","name":"GoodMDM","description":"","dataFormat":"mobile"},"pluginInfo":"60035
+        (0\/tcp) MDM Mobile Device Reporting"},{"pluginID":"60035","severity":{"id":"0","name":"Info","description":"Informative"},"identifier":"iPad\/yk1Ts71l2oIdEJN4E7if5RYLmxyrDlZS6p1p3o1G","model":"iPad","serial":"tikYUxqZFKNzBRrWbY6WCQJO0mZ4i54p1JHK106s","deviceVersion":"6.1.3","port":"0","protocol":"tcp","pluginName":"MDM
+        Mobile Device Reporting","user":"John0 Doe0","mdmType":"","osCPE":"","lastSeen":"-1","pluginOutput":"Serial
+        Number : tikYUxqZFKNzBRrWbY6WCQJO0mZ4i54p1JHK106s\\nDevice : iPad mini (WiFi)\\nModel
+        : iPad\\nVersion : 6.1.3\\nTimestamp : No Timestamp (Good MDM)\\nUser : John0
+        Doe0\\nManaged By :\\n    Good MDM","exploitAvailable":"No","exploitEase":"","exploitFrameworks":"","synopsis":"Gathers
+        mobile device information from MDMs and reports settings.","description":"This
+        plugin gathers the information provided from mobile device management systems
+        around the network and reports the devices, information, and where they are
+        managed.","solution":"n\/a","seeAlso":"","riskFactor":"None","stigSeverity":"","baseScore":"0.0","temporalScore":"0.0","cvssVector":"","cvssV3BaseScore":"0.0","cvssV3TemporalScore":"0.0","cvssV3Vector":"","cpe":"","vulnPubDate":"-1","patchPubDate":"-1","pluginPubDate":"1338480000","pluginModDate":"1544806800","checkType":"local","version":"1.52","cve":"","bid":"","xref":"","repository":{"id":"3","name":"GoodMDM","description":"","dataFormat":"mobile"},"pluginInfo":"60035
+        (0\/tcp) MDM Mobile Device Reporting"},{"pluginID":"60026","severity":{"id":"3","name":"High","description":"High
+        Severity"},"identifier":"iPhone\/M1DUzuSKEg","model":"iPhone","serial":"XreYyuUVc9","deviceVersion":"4.4.8","port":"0","protocol":"tcp","pluginName":"Apple
+        iOS < 5.0 Multiple Vulnerabilities (BEAST)","user":"","mdmType":"","osCPE":"cpe:\/o:apple:ios","lastSeen":"1365772591","pluginOutput":"Apple
+        iOS vulnerable version detected\\n  Model         :  iPhone\\n  Serial Number
+        :  XreYyuUVc9\\n  Version       :  4.4.8\\n  Fixed Version :  5.0 ","exploitAvailable":"Yes","exploitEase":"Exploits
+        are available","exploitFrameworks":"","synopsis":"Report iOS devices older
+        than 5.0.","description":"The mobile device is running a version of iOS that
+        is prior to version 5.0. Version 5.0 contains numerous security-related fixes
+        for the following vulnerabilities :\\n\\n  - Apple iOS Calendar Synchronization
+        SSL Certificate     Validation Information Disclosure Vulnerability     (CVE-2011-3253)\\n\\n  -
+        Apple iOS Calendar Cross-Site Scripting Vulnerability     (CVE-2011-3254)\\n\\n  -
+        Apple iOS CFNetwork Information Disclosure Vulnerability     (CVE-2011-3255)\\n\\n  -
+        Apple iOS and Mac OS X CFNetwork Cross Domain     Information Disclosure Vulnerability
+        (CVE-2011-3246)\\n\\n  - Apple Mac OS X CoreFoundation Memory Corruption     Vulnerability
+        (CVE-2011-0259)\\n\\n  - FreeType Font Document Multiple Memory Corruption     Vulnerabilities
+        (CVE-2011-3256)\\n\\n  - Apple Mac OS X QuickTime Cross-Domain Information     Disclosure
+        Vulnerability (CVE-2011-0187)\\n\\n  - Apple iOS Mail Cookie Synchronization
+        Validation     Information Disclosure Vulnerability (CVE-2011-3257)\\n\\n  -
+        An information disclosure vulnerability, known as BEAST,     exists in the
+        SSL 3.0 and TLS 1.0 protocols due to a     flaw in the way the initialization
+        vector (IV) is     selected when operating in cipher-block chaining (CBC)     modes.
+        A man-in-the-middle attacker can exploit this     to obtain plaintext HTTP
+        header data, by using a     blockwise chosen-boundary attack (BCBA) on an
+        HTTPS     session, in conjunction with JavaScript code that uses     the HTML5
+        WebSocket API, the Java URLConnection API,     or the Silverlight WebClient
+        API. (CVE-2011-3389)\\n\\n  - Opera Web Browser Information Disclosure Vulnerability\\n\\n  -
+        Apple iOS Home Screen Information Disclosure     Vulnerability (CVE-2011-3431)\\n\\n  -
+        libTIFF CCITT Group 4 Encoded TIFF Image Buffer Overflow     Vulnerability
+        (CVE-2011-0192)\\n\\n  - Apple Safari ImageIO TIFF Image Handling Heap Buffer     Overflow
+        Vulnerability (CVE-2011-0241)\\n\\n  - Apple Mac OS X ICU Buffer Overflow
+        Vulnerability     (CVE-2011-0206)\\n\\n  - Apple Kernel TCP Exhaustion Denial
+        of Service     Vulnerability (CVE-2011-3259)\\n\\n  - Apple Mac OS X IPV6
+        Socket Options Denial of Service     Vulnerability (CVE-2011-1132)\\n\\n  -
+        Apple iOS Keyboard Information Disclosure Vulnerability     (CVE-2011-3245)\\n\\n  -
+        Apple Safari ''libxml'' Remote Code Execution     Vulnerability (CVE-2011-0216)\\n\\n  -
+        Apple iPhone\/iPad\/iPod Touch prior to iOS 5 Buffer     Overflow Vulnerability
+        (CVE-2011-3260)\\n\\n  - Apple iPhone\/iPad\/iPod Touch prior to iOS 5 Remote
+        Code     Execution Vulnerability (CVE-2011-3261)\\n\\n  - Apple Mac OS X QuickLook
+        Office File Memory Corruption     Vulnerability (CVE-2011-0208)\\n\\n  - Apple
+        Mac OS X QuickLook Remote Code Execution     Vulnerability (CVE-2011-0184)\\n\\n  -
+        Apple iPhone\/iPad\/iPod Touch ''Content-Disposition''     Header Cross-Site
+        Scripting Vulnerability     (CVE-2011-3246)\\n\\n  - Apple iOS Parental Restrictions
+        Passcode Information     Disclosure Vulnerability (CVE-2011-3249)\\n\\n  -
+        Apple iOS Insecure Misleading UI Insecure     Configuration Weakness (CVE-2011-3430)\\n\\n  -
+        Apple iOS Remote Denial of Service Vulnerability     (CVE-2011-3432)\\n\\n  -
+        WebKit Memory Corruption Remote Code Execution     Vulnerability (CVE-2011-0218)\\n\\n  -
+        WebKit Memory Corruption Remote Code Execution     Vulnerability (CVE-2011-0221)\\n\\n  -
+        WebKit Memory Corruption Remote Code Execution     Vulnerability (CVE-2011-0222)\\n\\n  -
+        WebKit Memory Corruption Remote Code Execution     Vulnerability (CVE-2011-0225)\\n\\n  -
+        WebKit Memory Corruption Remote Code Execution     Vulnerability (CVE-2011-0232)\\n\\n  -
+        WebKit FrameOwner Element Memory Corruption Remote     Code Execution Vulnerability
+        (CVE-2011-0233)\\n\\n  - WebKit Malformed XHTML Tags Use-After-Free     Memory
+        Corruption Vulnerability (CVE-2011-0234)\\n\\n  - WebKit Memory Corruption
+        Remote Code Execution     Vulnerability (CVE-2011-0235)\\n\\n  - WebKit Memory
+        Corruption Remote Code Execution     Vulnerability (CVE-2011-0238)\\n\\n  -
+        WebKit ''NamedNodeMap.cpp'' Memory Corruption Remote     Code Execution Vulnerability
+        (CVE-2011-0254)\\n\\n  - WebKit Memory Corruption Remote Code Execution     Vulnerability
+        (CVE-2011-0255)\\n\\n  - Google Chrome prior to 9.0.597.94 Multiple Security     Vulnerabilities
+        (CVE-2011-0981)\\n\\n  - Google Chrome prior to 9.0.597.107 Multiple Security     Vulnerabilities
+        (CVE-2011-1109)\\n\\n  - Google Chrome prior to 10.0.648.127 Multiple Security     Vulnerabilities
+        (CVE-2011-1188)\\n\\n  - WebKit Memory Corruption Remote Code Execution     Vulnerability
+        (CVE-2011-1288)\\n\\n  - Google Chrome prior to 10.0.648.204 Multiple Security     Vulnerabilities
+        (CVE-2011-1293)\\n\\n  - Google Chrome prior to 11.0.696.57 Multiple Security     Vulnerabilities
+        (CVE-2011-1449)\\n\\n  - WebKit MathML Tags Use-After-Free Remote Code Execution     Vulnerability\\n\\n  -
+        WebKit Memory Corruption Remote Code Execution     Vulnerability (CVE-2011-1453)\\n\\n  -
+        WebKit Memory Corruption Remote Code Execution     Vulnerability (CVE-2011-1457)\\n\\n  -
+        WebKit Memory Corruption Remote Code Execution     Vulnerability (CVE-2011-1462)\\n\\n  -
+        WebKit Memory Corruption Remote Code Execution     Vulnerability (CVE-2011-1797)\\n\\n  -
+        WebKit Multiple Unspecified Remote Code Execution     Vulnerabilities (CVE-2011-2338)\\n\\n  -
+        WebKit Style Sheet Elements Remote Code Execution     Vulnerability (CVE-2011-2341)\\n\\n  -
+        Google Chrome Prior to 12.0.742.112 Multiple Security     Vulnerabilities
+        (CVE-2011-2351)\\n\\n  - Google Chrome Prior to 13.0.782.107 Multiple Security     Vulnerabilities
+        (CVE-2011-2359)\\n\\n  - Google Chrome Prior to 13.0.782.215 Multiple Security     Vulnerabilities
+        (CVE-2011-2823)\\n\\n  - Mozilla Firefox\/Thunderbird\/SeaMonkey YARR Remote
+        Code     Execution Vulnerability (CVE-2011-3232)\\n\\n  - Google Chrome Prior
+        to 14.0.835.163 Multiple Security     Vulnerabilities (CVE-2011-3234)\\n\\n  -
+        WebKit Embedded URL Cross Domain Scripting Vulnerability     (CVE-2011-0242)\\n\\n  -
+        WebKit Address Bar URI Spoofing Vulnerability     (CVE-2011-1107)\\n\\n  -
+        WebKit ''libxslt'' Remote Code Execution Vulnerability     (CVE-2011-1774)\\n\\n  -
+        WebKit ''HTML5'' Drag and Drop Cross-Origin Information     Disclosure Vulnerability
+        (CVE-2011-0166)\\n\\n  - WebKit Inactive DOM Windows Cross Domain Scripting     Vulnerability
+        (CVE-2011-3243)\\n\\n  - Apple iOS WiFi Credentials Information Disclosure     Vulnerability
+        (CVE-2011-3234)","solution":"Apple has released a set of patches for your
+        iOS-based device.","seeAlso":"https:\/\/support.apple.com\/en-us\/HT202349\\nhttps:\/\/www.imperialviolet.org\/2011\/09\/23\/chromeandbeast.html\\nhttps:\/\/www.openssl.org\/~bodo\/tls-cbc.txt","riskFactor":"High","stigSeverity":"","baseScore":"9.3","temporalScore":"7.7","cvssVector":"AV:N\/AC:M\/Au:N\/C:C\/I:C\/A:C\/E:F\/RL:OF\/RC:C","cvssV3BaseScore":"0.0","cvssV3TemporalScore":"0.0","cvssV3Vector":"","cpe":"cpe:\/o:apple:iphone_os","vulnPubDate":"-1","patchPubDate":"1338480000","pluginPubDate":"1340121600","pluginModDate":"1544806800","checkType":"local","version":"1.61","cve":"CVE-2011-3389,CVE-2011-1107,CVE-2011-1109,CVE-2011-1114,CVE-2011-1115,CVE-2011-1117,CVE-2011-1121,CVE-2011-0187,CVE-2011-0166,CVE-2011-0192,CVE-2011-0981,CVE-2011-0983,CVE-2011-1449,CVE-2011-1451,CVE-2011-2338,CVE-2011-2339,CVE-2011-2341,CVE-2011-2351,CVE-2011-2352,CVE-2011-2354,CVE-2011-2356,CVE-2011-2359,CVE-2011-2788,CVE-2011-2790,CVE-2011-2792,CVE-2011-2797,CVE-2011-2799,CVE-2011-2805,CVE-2011-2809,CVE-2011-2813,CVE-2011-2814,CVE-2011-2816,CVE-2011-2817,CVE-2011-2818,CVE-2011-2819,CVE-2011-2820,CVE-2011-2823,CVE-2011-2827,CVE-2011-2831,CVE-2011-3232,CVE-2011-3234,CVE-2011-3235,CVE-2011-3236,CVE-2011-3237,CVE-2011-3243,CVE-2011-1293,CVE-2011-1295,CVE-2011-1296,CVE-2011-0206,CVE-2011-0208,CVE-2011-1132,CVE-2011-3246,CVE-2011-3256,CVE-2011-0184,CVE-2011-0216,CVE-2011-0218,CVE-2011-0222,CVE-2011-0225,CVE-2011-0232,CVE-2011-0233,CVE-2011-0234,CVE-2011-0235,CVE-2011-0238,CVE-2011-0241,CVE-2011-0242,CVE-2011-0254,CVE-2011-0255,CVE-2011-0259,CVE-2011-1188,CVE-2011-1190,CVE-2011-1203,CVE-2011-1204,CVE-2011-1288,CVE-2011-1453,CVE-2011-1457,CVE-2011-1462,CVE-2011-1774,CVE-2011-1797,CVE-2011-2800,CVE-2011-3244,CVE-2011-3245,CVE-2011-3253,CVE-2011-3254,CVE-2011-3255,CVE-2011-3257,CVE-2011-3259,CVE-2011-3260,CVE-2011-3261,CVE-2011-3426,CVE-2011-3427,CVE-2011-3429,CVE-2011-3430,CVE-2011-3431,CVE-2011-3432,CVE-2011-3434,CVE-2011-0221","bid":"49279,49658,49778,46614,47020,46992,46658,46811,46262,47604,48479,48960,49850,50066,51032,47029,48422,48429,48440,50115,50155,46965,48823,48824,48832,48833,48840,48842,48844,48845,48846,48847,48848,48852,48853,48854,48855,48856,48857,48858,48859,50067,50087,50088,50123,50124,50143,50147,50149,50151,50152,50154,50156,50157,50158,50159,50161,46785,48843,48850,49388","xref":"CERT
+        #864643","repository":{"id":"3","name":"GoodMDM","description":"","dataFormat":"mobile"},"pluginInfo":"60026
+        (0\/tcp) Apple iOS < 5.0 Multiple Vulnerabilities (BEAST)"},{"pluginID":"64287","severity":{"id":"3","name":"High","description":"High
+        Severity"},"identifier":"iPhone\/M1DUzuSKEg","model":"iPhone","serial":"XreYyuUVc9","deviceVersion":"4.4.8","port":"0","protocol":"tcp","pluginName":"Apple
+        iOS < 6.1 Multiple Vulnerabilities","user":"","mdmType":"","osCPE":"cpe:\/o:apple:ios","lastSeen":"1365772591","pluginOutput":"Apple
+        iOS vulnerable version detected\\n  Model         :  iPhone\\n  Serial Number
+        :  XreYyuUVc9\\n  Version       :  4.4.8\\n  Fixed Version :  6.1 ","exploitAvailable":"No","exploitEase":"No
+        known exploits are available","exploitFrameworks":"","synopsis":"Report iOS
+        devices older than 6.1.","description":"The mobile device is running a version
+        of iOS that is older than version 6.1.  This version contains security-related
+        fixes for the following issues :\\n\\n  - An error related to ''EUC-JP'' encoding
+        could allow cross-     site scripting attacks. (CVE-2011-3058)\\n\\n  - An
+        out-of-bounds read error exists related to 802.11i     information handling
+        that could allow remote attackers     to disable WiFi. (CVE-2012-2619)\\n\\n  -
+        An error exists related to certificate-based     ''Apple ID'' authentication
+        that could allow improper     trust extension. (CVE-2013-0963)\\n\\n  - An
+        error exists related to the ''copyin'' and ''copyout''     functions that
+        could allow a user-mode process to access     the first page of kernel memory.
+        (CVE-2013-0964)\\n\\n  - An error exists related to Mobile Safari     preferences
+        that could improperly allow JavaScript     to be enabled after a user has
+        disabled it.\\n    (CVE-2013-0974)\\n\\n  - Many errors exist related to the
+        bundled ''WebKit''     components. (CVE-2012-2824, CVE-2012-2857,     CVE-2012-2889,
+        CVE-2012-3606, CVE-2012-3607,     CVE-2012-3621, CVE-2012-3632, CVE-2012-3687,     CVE-2012-3701,
+        CVE-2013-0948, CVE-2013-0949,     CVE-2013-0950, CVE-2013-0951, CVE-2013-0952,     CVE-2013-0953,
+        CVE-2013-0954, CVE-2013-0955,     CVE-2013-0956, CVE-2013-0958, CVE-2013-0959,     CVE-2013-0962,
+        CVE-2013-0968)\\n\\n  - Two intermediate certificates, improperly issued by     TURKTRUST
+        certificate authority, are incorrectly     trusted.","solution":"Apple has
+        released a set of patches for iOS-based devices.","seeAlso":"https:\/\/support.apple.com\/en-us\/HT202673\\nhttps:\/\/lists.apple.com\/archives\/security-announce\/2013\/Jan\/msg00000.html","riskFactor":"High","stigSeverity":"","baseScore":"9.3","temporalScore":"6.9","cvssVector":"AV:N\/AC:M\/Au:N\/C:C\/I:C\/A:C\/E:U\/RL:OF\/RC:C","cvssV3BaseScore":"0.0","cvssV3TemporalScore":"0.0","cvssV3Vector":"","cpe":"cpe:\/o:apple:iphone_os","vulnPubDate":"1359392400","patchPubDate":"1359392400","pluginPubDate":"1359478800","pluginModDate":"1544806800","checkType":"local","version":"1.49","cve":"CVE-2012-3606,CVE-2012-3607,CVE-2012-3621,CVE-2012-3632,CVE-2012-3687,CVE-2012-3701,CVE-2012-2824,CVE-2012-2857,CVE-2013-0948,CVE-2013-0949,CVE-2013-0950,CVE-2013-0951,CVE-2013-0952,CVE-2013-0953,CVE-2013-0954,CVE-2013-0955,CVE-2013-0956,CVE-2013-0958,CVE-2013-0959,CVE-2011-3058,CVE-2012-2619,CVE-2012-2889,CVE-2013-0962,CVE-2013-0963,CVE-2013-0964,CVE-2013-0968,CVE-2013-0974","bid":"54203,55534,54749,57576,57580,57581,57582,57584,57585,57586,57587,57588,57589,57590,52762,55676,56184,57583,57591,57595,57597,57598","xref":"","repository":{"id":"3","name":"GoodMDM","description":"","dataFormat":"mobile"},"pluginInfo":"64287
+        (0\/tcp) Apple iOS < 6.1 Multiple Vulnerabilities"},{"pluginID":"60028","severity":{"id":"3","name":"High","description":"High
+        Severity"},"identifier":"iPhone\/M1DUzuSKEg","model":"iPhone","serial":"XreYyuUVc9","deviceVersion":"4.4.8","port":"0","protocol":"tcp","pluginName":"Apple
+        iOS < 5.1 Multiple Vulnerabilities","user":"","mdmType":"","osCPE":"cpe:\/o:apple:ios","lastSeen":"1365772591","pluginOutput":"Apple
+        iOS vulnerable version detected\\n  Model         :  iPhone\\n  Serial Number
+        :  XreYyuUVc9\\n  Version       :  4.4.8\\n  Fixed Version :  5.1 ","exploitAvailable":"Yes","exploitEase":"Exploits
+        are available","exploitFrameworks":"","synopsis":"Report iOS devices older
+        than 5.1.","description":"The mobile device is running a version of iOS that
+        is older than version 5.1. Version 5.1 contains numerous security-related
+        fixes for the following vulnerabilities :\\n\\n  - Apple iPhone\/iPad\/iPod
+        Touch prior to iOS 5.1 Multiple     Vulnerabilities (CVE-2012-0641)\\n\\n  -
+        Apple Mac OS X Integer Overflow Vulnerability     (CVE-2011-3453)\\n\\n  -
+        Google Chrome prior to 15.0.874.102 Multiple Security     Vulnerabilities
+        (CVE-2011-3887)\\n\\n  - WebKit Multiple Unspecified Cross-Site Scripting     Vulnerabilities
+        (CVE-2012-0590)\\n\\n  - Google Chrome prior to 13.0.782.215 Multiple Security     Vulnerabilities
+        (CVE-2011-2825)\\n\\n  - WebKit Multiple Unspecified Memory Corruption     Vulnerabilities
+        (CVE-2011-2833)\\n\\n  - Google Chrome prior to 14.0.835.163 Multiple Security     Vulnerabilities
+        (CVE-2011-2846)\\n\\n  - Google Chrome prior to 14.0.835.202 Multiple Security     Vulnerabilities
+        (CVE-2011-2877)\\n\\n  - Google Chrome prior to 15.0.874.120 Multiple Security     Vulnerabilities
+        (CVE-2011-3897)\\n\\n  - Google Chrome prior to 16.0.912.63 Multiple Security     Vulnerabilities
+        (CVE-2011-3908)\\n\\n  - WebKit SVG Tags Use-After-Free Remote Code Execution     Vulnerability
+        (CVE-2011-3928)\\n\\n  - Google Chrome prior to 16.0.912.77 Multiple Security     Vulnerabilities
+        (CVE-2012-0591)\\n\\n  - WebKit Array.Splice Method Remote Code Execution     Vulnerability
+        (CVE-2012-0592)","solution":"Apple has released a set of patches for your
+        iOS-based device.","seeAlso":"https:\/\/support.apple.com\/en-us\/HT202432","riskFactor":"High","stigSeverity":"","baseScore":"9.3","temporalScore":"7.7","cvssVector":"AV:N\/AC:M\/Au:N\/C:C\/I:C\/A:C\/E:F\/RL:OF\/RC:C","cvssV3BaseScore":"0.0","cvssV3TemporalScore":"0.0","cvssV3Vector":"","cpe":"cpe:\/o:apple:iphone_os","vulnPubDate":"-1","patchPubDate":"1338480000","pluginPubDate":"1340121600","pluginModDate":"1544806800","checkType":"local","version":"1.55","cve":"CVE-2012-0642,CVE-2011-3908,CVE-2011-3909,CVE-2011-3885,CVE-2011-3887,CVE-2011-3888,CVE-2011-2877,CVE-2012-0593,CVE-2012-0594,CVE-2012-0595,CVE-2012-0596,CVE-2012-0597,CVE-2012-0598,CVE-2012-0599,CVE-2012-0600,CVE-2012-0601,CVE-2012-0602,CVE-2012-0603,CVE-2012-0604,CVE-2012-0605,CVE-2012-0606,CVE-2012-0607,CVE-2012-0608,CVE-2012-0609,CVE-2012-0610,CVE-2012-0611,CVE-2012-0612,CVE-2012-0613,CVE-2012-0614,CVE-2012-0615,CVE-2012-0616,CVE-2012-0617,CVE-2012-0618,CVE-2012-0619,CVE-2012-0620,CVE-2012-0621,CVE-2012-0622,CVE-2012-0623,CVE-2012-0624,CVE-2012-0625,CVE-2012-0626,CVE-2012-0627,CVE-2012-0628,CVE-2012-0629,CVE-2012-0630,CVE-2012-0631,CVE-2012-0632,CVE-2012-0633,CVE-2012-0635,CVE-2011-3453,CVE-2011-3897,CVE-2011-2825,CVE-2011-2833,CVE-2011-2846,CVE-2011-2847,CVE-2011-2854,CVE-2011-2855,CVE-2011-2857,CVE-2011-2860,CVE-2011-2867,CVE-2011-2868,CVE-2011-2869,CVE-2011-2870,CVE-2011-2871,CVE-2011-2872,CVE-2011-2873,CVE-2011-3881,CVE-2011-3928,CVE-2012-0585,CVE-2012-0586,CVE-2012-0587,CVE-2012-0588,CVE-2012-0589,CVE-2012-0590,CVE-2012-0591,CVE-2012-0592,CVE-2012-0641,CVE-2012-0643,CVE-2012-0644,CVE-2012-0645,CVE-2012-0646","bid":"49279,49658,52364,51041,50360,49938,51807,50642,52365,52367,53148,51641,52956","xref":"","repository":{"id":"3","name":"GoodMDM","description":"","dataFormat":"mobile"},"pluginInfo":"60028
+        (0\/tcp) Apple iOS < 5.1 Multiple Vulnerabilities"}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080242}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:57:22 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"query": {"tool": "vulndetails", "type": "mobile", "startOffset":
+      5, "filters": [], "endOffset": 10}, "type": "mobile", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['148']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"244","returnedRecords":5,"startOffset":"5","endOffset":"10","matchingDataElementCount":"-1
+        ","results":[{"pluginID":"65633","severity":{"id":"3","name":"High","description":"High
+        Severity"},"identifier":"iPhone\/M1DUzuSKEg","model":"iPhone","serial":"XreYyuUVc9","deviceVersion":"4.4.8","port":"0","protocol":"tcp","pluginName":"Apple
+        iOS < 6.1.3 Multiple Vulnerabilities","user":"","mdmType":"","osCPE":"cpe:\/o:apple:ios","lastSeen":"1365772591","pluginOutput":"Apple
+        iOS vulnerable version detected\\n  Model         :  iPhone\\n  Serial Number
+        :  XreYyuUVc9\\n  Version       :  4.4.8\\n  Fixed Version :  6.1.3 ","exploitAvailable":"No","exploitEase":"No
+        known exploits are available","exploitFrameworks":"","synopsis":"Report iOS
+        devices older than 6.1.3.","description":"The mobile device is running a version
+        of iOS that is older than version 6.1.3.  This version contains security-related
+        fixes for the following issues :\\n\\n  - A state management error exists
+        related to ''Mach-O''     files and overlapping segments that could allow     execution
+        of unsigned code. (CVE-2013-0977)\\n\\n  - An error exists related to the
+        ARM prefetch abort     handler that could allow disclosure of sensitive     information.
+        (CVE-2013-0978)\\n\\n  - An error exists related to ''lockdownd'' and file     permissions
+        restrictions. (CVE-2013-0979)\\n\\n  - An error exists related to screen locking
+        that could     allow unauthorized access. (CVE-2013-0980)\\n\\n  - An error
+        exists related to IOUSBDeviceFamily driver used     pipe object pointers that
+        could allow execution of     arbitrary code. (CVE-2013-0981)\\n\\n  - A variable
+        casting error exists related to the bundled     ''WebKit'' component and SVG
+        handling. (CVE-2013-0912)","solution":"Apple has released a set of patches
+        for iOS-based devices.","seeAlso":"https:\/\/support.apple.com\/en-us\/HT202706\\nhttps:\/\/lists.apple.com\/archives\/security-announce\/2013\/Mar\/msg00004.html","riskFactor":"High","stigSeverity":"","baseScore":"9.3","temporalScore":"6.9","cvssVector":"AV:N\/AC:M\/Au:N\/C:C\/I:C\/A:C\/E:U\/RL:OF\/RC:C","cvssV3BaseScore":"0.0","cvssV3TemporalScore":"0.0","cvssV3Vector":"","cpe":"cpe:\/o:apple:iphone_os","vulnPubDate":"1360947600","patchPubDate":"1363708800","pluginPubDate":"1363795200","pluginModDate":"1544806800","checkType":"local","version":"1.49","cve":"CVE-2013-0912,CVE-2013-0977,CVE-2013-0978,CVE-2013-0979,CVE-2013-0980,CVE-2013-0981","bid":"57967,57990,58586,58588,58589,58590","xref":"","repository":{"id":"3","name":"GoodMDM","description":"","dataFormat":"mobile"},"pluginInfo":"65633
+        (0\/tcp) Apple iOS < 6.1.3 Multiple Vulnerabilities"},{"pluginID":"60027","severity":{"id":"4","name":"Critical","description":"Critical
+        Severity"},"identifier":"iPhone\/M1DUzuSKEg","model":"iPhone","serial":"XreYyuUVc9","deviceVersion":"4.4.8","port":"0","protocol":"tcp","pluginName":"Apple
+        iOS < 5.1.1 Multiple Vulnerabilities","user":"","mdmType":"","osCPE":"cpe:\/o:apple:ios","lastSeen":"1365772591","pluginOutput":"Apple
+        iOS vulnerable version detected\\n  Model         :  iPhone\\n  Serial Number
+        :  XreYyuUVc9\\n  Version       :  4.4.8\\n  Fixed Version :  5.1.1 ","exploitAvailable":"Yes","exploitEase":"Exploits
+        are available","exploitFrameworks":"","synopsis":"Report iOS devices older
+        than 5.1.1.","description":"The mobile device is running a version of iOS
+        that is older than version 5.1.1.  Version 5.1.1 contains numerous security-related
+        fixes for the following vulnerabilities :\\n\\n  - Attackers can use a vulnerability
+        in WebKit to perform     cross-site scripting attacks, possibly leaking data
+        such     as cookies, user information, and passwords.\\n    (CVE-2011-3046,
+        CVE-2011-3056)\\n\\n  - A remote code execution vulnerability in WebKit could     allow
+        a malicious site to run code on the host iOS     device giving the attacker
+        access to critical data on     the phone.(CVE-2012-0672)\\n\\n  - Vulnerabilities
+        in Safari can allow malicious sites to     spoof the address in the address
+        bar of the browser.\\n    This attack allows an attacker to redirect victims
+        to a     malicious site without the user''s ability to notice.\\n    (CVE-2012-0674)","solution":"Apple
+        has released a set of patches for your iOS-based device.","seeAlso":"https:\/\/support.apple.com\/en-us\/HT202475\\nhttps:\/\/www.securityfocus.com\/archive\/1\/522612\/30\/210\/threaded","riskFactor":"Critical","stigSeverity":"","baseScore":"10.0","temporalScore":"8.3","cvssVector":"AV:N\/AC:L\/Au:N\/C:C\/I:C\/A:C\/E:F\/RL:OF\/RC:C","cvssV3BaseScore":"0.0","cvssV3TemporalScore":"0.0","cvssV3Vector":"","cpe":"cpe:\/o:apple:iphone_os","vulnPubDate":"-1","patchPubDate":"1336406400","pluginPubDate":"1329238800","pluginModDate":"1544806800","checkType":"local","version":"1.57","cve":"CVE-2011-3046,CVE-2011-3056,CVE-2012-0672,CVE-2012-0674","bid":"52369,53404,53407,53446","xref":"","repository":{"id":"3","name":"GoodMDM","description":"","dataFormat":"mobile"},"pluginInfo":"60027
+        (0\/tcp) Apple iOS < 5.1.1 Multiple Vulnerabilities"},{"pluginID":"62803","severity":{"id":"3","name":"High","description":"High
+        Severity"},"identifier":"iPhone\/M1DUzuSKEg","model":"iPhone","serial":"XreYyuUVc9","deviceVersion":"4.4.8","port":"0","protocol":"tcp","pluginName":"Apple
+        iOS < 6.0.1 Multiple Vulnerabilities","user":"","mdmType":"","osCPE":"cpe:\/o:apple:ios","lastSeen":"1365772591","pluginOutput":"Apple
+        iOS vulnerable version detected\\n  Model         :  iPhone\\n  Serial Number
+        :  XreYyuUVc9\\n  Version       :  4.4.8\\n  Fixed Version :  6.0.1 ","exploitAvailable":"Yes","exploitEase":"Exploits
+        are available","exploitFrameworks":"","synopsis":"Report iOS devices older
+        than 6.0.1.","description":"The mobile device is running a version of iOS
+        that is older than version 6.0.1. This version contains security-related fixes
+        for the following issues :\\n\\n  - Kernel extension API responses containing     an
+        ''OSBundleMachOHeaders'' key may include kernel     addresses, which can aid
+        in further attacks.\\n    (CVE-2012-3749)\\n\\n  - The lock screen can provide
+        ''Passbook'' data to an     attacker having physical device access but not
+        a     passcode. (CVE-2012-3750)\\n\\n  - A time-of-check-to-time-of-use issue
+        in the handling     of JavaScript array in WebKit could lead to arbitrary,     remote
+        code execution. (CVE-2012-3748)\\n\\n  - A use-after-free issue in the handling
+        of SVG images     in WebKit code could lead to arbitrary, remote code     execution.
+        (CVE-2012-5112)","solution":"Apple has released a set of patches for iOS-based
+        devices.","seeAlso":"https:\/\/support.apple.com\/en-us\/HT201347\\nhttps:\/\/lists.apple.com\/archives\/security-announce\/2012\/Nov\/msg00000.html","riskFactor":"High","stigSeverity":"","baseScore":"9.3","temporalScore":"7.7","cvssVector":"AV:N\/AC:M\/Au:N\/C:C\/I:C\/A:C\/E:F\/RL:OF\/RC:C","cvssV3BaseScore":"0.0","cvssV3TemporalScore":"0.0","cvssV3Vector":"","cpe":"cpe:\/o:apple:iphone_os","vulnPubDate":"1349884800","patchPubDate":"1351785600","pluginPubDate":"1351872000","pluginModDate":"1544806800","checkType":"local","version":"1.52","cve":"CVE-2012-3748,CVE-2012-5112,CVE-2012-3749,CVE-2012-3750","bid":"55867,56362,56361,56363","xref":"","repository":{"id":"3","name":"GoodMDM","description":"","dataFormat":"mobile"},"pluginInfo":"62803
+        (0\/tcp) Apple iOS < 6.0.1 Multiple Vulnerabilities"},{"pluginID":"60035","severity":{"id":"0","name":"Info","description":"Informative"},"identifier":"iPhone\/M1DUzuSKEg","model":"iPhone","serial":"XreYyuUVc9","deviceVersion":"4.4.8","port":"0","protocol":"tcp","pluginName":"MDM
+        Mobile Device Reporting","user":"","mdmType":"","osCPE":"cpe:\/o:apple:ios","lastSeen":"1365772591","pluginOutput":"  Serial
+        Number :  XreYyuUVc9\\nDevice : iPhone 5\\nModel : iPhone\\nVersion : 4.4.8\\nTimestamp
+        : 2013-04-12 09:16:31\\nNOT SET\\nManaged By :\\n    Activesync","exploitAvailable":"No","exploitEase":"","exploitFrameworks":"","synopsis":"Gathers
+        mobile device information from MDMs and reports settings.","description":"This
+        plugin gathers the information provided from mobile device management systems
+        around the network and reports the devices, information, and where they are
+        managed.","solution":"n\/a","seeAlso":"","riskFactor":"None","stigSeverity":"","baseScore":"0.0","temporalScore":"0.0","cvssVector":"","cvssV3BaseScore":"0.0","cvssV3TemporalScore":"0.0","cvssV3Vector":"","cpe":"","vulnPubDate":"-1","patchPubDate":"-1","pluginPubDate":"1338480000","pluginModDate":"1544806800","checkType":"local","version":"1.52","cve":"","bid":"","xref":"","repository":{"id":"3","name":"GoodMDM","description":"","dataFormat":"mobile"},"pluginInfo":"60035
+        (0\/tcp) MDM Mobile Device Reporting"},{"pluginID":"62242","severity":{"id":"3","name":"High","description":"High
+        Severity"},"identifier":"iPhone\/M1DUzuSKEg","model":"iPhone","serial":"XreYyuUVc9","deviceVersion":"4.4.8","port":"0","protocol":"tcp","pluginName":"Apple
+        iOS < 6.0 Multiple Vulnerabilities","user":"","mdmType":"","osCPE":"cpe:\/o:apple:ios","lastSeen":"1365772591","pluginOutput":"Apple
+        iOS vulnerable version detected\\n  Model         :  iPhone\\n  Serial Number
+        :  XreYyuUVc9\\n  Version       :  4.4.8\\n  Fixed Version :  6.0 ","exploitAvailable":"Yes","exploitEase":"Exploits
+        are available","exploitFrameworks":"","synopsis":"Report iOS devices older
+        than 6.0.","description":"The mobile device is running a version of iOS that
+        is older than version 6.0.  Version 6.0 contains numerous security-related
+        fixes for the following vulnerabilities :\\n\\n  - Numerous memory errors
+        exist related to handling     ''TIFF'', ''PNG'' and ''JPEG'' images and ''ImageIO''
+        that could     allow arbitrary code execution. (CVE-2011-1167,     CVE-2011-3026,
+        CVE-2011-3048, CVE-2011-3328,     CVE-2012-1173, CVE-2012-3726)\\n\\n  - Several
+        issues exist related to ''CoreGraphics'' and     ''FreeType'' (CVE-2012-1126,
+        CVE-2012-1127, CVE-2012-1128,     CVE-2012-1129, CVE-2012-1130, CVE-2012-1131,     CVE-2012-1132,
+        CVE-2012-1133, CVE-2012-1134,     CVE-2012-1135, CVE-2012-1136, CVE-2012-1137,     CVE-2012-1138,
+        CVE-2012-1139, CVE-2012-1140,     CVE-2012-1141, CVE-2012-1142, CVE-2012-1143,     CVE-2012-1144)\\n\\n  -
+        Numerous issues exist related to libxml and could lead     to application
+        crashes or arbitrary code execution.\\n    (CVE-2011-1944, CVE-2011-2821,
+        CVE-2011-2834,     CVE-2011-3919)\\n\\n  - A stack-based buffer overflow exists
+        related to ''locale     ID'' and ''International Components for Unicode''
+        (ICU).\\n    (CVE-2011-4599)\\n\\n  - An unitialized memory access issue exists
+        related to     ''Sorenson'' encoded movie files and ''CoreMedia''.\\n    (CVE-2012-3722)\\n\\n  -
+        An URL handling issue exists related to ''CFNetwork''     that can disclose
+        sensitive information. (CVE-2012-3724)\\n\\n  - The ''DNAv4'' protocol discloses
+        sensitive information     when connecting to unencrypted WiFi networks.\\n    (CVE-2012-3725)\\n\\n  -
+        A buffer overflow error exists related to ''IPSec'' and     ''racoon'' configuration
+        files. (CVE-2012-3727)\\n\\n  - An invalid pointer dereference error exists
+        related to     the kernel and packet filter ioctls. (CVE-2012-3728)\\n\\n  -
+        An uninitialized memory access error exists related to     the kernel and
+        the Berkeley Packet Filter interpreter.\\n    (CVE-2012-3729)\\n\\n  - Several
+        issues exist related to ''Mail'' and the handling     of attachments and ''S\/MIME''
+        signed messages.\\n    (CVE-2012-3730, CVE-2012-3731, CVE-2012-3732)\\n\\n  -
+        Information disclosure issues exist related to     ''Messages'', ''Office
+        Viewer'', system logs, and ''UIKit''.\\n    (CVE-2012-3733, CVE-2012-3734,
+        CVE-2012-3743,     CVE-2012-3746)\\n\\n  - Memory corruption errors exist
+        related to ''OpenGL''.\\n    (CVE-2011-3457)\\n\\n  - Numerous errors exist
+        related to ''Passcode Lock''.\\n    (CVE-2012-3735, CVE-2012-3736, CVE-2012-3737,     CVE-2012-3738,
+        CVE-2012-3739, CVE-2012-3740)\\n\\n  - An error exists in ''Restrictions''
+        that could allow     unauthorized purchases. (CVE-2012-3741)\\n\\n  - Errors
+        exist in ''Safari'' that are related to misleading     URL characters and
+        password auto complete.\\n    (CVE-2012-3742, CVE-2012-0680)\\n\\n  - A buffer
+        overflow error exists related to ''Telephony''     and SMS handling. (CVE-2012-3745)\\n\\n  -
+        Many errors exist related to the bundled ''WebKit''     components. (CVE-2011-2845,
+        CVE-2011-3016,     CVE-2011-3021, CVE-2011-3027, CVE-2011-3032,     CVE-2011-3034,
+        CVE-2011-3035, CVE-2011-3036,     CVE-2011-3037, CVE-2011-3038, CVE-2011-3039,     CVE-2011-3040,
+        CVE-2011-3041, CVE-2011-3042,     CVE-2011-3043, CVE-2011-3044, CVE-2011-3050,     CVE-2011-3053,
+        CVE-2011-3059, CVE-2011-3060,     CVE-2011-3064, CVE-2011-3067, CVE-2011-3068,     CVE-2011-3069,
+        CVE-2011-3071, CVE-2011-3073,     CVE-2011-3074, CVE-2011-3075, CVE-2011-3076,     CVE-2011-3078,
+        CVE-2011-3081, CVE-2011-3086,     CVE-2011-3089, CVE-2011-3090, CVE-2011-3105,     CVE-2011-3913,
+        CVE-2011-3924, CVE-2011-3926,     CVE-2011-3958, CVE-2011-3966, CVE-2011-3968,     CVE-2011-3969,
+        CVE-2011-3971, CVE-2012-0682,     CVE-2012-0683, CVE-2012-1520, CVE-2012-1521,     CVE-2012-2815,
+        CVE-2012-2818, CVE-2012-3589,     CVE-2012-3590, CVE-2012-3591, CVE-2012-3592,     CVE-2012-3593,
+        CVE-2012-3594, CVE-2012-3595,     CVE-2012-3596, CVE-2012-3597, CVE-2012-3598,     CVE-2012-3599,
+        CVE-2012-3600, CVE-2012-3601,     CVE-2012-3602, CVE-2012-3603, CVE-2012-3604,     CVE-2012-3605,
+        CVE-2012-3608, CVE-2012-3609,     CVE-2012-3610, CVE-2012-3611, CVE-2012-3612,     CVE-2012-3613,
+        CVE-2012-3614, CVE-2012-3615,     CVE-2012-3617, CVE-2012-3618, CVE-2012-3620,     CVE-2012-3624,
+        CVE-2012-3625, CVE-2012-3626,     CVE-2012-3627, CVE-2012-3628, CVE-2012-3629,     CVE-2012-3630,
+        CVE-2012-3631, CVE-2012-3633,     CVE-2012-3634, CVE-2012-3635, CVE-2012-3636,     CVE-2012-3637,
+        CVE-2012-3638, CVE-2012-3639,     CVE-2012-3640, CVE-2012-3641, CVE-2012-3642,     CVE-2012-3644,
+        CVE-2012-3645, CVE-2012-3646,     CVE-2012-3647, CVE-2012-3648, CVE-2012-3650,     CVE-2012-3651,
+        CVE-2012-3652, CVE-2012-3653,     CVE-2012-3655, CVE-2012-3656, CVE-2012-3658,     CVE-2012-3659,
+        CVE-2012-3660, CVE-2012-3661,     CVE-2012-3663, CVE-2012-3664, CVE-2012-3665,     CVE-2012-3666,
+        CVE-2012-3667, CVE-2012-3668,     CVE-2012-3669, CVE-2012-3670, CVE-2012-3671,     CVE-2012-3672,
+        CVE-2012-3673, CVE-2012-3674,     CVE-2012-3676, CVE-2012-3677, CVE-2012-3678,     CVE-2012-3679,
+        CVE-2012-3680, CVE-2012-3681,     CVE-2012-3682, CVE-2012-3683, CVE-2012-3684,     CVE-2012-3686,
+        CVE-2012-3691, CVE-2012-3693,     CVE-2012-3695, CVE-2012-3696, CVE-2012-3703,     CVE-2012-3704,
+        CVE-2012-3706, CVE-2012-3708,     CVE-2012-3710, CVE-2012-3747)","solution":"Apple
+        has released a set of patches for iOS-based devices.","seeAlso":"https:\/\/support.apple.com\/en-us\/HT202615\\nhttps:\/\/lists.apple.com\/archives\/security-announce\/2012\/Sep\/msg00003.html","riskFactor":"High","stigSeverity":"","baseScore":"9.3","temporalScore":"7.7","cvssVector":"AV:N\/AC:M\/Au:N\/C:C\/I:C\/A:C\/E:F\/RL:OF\/RC:C","cvssV3BaseScore":"0.0","cvssV3TemporalScore":"0.0","cvssV3Vector":"","cpe":"cpe:\/o:apple:iphone_os","vulnPubDate":"1300723200","patchPubDate":"1348070400","pluginPubDate":"1348502400","pluginModDate":"1544806800","checkType":"local","version":"1.53","cve":"CVE-2011-3105,CVE-2012-2818,CVE-2012-3598,CVE-2012-3601,CVE-2012-3602,CVE-2012-3612,CVE-2012-3613,CVE-2012-3614,CVE-2012-3617,CVE-2012-3624,CVE-2012-3647,CVE-2012-3648,CVE-2012-3651,CVE-2012-3652,CVE-2012-3658,CVE-2012-3659,CVE-2012-3660,CVE-2012-3671,CVE-2012-3672,CVE-2012-3673,CVE-2012-3676,CVE-2012-3677,CVE-2012-3684,CVE-2012-3703,CVE-2012-3704,CVE-2012-3706,CVE-2012-3708,CVE-2012-3710,CVE-2011-1944,CVE-2011-2821,CVE-2011-2834,CVE-2011-3919,CVE-2011-3026,CVE-2011-3078,CVE-2011-3081,CVE-2012-1521,CVE-2011-3913,CVE-2011-3086,CVE-2011-3089,CVE-2011-3090,CVE-2011-2845,CVE-2011-3016,CVE-2011-3021,CVE-2011-3027,CVE-2011-3050,CVE-2011-3053,CVE-2011-1167,CVE-2011-3328,CVE-2011-3457,CVE-2011-3032,CVE-2011-3034,CVE-2011-3035,CVE-2011-3036,CVE-2011-3037,CVE-2011-3038,CVE-2011-3039,CVE-2011-3040,CVE-2011-3041,CVE-2011-3042,CVE-2011-3043,CVE-2011-3044,CVE-2011-3059,CVE-2011-3060,CVE-2011-3064,CVE-2011-3067,CVE-2011-3068,CVE-2011-3069,CVE-2011-3071,CVE-2011-3073,CVE-2011-3074,CVE-2011-3075,CVE-2011-3076,CVE-2011-3924,CVE-2011-3926,CVE-2011-3958,CVE-2011-3966,CVE-2011-3968,CVE-2011-3969,CVE-2011-3971,CVE-2012-0680,CVE-2012-0682,CVE-2012-0683,CVE-2012-1520,CVE-2012-2815,CVE-2012-3589,CVE-2012-3590,CVE-2012-3591,CVE-2012-3592,CVE-2012-3593,CVE-2012-3594,CVE-2012-3595,CVE-2012-3596,CVE-2012-3597,CVE-2012-3599,CVE-2012-3600,CVE-2012-3603,CVE-2012-3604,CVE-2012-3605,CVE-2012-3608,CVE-2012-3609,CVE-2012-3610,CVE-2012-3611,CVE-2012-3615,CVE-2012-3618,CVE-2012-3620,CVE-2012-3625,CVE-2012-3626,CVE-2012-3627,CVE-2012-3628,CVE-2012-3629,CVE-2012-3630,CVE-2012-3631,CVE-2012-3633,CVE-2012-3634,CVE-2012-3635,CVE-2012-3636,CVE-2012-3637,CVE-2012-3638,CVE-2012-3639,CVE-2012-3640,CVE-2012-3641,CVE-2012-3642,CVE-2012-3644,CVE-2012-3645,CVE-2012-3646,CVE-2012-3650,CVE-2012-3653,CVE-2012-3655,CVE-2012-3656,CVE-2012-3661,CVE-2012-3663,CVE-2012-3664,CVE-2012-3665,CVE-2012-3666,CVE-2012-3667,CVE-2012-3668,CVE-2012-3669,CVE-2012-3670,CVE-2012-3674,CVE-2012-3678,CVE-2012-3679,CVE-2012-3680,CVE-2012-3681,CVE-2012-3682,CVE-2012-3683,CVE-2012-3686,CVE-2012-3691,CVE-2012-3693,CVE-2012-3695,CVE-2012-3696,CVE-2011-3048,CVE-2011-4599,CVE-2012-1173,CVE-2012-3722,CVE-2012-1126,CVE-2012-1127,CVE-2012-1128,CVE-2012-1129,CVE-2012-1130,CVE-2012-1131,CVE-2012-1132,CVE-2012-1133,CVE-2012-1134,CVE-2012-1135,CVE-2012-1136,CVE-2012-1137,CVE-2012-1138,CVE-2012-1139,CVE-2012-1140,CVE-2012-1141,CVE-2012-1142,CVE-2012-1143,CVE-2012-1144,CVE-2012-3724,CVE-2012-3725,CVE-2012-3726,CVE-2012-3727,CVE-2012-3728,CVE-2012-3729,CVE-2012-3730,CVE-2012-3731,CVE-2012-3732,CVE-2012-3733,CVE-2012-3734,CVE-2012-3735,CVE-2012-3736,CVE-2012-3737,CVE-2012-3738,CVE-2012-3739,CVE-2012-3740,CVE-2012-3741,CVE-2012-3742,CVE-2012-3743,CVE-2012-3744,CVE-2012-3745,CVE-2012-3746,CVE-2012-3747","bid":"53679,54203,54680,55534,52049,57027,56274,56275,56276,56277,51006,52830,55087,56250,56251,56253,56254,56255,56257,56259,56260,56261,56264,56265,56267,56268,56269,56270,56271,56272,56273,56279,56296","xref":"","repository":{"id":"3","name":"GoodMDM","description":"","dataFormat":"mobile"},"pluginInfo":"62242
+        (0\/tcp) Apple iOS < 6.0 Multiple Vulnerabilities"}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080242}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:57:22 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      transfer-encoding: [chunked]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

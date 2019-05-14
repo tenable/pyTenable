@@ -1,0 +1,80 @@
+interactions:
+- request:
+    body: !!python/unicode '{"query": {"tool": "sumip", "type": "vuln", "startOffset":
+      0, "filters": [], "endOffset": 5}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['137']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"33","returnedRecords":5,"startOffset":"0","endOffset":"5","matchingDataElementCount":"1629:19:146:176:32:1256:2780","results":[{"ip":"192.168.100.1","uuid":"","score":"49","total":"43","severityInfo":"39","severityLow":"0","severityMedium":"3","severityHigh":"0","severityCritical":"1","macAddress":"","policyName":"3ae050e2-486c-5c1a-a6a5-45305557cec3-621\/Full
+        Safe Scan","pluginSet":"201812150336","netbiosName":"","dnsName":"pfsense.home.cugnet.net","osCPE":"cpe:\/o:freebsd:freebsd:11.1","biosGUID":"","tpmID":"","mcafeeGUID":"","lastAuthRun":"","lastUnauthRun":"1545071370","uniqueness":"repositoryID,ip,dnsName","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}},{"ip":"192.168.100.3","uuid":"","score":"0","total":"10","severityInfo":"10","severityLow":"0","severityMedium":"0","severityHigh":"0","severityCritical":"0","macAddress":"","policyName":"3ae050e2-486c-5c1a-a6a5-45305557cec3-621\/Full
+        Safe Scan","pluginSet":"201812150336","netbiosName":"","dnsName":"officeswitch.home.cugnet.net","osCPE":"cpe:\/o:fortinet:fortios","biosGUID":"","tpmID":"","mcafeeGUID":"","lastAuthRun":"","lastUnauthRun":"1545071397","uniqueness":"repositoryID,ip,dnsName","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}},{"ip":"192.168.100.4","uuid":"","score":"0","total":"10","severityInfo":"10","severityLow":"0","severityMedium":"0","severityHigh":"0","severityCritical":"0","macAddress":"","policyName":"3ae050e2-486c-5c1a-a6a5-45305557cec3-621\/Full
+        Safe Scan","pluginSet":"201812150336","netbiosName":"","dnsName":"avswitch.home.cugnet.net","osCPE":"cpe:\/o:fortinet:fortios","biosGUID":"","tpmID":"","mcafeeGUID":"","lastAuthRun":"","lastUnauthRun":"1545071381","uniqueness":"repositoryID,ip,dnsName","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}},{"ip":"192.168.100.5","uuid":"","score":"34","total":"44","severityInfo":"33","severityLow":"3","severityMedium":"7","severityHigh":"1","severityCritical":"0","macAddress":"","policyName":"3ae050e2-486c-5c1a-a6a5-45305557cec3-621\/Full
+        Safe Scan","pluginSet":"201812150336","netbiosName":"","dnsName":"switch.home.cugnet.net","osCPE":"cpe:\/o:cisco:ios:15","biosGUID":"","tpmID":"","mcafeeGUID":"","lastAuthRun":"","lastUnauthRun":"1545071146","uniqueness":"repositoryID,ip,dnsName","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}},{"ip":"192.168.100.10","uuid":"","score":"43","total":"60","severityInfo":"46","severityLow":"3","severityMedium":"10","severityHigh":"1","severityCritical":"0","macAddress":"","policyName":"3ae050e2-486c-5c1a-a6a5-45305557cec3-621\/Full
+        Safe Scan","pluginSet":"201812150336","netbiosName":"","dnsName":"wap.home.cugnet.net","osCPE":"cpe:\/o:linux:linux_kernel:2.6","biosGUID":"","tpmID":"","mcafeeGUID":"","lastAuthRun":"","lastUnauthRun":"1545071288","uniqueness":"repositoryID,ip,dnsName","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080216}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['3085']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:56:56 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"query": {"tool": "sumip", "type": "vuln", "startOffset":
+      5, "filters": [], "endOffset": 10}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['138']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"33","returnedRecords":5,"startOffset":"5","endOffset":"10","matchingDataElementCount":"1629:19:146:176:32:1256:2780","results":[{"ip":"192.168.100.114","uuid":"c2d9e0b8-d88e-46ed-b7f4-86062e3ab42b","score":"617","total":"179","severityInfo":"144","severityLow":"0","severityMedium":"9","severityHigh":"15","severityCritical":"11","macAddress":"62:45:b4:ed:2f:1c","policyName":"Basic
+        Agent Scan","pluginSet":"201812150336","netbiosName":"UNKNOWN\\FREELANCER","dnsName":"freelancer","osCPE":"cpe:\/o:microsoft:windows_10:::x64-home","biosGUID":"03D40274-0435-058C-D006-4F0700080009","tpmID":"","mcafeeGUID":"","lastAuthRun":"1545066276","lastUnauthRun":"","uniqueness":"repositoryID,uuid","repository":{"id":"2","name":"Agents","description":"","dataFormat":"agent"}},{"ip":"192.168.101.1","uuid":"","score":"44","total":"26","severityInfo":"23","severityLow":"1","severityMedium":"1","severityHigh":"0","severityCritical":"1","macAddress":"00:08:a2:09:5c:8e","policyName":"3ae050e2-486c-5c1a-a6a5-45305557cec3-621\/Full
+        Safe Scan","pluginSet":"201812150336","netbiosName":"","dnsName":"","osCPE":"cpe:\/o:freebsd:freebsd:11.1","biosGUID":"","tpmID":"","mcafeeGUID":"","lastAuthRun":"","lastUnauthRun":"1545071413","uniqueness":"repositoryID,ip,dnsName","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}},{"ip":"192.168.101.30","uuid":"","score":"34","total":"125","severityInfo":"116","severityLow":"0","severityMedium":"8","severityHigh":"1","severityCritical":"0","macAddress":"00:11:32:63:a1:cf","policyName":"3ae050e2-486c-5c1a-a6a5-45305557cec3-621\/Full
+        Safe Scan","pluginSet":"201812150336","netbiosName":"WORKGROUP\\DISKSTATION","dnsName":"diskstation.home.cugnet.net","osCPE":"cpe:\/o:microsoft:windows","biosGUID":"","tpmID":"","mcafeeGUID":"","lastAuthRun":"","lastUnauthRun":"1545071502","uniqueness":"repositoryID,ip,dnsName","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}},{"ip":"192.168.101.115","uuid":"","score":"7","total":"56","severityInfo":"53","severityLow":"1","severityMedium":"2","severityHigh":"0","severityCritical":"0","macAddress":"00:0c:29:16:b0:a7","policyName":"3ae050e2-486c-5c1a-a6a5-45305557cec3-621\/Full
+        Safe Scan","pluginSet":"201812150336","netbiosName":"UNKNOWN\\securitycenter.home.cugnet.net","dnsName":"securitycenter.home.cugnet.net","osCPE":"cpe:\/o:centos:centos:7:update6","biosGUID":"c3b44d56-a488-6cf9-8733-d6fd9816b0a7","tpmID":"","mcafeeGUID":"","lastAuthRun":"1545071294","lastUnauthRun":"","uniqueness":"repositoryID,ip,dnsName","repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"}},{"ip":"192.168.101.117","uuid":"16ee04f6-e9fa-4394-a9d9-f3823c3b1919","score":"0","total":"59","severityInfo":"59","severityLow":"0","severityMedium":"0","severityHigh":"0","severityCritical":"0","macAddress":"00:0c:29:91:cc:a3","policyName":"Basic
+        Agent Scan","pluginSet":"201812150336","netbiosName":"","dnsName":"plex.home.cugnet.net","osCPE":"cpe:\/o:centos:centos:7:update6","biosGUID":"564d0761-89f2-b58d-b62a-bf54b191cca3","tpmID":"","mcafeeGUID":"","lastAuthRun":"1545065315","lastUnauthRun":"","uniqueness":"repositoryID,uuid","repository":{"id":"2","name":"Agents","description":"","dataFormat":"agent"}}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080216}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['3350']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:56:56 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

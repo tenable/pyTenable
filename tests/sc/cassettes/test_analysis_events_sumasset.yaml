@@ -1,0 +1,96 @@
+interactions:
+- request:
+    body: !!python/unicode '{"query": {"tool": "sumasset", "type": "event", "startOffset":
+      0, "filters": [], "endOffset": 5}, "type": "event", "sourceType": "lce"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['135']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=0150bac84c086c64c456938ea48f99a3]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2021766805']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":34,"returnedRecords":5,"startOffset":0,"endOffset":5,"matchingDataElementCount":134116,"results":[{"count":"64187","asset":{"id":"2","name":"Systems
+        that have been Scanned","description":"This asset uses the Scan Summary plugin
+        to detect if a host has been scanned by Nessus. The Scan Summary plugin contains
+        the list of tests conducted during the most recent scan.","type":"dynamic","status":"0"}},{"count":"25169","asset":{"id":"9","name":"Linux
+        Hosts","description":"The operating system detected has Linux installed.","type":"dynamic","status":"0"}},{"count":"25154","asset":{"id":"15","name":"Systems
+        with Software inventory","description":"This asset detects systems where software
+        enumeration has been conducted within the last 30 days. There are 3 plugins
+        used for software inventory, one for Windows, Linux, and Solaris.","type":"dynamic","status":"0"}},{"count":"7735","asset":{"id":"23","name":"SSL
+        or TLS Servers","description":"This asset list uses active and passive plugins
+        to detect servers running SSL and TLS.","type":"dynamic","status":"0"}},{"count":"5664","asset":{"id":"19","name":"Bad
+        Credentials","description":"The Nessus scanner testing the remote host has
+        been given SMB credentials to log into the remote host, however these credentials
+        do not have administrative privileges.  Local security checks have been disabled
+        for this host because either the credentials supplied in the scan policy did
+        not allow Nessus to log into it or some other problem occurred.\n\nThis will
+        be helpful for those getting started with SecurityCenter.","type":"dynamic","status":"0"}}],"startTime":1544994095,"endTime":1545080495},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080495}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['1750']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 21:01:35 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"query": {"tool": "sumasset", "type": "event", "startOffset":
+      5, "filters": [], "endOffset": 10}, "type": "event", "sourceType": "lce"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['136']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=0150bac84c086c64c456938ea48f99a3]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2021766805']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":34,"returnedRecords":5,"startOffset":5,"endOffset":10,"matchingDataElementCount":134152,"results":[{"count":"5613","asset":{"id":"3","name":"Windows
+        Hosts","description":"The operating system detected has Windows installed.\n\nThis
+        will be helpful for those getting started with SecurityCenter.","type":"dynamic","status":"0"}},{"count":"588","asset":{"id":"34","name":"Exploited
+        by Malware","description":"This asset identifies systems that can be exploited
+        using Malware, and are identified using the Nessus Vulnerability Scanner.","type":"dynamic","status":"0"}},{"count":"8","asset":{"id":"10","name":"Device
+        Type Firewall","description":"The systems identified by this asset have been
+        determined by plugin 54615 ''Device Type'' to be type firewall.","type":"dynamic","status":"0"}},{"count":"4","asset":{"id":"7","name":"Device
+        Type Router","description":"The systems identified by this asset have been
+        determined by plugin 54615 ''Device Type'' to be type router.","type":"dynamic","status":"0"}},{"count":0,"asset":{"id":"29","name":"Systems
+        Tracking Login Failure Statistics","description":"This asset tracks the login
+        failure statistics on systems running the LCE client or sending syslog to
+        LCE.","type":"dynamic","status":"0"}}],"startTime":1544994097,"endTime":1545080497},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080497}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['1394']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 21:01:37 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

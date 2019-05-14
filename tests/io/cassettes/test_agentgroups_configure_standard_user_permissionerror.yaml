@@ -1,0 +1,97 @@
+interactions:
+- request:
+    body: !!python/unicode '{"name": "f871ac4d-4edf-4705-a4de-3137453596f6"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['48']
+      Content-Type: [application/json]
+      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: POST
+    uri: https://cloud.tenable.com/scanners/1/agent-groups
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WPS07FMAxF95JxLeXjNC2bqUziQCSSPjWpEELsHb+nMgCJoa+P5XM/VUnqyejZ
+        Wzep87xPSoes2aMFzZwATc5AefHgtF1NJAwpOTWpRpWFzkswFFFAThkwaA+EicEZF9A7v855Fjoe
+        TKPsbUs05Mx4ROMWZ+2k3qiPre6p5BL/Y0ap3AfV2++4v9LB4qwntb83PsSnf/TBVV3B9uj3M1zK
+        f5CrdrQiy2SksXeA1q1Az9rAuoSIeZa1udc+u5zc+Kild3Htj+f0wm30Le5nGxJ8fQN/y/lMWAEA
+        AA==
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 06 Dec 2018 23:18:42 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-d-prod-us-east-1]
+      x-request-uuid: [6b253e3161146222ee3b9e9d43dae072]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"name": "471609e4-3c6e-4a3d-98f5-f1ee1c8db475"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['48']
+      Content-Type: [application/json]
+      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: PUT
+    uri: https://cloud.tenable.com/scanners/1/agent-groups/106523
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWKi5JLCktds5PSVWyMjEw1lFKLSrKL1KyUnLLL0rKTElJzVPSUcpNLS5OTAeq
+        UPLMKy5NS8tMzkzNK1EoTs4vSFWqBQChW+L4RQAAAA==
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-encoding: [gzip]
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 06 Dec 2018 23:18:43 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-d-prod-us-east-1]
+      x-request-uuid: [7eb49fa03d4a2ecfbe3d8a280b2375a8]
+    status: {code: 403, message: Forbidden}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['0']
+      Cookie: [nginx-cloud-site-id=us-2b]
+      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: DELETE
+    uri: https://cloud.tenable.com/scanners/1/agent-groups/106523
+  response:
+    body: {string: !!python/unicode ''}
+    headers:
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      date: ['Thu, 06 Dec 2018 23:18:43 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      transfer-encoding: [chunked]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-gateway-site-id: [nginx-router-d-prod-us-east-1]
+      x-request-uuid: [59aa5f9956949fa85efd1bf2045ca9bb]
+      x-xss-protection: [mode=block]
+    status: {code: 200, message: OK}
+version: 1

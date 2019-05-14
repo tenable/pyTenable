@@ -1,0 +1,94 @@
+interactions:
+- request:
+    body: !!python/unicode '{"query": {"tool": "listvuln", "type": "vuln", "startOffset":
+      0, "filters": [], "endOffset": 5}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['140']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"1629","returnedRecords":5,"startOffset":"0","endOffset":"5","matchingDataElementCount":"-1","results":[{"pluginID":"10107","severity":{"id":"0","name":"Info","description":"Informative"},"ip":"192.168.100.1","uuid":"","port":"80","protocol":"TCP","name":"HTTP
+        Server Type and Version","dnsName":"pfsense.home.cugnet.net","macAddress":"","netbiosName":"","uniqueness":"repositoryID,ip,dnsName","family":{"id":"11","name":"Web
+        Servers","type":"active"},"repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"},"pluginInfo":"10107
+        (80\/6) HTTP Server Type and Version"},{"pluginID":"10107","severity":{"id":"0","name":"Info","description":"Informative"},"ip":"192.168.100.1","uuid":"","port":"443","protocol":"TCP","name":"HTTP
+        Server Type and Version","dnsName":"pfsense.home.cugnet.net","macAddress":"","netbiosName":"","uniqueness":"repositoryID,ip,dnsName","family":{"id":"11","name":"Web
+        Servers","type":"active"},"repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"},"pluginInfo":"10107
+        (443\/6) HTTP Server Type and Version"},{"pluginID":"10114","severity":{"id":"0","name":"Info","description":"Informative"},"ip":"192.168.100.1","uuid":"","port":"0","protocol":"ICMP","name":"ICMP
+        Timestamp Request Remote Date Disclosure","dnsName":"pfsense.home.cugnet.net","macAddress":"","netbiosName":"","uniqueness":"repositoryID,ip,dnsName","family":{"id":"30","name":"General","type":"active"},"repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"},"pluginInfo":"10114
+        (0\/1) ICMP Timestamp Request Remote Date Disclosure"},{"pluginID":"10287","severity":{"id":"0","name":"Info","description":"Informative"},"ip":"192.168.100.1","uuid":"","port":"0","protocol":"UDP","name":"Traceroute
+        Information","dnsName":"pfsense.home.cugnet.net","macAddress":"","netbiosName":"","uniqueness":"repositoryID,ip,dnsName","family":{"id":"30","name":"General","type":"active"},"repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"},"pluginInfo":"10287
+        (0\/17) Traceroute Information"},{"pluginID":"10386","severity":{"id":"0","name":"Info","description":"Informative"},"ip":"192.168.100.1","uuid":"","port":"80","protocol":"TCP","name":"Web
+        Server No 404 Error Code Check","dnsName":"pfsense.home.cugnet.net","macAddress":"","netbiosName":"","uniqueness":"repositoryID,ip,dnsName","family":{"id":"11","name":"Web
+        Servers","type":"active"},"repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"},"pluginInfo":"10386
+        (80\/6) Web Server No 404 Error Code Check"}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080197}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['2670']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:56:37 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=100']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: !!python/unicode '{"query": {"tool": "listvuln", "type": "vuln", "startOffset":
+      5, "filters": [], "endOffset": 10}, "type": "vuln", "sourceType": "cumulative"}'
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['141']
+      Content-Type: [application/json]
+      Cookie: [TNS_SESSIONID=9e4b4e83ec7251dfcccfd36636d5e788]
+      User-Agent: [pyTenable/0.3.5 (pyTenable/0.3.5; Python/2.7.14)]
+      X-SecurityCenter: ['2023559547']
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/analysis
+  response:
+    body: {string: !!python/unicode '{"type":"regular","response":{"totalRecords":"1629","returnedRecords":5,"startOffset":"5","endOffset":"10","matchingDataElementCount":"-1","results":[{"pluginID":"10863","severity":{"id":"0","name":"Info","description":"Informative"},"ip":"192.168.100.1","uuid":"","port":"443","protocol":"TCP","name":"SSL
+        Certificate Information","dnsName":"pfsense.home.cugnet.net","macAddress":"","netbiosName":"","uniqueness":"repositoryID,ip,dnsName","family":{"id":"30","name":"General","type":"active"},"repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"},"pluginInfo":"10863
+        (443\/6) SSL Certificate Information"},{"pluginID":"10884","severity":{"id":"0","name":"Info","description":"Informative"},"ip":"192.168.100.1","uuid":"","port":"123","protocol":"UDP","name":"Network
+        Time Protocol (NTP) Server Detection","dnsName":"pfsense.home.cugnet.net","macAddress":"","netbiosName":"","uniqueness":"repositoryID,ip,dnsName","family":{"id":"24","name":"Service
+        detection","type":"active"},"repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"},"pluginInfo":"10884
+        (123\/17) Network Time Protocol (NTP) Server Detection"},{"pluginID":"10919","severity":{"id":"0","name":"Info","description":"Informative"},"ip":"192.168.100.1","uuid":"","port":"0","protocol":"TCP","name":"Open
+        Port Re-check","dnsName":"pfsense.home.cugnet.net","macAddress":"","netbiosName":"","uniqueness":"repositoryID,ip,dnsName","family":{"id":"30","name":"General","type":"active"},"repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"},"pluginInfo":"10919
+        (0\/6) Open Port Re-check"},{"pluginID":"11002","severity":{"id":"0","name":"Info","description":"Informative"},"ip":"192.168.100.1","uuid":"","port":"53","protocol":"TCP","name":"DNS
+        Server Detection","dnsName":"pfsense.home.cugnet.net","macAddress":"","netbiosName":"","uniqueness":"repositoryID,ip,dnsName","family":{"id":"37","name":"DNS","type":"active"},"repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"},"pluginInfo":"11002
+        (53\/6) DNS Server Detection"},{"pluginID":"11002","severity":{"id":"0","name":"Info","description":"Informative"},"ip":"192.168.100.1","uuid":"","port":"53","protocol":"UDP","name":"DNS
+        Server Detection","dnsName":"pfsense.home.cugnet.net","macAddress":"","netbiosName":"","uniqueness":"repositoryID,ip,dnsName","family":{"id":"37","name":"DNS","type":"active"},"repository":{"id":"1","name":"Default","description":"","dataFormat":"IPv4"},"pluginInfo":"11002
+        (53\/17) DNS Server Detection"}]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1545080198}
+
+'}
+    headers:
+      cache-control: ['no-store, no-cache, must-revalidate']
+      connection: [Keep-Alive]
+      content-length: ['2609']
+      content-type: [application/json]
+      date: ['Mon, 17 Dec 2018 20:56:38 GMT']
+      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      keep-alive: ['timeout=15, max=99']
+      pragma: [no-cache]
+      securitycenter: [5.8.0]
+      server: [Apache]
+      strict-transport-security: [max-age=31536000; includeSubDomains]
+      x-content-type-options: [nosniff]
+      x-frame-options: [DENY]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1

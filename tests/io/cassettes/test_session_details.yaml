@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
+      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+    method: GET
+    uri: https://cloud.tenable.com/session
+  response:
+    body: {string: !!python/unicode '{"id":3,"uuid":"a09161a2-3860-4ca8-93c8-b3f7be366e50","uuid_id":"a09161a2-3860-4ca8-93c8-b3f7be366e50","username":"test_admin@pytenable.io","user_name":"test_admin@pytenable.io","email":"noreply@pytenable.test","name":"00bc5450-497e-4047-9f0b-0e2755d7cd2e","type":"local","permissions":64,"enabled":true,"login_fail_count":0,"login_fail_total":0,"container_id":1215,"container_uuid":"a0abbae8-512f-4b9d-93f3-74d9809a1004","container_name":"pyTenable
+        Test Container","features":{"access_groups":true,"access_groups_migration":true,"advanced_search_v2":true,"agent_triage_m2":true,"agent_updates":true,"analytics":true,"analytics_v2":true,"asset_deleting_ui":true,"asset_management":true,"audits_workbench":false,"aws_connector_v1":true,"cfl_core_ssor":false,"connectors_gen2":false,"container_security":true,"container_security_gen2":true,"container_security_gen2_runtime":false,"credentials_mgmt":true,"credentials_mgmt_v2":true,"dashboards_gen2":true,"dashboards_gen2_blank_canvas":false,"dashboards_gen2_export":true,"dashboards_gen2_export_png":false,"dashboards_gen2_lumin_enabled":false,"dashboards_gen2_schedule":true,"dashboards_gen2_tag_filter":false,"dashboards_gen2_widget_filters":false,"dashboards_gen2_widget_library":false,"dynamic_tagging":true,"environment_management":false,"export_dashboard":true,"export_dashboard_pdf":true,"general_data_protection_compliance":false,"import_data":false,"indexing_v2":true,"lumin_beta_allowed":false,"lumin_beta_enabled":false,"modify_vulnerability":false,"pci_multiscan":false,"qualys_connector":true,"qualys_vuln_connector":false,"rbac":true,"recast_rules":true,"reporting":true,"scan_service":true,"scans_gen2":false,"state":true,"suggest_feature":true,"system":false,"tagging":true,"vm_service_query":true,"vulnerability_management_gen2":true,"was_discovery":false,"was_multi_scanning":false,"was_plugin_selection":true,"was_scan_progress":true,"webapp_scanning":false,"webapp_scanning_gen2":false},"apps":{"consec":"standard","was":"standard"},"group_uuids":[],"groups":[]}'}
+    headers:
+      accept-ranges: [bytes]
+      cache-control: [no-cache]
+      connection: [keep-alive]
+      content-length: ['2030']
+      content-type: [application/json; charset=utf-8]
+      date: ['Thu, 06 Dec 2018 23:22:19 GMT']
+      server: [tenable.io]
+      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
+          path=/; HttpOnly]
+      strict-transport-security: [max-age=63072000; includeSubDomains]
+      vary: [accept-encoding]
+      x-content-type-options: [nosniff]
+      x-gateway-site-id: [nginx-router-a-prod-us-east-2]
+      x-request-uuid: [f65ba9157c9c90b69c22c9b648d7d1b5]
+    status: {code: 200, message: OK}
+version: 1
