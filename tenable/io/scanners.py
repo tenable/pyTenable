@@ -62,12 +62,14 @@ class ScannersAPI(TIOEndpoint):
             for item in tmpl['settings']['basic']['inputs']:
                 if item['id'] == 'scanner_id':
                     return item['options']
+            return []
 
-        vm_tmpl = self._api.policies.templates()['advanced']
-        was_tmpl = self._api.policies.templates()['was_scan']
-        vm_scanners = get_scanners(self._api.editor.template_details('scan', vm_tmpl))
-        was_scanners = get_scanners(self._api.editor.template_details('scan', was_tmpl))
-        return vm_scanners + was_scanners
+        vm_tmpl = self._api.policies.templates().get('advanced', None)
+        was_tmpl = self._api.policies.templates().get('was_scan', None)
+        scanners = get_scanners(self._api.editor.template_details('scan', vm_tmpl))
+        if was_tmpl is not None:
+            scanners.extend(get_scanners(self._api.editor.template_details('scan', was_tmpl)))
+        return scanners
 
     def control_scan(self, scanner_id, scan_uuid, action):
         '''
