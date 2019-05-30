@@ -30,7 +30,7 @@ installing via pip:
    
    pip install pytenable
 
-If your looking for bleeding-edge, then feel free to install directly from the 
+If you're looking for bleeding-edge, then feel free to install directly from the 
 github repository like so:
 
 .. code-block:: bash

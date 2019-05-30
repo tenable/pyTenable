@@ -142,7 +142,8 @@ class UsersAPI(TIOEndpoint):
         payload = dict()
 
         if permissions:
-            payload['permisions'] = self._check('permissions', permissions, int)
+            payload['permissions'] = self._check('permissions', permissions,
+                                                 int)
         if enabled is not None:
             payload['enabled'] = self._check('enabled', enabled, bool)
         if email:
