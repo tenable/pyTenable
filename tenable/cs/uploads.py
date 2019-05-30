@@ -1,4 +1,19 @@
+'''
+uploads
+=======
+
+The uploads methods are abstractions to make uploading an image into Container
+Security easier for the user.
+
+Methods available on ``cs.uploads``:
+
+.. rst-class:: hide-signature
+.. autoclass:: UploadAPI
+
+    .. automethod:: docker_push
+'''
 from .base import CSEndpoint
+from tenable.errors import PackageMissingError
 
 class UploadAPI(CSEndpoint):
     def docker_push(self, name, tag=None, cs_name=None, cs_tag=None):
@@ -7,7 +22,7 @@ class UploadAPI(CSEndpoint):
 
         Args:
             name (str): The name of the local docker image.
-            tag (str, optional): 
+            tag (str, optional):
                 The tag for the local docker image. Default is `latest`.
             cs_name (str, optional):
                 The repository and name for the image in Container Security.  If
@@ -22,12 +37,21 @@ class UploadAPI(CSEndpoint):
         '''
         # as we may not need to perform this action, we will import and initiate
         # the docker environment at the time of the push.
-        import docker
+        try:
+            import docker
+        except ImportError:
+            raise PackageMissingError(
+                'The python package docker is required to use cs.uploads.docker_push')
         d = docker.from_env(version='auto')
+
+        self._check('name', name, str)
+        self._check('tag', tag, str)
+        self._check('cs_name', cs_name, str)
+        self._check('cs_tag', cs_tag, str)
 
         if not cs_name:
             cs_name = 'library/{}'.format(name)
-        
+
         if not cs_tag:
             if not tag:
                 cs_tag = tag
