@@ -284,6 +284,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: create <scans-create>`
 
         Args:
+            name (str): The name of the scan to create.
             template (str, optional):
                 The scan policy template to use.  If no template is specified
                 then the default of `basic` will be used.
@@ -313,7 +314,9 @@ class ScansAPI(TIOEndpoint):
         Examples:
             Create an un-credentialed basic scan:
 
-            >>> scan = tio.scans.create(targets=['127.0.0.1'])
+            >>> scan = tio.scans.create(
+            ...     name='Example Scan',
+            ...     targets=['127.0.0.1'])
         '''
         if 'template' not in kw:
             kw['template'] = 'basic'
