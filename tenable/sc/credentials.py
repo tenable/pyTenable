@@ -404,7 +404,7 @@ class CredentialAPI(SCEndpoint):
 
         for key in uploadable_keys:
             if key in kw:
-                kw[key] = self._api.files.upload(fobj)
+                kw[key] = self._api.files.upload(kw[key])
         return kw
 
     def create(self, name, cred_type, auth_type, **kw):
@@ -888,6 +888,9 @@ class CredentialAPI(SCEndpoint):
         Examples:
             >>> cred = sc.credentials.edit()
         '''
+        # Uploading files as necessary
+        kw = self._upload_files(**kw)
+
         payload = self._constructor(**kw)
         return self._api.patch('credential/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
@@ -915,7 +918,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Retrieves the list of scan zone definitions.
 
-        + :sccv-api:`credential: list <Credential.html#CredentialRESTReference-/credential>`
+        + :sc-api:`credential: list <Credential.html#CredentialRESTReference-/credential>`
 
         Args:
             fields (list, optional):
