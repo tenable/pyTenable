@@ -16,7 +16,8 @@ autodoc_mock_imports = [
     'lxml',
     'dateutil',
     'dateutil.parser',
-    'semver'
+    'semver',
+    'docker',
 ]
 
 import os, sys, datetime
@@ -55,6 +56,7 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
     'sphinx.ext.extlinks',
+    #'sphinx_markdown_builder',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
