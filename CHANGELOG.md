@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.20]
+### Added
+- Added support for the new plugins list endpoint.
+- Support for extensible retry logic using the retry_on param.
+- Tested out CSv2 API endpoints #8 #9
+
+### Changed
+- Homogenized the docstrings for TenableSC #115
+- Updated docs in tio.scans.create to denote that the name is required. #118
+
+### Fixed
+- Streaming responses in TenableSC weren't working as expected #114
+- Files weren't uploading properly in TenableSC Credentials endpoints #122
+- User permissions parameter type #121
+- Typo in docs #120
+- Scanner listing when WAS wasn't enabled caused an error #117
+
 ## [0.3.19]
 ### Changed
 - All Tenable.io API doc links have been re-pointed to the new developer portal. #111
@@ -273,9 +290,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fixed Time Conversion Issue #6
 
-
-
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.19...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.20...master
+[0.3.20]: https://github.com/tenable/pyTenable/compare/0.3.19...0.3.20
 [0.3.19]: https://github.com/tenable/pyTenable/compare/0.3.18...0.3.19
 [0.3.18]: https://github.com/tenable/pyTenable/compare/0.3.17...0.3.18
 [0.3.17]: https://github.com/tenable/pyTenable/compare/0.3.16...0.3.17
