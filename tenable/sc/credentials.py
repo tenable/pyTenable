@@ -57,7 +57,7 @@ class CredentialAPI(SCEndpoint):
             # values and then convert it to the camelCase equiv.
             kw['authType'] = self._check('auth_type', kw['auth_type'], str,
                 choices=['cyberark', 'lieberman', 'password', 'BeyondTrust',
-                         'certificate', 'kerberos', 'publickey', 'thycotic',
+                         'certificate', 'kerberos', 'publicKey', 'thycotic',
                          'lm', 'ntlm'])
             del(kw['auth_type'])
 
@@ -605,11 +605,11 @@ class CredentialAPI(SCEndpoint):
 
             Creating a root user SSH cred with a private key:
 
-            >>> with open('publickeyfile.pub', 'rb') as keyfile:
+            >>> with open('privatekeyfile', 'rb') as keyfile:
             ...     cred = sc.credentials.create(
-            ...         'Example SSH Keys', 'ssh', 'publickey',
+            ...         'Example SSH Keys', 'ssh', 'publicKey',
             ...         username='root',
-            ...         public_key=keyfile)
+            ...         private_key=keyfile)
 
             Creating a normal user SSH cred with sudo for privilege escalation:
 
