@@ -12,7 +12,7 @@ except:
 
 setup(
     name='pyTenable',
-    version='0.3.20',
+    version='0.3.21',
     description='Python library to interface into Tenable\'s products and applications',
     author='Tenable, Inc.',
     long_description=long_description,

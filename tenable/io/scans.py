@@ -543,7 +543,12 @@ class ScansAPI(TIOEndpoint):
             ...     tio.scans.export(1, history_id=1, fobj=reportobj)
         '''
 
-        # initiate the payload and parameters dictionaries.
+        # initiate the payload and parameters dictionaries.  We are also
+        # checking to see if the filters were passed as a keyword argument
+        # instead of as an argument list.  As this seems to be a common
+        # issue, we should be supporting this methodology.
+        filters = self._check('filters',
+            kw.get('filters', filters), (list, tuple))
         payload = self._parse_filters(filters,
             self._api.filters.scan_filters(), rtype='sjson')
         params = dict()
