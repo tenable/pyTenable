@@ -443,7 +443,7 @@ class ScansAPI(TIOEndpoint):
                 editor['plugins']['families'], scan_id)
 
         # We next need to do a little post-parsing of the ACLs to find the
-        # owner and put ownder_id attribute into the appropriate location.
+        # owner and put owner_id attribute into the appropriate location.
         for acl in scan['settings']['acls']:
             if acl['owner'] == 1:
                 scan['settings']['owner_id'] = acl['id']

@@ -663,7 +663,8 @@ class CredentialAPI(SCEndpoint):
 
         # If the credential type is ssh, then we'd like to make sure that
         # the escalation is set to "none" unless overridden.
-        if cred_type == 'ssh':
+        if (cred_type == 'ssh'
+          and auth_type in ['password', 'publicKey', 'certificate']):
             kw['privilege_escalation'] = kw.get('privilege_escalation', 'none')
 
         if kw.get('db_type') == 'Oracle':
