@@ -181,13 +181,17 @@ class SCEndpoint(APIEndpoint):
                         item['value'] = self._combo_expansion(f[2])
                     elif (isinstance(f[2], list)
                       and all(isinstance(i, int) for i in f[2])):
-                        # if the value is a list and al;l of the items within
+                        # if the value is a list and all of the items within
                         # that list are integers, then we can safely assume that
                         # this is a list of integer ids that need to be expanded
                         # into a list of dictionaries.
                         item['value'] = [dict(id=str(i)) for i in f[2]]
+                    elif (isinstance(f[2], int) and f[0] in ['asset',]):
+                        # If the value is an integer, then we will want to
+                        # expand the value into a dictionary with an id attr.
+                        item['value'] = dict(id=str(f[2]))
                     else:
-                        # if we dont have any specific conditions set, then
+                        # if we don't have any specific conditions set, then
                         # simply return the value parameter assigned to the
                         # "value" attribute
                         item['value'] = f[2]
