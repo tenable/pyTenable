@@ -24,6 +24,7 @@
 .. automodule:: tenable.sc.scanners
 .. automodule:: tenable.sc.status
 .. automodule:: tenable.sc.system
+.. automodule:: tenable.sc.users
 .. automodule:: tenable.sc.base
 
 
