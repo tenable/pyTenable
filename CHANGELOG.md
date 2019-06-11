@@ -4,13 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.3.21]
 ### Changed
 - Tenable.io scans.export now supports explicitly defining the filters attribute as well as the implicit argument list #124
 
 ### Fixed
 - Doc examples for TenableSC credentials.create were incorrect. #122
 - SC API Reference incorrectly stated authType of "publickey" instead of "publicKey". #122
+- SC Analysis Query Expander wasn't expanding numerid ids https://community.tenable.com/s/question/0D7f2000005b5OX/filter-on-asset-via-api-call-to-analysis-resource-using-pytenable
+- SC Credential privilegeEscalation attr pre-fill wasn't restricted to just specific types #126
+- SC Users docs weren't linked into the documentation.
 
 ## [0.3.20]
 ### Added
@@ -298,7 +301,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fixed Time Conversion Issue #6
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.20...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.21...master
+[0.3.21]: https://github.com/tenable/pyTenable/compare/0.3.20...0.3.21
 [0.3.20]: https://github.com/tenable/pyTenable/compare/0.3.19...0.3.20
 [0.3.19]: https://github.com/tenable/pyTenable/compare/0.3.18...0.3.19
 [0.3.18]: https://github.com/tenable/pyTenable/compare/0.3.17...0.3.18
