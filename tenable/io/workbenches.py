@@ -433,7 +433,7 @@ class WorkbenchesAPI(TIOEndpoint):
                 if 'chapters' not in kw:
                     raise UnexpectedValueError('no chapters were specified')
                 else:
-                    params['chapter'] = ','.join(
+                    params['chapter'] = ';'.join(
                         self._check('chapters', kw['chapters'], list,
                             default='vuln_by_asset',
                             choices=[
