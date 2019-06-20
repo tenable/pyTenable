@@ -380,10 +380,12 @@ class WorkbenchesAPI(TIOEndpoint):
                 `csv`, `html`, `pdf`.  Default is 'nessus'
             chapters (list, optional):
                 A list of the chapters to write for the report.  The chapters
-                list is only required for PDF and HTML exports.  Available
-                chapters are `vuln_hosts_summary`, `vuln_by_host`,
-                `compliance_exec`, `remediations`, `vuln_by_plugin`, and
-                `compliance`.  List order will denote output order.
+                list is only required for PDF, CSV, and HTML exports.  Available
+                chapters are ``vuln_hosts_summary``, ``vuln_by_host``,
+                ``vuln_by_plugin``, and ``vuln_by_asset``. List order will denote
+                output order.  In the case of CSV reports, only
+                ``vuln_by_asset`` and ``vuln_by_plugin`` are available and only
+                a singular chapter can be specified.
             filter_type (str, optional):
                 Are the filters exclusive (this AND this AND this) or inclusive
                 (this OR this OR this).  Valid values are `and` and `or`.  The
@@ -442,6 +444,7 @@ class WorkbenchesAPI(TIOEndpoint):
                                 'vuln_by_host',
                                 'vuln_by_plugin',
                                 'vuln_hosts_summary',
+                                'vuln_by_asset',
                         ]))
 
         if 'filter_type' in kw:
