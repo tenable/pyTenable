@@ -198,9 +198,11 @@ class APIEndpoint(object):
         # unicode type transparently, so add the unicode type to the expected
         # types list.  NOTE this is for Python2 only, as Python3 treats all
         # strings as type string.
+        str_types = (str)
         if str in etypes:
             try:
                 etypes.append(unicode)
+                str_types = (str, unicode)
             except NameError:
                 pass
 
@@ -208,8 +210,36 @@ class APIEndpoint(object):
         # types match.
         type_pass = False
         for etype in etypes:
-            if isinstance(obj, etype):
-                type_pass = True
+            if not type_pass:
+                if isinstance(obj, etype):
+                    type_pass = True
+                elif isinstance(obj, str_types) and etype not in [list, tuple]:
+                    # if the expected type is not a list or tuple and it is a
+                    # string type, then we will attempt to recast the object
+                    # to be the expected type.
+                    try:
+                        new_obj = etype(obj)
+                    except:
+                        # if the recasting fails, then just pass through.
+                        pass
+                    else:
+                        if etype == bool:
+                            # if the expected type was boolean, then we will
+                            # want to ensure that the string is one of the
+                            # allowed values.  From there we will set the
+                            # object to be either True or False.  in either case
+                            # we will also want to make sure to set the
+                            # type_pass flag to ensure we don't raise a
+                            # TypeError later on.
+                            if obj.lower() in ['true', 'false', 'yes', 'no']:
+                                type_pass = True
+                                obj = obj.lower() in ['true', 'yes']
+                        else:
+                            # In every other case, just set the object to be the
+                            # recasted object and set the type_pass flag.
+                            obj = new_obj
+                            type_pass = True
+
 
         # If the object is none of the right types then we want to raise a
         # TypeError as it was something we weren't expecting.
