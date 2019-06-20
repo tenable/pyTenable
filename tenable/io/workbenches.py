@@ -468,9 +468,9 @@ class WorkbenchesAPI(TIOEndpoint):
         # Next we will wait for the state of the export request to become
         # ready.  We will query the API every half a second until we get the
         # response we're looking for.
-        while 'ready' != self._api.get('workbenches/export/{}/status'.format(
-                fid)).json()['status']:
-            time.sleep(0.5)
+        self._wait_for_download(
+            'workbenches/export/{}/status'.format(fid),
+            'workbenches', 'export', fid)
 
         # Now that the status has reported back as "ready", we can actually
         # download the file.

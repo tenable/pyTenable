@@ -595,19 +595,10 @@ class ScansAPI(TIOEndpoint):
         self._api._log.debug('Initiated scan export {}'.format(fid))
 
         # Next we will wait for the status of the export request to become
-        # ready.  We will query the API every half a second until we get the
-        # response we're looking for.
-        status = self._api.get('scans/{}/export/{}/status'.format(
-                               scan_id, fid)).json()['status']
-        while status not in ['error', 'ready']:
-            time.sleep(0.5)
-            status = self._api.get('scans/{}/export/{}/status'.format(
-                                   scan_id, fid)).json()['status']
-
-        # If the status that has been reported back is "error", then we will
-        # need to throw the appropriate error back to the user.
-        if status == 'error':
-            raise FileDownloadError('scans', scan_id, fid)
+        # ready.
+        status = self._wait_for_download(
+            'scans/{}/export/{}/status'.format(scan_id, fid),
+            'scans', scan_id, fid)
 
         # Now that the status has reported back as "ready", we can actually
         # download the file.

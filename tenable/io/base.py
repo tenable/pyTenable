@@ -1,8 +1,9 @@
 '''
 
 '''
-from tenable.base import APIResultsIterator, APIEndpoint
+from tenable.base import APIResultsIterator, APIEndpoint, FileDownloadError
 from tenable.errors import UnexpectedValueError
+import time
 
 class TIOEndpoint(APIEndpoint):
     def _parse_filters(self, finput, filterset=None, rtype='sjson'):
@@ -13,14 +14,14 @@ class TIOEndpoint(APIEndpoint):
         Args:
             finput (list): The list of filter tuples
             filterset (dict): The response of the allowed filters
-            rtype (str, optional): 
-                The filter format.  Allowed types are 'json', 'sjson', and 
-                'colon'.  JSON is just a simple JSON list of dictionaries.  
-                SJSON format is effectively serialized JSON into the query 
+            rtype (str, optional):
+                The filter format.  Allowed types are 'json', 'sjson', and
+                'colon'.  JSON is just a simple JSON list of dictionaries.
+                SJSON format is effectively serialized JSON into the query
                 params. COLON format denotes a colon-delimited format.
 
         Returns:
-            dict: 
+            dict:
                 The query parameters in the anticipated dictionary format to
                 feed to requests.
         '''
@@ -32,11 +33,11 @@ class TIOEndpoint(APIEndpoint):
             fname = self._check('filter_name', f[0], str)
             if f[0] not in filterset:
                 raise UnexpectedValueError('{} is not a filterable option'.format(f[0]))
-            foper = self._check('filter_operator', f[1], str, 
+            foper = self._check('filter_operator', f[1], str,
                 choices=filterset[f[0]]['operators'] if filterset else None)
             fval = ','.join([self._check('filter_value', i, str,
                 choices=filterset[f[0]]['choices'] if filterset else None,
-                pattern=filterset[f[0]]['pattern']) for i in 
+                pattern=filterset[f[0]]['pattern']) for i in
                     self._check('filter_value', f[2], str).split(',')])
 
             if rtype == 'sjson':
@@ -65,6 +66,25 @@ class TIOEndpoint(APIEndpoint):
 
         return resp
 
+    def _wait_for_download(self, path, resource, resource_id, file_id):
+        '''
+        A simple method to centralize waiting for an export to enter a
+        completed state.  The initial request will be made and then we will
+        recheck every two and a half seconds after that.  Once the status
+        returns one of the completed states, we will return the status.
+        '''
+        status = self._api.get(path).json()['status']
+        while status not in ['error', 'ready']:
+            time.sleep(2.5)
+            status = self._api.get(path).json()['status']
+
+        # If the status that has been reported back is "error", then we will
+        # need to throw the appropriate error back to the user.
+        if status == 'error':
+            raise FileDownloadError(resource, resource_id, file_id)
+
+        # Return the status to the caller.
+        return status
 
 class TIOIterator(APIResultsIterator):
     _path = None
@@ -113,7 +133,7 @@ class TIOIterator(APIResultsIterator):
         # Lets make the actual call at this point.
         resp, key = self._get_data()
 
-        # Now that we have the response, lets reset any counters we need to, 
+        # Now that we have the response, lets reset any counters we need to,
         # and increment things like the page counter, offset, etc.
         self.page_count = 0
         self._pages_requested += 1
