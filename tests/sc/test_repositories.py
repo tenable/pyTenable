@@ -60,11 +60,11 @@ def test_repositories_constructor_trending_unexpectedvalueerror(sc):
 
 def test_repositories_constructor_fulltext_search_typerror(sc):
     with pytest.raises(TypeError):
-        sc.repositories._constructor(fulltext_search='yes')
+        sc.repositories._constructor(fulltext_search='yup')
 
 def test_repositories_constructor_lce_correlation_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.repositories._constructor(lce_correlation='yes')
+        sc.repositories._constructor(lce_correlation='yup')
 
 def test_repositories_constructor_allowed_ips_typeerror(sc):
     with pytest.raises(TypeError):
@@ -362,7 +362,7 @@ def test_repositories_import_repository_id_typeerror(sc):
 
 @pytest.mark.vcr()
 @pytest.mark.datafiles(os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), 
+    os.path.dirname(os.path.realpath(__file__)),
     '..', 'test_files', 'sc_repo.tgz'))
 def test_repositories_import_repository_success(admin, datafiles, repository):
     #offline = admin.repositories.create(name='Offline', type='Offline')
@@ -377,7 +377,7 @@ def test_repositories_export_repository_id_typeerror(sc):
 def test_repositories_export_repository_success(admin, repository):
     with open('{}'.format(repository['id']), 'wb') as repo:
         admin.repositories.export_repository(int(repository['id']), repo)
-    
+
 def test_repositories_device_info_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.device_info('one')

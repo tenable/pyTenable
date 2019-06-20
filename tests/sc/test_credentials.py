@@ -88,11 +88,11 @@ def test_crddentials_constructor_vault_folder_typeerror(sc):
 
 def test_credentials_constructor_vault_use_ssl_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.credentials._constructor(vault_use_ssl='no')
+        sc.credentials._constructor(vault_use_ssl='nope')
 
 def test_credentials_constructor_verify_ssl_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.credentials._constructor(vault_verify_ssl='no')
+        sc.credentials._constructor(vault_verify_ssl='nope')
 
 def test_credentials_constructor_vault_address_typeerror(sc):
     with pytest.raises(TypeError):
@@ -128,11 +128,11 @@ def test_credentials_constructor_lieberman_pam_password_typeerror(sc):
 
 def test_credentials_constructor_lieberman_use_ssl_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.credentials._constructor(lieberman_use_ssl='false')
+        sc.credentials._constructor(lieberman_use_ssl='nope')
 
 def test_credentials_constructor_lieberman_verify_ssl_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.credentials._constructor(lieberman_verify_ssl='false')
+        sc.credentials._constructor(lieberman_verify_ssl='nope')
 
 def test_credentials_constructor_lieberman_system_name_typeerror(sc):
     with pytest.raises(TypeError):

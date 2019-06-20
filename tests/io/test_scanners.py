@@ -25,13 +25,13 @@ def test_scanner_control_scans_action_unexpectedvalue(api):
 @pytest.mark.vcr()
 def test_scanner_control_scans_notfounderror(api):
     with pytest.raises(NotFoundError):
-        api.scanners.control_scan(1, 
+        api.scanners.control_scan(1,
             'c5e3e4c9-ee47-4fbc-9e1d-d6f39801f56c', 'stop')
 
 @pytest.mark.vcr()
 def test_scanner_control_scans_permissionerror(stdapi):
     with pytest.raises(PermissionError):
-        stdapi.scanners.control_scan(1, 
+        stdapi.scanners.control_scan(1,
             'c5e3e4c9-ee47-4fbc-9e1d-d6f39801f56c', 'stop')
 
 @pytest.mark.vcr()
@@ -91,17 +91,17 @@ def test_scanner_edit_id_typeerror(api):
 @pytest.mark.vcr()
 def test_sanner_edit_plugin_update_typeerror(api, scanner):
     with pytest.raises(TypeError):
-        api.scanners.edit(scanner['id'], force_plugin_update='yes')
+        api.scanners.edit(scanner['id'], force_plugin_update='yup')
 
 @pytest.mark.vcr()
 def test_scanner_edit_ui_update_typeerror(api, scanner):
     with pytest.raises(TypeError):
-        api.scanners.edit(scanner['id'], force_ui_update='yes')
+        api.scanners.edit(scanner['id'], force_ui_update='yup')
 
 @pytest.mark.vcr()
 def test_scanner_edit_finish_update_typeerror(api, scanner):
     with pytest.raises(TypeError):
-        api.scanners.edit(scanner['id'], finish_update='yes')
+        api.scanners.edit(scanner['id'], finish_update='yup')
 
 @pytest.mark.vcr()
 def test_scanner_edit_registration_code_typeerror(api, scanner):
@@ -111,7 +111,7 @@ def test_scanner_edit_registration_code_typeerror(api, scanner):
 @pytest.mark.vcr()
 def test_scanner_edit_aws_update_typeerror(api, scanner):
     with pytest.raises(TypeError):
-        api.scanners.edit(scanner['id'], aws_update_interval='no')
+        api.scanners.edit(scanner['id'], aws_update_interval='nope')
 
 @pytest.mark.vcr()
 @pytest.mark.xfail(raises=PermissionError)
@@ -195,7 +195,7 @@ def test_link_state_id_typeerror(api):
 @pytest.mark.vcr()
 def test_link_state_linked_typeerror(api):
     with pytest.raises(TypeError):
-        api.scanners.toggle_link_state(1, 'False')
+        api.scanners.toggle_link_state(1, 'nope')
 
 @pytest.mark.vcr()
 def test_link_state_permissionerror(stdapi, scanner):
@@ -216,6 +216,6 @@ def test_scanners_get_permissions(api, scanner):
 
 @pytest.mark.vcr()
 def test_scanner_edit_permissions(api, scanner, user):
-    api.scanners.edit_permissions(scanner['id'], 
+    api.scanners.edit_permissions(scanner['id'],
         {'type': 'default', 'permissions': 16},
         {'type': 'user', 'id': user['id'], 'permissions': 16})

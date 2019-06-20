@@ -51,7 +51,7 @@ def test_scanners_constructor_proxy_typeerror(sc):
 
 def test_scanners_constructor_verify_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.scanners._constructor(verify='true')
+        sc.scanners._constructor(verify='yup')
 
 def test_scanners_constructor_enabled_typeerror(sc):
     with pytest.raises(TypeError):

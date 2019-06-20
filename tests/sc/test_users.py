@@ -20,8 +20,8 @@ def test_users_constructor_responsibility_typeerror(sc):
 
 def test_users_constructor_keys_typeerror(sc):
     keys = [
-            'ldapUsername', 'username', 'firstname', 'lastname', 'title', 
-            'email', 'address', 'city', 'state', 'country', 'phone', 'fax', 
+            'ldapUsername', 'username', 'firstname', 'lastname', 'title',
+            'email', 'address', 'city', 'state', 'country', 'phone', 'fax',
             'fingerprint', 'status'
         ]
     for k in keys:
@@ -54,7 +54,7 @@ def test_users_constructor_timezone_typeerror(sc):
 
 def test_users_constructor_update_password_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.users._constructor(update_password='no')
+        sc.users._constructor(update_password='nope')
 
 def test_users_constructor_managed_usergroups_typeerror(sc):
     with pytest.raises(TypeError):
@@ -86,8 +86,8 @@ def test_users_constructor_def_reportcards_typeerror(sc):
 
 def test_users_constructor_success(sc):
     user = sc.users._constructor(
-        username='jsmith', 
-        password='notmypassword', 
+        username='jsmith',
+        password='notmypassword',
         role=1,
         group=1,
         org=1,

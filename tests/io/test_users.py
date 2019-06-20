@@ -124,7 +124,7 @@ def test_users_edit_email_typeerror(api):
 @pytest.mark.vcr()
 def test_users_edit_enabled_typeerror(api):
     with pytest.raises(TypeError):
-        api.users.edit(1, enabled='false')
+        api.users.edit(1, enabled='nope')
 
 @pytest.mark.vcr()
 def test_users_edit_notfounderror(api):

@@ -18,7 +18,7 @@ def test_schdeule_constructor_start_typeerror(sc):
 def test_schedule_constructor_rrule_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scans._schedule_constructor(
-            {'type': 'ical', 'start': '', 'repeatRule': 1}) 
+            {'type': 'ical', 'start': '', 'repeatRule': 1})
 
 def test_scans_constructor_name_typeerror(sc):
     with pytest.raises(TypeError):
@@ -38,7 +38,7 @@ def test_scans_constructor_description_typeerror(sc):
 
 def test_scans_constructor_repo_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.scans._constructor(repo='no')
+        sc.scans._constructor(repo='nope')
 
 def test_scans_constructor_repo_success(sc):
     resp = sc.scans._constructor(repo=1)
@@ -46,7 +46,7 @@ def test_scans_constructor_repo_success(sc):
 
 def test_scans_constructor_scan_zone_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.scans._constructor(scan_zone='no')
+        sc.scans._constructor(scan_zone='nope')
 
 def test_scans_constructor_scan_zone_success(sc):
     resp = sc.scans._constructor(scan_zone=1)
@@ -54,7 +54,7 @@ def test_scans_constructor_scan_zone_success(sc):
 
 def test_scans_constructor_email_complete_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.scans._constructor(email_complete='no')
+        sc.scans._constructor(email_complete='nope')
 
 def test_scans_constructor_email_complete_success(sc):
     resp = sc.scans._constructor(email_complete=True)
@@ -62,7 +62,7 @@ def test_scans_constructor_email_complete_success(sc):
 
 def test_scans_constructor_email_launch_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.scans._constructor(email_launch='no')
+        sc.scans._constructor(email_launch='nope')
 
 def test_scans_constructor_email_launch_success(sc):
     resp = sc.scans._constructor(email_launch=True)
@@ -82,7 +82,7 @@ def test_scans_constructor_timeout_success(sc):
 
 def test_scans_constructor_vhosts_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.scans._constructor(vhosts='no')
+        sc.scans._constructor(vhosts='nope')
 
 def test_scans_constructor_vhosts_success(sc):
     resp = sc.scans._constructor(vhosts=True)
@@ -150,7 +150,7 @@ def test_scans_constructor_asset_lists_typeerror(sc):
 
 def test_scans_constructor_asset_list_id_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.scans._constructor(asset_lists=['no',])
+        sc.scans._constructor(asset_lists=['nope',])
 
 def test_scans_constructor_asset_lists_success(sc):
     resp = sc.scans._constructor(asset_lists=[1, 2])
@@ -162,7 +162,7 @@ def test_scans_constructor_creds_typeerror(sc):
 
 def test_scans_constructor_creds_id_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.scans._constructor(creds=['no'])
+        sc.scans._constructor(creds=['nope'])
 
 def test_scans_constructor_creds_success(sc):
     resp = sc.scans._constructor(creds=[1, 2])
@@ -194,7 +194,7 @@ def scan(request, sc, vcr):
     with vcr.use_cassette('sc_scans_create'):
         scan = sc.scans.create('Example Scan', 1,
             schedule_type='template',
-            targets=['127.0.0.1'], 
+            targets=['127.0.0.1'],
             policy_id=1000001)
     def teardown():
         try:
@@ -264,7 +264,7 @@ def test_scans_details(sc, scan):
     check(s['owner'], 'id', str)
     check(s['owner'], 'username', str)
     check(s['owner'], 'firstname', str)
-    check(s['owner'], 'lastname', str) 
+    check(s['owner'], 'lastname', str)
 
 @pytest.mark.vcr()
 def test_scans_create(scan):
@@ -315,7 +315,7 @@ def test_scans_create(scan):
     check(scan['owner'], 'id', str)
     check(scan['owner'], 'username', str)
     check(scan['owner'], 'firstname', str)
-    check(scan['owner'], 'lastname', str)  
+    check(scan['owner'], 'lastname', str)
 
 @pytest.mark.vcr()
 def test_scans_edit(sc, scan):

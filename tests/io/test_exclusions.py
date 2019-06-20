@@ -128,7 +128,7 @@ def test_exclusions_create_day_of_month_unexpectedvalue(api):
 @pytest.mark.vcr()
 def test_exclusions_create_enabled_typeerror(api):
     with pytest.raises(TypeError):
-        api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'], enabled='yes')
+        api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'], enabled='yup')
 
 @pytest.mark.vcr()
 def test_exclusions_create_standard_user_permissionerror(stdapi):

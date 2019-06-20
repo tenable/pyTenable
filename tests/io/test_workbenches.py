@@ -6,7 +6,7 @@ import uuid, pytest
 @pytest.mark.vcr()
 def test_workbench_assets_age_typeerror(api):
     with pytest.raises(TypeError):
-        api.workbenches.assets(age='123')
+        api.workbenches.assets(age='onetwothree')
 
 @pytest.mark.vcr()
 def test_workbench_assets_filter_tyype_typeerror(api):
@@ -150,7 +150,7 @@ def test_workbench_asset_info_unexpectedvalueerror(api):
 @pytest.mark.vcr()
 def test_workbench_asset_info_all_fields_typeerror(api):
     with pytest.raises(TypeError):
-        api.workbenches.asset_info('', all_fields='1')
+        api.workbenches.asset_info('', all_fields='one')
 
 @pytest.mark.vcr()
 def test_workbench_asset_info(api):
@@ -461,17 +461,17 @@ def test_workbench_vulns_invalid_filter(api):
 @pytest.mark.vcr()
 def test_workbench_vulns_authenticated_typeerror(api):
     with pytest.raises(TypeError):
-        api.workbenches.vulns(authenticated='FALSE')
+        api.workbenches.vulns(authenticated='nope')
 
 @pytest.mark.vcr()
 def test_workbench_vulns_exploitable_typeerror(api):
     with pytest.raises(TypeError):
-        api.workbenches.vulns(exploitable='FALSE')
+        api.workbenches.vulns(exploitable='nope')
 
 @pytest.mark.vcr()
 def test_workbench_vulns_resolvable_typeerror(api):
     with pytest.raises(TypeError):
-        api.workbenches.vulns(resolvable='FALSE')
+        api.workbenches.vulns(resolvable='nope')
 
 @pytest.mark.vcr()
 def test_workbench_vulns_severity_typeerror(api):
