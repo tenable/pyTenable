@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.22]
+### Added
+- Tenable.sc Asset List API Added and Tested #13
+
+### Changed
+- Export wait logic is now centralized.  Both scan export and workbench export now use this new method.
+
+### Fixed
+- Multiple chapters should be merged with ; and not , in Workbenches exports
+- Chapter "vuln_by_asset" was missing from the choices for workbench export #127
+- Docstrings incorrectly state that chapters are only necessary for PDF and HTML #127
+- Scan types weren't being set when passing the subordinate attribute #128
+
+
 ## [0.3.21]
 ### Changed
 - Tenable.io scans.export now supports explicitly defining the filters attribute as well as the implicit argument list #124
@@ -14,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - SC Analysis Query Expander wasn't expanding numerid ids https://community.tenable.com/s/question/0D7f2000005b5OX/filter-on-asset-via-api-call-to-analysis-resource-using-pytenable
 - SC Credential privilegeEscalation attr pre-fill wasn't restricted to just specific types #126
 - SC Users docs weren't linked into the documentation.
+
 
 ## [0.3.20]
 ### Added
@@ -32,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Typo in docs #120
 - Scanner listing when WAS wasn't enabled caused an error #117
 
+
 ## [0.3.19]
 ### Changed
 - All Tenable.io API doc links have been re-pointed to the new developer portal. #111
@@ -47,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Various documentation issues reported by sphinx addressed
 - TenableSC.scan_instances.list can now support non-standard timeframes #108
+
 
 ## [0.3.18]
 ### Added
@@ -65,6 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Addressed issue where UnexpectedValueError was sometimes raised when
   specifying a scanner by name in tio.scans._create_scan_document.
+
 
 ## [0.3.16]
 ### Added
@@ -86,11 +104,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Exports would erroneously set an option if set to none.
 - The scan history test cassette was modified to match the new call.
 
+
 ## [0.3.14]
 ### Fixed
 - Corrected Doc Issue where the downloads API was incorrectly referencing
   sc.alerts
 - Fixed issue with scan history deletion where the path was incorrect #101
+
 
 ## [0.3.13]
 ### Added
@@ -120,6 +140,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed issue with TenableSC.analysis.scan not properly passing a view. #73
 
+
 ## [0.3.11]
 ### Added
 - Added proxy support for the IO, SC, etc. #72
@@ -127,6 +148,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fixed issue where supplied sessions weren't being properly passed to
   _build_session.
+
 
 ## [0.3.10]
 ### Added
@@ -301,7 +323,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fixed Time Conversion Issue #6
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.21...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.22...master
+[0.3.22]: https://github.com/tenable/pyTenable/compare/0.3.21...0.3.22
 [0.3.21]: https://github.com/tenable/pyTenable/compare/0.3.20...0.3.21
 [0.3.20]: https://github.com/tenable/pyTenable/compare/0.3.19...0.3.20
 [0.3.19]: https://github.com/tenable/pyTenable/compare/0.3.18...0.3.19
