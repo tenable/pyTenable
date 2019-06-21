@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - TNS_SESSIONID=SESSIONID
+      User-Agent:
+      - pyTenable/0.3.22 (pyTenable/0.3.22; Python/3.6.7)
+      X-SecurityCenter:
+      - '0000000000'
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/asset/35/export
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<assets>\n\t<asset>\n\t\t<scVersion>5.8.0</scVersion>\n\t\t<name>Example</name>\n\t\t<description></description>\n\t\t<type>static</type>\n\t\t<templateID>-1</templateID>\n\t\t<definition>YToyOntzOjEwOiJkZWZpbmVkSVBzIjtzOjExOiIxOTIuMTY4LjAuMSI7czoxNToiYXNzZXREYXRhRmllbGRzIjthOjA6e319</definition>\n\t</asset>\n</assets>\n"
+    headers:
+      Cache-Control:
+      - private, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Disposition:
+      - attachment; filename="asset.47.1.xml"
+      Content-Length:
+      - '337'
+      Content-Transfer-Encoding:
+      - BASE64;
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Date:
+      - Thu, 20 Jun 2019 13:49:58 GMT
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - public
+      SecurityCenter:
+      - 5.8.0
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

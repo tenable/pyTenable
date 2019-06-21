@@ -1,0 +1,121 @@
+interactions:
+- request:
+    body: "--60e43c06738513483218ee3a94e61840\r\nContent-Disposition: form-data; name=\"Filedata\";
+      filename=\"asset_list.xml\"\r\n\r\n<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<assets>\n\t<asset>\n\t\t<scVersion>5.8.0</scVersion>\n\t\t<name>Import
+      Example</name>\n\t\t<description></description>\n\t\t<type>static</type>\n\t\t<templateID>-1</templateID>\n\t\t<definition>YToyOntzOjEwOiJkZWZpbmVkSVBzIjtzOjExOiIxOTIuMTY4LjAuMSI7czoxNToiYXNzZXREYXRhRmllbGRzIjthOjA6e319</definition>\n\t</asset>\n</assets>\n\r\n--60e43c06738513483218ee3a94e61840--\r\n"
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '498'
+      Content-Type:
+      - multipart/form-data; boundary=60e43c06738513483218ee3a94e61840
+      Cookie:
+      - TNS_SESSIONID=SESSIONID
+      User-Agent:
+      - pyTenable/0.3.22 (pyTenable/0.3.22; Python/3.6.7)
+      X-SecurityCenter:
+      - '0000000000'
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/file/upload
+  response:
+    body:
+      string: '{"type":"regular","response":{"filename":"SW6CHj","originalFilename":"asset_list.xml","content":"","context":""},"error_code":0,"error_msg":"","warnings":[],"timestamp":1561038575}
+
+'
+    headers:
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '181'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 20 Jun 2019 13:49:35 GMT
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - no-cache
+      SecurityCenter:
+      - 5.8.0
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"filename": "SW6CHj"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '22'
+      Content-Type:
+      - application/json
+      Cookie:
+      - TNS_SESSIONID=SESSIONID
+      User-Agent:
+      - pyTenable/0.3.22 (pyTenable/0.3.22; Python/3.6.7)
+      X-SecurityCenter:
+      - '0000000000'
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/asset/import
+  response:
+    body:
+      string: '{"type":"regular","response":{"id":"46","name":"Import Example","type":"static","description":"","tags":"","context":"","status":"0","createdTime":"1561038575","modifiedTime":"1561038575","typeFields":{"definedIPs":"192.168.0.1"},"repositories":[{"ipCount":"-1","repository":{"id":"1","name":"Default","description":""}},{"ipCount":"-1","repository":{"id":"18","name":"Ad-Hoc","description":""}}],"ipCount":-1,"groups":[],"assetDataFields":[],"canUse":"true","canManage":"true","creator":{"id":"2","username":"api","firstname":"api","lastname":"user"},"owner":{"id":"2","username":"api","firstname":"api","lastname":"user"},"ownerGroup":{"id":"0","name":"Full
+        Access","description":"Full Access group"},"targetGroup":{"id":-1,"name":"","description":""},"template":{"id":-1,"name":"","description":""}},"error_code":0,"error_msg":"","warnings":[],"timestamp":1561038575}
+
+'
+    headers:
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '871'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 20 Jun 2019 13:49:35 GMT
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=99
+      Pragma:
+      - no-cache
+      SecurityCenter:
+      - 5.8.0
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

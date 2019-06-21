@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - TNS_SESSIONID=SESSIONID
+      User-Agent:
+      - pyTenable/0.3.22 (pyTenable/0.3.22; Python/3.6.7)
+      X-SecurityCenter:
+      - '0000000000'
+    method: GET
+    uri: https://securitycenter.home.cugnet.net/rest/asset/35
+  response:
+    body:
+      string: '{"type":"regular","response":{"id":"37","name":"Example","type":"static","description":"","tags":"","context":"","status":"0","createdTime":"1560971557","modifiedTime":"1560971557","typeFields":{"definedIPs":"192.168.0.1"},"repositories":[{"ipCount":"-1","repository":{"id":"1","name":"Default","description":""}},{"ipCount":"-1","repository":{"id":"18","name":"Ad-Hoc","description":""}}],"ipCount":-1,"groups":[],"assetDataFields":[],"canUse":"true","canManage":"true","creator":{"id":"2","username":"api","firstname":"api","lastname":"user"},"owner":{"id":"2","username":"api","firstname":"api","lastname":"user"},"ownerGroup":{"id":"0","name":"Full
+        Access","description":"Full Access group"},"targetGroup":{"id":-1,"name":"","description":""},"template":{"id":-1,"name":"","description":""}},"error_code":0,"error_msg":"","warnings":[],"timestamp":1560971557}
+
+'
+    headers:
+      Cache-Control:
+      - no-store, no-cache, must-revalidate
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '864'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 19 Jun 2019 19:12:37 GMT
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - no-cache
+      SecurityCenter:
+      - 5.8.0
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
