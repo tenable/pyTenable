@@ -286,6 +286,15 @@ class ScanAPI(SCEndpoint):
         '''
         kw['name'] = name
         kw['repo'] = repo
+
+        # If the policy_id or plugin_id is set (as one or the other generally
+        # should be) then we will automatically set the scan type based on
+        # which of the values is defined.
+        if 'policy_id' in kw:
+            kw['type'] = 'policy'
+        elif 'plugin_id' in kw:
+            kw['type'] = 'plugin'
+
         scan = self._constructor(**kw)
         return self._api.post('scan', json=scan).json()['response']
 
