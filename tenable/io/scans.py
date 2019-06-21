@@ -317,6 +317,31 @@ class ScansAPI(TIOEndpoint):
             >>> scan = tio.scans.create(
             ...     name='Example Scan',
             ...     targets=['127.0.0.1'])
+
+            Creating a scan with a set of managed credentials:
+
+            >>> scan = tio.scans.create(
+            ...     name='Example Managed Cred Scan',
+            ...     targets=['127.0.0.1'],
+            ...     credentials={'Host': {'SSH': [{'id': 'CREDENTIAL-UUID'}]}}
+
+            Creating a scan with a set of embedded credentials:
+
+            >>> scan = tio.scans.create(
+            ...     name='Example Embedded Cred Scan',
+            ...     targets=['127.0.0.1'],
+            ...     credentials={'Host': {'Windows': [{
+            ...         'domain': '',
+            ...         'username': 'Administrator',
+            ...         'password': 'sekretsquirrel',
+            ...         'auth_method': 'Password'
+            ...     }]}}
+            ... )
+
+            For further information on credentials, what settings to use, etc,
+            refer to
+            `this doc <https://developer.tenable.com/docs/determine-settings-for-credential-type>`_
+            on the developer portal.
         '''
         if 'template' not in kw:
             kw['template'] = 'basic'
