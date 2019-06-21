@@ -7,6 +7,7 @@
 .. automodule:: tenable.sc.alerts
 .. automodule:: tenable.sc.accept_risks
 .. automodule:: tenable.sc.analysis
+.. automodule:: tenable.sc.asset_lists
 .. automodule:: tenable.sc.audit_files
 .. automodule:: tenable.sc.credentials
 .. automodule:: tenable.sc.feeds
@@ -60,6 +61,7 @@ from tenable.errors import *
 from .accept_risks import AcceptRiskAPI
 from .alerts import AlertAPI
 from .analysis import AnalysisAPI
+from .asset_lists import AssetListAPI
 from .audit_files import AuditFileAPI
 from .credentials import CredentialAPI
 from .files import FileAPI
@@ -278,6 +280,10 @@ class TenableSC(APISession):
     @property
     def analysis(self):
         return AnalysisAPI(self)
+
+    @property
+    def asset_lists(self):
+        return AssetListAPI(self)
 
     @property
     def audit_files(self):
