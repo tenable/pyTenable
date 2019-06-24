@@ -59,7 +59,7 @@ class EditorAPI(TIOEndpoint):
         settings for a given policy/scan
         '''
         resp = {
-            'custom': dict(),
+            'custom': list(),
             'feed': dict()
         }
 
