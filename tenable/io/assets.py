@@ -11,6 +11,7 @@ Methods available on ``tio.assets``:
 .. autoclass:: AssetsAPI
 
     .. automethod:: asset_import
+    .. automethod:: delete
     .. automethod:: details
     .. automethod:: import_job_details
     .. automethod:: list
@@ -35,6 +36,25 @@ class AssetsAPI(TIOEndpoint):
             ...     pprint(asset)
         '''
         return self._api.get('assets').json()['assets']
+
+    def delete(self, uuid):
+        '''
+        Deletes the asset.
+
+        :devportal:`workbenches: asset-delete <workbenches-asset-delete>`
+
+        Args:
+            asset_uuid (str): The unique identifier for the asset.
+
+        Returns:
+            :obj:`None`:
+
+        Examples:
+            >>> asset_id = '00000000-0000-0000-0000-000000000000'
+            >>> tio.asset.delete(asset_id)
+        '''
+        self._api.delete('workbenches/assets/{}'.format(
+            self._check('uuid', uuid, 'uuid')))
 
     def details(self, uuid):
         '''
