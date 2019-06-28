@@ -339,7 +339,7 @@ class AuditFileAPI(SCEndpoint):
             >>> with open('example.zip', 'wb') as fobj:
             ...     sc.audit_files.export_audit(1, fobj)
         '''
-        resp = self._api.post('auditFile/{}/export'.format(
+        resp = self._api.get('auditFile/{}/export'.format(
             self._check('id', id, int)), stream=True)
 
         # if no file-like object was passed, then we will instantiate a BytesIO
