@@ -163,14 +163,14 @@ class AuditFileAPI(SCEndpoint):
         # been provided.
         if audit_file:
             if hasattr(audit_file, 'name'):
-                kw['orig_filename'] = audit_file.name
+                kw['orig_filename'] = basename(audit_file.name)
             kw['filename'] = self._api.files.upload(audit_file)
 
         # Upload and store the relevent information on the tailoring file that
         # has been provided.
         if tailoring_file:
             if hasattr(tailoring_file, 'name'):
-                kw['tailoring_orig_filename'] = tailoring_file.name
+                kw['tailoring_orig_filename'] = basename(tailoring_file.name)
             kw['tailoring_filename'] = self._api.files.upload(tailoring_file)
 
         payload = self._constructor(**kw)
@@ -257,14 +257,14 @@ class AuditFileAPI(SCEndpoint):
         # been provided.
         if audit_file:
             if hasattr(audit_file, 'name'):
-                kw['orig_filename'] = audit_file.name
+                kw['orig_filename'] = basename(audit_file.name)
             kw['filename'] = self._api.files.upload(audit_file)
 
         # Upload and store the relevent information on the tailoring file that
         # has been provided.
         if tailoring_file:
             if hasattr(tailoring_file, 'name'):
-                kw['tailoring_orig_filename'] = tailoring_file.name
+                kw['tailoring_orig_filename'] = basename(tailoring_file.name)
             kw['tailoring_filename'] = self._api.files.upload(tailoring_file)
 
         payload = self._constructor(**kw)
