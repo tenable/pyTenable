@@ -10,31 +10,6 @@ interactions:
     method: GET
     uri: https://cloud.tenable.com/filters/workbenches/assets
   response:
-    body: {string: !!python/unicode 'This scanner, agent, or API key token does not
-        appear to be related to any active containers on any sites and has been blacklisted.'}
-    headers:
-      connection: [keep-alive]
-      content-length: ['131']
-      content-type: [application/octet-stream]
-      date: ['Fri, 26 Apr 2019 15:24:53 GMT']
-      server: [tenable.io]
-      strict-transport-security: [max-age=63072000; includeSubDomains]
-      x-content-type-options: [nosniff]
-      x-gateway-site-id: [nginx-router-c-prod-ca-central-1]
-      x-path-handler: [blacklisted]
-      x-request-uuid: [b95149b2746dab9528501c018bc4aab8]
-    status: {code: 401, message: Unauthorized}
-- request:
-    body: null
-    headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [pyTenable/0.3.18 (pyTenable/0.3.18; Python/2.7.15)]
-      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
-    method: GET
-    uri: https://cloud.tenable.com/filters/workbenches/assets
-  response:
     body:
       string: !!binary |
         H4sIAAAAAAAAA+1b63LbRrJ+FZYqP6REQ2MuuKnqlIuRncRVtqyEvtTGVlhzg4RdEmAA0LZi+2n2
