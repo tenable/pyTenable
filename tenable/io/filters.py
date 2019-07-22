@@ -48,17 +48,50 @@ class FiltersAPI(TIOEndpoint):
             filters[item['name']] = f
         return filters
 
-    def _use_cache(self, name, path, normalize=True):
+    def _use_cache(self, name, path, field_name='filters', normalize=True):
         '''
         Leverages the filter cache and will return the results as expected.
         '''
         if name not in self._cache:
-            self._cache[name] = self._api.get(path).json()['filters']
+            self._cache[name] = self._api.get(path).json()[field_name]
 
         if normalize:
             return self._normalize(self._cache[name])
         else:
             return self._cache[name]
+
+    def access_group_asset_rules_filters(self, normalize=True):
+        '''
+        Returns access group rules filters.
+
+        :devportal:`filters: access-control-rules-filters <access-groups-list-rule-filters>`
+
+        Returns:
+            :obj:`dict`:
+                Filter resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.access_group_rules_filters()
+        '''
+        return self._use_cache('access_group_asset_filters',
+            'access-groups/rules/filters',
+            field_name='rules', normalize=normalize)
+
+    def access_group_filters(self, normalize=True):
+        '''
+        Returns access group filters.
+
+        :devportal:`filters: access-group-filters <access-groups-list-filters>`
+
+        Returns:
+            :obj:`dict`:
+                Filter resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.access_group_filters()
+        '''
+        return self._use_cache('access_groups',
+            'access-groups/filters', normalize=normalize)
 
     def agents_filters(self, normalize=True):
         '''
@@ -73,7 +106,8 @@ class FiltersAPI(TIOEndpoint):
         Examples:
             >>> filters = tio.filters.agents_filters()
         '''
-        return self._use_cache('agents', 'filters/scans/agents', normalize)
+        return self._use_cache('agents', 'filters/scans/agents',
+                               normalize=normalize)
 
     def workbench_vuln_filters(self, normalize=True):
         '''
@@ -88,7 +122,8 @@ class FiltersAPI(TIOEndpoint):
         Examples:
             >>> filters = tio.filters.workbench_vuln_filters()
         '''
-        return self._use_cache('vulns', 'filters/workbenches/vulnerabilities', normalize)
+        return self._use_cache('vulns',
+            'filters/workbenches/vulnerabilities', normalize=normalize)
 
     def workbench_asset_filters(self, normalize=True):
         '''
@@ -103,7 +138,8 @@ class FiltersAPI(TIOEndpoint):
         Examples:
             >>> filters = tio.filters.workbench_asset_filters()
         '''
-        return self._use_cache('asset', 'filters/workbenches/assets', normalize)
+        return self._use_cache('asset', 'filters/workbenches/assets',
+                               normalize=normalize)
 
     def scan_filters(self, normalize=True):
         '''
@@ -116,7 +152,8 @@ class FiltersAPI(TIOEndpoint):
         Examples:
             >>> filters = tio.filters.scan_filters()
         '''
-        return self._use_cache('scan', 'filters/scans/reports', normalize)
+        return self._use_cache('scan', 'filters/scans/reports',
+                               normalize=normalize)
 
     def credentials_filters(self, normalize=True):
         '''
@@ -131,4 +168,5 @@ class FiltersAPI(TIOEndpoint):
         Examples:
             >>> filters = tio.filters.scan_filters()
         '''
-        return self._use_cache('scan', 'filters/credentials', normalize)
+        return self._use_cache('scan', 'filters/credentials',
+                               normalize=normalize)

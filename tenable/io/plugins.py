@@ -12,6 +12,7 @@ Methods available on ``tio.plugins``:
 
     .. automethod:: families
     .. automethod:: family_details
+    .. automethod:: list
     .. automethod:: plugin_details
 '''
 from .base import TIOEndpoint, TIOIterator
