@@ -37,3 +37,22 @@ def test_scan_filters(api):
         check(filters[f], 'choices', list, allow_none=True)
         check(filters[f], 'operators', list)
         check(filters[f], 'pattern', str, allow_none=True)
+
+@pytest.mark.vcr()
+def test_access_group_asset_rules_filters(api):
+    filters = api.filters.access_group_asset_rules_filters()
+    assert isinstance(filters, dict)
+    for f in filters:
+        check(filters[f], 'choices', list, allow_none=True)
+        check(filters[f], 'operators', list)
+        check(filters[f], 'pattern', str, allow_none=True)
+
+@pytest.mark.vcr()
+def test_access_group_filters(api):
+    filters = api.filters.access_group_filters()
+    assert isinstance(filters, dict)
+    for f in filters:
+        check(filters[f], 'choices', list, allow_none=True)
+        check(filters[f], 'operators', list)
+        check(filters[f], 'pattern', str, allow_none=True)
+

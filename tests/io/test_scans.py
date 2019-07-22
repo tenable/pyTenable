@@ -1,7 +1,7 @@
 from tenable.errors import *
 from ..checker import check, single
 from .conftest import SCAN_ID_WITH_RESULTS
-import uuid, time, pytest
+import uuid, time, pytest, os
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_template_typeerror(api):
@@ -105,7 +105,7 @@ def test_scan_configure_notfounderror(api):
 def test_scan_configure(api, scan):
     mod = api.scans.configure(scan['id'], name='MODIFIED')
     assert mod['id'] == scan['id']
-    assert mod['name'] == 'MODIFIED' 
+    assert mod['name'] == 'MODIFIED'
 
 @pytest.mark.vcr()
 def test_scan_copy_scan_id_typeerror(api):
@@ -450,6 +450,7 @@ def test_scan_export_file_object(api):
             counter += 1
             if counter > 10:
                 break
+    os.remove(fn)
 
 @pytest.mark.vcr()
 def test_scan_host_details_scan_id_typeerror(api):
@@ -612,7 +613,7 @@ def test_scan_plugin_output(api, scan_results):
     host = api.scans.host_details(
         SCAN_ID_WITH_RESULTS, scan_results['hosts'][0]['asset_id'])
     output = api.scans.plugin_output(
-        SCAN_ID_WITH_RESULTS, 
+        SCAN_ID_WITH_RESULTS,
         host['vulnerabilities'][0]['host_id'],
         host['vulnerabilities'][0]['plugin_id'])
     assert isinstance(output, dict)
