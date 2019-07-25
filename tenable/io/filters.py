@@ -170,7 +170,7 @@ class FiltersAPI(TIOEndpoint):
         '''
         return self._use_cache('scan', 'filters/credentials',
                                normalize=normalize)
-    
+
     def network_filters(self):
         '''
         Returns the networks filters.
@@ -178,12 +178,12 @@ class FiltersAPI(TIOEndpoint):
         Returns:
             :obj:`dict`:
                 Filter resource dictionary
-        
+
         Examples:
             >>> filters = tio.filters.network_filters()
         '''
         return {'name': {
-            'operators': ['eq'],
+            'operators': ['eq', 'neq', 'match'],
             'choices': None,
             'pattern': None
         }}
