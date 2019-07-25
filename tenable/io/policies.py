@@ -20,7 +20,7 @@ Methods available on ``tio.policies``:
     .. automethod:: list
 '''
 from .base import TIOEndpoint
-from tenable.utils import policy_settings
+from tenable.utils import policy_settings, dict_merge
 from io import BytesIO
 
 class PoliciesAPI(TIOEndpoint):
@@ -45,14 +45,14 @@ class PoliciesAPI(TIOEndpoint):
         relevant resources.
 
         Args:
-            name (str): The name of the scan .
+            name (str): The name of the scan template.
 
         Returns:
             :obj:`dict`:
                 The policy configuration resource.
 
         Examples:
-            >>> template = tio.policies.template('basic')
+            >>> template = tio.policies.template_details('basic')
             >>> pprint(template)
 
         Please note that template_details is reverse-engineered from the
@@ -64,8 +64,7 @@ class PoliciesAPI(TIOEndpoint):
         tmpl_uuid = tmpl[self._check('name', name, str, choices=tmpl.keys())]
 
         # Get the editor object
-        editor = self._api.get('editor/policy/{}'.format(
-            self._check('scan_id', scan_id, int))).json()
+        editor = self._api.editor.template_details('policy', tmpl_uuid)
 
         # define the initial skeleton of the scan object
         scan = {
@@ -76,7 +75,7 @@ class PoliciesAPI(TIOEndpoint):
         # graft on the basic settings that aren't stored in any input sections.
         for item in editor['settings']['basic']['groups']:
             for setting in item.keys():
-                if setting not in ['name', 'title', 'inputs']:
+                if setting not in ['name', 'title', 'inputs', 'sections']:
                     scan['settings'][setting] = item[setting]
 
         if 'credentials' in editor:
@@ -116,13 +115,7 @@ class PoliciesAPI(TIOEndpoint):
             # if the plugins sub-document exists, then lets walk down the
             # plugins dataset.
             scan['plugins'] = self._api.editor.parse_plugins(
-                editor['plugins']['families'], scan_id)
-
-        # We next need to do a little post-parsing of the ACLs to find the
-        # owner and put ownder_id attribute into the appropriate location.
-        for acl in scan['settings']['acls']:
-            if acl['owner'] == 1:
-                scan['settings']['owner_id'] = acl['id']
+                editor['plugins']['families'], tmpl_uuid)
 
         # return the scan document to the caller.
         return scan
