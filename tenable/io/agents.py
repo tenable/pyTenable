@@ -57,7 +57,7 @@ class AgentsAPI(TIOEndpoint):
                     - ``('distro', 'match', 'win')``
                     - ``('name', 'nmatch', 'home')``
 
-                As the filters mat change and sortable fields mat change over
+                As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
                 the `filters:agents-filters <https://cloud.tenable.com/api#/resources/filters/agents-filters>`_
                 endpoint to get more details.

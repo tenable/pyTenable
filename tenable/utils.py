@@ -26,15 +26,15 @@ def policy_settings(item):
     resp = dict()
     if 'id' in item and ('default' in item
         or ('type' in item and item['type'] in [
-            'file', 
-            'checkbox', 
+            'file',
+            'checkbox',
             'entry',
             'textarea',
             'medium-fixed-entry',
             'password'])):
         # if we find both an 'id' and a 'default' attribute, or if we find
         # a 'type' attribute matching one of the known attribute types, then
-        # we will parse out the data and append it to the response dictionary 
+        # we will parse out the data and append it to the response dictionary
         if not 'default' in item:
             item['default'] = ""
         resp[item['id']] = item['default']
@@ -45,8 +45,8 @@ def policy_settings(item):
         # editor data-structure.
         if key == 'modes':
             continue
-        if (isinstance(item[key], list) 
-            and len(item[key]) > 0 
+        if (isinstance(item[key], list)
+            and len(item[key]) > 0
             and isinstance(item[key][0], dict)):
             for i in item[key]:
                 resp = dict_merge(resp, policy_settings(i))

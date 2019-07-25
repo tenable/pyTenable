@@ -16,6 +16,7 @@ Methods available on ``tio.agent_groups``:
     .. automethod:: delete
     .. automethod:: delete_agent
     .. automethod:: details
+    .. automethod:: list
     .. automethod:: task_status
 '''
 from .base import TIOEndpoint
@@ -111,7 +112,7 @@ class AgentGroupsAPI(TIOEndpoint):
         return self._api.post(
             'scanners/{}/agent-groups'.format(
                 self._check('scanner_id', scanner_id, int)
-            ), json={'name': self. _check('name', name, str)}).json()
+            ), json={'name': self._check('name', name, str)}).json()
 
     def delete(self, group_id, scanner_id=1):
         '''

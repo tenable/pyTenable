@@ -247,7 +247,7 @@ class AccessGroupsAPI(TIOEndpoint):
     
     def list(self, *filters, **kw):
         '''
-        Get the listing of configured agents from Tenable.io.
+        Get the listing of configured access groups from Tenable.io.
 
         :devportal:`access-groups: list <access-groups-list>`
 
@@ -261,7 +261,7 @@ class AccessGroupsAPI(TIOEndpoint):
                     - ``('distro', 'match', 'win')``
                     - ``('name', 'nmatch', 'home')``
 
-                As the filters mat change and sortable fields mat change over
+                As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
                 the :devportal:`access-groups: list-filters <access-groups-list-filters>`
                 endpoint to get more details.
@@ -297,8 +297,8 @@ class AccessGroupsAPI(TIOEndpoint):
 
             Retrieving all of the windows agents:
 
-            >>> for group in tio.access_groups.list(('distro', 'match', 'win')):
-            ...     pprint(agent)
+            >>> for group in tio.access_groups.list(('name', 'eq', 'win')):
+            ...     pprint(group)
         '''
         limit = 50
         offset = 0
