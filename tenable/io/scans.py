@@ -425,7 +425,7 @@ class ScansAPI(TIOEndpoint):
         # graft on the basic settings that aren't stored in any input sections.
         for item in editor['settings']['basic']['groups']:
             for setting in item.keys():
-                if setting not in ['name', 'title', 'inputs']:
+                if setting not in ['name', 'title', 'inputs', 'sections']:
                     scan['settings'][setting] = item[setting]
 
         if 'credentials' in editor:
