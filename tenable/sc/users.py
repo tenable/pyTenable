@@ -133,6 +133,11 @@ class UserAPI(SCEndpoint):
                 'default_reportcards', kw['default_reportcards'], bool)).lower()
             del(kw['default_reportcards'])
 
+        if 'ldap_id' in kw:
+            # Convert the ldap_id attribute to a subdocument of "ldap"
+            kw['ldap'] = {'id': self._check('ldap_id', kw['ldap_id'], int)}
+            del(kw['ldap_id'])
+
         return kw
 
     def create(self, username, password, role, **kw):
@@ -183,6 +188,9 @@ class UserAPI(SCEndpoint):
                 for users that are not Administrators.
             is_locked (bool, optional):
                 If the account locked?  If left unspecified the default is False.
+            ldap_id (int, optional):
+                If specifying an LDAP auth type, this is the numeric identifier
+                for the LDAP configuration to use.
             managed_usergroups (list, optional):
                 A list of group ids that the user is allowed to manage users
                 within.
@@ -295,6 +303,9 @@ class UserAPI(SCEndpoint):
                 for users that are not Administrators.
             is_locked (bool, optional):
                 If the account locked?  If left unspecified the default is False.
+            ldap_id (int, optional):
+                If specifying an LDAP auth type, this is the numeric identifier
+                for the LDAP configuration to use.
             managed_usergroups (list, optional):
                 A list of group ids that the user is allowed to manage users
                 within.
