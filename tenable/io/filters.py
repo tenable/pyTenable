@@ -171,7 +171,7 @@ class FiltersAPI(TIOEndpoint):
         return self._use_cache('scan', 'filters/credentials',
                                normalize=normalize)
 
-    def network_filters(self):
+    def networks_filters(self):
         '''
         Returns the networks filters.
 

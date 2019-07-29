@@ -8,6 +8,7 @@
 .. automodule:: tenable.io.agents
 .. automodule:: tenable.io.assets
 .. automodule:: tenable.io.audit_log
+.. automodule:: tenable.io.credentials
 .. automodule:: tenable.io.editor
 .. automodule:: tenable.io.exclusions
 .. automodule:: tenable.io.exports
@@ -15,6 +16,7 @@
 .. automodule:: tenable.io.filters
 .. automodule:: tenable.io.folders
 .. automodule:: tenable.io.groups
+.. automodule:: tenable.io.networks
 .. automodule:: tenable.io.permissions
 .. automodule:: tenable.io.plugins
 .. automodule:: tenable.io.policies
@@ -36,7 +38,7 @@ there may still bee the occasional need to make raw HTTP calls to the IO API.
 The methods listed below aren't run through any naturalization by the library
 aside from the response code checking.  These methods effectively route
 directly into the requests session.  The responses will be Response objects from
-the ``requests`` library.  In all cases, the path is appended to the base 
+the ``requests`` library.  In all cases, the path is appended to the base
 ``url`` paramater that the ``TenableIO`` object was instantiated with.
 
 Example:
@@ -64,6 +66,7 @@ from .agent_groups import AgentGroupsAPI
 from .agents import AgentsAPI
 from .assets import AssetsAPI
 from .audit_log import AuditLogAPI
+from .credentials import CredentialsAPI
 from .editor import EditorAPI
 from .exclusions import ExclusionsAPI
 from .exports import ExportsAPI
@@ -71,6 +74,7 @@ from .files import FileAPI
 from .filters import FiltersAPI
 from .folders import FoldersAPI
 from .groups import GroupsAPI
+from .networks import NetworksAPI
 from .permissions import PermissionsAPI
 from .plugins import PluginsAPI
 from .policies import PoliciesAPI
@@ -102,7 +106,7 @@ class TenableIO(APISession):
             variable ``TIO_SECRET_KEY`` to acquire the key.
         url (str, optional):
             The base URL that the paths will be appended onto.  The default
-            is ``https://cloud.tenable.com`` 
+            is ``https://cloud.tenable.com``
         retries (int, optional):
             The number of retries to make before failing a request.  The
             default is ``3``.
@@ -118,7 +122,7 @@ class TenableIO(APISession):
         >>> from tenable.io import TenableIO
         >>> tio = TenableIO('ACCESS_KEY', 'SECRET_KEY')
     '''
-    
+
     _tzcache = None
     _url = 'https://cloud.tenable.com'
 
@@ -151,6 +155,10 @@ class TenableIO(APISession):
         return AuditLogAPI(self)
 
     @property
+    def credentials(self):
+        return CredentialsAPI(self)
+
+    @property
     def editor(self):
         return EditorAPI(self)
 
@@ -177,6 +185,10 @@ class TenableIO(APISession):
     @property
     def groups(self):
         return GroupsAPI(self)
+
+    @property
+    def networks(self):
+        return NetworksAPI(self)
 
     @property
     def permissions(self):
@@ -209,7 +221,7 @@ class TenableIO(APISession):
     @property
     def session(self):
         return SessionAPI(self)
-    
+
     @property
     def tags(self):
         return TagsAPI(self)
@@ -230,32 +242,32 @@ class TenableIO(APISession):
     def _tz(self):
         '''
         As we will be using the timezone listing in a lot of parameter checking,
-        we should probably cache the response as a private attribute to speed 
+        we should probably cache the response as a private attribute to speed
         up checking times.
         '''
         if not self._tzcache:
             self._tzcache = self.scans.timezones()
         return self._tzcache
 
-    def __init__(self, access_key=None, secret_key=None, url=None, retries=None, 
+    def __init__(self, access_key=None, secret_key=None, url=None, retries=None,
                  backoff=None, ua_identity=None, session=None, proxies=None):
         if access_key:
             self._access_key = access_key
         else:
             self._access_key = os.getenv('TIO_ACCESS_KEY')
-        
+
         if secret_key:
             self._secret_key = secret_key
         else:
             self._secret_key = os.getenv('TIO_SECRET_KEY')
-        
+
         if not self._access_key or not self._secret_key:
             raise UnexpectedValueError('No valid API Keypair Defined')
-        
-        APISession.__init__(self, url, 
-            retries=retries, 
-            backoff=backoff, 
-            ua_identity=ua_identity, 
+
+        APISession.__init__(self, url,
+            retries=retries,
+            backoff=backoff,
+            ua_identity=ua_identity,
             session=session,
             proxies=proxies)
 
