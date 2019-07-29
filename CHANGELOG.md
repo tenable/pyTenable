@@ -337,7 +337,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fixed Time Conversion Issue #6
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.22...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.23...master
+[0.3.23]: https://github.com/tenable/pyTenable/compare/0.3.22...0.3.23
 [0.3.22]: https://github.com/tenable/pyTenable/compare/0.3.21...0.3.22
 [0.3.21]: https://github.com/tenable/pyTenable/compare/0.3.20...0.3.21
 [0.3.20]: https://github.com/tenable/pyTenable/compare/0.3.19...0.3.20
