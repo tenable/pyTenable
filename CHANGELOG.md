@@ -6,7 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.23]
 ### Changed
-- Improved documentation for creating scans to include
+- Improved documentation for creating scans to include credentials
+
+### Added
+- Tenable.io Access Group API Added and Tested #98
+- Tenable.io Networks API Added and Tested #129
+- Tenable.io Managed Credentials API Added and Tested #130
+
+### Fixed
+- tio.policies.template_details wasn't correctly constructing the document from the editor API #136
+- tio.agent_groups.list was missing from the documentation
 
 
 ## [0.3.22]
