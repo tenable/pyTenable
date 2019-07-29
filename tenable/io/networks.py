@@ -23,11 +23,11 @@ from .base import TIOEndpoint, TIOIterator
 
 class NetworksIterator(TIOIterator):
     '''
-    The networks iterator provides a scalable way to work through networks 
-    result sets of any size.  The iterator will walk through each page of data, 
-    returning one record at a time.  If it reaches the end of a page of records, 
-    then it will request the next page of information and then continue to 
-    return records from the next page (and the next, and the next) until the 
+    The networks iterator provides a scalable way to work through networks
+    result sets of any size.  The iterator will walk through each page of data,
+    returning one record at a time.  If it reaches the end of a page of records,
+    then it will request the next page of information and then continue to
+    return records from the next page (and the next, and the next) until the
     counter reaches the total number of records that the API has reported.
 
     Attributes:
@@ -52,22 +52,22 @@ class NetworksAPI(TIOEndpoint):
         Args:
             name (str): The name of the new network.
             description (str, optional): Description of the network.
-        
+
         Returns:
             :obj:`dict`:
                 The resource record of the newly created network.
-        
+
         Examples:
             >>> nw = tio.networks.create('Example')
         '''
         if not description:
             description = ''
-        
+
         return self._api.post('networks', json={
             'name': self._check('name', name, str),
             'description': self._check('description', description, str)
         }).json()
-    
+
     def delete(self, id):
         '''
         Deletes the specified network.
@@ -76,12 +76,12 @@ class NetworksAPI(TIOEndpoint):
 
         Args:
             id (str): The UUID of the network to remove.
-        
+
         Examples:
             >>> tio.networks.delete('00000000-0000-0000-0000-000000000000')
         '''
         self._api.delete('networks/{}'.format(self._check('id', id, 'uuid')))
-    
+
     def details(self, id):
         '''
         Retreives the details of the specified network.
@@ -90,13 +90,13 @@ class NetworksAPI(TIOEndpoint):
 
         Args:
             id (str): The UUID of the network.
-        
+
         Examples:
             >>> nw = tio.networks.details('00000000-0000-0000-0000-000000000000')
         '''
         return self._api.get('networks/{}'.format(
             self._check('id', id, 'uuid'))).json()
-    
+
     def edit(self, id, name, description=None):
         '''
         Updates the specified network resource.
@@ -106,26 +106,26 @@ class NetworksAPI(TIOEndpoint):
         Args:
             id (str): The UUID of the network resource to update.
             name (str): The new name of the network resource.
-            description (str, optional): 
+            description (str, optional):
                 The new description of the network resource.
-        
+
         Returns:
             :obj:`dict`:
                 The updates network resource.
-        
+
         Examples:
             >>> nw = tio.networks.edit('00000000-0000-0000-0000-000000000000',
             ...     'Updated Network', 'Updated Description')
         '''
         if not description:
             description = ''
-        
+
         return self._api.put('networks/{}'.format(self._check('id', id, 'uuid')),
             json={
                 'name': self._check('name', name, str),
                 'description': self._check('description', description, str)
             }).json()
-    
+
     def assign_scanners(self, id, *scanner_uuids):
         '''
         Assigns one or many scanners to a network.
@@ -136,7 +136,7 @@ class NetworksAPI(TIOEndpoint):
         Args:
             id (str): The UUID of the network.
             *scanner_uuids (str): Scanner UUID(s) to assign to the network.
-        
+
         Examples:
             Assign a single scanner:
 
@@ -154,16 +154,16 @@ class NetworksAPI(TIOEndpoint):
         if len(scanner_uuids) == 1:
             self._api.post('networks/{}/scanners/{}'.format(
                 self._check('id', id, 'uuid'),
-                self._check('scanner_uuid', scanner_uuids[0], 'uuid')
+                self._check('scanner_uuid', scanner_uuids[0], 'scanner-uuid')
             ))
         elif len(scanner_uuids) > 1:
             self._api.post('networks/{}/scanners'.format(
                 self._check('id', id, 'uuid')),
-                    json={'scanner_uuids': [self._check('scanner_uuid', i, 'uuid')
+                    json={'scanner_uuids': [self._check('scanner_uuid', i, 'scanner-uuid')
                         for i in scanner_uuids]})
         else:
             raise UnexpectedValueError('No scanner_uuids were supplied.')
-    
+
     def list_scanners(self, id):
         '''
         Retreives the list of scanners associated to a given network.
@@ -172,7 +172,7 @@ class NetworksAPI(TIOEndpoint):
 
         Args:
             id (str): The UUID of the network.
-        
+
         Returns:
             :obj:`list`:
                 List of scanner resources associated to this network.
@@ -184,7 +184,7 @@ class NetworksAPI(TIOEndpoint):
         '''
         return self._api.get('networks/{}/scanners'.format(
             self._check('id', id, 'uuid'))).json()['scanners']
-    
+
     def unassigned_scanners(self, id):
         '''
         Retrives the list of scanners that are currently unassigned to the given
@@ -195,11 +195,11 @@ class NetworksAPI(TIOEndpoint):
 
         Args:
             id (str): The UUID of the network.
-        
+
         Returns:
             :obj:`list`:
                 The list of unassigned scanner resources
-        
+
         Examples:
             >>> network = '00000000-0000-0000-0000-000000000000'
             >>> for scanner in tio.networks.unassigned_scanners(network):
@@ -207,7 +207,7 @@ class NetworksAPI(TIOEndpoint):
         '''
         return self._api.get('networks/{}/assignable-scanners'.format(
             self._check('id', id, 'uuid'))).json()['scanners']
-    
+
     def list(self, *filters, **kw):
         '''
         Get the listing of configured networks from Tenable.io.
@@ -230,8 +230,8 @@ class NetworksAPI(TIOEndpoint):
             filter_type (str, optional):
                 The filter_type operator determines how the filters are combined
                 together.  ``and`` will inform the API that all of the filter
-                conditions must be met for an access group to be returned, 
-                whereas ``or`` would mean that if any of the conditions are met, 
+                conditions must be met for an access group to be returned,
+                whereas ``or`` would mean that if any of the conditions are met,
                 the access group record will be returned.
             include_deleted (bool, optional):
                 Indicates whether deleted network objects should be included in
@@ -250,20 +250,20 @@ class NetworksAPI(TIOEndpoint):
                 to.
 
         Returns:
-            :obj:`AccessGroupsIterator`:
+            :obj:`NetworksIterator`:
                 An iterator that handles the page management of the requested
                 records.
 
         Examples:
             Getting the listing of all agents:
 
-            >>> for group in tio.access_groups.list():
-            ...     pprint(group)
+            >>> for nw in tio.networks.list():
+            ...     pprint(nw)
 
             Retrieving all of the windows agents:
 
-            >>> for group in tio.access_groups.list(('distro', 'match', 'win')):
-            ...     pprint(agent)
+            >>> for nw in tio.access_groups.list(('name', 'match', 'win')):
+            ...     pprint(nw)
         '''
         limit = 50
         offset = 0
@@ -317,8 +317,12 @@ class NetworksAPI(TIOEndpoint):
             'wildcard_fields', kw['wildcard_fields'], list):
             query['wf'] = ','.join(kw['wildcard_fields'])
 
+        if 'include_deleted' in kw and self._check(
+            'include_deleted', kw['include_deleted'], bool):
+            query['includeDeleted'] = kw['include_deleted']
+
         # Return the Iterator.
-        return AccessGroupsIterator(self._api,
+        return NetworksIterator(self._api,
             _limit=limit,
             _offset=offset,
             _pages_total=pages,
