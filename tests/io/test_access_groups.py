@@ -34,32 +34,32 @@ def test_access_group_principal_constructor_id_typeerror(api):
 def test_access_group_principal_constructor_dict_type_typeerror(api):
     with pytest.raises(TypeError):
         api.access_groups._principal_constructor([{
-            'type': 1, 
-            'principal_id': str(uuid.uuid4()), 
+            'type': 1,
+            'principal_id': str(uuid.uuid4()),
             'principal_name': 'test@test.com'
         }])
 
 def test_access_group_principal_constructor_dict_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.access_groups._principal_constructor([{
-            'type': 'something', 
-            'principal_id': str(uuid.uuid4()), 
+            'type': 'something',
+            'principal_id': str(uuid.uuid4()),
             'principal_name': 'test@test.com'
         }])
 
 def test_access_group_principal_constructor_dict_id_typeerror(api):
     with pytest.raises(TypeError):
         api.access_groups._principal_constructor([{
-            'type': 'user', 
-            'principal_id': 1, 
+            'type': 'user',
+            'principal_id': 1,
             'principal_name': 'test@test.com'
         }])
 
 def test_access_group_principal_constructor_dict_name_typeerror(api):
     with pytest.raises(TypeError):
         api.access_groups._principal_constructor([{
-            'type': 'user', 
-            'principal_id': str(uuid.uuid4()), 
+            'type': 'user',
+            'principal_id': str(uuid.uuid4()),
             'principal_name': 1
         }])
 
@@ -67,7 +67,7 @@ def test_access_group_principal_constructor_tuple_pass(api):
     assert api.access_groups._principal_constructor([
         ('user', 'test@test.com')
     ]) == [{'type': 'user', 'principal_name': 'test@test.com'}]
-    
+
     u = str(uuid.uuid4())
     assert api.access_groups._principal_constructor([
         ('user', u)
@@ -208,8 +208,6 @@ def test_access_groups_list_sort_direction_typeerror(api):
 def test_access_groups_list_sort_direction_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
         api.access_groups.list(sort=(('uuid', 'nope'),))
-
-('ipv4', 'eq', ['192.168.0.0/24'])
 
 @pytest.mark.vcr()
 def test_access_groups_list_filter_name_typeerror(api):
