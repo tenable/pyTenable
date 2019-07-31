@@ -174,6 +174,10 @@ class TenableSC(APISession):
         base = '{}://{}:{}'.format(scheme, host, port)
         url = '{}/rest'.format(base)
 
+        # Setting the SSL Verification flag on the object itself so that it's
+        # reusable if the user logs out and logs back in.
+        self._ssl_verify = ssl_verify
+
         # Now lets pass the relevent parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
         APISession.__init__(self, url,
@@ -182,13 +186,6 @@ class TenableSC(APISession):
             ua_identity=ua_identity,
             session=session,
             proxies=proxies)
-
-        # Also, as Tenable.sc is generally installed without a certificate
-        # chain that we can validate, we will want to turn off verification
-        # and the associated warnings unless told to otherwise:
-        self._session.verify = ssl_verify
-        if not ssl_verify:
-            warnings.filterwarnings('ignore', 'Unverified HTTPS request')
 
         # If a client-side certificate is specified, then we will want to add
         # it into the session object as well.  The cert parameter is expecting
@@ -225,6 +222,15 @@ class TenableSC(APISession):
                 })
         except:
             raise ConnectionError('Invalid Tenable.sc Instance')
+
+    def _build_session(self, session=None):
+        APISession._build_session(self, session)
+        # As Tenable.sc is generally installed without a certificate chain that
+        # we can validate, we will want to turn off verification and the
+        # associated warnings unless told to otherwise:
+        self._session.verify = self._ssl_verify
+        if not self._ssl_verify:
+            warnings.filterwarnings('ignore', 'Unverified HTTPS request')
 
     def _resp_error_check(self, response, **kwargs):
         if not kwargs.get('stream', False):
