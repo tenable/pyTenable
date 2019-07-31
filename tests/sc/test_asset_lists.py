@@ -491,6 +491,7 @@ def test_asset_lists_import_definition_success(sc, assetlist, datafiles):
 def test_asset_lists_export_definition_success(sc, assetlist):
     with open('asset_list_export.xml', 'wb') as fobj:
         sc.asset_lists.export_definition(int(assetlist['id']), fobj)
+    os.remove('asset_list_export.xml')
 
 @pytest.mark.skip(reason='No LDAP Service to query against')
 @pytest.mark.vcr()

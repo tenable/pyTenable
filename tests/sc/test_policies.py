@@ -381,6 +381,7 @@ def test_policies_export_policy_id_typeerror(sc):
 def test_policies_export_policy(sc, policy):
     with open('{}.xml'.format(policy['id']), 'wb') as pfile:
         sc.policies.export_policy(int(policy['id']), fobj=pfile)
+    os.remove('{}.xml'.format(policy['id']))
 
 def test_policies_import_policy_name_typeerror(sc):
     with pytest.raises(TypeError):
@@ -396,7 +397,7 @@ def test_policies_import_policy_tags_typeerror(sc):
 
 @pytest.mark.vcr()
 @pytest.mark.datafiles(os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), 
+    os.path.dirname(os.path.realpath(__file__)),
     '..', 'test_files', 'sc_policy.xml'))
 def test_policies_import_policy(sc, datafiles):
     with open(os.path.join(str(datafiles), 'sc_policy.xml'), 'rb') as fobj:

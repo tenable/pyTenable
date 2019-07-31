@@ -377,6 +377,7 @@ def test_repositories_export_repository_id_typeerror(sc):
 def test_repositories_export_repository_success(admin, repository):
     with open('{}'.format(repository['id']), 'wb') as repo:
         admin.repositories.export_repository(int(repository['id']), repo)
+    os.remove('{}'.format(repository['id']))
 
 def test_repositories_device_info_id_typeerror(sc):
     with pytest.raises(TypeError):

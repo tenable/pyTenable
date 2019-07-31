@@ -153,6 +153,7 @@ def test_scan_instances_export_scan_export_format_unexpectedvalueerror(sc):
 def test_scan_instances_export_scan_success(sc, scaninstance):
     with open('{}.zip'.format(scaninstance['id']), 'wb') as scanfile:
         sc.scan_instances.export_scan(124, fobj=scanfile)
+    os.remove('{}.zip'.format(scaninstance['id']))
 
 @pytest.mark.vcr()
 @pytest.mark.datafiles(os.path.join(
