@@ -2,19 +2,8 @@ from tenable.reports.nessusv2 import NessusReportv2
 from ..checker import check
 import datetime, sys, pytest, os
 
-@pytest.mark.skipif(sys.version_info < (3,4),
-                    reason="requires python3.4 or higher")
 @pytest.mark.datafiles(os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), 
-    '..', 'test_files', 'example.nessus'))
-def test_nessus_report_typeerror(datafiles):
-    with open(os.path.join(str(datafiles), 'example.nessus')) as nobj:
-        with pytest.raises(TypeError):
-            for items in NessusReportv2(nobj):
-                pass
-
-@pytest.mark.datafiles(os.path.join(
-    os.path.dirname(os.path.realpath(__file__)), 
+    os.path.dirname(os.path.realpath(__file__)),
     '..', 'test_files', 'example.nessus'))
 def test_nessus_report(datafiles):
     with open(os.path.join(str(datafiles), 'example.nessus'), 'rb') as nobj:

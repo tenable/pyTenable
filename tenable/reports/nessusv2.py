@@ -4,10 +4,10 @@
 from tenable.errors import PackageMissingError
 
 try:
-    from lxml import etree
+    from defusedxml.ElementTree import iterparse
 except ImportError:
     raise PackageMissingError(
-        'The python package lxml is required for NessusReportv2')
+        'The python package defusedxml is required for NessusReportv2')
 
 import dateutil.parser, time
 
@@ -29,16 +29,16 @@ class NessusReportv2(object):
             be parsed.
 
     Examples:
-        For example, if we wanted to load a Nessus report from disk and iterate 
+        For example, if we wanted to load a Nessus report from disk and iterate
         through the contents, it would simply be a matter of:
 
         >>> with open('example.nessus') as nessus_file:
         ...     report = NessusReportv2(nessus_file)
         ...     for item in report:
-        ...         print(item) 
+        ...         print(item)
     '''
     def __init__(self, fobj):
-        self._iter = etree.iterparse(fobj, events=('start', 'end'))
+        self._iter = iterparse(fobj, events=('start', 'end'))
 
     def __iter__(self):
         return self
@@ -71,7 +71,7 @@ class NessusReportv2(object):
     def next(self):
         '''
         Get the next ReportItem from the nessus file and return it as a
-        python dictionary.  
+        python dictionary.
 
         Generally speaking this method is not called directly, but is instead
         called as part of a loop.
@@ -87,7 +87,7 @@ class NessusReportv2(object):
                 if event == 'end' and elem.tag == 'HostProperties':
                     # Once we have finished parsing out all of the host properties,
                     # we need to update the host cache with this new information.
-                    for child in elem.getchildren():
+                    for child in elem:
                         self._cache[child.get('name')] = child.text
                     elem.clear()
 
@@ -116,10 +116,10 @@ class NessusReportv2(object):
                     for k in vuln.keys():
                         vuln[k] = self._defs(k, vuln[k])
 
-                    for c in elem.getchildren():
+                    for c in elem:
                         # iterate through each child element and add it to the vuln
                         # dictionary.  We will also check to see if we have seen
-                        # the tag before, and if so, convert the stored value to a 
+                        # the tag before, and if so, convert the stored value to a
                         # list of values.  The need to return a list is common for
                         # things like CVEs, BIDs, See-Alsos, etc.
 
