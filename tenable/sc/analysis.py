@@ -129,7 +129,7 @@ class AnalysisResultsIterator(SCResultsIterator):
         if page_size == records and total_records:
             self.total = int(total_records)
         else:
-            self._log.warn(' '.join([
+            self._log.warning(' '.join([
                 'API Recordkeeping error.',
                 'api_total={},'.format(str(total_records)),
                 'api_count={},'.format(str(records)),
