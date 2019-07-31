@@ -13,9 +13,10 @@ Methods available on ``tio.exports``:
     .. automethod:: assets
     .. automethod:: vulns
 '''
-from .base import TIOEndpoint, APIResultsIterator
+from .base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
 from tenable.errors import TioExportsError
-import time
+from ipaddress import IPv4Network, AddressValueError
+import time, ipaddress, sys
 
 class ExportsIterator(APIResultsIterator):
     '''
@@ -202,7 +203,25 @@ class ExportsAPI(TIOEndpoint):
             payload['filters']['plugin_family'] = kw['plugin_family']
 
         if 'cidr_range' in kw and self._check('cidr_range', kw['cidr_range'], str):
-            payload['filters']['cidr_range'] = kw['cidr_range']
+            cidr = kw['cidr_range']
+
+            # if the python version is less than 3, then we will need to
+            # recast it as a unicode string.
+            if sys.version_info < (3, 0):
+                cidr = unicode(cidr)
+
+            # Validate the cidr_range attribute as an actual CIDR range.  If it
+            # returns an error back to us, then we can safely assume that it's
+            # not a valid CIDR and throw a UnexpectedValueError informing the
+            # caller of the mistake.
+            try:
+                network = IPv4Network(cidr)
+            except ValueError:
+                raise UnexpectedValueError('{} is not a valid CIDR'.format(cidr))
+
+            # Assuming everything has passed, then we will add the filter to the
+            # filters dictionary.
+            payload['filters']['cidr_range'] = str(network)
 
         if 'tags' in kw and self._check('tags', kw['tags'], list):
             # if any tags were specified, then we will iterate through the list
