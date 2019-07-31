@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.24]
+### Changed
+- Switched the Nessusv2 file parser to diffusedxml per recommendation with bandit
+
+### Fixed
+- TenableSC SSL verification flags were not set in the session builder, which meant that login was a one-time event. #139
+
 ## [0.3.23]
 ### Changed
 - Improved documentation for creating scans to include credentials
@@ -337,7 +344,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fixed Time Conversion Issue #6
 
-[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.23...master
+[Unreleased]: https://github.com/tenable/pyTenable/compare/0.3.24...master
+[0.3.24]: https://github.com/tenable/pyTenable/compare/0.3.23...0.3.24
 [0.3.23]: https://github.com/tenable/pyTenable/compare/0.3.22...0.3.23
 [0.3.22]: https://github.com/tenable/pyTenable/compare/0.3.21...0.3.22
 [0.3.21]: https://github.com/tenable/pyTenable/compare/0.3.20...0.3.21
