@@ -22,12 +22,12 @@ from .base import TIOEndpoint, TIOIterator
 
 class AccessGroupsIterator(TIOIterator):
     '''
-    The access groups iterator provides a scalable way to work through 
-    access groups result sets of any size.  The iterator will walk through each 
-    page of data, returning one record at a time.  If it reaches the end of a 
-    page of records, then it will request the next page of information and then 
-    continue to return records from the next page (and the next, and the next) 
-    until the counter reaches the total number of records that the API has 
+    The access groups iterator provides a scalable way to work through
+    access groups result sets of any size.  The iterator will walk through each
+    page of data, returning one record at a time.  If it reaches the end of a
+    page of records, then it will request the next page of information and then
+    continue to return records from the next page (and the next, and the next)
+    until the counter reaches the total number of records that the API has
     reported.
 
     Attributes:
@@ -52,7 +52,7 @@ class AccessGroupsAPI(TIOEndpoint):
         for item in items:
             self._check('principal', item, (tuple, dict))
             if isinstance(item, tuple):
-                self._check('principal:type', item[0], str, 
+                self._check('principal:type', item[0], str,
                     choices=['user', 'group'])
                 try:
                     resp.append({
@@ -67,7 +67,7 @@ class AccessGroupsAPI(TIOEndpoint):
                             'principal:name', item[1], str)
                     })
             else:
-                self._check('principal:type', item['type'], str, 
+                self._check('principal:type', item['type'], str,
                     choices=['user', 'group'])
                 if 'principal_id' in item:
                     self._check('principal_id', item['principal_id'], 'uuid')
@@ -75,7 +75,7 @@ class AccessGroupsAPI(TIOEndpoint):
                     self._check('principal_name', item['principal_name'], str)
                 resp.append(item)
         return resp
-            
+
     def create(self, name, rules, principals=None, all_users=False):
         '''
         Creates a new access group
@@ -107,18 +107,18 @@ class AccessGroupsAPI(TIOEndpoint):
                     ('user', '32a0c314-442b-4aed-bbf5-ba9cf5cafbf4')
                     ('user', 'steve@company.tld')
                     ('group', '32a0c314-442b-4aed-bbf5-ba9cf5cafbf4')
-            
+
             all_users (bool, optional):
                 If enabled, the access group will apply to all users and any
                 principals defined will be ignored.
-        
+
         Returns:
             :obj:`dict`:
                 The resource record for the new access list.
-        
+
         Examples:
             Allow all users to see 192.168.0.0/24:
-            
+
             >>> tio.access_groups.create('Example',
             ...     [('ipv4', 'eq', ['192.168.0.0/24'])],
             ...     all_users=True)
@@ -139,9 +139,9 @@ class AccessGroupsAPI(TIOEndpoint):
         payload = {
             # run the rules through the filter parser...
             'rules': self._parse_filters(rules,
-                self._api.filters.access_group_asset_rules_filters(), 
+                self._api.filters.access_group_asset_rules_filters(),
                     rtype='accessgroup')['rules'],
-            
+
             # run the principals through the principal parser...
             'principals': self._principal_constructor(principals),
             'name': self._check('name', name, str),
@@ -150,7 +150,7 @@ class AccessGroupsAPI(TIOEndpoint):
 
         # call the API endpoint and return the response to the caller.
         return self._api.post('access-groups', json=payload).json()
-    
+
     def edit(self, id, **kw):
         '''
         Edits an access group
@@ -158,7 +158,7 @@ class AccessGroupsAPI(TIOEndpoint):
         :devportal:`access-groups: update <access-groups-edit>`
 
         Args:
-            id (str): 
+            id (str):
                 The UUID of the access group to edit.
             name (str, optional):
                 The name of the access group to create.
@@ -184,26 +184,26 @@ class AccessGroupsAPI(TIOEndpoint):
                     ('user', '32a0c314-442b-4aed-bbf5-ba9cf5cafbf4')
                     ('user', 'steve@company.tld')
                     ('group', '32a0c314-442b-4aed-bbf5-ba9cf5cafbf4')
-            
+
             all_users (bool, optional):
                 If enabled, the access group will apply to all users and any
                 principals defined will be ignored.
             all_assets (bool, optional):
-                Specifies if the access group to modify is the default 
+                Specifies if the access group to modify is the default
                 "all assets" group or a user-defined one.
         '''
 
         # If any rules are specified, then run them through the filter parser.
         if 'rules' in kw:
             kw['rules'] = self._parse_filters(kw['rules'],
-                self._api.filters.access_group_asset_rules_filters(), 
+                self._api.filters.access_group_asset_rules_filters(),
                     rtype='accessgroup')['rules']
-        
+
         # if any principals are specified, then run them through the principal
         # parser.
         if 'principals' in kw:
             kw['principals'] = self._principal_constructor(kw['principals'])
-        
+
         # get the details of the access group that we are supposed to be editing
         # and then merge in the keywords specified.
         g = dict_merge(self.details(self._check('id', id, 'uuid')), kw)
@@ -218,33 +218,33 @@ class AccessGroupsAPI(TIOEndpoint):
         }
 
         # call the API endpoint and return the response to the caller.
-        return self._api.put('access-groups/{}'.format(id), 
+        return self._api.put('access-groups/{}'.format(id),
             json=payload).json()
-    
+
     def delete(self, id):
         '''
         Deletes the specified access group.
 
-        :devportal:`access-groups: delete <access-groups-delete>
+        :devportal:`access-groups: delete <access-groups-delete>`
 
         Args:
             id (str): The UUID of the access group to remove.
         '''
         self._api.delete('access-groups/{}'.format(
             self._check('id', id, 'uuid')))
-    
+
     def details(self, id):
         '''
-        Retreives the details of the specified access group.
+        Retrieves the details of the specified access group.
 
-        :devportal:`access-groups: details <access-groups-details>
+        :devportal:`access-groups: details <access-groups-details>`
 
         Args:
             id (str): The UUID of the access group.
         '''
         return self._api.get('access-groups/{}'.format(
             self._check('id', id, 'uuid'))).json()
-    
+
     def list(self, *filters, **kw):
         '''
         Get the listing of configured access groups from Tenable.io.
@@ -263,13 +263,13 @@ class AccessGroupsAPI(TIOEndpoint):
 
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :devportal:`access-groups: list-filters <access-groups-list-filters>`
+                the :py:meth:`tio.filters.access_groups_filters() <FiltersAPI.access_groups_filters>`
                 endpoint to get more details.
             filter_type (str, optional):
                 The filter_type operator determines how the filters are combined
                 together.  ``and`` will inform the API that all of the filter
-                conditions must be met for an access group to be returned, 
-                whereas ``or`` would mean that if any of the conditions are met, 
+                conditions must be met for an access group to be returned,
+                whereas ``or`` would mean that if any of the conditions are met,
                 the access group record will be returned.
             limit (int, optional):
                 The number of records to retrieve.  Default is 50

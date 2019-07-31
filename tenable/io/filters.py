@@ -12,6 +12,7 @@ Methods available on ``tio.filters``:
 
     .. automethod:: agents_filters
     .. automethod:: scan_filters
+    .. automethod:: networks_filters
     .. automethod:: workbench_asset_filters
     .. automethod:: workbench_vuln_filters
 '''

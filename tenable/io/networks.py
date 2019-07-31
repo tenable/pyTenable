@@ -225,7 +225,7 @@ class NetworksAPI(TIOEndpoint):
 
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:`tenable.io.filters.FiltersAPI.network_filters`
+                the :py:meth:`tio.networks.network_filters() <FiltersAPI.networks_filters>`
                 endpoint to get more details.
             filter_type (str, optional):
                 The filter_type operator determines how the filters are combined

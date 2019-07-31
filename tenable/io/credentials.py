@@ -93,7 +93,8 @@ class CredentialsAPI(TIOEndpoint):
                 The name of the credential.
             cred_type (str):
                 The type of credential to create.  For a list of values refer to
-                the output of the :py:`types` method.
+                the output of the :py:meth:`types() <CredentialsAPI.types>`
+                method.
             description (str, optional):
                 A description for the credential.
             permissions (list, optional):
@@ -269,7 +270,7 @@ class CredentialsAPI(TIOEndpoint):
 
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:`tenable.io.filters.FiltersAPI.network_filters`
+                the :py:meth:`tio.filters.networks_filters() <FiltersAPI.networks_filters>`
                 endpoint to get more details.
             filter_type (str, optional):
                 The filter_type operator determines how the filters are combined

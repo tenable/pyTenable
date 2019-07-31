@@ -104,8 +104,6 @@ class PluginsAPI(TIOEndpoint):
         '''
         Get the listing of plugin details from Tenable.io.
 
-        :devportal:`plugins: list <>`_
-
         Args:
             size (int, optional):
                 The number of records to retrieve.  Default is 1000
