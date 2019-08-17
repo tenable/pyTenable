@@ -17,27 +17,51 @@ Methods available on ``tio.scans``:
     .. automethod:: delete
     .. automethod:: delete_history
     .. automethod:: details
-    .. automethod:: results
     .. automethod:: export
+    .. automethod:: history
     .. automethod:: host_details
     .. automethod:: import_scan
     .. automethod:: launch
     .. automethod:: list
     .. automethod:: pause
     .. automethod:: plugin_output
-    .. automethod:: set_read_status
+    .. automethod:: results
     .. automethod:: resume
     .. automethod:: schedule
+    .. automethod:: set_read_status
     .. automethod:: status
     .. automethod:: stop
     .. automethod:: timezones
 '''
-from .base import TIOEndpoint
+from .base import TIOEndpoint, TIOIterator
 from tenable.utils import dict_merge, policy_settings
 from tenable.errors import UnexpectedValueError, FileDownloadError
 from datetime import datetime, timedelta
 from io import BytesIO
 import time
+
+
+class ScanHistoryIterator(TIOIterator):
+    '''
+    The agents iterator provides a scalable way to work through scan history
+    result sets of any size.  The iterator will walk through each page of data,
+    returning one record at a time.  If it reaches the end of a page of
+    records, then it will request the next page of information and then continue
+    to return records from the next page (and the next, and the next) until the
+    counter reaches the total number of records that the API has reported.
+
+    Attributes:
+        count (int): The current number of records that have been returned
+        page (list):
+            The current page of data being walked through.  pages will be
+            cycled through as the iterator requests more information from the
+            API.
+        page_count (int): The number of record returned from the current page.
+        total (int):
+            The total number of records that exist for the current request.
+    '''
+    pass
+
 
 class ScansAPI(TIOEndpoint):
     def _block_while_running(self, scan_id, sleeper=5):
@@ -367,6 +391,38 @@ class ScansAPI(TIOEndpoint):
             >>> tio.scans.delete(1)
         '''
         self._api.delete('scans/{}'.format(self._check('scan_id', scan_id, int)))
+
+    def history(self, id, limit=None, offset=None, pages=None):
+        '''
+        Get the scan history of a given scan from Tenable.io.
+
+        :devportal:`scans: history <scans-history>`
+
+        Args:
+            id (int):
+                The unique identifier for the scan.
+            limit (int, optional):
+                The number of records to retrieve.  Default is 50
+            offset (int, optional):
+                The starting record to retrieve.  Default is 0.
+
+        Returns:
+            :obj:`ScanHistoryIterator`:
+                An iterator that handles the page management of the requested
+                records.
+
+        Examples:
+            >>> for history in tio.scans.history(1):
+            ...     pprint(history)
+        '''
+        return ScanHistoryIterator(self._api,
+            _limit=limit if limit else 50,
+            _offset=offset if offset else 0,
+            _pages_total=pages,
+            _query=dict(),
+            _path='scans/{}/history'.format(self._check('id', id, int)),
+            _resource='history'
+        )
 
     def delete_history(self, scan_id, history_id):
         '''
