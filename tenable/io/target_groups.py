@@ -34,7 +34,7 @@ class TargetGroupsAPI(TIOEndpoint):
                 individual IPs are supported.
             type (str, optional):
                 The type of target group to create.  Valid types are `user` and
-                `system`.  The default if not specified is `system`.
+                `system`.  The default if not specified is `user`.
             acls (list, optional):
                 A list of ACLs defining how the asset list can be used.  For
                 further information on how the ACL dictionaries should be
@@ -55,7 +55,7 @@ class TargetGroupsAPI(TIOEndpoint):
             payload['acls'] = self._check('acls', kw['acls'], list)
         if 'type' in kw:
             payload['type'] = self._check('type', kw['type'], str,
-                choices=['system', 'user'], default='system')
+                choices=['system', 'user'], default='user')
         if len(members) > 0:
             payload['members'] = ','.join(self._check('members', members, list))
         else:
