@@ -34,12 +34,13 @@ def test_exports_vuln_since_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(since='nothing here')
 
-#@pytest.mark.skip(reason='''
-#    Depending on site load, this may take some time for the first chunk to
-#    become available for testing.  As a result, for normal testing we will skip
-#    this test, however we will keep it here in-case we ever want to run some
-#    consistency checking.
-#''')
+@pytest.mark.vcr()
+def test_exports_vuln_cidr_range_invalid_cidr(api):
+    with pytest.raises(UnexpectedValueError):
+        api.exports.vulns(cidr_range='999.168.0.0/24')
+    with pytest.raises(UnexpectedValueError):
+        api.exports.vulns(cidr_range='192.168.0.0/999')
+
 @pytest.mark.vcr()
 def test_exports_vulns(api):
     vulns = api.exports.vulns()
@@ -133,12 +134,6 @@ def test_exports_assets_has_plugin_results_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(has_plugin_results='something')
 
-#@pytest.mark.skip(reason='''
-#    Depending on site load, this may take some time for the first chunk to
-#    become available for testing.  As a result, for normal testing we will skip
-#    this test, however we will keep it here in-case we ever want to run some
-#    consistency checking.
-#''')
 @pytest.mark.vcr()
 def test_exports_assets(api):
     assets = api.exports.assets()
@@ -189,7 +184,7 @@ def test_exports_assets(api):
     check(a, 'qualys_asset_ids', list)
     check(a, 'qualys_host_ids', list)
     check(a, 'servicenow_sysid', str, allow_none=True)
-    
+
     check(a, 'sources', list)
     for i in a['sources']:
         check(i, 'first_seen', str)
