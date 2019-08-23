@@ -107,27 +107,24 @@ class ScansAPI(TIOEndpoint):
         # If a policy UUID is sent, then we will set the scan template UUID to
         # be the UUID that was specified.
         if 'policy' in kw:
-            try:
-                # at first we are going to assume that the information that was
-                # relayed to use for the scan policy was the policy ID.  As
-                # this is the least expensive thing to check for, it's a logical
-                # starting point.
-                scan['settings']['policy_id'] = self._check(
-                    'policy', kw['policy'], int)
+            policies = self._api.policies.list()
+            match = False
 
-            except (UnexpectedValueError, TypeError):
-                # Now we are going to attempt to find the scan policy based on
-                # the title of the policy before giving up and throwing. an
-                # UnexpectedValueError
-                policies = self._api.policies.list()
-                match = False
-                for item in policies:
-                    if kw['policy'] == item['name']:
-                        scan['uuid'] = item['template_uuid']
-                        scan['settings']['policy_id'] = item['id']
-                        match = True
-                if not match:
-                    raise UnexpectedValueError('policy setting is invalid.')
+            # Here we are going to iterate over each policy in the list, looking
+            # to see if we see a match in either the name or the id.  If we do
+            # find a match, then we will use the first one that matches, pull
+            # the editor config, and then use the policy id and scan policy
+            # template uuid.
+            for item in policies:
+                if kw['policy'] in [item['name'], item['id']] and not match:
+                    policy_tmpl = self._api.editor.details('scan/policy', item['id'])
+                    scan['uuid'] = policy_tmpl['uuid']
+                    scan['settings']['policy_id'] = item['id']
+                    match = True
+
+            # if no match was discovered, then raise an invalid warning.
+            if not match:
+                raise UnexpectedValueError('policy setting is invalid.')
             del(kw['policy'])
 
         # if the scanner attribute was set, then we will attempt to figure out
@@ -453,6 +450,13 @@ class ScansAPI(TIOEndpoint):
         credentials are populated into the 'current' sub-document for the
         relevant resources.
 
+        .. important::
+            Please note that the details method is reverse-engineered from the
+            responses from the editor API, and while we are reasonably sure that
+            the response should align almost exactly to what the API expects to
+            be pushed to it, this method by very nature of what it's doing isn't
+            guaranteed to always work.
+
         Args:
             scan_id (int): The unique identifier for the scan.
 
@@ -463,74 +467,8 @@ class ScansAPI(TIOEndpoint):
         Examples:
             >>> scan = tio.scans.details(1)
             >>> pprint(scan)
-
-        Please note that flatten_scan is reverse-engineered from the responses
-        from the editor API and isn't guaranteed to work.
         '''
-
-        # Get the editor object
-        editor = self._api.get('editor/scan/{}'.format(
-            self._check('scan_id', scan_id, int))).json()
-
-        # define the initial skeleton of the scan object
-        scan = {
-            'settings': policy_settings(editor['settings']),
-            'uuid': editor['uuid']
-        }
-
-        # graft on the basic settings that aren't stored in any input sections.
-        for item in editor['settings']['basic']['groups']:
-            for setting in item.keys():
-                if setting not in ['name', 'title', 'inputs', 'sections']:
-                    scan['settings'][setting] = item[setting]
-
-        if 'credentials' in editor:
-            # if the credentials sub-document exists, then lets walk down the
-            # credentials dataset
-            scan['credentials'] = {
-                'current': self._api.editor.parse_creds(
-                    editor['credentials']['data'])
-            }
-
-            # We also need to gather the settings from the various credential
-            # settings that are unique to the scan.
-            for ctype in editor['credentials']['data']:
-                for citem in ctype['types']:
-                    if 'settings' in citem and citem['settings']:
-                        scan['settings'] = dict_merge(
-                            scan['settings'], policy_settings(
-                                citem['settings']))
-
-        if 'compliance' in editor:
-            # if the audits sub-document exists, then lets walk down the
-            # audits dataset.
-            scan['compliance'] = {
-                'current': self._api.editor.parse_audits(
-                    editor['compliance']['data'])
-            }
-
-            # We also need to add in the "compliance" settings into the scan
-            # settings.
-            for item in editor['compliance']['data']:
-                if 'settings' in item:
-                    scan['settings'] = dict_merge(
-                        scan['settings'], policy_settings(
-                            item['settings']))
-
-        if 'plugins' in editor:
-            # if the plugins sub-document exists, then lets walk down the
-            # plugins dataset.
-            scan['plugins'] = self._api.editor.parse_plugins(
-                editor['plugins']['families'], scan_id)
-
-        # We next need to do a little post-parsing of the ACLs to find the
-        # owner and put owner_id attribute into the appropriate location.
-        for acl in scan['settings']['acls']:
-            if acl['owner'] == 1:
-                scan['settings']['owner_id'] = acl['id']
-
-        # return the scan document to the caller.
-        return scan
+        return self._api.editor.details('scan', scan_id)
 
     def results(self, scan_id, history_id=None):
         '''

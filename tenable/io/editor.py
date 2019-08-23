@@ -15,6 +15,7 @@ Methods available on ``io.editor``:
 
     .. automethod:: audits
     .. automethod:: details
+    .. automethod:: obj_details
     .. automethod:: plugin_description
     .. automethod:: template_details
     .. automethod:: template_list
@@ -191,7 +192,7 @@ class EditorAPI(TIOEndpoint):
                 self._check('uuid', uuid, str)
             )).json()
 
-    def details(self, etype, id):
+    def obj_details(self, etype, id):
         '''
         Retrieves details about a specific object.
 
@@ -210,7 +211,8 @@ class EditorAPI(TIOEndpoint):
         '''
         return self._api.get(
             'editor/{}/{}'.format(
-                self._check('etype', etype, str, choices=['scan', 'policy']),
+                self._check('etype', etype, str,
+                    choices=['scan', 'policy', 'scan/policy']),
                 self._check('id', id, int)
             )).json()
 
@@ -258,3 +260,97 @@ class EditorAPI(TIOEndpoint):
                 self._check('family_id', family_id, int),
                 self._check('plugin_id', plugin_id, int)
             )).json()['plugindescription']
+
+    def details(self, etype, id):
+        '''
+        Constructs a valid scan document from the specified item.
+
+        .. important::
+            Please note that the details method is reverse-engineered from the
+            responses from the editor API, and while we are reasonably sure that
+            the response should align almost exactly to what the API expects to
+            be pushed to it, this method by very nature of what it's doing isn't
+            guaranteed to always work.
+
+        Args:
+            etype (str): The type of object to request.
+            scan_id (int): The unique identifier for the scan.
+
+        Returns:
+            :obj:`dict`:
+                The constructed scan configuration resource.
+
+        Examples:
+            >>> policy = tio.editor.details('scan', 1)
+            >>> pprint(scan)
+        '''
+
+        # Get the editor object
+        editor = self.obj_details(etype, id)
+
+        # define the initial skeleton of the scan object
+        obj = {
+            'settings': policy_settings(editor['settings']),
+            'uuid': editor['uuid']
+        }
+
+        # graft on the basic settings that aren't stored in any input sections.
+        for item in editor['settings']['basic']['groups']:
+            for setting in item.keys():
+                if setting not in ['name', 'title', 'inputs', 'sections']:
+                    obj['settings'][setting] = item[setting]
+
+        if 'credentials' in editor:
+            # if the credentials sub-document exists, then lets walk down the
+            # credentials dataset
+            obj['credentials'] = {
+                'current': self._api.editor.parse_creds(
+                    editor['credentials']['data'])
+            }
+
+            # We also need to gather the settings from the various credential
+            # settings that are unique to the scan.
+            for ctype in editor['credentials']['data']:
+                for citem in ctype['types']:
+                    if 'settings' in citem and citem['settings']:
+                        obj['settings'] = dict_merge(
+                            obj['settings'], policy_settings(
+                                citem['settings']))
+
+        if 'compliance' in editor:
+            # if the audits sub-document exists, then lets walk down the
+            # audits dataset.
+            obj['compliance'] = {
+                'current': self._api.editor.parse_audits(
+                    editor['compliance']['data'])
+            }
+
+            # We also need to add in the "compliance" settings into the scan
+            # settings.
+            for item in editor['compliance']['data']:
+                if 'settings' in item:
+                    obj['settings'] = dict_merge(
+                        obj['settings'], policy_settings(
+                            item['settings']))
+
+        if 'plugins' in editor:
+            # if the plugins sub-document exists, then lets walk down the
+            # plugins dataset.
+            obj['plugins'] = self._api.editor.parse_plugins(
+                editor['plugins']['families'], id)
+
+        # We next need to do a little post-parsing of the ACLs to find the
+        # owner and put owner_id attribute into the appropriate location.
+        if 'acls' in obj['settings'] and isinstance(obj['settings']['acls'], list):
+            for acl in obj['settings']['acls']:
+                if acl['owner'] == 1:
+                    obj['settings']['owner_id'] = acl['id']
+
+        # Clean out the empty attributes for templates:
+        if etype == 'scan/policy':
+            for key in list(obj['settings'].keys()):
+                if obj['settings'][key] == None:
+                    del(obj['settings'][key])
+
+        # return the scan document to the caller.
+        return obj
