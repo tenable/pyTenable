@@ -466,7 +466,7 @@ class ScanAPI(SCEndpoint):
             ...     running['scanResult']['id']))
         '''
         payload = dict()
-        if diagnostic_target and diagnostic_passwsord:
+        if diagnostic_target and diagnostic_password:
             payload['diagnosticTarget'] = self._check(
                 'diagnostic_target', diagnostic_target, str)
             payload['diagnosticPassword'] = self._check(
