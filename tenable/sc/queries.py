@@ -107,8 +107,8 @@ class QueryAPI(SCEndpoint):
             browse_sort_col (str, optional):
                 The browsable column in which to sort on.
             browse_sort_dir (str, optional):
-                The direction in which to sort.  Valid values are ``asc'' and
-                ''desc''.
+                The direction in which to sort.  Valid values are ``asc`` and
+                ``desc``.
             description (str, optional):
                 The description for the query.
             limit (int, optional):
@@ -121,8 +121,8 @@ class QueryAPI(SCEndpoint):
                 The identifier stating the owner of the query.  If left
                 unspecified, then the default is the current user.
             sort_direction (str, optional):
-                The direction in which to sort.  Valid values are ``asc'' and
-                ''desc''.
+                The direction in which to sort.  Valid values are ``asc`` and
+                ``desc``.
             sort_field (str, optional):
                 The field in which to sort the results.
             tags (str, optional):
@@ -183,8 +183,8 @@ class QueryAPI(SCEndpoint):
             browse_sort_col (list, optional):
                 The browsable column in which to sort on.
             browse_sort_dir (str, optional):
-                The direction in which to sort.  Valid values are ``asc'' and
-                ''desc''.
+                The direction in which to sort.  Valid values are ``asc`` and
+                ``desc``.
             description (str, optional):
                 The description for the query.
             limit (int, optional):
@@ -199,8 +199,8 @@ class QueryAPI(SCEndpoint):
                 The identifier stating the owner of the query.  If left
                 unspecified, then the default is the current user.
             sort_direction (str, optional):
-                The direction in which to sort.  Valid values are ``asc'' and
-                ''desc''.
+                The direction in which to sort.  Valid values are ``asc`` and
+                ``desc``.
             sort_field (str, optional):
                 The field in which to sort the results.
             tags (str, optional):

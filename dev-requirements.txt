@@ -5,6 +5,7 @@ defusedxml>=0.5.0
 requests-pkcs12>=1.3
 pytest>=3.6
 docker>=3.7.2
+ipaddress>=1.0.22
 pytest-cov
 pytest-vcr
 pytest-datafiles

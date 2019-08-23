@@ -12,7 +12,7 @@ except:
 
 setup(
     name='pyTenable',
-    version='0.3.25',
+    version='0.3.26',
     description='Python library to interface into Tenable\'s products and applications',
     author='Tenable, Inc.',
     long_description=long_description,
@@ -40,6 +40,7 @@ setup(
         'requests>=2.19',
         'python-dateutil>=2.6',
         'semver>=2.8.1',
+        'ipaddress>=1.0.22'
     ],
     extras_require={
         'NessusReportv2': 'defusedxml>=0.5.0',

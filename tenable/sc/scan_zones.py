@@ -3,7 +3,7 @@ scan_zones
 ==========
 
 The following methods allow for interaction into the Tenable.sc
-:sc-api:`Scan Zone Scan-Zone.html>`_ API.  These items are typically seen under
+:sc-api:`Scan Zone <Scan-Zone.html>` API.  These items are typically seen under
 the **Scan Zones** section of Tenable.sc.
 
 Methods available on ``sc.scan_zones``:
