@@ -41,7 +41,6 @@ def test_scan_create_scan_document_policies_name_pass(api):
     check(resp, 'settings', dict)
     check(resp['settings'], 'policy_id', int)
     assert resp['settings']['policy_id'] == p['id']
-    assert resp['uuid'] == p['template_uuid']
 
 #def test_scan_create_scan_document_targets
 
