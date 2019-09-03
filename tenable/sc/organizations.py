@@ -16,10 +16,15 @@ Methods available on ``sc.organizations``:
     .. automethod:: details
     .. automethod:: edit
     .. automethod:: delete
+    .. automethod:: accept_risk_rules
+    .. automethod:: recast_risk_rules
+    .. automethod:: manager_create
+    .. automethod:: manager_delete
+    .. automethod:: manager_details
+    .. automethod:: manager_edit
+    .. automethod:: managers_list
 '''
-
 from tenable.sc.base import SCEndpoint
-
 
 
 class OrganizationAPI(SCEndpoint):
@@ -409,3 +414,157 @@ class OrganizationAPI(SCEndpoint):
             params['port'] = self._check('port', port, int)
         return self._api.get('organization/{}/acceptRiskRule'.format(
             self._check('id', id, int)), params=params).json()['response']
+
+    def managers_list(self, org_id, fields=None):
+        '''
+        Retrieves a list of security managers.
+
+        :sc-api:`organization-security-manager: list <Organization-Security-Manager.html#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager>`
+
+        Args:
+            org_id: (int):
+                The numeric identifier for the organization.
+            fields (list, optional):
+                The list of fields that are desired to be returned.  For details
+                on what fields are available, please refer to the details on the
+                request within the organization list API doc.
+
+        Returns:
+            :obj:`list`:
+                List of user definitions.
+
+        Examples:
+            Retrieve all of the security managers for a given org.:
+
+            >>> repos = sc.organizations.managers_list()
+        '''
+        params = dict()
+        if fields:
+            params['fields'] = ','.join([self._check('field', f, str)
+                                         for f in fields])
+        return self._api.get('organization/{}/securityManager'.format(
+            self._check('org_id', org_id, int)), params=params).json()['response']
+
+    def manager_create(self, org_id, username, password, role, **kw):
+        '''
+        Creates a new security manager for the given org.  For a complete list
+        of parameters that are supported for this call, please refer to
+        :py:meth:`tio.users.create() <UserAPI.create>` for more details.
+
+        :sc-api:`organization-security-manager: create <Organization-Security-Manager.html#organization_orgID_securityManager_POST>`
+
+        Args:
+            org_id: (int):
+                The numeric identifier for the organization.
+            username (str):
+                The username for the account
+            password (str):
+                The password for the user to create
+            role (int):
+                The role that should be assigned to this user.
+            **kw (dict):
+                The keyword args to pass to the user constructor.
+
+        Returns:
+            :obj:`dict`:
+                The newly created security manager.
+
+        Examples:
+            >>> secmngr = sc.organizations.manager_create(1,
+            ...     'username', 'password', 1)
+        '''
+        kw['username'] = username
+        kw['password'] = password
+        kw['role'] = role
+        kw['auth_type'] = kw.get('auth_type', 'tns')
+        kw['responsibleAssetID'] = -1
+        payload = self._api.users._constructor(**kw)
+        return self._api.post('organization/{}/securityManager'.format(
+            self._check('org_id', org_id, int)), json=payload).json()['response']
+
+    def manager_details(self, org_id, user_id, fields=None):
+        '''
+        Retrieves the details of a specified security manager within a
+        specified organization.
+
+        :sc-api:`organization-security-manager: details <Organization-Security-Manager.html#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager/{id}>`
+
+        Args:
+            org_id: (int):
+                The numeric identifier for the organization.
+            user_id: (int):
+                The numeric identifier for the user.
+            fields (list, optional):
+                The list of fields that are desired to be returned.  For details
+                on what fields are available, please refer to the details on the
+                request within the organization list API doc.
+
+        Returns:
+            :obj:`dict`:
+                The user resource record.
+
+        Examples:
+            >>> secmngr = sc.organizations.manager_details(1, 1)
+        '''
+        params = dict()
+        if fields:
+            params['fields'] = ','.join([self._check('field', f, str)
+                                         for f in fields])
+        return self._api.get('organization/{}/securityManager/{}'.format(
+            self._check('org_id', org_id, int),
+            self._check('user_id', user_id, int)),
+                params=params).json()['response']
+
+    def manager_edit(self, org_id, user_id, **kw):
+        '''
+        Edits the specified security manager within the specified organization.
+        For details on the supported arguments that may be passed, please refer
+        to :py:meth:`tio.users.edit() <UserAPI.edit>` for more details.
+
+        :sc-api:`organization-security-manager: edit <Organization-Security-Manager.html#organization_orgID_securityManager_id_PATCH>`
+
+        Args:
+            org_id: (int):
+                The numeric identifier for the organization.
+            user_id: (int):
+                The numeric identifier for the user.
+            **kw (dict):
+                The keyword args to pass to the user constructor.
+
+        Returns:
+            :obj:`dict`:
+                The updated user record.
+
+        Examples:
+            >>> secmngr = sc.organizations.manager_edit(1, 1,
+            ...     username='updated')
+        '''
+        payload = self._api.users._constructor(**kw)
+        return self._api.get('organization/{}/securityManager/{}'.format(
+            self._check('org_id', org_id, int),
+            self._check('user_id', user_id, int)
+            ), json=payload).json()['response']
+
+    def manager_delete(self, org_id, user_id, migrate_to=None):
+        '''
+        Removes the user specified.
+
+        :sc-api:`organization-security-manager: delete <Organization-Security-Manager.html#organization_orgID_securityManager_id_DELETE>`
+
+        Args:
+            org_id: (int):
+                The numeric identifier for the organization.
+            user_id: (int):
+                The numeric identifier for the user.
+
+        Examples:
+            >>> sc.organizations.manager_delete(1, 1)
+        '''
+        payload = dict()
+        if migrate_to:
+            payload['migrateUserID'] = self._check('migrate_to', migrate_to, int)
+
+        self._api.get('organization/{}/securityManager/{}'.format(
+            self._check('org_id', org_id, int),
+            self._check('user_id', user_id, int)
+            ), json=payload)
