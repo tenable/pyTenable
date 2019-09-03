@@ -10,6 +10,7 @@
 .. automodule:: tenable.sc.asset_lists
 .. automodule:: tenable.sc.audit_files
 .. automodule:: tenable.sc.credentials
+.. automodule:: tenable.sc.current
 .. automodule:: tenable.sc.feeds
 .. automodule:: tenable.sc.files
 .. automodule:: tenable.sc.groups
@@ -64,6 +65,7 @@ from .analysis import AnalysisAPI
 from .asset_lists import AssetListAPI
 from .audit_files import AuditFileAPI
 from .credentials import CredentialAPI
+from .current import CurrentSessionAPI
 from .files import FileAPI
 from .feeds import FeedAPI
 from .groups import GroupAPI
@@ -298,6 +300,10 @@ class TenableSC(APISession):
     @property
     def credentials(self):
         return CredentialAPI(self)
+
+    @property
+    def current(self):
+        return CurrentSessionAPI(self)
 
     @property
     def feeds(self):
