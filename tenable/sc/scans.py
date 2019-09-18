@@ -111,7 +111,18 @@ class ScanAPI(SCEndpoint):
             # maxScanTime is a integer encased in a string value.  the snake
             # cased version of that expects an integer and converts it into the
             # string equivalent.
-            kw['maxScanTime'] = str(self._check('max_time', kw['max_time'], int))
+            # if given a value of 0 or less than 0, then 
+            # maxScanTime will be set to 'unlimited' 
+
+            kw['maxScanTime'] = self._check('max_time', kw['max_time'], int)
+
+            # at this point max_time should have been validated as an integer
+            # evaluate if it's equal to or less than 0, else cast the int as a str
+            if kw['max_time'] <= 0:
+                kw['maxScanTime'] = 'unlimited'
+            else:
+                kw['maxScanTime'] = str(kw['max_time'])
+            
             del(kw['max_time'])
 
         if 'auto_mitigation' in kw:
