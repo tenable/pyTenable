@@ -213,7 +213,7 @@ class SCEndpoint(APIEndpoint):
         if resp['type'] == 'ical' and 'start' in item and 'repeatRule' in item:
             resp['start'] = self._check('schedule:start', item['start'], str)
             resp['repeatRule'] = self._check(
-                'schedule:repeatRule', item['rrule'], str)
+                'schedule:repeatRule', item['repeatRule'], str)
         return resp
 
 class SCResultsIterator(APIResultsIterator):
