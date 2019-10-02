@@ -296,7 +296,7 @@ class RepositoryAPI(SCEndpoint):
             ...     format='mobile', orgs=[1],
             ...     mobile_sched={
             ...         'repeatRule': 'FREQ=DAILY;INTERVAL=1',
-            ...         'start': 'TZID=America/NewYork:20190212T060000',
+            ...         'start': 'TZID=America/New_York:20190212T060000',
             ...         'type': 'ical',
             ...     },
             ...     preferences={

@@ -57,8 +57,8 @@ formatted string.
 
     {
         'type': 'ical',
-        'start': 'TZID=America/New York:20190214T090000',
-        'rrule': 'FREQ=DAILY;INTERVAL=1'
+        'start': 'TZID=America/New_York:20190214T090000',
+        'repeatRule': 'FREQ=DAILY;INTERVAL=1'
     }
 
 * Example weekly event every Saturday at 8:30pm Eastern
@@ -67,8 +67,8 @@ formatted string.
 
     {
         'type': 'ical',
-        'start': 'TZID=America/New York:20190214T203000',
-        'rrule': 'FREQ=WEEKLY;BYDAY=SA;INTERVAL=1'
+        'start': 'TZID=America/New_York:20190214T203000',
+        'repeatRule': 'FREQ=WEEKLY;BYDAY=SA;INTERVAL=1'
     }
 
 There are detailed instructions in the RFC documentation on how to construct
