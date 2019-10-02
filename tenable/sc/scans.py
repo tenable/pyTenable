@@ -74,6 +74,14 @@ class ScanAPI(SCEndpoint):
                 'email_launch', kw['email_launch'], bool, default=False)).lower()
             del(kw['email_launch'])
 
+        if 'host_tracking' in kw:
+            # As host_tracking is effectively a string interpretation of a bool
+            # value, if the snake case equivalent is used, we will convert it
+            # into the expected parameter and remove the snake cased version.
+            kw['dhcpTracking'] = str(self._check(
+                'host_tracking', kw['host_tracking'], bool, default=False)).lower()
+            del(kw['host_tracking'])
+
         if 'timeout' in kw:
             # timeout is the checked version of timeoutAction.  If timeout is
             # specified, we will check to make sure that the action is a valid
