@@ -344,7 +344,7 @@ class WorkbenchesAPI(TIOEndpoint):
                 List of asset resource records.
 
         Examples:
-            >>> for asset in tio.workbenches.assets_with_vulns():
+            >>> for asset in tio.workbenches.vuln_assets():
             ...     pprint(asset)
         '''
         # Call the query builder to handle construction
