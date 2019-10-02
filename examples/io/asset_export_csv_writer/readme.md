@@ -1,7 +1,7 @@
 # Vuln Export CSV File Generator
 
 Generates a CSV File from the asset export.  Specific fields can be
-specified from the vulnerability documents using dot notation.
+specified from the asset documents using dot notation.
 
 ## Install
 
