@@ -38,10 +38,11 @@ In all of the definitions except ``ical``, a  single parameter of ``type`` is
 passed with lone of the following values: ``ical``, ``never``, ``rollover``, and
 ``template``.  If no document is specified, then the default of ``never`` is
 assumed.  For repeating scans, you'll have to use the type of ``ical`` and also
-specify the ``start`` and ``rrule`` parameters as well.  The ``start`` parameter
-is an `iCal DateTime Form #3 <https://tools.ietf.org/html/rfc5545#section-3.3.5>`_
+specify the ``start`` and ``repeatRule`` parameters as well.  The ``start``
+parameter is an
+`iCal DateTime Form #3 <https://tools.ietf.org/html/rfc5545#section-3.3.5>`_
 formatted string specifying the date and time in which to start the repeating
-event.  The ``rrule`` parameter is an
+event.  The ``repeatRule`` parameter is an
 `iCal Recurrance Rule <https://tools.ietf.org/html/rfc5545#section-3.3.10>`_
 formatted string.
 
