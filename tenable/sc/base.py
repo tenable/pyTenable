@@ -165,7 +165,6 @@ class SCEndpoint(APIEndpoint):
                 query_filters = query_response.get('filters', list())
 
                 kw['query']['filters'] = query_filters
-                return kw
 
             for f in filters:
                 if kw['type'] == 'ticket':
@@ -196,6 +195,16 @@ class SCEndpoint(APIEndpoint):
                         # simply return the value parameter assigned to the
                         # "value" attribute
                         item['value'] = f[2]
+
+                # Added this here to make the filter list overloadable.  As SC
+                # only supports one filter of a given type, if an existing
+                # filter is already in the list, we will overload it with the
+                # new one.  This allows for the ability to overload query
+                # filters if need be, or to overload a saved filterset that
+                # someone is appending to.
+                flist = [i['filterName'] for i in kw['query']['filters']]
+                if f[0] in flist:
+                    kw['query']['filters'].pop(flist.index(f[0]))
 
                 # Add the newly expanded filter to the filters list.
                 kw['query']['filters'].append(item)
