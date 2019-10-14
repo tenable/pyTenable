@@ -220,7 +220,7 @@ class TenableSC(APISession):
                 # if a token was passed in the system info page, then we should
                 # update the X-SecurityCenter header with the token info.
                 self._session.headers.update({
-                    'X-SecurityCenter': str(d['response']['token'])
+                    'X-SecurityCenter': str(self.info['token'])
                 })
         except:
             raise ConnectionError('Invalid Tenable.sc Instance')
