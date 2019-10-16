@@ -12,7 +12,7 @@ except:
 
 setup(
     name='pyTenable',
-    version='0.3.26',
+    version='0.3.27',
     description='Python library to interface into Tenable\'s products and applications',
     author='Tenable, Inc.',
     long_description=long_description,
@@ -43,8 +43,13 @@ setup(
         'ipaddress>=1.0.22'
     ],
     extras_require={
-        'NessusReportv2': 'defusedxml>=0.5.0',
-        'PWCertAuth': 'requests-pkcs12>=1.3',
-        'docker': 'docker>=3.7.2',
+        'NessusReportv2': ['defusedxml>=0.5.0'],
+        'PWCertAuth': ['requests-pkcs12>=1.3'],
+        'docker': ['docker>=3.7.2'],
+        'complete': [
+            'defusedxml>=0.5.0',
+            'requests-pkcs12>=1.3',
+            'docker>=3.7.2',
+        ]
     }
 )
