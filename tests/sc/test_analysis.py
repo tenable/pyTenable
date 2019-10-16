@@ -53,6 +53,55 @@ def test_analysis_query_constructor_simple(sc):
         }
     }
 
+def test_analysis_query_constructor_replace(sc):
+    resp = sc.analysis._query_constructor(
+        ('filter1', 'operator1', 'badvalue'),
+        ('filter1', 'operator1', 'value1'),
+        ('filter2', 'operator2', 'value2'),
+        tool='tool_test',
+        type='type_test')
+    assert resp == {
+        'tool': 'tool_test',
+        'query': {
+            'tool': 'tool_test',
+            'type': 'type_test',
+            'filters': [{
+                'filterName': 'filter1',
+                'operator': 'operator1',
+                'value': 'value1',
+            }, {
+                'filterName': 'filter2',
+                'operator': 'operator2',
+                'value': 'value2'
+            }]
+        }
+    }
+
+def test_analysis_query_constructor_remove(sc):
+    resp = sc.analysis._query_constructor(
+        ('filter3', 'operator1', 'badvalue'),
+        ('filter1', 'operator1', 'value1'),
+        ('filter2', 'operator2', 'value2'),
+        ('filter3', None, None),
+        tool='tool_test',
+        type='type_test')
+    assert resp == {
+        'tool': 'tool_test',
+        'query': {
+            'tool': 'tool_test',
+            'type': 'type_test',
+            'filters': [{
+                'filterName': 'filter1',
+                'operator': 'operator1',
+                'value': 'value1',
+            }, {
+                'filterName': 'filter2',
+                'operator': 'operator2',
+                'value': 'value2'
+            }]
+        }
+    }
+
 def test_analysis_query_constructor_asset(sc):
     resp = sc.analysis._query_constructor(('asset', '~', ('or', 1, 2)),
         tool='tool', type='type')
@@ -72,6 +121,8 @@ def test_analysis_query_constructor_asset(sc):
             }]
         }
     }
+
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_cceipdetail_tool(sc):
