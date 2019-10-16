@@ -206,8 +206,13 @@ class SCEndpoint(APIEndpoint):
                 if f[0] in flist:
                     kw['query']['filters'].pop(flist.index(f[0]))
 
-                # Add the newly expanded filter to the filters list.
-                kw['query']['filters'].append(item)
+                # Add the newly expanded filter to the filters list as long as
+                # both the operator and value are not None.  If both are none,
+                # then skip appending.  This should allow for effectively
+                # removing an unwanted filter from a query if a query id is
+                # specified.
+                if f[1] != None and f[2] != None:
+                    kw['query']['filters'].append(item)
             del(kw['type'])
         return kw
 
