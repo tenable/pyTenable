@@ -252,7 +252,12 @@ class AcceptRiskAPI(SCEndpoint):
 
             >>> rule = sc.accept_risks.create(97737, [1],
             ...     ips=['192.168.0.101', '192.168.0.102'], expires=90)
+
+            Create a rule to accept 97737 on all IPs on repository 1:
+
+            >>> rule = sc.accept_risks.create(97737, [1])
         '''
+        kw['hostType'] = 'all'
         kw['plugin_id'] = plugin_id
         kw['repos'] = repos
         payload = self._constructor(**kw)
