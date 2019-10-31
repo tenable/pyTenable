@@ -13,4 +13,6 @@ def vcr_config():
 
 @pytest.fixture(autouse=True, scope='module')
 def dl(request, vcr):
-    return Downloads(os.getenv('DL_TOKEN'))
+    return Downloads(os.getenv('DL_TOKEN'),
+        vendor='pytest',
+        product='pytenable-automated-testing')

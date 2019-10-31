@@ -16,7 +16,10 @@ def vcr_config():
 def sc(request, vcr):
     with vcr.use_cassette('sc_login',
         filter_post_data_parameters=['username', 'password']):
-        sc = TenableSC(os.getenv('SC_TEST_HOST', 'securitycenter.home.cugnet.net'))
+        sc = TenableSC(
+            os.getenv('SC_TEST_HOST', 'securitycenter.home.cugnet.net'),
+            vendor='pytest',
+            product='pytenable-automated-testing')
         sc.login(
             os.getenv('SC_TEST_USER', 'username'),
             os.getenv('SC_TEST_PASS', 'password'))
@@ -30,7 +33,10 @@ def sc(request, vcr):
 def admin(request, vcr):
     with vcr.use_cassette('sc_login',
         filter_post_data_parameters=['username', 'password']):
-        sc = TenableSC(os.getenv('SC_TEST_HOST', 'securitycenter.home.cugnet.net'))
+        sc = TenableSC(
+            os.getenv('SC_TEST_HOST', 'securitycenter.home.cugnet.net'),
+            vendor='pytest',
+            product='pytenable-automated-testing')
         sc.login(
             os.getenv('SC_TEST_ADMIN_USER', 'admin'),
             os.getenv('SC_TEST_ADMIN_PASS', 'password'))
@@ -44,7 +50,10 @@ def admin(request, vcr):
 def unauth(request, vcr):
     with vcr.use_cassette('sc_login',
         filter_post_data_parameters=['username', 'password']):
-        sc = TenableSC(os.getenv('SC_TEST_HOST', 'securitycenter.home.cugnet.net'))
+        sc = TenableSC(
+            os.getenv('SC_TEST_HOST', 'securitycenter.home.cugnet.net'),
+            vendor='pytest',
+            product='pytenable-automated-testing')
     return sc
 
 @pytest.fixture
