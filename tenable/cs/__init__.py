@@ -89,8 +89,10 @@ class ContainerSecurity(APISession):
     def usage(self):
         return UsageAPI(self)
 
-    def __init__(self, access_key, secret_key,
-                 url=None, retries=None, backoff=None, registry=None):
+    def __init__(self, access_key=None, secret_key=None, registry=None,
+                 url=None, retries=None, backoff=None, ua_identity=None,
+                 session=None, proxies=None, vendor=None, product=None,
+                 build=None):
         if access_key:
             self._access_key = access_key
         else:
@@ -106,13 +108,22 @@ class ContainerSecurity(APISession):
 
         if registry:
             self._registry = registry
-        APISession.__init__(self, url, retries, backoff)
+
+        super(ContainerSecurity, self).__init__(url,
+            retries=retries,
+            backoff=backoff,
+            ua_identity=ua_identity,
+            session=session,
+            proxies=proxies,
+            vendor=vendor,
+            product=product,
+            build=build)
 
     def _build_session(self, session=None):
         '''
         Build the session and add the API Keys into the session
         '''
-        APISession._build_session(self, session)
+        super(ContainerSecurity, self)._build_session(session)
         self._session.headers.update({
             'X-APIKeys': 'accessKey={}; secretKey={};'.format(
                 self._access_key, self._secret_key)

@@ -1,7 +1,7 @@
 '''
 .. autoclass:: APIResultsIterator
 '''
-import requests, sys, logging, re, time, logging, warnings, json
+import requests, sys, os, logging, re, time, logging, warnings, json
 from .errors import *
 from . import __version__, __author__
 
@@ -308,7 +308,9 @@ class APISession(object):
             other API calls.
     '''
     _restricted_paths = dict()
-    _ua_identity = None
+    _vendor = 'unknown'
+    _product = 'unknown'
+    _build = 'unknown'
     _proxies = None
     _error_codes = {
         400: InvalidInputError,
@@ -336,7 +338,8 @@ class APISession(object):
     '''
 
     def __init__(self, url=None, retries=None, backoff=None,
-                 ua_identity=None, session=None, proxies=None):
+                 ua_identity=None, session=None, proxies=None,
+                 vendor=None, product=None, build=None):
         if url:
             self._url = url
         if retries and isinstance(retries, int):
@@ -344,9 +347,15 @@ class APISession(object):
         if backoff and isinstance(backoff, float):
             self._backoff = backoff
         if ua_identity and isinstance(ua_identity, str):
-            self._ua_identity = ua_identity
+            self._product = ua_identity
         if proxies and isinstance(proxies, dict):
             self._proxies = proxies
+        if vendor:
+            self._vendor = vendor
+        if product:
+            self._product = product
+        if build:
+            self._build = build
         self._log = logging.getLogger('{}.{}'.format(
             self.__module__, self.__class__.__name__))
         self._build_session(session)
@@ -355,10 +364,7 @@ class APISession(object):
         '''
         Requests session builder
         '''
-        if self._ua_identity:
-            identity = self._ua_identity
-        else:
-            identity = 'pyTenable/{}'.format(__version__)
+
 
         if session:
             self._session = session
@@ -366,9 +372,39 @@ class APISession(object):
             self._session = requests.Session()
         if self._proxies:
             self._session.proxies.update(self._proxies)
+
+        # Update the User-Agent string with the information necessary.
+        uname = os.uname()
         self._session.headers.update({
-            'User-Agent': '{} (pyTenable/{}; Python/{})'.format(identity,
-                __version__, '.'.join([str(i) for i in sys.version_info][0:3])),
+            'User-Agent': ' '.join([
+                'Integration/1.0 ({}; {}; Build/{})'.format(
+
+                    # The vendor name for the integration
+                    self._vendor,
+
+                    # The product name of the integration
+                    self._product,
+
+                    # The build of the integration
+                    self._build
+                ),
+                'pyTenable/{} (pyTenable/{}; Python/{}; {}/{})'.format(
+                    # The version of the library being used
+                    __version__,
+
+                    # The version of Restfly
+                    __version__,
+
+                    # The python version string
+                    '.'.join([str(i) for i in sys.version_info][0:3]),
+
+                    # The source OS
+                    uname[0],
+
+                    # The source Arch
+                    uname[-1]
+                ),
+            ])
         })
 
     def _resp_error_check(self, response, **kwargs): #stub

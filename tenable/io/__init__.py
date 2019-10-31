@@ -250,7 +250,8 @@ class TenableIO(APISession):
         return self._tzcache
 
     def __init__(self, access_key=None, secret_key=None, url=None, retries=None,
-                 backoff=None, ua_identity=None, session=None, proxies=None):
+                 backoff=None, ua_identity=None, session=None, proxies=None,
+                 vendor=None, product=None, build=None):
         if access_key:
             self._access_key = access_key
         else:
@@ -264,12 +265,15 @@ class TenableIO(APISession):
         if not self._access_key or not self._secret_key:
             raise UnexpectedValueError('No valid API Keypair Defined')
 
-        APISession.__init__(self, url,
+        super(TenableIO, self).__init__(url,
             retries=retries,
             backoff=backoff,
             ua_identity=ua_identity,
             session=session,
-            proxies=proxies)
+            proxies=proxies,
+            vendor=vendor,
+            product=product,
+            build=build)
 
     def _retry_request(self, response, retries, kwargs):
         '''
@@ -294,7 +298,7 @@ class TenableIO(APISession):
         '''
         Build the session and add the API Keys into the session
         '''
-        APISession._build_session(self, session)
+        super(TenableIO, self)._build_session(session)
         self._session.headers.update({
             'X-APIKeys': 'accessKey={}; secretKey={};'.format(
                 self._access_key, self._secret_key)
