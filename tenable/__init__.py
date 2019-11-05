@@ -80,6 +80,6 @@ License
 
 The project is licensed under the MIT license.
 '''
-__version__ = '0.3.28'
+__version__ = '0.3.29'
 __author__ = 'Steve McGrath <smcgrath@tenable.com>'
 __license__ = 'MIT'
