@@ -1,7 +1,7 @@
 '''
 .. autoclass:: APIResultsIterator
 '''
-import requests, sys, os, logging, re, time, logging, warnings, json
+import requests, sys, platform, logging, re, time, logging, warnings, json
 from .errors import *
 from . import __version__, __author__
 
@@ -374,7 +374,7 @@ class APISession(object):
             self._session.proxies.update(self._proxies)
 
         # Update the User-Agent string with the information necessary.
-        uname = os.uname()
+        uname = platform.uname()
         self._session.headers.update({
             'User-Agent': ' '.join([
                 'Integration/1.0 ({}; {}; Build/{})'.format(
@@ -402,7 +402,7 @@ class APISession(object):
                     uname[0],
 
                     # The source Arch
-                    uname[-1]
+                    uname[-2]
                 ),
             ])
         })
