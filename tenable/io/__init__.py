@@ -114,13 +114,31 @@ class TenableIO(APISession):
             If a 429 response is returned, how much do we want to backoff
             if the response didn't send a Retry-After header.  The default
             backoff is ``1`` second.
-        ua_identity (str, optional):
-            An application identifier to be added into the User-Agent string
-            for the purposes of application identification.
+        vendor (str, optional):
+            The vendor name for the User-Agent string.
+        product (str, optional):
+            The product name for the User-Agent string.
+        build (str, optional):
+            The version or build identifier for the User-Agent string.
 
     Examples:
+        Basic Example:
+
         >>> from tenable.io import TenableIO
         >>> tio = TenableIO('ACCESS_KEY', 'SECRET_KEY')
+
+        Example with proper identification:
+
+        >>> tio = TenableIO('ACCESS_KEY', 'SECRET_KEY',
+        >>>     vendor='Company Name',
+        >>>     product='My Awesome Widget',
+        >>>     build='1.0.0')
+
+        Example with proper identification leveraging environment variables for
+        access and secret keys:
+
+        >>> tio = TenableIO(
+        >>>     vendor='Company Name', product='Widget', build='1.0.0')
     '''
 
     _tzcache = None
