@@ -21,6 +21,7 @@ Methods available on ``tio.scans``:
     .. automethod:: history
     .. automethod:: host_details
     .. automethod:: import_scan
+    .. automethod:: info
     .. automethod:: launch
     .. automethod:: list
     .. automethod:: pause
@@ -983,9 +984,9 @@ class ScansAPI(TIOEndpoint):
                 The metadata about the scan instance specified.
 
         Examples:
-            >>> info = tio.scans.info(1, 1)
+            >>> info = tio.scans.info(1, 'BA0ED610-C27B-4096-A8F4-3189279AFFE7')
         '''
         return self._api.get('scans/{}/history/{}'.format(
             self._check('scan_id', scan_id, int),
-            self._check('history_uuid', history_uuid, int))).json()
+            self._check('history_uuid', history_uuid, 'uuid'))).json()
 
