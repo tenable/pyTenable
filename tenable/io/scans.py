@@ -988,5 +988,5 @@ class ScansAPI(TIOEndpoint):
         '''
         return self._api.get('scans/{}/history/{}'.format(
             self._check('scan_id', scan_id, int),
-            self._check('history_uuid', history_uuid, 'uuid'))).json()
+            self._check('history_uuid', history_uuid, 'scanner-uuid'))).json()
 
