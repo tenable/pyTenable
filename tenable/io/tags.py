@@ -61,7 +61,8 @@ class TagsAPI(TIOEndpoint):
         'updated_by': {'operators': ['eq'], 'pattern': None, 'choices': None} # Add UUID regex here
     }
 
-    def create(self, category, value, description=None, category_description=None):
+    def create(self, category, value, description=None, filters=None,
+               category_description=None):
         '''
         Create a tag category/value pair
 
@@ -78,6 +79,8 @@ class TagsAPI(TIOEndpoint):
                 optionally provided.
             description (str, optional):
                 A description for the Category/Value pair.
+            filters (dict, optional):
+                The filter dictionary as specified within the API documents.
 
         Returns:
             :obj:`dict`:
@@ -114,6 +117,8 @@ class TagsAPI(TIOEndpoint):
         if category_description:
             payload['category_description'] = self._check(
                 'category_description', category_description, str)
+        if filters:
+            payload['filters'] = self.check('filters', filters, dict)
 
         return self._api.post('tags/values', json=payload).json()
 
@@ -218,7 +223,7 @@ class TagsAPI(TIOEndpoint):
         return self._api.get('tags/categories/{}'.format(self._check(
             'tag_category_uuid', tag_category_uuid, 'uuid'))).json()
 
-    def edit(self, tag_value_uuid, value=None, description=None):
+    def edit(self, tag_value_uuid, value=None, description=None, filters=None):
         '''
         Updates Tag category/value pair information.
 
@@ -231,6 +236,8 @@ class TagsAPI(TIOEndpoint):
                 The new name for the category value.
             description (str, optional):
                 New description for the category value.
+            filters (dict, optional):
+                The filter dictionary as specified within the API documents.
 
         Returns:
             :obj:`dict`:
@@ -244,6 +251,8 @@ class TagsAPI(TIOEndpoint):
         payload['value'] = self._check('value', value, str)
         if description:
             payload['description'] = self._check('description', description, str)
+        if filters:
+            payload['filters'] = self.check('filters', filters, dict)
         return self._api.put('tags/values/{}'.format(self._check(
             'tag_value_uuid', tag_value_uuid, 'uuid')), json=payload).json()
 
