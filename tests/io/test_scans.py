@@ -424,6 +424,15 @@ def test_scan_export_filter_type_unexpectedvalueerror(api):
         api.scans.export(1, filter_type='nothing')
 
 @pytest.mark.vcr()
+def test_scan_export_was_typeerror(api):
+    with pytest.raises(UnexpectedValueError):
+      api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='bad-value')
+
+@pytest.mark.vcr()
+def test_scan_export_was(api):
+    api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='web-app')
+
+@pytest.mark.vcr()
 def test_scan_export_bytesio(api):
     from io import BytesIO
     from tenable.reports.nessusv2 import NessusReportv2
