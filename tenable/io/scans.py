@@ -540,6 +540,9 @@ class ScansAPI(TIOEndpoint):
                 Are the filters exclusive (this AND this AND this) or inclusive
                 (this OR this OR this).  Valid values are `and` and `or`.  The
                 default setting is `and`.
+            scan_type (str, optional):
+                This parameter is required only when using the API with
+                Web Application Scanning. Available option is 'web-app'.
             fobj (FileObject, optional):
                 The file-like object to be returned with the exported data.  If
                 no object is specified, a BytesIO object is returned with the
@@ -572,10 +575,16 @@ class ScansAPI(TIOEndpoint):
         payload = self._parse_filters(filters,
             self._api.filters.scan_filters(), rtype='sjson')
         params = dict()
+        dl_params = dict()
 
         if 'history_id' in kw:
             params['history_id'] = self._check(
                 'history_id', kw['history_id'], int)
+
+        # Enable exporting of Web Application scans.
+        if 'scan_type' in kw:
+            dl_params['type'] = params['type'] = self._check(
+                'type', kw['scan_type'], str, choices=['web-app'])
 
         if 'password' in kw:
             payload['password'] = self._check('password', kw['password'], str)
@@ -618,12 +627,12 @@ class ScansAPI(TIOEndpoint):
         # ready.
         status = self._wait_for_download(
             'scans/{}/export/{}/status'.format(scan_id, fid),
-            'scans', scan_id, fid)
+            'scans', scan_id, fid, params=dl_params)
 
         # Now that the status has reported back as "ready", we can actually
         # download the file.
         resp = self._api.get('scans/{}/export/{}/download'.format(
-            scan_id, fid), stream=True)
+            scan_id, fid), params=dl_params, stream=True)
 
         # Lets stream the file into the file-like object...
         for chunk in resp.iter_content(chunk_size=1024):
