@@ -89,17 +89,17 @@ class TIOEndpoint(APIEndpoint):
 
         return resp
 
-    def _wait_for_download(self, path, resource, resource_id, file_id):
+    def _wait_for_download(self, path, resource, resource_id, file_id, **kw):
         '''
         A simple method to centralize waiting for an export to enter a
         completed state.  The initial request will be made and then we will
         recheck every two and a half seconds after that.  Once the status
         returns one of the completed states, we will return the status.
         '''
-        status = self._api.get(path).json()['status']
+        status = self._api.get(path, **kw).json()['status']
         while status not in ['error', 'ready']:
             time.sleep(2.5)
-            status = self._api.get(path).json()['status']
+            status = self._api.get(path, **kw).json()['status']
 
         # If the status that has been reported back is "error", then we will
         # need to throw the appropriate error back to the user.
