@@ -252,7 +252,7 @@ class TagsAPI(TIOEndpoint):
         if description:
             payload['description'] = self._check('description', description, str)
         if filters:
-            payload['filters'] = self.check('filters', filters, dict)
+            payload['filters'] = self._check('filters', filters, dict)
         return self._api.put('tags/values/{}'.format(self._check(
             'tag_value_uuid', tag_value_uuid, 'uuid')), json=payload).json()
 
