@@ -183,7 +183,7 @@ class TenableSC(APISession):
                  password=None, port=443, ssl_verify=False, cert=None,
                  adapter=None, scheme='https', retries=None, backoff=None,
                  ua_identity=None, session=None, proxies=None,
-                 vendor=None, product=None, build=None):
+                 vendor=None, product=None, build=None, prelog=False):
         # As we will always be passing a URL to the APISession class, we will
         # want to construct a URL that APISession (and further requests)
         # understands.
@@ -204,7 +204,8 @@ class TenableSC(APISession):
             proxies=proxies,
             vendor=vendor,
             product=product,
-            build=build)
+            build=build,
+            prelog=prelog)
 
         # If a client-side certificate is specified, then we will want to add
         # it into the session object as well.  The cert parameter is expecting
