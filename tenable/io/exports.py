@@ -64,11 +64,13 @@ class ExportsIterator(APIResultsIterator):
         if len(self.chunks) < 1:
             status = get_status()
 
+            backoff_counter = 1
             # if the export is still processing, but there aren't any chunks for
             # us to process yet, then we will wait here in a loop and call for
             # status once a second until we get something else to work on.
             while len(status['chunks_unfinished']) < 1:
-                time.sleep(1)   # wait 1 second
+                backoff_counter += 1
+                time.sleep(backoff_counter if backoff_counter < 30 else 30)
                 status = get_status()
 
             # now that we have some chunks to work on, lets refresh the local
