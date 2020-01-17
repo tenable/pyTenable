@@ -236,10 +236,9 @@ class ScannerAPI(SCEndpoint):
         Examples:
             >>> scanner = sc.scanners.edit(1, enabled=True)
         '''
-        base = self.details(self._check('id', id, int))
         payload = self._constructor(**kw)
         return self._api.patch('scanner/{}'.format(id),
-            json=dict_merge(base, payload)).json()['response']
+            json=payload).json()['response']
 
     def delete(self, id):
         '''
