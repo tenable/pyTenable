@@ -308,7 +308,6 @@ class APISession(object):
             An optional identifier for the application to discern it amongst
             other API calls.
     '''
-    _log_precog = False
     _restricted_paths = dict()
     _vendor = 'unknown'
     _product = 'unknown'
@@ -341,7 +340,7 @@ class APISession(object):
 
     def __init__(self, url=None, retries=None, backoff=None,
                  ua_identity=None, session=None, proxies=None,
-                 vendor=None, product=None, build=None, prelog=False):
+                 vendor=None, product=None, build=None):
         if url:
             self._url = url
         if retries and isinstance(retries, int):
@@ -358,8 +357,6 @@ class APISession(object):
             self._product = product
         if build:
             self._build = build
-        if prelog:
-            self._log_precog = True
         self._log = logging.getLogger('{}.{}'.format(
             self.__module__, self.__class__.__name__))
         self._build_session(session)
@@ -438,20 +435,27 @@ class APISession(object):
             del(kwargs['retry_on'])
 
         while retries <= self._retries:
-            if (('params' in kwargs and kwargs['params'])
-              or ('json' in kwargs and kwargs['json'])
-              or self._log_precog):
-                if path not in self._restricted_paths:
-                    # If the path is not one of the paths that would contain
-                    # sensitive data (such as login information) then pass the
-                    # log on unredacted.
-                    self._log.debug('{} {}, query={}, body={}'.format(method,
-                        path, kwargs.get('params', {}), kwargs.get('json', {})))
-                else:
-                    # The path was a restricted path, generate the log, however
-                    # redact the information.
-                    self._log.debug('path={}, query={}, body={}'.format(
-                        path, 'REDACTED', 'REDACTED'))
+            if path not in self._restricted_paths:
+                # If the path is not one of the paths that would contain
+                # sensitive data (such as login information) then pass the
+                # log on un-redacted.
+                self._log.debug(json.dumps({
+                        'method': method,
+                        'url': '{}/{}'.format(self._url, path),
+                        'params': kwargs.get('params', {}),
+                        'body': kwargs.get('json', {})
+                    })
+                )
+            else:
+                # The path was a restricted path, generate the log, however
+                # redact the information.
+                self._log.debug(json.dumps({
+                        'method': method,
+                        'url': '{}/{}'.format(self._url, path),
+                        'params': 'REDACTED',
+                        'body': 'REDACTED'
+                    })
+                )
 
             # Make the call to the API and pull the status code.
             try:
