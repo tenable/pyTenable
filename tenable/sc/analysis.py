@@ -153,7 +153,7 @@ class AnalysisAPI(SCEndpoint):
         '''
 
         offset = 0
-        limit = 200
+        limit = 1000
         pages = None
 
         # Call the query constructor to build the query if necessary./
