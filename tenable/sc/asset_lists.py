@@ -150,7 +150,7 @@ class AssetListAPI(SCEndpoint):
 
         if 'fobj' in kw:
             # Uploads the file object and stores the returned name in filename.
-            kw['filename'] = self._api.files.upload(fobj)
+            kw['filename'] = self._api.files.upload(kw['fobj'])
             del(kw['fobj'])
 
         if 'data_fields' in kw:
