@@ -45,7 +45,7 @@ class FeedAPI(SCEndpoint):
 
             Getting the feed status for a specific type (e.g. `active`).
 
-            >>> status = sc.feed.status('active')
+            >>> status = sc.feeds.status('active')
         '''
         self._check('feed_type', feed_type, str, choices=[
             'active', 'passive', 'lce', 'sc', 'all'])
@@ -98,7 +98,7 @@ class FeedAPI(SCEndpoint):
             updating the active plugins:
 
             >>> with open('sc-plugins-diff.tar.gz', 'rb') as plugfile:
-            ...     sc.feed.process('active', plugfile)
+            ...     sc.feeds.process('active', plugfile)
         '''
         filename = self._api.files.upload(fobj)
 
