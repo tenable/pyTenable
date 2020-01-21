@@ -5,7 +5,7 @@ files
 The following methods allow for interaction into the Tenable.sc
 :sc-api:`File <File.html>` API.
 
-Methods available on ``sc.feeds``:
+Methods available on ``sc.files``:
 
 .. rst-class:: hide-signature
 .. autoclass:: FileAPI
