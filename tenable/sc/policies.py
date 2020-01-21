@@ -12,6 +12,7 @@ Methods available on ``sc.policies``:
 .. autoclass:: ScanPolicyAPI
 
     .. automethod:: copy
+    .. automethod:: create
     .. automethod:: delete
     .. automethod:: details
     .. automethod:: export_policy
