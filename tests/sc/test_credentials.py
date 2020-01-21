@@ -418,7 +418,7 @@ def test_credentials_constructor_success(sc):
         'kdc_port': '1234',
         'kdc_protocol': 'TCP',
         'kdc_realm': 'something',
-        'OracleAuthType': 'NORMAL',
+        'oracleAuthType': 'NORMAL',
         'oracle_service_type': 'SERVICE_NAME',
         'SQLServerAuthType': 'Windows',
         'escalationUsername': 'root',
