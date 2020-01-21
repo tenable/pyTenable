@@ -329,7 +329,7 @@ class CredentialAPI(SCEndpoint):
         if 'oracle_auth_type' in kw:
             # Validate that the oracle_auth_type var is a string and then store
             # it in the camelCased equiv.
-            kw['OracleAuthType'] = self._check(
+            kw['oracleAuthType'] = self._check(
                 'oracle_auth_type', kw['oracle_auth_type'], str, case='upper',
                 choices=['SYSDBA', 'SYSOPER', 'NORMAL'])
             del(kw['oracle_auth_type'])
