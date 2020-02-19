@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.6]
 ### Fixed
 - TenableIO.tags.list_categories() was pointing to values instead of categories #186
+- TenableSC instantiation dopes not support base path customization #187
 
 ## [1.0.5]
 ### Fixed

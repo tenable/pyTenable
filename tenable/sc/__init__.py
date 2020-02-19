@@ -183,12 +183,12 @@ class TenableSC(APISession):
                  password=None, port=443, ssl_verify=False, cert=None,
                  adapter=None, scheme='https', retries=None, backoff=None,
                  ua_identity=None, session=None, proxies=None,
-                 vendor=None, product=None, build=None):
+                 vendor=None, product=None, build=None, base_path='rest'):
         # As we will always be passing a URL to the APISession class, we will
         # want to construct a URL that APISession (and further requests)
         # understands.
         base = '{}://{}:{}'.format(scheme, host, port)
-        url = '{}/rest'.format(base)
+        url = '{}/{}'.format(base, base_path)
 
         # Setting the SSL Verification flag on the object itself so that it's
         # reusable if the user logs out and logs back in.
