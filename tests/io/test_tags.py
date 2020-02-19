@@ -239,7 +239,7 @@ def test_tags_list_constructor_filter_type_unexpectedvalueerror(api):
             api.tags._filterset_tags, 'nadda', None)
 
 def test_tags_list_constructor_filter_type_success(api):
-    resp = api.tags._tag_list_constructor([], 
+    resp = api.tags._tag_list_constructor([],
         api.tags._filterset_tags, 'and', None)
     assert resp['ft'] == 'AND'
 
@@ -254,7 +254,7 @@ def test_tags_list_constructor_sort_unexpectedvalueerror(api):
             api.tags._filterset_tags, None, 'something_else')
 
 def test_tags_list_constructor_sort_success(api):
-    resp = api.tags._tag_list_constructor([], 
+    resp = api.tags._tag_list_constructor([],
         api.tags._filterset_tags, None, 'value')
     assert resp['sort'] == 'value'
 
@@ -286,12 +286,12 @@ def test_tags_list_category_success(api, tagcat):
     tags = api.tags.list_categories()
     assert isinstance(tags, TagsIterator)
     t = tags.next()
-    check(t, 'category_uuid', 'uuid')
+    check(t, 'uuid', 'uuid')
     check(t, 'created_at', 'datetime')
     check(t, 'created_by', str)
     check(t, 'updated_at', 'datetime')
     check(t, 'updated_by', str)
-    check(t, 'category_name', str)
+    check(t, 'name', str)
     #check(t, 'description', str, allow_none=True)
     #check(t, 'reserved', bool)
 

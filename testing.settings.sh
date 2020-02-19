@@ -1,4 +1,4 @@
-export TESTING_PYTHON_VERSIONS="2.7.15 3.4.9 3.5.6 3.6.7 3.7.1"
+export TESTING_PYTHON_VERSIONS="2.7.15 3.4.9 3.5.6 3.6.7 3.7.5"
 
 function perform_cleanup {
     echo "Cleaning up the Nessus Reports."

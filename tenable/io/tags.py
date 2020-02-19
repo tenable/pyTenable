@@ -346,9 +346,9 @@ class TagsAPI(TIOEndpoint):
             kw['filter_type'] if 'filter_type' in kw else None,
             kw['sort'] if 'sort' in kw else None)
         return TagsIterator(self._api,
-            _limit=self._check('limit', kw['limit'], int) if 'limit' in kw else 1000,
-            _offset=self._check('offset', kw['offset'], int) if 'offset' in kw else 0,
-            _pages_total=self._check('pages', kw['pages'], int) if 'pages' in kw else None,
+            _limit=self._check('limit', kw.get('limit', 1000), int),
+            _offset=self._check('offset', kw.get('offset', 0), int),
+            _pages_total=self._check('pages', kw.get('pages'), int),
             _query=query,
             _path='tags/values',
             _resource='values'
@@ -402,12 +402,12 @@ class TagsAPI(TIOEndpoint):
             kw['filter_type'] if 'filter_type' in kw else None,
             kw['sort'] if 'sort' in kw else None)
         return TagsIterator(self._api,
-            _limit=self._check('limit', kw['limit'], int) if 'limit' in kw else 1000,
-            _offset=self._check('offset', kw['offset'], int) if 'offset' in kw else 0,
-            _pages_total=self._check('pages', kw['pages'], int) if 'pages' in kw else None,
+            _limit=self._check('limit', kw.get('limit', 1000), int),
+            _offset=self._check('offset', kw.get('offset', 0), int),
+            _pages_total=self._check('pages', kw.get('pages'), int),
             _query=query,
-            _path='tags/values',
-            _resource='values'
+            _path='tags/categories',
+            _resource='categories'
         )
 
     def assign(self, assets, tags):
