@@ -15,6 +15,7 @@ Methods available on ``sc.policies``:
     .. automethod:: create
     .. automethod:: delete
     .. automethod:: details
+    .. automethod:: edit
     .. automethod:: export_policy
     .. automethod:: import_policy
     .. automethod:: list
