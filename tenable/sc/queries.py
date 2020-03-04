@@ -139,7 +139,7 @@ class QueryAPI(SCEndpoint):
         kw['name'] = name
         kw['tool'] = tool
         kw['type'] = data_type
-        payload = self._constructor(**kw)
+        payload = self._constructor(*filters, **kw)
         return self._api.post('query', json=payload).json()['response']
 
     def details(self, id, fields=None):
