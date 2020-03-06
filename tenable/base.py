@@ -473,6 +473,10 @@ class APISession(object):
                 self._log.error('Connection Reset {}'.format(str(err)))
                 time.sleep(0.1)
                 retries += 1
+            except RequestsTimeoutError as err:
+                self._log.error('Connection Timeout {}'.format(str(err)))
+                time.sleep(0.1)
+                retries += 1
             else:
                 # If there is a Request UUID then we will want to log the UUID
                 # just incase we may need it for tracking down what happened
