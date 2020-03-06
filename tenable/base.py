@@ -2,7 +2,7 @@
 .. autoclass:: APIResultsIterator
 '''
 import requests, sys, platform, logging, re, time, logging, warnings, json
-from requests.exceptions import ConnectionError as RequestsConnectionError
+from requests.exceptions import ConnectionError as RequestsConnectionError, Timeout as RequestsTimeoutError
 from .errors import *
 from . import __version__, __author__
 
@@ -338,9 +338,14 @@ class APISession(object):
     Retry-After header was returned.
     '''
 
+    _timeout = 120
+    '''
+    int: timeout period in seconds for request, set to prevent a hubg state
+    '''
+
     def __init__(self, url=None, retries=None, backoff=None,
                  ua_identity=None, session=None, proxies=None,
-                 vendor=None, product=None, build=None):
+                 vendor=None, product=None, build=None, timeout=None):
         if url:
             self._url = url
         if retries and isinstance(retries, int):
@@ -357,6 +362,8 @@ class APISession(object):
             self._product = product
         if build:
             self._build = build
+        if timeout and isinstance(timeout, int):
+            self._timeout = timeout
         self._log = logging.getLogger('{}.{}'.format(
             self.__module__, self.__class__.__name__))
         self._build_session(session)
@@ -460,7 +467,7 @@ class APISession(object):
             # Make the call to the API and pull the status code.
             try:
                 resp = self._session.request(method,
-                    '{}/{}'.format(self._url, path), **kwargs)
+                    '{}/{}'.format(self._url, path), timeout=self._timeout, **kwargs)
                 status = resp.status_code
             except RequestsConnectionError as err:
                 self._log.error('Connection Reset {}'.format(str(err)))
