@@ -2,7 +2,8 @@
 .. autoclass:: APIResultsIterator
 '''
 import requests, sys, platform, logging, re, time, logging, warnings, json
-from requests.exceptions import ConnectionError as RequestsConnectionError, Timeout as RequestsTimeoutError
+from requests.exceptions import ConnectionError as RequestsConnectionError, Timeout as RequestsTimeoutError, \
+    HTTPError as RequestsHTTPError, RequestException as RequestsRequestException
 from .errors import *
 from . import __version__, __author__
 
@@ -300,7 +301,7 @@ class APISession(object):
             object.
         retries (int, optional):
             The number of retries to make before failing a request.  The
-            default is 3.
+            default is 5.
         backoff (float, optional):
             If a 429 response is returned, how much do we want to backoff
             if the response didn't send a Retry-After header.
@@ -469,13 +470,21 @@ class APISession(object):
                 resp = self._session.request(method,
                     '{}/{}'.format(self._url, path), timeout=self._timeout, **kwargs)
                 status = resp.status_code
-            except RequestsConnectionError as err:
-                self._log.error('Connection Reset {}'.format(str(err)))
-                time.sleep(0.1)
+            except RequestsHTTPError as err_http:
+                self._log.error('HTTP Error {}'.format(str(err_http)))
+                time.sleep(1)
                 retries += 1
-            except RequestsTimeoutError as err:
-                self._log.error('Connection Timeout {}'.format(str(err)))
-                time.sleep(0.1)
+            except RequestsConnectionError as err_connection:
+                self._log.error('Connection Reset {}'.format(str(err_connection)))
+                time.sleep(1)
+                retries += 1
+            except RequestsTimeoutError as err_timeout:
+                self._log.error('Connection Timeout {}'.format(str(err_timeout)))
+                time.sleep(1)
+                retries += 1
+            except RequestsRequestException as err:
+                self._log.error('Other Request Exception {}'.format(str(err)))
+                time.sleep(1)
                 retries += 1
             else:
                 # If there is a Request UUID then we will want to log the UUID
