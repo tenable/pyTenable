@@ -269,7 +269,7 @@ class TenableIO(APISession):
 
     def __init__(self, access_key=None, secret_key=None, url=None, retries=None,
                  backoff=None, ua_identity=None, session=None, proxies=None,
-                 vendor=None, product=None, build=None):
+                 vendor=None, product=None, build=None, timeout=None):
         if access_key:
             self._access_key = access_key
         else:
@@ -291,7 +291,8 @@ class TenableIO(APISession):
             proxies=proxies,
             vendor=vendor,
             product=product,
-            build=build
+            build=build,
+            timeout=timeout
         )
 
     def _retry_request(self, response, retries, kwargs):

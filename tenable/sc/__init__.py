@@ -182,8 +182,8 @@ class TenableSC(APISession):
     def __init__(self, host, access_key=None, secret_key=None, username=None,
                  password=None, port=443, ssl_verify=False, cert=None,
                  adapter=None, scheme='https', retries=None, backoff=None,
-                 ua_identity=None, session=None, proxies=None,
-                 vendor=None, product=None, build=None, base_path='rest'):
+                 ua_identity=None, session=None, proxies=None, timeout=None,
+                 vendor=None, product=None, build=None, base_path='rest',):
         # As we will always be passing a URL to the APISession class, we will
         # want to construct a URL that APISession (and further requests)
         # understands.
@@ -204,7 +204,8 @@ class TenableSC(APISession):
             proxies=proxies,
             vendor=vendor,
             product=product,
-            build=build
+            build=build,
+            timeout=timeout
         )
 
         # If a client-side certificate is specified, then we will want to add
