@@ -2,8 +2,12 @@
 .. autoclass:: APIResultsIterator
 '''
 import requests, sys, platform, logging, re, time, logging, warnings, json
-from requests.exceptions import ConnectionError as RequestsConnectionError, Timeout as RequestsTimeoutError, \
-    HTTPError as RequestsHTTPError, RequestException as RequestsRequestException
+from requests.exceptions import (
+    ConnectionError as RequestsConnectionError,
+    Timeout as RequestsTimeoutError,
+    HTTPError as RequestsHTTPError,
+    RequestException as RequestsRequestException
+)
 from .errors import *
 from . import __version__, __author__
 
@@ -339,9 +343,10 @@ class APISession(object):
     Retry-After header was returned.
     '''
 
-    _timeout = 120
+    _timeout = None
     '''
-    int: timeout period in seconds for request, set to prevent a hubg state
+    int: number of seconds to wait for the response to complete before raising
+    an exception.
     '''
 
     def __init__(self, url=None, retries=None, backoff=None,
@@ -468,28 +473,35 @@ class APISession(object):
             # Make the call to the API and pull the status code.
             try:
                 resp = self._session.request(method,
-                    '{}/{}'.format(self._url, path), timeout=self._timeout, **kwargs)
+                    '{}/{}'.format(self._url, path),
+                    timeout=self._timeout, **kwargs)
                 status = resp.status_code
-            except RequestsHTTPError as err_http:
-                self._log.error('HTTP Error {}'.format(str(err_http)))
+
+            # This series of error blocks will catch any underlying exceptions
+            # thrown from the requests library, log them, iterate the retry
+            # counter, then release the attempt for the next iteration.
+            except RequestsHTTPError as err:
+                self._log.error('HTTP Error {}'.format(str(err)))
                 time.sleep(1)
                 retries += 1
-            except RequestsConnectionError as err_connection:
-                self._log.error('Connection Reset {}'.format(str(err_connection)))
+            except RequestsConnectionError as err:
+                self._log.error('Connection Reset {}'.format(str(err)))
                 time.sleep(1)
                 retries += 1
-            except RequestsTimeoutError as err_timeout:
-                self._log.error('Connection Timeout {}'.format(str(err_timeout)))
+            except RequestsTimeoutError as err:
+                self._log.error('Connection Timeout {}'.format(str(err)))
                 time.sleep(1)
                 retries += 1
             except RequestsRequestException as err:
                 self._log.error('Other Request Exception {}'.format(str(err)))
                 time.sleep(1)
                 retries += 1
+
+            # The following code will run when a request successfully returned.
             else:
                 # If there is a Request UUID then we will want to log the UUID
                 # just incase we may need it for tracking down what happened
-                # within the
+                # within the Tenable.io platform.
                 if resp.headers.get('x-request-uuid'):
                     self._log.debug('Request-UUID {} for {}'.format(
                         resp.headers.get('x-request-uuid'),
