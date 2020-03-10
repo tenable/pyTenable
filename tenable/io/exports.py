@@ -16,6 +16,7 @@ Methods available on ``tio.exports``:
 from .base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
 from tenable.errors import TioExportsError
 from ipaddress import IPv4Network, AddressValueError
+from json.decoder import JSONDecodeError
 import time, ipaddress, sys
 
 class ExportsIterator(APIResultsIterator):
@@ -31,6 +32,12 @@ class ExportsIterator(APIResultsIterator):
         self.chunks = list()
         self.processed = list()
         APIResultsIterator.__init__(self, api, **kw)
+
+    def _process_page(self, page_data):
+        '''
+        Processes a page of data
+        '''
+        self.page = page_data
 
     def _get_page(self):
         '''
@@ -82,8 +89,31 @@ class ExportsIterator(APIResultsIterator):
         self.chunk_id = self.chunks[0]
         self.chunks.pop(0)
         self.processed.append(self.chunk_id)
-        self.page = self._api.get('{}/export/{}/chunks/{}'.format(
-            self.type, self.uuid, self.chunk_id)).json()
+
+        # We will attempt to download a chunk of data and convert it into JSON.
+        # If the conversion fails, then we will increment our own retry counter
+        # and attempt to download the chunk again.  After 3 attempts, we will
+        # assume that the chunk is dead and simply expire the chunk id.
+        downloaded = False
+        counter = 0
+        while not downloaded and counter <= 3:
+            try:
+                self.page = self._api.get('{}/export/{}/chunks/{}'.format(
+                    self.type, self.uuid, self.chunk_id)).json()
+                downloaded = True
+            except JSONDecodeError as err:
+                self._log.warn('Invalid Chunk {} on export {}'.format(
+                               str(self.chunk_id), str(self.uuid)))
+                self.page = list()
+                counter += 1
+
+        # If the chunk of data is empty, then we will call ourselves to get the
+        # next page of data.  This allows us to properly handle empty chunks of
+        # data.
+        if len(self.page) < 1:
+            self._log.warn('Empty Chunk {} on Export {}'.format(
+                           str(self.chunk_id), str(self.uuid)))
+            self._get_page()
 
     def next(self):
         '''
