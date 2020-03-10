@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0]
+### Added
+- Response timeout settings exposed and defaults set. #192 #193
+
+### Changed
+- Improved handling of export chunks.
+    - Added Error handling of JSON decode errors
+    - Added retry logic of chunks that appear to be broken (networking issue?)
+    - Added automatic retiring and re-fetch to ignore empty chunks of data.
+
+### Fixed
+- Retry documentation wasn't correct, adjusted the default values as necessary.
+
 ## [1.0.7]
 ### Fixed
 - TenableSC.queries.create() did not pass filters to the constructor #191
@@ -438,6 +451,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fixed Time Conversion Issue #6
 
+[1.1.0]: https://github.com/tenable/pyTenable/compare/1.0.7...1.1.0
 [1.0.7]: https://github.com/tenable/pyTenable/compare/1.0.6...1.0.7
 [1.0.6]: https://github.com/tenable/pyTenable/compare/1.0.5...1.0.6
 [1.0.5]: https://github.com/tenable/pyTenable/compare/1.0.4...1.0.5
