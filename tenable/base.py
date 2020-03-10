@@ -4,8 +4,6 @@
 import requests, sys, platform, logging, re, time, logging, warnings, json
 from requests.exceptions import (
     ConnectionError as RequestsConnectionError,
-    Timeout as RequestsTimeoutError,
-    HTTPError as RequestsHTTPError,
     RequestException as RequestsRequestException
 )
 from .errors import *
@@ -368,7 +366,7 @@ class APISession(object):
             self._product = product
         if build:
             self._build = build
-        if timeout and isinstance(timeout, int):
+        if timeout and isinstance(timeout, (int, tuple)):
             self._timeout = timeout
         self._log = logging.getLogger('{}.{}'.format(
             self.__module__, self.__class__.__name__))
@@ -378,8 +376,6 @@ class APISession(object):
         '''
         Requests session builder
         '''
-
-
         if session:
             self._session = session
         else:
@@ -440,7 +436,7 @@ class APISession(object):
         Request call builder
         '''
         retries = 0
-        retry_codes = [429, 501, 502, 503]
+        retry_codes = [429, 500, 501, 502, 503, 504]
         if 'retry_on' in kwargs:
             # if the retry_on parameter is passed, then we will consume this
             # to extend the codes that we will attempt to retry.
@@ -480,20 +476,8 @@ class APISession(object):
             # This series of error blocks will catch any underlying exceptions
             # thrown from the requests library, log them, iterate the retry
             # counter, then release the attempt for the next iteration.
-            except RequestsHTTPError as err:
-                self._log.error('HTTP Error {}'.format(str(err)))
-                time.sleep(1)
-                retries += 1
-            except RequestsConnectionError as err:
-                self._log.error('Connection Reset {}'.format(str(err)))
-                time.sleep(1)
-                retries += 1
-            except RequestsTimeoutError as err:
-                self._log.error('Connection Timeout {}'.format(str(err)))
-                time.sleep(1)
-                retries += 1
-            except RequestsRequestException as err:
-                self._log.error('Other Request Exception {}'.format(str(err)))
+            except (RequestsConnectionError, RequestsRequestException) as err:
+                self._log.error('Requests Error: {}'.format(str(err)))
                 time.sleep(1)
                 retries += 1
 

@@ -16,7 +16,10 @@ Methods available on ``tio.exports``:
 from .base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
 from tenable.errors import TioExportsError
 from ipaddress import IPv4Network, AddressValueError
-from json.decoder import JSONDecodeError
+try:
+    from json.decoder import JSONDecodeError
+except ImportError:
+    JSONDecodeError = ValueError
 import time, ipaddress, sys
 
 class ExportsIterator(APIResultsIterator):

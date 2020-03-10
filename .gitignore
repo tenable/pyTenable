@@ -24,3 +24,4 @@ env_builder
 /120.zip
 /1000007.xml
 /*.nessus
+.tox
