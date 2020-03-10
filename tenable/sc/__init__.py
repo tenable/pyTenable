@@ -116,7 +116,7 @@ class TenableSC(APISession):
             default is port ``443``.
         retries (int, optional):
             The number of retries to make before failing a request.  The
-            default is ``3``.
+            default is ``5``.
         scheme (str, optional):
             What HTTP scheme should be used for URI path construction.  The
             default is ``https``.
@@ -130,6 +130,10 @@ class TenableSC(APISession):
             Default is False.
         username (str, optional):
             The username to use for session authentication.
+        timeout (int, optional):
+            The connection timeout parameter informing the library how long to
+            wait in seconds for a stalled response before terminating the
+            connection.  If unspecified, the default is 300 seconds.
 
 
     Examples:
@@ -172,6 +176,7 @@ class TenableSC(APISession):
     '''
     _apikeys = False
     _restricted_paths = ['token']
+    _timeout = 300
     _error_codes = {
         400: InvalidInputError,
         403: APIError,

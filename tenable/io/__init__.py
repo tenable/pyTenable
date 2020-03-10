@@ -109,7 +109,7 @@ class TenableIO(APISession):
             is ``https://cloud.tenable.com``
         retries (int, optional):
             The number of retries to make before failing a request.  The
-            default is ``3``.
+            default is ``5``.
         backoff (float, optional):
             If a 429 response is returned, how much do we want to backoff
             if the response didn't send a Retry-After header.  The default
@@ -120,6 +120,10 @@ class TenableIO(APISession):
             The product name for the User-Agent string.
         build (str, optional):
             The version or build identifier for the User-Agent string.
+        timeout (int, optional):
+            The connection timeout parameter informing the library how long to
+            wait in seconds for a stalled response before terminating the
+            connection.  If unspecified, the default is 120 seconds.
 
     Examples:
         Basic Example:
@@ -143,6 +147,7 @@ class TenableIO(APISession):
 
     _tzcache = None
     _url = 'https://cloud.tenable.com'
+    _timeout = 120
 
     @property
     def access_groups(self):
