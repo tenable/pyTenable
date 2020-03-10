@@ -150,6 +150,7 @@ def test_edit_scanner_group_name_typeerror(api):
         api.scanner_groups.edit(1, 1)
 
 @pytest.mark.vcr()
+@pytest.mark.xfail(raises=ServerError)
 def test_edit_scanner_group_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scanner_groups.edit(1, str(uuid.uuid4()))

@@ -436,7 +436,7 @@ class APISession(object):
         Request call builder
         '''
         retries = 0
-        retry_codes = [429, 500, 501, 502, 503, 504]
+        retry_codes = [429, 501, 502, 503, 504]
         if 'retry_on' in kwargs:
             # if the retry_on parameter is passed, then we will consume this
             # to extend the codes that we will attempt to retry.
