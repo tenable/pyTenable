@@ -112,3 +112,8 @@ def test_workbenches_asset_delete_asset_uuid_typeerror(api):
 def test_workbenches_asset_delete_success(api):
     asset = api.workbenches.assets()[0]
     api.workbenches.asset_delete(asset['id'])
+
+@pytest.mark.vcr()
+def test_assign_tags(api):
+    with pytest.raises(UnexpectedValueError):
+        api.assets.assign_tags('foo', [], [])

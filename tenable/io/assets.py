@@ -79,6 +79,35 @@ class AssetsAPI(TIOEndpoint):
                 self._check('uuid', uuid, str)
             )).json()
 
+    def assign_tags(self, action, assets, tags):
+        '''
+        Add/remove tags for asset(s).
+
+        :devportal:`tags: assign-asset-tags <tags-assign-asset-tags>`
+
+        Args:
+            action (str):
+                Specifies whether to add or remove tags. Valid values: add, remove.
+            assets (List[str]):
+                An array of asset UUIDs.
+            tags (List[str]):
+                An array of tag value UUIDs.
+
+        Returns:
+            :obj:`dict`:
+                The job Resource record.
+
+        Examples:
+            >>> asset = tio.assets.assign_tags(
+            ...     'add', ['00000000-0000-0000-0000-000000000000'], ['00000000-0000-0000-0000-000000000000'])
+        '''
+        return self._api.post(
+            'tags/assets/assignments', json={
+                'action': self._check('action', action, str, choices=['add', 'remove']),
+                'assets': [self._check('asset', i, 'uuid') for i in assets],
+                'tags': [self._check('source', i, 'uuid') for i in tags]
+            }).json()
+
     def tags(self, uuid):
         '''
         Retrieves the details about a specific asset.
