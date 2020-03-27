@@ -433,5 +433,5 @@ class AuditFileAPI(SCEndpoint):
             params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
 
-        return self._api.get('auditFileTemplate/{}'.format(
-            self._check('id', id, int)), params=params).json()['response']
+        return self._api.get('auditFileTemplate',
+            params=params).json()['response']
