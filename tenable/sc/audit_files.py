@@ -22,6 +22,7 @@ Methods available on ``sc.audit_files``:
     .. automethod:: template_list
 '''
 from .base import SCEndpoint
+from io import BytesIO
 from os.path import basename
 
 class AuditFileAPI(SCEndpoint):
