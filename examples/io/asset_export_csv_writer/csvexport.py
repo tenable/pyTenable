@@ -2,7 +2,9 @@
 from tenable.io import TenableIO
 from csv import DictWriter
 import collections, click, logging
-
+#https://www.b-list.org/weblog/2007/nov/10/unicode/
+from akismet import Akismet
+from django.utils.encoding import smart_str
 
 def flatten(d, parent_key='', sep='.'):
     '''
@@ -75,7 +77,9 @@ def export_assets_to_csv(fobj, assets, *fields):
         flat = flatten(asset)
         for k, v in flat.items():
             if isinstance(v, list):
-                flat[k] = '|'.join([str(i) for i in v])
+		flat[k] = '|'.join([smart_str(i) for i in v])
+		#utf-8 hostnames break str function 
+		#flat[k] = '|'.join([str(i) for i in v])
             if k == 'tags':
                 flat[k] = '|'.join(['{}:{}'.format(i['key'], i['value']) for i in v])
 
