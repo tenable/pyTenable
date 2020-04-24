@@ -247,7 +247,9 @@ class ScansAPI(TIOEndpoint):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
                 more detailed information, please refer to the API documentation
-                linked above.
+                linked above.  Further, any keyword arguments passed that are
+                not explicitly documented will be automatically appended to the
+                settings document.  There is no need to pass settings directly.
 
         Returns:
             :obj:`dict`:
@@ -327,7 +329,9 @@ class ScansAPI(TIOEndpoint):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
                 more detailed information, please refer to the API documentation
-                linked above.
+                linked above.  Further, any keyword arguments passed that are
+                not explicitly documented will be automatically appended to the
+                settings document.  There is no need to pass settings directly.
 
         Returns:
             :obj:`dict`:
