@@ -160,8 +160,8 @@ class ExportsAPI(TIOEndpoint):
                 Specifies the number of assets returned per-chunk.  If nothing is
                 specified, it will default to 500 assets.
             plugin_family (list, optional):
-                list of plugin families to restrict the export to.  values are
-                interpreted with an insensitivity to case.
+                list of plugin families to restrict the export to.  Please note
+                that this parameter's values are case sensitive.
             severity (list, optional):
                 list of severities to include as part of the export.  Supported
                 values are `info`, `low`, `medium`, `high`, and `critical`.
