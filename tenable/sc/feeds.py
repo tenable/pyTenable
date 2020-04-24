@@ -102,7 +102,7 @@ class FeedAPI(SCEndpoint):
         '''
         filename = self._api.files.upload(fobj)
 
-        self._api.post('feed/{}/update'.format(
+        self._api.post('feed/{}/process'.format(
             self._check('feed_type', feed_type, str, choices=[
                 'active', 'passive', 'lce', 'sc'])),
             json={'filename': filename})
