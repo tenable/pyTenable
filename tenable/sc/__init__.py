@@ -1,4 +1,13 @@
 '''
+
+.. note::
+    Please refer to the common themes section for TenableSC for details on how
+    these methods are written from an overall concept.  Not all attributes are
+    explicitly documented, only the ones that pyTenable is augmenting,
+    validating, or modifying.  For a complete listing of the attributes that can
+    be passed to most APIs, refer to the official API documentation that each
+    method calls, which is conveniently linked in each method's docs.
+
 .. autoclass:: TenableSC
 
     .. automethod:: login
