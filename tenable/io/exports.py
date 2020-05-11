@@ -14,7 +14,7 @@ Methods available on ``tio.exports``:
     .. automethod:: vulns
 '''
 from .base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
-from tenable.errors import TioExportsError
+from tenable.errors import TioExportsError, TioExportsTimeout
 from ipaddress import IPv4Network, AddressValueError
 try:
     from json.decoder import JSONDecodeError
@@ -32,6 +32,7 @@ class ExportsIterator(APIResultsIterator):
         self.type = None
         self.uuid = None
         self.chunk_id = None
+        self.timeout = None
         self.chunks = list()
         self.processed = list()
         APIResultsIterator.__init__(self, api, **kw)
@@ -61,11 +62,16 @@ class ExportsIterator(APIResultsIterator):
             # if there are no more chunks to process and the export status is
             # set to finished, then we will break the iteration.
             if (status['status'] == 'FINISHED'
-                    and len(status['chunks_unfinished']) < 1):
+              and len(status['chunks_unfinished']) < 1):
                 raise StopIteration()
 
             if status['status'] == 'ERROR':
                 raise TioExportsError(self.type, self.uuid)
+
+            if (status['status'] == 'QUEUED' and self.timeout
+              and time.time() > self.timeout):
+                self.cancel()
+                raise TioExportsTimeout(self.type, self.uuid)
 
             return status
 
@@ -134,6 +140,13 @@ class ExportsIterator(APIResultsIterator):
         self.count += 1
         self.page_count += 1
         return item
+
+    def cancel(self):
+        '''
+        Cancels the export.
+        '''
+        self._api.get('{}/export/{}/cancel'.format(self.type, self.uuid)).json()
+        raise
 
 
 class ExportsAPI(TIOEndpoint):
@@ -284,7 +297,12 @@ class ExportsAPI(TIOEndpoint):
             uuid = self._api.post(
                 'vulns/export', json=payload).json()['export_uuid']
             self._api._log.debug('Initiated vuln export {}'.format(uuid))
-        return ExportsIterator(self._api, type='vulns', uuid=uuid)
+
+        return ExportsIterator(self._api,
+            type='vulns',
+            uuid=uuid,
+            timeout=self._check('timeout', kw.get('timeout'), int)
+        )
 
     def assets(self, **kw):
         '''

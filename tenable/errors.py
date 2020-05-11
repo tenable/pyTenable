@@ -9,6 +9,7 @@
 .. autoclass:: ServerError
 .. autoclass:: TenableException
 .. autoclass:: TioExportsError
+.. autoclass:: TioExportsTimeout
 .. autoclass:: UnexpectedValueError
 .. autoclass:: UnknownError
 .. autoclass:: UnsupportedError
@@ -93,8 +94,18 @@ class TioExportsError(TenableException):
     def __init__(self, export, uuid):
         self.export = export
         self.uuid = uuid
-        TenableException.__init__(self, '{} export {} has errored.'.format(
-            export, uuid))
+        TenableException.__init__(self,
+            '{} export {} has errored.'.format(export, uuid))
+
+class TioExportsTimeout(TenableException):
+    '''
+    When an export has been cancelled due to timeout, this error is thrown.
+    '''
+    def __init__(self, export, uuid):
+        self.export = export
+        self.uuid = uuid
+        TenableException.__init__(self,
+            '{} export {} has timed out.'.format(export, uuid))
 
 
 class APIError(TenableException):
@@ -116,7 +127,7 @@ class APIError(TenableException):
             an empty string.
     '''
     uuid = None
-    
+
     def __init__(self, r):
         self.response = r
         self.code = r.status_code
@@ -151,10 +162,10 @@ class RetryError(APIError):
             infrastructure.  In the case of Non-Tenable.io products, is simply
             an empty string.
         attempts (int):
-            The number of attempts that were made before bailing.    
+            The number of attempts that were made before bailing.
     '''
     attempts = 0
-    
+
     def __init__(self, r, attempts):
         self.attempts = attempts
         APIError.__init__(self, r)
