@@ -242,7 +242,7 @@ class ScanResultAPI(SCEndpoint):
         return self._api.post('scanResult/{}/import'.format(self._check(
             'id', id, int)), json=payload).json()['response']
 
-    def list(self, fields=None, start_time=None, end_time=None):
+    def list(self, fields=None, start_time=None, end_time=None, optimize=True):
         '''
         Retrieves the list of scan instances.
 
@@ -255,6 +255,9 @@ class ScanResultAPI(SCEndpoint):
                 Epoch time to start search (searches against createdTime and defaults to now-30d)
             end_time (int, optional):
                 Epoch time to end search (searches against createdTime and defaults to now)
+            optimize (bool, optional):
+                Informs Tenable.sc to optimize completed scan results.  If left
+                unspecified, the default is `True`.
 
         Returns:
             :obj:`dict`:
@@ -266,7 +269,9 @@ class ScanResultAPI(SCEndpoint):
             >>> for scan in sc.scan_instances.list()['manageable']:
             ...     pprint(scan)
         '''
-        params = dict()
+        params = dict(
+            optimizeCompletedScanResults=str(optimize).lower()
+        )
         if fields:
             params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
