@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2]
+### Fixed
+- TenableSC.FeedsAPI.process pointed to the wrong URL. #201
+
+### Changed
+- TenableIO.ScansAPI didn't distinctly call out that unknown keyword args are shunted to settings #202
+- Explicitly called out the common themes section of the documentation for TenableSC #200
+- Adjusted case sensitivity guidelines for plugin_family in TenableIO.exports.vulns #199
+
 ## [1.1.1]
 ### Added
 - Added assign tags method to TenableIO.assets package #194
@@ -459,6 +468,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fixed Time Conversion Issue #6
 
+[1.1.2]: https://github.com/tenable/pyTenable/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/tenable/pyTenable/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/tenable/pyTenable/compare/1.0.7...1.1.0
 [1.0.7]: https://github.com/tenable/pyTenable/compare/1.0.6...1.0.7

@@ -9,7 +9,7 @@ interactions:
       User-Agent: [pyTenable/1.0.0 (pyTenable/1.0.0; Python/2.7.15)]
       X-SecurityCenter: ['0000000000']
     method: GET
-    uri: https://securitycenter.home.cugnet.net/rest/scanResult
+    uri: https://securitycenter.home.cugnet.net/rest/scanResult?optimizeCompletedScanResults=true
   response:
     body: {string: !!python/unicode '{"type":"regular","response":{"usable":[{"id":"120","name":"Daily
         Agent Scan [Agent Scan Import]","description":"","status":"Completed"},{"id":"121","name":"Daily
