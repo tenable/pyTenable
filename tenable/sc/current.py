@@ -73,7 +73,7 @@ class CurrentSessionAPI(SCEndpoint):
                 The user record.
 
         Examples:
-            >>> org = sc.current.org()
+            >>> user = sc.current.user()
         '''
         params = dict()
         if fields:
