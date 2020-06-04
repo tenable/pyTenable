@@ -207,8 +207,8 @@ class ScansAPI(TIOEndpoint):
 
         # Make the HTTP call and stream the data into the file object.
         resp = self._api.get('scans/{}/attachments/{}'.format(
-            self._check('scan_id', scan_id, int),
-            self._check('attachment_id', attachment_id, int)
+            scan_id,
+            attachment_id
             ), params={'key': self._check('key', key, str)}, stream=True)
         for chunk in resp.iter_content(chunk_size=1024):
             if chunk:
@@ -268,7 +268,7 @@ class ScansAPI(TIOEndpoint):
         scan = dict_merge(current, updated)
 
         # Performing the actual call to the API with the updated scan record.
-        return self._api.put('scans/{}'.format(self._check('id', id, int)),
+        return self._api.put('scans/{}'.format(id),
                     json=scan).json()
 
     def copy(self, scan_id, folder_id=None, name=None):
@@ -298,7 +298,7 @@ class ScansAPI(TIOEndpoint):
             payload['name'] = self._check('name', name, str)
 
         # make the call and return the resulting JSON document to the caller.
-        return self._api.post('scans/{}/copy'.format(self._check('scan_id', scan_id, int)),
+        return self._api.post('scans/{}/copy'.format(scan_id),
             json=payload).json()
 
     def create(self, **kw):
@@ -392,7 +392,7 @@ class ScansAPI(TIOEndpoint):
         Examples:
             >>> tio.scans.delete(1)
         '''
-        self._api.delete('scans/{}'.format(self._check('scan_id', scan_id, int)))
+        self._api.delete('scans/{}'.format(scan_id))
 
     def history(self, id, limit=None, offset=None, pages=None):
         '''
@@ -422,7 +422,7 @@ class ScansAPI(TIOEndpoint):
             _offset=offset if offset else 0,
             _pages_total=pages,
             _query=dict(),
-            _path='scans/{}/history'.format(self._check('id', id, int)),
+            _path='scans/{}/history'.format(id),
             _resource='history'
         )
 
@@ -444,8 +444,8 @@ class ScansAPI(TIOEndpoint):
             >>> tio.scans.delete_history(1, 1)
         '''
         self._api.delete('scans/{}/history/{}'.format(
-            self._check('scan_id', scan_id, int),
-            self._check('history_id', history_id, int)))
+            scan_id,
+            history_id))
 
     def details(self, scan_id):
         '''
@@ -475,7 +475,7 @@ class ScansAPI(TIOEndpoint):
         '''
         return self._api.editor.details('scan', scan_id)
 
-    def results(self, scan_id, history_id=None):
+    def results(self, scan_id, history_id=None, history_uuid=None):
         '''
         Return the scan results from either the latest scan or a specific scan
         instance in the history.
@@ -501,11 +501,16 @@ class ScansAPI(TIOEndpoint):
             >>> results = tio.scans.results(1, 1)
         '''
         params = dict()
+
         if history_id:
             params['history_id'] = self._check('history_id', history_id, int)
 
+        if history_uuid:
+            params['history_uuid'] = self._check(
+                'history_uuid', history_uuid, 'scanner-uuid')
+
         return self._api.get('scans/{}'.format(
-            self._check('scan_id', scan_id, int)), params=params).json()
+            scan_id), params=params).json()
 
 
     def export(self, scan_id, *filters, **kw):
@@ -585,6 +590,10 @@ class ScansAPI(TIOEndpoint):
             params['history_id'] = self._check(
                 'history_id', kw['history_id'], int)
 
+        if kw.get('history_uuid'):
+            params['history_uuid'] = self._check(
+                'history_uuid', kw['history_uuid'], 'scanner-uuid')
+
         # Enable exporting of Web Application scans.
         if 'scan_type' in kw:
             dl_params['type'] = params['type'] = self._check(
@@ -648,7 +657,7 @@ class ScansAPI(TIOEndpoint):
         # Lastly lets return the FileObject to the caller.
         return fobj
 
-    def host_details(self, scan_id, host_id, history_id=None):
+    def host_details(self, scan_id, host_id, history_id=None, history_uuid=None):
         '''
         Retrieve the host details from a specific scan.
 
@@ -671,8 +680,12 @@ class ScansAPI(TIOEndpoint):
         if history_id:
             params['history_id'] = self._check('history_id', history_id, int)
 
+        if history_uuid:
+            params['history_uuid'] = self._check(
+                'history_uuid', history_uuid, 'scanner-uuid')
+
         return self._api.get('scans/{}/hosts/{}'.format(
-                self._check('scan_id', scan_id, int),
+                scan_id,
                 self._check('host_id', host_id, int)),
             params=params).json()
 
@@ -758,7 +771,7 @@ class ScansAPI(TIOEndpoint):
             payload['alt_targets'] = self._check('targets', targets, list)
 
         return self._api.post('scans/{}/launch'.format(
-                self._check('scan_id', scan_id, int)),
+                scan_id),
             json=payload).json()['scan_uuid']
 
     def list(self, folder_id=None, last_modified=None):
@@ -810,12 +823,11 @@ class ScansAPI(TIOEndpoint):
         Examples:
             >>> tio.scans.pause(1)
         '''
-        self._api.post('scans/{}/pause'.format(
-            self._check('scan_id', scan_id, int)), json={})
+        self._api.post('scans/{}/pause'.format(scan_id), json={})
         if block:
             self._block_while_running(scan_id)
 
-    def plugin_output(self, scan_id, host_id, plugin_id, history_id=None):
+    def plugin_output(self, scan_id, host_id, plugin_id, history_id=None, history_uuid=None):
         '''
         Retrieve the plugin output for a specific instance of a vulnerability
         on a host.
@@ -840,9 +852,11 @@ class ScansAPI(TIOEndpoint):
         params = dict()
         if history_id:
             params['history_id'] = self._check('history_id', history_id, int)
+        if history_uuid:
+            params['history_uuid'] = self._check('history_uuid', history_uuid, 'uuid')
 
         return self._api.get('scans/{}/hosts/{}/plugins/{}'.format(
-            self._check('scan_id', scan_id, int),
+            scan_id,
             self._check('host_id', host_id, int),
             self._check('plugin_id', plugin_id, int)), params=params).json()
 
@@ -868,8 +882,7 @@ class ScansAPI(TIOEndpoint):
 
             >>> tio.scans.set_read_status(1, False)
         '''
-        self._api.put('scans/{}/status'.format(
-                self._check('scan_id', scan_id, int)), json={
+        self._api.put('scans/{}/status'.format(scan_id), json={
             'read': self._check('read_status', read_status, bool)
         })
 
@@ -889,8 +902,7 @@ class ScansAPI(TIOEndpoint):
         Examples:
             >>> tio.scans.resume(1)
         '''
-        self._api.post('scans/{}/resume'.format(
-            self._check('scan_id', scan_id, int)))
+        self._api.post('scans/{}/resume'.format(scan_id))
 
     def schedule(self, scan_id, enabled):
         '''
@@ -911,8 +923,7 @@ class ScansAPI(TIOEndpoint):
 
             >>> tio.scans.schedule(1, True)
         '''
-        return self._api.put('scans/{}/schedule'.format(
-                self._check('scan_id', scan_id, int)), json={
+        return self._api.put('scans/{}/schedule'.format(scan_id), json={
             'enabled': self._check('enabled', enabled, bool)}).json()
 
     def stop(self, scan_id, block=False):
@@ -939,8 +950,7 @@ class ScansAPI(TIOEndpoint):
 
             >>> tio.scans.stop(1, True)
         '''
-        self._api.post('scans/{}/stop'.format(
-            self._check('scan_id', scan_id, int)))
+        self._api.post('scans/{}/stop'.format(scan_id))
         if block:
             self._block_while_running(scan_id)
 
@@ -961,8 +971,7 @@ class ScansAPI(TIOEndpoint):
             >>> tio.scans.status(1)
             u'completed'
         '''
-        return self._api.get('scans/{}/latest-status'.format(
-            self._check('scan_id', scan_id, int))).json()['status']
+        return self._api.get('scans/{}/latest-status'.format(scan_id)).json()['status']
 
     def timezones(self):
         '''
@@ -1000,6 +1009,6 @@ class ScansAPI(TIOEndpoint):
             >>> info = tio.scans.info(1, 'BA0ED610-C27B-4096-A8F4-3189279AFFE7')
         '''
         return self._api.get('scans/{}/history/{}'.format(
-            self._check('scan_id', scan_id, int),
+            scan_id,
             self._check('history_uuid', history_uuid, 'scanner-uuid'))).json()
 

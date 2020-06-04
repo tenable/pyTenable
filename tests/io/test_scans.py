@@ -69,10 +69,10 @@ def test_scan_create_scan_document_scanner_name_pass(api):
     check(resp['settings'], 'scanner_id', str)
     assert resp['settings']['scanner_id'] == s['id']
 
-@pytest.mark.vcr()
-def test_scan_attachment_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.attachment('nope', 1)
+#@pytest.mark.vcr()
+#def test_scan_attachment_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.attachment('nope', 1)
 
 @pytest.mark.vcr()
 def test_scan_attachment_attachement_id_typeerror(api):
@@ -90,10 +90,10 @@ def test_scan_configure_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.configure('abc123')
 
-@pytest.mark.vcr()
-def test_scan_configure_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.configure('nope')
+#@pytest.mark.vcr()
+#def test_scan_configure_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.configure('nope')
 
 @pytest.mark.vcr()
 def test_scan_configure_notfounderror(api):
@@ -106,10 +106,10 @@ def test_scan_configure(api, scan):
     assert mod['id'] == scan['id']
     assert mod['name'] == 'MODIFIED'
 
-@pytest.mark.vcr()
-def test_scan_copy_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.copy('nope')
+#@pytest.mark.vcr()
+#def test_scan_copy_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.copy('nope')
 
 @pytest.mark.vcr()
 def test_scan_copy_folder_id_typeerror(api):
@@ -212,10 +212,10 @@ def test_scan_create_was_scan_pass(api):
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', str)
 
-@pytest.mark.vcr()
-def test_scan_delete_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.delete('nope')
+#@pytest.mark.vcr()
+#def test_scan_delete_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.delete('nope')
 
 @pytest.mark.vcr()
 def test_scan_delete_notfounderror(api):
@@ -226,25 +226,25 @@ def test_scan_delete_notfounderror(api):
 def test_scan_delete(api, scan):
     api.scans.delete(scan['id'])
 
-@pytest.mark.vcr()
-def test_scan_delete_history_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.delete_history('nope', 1)
+#@pytest.mark.vcr()
+#def test_scan_delete_history_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.delete_history('nope', 1)
 
-@pytest.mark.vcr()
-def test_scan_delete_history_history_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.delete_history(1, 'nope')
+#@pytest.mark.vcr()
+#def test_scan_delete_history_history_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.delete_history(1, 'nope')
 
 @pytest.mark.vcr()
 def test_scan_delete_history_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scans.delete_history(1, 1)
 
-@pytest.mark.vcr()
-def test_scan_details_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.details('nope')
+#@pytest.mark.vcr()
+#def test_scan_details_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.details('nope')
 
 @pytest.mark.vcr()
 def test_scan_details_history_it_typeerror(api):
@@ -378,10 +378,10 @@ def test_scan_results(api, scan_results):
         #check(i, 'severity_index', int)
         check(i, 'plugin_family', str)
 
-@pytest.mark.vcr()
-def test_scan_export_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.export('nope')
+#@pytest.mark.vcr()
+#def test_scan_export_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.export('nope')
 
 @pytest.mark.vcr()
 def test_scan_export_history_id_typeerror(api):
@@ -460,10 +460,10 @@ def test_scan_export_file_object(api):
                 break
     os.remove(fn)
 
-@pytest.mark.vcr()
-def test_scan_host_details_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.host_details('nope', 1)
+#@pytest.mark.vcr()
+#def test_scan_host_details_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.host_details('nope', 1)
 
 @pytest.mark.vcr()
 def test_scan_host_details_host_id_typeerror(api):
@@ -530,10 +530,10 @@ def test_scan_import_scan(api):
     fobj = api.scans.export(SCAN_ID_WITH_RESULTS)
     api.scans.import_scan(fobj)
 
-@pytest.mark.vcr()
-def test_scan_launch_scanid_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.launch('nope')
+#@pytest.mark.vcr()
+#def test_scan_launch_scanid_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.launch('nope')
 
 @pytest.mark.vcr()
 def test_scan_launch_targets_typerror(api):
@@ -586,20 +586,20 @@ def test_scan_list(api):
     check(s, 'user_permissions', int)
     check(s, 'uuid', 'scanner-uuid')
 
-@pytest.mark.vcr()
-def test_scan_pause_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.pause('nope')
+#@pytest.mark.vcr()
+#def test_scan_pause_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.pause('nope')
 
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 def test_scan_pause_scan(api, scan):
     hid = api.scans.launch(scan['id'])
     api.scans.pause(scan['id'], block=True)
 
-@pytest.mark.vcr()
-def test_scan_plugin_output_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.plugin_output('nope', 1, 1)
+#@pytest.mark.vcr()
+#def test_scan_plugin_output_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.plugin_output('nope', 1, 1)
 
 @pytest.mark.vcr()
 def test_scan_plugin_output_host_id_typeerror(api):
@@ -658,10 +658,10 @@ def test_scan_plugin_output(api, scan_results):
                 check(h, 'hostname', str)
         check(i, 'severity', int)
 
-@pytest.mark.vcr()
-def test_scan_read_status_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.set_read_status('nope', False)
+#@pytest.mark.vcr()
+#def test_scan_read_status_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.set_read_status('nope', False)
 
 @pytest.mark.vcr()
 def test_scan_read_status_read_status_typeerror(api):
@@ -677,10 +677,10 @@ def test_scan_read_status(api, scan):
         if i['id'] == s['id']:
             assert s['read'] != i['read']
 
-@pytest.mark.vcr()
-def test_scan_resume_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.resume('nope')
+#@pytest.mark.vcr()
+#def test_scan_resume_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.resume('nope')
 
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 @pytest.mark.vcr()
@@ -693,10 +693,10 @@ def test_scan_resume(api, scan):
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
 
-@pytest.mark.vcr()
-def test_scan_schedule_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.schedule('nope', False)
+#@pytest.mark.vcr()
+#def test_scan_schedule_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.schedule('nope', False)
 
 @pytest.mark.vcr()
 def test_scan_schedule_enabled_typeerror(api):
@@ -708,10 +708,10 @@ def test_scan_schedule_enabled_typeerror(api):
 def test_scan_schedule(api, scan):
     api.scans.schedule(scan['id'], False)
 
-@pytest.mark.vcr()
-def test_scan_stop_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.stop('nope')
+#@pytest.mark.vcr()
+#def test_scan_stop_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.stop('nope')
 
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 @pytest.mark.vcr()
@@ -720,10 +720,10 @@ def test_scan_stop(api, scan):
     time.sleep(5)
     api.scans.stop(scan['id'])
 
-@pytest.mark.vcr()
-def test_scan_status_scan_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.status('no')
+#@pytest.mark.vcr()
+#def test_scan_status_scan_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.status('no')
 
 @pytest.mark.vcr()
 def test_scan_status(api, scan):
