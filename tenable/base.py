@@ -7,6 +7,7 @@ from requests.exceptions import (
     RequestException as RequestsRequestException
 )
 from .errors import *
+from .utils import url_validator
 from . import __version__, __author__
 
 
@@ -350,7 +351,7 @@ class APISession(object):
     def __init__(self, url=None, retries=None, backoff=None,
                  ua_identity=None, session=None, proxies=None,
                  vendor=None, product=None, build=None, timeout=None):
-        if url:
+        if url and url_validator(url):
             self._url = url
         if retries and isinstance(retries, int):
             self._retries = retries

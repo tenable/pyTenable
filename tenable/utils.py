@@ -1,3 +1,9 @@
+try:
+    from urlparse import urlparse
+except:
+    from urllib.parse import urlparse
+
+
 def dict_merge(master, updates):
     '''
     Merge 2 dictionaries together  The updates dictionary will be merged into
@@ -55,3 +61,11 @@ def policy_settings(item):
 
     # Return the key-value pair.
     return resp
+
+
+def url_validator(uri):
+    try:
+        r = urlparse(uri)
+        return all([r.scheme, r.netloc])
+    except:
+        return False
