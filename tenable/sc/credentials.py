@@ -57,7 +57,7 @@ class CredentialAPI(SCEndpoint):
             # values and then convert it to the camelCase equiv.
             kw['authType'] = self._check('auth_type', kw['auth_type'], str,
                 choices=['cyberark', 'lieberman', 'password', 'BeyondTrust',
-                         'certificate', 'kerberos', 'publicKey', 'thycotic',
+                         'certificate', 'kerberos', 'publickey', 'thycotic',
                          'lm', 'ntlm'])
             del(kw['auth_type'])
 
@@ -607,7 +607,7 @@ class CredentialAPI(SCEndpoint):
 
             >>> with open('privatekeyfile', 'rb') as keyfile:
             ...     cred = sc.credentials.create(
-            ...         'Example SSH Keys', 'ssh', 'publicKey',
+            ...         'Example SSH Keys', 'ssh', 'publickey',
             ...         username='root',
             ...         private_key=keyfile)
 
