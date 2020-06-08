@@ -125,14 +125,14 @@ class AcceptRiskAPI(SCEndpoint):
             # validating that org_ids is a list of integer values, then
             # converting the result into a comma-seperated string and assigning
             # it to the appropriate query parameter.
-            params['organizationIDs'] = ','.join([self._check('org:id', i, int)
+            params['organizationIDs'] = ','.join([str(self._check('org:id', i, int))
                 for i in self._check('org_ids', org_ids, list)])
 
         if repo_ids:
             # validating that repo_ids is a list of integer values, then
             # converting the result into a comma-seperated string and assigning
             # it to the appropriate query parameter.
-            params['repositoryIDs'] = ','.join([self._check('repo:id', i, int)
+            params['repositoryIDs'] = ','.join([str(self._check('repo:id', i, int))
                 for i in self._check('repo_ids', repo_ids, list)])
 
         return self._api.get('acceptRiskRule', params=params).json()['response']
