@@ -182,7 +182,7 @@ class GroupAPI(SCEndpoint):
 
     def list(self, fields=None):
         '''
-        Retrieves the list of scan zone definitions.
+        Retrieves the list of group definitions.
 
         :sc-api:`group: list <Group.html#group_GET>`
 

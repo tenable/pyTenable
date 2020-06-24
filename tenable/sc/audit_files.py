@@ -293,7 +293,7 @@ class AuditFileAPI(SCEndpoint):
 
     def list(self, fields=None):
         '''
-        Retrieves the list of scan zone definitions.
+        Retrieves the list of audit file definitions.
 
         :sc-api:`audit file: list <AuditFile.html#AuditFileRESTReference-/auditFile>`
 

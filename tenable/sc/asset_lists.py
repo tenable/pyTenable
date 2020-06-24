@@ -586,7 +586,7 @@ class AssetListAPI(SCEndpoint):
 
     def list(self, fields=None):
         '''
-        Retrieves the list of scan zone definitions.
+        Retrieves the list of asset list definitions.
 
         :sc-api:`asset-list: list <Asset.html#AssetRESTReference-/asset>`
 
