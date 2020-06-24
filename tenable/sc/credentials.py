@@ -917,7 +917,7 @@ class CredentialAPI(SCEndpoint):
 
     def list(self, fields=None):
         '''
-        Retrieves the list of scan zone definitions.
+        Retrieves the list of credential definitions.
 
         + :sc-api:`credential: list <Credential.html#CredentialRESTReference-/credential>`
 
