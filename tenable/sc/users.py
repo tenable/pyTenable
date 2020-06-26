@@ -374,7 +374,7 @@ class UserAPI(SCEndpoint):
 
     def list(self, fields=None):
         '''
-        Retrieves the list of scan zone definitions.
+        Retrieves the list of user definitions.
 
         :sc-api:`user: list <User.html#user_GET>`
 

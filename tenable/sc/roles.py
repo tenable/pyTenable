@@ -246,7 +246,7 @@ class RoleAPI(SCEndpoint):
 
         Returns:
             :obj:`dict`:
-                The newly updated scan zone.
+                The newly updated role.
 
         Examples:
             >>> role = sc.roles.create()
@@ -277,7 +277,7 @@ class RoleAPI(SCEndpoint):
 
     def list(self, fields=None):
         '''
-        Retrieves the list of scan zone definitions.
+        Retrieves the list of role definitions.
 
         :sc-api:`role: list <Role.html#role_GET>`
 
@@ -287,7 +287,7 @@ class RoleAPI(SCEndpoint):
 
         Returns:
             :obj:`list`:
-                A list of scan zone resources.
+                A list of role resources.
 
         Examples:
             >>> for role in sc.roles.list():

@@ -188,7 +188,7 @@ class AgentGroupsAPI(TIOEndpoint):
         :devportal:`agent-groups: details <agent-groups-details>`
 
         Args:
-            group_id (int): The id of the agent group to remove the agent from
+            group_id (int): The id of the agent group.
             scanner_id (int, optional): The id of the scanner
 
         Returns:
