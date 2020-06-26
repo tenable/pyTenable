@@ -221,15 +221,15 @@ class SCEndpoint(APIEndpoint):
         Handles creation of the schedule sub-document.
         '''
         self._check('schedule:item', item, dict)
-        resp = {'type': self._check('schedule:type', item['type'], str,
+        item['type'] = self._check('schedule:type',  item.get('type'), str,
             choices=['ical', 'dependent', 'never', 'rollover', 'template', 'now'],
-            default='never')}
-
-        if resp['type'] == 'ical' and 'start' in item and 'repeatRule' in item:
-            resp['start'] = self._check('schedule:start', item['start'], str)
-            resp['repeatRule'] = self._check(
-                'schedule:repeatRule', item['repeatRule'], str)
-        return resp
+            default='never')
+        if item['type'] == 'ical':
+            self._check('schedule:start', item.get('start'), str)
+            self._check('schedule:repeatRule', item.get('repeatRule'), str)
+        if item['type'] == 'dependent':
+            self._check('schedule:dependentID', item.get('dependentID'), int)
+        return item
 
 class SCResultsIterator(APIResultsIterator):
     def _get_page(self):
