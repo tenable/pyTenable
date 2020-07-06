@@ -6,9 +6,9 @@ from requests.exceptions import (
     ConnectionError as RequestsConnectionError,
     RequestException as RequestsRequestException
 )
-from .errors import *
-from .utils import url_validator
-from . import __version__, __author__
+from tenable.errors import *
+from tenable.utils import url_validator
+from tenable import __version__, __author__
 
 
 class APIResultsIterator(object):
