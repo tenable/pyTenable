@@ -1,6 +1,9 @@
 from setuptools import setup, find_packages
 import os
 
+with open('tenable/version.py', 'r') as vfile:
+    exec(vfile.read())
+
 try:
     long_description = open(
         os.path.join(
@@ -12,7 +15,7 @@ except:
 
 setup(
     name='pyTenable',
-    version='1.1.3',
+    version=version,
     description='Python library to interface into Tenable\'s products and applications',
     author='Tenable, Inc.',
     long_description=long_description,
@@ -41,6 +44,7 @@ setup(
         'python-dateutil>=2.6',
         'semver>=2.8.1',
         'ipaddress>=1.0.22'
+        'restfly>=1.3.3',
     ],
     extras_require={
         'NessusReportv2': ['defusedxml>=0.5.0'],
