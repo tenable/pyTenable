@@ -74,6 +74,7 @@ class Downloads(APISession):
             vendor=vendor,
             product=product,
             build=build)
+        raise DeprecationWarning('The downloads package has been replaced with the dl package and will be removed in 1.3.')
 
     def _build_session(self, session):
         '''
