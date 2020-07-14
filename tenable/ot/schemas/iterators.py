@@ -3,7 +3,7 @@ from box import BoxList
 from copy import copy
 
 
-class OTv1Iterator(APIIterator):
+class OTIterator(APIIterator):
     _path = None
     limit = 500
     offset = 0
@@ -13,7 +13,7 @@ class OTv1Iterator(APIIterator):
         self._payload = kwargs.pop('payload')
         self.limit = kwargs.get('limit', self.limit)
         self.offset = kwargs.get('offset', self.offset)
-        super(OTv1Iterator, self).__init__(api, **kwargs)
+        super(OTIterator, self).__init__(api, **kwargs)
 
     def _get_page(self):
         p = copy(self._payload)

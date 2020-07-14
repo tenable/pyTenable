@@ -8,6 +8,7 @@ base class over the original APISession class.
 
 .. autoclass:: APIPlatform
     :members:
+    :inherited-members:
 '''
 from restfly import APISession as Base
 from tenable.utils import url_validator
@@ -60,7 +61,6 @@ class APIPlatform(Base):
     _backoff = 1
     _retries = 5
     _env_base = ''
-    _base_path = ''
     _port = 443
     _scheme = 'https'
     _address = None
@@ -69,13 +69,12 @@ class APIPlatform(Base):
 
     def __init__(self, **kwargs):
         # Constructing the URL from the various parameters.
-        self._url = '{}://{}:{}{}'.format(
+        self._url = '{}://{}:{}'.format(
             kwargs.get('scheme', self._scheme),
             kwargs.get('address', os.getenv(
                 '{}_ADDRESS'.format(self._env_base), self._address)),
             kwargs.get('port', os.getenv(
                 '{}_PORT'.format(self._env_base), self._port)),
-            kwargs.get('base_path', self._base_path)
         )
 
         # if the constructed URL isn't valid, then we will throw a TypeError
