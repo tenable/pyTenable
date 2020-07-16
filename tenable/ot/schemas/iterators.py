@@ -16,6 +16,9 @@ class OTIterator(APIIterator):
         super(OTIterator, self).__init__(api, **kwargs)
 
     def _get_page(self):
+        '''
+        Retrieves the next page of data
+        '''
         p = copy(self._payload)
         p['offset'] = self.offset
         p['limit'] = self.limit

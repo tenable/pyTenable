@@ -52,6 +52,9 @@ class VulnAssetIntermixer(object):
         self._api = api
 
     def _merge_cache(self, asset):
+        '''
+        Returns a "vuln instance" of a merged asset, vuln def, and connections.
+        '''
         if asset.id not in self._asset_cache:
             connections = self._api.assets.connections(asset.id)
             for con in connections:
@@ -67,6 +70,9 @@ class VulnAssetIntermixer(object):
         return vuln
 
     def _get_next_vai(self):
+        '''
+        Gets the next Vulnerability Asset Iterator
+        '''
         self._va_iterator = self._api.vulns.vuln_assets(
             self._vulns[self._vulns_idx].cve.CVE_data_meta.ID)
         self.vuln_count += 1
