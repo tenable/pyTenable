@@ -8,6 +8,7 @@
    io
    sc
    api/ot/index
+   api/dl/index
    downloads
    common
    errors
