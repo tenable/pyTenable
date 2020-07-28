@@ -6,6 +6,9 @@ Product Downloads
     :members:
 '''
 from tenable.base.platform import APIPlatform
+from box import BoxList
+from io import BytesIO
+import os, warnings
 
 
 class Downloads(APIPlatform):
@@ -58,41 +61,58 @@ class Downloads(APIPlatform):
     '''
     _base_path = '/v1'
     _env_base = 'TDL'
+    _address = 'www.tenable.com'
+    _base_path = 'downloads/api/v2'
+
+    def __init__(self, api_token=None, **kwargs):
+        if not api_token:
+            api_token = os.getenv('{}_API_TOKEN'.format(self._env_base))
+        kwargs['api_token'] = api_token
+        super(Downloads, self).__init__(**kwargs)
 
     def _authenticate(self, **kwargs):
         '''
         Authentication method for Downloads API
         '''
-        api_token = kwargs.get('api_token', os.getenv(
-            '{}_API_TOKEN'.format(self._env_base)))
-
-        self._session.headers.update({
-            'Authorization': 'Bearer {token}'.format(token=api_token)
-        })
+        if not kwargs.get('api_token'):
+            warnings.warn('Starting an unauthenticated session')
+            self._log.warning('Starting an unauthenticated session.')
+        else:
+            self._session.headers.update({
+                'Authorization': 'Bearer {token}'.format(
+                    token=kwargs.get('api_token')
+                )
+            })
 
     def list(self):
         '''
         Lists the available content pages.
 
+        :devportal:`API Endpoint Documentation <get_pages>`
+
         Returns:
-            list: The list of page resources.
+            :obj:`list`:
+                The list of page resources.
 
         Examples:
             >>> pages = dl.list()
             >>> for page in pages:
             ...     pprint(page)
         '''
-        return self.get('pages')
+        return self.get('pages', box=BoxList)
 
     def details(self, page):
         '''
         Retrieves the specific download items for the page requested.
 
+        :devportal:`API Endpoint Documentation <get_pages-slug>`
+
         Args:
             page (str): The name of the page to request.
 
         Returns:
-            dict: The page details.
+            :obj:`dict`:
+                The page details.
 
         Examples:
             >>> details = dl.details('nessus')
@@ -103,6 +123,8 @@ class Downloads(APIPlatform):
         '''
         Retreives the requested package and downloads the file.
 
+        :devportal:`API Endpoint Documentation <get_pages-slug-files-file>`
+
         Args:
             page (str): The name of the page
             package (str): The package filename
@@ -111,7 +133,8 @@ class Downloads(APIPlatform):
                 specified, then a BytesIO object will be used.
 
         Returns:
-            FileObjectdl
+            :obj:`FileObject`:
+                The binary package
 
         Examples:
             >>> with open('Nessus-latest.x86_64.rpm', 'wb') as pkgfile:
@@ -121,9 +144,7 @@ class Downloads(APIPlatform):
         if not fobj:
             fobj = BytesIO()
 
-        # Now that the status has reported back as "ready", we can actually
-        # download the file.
-        resp = self._api.get(
+        resp = self.get(
             'pages/{}/files/{}'.format(page, package), stream=True, box=False)
 
         # Lets stream the file into the file-like object...
