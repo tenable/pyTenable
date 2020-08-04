@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0]
+### Added
+- Embedded new base classes leveraging RESTfly for connection logic instead of the custom-coded ones.
+- Added base schema for filtering using marshmallow.
+- Added Tenable.ot support using new base class.
+- Refactored the Downloads class to use the new RESTfly-based classes.
+- New unit tests will now start to use responses over pytest-vcr when possible.
+
+### Changed
+- tenable.downloads.Downloads now will warn about deprecation.
+
+
+## [1.1.3]
+### Added
+- history_uuid is now a field that can be used in TenableIO.scans
+
+### Changed
+- Relaxed type checking for scan_id in TenableIO.scans
+
+
 ## [1.1.2]
 ### Fixed
 - TenableSC.FeedsAPI.process pointed to the wrong URL. #201

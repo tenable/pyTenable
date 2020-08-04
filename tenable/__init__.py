@@ -21,6 +21,12 @@ different APIs between some of the products.
 - Issue Tracker: https://github.com/tenable/pyTenable/issues
 - Github Repository: https://github.com/tenable/pyTenable
 
+.. note::
+    pyTenable version 1.2 is the first release to drop support for Python
+    versions less than 3.6.  If you are still using any of these depricated
+    python versions the 1.1 release will still work, however is no longer being
+    actively developed or maintained.
+
 Installation
 ------------
 
