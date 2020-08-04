@@ -1,7 +1,3 @@
-try:
-    from urlparse import urlparse
-except:
-    from urllib.parse import urlparse
 from restfly.utils import dict_merge, url_validator
 
 def policy_settings(item):
