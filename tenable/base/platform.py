@@ -13,7 +13,7 @@ base class over the original APISession class.
 from restfly import APISession as Base
 from tenable.utils import url_validator
 from tenable.version import version
-import os
+import os, warnings
 
 
 class APIPlatform(Base):
@@ -28,6 +28,14 @@ class APIPlatform(Base):
             If a 429 response is returned, how much do we want to backoff
             if the response didn't send a Retry-After header.  If left
             unspecified, the default is 1 second.
+        box (bool, optional):
+            Should responses be passed through Box?  If left unspecified, the
+            defaut is ``True``.
+        box_attrs (dict, optional):
+            Any additional attributes to pass to the Box constructor for this
+            session?  For a list of attributes that can be sent, please refer
+            to the `Box documentation <https://github.com/cdgriffith/Box/wiki>`_
+            for more information.
         build (str, optional):
             The build number to put into the User-Agent string.
         product (str, optional):
@@ -45,6 +53,10 @@ class APIPlatform(Base):
         session (requests.Session, optional):
             Provide a pre-built session instead of creating a requests
             session at instantiation.
+        squash_camel (bool, optional):
+            Should the responses have CamelCase responses be squashed into
+            snake_case?  If left unspecified, the default value is ``False``.
+            Note that this will only work when Box is enabled.
         ssl_verify (bool, optional):
             If SSL Verification needs to be disabled (for example when using
             a self-signed certificate), then this parameter should be set to
@@ -66,6 +78,7 @@ class APIPlatform(Base):
     _address = None
     _auth = (None, None)
     _auth_mech = None
+    _box_attrs = dict()
 
     def __init__(self, **kwargs):
         # Constructing the URL from the various parameters.
@@ -81,6 +94,14 @@ class APIPlatform(Base):
         # to inform the caller that something isn't right here.
         if not url_validator(self._url):
             raise TypeError('{url} is not a valid URL'.format(url=self._url))
+
+        # CamelCase squashing is an optional parameter thanks to Box.  if the
+        # user has requested it, then we should add the appropriate parameter to
+        # the box_attrs.
+        if kwargs.get('squash_camel'):
+            box_attrs = kwargs.get('box_attrs', {})
+            box_attrs['camel_killer_box'] = bool(kwargs.pop('squash_camel'))
+            kwargs['box_attrs'] = box_attrs
 
         # Call the RESTfly constructor
         super(APIPlatform, self).__init__(**kwargs)
@@ -149,6 +170,7 @@ class APIPlatform(Base):
         elif None not in self._auth:
             kwargs['session_auth_func']()
         else:
+            warnings.warn('Starting an unauthenticated session')
             self._log.warning('Starting an unauthenticated session.')
 
     def _deauthenticate(self):

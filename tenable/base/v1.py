@@ -16,6 +16,7 @@ interface to use for your own uses, take a look at the RESTfly library.
 .. autoclass:: APISession
     :members:
 '''
+from __future__ import absolute_import
 import requests, sys, platform, logging, re, time, logging, warnings, json
 from requests.exceptions import (
     ConnectionError as RequestsConnectionError,
