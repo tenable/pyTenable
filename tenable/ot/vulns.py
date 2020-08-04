@@ -55,26 +55,27 @@ class VulnAssetIntermixer(object):
         '''
         Returns a "vuln instance" of a merged asset, vuln def, and connections.
         '''
-        if asset.id not in self._asset_cache:
-            connections = self._api.assets.connections(asset.id)
+        if asset['id'] not in self._asset_cache:
+            connections = self._api.assets.connections(asset['id'])
             for con in connections:
-                iface = self._api.network_interfaces.details(con.network_interface)
-                iface.id = con.network_interface
-                con.network_interface = iface
-            self._asset_cache[asset.id] = connections
+                iface = self._api.network_interfaces.details(con['networkInterface'])
+                iface['id'] = con['networkInterface']
+                con['networkInterface'] = iface
+            self._asset_cache[asset['id']] = connections
             self.asset_count += 1
         asset.connections = self._asset_cache[asset.id]
         vuln = copy(self._vulns[self._vulns_idx])
-        vuln.asset = asset
-        vuln.cve.id = vuln.cve.CVE_data_meta.ID
-        return vuln
+        vuln['asset'] = asset
+        vuln['cve']['id'] = vuln['cve']['CVE_data_meta']['ID']
+        return Box(vuln, box_attrs=self._api._box_attrs)
 
     def _get_next_vai(self):
         '''
         Gets the next Vulnerability Asset Iterator
         '''
         self._va_iterator = self._api.vulns.vuln_assets(
-            self._vulns[self._vulns_idx].cve.CVE_data_meta.ID)
+            self._vulns[self._vulns_idx]['cve']['CVE_data_meta']['ID']
+        )
         self.vuln_count += 1
 
     def next(self):
@@ -92,7 +93,7 @@ class VulnAssetIntermixer(object):
                 The next vulnerability instance item.
         '''
         if not self._vulns:
-            self._vulns = self._api.vulns.list()
+            self._vulns = self._api.vulns.list(box=False).json()
 
         if not self._va_iterator:
             self._get_next_vai()
@@ -125,7 +126,8 @@ class VulnsAPI(APIEndpoint):
         Example:
             >>> vulns = ot.vulns.list()
         '''
-        return self._get(params=kwargs, box=BoxList)
+        box = kwargs.pop('box', BoxList)
+        return self._get(params=kwargs, box=box)
 
     def assets_list(self):
         '''
