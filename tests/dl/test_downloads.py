@@ -9,7 +9,7 @@ def test_downloads_init(monkeypatch):
     '''
     warnings.simplefilter('always')
     # Test warning when no api token is set
-    monkeypatch.delenv('TDL_API_TOKEN')
+    monkeypatch.delenv('TDL_API_TOKEN', False)
     with pytest.warns(Warning):
         dl = Downloads()
 

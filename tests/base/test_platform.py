@@ -31,3 +31,14 @@ def test_authentication():
     api._deauthenticate()
     assert api._auth_mech == None
     assert api._auth == (None, None)
+
+@responses.activate
+def test_camel_squashing():
+    responses.add(
+        method='GET',
+        url='https://localhost:443/example',
+        json={'id': 1, 'annoyingResponse': 'passed'}
+    )
+    api1 = APIPlatform(address='localhost')
+    api2 = APIPlatform(address='localhost', squash_camel=True)
+    assert api1.get('example').annoyingResponse == api2.get('example').annoying_response
