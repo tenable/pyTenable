@@ -58,7 +58,7 @@ Example:
 '''
 import logging, os
 from tenable.errors import UnexpectedValueError
-from tenable.base import APISession
+from tenable.base.v1 import APISession
 from .access_groups import AccessGroupsAPI
 from .agent_config import AgentConfigAPI
 from .agent_exclusions import AgentExclusionsAPI
