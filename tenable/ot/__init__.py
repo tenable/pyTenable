@@ -59,10 +59,9 @@ class TenableOT(APIPlatform):
 
         >>> ot = TenableOT(vendor='Company', product='Widget', build='1.0.0')
     '''
-    _base_path = '/v1'
+    _base_path = 'v1'
     _env_base = 'TOT'
     _ssl_verify = False
-    _box_attrs = {'camel_killer_box': True}
 
     def _authenticate(self, **kwargs):
         '''

@@ -67,6 +67,7 @@ class PaginationOrderSchema(Schema):
         if isinstance(data.get('direction'), str):
             # We want to ensure that the sort direction is uppercased.
             data['direction'] = data.get('direction').upper()
+        return data
 
 
 class PaginationSchema(Schema):
@@ -79,6 +80,8 @@ class PaginationSchema(Schema):
     @pre_load
     def process_filters(self, data, **kwargs):
         model = data.pop('model', None)
+        if data.get('order_by'):
+            data['orderBy'] = data.pop('order_by')
         if data.get('filters'):
             filters = PaginationFilterSchema()
             if model:
