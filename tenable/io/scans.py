@@ -666,8 +666,10 @@ class ScansAPI(TIOEndpoint):
         Args:
             scan_id (int): The unique identifier for the scan.
             host_id (int): The unique identifier for the host within the scan.
-            histort_id (int, optional):
+            history_id (int, optional):
                 The unique identifier for the instance of the scan.
+            history_uuid (str, optional): 
+                The unique identifier for the scan instance.
 
         Returns:
             :obj:`dict`:
