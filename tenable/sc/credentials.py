@@ -497,6 +497,8 @@ class CredentialAPI(SCEndpoint):
                 The password for the credential.
             port (int, optional):
                 A valid port number for a database credential.
+            private_key (file, optional):
+                The fileobject containing the SSH private key.
             privilege_escalation (str, optional):
                 The type of privilege escalation to perform once authenticated.
                 Valid values are ``.k5login``, ``cisco``, ``dzdo``, ``none``,

@@ -631,8 +631,7 @@ class ScansAPI(TIOEndpoint):
 
         # The first thing that we need to do is make the request and get the
         # File id for the job.
-        fid = self._api.post('scans/{}/export'.format(
-            self._check('scan_id', scan_id, int)),
+        fid = self._api.post('scans/{}/export'.format(scan_id),
             params=params, json=payload).json()['file']
         self._api._log.debug('Initiated scan export {}'.format(fid))
 
@@ -666,8 +665,10 @@ class ScansAPI(TIOEndpoint):
         Args:
             scan_id (int): The unique identifier for the scan.
             host_id (int): The unique identifier for the host within the scan.
-            histort_id (int, optional):
+            history_id (int, optional):
                 The unique identifier for the instance of the scan.
+            history_uuid (str, optional): 
+                The unique identifier for the scan instance.
 
         Returns:
             :obj:`dict`:
