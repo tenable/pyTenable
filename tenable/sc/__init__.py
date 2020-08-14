@@ -66,7 +66,7 @@ Example:
     .. automethod:: put
     .. automethod:: delete
 '''
-from tenable.base import APISession
+from tenable.base.v1 import APISession
 from tenable.errors import *
 from .accept_risks import AcceptRiskAPI
 from .alerts import AlertAPI

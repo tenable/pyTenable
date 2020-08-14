@@ -202,10 +202,13 @@ texinfo_documents = [
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
     'https://docs.python.org/': None,
-    'requests': ('http://docs.python-requests.org/en/master/', None)
+    'requests': ('https://requests.readthedocs.io/en/master/', None),
+    'restfly': ('https://restfly.readthedocs.io/en/latest/', None),
+    'box': ('https://box.readthedocs.io/en/latest', None),
 }
 
 extlinks = {
     'devportal': ('https://developer.tenable.com/reference#%s', 'devportal'),
     'sc-api': ('https://docs.tenable.com/sccv/api/%s', 'sc-api'),
+    'requests': ('https://requests.readthedocs.io/en/master/%s', 'requests'),
 }

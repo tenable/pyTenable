@@ -1,57 +1,129 @@
-from tenable.base import APISession
-from tenable.errors import *
-import warnings, logging, semver
+'''
+Tenable.ot
+==========
+
+This package covers the Tenable.ot interface.
+
+.. autoclass:: TenableOT
+    :members:
 
 
-class TenableOT(APISession):
-    _timeout = 300
+.. toctree::
+    :hidden:
+    :glob:
 
-    def __init__(self, host, token=None, port=443, ssl_verify=False, cert=None,
-                 adapter=None, scheme='https', retries=None, backoff=None,
-                 ua_identity=None, session=None, proxies=None, timeout=None,
-                 vendor=None, product=None, build=None, base_path='v1'):
-        # As we will always be passing a URL to the APISession class, we will
-        # want to construct a URL that APISession (and further requests)
-        # understands.
-        base = '{}://{}:{}'.format(scheme, host, port)
-        url = '{}/{}'.format(base, base_path)
+    assets
+    network_interfaces
+    vulns
 
-        # We will need to store the API Token in order to use it as part of the
-        # session builder.
-        self._api_token = token
+'''
+from tenable.base.platform import APIPlatform
+import os
 
-        # Setting the SSL Verification flag on the object itself so that it's
-        # reusable if the user logs out and logs back in.
-        self._ssl_verify = ssl_verify
+from .assets import AssetsAPI
+from .network_interfaces import NetworkInterfacesAPI
+from .vulns import VulnsAPI
 
-        # Now lets pass the relevent parts off to the APISession's constructor
-        # to make sure we have everything lined up as we expect.
-        super(TenableOT, self).__init__(url,
-            retries=retries,
-            backoff=backoff,
-            ua_identity=ua_identity,
-            session=session,
-            proxies=proxies,
-            vendor=vendor,
-            product=product,
-            build=build,
-            timeout=timeout
-        )
+class TenableOT(APIPlatform):
+    '''
+    The Tenable.ot object is the primary interaction point for users to
+    interface with Tenable.io via the pyTenable library.  All of the API
+    endpoint classes that have been written will be grafted onto this class.
 
-    def __enter__(self):
-        return self
+    Args:
+        api_token (str, optional):
+            The user's API access key for Tenable.ot.
+        port (int, optional):
+            The port to connect to on the Tenable.ot host.  If left unspecified,
+            then the library will attempt to
+        **kwargs:
+            arguments passed to :class:`tenable.base.platform.APIPlatform` for
+            connection management.
 
-    def __exit__(self, exc_type, exc_value, exc_traceback):
-        pass
 
-    def _build_session(self, session=None):
-        super(TenableOT, self)._build_session(session)
-        # As Tenable.sc is generally installed without a certificate chain that
-        # we can validate, we will want to turn off verification and the
-        # associated warnings unless told to otherwise:
-        self._session.verify = self._ssl_verify
-        if not self._ssl_verify:
-            warnings.filterwarnings('ignore', 'Unverified HTTPS request')
+    Examples:
+        Basic Example:
+
+        >>> from tenable.ot import TenableOT
+        >>> ot = TenableOT(api_token='API_TOKEN', address='ot.example.com')
+
+        Example with proper identification:
+
+        >>> ot = TenableOT(api_token='API_TOKEN', address='ot.example.com',
+        >>>     vendor='Company Name',
+        >>>     product='My Awesome Widget',
+        >>>     build='1.0.0')
+
+        Example with proper identification leveraging environment variables for
+        the connection parameters:
+
+        >>> ot = TenableOT(vendor='Company', product='Widget', build='1.0.0')
+    '''
+    _base_path = 'v1'
+    _env_base = 'TOT'
+    _ssl_verify = False
+
+    def _authenticate(self, **kwargs):
+        '''
+        Authentication method for Tenable.ot platform
+        '''
+        api_token = kwargs.get('api_token', os.getenv(
+            '{}_API_TOKEN'.format(self._env_base)))
+
         self._session.headers.update({
-            'Authorization': 'Key {token}'.format(token=self._api_token)
+            'Authorization': 'Key {token}'.format(token=api_token)
         })
+
+    def graphql(self, **kwargs):
+        '''
+        GraphQL Endpoint
+
+        This singular method exposes the GraphQL API to the library.  As all
+        keyword arguments are passed directly to the JSON body, it allows for a
+        freeform interface into the GraphQL API.
+
+        Args:
+            **kwargs (dict, optional):
+                The key/values that should be passed to the body of the GraphQL
+                request.
+
+        Example:
+            >>> ot.graphql(
+            ...     variables={'asset': 'b64 id string'},
+            ...     query=\'\'\'
+            ...         query getAssetDetails($asset: ID!) {
+            ...             asset(id: $asset) {
+            ...                 id
+            ...                 type
+            ...                 name
+            ...                 criticality
+            ...                 location
+            ...             }
+            ...         }
+            ... \'\'\')
+        '''
+        return self.post('graphql', json=kwargs, use_base=False)
+
+    @property
+    def assets(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ot Assets APIs <assets>`.
+        '''
+        return AssetsAPI(self)
+
+    @property
+    def network_interfaces(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ot Network Interfaces APIs <network_interfaces>`.
+        '''
+        return NetworkInterfacesAPI(self)
+
+    @property
+    def vulns(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ot Vulnerabilities APIs <vulns>`.
+        '''
+        return VulnsAPI(self)

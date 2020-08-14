@@ -25,3 +25,4 @@ env_builder
 /1000007.xml
 /*.nessus
 .tox
+/test_*.py

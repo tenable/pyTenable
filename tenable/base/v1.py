@@ -1,14 +1,30 @@
 '''
+Version 1 Base Classes
+======================
+
+These classes are what pyTenable < 1.2 used for all interactions.  They are here
+as most of the library will still use it until these have been phased out in
+favor of the newer RESTfly-derived classes.
+
+As these classes exist only as a basis for the application packages, it isn't
+recommended to use this directly.  Further if you're looking for a generic API
+interface to use for your own uses, take a look at the RESTfly library.
+
 .. autoclass:: APIResultsIterator
+    :members:
+
+.. autoclass:: APISession
+    :members:
 '''
+from __future__ import absolute_import
 import requests, sys, platform, logging, re, time, logging, warnings, json
 from requests.exceptions import (
     ConnectionError as RequestsConnectionError,
     RequestException as RequestsRequestException
 )
-from .errors import *
-from .utils import url_validator
-from . import __version__, __author__
+from tenable.errors import *
+from tenable.utils import url_validator
+from tenable import __version__, __author__
 
 
 class APIResultsIterator(object):

@@ -1,4 +1,4 @@
-import pytest, os, uuid
+import pytest, os, uuid, warnings
 from tenable.downloads import Downloads
 from tenable.errors import *
 
@@ -13,6 +13,7 @@ def vcr_config():
 
 @pytest.fixture(autouse=True, scope='module')
 def dl(request, vcr):
+    warnings.filterwarnings('ignore', category=DeprecationWarning)
     return Downloads(os.getenv('DL_TOKEN'),
         vendor='pytest',
         product='pytenable-automated-testing')
