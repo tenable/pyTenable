@@ -462,6 +462,11 @@ class ScansAPI(TIOEndpoint):
             be pushed to it, this method by very nature of what it's doing isn't
             guaranteed to always work.
 
+        .. note::
+            If you're looking for the results of the most recent scan, and what
+            matches to the ``GET /scans/{id}`` call, then take a look at the
+            results method.
+
         Args:
             scan_id (int): The unique identifier for the scan.
 
@@ -667,7 +672,7 @@ class ScansAPI(TIOEndpoint):
             host_id (int): The unique identifier for the host within the scan.
             history_id (int, optional):
                 The unique identifier for the instance of the scan.
-            history_uuid (str, optional): 
+            history_uuid (str, optional):
                 The unique identifier for the scan instance.
 
         Returns:
