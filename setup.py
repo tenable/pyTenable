@@ -39,7 +39,7 @@ setup(
         'requests>=2.19',
         'python-dateutil>=2.6',
         'semver>=2.8.1',
-        'ipaddress>=1.0.22'
+        'ipaddress>=1.0.22',
         'restfly>=1.3.5',
         'marshmallow>=3.6',
         'python-box>=4.0',
