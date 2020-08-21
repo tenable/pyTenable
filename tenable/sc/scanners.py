@@ -185,7 +185,7 @@ class ScannerAPI(SCEndpoint):
                 The scanner resource record.
 
         Examples:
-            >>> scanner = sc.scan_zones.details(1)
+            >>> scanner = sc.scanners.details(1)
             >>> pprint(scanner)
         '''
         params = dict()
