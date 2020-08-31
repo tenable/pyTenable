@@ -286,7 +286,7 @@ class TenableSC(APISession):
             try:
                 d = response.json()
                 if d['error_code']:
-                    raise APIError(d['error_code'], d['error_msg'])
+                    raise APIError(response)
             except ValueError:
                 pass
         return response
