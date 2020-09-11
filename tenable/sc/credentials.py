@@ -504,6 +504,8 @@ class CredentialAPI(SCEndpoint):
                 Valid values are ``.k5login``, ``cisco``, ``dzdo``, ``none``,
                 ``pbrun``, ``su``, ``su+sudo``, ``sudo``.  If left unspecified,
                 the default is ``none``.
+            public_key (file, optional):
+                The fileobject containing the SSH public key or certificate.
             oracle_auth_type (str, optional):
                 The type of authentication to use when communicating to an
                 Oracle database server.  Supported values are ``sysdba``,
