@@ -192,10 +192,10 @@ class ExportsAPI(TIOEndpoint):
                 based on when they were last observed.  The idea is to relay
                 state changes of a vulnerability and use a singular export to
                 track all of these state changes.
-            state (list, optional):
+            state (list[str], optional):
                 list of object states to be returned.  Supported values are
                 `open`, `reopened`, and `fixed`.
-            tags (list, optional):
+            tags (list[tuple], optional):
                 List of tag key-value pairs that must be associated to the
                 vulnerability data to be returned.  Key-value pairs are tuples
                 ``('key', 'value')`` and are case-sensitive.
@@ -204,7 +204,22 @@ class ExportsAPI(TIOEndpoint):
                 the UUID of the export to bypass the initial request and instead
                 use the UUID passed to build the export iterator.
             vpr (dict, optional):
-                Restricts the results to the
+                Restricts the results to the export to only vulnerabilities that
+                match the VPR criteria specified.  As this supports a range of
+                operations, it's worth detailing a couple of examples:
+
+                VPR Scores greater than or equal to 7.0:
+
+                .. python::
+
+                    vpr={'gte': 7}
+
+                VPR Score less than 7, but not 5:
+
+                .. python::
+
+                    vpr={'lt': 7, 'neq': [5]}
+
 
         Returns:
             :obj:`ExportIterator`:
