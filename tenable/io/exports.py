@@ -15,12 +15,12 @@ Methods available on ``tio.exports``:
 '''
 from .base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
 from tenable.errors import TioExportsError, TioExportsTimeout
-from ipaddress import IPv4Network, AddressValueError
+from ipaddress import IPv4Network
 try:
     from json.decoder import JSONDecodeError
 except ImportError:
     JSONDecodeError = ValueError
-import time, ipaddress, sys
+import time, sys
 
 class ExportsIterator(APIResultsIterator):
     '''
@@ -163,6 +163,10 @@ class ExportsAPI(TIOEndpoint):
             first_found (int, optional):
                 Specifies the earliest time for a vulnerability to have been
                 discovered.  Format is a unix timestamp integer.
+            include_unlicensed (bool, optional):
+                Informs the vuln export if it should include vulnerability data
+                from assets that are unlicensed.  This is generally required
+                when interacting with stale assets (>90 days).
             last_fixed (int, optional):
                 Specifies the earliest time that vulnerabilities may have been
                 fixed.  Format is a unix timestamp integer.
@@ -172,26 +176,14 @@ class ExportsAPI(TIOEndpoint):
             num_assets (int, optional):
                 Specifies the number of assets returned per-chunk.  If nothing is
                 specified, it will default to 500 assets.
-            plugin_family (list, optional):
+            plugin_family (list[str], optional):
                 list of plugin families to restrict the export to.  Please note
                 that this parameter's values are case sensitive.
-            severity (list, optional):
+            plugin_ids (list[int], optional):
+                A list of plugin id's to explicitly export.
+            severity (list[str], optional):
                 list of severities to include as part of the export.  Supported
                 values are `info`, `low`, `medium`, `high`, and `critical`.
-            since (int, optional):
-                Returned results will be bounded based on the state of the
-                vulnerability instance detailed below.  This parameter expects a
-                unix timestamp.
-
-                * Vulns in the **open** state are bounded by ``first_found``.
-                * Vulns in the **reopened** state are bounded by ``last_found``.
-                * Vulns in the **fixed** state are bounded by ``last_fixed``.
-
-                In short it'll return active vulnerabilities based on when they
-                were first discovered, and fixed and resurfaced vulnerabilities
-                based on when they were last observed.  The idea is to relay
-                state changes of a vulnerability and use a singular export to
-                track all of these state changes.
             state (list[str], optional):
                 list of object states to be returned.  Supported values are
                 `open`, `reopened`, and `fixed`.
@@ -253,6 +245,9 @@ class ExportsAPI(TIOEndpoint):
 
         payload['num_assets'] = str(self._check('num_assets',
             kw['num_assets'] if 'num_assets' in kw else None, int, default=500))
+
+        if self._check('include_unlicensed', kw.get('include_unlicensed'), bool):
+            payload['include_unlicensed'] = kw.get('include_unlicensed')
 
         if self._check('plugin_ids', kw.get('plugin_ids'), list):
             payload['filters']['plugin_id'] = [int(p) for p in kw['plugin_ids']]
@@ -346,6 +341,18 @@ class ExportsAPI(TIOEndpoint):
             first_scan_time (int, optional):
                 Returns all assets first scanned after the specified unix
                 timestamp.
+            is_deleted (bool, optional):
+                Determines whether or not to return assets which have any value
+                within the ``deleted_at`` attribute.  If left unspecified, the
+                default is ``False``
+            is_licensed (bool, optional):
+                Determines whether or not to return unlicensed assets as part of
+                the export.  If left unspecified, the default is ``True``,
+                meaning only licensed assets will be returned.
+            is_terminated (bool, optional):
+                Determines whether or not to return assets that have any value
+                within the ``terminated_at`` attribute.  If left unspecified,
+                the default is ``False``.
             last_authenticated_scan_time (int, optional):
                 Returns all assets that have completed an authenticated scan
                 after the specified unix timestamp.
@@ -356,7 +363,7 @@ class ExportsAPI(TIOEndpoint):
                 If set to True, will return only assets that have a ServiceNow
                 Sys ID.  If set to False, then returns only assets that do not
                 have a ServiceNow Sys ID.
-            sources (list, optional):
+            sources (list[str], optional):
                 Returns assets that have the specified source.  If multiple
                 sources are listed, then the results will be assets that have
                 been observed by any of the sources listed.
@@ -365,7 +372,7 @@ class ExportsAPI(TIOEndpoint):
                 returns only assets that do not have any plugin results.  Assets
                 thats would not have plugin results would be assets created from
                 a connector, or a discovery scan.
-            tags (list, optional):
+            tags (list[tuple], optional):
                 List of tag key-value pairs that must be associated to the
                 asset data to be returned.  Key-value pairs are tuples
                 ``('key', 'value')`` and are case-sensitive.
@@ -411,7 +418,8 @@ class ExportsAPI(TIOEndpoint):
 
         # Lets to the same thing we did above for integer checks for the boolean
         # ones as well.
-        for option in ['servicenow_sysid', 'has_plugin_results']:
+        for option in ['servicenow_sysid', 'has_plugin_results',
+                       'is_terminated', 'is_deleted', 'is_licensed']:
             if option in kw:
                 payload['filters'][option] = self._check(option, kw[option], bool)
 
