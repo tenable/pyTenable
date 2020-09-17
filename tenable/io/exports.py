@@ -250,8 +250,14 @@ class ExportsAPI(TIOEndpoint):
             if option in kw and self._check(option, kw[option], int):
                 payload['filters'][option] = kw[option]
 
+
         payload['num_assets'] = str(self._check('num_assets',
             kw['num_assets'] if 'num_assets' in kw else None, int, default=500))
+
+        if self._check('plugin_ids', kw.get('plugin_ids'), list):
+            payload['filters']['plugin_id'] = [int(p) for p in kw['plugin_ids']]
+        if self._check('plugin_id', kw.get('plugin_ids), list):
+            payload['filters']['plugin_id'] = [int(p) for p in kw['plugin_id']]
 
         if 'severity' in kw and self._check('severity', kw['severity'], list,
                 choices=['info', 'low', 'medium', 'high', 'critical'], case='lower'):
