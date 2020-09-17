@@ -1,9 +1,8 @@
-from tenable.ot import TenableOT
 import pytest, responses
 
 
 @responses.activate
-def test_details():
+def test_details(ot):
     '''
     Tests the details method
     '''
@@ -19,7 +18,6 @@ def test_details():
             'family': 'Unknown'
         }
     )
-    ot = TenableOT(address='localhost')
     resp = ot.network_interfaces.details('d7f06b04-5733-44ac-9e84-096f6fdb181b')
     assert resp.id == 'd7f06b04-5733-44ac-9e84-096f6fdb181b'
     assert resp.ips == ['192.168.101.154']
@@ -30,7 +28,7 @@ def test_details():
 
 
 @responses.activate
-def test_connections():
+def test_connections(ot):
     '''
     Test the connections method
     '''
@@ -49,7 +47,6 @@ def test_connections():
             }
         }]
     )
-    ot = TenableOT(address='localhost')
     resp = ot.network_interfaces.connections('d7f06b04-5733-44ac-9e84-096f6fdb181b')
     for item in resp:
         assert item.asset == '026fd8a1-2d50-4b2b-9cd5-285489d7fda4'

@@ -1,8 +1,7 @@
-from tenable.ot import TenableOT
 import pytest, responses
 
 @responses.activate
-def test_list():
+def test_list(ot):
     '''
     Tests the list iterator
     '''
@@ -29,7 +28,6 @@ def test_list():
             }
         ]
     )
-    ot = TenableOT(address='localhost')
     resp = ot.assets.list()
     item = resp.next()
     assert item.id == '000b3456-35f6-4b83-8ffe-45aceb288ce4'
@@ -43,7 +41,7 @@ def test_list():
 
 
 @responses.activate
-def test_details():
+def test_details(ot):
     '''
     Tests the details method
     '''
@@ -68,7 +66,6 @@ def test_details():
             'type': 'UnknownType'
         }
     )
-    ot = TenableOT(address='localhost')
     resp = ot.assets.details('026fd8a1-2d50-4b2b-9cd5-285489d7fda4')
     assert resp.id == '026fd8a1-2d50-4b2b-9cd5-285489d7fda4'
     assert resp.name == 'Endpoint #608'
@@ -80,7 +77,7 @@ def test_details():
 
 
 @responses.activate
-def test_connections():
+def test_connections(ot):
     '''
     Tests the connections method
     '''
@@ -99,7 +96,6 @@ def test_connections():
             }
         }]
     )
-    ot = TenableOT(address='localhost')
     resp = ot.assets.connections('026fd8a1-2d50-4b2b-9cd5-285489d7fda4')
     for item in resp:
         assert item.asset == '026fd8a1-2d50-4b2b-9cd5-285489d7fda4'

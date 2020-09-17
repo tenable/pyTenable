@@ -18,7 +18,7 @@ This package covers the Tenable.ot interface.
 
 '''
 from tenable.base.platform import APIPlatform
-import os
+import os, semver
 
 from .assets import AssetsAPI
 from .network_interfaces import NetworkInterfacesAPI
@@ -67,12 +67,20 @@ class TenableOT(APIPlatform):
         '''
         Authentication method for Tenable.ot platform
         '''
-        api_token = kwargs.get('api_token', os.getenv(
-            '{}_API_TOKEN'.format(self._env_base)))
+        api_token = kwargs.get('api_token',
+            os.getenv(f'{self._env_base}_API_TOKEN')
+        )
 
         self._session.headers.update({
-            'Authorization': 'Key {token}'.format(token=api_token)
+            'Authorization': f'Key {api_token}',
+            'X-APIKeys': f'key={api_token}',
         })
+
+        self.version = self.get('version').Version
+        if semver.compare(self.version, '3.6.33') > -1:
+            self._session.headers.update({'Authorization': None})
+        else:
+            self._session.headers.update({'X-APIKeys': None})
 
     def graphql(self, **kwargs):
         '''

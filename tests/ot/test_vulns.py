@@ -1,4 +1,3 @@
-from tenable.ot import TenableOT
 from tenable.ot.schemas.iterators import OTIterator
 from tenable.ot.vulns import VulnAssetIntermixer
 from box import Box
@@ -136,12 +135,11 @@ def load_responses(responses):
 
 
 @responses.activate
-def test_vuln_asset_intermixer():
+def test_vuln_asset_intermixer(ot):
     '''
     Tests the intermixer iterator
     '''
     load_responses(responses)
-    ot = TenableOT(address='localhost')
     vulns = ot.vulns.extract()
 
     # assert the iterator returns itself.
@@ -167,12 +165,11 @@ def test_vuln_asset_intermixer():
 
 
 @responses.activate
-def test_list():
+def test_list(ot):
     '''
     Tests the list method
     '''
     load_responses(responses)
-    ot = TenableOT(address='localhost')
     vulns = ot.vulns.list()
 
     for vuln in vulns:
@@ -181,7 +178,7 @@ def test_list():
 
 
 @responses.activate
-def test_assets_list():
+def test_assets_list(ot):
     responses.add(
         method='GET',
         url='https://localhost:443/v1/vulnerabilities/assets',
@@ -195,7 +192,6 @@ def test_assets_list():
             }
         ]
     )
-    ot = TenableOT(address='localhost')
     counts = ot.vulns.assets_list()
     for c in counts:
         assert c.cveId

@@ -1,16 +1,14 @@
 from tenable.ot.schemas.iterators import OTIterator
-from tenable.ot import TenableOT
 import responses, pytest, re
 
 
 @responses.activate
-def test_iterator():
+def test_iterator(ot):
     responses.add(
         method='POST',
         url='https://localhost:443/v1/iterator_test',
         json=['item1', 'item2', 'item3', 'item4', 'item5', 'item6']
     )
-    ot = TenableOT(address='localhost')
 
     # iterate through multiple pages
     items = OTIterator(ot, path='iterator_test', payload=dict(), limit=6, max_pages=3)
