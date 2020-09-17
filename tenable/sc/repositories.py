@@ -154,7 +154,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Retrieves a list of repositories.
 
-        :sc-api:`repository: list <Repository.html#RepositoryRESTReference-/repository>`
+        :sc-api:`repository: list <Repository.htm#repository_GET>`
 
         Args:
             fields (list, optional):
