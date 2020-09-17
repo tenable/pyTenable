@@ -57,7 +57,7 @@ class CredentialAPI(SCEndpoint):
             # values and then convert it to the camelCase equiv.
             kw['authType'] = self._check('auth_type', kw['auth_type'], str,
                 choices=['cyberark', 'lieberman', 'password', 'BeyondTrust',
-                         'certificate', 'kerberos', 'publickey', 'thycotic',
+                         'certificate', 'kerberos', 'publicKey', 'thycotic',
                          'lm', 'ntlm'])
             del(kw['auth_type'])
 
@@ -421,7 +421,7 @@ class CredentialAPI(SCEndpoint):
             auth_type (str):
                 The type of authentication for the credential.  Valid types are
                 ``beyondtrust``, ``certificate``, cyberark``, ``kerberos``,
-                ``lieberman``, ``lm``, ``ntlm``, ``password``, ``publickey``,
+                ``lieberman``, ``lm``, ``ntlm``, ``password``, ``publicKey``,
                 ``thycotic``.
             beyondtrust_api_key (str, optional):
                 The API key to use for authenticating to Beyondtrust.
