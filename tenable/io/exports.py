@@ -251,7 +251,7 @@ class ExportsAPI(TIOEndpoint):
 
         if self._check('plugin_ids', kw.get('plugin_ids'), list):
             payload['filters']['plugin_id'] = [int(p) for p in kw['plugin_ids']]
-        if self._check('plugin_id', kw.get('plugin_ids), list):
+        if self._check('plugin_id', kw.get('plugin_id'), list):
             payload['filters']['plugin_id'] = [int(p) for p in kw['plugin_id']]
 
         if 'severity' in kw and self._check('severity', kw['severity'], list,
