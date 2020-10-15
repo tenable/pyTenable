@@ -60,7 +60,7 @@ class UsersAPI(TIOEndpoint):
 
             Create an admin user and add the email and name:
 
-            >>> user = tio.create.users('jdoe@company.com', 'password', 64,
+            >>> user = tio.users.create('jdoe@company.com', 'password', 64,
             ...     name='Jane Doe', email='jdoe@company.com')
 
         '''
