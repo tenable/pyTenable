@@ -240,7 +240,7 @@ class ExportsAPI(TIOEndpoint):
                        'last_fixed', 'first_scan_time',
                        'last_authenticated_scan_time', 'last_assessed']:
             self._api._log.debug(f'{option}={kw.get(option)}')
-            if self._check(option, kw.get(option), int) != None:
+            if self._check(option, kw.get(option), int) is not None:
                 payload['filters'][option] = kw[option]
 
         payload['num_assets'] = str(self._check('num_assets',
