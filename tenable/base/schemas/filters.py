@@ -76,7 +76,7 @@ class BaseFilterRuleSchema(Schema):
         can then be validated and processed.
         '''
         if isinstance(rule, tuple):
-            return {
+            rule = {
                 'name': rule[0],
                 'oper': rule[1],
                 'value': rule[2]
