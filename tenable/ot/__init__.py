@@ -31,8 +31,8 @@ class TenableOT(APIPlatform):
     endpoint classes that have been written will be grafted onto this class.
 
     Args:
-        api_token (str, optional):
-            The user's API access key for Tenable.ot.
+        secret_key (str, optional):
+            The user's API secret key for Tenable.ot.
         port (int, optional):
             The port to connect to on the Tenable.ot host.  If left unspecified,
             then the library will attempt to
@@ -67,20 +67,13 @@ class TenableOT(APIPlatform):
         '''
         Authentication method for Tenable.ot platform
         '''
-        api_token = kwargs.get('api_token',
-            os.getenv(f'{self._env_base}_API_TOKEN')
+        api_token = kwargs.get('secret_key',
+            os.getenv(f'{self._env_base}_SECRET_KEY')
         )
 
         self._session.headers.update({
-            'Authorization': f'Key {api_token}',
             'X-APIKeys': f'key={api_token}',
         })
-
-        self.version = self.get('version').Version
-        if semver.compare(self.version, '3.6.33') > -1:
-            self._session.headers.update({'Authorization': None})
-        else:
-            self._session.headers.update({'X-APIKeys': None})
 
     def graphql(self, **kwargs):
         '''
