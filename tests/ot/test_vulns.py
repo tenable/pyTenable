@@ -12,74 +12,46 @@ def load_responses(responses):
     responses.add(
         method='GET',
         url='https://localhost:443/v1/vulnerabilities',
-        json=[{
-            'cve': {
-                'CVE_data_meta': {
-                    'ID': 'CVE-2020-9464'
-                },
-                'references': {
-                    'reference_data': [
-                        {
-                            'url': 'https://cert.vde.com/en-us/advisories/vde-2020-005',
-                            'name': 'https://cert.vde.com/en-us/advisories/vde-2020-005',
-                            'refsource': 'MISC'
-                        }
-                    ]
-                },
-                'description': {
-                    'description_data': [
-                        {
-                            'lang': 'en',
-                            'value': 'description_data'
-                        }
-                    ]
-                }
-            },
-            'impact': {
-                'baseMetricV2': {
-                    'cvssV2': {
-                        'baseScore': 7.8,
-                        'accessVector': 'NETWORK',
-                        'accessComplexity': 'LOW',
-                        'authentication': 'NONE',
-                        'confidentialityImpact': 'NONE',
-                        'integrityImpact': 'NONE',
-                        'availabilityImpact': 'COMPLETE'
-                    }
-                }
-            },
-            'configurations': {
-                'nodes': [
-                    {
-                        'operator': 'AND',
-                        'children': [
-                            {
-                                'operator': 'OR',
-                                'cpe_match': [
-                                    {
-                                        'vulnerable': True,
-                                        'cpe23Uri': 'cpe:2.3:o:beckhoff:bk9000_firmware:*:*:*:*:*:*:*:*',
-                                        'family': 'Beckhoff'
-                                    }
-                                ]
-                            }, {
-                                'operator': 'OR',
-                                'cpe_match': [
-                                    {
-                                        'vulnerable': False,
-                                        'cpe23Uri': 'cpe:2.3:h:beckhoff:bk9000:-:*:*:*:*:*:*:*',
-                                        'family': 'Beckhoff'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            'publishedDate': '2020-03-12T14:15Z',
-            'lastModifiedDate': '2020-03-16T16:43Z',
-            'comment': ''
-        }]
+        json=[
+        {'comment': '',
+         'cpeTree': None,
+         'cvss': {'accessComplexity': 'LOW',
+                  'accessVector': 'NETWORK',
+                  'authentication': 'NONE',
+                  'availabilityImpact': 'COMPLETE',
+                  'confidentialityImpact': 'COMPLETE',
+                  'integrityImpact': 'COMPLETE',
+                  'score': 10},
+         'descriptions': [{'cveId': 'CVE-2020-9633',
+                           'language': 'en',
+                           'value': 'Adobe Flash Player Desktop Runtime 32.0.0.371 and '
+                                    'earlier, Adobe Flash Player for Google Chrome '
+                                    '32.0.0.371 and earlier, and Adobe Flash Player '
+                                    'for Microsoft Edge and Internet Explorer '
+                                    '32.0.0.330 and earlier have an use after free '
+                                    'vulnerability. Successful exploitation could lead '
+                                    'to arbitrary code execution.'}],
+         'id': 'CVE-2020-9633',
+         'lastModifiedDate': '2020-07-06T14:15:00Z',
+         'publishedDate': '2020-06-12T14:15:00Z',
+         'references': [{'cveId': 'CVE-2020-9633',
+                         'name': 'https://helpx.adobe.com/security/products/flash-player/apsb20-30.html',
+                         'source': 'CONFIRM',
+                         'url': 'https://helpx.adobe.com/security/products/flash-player/apsb20-30.html'},
+                        {'cveId': 'CVE-2020-9633',
+                         'name': 'GLSA-202006-09',
+                         'source': 'GENTOO',
+                         'url': 'https://security.gentoo.org/glsa/202006-09'}],
+         'tvi': {'cveId': 'CVE-2020-9633',
+                 'cvssV3Score': 5.9,
+                 'exploitCodeMaturity': 'UnprovenExploitCodeMaturity',
+                 'productCoverage': 'LowProductCoverage',
+                 'threatIntensity': 'VeryLowThreatIntensity',
+                 'threatRecency': 'From120To365DaysThreatRecency',
+                 'threatSources': ['NoRecordedEventsThreatSource'],
+                 'vprScore': 5.9,
+                 'vulnerabilityAge': 'From60To180DaysVulnerabilityAge'}},
+        ]
     )
     responses.add(
         method='POST',
@@ -152,12 +124,12 @@ def test_vuln_asset_intermixer(ot):
     assert v.asset.id == '8fe5cdb1-723e-4996-9d3c-7787445bc38a'
     assert v.asset.connections
     assert v.asset.connections[0].networkInterface.id == 'd7f06b04-5733-44ac-9e84-096f6fdb181b'
-    assert v.impact.baseMetricV2.cvssV2.baseScore == 7.8
+    assert v.cvss.score == 10
 
     # Validate that merge_cache should always return the same asset cache.
     w = vulns._merge_cache(Box({'id': '8fe5cdb1-723e-4996-9d3c-7787445bc38a'}))
     assert v.asset.id == w.asset.id
-    assert v.cve.id == w.cve.id
+    assert v.id == w.id
 
     # test that the stop iterator works as expected.
     with pytest.raises(StopIteration):
@@ -173,8 +145,8 @@ def test_list(ot):
     vulns = ot.vulns.list()
 
     for vuln in vulns:
-        assert vuln.cve.CVE_data_meta.ID == 'CVE-2020-9464'
-        assert vuln.impact.baseMetricV2.cvssV2.baseScore == 7.8
+        assert vuln.id == 'CVE-2020-9633'
+        assert vuln.cvss.score == 10
 
 
 @responses.activate

@@ -66,15 +66,14 @@ class VulnAssetIntermixer(object):
         asset.connections = self._asset_cache[asset.id]
         vuln = copy(self._vulns[self._vulns_idx])
         vuln['asset'] = asset
-        vuln['cve']['id'] = vuln['cve']['CVE_data_meta']['ID']
-        return Box(vuln, box_attrs=self._api._box_attrs)
+        return Box(vuln, **self._api._box_attrs)
 
     def _get_next_vai(self):
         '''
         Gets the next Vulnerability Asset Iterator
         '''
         self._va_iterator = self._api.vulns.vuln_assets(
-            self._vulns[self._vulns_idx]['cve']['CVE_data_meta']['ID']
+            self._vulns[self._vulns_idx]['id']
         )
         self.vuln_count += 1
 
