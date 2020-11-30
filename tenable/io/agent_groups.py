@@ -181,7 +181,7 @@ class AgentGroupsAPI(TIOEndpoint):
                     self._check('group_id', group_id, int)),
                 json={'items': [self._check('agent_ids', i, int) for i in agent_ids]}).json()
 
-    def details(self, group_id, scanner_id=1):
+    def details(self, group_id, scanner_id=1, *filters, **kw):
         '''
         Retrieve the details about the specified agent group.
 
@@ -189,7 +189,39 @@ class AgentGroupsAPI(TIOEndpoint):
 
         Args:
             group_id (int): The id of the agent group.
-            scanner_id (int, optional): The id of the scanner
+            *filters (tuple, optional):
+                Filters are tuples in the form of ('NAME', 'OPERATOR', 'VALUE').
+                Multiple filters can be used and will filter down the data being
+                returned from the API.
+
+                Examples:
+                    - ``('distro', 'match', 'win')``
+                    - ``('name', 'nmatch', 'home')``
+
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the `filters:agents-filters <https://cloud.tenable.com/api#/resources/filters/agents-filters>`_
+                endpoint to get more details.
+            filter_type (str, optional):
+                The filter_type operator determines how the filters are combined
+                together.  ``and`` will inform the API that all of the filter
+                conditions must be met for an agent to be returned, whereas
+                ``or`` would mean that if any of the conditions are met, the
+                agent record will be returned.
+            limit (int, optional):
+                The number of records to retrieve.  Default is 50
+            offset (int, optional):
+                The starting record to retrieve.  Default is 0.
+            scanner_id (int, optional):
+                The identifier the scanner that the agent communicates to.
+            sort (tuple, optional):
+                A tuple of tuples identifying the the field and sort order of
+                the field.
+            wildcard (str, optional):
+                A string to pattern match against all available fields returned.
+            wildcard_fields (list, optional):
+                A list of fields to optionally restrict the wild-card matching
+                to.
 
         Returns:
             :obj:`dict`:
@@ -199,11 +231,70 @@ class AgentGroupsAPI(TIOEndpoint):
             >>> group = tio.agent_groups.details(1)
             >>> pprint(group)
         '''
+        scanner_id = 1
+        limit = 50
+        offset = 0
+        pages = None
+        query = self._parse_filters(filters,
+            self._api.filters.agents_filters(), rtype='colon')
+
+        # Overload the scanner_id with a new value if it has been requested
+        # to do so.
+        if 'scanner_id' in kw:
+            scanner_id = self._check('scanner_id', kw['scanner_id'], int)
+
+        # For the sorting fields, we are converting the tuple that has been
+        # provided to us and converting it into a comma-delimited string with
+        # each field being represented with its sorting order.  e.g. If we are
+        # presented with the following:
+        #
+        #   sort=(('field1', 'asc'), ('field2', 'desc'))
+        #
+        # we will generate the following string:
+        #
+        #   sort=field1:asc,field2:desc
+        #
+        if 'sort' in kw and self._check('sort', kw['sort'], tuple):
+            query['sort'] = ','.join(['{}:{}'.format(
+                self._check('sort_field', i[0], str),
+                self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
+            ) for i in kw['sort']])
+
+        # The filter_type determines how the filters are combined together.
+        # The default is 'and', however you can always explicitly define 'and'
+        # or 'or'.
+        if 'filter_type' in kw and self._check(
+            'filter_type', kw['filter_type'], str, choices=['and', 'or']):
+            query['ft'] = kw['filter_type']
+
+        # The wild-card filter text refers to how the API will pattern match
+        # within all fields, or specific fields using the wildcard_fields param.
+        if 'wildcard' in kw and self._check('wildcard', kw['wildcard'], str):
+            query['w'] = kw['wildcard']
+
+        # The wildcard_fields parameter allows the user to restrict the fields
+        # that the wild-card pattern match pertains to.
+        if 'wildcard_fields' in kw and self._check(
+            'wildcard_fields', kw['wildcard_fields'], list):
+            query['wf'] = ','.join(kw['wildcard_fields'])
+
+        # If the offset was set to something other than the default starting
+        # point of 0, then we will update offset to reflect that.
+        if 'offset' in kw and self._check('offset', kw['offset'], int):
+            query['offset'] = kw['offset']
+
+        # The limit parameter affects how many records at a time we will pull
+        # from the API.  The default in the API is set to 50, however we can
+        # pull any variable amount.
+        if 'limit' in kw and self._check('limit', kw['limit'], int):
+            query['limit'] = kw['limit']
+
         return self._api.get(
             'scanners/{}/agent-groups/{}'.format(
                 self._check('scanner_id', scanner_id, int),
                 self._check('group_id', group_id, int)
-            )).json()
+            ), params=query
+        ).json()
 
     def list(self, scanner_id=1):
         '''
