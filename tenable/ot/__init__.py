@@ -35,7 +35,7 @@ class TenableOT(APIPlatform):
             The user's API secret key for Tenable.ot.
         port (int, optional):
             The port to connect to on the Tenable.ot host.  If left unspecified,
-            then the library will attempt to
+            then the library will attempt to connect on port 443.
         **kwargs:
             arguments passed to :class:`tenable.base.platform.APIPlatform` for
             connection management.
@@ -45,11 +45,11 @@ class TenableOT(APIPlatform):
         Basic Example:
 
         >>> from tenable.ot import TenableOT
-        >>> ot = TenableOT(api_token='API_TOKEN', address='ot.example.com')
+        >>> ot = TenableOT(secret_key='SECRET_KEY', address='ot.example.com')
 
         Example with proper identification:
 
-        >>> ot = TenableOT(api_token='API_TOKEN', address='ot.example.com',
+        >>> ot = TenableOT(secret_key='SECRET_KEY', address='ot.example.com',
         >>>     vendor='Company Name',
         >>>     product='My Awesome Widget',
         >>>     build='1.0.0')

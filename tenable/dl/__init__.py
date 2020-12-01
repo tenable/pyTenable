@@ -10,7 +10,6 @@ from box import BoxList
 from io import BytesIO
 import os, warnings
 
-
 class Downloads(APIPlatform):
     '''
     The Downloads object is the primary interaction point for users to
