@@ -364,7 +364,7 @@ class TagsAPI(TIOEndpoint):
         Args:
             *filters (tuple, optional):
                 A defined filter tuple consisting of the name, operator, and
-                value.  Example: ``('category_name', 'eq', 'Location')``.
+                value.  Example: ``('name', 'eq', 'Location')``.
             filter_type (str, optional):
                 If multiple filters are defined, the filter_type toggles the
                 behavior as to how these filters are used.  Either all of the
@@ -395,7 +395,7 @@ class TagsAPI(TIOEndpoint):
             Return all of the Tags of the Location category:
 
             >>> for tag in tio.tags.list_categories(
-            ...   ('category_name', 'eq', 'Location')):
+            ...   ('name', 'eq', 'Location')):
             ...     pprint(tag)
         '''
         query = self._tag_list_constructor(filters, self._filterset_categories,
