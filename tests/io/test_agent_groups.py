@@ -65,10 +65,10 @@ def test_agentgroups_configure_name_typeerror(api):
     with pytest.raises(TypeError):
         api.agent_groups.configure(1, 1)
 
-@pytest.mark.vcr()
-def test_agentgroups_configure_scanner_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.agent_groups.configure(1, 1, scanner_id='nope')
+#@pytest.mark.vcr()
+#def test_agentgroups_configure_scanner_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.agent_groups.configure(1, 1, scanner_id='nope')
 
 @pytest.mark.vcr()
 def test_agentgroups_configure_standard_user_permissionerror(stdapi, agentgroup):
@@ -228,7 +228,7 @@ def test_agentgroups_task_status_task_uuid_unexpectedvalueerror(api):
 @pytest.mark.vcr()
 def test_agentgroups_task_status(api, agentgroup):
     agents = api.agents.list()
-    t1 = api.agent_groups.add_agent(agentgroup['id'], 
+    t1 = api.agent_groups.add_agent(agentgroup['id'],
         agents.next()['id'],
         agents.next()['id']
     )
