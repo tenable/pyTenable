@@ -178,10 +178,10 @@ def test_agentgroups_details_group_id_typeerror(api):
     with pytest.raises(TypeError):
         api.agent_groups.details('nope')
 
-@pytest.mark.vcr()
-def test_agentgroups_details_scanner_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.agent_groups.details(1, scanner_id='nope')
+#@pytest.mark.vcr()
+#def test_agentgroups_details_scanner_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.agent_groups.details(1, scanner_id='nope')
 
 @pytest.mark.vcr()
 def test_agentgroups_details_nonexistant_group(api):
