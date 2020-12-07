@@ -93,7 +93,7 @@ class EditorAPI(TIOEndpoint):
                         })
         return resp
 
-    def parse_plugins(self, families, id, callfmt='editor/{id}/families/{fam}'):
+    def parse_plugins(self, families, id, callfmt='editor/scan/{id}/families/{fam}'):
         '''
         Walks through the plugin settings and will return the the configured
         settings for a given scan/policy
