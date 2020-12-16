@@ -412,7 +412,7 @@ class OrganizationAPI(SCEndpoint):
             params['pluginID'] = self._check('plugin', plugin, int)
         if port:
             params['port'] = self._check('port', port, int)
-        return self._api.get('organization/{}/acceptRiskRule'.format(
+        return self._api.get('organization/{}/recastRiskRule'.format(
             self._check('id', id, int)), params=params).json()['response']
 
     def managers_list(self, org_id, fields=None):
