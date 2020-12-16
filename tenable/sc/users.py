@@ -68,7 +68,7 @@ class UserAPI(SCEndpoint):
             # Verify that auth_type is one of the correct possible values and
             # store it within the camelCased version of the parameter.
             kw['authType'] = self._check('auth_type', kw['auth_type'], str,
-                choices=['ldap', 'legacy', 'saml', 'tns'])
+                choices=['ldap', 'legacy', 'saml', 'tns', 'linked'])
             del(kw['auth_type'])
 
         if 'email_notice' in kw:
