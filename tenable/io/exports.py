@@ -35,6 +35,7 @@ class ExportsIterator(APIResultsIterator):
         self.timeout = None
         self.chunks = list()
         self.processed = list()
+        self._wait_for_complete = False
         APIResultsIterator.__init__(self, api, **kw)
 
     def _process_page(self, page_data):
@@ -50,6 +51,7 @@ class ExportsIterator(APIResultsIterator):
         def get_status():
             # Query the API for the status of the export.
             status = self._api.get('{}/export/{}/status'.format(self.type, self.uuid)).json()
+            self._log.debug(f'EXPORT {self.type} {self.uuid} is status {status.get("status")}')
 
             # We need to get the list of chunks that we haven't completed yet and are
             # available for download.
@@ -64,6 +66,9 @@ class ExportsIterator(APIResultsIterator):
             if (status['status'] == 'FINISHED'
               and len(status['chunks_unfinished']) < 1):
                 raise StopIteration()
+
+            if status['status'] != 'FINISHED' and self._wait_for_complete:
+                status['chunks_unfinished'] = list()
 
             if status['status'] == 'ERROR':
                 raise TioExportsError(self.type, self.uuid)
@@ -191,6 +196,10 @@ class ExportsAPI(TIOEndpoint):
                 List of tag key-value pairs that must be associated to the
                 vulnerability data to be returned.  Key-value pairs are tuples
                 ``('key', 'value')`` and are case-sensitive.
+            timeout (int, optional):
+                Number of seconds to wait before timing out the export.  If left
+                unspecified the iterator will wait indefinitely for the export to
+                complete.
             uuid (str, optional):
                 To re-request an iterator based off of an existing export, pass
                 the UUID of the export to bypass the initial request and instead
@@ -212,6 +221,10 @@ class ExportsAPI(TIOEndpoint):
 
                     vpr={'lt': 7, 'neq': [5]}
 
+            when_done (bool, optional):
+                Wait to start working through the data until the export has finished
+                processing.  If left unspecified the default behavior is to download
+                chunks as they are available.
 
         Returns:
             :obj:`ExportIterator`:
@@ -317,7 +330,8 @@ class ExportsAPI(TIOEndpoint):
         return ExportsIterator(self._api,
             type='vulns',
             uuid=uuid,
-            timeout=self._check('timeout', kw.get('timeout'), int)
+            timeout=self._check('timeout', kw.get('timeout'), int),
+            _wait_for_cmplete=self._check('when_done', kw.get('when_done'), bool, default=False)
         )
 
     def assets(self, **kw):
@@ -376,10 +390,18 @@ class ExportsAPI(TIOEndpoint):
                 List of tag key-value pairs that must be associated to the
                 asset data to be returned.  Key-value pairs are tuples
                 ``('key', 'value')`` and are case-sensitive.
+            timeout (int, optional):
+                Number of seconds to wait before timing out the export.  If left
+                unspecified the iterator will wait indefinitely for the export to
+                complete.
             uuid (str, optional):
                 To re-request an iterator based off of an existing export, pass
                 the UUID of the export to bypass the initial request and instead
                 use the UUID passed to build the export iterator.
+            when_done (bool, optional):
+                Wait to start working through the data until the export has finished
+                processing.  If left unspecified the default behavior is to download
+                chunks as they are available.
 
         Returns:
             :obj:`ExportIterator`:
@@ -449,4 +471,10 @@ class ExportsAPI(TIOEndpoint):
             uuid = self._api.post(
                 'assets/export', json=payload).json()['export_uuid']
             self._api._log.debug('Initiated asset export {}'.format(uuid))
-        return ExportsIterator(self._api, type='assets', uuid=uuid)
+        return ExportsIterator(
+            self._api,
+            type='assets',
+            uuid=uuid,
+            timeout=self._check('timeout', kw.get('timeout'), int),
+            _wait_for_cmplete=self._check('when_done', kw.get('when_done'), bool, default=False)
+        )
