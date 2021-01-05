@@ -9,7 +9,7 @@ interactions:
       User-Agent: [pyTenable/0.3.18 (pyTenable/0.3.18; Python/2.7.15)]
       X-SecurityCenter: ['0000000000']
     method: GET
-    uri: https://securitycenter.home.cugnet.net/rest/organization/2/acceptRiskRule
+    uri: https://securitycenter.home.cugnet.net/rest/organization/2/recastRiskRule
   response:
     body: {string: !!python/unicode '{"type":"regular","response":[],"error_code":0,"error_msg":"","warnings":[],"timestamp":1557324775}
 
