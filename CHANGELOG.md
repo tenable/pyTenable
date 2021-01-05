@@ -4,6 +4,57 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.6]
+### Fixed
+- Removed integer checks for tio.editor.obj_details
+- Fixed Plugin Family URL for scan policies when using mixed families #255
+
+### Added
+- `timeout` and `when_done` are now documented and supported for both vuln and asset exports.
+
+
+## [1.2.5]
+### Fixed
+- Updated docs to replace "category_name" with "name" in the example in tagging. #241
+- Updated export None checking added in 1.2.3 to check for None correctly #248
+- Updated filter schema to always return the rule.
+- Incorrect endpoint used for sc.organizations.recast_risk_rules #256
+
+### Added
+- Added pagination support in tio.agent_groups_details #251
+- Added "linked" to accepted account types #257
+
+### Changed
+- Tenable.ot base version is now 3.7
+- TenableOT object now uses `secret_key` over `api_token`.
+- Updated VulnInternmixer iterator in Tenable.ot to support new format.
+
+
+## [1.2.4]
+
+This version was pulled due to a dirty build environment.  All 1.2.4 notes are in 1.2.5
+
+
+## [1.2.3]
+### Fixed
+- Corrected documentation issue #239
+
+### Changed
+- Corrected behavior in tio.exports.ExportsIterator now that the API has changed
+
+
+## [1.2.2]
+### Fixed
+- Reverted Tenable.sc credential issue #210 as the docs are incorrect.
+- Fixed documentation issues #228 #225 #233 #229
+- Fixed regex escaping in test suite #230
+
+
+## [1.2.1]
+### Changed
+- Removed ipaddress requirement as it's part of the standard library #226
+
+
 ## [1.2.0]
 ### Added
 - Embedded new base classes leveraging RESTfly for connection logic instead of the custom-coded ones.
@@ -488,6 +539,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Fixed Time Conversion Issue #6
 
+
+[1.2.6]: https://github.com/tenable/pyTenable/compare/1.2.5...1.2.6
+[1.2.5]: https://github.com/tenable/pyTenable/compare/1.2.3...1.2.5
+[1.2.3]: https://github.com/tenable/pyTenable/compare/1.2.2...1.2.3
+[1.2.2]: https://github.com/tenable/pyTenable/compare/1.2.1...1.2.2
+[1.2.1]: https://github.com/tenable/pyTenable/compare/1.2.0...1.2.1
+[1.2.0]: https://github.com/tenable/pyTenable/compare/1.1.3...1.2.0
+[1.1.3]: https://github.com/tenable/pyTenable/compare/1.1.2...1.1.3
 [1.1.2]: https://github.com/tenable/pyTenable/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/tenable/pyTenable/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/tenable/pyTenable/compare/1.0.7...1.1.0
