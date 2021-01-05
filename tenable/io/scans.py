@@ -383,7 +383,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: delete <scans-delete>`
 
         Args:
-            scan_id (int): The unique identifier for the scan.
+            scan_id (int or uuid): The unique identifier for the scan.
 
         Returns:
             :obj:`None`:
@@ -401,7 +401,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: history <scans-history>`
 
         Args:
-            id (int):
+            id (int or uuid):
                 The unique identifier for the scan.
             limit (int, optional):
                 The number of records to retrieve.  Default is 50
@@ -433,8 +433,8 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: delete-history <scans-delete-history>`
 
         Args:
-            scan_id (int): The unique identifier for the scan.
-            history_id (int): The unique identifier for the instance of the scan.
+            scan_id (int or uuid): The unique identifier for the scan.
+            history_id (int or uuid): The unique identifier for the instance of the scan.
 
         Returns:
             :obj:`None`:
@@ -468,7 +468,7 @@ class ScansAPI(TIOEndpoint):
             results method.
 
         Args:
-            scan_id (int): The unique identifier for the scan.
+            scan_id (int or uuid): The unique identifier for the scan.
 
         Returns:
             :obj:`dict`:
@@ -488,9 +488,11 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: details <scans-details>`
 
         Args:
-            scan_id (int): The unique identifier for the scan.
+            scan_id (int or uuid): The unique identifier for the scan.
             history_id (int, optional):
                 The unique identifier for the instance of the scan.
+            history_uuid (uuid, optional):
+                The UUID for the instance of the scan.
 
         Returns:
             :obj:`dict`:
@@ -525,7 +527,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: export <scans-export-request>`
 
         Args:
-            scan_id (int): The unique identifier of the scan.
+            scan_id (int or uuid): The unique identifier of the scan.
             *filters (tuple, optional):
                 A list of tuples detailing the filters that wish to be applied
                 the response data.  Each tuple is constructed as
@@ -535,6 +537,8 @@ class ScansAPI(TIOEndpoint):
                 refer to the API documentation linked above.
             history_id (int, optional):
                 The unique identifier for the instance of the scan.
+            history_uuid (uuid, optional):
+                The UUID for the instance of the scan.
             format (str, optional):
                 What format would you like the resulting data to be in.  The
                 default would be nessus output.  Available options are `nessus`,
@@ -720,12 +724,12 @@ class ScansAPI(TIOEndpoint):
         Examples:
             Import a .nessusv2 report:
 
-            >>> with open('example.nessus') as reportobj:
+            >>> with open('example.nessus', 'rb') as reportobj:
             ...     tio.scans.import(reportobj)
 
             Import a NessusDB report.
 
-            >>> with open('example.db') as reportobj:
+            >>> with open('example.db', 'rb') as reportobj:
             ...     tio.scans.import(reportobj, password='sekret')
         '''
         # First lets verify that the folder_id and password are typed correctly
@@ -754,7 +758,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: launch <scans-launch>`
 
         Args:
-            scan_id (int): The unique identifier for the scan.
+            scan_id (int or uuid): The unique identifier for the scan.
             targets (list, optional):
                 A list of targets to be scanned instead of the default targets
                 in the scan.
@@ -818,7 +822,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: pause <scans-pause>`
 
         Args:
-            scan_id (int): The unique identifier fo the scan to pause.
+            scan_id (int or uuid): The unique identifier fo the scan to pause.
             block (bool, optional):
                 Block until the scan is actually paused.  Default is False.
 
@@ -841,7 +845,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: plugin-output <scans-plugin-output>`
 
         Args:
-            scan_id (int): The unique identifier of the scan.
+            scan_id (int or uuid): The unique identifier of the scan.
             host_id (int): The unique identifier of the scanned host.
             plugin_id (int): The plugin id.
             history_id (int, optional):
@@ -874,7 +878,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: read-status <scans-read-status>`
 
         Args:
-            scan_id (int): The unique identifier for the scan.
+            scan_id (int or uuid): The unique identifier for the scan.
             read_status (bool):
                 Is the scan in a read or unread state?  True would denote read,
                 whereas False is unread.
@@ -899,7 +903,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: resume <scans-resume>`
 
         Args:
-            scan_id (int): The unique identifier for the scan.
+            scan_id (int or uuid): The unique identifier for the scan.
 
         Returns:
             :obj:`None`:
@@ -967,7 +971,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: get-latest-status <scans-get-latest-status>`
 
         Args:
-            scan_id (int): The unique identifier for the scan.
+            scan_id (int or uuid): The unique identifier for the scan.
 
         Returns:
             :obj:`str`:
@@ -1004,7 +1008,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scan: get-scan-history <scans-history-by-scan-id>`
 
         Args:
-            scan_id (int): The unique identifier for the scan.
+            scan_id (int or uuid): The unique identifier for the scan.
             history_uuid (str): The unique identifier for the scan instance.
 
         Returns:

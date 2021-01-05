@@ -211,10 +211,7 @@ class EditorAPI(TIOEndpoint):
         '''
         return self._api.get(
             'editor/{}/{}'.format(
-                self._check('etype', etype, str,
-                    choices=['scan', 'policy', 'scan/policy']),
-                self._check('id', id, int)
-            )).json()
+                self._check('etype', etype, str, choices=['scan', 'policy', 'scan/policy']), id)).json()
 
     def template_list(self, etype):
         '''
