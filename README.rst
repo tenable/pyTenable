@@ -1,20 +1,20 @@
 Welcome to pyTenable's documentation!
 =====================================
 
-.. image:: https://travis-ci.org/tenable/pyTenable.svg?branch=master
-   :target: https://travis-ci.org/tenable/pyTenable
+.. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ftenable%2FpyTenable%2Fbadge&label=build
+   :target: https://github.com/tenable/pyTenable/actions
 .. image:: https://img.shields.io/pypi/v/pytenable.svg
    :target: https://pypi.org/project/pyTenable/
 .. image:: https://img.shields.io/pypi/pyversions/pyTenable.svg
    :target: https://pypi.org/project/pyTenable/
-.. image:: https://img.shields.io/pypi/dm/pyTenable.svg
+.. image:: https://img.shields.io/pypi/dm/pytenable
    :target: https://github.com/tenable/pytenable
 .. image:: https://img.shields.io/github/license/tenable/pyTenable.svg
    :target: https://github.com/tenable/pytenable
 
-pyTenable is intended to be a pythonic interface into the Tenable application 
-APIs.  Further by providing a common interface and a common structure between 
-all of the various applications, we can ease the transition from the vastly 
+pyTenable is intended to be a pythonic interface into the Tenable application
+APIs.  Further by providing a common interface and a common structure between
+all of the various applications, we can ease the transition from the vastly
 different APIs between some of the products.
 
 - Issue Tracker: https://github.com/tenable/pyTenable/issues
@@ -23,14 +23,14 @@ different APIs between some of the products.
 Installation
 ------------
 
-To install the most recent published version to pypi, its simply a matter of 
+To install the most recent published version to pypi, its simply a matter of
 installing via pip:
 
 .. code-block:: bash
-   
+
    pip install pytenable
 
-If you're looking for bleeding-edge, then feel free to install directly from the 
+If you're looking for bleeding-edge, then feel free to install directly from the
 github repository like so:
 
 .. code-block:: bash
@@ -40,7 +40,7 @@ github repository like so:
 Getting Started
 ---------------
 
-Lets assume that we want to get the list of scans that have been run on our 
+Lets assume that we want to get the list of scans that have been run on our
 Tenable.io application.  Performing this action is as simple as the following:
 
 .. code-block:: python
