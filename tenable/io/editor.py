@@ -93,7 +93,7 @@ class EditorAPI(TIOEndpoint):
                         })
         return resp
 
-    def parse_plugins(self, families, id, callfmt='editor/{id}/families/{fam}'):
+    def parse_plugins(self, etype, families, id, callfmt='editor/{etype}/{id}/families/{fam}'):
         '''
         Walks through the plugin settings and will return the the configured
         settings for a given scan/policy
@@ -114,7 +114,7 @@ class EditorAPI(TIOEndpoint):
                 # dictionary of plugin_id:status.
                 plugins = dict()
                 plugs = self._api.get(callfmt.format(
-                    id=id, fam=families[family]['id'])).json()['plugins']
+                    etype=etype, id=id, fam=families[family]['id'])).json()['plugins']
                 for plugin in plugs:
                     plugins[plugin['id']] = plugin['status']
                 resp[family] = {
@@ -334,7 +334,7 @@ class EditorAPI(TIOEndpoint):
             # if the plugins sub-document exists, then lets walk down the
             # plugins dataset.
             obj['plugins'] = self._api.editor.parse_plugins(
-                editor['plugins']['families'], id)
+                etype, editor['plugins']['families'], id)
 
         # We next need to do a little post-parsing of the ACLs to find the
         # owner and put owner_id attribute into the appropriate location.
