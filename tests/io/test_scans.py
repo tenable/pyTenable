@@ -85,10 +85,10 @@ def test_scan_attachement_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scans.attachment(1, 1, 'none')
 
-@pytest.mark.vcr()
-def test_scan_configure_id_typeerror(api):
-    with pytest.raises(TypeError):
-        api.scans.configure('abc123')
+#@pytest.mark.vcr()
+#def test_scan_configure_id_typeerror(api):
+#    with pytest.raises(TypeError):
+#        api.scans.configure('abc123')
 
 #@pytest.mark.vcr()
 #def test_scan_configure_scan_id_typeerror(api):
