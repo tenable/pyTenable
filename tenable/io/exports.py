@@ -136,8 +136,8 @@ class ExportsIterator(APIResultsIterator):
         # If we have worked through the current page of records then we should
         # query the next page of records.
         if self.page_count >= len(self.page):
-            self.page_count = 0
             self._get_page()
+            self.page_count = 0
 
         # Get the relevant record, increment the counters, and return the
         # record.
