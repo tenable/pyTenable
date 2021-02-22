@@ -16,6 +16,7 @@ Methods available on ``tio.credentials``:
     .. automethod:: edit
     .. automethod:: list
     .. automethod:: types
+    .. automethod:: upload
 '''
 from tenable.utils import dict_merge
 from .base import TIOEndpoint, TIOIterator
@@ -370,3 +371,29 @@ class CredentialsAPI(TIOEndpoint):
             _resource='credentials'
         )
 
+    def upload(self, fobj):
+        '''
+        Uploads a file for use with a managed credential.
+
+        :devportal:`credentials: upload <file-upload>`
+
+        Args:
+            fobj (FileObject):
+                The file object intended to be uploaded into Tenable.io.
+
+        Returns:
+            :obj:`str`:
+                The fileuploaded attribute
+        '''
+
+        # We will attempt to discover the name of the file stored within the
+        # file object.  If the name of the file is successfully discovered, we
+        # will generate a random uuid string and append it to the name.
+        # Otherwise, we will generate a random uuid string to use instead.
+        kw = {
+            'files': {
+                'Filedata': fobj
+            }
+        }
+
+        return self._api.post('credentials/files', **kw).json()['fileuploaded']
