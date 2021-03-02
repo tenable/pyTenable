@@ -264,3 +264,7 @@ def test_credentials_list(api):
         check(c, 'permission', int)
         check(c, 'user_permissions', int)
     assert count == credentials.total
+
+@pytest.mark.vcr()
+def test_credentials_upload(api):
+    api.credentials.upload('ExampleDataGoesHere')
