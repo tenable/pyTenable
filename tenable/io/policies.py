@@ -115,7 +115,7 @@ class PoliciesAPI(TIOEndpoint):
             # if the plugins sub-document exists, then lets walk down the
             # plugins dataset.
             scan['plugins'] = self._api.editor.parse_plugins(
-                editor['plugins']['families'], tmpl_uuid)
+                'policy', editor['plugins']['families'], tmpl_uuid)
 
         # return the scan document to the caller.
         return scan
