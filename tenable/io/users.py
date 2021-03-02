@@ -157,7 +157,7 @@ class UsersAPI(TIOEndpoint):
             'permissions': user['permissions'],
             'enabled': user['enabled'],
             'email': user['email'],
-            'name': user['name'],
+            'name': user.get('name', None),
         }, payload)
         return self._api.put('users/{}'.format(id), json=payload).json()
 
