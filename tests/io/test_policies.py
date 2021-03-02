@@ -130,3 +130,22 @@ def test_policy_list(api, policy):
         check(p, 'template_uuid', 'scanner-uuid')
         check(p, 'user_permissions', int)
         check(p, 'visibility', str)
+
+@pytest.mark.vcr()
+def test_policy_template_details_success(api):
+    template_detail = api.policies.template_details('agent_advanced')
+    assert isinstance(template_detail, dict)
+    check(template_detail, 'compliance', dict)
+    check(template_detail, 'plugins', dict)
+    check(template_detail, 'settings', dict)
+    check(template_detail, 'uuid', 'scanner-uuid')
+
+@pytest.mark.vcr()
+def test_policy_template_details_keyerror(api):
+    with pytest.raises(KeyError):
+        api.policies.template_details('one')
+
+@pytest.mark.vcr()
+def test_policy_template_details_typeerror(api):
+    with pytest.raises(TypeError):
+        api.policies.template_details(1)
