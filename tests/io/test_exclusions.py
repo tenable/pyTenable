@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from tenable.errors import *
 from ..checker import check, single
+from tests.io.test_networks import network
 import uuid, pytest
 
 @pytest.fixture
@@ -138,6 +139,30 @@ def test_exclusions_create_standard_user_permissionerror(stdapi):
             end_time=datetime.utcnow() + timedelta(hours=1))
 
 @pytest.mark.vcr()
+def test_exclusions_create_with_selected_network_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
+            start_time=datetime.utcnow(),
+            end_time=datetime.utcnow() + timedelta(hours=1),
+            network_id='nope')
+
+@pytest.mark.vcr()
+def test_exclusions_create_with_selected_network_typeerror(api):
+    with pytest.raises(TypeError):
+        api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
+            start_time=datetime.utcnow(),
+            end_time=datetime.utcnow() + timedelta(hours=1),
+            network_id=1)
+
+@pytest.mark.vcr()
+def test_exclusions_create_with_selected_network_notfounderror(api):
+    with pytest.raises(NotFoundError):
+        api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
+            start_time=datetime.utcnow(),
+            end_time=datetime.utcnow() + timedelta(hours=1),
+            network_id='00000000-0000-0000-0000-100000000001')
+
+@pytest.mark.vcr()
 def test_exclusions_create_onetime_exclusion(api):
     resp = api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
         start_time=datetime.utcnow(),
@@ -251,6 +276,57 @@ def test_exclusions_create_yearly_exclusion(api):
     api.exclusions.delete(resp['id'])
 
 @pytest.mark.vcr()
+def test_exclusions_create_with_selected_network_exclusion(api, network):
+    resp = api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
+        start_time=datetime.utcnow(),
+        end_time=datetime.utcnow() + timedelta(hours=1),
+        frequency='yearly',
+        network_id=network['uuid'])
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'network_id', 'uuid')
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    details = api.exclusions.details(resp['id'])
+    assert details['network_id'] == network['uuid']
+    api.exclusions.delete(resp['id'])
+
+@pytest.mark.vcr()
+def test_exclusions_create_with_default_network_exclusion(api):
+    resp = api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
+        start_time=datetime.utcnow(),
+        end_time=datetime.utcnow() + timedelta(hours=1),
+        frequency='yearly')
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'network_id', 'uuid')
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    details = api.exclusions.details(resp['id'])
+    assert details['network_id'] == '00000000-0000-0000-0000-000000000000'
+    api.exclusions.delete(resp['id'])
+
+@pytest.mark.vcr()
 def test_exclusions_delete_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.exclusions.delete(999999)
@@ -345,6 +421,21 @@ def test_exclusions_edit_standard_user_permission_error(stdapi, exclusion):
         stdapi.exclusions.edit(exclusion['id'], name=str(uuid.uuid4()))
 
 @pytest.mark.vcr()
+def test_exclusions_edit_network_select_notfounderror(api, exclusion):
+    with pytest.raises(NotFoundError):
+        api.exclusions.edit(exclusion['id'], network_id='00000000-0000-0000-0000-100000000001')
+
+@pytest.mark.vcr()
+def test_exclusions_edit_network_select_unexpectedvalueerror(api, exclusion):
+    with pytest.raises(UnexpectedValueError):
+        api.exclusions.edit(exclusion['id'], network_id='nope')
+
+@pytest.mark.vcr()
+def test_exclusions_edit_network_select_typeerror(api, exclusion):
+    with pytest.raises(TypeError):
+        api.exclusions.edit(exclusion['id'], network_id=1)
+
+@pytest.mark.vcr()
 def test_exclusions_edit_success(api, exclusion):
     resp = api.exclusions.edit(exclusion['id'], name=str(uuid.uuid4()))
     assert isinstance(resp, dict)
@@ -361,6 +452,26 @@ def test_exclusions_edit_success(api, exclusion):
     check(resp['schedule']['rrules'], 'interval', int)
     check(resp['schedule'], 'starttime', 'datetime')
     check(resp['schedule'], 'timezone', str)
+
+@pytest.mark.vcr()
+def test_exclusions_edit_network_success(api, exclusion, network):
+    resp = api.exclusions.edit(exclusion['id'], name=str(uuid.uuid4()), network_id=network['uuid'])
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'network_id', 'uuid')
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    assert resp['network_id'] == network['uuid']
 
 @pytest.mark.vcr()
 def test_exclusions_list(api):
