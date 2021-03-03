@@ -17,6 +17,8 @@ Methods available on ``tio.exclusions``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from pprint import pprint
+
 from .base import TIOEndpoint
 from datetime import datetime
 
@@ -24,7 +26,7 @@ class ExclusionsAPI(TIOEndpoint):
     def create(self, name, members, start_time=None, end_time=None,
                timezone=None, description=None, frequency=None,
                interval=None, weekdays=None, day_of_month=None,
-               enabled=True):
+               enabled=True, network_id=None):
         '''
         Create a scan target exclusion.
 
@@ -60,6 +62,8 @@ class ExclusionsAPI(TIOEndpoint):
                 The default is today.
             enabled (bool, optional):
                 Is the exclusion enabled?  The default is ``True``
+            network_id (uuid, optional):
+                The ID of the network object associated with scanners where Tenable.io applies the exclusion.
 
         Returns:
             :obj:`dict`:
@@ -150,6 +154,8 @@ class ExclusionsAPI(TIOEndpoint):
             'name': self._check('name', name, str),
             'members': ','.join(self._check('members', members, list)),
             'description': self._check('description', description, str, default=''),
+            'network_id': self._check('network_id', network_id, 'uuid',
+                                      default='00000000-0000-0000-0000-000000000000'),
             'schedule': {
                 'enabled': self._check('enabled', enabled, bool, default=True),
                 'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
@@ -204,7 +210,7 @@ class ExclusionsAPI(TIOEndpoint):
 
     def edit(self, id, name=None, members=None, start_time=None,
              end_time=None, timezone=None, description=None, frequency=None,
-             interval=None, weekdays=None, day_of_month=None, enabled=None):
+             interval=None, weekdays=None, day_of_month=None, enabled=None, network_id=None):
         '''
         Edit an existing scan target exclusion.
 
@@ -216,7 +222,6 @@ class ExclusionsAPI(TIOEndpoint):
 
         Args:
             id (int): The id of the exclusion object in Tenable.io
-
             scanner_id (int, optional): The scanner id.
             name (str, optional): The name of the exclusion to create.
             description (str, optional):
@@ -237,6 +242,8 @@ class ExclusionsAPI(TIOEndpoint):
                 Default values: ``['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']``
             day_of_month (int, optional):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
+            network_id (uuid, optional):
+                The ID of the network object associated with scanners where Tenable.io applies the exclusion.
 
         Returns:
             :obj:`dict`:
@@ -298,6 +305,9 @@ class ExclusionsAPI(TIOEndpoint):
         if day_of_month is not None:
             payload['schedule']['rrules']['bymonthday'] = self._check(
                 'day_of_month', day_of_month, int, choices=list(range(1,32)))
+
+        if network_id:
+            payload['network_id'] = self._check('network_id', network_id, 'uuid')
 
         # Lets check to make sure that the scanner_id  and exclusion_id are
         # integers as the API documentation requests and if we don't raise an
