@@ -20,12 +20,16 @@ def exclusion(request, api):
 @pytest.mark.vcr()
 def test_exclusions_create_name_typeerror(api):
     with pytest.raises(TypeError):
-        api.exclusions.create(1, ['127.0.0.1'])
+        api.exclusions.create(1, ['127.0.0.1'],
+        start_time=datetime.utcnow(),
+        end_time=datetime.utcnow() + timedelta(hours=1))
 
 @pytest.mark.vcr()
 def test_exclusions_create_members_typeerror(api):
     with pytest.raises(TypeError):
-        api.exclusions.create(str(uuid.uuid4), '127.0.0.1')
+        api.exclusions.create(str(uuid.uuid4), '127.0.0.1',
+        start_time=datetime.utcnow(),
+        end_time=datetime.utcnow() + timedelta(hours=1))
 
 @pytest.mark.vcr()
 def test_exclusions_create_start_time_typeerror(api):
@@ -336,22 +340,22 @@ def test_exclusions_edit_interval_typerror(api, exclusion):
 @pytest.mark.vcr()
 def test_exclusions_edit_weekdays_typerror(api, exclusion):
     with pytest.raises(TypeError):
-        api.exclusions.edit(exclusion['id'], weekdays='nope')
+        api.exclusions.edit(exclusion['id'], frequency='Weekly', weekdays='nope')
 
 @pytest.mark.vcr()
 def test_exclusions_edit_weekdays_unexpectedvalue(api, exclusion):
     with pytest.raises(UnexpectedValueError):
-        api.exclusions.edit(exclusion['id'], weekdays=['MO', 'WE', 'nope'])
+        api.exclusions.edit(exclusion['id'], frequency='Weekly', weekdays=['MO', 'WE', 'nope'])
 
 @pytest.mark.vcr()
 def test_exclusions_edit_dayofmonth_typerror(api, exclusion):
     with pytest.raises(TypeError):
-        api.exclusions.edit(exclusion['id'], day_of_month='nope')
+        api.exclusions.edit(exclusion['id'], frequency='monthly', day_of_month='nope')
 
 @pytest.mark.vcr()
 def test_exclusions_edit_dayofmonth_unexpectedvalue(api, exclusion):
     with pytest.raises(UnexpectedValueError):
-        api.exclusions.edit(exclusion['id'], day_of_month=0)
+        api.exclusions.edit(exclusion['id'], frequency='monthly', day_of_month=0)
 
 @pytest.mark.vcr()
 def test_exclusions_edit_standard_user_permission_error(stdapi, exclusion):
