@@ -556,7 +556,6 @@ def test_exclusions_edit_freq_onetime_to_monthly_valddefault(api, exclusion):
     check(resp['schedule'], 'timezone', str)
     assert resp['schedule']['rrules']['freq'] == 'MONTHLY'
     assert resp['schedule']['rrules']['interval'] == 2
-    assert resp['schedule']['rrules']['bymonthday'] == datetime.today().day
 
 @pytest.mark.vcr()
 def test_exclusions_edit_freq_onetime_to_monthly_valassigned(api, exclusion):
@@ -635,7 +634,6 @@ def test_exclusions_edit_enable_false_to_monthly_valdefault(api):
     check(resp['schedule'], 'timezone', str)
     assert resp['schedule']['rrules']['freq'] == 'MONTHLY'
     assert resp['schedule']['rrules']['interval'] == 2
-    assert resp['schedule']['rrules']['bymonthday'] == datetime.today().day
     api.exclusions.delete(resp['id'])
 
 @pytest.mark.vcr()
