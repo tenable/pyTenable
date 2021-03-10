@@ -32,6 +32,13 @@ class RoleAPI(SCEndpoint):
             # Validate that the description parameter is a string.
             self._check('description', kw['description'], str)
 
+        kw['permScan'] = self._check('can_scan',
+                                     kw.pop('can_scan', None),
+                                     str,
+                                     case='lower',
+                                     choices=['full', 'policy', 'none'],
+                                     default='none')
+
         # Snake-cased boolean role mapping to the API attributes.
         mapping = {
             'manage_groups': 'permManageGroups',
@@ -48,7 +55,6 @@ class RoleAPI(SCEndpoint):
             'purge_tickets': 'permPurgeTickets',
             'purge_scans': 'permPurgeScanResults',
             'purge_reports': 'permPurgeReportResults',
-            'can_scan': 'permScan',
             'can_agent_scan': 'permAgentsScan',
             'can_share': 'permShareObjects',
             'can_feed_update': 'permUpdateFeeds',
@@ -86,9 +92,10 @@ class RoleAPI(SCEndpoint):
             can_import_scan (bool, optional):
                 Are members of this role allowed to import scans?  If left
                 unspecified, the default is ``False``.
-            can_scan (bool, optional):
-                Are members of this role allowed to perform scans?  If left
-                unspecified, the default is ``False``.
+            can_scan (str, optional):
+                Are members of this role allowed to perform scans?  Accepted
+                values are `full`, `policy`, and `none`.  If left unspecified,
+                the default is `none`.
             can_share (bool, optional):
                 Are members of this role allowed to share objects with other
                 groups?  If left unspecified, the default is ``False``.
