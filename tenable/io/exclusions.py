@@ -147,9 +147,9 @@ class ExclusionsAPI(TIOEndpoint):
                 default=datetime.today().day)
 
         # construct payload schedule based on enable
-        if enabled:
+        if enabled is True:
             schedule = {
-                'enabled': self._check('enabled', enabled, bool, default=True),
+                'enabled': True,
                 'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
                 'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
                 'timezone': self._check('timezone', timezone, str,
@@ -157,10 +157,10 @@ class ExclusionsAPI(TIOEndpoint):
                                         default='Etc/UTC'),
                 'rrules': rrules
             }
+        elif enabled is False:
+            schedule = {'enabled': False}
         else:
-            schedule = {
-                'enabled': self._check('enabled', enabled, bool)
-            }
+            raise TypeError('enabled must be a boolean value.')
 
         # Next we need to construct the rest of the payload
         payload = {
