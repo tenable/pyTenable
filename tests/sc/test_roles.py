@@ -14,6 +14,14 @@ def test_roles_constructor_role_mapping_typeerror(sc):
     with pytest.raises(TypeError):
         sc.roles._constructor(can_view_logs='nothing')
 
+def test_roles_constructor_can_scan_(sc):
+    with pytest.raises(TypeError):
+        sc.roles._constructor(can_scan=True)
+    with pytest.raises(UnexpectedValueError):
+        sc.roles._constructor(can_scan='something')
+    assert sc.roles._constructor(can_scan='full') == {'permScan': 'full'}
+    assert sc.roles._constructor(can_scan='Full') == {'permScan': 'full'}
+
 def test_roles_constructor_success(sc):
     role = sc.roles._constructor(
         name='Example',
@@ -29,7 +37,8 @@ def test_roles_constructor_success(sc):
         'permManageAttributeSets': 'true',
         'permShareObjects': 'true',
         'permCreatePolicies': 'true',
-        'permViewOrgLogs': 'false'
+        'permViewOrgLogs': 'false',
+        'permScan': 'none'
     }
 
 @pytest.fixture
