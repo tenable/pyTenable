@@ -17,6 +17,7 @@ Methods available on ``tio.exclusions``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from restfly.utils import dict_merge
 from pprint import pprint
 
 from .base import TIOEndpoint
@@ -61,6 +62,7 @@ class ExclusionsAPI(TIOEndpoint):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
                 The default is today.
             enabled (bool, optional):
+                enable/disable exclusion. The default is ``True``
                 Is the exclusion enabled?  The default is ``True``
             network_id (uuid, optional):
                 The ID of the network object associated with scanners where Tenable.io applies the exclusion.
@@ -149,6 +151,22 @@ class ExclusionsAPI(TIOEndpoint):
                 choices=list(range(1,32)),
                 default=datetime.today().day)
 
+        # construct payload schedule based on enable
+        if enabled:
+            schedule = {
+                'enabled': self._check('enabled', enabled, bool, default=True),
+                'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
+                'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
+                'timezone': self._check('timezone', timezone, str,
+                                        choices=self._api._tz,
+                                        default='Etc/UTC'),
+                'rrules': rrules
+            }
+        else:
+            schedule = {
+                'enabled': self._check('enabled', enabled, bool)
+            }
+
         # Next we need to construct the rest of the payload
         payload = {
             'name': self._check('name', name, str),
@@ -156,15 +174,7 @@ class ExclusionsAPI(TIOEndpoint):
             'description': self._check('description', description, str, default=''),
             'network_id': self._check('network_id', network_id, 'uuid',
                                       default='00000000-0000-0000-0000-000000000000'),
-            'schedule': {
-                'enabled': self._check('enabled', enabled, bool, default=True),
-                'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'timezone': self._check('timezone', timezone, str,
-                    choices=self._api._tz,
-                    default='Etc/UTC'),
-                'rrules': rrules
-            }
+            'schedule': schedule
         }
 
         # And now to make the call and return the data.
@@ -242,6 +252,8 @@ class ExclusionsAPI(TIOEndpoint):
                 Default values: ``['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']``
             day_of_month (int, optional):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
+            enabled (bool, optional):
+                enable/disable exclusion.
             network_id (uuid, optional):
                 The ID of the network object associated with scanners where Tenable.io applies the exclusion.
 
@@ -270,41 +282,64 @@ class ExclusionsAPI(TIOEndpoint):
         if enabled is not None:
             payload['schedule']['enabled'] = self._check('enabled', enabled, bool)
 
-        if start_time:
-            payload['schedule']['starttime'] = self._check(
-                'start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+        if payload['schedule']['enabled']:
+            frequency = self._check('frequency', frequency, str,
+                                    choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
+                                    default=payload['schedule']['rrules'].get('freq')
+                                    if payload['schedule']['rrules'] is not None else 'ONETIME',
+                                    case='upper')
 
-        if end_time:
-            payload['schedule']['endtime'] = self._check(
-                'end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+            rrules = {
+                'freq': frequency,
+            }
 
-        if timezone:
-            payload['schedule']['timezone'] = self._check(
-                'timezone', timezone, str, choices=self._api._tz)
+            # frequency default value is designed for weekly and monthly based on below conditions
+            # - if schedule rrules is None and not defined in edit params, assign default values
+            # - if schedule rrules is not None and not defined in edit params, assign old values
+            # - if schedule rrules is not None and not defined in edit params
+            # and byweekday/bymonthday key not already exist, assign default values
+            # - if schedule rrules is not None and defined in edit params, assign new values
+            if frequency == 'WEEKLY':
+                rrules['byweekday'] = ','.join(self._check(
+                    'weekdays', weekdays, list,
+                    choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                    default=payload['schedule']['rrules'].get('byweekday', '').split()
+                            or ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']
+                    if payload['schedule']['rrules'] is not None else
+                    ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                    case='upper'))
+                # In the same vein as the frequency check, we're accepting
+                # case-insensitive input, comparing it to our known list of
+                # acceptable responses, then joining them all together into a
+                # comma-separated string.
 
-        if frequency:
-            payload['schedule']['rrules']['freq'] = self._check(
-                'frequency', frequency, str,
-                choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-                case='upper')
+            if frequency == 'MONTHLY':
+                rrules['bymonthday'] = self._check(
+                    'day_of_month', day_of_month, int, choices=list(range(1, 32)),
+                    default=payload['schedule']['rrules'].get('bymonthday', datetime.today().day)
+                    if payload['schedule']['rrules'] is not None else datetime.today().day)
 
-        if interval:
-            payload['schedule']['rrules']['interval'] = self._check(
-                'interval', interval, int)
+            # update new rrules in existing payload
+            if payload['schedule']['rrules'] is not None:
+                dict_merge(payload['schedule']['rrules'], rrules)
+            else:
+                payload['schedule']['rrules'] = rrules
 
-        if weekdays:
-            payload['schedule']['rrules']['byweekday'] = ','.join(self._check(
-                'weekdays', weekdays, list,
-                choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                case='upper'))
-            # In the same vein as the frequency check, we're accepting
-            # case-insensitive input, comparing it to our known list of
-            # acceptable responses, then joining them all together into a
-            # comma-separated string.
+            if start_time:
+                payload['schedule']['starttime'] = self._check(
+                    'start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
 
-        if day_of_month is not None:
-            payload['schedule']['rrules']['bymonthday'] = self._check(
-                'day_of_month', day_of_month, int, choices=list(range(1,32)))
+            if end_time:
+                payload['schedule']['endtime'] = self._check(
+                    'end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+
+            if interval:
+                payload['schedule']['rrules']['interval'] = self._check(
+                    'interval', interval, int)
+
+            payload['schedule']['timezone'] = self._check('timezone', timezone, str,
+                                                          choices=self._api._tz,
+                                                          default='Etc/UTC')
 
         if network_id:
             payload['network_id'] = self._check('network_id', network_id, 'uuid')
