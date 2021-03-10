@@ -32,9 +32,6 @@ class TargetGroupsAPI(TIOEndpoint):
             members (list):
                 The members of the target group.  FQDNs, CIDRs, IPRanges, and
                 individual IPs are supported.
-            type (str, optional):
-                The type of target group to create.  Valid types are `user` and
-                `system`.  The default if not specified is `user`.
             acls (list, optional):
                 A list of ACLs defining how the asset list can be used.  For
                 further information on how the ACL dictionaries should be
@@ -53,9 +50,6 @@ class TargetGroupsAPI(TIOEndpoint):
 
         if 'acls' in kw:
             payload['acls'] = self._check('acls', kw['acls'], list)
-        if 'type' in kw:
-            payload['type'] = self._check('type', kw['type'], str,
-                choices=['system', 'user'], default='user')
         if len(members) > 0:
             payload['members'] = ','.join(self._check('members', members, list))
         else:
@@ -120,9 +114,6 @@ class TargetGroupsAPI(TIOEndpoint):
                 written, please refer to the API documentation.  NOTE: modifying
                 ACLs is atomic and not additive.  Please provide the complete
                 list of ACLs that this asset group will need.
-            type (str, optional):
-                The type of target group to create.  Valid types are `user` and
-                `system`.
 
         Returns:
             :obj:`dict`:
@@ -137,9 +128,6 @@ class TargetGroupsAPI(TIOEndpoint):
             payload['name'] = self._check('name', kw['name'], str)
         if 'acls' in kw:
             payload['acls'] = self._check('acls', kw['acls'], list)
-        if 'type' in kw:
-            payload['type'] = self._check('type', kw['type'], str,
-                choices=['system', 'user'])
         if 'members' in kw and len(kw['members']) > 0:
             payload['members'] = ','.join(self._check('members', kw['members'], list))
 

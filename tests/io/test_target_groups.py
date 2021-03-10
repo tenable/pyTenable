@@ -15,16 +15,6 @@ def targetgroup(request, api):
     return group
 
 @pytest.mark.vcr()
-def test_targetgroups_create_name_typeerror(api):
-    with pytest.raises(TypeError):
-        api.target_groups.create(False, [])
-
-@pytest.mark.vcr()
-def test_targetgroups_create_type_typeerror(api):
-    with pytest.raises(TypeError):
-        api.target_groups.create('nope', [], type=1)
-
-@pytest.mark.vcr()
 def test_targetgroups_create_type_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
         api.target_groups.create('nope', [], type='nope')
@@ -115,16 +105,6 @@ def test_targetgroups_edit_name_typeerror(api):
 def test_targetgroups_edit_acls_typeerror(api):
     with pytest.raises(TypeError):
         api.target_groups.edit(1, acls=False)
-
-@pytest.mark.vcr()
-def test_targetgroups_edit_type_typeerror(api):
-    with pytest.raises(TypeError):
-        api.target_groups.edit(1, type=False)
-
-@pytest.mark.vcr()
-def test_targetgroups_edit_type_unexpectedvalue(api):
-    with pytest.raises(UnexpectedValueError):
-        api.target_groups.edit(1, type='nope')
 
 @pytest.mark.vcr()
 def test_targetgroups_edit(api, targetgroup):
