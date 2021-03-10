@@ -134,14 +134,11 @@ class TargetGroupsAPI(TIOEndpoint):
         # We need to get the current asset group and then merge in the modified
         # data.  We will store the information in the same variable as the
         # modified information was built into.
-        for agroup in self.list():
-            if agroup['id'] == self._check('id', id, int):
-                craw = agroup
+        craw = self.details(self._check('id', id, int))
         current = {
-            'name': craw['name'],
-            'acls': craw['acls'],
-            'type': craw['type'],
-            'members': craw['members'],
+            'name': craw.get('name'),
+            'acls': craw.get('acls'),
+            'members': craw.get('members'),
         }
         payload = dict_merge(current, payload)
         return self._api.put('target-groups/{}'.format(id), json=payload).json()
