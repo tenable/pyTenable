@@ -219,7 +219,8 @@ class TenableSC(APISession):
             vendor=vendor,
             product=product,
             build=build,
-            timeout=timeout
+            timeout=timeout,
+            ssl_verify=ssl_verify
         )
 
         # If a client-side certificate is specified, then we will want to add
@@ -271,15 +272,6 @@ class TenableSC(APISession):
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
         self.logout()
-
-    def _build_session(self, session=None):
-        super(TenableSC, self)._build_session(session)
-        # As Tenable.sc is generally installed without a certificate chain that
-        # we can validate, we will want to turn off verification and the
-        # associated warnings unless told to otherwise:
-        self._session.verify = self._ssl_verify
-        if not self._ssl_verify:
-            warnings.filterwarnings('ignore', 'Unverified HTTPS request')
 
     def _resp_error_check(self, response, **kwargs):
         if not kwargs.get('stream', False):

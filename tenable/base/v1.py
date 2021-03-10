@@ -366,7 +366,8 @@ class APISession(object):
 
     def __init__(self, url=None, retries=None, backoff=None,
                  ua_identity=None, session=None, proxies=None,
-                 vendor=None, product=None, build=None, timeout=None):
+                 vendor=None, product=None, build=None, timeout=None,
+                 ssl_verify=None):
         if url and url_validator(url):
             self._url = url
         if retries and isinstance(retries, int):
@@ -387,6 +388,12 @@ class APISession(object):
             self._timeout = timeout
         self._log = logging.getLogger('{}.{}'.format(
             self.__module__, self.__class__.__name__))
+
+        # Setting the SSL Verification flag on the object itself so that it's
+        # reusable if the user logs out and logs back in.
+        self._ssl_verify = ssl_verify
+
+
         self._build_session(session)
 
     def _build_session(self, session=None):
@@ -397,8 +404,13 @@ class APISession(object):
             self._session = session
         else:
             self._session = requests.Session()
+
         if self._proxies:
             self._session.proxies.update(self._proxies)
+
+        self._session.verify = self._ssl_verify
+        if not self._ssl_verify:
+            warnings.filterwarnings('ignore', 'Unverified HTTPS request')
 
         # Update the User-Agent string with the information necessary.
         uname = platform.uname()
@@ -454,6 +466,8 @@ class APISession(object):
         '''
         retries = 0
         retry_codes = [429, 501, 502, 503, 504]
+        kwargs['verify'] = kwargs.get('verify', self._ssl_verify)
+
         if 'retry_on' in kwargs:
             # if the retry_on parameter is passed, then we will consume this
             # to extend the codes that we will attempt to retry.

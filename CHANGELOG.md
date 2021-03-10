@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.8]
+### Changed
+- Centralized the SSL Verification process and support passing the verify param
+  to Python Requests regardless of the of the session setting.  This addresses
+  the requests issue identified https://github.com/psf/requests/issues/3829
+  #265 #166 #139
+
+[1.2.8]: https://github.com/tenable/pyTenable/compare/1.2.7...1.2.8
+
 ## [1.2.7]
 ### Fixed
 - Tenable.io policy template details required type #271
