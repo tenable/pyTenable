@@ -294,9 +294,11 @@ class TagsAPI(TIOEndpoint):
         if filter_type:
             query['ft'] = self._check('filter_type', filter_type, str,
                 choices=['AND', 'OR'], case='upper')
-        if sort:
-            query['sort'] = self._check('sort', sort, str,
-                choices=[k for k in filterdefs.keys()])
+        if sort and self._check('sort', sort, tuple):
+            query['sort'] = ','.join(['{}:{}'.format(
+                self._check('sort_field', i[0], str, choices=[k for k in filterdefs.keys()]),
+                self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
+            ) for i in sort])
         return query
 
     def list(self, *filters, **kw):
