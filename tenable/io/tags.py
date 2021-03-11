@@ -326,8 +326,9 @@ class TagsAPI(TIOEndpoint):
             offset (int, optional):
                 How many records to skip before returning results.  If nothing
                 is set, it will default to 0.
-            sort (str, optional):
-                What field to sort the results on.
+            sort (tuple, optional):
+                A tuple of tuples identifying the the field and sort order of
+                the field.
 
         Returns:
             :obj:`TagIterator`:
@@ -381,8 +382,9 @@ class TagsAPI(TIOEndpoint):
             offset (int, optional):
                 How many records to skip before returning results.  If nothing
                 is set, it will default to 0.
-            sort (str, optional):
-                What field to sort the results on.
+            sort (tuple, optional):
+                A tuple of tuples identifying the the field and sort order of
+                the field.
 
         Returns:
             :obj:`TagIterator`:
