@@ -394,7 +394,7 @@ class ScansAPI(TIOEndpoint):
         '''
         self._api.delete('scans/{}'.format(scan_id))
 
-    def history(self, id, limit=None, offset=None, pages=None):
+    def history(self, id, limit=None, offset=None, pages=None, sort=None):
         '''
         Get the scan history of a given scan from Tenable.io.
 
@@ -407,6 +407,9 @@ class ScansAPI(TIOEndpoint):
                 The number of records to retrieve.  Default is 50
             offset (int, optional):
                 The starting record to retrieve.  Default is 0.
+            sort (tuple, optional):
+                A tuple of tuples identifying the the field and sort order of
+                the field.
 
         Returns:
             :obj:`ScanHistoryIterator`:
@@ -417,11 +420,18 @@ class ScansAPI(TIOEndpoint):
             >>> for history in tio.scans.history(1):
             ...     pprint(history)
         '''
+        query = dict()
+        if sort and self._check('sort', sort, tuple):
+            query['sort'] = ','.join(['{}:{}'.format(
+                self._check('sort_field', i[0], str),
+                self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
+            ) for i in sort])
+
         return ScanHistoryIterator(self._api,
             _limit=limit if limit else 50,
             _offset=offset if offset else 0,
             _pages_total=pages,
-            _query=dict(),
+            _query=query,
             _path='scans/{}/history'.format(id),
             _resource='history'
         )
