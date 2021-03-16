@@ -711,6 +711,81 @@ def test_exclusions_edit_enable_true_exclusion(api):
     api.exclusions.delete(resp['id'])
 
 @pytest.mark.vcr()
+def test_exclusions_edit_interval_exclusion_valdefault(api):
+    exclusion = api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'], enabled=False)
+    resp = api.exclusions.edit(exclusion['id'],
+                               enabled=True,
+                               start_time = datetime.utcnow(),
+                               end_time = datetime.utcnow() + timedelta(hours=1))
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    assert resp['schedule']['rrules']['interval'] == 1
+    api.exclusions.delete(resp['id'])
+
+@pytest.mark.vcr()
+def test_exclusions_edit_interval_exclusion_valassigned(api):
+    exclusion = api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'], enabled=False)
+    resp = api.exclusions.edit(exclusion['id'],
+                               enabled=True,
+                               interval=3,
+                               start_time = datetime.utcnow(),
+                               end_time = datetime.utcnow() + timedelta(hours=1))
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    assert resp['schedule']['rrules']['interval'] == 3
+    api.exclusions.delete(resp['id'])
+
+@pytest.mark.vcr()
+def test_exclusions_edit_interval_exclusion_valavailable(api):
+    exclusion = api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'], enabled=True,
+                                      frequency='Weekly',
+                                      interval=2,
+                                      start_time=datetime.utcnow(),
+                                      end_time=datetime.utcnow() + timedelta(hours=1)
+                                      )
+    resp = api.exclusions.edit(exclusion['id'])
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'members', str)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    assert resp['schedule']['rrules']['interval'] == 2
+    api.exclusions.delete(resp['id'])
+
+@pytest.mark.vcr()
 def test_exclusions_edit_enabled_false_exclusion(api):
     exclusion = api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'], enabled=False)
     resp = api.exclusions.edit(exclusion['id'], members=['127.0.0.2'])

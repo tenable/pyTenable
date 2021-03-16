@@ -281,8 +281,11 @@ class ExclusionsAPI(TIOEndpoint):
                                     if payload['schedule']['rrules'] is not None else 'ONETIME',
                                     case='upper')
 
+            # interval needs to be handled in schedule enabled excusion
             rrules = {
                 'freq': frequency,
+                'interval': payload['schedule']['rrules'].get('interval', None) or 1
+                if payload['schedule']['rrules'] is not None else 1
             }
 
             # frequency default value is designed for weekly and monthly based on below conditions
