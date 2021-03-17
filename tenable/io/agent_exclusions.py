@@ -17,7 +17,7 @@ Methods available on ``tio.agent_exclusions``:
     .. automethod:: list
 '''
 from .base import TIOEndpoint
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 class AgentExclusionsAPI(TIOEndpoint):
     def create(self, name, scanner_id=1, start_time=None, end_time=None,
@@ -57,7 +57,7 @@ class AgentExclusionsAPI(TIOEndpoint):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
                 The default is today.
             enabled (bool, optional):
-                Is the exclusion enabled?  The default is ``True``
+                enable/disable exclusion. The default is ``True``
 
         Returns:
             dict: Dictionary of the newly minted exclusion.
@@ -148,8 +148,10 @@ class AgentExclusionsAPI(TIOEndpoint):
             'description': self._check('description', description, str, default=''),
             'schedule': {
                 'enabled': self._check('enabled', enabled, bool, default=True),
-                'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
+                'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+                    if enabled is True else datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
+                'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+                    if enabled is True else (datetime.utcnow() + timedelta(hours=1)).strftime('%Y-%m-%d %H:%M:%S'),
                 'timezone': self._check('timezone', timezone, str,
                     choices=self._api._tz,
                     default='Etc/UTC'),
