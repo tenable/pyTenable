@@ -16,8 +16,9 @@ Methods available on ``tio.agent_exclusions``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from restfly.utils import dict_merge, dict_clean
 from .base import TIOEndpoint
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 class AgentExclusionsAPI(TIOEndpoint):
     def create(self, name, scanner_id=1, start_time=None, end_time=None,
@@ -57,7 +58,7 @@ class AgentExclusionsAPI(TIOEndpoint):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
                 The default is today.
             enabled (bool, optional):
-                Is the exclusion enabled?  The default is ``True``
+                enable/disable exclusion. The default is ``True``
 
         Returns:
             dict: Dictionary of the newly minted exclusion.
@@ -148,8 +149,10 @@ class AgentExclusionsAPI(TIOEndpoint):
             'description': self._check('description', description, str, default=''),
             'schedule': {
                 'enabled': self._check('enabled', enabled, bool, default=True),
-                'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
+                'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+                    if enabled is True else datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
+                'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+                    if enabled is True else (datetime.utcnow() + timedelta(hours=1)).strftime('%Y-%m-%d %H:%M:%S'),
                 'timezone': self._check('timezone', timezone, str,
                     choices=self._api._tz,
                     default='Etc/UTC'),
@@ -242,6 +245,8 @@ class AgentExclusionsAPI(TIOEndpoint):
                 Default values: ``['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']``
             day_of_month (int, optional):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
+            enabled (bool, optional):
+                enable/disable exclusion.
 
         Returns:
             dict: Dictionary of the newly minted exclusion.
@@ -262,41 +267,62 @@ class AgentExclusionsAPI(TIOEndpoint):
         if enabled is not None:
             payload['schedule']['enabled'] = self._check('enabled', enabled, bool)
 
-        if start_time:
-            payload['schedule']['starttime'] = self._check(
-                'start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+        if payload['schedule']['enabled']:
+            frequency = self._check('frequency', frequency, str,
+                                    choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
+                                    default=payload['schedule']['rrules']['freq'],
+                                    case='upper')
 
-        if end_time:
-            payload['schedule']['endtime'] = self._check(
-                'end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+            rrules = {
+                'freq': frequency,
+                'interval': payload['schedule']['rrules']['interval'],
+                'byweekday': None,
+                'bymonthday': None,
+            }
 
-        if timezone:
-            payload['schedule']['timezone'] = self._check(
-                'timezone', timezone, str, choices=self._api._tz)
+            # frequency default value is designed for weekly and monthly based on below conditions
+            # - if schedule rrules is not None and not defined in edit params,
+            #   and byweekday/bymonthday key already exist, assign old values
+            # - if schedule rrules is not None and not defined in edit params
+            #   and byweekday/bymonthday key not already exist, assign default values
+            # - if schedule rrules is not None and defined in edit params, assign new values
+            if frequency == 'WEEKLY':
+                rrules['byweekday'] = ','.join(self._check(
+                    'weekdays', weekdays, list,
+                    choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                    default=payload['schedule']['rrules'].get('byweekday', '').split()
+                            or ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                    case='upper'))
+                # In the same vein as the frequency check, we're accepting
+                # case-insensitive input, comparing it to our known list of
+                # acceptable responses, then joining them all together into a
+                # comma-separated string.
 
-        if frequency:
-            payload['schedule']['rrules']['freq'] = self._check(
-                'frequency', frequency, str,
-                choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-                case='upper')
+            if frequency == 'MONTHLY':
+                rrules['bymonthday'] = self._check(
+                    'day_of_month', day_of_month, int, choices=list(range(1, 32)),
+                    default=payload['schedule']['rrules'].get('bymonthday', datetime.today().day))
 
-        if interval:
-            payload['schedule']['rrules']['interval'] = self._check(
-                'interval', interval, int)
+            # update new rrules in existing payload
+            dict_merge(payload['schedule']['rrules'], rrules)
+            # remove null values from payload
+            payload = dict_clean(payload)
 
-        if weekdays:
-            payload['schedule']['rrules']['byweekday'] = ','.join(self._check(
-                'weekdays', weekdays, list,
-                choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                case='upper'))
-            # In the same vein as the frequency check, we're accepting
-            # case-insensitive input, comparing it to our known list of
-            # acceptable responses, then joining them all together into a
-            # comma-separated string.
+            if start_time:
+                payload['schedule']['starttime'] = self._check(
+                    'start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
 
-        if day_of_month is not None:
-            payload['schedule']['rrules']['bymonthday'] = self._check(
-                'day_of_month', day_of_month, int, choices=list(range(1,32)))
+            if end_time:
+                payload['schedule']['endtime'] = self._check(
+                    'end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+
+            if interval:
+                payload['schedule']['rrules']['interval'] = self._check(
+                    'interval', interval, int)
+
+            if timezone:
+                payload['schedule']['timezone'] = self._check(
+                    'timezone', timezone, str, choices=self._api._tz)
 
         # Lets check to make sure that the scanner_id  and exclusion_id are
         # integers as the API documentation requests and if we don't raise an
