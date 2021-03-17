@@ -18,8 +18,6 @@ Methods available on ``tio.exclusions``:
     .. automethod:: list
 '''
 from restfly.utils import dict_merge
-from pprint import pprint
-
 from .base import TIOEndpoint
 from datetime import datetime
 
@@ -63,7 +61,6 @@ class ExclusionsAPI(TIOEndpoint):
                 The default is today.
             enabled (bool, optional):
                 enable/disable exclusion. The default is ``True``
-                Is the exclusion enabled?  The default is ``True``
             network_id (uuid, optional):
                 The ID of the network object associated with scanners where Tenable.io applies the exclusion.
 
