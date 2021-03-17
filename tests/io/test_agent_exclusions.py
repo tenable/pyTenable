@@ -363,6 +363,196 @@ def test_agentexclusions_edit_success(api, agentexclusion):
     api.agent_exclusions.edit(agentexclusion['id'], name=str(uuid.uuid4()))
 
 @pytest.mark.vcr()
+def test_agentexclusions_edit_freq_onetime_to_daily(api, agentexclusion):
+    resp = api.agent_exclusions.edit(agentexclusion['id'], name=str(uuid.uuid4()),
+                               frequency='daily',
+                               interval=2)
+
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', str)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    assert resp['schedule']['rrules']['freq'] == 'DAILY'
+    assert resp['schedule']['rrules']['interval'] == '2'
+
+@pytest.mark.vcr()
+def test_agentexclusions_edit_enable_exclusion(api):
+    agentexclusion = api.agent_exclusions.create(str(uuid.uuid4()), enabled=False)
+    resp = api.agent_exclusions.edit(agentexclusion['id'], enabled=True,
+                                     start_time=dtime.utcnow(),
+                                     end_time=dtime.utcnow() + timedelta(hours=1))
+    check(resp, 'id', int)
+    check(resp, 'name', str)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', str)
+    assert resp['schedule']['enabled'] == True
+    api.agent_exclusions.delete(resp['id'])
+
+@pytest.mark.vcr()
+def test_agentexclusions_edit_onetime_to_weekly_valdefault(api, agentexclusion):
+    resp = api.agent_exclusions.edit(agentexclusion['id'],
+                                     frequency='Weekly')
+    check(resp, 'id', int)
+    check(resp, 'name', str)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', str)
+    assert resp['schedule']['rrules']['byweekday'] == 'SU,MO,TU,WE,TH,FR,SA'
+
+@pytest.mark.vcr()
+def test_agentexclusions_edit_onetime_to_weekly_valassigned(api, agentexclusion):
+    resp = api.agent_exclusions.edit(agentexclusion['id'],
+                                     frequency='Weekly',
+                                     weekdays=['MO', 'TU'])
+    check(resp, 'id', int)
+    check(resp, 'name', str)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', str)
+    assert resp['schedule']['rrules']['byweekday'] == 'MO,TU'
+
+@pytest.mark.vcr()
+def test_agentexclusions_edit_onetime_to_weekly_valavailable(api):
+    agentexclusion = api.agent_exclusions.create(str(uuid.uuid4()),
+                                                 frequency='Weekly',
+                                                 weekdays=['TU', 'WE'],
+                                                 start_time=dtime.utcnow(),
+                                                 end_time=dtime.utcnow() + timedelta(hours=1))
+    resp = api.agent_exclusions.edit(agentexclusion['id'], name=str(uuid.uuid4()))
+    check(resp, 'id', int)
+    check(resp, 'name', str)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', str)
+    assert resp['schedule']['rrules']['byweekday'] == 'TU,WE'
+
+@pytest.mark.vcr()
+def test_agentexclusions_edit_freq_onetime_to_monthly_valddefault(api, agentexclusion):
+    resp = api.agent_exclusions.edit(agentexclusion['id'], name=str(uuid.uuid4()),
+                               frequency='monthly',
+                               interval=2)
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', str)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    assert resp['schedule']['rrules']['freq'] == 'MONTHLY'
+    assert resp['schedule']['rrules']['interval'] == '2'
+
+@pytest.mark.vcr()
+def test_agentexclusions_edit_freq_onetime_to_monthly_valassigned(api, agentexclusion):
+    resp = api.agent_exclusions.edit(agentexclusion['id'], name=str(uuid.uuid4()),
+                               frequency='monthly',
+                               interval=2,
+                               day_of_month=8)
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', str)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    assert resp['schedule']['rrules']['freq'] == 'MONTHLY'
+    assert resp['schedule']['rrules']['interval'] == '2'
+    assert resp['schedule']['rrules']['bymonthday'] == '8'
+
+@pytest.mark.vcr()
+def test_agentexclusions_edit_freq_onetime_to_monthly_valavailable(api):
+    agentexclusion = api.agent_exclusions.create(str(uuid.uuid4()),
+                                      start_time = dtime.utcnow(),
+                                      end_time = dtime.utcnow() + timedelta(hours=1),
+                                      frequency='monthly', day_of_month=8)
+    resp = api.agent_exclusions.edit(agentexclusion['id'],
+                               frequency='monthly',
+                               interval=2)
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', str)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    assert resp['schedule']['rrules']['freq'] == 'MONTHLY'
+    assert resp['schedule']['rrules']['interval'] == '2'
+    assert resp['schedule']['rrules']['bymonthday'] == '8'
+    api.agent_exclusions.delete(resp['id'])
+
+@pytest.mark.vcr()
+def test_agentexclusions_edit_freq_onetime_to_yearly(api, agentexclusion):
+    resp = api.agent_exclusions.edit(agentexclusion['id'], name=str(uuid.uuid4()),
+                               frequency='yearly',
+                               interval=2)
+    assert isinstance(resp, dict)
+    check(resp, 'description', str, allow_none=True)
+    check(resp, 'id', int)
+    check(resp, 'last_modification_date', int)
+    check(resp, 'name', str)
+    check(resp, 'schedule', dict)
+    check(resp['schedule'], 'enabled', bool)
+    check(resp['schedule'], 'endtime', 'datetime')
+    check(resp['schedule'], 'rrules', dict)
+    check(resp['schedule']['rrules'], 'freq', str)
+    check(resp['schedule']['rrules'], 'interval', str)
+    check(resp['schedule'], 'starttime', 'datetime')
+    check(resp['schedule'], 'timezone', str)
+    assert resp['schedule']['rrules']['freq'] == 'YEARLY'
+    assert resp['schedule']['rrules']['interval'] == '2'
+
+@pytest.mark.vcr()
 def test_agentexclusions_list_blackouts(api, agentexclusion):
     items = api.agent_exclusions.list()
     assert isinstance(items, list)
