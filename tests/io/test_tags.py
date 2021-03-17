@@ -251,12 +251,12 @@ def test_tags_list_constructor_sort_typeerror(api):
 def test_tags_list_constructor_sort_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.tags._tag_list_constructor([],
-            api.tags._filterset_tags, None, 'something_else')
+            api.tags._filterset_tags, None, (('something_else'),))
 
 def test_tags_list_constructor_sort_success(api):
     resp = api.tags._tag_list_constructor([],
-        api.tags._filterset_tags, None, 'value')
-    assert resp['sort'] == 'value'
+        api.tags._filterset_tags, None, (('value','asc'),))
+    assert resp['sort'] == 'value:asc'
 
 def test_tags_list_constructor_filter_success(api):
     resp = api.tags._tag_list_constructor([
