@@ -151,7 +151,7 @@ def test_agentexclusions_create_onetime_exclusion(api):
     check(resp['schedule'], 'endtime', 'datetime')
     check(resp['schedule'], 'timezone', str)
     check(resp['schedule']['rrules'], 'freq', str)
-    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule']['rrules'], 'interval', str)
     api.agent_exclusions.delete(resp['id'])
 
 @pytest.mark.vcr()
@@ -171,7 +171,7 @@ def test_agentexclusions_create_daily_exclusion(api):
     check(resp['schedule'], 'endtime', 'datetime')
     check(resp['schedule'], 'timezone', str)
     check(resp['schedule']['rrules'], 'freq', str)
-    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule']['rrules'], 'interval', str)
     api.agent_exclusions.delete(resp['id'])
 
 @pytest.mark.vcr()
@@ -192,7 +192,7 @@ def test_agentexclusions_create_weekly_exclusion(api):
     check(resp['schedule'], 'endtime', 'datetime')
     check(resp['schedule'], 'timezone', str)
     check(resp['schedule']['rrules'], 'freq', str)
-    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule']['rrules'], 'interval', str)
     check(resp['schedule']['rrules'], 'byweekday', str)
     api.agent_exclusions.delete(resp['id'])
 
@@ -214,8 +214,8 @@ def test_agentexclusions_create_monthly_exclusion(api):
     check(resp['schedule'], 'endtime', 'datetime')
     check(resp['schedule'], 'timezone', str)
     check(resp['schedule']['rrules'], 'freq', str)
-    check(resp['schedule']['rrules'], 'interval', int)
-    check(resp['schedule']['rrules'], 'bymonthday', int)
+    check(resp['schedule']['rrules'], 'interval', str)
+    check(resp['schedule']['rrules'], 'bymonthday', str)
     api.agent_exclusions.delete(resp['id'])
 
 @pytest.mark.vcr()
@@ -235,7 +235,7 @@ def test_agentexclusions_create_yearly_exclusion(api):
     check(resp['schedule'], 'endtime', 'datetime')
     check(resp['schedule'], 'timezone', str)
     check(resp['schedule']['rrules'], 'freq', str)
-    check(resp['schedule']['rrules'], 'interval', int)
+    check(resp['schedule']['rrules'], 'interval', str)
     api.agent_exclusions.delete(resp['id'])
 
 @pytest.mark.vcr()
@@ -336,22 +336,22 @@ def test_agentexclusions_edit_interval_typerror(api, agentexclusion):
 @pytest.mark.vcr()
 def test_agentexclusions_edit_weekdays_typerror(api, agentexclusion):
     with pytest.raises(TypeError):
-        api.agent_exclusions.edit(agentexclusion['id'], weekdays='nope')
+        api.agent_exclusions.edit(agentexclusion['id'], frequency='weekly', weekdays='nope')
 
 @pytest.mark.vcr()
 def test_agentexclusions_edit_weekdays_unexpectedvalue(api, agentexclusion):
     with pytest.raises(UnexpectedValueError):
-        api.agent_exclusions.edit(agentexclusion['id'], weekdays=['MO', 'WE', 'nope'])
+        api.agent_exclusions.edit(agentexclusion['id'], frequency='weekly', weekdays=['MO', 'WE', 'nope'])
 
 @pytest.mark.vcr()
 def test_agentexclusions_edit_dayofmonth_typerror(api, agentexclusion):
     with pytest.raises(TypeError):
-        api.agent_exclusions.edit(agentexclusion['id'], day_of_month='nope')
+        api.agent_exclusions.edit(agentexclusion['id'], frequency='monthly', day_of_month='nope')
 
 @pytest.mark.vcr()
 def test_agentexclusions_edit_dayofmonth_unexpectedvalue(api, agentexclusion):
     with pytest.raises(UnexpectedValueError):
-        api.agent_exclusions.edit(agentexclusion['id'], day_of_month=0)
+        api.agent_exclusions.edit(agentexclusion['id'], frequency='monthly', day_of_month=0)
 
 @pytest.mark.vcr()
 def test_agentexclusions_edit_standard_user_permission_error(stdapi, agentexclusion):
