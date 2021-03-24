@@ -135,6 +135,56 @@ def test_scan_create_scan_schedule_timezone_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.scans.create_scan_schedule(enabled=True, timezone='the zone of time')
 
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_freq_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency=1)
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_freq_unexpectedvalueerror(api, scan):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='nope')
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_interval_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, interval='nope')
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_day_of_month_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='monthly', day_of_month='nope')
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_day_of_month_unexpectedvalueerror(api, scan):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='monthly', day_of_month=300)
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_weekdays_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='weekly', weekdays='nope')
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_weekdays_unexpectedvalueerror(api, scan):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='weekly', weekdays=['MO', 'WE', 'nope'])
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_starttime_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, starttime='fail')
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_timezone_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, timezone=1)
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_timezone_unexpectedvalueerror(api, scan):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, timezone='the zone of time')
+
 #@pytest.mark.vcr()
 #def test_scan_configure_id_typeerror(api):
 #    with pytest.raises(TypeError):
