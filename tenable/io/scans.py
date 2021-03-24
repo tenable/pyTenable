@@ -194,6 +194,33 @@ class ScansAPI(TIOEndpoint):
         scan['settings'] = dict_merge(scan['settings'], kw)
         return scan
 
+    def _get_schedule_details(self, details):
+        '''
+        Existing schedule contains combined string of frequency, interval and
+        BYDAY or BYMONTHDAY in rrules. we will Split existing schedule details to
+        distributed schedule dictionary
+
+        Args:
+            details (dict): Dictionary of existing schedule
+
+        Returns:
+            :obj:`dict`:
+                Distributed dictionary of the keys required for scan schedule.
+        '''
+        schedule = {}
+        if details['rrules'] is not None:
+            rrules = dict(rules.split('=') for rules in details['rrules'].split(';'))
+            schedule = {
+                'frequency': rrules['FREQ'],
+                'interval': rrules['INTERVAL'],
+                'weekdays': rrules.get('BYDAY', '').split(),
+                'day_of_month': rrules.get('BYMONTHDAY', None),
+                'starttime': datetime.strptime(details['starttime'], '%Y%m%dT%H%M%S')
+                    if details['starttime'] is not None else None,
+                'timezone': details['timezone'] if details['timezone'] is not None else None,
+            }
+        return schedule
+
     def create_scan_schedule(self, enabled=False, frequency=None, interval=None,
                              weekdays=None, day_of_month=None, starttime=None, timezone=None):
         '''
@@ -291,6 +318,135 @@ class ScansAPI(TIOEndpoint):
 
         return schedule
 
+    def configure_scan_schedule(self, id, enabled=None, frequency=None, interval=None,
+                             weekdays=None, day_of_month=None, starttime=None, timezone=None):
+        '''
+        Create dictionary of keys required for scan schedule
+
+        Args:
+            id (int): The id of the Scan object in Tenable.io
+            enabled (bool, optional): To enable/disable scan schedule
+            frequency (str, optional):
+                The frequency of the rule. The string inputted will be up-cased.
+                Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``,
+                ``MONTHLY``, ``YEARLY``.
+                Default value is ``ONETIME``.
+            interval (int, optional):
+                The interval of the rule.  The default interval is 1
+            weekdays (list, optional):
+                List of 2-character representations of the days of the week to
+                repeat the frequency rule on.  Valid values are:
+                *SU, MO, TU, WE, TH, FR, SA*
+                Default values: ``['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']``
+            day_of_month (int, optional):
+                The day of the month to repeat a **MONTHLY** frequency rule on.
+                The default is today.
+            starttime (datetime, optional): When the scan should start.
+            timezone (str, optional):
+                The timezone to use for the scan.  The default if none is
+                specified is to use UTC.  For the list of usable timezones,
+                please refer to :devportal:`scans-timezones`
+
+        Returns:
+            :obj:`dict`:
+                Dictionary of the keys required for scan schedule.
+
+        '''
+        current = self.details(self._check('id', id, int))['settings']
+        if enabled in [True, False]:
+            current['enabled'] = self._check('enabled', enabled, bool)
+        schedule = {}
+        if current['enabled'] is True:
+            if current['rrules'] is not None:
+                # create existing schedule dictionary
+                existing_rrules = {
+                    'enabled': current['enabled'],
+                    'scheduleScan': 'yes' if current['enabled'] is True else 'no',
+                    'rrules': current['rrules'],
+                    'starttime': current['starttime'],
+                    'timezone': current['timezone']
+                }
+
+                # Restructure existing_rrule with distributed values
+                existing_rrules = self._get_schedule_details(existing_rrules)
+            else:
+                existing_rrules = {}
+
+            launch = self._check('frequency', frequency, str,
+                 choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
+                 default=existing_rrules.get('frequency', None) or 'ONETIME',
+                 case='upper')
+            
+            frequency = "FREQ={}".format(launch)
+
+            rrules = {
+                'frequency': frequency,
+                'interval': 'INTERVAL={}'.format(self._check('interval', interval, int,
+                    default=existing_rrules.get('interval', None) or 1)),
+                'weekdays': None,
+                'day_of_month': None
+            }
+
+            # if the frequency is a weekly one, then we will need to specify the
+            # days of the week that the exclusion is run on.
+            if frequency == 'FREQ=WEEKLY':
+                rrules['weekdays'] = 'BYDAY={}'.format(','.join(self._check(
+                    'weekdays', weekdays, list,
+                    choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                    default=existing_rrules.get('weekdays', '') or
+                            ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                    case='upper')))
+                # In the same vein as the frequency check, we're accepting
+                # case-insensitive input, comparing it to our known list of
+                # acceptable responses, then joining them all together into a
+                # comma-separated string.
+
+            # if the frequency is monthly, then we will need to specify the day of
+            # the month that the rule will run on.
+            if frequency == 'FREQ=MONTHLY':
+                rrules['day_of_month'] = 'BYMONTHDAY={}'.format(self._check('day_of_month', day_of_month, int,
+                    choices=list(range(1, 32)),
+                    default=existing_rrules.get('day_of_month', None) or datetime.today().day))
+
+            # Now we have to remove unused keys from rrules and create rrules structure required by scan
+            # 'FREQ=ONETIME;INTERVAL=1', FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TH,FR', 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=22'
+            schedule['rrules'] = ';'.join(dict_clean(rrules).values())
+
+            # Set enable and launch key for schedule
+            schedule['enabled'] = True
+            schedule['launch'] = launch
+
+            # starttime is rounded-off to 30 min schedule and
+            # will assign schedule datetime in (19700101T011223) manner
+            starttime = self._check('start_time', starttime, datetime,
+                        default=existing_rrules.get('starttime', None) or datetime.utcnow())
+            secs = timedelta(minutes=30).total_seconds()
+            starttime = datetime.fromtimestamp(starttime.timestamp() + secs - starttime.timestamp() % secs)
+            schedule['starttime'] = starttime.strftime('%Y%m%dT%H%M%S')
+
+            schedule['timezone'] = self._check('timezone', timezone, str,
+                                                choices=self._api._tz,
+                                                default=existing_rrules.get('timezone', None) or 'Etc/UTC')
+
+            schedule['scheduleScan'] = 'yes'
+
+            # merge updated schedule values to existing schedule
+            dict_merge(existing_rrules, schedule)
+
+            # remove extra keys after merge
+            keys = ['frequency', 'interval', 'weekdays', 'day_of_month']
+            for k in keys:
+                if k in existing_rrules:
+                    del(existing_rrules[k])
+
+            return existing_rrules
+
+        if current['enabled'] is False:
+            # Set enable and launch key for schedule
+            schedule['enabled'] = False
+            schedule['scheduleScan'] = 'no'
+            return schedule
+
     def attachment(self, scan_id, attachment_id, key, fobj=None):
         '''
         Retrieve an attachment  associated to a scan.
@@ -356,6 +512,8 @@ class ScansAPI(TIOEndpoint):
                 A list of compliance audiots to use.
             scanner (str, optional):
                 Define the scanner or scanner group uuid or name.
+            schedule_scan (dict, optional):
+                Define updated schedule for scan
             **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
@@ -370,6 +528,11 @@ class ScansAPI(TIOEndpoint):
 
         Examples:
             >>> tio.scans.configure(1, name='New Scan Name')
+
+            # configure a schedule for existing scan
+
+            >>> configure_schedule = api.scans.configure_scan_schedule(1, interval=2)
+            >>> tio.scans.configure(1, schedule_scan=configure_schedule)
         '''
 
         # We will get the current scan record, generate the new parameters in
