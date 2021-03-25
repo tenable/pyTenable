@@ -29,12 +29,13 @@ def test_agentconfig_edit_standard_user_should_fail(stdapi):
 
 @pytest.mark.vcr()
 def test_agentconfig_edit_set_autounlink(api):
-    resp = api.agent_config.edit(auto_unlink=30)
+    resp = api.agent_config.edit(auto_unlink=31)
     assert isinstance(resp, dict)
     check(resp, 'auto_unlink', dict)
     check(resp['auto_unlink'], 'enabled', bool)
     check(resp['auto_unlink'], 'expiration', int)
     check(resp, 'software_update', bool)
+    assert resp['auto_unlink']['expiration'] == 31
 
 @pytest.mark.vcr()
 def test_agentconfig_edit_disable_autounlink(api):
@@ -44,6 +45,17 @@ def test_agentconfig_edit_disable_autounlink(api):
     check(resp['auto_unlink'], 'enabled', bool)
     check(resp['auto_unlink'], 'expiration', int)
     check(resp, 'software_update', bool)
+    assert resp['auto_unlink']['enabled'] == False
+
+@pytest.mark.vcr()
+def test_agentconfig_edit_disable_softwareupdate(api):
+    resp = api.agent_config.edit(software_update=False)
+    assert isinstance(resp, dict)
+    check(resp, 'auto_unlink', dict)
+    check(resp['auto_unlink'], 'enabled', bool)
+    check(resp['auto_unlink'], 'expiration', int)
+    check(resp, 'software_update', bool)
+    assert resp['software_update'] == False
 
 @pytest.mark.vcr()
 def test_agentconfig_show_error_conditions(api):
