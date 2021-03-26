@@ -237,3 +237,23 @@ def test_list_scanners_in_scanner_group(api, scannergroup, scanner):
         check(s, 'ui_version', str)
         check(s, 'uuid', 'uuid')
     api.scanner_groups.delete_scanner(scannergroup['id'], scanner['id'])
+
+@pytest.mark.vcr()
+def test_edit_routes_in_scanner_group_invalidinputerror(api, scannergroup):
+    with pytest.raises(InvalidInputError):
+        api.scanner_groups.edit_routes(scannergroup['id'], ['127.0.0.256'])
+
+@pytest.mark.vcr()
+def test_edit_routes_in_scanner_group_typeerror(api, scannergroup):
+    with pytest.raises(TypeError):
+        api.scanner_groups.edit_routes(scannergroup['id'], '127.0.0.1')
+
+@pytest.mark.vcr()
+def test_edit_routes_in_scanner_group_success(api, scannergroup):
+    api.scanner_groups.edit_routes(scannergroup['id'], ['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_list_routes_in_scanner_group_success(api, scannergroup):
+    api.scanner_groups.edit_routes(scannergroup['id'], ['127.0.0.1'])
+    routes = api.scanner_groups.list_routes(scannergroup['id'])
+    assert routes[0]['route'] == '127.0.0.1'
