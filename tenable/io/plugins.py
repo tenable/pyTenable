@@ -80,9 +80,13 @@ class PluginIterator(TIOIterator):
         # If the maptable exists, then graft on the plugin family information
         # on to to the item.
         if self._maptable:
-            fid = self._maptable['plugins'][item['id']]
-            item['family_id'] = fid
-            item['family_name'] = self._maptable['families'][fid]
+            try:
+                fid = self._maptable['plugins'][item['id']]
+                item['family_id'] = fid
+                item['family_name'] = self._maptable['families'][fid]
+            except:
+                item['family_id'] = None
+                item['family_name'] = None
 
         return item
 
