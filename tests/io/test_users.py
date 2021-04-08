@@ -288,3 +288,28 @@ def test_users_change_password(api):
     user = api.users.create(guser(), password, 16)
     api.users.change_password(user['id'], password, gpass())
     api.users.delete(user['id'])
+
+@pytest.mark.vcr()
+def test_users_list_auths_success(api, user):
+    user_auth = api.users.list_auths(user['id'])
+    assert isinstance(user, dict)
+    check(user_auth, 'account_uuid', 'uuid')
+    check(user_auth, 'api_permitted', bool)
+    check(user_auth, 'password_permitted', bool)
+    check(user_auth, 'saml_permitted', bool)
+    check(user_auth, 'user_uuid', 'uuid')
+
+@pytest.mark.vcr()
+def test_users_list_auths_notfounderror(api):
+    with pytest.raises(NotFoundError):
+        api.users.list_auths(1)
+
+@pytest.mark.vcr()
+def test_users_list_auths_typeerror(api):
+    with pytest.raises(TypeError):
+        api.users.list_auths('nope')
+
+@pytest.mark.vcr()
+def test_users_list_auths_permissionerror(stdapi, user):
+    with pytest.raises(PermissionError):
+        stdapi.users.list_auths(user['id'])
