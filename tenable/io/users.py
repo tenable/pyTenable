@@ -344,6 +344,55 @@ class UsersAPI(TIOEndpoint):
         return self._api.put('users/{}/keys'.format(
             self._check('id', id, int))).json()
 
+    def list_auths(self, id):
+        '''
+        list user authorizations for accessing a Tenable.io instance.
 
+        :devportal:`users: list-auths <users-list-auths>`
 
+        Args:
+            id (int): The unique identifier for the user.
 
+        Returns:
+            :obj:`dict`:
+                Returns authorizations for the user.
+
+        Examples:
+            >>> auth = tio.users.list_auths(1)
+        '''
+        return self._api.get('users/{}/authorizations'.format(
+            self._check('id', id, int))).json()
+
+    def edit_auths(self, id, api_permitted=None, password_permitted=None, saml_permitted=None):
+        '''
+        update user authorizations for accessing a Tenable.io instance.
+
+        :devportal:`users: edit-auths <users-update-auths>`
+
+        Args:
+            id (int): The unique identifier for the user.
+            api_permitted (bool): Indicates whether API access is authorized for the user.
+            password_permitted (bool): Indicates whether user name and password login is authorized for the user.
+            saml_permitted (bool): Indicates whether SSO with SAML is authorized for the user.
+
+        Returns:
+            :obj:`None`:
+                Returned if Tenable.io successfully updates the user's authorizations.
+
+        Examples:
+            >>> tio.users.edit_auths(1, True, True, False)
+        '''
+        # get current settings
+        current = self.list_auths(self._check('id', id, int))
+
+        # update payload with new settings
+        payload = {
+            'api_permitted': self._check('api_permitted', api_permitted, bool, default=current['api_permitted']),
+            'password_permitted': self._check('password_permitted', password_permitted, bool,
+                default=current['password_permitted']),
+            'saml_permitted': self._check('saml_permitted', saml_permitted, bool,
+                default=current['saml_permitted'])
+        }
+
+        return self._api.put('users/{}/authorizations'.format(
+            self._check('id', id, int)), json=payload)
