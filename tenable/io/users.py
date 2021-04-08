@@ -22,6 +22,8 @@ Methods available on ``tio.users``:
     .. automethod:: verify_two_factor
     .. automethod:: impersonate
     .. automethod:: list
+    .. automethod:: list_auths
+    .. automethod:: edit_auths
 '''
 from.base import TIOEndpoint
 from tenable.errors import UnknownError, PasswordComplexityError
