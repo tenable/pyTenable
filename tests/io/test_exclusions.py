@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from tenable.errors import *
 from ..checker import check, single
 from tests.io.test_networks import network
-import uuid, pytest
+import uuid, pytest, os
 
 @pytest.fixture
 @pytest.mark.vcr()
@@ -929,3 +929,11 @@ def test_exclusions_list(api):
             check(exclusion['schedule']['rrules'], 'interval', int)
             check(exclusion['schedule'], 'starttime', 'datetime')
             check(exclusion['schedule'], 'timezone', str)
+
+@pytest.mark.vcr()
+@pytest.mark.datafiles(os.path.join(
+    os.path.dirname(os.path.realpath(__file__)),
+    '..', 'test_files', 'io_exclusion.csv'))
+def test_exclusion_import_exclusion(api, datafiles):
+    with open(os.path.join(str(datafiles), 'io_exclusion.csv'), 'rb') as fobj:
+        api.exclusions.exclusions_import(fobj)

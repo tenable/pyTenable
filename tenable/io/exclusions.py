@@ -16,6 +16,7 @@ Methods available on ``tio.exclusions``:
     .. automethod:: details
     .. automethod:: edit
     .. automethod:: list
+    .. automethod:: exclusions_import
 '''
 from restfly.utils import dict_merge
 from .base import TIOEndpoint
@@ -367,3 +368,24 @@ class ExclusionsAPI(TIOEndpoint):
             ...     pprint(exclusion)
         '''
         return self._api.get('exclusions').json()['exclusions']
+
+    def exclusions_import(self, fobj):
+        '''
+        Import exclusions into Tenable.io.
+
+        :devportal:`exclusions: import <exclusions-import>`
+
+        Args:
+            fobj (FileObject):
+                The file object of the exclusion(s) you wish to import.
+
+        Returns:
+            :obj:`dict`:
+                The dictionary of the imported policy.
+
+        Examples:
+            >>> with open('import_example.csv') as exclusion:
+            ...     tio.exclusions.exclusions_import(exclusion)
+        '''
+        fid = self._api.files.upload(fobj)
+        return self._api.post('exclusions/import', json={'file': fid})
