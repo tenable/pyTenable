@@ -313,3 +313,41 @@ def test_users_list_auths_typeerror(api):
 def test_users_list_auths_permissionerror(stdapi, user):
     with pytest.raises(PermissionError):
         stdapi.users.list_auths(user['id'])
+
+@pytest.mark.vcr()
+def test_users_edit_auths_success(api, user):
+    api.users.edit_auths(user['id'], False, False, False)
+    user_auth = api.users.list_auths(user['id'])
+    assert user_auth['api_permitted'] == False
+    assert user_auth['password_permitted'] == False
+    assert user_auth['saml_permitted'] == False
+
+@pytest.mark.vcr()
+def test_users_edit_auths_notfounderror(api):
+    with pytest.raises(NotFoundError):
+        api.users.edit_auths(1)
+
+@pytest.mark.vcr()
+def test_users_edit_auths_typeerror(api):
+    with pytest.raises(TypeError):
+        api.users.edit_auths('nope')
+
+@pytest.mark.vcr()
+def test_users_edit_auths_api_permitted_typeerror(api, user):
+    with pytest.raises(TypeError):
+        api.users.edit_auths(user['id'], api_permitted='nope')
+
+@pytest.mark.vcr()
+def test_users_edit_auths_password_permitted_typeerror(api, user):
+    with pytest.raises(TypeError):
+        api.users.edit_auths(user['id'], password_permitted='nope')
+
+@pytest.mark.vcr()
+def test_users_edit_auths_saml_permitted_typeerror(api, user):
+    with pytest.raises(TypeError):
+        api.users.edit_auths(user['id'], saml_permitted='nope')
+
+@pytest.mark.vcr()
+def test_users_edit_auths_permissionerror(stdapi, user):
+    with pytest.raises(PermissionError):
+        stdapi.users.edit_auths(user['id'])
