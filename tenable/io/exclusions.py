@@ -380,8 +380,8 @@ class ExclusionsAPI(TIOEndpoint):
                 The file object of the exclusion(s) you wish to import.
 
         Returns:
-            :obj:`dict`:
-                The dictionary of the imported policy.
+            :obj:`None`:
+                Returned if Tenable.io successfully imports the exclusion file.
 
         Examples:
             >>> with open('import_example.csv') as exclusion:
