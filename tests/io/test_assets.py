@@ -1,6 +1,7 @@
 from tenable.errors import *
 from ..checker import check, single
 import pytest
+import time
 
 @pytest.mark.vcr()
 def test_assets_list(api):
@@ -117,3 +118,37 @@ def test_workbenches_asset_delete_success(api):
 def test_assign_tags(api):
     with pytest.raises(UnexpectedValueError):
         api.assets.assign_tags('foo', [], [])
+
+@pytest.mark.vcr()
+def test_assets_bulk_delete_filter_type_typeerror(api):
+    with pytest.raises(TypeError):
+        api.assets.bulk_delete(filter_type=1)
+
+@pytest.mark.vcr()
+def test_assets_bulk_delete_filter_type_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.assets.bulk_delete(filter_type='NOT')
+
+@pytest.mark.vcr()
+def test_assets_bulk_delete_bad_filter(api):
+    with pytest.raises(UnexpectedValueError):
+        api.assets.bulk_delete(('operating_system', 'contains', 'Linux'))
+
+@pytest.mark.vcr()
+def test_assets_bulk_delete_success(api):
+    api.assets.asset_import('pytest', {
+        'fqdn': ['example1.py.test'],
+        'ipv4': ['192.168.254.1'],
+        'netbios_name': '',
+        'mac_address': []
+    })
+    api.assets.asset_import('pytest', {
+        'fqdn': ['example2.py.test'],
+        'ipv4': ['192.168.254.1'],
+        'netbios_name': '',
+        'mac_address': []
+    })
+    time.sleep(5)
+    resp = api.assets.bulk_delete(('ipv4', 'eq', '192.168.254.1'))
+    check(resp['response']['data'], 'asset_count', int)
+    assert resp['response']['data']['asset_count'] == 2
