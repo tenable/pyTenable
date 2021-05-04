@@ -17,6 +17,7 @@ Methods available on ``tio.assets``:
     .. automethod:: list
     .. automethod:: list_import_jobs
     .. automethod:: tags
+    .. automethod:: bulk_delete
 '''
 from .base import TIOEndpoint
 
@@ -208,3 +209,39 @@ class AssetsAPI(TIOEndpoint):
                 self._check('uuid', uuid, str)
             )).json()
 
+    def bulk_delete(self, *filters, filter_type=None):
+        '''
+        Deletes the specified assets.
+
+        :devportal:`assets: bulk_delete <assets-bulk-delete>`
+
+        Args:
+             *filters (list, optional):
+                 A list of tuples detailing the filters that wish to be applied
+                the response data.  Each tuple is constructed as
+                ('filter', 'operator', 'value') and would look like the
+                following example: `('host.hostname', 'match', 'asset.com')`.
+                For a complete list of the available filters and options, please
+                refer to the API documentation linked above.
+            filter_type (str, optional):
+                Are the filters exclusive (this AND this AND this) or inclusive
+                (this OR this OR this).  Valid values are `and` and `or`.  The
+                default setting is `and`.
+
+        Returns:
+            :obj:`dict`:
+                Returns the number of deleted assets.
+
+        Examples:
+            >>> asset = tio.assets.bulk_delete(('host.hostname', 'match', 'asset.com'), filter_type='or')
+            >>> pprint(asset)
+        '''
+        payload = dict()
+
+        # run the rules through the filter parser...
+        payload['query'] = {
+            self._check('filter_type', filter_type, str, choices=['and', 'or'], default='and', case='lower'):
+                self._parse_filters(filters, self._api.filters.workbench_asset_filters(), rtype='assets')['asset']
+        }
+
+        return self._api.post('api/v2/assets/bulk-jobs/delete', json=payload).json()
