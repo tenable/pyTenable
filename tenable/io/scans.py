@@ -1056,7 +1056,7 @@ class ScansAPI(TIOEndpoint):
                 Return the list of missed targets (if any), and the list of matched scanner groups (if any).
 
         Examples:
-            >>> scan_routes_info = tio.scans.evaluate_scan_route(10, 5, targets=['127.0.0.1'])
+            >>> scan_routes_info = tio.scans.check_auto_targets(10, 5, targets=['127.0.0.1'])
         '''
         query = {
             "limit": self._check('limit', limit, int),
