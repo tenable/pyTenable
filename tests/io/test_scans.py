@@ -733,3 +733,47 @@ def test_scan_status(api, scan):
 @pytest.mark.vcr()
 def test_scan_timezones(api):
     assert isinstance(api.scans.timezones(), list)
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_success(api):
+    resp = api.scans.check_auto_targets(10, 5, targets=['127.0.0.1'])
+    assert isinstance(resp, dict)
+    check(resp, 'matched_resource_uuids', list)
+    check(resp, 'missed_targets', list)
+    check(resp, 'total_matched_resource_uuids', int)
+    check(resp, 'total_missed_targets', int)
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_limit_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.check_auto_targets('nope', 5, targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_matched_resource_limit_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.check_auto_targets(10, 'nope', targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_network_uuid_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.check_auto_targets(10, 5, network_uuid='nope', targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_network_uuid_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.check_auto_targets(10, 5, network_uuid=1, targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_tags_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.check_auto_targets(10, 5, tags=['nope'], targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_tags_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.check_auto_targets(10, 5, tags=1, targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_targets_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.check_auto_targets(10, 5, targets=1)

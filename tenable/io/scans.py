@@ -33,6 +33,7 @@ Methods available on ``tio.scans``:
     .. automethod:: status
     .. automethod:: stop
     .. automethod:: timezones
+    .. automethod:: check_auto_targets
 '''
 from .base import TIOEndpoint, TIOIterator
 from tenable.utils import dict_merge, policy_settings
@@ -1032,3 +1033,45 @@ class ScansAPI(TIOEndpoint):
             scan_id,
             self._check('history_uuid', history_uuid, 'scanner-uuid'))).json()
 
+    def check_auto_targets(self, limit, matched_resource_limit, network_uuid=None, tags=None, targets=None):
+        '''
+        Evaluates a list of targets and/or tags against the scan route configuration of scanner groups.
+
+        :devportal:`scan: check-auto-targets <scans-check-auto-targets>`
+
+        Args:
+            limit (int):
+                Limit the number of missed targets returned in the response.
+            matched_resource_limit (int):
+                Limit the number of matched resource UUIDs returned in the response.
+            network_uuid (uuid, optional):
+                The UUID of the network.
+            tags (list, optional):
+                A list of asset tags UUIDs.
+            targets (list, optional):
+                A list of valid targets.
+
+        Returns:
+            :obj:`dict`:
+                Return the list of missed targets (if any), and the list of matched scanner groups (if any).
+
+        Examples:
+            >>> scan_routes_info = tio.scans.evaluate_scan_route(10, 5, targets=['127.0.0.1'])
+        '''
+        query = {
+            "limit": self._check('limit', limit, int),
+            "matched_resource_limit": self._check('matched_resource_limit', matched_resource_limit, int)
+        }
+
+        payload = dict()
+
+        payload['network_uuid'] = self._check('network_uuid', network_uuid, 'uuid',
+            default='00000000-0000-0000-0000-000000000000')
+
+        if tags:
+            payload['tags'] = [self._check('tag', tag, 'uuid') for tag in self._check('tags', tags, list)]
+
+        if targets:
+            payload['target_list'] = ','.join(self._check('targets', targets, list))
+
+        return self._api.post('scans/check-auto-targets', params=query, json=payload).json()
