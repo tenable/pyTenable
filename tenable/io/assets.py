@@ -216,17 +216,15 @@ class AssetsAPI(TIOEndpoint):
         :devportal:`assets: bulk_delete <assets-bulk-delete>`
 
         Args:
-             *filters (list, optional):
-                 A list of tuples detailing the filters that wish to be applied
-                the response data.  Each tuple is constructed as
-                ('filter', 'operator', 'value') and would look like the
-                following example: `('host.hostname', 'match', 'asset.com')`.
-                For a complete list of the available filters and options, please
-                refer to the API documentation linked above.
+             *filters (tuple):
+                A defined filter tuple consisting of the name, operator, and
+                value.  Example: ``('host.hostname', 'match', 'asset.com')``.
             filter_type (str, optional):
-                Are the filters exclusive (this AND this AND this) or inclusive
-                (this OR this OR this).  Valid values are `and` and `or`.  The
-                default setting is `and`.
+                If multiple filters are defined, the filter_type toggles the
+                behavior as to how these filters are used.  Either all of the
+                filters have to match (``AND``) or any of the filters have to
+                match (``OR``).  If not specified, the default behavior is to
+                assume filter_type is ``AND``.
 
         Returns:
             :obj:`dict`:
