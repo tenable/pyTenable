@@ -18,6 +18,7 @@ Methods available on ``tio.networks``:
     .. automethod:: list
     .. automethod:: list_scanners
     .. automethod:: unassigned_scanners
+    .. automethod:: network_asset_count
 '''
 from .base import TIOEndpoint, TIOIterator
 
@@ -331,3 +332,25 @@ class NetworksAPI(TIOEndpoint):
             _resource='networks'
         )
 
+    def network_asset_count(self, id, num_days):
+        '''
+        get the total number of assets in the network along with the number of assets
+        that have not been seen for the specified number of days.
+
+        :devportal:`networks: network_asset_count <networks-asset-count-details>`
+
+        Args:
+            id (str): The UUID of the network.
+            num_days (int): count of assets that have not been seen for the specified number of days
+
+        Returns:
+            :obj:`dict`:
+                Returns the total number of assets in the network along with the number of assets
+                that have not been seen for the specified number of days.
+
+        Examples:
+            >>> network = '00000000-0000-0000-0000-000000000000'
+            >>> count = tio.networks.network_asset_count(network, 180)
+        '''
+        return self._api.get('networks/{}/counts/assets-not-seen-in/{}'.format(
+            self._check('id', id, 'uuid'), self._check('num_days', num_days, int))).json()
