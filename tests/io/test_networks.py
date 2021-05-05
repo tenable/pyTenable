@@ -255,3 +255,31 @@ def test_networks_list(api):
         check(i, 'created_in_seconds', int)
         check(i, 'modified_in_seconds', int)
     assert count == networks.total
+
+@pytest.mark.vcr()
+def test_network_asset_count_network_id_typeerror(api):
+    with pytest.raises(TypeError):
+        api.networks.network_asset_count(1, 180)
+
+@pytest.mark.vcr()
+def test_network_asset_count_network_id_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.networks.network_asset_count('nope', 180)
+
+@pytest.mark.vcr()
+def test_network_asset_count_network_num_days_typeerror(api):
+    with pytest.raises(TypeError):
+        api.networks.network_asset_count('00000000-0000-0000-0000-000000000000', 'nope')
+
+@pytest.mark.vcr()
+def test_network_asset_count_network_num_days_invalidinputerror(api):
+    with pytest.raises(InvalidInputError):
+        api.networks.network_asset_count('00000000-0000-0000-0000-000000000000', -180)
+
+@pytest.mark.vcr()
+def test_network_asset_count_network_success(api):
+    network = '00000000-0000-0000-0000-000000000000'
+    resp = api.networks.network_asset_count(network, 180)
+    assert isinstance(resp, dict)
+    check(resp, 'numAssetsTotal', int)
+    check(resp, 'numAssetsNotSeen', int)
