@@ -671,6 +671,9 @@ class ScansAPI(TIOEndpoint):
             scan_id, fid), params=dl_params, stream=True)
 
         if stream_hook is not None:
+            assert isinstance(stream_hook, callable)
+            # See issue 305 for an example stream_hook callable
+            # https://github.com/tenable/pyTenable/issues/305
             stream_hook(resp, fobj)
         else:
             # Lets stream the file into the file-like object...
