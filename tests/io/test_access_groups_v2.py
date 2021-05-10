@@ -212,35 +212,6 @@ def test_access_group_v2_edit_success(api, agroup):
     check(g, 'processing_percent_complete', int)
 
 @pytest.mark.vcr()
-def test_access_groups_v2_details_success(api, agroup):
-    g = api.access_groups_v2.details(agroup['id'])
-    assert isinstance(g, dict)
-    check(g, 'created_at', 'datetime')
-    check(g, 'updated_at', 'datetime')
-    check(g, 'id', 'uuid')
-    check(g, 'name', str)
-    check(g, 'all_assets', bool)
-    check(g, 'version', int)
-    check(g, 'status', str)
-    check(g, 'access_group_type', str)
-    check(g, 'rules', list)
-    for rule in g['rules']:
-        check(rule, 'type', str)
-        check(rule, 'operator', str)
-        check(rule, 'terms', list)
-    check(g, 'principals', list)
-    for principal in agroup['principals']:
-        check(principal, 'type', str)
-        check(principal, 'principal_id', 'uuid')
-        check(principal, 'principal_name', str)
-        check(principal, 'permissions', list)
-    check(g, 'created_by_uuid', 'uuid')
-    check(g, 'updated_by_uuid', 'uuid')
-    check(g, 'created_by_name', str)
-    check(g, 'updated_by_name', str)
-    check(g, 'processing_percent_complete', int)
-
-@pytest.mark.vcr()
 def test_access_groups_v2_list_offset_typeerror(api):
     with pytest.raises(TypeError):
         api.access_groups_v2.list(offset='nope')

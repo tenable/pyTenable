@@ -18,7 +18,7 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: DELETE
-    uri: https://cloud.tenable.com/v2/access-groups/b35e06aa-62a8-4313-a595-001b0c8adc3c
+    uri: https://cloud.tenable.com/v2/access-groups/2b4bff6f-d8f7-49af-b712-1002061c7a08
   response:
     body:
       string: ''
@@ -32,7 +32,7 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Mon, 10 May 2021 10:05:02 GMT
+      - Mon, 10 May 2021 13:55:44 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -47,7 +47,7 @@ interactions:
       X-Gateway-Site-ID:
       - nginx-router-ssu2q-ap-southeast-1-prod
       X-Request-Uuid:
-      - c155e2b6a96b5f18dd0c492a5855a6bc
+      - ecac68aeb99486d2301fab9ee738e00d
       X-XSS-Protection:
       - 1; mode=block
     status:

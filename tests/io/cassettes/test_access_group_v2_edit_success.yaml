@@ -16,18 +16,18 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
-    uri: https://cloud.tenable.com/v2/access-groups/9e3d54b7-8be6-414d-a9ca-b4b0181b1a32
+    uri: https://cloud.tenable.com/v2/access-groups/2b4bff6f-d8f7-49af-b712-1002061c7a08
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6VSwWrcMBD9laLzytHIsnftU5fG5JI0hd1eWoKQ5Nlg8NqKJIcuIf/e8eKFDfQQ
-        6BwEmnlv5mme3pgbh2S6AYOepq5lNWs3ZQ5K5BzbquDKmIpXkK85lhXYsnW5VchWzAU0CVttEnGk
-        kMBFwUHsIa9lUat1Jgvxi3CTbz+FO8+uMG8LZdd8Y7HkClTLTeUMt8oK2IAFk0vCDuaIhG7+mKPv
-        ZzGm77WJEVNk9cH0EVfsFUPsxoHVsGIxmTRRiX17fPhx3+yb25njHMaon8M4eZ1Ofu74sP2+vWv0
-        drdr9jvChKlH4v1+Ywug86+K8qPHYNIYKIMvdE8YjjOOQSUzKDeZyMSNVOzp/WnFfOgG13mSdd1p
-        ljxFEsmuEPq8BbEE/8dxiQ+sZR/bvv/y89KSFHVx3sA89azj4pg9XawGI1sBQnIAK8hqRG6FOvC1
-        VOJgy7IAdbiy8H+Ii0R/SjgY26NOGNN5AV+XTObGI/ug8tMcH8bZy2541vRuh0PSVKCvkYgPQrz/
-        BfVmXAjnAgAA
+        H4sIAAAAAAAAA6VSwWrcMBT8laLzypFk2V771CUsIYekoU4vKUFI8lMweG1FkkOXkH/v8+KFDfQQ
+        qA4CPc28N5rRO7HTmHQ/QlDz3HekId22zLlkOYWuLqjUuqY1zysKZc1N2dncSCAbYgPoBJ3SCTmC
+        CU5ZQTl75HlTFI3kGc/5E+Jm330Jd5otjDTOlY52W1dRWWtHTcUF4plgJbeVZlvEjvoAiN7/0Qc/
+        LGL0MCgdI6RIGqeHCBvyBiH200gaviEx6TTjFXn4+eN637a39zcLyVqIUb2EafYqHf3S8m53v7vZ
+        q13b7h9bxIR5ACT+ficroPdvEuuTh6DTFLACr3hOEA4LjvBaZLzcZixjV0KS54/nDfGhH23vUddl
+        p0XzHFEluUCokw1sXfQf23l9Yq2G7Ibh269zS1TUx8WCZepJxzkyczxnzbXoGGdoMDcMswaghklH
+        KyGZM2VZcOkuMvwf4irRHxOM2gygEsR0MuD7WsnsdCCfVH6Z48O0ZNmPLwrfbWFMCi/wbyTks4+/
+        wcypTeYCAAA=
     headers:
       Cache-Control:
       - no-store
@@ -38,7 +38,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 10 May 2021 13:25:47 GMT
+      - Mon, 10 May 2021 13:55:42 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -55,9 +55,9 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Gateway-Site-ID:
-      - nginx-router-j15ji-ap-southeast-1-prod
+      - nginx-router-ssu2q-ap-southeast-1-prod
       X-Request-Uuid:
-      - 30a76df5fdb0099dc323d81f792d7607
+      - 9d1d65d865a3836889a71a8e1fc1160a
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -87,18 +87,18 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: PUT
-    uri: https://cloud.tenable.com/v2/access-groups/9e3d54b7-8be6-414d-a9ca-b4b0181b1a32
+    uri: https://cloud.tenable.com/v2/access-groups/2b4bff6f-d8f7-49af-b712-1002061c7a08
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6WRT2vjMBDFv0rROfJKsuzYPjWUUPbQdqnbS5ci9GdSDI6tleRCKP3uHacOpFCW
-        hdVBoNHvjZ7mvRE7Dkl3AwQ1TZ0jDXFVmXPJcgquLqjUuqY1z9cUypqb0tncSCArYgPoBE7phBrB
-        BKesoJw98LwRRSPXmSjYE3KTd3/jqqwq8pk7vl1D7gpp1rQyUFLJpaO6tpoaaRivuOE6F8gOeg9I
-        P362xoLue6VjhBRJs9N9hBV5hRC7cSCNWJGYdJrwivy6v7vatu3P2+tZZC3EqF7COHmVDn5uebO5
-        3Vxv1aZttw8tMmHqAYW/38gCdP5VYn30EHQaA1bgD54ThP3MEV6LjJdVxjL2Q0jy/P68Ij50g+08
-        +jrvNHueIrokZ4Q6joEti36zndYX1TKQTd9fPJ5aoqMuziOYXz36OEVmDqesuRaOcSYo54Zh1gDU
-        MLmjayHZzpRlweXuLMP/ES4W/SHBoE0PKkFMxwFcLpXMjnvyxeU/a3wY5yy74UXhvy0MSeGF7yGh
-        nr1/AK2oV9nmAgAA
+        H4sIAAAAAAAAA6WRQWvcMBCF/0rReeVKsmyvfcoSltBD01Inl5YgJHkUDF5bleTAEvLfO3a9sIFS
+        CtVBoNH3Rk/zXomdxqT7EYKa574jDen2Zc4lyyl0dUGl1jWteV5RKGtuys7mRgLZERtAJ+iUTqgR
+        THDKCsrZA8+bomgkz3jOvyM3++5vXJ4V1cqtbwsjjXOlo93eVVTW2lFTcYE8E6zkttJsj+yoT4D0
+        4+/WWNDDoHSMkCJpnB4i7MgLhNhPI2nEjsSk04xX5Ou3L7fHtv10f7eIrIUY1XOYZq/S2S8tPx/u
+        D3dHdWjb40OLTJgHQOGPV7IBvX+RWJ88BJ2mgBX4iecE4bRwhNci4+U+Yxn7KCR5envaER/60fYe
+        fV13WjzPEV2SK0KtY2Dbon/YLuudahvIYRg+PF5aoqM+LiNYXl19XCIz50vWXIuOcYYD5oZh1gDU
+        MOloJSRzpiwLLt1Vhv8j3Cz6c4JRmwFUgpjWAdxslcxOJ/LO5T9rfJiWLPvxWeG/LYxJ4YUfIKGe
+        vf0C4bRU0eYCAAA=
     headers:
       Cache-Control:
       - no-store
@@ -109,7 +109,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 10 May 2021 13:25:48 GMT
+      - Mon, 10 May 2021 13:55:43 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -126,9 +126,9 @@ interactions:
       X-Content-Type-Options:
       - nosniff
       X-Gateway-Site-ID:
-      - nginx-router-j15ji-ap-southeast-1-prod
+      - nginx-router-ssu2q-ap-southeast-1-prod
       X-Request-Uuid:
-      - 1f71dbb55eb403b093efc83b9be6c7a4
+      - 5cb91cb2d981c94c8f6a69c2f0fcb91f
       X-XSS-Protection:
       - 1; mode=block
     status:
