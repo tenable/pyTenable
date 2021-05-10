@@ -169,6 +169,10 @@ def test_access_groups_v2_create_success(api, agroup):
     check(agroup, 'processing_percent_complete', int)
 
 @pytest.mark.vcr()
+def test_access_groups_v2_delete_success(api, agroup):
+    api.access_groups_v2.delete(agroup['id'])
+
+@pytest.mark.vcr()
 def test_access_groups_v2_list_offset_typeerror(api):
     with pytest.raises(TypeError):
         api.access_groups_v2.list(offset='nope')
