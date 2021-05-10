@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.2.8
+        (pyTenable/1.2.8; Python/3.8.6; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/v2/access-groups/2f23b7e7-8aa3-476b-8cd4-568de14c091e
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6VSTWvcMBD9K0XnlSvJsvxx6hKWkEPTUqeXlCD0MQ4Gr61KcugS8t8rLV7YQA+B
+        zkGgmfdmnubpFZlljmqcwct1HS3qkG1ESTkpMdi2wlypFre0rDGIlmphTak5oB0yHlQEK1VMHEYY
+        xaTClDzQsmOiI01R8fox4VZnP4Q7z2YDK3UNNW6UKjGvhcaNsRxXorFAuSEtzbNndYSEPvxRRzfl
+        hJomqUKAGFA3qCnADr2AD+Myo47uUIgqrqmEvv/4dnPo+7v720wyBkKQz35ZnYwnl1t+3d/vbw9y
+        3/eHhz5h/DpBIv56RRtgdC885RcHXsXFpwz8TvcI/phxiLasoKIpSEE+M46e3p52yPlxNqNLuq47
+        Zc1rSCrRFUKe10C2wP84LvGOtS1kP02ffl5aJkVjyCvIU886Lpbp08VrqpgllDBMqSbJawCsCR9w
+        zTgZtBAV5cOVh/9D3CS6U4RZ6QlkhBDPC/iyZQqzHNE7lR/mOL9kL8f5WaZ3G5ijTIX0N2Lik7e/
+        xFxQm+YCAAA=
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 10 May 2021 13:26:09 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Gateway-Site-ID:
+      - nginx-router-gcte4-ap-southeast-1-prod
+      X-Request-Uuid:
+      - a2ab38ff579dadb9b3f0943c7c465f9f
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
