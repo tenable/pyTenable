@@ -10,7 +10,9 @@ Methods available on ``tio.access_groups_v2``:
 .. rst-class:: hide-signature
 .. autoclass:: AccessGroupsV2API
     .. automethod:: list
+    .. automethod:: create
 '''
+from tenable.errors import UnexpectedValueError
 from .base import TIOEndpoint, TIOIterator
 
 class AccessGroupsIteratorV2(TIOIterator):
@@ -36,6 +38,66 @@ class AccessGroupsIteratorV2(TIOIterator):
     pass
 
 class AccessGroupsV2API(TIOEndpoint):
+    def _list_clean(self, items):
+        '''
+        Removes duplicate values from list
+
+        Args:
+            items (list): list of items
+
+        Returns:
+            :obj:`list`:
+                Returns list of distinct values
+        '''
+        return list(set(self._check('items', items, list)))
+
+    def _principal_constructor(self, items):
+        '''
+        Simple principle tuple expander.  Also supports validating principle
+        dictionaries for transparent passthrough.
+        '''
+        resp = list()
+        for item in items:
+            self._check('principal', item, (tuple, dict))
+            if isinstance(item, tuple):
+                data = dict()
+                if len(item) == 2:
+                    item = item + ([],)
+                data['type'] = self._check('principal:type', item[0], str, choices=['user', 'group'])
+
+                try:
+                    data['principal_id'] = self._check('principal:id', item[1], 'uuid')
+                except UnexpectedValueError as err:
+                    data['principal_name'] = self._check('principal:name', item[1], str)
+
+                data['permissions'] = self._list_clean(
+                    [self._check('permission', permission, str,
+                        choices=['CAN_VIEW', 'CAN_SCAN'], case='upper')
+                    for permission in self._check('permissions', item[2], list)])
+
+                # if permissions are empty, we will assign default value to it
+                if not data['permissions']:
+                    data['permissions'] = ['CAN_VIEW']
+
+                resp.append(data)
+            else:
+                self._check('principal:type', item['type'], str,
+                    choices=['user', 'group'])
+                if 'principal_id' in item:
+                    self._check('principal_id', item['principal_id'], 'uuid')
+                if 'principal_name' in item:
+                    self._check('principal_name', item['principal_name'], str)
+                item['permissions'] = self._list_clean(
+                    [self._check('permission', permission, str,
+                        choices=['CAN_VIEW', 'CAN_SCAN'], case='upper')
+                     for permission in self._check('permissions', item['permissions']
+                    if 'permissions' in item and item['permissions'] else None, list, default=['CAN_VIEW'])]
+                )
+
+                resp.append(item)
+
+        return resp
+
     def list(self, *filters, **kw):
         '''
         Get the listing of configured access groups from Tenable.io.
@@ -151,3 +213,89 @@ class AccessGroupsV2API(TIOEndpoint):
             _path='v2/access-groups',
             _resource='access_groups'
         )
+
+    def create(self, name, rules, principals=None, all_users=False, access_group_type=None):
+        '''
+        Creates a new access group
+
+        :devportal:`access-groups: create <v2-access-groups-create>`
+
+        Args:
+            name (str):
+                The name of the access group to create.
+            rules (list):
+                a list of rule tuples.  Tuples are defined in the standardized
+                method of name, operator, value.  For example:
+
+                .. code-block:: python
+
+                    ('operating_system', 'eq', ['Windows NT'])
+
+                Rules will be validate against by the filters before being sent
+                to the API.  Note that the value field in this context is a list
+                of string values.
+            principals (list, optional):
+                A list of principal tuples.  Each tuple must contain the type,
+                the identifier and the permissions for the principal.
+                The identifier can be either a UUID associated to a user/group, or the name of the
+                user/group and the permissions can be either a CAN_VIEW or CAN_EDIT or Both in list
+                Default permission is ``CAN_VIEW``
+                For example:
+
+                .. code-block:: python
+
+                    ('user', '32a0c314-442b-4aed-bbf5-ba9cf5cafbf4', ['CAN_VIEW'])
+                    ('user', 'steve@company.tld', ['CAN_SCAN'])
+                    ('group', '32a0c314-442b-4aed-bbf5-ba9cf5cafbf4')
+
+            all_users (bool, optional):
+                If enabled, the access group will apply to all users and any
+                principals defined will be ignored.
+
+            access_group_type (str, optional):
+                The type of access group. It can be one of two possible types:
+                `MANAGE_ASSETS`, `SCAN_TARGETS`
+                The default is `MANAGE_ASSETS`
+
+        Returns:
+            :obj:`dict`:
+                The resource record for the new access list.
+
+        Examples:
+            Allow all users to see 192.168.0.0/24:
+
+            >>> tio.access_groups_v2.create('Example',
+            ...     [('ipv4', 'eq', ['192.168.0.0/24'])],
+            ...     all_users=True)
+
+            Allow everyone in a specific group id to see specific hosts:
+
+            >>> tio.access_groups_v2.create('Example',
+            ...     [('netbios_name', 'eq', ['dc1.company.tld']),
+            ...      ('netbios_name', 'eq', ['dc2.company.tld'])],
+            ...     principals=[
+            ...         ('group', '32a0c314-442b-4aed-bbf5-ba9cf5cafbf4', ['CAN_VIEW'])
+            ... ])
+        '''
+        if not principals:
+            principals = list()
+
+        # construct the payload dictionary
+        payload = {
+            # run the rules through the filter parser...
+            'rules': self._parse_filters(rules,
+                self._api.filters.access_group_asset_rules_filters_v2(),
+                    rtype='accessgroup')['rules'],
+
+            # run the principals through the principal parser...
+            'principals': self._principal_constructor(principals),
+            'name': self._check('name', name, str),
+            'all_users': self._check('all_users', all_users, bool),
+            'access_group_type': self._check('access_group_type', access_group_type, str,
+                choices=['MANAGE_ASSETS', 'SCAN_TARGETS'],
+                default='MANAGE_ASSETS',
+                case='upper')
+        }
+
+        # call the API endpoint and return the response to the caller.
+        return self._api.post('v2/access-groups', json=payload).json()
