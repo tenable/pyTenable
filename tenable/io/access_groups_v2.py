@@ -12,7 +12,10 @@ Methods available on ``tio.access_groups_v2``:
     .. automethod:: list
     .. automethod:: create
     .. automethod:: delete
+    .. automethod:: edit
+    .. automethod:: details
 '''
+from restfly.utils import dict_merge
 from tenable.errors import UnexpectedValueError
 from .base import TIOEndpoint, TIOIterator
 
@@ -312,3 +315,91 @@ class AccessGroupsV2API(TIOEndpoint):
         '''
         self._api.delete('v2/access-groups/{}'.format(
             self._check('id', id, 'uuid')))
+
+    def edit(self, id, **kw):
+        '''
+        Edits an access group
+
+        :devportal:`access-groups: edit <v2-access-groups-edit>`
+
+        Args:
+            id (str):
+                The UUID of the access group to edit.
+            name (str, optional):
+                The name of the access group to edit.
+            rules (list, optional):
+                a list of rule tuples.  Tuples are defined in the standardized
+                method of name, operator, value.  For example:
+
+                .. code-block:: python
+
+                    ('operating_system', 'eq', ['Windows NT'])
+
+                Rules will be validate against by the filters before being sent
+                to the API.  Note that the value field in this context is a list
+                of string values.
+            principals (list, optional):
+                A list of principal tuples.  Each tuple must contain the type,
+                the identifier and the permissions for the principal.
+                The identifier can be either a UUID associated to a user/group, or the name of the
+                user/group and the permissions can be either a CAN_VIEW or CAN_SCAN or Both in list
+                Default permission is ``CAN_VIEW``
+                For example:
+
+                .. code-block:: python
+
+                    ('user', '32a0c314-442b-4aed-bbf5-ba9cf5cafbf4', ['CAN_VIEW'])
+                    ('user', 'steve@company.tld', ['CAN_SCAN'])
+                    ('group', '32a0c314-442b-4aed-bbf5-ba9cf5cafbf4')
+
+            all_users (bool):
+                If enabled, the access group will apply to all users and any
+                principals defined will be ignored.
+            all_assets (bool, optional):
+                Specifies if the access group to modify is the default
+                "all assets" group or a user-defined one.
+            access_group_type (str, optional):
+                The type of access group. It can be one of three possible types:
+                `MANAGE_ASSETS`, `SCAN_TARGETS`
+                The default is `MANAGE_ASSETS`
+        '''
+
+        # If any rules are specified, then run them through the filter parser.
+        if 'rules' in kw:
+            kw['rules'] = self._parse_filters(kw['rules'],
+                self._api.filters.access_group_asset_rules_filters_v2(),
+                    rtype='accessgroup')['rules']
+
+        # if any principals are specified, then run them through the principal
+        # parser.
+        if 'principals' in kw:
+            kw['principals'] = self._principal_constructor(kw['principals'])
+
+        # get the details of the access group that we are supposed to be editing
+        # and then merge in the keywords specified.
+        g = dict_merge(self.details(self._check('id', id, 'uuid')), kw)
+
+        # construct the payload from the merged details.
+        payload = {
+            'name': self._check('name', g['name'], str),
+            'all_users': self._check('all_users', g['all_users'], bool),
+            'all_assets': self._check('all_assets', g['all_assets'], bool),
+            'rules': g['rules'],
+            'principals': g['principals'],
+            'access_group_type': g['access_group_type']
+        }
+
+        # call the API endpoint and return the response to the caller.
+        return self._api.put('v2/access-groups/{}'.format(id), json=payload).json()
+
+    def details(self, id):
+        '''
+        Retrieves the details of the specified access group.
+
+        :devportal:`access-groups: details <v2-access-groups-details>`
+
+        Args:
+            id (str): The UUID of the access group.
+        '''
+        return self._api.get('v2/access-groups/{}'.format(
+            self._check('id', id, 'uuid'))).json()
