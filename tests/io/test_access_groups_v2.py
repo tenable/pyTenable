@@ -212,8 +212,9 @@ def test_access_group_v2_edit_success(api, agroup):
     check(g, 'processing_percent_complete', int)
 
 @pytest.mark.vcr()
-def test_access_groups_v2_details_success(api, agroup):
-    g = api.access_groups_v2.details(agroup['id'])
+def test_access_groups_v2_details_success(api):
+    group = api.access_groups_v2.create('Test', [('ipv4', 'eq', ['192.168.0.0/24'])])
+    g = api.access_groups_v2.details(group['id'])
     assert isinstance(g, dict)
     check(g, 'created_at', 'datetime')
     check(g, 'updated_at', 'datetime')
@@ -229,7 +230,7 @@ def test_access_groups_v2_details_success(api, agroup):
         check(rule, 'operator', str)
         check(rule, 'terms', list)
     check(g, 'principals', list)
-    for principal in agroup['principals']:
+    for principal in group['principals']:
         check(principal, 'type', str)
         check(principal, 'principal_id', 'uuid')
         check(principal, 'principal_name', str)
@@ -239,6 +240,7 @@ def test_access_groups_v2_details_success(api, agroup):
     check(g, 'created_by_name', str)
     check(g, 'updated_by_name', str)
     check(g, 'processing_percent_complete', int)
+    api.access_groups_v2.delete(group['id'])
 
 @pytest.mark.vcr()
 def test_access_groups_v2_list_offset_typeerror(api):
