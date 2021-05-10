@@ -11,6 +11,7 @@ Methods available on ``tio.access_groups_v2``:
 .. autoclass:: AccessGroupsV2API
     .. automethod:: list
     .. automethod:: create
+    .. automethod:: delete
 '''
 from tenable.errors import UnexpectedValueError
 from .base import TIOEndpoint, TIOIterator
@@ -299,3 +300,15 @@ class AccessGroupsV2API(TIOEndpoint):
 
         # call the API endpoint and return the response to the caller.
         return self._api.post('v2/access-groups', json=payload).json()
+
+    def delete(self, id):
+        '''
+        Deletes the specified access group.
+
+        :devportal:`access-groups: delete <v2-access-groups-delete>`
+
+        Args:
+            id (str): The UUID of the access group to remove.
+        '''
+        self._api.delete('v2/access-groups/{}'.format(
+            self._check('id', id, 'uuid')))
