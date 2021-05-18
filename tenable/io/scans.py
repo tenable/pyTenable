@@ -37,6 +37,7 @@ Methods available on ``tio.scans``:
 from .base import TIOEndpoint, TIOIterator
 from tenable.utils import dict_merge, policy_settings
 from tenable.errors import UnexpectedValueError, FileDownloadError
+from tenable.constants import IOConstants
 from datetime import datetime, timedelta
 from restfly.utils import dict_clean
 from io import BytesIO
@@ -66,6 +67,9 @@ class ScanHistoryIterator(TIOIterator):
 
 
 class ScansAPI(TIOEndpoint):
+    schedule_const = IOConstants.ScanScheduleConst
+    case_const = IOConstants.CaseConst
+
     def _block_while_running(self, scan_id, sleeper=5):
         '''
         A simple function to block while the scan_id specified is still in a
@@ -179,9 +183,10 @@ class ScansAPI(TIOEndpoint):
         if 'schedule_scan' in kw:
             self._check('schedule_scan', kw['schedule_scan'], dict)
             if kw['schedule_scan']['enabled']:
-                keys = ['enabled', 'launch', 'rrules', 'scheduleScan', 'starttime', 'timezone']
+                keys = [self.schedule_const.enabled, self.schedule_const.launch, self.schedule_const.rrules,
+                    self.schedule_const.schedule_scan, self.schedule_const.start_time, self.schedule_const.timezone]
             else:
-                keys = ['enabled', 'scheduleScan']
+                keys = [self.schedule_const.enabled, self.schedule_const.schedule_scan]
 
             # update schedule values in scan settings based on enable parameter
             for k in keys:
@@ -208,21 +213,23 @@ class ScansAPI(TIOEndpoint):
                 Distributed dictionary of the keys required for scan schedule.
         '''
         schedule = {}
-        if details['rrules'] is not None:
-            rrules = dict(rules.split('=') for rules in details['rrules'].split(';'))
+        if details[self.schedule_const.rrules] is not None:
+            rrules = dict(rules.split('=') for rules in details[self.schedule_const.rrules].split(';'))
             schedule = {
-                'frequency': rrules['FREQ'],
-                'interval': rrules['INTERVAL'],
-                'weekdays': rrules.get('BYDAY', '').split(),
-                'day_of_month': rrules.get('BYMONTHDAY', None),
-                'starttime': datetime.strptime(details['starttime'], '%Y%m%dT%H%M%S')
-                    if details['starttime'] is not None else None,
-                'timezone': details['timezone'] if details['timezone'] is not None else None,
+                self.schedule_const.frequency: rrules['FREQ'],
+                self.schedule_const.interval: rrules['INTERVAL'],
+                self.schedule_const.weekdays: rrules.get('BYDAY', '').split(),
+                self.schedule_const.day_of_month: rrules.get('BYMONTHDAY', None),
+                self.schedule_const.start_time: datetime.strptime(
+                    details[self.schedule_const.start_time], self.schedule_const.time_format)
+                    if details[self.schedule_const.start_time] is not None else None,
+                self.schedule_const.timezone: details[self.schedule_const.timezone]
+                    if details[self.schedule_const.timezone] is not None else None,
             }
         return schedule
 
     def create_scan_schedule(self, enabled=False, frequency=None, interval=None,
-                             weekdays=None, day_of_month=None, starttime=None, timezone=None):
+            weekdays=None, day_of_month=None, starttime=None, timezone=None):
         '''
         Create dictionary of keys required for scan schedule
 
@@ -254,29 +261,32 @@ class ScansAPI(TIOEndpoint):
                 Dictionary of the keys required for scan schedule.
 
         '''
-        self._check('enabled', enabled, bool)
+        self._check(self.schedule_const.enabled, enabled, bool)
         schedule = {}
+
         if enabled is True:
-            launch = self._check('frequency', frequency, str,
-                 choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-                 default='ONETIME',
-                 case='upper')
-            frequency = "FREQ={}".format(launch)
+            launch = self._check(self.schedule_const.frequency, frequency, str,
+                choices=self.schedule_const.frequency_choice,
+                default=self.schedule_const.frequency_default,
+                case=self.case_const.uppercase)
+            frequency = self.schedule_const.ffrequency.format(launch)
             rrules = {
-                'frequency': frequency,
-                'interval': 'INTERVAL={}'.format(self._check('interval', interval, int, default=1)),
-                'weekdays': None,
-                'day_of_month': None
+                self.schedule_const.frequency: frequency,
+                self.schedule_const.interval: self.schedule_const.finterval.format(
+                    self._check(self.schedule_const.interval, interval, int,
+                    default=self.schedule_const.interval_default)),
+                self.schedule_const.weekdays: None,
+                self.schedule_const.day_of_month: None
             }
 
             # if the frequency is a weekly one, then we will need to specify the
             # days of the week that the exclusion is run on.
-            if frequency == 'FREQ=WEEKLY':
-                rrules['weekdays'] = 'BYDAY={}'.format(','.join(self._check(
-                    'weekdays', weekdays, list,
-                    choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                    default=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                    case='upper')))
+            if frequency == self.schedule_const.weekly_frequency:
+                rrules[self.schedule_const.weekdays] = self.schedule_const.fbyweekday.format(','.join(self._check(
+                    self.schedule_const.weekdays, weekdays, list,
+                    choices=self.schedule_const.weekdays_default,
+                    default=self.schedule_const.weekdays_default,
+                    case=self.case_const.uppercase)))
                 # In the same vein as the frequency check, we're accepting
                 # case-insensitive input, comparing it to our known list of
                 # acceptable responses, then joining them all together into a
@@ -284,42 +294,42 @@ class ScansAPI(TIOEndpoint):
 
             # if the frequency is monthly, then we will need to specify the day of
             # the month that the rule will run on.
-            if frequency == 'FREQ=MONTHLY':
-                rrules['day_of_month'] = 'BYMONTHDAY={}'.format(
-                    self._check('day_of_month', day_of_month, int,
-                                choices=list(range(1, 32)),
-                                default=datetime.today().day))
+            if frequency == self.schedule_const.monthly_frequency:
+                rrules[self.schedule_const.day_of_month] = self.schedule_const.fbymonthday.format(
+                    self._check(self.schedule_const.day_of_month, day_of_month, int,
+                        choices=self.schedule_const.day_of_month_choice,
+                        default=self.schedule_const.day_of_month_default))
 
             # Now we have to remove unused keys from rrules and create rrules structure required by scan
             # 'FREQ=ONETIME;INTERVAL=1', FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TH,FR', 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=22'
-            schedule['rrules'] = ';'.join(dict_clean(rrules).values())
+            schedule[self.schedule_const.rrules] = ';'.join(dict_clean(rrules).values())
 
             # Set enable and launch key for schedule
-            schedule['enabled'] = True
-            schedule['launch'] = launch
+            schedule[self.schedule_const.enabled] = True
+            schedule[self.schedule_const.launch] = launch
 
             # starttime is rounded-off to 30 min schedule to match with values used in UI
             # will assign schedule datetime in (19700101T013000) format
-            starttime = self._check('start_time', starttime, datetime, default=datetime.utcnow())
+            starttime = self._check(self.schedule_const.start_time, starttime, datetime,
+                default=self.schedule_const.start_time_default)
             secs = timedelta(minutes=30).total_seconds()
             starttime = datetime.fromtimestamp(starttime.timestamp() + secs - starttime.timestamp() % secs)
-            schedule['starttime'] = starttime.strftime('%Y%m%dT%H%M%S')
+            schedule[self.schedule_const.start_time] = starttime.strftime(self.schedule_const.time_format)
 
-            schedule['timezone'] = self._check('timezone', timezone, str,
-                                                choices=self._api._tz,
-                                                default='Etc/UTC')
+            schedule[self.schedule_const.timezone] = self._check(self.schedule_const.timezone, timezone, str,
+                choices=self._api._tz, default=self.schedule_const.timezone_default)
 
-            schedule['scheduleScan'] = 'yes'
+            schedule[self.schedule_const.schedule_scan] = 'yes'
 
         if enabled is False:
-            # Set enable and launch key for schedule
-            schedule['enabled'] = False
-            schedule['scheduleScan'] = 'no'
+            # Set enable and schedule_scan key for schedule
+            schedule[self.schedule_const.enabled] = False
+            schedule[self.schedule_const.schedule_scan] = 'no'
 
         return schedule
 
     def configure_scan_schedule(self, id, enabled=None, frequency=None, interval=None,
-                             weekdays=None, day_of_month=None, starttime=None, timezone=None):
+            weekdays=None, day_of_month=None, starttime=None, timezone=None):
         '''
         Create dictionary of keys required for scan schedule
 
@@ -354,17 +364,17 @@ class ScansAPI(TIOEndpoint):
         '''
         current = self.details(self._check('id', id, int))['settings']
         if enabled in [True, False]:
-            current['enabled'] = self._check('enabled', enabled, bool)
+            current[self.schedule_const.enabled] = self._check(self.schedule_const.enabled, enabled, bool)
         schedule = {}
-        if current['enabled'] is True:
-            if current['rrules'] is not None:
+        if current[self.schedule_const.enabled] is True:
+            if current[self.schedule_const.rrules] is not None:
                 # create existing schedule dictionary
                 existing_rrules = {
-                    'enabled': current['enabled'],
-                    'scheduleScan': 'yes' if current['enabled'] is True else 'no',
-                    'rrules': current['rrules'],
-                    'starttime': current['starttime'],
-                    'timezone': current['timezone']
+                    self.schedule_const.enabled: current[self.schedule_const.enabled],
+                    self.schedule_const.schedule_scan: 'yes' if current[self.schedule_const.enabled] is True else 'no',
+                    self.schedule_const.rrules: current[self.schedule_const.rrules],
+                    self.schedule_const.start_time: current[self.schedule_const.start_time],
+                    self.schedule_const.timezone: current[self.schedule_const.timezone]
                 }
 
                 # Restructure existing_rrule with distributed values
@@ -372,30 +382,33 @@ class ScansAPI(TIOEndpoint):
             else:
                 existing_rrules = {}
 
-            launch = self._check('frequency', frequency, str,
-                 choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-                 default=existing_rrules.get('frequency', None) or 'ONETIME',
-                 case='upper')
-            
-            frequency = "FREQ={}".format(launch)
+            launch = self._check(self.schedule_const.frequency, frequency, str,
+                choices=self.schedule_const.frequency_choice,
+                default=existing_rrules.get(self.schedule_const.frequency, None) or
+                   self.schedule_const.frequency_default,
+                case=self.case_const.uppercase)
+
+            frequency = self.schedule_const.ffrequency.format(launch)
 
             rrules = {
-                'frequency': frequency,
-                'interval': 'INTERVAL={}'.format(self._check('interval', interval, int,
-                    default=existing_rrules.get('interval', None) or 1)),
-                'weekdays': None,
-                'day_of_month': None
+                self.schedule_const.frequency: frequency,
+                self.schedule_const.interval: self.schedule_const.finterval.format(
+                    self._check(self.schedule_const.interval, interval, int,
+                    default=existing_rrules.get(self.schedule_const.interval, None)
+                        or self.schedule_const.interval_default)),
+                self.schedule_const.weekdays: None,
+                self.schedule_const.day_of_month: None
             }
 
             # if the frequency is a weekly one, then we will need to specify the
             # days of the week that the exclusion is run on.
-            if frequency == 'FREQ=WEEKLY':
-                rrules['weekdays'] = 'BYDAY={}'.format(','.join(self._check(
-                    'weekdays', weekdays, list,
-                    choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                    default=existing_rrules.get('weekdays', '') or
-                            ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                    case='upper')))
+            if frequency == self.schedule_const.weekly_frequency:
+                rrules[self.schedule_const.weekdays] = self.schedule_const.fbyweekday.format(','.join(self._check(
+                    self.schedule_const.weekdays, weekdays, list,
+                    choices=self.schedule_const.weekdays_default,
+                    default=existing_rrules.get(self.schedule_const.weekdays, '') or
+                        self.schedule_const.weekdays_default,
+                    case=self.case_const.uppercase)))
                 # In the same vein as the frequency check, we're accepting
                 # case-insensitive input, comparing it to our known list of
                 # acceptable responses, then joining them all together into a
@@ -403,48 +416,52 @@ class ScansAPI(TIOEndpoint):
 
             # if the frequency is monthly, then we will need to specify the day of
             # the month that the rule will run on.
-            if frequency == 'FREQ=MONTHLY':
-                rrules['day_of_month'] = 'BYMONTHDAY={}'.format(self._check('day_of_month', day_of_month, int,
-                    choices=list(range(1, 32)),
-                    default=existing_rrules.get('day_of_month', None) or datetime.today().day))
+            if frequency == self.schedule_const.monthly_frequency:
+                rrules[self.schedule_const.day_of_month] = self.schedule_const.fbymonthday.format(
+                    self._check(self.schedule_const.day_of_month, day_of_month, int,
+                    choices=self.schedule_const.day_of_month_choice,
+                    default=existing_rrules.get(self.schedule_const.day_of_month, None)
+                        or self.schedule_const.day_of_month_default))
 
             # Now we have to remove unused keys from rrules and create rrules structure required by scan
             # 'FREQ=ONETIME;INTERVAL=1', FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TH,FR', 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=22'
-            schedule['rrules'] = ';'.join(dict_clean(rrules).values())
+            schedule[self.schedule_const.rrules] = ';'.join(dict_clean(rrules).values())
 
             # Set enable and launch key for schedule
-            schedule['enabled'] = True
-            schedule['launch'] = launch
+            schedule[self.schedule_const.enabled] = True
+            schedule[self.schedule_const.launch] = launch
 
             # starttime is rounded-off to 30 min schedule and
             # will assign schedule datetime in (19700101T011223) manner
-            starttime = self._check('start_time', starttime, datetime,
-                        default=existing_rrules.get('starttime', None) or datetime.utcnow())
+            starttime = self._check(self.schedule_const.start_time, starttime, datetime,
+                default=existing_rrules.get(self.schedule_const.start_time, None)
+                    or self.schedule_const.start_time_default)
             secs = timedelta(minutes=30).total_seconds()
             starttime = datetime.fromtimestamp(starttime.timestamp() + secs - starttime.timestamp() % secs)
-            schedule['starttime'] = starttime.strftime('%Y%m%dT%H%M%S')
+            schedule[self.schedule_const.start_time] = starttime.strftime(self.schedule_const.time_format)
 
-            schedule['timezone'] = self._check('timezone', timezone, str,
-                                                choices=self._api._tz,
-                                                default=existing_rrules.get('timezone', None) or 'Etc/UTC')
+            schedule[self.schedule_const.timezone] = self._check(self.schedule_const.timezone, timezone, str,
+                choices=self._api._tz, default=existing_rrules.get(self.schedule_const.timezone, None)
+                    or self.schedule_const.timezone_default)
 
-            schedule['scheduleScan'] = 'yes'
+            schedule[self.schedule_const.schedule_scan] = 'yes'
 
             # merge updated schedule values to existing schedule
             dict_merge(existing_rrules, schedule)
 
             # remove extra keys after merge
-            keys = ['frequency', 'interval', 'weekdays', 'day_of_month']
+            keys = [self.schedule_const.frequency, self.schedule_const.interval,
+                    self.schedule_const.weekdays, self.schedule_const.day_of_month]
             for k in keys:
                 if k in existing_rrules:
                     del(existing_rrules[k])
 
             return existing_rrules
 
-        if current['enabled'] is False:
+        if current[self.schedule_const.enabled] is False:
             # Set enable and launch key for schedule
-            schedule['enabled'] = False
-            schedule['scheduleScan'] = 'no'
+            schedule[self.schedule_const.enabled] = False
+            schedule[self.schedule_const.schedule_scan] = 'no'
             return schedule
 
     def attachment(self, scan_id, attachment_id, key, fobj=None):
