@@ -21,6 +21,8 @@ Methods available on ``tio.tags``:
     .. automethod:: list
     .. automethod:: list_categories
 '''
+import json
+from tenable.utils import dict_merge
 from .base import TIOEndpoint, TIOIterator
 from tenable.errors import UnexpectedValueError
 
@@ -223,9 +225,6 @@ class TagsAPI(TIOEndpoint):
             # run the current_domain_permissions through the permission_constructor
             'current_domain_permissions': self._permission_constructor(
                 self._check('current_domain_permissions', current_domain_permissions, list)),
-
-            # set version default to 1
-            'version': 1
         }
 
         # if filters are defined, run the filters through the filter parser...
@@ -336,7 +335,8 @@ class TagsAPI(TIOEndpoint):
         return self._api.get('tags/categories/{}'.format(self._check(
             'tag_category_uuid', tag_category_uuid, 'uuid'))).json()
 
-    def edit(self, tag_value_uuid, value=None, description=None, filters=None):
+    def edit(self, tag_value_uuid, value=None, description=None, filters=None, filter_type=None,
+             all_users_permissions=None, current_domain_permissions=None):
         '''
         Updates Tag category/value pair information.
 
@@ -349,8 +349,32 @@ class TagsAPI(TIOEndpoint):
                 The new name for the category value.
             description (str, optional):
                 New description for the category value.
-            filters (dict, optional):
-                The filter dictionary as specified within the API documents.
+            filters (list, optional):
+                Filters are list of tuples in the form of ('FIELD', 'OPERATOR', 'VALUE').
+                Multiple filters can be used and will filter down the data
+                for automatically applying the tag to asset.
+
+                Examples::
+                    - ``('distro', 'match', ['win', 'linux'])``
+                    - ``('name', 'nmatch', 'home')``
+
+                Note that multiple values can be passed in list of string format
+            filter_type (str, optional):
+                The filter_type operator determines how the filters are combined
+                together.  ``and`` will inform the API that all of the filter
+                conditions must be met whereas ``or`` would mean that if any of the
+                conditions are met. Default is ``and``
+            all_users_permissions (list, optional):
+                List of the minimum set of permissions all users have on the current tag.
+                Possible values are ALL, CAN_EDIT, and CAN_SET_PERMISSIONS.
+            current_domain_permissions (list, optional):
+                List of user and group-specific permissions for the current tag
+                current_domain_permissions are list of tuples in the form of ('ID', 'NAME', 'TYPE', 'PERMISSIONS')
+                the TYPE can be either `USER` or `GROUP` and
+                the PERMISSIONS can be `ALL`, `CAN_EDIT` or `CAN_SET_PERMISSIONS` any one or all in list
+
+                Examples::
+                    - ``('c2f2d080-ac2b-4278-914b-29f148682ee1', 'user@company.com', 'USER', ['CAN_EDIT'])``
 
         Returns:
             :obj:`dict`:
@@ -364,8 +388,55 @@ class TagsAPI(TIOEndpoint):
         payload['value'] = self._check('value', value, str)
         if description:
             payload['description'] = self._check('description', description, str)
-        if filters:
-            payload['filters'] = self._check('filters', filters, dict)
+
+        # get existing values of tag
+        current = self.details(self._check('tag_value_uuid', tag_value_uuid, 'uuid'))
+        current_access_control = current['access_control']
+
+        # created copy of current access control which will be used to compare any changes done in permissions
+        access_control = current_access_control.copy()
+
+        # initialize access controls
+        payload['access_control'] = dict()
+
+        # Set all users permission
+        if all_users_permissions is not None:
+            current_access_control['all_users_permissions'] = [
+                self._check('i', i, str, choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'])
+                for i in self._check('all_users_permissions', all_users_permissions, list, case='upper')
+            ]
+
+        # run current_domain_permissions through permission parser
+        if current_domain_permissions is not None:
+            current_access_control['current_domain_permissions'] = self._permission_constructor(
+                current_domain_permissions)
+
+        # update payload access control with new values
+        payload['access_control'] = dict_merge(payload['access_control'], current_access_control)
+
+        # We need to pick current value of version if available or set default value to 0
+        # this value will be incremented when permissions are updated
+        if 'version' in current['access_control']:
+            current_version = current['access_control']['version']
+        else:
+            current_version = 0
+
+        # version value must be incremented each time the permissions are updated
+        if not payload['access_control'] == access_control:
+            payload['access_control']['version'] = current_version + 1
+
+        # if filters are defined, run the filters through the filter parser...
+        # or else apply the filters that are available in current payload
+        if filters is not None:
+            self._check('filters', filters, list)
+            payload['filters'] = self._tag_value_constructor(
+                filters, self._api.filters.asset_tag_filters(), filter_type)
+        elif 'filters' in current and current['filters']:
+            # current value in filters are in form of string.
+            # we have to first convert it into dict() form before applying
+            current['filters']['asset'] = json.loads(current['filters']['asset'])
+            payload['filters'] = current['filters']
+        
         return self._api.put('tags/values/{}'.format(self._check(
             'tag_value_uuid', tag_value_uuid, 'uuid')), json=payload).json()
 
