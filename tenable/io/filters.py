@@ -188,3 +188,18 @@ class FiltersAPI(TIOEndpoint):
             'choices': None,
             'pattern': None
         }}
+
+    def asset_tag_filters(self):
+        '''
+        Returns a list of filters that you can use to create the rules for applying dynamic tags.
+
+        :devportal:`tag: list asset tag filters <tags-list-asset-filters>`
+
+        Returns:
+            :obj:`dict`:
+                Filter resource dictionary
+
+        Examples:
+            >>> tio.tags.asset_tag_filters()
+        '''
+        return self._use_cache('tags', 'tags/assets/filters')
