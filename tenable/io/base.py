@@ -86,6 +86,17 @@ class TIOEndpoint(APIEndpoint):
                     'terms': fval,
                     'type': fname
                 })
+            elif rtype == 'assets':
+                # For the asset format, we will instead use the format of
+                # "field", "operator", and "value".  Further all terms must be a
+                # list of strings.
+                if 'asset' not in resp:
+                    resp['asset'] = list()
+                resp['asset'].append({
+                    'field': fname,
+                    'operator': foper,
+                    'value': fval
+                })
 
         return resp
 
