@@ -247,6 +247,9 @@ def test_tags_create_filters_and_access_control_success(api, user, tagfilters):
     check(tagvalue['access_control'], 'current_user_permissions', list)
     check(tagvalue['access_control'], 'defined_domain_permissions', list)
     check(tagvalue, 'filters', dict, allow_none=True)
+    assert tagvalue['access_control']['all_users_permissions'] == ['CAN_EDIT']
+    assert any(v['id'] == user['uuid'] for v in tagvalue['access_control']['current_domain_permissions'])
+    assert tagvalue['filters'] == {'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"192.168.0.0/24"}]}'}
     api.tags.delete(tagvalue['uuid'])
 
 @pytest.mark.vcr()
@@ -368,6 +371,36 @@ def test_tags_edit_description_typeerror(api):
         api.tags.edit(uuid.uuid4(), description=1)
 
 @pytest.mark.vcr()
+def test_tags_edit_all_users_permissions_typeerror(api, tagvalue):
+    with pytest.raises(TypeError):
+        api.tags.edit(tagvalue['uuid'], all_users_permissions=1)
+
+@pytest.mark.vcr()
+def test_tags_edit_all_users_permissions_unexpectedvalueerror(api, tagvalue):
+    with pytest.raises(UnexpectedValueError):
+        api.tags.edit(tagvalue['uuid'], all_users_permissions=['something'])
+
+@pytest.mark.vcr()
+def test_tags_edit_current_domain_permissions_typeerror(api,tagvalue):
+    with pytest.raises(TypeError):
+        api.tags.edit(tagvalue['uuid'], current_domain_permissions=1)
+
+@pytest.mark.vcr()
+def test_tags_edit_filters_typeerror(api, tagvalue):
+    with pytest.raises(TypeError):
+        api.tags.edit(tagvalue['uuid'], filters=1)
+
+@pytest.mark.vcr()
+def test_tags_edit_filter_type_typeerror(api, tagvalue, tagfilters):
+    with pytest.raises(TypeError):
+        api.tags.edit(tagvalue['uuid'], filters=tagfilters, filter_type=1)
+
+@pytest.mark.vcr()
+def test_tags_edit_filter_type_unexpectedvalueerror(api, tagvalue, tagfilters):
+    with pytest.raises(UnexpectedValueError):
+        api.tags.edit(tagvalue['uuid'], filters=tagfilters, filter_type='nope')
+
+@pytest.mark.vcr()
 def test_tags_edit_success(api, tagvalue):
     t = api.tags.edit(tagvalue['uuid'], value='Edited')
     assert isinstance(t, dict)
@@ -379,10 +412,48 @@ def test_tags_edit_success(api, tagvalue):
     check(t, 'category_uuid', 'uuid')
     check(t, 'value', str)
     check(t, 'type', str)
-    #check(t, 'description', str, allow_none=True)
+    # check(t, 'description', str, allow_none=True)
     check(t, 'category_name', str)
-    #check(t, 'category_description', str, allow_none=True)
+    # check(t, 'category_description', str, allow_none=True)
+    check(t, 'access_control', dict)
+    check(t['access_control'], 'all_users_permissions', list)
+    check(t['access_control'], 'current_domain_permissions', list)
+    check(t['access_control'], 'current_user_permissions', list)
+    check(t['access_control'], 'defined_domain_permissions', list)
+    # check(tagvalue, 'filters', dict, allow_none=True)
     assert t['value'] == 'Edited'
+
+@pytest.mark.vcr()
+def test_tags_edit_filters_and_access_control_success(api, user, tagfilters):
+    tagvalue = api.tags.create('Example', 'Test',
+        all_users_permissions=['CAN_EDIT'],
+        current_domain_permissions=[(user['uuid'], user['username'], 'user', ['CAN_EDIT'])],
+        filters=tagfilters)
+    t = api.tags.edit(tagvalue['uuid'], filters=[('ipv4', 'eq', ['127.0.0.1'])],
+        all_users_permissions=[], current_domain_permissions=[])
+    assert isinstance(t, dict)
+    check(t, 'uuid', 'uuid')
+    check(t, 'created_at', 'datetime')
+    check(t, 'created_by', str)
+    check(t, 'updated_at', 'datetime')
+    check(t, 'updated_by', str)
+    check(t, 'category_uuid', 'uuid')
+    check(t, 'value', str)
+    check(t, 'type', str)
+    # check(t, 'description', str, allow_none=True)
+    check(t, 'category_name', str)
+    # check(t, 'category_description', str, allow_none=True)
+    check(t, 'access_control', dict)
+    check(t['access_control'], 'all_users_permissions', list)
+    check(t['access_control'], 'current_domain_permissions', list)
+    check(t['access_control'], 'current_user_permissions', list)
+    check(t['access_control'], 'defined_domain_permissions', list)
+    check(tagvalue, 'filters', dict, allow_none=True)
+    assert t['access_control']['all_users_permissions'] == []
+    assert not any(v['id'] == user['uuid'] for v in t['access_control']['current_domain_permissions'])
+    assert t['filters'] == {'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"127.0.0.1"}]}'}
+    assert t['access_control']['version'] == 1
+    api.tags.delete(tagvalue['uuid'])
 
 @pytest.mark.vcr()
 def test_tags_edit_category_uuid_typeerror(api):
