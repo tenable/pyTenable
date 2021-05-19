@@ -4,6 +4,21 @@ from tenable.io.tags import TagsIterator
 import uuid, pytest
 
 @pytest.fixture
+def tagfilters():
+    return [('ipv4', 'eq', ['192.168.0.0/24'])]
+
+@pytest.fixture
+def filterdefs():
+     return {
+        'ipv4': {'choices': None,
+                 'operators': ['eq'],
+                 'pattern': '^(\\s*((?=\\d+\\.\\d+\\.\\d+\\.\\d+(?:\\/|-|\\s*,|$))'
+                            '(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.?){4})'
+                            '(?:(?:\\/(?:3[0-2]|[12]+\\d|[1-9]))|((?:-(?=\\d+\\.\\d+\\.\\d+\\.\\d+)'
+                            '(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.?){4})|(?:\\s*,(?:\\s*)))?)+)+$'},
+    }
+
+@pytest.fixture
 @pytest.mark.vcr()
 def tagvalue(request, api):
     tag = api.tags.create('Example', 'Test')
@@ -27,6 +42,132 @@ def tagcat(request, api):
     request.addfinalizer(teardown)
     return tag
 
+def test_tags_permission_constructor_id_typeerror(api):
+    with pytest.raises(TypeError):
+        api.tags._permission_constructor([(1, 'something', 'user')])
+
+def test_tags_permission_constructor_id_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.tags._permission_constructor([('something', 'something', 'user')])
+
+def test_tags_permission_constructor_name_typeerror(api):
+    with pytest.raises(TypeError):
+        api.tags._permission_constructor([(str(uuid.uuid4()), 1, 'user')])
+
+def test_tags_permission_constructor_type_typeerror(api):
+    with pytest.raises(TypeError):
+        api.tags._permission_constructor([(str(uuid.uuid4()), 'something', 1)])
+
+def test_tags_permission_constructor_type_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.tags._permission_constructor([(str(uuid.uuid4()), 'something', 'something')])
+
+def test_tags_permission_constructor_permissions_typeerror(api):
+    with pytest.raises(TypeError):
+        api.tags._permission_constructor([(str(uuid.uuid4()), 'something', 'user', 1)])
+
+def test_tags_permission_constructor_permissions_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.tags._permission_constructor([(str(uuid.uuid4()), 'something', 'user', ['something'])])
+
+def test_tags_permission_constructor_dict_id_typeerror(api):
+    with pytest.raises(TypeError):
+        api.tags._permission_constructor([{
+            'id': 1,
+            "name": 'something',
+            "type": 'something',
+            "permissions": [],
+        }])
+
+def test_tags_permission_constructor_dict_id_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.tags._permission_constructor([{
+            'id': 'something',
+            "name": 'something',
+            "type": 'something',
+            "permissions": [],
+        }])
+
+def test_tags_permission_constructor_dict_name_typeerror(api):
+    with pytest.raises(TypeError):
+        api.tags._permission_constructor([{
+            'id': str(uuid.uuid4()),
+            "name": 1,
+            "type": 'something',
+            "permissions": [],
+        }])
+
+def test_tags_permission_constructor_dict_type_typeerror(api):
+    with pytest.raises(TypeError):
+        api.tags._permission_constructor([{
+            'id': str(uuid.uuid4()),
+            "name": 'something',
+            "type": 1,
+            "permissions": [],
+        }])
+
+def test_tags_permission_constructor_dict_type_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.tags._permission_constructor([{
+            'id': str(uuid.uuid4()),
+            "name": 'something',
+            "type": 'something',
+            "permissions": [],
+        }])
+
+def test_tags_permission_constructor_dict_permission_typeerror(api):
+    with pytest.raises(TypeError):
+        api.tags._permission_constructor([{
+            'id': str(uuid.uuid4()),
+            "name": 'something',
+            "type": 'user',
+            "permissions": 1,
+        }])
+
+def test_tags_permission_constructor_dict_permission_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.tags._permission_constructor([{
+            'id': str(uuid.uuid4()),
+            "name": 'something',
+            "type": 'user',
+            "permissions": ['something'],
+        }])
+
+def test_tags_permission_constructor_tuple_pass(api):
+    u = str(uuid.uuid4())
+    assert api.tags._permission_constructor([
+        (u, 'test', 'user', ['CAN_EDIT'])
+    ]) == [{'permissions': ['CAN_EDIT'], 'type': 'USER', 'name': 'test', 'id': u}]
+
+    # when permissions not passed
+    assert api.tags._permission_constructor([
+        (u, 'test', 'user')
+    ]) == [{'permissions': [], 'type': 'USER', 'name': 'test', 'id': u}]
+
+def test_tags_permission_constructor_dict_pass(api):
+    u = str(uuid.uuid4())
+    assert api.tags._permission_constructor([
+        {'id': u, 'name': 'test', 'type': 'user', 'permissions': ['CAN_EDIT']}
+    ]) == [{'permissions': ['CAN_EDIT'], 'type': 'USER', 'name': 'test', 'id': u}]
+
+    # when permissions not passed
+    assert api.tags._permission_constructor([
+        {'id': u, 'name': 'test', 'type': 'user'}
+    ]) == [{'permissions': [], 'type': 'USER', 'name': 'test', 'id': u}]
+
+def test_tags_tag_value_constructor_filter_type_typeerror(api, tagfilters, filterdefs):
+    with pytest.raises(TypeError):
+        api.tags._tag_value_constructor(filters=tagfilters, filterdefs=filterdefs, filter_type=1)
+
+def test_tags_tag_value_constructor_filter_type_unexpectedvalueerror(api, tagfilters, filterdefs):
+    with pytest.raises(UnexpectedValueError):
+        api.tags._tag_value_constructor(filters=tagfilters, filterdefs=filterdefs, filter_type='nope')
+
+def test_tags_tag_value_constructor_pass(api, tagfilters, filterdefs):
+    assert api.tags._tag_value_constructor(
+        filters=tagfilters, filterdefs=filterdefs, filter_type='and'
+    ) == {'asset': {'and': [{'field': 'ipv4', 'operator': 'eq', 'value': '192.168.0.0/24'}]}}
+
 @pytest.mark.vcr()
 def test_tags_create_category_typeerror(api):
     with pytest.raises(TypeError):
@@ -47,6 +188,26 @@ def test_tags_create_category_description_typeerror(api):
     with pytest.raises(TypeError):
         api.tags.create('', '', category_description=1)
 
+pytest.mark.vcr()
+def test_tags_create_all_users_permissions_typeerror(api):
+    with pytest.raises(TypeError):
+        api.tags.create('', '', all_users_permissions=1)
+
+@pytest.mark.vcr()
+def test_tags_create_all_users_permissions_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.tags.create('', '', all_users_permissions=['something'])
+
+@pytest.mark.vcr()
+def test_tags_create_current_domain_permissions_typeerror(api):
+    with pytest.raises(TypeError):
+        api.tags.create('', '', current_domain_permissions=1)
+
+@pytest.mark.vcr()
+def test_tags_create_filters_typeerror(api):
+    with pytest.raises(TypeError):
+        api.tags.create('', '', filters=1)
+
 @pytest.mark.vcr()
 def test_tags_create_success(api, tagvalue):
     assert isinstance(tagvalue, dict)
@@ -56,8 +217,37 @@ def test_tags_create_success(api, tagvalue):
     check(tagvalue, 'updated_by', str)
     check(tagvalue, 'category_uuid', 'uuid')
     check(tagvalue, 'value', str)
-    #check(tagvalue, 'description', str, allow_none=True)
-    #check(tagvalue, 'category_description', str, allow_none=True)
+    # check(tagvalue, 'description', str, allow_none=True)
+    # check(tagvalue, 'category_description', str, allow_none=True)
+    check(tagvalue, 'access_control', dict)
+    check(tagvalue['access_control'], 'all_users_permissions', list)
+    check(tagvalue['access_control'], 'current_domain_permissions', list)
+    check(tagvalue['access_control'], 'current_user_permissions', list)
+    check(tagvalue['access_control'], 'defined_domain_permissions', list)
+    # check(tagvalue, 'filters', str, allow_none=True)
+
+@pytest.mark.vcr()
+def test_tags_create_filters_and_access_control_success(api, user, tagfilters):
+    tagvalue = api.tags.create('Example', 'Test',
+        all_users_permissions=['CAN_EDIT'],
+        current_domain_permissions=[(user['uuid'], user['username'], 'user', ['CAN_EDIT'])],
+        filters=tagfilters)
+    assert isinstance(tagvalue, dict)
+    check(tagvalue, 'uuid', 'uuid')
+    check(tagvalue, 'created_at', 'datetime')
+    check(tagvalue, 'updated_at', 'datetime')
+    check(tagvalue, 'updated_by', str)
+    check(tagvalue, 'category_uuid', 'uuid')
+    check(tagvalue, 'value', str)
+    # check(tagvalue, 'description', str, allow_none=True)
+    # check(tagvalue, 'category_description', str, allow_none=True)
+    check(tagvalue, 'access_control', dict)
+    check(tagvalue['access_control'], 'all_users_permissions', list)
+    check(tagvalue['access_control'], 'current_domain_permissions', list)
+    check(tagvalue['access_control'], 'current_user_permissions', list)
+    check(tagvalue['access_control'], 'defined_domain_permissions', list)
+    check(tagvalue, 'filters', dict, allow_none=True)
+    api.tags.delete(tagvalue['uuid'])
 
 @pytest.mark.vcr()
 def test_tags_create_category_name_typeerror(api):
