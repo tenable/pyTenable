@@ -37,3 +37,11 @@ def test_base_parse_filter_accessgroup(api, fitem, fset):
         'operator': 'match',
         'terms': ['win',]
     }]} == api.agents._parse_filters(fitem, fset, rtype='accessgroup')
+
+def test_base_parse_filter_assets(api, fitem, fset):
+    fitem = [(fitem[0][0], fitem[0][1], [fitem[0][2]])]
+    assert {'asset': [{
+        'field': 'distro',
+        'operator': 'match',
+        'value': 'win'
+    }]} == api.agents._parse_filters(fitem, fset, rtype='assets')
