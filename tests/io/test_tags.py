@@ -1,5 +1,5 @@
 from ..checker import check, single
-from tenable.errors import *
+from tenable.errors import UnexpectedValueError, NotFoundError
 from tenable.io.tags import TagsIterator
 import uuid, pytest
 
@@ -389,16 +389,6 @@ def test_tags_edit_current_domain_permissions_typeerror(api,tagvalue):
 def test_tags_edit_filters_typeerror(api, tagvalue):
     with pytest.raises(TypeError):
         api.tags.edit(tagvalue['uuid'], filters=1)
-
-@pytest.mark.vcr()
-def test_tags_edit_filter_type_typeerror(api, tagvalue, tagfilters):
-    with pytest.raises(TypeError):
-        api.tags.edit(tagvalue['uuid'], filters=tagfilters, filter_type=1)
-
-@pytest.mark.vcr()
-def test_tags_edit_filter_type_unexpectedvalueerror(api, tagvalue, tagfilters):
-    with pytest.raises(UnexpectedValueError):
-        api.tags.edit(tagvalue['uuid'], filters=tagfilters, filter_type='nope')
 
 @pytest.mark.vcr()
 def test_tags_edit_success(api, tagvalue):
