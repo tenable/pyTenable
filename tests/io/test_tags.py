@@ -1,5 +1,5 @@
 from ..checker import check, single
-from tenable.errors import *
+from tenable.errors import UnexpectedValueError, NotFoundError
 from tenable.io.tags import TagsIterator
 import uuid, pytest
 
@@ -38,12 +38,12 @@ def test_tags_create_value_typerror(api):
         api.tags.create('', 1)
 
 @pytest.mark.vcr()
-def test_tags_create_description_typerror(api):
+def test_tags_create_value_description_typerror(api):
     with pytest.raises(TypeError):
         api.tags.create('', '', description=1)
 
 @pytest.mark.vcr()
-def test_tags_create_category_description_typeerror(api):
+def test_tags_create_value_category_description_typeerror(api):
     with pytest.raises(TypeError):
         api.tags.create('', '', category_description=1)
 
