@@ -1,6 +1,7 @@
+from tests.io.test_networks import network
 from tenable.errors import *
 from ..checker import check, single
-import pytest
+import pytest, uuid, time
 
 @pytest.mark.vcr()
 def test_assets_list(api):
@@ -117,3 +118,41 @@ def test_workbenches_asset_delete_success(api):
 def test_assign_tags(api):
     with pytest.raises(UnexpectedValueError):
         api.assets.assign_tags('foo', [], [])
+
+@pytest.mark.vcr()
+def test_assets_move_assets_source_typeerror(api):
+    with pytest.raises(TypeError):
+        api.assets.move_assets(1, str(uuid.uuid4()), ["127.0.0.1"])
+
+@pytest.mark.vcr()
+def test_assets_move_assets_source_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.assets.move_assets('nope', str(uuid.uuid4()), ["127.0.0.1"])
+
+@pytest.mark.vcr()
+def test_assets_move_assets_destination_typeerror(api):
+    with pytest.raises(TypeError):
+        api.assets.move_assets(str(uuid.uuid4()), 1, ["127.0.0.1"])
+
+@pytest.mark.vcr()
+def test_assets_move_assets_destination_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.assets.move_assets(str(uuid.uuid4()), 'nope', ["127.0.0.1"])
+
+@pytest.mark.vcr()
+def test_assets_move_assets_target_typeerror(api):
+    with pytest.raises(TypeError):
+        api.assets.move_assets(str(uuid.uuid4()), str(uuid.uuid4()), 1)
+
+@pytest.mark.vcr()
+def test_assets_move_assets_success(api, network):
+    api.assets.asset_import('pytest', {
+        'fqdn': ['example.py.test'],
+        'ipv4': ['192.168.254.1'],
+        'netbios_name': '',
+        'mac_address': []
+    })
+    time.sleep(15)
+    resp = api.assets.move_assets('00000000-0000-0000-0000-000000000000', network['uuid'], ['192.168.254.1'])
+    check(resp['response']['data'], 'asset_count', int)
+    assert resp['response']['data']['asset_count'] == 1
