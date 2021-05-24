@@ -13,9 +13,12 @@ Methods available on ``tio.agent_config``:
     .. automethod:: edit
     .. automethod:: details
 '''
-from .base import TIOEndpoint
+from tenable.io.base import TIOEndpoint
 
 class AgentConfigAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to agent config
+    '''
     def edit(self, scanner_id=1, software_update=None, auto_unlink=None):
         '''
         Edits the agent configuration.
