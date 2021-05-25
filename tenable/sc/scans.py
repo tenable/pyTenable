@@ -323,11 +323,11 @@ class ScanAPI(SCEndpoint):
 
         Returns:
             :obj:`dict`:
-                The alert resource record.
+                The scan resource record.
 
         Examples:
-            >>> alert = sc.alerts.detail(1)
-            >>> pprint(alert)
+            >>> scan = sc.scans.detail(1)
+            >>> pprint(scan)
         '''
         params = dict()
         if fields:
@@ -399,7 +399,7 @@ class ScanAPI(SCEndpoint):
                 The scan resource for the created scan.
 
         Examples:
-            Creating a scan for a single host:
+            Editing an existing scan's name:
 
             >>> sc.scans.edit(1, name='Example scan')
         '''
