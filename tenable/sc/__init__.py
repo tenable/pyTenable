@@ -320,7 +320,7 @@ class TenableSC(APISession):
             })
 
         elif access_key != None and secret_key != None:
-            if semver.match(self.version, '<5.13.0'):
+            if semver.VersionInfo.parse(self.version).match('<5.13.0'):
                 raise ConnectionError(
                     'API Keys not supported on this version of Tenable.sc')
             self._session.headers.update({
