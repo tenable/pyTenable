@@ -25,11 +25,13 @@ Methods available on ``tio.users``:
     .. automethod:: list_auths
     .. automethod:: edit_auths
 '''
-from.base import TIOEndpoint
-from tenable.errors import UnknownError, PasswordComplexityError
 from tenable.utils import dict_merge
+from tenable.io.base import TIOEndpoint
 
 class UsersAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to Users
+    '''
     def create(self, username, password, permissions,
             name=None, email=None, account_type=None):
         '''
@@ -80,14 +82,14 @@ class UsersAPI(TIOEndpoint):
 
         return self._api.post('users', json=payload).json()
 
-    def delete(self, id):
+    def delete(self, user_id):
         '''
         Removes a user from Tenable.io.
 
         :devportal:`users: delete <users-delete>`
 
         Args:
-            id (int): The unique identifier of the user.
+            user_id (int): The unique identifier of the user.
 
         Returns:
             :obj:`None`:
@@ -96,16 +98,16 @@ class UsersAPI(TIOEndpoint):
         Examples:
             >>> tio.users.delete(1)
         '''
-        self._api.delete('users/{}'.format(self._check('id', id, int)))
+        self._api.delete('users/{}'.format(self._check('user_id', user_id, int)))
 
-    def details(self, id):
+    def details(self, user_id):
         '''
         Retrieve the details of a user.
 
         :devportal:`users: details <users-details>`
 
         Args:
-            id (int): THe unique identifier for the user.
+            user_id (int): The unique identifier for the user.
 
         Returns:
             :obj:`dict`:
@@ -114,16 +116,16 @@ class UsersAPI(TIOEndpoint):
         Examples:
             >>> user = tio.users.details(1)
         '''
-        return self._api.get('users/{}'.format(self._check('id', id, int))).json()
+        return self._api.get('users/{}'.format(self._check('user_id', user_id, int))).json()
 
-    def edit(self, id, permissions=None, name=None, email=None, enabled=None):
+    def edit(self, user_id, permissions=None, name=None, email=None, enabled=None):
         '''
         Modify an existing user.
 
         :devportal:`users: edit <users-edit>`
 
         Args:
-            id (int): The unique identifier for the user.
+            user_id (int): The unique identifier for the user.
             permissions (int, optional):
                 The permissions role for the user.  The permissions integer
                 is derived based on the desired role of the user.  For details
@@ -154,23 +156,23 @@ class UsersAPI(TIOEndpoint):
             payload['name'] = self._check('name', name, str)
 
         # Merge the data that we build with the payload with the user details.
-        user = self.details(self._check('id', id, int))
+        user = self.details(self._check('user_id', user_id, int))
         payload = dict_merge({
             'permissions': user['permissions'],
             'enabled': user['enabled'],
             'email': user['email'],
             'name': user.get('name', None),
         }, payload)
-        return self._api.put('users/{}'.format(id), json=payload).json()
+        return self._api.put('users/{}'.format(user_id), json=payload).json()
 
-    def enabled(self, id, enabled):
+    def enabled(self, user_id, enabled):
         '''
         Enable the user account.
 
         :devportal:`users: enabled <users-enabled>`
 
         Args:
-            id (int): The unique identifier for the user.
+            user_id (int): The unique identifier for the user.
             enabled (bool): Is the user enabled?
 
         Returns:
@@ -187,17 +189,17 @@ class UsersAPI(TIOEndpoint):
             >>> tio.users.enabled(1, False)
         '''
         return self._api.put('users/{}/enabled'.format(
-            self._check('id', id, int)), json={
+            self._check('user_id', user_id, int)), json={
                 'enabled': self._check('enabled', enabled, bool)}).json()
 
-    def two_factor(self, id, email, sms, phone=None):
+    def two_factor(self, user_id, email, sms, phone=None):
         '''
         Configure two-factor authorization for a specific user.
 
         :devportal:`users: two-factor <users-two-factor>`
 
         Args:
-            id (int): The unique identifier for the user.
+            user_id (int): The unique identifier for the user.
             email (bool):
                 Whether two-factor should be additionally sent as an email.
             sms (bool):
@@ -226,9 +228,9 @@ class UsersAPI(TIOEndpoint):
         if phone:
             payload['sms_phone'] = self._check('phone', phone, str)
         self._api.put('users/{}/two-factor'.format(
-            self._check('id', id, int)), json=payload)
+            self._check('user_id', user_id, int)), json=payload)
 
-    def enable_two_factor(self, id, phone):
+    def enable_two_factor(self, user_id, phone):
         '''
         Enable phone-based two-factor authorization for a specific user.
 
@@ -245,10 +247,10 @@ class UsersAPI(TIOEndpoint):
             >>> tio.users.enable_two_factor(1, '9998887766')
         '''
         self._api.post('users/{}/two-factor/send-verification'.format(
-            self._check('id', id, int)), json={
+            self._check('user_id', user_id, int)), json={
                 'sms_phone': self._check('phone', phone, str)})
 
-    def verify_two_factor(self, id, code):
+    def verify_two_factor(self, user_id, code):
         '''
         Send the verification code for two-factor authorization.
 
@@ -265,7 +267,7 @@ class UsersAPI(TIOEndpoint):
             >>> tio.users.verify_two_factor(1, 'abc123')
         '''
         self._api.post('users/{}/two-factor/verify-code'.format(
-            self._check('id', id, int)), json={
+            self._check('user_id', user_id, int)), json={
                 'verification_code': self._check('code', code, str)})
 
     def impersonate(self, name):
@@ -304,14 +306,14 @@ class UsersAPI(TIOEndpoint):
         '''
         return self._api.get('users').json()['users']
 
-    def change_password(self, id, old_password, new_password):
+    def change_password(self, user_id, old_password, new_password):
         '''
         Change the password for a specific user.
 
         :devportal:`users: password <users-password>`
 
         Args:
-            id (int): The unique identifier for the user.
+            user_id (int): The unique identifier for the user.
             old_password (str): The current password.
             new_password (str): The new password.
 
@@ -322,19 +324,19 @@ class UsersAPI(TIOEndpoint):
         Examples:
             >>> tio.users.change_password(1, 'old_pass', 'new_pass')
         '''
-        self._api.put('users/{}/chpasswd'.format(self._check('id', id, int)), json={
+        self._api.put('users/{}/chpasswd'.format(self._check('user_id', user_id, int)), json={
             'password': self._check('new_password', new_password, str),
             'current_password': self._check('old_password', old_password, str)
         })
 
-    def gen_api_keys(self, id):
+    def gen_api_keys(self, user_id):
         '''
         Generate the API keys for a specific user.
 
         :devportal:`users: keys <user-keys>`
 
         Args:
-            id (int): The unique identifier for the user.
+            user_id (int): The unique identifier for the user.
 
         Returns:
             :obj:`dict`:
@@ -344,16 +346,16 @@ class UsersAPI(TIOEndpoint):
             >>> keys = tio.users.gen_api_keys(1)
         '''
         return self._api.put('users/{}/keys'.format(
-            self._check('id', id, int))).json()
+            self._check('user_id', user_id, int))).json()
 
-    def list_auths(self, id):
+    def list_auths(self, user_id):
         '''
         list user authorizations for accessing a Tenable.io instance.
 
         :devportal:`users: list-auths <users-list-auths>`
 
         Args:
-            id (int): The unique identifier for the user.
+            user_id (int): The unique identifier for the user.
 
         Returns:
             :obj:`dict`:
@@ -363,19 +365,23 @@ class UsersAPI(TIOEndpoint):
             >>> auth = tio.users.list_auths(1)
         '''
         return self._api.get('users/{}/authorizations'.format(
-            self._check('id', id, int))).json()
+            self._check('user_id', user_id, int))).json()
 
-    def edit_auths(self, id, api_permitted=None, password_permitted=None, saml_permitted=None):
+    def edit_auths(self, user_id, api_permitted=None, password_permitted=None, saml_permitted=None):
         '''
         update user authorizations for accessing a Tenable.io instance.
 
         :devportal:`users: edit-auths <users-update-auths>`
 
         Args:
-            id (int): The unique identifier for the user.
-            api_permitted (bool): Indicates whether API access is authorized for the user.
-            password_permitted (bool): Indicates whether user name and password login is authorized for the user.
-            saml_permitted (bool): Indicates whether SSO with SAML is authorized for the user.
+            user_id (int):
+                The unique identifier for the user.
+            api_permitted (bool):
+                Indicates whether API access is authorized for the user.
+            password_permitted (bool):
+                Indicates whether user name and password login is authorized for the user.
+            saml_permitted (bool):
+                Indicates whether SSO with SAML is authorized for the user.
 
         Returns:
             :obj:`None`:
@@ -385,11 +391,12 @@ class UsersAPI(TIOEndpoint):
             >>> tio.users.edit_auths(1, True, True, False)
         '''
         # get current settings
-        current = self.list_auths(self._check('id', id, int))
+        current = self.list_auths(self._check('user_id', user_id, int))
 
         # update payload with new settings
         payload = {
-            'api_permitted': self._check('api_permitted', api_permitted, bool, default=current['api_permitted']),
+            'api_permitted': self._check('api_permitted', api_permitted, bool,
+                default=current['api_permitted']),
             'password_permitted': self._check('password_permitted', password_permitted, bool,
                 default=current['password_permitted']),
             'saml_permitted': self._check('saml_permitted', saml_permitted, bool,
@@ -397,4 +404,4 @@ class UsersAPI(TIOEndpoint):
         }
 
         return self._api.put('users/{}/authorizations'.format(
-            self._check('id', id, int)), json=payload)
+            self._check('user_id', user_id, int)), json=payload)
