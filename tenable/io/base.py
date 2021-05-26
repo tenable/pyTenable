@@ -1,11 +1,18 @@
 '''
+base
+=====
 
+The following methods in classes allow for page iteration
+and centralized data processing utility
 '''
+import time
 from tenable.base import APIResultsIterator, APIEndpoint, FileDownloadError
 from tenable.errors import UnexpectedValueError
-import time
 
 class TIOEndpoint(APIEndpoint):
+    '''
+    This class contains centralized methods for data processing
+    '''
     def _parse_filters(self, finput, filterset=None, rtype='sjson'):
         '''
         A centralized method to parse and munge the filter tuples into the
@@ -121,6 +128,9 @@ class TIOEndpoint(APIEndpoint):
         return status
 
 class TIOIterator(APIResultsIterator):
+    '''
+    The following methods allows us to iterate through pages and get data
+    '''
     _path = None
     _resource = None
     _size = 100

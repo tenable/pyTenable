@@ -19,9 +19,12 @@ Methods available on ``tio.assets``:
     .. automethod:: tags
     .. automethod:: bulk_delete
 '''
-from .base import TIOEndpoint
+from tenable.io.base import TIOEndpoint
 
 class AssetsAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to Assets
+    '''
     def list(self):
         '''
         Returns a list of assets.
@@ -100,7 +103,8 @@ class AssetsAPI(TIOEndpoint):
 
         Examples:
             >>> asset = tio.assets.assign_tags(
-            ...     'add', ['00000000-0000-0000-0000-000000000000'], ['00000000-0000-0000-0000-000000000000'])
+            ...     'add', ['00000000-0000-0000-0000-000000000000'],
+            ...     ['00000000-0000-0000-0000-000000000000'])
         '''
         return self._api.post(
             'tags/assets/assignments', json={
@@ -231,15 +235,18 @@ class AssetsAPI(TIOEndpoint):
                 Returns the number of deleted assets.
 
         Examples:
-            >>> asset = tio.assets.bulk_delete(('host.hostname', 'match', 'asset.com'), filter_type='or')
+            >>> asset = tio.assets.bulk_delete(
+            ...     ('host.hostname', 'match', 'asset.com'), filter_type='or')
             >>> pprint(asset)
         '''
         payload = dict()
 
         # run the rules through the filter parser...
-        payload['query'] = {
-            self._check('filter_type', filter_type, str, choices=['and', 'or'], default='and', case='lower'):
-                self._parse_filters(filters, self._api.filters.workbench_asset_filters(), rtype='assets')['asset']
-        }
+        filter_type = self._check('filter_type', filter_type, str,
+            choices=['and', 'or'], default='and', case='lower')
+        parsed = self._parse_filters(
+            filters, self._api.filters.workbench_asset_filters(), rtype='assets')['asset']
+
+        payload['query'] = {filter_type: parsed}
 
         return self._api.post('api/v2/assets/bulk-jobs/delete', json=payload).json()
