@@ -17,7 +17,7 @@ Methods available on ``tio.access_groups_v2``:
 '''
 from restfly.utils import dict_merge
 from tenable.errors import UnexpectedValueError
-from .base import TIOEndpoint, TIOIterator
+from tenable.io.base import TIOEndpoint, TIOIterator
 
 class AccessGroupsIteratorV2(TIOIterator):
     '''
@@ -42,6 +42,9 @@ class AccessGroupsIteratorV2(TIOIterator):
     pass
 
 class AccessGroupsV2API(TIOEndpoint):
+    '''
+    This will contain all methods related to access group
+    '''
     def _list_clean(self, items):
         '''
         Removes duplicate values from list
@@ -67,11 +70,12 @@ class AccessGroupsV2API(TIOEndpoint):
                 data = dict()
                 if len(item) == 2:
                     item = item + ([],)
-                data['type'] = self._check('principal:type', item[0], str, choices=['user', 'group'])
+                data['type'] = self._check('principal:type', item[0], str,
+                    choices=['user', 'group'])
 
                 try:
                     data['principal_id'] = self._check('principal:id', item[1], 'uuid')
-                except UnexpectedValueError as err:
+                except UnexpectedValueError:
                     data['principal_name'] = self._check('principal:name', item[1], str)
 
                 data['permissions'] = self._list_clean(
@@ -91,11 +95,12 @@ class AccessGroupsV2API(TIOEndpoint):
                     self._check('principal_id', item['principal_id'], 'uuid')
                 if 'principal_name' in item:
                     self._check('principal_name', item['principal_name'], str)
-                item['permissions'] = self._list_clean(
-                    [self._check('permission', permission, str,
+                item['permissions'] = self._list_clean([
+                    self._check('permission', permission, str,
                         choices=['CAN_VIEW', 'CAN_SCAN'], case='upper')
-                     for permission in self._check('permissions', item['permissions']
-                    if 'permissions' in item and item['permissions'] else None, list, default=['CAN_VIEW'])]
+                    for permission in self._check('permissions', item['permissions']
+                    if 'permissions' in item and item['permissions']
+                    else None, list, default=['CAN_VIEW'])]
                 )
 
                 resp.append(item)
@@ -304,26 +309,26 @@ class AccessGroupsV2API(TIOEndpoint):
         # call the API endpoint and return the response to the caller.
         return self._api.post('v2/access-groups', json=payload).json()
 
-    def delete(self, id):
+    def delete(self, group_id):
         '''
         Deletes the specified access group.
 
         :devportal:`access-groups: delete <v2-access-groups-delete>`
 
         Args:
-            id (str): The UUID of the access group to remove.
+            group_id (str): The UUID of the access group to remove.
         '''
         self._api.delete('v2/access-groups/{}'.format(
-            self._check('id', id, 'uuid')))
+            self._check('group_id', group_id, 'uuid')))
 
-    def edit(self, id, **kw):
+    def edit(self, group_id, **kw):
         '''
         Edits an access group
 
         :devportal:`access-groups: edit <v2-access-groups-edit>`
 
         Args:
-            id (str):
+            group_id (str):
                 The UUID of the access group to edit.
             name (str, optional):
                 The name of the access group to edit.
@@ -377,29 +382,29 @@ class AccessGroupsV2API(TIOEndpoint):
 
         # get the details of the access group that we are supposed to be editing
         # and then merge in the keywords specified.
-        g = dict_merge(self.details(self._check('id', id, 'uuid')), kw)
+        details = dict_merge(self.details(self._check('group_id', group_id, 'uuid')), kw)
 
         # construct the payload from the merged details.
         payload = {
-            'name': self._check('name', g['name'], str),
-            'all_users': self._check('all_users', g['all_users'], bool),
-            'all_assets': self._check('all_assets', g['all_assets'], bool),
-            'rules': g['rules'],
-            'principals': g['principals'],
-            'access_group_type': g['access_group_type']
+            'name': self._check('name', details['name'], str),
+            'all_users': self._check('all_users', details['all_users'], bool),
+            'all_assets': self._check('all_assets', details['all_assets'], bool),
+            'rules': details['rules'],
+            'principals': details['principals'],
+            'access_group_type': details['access_group_type']
         }
 
         # call the API endpoint and return the response to the caller.
-        return self._api.put('v2/access-groups/{}'.format(id), json=payload).json()
+        return self._api.put('v2/access-groups/{}'.format(group_id), json=payload).json()
 
-    def details(self, id):
+    def details(self, group_id):
         '''
         Retrieves the details of the specified access group.
 
         :devportal:`access-groups: details <v2-access-groups-details>`
 
         Args:
-            id (str): The UUID of the access group.
+            group_id (str): The UUID of the access group.
         '''
         return self._api.get('v2/access-groups/{}'.format(
-            self._check('id', id, 'uuid'))).json()
+            self._check('group_id', group_id, 'uuid'))).json()
