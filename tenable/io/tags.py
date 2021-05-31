@@ -23,8 +23,8 @@ Methods available on ``tio.tags``:
 '''
 import json
 from tenable.utils import dict_merge
-from .base import TIOEndpoint, TIOIterator
 from tenable.errors import UnexpectedValueError
+from tenable.io.base import TIOEndpoint, TIOIterator
 
 class TagsIterator(TIOIterator):
     '''
@@ -48,19 +48,42 @@ class TagsIterator(TIOIterator):
     pass
 
 class TagsAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to tags
+    '''
     _filterset_tags = {
-        'value': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'category_name': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'description': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'updated_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None},
-        'updated_by': {'operators': ['eq'], 'pattern': None} # Add UUID regex here
+        'value': {
+            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
+        },
+        'category_name': {
+            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
+        },
+        'description': {
+            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
+        },
+        'updated_at': {
+            'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None
+        },
+        'updated_by': {
+            'operators': ['eq'], 'pattern': None
+        }  # Add UUID regex here
     }
     _filterset_categories = {
-        'name': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'description': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'created_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None},
-        'updated_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None},
-        'updated_by': {'operators': ['eq'], 'pattern': None, 'choices': None} # Add UUID regex here
+        'name': {
+            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
+        },
+        'description': {
+            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
+        },
+        'created_at': {
+            'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None
+        },
+        'updated_at': {
+            'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None
+        },
+        'updated_by': {
+            'operators': ['eq'], 'pattern': None, 'choices': None
+        }  # Add UUID regex here
     }
 
     def _permission_constructor(self, items):
@@ -76,20 +99,25 @@ class TagsAPI(TIOEndpoint):
                 resp.append({
                     'id': self._check('id', item[0], 'uuid'),
                     "name": self._check('name', item[1], str),
-                    "type": self._check('type', item[2], str, choices=['user', 'group'], case='upper'),
+                    "type": self._check('type', item[2], str,
+                        choices=['user', 'group'], case='upper'),
                     "permissions": [
-                        self._check('i', i, str, choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'], case='upper')
+                        self._check('i', i, str,
+                            choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'], case='upper')
                         for i in self._check('permissions', item[3], list)],
                 })
             else:
                 data = dict()
                 data['id'] = self._check('id', item['id'], 'uuid')
                 data['name'] = self._check('name', item['name'], str)
-                data['type'] = self._check('type', item['type'], str, choices=['user', 'group'], case='upper')
+                data['type'] = self._check('type', item['type'], str,
+                    choices=['user', 'group'], case='upper')
                 data['permissions'] = [
-                    self._check('i', i, str, choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'], case='upper')
-                    for i in self._check('permissions', item['permissions'] if 'permissions' in item else None, list,
-                        default=list())]
+                    self._check('i', i, str,
+                        choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'], case='upper')
+                    for i in self._check('permissions', item['permissions']
+                        if 'permissions' in item else None, list,
+                            default=list())]
                 resp.append(data)
 
         return resp
@@ -117,7 +145,8 @@ class TagsAPI(TIOEndpoint):
         return payload_filters
 
     def create(self, category, value, description=None, category_description=None,
-               filters=None, filter_type=None, all_users_permissions=None, current_domain_permissions=None):
+               filters=None, filter_type=None, all_users_permissions=None,
+               current_domain_permissions=None):
         '''
         Create a tag category/value pair
 
@@ -154,12 +183,14 @@ class TagsAPI(TIOEndpoint):
                 Possible values are ALL, CAN_EDIT, and CAN_SET_PERMISSIONS.
             current_domain_permissions (list, optional):
                 List of user and group-specific permissions for the current tag
-                current_domain_permissions are list of tuples in the form of ('ID', 'NAME', 'TYPE', 'PERMISSIONS')
+                current_domain_permissions are list of tuples in the form of
+                ('ID', 'NAME', 'TYPE', 'PERMISSIONS')
                 the TYPE can be either `USER` or `GROUP` and
-                the PERMISSIONS can be `ALL`, `CAN_EDIT` or `CAN_SET_PERMISSIONS` any one or all in list
+                the PERMISSIONS can be `ALL`, `CAN_EDIT` or `CAN_SET_PERMISSIONS`
+                any one or all in list
 
                 Examples:
-                    - ``('c2f2d080-ac2b-4278-914b-29f148682ee1', 'user@company.com', 'USER', ['CAN_EDIT'])``
+                    - ``(uuid , 'user@company.com', 'USER', ['CAN_EDIT'])``
 
         Returns:
             :obj:`dict`:
@@ -174,16 +205,19 @@ class TagsAPI(TIOEndpoint):
 
             >>> tio.tags.create('Location', 'New York')
 
-            Creating a new Tag value in the existing Location Category and apply to assets dynamically:
+            Creating a new Tag value in the existing Location Category
+            and apply to assets dynamically:
 
-            >>> tio.tags.create('Location', 'San Francisco', filters=[('distro', 'match', ['win', 'linux'])])
+            >>> tio.tags.create('Location', 'San Francisco',
+            ...     filters=[('distro', 'match', ['win', 'linux'])])
 
-            Creating a new Tag value in the existing Location Category and set permissions for users:
+            Creating a new Tag value in the existing Location Category
+            and set permissions for users:
 
             >>> tio.tags.create('Location', 'Washington',
             ...     all_users_permissions=['CAN_EDIT'],
-            ...     current_domain_permissions=[
-            ...         ('c2f2d080-ac2b-4278-914b-29f148682ee1', 'user@company.com', 'USER', ['CAN_EDIT'])
+            ...     current_domain_permissions=[('c2f2d080-ac2b-4278-914b-29f148682ee1',
+            ...         'user@company.com', 'USER', ['CAN_EDIT'])
             ...     ])
 
             Creating a new Tag Value within a Category by UUID:
@@ -369,12 +403,14 @@ class TagsAPI(TIOEndpoint):
                 Possible values are ALL, CAN_EDIT, and CAN_SET_PERMISSIONS.
             current_domain_permissions (list, optional):
                 List of user and group-specific permissions for the current tag
-                current_domain_permissions are list of tuples in the form of ('ID', 'NAME', 'TYPE', 'PERMISSIONS')
+                current_domain_permissions are list of tuples in the form of
+                ('ID', 'NAME', 'TYPE', 'PERMISSIONS')
                 the TYPE can be either `USER` or `GROUP` and
-                the PERMISSIONS can be `ALL`, `CAN_EDIT` or `CAN_SET_PERMISSIONS` any one or all in list
+                the PERMISSIONS can be `ALL`, `CAN_EDIT` or `CAN_SET_PERMISSIONS`
+                any one or all in list
 
                 Examples::
-                    - ``('c2f2d080-ac2b-4278-914b-29f148682ee1', 'user@company.com', 'USER', ['CAN_EDIT'])``
+                    - ``(uuid, 'user@company.com', 'USER', ['CAN_EDIT'])``
 
         Returns:
             :obj:`dict`:
@@ -393,7 +429,8 @@ class TagsAPI(TIOEndpoint):
         current = self.details(self._check('tag_value_uuid', tag_value_uuid, 'uuid'))
         current_access_control = current['access_control']
 
-        # created copy of current access control which will be used to compare any changes done in permissions
+        # created copy of current access control which will be used
+        # to compare any changes done in permissions
         access_control = current_access_control.copy()
 
         # initialize access controls
@@ -403,8 +440,8 @@ class TagsAPI(TIOEndpoint):
         if all_users_permissions is not None:
             current_access_control['all_users_permissions'] = [
                 self._check('i', i, str, choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'])
-                for i in self._check('all_users_permissions', all_users_permissions, list, case='upper')
-            ]
+                for i in self._check('all_users_permissions', all_users_permissions, list,
+                    case='upper')]
 
         # run current_domain_permissions through permission parser
         if current_domain_permissions is not None:
@@ -436,7 +473,7 @@ class TagsAPI(TIOEndpoint):
             # we have to first convert it into dict() form before applying
             current['filters']['asset'] = json.loads(current['filters']['asset'])
             payload['filters'] = current['filters']
-        
+
         return self._api.put('tags/values/{}'.format(self._check(
             'tag_value_uuid', tag_value_uuid, 'uuid')), json=payload).json()
 
