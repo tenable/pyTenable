@@ -82,17 +82,17 @@ class ScansAPI(TIOEndpoint):
             if running:
                 time.sleep(sleeper)
 
-    def _create_scan_document(self, kw):
+    def _create_scan_document(self, kwargs):
         '''
         Takes the key-worded arguments and will provide a scan settings document
         based on the values inputted.
 
         Args:
-            kw (dict): The keyword dict passed from the user
+            kwargs (dict): The keyword dict passed from the user
 
         Returns:
             :obj:`dict`:
-                The resulting scan document based on the kw provided.
+                The resulting scan document based on the kwargs provided.
         '''
         scan = {
             'settings': dict(),
@@ -100,18 +100,18 @@ class ScansAPI(TIOEndpoint):
 
         # If a template is specified, then we will pull the listing of available
         # templates and set the policy UUID to match the template name given.
-        if 'template' in kw:
+        if 'template' in kwargs:
             templates = self._api.policies.templates()
             scan['uuid'] = templates[self._check(
-                'template', kw['template'], str,
+                'template', kwargs['template'], str,
                 default='basic',
                 choices=list(templates.keys())
             )]
-            del kw['template']
+            del kwargs['template']
 
         # If a policy UUID is sent, then we will set the scan template UUID to
         # be the UUID that was specified.
-        if 'policy' in kw:
+        if 'policy' in kwargs:
             policies = self._api.policies.list()
             match = False
 
@@ -121,7 +121,7 @@ class ScansAPI(TIOEndpoint):
             # the editor config, and then use the policy id and scan policy
             # template uuid.
             for item in policies:
-                if kw['policy'] in [item['name'], item['id']] and not match:
+                if kwargs['policy'] in [item['name'], item['id']] and not match:
                     policy_tmpl = self._api.editor.details('scan/policy', item['id'])
                     scan['uuid'] = policy_tmpl['uuid']
                     scan['settings']['policy_id'] = item['id']
@@ -130,56 +130,56 @@ class ScansAPI(TIOEndpoint):
             # if no match was discovered, then raise an invalid warning.
             if not match:
                 raise UnexpectedValueError('policy setting is invalid.')
-            del kw['policy']
+            del kwargs['policy']
 
         # if the scanner attribute was set, then we will attempt to figure out
         # what scanner to use.
-        if 'scanner' in kw:
+        if 'scanner' in kwargs:
             scanners = self._api.scanners.allowed_scanners()
 
             # We will want to attempt to enumerate the scanner list and if
             # we see a name match, replace the scanner name with the UUID
             # of the scanner instead.
             for item in scanners:
-                if item['name'] == kw['scanner']:
-                    kw['scanner'] = item['id']
+                if item['name'] == kwargs['scanner']:
+                    kwargs['scanner'] = item['id']
 
             # we will always want to attempt to use the UUID first as it's
             # the cheapest check that we can run.
             scan['settings']['scanner_id'] = self._check(
-                'scanner', kw['scanner'], 'scanner-uuid',
+                'scanner', kwargs['scanner'], 'scanner-uuid',
                 choices=[s['id'] for s in scanners])
-            del kw['scanner']
+            del kwargs['scanner']
 
         # If the targets parameter is specified, then we will need to convert
         # the list of targets to a comma-delimited string and then set the
         # text_targets parameter with the result.
-        if 'targets' in kw:
+        if 'targets' in kwargs:
             scan['settings']['text_targets'] = ','.join(self._check(
-                'targets', kw['targets'], list))
-            del kw['targets']
+                'targets', kwargs['targets'], list))
+            del kwargs['targets']
 
         # For credentials, we will simply push the dictionary as-is into the
         # the credentials.add sub-document.
-        if 'credentials' in kw:
+        if 'credentials' in kwargs:
             scan['credentials'] = {'add': dict()}
             scan['credentials']['add'] = self._check(
-                'credentials', kw['credentials'], dict)
-            del kw['credentials']
+                'credentials', kwargs['credentials'], dict)
+            del kwargs['credentials']
 
         # Just like with credentials, we will push the dictionary as-is into the
         # correct sub-document of the scan definition.
-        if 'compliance' in kw:
-            scan['audits'] = self._check('compliance', kw['compliance'], dict)
-            del kw['compliance']
+        if 'compliance' in kwargs:
+            scan['audits'] = self._check('compliance', kwargs['compliance'], dict)
+            del kwargs['compliance']
 
-        if 'plugins' in kw:
-            scan['plugins'] = self._check('plugins', kw['plugins'], dict)
-            del kw['plugins']
+        if 'plugins' in kwargs:
+            scan['plugins'] = self._check('plugins', kwargs['plugins'], dict)
+            del kwargs['plugins']
 
         # any other remaining keyword arguments will be passed into the settings
         # sub-document.  The bulk of the data should go here...
-        scan['settings'] = dict_merge(scan['settings'], kw)
+        scan['settings'] = dict_merge(scan['settings'], kwargs)
         return scan
 
     def attachment(self, scan_id, attachment_id, key, fobj=None):
@@ -660,7 +660,7 @@ class ScansAPI(TIOEndpoint):
 
         # Next we will wait for the status of the export request to become
         # ready.
-        status = self._wait_for_download(
+        _ = self._wait_for_download(
             'scans/{}/export/{}/status'.format(scan_id, fid),
             'scans', scan_id, fid, params=dl_params)
 
