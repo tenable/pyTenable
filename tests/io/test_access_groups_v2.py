@@ -6,15 +6,15 @@ import pytest
 from tenable.errors import UnexpectedValueError, APIError
 from tests.checker import check
 
-@pytest.fixture
-def rules():
+@pytest.fixture(name='rules')
+def fixture_rules():
     '''
     Fixture to return access_group rules structure
     '''
     return [('ipv4', 'eq', ['192.168.0.0/24'])]
 
-@pytest.fixture
-def agroup(request, api, vcr, rules):
+@pytest.fixture(name='agroup')
+def fixture_agroup(request, api, vcr, rules):
     '''
     Fixture to create access_group
     '''
@@ -37,42 +37,43 @@ def test_access_group_v2_principal_constructor_type_typeerror(api):
     test to raise exception when type of type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.access_groups_v2._principal_constructor([(1, 'something')])
+        getattr(api.access_groups_v2, '_principal_constructor')([(1, 'something')])
 
 def test_access_group_v2_principal_constructor_type_unexpectedvalueerror(api):
     '''
     test to raise exception when type param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.access_groups_v2._principal_constructor([('something', 'something')])
+        getattr(api.access_groups_v2, '_principal_constructor')([('something', 'something')])
 
 def test_access_group_v2_principal_constructor_id_typeerror(api):
     '''
     test to raise exception when type of id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.access_groups_v2._principal_constructor([('user', 1)])
+        getattr(api.access_groups_v2, '_principal_constructor')([('user', 1)])
 
 def test_access_group_v2_principal_constructor_permission_typeerror(api):
     '''
     test to raise exception when type of permissions param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.access_groups_v2._principal_constructor([('user', str(uuid.uuid4()), 1)])
+        getattr(api.access_groups_v2, '_principal_constructor')([('user', str(uuid.uuid4()), 1)])
 
 def test_access_group_v2_principal_constructor_permission_unexpectedvalueerror(api):
     '''
     test to raise exception when permissions param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.access_groups_v2._principal_constructor([('user', str(uuid.uuid4()), ['nope'])])
+        getattr(api.access_groups_v2, '_principal_constructor')([
+            ('user', str(uuid.uuid4()), ['nope'])])
 
 def test_access_group_v2_principal_constructor_dict_type_typeerror(api):
     '''
     test to raise exception when type of type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.access_groups_v2._principal_constructor([{
+        getattr(api.access_groups_v2, '_principal_constructor')([{
             'type': 1,
             'principal_id': str(uuid.uuid4()),
             'principal_name': 'test@test.com'
@@ -83,7 +84,7 @@ def test_access_group_v2_principal_constructor_dict_type_unexpectedvalueerror(ap
     test to raise exception when type param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.access_groups_v2._principal_constructor([{
+        getattr(api.access_groups_v2, '_principal_constructor')([{
             'type': 'something',
             'principal_id': str(uuid.uuid4()),
             'principal_name': 'test@test.com'
@@ -94,7 +95,7 @@ def test_access_group_v2_principal_constructor_dict_id_typeerror(api):
     test to raise exception when type of id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.access_groups_v2._principal_constructor([{
+        getattr(api.access_groups_v2, '_principal_constructor')([{
             'type': 'user',
             'principal_id': 1,
             'principal_name': 'test@test.com'
@@ -105,7 +106,7 @@ def test_access_group_v2_principal_constructor_dict_name_typeerror(api):
     test to raise exception when type of name param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.access_groups_v2._principal_constructor([{
+        getattr(api.access_groups_v2, '_principal_constructor')([{
             'type': 'user',
             'principal_id': str(uuid.uuid4()),
             'principal_name': 1
@@ -116,7 +117,7 @@ def test_access_group_v2_principal_constructor_dict_permissions_typeerror(api):
     test to raise exception when type of permissions param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.access_groups_v2._principal_constructor([{
+        getattr(api.access_groups_v2, '_principal_constructor')([{
             'type': 'user',
             'principal_id': str(uuid.uuid4()),
             'permissions': 1
@@ -127,7 +128,7 @@ def test_access_group_v2_principal_constructor_dict_permissions_unexpectedvaluee
     test to raise exception when permissions param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.access_groups_v2._principal_constructor([{
+        getattr(api.access_groups_v2, '_principal_constructor')([{
             'type': 'user',
             'principal_id': str(uuid.uuid4()),
             'permissions': ['Nothing']
@@ -137,12 +138,12 @@ def test_access_group_v2_principal_constructor_tuple_pass(api):
     '''
     test to parse tuple type principals
     '''
-    assert api.access_groups_v2._principal_constructor([
+    assert getattr(api.access_groups_v2, '_principal_constructor')([
         ('user', 'test@test.com', ['can_view'])
     ]) == [{'permissions': ['CAN_VIEW'], 'type': 'user', 'principal_name': 'test@test.com'}]
 
     user_id = str(uuid.uuid4())
-    assert api.access_groups_v2._principal_constructor([
+    assert getattr(api.access_groups_v2, '_principal_constructor')([
         ('user', user_id)
     ]) == [{'permissions': ['CAN_VIEW'], 'type': 'user', 'principal_id': user_id}]
 
@@ -150,12 +151,12 @@ def test_access_group_v2_principal_constructor_dict_pass(api):
     '''
     test to parse dict type principals
     '''
-    assert api.access_groups_v2._principal_constructor([
+    assert getattr(api.access_groups_v2, '_principal_constructor')([
         {'type': 'user', 'principal_name': 'test@test.com', 'permissions': ['CAN_VIEW']}
     ]) == [{'permissions': ['CAN_VIEW'], 'type': 'user', 'principal_name': 'test@test.com'}]
 
     user_id = str(uuid.uuid4())
-    assert api.access_groups_v2._principal_constructor([
+    assert getattr(api.access_groups_v2, '_principal_constructor')([
         {'type': 'user', 'principal_id': user_id}
     ]) == [{'permissions': ['CAN_VIEW'], 'type': 'user', 'principal_id': user_id}]
 
@@ -164,13 +165,13 @@ def test_access_group_v2_list_clean_typeerror(api):
     test to raise exception when type of items param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.access_groups_v2._list_clean(items='nope')
+        getattr(api.access_groups_v2, '_list_clean')(items='nope')
 
 def test_access_group_v2_list_clean_pass(api):
     '''
     test to remove duplicates from list
     '''
-    resp = api.access_groups_v2._list_clean(['one', 'two', 'one'])
+    resp = getattr(api.access_groups_v2, '_list_clean')(['one', 'two', 'one'])
     assert sorted(resp) == ['one', 'two']
 
 @pytest.mark.vcr()
