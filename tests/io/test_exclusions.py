@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from tenable.errors import *
 from ..checker import check, single
-from tests.io.test_networks import network
+from tests.io.test_networks import fixture_network
 import uuid, pytest
 
 @pytest.fixture
