@@ -9,9 +9,9 @@ from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
 from tests.checker import check
 from tests.io.test_networks import network
 
-@pytest.fixture
+@pytest.fixture(name='exclusion')
 @pytest.mark.vcr()
-def exclusion(request, api):
+def fixture_exclusion(request, api):
     '''
     Fixture to create exclusion
     '''
