@@ -17,7 +17,7 @@ def test_scan_create_scan_document_template_typeerror(api):
     test to raise exception when type of template param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.scans._create_scan_document({'template': 123})
+        getattr(api.scans, '_create_scan_document')({'template': 123})
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_template_unexpected_value_error(api):
@@ -25,7 +25,7 @@ def test_scan_create_scan_document_template_unexpected_value_error(api):
     test to raise exception when template param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.scans._create_scan_document({'template': 'nothing_here'})
+        getattr(api.scans, '_create_scan_document')({'template': 'nothing_here'})
 
 @pytest.mark.vcr()
 def test_scan_create_scan_socument_template_pass(api):
@@ -33,7 +33,7 @@ def test_scan_create_scan_socument_template_pass(api):
     test to create scan document basic template
     '''
     templates = api.policies.templates()
-    resp = api.scans._create_scan_document({'template': 'basic'})
+    resp = getattr(api.scans, '_create_scan_document')({'template': 'basic'})
     assert isinstance(resp, dict)
     check(resp, 'uuid', 'scanner-uuid')
     assert resp['uuid'] == templates['basic']
@@ -45,7 +45,7 @@ def test_scan_create_scan_document_policies_id_pass(api):
     '''
     policies = api.policies.list()
     policy = policies[0]
-    resp = api.scans._create_scan_document({'policy': policy['id']})
+    resp = getattr(api.scans, '_create_scan_document')({'policy': policy['id']})
     assert isinstance(resp, dict)
     check(resp, 'settings', dict)
     check(resp['settings'], 'policy_id', int)
@@ -58,7 +58,7 @@ def test_scan_create_scan_document_policies_name_pass(api):
     '''
     policies = api.policies.list()
     policy = policies[0]
-    resp = api.scans._create_scan_document({'policy': policy['name']})
+    resp = getattr(api.scans, '_create_scan_document')({'policy': policy['name']})
     assert isinstance(resp, dict)
     check(resp, 'uuid', 'scanner-uuid')
     check(resp, 'settings', dict)
@@ -73,7 +73,7 @@ def test_scan_create_scan_document_scanner_unexpectedvalueerror(api):
     test to raise exception when scanner param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.scans._create_scan_document({'scanner': 'nothing to see here'})
+        getattr(api.scans, '_create_scan_document')({'scanner': 'nothing to see here'})
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_uuid_pass(api):
@@ -82,7 +82,7 @@ def test_scan_create_scan_document_scanner_uuid_pass(api):
     '''
     scanners = api.scanners.allowed_scanners()
     scanner = scanners[0]
-    resp = api.scans._create_scan_document({'scanner': scanner['id']})
+    resp = getattr(api.scans, '_create_scan_document')({'scanner': scanner['id']})
     assert isinstance(resp, dict)
     check(resp, 'settings', dict)
     check(resp['settings'], 'scanner_id', 'scanner-uuid')
@@ -95,7 +95,7 @@ def test_scan_create_scan_document_scanner_name_pass(api):
     '''
     scanners = api.scanners.allowed_scanners()
     scanner = scanners[0]
-    resp = api.scans._create_scan_document({'scanner': scanner['name']})
+    resp = getattr(api.scans, '_create_scan_document')({'scanner': scanner['name']})
     assert isinstance(resp, dict)
     check(resp, 'settings', dict)
     check(resp['settings'], 'scanner_id', str)
