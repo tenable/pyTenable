@@ -7,15 +7,15 @@ from tests.checker import check, single
 from tenable.errors import UnexpectedValueError, NotFoundError
 from tenable.io.tags import TagsIterator
 
-@pytest.fixture
-def tagfilters():
+@pytest.fixture(name='tagfilters')
+def fixture_tagfilters():
     '''
     Returns tag filter structure
     '''
     return [('ipv4', 'eq', ['192.168.0.0/24'])]
 
-@pytest.fixture
-def filterdefs():
+@pytest.fixture(name='filterdefs')
+def fixture_filterdefs():
     '''
     Returns filter definition of ipv4 type filter
     '''
@@ -30,9 +30,9 @@ def filterdefs():
                 '(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.?){4})|(?:\\s*,(?:\\s*)))?)+)+$'},
     }
 
-@pytest.fixture
+@pytest.fixture(name='tagvalue')
 @pytest.mark.vcr()
-def tagvalue(request, api):
+def fixture_tagvalue(request, api):
     '''
     Fixture to create tag value
     '''
@@ -48,9 +48,9 @@ def tagvalue(request, api):
     request.addfinalizer(teardown)
     return tag
 
-@pytest.fixture
+@pytest.fixture(name='tagcat')
 @pytest.mark.vcr()
-def tagcat(request, api):
+def fixture_tagcat(request, api):
     '''
     Fixture to create tag category
     '''
@@ -71,56 +71,59 @@ def test_tags_permission_constructor_id_typeerror(api):
     test to raise exception when type of id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._permission_constructor([(1, 'something', 'user')])
+        getattr(api.tags, '_permission_constructor')([(1, 'something', 'user')])
 
 def test_tags_permission_constructor_id_unexpectedvalueerror(api):
     '''
     test to raise exception when id param value does not match the pattern.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.tags._permission_constructor([('something', 'something', 'user')])
+        getattr(api.tags, '_permission_constructor')([('something', 'something', 'user')])
 
 def test_tags_permission_constructor_name_typeerror(api):
     '''
     test to raise exception when type of name param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._permission_constructor([(str(uuid.uuid4()), 1, 'user')])
+        getattr(api.tags, '_permission_constructor')([(str(uuid.uuid4()), 1, 'user')])
 
 def test_tags_permission_constructor_type_typeerror(api):
     '''
     test to raise exception when type of type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._permission_constructor([(str(uuid.uuid4()), 'something', 1)])
+        getattr(api.tags, '_permission_constructor')([(str(uuid.uuid4()), 'something', 1)])
 
 def test_tags_permission_constructor_type_unexpectedvalueerror(api):
     '''
     test to raise exception when type param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.tags._permission_constructor([(str(uuid.uuid4()), 'something', 'something')])
+        getattr(api.tags, '_permission_constructor')([
+            (str(uuid.uuid4()), 'something', 'something')])
 
 def test_tags_permission_constructor_permissions_typeerror(api):
     '''
     test to raise exception when type of permissions param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._permission_constructor([(str(uuid.uuid4()), 'something', 'user', 1)])
+        getattr(api.tags, '_permission_constructor')([
+            (str(uuid.uuid4()), 'something', 'user', 1)])
 
 def test_tags_permission_constructor_permissions_unexpectedvalueerror(api):
     '''
     test to raise exception when permissions param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.tags._permission_constructor([(str(uuid.uuid4()), 'something', 'user', ['something'])])
+        getattr(api.tags, '_permission_constructor')([
+            (str(uuid.uuid4()), 'something', 'user', ['something'])])
 
 def test_tags_permission_constructor_dict_id_typeerror(api):
     '''
     test to raise exception when type of id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._permission_constructor([{
+        getattr(api.tags, '_permission_constructor')([{
             'id': 1,
             "name": 'something',
             "type": 'something',
@@ -132,7 +135,7 @@ def test_tags_permission_constructor_dict_id_unexpectedvalueerror(api):
     test to raise exception when id param value does not match the pattern.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.tags._permission_constructor([{
+        getattr(api.tags, '_permission_constructor')([{
             'id': 'something',
             "name": 'something',
             "type": 'something',
@@ -144,7 +147,7 @@ def test_tags_permission_constructor_dict_name_typeerror(api):
     test to raise exception when type of name param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._permission_constructor([{
+        getattr(api.tags, '_permission_constructor')([{
             'id': str(uuid.uuid4()),
             "name": 1,
             "type": 'something',
@@ -156,7 +159,7 @@ def test_tags_permission_constructor_dict_type_typeerror(api):
     test to raise exception when type of type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._permission_constructor([{
+        getattr(api.tags, '_permission_constructor')([{
             'id': str(uuid.uuid4()),
             "name": 'something',
             "type": 1,
@@ -168,7 +171,7 @@ def test_tags_permission_constructor_dict_type_unexpectedvalueerror(api):
     test to raise exception when type param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.tags._permission_constructor([{
+        getattr(api.tags, '_permission_constructor')([{
             'id': str(uuid.uuid4()),
             "name": 'something',
             "type": 'something',
@@ -180,7 +183,7 @@ def test_tags_permission_constructor_dict_permission_typeerror(api):
     test to raise exception when type of permission param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._permission_constructor([{
+        getattr(api.tags, '_permission_constructor')([{
             'id': str(uuid.uuid4()),
             "name": 'something',
             "type": 'user',
@@ -192,7 +195,7 @@ def test_tags_permission_constructor_dict_permission_unexpectedvalueerror(api):
     test to raise exception when permission param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.tags._permission_constructor([{
+        getattr(api.tags, '_permission_constructor')([{
             'id': str(uuid.uuid4()),
             "name": 'something',
             "type": 'user',
@@ -204,12 +207,12 @@ def test_tags_permission_constructor_tuple_pass(api):
     test to parse tuple type current_domain_permissions
     '''
     user = str(uuid.uuid4())
-    assert api.tags._permission_constructor([
+    assert getattr(api.tags, '_permission_constructor')([
         (user, 'test', 'user', ['CAN_EDIT'])
     ]) == [{'permissions': ['CAN_EDIT'], 'type': 'USER', 'name': 'test', 'id': user}]
 
     # when permissions not passed
-    assert api.tags._permission_constructor([
+    assert getattr(api.tags, '_permission_constructor')([
         (user, 'test', 'user')
     ]) == [{'permissions': [], 'type': 'USER', 'name': 'test', 'id': user}]
 
@@ -218,12 +221,12 @@ def test_tags_permission_constructor_dict_pass(api):
     test to parse dict type current_domain_permission
     '''
     user = str(uuid.uuid4())
-    assert api.tags._permission_constructor([
+    assert getattr(api.tags, '_permission_constructor')([
         {'id': user, 'name': 'test', 'type': 'user', 'permissions': ['CAN_EDIT']}
     ]) == [{'permissions': ['CAN_EDIT'], 'type': 'USER', 'name': 'test', 'id': user}]
 
     # when permissions not passed
-    assert api.tags._permission_constructor([
+    assert getattr(api.tags, '_permission_constructor')([
         {'id': user, 'name': 'test', 'type': 'user'}
     ]) == [{'permissions': [], 'type': 'USER', 'name': 'test', 'id': user}]
 
@@ -232,21 +235,22 @@ def test_tags_tag_value_constructor_filter_type_typeerror(api, tagfilters, filte
     test to raise exception when type of filter_type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._tag_value_constructor(filters=tagfilters, filterdefs=filterdefs, filter_type=1)
+        getattr(api.tags, '_tag_value_constructor')(
+            filters=tagfilters, filterdefs=filterdefs, filter_type=1)
 
 def test_tags_tag_value_constructor_filter_type_unexpectedvalueerror(api, tagfilters, filterdefs):
     '''
     test to raise exception when filter_type param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.tags._tag_value_constructor(filters=tagfilters,
+        getattr(api.tags, '_tag_value_constructor')(filters=tagfilters,
             filterdefs=filterdefs, filter_type='nope')
 
 def test_tags_tag_value_constructor_pass(api, tagfilters, filterdefs):
     '''
     test to parse tag value filters
     '''
-    assert api.tags._tag_value_constructor(
+    assert getattr(api.tags, '_tag_value_constructor')(
         filters=tagfilters, filterdefs=filterdefs, filter_type='and'
     ) == {'asset': {'and': [{'field': 'ipv4', 'operator': 'eq', 'value': '192.168.0.0/24'}]}}
 
@@ -318,7 +322,7 @@ def test_tags_create_filters_typeerror(api):
         api.tags.create('', '', filters=1)
 
 @pytest.mark.vcr()
-def test_tags_create_success(api, tagvalue):
+def test_tags_create_success(tagvalue):
     '''
     test to create tag value.
     '''
@@ -387,7 +391,7 @@ def test_tags_create_category_description_typeerror(api):
         api.tags.create_category('', description=1)
 
 @pytest.mark.vcr()
-def test_tags_create_category_success(api, tagcat):
+def test_tags_create_category_success(tagcat):
     '''
     test to create tag category.
     '''
@@ -697,23 +701,23 @@ def test_tags_list_constructor_filter_type_typeerror(api):
     test to raise exception when type of filter_type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._tag_list_constructor([],
-            api.tags._filterset_tags, True, None)
+        getattr(api.tags, '_tag_list_constructor')([],
+            getattr(api.tags, '_filterset_tags'), True, None)
 
 def test_tags_list_constructor_filter_type_unexpectedvalueerror(api):
     '''
     test to raise exception when filter_type param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.tags._tag_list_constructor([],
-            api.tags._filterset_tags, 'nadda', None)
+        getattr(api.tags, '_tag_list_constructor')([],
+            getattr(api.tags, '_filterset_tags'), 'nadda', None)
 
 def test_tags_list_constructor_filter_type_success(api):
     '''
     test to check filter_type param in tags_list_constructor method.
     '''
-    resp = api.tags._tag_list_constructor([],
-        api.tags._filterset_tags, 'and', None)
+    resp = getattr(api.tags, '_tag_list_constructor')([],
+        getattr(api.tags, '_filterset_tags'), 'and', None)
     assert resp['ft'] == 'AND'
 
 def test_tags_list_constructor_sort_typeerror(api):
@@ -721,36 +725,36 @@ def test_tags_list_constructor_sort_typeerror(api):
     test to raise exception when type of sort param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._tag_list_constructor([],
-            api.tags._filterset_tags, None, 1)
+        getattr(api.tags, '_tag_list_constructor')([],
+            getattr(api.tags, '_filterset_tags'), None, 1)
 
 def test_tags_list_constructor_sort_unexpectedvalueerror(api):
     '''
     test to raise exception when sort param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.tags._tag_list_constructor([],
-            api.tags._filterset_tags, None, (('something_else'),))
+        getattr(api.tags, '_tag_list_constructor')([],
+            getattr(api.tags, '_filterset_tags'), None, (('something_else'),))
 
 def test_tags_list_constructor_sort_success(api):
     '''
     test to check sort param in tags_list_constructor method.
     '''
-    resp = api.tags._tag_list_constructor([],
-        api.tags._filterset_tags, None, (('value','asc'),))
+    resp = getattr(api.tags, '_tag_list_constructor')([],
+        getattr(api.tags, '_filterset_tags'), None, (('value','asc'),))
     assert resp['sort'] == 'value:asc'
 
 def test_tags_list_constructor_filter_success(api):
     '''
     test to check filter param in tags_list_constructor method.
     '''
-    resp = api.tags._tag_list_constructor([
+    resp = getattr(api.tags, '_tag_list_constructor')([
         ('value', 'eq', 'Test')
-    ], api.tags._filterset_tags, None, None)
+    ], getattr(api.tags, '_filterset_tags'), None, None)
     assert resp['f'] == ['value:eq:Test']
 
 @pytest.mark.vcr()
-def test_tags_list_success(api, tagvalue):
+def test_tags_list_success(api):
     '''
     test to get list of tags.
     '''
@@ -770,7 +774,7 @@ def test_tags_list_success(api, tagvalue):
     #check(t, 'category_description', str, allow_none=True)
 
 @pytest.mark.vcr()
-def test_tags_list_category_success(api, tagcat):
+def test_tags_list_category_success(api):
     '''
     test to list of tag categories.
     '''
