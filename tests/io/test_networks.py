@@ -6,8 +6,8 @@ import pytest
 from tenable.errors import UnexpectedValueError, APIError, InvalidInputError
 from tests.checker import check
 
-@pytest.fixture
-def network(request, api, vcr):
+@pytest.fixture(name='network')
+def fixture_network(request, api, vcr):
     '''
     Fixture to create network
     '''
