@@ -7,9 +7,9 @@ from tests.checker import check, single
 from tenable.errors import UnexpectedValueError, NotFoundError
 from tenable.io.tags import TagsIterator
 
-@pytest.fixture
+@pytest.fixture(name='tagvalue')
 @pytest.mark.vcr()
-def tagvalue(request, api):
+def fixture_tagvalue(request, api):
     '''
     Fixture to create tag value
     '''
@@ -25,9 +25,9 @@ def tagvalue(request, api):
     request.addfinalizer(teardown)
     return tag
 
-@pytest.fixture
+@pytest.fixture(name='tagcat')
 @pytest.mark.vcr()
-def tagcat(request, api):
+def fixture_tagcat(request, api):
     '''
     Fixture to create tag category
     '''
@@ -77,7 +77,7 @@ def test_tags_create_value_category_description_typeerror(api):
         api.tags.create('', '', category_description=1)
 
 @pytest.mark.vcr()
-def test_tags_create_success(api, tagvalue):
+def test_tags_create_success(tagvalue):
     '''
     test to create tag value.
     '''
@@ -108,7 +108,7 @@ def test_tags_create_category_description_typeerror(api):
         api.tags.create_category('', description=1)
 
 @pytest.mark.vcr()
-def test_tags_create_category_success(api, tagcat):
+def test_tags_create_category_success(tagcat):
     '''
     test to create tag category.
     '''
@@ -365,23 +365,23 @@ def test_tags_list_constructor_filter_type_typeerror(api):
     test to raise exception when type of filter_type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._tag_list_constructor([],
-            api.tags._filterset_tags, True, None)
+        getattr(api.tags, '_tag_list_constructor')([],
+            getattr(api.tags, '_filterset_tags'), True, None)
 
 def test_tags_list_constructor_filter_type_unexpectedvalueerror(api):
     '''
     test to raise exception when filter_type param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.tags._tag_list_constructor([],
-            api.tags._filterset_tags, 'nadda', None)
+        getattr(api.tags, '_tag_list_constructor')([],
+            getattr(api.tags, '_filterset_tags'), 'nadda', None)
 
 def test_tags_list_constructor_filter_type_success(api):
     '''
     test to check filter_type param in tags_list_constructor method.
     '''
-    resp = api.tags._tag_list_constructor([],
-        api.tags._filterset_tags, 'and', None)
+    resp = getattr(api.tags, '_tag_list_constructor')([],
+        getattr(api.tags, '_filterset_tags'), 'and', None)
     assert resp['ft'] == 'AND'
 
 def test_tags_list_constructor_sort_typeerror(api):
@@ -389,36 +389,36 @@ def test_tags_list_constructor_sort_typeerror(api):
     test to raise exception when type of sort param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags._tag_list_constructor([],
-            api.tags._filterset_tags, None, 1)
+        getattr(api.tags, '_tag_list_constructor')([],
+            getattr(api.tags, '_filterset_tags'), None, 1)
 
 def test_tags_list_constructor_sort_unexpectedvalueerror(api):
     '''
     test to raise exception when sort param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
-        api.tags._tag_list_constructor([],
-            api.tags._filterset_tags, None, (('something_else'),))
+        getattr(api.tags, '_tag_list_constructor')([],
+            getattr(api.tags, '_filterset_tags'), None, (('something_else'),))
 
 def test_tags_list_constructor_sort_success(api):
     '''
     test to check sort param in tags_list_constructor method.
     '''
-    resp = api.tags._tag_list_constructor([],
-        api.tags._filterset_tags, None, (('value','asc'),))
+    resp = getattr(api.tags, '_tag_list_constructor')([],
+        getattr(api.tags, '_filterset_tags'), None, (('value','asc'),))
     assert resp['sort'] == 'value:asc'
 
 def test_tags_list_constructor_filter_success(api):
     '''
     test to check filter param in tags_list_constructor method.
     '''
-    resp = api.tags._tag_list_constructor([
+    resp = getattr(api.tags, '_tag_list_constructor')([
         ('value', 'eq', 'Test')
-    ], api.tags._filterset_tags, None, None)
+    ], getattr(api.tags, '_filterset_tags'), None, None)
     assert resp['f'] == ['value:eq:Test']
 
 @pytest.mark.vcr()
-def test_tags_list_success(api, tagvalue):
+def test_tags_list_success(api):
     '''
     test to get list of tags.
     '''
@@ -438,7 +438,7 @@ def test_tags_list_success(api, tagvalue):
     #check(t, 'category_description', str, allow_none=True)
 
 @pytest.mark.vcr()
-def test_tags_list_category_success(api, tagcat):
+def test_tags_list_category_success(api):
     '''
     test to list of tag categories.
     '''
