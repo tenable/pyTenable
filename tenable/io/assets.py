@@ -18,9 +18,12 @@ Methods available on ``tio.assets``:
     .. automethod:: list_import_jobs
     .. automethod:: tags
 '''
-from .base import TIOEndpoint
+from tenable.io.base import TIOEndpoint
 
 class AssetsAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to Assets
+    '''
     def list(self):
         '''
         Returns a list of assets.
@@ -99,7 +102,8 @@ class AssetsAPI(TIOEndpoint):
 
         Examples:
             >>> asset = tio.assets.assign_tags(
-            ...     'add', ['00000000-0000-0000-0000-000000000000'], ['00000000-0000-0000-0000-000000000000'])
+            ...     'add', ['00000000-0000-0000-0000-000000000000'],
+            ...     ['00000000-0000-0000-0000-000000000000'])
         '''
         return self._api.post(
             'tags/assets/assignments', json={
