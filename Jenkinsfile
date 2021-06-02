@@ -19,17 +19,18 @@ try {
         version ->
             echo "Version: ${version}"
             tasks[version] = { unittests(version) }
-        }
-    }    
+    }
 
     parallel(tasks)
 
     common.setResultIfNotSet(Constants.JSUCCESS)
-} catch (ex) {
+} 
+catch (ex) {
     common.logException(ex)
     common.setResultAbortedOrFailure()
     throw ex
-} finally {
+} 
+finally {
     common.setResultIfNotSet(Constants.JFAILURE)
     buildsCommon.notifyPostBuild(bparams)
 }
