@@ -1,6 +1,8 @@
 @Library('tenable.common')
 
 import com.tenable.jenkins.builds.*
+import com.tenable.jenkins.common.*
+import com.tenable.jenkins.Constants
 
 pythonVersion = [ '3.6', '3.7', '3.8', '3.9' ]
 
