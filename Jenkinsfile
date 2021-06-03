@@ -13,10 +13,10 @@ common = new Common(this)
 buildsCommon = new BuildsCommon(this)
 
 void unittests(String version) {
-    echo "Version: version"
+    echo "Version: ${version}"
 
     node(Constants.DOCKERNODE) {
-        buildsCommon.clenup()
+        buildsCommon.cleanup()
         checkout scm
 
         withContainer(image: "${version}-buster", registry: '') {
