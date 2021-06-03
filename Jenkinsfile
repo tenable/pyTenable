@@ -45,7 +45,7 @@ try {
     pythonVersion.each {
         version ->
             echo "Version: ${version}"
-            tasks[version] = { unittests(version) }
+            //tasks[version] = { unittests(version) }
     }
 
     tasks['snyk'] = {
