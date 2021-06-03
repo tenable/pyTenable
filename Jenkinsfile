@@ -1,4 +1,4 @@
-@Library('tenable.common')
+@Library('tenable.common@SNYK-EDGECASE')
 
 import com.tenable.jenkins.builds.*
 import com.tenable.jenkins.common.*
@@ -11,6 +11,7 @@ pythonVersion = [ '3.6', '3.7', '3.8', '3.9' ]
 bparams = new BuildParams(this, 1083)
 bparams.channels = '#jenkins-devel'
 bparams.snykContainer = 'python:3.6-buster'
+bparams.snykRegistry = ''
 bparams.nexusiqtype = 'REQUIREMENTS'
 
 GlobalContext.put('appid', bparams.appid)
