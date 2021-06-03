@@ -23,7 +23,7 @@ void unittests(String version) {
             buildsCommon.cleanup()
             checkout scm
 
-            withContainer(image: "python:${version}-buster", registry: '', inside: '-u root') {
+            withContainer(image: "python:${version}-buster", registry: '', inside: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {
                 sh 'python --version'
                 sh """
                     python -m pip install --upgrade pip
