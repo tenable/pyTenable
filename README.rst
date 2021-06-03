@@ -74,6 +74,427 @@ the python logging package.  An easy example is detailed here:
    import logging
    logging.basicConfig(level=logging.DEBUG)
 
+Getting Started with Tenable.ad
+
+# swagger-client For AD package by Swagger Editor
+API to interact with Tenable.ad
+
+This project is having the following requirements:
+
+Then import the package:
+
+```python
+import ad 
+```
+
+### Setuptools
+
+Install via [Setuptools](http://pypi.python.org/pypi/setuptools).
+
+```sh
+python setup.py install --user
+```
+(or `sudo python setup.py install` to install the package for all users)
+
+Then import the package:
+
+```python
+import ad
+```
+
+## Getting Started
+
+Please follow the [installation procedure](#installation--usage) and then run the following:
+
+```python
+from __future__ import print_function
+import time
+import ad
+from ad.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: ApiKey
+configuration = ad.Configuration()
+configuration.api_key['x-api-key'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['x-api-key'] = 'Bearer'
+
+
+
+# create an instance of the API class
+api_instance = ad.ADObjectApi(ad.ApiClient(configuration))
+x_api_key = 'put-your-api-key-here' # str | The user's API key (default to put-your-api-key-here)
+directory_id = 'directory_id_example' # str | 
+infrastructure_id = 'infrastructure_id_example' # str | 
+id = 'id_example' # str | 
+
+
+try:
+    # Get ad-object instance by id.
+    api_response = api_instance.api_infrastructures_infrastructure_id_directories_directory_id_ad_objects_id_get(x_api_key, directory_id, infrastructure_id, id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ADObjectApi->api_infrastructures_infrastructure_id_directories_directory_id_ad_objects_id_get: %s\n" % e)
+
+# Configure API key authorization: ApiKey
+configuration = ad.Configuration()
+configuration.api_key['x-api-key'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['x-api-key'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = ad.ADObjectApi(ad.ApiClient(configuration))
+x_api_key = 'put-your-api-key-here' # str | The user's API key (default to put-your-api-key-here)
+infrastructure_id = 'infrastructure_id_example' # str | 
+directory_id = 'directory_id_example' # str | 
+event_id = 'event_id_example' # str | 
+id = 'id_example' # str | 
+wanted_values = ['wanted_values_example'] # list[str] |  (optional)
+event_provider_id = 'event_provider_id_example' # str |  (optional)
+
+try:
+    # Get one ad-object changes between a given event and the event which precedes it
+    api_response = api_instance.api_infrastructures_infrastructure_id_directories_directory_id_events_event_id_ad_objects_id_changes_get(x_api_key, infrastructure_id, directory_id, event_id, id, wanted_values=wanted_values, event_provider_id=event_provider_id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ADObjectApi->api_infrastructures_infrastructure_id_directories_directory_id_events_event_id_ad_objects_id_changes_get: %s\n" % e)
+
+# Configure API key authorization: ApiKey
+configuration = ad.Configuration()
+configuration.api_key['x-api-key'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['x-api-key'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = ad.ADObjectApi(ad.ApiClient(configuration))
+x_api_key = 'put-your-api-key-here' # str | The user's API key (default to put-your-api-key-here)
+directory_id = 'directory_id_example' # str | 
+infrastructure_id = 'infrastructure_id_example' # str | 
+id = 'id_example' # str | 
+event_id = 'event_id_example' # str | 
+
+try:
+    # Get ad-object instance by id.
+    api_response = api_instance.api_infrastructures_infrastructure_id_directories_directory_id_events_event_id_ad_objects_id_get(x_api_key, directory_id, infrastructure_id, id, event_id)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ADObjectApi->api_infrastructures_infrastructure_id_directories_directory_id_events_event_id_ad_objects_id_get: %s\n" % e)
+
+# Configure API key authorization: ApiKey
+configuration = ad.Configuration()
+configuration.api_key['x-api-key'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['x-api-key'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = ad.ADObjectApi(ad.ApiClient(configuration))
+x_api_key = 'put-your-api-key-here' # str | The user's API key (default to put-your-api-key-here)
+profile_id = 'profile_id_example' # str | 
+checker_id = 'checker_id_example' # str | 
+id = 'id_example' # str | 
+show_ignored = 'show_ignored_example' # str |  (optional)
+
+try:
+    # Retrieve an AD object by id that have deviances for a specific profile and checker
+    api_response = api_instance.api_profiles_profile_id_checkers_checker_id_ad_objects_id_get(x_api_key, profile_id, checker_id, id, show_ignored=show_ignored)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ADObjectApi->api_profiles_profile_id_checkers_checker_id_ad_objects_id_get: %s\n" % e)
+
+# Configure API key authorization: ApiKey
+configuration = ad.Configuration()
+configuration.api_key['x-api-key'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['x-api-key'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = ad.ADObjectApi(ad.ApiClient(configuration))
+body = ad.AdobjectsSearchBody() # AdobjectsSearchBody | 
+x_api_key = 'put-your-api-key-here' # str | The user's API key (default to put-your-api-key-here)
+profile_id = 'profile_id_example' # str | 
+checker_id = 'checker_id_example' # str | 
+per_page = 'per_page_example' # str |  (optional)
+page = 'page_example' # str |  (optional)
+
+try:
+    # Search all AD objects having deviances by profile by checker
+    api_response = api_instance.api_profiles_profile_id_checkers_checker_id_ad_objects_search_post(body, x_api_key, profile_id, checker_id, per_page=per_page, page=page)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ADObjectApi->api_profiles_profile_id_checkers_checker_id_ad_objects_search_post: %s\n" % e)
+```
+
+## Documentation for API Endpoints
+
+All URIs are relative to *{protocol}://customer.alsid.app*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+*ADObjectApi* | [**api_infrastructures_infrastructure_id_directories_directory_id_ad_objects_id_get**](docs/ADObjectApi.md#api_infrastructures_infrastructure_id_directories_directory_id_ad_objects_id_get) | **GET** /api/infrastructures/{infrastructureId}/directories/{directoryId}/ad-objects/{id} | Get ad-object instance by id.
+*ADObjectApi* | [**api_infrastructures_infrastructure_id_directories_directory_id_events_event_id_ad_objects_id_changes_get**](docs/ADObjectApi.md#api_infrastructures_infrastructure_id_directories_directory_id_events_event_id_ad_objects_id_changes_get) | **GET** /api/infrastructures/{infrastructureId}/directories/{directoryId}/events/{eventId}/ad-objects/{id}/changes | Get one ad-object changes between a given event and the event which precedes it
+*ADObjectApi* | [**api_infrastructures_infrastructure_id_directories_directory_id_events_event_id_ad_objects_id_get**](docs/ADObjectApi.md#api_infrastructures_infrastructure_id_directories_directory_id_events_event_id_ad_objects_id_get) | **GET** /api/infrastructures/{infrastructureId}/directories/{directoryId}/events/{eventId}/ad-objects/{id} | Get ad-object instance by id.
+*ADObjectApi* | [**api_profiles_profile_id_checkers_checker_id_ad_objects_id_get**](docs/ADObjectApi.md#api_profiles_profile_id_checkers_checker_id_ad_objects_id_get) | **GET** /api/profiles/{profileId}/checkers/{checkerId}/ad-objects/{id} | Retrieve an AD object by id that have deviances for a specific profile and checker
+*ADObjectApi* | [**api_profiles_profile_id_checkers_checker_id_ad_objects_search_post**](docs/ADObjectApi.md#api_profiles_profile_id_checkers_checker_id_ad_objects_search_post) | **POST** /api/profiles/{profileId}/checkers/{checkerId}/ad-objects/search | Search all AD objects having deviances by profile by checker
+*APIKeyApi* | [**api_api_key_get**](docs/APIKeyApi.md#api_api_key_get) | **GET** /api/api-key | Get the API key of the current user
+*APIKeyApi* | [**api_api_key_post**](docs/APIKeyApi.md#api_api_key_post) | **POST** /api/api-key | Create or renew an API key for the current user
+*AboutApi* | [**api_about_get**](docs/AboutApi.md#api_about_get) | **GET** /api/about | Get about singleton.
+*AlertApi* | [**api_alerts_id_get**](docs/AlertApi.md#api_alerts_id_get) | **GET** /api/alerts/{id} | Get alert instance by id.
+*AlertApi* | [**api_alerts_id_patch**](docs/AlertApi.md#api_alerts_id_patch) | **PATCH** /api/alerts/{id} | Update alert instance.
+*AlertApi* | [**api_profiles_profile_id_alerts_get**](docs/AlertApi.md#api_profiles_profile_id_alerts_get) | **GET** /api/profiles/{profileId}/alerts | Retrieve all alert instances.
+*AlertApi* | [**api_profiles_profile_id_alerts_patch**](docs/AlertApi.md#api_profiles_profile_id_alerts_patch) | **PATCH** /api/profiles/{profileId}/alerts | Update alerts for one profile
+*ApplicationSettingApi* | [**api_application_settings_get**](docs/ApplicationSettingApi.md#api_application_settings_get) | **GET** /api/application-settings | Get the application settings
+*ApplicationSettingApi* | [**api_application_settings_patch**](docs/ApplicationSettingApi.md#api_application_settings_patch) | **PATCH** /api/application-settings | Update the application settings
+*AttackApi* | [**api_attack_settings_gpo_get**](docs/AttackApi.md#api_attack_settings_gpo_get) | **GET** /api/attack-settings/gpo | Get attack GPO script
+*AttackApi* | [**api_attack_types_get**](docs/AttackApi.md#api_attack_types_get) | **GET** /api/attack-types | Get attack types
+*AttackApi* | [**api_attacks_get**](docs/AttackApi.md#api_attacks_get) | **GET** /api/attacks | Get all attacks
+*AttackApi* | [**api_attacks_id_patch**](docs/AttackApi.md#api_attacks_id_patch) | **PATCH** /api/attacks/{id} | Update attack instance
+*AttackApi* | [**api_attacks_post**](docs/AttackApi.md#api_attacks_post) | **POST** /api/attacks | Create attack instance
+*AttackAlertApi* | [**api_alerts_ioa_count_get**](docs/AttackAlertApi.md#api_alerts_ioa_count_get) | **GET** /api/alerts-ioa/count | Get all ioa alerts
+*AttackAlertApi* | [**api_alerts_ioa_get**](docs/AttackAlertApi.md#api_alerts_ioa_get) | **GET** /api/alerts-ioa | Get all ioa alerts
+*AttackAlertApi* | [**api_alerts_ioa_id_patch**](docs/AttackAlertApi.md#api_alerts_ioa_id_patch) | **PATCH** /api/alerts-ioa/{id} | Update an ioa alert instance by ID.
+*AttackAlertApi* | [**api_alerts_ioa_patch**](docs/AttackAlertApi.md#api_alerts_ioa_patch) | **PATCH** /api/alerts-ioa | Update all ioa alerts
+*CategoryApi* | [**api_categories_get**](docs/CategoryApi.md#api_categories_get) | **GET** /api/categories | Retrieve all category instances.
+*CategoryApi* | [**api_categories_id_get**](docs/CategoryApi.md#api_categories_id_get) | **GET** /api/categories/{id} | Get category instance by id.
+*CheckerApi* | [**api_checkers_get**](docs/CheckerApi.md#api_checkers_get) | **GET** /api/checkers | Retrieve all checker instances.
+*CheckerApi* | [**api_checkers_id_get**](docs/CheckerApi.md#api_checkers_id_get) | **GET** /api/checkers/{id} | Get checker instance by id.
+*CheckerOptionApi* | [**api_profiles_profile_id_checkers_checker_id_checker_options_get**](docs/CheckerOptionApi.md#api_profiles_profile_id_checkers_checker_id_checker_options_get) | **GET** /api/profiles/{profileId}/checkers/{checkerId}/checker-options | Get all checker options related to a checker.
+*CheckerOptionApi* | [**api_profiles_profile_id_checkers_checker_id_checker_options_post**](docs/CheckerOptionApi.md#api_profiles_profile_id_checkers_checker_id_checker_options_post) | **POST** /api/profiles/{profileId}/checkers/{checkerId}/checker-options | Create checker options related to a checker.
+*DashboardApi* | [**api_dashboards_get**](docs/DashboardApi.md#api_dashboards_get) | **GET** /api/dashboards | Retrieve all dashboard instances.
+*DashboardApi* | [**api_dashboards_id_delete**](docs/DashboardApi.md#api_dashboards_id_delete) | **DELETE** /api/dashboards/{id} | Delete dashboard instance.
+*DashboardApi* | [**api_dashboards_id_get**](docs/DashboardApi.md#api_dashboards_id_get) | **GET** /api/dashboards/{id} | Get dashboard instance by id.
+*DashboardApi* | [**api_dashboards_id_patch**](docs/DashboardApi.md#api_dashboards_id_patch) | **PATCH** /api/dashboards/{id} | Update dashboard instance.
+*DashboardApi* | [**api_dashboards_post**](docs/DashboardApi.md#api_dashboards_post) | **POST** /api/dashboards | Create dashboard instance.
+*DevianceApi* | [**api_infrastructures_infrastructure_id_directories_directory_id_deviances_get**](docs/DevianceApi.md#api_infrastructures_infrastructure_id_directories_directory_id_deviances_get) | **GET** /api/infrastructures/{infrastructureId}/directories/{directoryId}/deviances | Get all deviances for a directory.
+*DevianceApi* | [**api_infrastructures_infrastructure_id_directories_directory_id_deviances_id_get**](docs/DevianceApi.md#api_infrastructures_infrastructure_id_directories_directory_id_deviances_id_get) | **GET** /api/infrastructures/{infrastructureId}/directories/{directoryId}/deviances/{id} | Get ad-object-deviance-history instance by id.
+*DevianceApi* | [**api_infrastructures_infrastructure_id_directories_directory_id_deviances_id_patch**](docs/DevianceApi.md#api_infrastructures_infrastructure_id_directories_directory_id_deviances_id_patch) | **PATCH** /api/infrastructures/{infrastructureId}/directories/{directoryId}/deviances/{id} | Update ad-object-deviance-history instance.
+*DevianceApi* | [**api_profiles_profile_id_checkers_checker_id_ad_objects_ad_object_id_deviances_patch**](docs/DevianceApi.md#api_profiles_profile_id_checkers_checker_id_ad_objects_ad_object_id_deviances_patch) | **PATCH** /api/profiles/{profileId}/checkers/{checkerId}/ad-objects/{adObjectId}/deviances | Update instances matching a checkerId and an AD object ID.
+*DevianceApi* | [**api_profiles_profile_id_checkers_checker_id_ad_objects_ad_object_id_deviances_post**](docs/DevianceApi.md#api_profiles_profile_id_checkers_checker_id_ad_objects_ad_object_id_deviances_post) | **POST** /api/profiles/{profileId}/checkers/{checkerId}/ad-objects/{adObjectId}/deviances | Search all deviances by profile by checker by AD object
+*DevianceApi* | [**api_profiles_profile_id_checkers_checker_id_deviances_patch**](docs/DevianceApi.md#api_profiles_profile_id_checkers_checker_id_deviances_patch) | **PATCH** /api/profiles/{profileId}/checkers/{checkerId}/deviances | Update instances matching a checkerId.
+*DevianceApi* | [**api_profiles_profile_id_checkers_checker_id_deviances_post**](docs/DevianceApi.md#api_profiles_profile_id_checkers_checker_id_deviances_post) | **POST** /api/profiles/{profileId}/checkers/{checkerId}/deviances | Get all deviances by checker.
+*DevianceApi* | [**api_profiles_profile_id_infrastructures_infrastructure_id_directories_directory_id_checkers_checker_id_deviances_get**](docs/DevianceApi.md#api_profiles_profile_id_infrastructures_infrastructure_id_directories_directory_id_checkers_checker_id_deviances_get) | **GET** /api/profiles/{profileId}/infrastructures/{infrastructureId}/directories/{directoryId}/checkers/{checkerId}/deviances | Get all deviances related to a single directory and checker.
+*DevianceApi* | [**api_profiles_profile_id_infrastructures_infrastructure_id_directories_directory_id_events_event_id_deviances_post**](docs/DevianceApi.md#api_profiles_profile_id_infrastructures_infrastructure_id_directories_directory_id_events_event_id_deviances_post) | **POST** /api/profiles/{profileId}/infrastructures/{infrastructureId}/directories/{directoryId}/events/{eventId}/deviances | Get all deviances by eventId.
+*DirectoryApi* | [**api_directories_get**](docs/DirectoryApi.md#api_directories_get) | **GET** /api/directories | Retrieve all directory instances.
+*DirectoryApi* | [**api_directories_id_get**](docs/DirectoryApi.md#api_directories_id_get) | **GET** /api/directories/{id} | Get directory instance by id.
+*DirectoryApi* | [**api_directories_post**](docs/DirectoryApi.md#api_directories_post) | **POST** /api/directories | Create directory instance.
+*DirectoryApi* | [**api_infrastructures_infrastructure_id_directories_get**](docs/DirectoryApi.md#api_infrastructures_infrastructure_id_directories_get) | **GET** /api/infrastructures/{infrastructureId}/directories | Get all directories for a given infrastructure
+*DirectoryApi* | [**api_infrastructures_infrastructure_id_directories_id_delete**](docs/DirectoryApi.md#api_infrastructures_infrastructure_id_directories_id_delete) | **DELETE** /api/infrastructures/{infrastructureId}/directories/{id} | Delete directory instance.
+*DirectoryApi* | [**api_infrastructures_infrastructure_id_directories_id_get**](docs/DirectoryApi.md#api_infrastructures_infrastructure_id_directories_id_get) | **GET** /api/infrastructures/{infrastructureId}/directories/{id} | Get directory instance by id.
+*DirectoryApi* | [**api_infrastructures_infrastructure_id_directories_id_patch**](docs/DirectoryApi.md#api_infrastructures_infrastructure_id_directories_id_patch) | **PATCH** /api/infrastructures/{infrastructureId}/directories/{id} | Update directory instance.
+*EmailNotifierApi* | [**api_email_notifiers_get**](docs/EmailNotifierApi.md#api_email_notifiers_get) | **GET** /api/email-notifiers | Retrieve all email-notifier instances.
+*EmailNotifierApi* | [**api_email_notifiers_id_delete**](docs/EmailNotifierApi.md#api_email_notifiers_id_delete) | **DELETE** /api/email-notifiers/{id} | Delete email-notifier instance.
+*EmailNotifierApi* | [**api_email_notifiers_id_get**](docs/EmailNotifierApi.md#api_email_notifiers_id_get) | **GET** /api/email-notifiers/{id} | Get email-notifier instance by id.
+*EmailNotifierApi* | [**api_email_notifiers_id_patch**](docs/EmailNotifierApi.md#api_email_notifiers_id_patch) | **PATCH** /api/email-notifiers/{id} | Update email-notifier instance.
+*EmailNotifierApi* | [**api_email_notifiers_post**](docs/EmailNotifierApi.md#api_email_notifiers_post) | **POST** /api/email-notifiers | Create email-notifier instance.
+*EmailNotifierApi* | [**api_email_notifiers_test_message_id_get**](docs/EmailNotifierApi.md#api_email_notifiers_test_message_id_get) | **GET** /api/email-notifiers/test-message/{id} | Send a test email notification by id
+*EmailNotifierApi* | [**api_email_notifiers_test_message_post**](docs/EmailNotifierApi.md#api_email_notifiers_test_message_post) | **POST** /api/email-notifiers/test-message | Send a test email notification
+*EventApi* | [**api_events_event_provider_id_last_events_get**](docs/EventApi.md#api_events_event_provider_id_last_events_get) | **GET** /api/events/{eventProviderId}/last-events | Get the last events for each AD object source and directory
+*EventApi* | [**api_events_last_get**](docs/EventApi.md#api_events_last_get) | **GET** /api/events/last | Get the last event
+*EventApi* | [**api_events_search_post**](docs/EventApi.md#api_events_search_post) | **POST** /api/events/search | Search events instances
+*EventApi* | [**api_infrastructures_infrastructure_id_directories_directory_id_ad_objects_ad_object_id_events_last_get**](docs/EventApi.md#api_infrastructures_infrastructure_id_directories_directory_id_ad_objects_ad_object_id_events_last_get) | **GET** /api/infrastructures/{infrastructureId}/directories/{directoryId}/ad-objects/{adObjectId}/events/last | Get the last event related to an AD Object
+*EventApi* | [**api_infrastructures_infrastructure_id_directories_directory_id_events_id_get**](docs/EventApi.md#api_infrastructures_infrastructure_id_directories_directory_id_events_id_get) | **GET** /api/infrastructures/{infrastructureId}/directories/{directoryId}/events/{id} | Get event instance by id.
+*InfrastructureApi* | [**api_infrastructures_get**](docs/InfrastructureApi.md#api_infrastructures_get) | **GET** /api/infrastructures | Retrieve all infrastructure instances.
+*InfrastructureApi* | [**api_infrastructures_id_delete**](docs/InfrastructureApi.md#api_infrastructures_id_delete) | **DELETE** /api/infrastructures/{id} | Delete infrastructure instance.
+*InfrastructureApi* | [**api_infrastructures_id_get**](docs/InfrastructureApi.md#api_infrastructures_id_get) | **GET** /api/infrastructures/{id} | Get infrastructure instance by id.
+*InfrastructureApi* | [**api_infrastructures_id_patch**](docs/InfrastructureApi.md#api_infrastructures_id_patch) | **PATCH** /api/infrastructures/{id} | Update infrastructure instance.
+*InfrastructureApi* | [**api_infrastructures_post**](docs/InfrastructureApi.md#api_infrastructures_post) | **POST** /api/infrastructures | Create infrastructure instance.
+*LDAPConfigurationApi* | [**api_ldap_configuration_get**](docs/LDAPConfigurationApi.md#api_ldap_configuration_get) | **GET** /api/ldap-configuration | Get ldap-configuration singleton.
+*LDAPConfigurationApi* | [**api_ldap_configuration_patch**](docs/LDAPConfigurationApi.md#api_ldap_configuration_patch) | **PATCH** /api/ldap-configuration | Update ldap-configuration singleton.
+*LicenseApi* | [**api_license_get**](docs/LicenseApi.md#api_license_get) | **GET** /api/license | Get license singleton.
+*LicenseApi* | [**api_license_post**](docs/LicenseApi.md#api_license_post) | **POST** /api/license | Create new license singleton
+*PreferenceApi* | [**api_preferences_get**](docs/PreferenceApi.md#api_preferences_get) | **GET** /api/preferences | Get a user&#x27;s preferences
+*PreferenceApi* | [**api_preferences_patch**](docs/PreferenceApi.md#api_preferences_patch) | **PATCH** /api/preferences | Update a user&#x27;s preferences
+*ProfileApi* | [**api_profiles_from_from_id_post**](docs/ProfileApi.md#api_profiles_from_from_id_post) | **POST** /api/profiles/from/{fromId} | Creates a new profile from another one
+*ProfileApi* | [**api_profiles_get**](docs/ProfileApi.md#api_profiles_get) | **GET** /api/profiles | Retrieve all profile instances.
+*ProfileApi* | [**api_profiles_id_commit_post**](docs/ProfileApi.md#api_profiles_id_commit_post) | **POST** /api/profiles/{id}/commit | Commits change of the related profile
+*ProfileApi* | [**api_profiles_id_delete**](docs/ProfileApi.md#api_profiles_id_delete) | **DELETE** /api/profiles/{id} | Delete profile instance.
+*ProfileApi* | [**api_profiles_id_get**](docs/ProfileApi.md#api_profiles_id_get) | **GET** /api/profiles/{id} | Get profile instance by id.
+*ProfileApi* | [**api_profiles_id_patch**](docs/ProfileApi.md#api_profiles_id_patch) | **PATCH** /api/profiles/{id} | Update profile instance.
+*ProfileApi* | [**api_profiles_id_unstage_post**](docs/ProfileApi.md#api_profiles_id_unstage_post) | **POST** /api/profiles/{id}/unstage | Unstages change of the related profile
+*ProfileApi* | [**api_profiles_post**](docs/ProfileApi.md#api_profiles_post) | **POST** /api/profiles | Create profile instance.
+*ReasonApi* | [**api_profiles_profile_id_checkers_checker_id_reasons_get**](docs/ReasonApi.md#api_profiles_profile_id_checkers_checker_id_reasons_get) | **GET** /api/profiles/{profileId}/checkers/{checkerId}/reasons | Retrieve all reason instances that have deviances for a specific profile and checker.
+*ReasonApi* | [**api_profiles_profile_id_infrastructures_infrastructure_id_directories_directory_id_events_event_id_reasons_get**](docs/ReasonApi.md#api_profiles_profile_id_infrastructures_infrastructure_id_directories_directory_id_events_event_id_reasons_get) | **GET** /api/profiles/{profileId}/infrastructures/{infrastructureId}/directories/{directoryId}/events/{eventId}/reasons | Retrieve all reason instances for which we have deviances for a specific profile, directory and event.
+*ReasonApi* | [**api_reasons_get**](docs/ReasonApi.md#api_reasons_get) | **GET** /api/reasons | Retrieve all reason instances.
+*ReasonApi* | [**api_reasons_id_get**](docs/ReasonApi.md#api_reasons_id_get) | **GET** /api/reasons/{id} | Get reason instance by id.
+*RoleApi* | [**api_roles_from_from_id_post**](docs/RoleApi.md#api_roles_from_from_id_post) | **POST** /api/roles/from/{fromId} | Creates a new role from another one
+*RoleApi* | [**api_roles_get**](docs/RoleApi.md#api_roles_get) | **GET** /api/roles | Retrieve all role instances.
+*RoleApi* | [**api_roles_id_delete**](docs/RoleApi.md#api_roles_id_delete) | **DELETE** /api/roles/{id} | Delete role instance.
+*RoleApi* | [**api_roles_id_get**](docs/RoleApi.md#api_roles_id_get) | **GET** /api/roles/{id} | Get role instance by id.
+*RoleApi* | [**api_roles_id_patch**](docs/RoleApi.md#api_roles_id_patch) | **PATCH** /api/roles/{id} | Update role instance.
+*RoleApi* | [**api_roles_id_permissions_put**](docs/RoleApi.md#api_roles_id_permissions_put) | **PUT** /api/roles/{id}/permissions | Replace permission list for a role
+*RoleApi* | [**api_roles_post**](docs/RoleApi.md#api_roles_post) | **POST** /api/roles | Create role instance.
+*RoleApi* | [**api_roles_user_creation_defaults_get**](docs/RoleApi.md#api_roles_user_creation_defaults_get) | **GET** /api/roles/user-creation-defaults | Return the default roles for user creation
+*SAMLConfigurationApi* | [**api_saml_configuration_generate_certificate_get**](docs/SAMLConfigurationApi.md#api_saml_configuration_generate_certificate_get) | **GET** /api/saml-configuration/generate-certificate | Generates SAML certificate
+*SAMLConfigurationApi* | [**api_saml_configuration_get**](docs/SAMLConfigurationApi.md#api_saml_configuration_get) | **GET** /api/saml-configuration | Get saml-configuration singleton.
+*SAMLConfigurationApi* | [**api_saml_configuration_patch**](docs/SAMLConfigurationApi.md#api_saml_configuration_patch) | **PATCH** /api/saml-configuration | Update saml-configuration singleton.
+*ScoreApi* | [**api_profiles_profile_id_scores_get**](docs/ScoreApi.md#api_profiles_profile_id_scores_get) | **GET** /api/profiles/{profileId}/scores | Get the directories score by profile
+*SyslogApi* | [**api_syslogs_get**](docs/SyslogApi.md#api_syslogs_get) | **GET** /api/syslogs | Retrieve all syslog instances.
+*SyslogApi* | [**api_syslogs_id_delete**](docs/SyslogApi.md#api_syslogs_id_delete) | **DELETE** /api/syslogs/{id} | Delete syslog instance.
+*SyslogApi* | [**api_syslogs_id_get**](docs/SyslogApi.md#api_syslogs_id_get) | **GET** /api/syslogs/{id} | Get syslog instance by id.
+*SyslogApi* | [**api_syslogs_id_patch**](docs/SyslogApi.md#api_syslogs_id_patch) | **PATCH** /api/syslogs/{id} | Update syslog instance.
+*SyslogApi* | [**api_syslogs_post**](docs/SyslogApi.md#api_syslogs_post) | **POST** /api/syslogs | Create syslog instance.
+*SyslogApi* | [**api_syslogs_test_message_id_get**](docs/SyslogApi.md#api_syslogs_test_message_id_get) | **GET** /api/syslogs/test-message/{id} | Send a test syslog notification by id
+*SyslogApi* | [**api_syslogs_test_message_post**](docs/SyslogApi.md#api_syslogs_test_message_post) | **POST** /api/syslogs/test-message | Send a test syslog notification
+*TopologyApi* | [**api_profiles_profile_id_topology_get**](docs/TopologyApi.md#api_profiles_profile_id_topology_get) | **GET** /api/profiles/{profileId}/topology | Get a representation of the AD topology.
+*UserApi* | [**api_login_post**](docs/UserApi.md#api_login_post) | **POST** /api/login | Logs in a user
+*UserApi* | [**api_logout_post**](docs/UserApi.md#api_logout_post) | **POST** /api/logout | Logs out a user
+*UserApi* | [**api_users_forgotten_password_post**](docs/UserApi.md#api_users_forgotten_password_post) | **POST** /api/users/forgotten-password | Sends an email to create a new password
+*UserApi* | [**api_users_get**](docs/UserApi.md#api_users_get) | **GET** /api/users | Get all users
+*UserApi* | [**api_users_id_delete**](docs/UserApi.md#api_users_id_delete) | **DELETE** /api/users/{id} | Delete user instance.
+*UserApi* | [**api_users_id_get**](docs/UserApi.md#api_users_id_get) | **GET** /api/users/{id} | Get user instance by id.
+*UserApi* | [**api_users_id_patch**](docs/UserApi.md#api_users_id_patch) | **PATCH** /api/users/{id} | Update user instance.
+*UserApi* | [**api_users_id_roles_put**](docs/UserApi.md#api_users_id_roles_put) | **PUT** /api/users/{id}/roles | Replace role list for a user
+*UserApi* | [**api_users_password_patch**](docs/UserApi.md#api_users_password_patch) | **PATCH** /api/users/password | Update a user&#x27;s password
+*UserApi* | [**api_users_post**](docs/UserApi.md#api_users_post) | **POST** /api/users | Create user instance.
+*UserApi* | [**api_users_retrieve_password_post**](docs/UserApi.md#api_users_retrieve_password_post) | **POST** /api/users/retrieve-password | Retrieves a user&#x27;s password
+*UserApi* | [**api_users_whoami_get**](docs/UserApi.md#api_users_whoami_get) | **GET** /api/users/whoami | Get a user&#x27;s information
+*WidgetApi* | [**api_dashboards_dashboard_id_widgets_get**](docs/WidgetApi.md#api_dashboards_dashboard_id_widgets_get) | **GET** /api/dashboards/{dashboardId}/widgets | Get all widgets by dashboard id
+*WidgetApi* | [**api_dashboards_dashboard_id_widgets_id_delete**](docs/WidgetApi.md#api_dashboards_dashboard_id_widgets_id_delete) | **DELETE** /api/dashboards/{dashboardId}/widgets/{id} | Delete widget instance.
+*WidgetApi* | [**api_dashboards_dashboard_id_widgets_id_get**](docs/WidgetApi.md#api_dashboards_dashboard_id_widgets_id_get) | **GET** /api/dashboards/{dashboardId}/widgets/{id} | Get widget instance by id.
+*WidgetApi* | [**api_dashboards_dashboard_id_widgets_id_options_get**](docs/WidgetApi.md#api_dashboards_dashboard_id_widgets_id_options_get) | **GET** /api/dashboards/{dashboardId}/widgets/{id}/options | Get a widget&#x27;s options by id
+*WidgetApi* | [**api_dashboards_dashboard_id_widgets_id_options_put**](docs/WidgetApi.md#api_dashboards_dashboard_id_widgets_id_options_put) | **PUT** /api/dashboards/{dashboardId}/widgets/{id}/options | Define widget&#x27;s options by id
+*WidgetApi* | [**api_dashboards_dashboard_id_widgets_id_patch**](docs/WidgetApi.md#api_dashboards_dashboard_id_widgets_id_patch) | **PATCH** /api/dashboards/{dashboardId}/widgets/{id} | Update widget instance.
+*WidgetApi* | [**api_dashboards_dashboard_id_widgets_post**](docs/WidgetApi.md#api_dashboards_dashboard_id_widgets_post) | **POST** /api/dashboards/{dashboardId}/widgets | Create a new widget in dashboard by dashboard id
+*WidgetApi* | [**api_widgets_get**](docs/WidgetApi.md#api_widgets_get) | **GET** /api/widgets | Retrieve all widget instances.
+
+## Documentation For Models
+
+ - [AdObjectIdDeviancesBody](docs/AdObjectIdDeviancesBody.md)
+ - [AdObjectIdDeviancesBody1](docs/AdObjectIdDeviancesBody1.md)
+ - [AdobjectsSearchBody](docs/AdobjectsSearchBody.md)
+ - [AlertsIdBody](docs/AlertsIdBody.md)
+ - [AlertsioaIdBody](docs/AlertsioaIdBody.md)
+ - [ApiAlertsioaBody](docs/ApiAlertsioaBody.md)
+ - [ApiApplicationsettingsBody](docs/ApiApplicationsettingsBody.md)
+ - [ApiAttacksBody](docs/ApiAttacksBody.md)
+ - [ApiDashboardsBody](docs/ApiDashboardsBody.md)
+ - [ApiDirectoriesBody](docs/ApiDirectoriesBody.md)
+ - [ApiInfrastructuresBody](docs/ApiInfrastructuresBody.md)
+ - [ApiLdapconfigurationBody](docs/ApiLdapconfigurationBody.md)
+ - [ApiLicenseBody](docs/ApiLicenseBody.md)
+ - [ApiLoginBody](docs/ApiLoginBody.md)
+ - [ApiPreferencesBody](docs/ApiPreferencesBody.md)
+ - [ApiProfilesBody](docs/ApiProfilesBody.md)
+ - [ApiRolesBody](docs/ApiRolesBody.md)
+ - [ApiSamlconfigurationBody](docs/ApiSamlconfigurationBody.md)
+ - [ApiUsersBody](docs/ApiUsersBody.md)
+ - [ApialertsioaAttackType](docs/ApialertsioaAttackType.md)
+ - [ApialertsioaDirectory](docs/ApialertsioaDirectory.md)
+ - [ApiattacksSource](docs/ApiattacksSource.md)
+ - [ApiattacksVector](docs/ApiattacksVector.md)
+ - [ApiattacksVectorAttributes](docs/ApiattacksVectorAttributes.md)
+ - [ApiattacktypesResources](docs/ApiattacktypesResources.md)
+ - [ApicheckersAttackerKnownTools](docs/ApicheckersAttackerKnownTools.md)
+ - [ApicheckersRecommendation](docs/ApicheckersRecommendation.md)
+ - [ApicheckersResources](docs/ApicheckersResources.md)
+ - [ApicheckersVulnerabilityDetail](docs/ApicheckersVulnerabilityDetail.md)
+ - [ApieventssearchOrder](docs/ApieventssearchOrder.md)
+ - [ApiinfrastructuresinfrastructureIddirectoriesdirectoryIddeviancesAttributes](docs/ApiinfrastructuresinfrastructureIddirectoriesdirectoryIddeviancesAttributes.md)
+ - [ApiinfrastructuresinfrastructureIddirectoriesdirectoryIddeviancesDescription](docs/ApiinfrastructuresinfrastructureIddirectoriesdirectoryIddeviancesDescription.md)
+ - [ApiinfrastructuresinfrastructureIddirectoriesdirectoryIddeviancesDescriptionReplacements](docs/ApiinfrastructuresinfrastructureIddirectoriesdirectoryIddeviancesDescriptionReplacements.md)
+ - [ApiinfrastructuresinfrastructureIddirectoriesdirectoryIdeventseventIdadobjectsidchangesValues](docs/ApiinfrastructuresinfrastructureIddirectoriesdirectoryIdeventseventIdadobjectsidchangesValues.md)
+ - [ApildapconfigurationAllowedGroups](docs/ApildapconfigurationAllowedGroups.md)
+ - [ApiprofilesprofileIdcheckerscheckerIdadobjectssearchObjectAttributes](docs/ApiprofilesprofileIdcheckerscheckerIdadobjectssearchObjectAttributes.md)
+ - [ApirolesPermissions](docs/ApirolesPermissions.md)
+ - [ApisamlconfigurationAllowedGroups](docs/ApisamlconfigurationAllowedGroups.md)
+ - [AttacksIdBody](docs/AttacksIdBody.md)
+ - [CheckerIdCheckeroptionsBody](docs/CheckerIdCheckeroptionsBody.md)
+ - [CheckerIdDeviancesBody](docs/CheckerIdDeviancesBody.md)
+ - [CheckerIdDeviancesBody1](docs/CheckerIdDeviancesBody1.md)
+ - [DashboardIdWidgetsBody](docs/DashboardIdWidgetsBody.md)
+ - [DashboardsIdBody](docs/DashboardsIdBody.md)
+ - [DeviancesIdBody](docs/DeviancesIdBody.md)
+ - [DirectoriesIdBody](docs/DirectoriesIdBody.md)
+ - [EmailnotifiersIdBody](docs/EmailnotifiersIdBody.md)
+ - [EmailnotifiersTestmessageBody](docs/EmailnotifiersTestmessageBody.md)
+ - [EventIdDeviancesBody](docs/EventIdDeviancesBody.md)
+ - [EventsSearchBody](docs/EventsSearchBody.md)
+ - [FromFromIdBody](docs/FromFromIdBody.md)
+ - [FromFromIdBody1](docs/FromFromIdBody1.md)
+ - [IdOptionsBody](docs/IdOptionsBody.md)
+ - [IdRolesBody](docs/IdRolesBody.md)
+ - [InfrastructuresIdBody](docs/InfrastructuresIdBody.md)
+ - [InlineResponse200](docs/InlineResponse200.md)
+ - [InlineResponse2001](docs/InlineResponse2001.md)
+ - [InlineResponse20010](docs/InlineResponse20010.md)
+ - [InlineResponse20011](docs/InlineResponse20011.md)
+ - [InlineResponse20012](docs/InlineResponse20012.md)
+ - [InlineResponse20013](docs/InlineResponse20013.md)
+ - [InlineResponse20014](docs/InlineResponse20014.md)
+ - [InlineResponse20015](docs/InlineResponse20015.md)
+ - [InlineResponse20016](docs/InlineResponse20016.md)
+ - [InlineResponse20017](docs/InlineResponse20017.md)
+ - [InlineResponse20018](docs/InlineResponse20018.md)
+ - [InlineResponse20019](docs/InlineResponse20019.md)
+ - [InlineResponse2002](docs/InlineResponse2002.md)
+ - [InlineResponse20020](docs/InlineResponse20020.md)
+ - [InlineResponse20021](docs/InlineResponse20021.md)
+ - [InlineResponse20022](docs/InlineResponse20022.md)
+ - [InlineResponse20023](docs/InlineResponse20023.md)
+ - [InlineResponse20024](docs/InlineResponse20024.md)
+ - [InlineResponse20025](docs/InlineResponse20025.md)
+ - [InlineResponse20026](docs/InlineResponse20026.md)
+ - [InlineResponse20027](docs/InlineResponse20027.md)
+ - [InlineResponse20028](docs/InlineResponse20028.md)
+ - [InlineResponse20028AllowedGroups](docs/InlineResponse20028AllowedGroups.md)
+ - [InlineResponse20029](docs/InlineResponse20029.md)
+ - [InlineResponse2003](docs/InlineResponse2003.md)
+ - [InlineResponse20030](docs/InlineResponse20030.md)
+ - [InlineResponse20031](docs/InlineResponse20031.md)
+ - [InlineResponse20032](docs/InlineResponse20032.md)
+ - [InlineResponse20033](docs/InlineResponse20033.md)
+ - [InlineResponse20034](docs/InlineResponse20034.md)
+ - [InlineResponse20035](docs/InlineResponse20035.md)
+ - [InlineResponse20036](docs/InlineResponse20036.md)
+ - [InlineResponse20036AllowedGroups](docs/InlineResponse20036AllowedGroups.md)
+ - [InlineResponse20037](docs/InlineResponse20037.md)
+ - [InlineResponse20038](docs/InlineResponse20038.md)
+ - [InlineResponse20039](docs/InlineResponse20039.md)
+ - [InlineResponse2004](docs/InlineResponse2004.md)
+ - [InlineResponse20040](docs/InlineResponse20040.md)
+ - [InlineResponse20040Directories](docs/InlineResponse20040Directories.md)
+ - [InlineResponse20040Infrastructures](docs/InlineResponse20040Infrastructures.md)
+ - [InlineResponse20040Trusts](docs/InlineResponse20040Trusts.md)
+ - [InlineResponse20041](docs/InlineResponse20041.md)
+ - [InlineResponse20042](docs/InlineResponse20042.md)
+ - [InlineResponse20043](docs/InlineResponse20043.md)
+ - [InlineResponse20044](docs/InlineResponse20044.md)
+ - [InlineResponse20045](docs/InlineResponse20045.md)
+ - [InlineResponse20046](docs/InlineResponse20046.md)
+ - [InlineResponse20047](docs/InlineResponse20047.md)
+ - [InlineResponse2005](docs/InlineResponse2005.md)
+ - [InlineResponse2006](docs/InlineResponse2006.md)
+ - [InlineResponse2007](docs/InlineResponse2007.md)
+ - [InlineResponse2008](docs/InlineResponse2008.md)
+ - [InlineResponse2009](docs/InlineResponse2009.md)
+ - [InlineResponse204](docs/InlineResponse204.md)
+ - [OneOfidOptionsBody](docs/OneOfidOptionsBody.md)
+ - [OneOfinlineResponse20047](docs/OneOfinlineResponse20047.md)
+ - [ProfileIdAlertsBody](docs/ProfileIdAlertsBody.md)
+ - [ProfilesIdBody](docs/ProfilesIdBody.md)
+ - [RolesIdBody](docs/RolesIdBody.md)
+ - [SyslogsIdBody](docs/SyslogsIdBody.md)
+ - [SyslogsTestmessageBody](docs/SyslogsTestmessageBody.md)
+ - [UsersForgottenpasswordBody](docs/UsersForgottenpasswordBody.md)
+ - [UsersIdBody](docs/UsersIdBody.md)
+ - [UsersPasswordBody](docs/UsersPasswordBody.md)
+ - [UsersRetrievepasswordBody](docs/UsersRetrievepasswordBody.md)
+ - [WidgetsIdBody](docs/WidgetsIdBody.md)
+
+## Documentation For Authorization
+
+
+## ApiKey
+
+- **Type**: API key
+- **API key parameter name**: x-api-key
+- **Location**: HTTP header
+
+
+## Author
+
+
+
+
 License
 -------
 

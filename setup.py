@@ -42,6 +42,10 @@ setup(
         'restfly>=1.3.5',
         'marshmallow>=3.6',
         'python-box>=4.0',
+        'urllib3 >= 1.15',
+        'six >= 1.10',
+        'certifi',
+        'python-dateutil'
     ],
     extras_require={
         'NessusReportv2': ['defusedxml>=0.5.0'],
