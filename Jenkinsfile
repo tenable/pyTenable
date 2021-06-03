@@ -31,7 +31,8 @@ void unittests(String version) {
                     pip install -r requirements.txt
 
                     pytest --vcr-record=none --cov-report term-missing --cov=tenable tests
-                    find .
+                    find . -name *.html
+                    find . -name *.xml
                 """
             }
         }
@@ -49,7 +50,7 @@ try {
 
     tasks['snyk'] = {
         stage('snyk') {
-            Snyk snyk = new Snyk(script, parameters)
+            Snyk snyk = new Snyk(this, bparams)
             snyk.execute()
         }
     }
