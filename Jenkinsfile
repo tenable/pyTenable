@@ -16,7 +16,8 @@ void unittests(String version) {
     echo "Version: version"
 
     node(Constants.DOCKERNODE) {
-        buildsCommon.buildInit(bparams)        
+        buildsCommon.clenup()
+        checkout scm
 
         withContainer(image: "${version}-buster", registry: '') {
             sh 'python --version'
