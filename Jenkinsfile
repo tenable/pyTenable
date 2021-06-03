@@ -19,8 +19,15 @@ void unittests(String version) {
         buildsCommon.cleanup()
         checkout scm
 
-        withContainer(image: "${version}-buster", registry: '') {
+        withContainer(image: "python:${version}-buster", registry: '') {
             sh 'python --version'
+            sh """
+                python -m pip install --upgrade pip
+                pip install -r test-requirements.txt
+                pip install -r requirements.txt
+
+                pytest --vcr-record=none --cov-report term-missing --cov=tenable tests
+            """
         }
     }
 }
