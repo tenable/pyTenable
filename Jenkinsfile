@@ -12,7 +12,7 @@ bparams = new BuildParams(this, 1083)
 bparams.channels = '#jenkins-devel'
 bparams.snykContainer = 'python:3.6-buster'
 
-GlobalContext.put(bparams.appid)
+GlobalContext.put('appid', bparams.appid)
 
 common = new Common(this)
 buildsCommon = new BuildsCommon(this)
