@@ -15,19 +15,21 @@ buildsCommon = new BuildsCommon(this)
 void unittests(String version) {
     echo "Version: ${version}"
 
-    node(Constants.DOCKERNODE) {
-        buildsCommon.cleanup()
-        checkout scm
+    stage("unittest${version}") {
+        node(Constants.DOCKERNODE) {
+            buildsCommon.cleanup()
+            checkout scm
 
-        withContainer(image: "python:${version}-buster", registry: '', inside: '-u root') {
-            sh 'python --version'
-            sh """
-                python -m pip install --upgrade pip
-                pip install -r test-requirements.txt
-                pip install -r requirements.txt
+            withContainer(image: "python:${version}-buster", registry: '', inside: '-u root') {
+                sh 'python --version'
+                sh """
+                    python -m pip install --upgrade pip
+                    pip install -r test-requirements.txt
+                    pip install -r requirements.txt
 
-                pytest --vcr-record=none --cov-report term-missing --cov=tenable tests
-            """
+                    pytest --vcr-record=none --cov-report term-missing --cov=tenable tests
+                """
+            }
         }
     }
 }
