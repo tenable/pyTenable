@@ -4,7 +4,8 @@ import com.tenable.jenkins.builds.*
 import com.tenable.jenkins.common.*
 import com.tenable.jenkins.Constants
 
-pythonVersion = [ '3.6', '3.7', '3.8', '3.9' ]
+//pythonVersion = [ '3.6', '3.7', '3.8', '3.9' ]
+pythonVersion = [ '3.6' ]
 
 bparams = new BuildParams(this, 1083)
 bparams.channels = '#jenkins-devel'
@@ -28,6 +29,7 @@ void unittests(String version) {
                     pip install -r requirements.txt
 
                     pytest --vcr-record=none --cov-report term-missing --cov=tenable tests
+                    find .
                 """
             }
         }
