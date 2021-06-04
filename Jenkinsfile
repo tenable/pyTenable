@@ -13,7 +13,7 @@ bparams.channels = '#jenkins-devel'
 bparams.snykContainer = 'python:3.6-buster'
 bparams.snykRegistry = ''
 bparams.snykType = 'PYTHON'
-bparams.nexusiqtype = 'REQUIREMENTS'
+bparams.nexusiqtype = 'REQUIREMENT'
 
 GlobalContext.put('appid', bparams.appid)
 
@@ -35,7 +35,7 @@ void unittests(String version) {
                     pip install -r test-requirements.txt
                     pip install -r requirements.txt
 
-                    pytest --vcr-record=none --cov-report term-missing --cov=tenable tests
+                    pytest --vcr-record=none --cov-report html:test-reports/coverage  --cov=tenable tests
                 """
             }
         }
