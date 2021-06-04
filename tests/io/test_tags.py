@@ -7,6 +7,29 @@ from tests.checker import check, single
 from tenable.errors import UnexpectedValueError, NotFoundError
 from tenable.io.tags import TagsIterator
 
+@pytest.fixture(name='tagfilters')
+def fixture_tagfilters():
+    '''
+    Returns tag filter structure
+    '''
+    return [('ipv4', 'eq', ['192.168.0.0/24'])]
+
+@pytest.fixture(name='filterdefs')
+def fixture_filterdefs():
+    '''
+    Returns filter definition of ipv4 type filter
+    '''
+    return {
+        'ipv4': {
+            'choices': None,
+            'operators': ['eq'],
+            'pattern':
+                '^(\\s*((?=\\d+\\.\\d+\\.\\d+\\.\\d+(?:\\/|-|\\s*,|$))'
+                '(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.?){4})'
+                '(?:(?:\\/(?:3[0-2]|[12]+\\d|[1-9]))|((?:-(?=\\d+\\.\\d+\\.\\d+\\.\\d+)'
+                '(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)\\.?){4})|(?:\\s*,(?:\\s*)))?)+)+$'},
+    }
+
 @pytest.fixture(name='tagvalue')
 @pytest.mark.vcr()
 def fixture_tagvalue(request, api):
@@ -43,6 +66,194 @@ def fixture_tagcat(request, api):
     request.addfinalizer(teardown)
     return tag
 
+def test_tags_permission_constructor_id_typeerror(api):
+    '''
+    test to raise exception when type of id param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        getattr(api.tags, '_permission_constructor')([(1, 'something', 'user')])
+
+def test_tags_permission_constructor_id_unexpectedvalueerror(api):
+    '''
+    test to raise exception when id param value does not match the pattern.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        getattr(api.tags, '_permission_constructor')([('something', 'something', 'user')])
+
+def test_tags_permission_constructor_name_typeerror(api):
+    '''
+    test to raise exception when type of name param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        getattr(api.tags, '_permission_constructor')([(str(uuid.uuid4()), 1, 'user')])
+
+def test_tags_permission_constructor_type_typeerror(api):
+    '''
+    test to raise exception when type of type param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        getattr(api.tags, '_permission_constructor')([(str(uuid.uuid4()), 'something', 1)])
+
+def test_tags_permission_constructor_type_unexpectedvalueerror(api):
+    '''
+    test to raise exception when type param value does not match the choices.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        getattr(api.tags, '_permission_constructor')([
+            (str(uuid.uuid4()), 'something', 'something')])
+
+def test_tags_permission_constructor_permissions_typeerror(api):
+    '''
+    test to raise exception when type of permissions param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        getattr(api.tags, '_permission_constructor')([
+            (str(uuid.uuid4()), 'something', 'user', 1)])
+
+def test_tags_permission_constructor_permissions_unexpectedvalueerror(api):
+    '''
+    test to raise exception when permissions param value does not match the choices.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        getattr(api.tags, '_permission_constructor')([
+            (str(uuid.uuid4()), 'something', 'user', ['something'])])
+
+def test_tags_permission_constructor_dict_id_typeerror(api):
+    '''
+    test to raise exception when type of id param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        getattr(api.tags, '_permission_constructor')([{
+            'id': 1,
+            "name": 'something',
+            "type": 'something',
+            "permissions": [],
+        }])
+
+def test_tags_permission_constructor_dict_id_unexpectedvalueerror(api):
+    '''
+    test to raise exception when id param value does not match the pattern.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        getattr(api.tags, '_permission_constructor')([{
+            'id': 'something',
+            "name": 'something',
+            "type": 'something',
+            "permissions": [],
+        }])
+
+def test_tags_permission_constructor_dict_name_typeerror(api):
+    '''
+    test to raise exception when type of name param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        getattr(api.tags, '_permission_constructor')([{
+            'id': str(uuid.uuid4()),
+            "name": 1,
+            "type": 'something',
+            "permissions": [],
+        }])
+
+def test_tags_permission_constructor_dict_type_typeerror(api):
+    '''
+    test to raise exception when type of type param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        getattr(api.tags, '_permission_constructor')([{
+            'id': str(uuid.uuid4()),
+            "name": 'something',
+            "type": 1,
+            "permissions": [],
+        }])
+
+def test_tags_permission_constructor_dict_type_unexpectedvalueerror(api):
+    '''
+    test to raise exception when type param value does not match the choices.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        getattr(api.tags, '_permission_constructor')([{
+            'id': str(uuid.uuid4()),
+            "name": 'something',
+            "type": 'something',
+            "permissions": [],
+        }])
+
+def test_tags_permission_constructor_dict_permission_typeerror(api):
+    '''
+    test to raise exception when type of permission param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        getattr(api.tags, '_permission_constructor')([{
+            'id': str(uuid.uuid4()),
+            "name": 'something',
+            "type": 'user',
+            "permissions": 1,
+        }])
+
+def test_tags_permission_constructor_dict_permission_unexpectedvalueerror(api):
+    '''
+    test to raise exception when permission param value does not match the choices.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        getattr(api.tags, '_permission_constructor')([{
+            'id': str(uuid.uuid4()),
+            "name": 'something',
+            "type": 'user',
+            "permissions": ['something'],
+        }])
+
+def test_tags_permission_constructor_tuple_pass(api):
+    '''
+    test to parse tuple type current_domain_permissions
+    '''
+    user = str(uuid.uuid4())
+    assert getattr(api.tags, '_permission_constructor')([
+        (user, 'test', 'user', ['CAN_EDIT'])
+    ]) == [{'permissions': ['CAN_EDIT'], 'type': 'USER', 'name': 'test', 'id': user}]
+
+    # when permissions not passed
+    assert getattr(api.tags, '_permission_constructor')([
+        (user, 'test', 'user')
+    ]) == [{'permissions': [], 'type': 'USER', 'name': 'test', 'id': user}]
+
+def test_tags_permission_constructor_dict_pass(api):
+    '''
+    test to parse dict type current_domain_permission
+    '''
+    user = str(uuid.uuid4())
+    assert getattr(api.tags, '_permission_constructor')([
+        {'id': user, 'name': 'test', 'type': 'user', 'permissions': ['CAN_EDIT']}
+    ]) == [{'permissions': ['CAN_EDIT'], 'type': 'USER', 'name': 'test', 'id': user}]
+
+    # when permissions not passed
+    assert getattr(api.tags, '_permission_constructor')([
+        {'id': user, 'name': 'test', 'type': 'user'}
+    ]) == [{'permissions': [], 'type': 'USER', 'name': 'test', 'id': user}]
+
+def test_tags_tag_value_constructor_filter_type_typeerror(api, tagfilters, filterdefs):
+    '''
+    test to raise exception when type of filter_type param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        getattr(api.tags, '_tag_value_constructor')(
+            filters=tagfilters, filterdefs=filterdefs, filter_type=1)
+
+def test_tags_tag_value_constructor_filter_type_unexpectedvalueerror(api, tagfilters, filterdefs):
+    '''
+    test to raise exception when filter_type param value does not match the choices.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        getattr(api.tags, '_tag_value_constructor')(filters=tagfilters,
+            filterdefs=filterdefs, filter_type='nope')
+
+def test_tags_tag_value_constructor_pass(api, tagfilters, filterdefs):
+    '''
+    test to parse tag value filters
+    '''
+    assert getattr(api.tags, '_tag_value_constructor')(
+        filters=tagfilters, filterdefs=filterdefs, filter_type='and'
+    ) == {'asset': {'and': [{'field': 'ipv4', 'operator': 'eq', 'value': '192.168.0.0/24'}]}}
+
 @pytest.mark.vcr()
 def test_tags_create_category_typeerror(api):
     '''
@@ -77,6 +288,40 @@ def test_tags_create_value_category_description_typeerror(api):
         api.tags.create('', '', category_description=1)
 
 @pytest.mark.vcr()
+def test_tags_create_all_users_permissions_typeerror(api):
+    '''
+    test to raise exception when type of all_users_permissions param
+    does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.tags.create('', '', all_users_permissions=1)
+
+@pytest.mark.vcr()
+def test_tags_create_all_users_permissions_unexpectedvalueerror(api):
+    '''
+    test to raise exception when all_users_permission param value does not match the choices.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        api.tags.create('', '', all_users_permissions=['something'])
+
+@pytest.mark.vcr()
+def test_tags_create_current_domain_permissions_typeerror(api):
+    '''
+    test to raise exception when type of current_domain_permission param
+    does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.tags.create('', '', current_domain_permissions=1)
+
+@pytest.mark.vcr()
+def test_tags_create_filters_typeerror(api):
+    '''
+    test to raise exception when type of filters param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.tags.create('', '', filters=1)
+
+@pytest.mark.vcr()
 def test_tags_create_success(tagvalue):
     '''
     test to create tag value.
@@ -88,8 +333,46 @@ def test_tags_create_success(tagvalue):
     check(tagvalue, 'updated_by', str)
     check(tagvalue, 'category_uuid', 'uuid')
     check(tagvalue, 'value', str)
-    #check(tagvalue, 'description', str, allow_none=True)
-    #check(tagvalue, 'category_description', str, allow_none=True)
+    # check(tagvalue, 'description', str, allow_none=True)
+    # check(tagvalue, 'category_description', str, allow_none=True)
+    check(tagvalue, 'access_control', dict)
+    check(tagvalue['access_control'], 'all_users_permissions', list)
+    check(tagvalue['access_control'], 'current_domain_permissions', list)
+    check(tagvalue['access_control'], 'current_user_permissions', list)
+    check(tagvalue['access_control'], 'defined_domain_permissions', list)
+    # check(tagvalue, 'filters', str, allow_none=True)
+
+@pytest.mark.vcr()
+def test_tags_create_filters_and_access_control_success(api, user, tagfilters):
+    '''
+    test to create tag value and assign all_users_permissions,
+    current_domain_permission and filters
+    '''
+    tagvalue = api.tags.create('Example', 'Test',
+        all_users_permissions=['CAN_EDIT'],
+        current_domain_permissions=[(user['uuid'], user['username'], 'user', ['CAN_EDIT'])],
+        filters=tagfilters)
+    assert isinstance(tagvalue, dict)
+    check(tagvalue, 'uuid', 'uuid')
+    check(tagvalue, 'created_at', 'datetime')
+    check(tagvalue, 'updated_at', 'datetime')
+    check(tagvalue, 'updated_by', str)
+    check(tagvalue, 'category_uuid', 'uuid')
+    check(tagvalue, 'value', str)
+    # check(tagvalue, 'description', str, allow_none=True)
+    # check(tagvalue, 'category_description', str, allow_none=True)
+    check(tagvalue, 'access_control', dict)
+    check(tagvalue['access_control'], 'all_users_permissions', list)
+    check(tagvalue['access_control'], 'current_domain_permissions', list)
+    check(tagvalue['access_control'], 'current_user_permissions', list)
+    check(tagvalue['access_control'], 'defined_domain_permissions', list)
+    check(tagvalue, 'filters', dict, allow_none=True)
+    assert tagvalue['access_control']['all_users_permissions'] == ['CAN_EDIT']
+    assert any(v['id'] == user['uuid']
+        for v in tagvalue['access_control']['current_domain_permissions'])
+    assert tagvalue['filters'] == {
+        'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"192.168.0.0/24"}]}'}
+    api.tags.delete(tagvalue['uuid'])
 
 @pytest.mark.vcr()
 def test_tags_create_category_name_typeerror(api):
@@ -292,6 +575,40 @@ def test_tags_edit_description_typeerror(api):
         api.tags.edit(uuid.uuid4(), description=1)
 
 @pytest.mark.vcr()
+def test_tags_edit_all_users_permissions_typeerror(api, tagvalue):
+    '''
+    test to raise exception when type of all_users_permission param
+    does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.tags.edit(tagvalue['uuid'], all_users_permissions=1)
+
+@pytest.mark.vcr()
+def test_tags_edit_all_users_permissions_unexpectedvalueerror(api, tagvalue):
+    '''
+    test to raise exception when all_users_permission param value does not match the choices.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        api.tags.edit(tagvalue['uuid'], all_users_permissions=['something'])
+
+@pytest.mark.vcr()
+def test_tags_edit_current_domain_permissions_typeerror(api,tagvalue):
+    '''
+    test to raise exception when type of current_domain_permission param
+    does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.tags.edit(tagvalue['uuid'], current_domain_permissions=1)
+
+@pytest.mark.vcr()
+def test_tags_edit_filters_typeerror(api, tagvalue):
+    '''
+    test to raise exception when type of filters param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.tags.edit(tagvalue['uuid'], filters=1)
+
+@pytest.mark.vcr()
 def test_tags_edit_success(api, tagvalue):
     '''
     test to edit tag category/value pair information.
@@ -306,10 +623,54 @@ def test_tags_edit_success(api, tagvalue):
     check(resp, 'category_uuid', 'uuid')
     check(resp, 'value', str)
     check(resp, 'type', str)
-    #check(t, 'description', str, allow_none=True)
+    # check(t, 'description', str, allow_none=True)
     check(resp, 'category_name', str)
-    #check(t, 'category_description', str, allow_none=True)
+    # check(t, 'category_description', str, allow_none=True)
+    check(resp, 'access_control', dict)
+    check(resp['access_control'], 'all_users_permissions', list)
+    check(resp['access_control'], 'current_domain_permissions', list)
+    check(resp['access_control'], 'current_user_permissions', list)
+    check(resp['access_control'], 'defined_domain_permissions', list)
+    # check(tagvalue, 'filters', dict, allow_none=True)
     assert resp['value'] == 'Edited'
+
+@pytest.mark.vcr()
+def test_tags_edit_filters_and_access_control_success(api, user, tagfilters):
+    '''
+    test to edit tag value and update all_users_permissions,
+    current_domain_permission and filters
+    '''
+    tagvalue = api.tags.create('Example', 'Test',
+        all_users_permissions=['CAN_EDIT'],
+        current_domain_permissions=[(user['uuid'], user['username'], 'user', ['CAN_EDIT'])],
+        filters=tagfilters)
+    resp = api.tags.edit(tagvalue['uuid'], filters=[('ipv4', 'eq', ['127.0.0.1'])],
+        all_users_permissions=[], current_domain_permissions=[])
+    assert isinstance(resp, dict)
+    check(resp, 'uuid', 'uuid')
+    check(resp, 'created_at', 'datetime')
+    check(resp, 'created_by', str)
+    check(resp, 'updated_at', 'datetime')
+    check(resp, 'updated_by', str)
+    check(resp, 'category_uuid', 'uuid')
+    check(resp, 'value', str)
+    check(resp, 'type', str)
+    # check(t, 'description', str, allow_none=True)
+    check(resp, 'category_name', str)
+    # check(t, 'category_description', str, allow_none=True)
+    check(resp, 'access_control', dict)
+    check(resp['access_control'], 'all_users_permissions', list)
+    check(resp['access_control'], 'current_domain_permissions', list)
+    check(resp['access_control'], 'current_user_permissions', list)
+    check(resp['access_control'], 'defined_domain_permissions', list)
+    check(tagvalue, 'filters', dict, allow_none=True)
+    assert resp['access_control']['all_users_permissions'] == []
+    assert not any(v['id'] == user['uuid']
+        for v in resp['access_control']['current_domain_permissions'])
+    assert resp['filters'] == {
+        'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"127.0.0.1"}]}'}
+    assert resp['access_control']['version'] == 1
+    api.tags.delete(tagvalue['uuid'])
 
 @pytest.mark.vcr()
 def test_tags_edit_category_uuid_typeerror(api):

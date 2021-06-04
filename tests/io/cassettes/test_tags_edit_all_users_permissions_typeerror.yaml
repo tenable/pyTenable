@@ -1,0 +1,192 @@
+---
+interactions:
+  - request:
+      body: '{"category_name": "Example", "value": "Test",
+      "access_control": {"current_user_permissions":
+      ["ALL", "CAN_EDIT", "CAN_SET_PERMISSIONS", "CAN_USE"],
+      "all_users_permissions":
+      [], "current_domain_permissions": []}}'
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        Content-Length:
+          - '211'
+        Content-Type:
+          - application/json
+        User-Agent:
+          - Integration/1.0
+            (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.2.8
+            (pyTenable/1.2.8; Python/3.8.6; Windows/AMD64)
+        X-APIKeys:
+          - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+      method: POST
+      uri: https://cloud.tenable.com/tags/values
+    response:
+      body:
+        string: !!binary |
+          H4sIAAAAAAAAA6VSwWrDMAz9F5/rYrtO0uS0suVQ6LrRdJeNERxbKYHECbFTVkr/fWpJYYzBCr1Z
+          T09PepKPZBgqQxISlwK4LOY0DlhMpZIRVVoaGmstSxaxMAZOJkT3oDyYXHmsEUxwygLK4y2XiWSJ
+          nE3jWfT+g1cckNcdPFhV1JB7cD4fHPQPIzLVbYP0oTM3yV55N8pqJO/a/pCPJsNwFksmQzrXWlEJ
+          itM58JKKwoiIh4EIjMGyvaoHQPoWZTH0h+4cOa98pX+qWtWcE+mXaroaMKOcq3a2Aetz3Q4WzTAE
+          tQbnELC+b2uSHIke+v7MOU+cd9A3Fda11pHkgyxWKxR6XKzz9Gm5HZ9Zus1f083zMsuWL+tsRN+y
+          lHxOiIGysrgT0zaqsvfrqbq+TOZ+SWHqOvifrY7ksmOuhGGcCcp5wfAjAdCCyZJGQrKyCMOAyxIb
+          jrv7/4bj9nG4DUZ3ujuhiT1aw3q8zen0DYcwtjT/AgAA
+      headers:
+        Cache-Control:
+          - no-store
+        Connection:
+          - keep-alive
+        Content-Encoding:
+          - gzip
+        Content-Type:
+          - application/json; charset=utf-8
+        Date:
+          - Wed, 19 May 2021 14:40:44 GMT
+        Expect-CT:
+          - enforce, max-age=86400
+        Pragma:
+          - no-cache
+        Set-Cookie:
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+        Strict-Transport-Security:
+          - max-age=63072000; includeSubDomains
+        Transfer-Encoding:
+          - chunked
+        Vary:
+          - accept-encoding
+        X-Content-Type-Options:
+          - nosniff
+        X-Gateway-Site-ID:
+          - nginx-router-gcte4-ap-southeast-1-prod
+        X-Request-Uuid:
+          - 23e29f6d72869f991d046f38ae241a2d
+        X-XSS-Protection:
+          - 1; mode=block
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: null
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        Cookie:
+          - nginx-cloud-site-id=us-2b
+        User-Agent:
+          - Integration/1.0
+            (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.2.8
+            (pyTenable/1.2.8; Python/3.8.6; Windows/AMD64)
+        X-APIKeys:
+          - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+      method: GET
+      uri: https://cloud.tenable.com/tags/values/9f2e14b8-9509-4a47-ac4d-9cc4f07069e1
+    response:
+      body:
+        string: !!binary |
+          H4sIAAAAAAAAA6VSwWrDMAz9F5/rYrtO0uS0suVQ6LrRdJeNERxbKYHECbFTVkr/fWpJYYzBCr1Z
+          T09PepKPZBgqQxISlwK4LOY0DlhMpZIRVVoaGmstSxaxMAZOJkT3oDyYXHmsEUxwygLK4y2XiWSJ
+          nE3jWfT+g1cckNcdPFhV1JB7cD4fHPQPIzLVbYP0oTM3yV55N8pqJO/a/pCPJsNwFksmQzrXWlEJ
+          itM58JKKwoiIh4EIjMGyvaoHQPoWZTH0h+4cOa98pX+qWtWcE+mXaroaMKOcq3a2Aetz3Q4WzTAE
+          tQbnELC+b2uSHIke+v7MOU+cd9A3Fda11pHkgyxWKxR6XKzz9Gm5HZ9Zus1f083zMsuWL+tsRN+y
+          lHxOiIGysrgT0zaqsvfrqbq+TOZ+SWHqOvifrY7ksmOuhGGcCcp5wfAjAdCCyZJGQrKyCMOAyxIb
+          jrv7/4bj9nG4DUZ3ujuhiT1aw3q8zen0DYcwtjT/AgAA
+      headers:
+        Cache-Control:
+          - no-store
+        Connection:
+          - keep-alive
+        Content-Encoding:
+          - gzip
+        Content-Type:
+          - application/json; charset=utf-8
+        Date:
+          - Wed, 19 May 2021 14:40:45 GMT
+        Expect-CT:
+          - enforce, max-age=86400
+        Pragma:
+          - no-cache
+        Set-Cookie:
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+        Strict-Transport-Security:
+          - max-age=63072000; includeSubDomains
+        Transfer-Encoding:
+          - chunked
+        Vary:
+          - accept-encoding
+        X-Content-Type-Options:
+          - nosniff
+        X-Gateway-Site-ID:
+          - nginx-router-gcte4-ap-southeast-1-prod
+        X-Request-Uuid:
+          - c60fbe2df7488d9b50dd1d26a2c9c167
+        X-XSS-Protection:
+          - 1; mode=block
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: null
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        Content-Length:
+          - '0'
+        Cookie:
+          - nginx-cloud-site-id=us-2b
+        User-Agent:
+          - Integration/1.0
+            (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.2.8
+            (pyTenable/1.2.8; Python/3.8.6; Windows/AMD64)
+        X-APIKeys:
+          - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+      method: DELETE
+      uri: https://cloud.tenable.com/tags/values/9f2e14b8-9509-4a47-ac4d-9cc4f07069e1
+    response:
+      body:
+        string: ''
+      headers:
+        Cache-Control:
+          - no-store
+        Connection:
+          - keep-alive
+        Content-Length:
+          - '0'
+        Content-Type:
+          - application/octet-stream
+        Date:
+          - Wed, 19 May 2021 14:40:46 GMT
+        Expect-CT:
+          - enforce, max-age=86400
+        Pragma:
+          - no-cache
+        Set-Cookie:
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+        Strict-Transport-Security:
+          - max-age=63072000; includeSubDomains
+        X-Content-Type-Options:
+          - nosniff
+        X-Gateway-Site-ID:
+          - nginx-router-gcte4-ap-southeast-1-prod
+        X-Request-Uuid:
+          - 220d99c1b6e6824288c529fd30486a37
+        X-XSS-Protection:
+          - 1; mode=block
+      status:
+        code: 200
+        message: OK
+version: 1
