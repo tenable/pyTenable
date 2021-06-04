@@ -84,7 +84,8 @@ class PluginIterator(TIOIterator):
                 fid = self._maptable['plugins'][item['id']]
                 item['family_id'] = fid
                 item['family_name'] = self._maptable['families'][fid]
-            except:
+            except KeyError:
+                self._log.warning("plugin id {} not found in plugin family".format(item['id']))
                 item['family_id'] = None
                 item['family_name'] = None
 
