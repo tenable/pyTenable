@@ -1,7 +1,15 @@
-from tenable.errors import *
-from ..checker import check, single
-from .conftest import SCAN_ID_WITH_RESULTS
-import uuid, time, pytest, os
+'''
+test scans
+'''
+import uuid
+import time
+import os
+from io import BytesIO
+import pytest
+from tenable.reports.nessusv2 import NessusReportv2
+from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputError
+from tests.checker import check, single
+from tests.io.conftest import SCAN_ID_WITH_RESULTS
 
 @pytest.fixture
 def scheduled_scan(request, api):
@@ -22,69 +30,93 @@ def scheduled_scan(request, api):
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_template_typeerror(api):
+    '''
+    test to raise exception when type of template param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
-        api.scans._create_scan_document({'template': 123})
+        getattr(api.scans, '_create_scan_document')({'template': 123})
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_template_unexpected_value_error(api):
+    '''
+    test to raise exception when template param value does not match the choices.
+    '''
     with pytest.raises(UnexpectedValueError):
-        api.scans._create_scan_document({'template': 'nothing_here'})
+        getattr(api.scans, '_create_scan_document')({'template': 'nothing_here'})
 
 @pytest.mark.vcr()
 def test_scan_create_scan_socument_template_pass(api):
+    '''
+    test to create scan document basic template
+    '''
     templates = api.policies.templates()
-    resp = api.scans._create_scan_document({'template': 'basic'})
+    resp = getattr(api.scans, '_create_scan_document')({'template': 'basic'})
     assert isinstance(resp, dict)
     check(resp, 'uuid', 'scanner-uuid')
     assert resp['uuid'] == templates['basic']
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_policies_id_pass(api):
+    '''
+    test to create scan document policy param using id
+    '''
     policies = api.policies.list()
-    p = policies[0]
-    resp = api.scans._create_scan_document({'policy': p['id']})
+    policy = policies[0]
+    resp = getattr(api.scans, '_create_scan_document')({'policy': policy['id']})
     assert isinstance(resp, dict)
     check(resp, 'settings', dict)
     check(resp['settings'], 'policy_id', int)
-    assert resp['settings']['policy_id'] == p['id']
+    assert resp['settings']['policy_id'] == policy['id']
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_policies_name_pass(api):
+    '''
+    test to create scan document with policy param using name
+    '''
     policies = api.policies.list()
-    p = policies[0]
-    resp = api.scans._create_scan_document({'policy': p['name']})
+    policy = policies[0]
+    resp = getattr(api.scans, '_create_scan_document')({'policy': policy['name']})
     assert isinstance(resp, dict)
     check(resp, 'uuid', 'scanner-uuid')
     check(resp, 'settings', dict)
     check(resp['settings'], 'policy_id', int)
-    assert resp['settings']['policy_id'] == p['id']
+    assert resp['settings']['policy_id'] == policy['id']
 
 #def test_scan_create_scan_document_targets
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_unexpectedvalueerror(api):
+    '''
+    test to raise exception when scanner param value does not match the choices.
+    '''
     with pytest.raises(UnexpectedValueError):
-        api.scans._create_scan_document({'scanner': 'nothing to see here'})
+        getattr(api.scans, '_create_scan_document')({'scanner': 'nothing to see here'})
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_uuid_pass(api):
+    '''
+    test to create scan document with scanner uuid param
+    '''
     scanners = api.scanners.allowed_scanners()
-    s = scanners[0]
-    resp = api.scans._create_scan_document({'scanner': s['id']})
+    scanner = scanners[0]
+    resp = getattr(api.scans, '_create_scan_document')({'scanner': scanner['id']})
     assert isinstance(resp, dict)
     check(resp, 'settings', dict)
     check(resp['settings'], 'scanner_id', 'scanner-uuid')
-    assert resp['settings']['scanner_id'] == s['id']
+    assert resp['settings']['scanner_id'] == scanner['id']
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_name_pass(api):
+    '''
+    test to create scan document with scanner name param
+    '''
     scanners = api.scanners.allowed_scanners()
-    s = scanners[0]
-    resp = api.scans._create_scan_document({'scanner': s['name']})
+    scanner = scanners[0]
+    resp = getattr(api.scans, '_create_scan_document')({'scanner': scanner['name']})
     assert isinstance(resp, dict)
     check(resp, 'settings', dict)
     check(resp['settings'], 'scanner_id', str)
-    assert resp['settings']['scanner_id'] == s['id']
+    assert resp['settings']['scanner_id'] == scanner['id']
 
 #@pytest.mark.vcr()
 #def test_scan_attachment_scan_id_typeerror(api):
@@ -93,12 +125,18 @@ def test_scan_create_scan_document_scanner_name_pass(api):
 
 @pytest.mark.vcr()
 def test_scan_attachment_attachement_id_typeerror(api):
+    '''
+    test to raise exception when type of attachment_id param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.attachment(1, 'nope')
 
 @pytest.mark.vcr()
 @pytest.mark.xfail(raises=InvalidInputError)
 def test_scan_attachement_notfounderror(api):
+    '''
+    test to raise exception when attachment not found.
+    '''
     with pytest.raises(NotFoundError):
         api.scans.attachment(1, 1, 'none')
 
@@ -214,11 +252,17 @@ def test_scan_configure_scan_schedule_timezone_unexpectedvalueerror(api, scan):
 
 @pytest.mark.vcr()
 def test_scan_configure_notfounderror(api):
+    '''
+    test to raise exception when scan_id not found.
+    '''
     with pytest.raises(NotFoundError):
         api.scans.configure(1, name=str(uuid.uuid4()))
 
 @pytest.mark.vcr()
 def test_scan_configure(api, scan):
+    '''
+    test to configure scan
+    '''
     mod = api.scans.configure(scan['id'], name='MODIFIED')
     assert mod['id'] == scan['id']
     assert mod['name'] == 'MODIFIED'
@@ -544,21 +588,33 @@ def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
 
 @pytest.mark.vcr()
 def test_scan_copy_folder_id_typeerror(api):
+    '''
+    test to raise exception when type of folder_id param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.copy(1, folder_id='nope')
 
 @pytest.mark.vcr()
 def test_scan_copy_name_typeerror(api):
+    '''
+    test to raise exception when type of name param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.copy(1, name=1)
 
 @pytest.mark.vcr()
 def test_scan_copy_notfounderror(api):
+    '''
+    test to raise exception when scan_id not found.
+    '''
     with pytest.raises(NotFoundError):
         api.scans.copy(1)
 
 @pytest.mark.vcr()
 def test_scan_copy(api, scan):
+    '''
+    test to copy scan
+    '''
     clone = api.scans.copy(scan['id'])
     assert isinstance(clone, dict)
     check(clone, 'control', bool)
@@ -580,7 +636,10 @@ def test_scan_copy(api, scan):
     check(clone, 'uuid', 'scanner-uuid')
 
 @pytest.mark.vcr()
-def test_scan_create_no_template_pass(api, scan):
+def test_scan_create_no_template_pass(scan):
+    '''
+    test to create scan when no template is provided by user
+    '''
     assert isinstance(scan, dict)
     check(scan, 'creation_date', int)
     check(scan, 'custom_targets', str)
@@ -843,6 +902,9 @@ def test_scan_create_scheduled_scan_freq_yearly(api):
 
 @pytest.mark.vcr()
 def test_scan_create_was_scan_pass(api):
+    '''
+    test to create was scan
+    '''
     scan = api.scans.create(template='was_scan', name=str(uuid.uuid4()),
         plugins={
             'Authentication & Session': {'status': 'enabled'},
@@ -888,11 +950,17 @@ def test_scan_create_was_scan_pass(api):
 
 @pytest.mark.vcr()
 def test_scan_delete_notfounderror(api):
+    '''
+    test to raise exception when scan_id not found.
+    '''
     with pytest.raises(NotFoundError):
         api.scans.delete(0)
 
 @pytest.mark.vcr()
 def test_scan_delete(api, scan):
+    '''
+    test to delete scan
+    '''
     api.scans.delete(scan['id'])
 
 #@pytest.mark.vcr()
@@ -907,6 +975,9 @@ def test_scan_delete(api, scan):
 
 @pytest.mark.vcr()
 def test_scan_delete_history_notfounderror(api):
+    '''
+    test to raise exception when scan_id not found.
+    '''
     with pytest.raises(NotFoundError):
         api.scans.delete_history(1, 1)
 
@@ -917,23 +988,29 @@ def test_scan_delete_history_notfounderror(api):
 
 @pytest.mark.vcr()
 def test_scan_details_history_it_typeerror(api):
+    '''
+    test to raise exception when type of scan_id param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.details(1, 'nope')
 
 @pytest.mark.vcr()
-def test_scan_results(api, scan_results):
+def test_scan_results(scan_results):
+    '''
+    test to get scan results
+    '''
     assert isinstance(scan_results, dict)
-    s = scan_results
-    check(s, 'info', dict)
-    info = s['info']
+    result = scan_results
+    check(result, 'info', dict)
+    info = result['info']
     check(info, 'acls', list, allow_none=True)
-    for i in s['info']['acls']:
-        check(i, 'owner', int, allow_none=True)
-        check(i, 'type', str, allow_none=True)
-        check(i, 'permissions', int, allow_none=True)
-        check(i, 'id', int, allow_none=True)
-        check(i, 'name', str, allow_none=True)
-        check(i, 'display_name', str, allow_none=True)
+    for acls in result['info']['acls']:
+        check(acls, 'owner', int, allow_none=True)
+        check(acls, 'type', str, allow_none=True)
+        check(acls, 'permissions', int, allow_none=True)
+        check(acls, 'id', int, allow_none=True)
+        check(acls, 'name', str, allow_none=True)
+        check(acls, 'display_name', str, allow_none=True)
     check(info, 'schedule_uuid', 'scanner-uuid', allow_none=True)
     check(info, 'edit_allowed', bool)
     check(info, 'status', str)
@@ -959,93 +1036,93 @@ def test_scan_results(api, scan_results):
     check(info, 'scan_type', str, allow_none=True)
     check(info, 'name', str)
 
-    check(s, 'comphosts', list)
-    for i in s['comphosts']:
-        check(i, 'totalchecksconsidered', int)
-        check(i, 'numchecksconsidered', int)
-        check(i, 'scanprogresstotal', int)
-        check(i, 'scanprogresscurrent', int)
-        check(i, 'host_index', int)
-        check(i, 'score', int)
-        check(i, 'severitycount', dict)
-        check(i, 'progress', str)
-        check(i, 'critical', int)
-        check(i, 'high', int)
-        check(i, 'medium', int)
-        check(i, 'low', int)
-        check(i, 'info', int)
-        check(i, 'host_id', int)
-        check(i, 'hostname', str)
+    check(result, 'comphosts', list)
+    for comphosts in result['comphosts']:
+        check(comphosts, 'totalchecksconsidered', int)
+        check(comphosts, 'numchecksconsidered', int)
+        check(comphosts, 'scanprogresstotal', int)
+        check(comphosts, 'scanprogresscurrent', int)
+        check(comphosts, 'host_index', int)
+        check(comphosts, 'score', int)
+        check(comphosts, 'severitycount', dict)
+        check(comphosts, 'progress', str)
+        check(comphosts, 'critical', int)
+        check(comphosts, 'high', int)
+        check(comphosts, 'medium', int)
+        check(comphosts, 'low', int)
+        check(comphosts, 'info', int)
+        check(comphosts, 'host_id', int)
+        check(comphosts, 'hostname', str)
 
-    check(s, 'hosts', list)
-    for i in s['hosts']:
-        check(i, 'totalchecksconsidered', int)
-        check(i, 'numchecksconsidered', int)
-        check(i, 'scanprogresstotal', int)
-        check(i, 'scanprogresscurrent', int)
-        check(i, 'host_index', int)
-        check(i, 'score', int)
-        check(i, 'severitycount', dict)
-        check(i, 'progress', str)
-        check(i, 'critical', int)
-        check(i, 'high', int)
-        check(i, 'medium', int)
-        check(i, 'low', int)
-        check(i, 'info', int)
-        check(i, 'host_id', int)
-        check(i, 'hostname', str)
+    check(result, 'hosts', list)
+    for hosts in result['hosts']:
+        check(hosts, 'totalchecksconsidered', int)
+        check(hosts, 'numchecksconsidered', int)
+        check(hosts, 'scanprogresstotal', int)
+        check(hosts, 'scanprogresscurrent', int)
+        check(hosts, 'host_index', int)
+        check(hosts, 'score', int)
+        check(hosts, 'severitycount', dict)
+        check(hosts, 'progress', str)
+        check(hosts, 'critical', int)
+        check(hosts, 'high', int)
+        check(hosts, 'medium', int)
+        check(hosts, 'low', int)
+        check(hosts, 'info', int)
+        check(hosts, 'host_id', int)
+        check(hosts, 'hostname', str)
 
-    check(s, 'notes', list)
-    for i in s['notes']:
-        check(i, 'title', str)
-        check(i, 'message', str)
-        check(i, 'severity', int)
+    check(result, 'notes', list)
+    for notes in result['notes']:
+        check(notes, 'title', str)
+        check(notes, 'message', str)
+        check(notes, 'severity', int)
 
-    check(s, 'remediations', dict)
-    check(s['remediations'], 'num_hosts', int)
-    check(s['remediations'], 'num_cves', int)
-    check(s['remediations'], 'num_impacted_hosts', int)
-    check(s['remediations'], 'num_remediated_cves', int)
-    check(s['remediations'], 'remediations', list)
-    for i in s['remediations']['remediations']:
-        check(i, 'value', str)
-        check(i, 'remediation', str)
-        check(i, 'hosts', int)
-        check(i, 'vulns', int)
+    check(result, 'remediations', dict)
+    check(result['remediations'], 'num_hosts', int)
+    check(result['remediations'], 'num_cves', int)
+    check(result['remediations'], 'num_impacted_hosts', int)
+    check(result['remediations'], 'num_remediated_cves', int)
+    check(result['remediations'], 'remediations', list)
+    for remediation in result['remediations']['remediations']:
+        check(remediation, 'value', str)
+        check(remediation, 'remediation', str)
+        check(remediation, 'hosts', int)
+        check(remediation, 'vulns', int)
 
-    check(s, 'vulnerabilities', list)
-    for i in s['vulnerabilities']:
-        check(i, 'count', int)
-        check(i, 'plugin_name', str)
-        check(i, 'vuln_index', int)
-        check(i, 'severity', int)
-        check(i, 'plugin_id', int)
+    check(result, 'vulnerabilities', list)
+    for vulnerability in result['vulnerabilities']:
+        check(vulnerability, 'count', int)
+        check(vulnerability, 'plugin_name', str)
+        check(vulnerability, 'vuln_index', int)
+        check(vulnerability, 'severity', int)
+        check(vulnerability, 'plugin_id', int)
         # Mentioned in the docs, however doesn't appear to show in testing
-        #check(i, 'severity_index', int)
-        check(i, 'plugin_family', str)
+        #check(vulnerability, 'severity_index', int)
+        check(vulnerability, 'plugin_family', str)
 
-    check(s, 'history', list)
-    for i in s['history']:
-        check(i, 'alt_targets_used', bool)
-        check(i, 'scheduler', int)
-        check(i, 'status', str)
-        check(i, 'type', str, allow_none=True)
-        check(i, 'uuid', str)
-        check(i, 'last_modification_date', int)
-        check(i, 'creation_date', int)
-        check(i, 'owner_id', int)
-        check(i, 'history_id', int)
+    check(result, 'history', list)
+    for history in result['history']:
+        check(history, 'alt_targets_used', bool)
+        check(history, 'scheduler', int)
+        check(history, 'status', str)
+        check(history, 'type', str, allow_none=True)
+        check(history, 'uuid', str)
+        check(history, 'last_modification_date', int)
+        check(history, 'creation_date', int)
+        check(history, 'owner_id', int)
+        check(history, 'history_id', int)
 
-    check(s, 'compliance', list)
-    for i in s['compliance']:
-        check(i, 'count', int)
-        check(i, 'plugin_name', str)
-        check(i, 'vuln_index', int)
-        check(i, 'severity', int)
-        check(i, 'plugin_id', int)
+    check(result, 'compliance', list)
+    for compliance in result['compliance']:
+        check(compliance, 'count', int)
+        check(compliance, 'plugin_name', str)
+        check(compliance, 'vuln_index', int)
+        check(compliance, 'severity', int)
+        check(compliance, 'plugin_id', int)
         # Mentioned in the docs, however doesn't appear to show in testing
-        #check(i, 'severity_index', int)
-        check(i, 'plugin_family', str)
+        #check(compliance, 'severity_index', int)
+        check(compliance, 'plugin_family', str)
 
 #@pytest.mark.vcr()
 #def test_scan_export_scan_id_typeerror(api):
@@ -1054,80 +1131,113 @@ def test_scan_results(api, scan_results):
 
 @pytest.mark.vcr()
 def test_scan_export_history_id_typeerror(api):
+    '''
+    test to raise exception when type of history_id param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.export(1, history_id='nope')
 
 @pytest.mark.vcr()
 def test_scan_export_format_typeerror(api):
+    '''
+    test to raise exception when type of format param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.export(1, format=1)
 
 @pytest.mark.vcr()
 def test_scan_export_format_unexpectedvalueerror(api):
+    '''
+    test to raise exception when format param value does not match the choices.
+    '''
     with pytest.raises(UnexpectedValueError):
         api.scans.export(1, format='something else')
 
 @pytest.mark.vcr()
 def test_scan_export_password_typeerror(api):
+    '''
+    test to raise exception when type of password param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.export(1, password=1)
 
 @pytest.mark.vcr()
 def test_scan_export_chapters_typeerror(api):
+    '''
+    test to raise exception when type of chapter param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.export(1, chapters=1)
 
 @pytest.mark.vcr()
 def test_scan_export_chapters_unexpectedvalueerror(api):
+    '''
+    test to raise exception when chapter param value does not match the choices.
+    '''
     with pytest.raises(UnexpectedValueError):
         api.scans.export(1, chapters=['nothing to see here'])
 
 @pytest.mark.vcr()
 def test_scan_export_filter_type_typeerror(api):
+    '''
+    test to raise exception when type of filter_type param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.export(1, filter_type=1)
 
 @pytest.mark.vcr()
 def test_scan_export_filter_type_unexpectedvalueerror(api):
+    '''
+    test to raise exception when filter_type param value does not match the choices.
+    '''
     with pytest.raises(UnexpectedValueError):
         api.scans.export(1, filter_type='nothing')
 
 @pytest.mark.vcr()
 def test_scan_export_was_typeerror(api):
+    '''
+    test to raise exception when scan_type param value does not match the choices.
+    '''
     with pytest.raises(UnexpectedValueError):
-      api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='bad-value')
+        api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='bad-value')
 
 @pytest.mark.vcr()
 def test_scan_export_was(api):
+    '''
+    test to export was scan
+    '''
     api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='web-app')
 
 @pytest.mark.vcr()
 def test_scan_export_bytesio(api):
-    from io import BytesIO
-    from tenable.reports.nessusv2 import NessusReportv2
+    '''
+    test to export scan
+    '''
     fobj = api.scans.export(SCAN_ID_WITH_RESULTS)
     assert isinstance(fobj, BytesIO)
 
     counter = 0
-    for i in NessusReportv2(fobj):
+    for _ in NessusReportv2(fobj):
         counter += 1
         if counter > 10:
             break
 
 @pytest.mark.vcr()
 def test_scan_export_file_object(api):
-    from tenable.reports.nessusv2 import NessusReportv2
-    fn = '{}.nessus'.format(uuid.uuid4())
-    with open(fn, 'wb') as fobj:
+    '''
+    test to export scan file object
+    '''
+    filename = '{}.nessus'.format(uuid.uuid4())
+    with open(filename, 'wb') as fobj:
         api.scans.export(SCAN_ID_WITH_RESULTS, fobj=fobj)
 
-    with open(fn, 'rb') as fobj:
+    with open(filename, 'rb') as fobj:
         counter = 0
-        for i in NessusReportv2(fobj):
+        for _ in NessusReportv2(fobj):
             counter += 1
             if counter > 10:
                 break
-    os.remove(fn)
+    os.remove(filename)
 
 #@pytest.mark.vcr()
 #def test_scan_host_details_scan_id_typeerror(api):
@@ -1136,21 +1246,33 @@ def test_scan_export_file_object(api):
 
 @pytest.mark.vcr()
 def test_scan_host_details_host_id_typeerror(api):
+    '''
+    test to raise exception when type of host_id param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.host_details(1, 'nope')
 
 @pytest.mark.vcr()
 def test_scan_host_details_history_id_typeerror(api):
+    '''
+    test to raise exception when type of history_id param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.host_details(1, 1, 'nope')
 
 @pytest.mark.vcr()
 def test_scan_host_details_notfounderror(api):
+    '''
+    test to raise exception when scan_id not found.
+    '''
     with pytest.raises(NotFoundError):
         api.scans.host_details(1, 1)
 
 @pytest.mark.vcr()
 def test_scan_host_details(api, scan_results):
+    '''
+    test to retrieve the host details from a specific scan
+    '''
     host = api.scans.host_details(
         SCAN_ID_WITH_RESULTS, scan_results['hosts'][0]['asset_id'])
     assert isinstance(host, dict)
@@ -1163,39 +1285,48 @@ def test_scan_host_details(api, scan_results):
     check(host['info'], 'mac-address', str, allow_none=True)
 
     check(host, 'vulnerabilities', list)
-    for i in host['vulnerabilities']:
-        check(i, 'count', int)
-        check(i, 'severity', int)
-        check(i, 'plugin_family', str)
-        check(i, 'hostname', str)
-        check(i, 'plugin_name', str)
-        check(i, 'severity_index', int)
-        check(i, 'vuln_index', int)
-        check(i, 'host_id', int)
-        check(i, 'plugin_id', int)
+    for vulnerability in host['vulnerabilities']:
+        check(vulnerability, 'count', int)
+        check(vulnerability, 'severity', int)
+        check(vulnerability, 'plugin_family', str)
+        check(vulnerability, 'hostname', str)
+        check(vulnerability, 'plugin_name', str)
+        check(vulnerability, 'severity_index', int)
+        check(vulnerability, 'vuln_index', int)
+        check(vulnerability, 'host_id', int)
+        check(vulnerability, 'plugin_id', int)
 
     check(host, 'compliance', list)
-    for i in host['compliance']:
-        check(i, 'count', int)
-        check(i, 'plugin_name', str)
-        check(i, 'vuln_index', int)
-        check(i, 'severity', int)
-        check(i, 'plugin_id', int)
-        check(i, 'severity_index', int)
-        check(i, 'plugin_family', str)
+    for compliance in host['compliance']:
+        check(compliance, 'count', int)
+        check(compliance, 'plugin_name', str)
+        check(compliance, 'vuln_index', int)
+        check(compliance, 'severity', int)
+        check(compliance, 'plugin_id', int)
+        check(compliance, 'severity_index', int)
+        check(compliance, 'plugin_family', str)
 
 @pytest.mark.vcr()
 def test_scan_import_scan_folder_id_typeerror(api):
+    '''
+    test to raise exception when type of folder_id param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.import_scan(None, folder_id='nope')
 
 @pytest.mark.vcr()
 def test_scan_import_scan_password_typeerror(api):
+    '''
+    test to raise exception when type of password param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.import_scan(None, password=1)
 
 @pytest.mark.vcr()
 def test_scan_import_scan(api):
+    '''
+    test to import scan
+    '''
     fobj = api.scans.export(SCAN_ID_WITH_RESULTS)
     api.scans.import_scan(fobj)
 
@@ -1206,54 +1337,72 @@ def test_scan_import_scan(api):
 
 @pytest.mark.vcr()
 def test_scan_launch_targets_typerror(api):
+    '''
+    test to raise exception when type of targets param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.launch(1, targets='nope')
 
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 def test_scan_launch(api, scan):
+    '''
+    test to launch scan
+    '''
     api.scans.launch(scan['id'])
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
 
 @pytest.mark.skip(reason='Switching between scan states this quickly can be trixsy')
 def test_scan_launch_alt_targets(api, scan):
+    '''
+    test to launch scan
+    '''
     api.scans.launch(scan['id'], targets=['127.0.0.2'])
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
 
 @pytest.mark.vcr()
 def test_scan_list_folder_id_typeerror(api):
+    '''
+    test to raise exception when type of folder_id param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.list(folder_id='nope')
 
 @pytest.mark.vcr()
 def test_scan_list_last_modified_typeerror(api):
+    '''
+    test to raise exception when type of last_modified param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.list(last_modified='nope')
 
 @pytest.mark.vcr()
 def test_scan_list(api):
+    '''
+    test to get list of scans
+    '''
     scans = api.scans.list()
     assert isinstance(scans, list)
-    s = scans[0]
-    check(s, 'control', bool)
-    check(s, 'creation_date', int)
-    check(s, 'enabled', bool)
-    check(s, 'id', int)
-    check(s, 'last_modification_date', int)
-    check(s, 'legacy', bool)
-    check(s, 'owner', str)
-    check(s, 'name', str)
-    check(s, 'permissions', int)
-    check(s, 'read', bool)
-    check(s, 'rrules', str, allow_none=True)
-    check(s, 'schedule_uuid', 'scanner-uuid')
-    check(s, 'shared', bool)
-    check(s, 'starttime', str, allow_none=True)
-    check(s, 'status', str)
-    check(s, 'timezone', str, allow_none=True)
-    check(s, 'user_permissions', int)
-    check(s, 'uuid', 'scanner-uuid')
+    scan = scans[0]
+    check(scan, 'control', bool)
+    check(scan, 'creation_date', int)
+    check(scan, 'enabled', bool)
+    check(scan, 'id', int)
+    check(scan, 'last_modification_date', int)
+    check(scan, 'legacy', bool)
+    check(scan, 'owner', str)
+    check(scan, 'name', str)
+    check(scan, 'permissions', int)
+    check(scan, 'read', bool)
+    check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'schedule_uuid', 'scanner-uuid')
+    check(scan, 'shared', bool)
+    check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'status', str)
+    check(scan, 'timezone', str, allow_none=True)
+    check(scan, 'user_permissions', int)
+    check(scan, 'uuid', 'scanner-uuid')
 
 #@pytest.mark.vcr()
 #def test_scan_pause_scan_id_typeerror(api):
@@ -1262,7 +1411,10 @@ def test_scan_list(api):
 
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 def test_scan_pause_scan(api, scan):
-    hid = api.scans.launch(scan['id'])
+    '''
+    test to pause scan
+    '''
+    _ = api.scans.launch(scan['id'])
     api.scans.pause(scan['id'], block=True)
 
 #@pytest.mark.vcr()
@@ -1272,60 +1424,75 @@ def test_scan_pause_scan(api, scan):
 
 @pytest.mark.vcr()
 def test_scan_plugin_output_host_id_typeerror(api):
+    '''
+    test to raise exception when type of host_id param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.plugin_output(1, 'nope', 1)
 
 @pytest.mark.vcr()
 def test_scan_plugin_output_plugin_id_typeerror(api):
+    '''
+    test to raise exception when type of plugin_id param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.plugin_output(1, 1, 'nope')
 
 @pytest.mark.vcr()
 def test_scan_plugin_output_history_id_typeerror(api):
+    '''
+    test to raise exception when type of history_id param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.plugin_output(1, 1, 1, history_id='nope')
 
 @pytest.mark.vcr()
 def test_scan_plugin_output(api, scan_results):
+    '''
+    test to get scan plugin output
+    '''
     host = api.scans.host_details(
         SCAN_ID_WITH_RESULTS, scan_results['hosts'][0]['asset_id'])
     output = api.scans.plugin_output(
         SCAN_ID_WITH_RESULTS,
         host['vulnerabilities'][0]['host_id'],
         host['vulnerabilities'][0]['plugin_id'])
+    output_info_pdesc = output['info']['plugindescription']
+    output_info_pdesc_patt = output_info_pdesc['pluginattributes']
+    output_info_pdesc_patt_pinfo = output_info_pdesc['pluginattributes']['plugin_information']
     assert isinstance(output, dict)
     check(output, 'info', dict)
     check(output['info'], 'plugindescription', dict)
-    check(output['info']['plugindescription'], 'pluginattributes', dict)
-    check(output['info']['plugindescription'], 'pluginfamily', str)
-    check(output['info']['plugindescription'], 'pluginid', str)
-    check(output['info']['plugindescription'], 'pluginname', str)
-    check(output['info']['plugindescription'], 'severity', int)
-    check(output['info']['plugindescription']['pluginattributes'], 'description', str)
-    check(output['info']['plugindescription']['pluginattributes'], 'has_patch', bool)
-    check(output['info']['plugindescription']['pluginattributes'], 'plugin_information', dict)
-    check(output['info']['plugindescription']['pluginattributes']['plugin_information'], 'plugin_family', str)
-    check(output['info']['plugindescription']['pluginattributes']['plugin_information'], 'plugin_id', int)
-    check(output['info']['plugindescription']['pluginattributes']['plugin_information'], 'plugin_modification_date', str)
-    check(output['info']['plugindescription']['pluginattributes']['plugin_information'], 'plugin_publication_date', str)
-    check(output['info']['plugindescription']['pluginattributes']['plugin_information'], 'plugin_type', str)
-    check(output['info']['plugindescription']['pluginattributes']['plugin_information'], 'plugin_version', str)
-    check(output['info']['plugindescription']['pluginattributes'], 'risk_information', dict)
-    check(output['info']['plugindescription']['pluginattributes']['risk_information'], 'risk_factor', str)
-    check(output['info']['plugindescription']['pluginattributes'], 'solution', str, allow_none=True)
-    check(output['info']['plugindescription']['pluginattributes'], 'synopsis', str, allow_none=True)
+    check(output_info_pdesc, 'pluginattributes', dict)
+    check(output_info_pdesc, 'pluginfamily', str)
+    check(output_info_pdesc, 'pluginid', str)
+    check(output_info_pdesc, 'pluginname', str)
+    check(output_info_pdesc, 'severity', int)
+    check(output_info_pdesc_patt, 'description', str)
+    check(output_info_pdesc_patt, 'has_patch', bool)
+    check(output_info_pdesc_patt, 'plugin_information', dict)
+    check(output_info_pdesc_patt_pinfo, 'plugin_family', str)
+    check(output_info_pdesc_patt_pinfo, 'plugin_id', int)
+    check(output_info_pdesc_patt_pinfo, 'plugin_modification_date', str)
+    check(output_info_pdesc_patt_pinfo, 'plugin_publication_date', str)
+    check(output_info_pdesc_patt_pinfo, 'plugin_type', str)
+    check(output_info_pdesc_patt_pinfo, 'plugin_version', str)
+    check(output_info_pdesc_patt, 'risk_information', dict)
+    check(output_info_pdesc_patt['risk_information'], 'risk_factor', str)
+    check(output_info_pdesc_patt, 'solution', str, allow_none=True)
+    check(output_info_pdesc_patt, 'synopsis', str, allow_none=True)
 
     check(output, 'outputs', list)
-    for i in output['outputs']:
-        check(i, 'has_attachment', int)
-        check(i, 'hosts', list, allow_none=True)
-        check(i, 'plugin_output', str, allow_none=True)
-        check(i, 'ports', dict)
-        for port in i['ports']:
-            check(i['ports'], port, list)
-            for h in i['ports'][port]:
-                check(h, 'hostname', str)
-        check(i, 'severity', int)
+    for outp in output['outputs']:
+        check(outp, 'has_attachment', int)
+        check(outp, 'hosts', list, allow_none=True)
+        check(outp, 'plugin_output', str, allow_none=True)
+        check(outp, 'ports', dict)
+        for port in outp['ports']:
+            check(outp['ports'], port, list)
+            for port_detail in outp['ports'][port]:
+                check(port_detail, 'hostname', str)
+        check(outp, 'severity', int)
 
 #@pytest.mark.vcr()
 #def test_scan_read_status_scan_id_typeerror(api):
@@ -1334,17 +1501,23 @@ def test_scan_plugin_output(api, scan_results):
 
 @pytest.mark.vcr()
 def test_scan_read_status_read_status_typeerror(api):
+    '''
+    test to raise exception when type of read_status param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.set_read_status(1, 'nope')
 
 @pytest.mark.vcr()
 def test_scan_read_status(api, scan):
+    '''
+    test to get scan read status
+    '''
     scans = api.scans.list()
-    s = scans[0]
+    scan = scans[0]
     api.scans.set_read_status(scans[0]['id'], not scans[0]['read'])
-    for i in api.scans.list():
-        if i['id'] == s['id']:
-            assert s['read'] != i['read']
+    for resp in api.scans.list():
+        if resp['id'] == scan['id']:
+            assert scan['read'] != resp['read']
 
 #@pytest.mark.vcr()
 #def test_scan_resume_scan_id_typeerror(api):
@@ -1354,6 +1527,9 @@ def test_scan_read_status(api, scan):
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 @pytest.mark.vcr()
 def test_scan_resume(api, scan):
+    '''
+    test to resume scan
+    '''
     api.scans.launch(scan['id'])
     time.sleep(5)
     api.scans.pause(scan['id'], block=True)
@@ -1369,12 +1545,18 @@ def test_scan_resume(api, scan):
 
 @pytest.mark.vcr()
 def test_scan_schedule_enabled_typeerror(api):
+    '''
+    test to raise exception when type of enabled param does not match the expected type.
+    '''
     with pytest.raises(TypeError):
         api.scans.schedule(1, 'nope')
 
 @pytest.mark.skip(reason="Need to configure the scan w/ a schedule.")
 @pytest.mark.vcr()
 def test_scan_schedule(api, scan):
+    '''
+    test to disable scan schedule
+    '''
     api.scans.schedule(scan['id'], False)
 
 #@pytest.mark.vcr()
@@ -1385,6 +1567,9 @@ def test_scan_schedule(api, scan):
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 @pytest.mark.vcr()
 def test_scan_stop(api, scan):
+    '''
+    test to stop scan
+    '''
     api.scans.launch(scan['id'])
     time.sleep(5)
     api.scans.stop(scan['id'])
@@ -1396,9 +1581,86 @@ def test_scan_stop(api, scan):
 
 @pytest.mark.vcr()
 def test_scan_status(api, scan):
+    '''
+    test to check scan status
+    '''
     status = api.scans.status(scan['id'])
     single(status, str)
 
 @pytest.mark.vcr()
 def test_scan_timezones(api):
+    '''
+    test to get list of allowed timezone strings
+    '''
     assert isinstance(api.scans.timezones(), list)
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_success(api):
+    '''
+    test to evaluates a list of targets and/or tags against
+    the scan route configuration of scanner groups
+    '''
+    resp = api.scans.check_auto_targets(10, 5, targets=['127.0.0.1'])
+    assert isinstance(resp, dict)
+    check(resp, 'matched_resource_uuids', list)
+    check(resp, 'missed_targets', list)
+    check(resp, 'total_matched_resource_uuids', int)
+    check(resp, 'total_missed_targets', int)
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_limit_typeerror(api):
+    '''
+    test to raise exception when type of limit param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.scans.check_auto_targets('nope', 5, targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_matched_resource_limit_typeerror(api):
+    '''
+    test to raise exception when type of matched_resource_limit param
+    does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.scans.check_auto_targets(10, 'nope', targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_network_uuid_unexpectedvalueerror(api):
+    '''
+    test to raise exception when network_uuid param value does not match the choices.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        api.scans.check_auto_targets(10, 5, network_uuid='nope', targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_network_uuid_typeerror(api):
+    '''
+    test to raise exception when type of network_uuid param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.scans.check_auto_targets(10, 5, network_uuid=1, targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_tags_unexpectedvalueerror(api):
+    '''
+    test to raise exception when type of any value in tags param
+    does not match the expected type.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        api.scans.check_auto_targets(10, 5, tags=['nope'], targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_tags_typeerror(api):
+    '''
+    test to raise exception when type of tags param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.scans.check_auto_targets(10, 5, tags=1, targets=['127.0.0.1'])
+
+@pytest.mark.vcr()
+def test_scan_check_auto_targets_targets_typeerror(api):
+    '''
+    test to raise exception when type of targets param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.scans.check_auto_targets(10, 5, targets=1)
