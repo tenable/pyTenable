@@ -6,14 +6,15 @@ import com.tenable.jenkins.Constants
 import com.tenable.jenkins.builds.snyk.*
 import com.tenable.jenkins.builds.nexusiq.*
 
-pythonVersion = [ '3.6', '3.7', '3.8', '3.9' ]
+//pythonVersion = [ '3.6', '3.7', '3.8', '3.9' ]
+pythonVersion = [ '3.6' ]
 
 bparams = new BuildParams(this, 1083)
 bparams.channels = '#jenkins-devel'
 bparams.snykContainer = 'python:3.6-buster'
 bparams.snykRegistry = ''
 bparams.snykType = 'PYTHON'
-bparams.nexusiqtype = 'REQUIREMENT'
+bparams.nexusiqtype = 'PREQUIREMENT'
 
 GlobalContext.put('appid', bparams.appid)
 
@@ -48,13 +49,13 @@ try {
     pythonVersion.each {
         version ->
             echo "Version: ${version}"
-            //tasks[version] = { unittests(version) }
+            tasks[version] = { unittests(version) }
     }
 
     tasks['snyk'] = {
         stage('snyk') {
             Snyk snyk = new Snyk(this, bparams)
-            snyk.execute()
+            //snyk.execute()
         }
     }
 
