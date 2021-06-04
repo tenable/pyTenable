@@ -213,6 +213,36 @@ class AssetsAPI(TIOEndpoint):
                 self._check('uuid', uuid, str)
             )).json()
 
+    def move_assets(self, source, destination, targets):
+        '''
+        Moves assets from the specified network to another network.
+
+        :devportal:`assets: move-assets <assets-bulk-move>`
+
+        source (str):
+            The UUID of the network currently associated with the assets.
+        destination (str):
+            The UUID of the network to associate with the specified assets.
+        targets (list):
+            The IPv4 addresses of the assets to move.
+
+        Returns:
+            :obj:`int`:
+                Returns the number of moved assets.
+
+        Examples:
+            >>> asset = tio.assets.move_assets('00000000-0000-0000-0000-000000000000',
+            ...         '10000000-0000-0000-0000-000000000001', ["127.0.0.1"])
+            >>> pprint(asset)
+        '''
+        payload = {
+            'source': self._check('source', source, 'uuid'),
+            'destination': self._check('destination', destination, 'uuid'),
+            'targets': ','.join(self._check('targets', targets, list))
+        }
+
+        return self._api.post('api/v2/assets/bulk-jobs/move-to-network', json=payload).json()
+
     def bulk_delete(self, *filters, filter_type=None):
         '''
         Deletes the specified assets.
