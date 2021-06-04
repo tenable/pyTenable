@@ -428,6 +428,31 @@ def test_tags_delete_success(api, tagvalue):
     api.tags.delete(tagvalue['uuid'])
 
 @pytest.mark.vcr()
+def test_tags_delete_bulk_typeerror(api, tagvalue):
+    '''
+    test to raise exception when type of tag_value_uuid param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.tags.delete(tagvalue['uuid'], 1)
+
+@pytest.mark.vcr()
+def test_tags_delete_bulk_unexpectedvalueerror(api, tagvalue):
+    '''
+    test to raise exception when type of tag_value_uuid param does not match the expected type.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        api.tags.delete(tagvalue['uuid'], 'nope')
+
+@pytest.mark.vcr()
+def test_tags_delete_bulk_success(api):
+    '''
+    test to delete multiple tags .
+    '''
+    tag1 = api.tags.create('Example', 'Test1')
+    tag2 = api.tags.create('Example', 'Test2')
+    api.tags.delete(tag1['uuid'], tag2['uuid'])
+
+@pytest.mark.vcr()
 def test_tags_delete_category_uuid_typeerror(api):
     '''
     test to raise exception when type of tag_category_uuid param does not match the expected type.
