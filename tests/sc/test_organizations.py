@@ -49,6 +49,7 @@ def test_organizations_constructor_lce_ids_item_typeerror(sc):
         sc.organizations._constructor(lce_ids=['one', ])
 
 
+
 def test_organizations_constructor_zone_selection_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(zone_selection=1)

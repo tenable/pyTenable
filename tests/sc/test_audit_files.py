@@ -400,3 +400,61 @@ def test_audit_files_template_categories(sc):
     for category in categories:
         check(category, 'categoryName', str)
         check(category, 'categoryId', str)
+
+
+@pytest.mark.vcr()
+def test_audit_files_list_success_for_fields(sc):
+    audit_files = sc.audit_files.list(fields=('id', 'name', 'description'))
+    assert isinstance(audit_files, dict)
+    for c in ['usable', 'manageable']:
+        for a in audit_files[c]:
+            check(a, 'name', str)
+            check(a, 'description', str)
+            check(a, 'id', str)
+
+
+@pytest.mark.vcr()
+def test_audit_files_export_audit(sc):
+    with open('1000007.xml', 'wb') as file:
+        sc.audit_files.export_audit(1000007, fobj=file)
+    os.remove('1000007.xml')
+
+
+@pytest.mark.vcr()
+def test_audit_files_export_audit_no_file(sc):
+    with open('1000007.xml', 'wb'):
+        sc.audit_files.export_audit(1000007)
+    os.remove('1000007.xml')
+
+
+@pytest.mark.vcr()
+def test_audit_files_template_details_success(sc):
+    template = sc.audit_files.template_details(1,
+                                               fields=['id', 'name', 'categoryName', 'categoryId'])
+    assert isinstance(template, dict)
+    check(template, 'id', str)
+    check(template, 'name', str)
+    check(template, 'categoryName', str)
+    check(template, 'categoryId', str)
+
+
+@pytest.mark.vcr()
+def test_audit_files_template_list_success(sc):
+    templates = sc.audit_files.template_list(fields=['id', 'name', 'categoryName', 'categoryId'],
+                                             category=1,
+                                             search='categoryName:Unix')
+    assert isinstance(templates, list)
+    for template in templates:
+        check(template, 'id', str)
+        check(template, 'name', str)
+        check(template, 'categoryName', str)
+        check(template, 'categoryId', str)
+
+
+@pytest.mark.vcr()
+def test_audit_files_template_categories(sc):
+    categories = sc.audit_files.template_categories()
+    assert isinstance(categories, list)
+    for category in categories:
+        check(category, 'categoryName', str)
+        check(category, 'categoryId', str)

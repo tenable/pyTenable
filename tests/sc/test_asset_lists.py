@@ -2,7 +2,7 @@ import os
 import pytest
 
 from tenable.errors import *
-from ..checker import check
+from ..checker import check, single
 
 
 def test_asset_lists_dynamic_rules_constructor_passthrough(sc):
@@ -232,6 +232,7 @@ def test_asset_lists_constructor_ips_list_item_typeerror(sc):
         sc.asset_lists._constructor(ips=[1, ])
 
 
+
 def test_asset_lists_constructor_filters_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(filters=1)
@@ -240,6 +241,7 @@ def test_asset_lists_constructor_filters_typeerror(sc):
 def test_asset_lists_constructor_filters_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(filters=[1, ])
+
 
 
 def test_asset_lists_constructor_filters_tuple_name_typeerror(sc):

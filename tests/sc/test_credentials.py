@@ -682,6 +682,27 @@ def test_credentials_details_success(sc, cred):
 
 
 @pytest.mark.vcr()
+def test_credentials_details_success_for_fields(sc, cred):
+    c = sc.credentials.details(int(cred['id']), fields=['id', 'type', 'name', 'description'])
+    assert isinstance(c, dict)
+    check(c, 'id', str)
+    check(c, 'type', str)
+    check(c, 'name', str)
+    check(c, 'description', str)
+
+
+@pytest.mark.vcr()
+def test_credentials_list_success(sc, cred):
+    credentials = sc.credentials.list(fields=['id', 'type', 'name', 'description'])
+    assert isinstance(credentials, list)
+    for cred in credentials:
+        check(cred, 'id', str)
+        check(cred, 'type', str)
+        check(cred, 'name', str)
+        check(cred, 'description', str)
+
+
+@pytest.mark.vcr()
 def test_credentials_tags_success(sc):
     tags = sc.credentials.tags()
     for tag in tags:

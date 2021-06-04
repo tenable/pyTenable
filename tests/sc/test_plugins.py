@@ -244,3 +244,13 @@ def test_plugins_family_plugins_success_for_json_result(sc):
         check(p, 'id', str)
         check(p, 'name', str)
         check(p, 'description', str)
+
+
+@pytest.mark.vcr()
+def test_plugins_family_plugins_success_for_json_result(sc):
+    plugs = sc.plugins.family_plugins(10, limit=100, pages=1, json_result=True)
+    assert isinstance(plugs, list)
+    for p in plugs:
+        check(p, 'id', str)
+        check(p, 'name', str)
+        check(p, 'description', str)

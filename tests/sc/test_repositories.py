@@ -118,6 +118,7 @@ def test_repositories_constructor_preferences_key_typeerror(sc):
         sc.repositories._constructor(preferences={1: 'one'})
 
 
+
 def test_repositories_constructor_preferences_value_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(preferences={'key': 1})

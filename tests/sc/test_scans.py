@@ -213,6 +213,7 @@ def test_scans_constructor_asset_list_id_typeerror(sc):
         sc.scans._constructor(asset_lists=['nope', ])
 
 
+
 def test_scans_constructor_asset_lists_success(sc):
     resp = sc.scans._constructor(asset_lists=[1, 2])
     assert resp == {'assets': [{'id': 1}, {'id': 2}]}

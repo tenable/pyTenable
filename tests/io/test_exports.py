@@ -1,38 +1,52 @@
-from datetime import datetime, timedelta
-from tenable.errors import *
-from ..checker import check, single
-from tenable.io.exports import ExportsIterator
 import pytest
+
+from tenable.errors import *
+from tenable.io.exports import ExportsIterator
+from ..checker import check
+
 
 @pytest.mark.vcr()
 def test_exports_vuln_num_assets_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(num_assets='nope')
 
+
 @pytest.mark.vcr()
 def test_exports_vuln_severity_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(severity='info')
+
 
 @pytest.mark.vcr()
 def test_exports_vuln_state_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(state=1)
 
+
 @pytest.mark.vcr()
 def test_exports_vuln_state_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.exports.vulns(state=['nothing here'])
+
 
 @pytest.mark.vcr()
 def test_exports_vuln_plugin_family_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(plugin_family='yes')
 
+
 @pytest.mark.vcr()
 def test_exports_vuln_since_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.vulns(since='nothing here')
+
+
+def test_process_page(api):
+    exports_iterator = ExportsIterator(api.exports._api)
+    exports_iterator._process_page(page_data='page_data')
+    assert exports_iterator.page is not None
+    assert exports_iterator.page == 'page_data'
+
 
 @pytest.mark.vcr()
 def test_exports_vuln_cidr_range_invalid_cidr(api):
@@ -40,6 +54,7 @@ def test_exports_vuln_cidr_range_invalid_cidr(api):
         api.exports.vulns(cidr_range='999.168.0.0/24')
     with pytest.raises(UnexpectedValueError):
         api.exports.vulns(cidr_range='192.168.0.0/999')
+
 
 @pytest.mark.vcr()
 def test_exports_vulns(api):
@@ -84,55 +99,66 @@ def test_exports_vulns(api):
     check(v, 'severity_modification_type', str)
     check(v, 'state', str)
 
+
 @pytest.mark.vcr()
 def test_exports_assets_chunk_size_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(chunk_size='something')
+
 
 @pytest.mark.vcr()
 def test_exports_assets_created_at_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(created_at='nope')
 
+
 @pytest.mark.vcr()
 def test_exports_assets_updated_at_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(updated_at='something')
+
 
 @pytest.mark.vcr()
 def test_exports_assets_terminated_at_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(terminated_at='something')
 
+
 @pytest.mark.vcr()
 def test_exports_assets_deleted_at_typerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(deleted_at='something')
+
 
 @pytest.mark.vcr()
 def test_exports_assets_last_authenticated_scan_time_typerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(last_authenticated_scan_time='something')
 
+
 @pytest.mark.vcr()
 def test_exports_assets_last_assessed_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(last_assessed='something')
+
 
 @pytest.mark.vcr()
 def test_exports_assets_servicenow_sysid_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(servicenow_sysid='something')
 
+
 @pytest.mark.vcr()
 def test_exports_assets_sources_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(sources=1)
 
+
 @pytest.mark.vcr()
 def test_exports_assets_has_plugin_results_typeerror(api):
     with pytest.raises(TypeError):
         api.exports.assets(has_plugin_results='something')
+
 
 @pytest.mark.vcr()
 def test_exports_assets(api):
