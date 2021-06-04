@@ -22,8 +22,6 @@ common = new Common(this)
 buildsCommon = new BuildsCommon(this)
 
 void unittests(String version) {
-    echo "Version: ${version}"
-
     stage("unittest${version}") {
         node(Constants.DOCKERNODE) {
             buildsCommon.cleanup()
@@ -31,12 +29,13 @@ void unittests(String version) {
 
             withContainer(image: "python:${version}-buster", registry: '', inside: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {
                 sh """
-                    python --version
                     python -m pip install --upgrade pip
                     pip install -r test-requirements.txt
                     pip install -r requirements.txt
 
                     pytest --vcr-record=none --cov-report html:test-reports/coverage --junitxml=test-reports/junit/results.xml --junit-prefix=${version} --cov=tenable tests
+                    find . -name *.html
+                    find . -name *.xml
                 """
             }
         }
@@ -48,8 +47,7 @@ try {
 
     pythonVersion.each {
         version ->
-            echo "Version: ${version}"
-            tasks[version] = { unittests(version) }
+            //tasks[version] = { unittests(version) }
     }
 
     tasks['snyk'] = {
@@ -61,7 +59,7 @@ try {
 
     tasks['sonarqube'] = {
         stage('sonarqube') {
-            SonarQube.execute(this, bparams)
+            //SonarQube.execute(this, bparams)
         }
     }
 
