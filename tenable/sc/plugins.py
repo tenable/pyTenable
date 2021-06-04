@@ -17,6 +17,7 @@ Methods available on ``sc.plugins``:
 from .base import SCEndpoint, SCResultsIterator
 from tenable.errors import UnexpectedValueError
 
+
 class PluginResultsIterator(SCResultsIterator):
     pass
 
@@ -29,7 +30,7 @@ class PluginAPI(SCEndpoint):
 
         if 'fields' in kw:
             kw['fields'] = ','.join([self._check('field', f, str)
-                for f in self._check('fields', kw['fields'], list)])
+                                     for f in self._check('fields', kw['fields'], list)])
 
         if 'filter' in kw:
             # break down the filter tuple into the various query parameters
@@ -40,16 +41,16 @@ class PluginAPI(SCEndpoint):
                     'the filter tuple must be name, operator, value.')
             kw['filterField'] = self._check('filter:field', kw['filter'][0], str)
             kw['op'] = self._check('filter:operator', kw['filter'][1], str,
-                choices=['eq', 'gt', 'gte', 'like', 'lt', 'lte'])
+                                   choices=['eq', 'gt', 'gte', 'like', 'lt', 'lte'])
             kw['value'] = self._check('filter:value', kw['filter'][2], str)
-            del(kw['filter'])
+            del (kw['filter'])
 
         if 'sort_field' in kw:
             # convert the snake_cased variant of the parameter to the camelCased
             # variant that the API expects to see.
             kw['sortField'] = self._check(
                 'sort_field', kw['sort_field'], str)
-            del(kw['sort_field'])
+            del (kw['sort_field'])
 
         if 'sort_direction' in kw:
             # convert the snake_cased variant of the parameter to the camelCased
@@ -57,7 +58,7 @@ class PluginAPI(SCEndpoint):
             kw['sortDirection'] = self._check(
                 'sort_direction', kw['sort_direction'], str,
                 choices=['ASC', 'DESC'], case='upper')
-            del(kw['sort_direction'])
+            del (kw['sort_direction'])
 
         if 'since' in kw:
             # The since parameter should be an integer.
@@ -66,29 +67,28 @@ class PluginAPI(SCEndpoint):
         if 'type' in kw:
             # Validate that the plugin type is whats expected.
             self._check('type', kw['type'], str, choices=[
-                    'active', 'all', 'compliance', 'custom',
-                    'lce', 'notPassive', 'passive'
-                ], default='all')
-
+                'active', 'all', 'compliance', 'custom',
+                'lce', 'notPassive', 'passive'
+            ], default='all')
 
         # While the iterator will handle the offset & limits, a raw json result
         # may be requested instead.
         if 'offset' in kw:
             kw['startOffset'] = self._check('offset', kw['offset'], int)
-            del(kw['offset'])
+            del (kw['offset'])
 
         if 'limit' in kw:
             kw['endOffset'] = self._check(
                 'limit', kw['limit'], int) + kw.get('startOffset', 0)
-            del(kw['limit'])
+            del (kw['limit'])
 
         # Pages and json_result paramaters should be removed from the document
         # if they exist.
         if 'pages' in kw:
-            del(kw['pages'])
+            del (kw['pages'])
 
         if 'json_result' in kw:
-            del(kw['json_result'])
+            del (kw['json_result'])
 
         # Return the modified keyword dict to the caller.
         return kw
@@ -156,11 +156,11 @@ class PluginAPI(SCEndpoint):
             return self._api.get('plugin', params=query).json()['response']
         else:
             return PluginResultsIterator(self._api,
-                _resource='plugin',
-                _offset=offset,
-                _limit=limit,
-                _query=query,
-                _pages_total=pages)
+                                         _resource='plugin',
+                                         _offset=offset,
+                                         _limit=limit,
+                                         _query=query,
+                                         _pages_total=pages)
 
     def details(self, id, fields=None):
         '''
@@ -178,13 +178,13 @@ class PluginAPI(SCEndpoint):
         Examples:
             >>> plugin = sc.alerts.detail(19506)
             >>> pprint(plugin)
-        '''
+       '''
         params = dict()
         if fields:
             params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
         return self._api.get('plugin/{}'.format(self._check('id', id, int)),
-            params=params).json()['response']
+                             params=params).json()['response']
 
     def family_list(self, **kw):
         '''
@@ -239,12 +239,12 @@ class PluginAPI(SCEndpoint):
             >>> family = sc.plugins.family_details(10)
             >>> pprint(family)
         '''
+        params = dict()
         if fields:
             params['fields'] = ','.join([self._check('field', f, str)
-                for f in fields])
+                                         for f in fields])
 
-        return self._api.get('pluginFamily/{}'.format(
-            self._check('id', id, int))).json()['response']
+        return self._api.get('pluginFamily/{}'.format(self._check('id', id, int)), params=params).json()['response']
 
     def family_plugins(self, id, **kw):
         '''
@@ -297,9 +297,9 @@ class PluginAPI(SCEndpoint):
             return self._api.get('plugin', params=query).json()['response']
         else:
             return PluginResultsIterator(self._api,
-                _resource='pluginFamily/{}/plugins'.format(
-                    self._check('id', id, int)),
-                _offset=offset,
-                _limit=limit,
-                _query=query,
-                _pages_total=pages)
+                                         _resource='pluginFamily/{}/plugins'.format(
+                                             self._check('id', id, int)),
+                                         _offset=offset,
+                                         _limit=limit,
+                                         _query=query,
+                                         _pages_total=pages)

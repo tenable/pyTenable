@@ -1,9 +1,13 @@
+import os
+import pytest
+import time
+
 from tenable.errors import *
-from ..checker import check, single
-import pytest, time, os
+from ..checker import check
+
 
 @pytest.fixture
-def scaninstance(request, vcr, sc):
+def scaninstance(vcr, sc):
     with vcr.use_cassette('scan_instance'):
         return sc.scan_instances.list()['manageable'][0]
 
@@ -12,33 +16,41 @@ def test_scan_instance_copy_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.copy('nothing', 1)
 
+
 def test_scan_instance_copy_users_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.copy(1, 'user_id')
 
+
 @pytest.mark.vcr()
 def test_scan_instances_copy_success(sc, scaninstance):
-    newscan = sc.scan_instances.copy(int(scaninstance['id']), 1)
+    sc.scan_instances.copy(int(scaninstance['id']), 1)
+
 
 def test_scan_instances_delete_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.delete('nothing')
 
+
 @pytest.mark.vcr()
 def test_scan_instances_delete_success(sc, scaninstance):
     sc.scan_instances.delete(int(scaninstance['id']))
+
 
 def test_scan_instances_details_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.details('nothing')
 
+
 def test_scan_instances_details_fields_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.details(1, 'something')
 
+
 def test_scan_instances_details_field_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.details(1, [1])
+
 
 @pytest.mark.vcr()
 def test_scan_instances_details_success(sc, scaninstance):
@@ -125,35 +137,50 @@ def test_scan_instances_details_success(sc, scaninstance):
     check(s, 'totalChecks', str)
     check(s, 'totalIPs', str)
 
+
 def test_scan_instances_email_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.email('nope')
+
 
 def test_scan_instances_email_email_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.email(1, 1)
 
+
 @pytest.mark.vcr()
 def test_scan_instances_email_success(sc, scaninstance):
     sc.scan_instances.email(int(scaninstance['id']), 'no-reply@tenable.com')
+
 
 def test_scan_instances_export_scan_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.export_scan('nothing')
 
+
 def test_scan_instances_export_scan_export_format_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.export_scan(1, export_format=1)
 
+
 def test_scan_instances_export_scan_export_format_unexpectedvalueerror(sc):
     with pytest.raises(UnexpectedValueError):
         sc.scan_instances.export_scan(1, export_format='something')
+
 
 @pytest.mark.vcr()
 def test_scan_instances_export_scan_success(sc, scaninstance):
     with open('{}.zip'.format(scaninstance['id']), 'wb') as scanfile:
         sc.scan_instances.export_scan(124, fobj=scanfile)
     os.remove('{}.zip'.format(scaninstance['id']))
+
+
+@pytest.mark.vcr()
+def test_scan_instances_export_scan_success_no_file(sc, scaninstance):
+    with open('{}.zip'.format(scaninstance['id']), 'wb'):
+        sc.scan_instances.export_scan(124)
+    os.remove('{}.zip'.format(scaninstance['id']))
+
 
 @pytest.mark.vcr()
 @pytest.mark.datafiles(os.path.join(
@@ -163,21 +190,26 @@ def test_scan_instances_import_scan_success(sc, datafiles):
     with open(os.path.join(str(datafiles), 'example.nessus'), 'rb') as fobj:
         sc.scan_instances.import_scan(fobj, 1)
 
+
 def test_scan_instances_reimport_scan_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.reimport_scan('nope')
+
 
 @pytest.mark.vcr()
 def test_scan_instances_reimport_success(sc, scaninstance):
     sc.scan_instances.reimport_scan(int(scaninstance['id']))
 
+
 def test_scan_instances_list_start_time_typerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.list(start_time='none')
 
+
 def test_scan_instances_list_end_time_typerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.list(end_time='none')
+
 
 @pytest.mark.vcr()
 def test_scan_instances_list(sc):
@@ -196,17 +228,35 @@ def test_scan_instances_list(sc):
         check(i, 'description', str)
         check(i, 'status', str)
 
+
+@pytest.mark.vcr()
+def test_scan_instances_list_for_fields(sc):
+    scan_instances = sc.scan_instances.list(fields=['id', 'name', 'description'])
+    assert isinstance(scan_instances, dict)
+    check(scan_instances, 'manageable', list)
+    for i in scan_instances['manageable']:
+        check(i, 'id', str)
+        check(i, 'name', str)
+        check(i, 'description', str)
+    check(scan_instances, 'usable', list)
+    for i in scan_instances['usable']:
+        check(i, 'id', str)
+        check(i, 'name', str)
+        check(i, 'description', str)
+
+
 def test_scan_instances_pause_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.pause('nope')
+
 
 @pytest.mark.skip(reason='Switching between scan states this quickly can be trixsy')
 @pytest.mark.vcr()
 def test_scan_instances_pause_success(sc):
     scan = sc.scans.create('Example Scan', 1,
-        schedule_type='template',
-        targets=['192.168.101.0/24'],
-        policy_id=1000001)
+                           schedule_type='template',
+                           targets=['192.168.101.0/24'],
+                           policy_id=1000001)
     instance = sc.scans.launch(int(scan['id']))
     time.sleep(120)
     try:
@@ -266,17 +316,19 @@ def test_scan_instances_pause_success(sc):
         check(s, 'totalChecks', str)
         check(s, 'totalIPs', str)
 
+
 def test_scan_instances_resume_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.resume('nope')
+
 
 @pytest.mark.skip(reason='Switching between scan states this quickly can be trixsy')
 @pytest.mark.vcr()
 def test_scan_instances_resume_success(sc):
     scan = sc.scans.create('Example Scan', 1,
-        schedule_type='template',
-        targets=['192.168.101.0/24'],
-        policy_id=1000001)
+                           schedule_type='template',
+                           targets=['192.168.101.0/24'],
+                           policy_id=1000001)
     instance = sc.scans.launch(int(scan['id']))
     time.sleep(120)
     try:
@@ -292,7 +344,7 @@ def test_scan_instances_resume_success(sc):
     else:
         check(s, 'canManage', str)
         check(s, 'canUse', str)
-        #check(s, 'completedChecks', str)
+        # check(s, 'completedChecks', str)
         check(s, 'createdTime', str)
         check(s, 'dataFormat', str)
         check(s, 'description', str)
@@ -343,17 +395,19 @@ def test_scan_instances_resume_success(sc):
         check(s, 'totalChecks', str)
         check(s, 'totalIPs', str)
 
+
 def test_scan_instances_stop_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scan_instances.pause('nope')
+
 
 @pytest.mark.skip(reason='Switching between scan states this quickly can be trixsy')
 @pytest.mark.vcr()
 def test_scan_instances_stop_success(sc):
     scan = sc.scans.create('Example Scan', 1,
-        schedule_type='template',
-        targets=['192.168.101.0/24'],
-        policy_id=1000001)
+                           schedule_type='template',
+                           targets=['192.168.101.0/24'],
+                           policy_id=1000001)
     instance = sc.scans.launch(int(scan['id']))
     time.sleep(120)
     try:
@@ -363,7 +417,7 @@ def test_scan_instances_stop_success(sc):
     else:
         check(s, 'canManage', str)
         check(s, 'canUse', str)
-        #check(s, 'completedChecks', str)
+        # check(s, 'completedChecks', str)
         check(s, 'createdTime', str)
         check(s, 'dataFormat', str)
         check(s, 'description', str)

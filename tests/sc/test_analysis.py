@@ -1,14 +1,41 @@
-from tenable.errors import *
-from ..checker import check, single
 import pytest
 
-def test_analysis_asset_excpansion_simple(sc):
+from tenable.errors import UnexpectedValueError
+from tenable.sc.analysis import AnalysisResultsIterator
+from ..checker import check
+
+
+def test_analysis_constructor_type_error(sc):
+    with pytest.raises(TypeError):
+        sc.analysis._analysis(tool=1, type='type',
+                              sort_field='field',
+                              sort_direction=1)
+
+    with pytest.raises(TypeError):
+        sc.analysis._analysis(tool=1, type='type',
+                              sort_field='field',
+                              sort_direction='ASC',
+                              offset=0,
+                              limit='limit')
+
+
+def test_analysis_constructor_success(sc):
+    analysis = sc.analysis._analysis(tool=1, type='type',
+                                     sort_field='field',
+                                     sort_direction='ASC',
+                                     offset=0,
+                                     payload={'sourceType': 'individual'})
+    assert isinstance(analysis, AnalysisResultsIterator)
+
+
+def test_analysis_asset_expansion_simple(sc):
     resp = sc.analysis._combo_expansion(('or', 1, 2))
     assert resp == {
         'operator': 'union',
         'operand1': {'id': '1'},
         'operand2': {'id': '2'},
     }
+
 
 def test_analysis_asset_expansion_complex(sc):
     resp = sc.analysis._combo_expansion(
@@ -29,6 +56,7 @@ def test_analysis_asset_expansion_complex(sc):
             }
         }
     }
+
 
 def test_analysis_query_constructor_simple(sc):
     resp = sc.analysis._query_constructor(
@@ -53,6 +81,7 @@ def test_analysis_query_constructor_simple(sc):
         }
     }
 
+
 def test_analysis_query_constructor_replace(sc):
     resp = sc.analysis._query_constructor(
         ('filter1', 'operator1', 'badvalue'),
@@ -76,6 +105,7 @@ def test_analysis_query_constructor_replace(sc):
             }]
         }
     }
+
 
 def test_analysis_query_constructor_remove(sc):
     resp = sc.analysis._query_constructor(
@@ -102,9 +132,10 @@ def test_analysis_query_constructor_remove(sc):
         }
     }
 
+
 def test_analysis_query_constructor_asset(sc):
     resp = sc.analysis._query_constructor(('asset', '~', ('or', 1, 2)),
-        tool='tool', type='type')
+                                          tool='tool', type='type')
     assert resp == {
         'tool': 'tool',
         'query': {
@@ -123,12 +154,32 @@ def test_analysis_query_constructor_asset(sc):
     }
 
 
+def test_analysis_vulns(sc):
+    vulns = sc.analysis.vulns(source='cumulative', scan_id=1)
+    assert isinstance(vulns, AnalysisResultsIterator)
+
+
+def test_analysis_scan(sc):
+    scan = sc.analysis.scan(1)
+    assert isinstance(scan, AnalysisResultsIterator)
+
+
+def test_analysis_events(sc):
+    event = sc.analysis.events(source='archive', silo_id='silo_id')
+    assert isinstance(event, AnalysisResultsIterator)
+
+
+def test_analysis_events_unexpected_value_error(sc):
+    with pytest.raises(UnexpectedValueError):
+        sc.analysis.events(source='archive')
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_cceipdetail_tool(sc):
     vulns = sc.analysis.vulns(tool='cceipdetail', pages=2, limit=5)
     for v in vulns:
         assert isinstance(v, dict)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_cveipdetail_tool(sc):
@@ -148,6 +199,7 @@ def test_analysis_vulns_cveipdetail_tool(sc):
             check(j, 'uuid', str)
             check(j, 'macAddress', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_iavmipdetail_tool(sc):
     vulns = sc.analysis.vulns(tool='iavmipdetail', pages=2, limit=5)
@@ -166,12 +218,14 @@ def test_analysis_vulns_iavmipdetail_tool(sc):
             check(j, 'uuid', str)
             check(j, 'macAddress', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_iplist_tool(sc):
     vulns = sc.analysis.vulns(tool='iplist', pages=2, limit=5)
     assert isinstance(vulns, dict)
     for i in vulns:
         check(vulns, i, str)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_listmailclients_tool(sc):
@@ -182,6 +236,7 @@ def test_analysis_vulns_listmailclients_tool(sc):
         check(v, 'detectionMethod', str)
         check(v, 'name', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_listservices_tool(sc):
     vulns = sc.analysis.vulns(tool='listservices', pages=2, limit=5)
@@ -190,6 +245,7 @@ def test_analysis_vulns_listservices_tool(sc):
         check(v, 'count', str)
         check(v, 'detectionMethod', str)
         check(v, 'name', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_listos_tool(sc):
@@ -200,6 +256,7 @@ def test_analysis_vulns_listos_tool(sc):
         check(v, 'detectionMethod', str)
         check(v, 'name', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_listsoftware_tool(sc):
     vulns = sc.analysis.vulns(tool='listsoftware', pages=2, limit=5)
@@ -209,6 +266,7 @@ def test_analysis_vulns_listsoftware_tool(sc):
         check(v, 'detectionMethod', str)
         check(v, 'name', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_listsshservers_tool(sc):
     vulns = sc.analysis.vulns(tool='listsshservers', pages=2, limit=5)
@@ -217,6 +275,7 @@ def test_analysis_vulns_listsshservers_tool(sc):
         check(v, 'count', str)
         check(v, 'detectionMethod', str)
         check(v, 'name', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_listvuln_tool(sc):
@@ -248,6 +307,7 @@ def test_analysis_vulns_listvuln_tool(sc):
         check(v, 'port', str)
         check(v, 'uuid', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_listwebclients_tool(sc):
     vulns = sc.analysis.vulns(tool='listwebclients', pages=2, limit=5)
@@ -257,6 +317,7 @@ def test_analysis_vulns_listwebclients_tool(sc):
         check(v, 'detectionMethod', str)
         check(v, 'name', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_listwebservers_tool(sc):
     vulns = sc.analysis.vulns(tool='listwebservers', pages=2, limit=5)
@@ -265,6 +326,7 @@ def test_analysis_vulns_listwebservers_tool(sc):
         check(v, 'count', str)
         check(v, 'detectionMethod', str)
         check(v, 'name', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_sumasset_tool(sc):
@@ -285,11 +347,13 @@ def test_analysis_vulns_sumasset_tool(sc):
         check(v['asset'], 'id', str)
         check(v['asset'], 'name', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_sumcce_tool(sc):
     vulns = sc.analysis.vulns(tool='sumcce', pages=2, limit=5)
     for v in vulns:
         assert isinstance(v, dict)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_sumclassa_tool(sc):
@@ -310,6 +374,7 @@ def test_analysis_vulns_sumclassa_tool(sc):
         check(v['repository'], 'id', str)
         check(v['repository'], 'name', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_sumclassb_tool(sc):
     vulns = sc.analysis.vulns(tool='sumclassb', pages=2, limit=5)
@@ -328,6 +393,7 @@ def test_analysis_vulns_sumclassb_tool(sc):
         check(v['repository'], 'description', str)
         check(v['repository'], 'id', str)
         check(v['repository'], 'name', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_sumclassc_tool(sc):
@@ -348,6 +414,7 @@ def test_analysis_vulns_sumclassc_tool(sc):
         check(v['repository'], 'id', str)
         check(v['repository'], 'name', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_sumcve_tool(sc):
     vulns = sc.analysis.vulns(tool='sumcve', pages=2, limit=5)
@@ -360,6 +427,7 @@ def test_analysis_vulns_sumcve_tool(sc):
         check(v['severity'], 'id', str)
         check(v['severity'], 'name', str)
         check(v, 'hostTotal', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_sumdnsname_tool(sc):
@@ -379,6 +447,7 @@ def test_analysis_vulns_sumdnsname_tool(sc):
         check(v['repository'], 'id', str)
         check(v['repository'], 'name', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_sumfamily_tool(sc):
     vulns = sc.analysis.vulns(tool='sumfamily', pages=2, limit=5)
@@ -396,6 +465,7 @@ def test_analysis_vulns_sumfamily_tool(sc):
         check(v, 'severityLow', str)
         check(v, 'severityInfo', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_sumiavm_tool(sc):
     vulns = sc.analysis.vulns(tool='sumiavm', pages=2, limit=5)
@@ -408,6 +478,7 @@ def test_analysis_vulns_sumiavm_tool(sc):
         check(v['severity'], 'id', str)
         check(v['severity'], 'name', str)
         check(v, 'hostTotal', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_sumid_tool(sc):
@@ -426,6 +497,7 @@ def test_analysis_vulns_sumid_tool(sc):
         check(v, 'pluginID', str)
         check(v, 'total', str)
         check(v, 'name', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_sumip_tool(sc):
@@ -459,6 +531,7 @@ def test_analysis_vulns_sumip_tool(sc):
         check(v['repository'], 'id', str)
         check(v['repository'], 'name', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_summsbulletin_tool(sc):
     vulns = sc.analysis.vulns(tool='summsbulletin', pages=2, limit=5)
@@ -471,6 +544,7 @@ def test_analysis_vulns_summsbulletin_tool(sc):
         check(v['severity'], 'id', str)
         check(v['severity'], 'name', str)
         check(v, 'hostTotal', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_sumport_tool(sc):
@@ -486,6 +560,7 @@ def test_analysis_vulns_sumport_tool(sc):
         check(v, 'severityLow', str)
         check(v, 'severityInfo', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_sumprotocol_tool(sc):
     vulns = sc.analysis.vulns(tool='sumprotocol', pages=2, limit=5)
@@ -499,6 +574,7 @@ def test_analysis_vulns_sumprotocol_tool(sc):
         check(v, 'severityMedium', str)
         check(v, 'severityLow', str)
         check(v, 'severityInfo', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_sumremediation_tool(sc):
@@ -517,6 +593,7 @@ def test_analysis_vulns_sumremediation_tool(sc):
         check(v, 'score', str)
         check(v, 'total', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_sumseverity_tool(sc):
     vulns = sc.analysis.vulns(tool='sumseverity', pages=2, limit=5)
@@ -528,11 +605,13 @@ def test_analysis_vulns_sumseverity_tool(sc):
         check(v['severity'], 'id', str)
         check(v['severity'], 'name', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_sumuserresponsibility_tool(sc):
     vulns = sc.analysis.vulns(tool='sumuserresponsibility', pages=2, limit=5)
     for v in vulns:
         assert isinstance(v, dict)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_sumuserresponsibility_tool(sc):
@@ -554,11 +633,13 @@ def test_analysis_vulns_sumuserresponsibility_tool(sc):
             check(i, 'status', str)
             check(i, 'username', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_trend_tool(sc):
     vulns = sc.analysis.vulns(tool='trend', pages=2, limit=5)
     for v in vulns:
         assert isinstance(v, dict)
+
 
 @pytest.mark.vcr()
 def test_analysis_vulns_vulndetails_tool(sc):
@@ -621,6 +702,7 @@ def test_analysis_vulns_vulndetails_tool(sc):
         check(v, 'vulnPubDate', str)
         check(v, 'xref', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_vulnipdetail_tool(sc):
     vulns = sc.analysis.vulns(tool='vulnipdetail', pages=2, limit=5)
@@ -652,6 +734,7 @@ def test_analysis_vulns_vulnipdetail_tool(sc):
         check(v['severity'], 'name', str)
         check(v, 'total', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_vulns_vulnipsummary_tool(sc):
     vulns = sc.analysis.vulns(tool='vulnipsummary', pages=2, limit=5)
@@ -676,6 +759,7 @@ def test_analysis_vulns_vulnipsummary_tool(sc):
         check(v['severity'], 'id', str)
         check(v['severity'], 'name', str)
         check(v, 'total', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_console_logs(sc):
@@ -703,6 +787,7 @@ def test_analysis_console_logs(sc):
         check(i['organization'], 'name', str)
         check(i, 'message', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_mobile_listvuln(sc):
     vulns = sc.analysis.mobile(tool='listvuln', pages=2, limit=5)
@@ -719,6 +804,7 @@ def test_analysis_mobile_listvuln(sc):
         check(v['severity'], 'description', str)
         check(v['severity'], 'id', str)
         check(v['severity'], 'name', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_mobile_sumdeviceid(sc):
@@ -740,6 +826,7 @@ def test_analysis_mobile_sumdeviceid(sc):
         check(v, 'severityMedium', str)
         check(v, 'total', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_mobile_summdmuser(sc):
     vulns = sc.analysis.mobile(tool='summdmuser', pages=2, limit=5)
@@ -753,6 +840,7 @@ def test_analysis_mobile_summdmuser(sc):
         check(v, 'severityMedium', str)
         check(v, 'total', str)
         check(v, 'user', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_mobile_summodel(sc):
@@ -769,6 +857,7 @@ def test_analysis_mobile_summodel(sc):
         check(v, 'severityMedium', str)
         check(v, 'total', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_mobile_sumoscpe(sc):
     vulns = sc.analysis.mobile(tool='sumoscpe', pages=2, limit=5)
@@ -784,6 +873,7 @@ def test_analysis_mobile_sumoscpe(sc):
         check(v, 'severityMedium', str)
         check(v, 'total', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_mobile_sumpluginid(sc):
     vulns = sc.analysis.mobile(tool='sumpluginid', pages=2, limit=5)
@@ -796,6 +886,7 @@ def test_analysis_mobile_sumpluginid(sc):
         check(v['severity'], 'id', str)
         check(v['severity'], 'name', str)
         check(v, 'total', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_mobile_vulndetails(sc):
@@ -847,6 +938,7 @@ def test_analysis_mobile_vulndetails(sc):
         check(v, 'vulnPubDate', str)
         check(v, 'xref', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_events_listdata(sc):
     events = sc.analysis.events(tool='listdata', pages=2, limit=5)
@@ -862,6 +954,7 @@ def test_analysis_events_listdata(sc):
         check(e, 'time', str)
         check(e, 'type', str)
         check(e, 'va/ids', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_events_sumasset(sc):
@@ -879,6 +972,7 @@ def test_analysis_events_sumasset(sc):
         except AssertionError:
             check(e, 'count', int)
 
+
 @pytest.mark.vcr()
 def test_analysis_events_sumclassa(sc):
     events = sc.analysis.events(tool='sumclassa', pages=2, limit=5)
@@ -886,6 +980,7 @@ def test_analysis_events_sumclassa(sc):
         assert isinstance(e, dict)
         check(e, 'class-a', str)
         check(e, 'count', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_events_sumclassb(sc):
@@ -895,6 +990,7 @@ def test_analysis_events_sumclassb(sc):
         check(e, 'class-b', str)
         check(e, 'count', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_events_sumclassc(sc):
     events = sc.analysis.events(tool='sumclassc', pages=2, limit=5)
@@ -902,6 +998,7 @@ def test_analysis_events_sumclassc(sc):
         assert isinstance(e, dict)
         check(e, 'class-c', str)
         check(e, 'count', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_events_sumconns(sc):
@@ -911,6 +1008,7 @@ def test_analysis_events_sumconns(sc):
         check(e, 'count', str)
         check(e, 'destination ip', str)
         check(e, 'source ip', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_events_sumdate(sc):
@@ -922,6 +1020,7 @@ def test_analysis_events_sumdate(sc):
         check(e, 'date', str)
         check(e, 'time block start', str)
         check(e, 'time block stop', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_events_sumdstip(sc):
@@ -936,6 +1035,7 @@ def test_analysis_events_sumdstip(sc):
         check(e['lce'], 'name', str)
         check(e['lce'], 'status', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_events_sumevent(sc):
     events = sc.analysis.events(tool='sumevent', pages=2, limit=5)
@@ -947,6 +1047,7 @@ def test_analysis_events_sumevent(sc):
         check(e, 'event', str)
         check(e, 'file', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_events_sumevent2(sc):
     events = sc.analysis.events(tool='sumevent2', pages=2, limit=5)
@@ -957,6 +1058,7 @@ def test_analysis_events_sumevent2(sc):
         check(e, 'description', str)
         check(e, 'event', str)
         check(e, 'file', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_events_sumip(sc):
@@ -971,6 +1073,7 @@ def test_analysis_events_sumip(sc):
         check(e['lce'], 'name', str)
         check(e['lce'], 'status', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_events_sumport(sc):
     events = sc.analysis.events(tool='sumport', pages=2, limit=5)
@@ -979,6 +1082,7 @@ def test_analysis_events_sumport(sc):
         check(e, 'count', str)
         check(e, 'port', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_events_sumprotocol(sc):
     events = sc.analysis.events(tool='sumprotocol', pages=2, limit=5)
@@ -986,6 +1090,7 @@ def test_analysis_events_sumprotocol(sc):
         assert isinstance(e, dict)
         check(e, 'count', str)
         check(e, 'protocol', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_events_sumsrcip(sc):
@@ -1000,6 +1105,7 @@ def test_analysis_events_sumsrcip(sc):
         check(e['lce'], 'name', str)
         check(e['lce'], 'status', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_events_sumtime(sc):
     events = sc.analysis.events(tool='sumtime', pages=2, limit=5)
@@ -1008,6 +1114,7 @@ def test_analysis_events_sumtime(sc):
         check(e, 'count', str)
         check(e, 'time block start', str)
         check(e, 'time block stop', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_events_sumtype(sc):
@@ -1018,6 +1125,7 @@ def test_analysis_events_sumtype(sc):
         check(e, 'count', str)
         check(e, 'type', str)
 
+
 @pytest.mark.vcr()
 def test_analysis_events_sumuser(sc):
     events = sc.analysis.events(tool='sumuser', pages=2, limit=5)
@@ -1026,6 +1134,7 @@ def test_analysis_events_sumuser(sc):
         check(e, '24-hour plot', str)
         check(e, 'count', str)
         check(e, 'user', str)
+
 
 @pytest.mark.vcr()
 def test_analysis_events_syslog(sc):

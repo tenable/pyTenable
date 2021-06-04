@@ -1,106 +1,137 @@
+import os
+import pytest
+
 from tenable.errors import *
-from ..checker import check, single
-import pytest, os
+from ..checker import check
+
 
 @pytest.fixture
 def repository(request, vcr, admin):
     with vcr.use_cassette('repository'):
         repo = admin.repositories.create(name='Example Repo')
+
     def teardown():
         try:
             admin.repositories.delete(int(repo['id']))
         except APIError:
             pass
+
     request.addfinalizer(teardown)
     return repo
+
 
 def test_repositories_constructor_nessus_sched_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(nessus_sched=1)
 
+
 def test_repositories_constructor_mobile_sched_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(mobile_sched=1)
+
 
 def test_repositories_constructor_remote_sched_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(remote_sched=1)
 
+
 def test_repositories_constructor_name_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(name=1)
+
+    with pytest.raises(TypeError):
+        sc.repositories._constructor(nessus_sched={'type': 'dependent', 'dependentID': 1}, name=1)
+
 
 def test_repositories_constructor_description_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(description=1)
 
+
 def test_repositories_constructor_format_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(format=1)
+
 
 def test_repositories_constructor_format_unexpectedvalueerror(sc):
     with pytest.raises(UnexpectedValueError):
         sc.repositories._constructor(format='none')
 
+
 def test_repositories_constructor_orgs_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(orgs=1)
+
 
 def test_repositories_constructor_org_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(orgs=['one'])
 
+
 def test_repositories_constructor_trending_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(trending='one')
+
 
 def test_repositories_constructor_trending_unexpectedvalueerror(sc):
     with pytest.raises(UnexpectedValueError):
         sc.repositories._constructor(trending=999)
 
+
 def test_repositories_constructor_fulltext_search_typerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(fulltext_search='yup')
+
 
 def test_repositories_constructor_lce_correlation_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(lce_correlation='yup')
 
+
 def test_repositories_constructor_allowed_ips_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(allowed_ips='127.0.0.1')
+
 
 def test_repositories_constructor_allowed_ips_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(allowed_ips=[1])
 
+
 def test_repositories_constructor_remote_ip_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(remote_ip=1)
+
 
 def test_repositories_constructor_remote_repo_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(remote_repo='one')
 
+
 def test_repositories_constructor_preferences_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(preferences=1)
 
+
 def test_repositories_constructor_preferences_key_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.repositories._constructor(preferences={1:'one'})
+        sc.repositories._constructor(preferences={1: 'one'})
+
 
 def test_repositories_constructor_preferences_value_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(preferences={'key': 1})
 
+
 def test_repositories_constructor_mdm_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(mdm_id='one')
 
+
 def test_repositories_constructor_scanner_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(scanner_id='one')
+
 
 def test_repositories_constructor_success(sc):
     resp = sc.repositories._constructor(
@@ -148,6 +179,7 @@ def test_repositories_constructor_success(sc):
         'scanner': {'id': 1}
     }
 
+
 @pytest.mark.vcr()
 def test_repositories_create_success(admin, repository):
     assert isinstance(repository, dict)
@@ -181,17 +213,31 @@ def test_repositories_create_success(admin, repository):
     check(r['typeFields'], 'trendingDays', str)
     check(r, 'vulnCount', str)
 
+
 def test_repositories_details_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.details('one')
+
 
 def test_repositories_details_fields_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.details(1, fields=1)
 
+
 def test_repopsitories_details_field_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.details(1, fields=[1])
+
+
+@pytest.mark.vcr()
+def test_repositories_remote_sync(admin):
+    admin.repositories.remote_sync(200001)
+
+
+@pytest.mark.vcr()
+def test_repositories_mobile_sync(admin):
+    admin.repositories.mobile_sync(200001)
+
 
 @pytest.mark.vcr()
 def test_repositories_details_success(admin, repository):
@@ -226,17 +272,47 @@ def test_repositories_details_success(admin, repository):
     check(r['typeFields'], 'trendingDays', str)
     check(r, 'vulnCount', str)
 
+
+@pytest.mark.vcr()
+def test_repositories_list_success(admin):
+    for repo in admin.repositories.list(fields=['id', 'name'], repo_type='Local'):
+        assert isinstance(repo, dict)
+        check(repo, 'name', str)
+        check(repo, 'id', str)
+
+
+@pytest.mark.vcr()
+def test_repositories_create_success_data_format_ipv6(admin):
+    repo = admin.repositories.create(dataFormat='IPv6', type='remote')
+    assert isinstance(repo, dict)
+    check(repo, 'name', str)
+    check(repo, 'id', str)
+    admin.repositories.delete(int(repo['id']))
+
+
+@pytest.mark.vcr()
+def test_repositories_create_success_data_format_mobile(admin):
+    repo = admin.repositories.create(dataFormat='mobile')
+    assert isinstance(repo, dict)
+    check(repo, 'name', str)
+    check(repo, 'id', str)
+    admin.repositories.delete(int(repo['id']))
+
+
 def test_repositories_delete_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.delete('one')
+
 
 @pytest.mark.vcr()
 def test_repositories_delete_success(admin, repository):
     admin.repositories.delete(int(repository['id']))
 
+
 def test_repositories_edit_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.edit('one')
+
 
 @pytest.mark.vcr()
 def test_repositories_edit_success(admin, repository):
@@ -271,29 +347,36 @@ def test_repositories_edit_success(admin, repository):
     check(r['typeFields'], 'trendingDays', str)
     check(r, 'vulnCount', str)
 
+
 def test_repositories_rules_constructor_plugin_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._rules_constructor(plugin_id='one')
+
 
 def test_repositories_rules_constructor_port_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._rules_constructor(port='one')
 
+
 def test_repositories_rules_constructor_org_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._rules_constructor(orgs=1)
+
 
 def test_repositories_rules_constructor_org_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._rules_constructor(orgs=['one'])
 
+
 def test_repositories_rules_constructor_fields_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._rules_constructor(fields=1)
 
+
 def test_repositories_rules_constructor_field_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._rules_constructor(fields=[1])
+
 
 def test_repositories_rules_constructor_success(sc):
     resp = sc.repositories._rules_constructor(
@@ -308,43 +391,53 @@ def test_repositories_rules_constructor_success(sc):
         'fields': 'name1,name2'
     }
 
+
 def test_repositories_accept_risk_rules_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.accept_risk_rules('one')
+
 
 @pytest.mark.skip(reason='Need VCRed data to test against')
 @pytest.mark.vcr()
 def test_repositories_accept_risk_rules_success(admin):
     pass
 
+
 def test_repositories_recast_risk_rules_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.recast_risk_rules('one')
+
 
 @pytest.mark.skip(reason='Need VCRed data to test against')
 @pytest.mark.vcr()
 def test_repositories_recast_risk_rules_success(admin):
     pass
 
+
 def test_repositories_asset_intersections_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.asset_intersections('one')
+
 
 def test_repositories_asset_intersections_uuid_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.asset_intersections(1, uuid=1)
 
+
 def test_repositories_asset_intersections_uuid_unexpectedvalueerror(sc):
     with pytest.raises(UnexpectedValueError):
         sc.repositories.asset_intersections(1, uuid='something')
+
 
 def test_repositories_asset_intersections_dns_typerrror(sc):
     with pytest.raises(TypeError):
         sc.repositories.asset_intersections(1, dns=1)
 
+
 def test_repositories_asset_intersections_ip_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.asset_intersections(1, ip=1)
+
 
 @pytest.mark.vcr()
 def test_repositories_asset_intersections_success(admin, repository):
@@ -356,22 +449,26 @@ def test_repositories_asset_intersections_success(admin, repository):
         check(a, 'id', str)
         check(a, 'name', str)
 
+
 def test_repositories_import_repository_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.import_repository('one', 1)
+
 
 @pytest.mark.vcr()
 @pytest.mark.datafiles(os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     '..', 'test_files', 'sc_repo.tgz'))
 def test_repositories_import_repository_success(admin, datafiles, repository):
-    #offline = admin.repositories.create(name='Offline', type='Offline')
+    # offline = admin.repositories.create(name='Offline', type='Offline')
     with open(os.path.join(str(datafiles), 'sc_repo.tgz'), 'rb') as repo:
         admin.repositories.import_repository(int(repository['id']), repo)
+
 
 def test_repositories_export_repository_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.export_repository('one', 1)
+
 
 @pytest.mark.vcr()
 def test_repositories_export_repository_success(admin, repository):
@@ -379,33 +476,41 @@ def test_repositories_export_repository_success(admin, repository):
         admin.repositories.export_repository(int(repository['id']), repo)
     os.remove('{}'.format(repository['id']))
 
+
 def test_repositories_device_info_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.device_info('one')
+
 
 def test_repositories_device_into_dns_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.device_info(1, dns=1)
 
+
 def test_repositories_device_info_ip_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.device_info(1, ip=1)
+
 
 def test_repositories_device_info_uuid_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.device_info(1, uuid=1)
 
+
 def test_repositories_device_info_uuid_unexpectedvalueerror(sc):
     with pytest.raises(UnexpectedValueError):
         sc.repositories.device_info(1, uuid='something')
+
 
 def test_repositories_device_info_fields_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.device_info(1, fields=1)
 
+
 def test_repositories_device_info_field_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.device_info(1, fields=[1])
+
 
 @pytest.mark.vcr()
 def test_repositories_device_info_success(admin, repository):
@@ -442,25 +547,42 @@ def test_repositories_device_info_success(admin, repository):
     check(r, 'uniqueness', str)
     check(r, 'uuid', str)
 
+
+@pytest.mark.vcr()
+def test_repositories_device_info_success_ip_info(admin, repository):
+    admin.repositories._api.version = "5.6.0"
+    r = admin.repositories.device_info(int(repository['id']), dns='server')
+    assert isinstance(r, dict)
+    check(r, 'biosGUID', str)
+    check(r, 'hasCompliance', str)
+    check(r, 'hasPassive', str)
+    check(r, 'ip', str)
+
+
 def test_repositories_remote_authorize_host_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.remote_authorize(1, 'user', 'pass')
+
 
 def test_repositories_remote_authorize_username_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.remote_authorize('host', 1, 'pass')
 
+
 def test_remositories_remote_authorize_password_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.remote_authorize('host', 'user', 1)
+
 
 @pytest.mark.skip(reason='No Downstream SC to Test with yet')
 def test_repositories_remote_autorize_success(admin):
     pass
 
+
 def test_repositories_remote_fetch_host_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.remote_fetch(1)
+
 
 @pytest.mark.skip(reason='No Downstream SC to Test with yet')
 def test_repositories_remote_fetch_success(admin):

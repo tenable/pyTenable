@@ -3857,11 +3857,6 @@ interactions:
         that Tenable Network Security has extracted the preceding\ndescription block
         directly from the Fedora update system website.\nTenable has attempted to
         automatically clean and format it as much as\npossible without introducing
-        additional issues."},{"id":"122200","name":"Fedora 29 : libexif (2019-e2f47b40a3)","description":"Fix
-        for CVE-2018-20030\nhttps:\/\/bugzilla.redhat.com\/show_bug.cgi?id=1663878\n\nNote
-        that Tenable Network Security has extracted the preceding\ndescription block
-        directly from the Fedora update system website.\nTenable has attempted to
-        automatically clean and format it as much as\npossible without introducing
         additional issues."},{"id":"122201","name":"EulerOS 2.0 SP5 : kernel (EulerOS-SA-2019-1028)","description":"According
         to the versions of the kernel packages installed, the\nEulerOS installation
         on the remote host is affected by the following\nvulnerabilities :\n\n  -

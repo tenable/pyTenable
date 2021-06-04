@@ -1,18 +1,23 @@
+import pytest
+
 from tenable.errors import *
-from ..checker import check, single
-import pytest, os
+from ..checker import check
+
 
 def test_roles_constructor_name_typeerror(sc):
     with pytest.raises(TypeError):
         sc.roles._constructor(name=1)
 
+
 def test_roles_constructor_description_typeerror(sc):
     with pytest.raises(TypeError):
         sc.roles._constructor(description=1)
 
+
 def test_roles_constructor_role_mapping_typeerror(sc):
     with pytest.raises(TypeError):
         sc.roles._constructor(can_view_logs='nothing')
+
 
 def test_roles_constructor_can_scan_(sc):
     with pytest.raises(TypeError):
@@ -21,6 +26,7 @@ def test_roles_constructor_can_scan_(sc):
         sc.roles._constructor(can_scan='something')
     assert sc.roles._constructor(can_scan='full') == {'permScan': 'full'}
     assert sc.roles._constructor(can_scan='Full') == {'permScan': 'full'}
+
 
 def test_roles_constructor_success(sc):
     role = sc.roles._constructor(
@@ -41,18 +47,22 @@ def test_roles_constructor_success(sc):
         'permScan': 'none'
     }
 
+
 @pytest.fixture
 def role(request, sc, vcr):
     with vcr.use_cassette('test_roles_create_success'):
         role = sc.roles.create('Example Role')
+
     def teardown():
         try:
             with vcr.use_cassette('test_roles_delete_success'):
                 sc.roles.delete(int(role['id']))
         except APIError:
             pass
+
     request.addfinalizer(teardown)
     return role
+
 
 @pytest.mark.vcr()
 def test_roles_create_success(sc, role):
@@ -86,6 +96,7 @@ def test_roles_create_success(sc, role):
     check(role, 'permViewOrgLogs', str)
     check(role, 'permManageAcceptRiskRules', str)
     check(role, 'permManageRecastRiskRules', str)
+
 
 @pytest.mark.vcr()
 def test_roles_details_success(sc, role):
@@ -130,6 +141,24 @@ def test_roles_details_success(sc, role):
     check(r['creator'], 'firstname', str)
     check(r['creator'], 'lastname', str)
 
+
+@pytest.mark.vcr()
+def test_roles_details_success_for_fields(sc, role):
+    role = sc.roles.details(int(role['id']), fields=['id', 'name', 'description'])
+    assert isinstance(role, dict)
+    check(role, 'id', str)
+    check(role, 'name', str)
+    check(role, 'description', str)
+
+
+@pytest.mark.vcr()
+def test_roles_list_success(sc):
+    for role in sc.roles.list(fields=['id', 'name']):
+        assert isinstance(role, dict)
+        check(role, 'id', str)
+        check(role, 'name', str)
+
+
 @pytest.mark.vcr()
 def test_roles_edit_success(sc, role):
     r = sc.roles.edit(int(role['id']), name='Updated Role')
@@ -163,6 +192,7 @@ def test_roles_edit_success(sc, role):
     check(r, 'permViewOrgLogs', str)
     check(r, 'permManageAcceptRiskRules', str)
     check(r, 'permManageRecastRiskRules', str)
+
 
 @pytest.mark.vcr()
 def test_roles_delete_success(sc, role):

@@ -64,80 +64,80 @@ class OrganizationAPI(SCEndpoint):
             # validate that the lce_ids is a list of integers and transform them
             # into a list of dictionaries with id attributes.
             kw['lces'] = [{'id': self._check('lce:id', i, int)}
-                for i in self._check('lce_ids', kw['lce_ids'], list)]
-            del(kw['lce_ids'])
+                          for i in self._check('lce_ids', kw['lce_ids'], list)]
+            del (kw['lce_ids'])
 
         if 'zone_selection' in kw:
             # validate that zone_selection is a string value of one of the
             # expected types and store it in the camelCase equiv.
             kw['zoneSelection'] = self._check('zone_selection',
-                kw['zone_selection'], str, choices=[
+                                              kw['zone_selection'], str, choices=[
                     'auto_only', 'locked', 'selectable', 'selectable+auto',
                     'selectable+auto_restricted'])
-            del(kw['zone_selection'])
+            del (kw['zone_selection'])
 
         if 'restricted_ips' in kw:
             # ensure that restricted_ips is a list of items and return it as a
             # comma-seperated string in the camelCase variant of the param.
             kw['restrictedIPs'] = ','.join(self._check(
                 'restricted_ips', kw['restricted_ips'], list))
-            del(kw['restricted_ips'])
+            del (kw['restricted_ips'])
 
         if 'repos' in kw:
             # convert the list of numeric ids for repos into a list of
             # dictionaries with the id attribute.
             kw['repositories'] = [{'id': self._check('repo:id', r, int)}
-                for r in self._check('repos', kw['repos'], list)]
-            del(kw['repos'])
+                                  for r in self._check('repos', kw['repos'], list)]
+            del (kw['repos'])
 
         if 'pub_sites' in kw:
             # convert the list of numeric ids for pub_sites into a list of
             # dictionaries with the id attribute.
             kw["pubSites"] = [{'id': self._check('site:id', p, int)}
-                for p in self._check('pub_sites', kw['pub_sites'], list)]
-            del(kw["pub_sites"])
+                              for p in self._check('pub_sites', kw['pub_sites'], list)]
+            del (kw["pub_sites"])
 
         if 'ldap_ids' in kw:
             # convert the list of numeric ids for ldap_ids into a list of
             # dictionaries with the id attribute.
             kw['ldaps'] = [{'id': self._check('ldap:id', p, int)}
-                for p in self._check('ldap_ids', kw['ldap_ids'], list)]
-            del(kw['ldap_ids'])
+                           for p in self._check('ldap_ids', kw['ldap_ids'], list)]
+            del (kw['ldap_ids'])
 
         if 'nessus_managers' in kw:
             # convert the list of numeric ids for nessus managers into a list of
             # dictionaries with the id attribute.
             kw['nessusManagers'] = [{'id': self._check('nessus_manager:id', n, int)}
-                for n in self._check('nessus_managers', kw['nessus_managers'], list)]
-            del(kw['nessus_managers'])
+                                    for n in self._check('nessus_managers', kw['nessus_managers'], list)]
+            del (kw['nessus_managers'])
 
         if 'info_links' in kw:
             # convert the info_links
             kw['ipInfoLinks'] = [{
-                    'name': self._check('link:name', i[0], str),
-                    'link': self._check('link:link', i[1], str)}
+                'name': self._check('link:name', i[0], str),
+                'link': self._check('link:link', i[1], str)}
                 for i in self._check('info_links', kw['info_links'], list)]
-            del(kw['info_links'])
+            del (kw['info_links'])
 
         if 'vuln_score_low' in kw:
             kw['vulnScoreLow'] = self._check(
                 'vuln_score_low', kw['vuln_score_low'], int)
-            del(kw['vuln_score_low'])
+            del (kw['vuln_score_low'])
 
         if 'vuln_score_medium' in kw:
             kw['vulnScoreMedium'] = self._check(
                 'vuln_score_medium', kw['vuln_score_medium'], int)
-            del(kw['vuln_score_medium'])
+            del (kw['vuln_score_medium'])
 
         if 'vuln_score_high' in kw:
             kw['vulnScoreHigh'] = self._check(
                 'vuln_score_high', kw['vuln_score_high'], int)
-            del(kw['vuln_score_high'])
+            del (kw['vuln_score_high'])
 
         if 'vuln_score_critical' in kw:
             kw['vulnScoreCritical'] = self._check(
                 'vuln_score_critical', kw['vuln_score_critical'], int)
-            del(kw['vuln_score_critical'])
+            del (kw['vuln_score_critical'])
 
         return kw
 
@@ -203,8 +203,8 @@ class OrganizationAPI(SCEndpoint):
 
             Creating a new organization with custom analysis links:
 
-            >>> org = sc.organization.create(Sample Organization', info_links=[
-            ...     ('SANS', 'https://isc.sans.edu/ipinfo.html?ip=%IP%)])
+            >>> org = sc.organization.create('Sample Organization', info_links=[
+            ...     ('SANS', 'https://isc.sans.edu/ipinfo.html?ip=%IP%')])
         '''
         kw['name'] = name
         kw['zone_selection'] = kw.get('zone_selection', 'auto_only')
@@ -267,6 +267,7 @@ class OrganizationAPI(SCEndpoint):
 
     def edit(self, id, **kw):
         '''Updates an existing organization
+
 
         Edits the Organization associated with {id}, changing only the passed
         in fields.
@@ -372,7 +373,7 @@ class OrganizationAPI(SCEndpoint):
         params = dict()
         if repos:
             params['repositoryIDs'] = ','.join([self._check('repo:id', i, int)
-                for i in self._check('repos', repos, list)])
+                                                for i in self._check('repos', repos, list)])
         if plugin:
             params['pluginID'] = self._check('plugin', plugin, int)
         if port:
@@ -407,7 +408,7 @@ class OrganizationAPI(SCEndpoint):
         params = dict()
         if repos:
             params['repositoryIDs'] = ','.join([self._check('repo:id', i, int)
-                for i in self._check('repos', repos, list)])
+                                                for i in self._check('repos', repos, list)])
         if plugin:
             params['pluginID'] = self._check('plugin', plugin, int)
         if port:
@@ -513,7 +514,7 @@ class OrganizationAPI(SCEndpoint):
         return self._api.get('organization/{}/securityManager/{}'.format(
             self._check('org_id', org_id, int),
             self._check('user_id', user_id, int)),
-                params=params).json()['response']
+            params=params).json()['response']
 
     def manager_edit(self, org_id, user_id, **kw):
         '''
@@ -540,10 +541,10 @@ class OrganizationAPI(SCEndpoint):
             ...     username='updated')
         '''
         payload = self._api.users._constructor(**kw)
-        return self._api.get('organization/{}/securityManager/{}'.format(
+        return self._api.patch('organization/{}/securityManager/{}'.format(
             self._check('org_id', org_id, int),
             self._check('user_id', user_id, int)
-            ), json=payload).json()['response']
+        ), json=payload).json()['response']
 
     def manager_delete(self, org_id, user_id, migrate_to=None):
         '''
@@ -564,7 +565,7 @@ class OrganizationAPI(SCEndpoint):
         if migrate_to:
             payload['migrateUserID'] = self._check('migrate_to', migrate_to, int)
 
-        self._api.get('organization/{}/securityManager/{}'.format(
+        self._api.delete('organization/{}/securityManager/{}'.format(
             self._check('org_id', org_id, int),
             self._check('user_id', user_id, int)
-            ), json=payload)
+        ), json=payload)

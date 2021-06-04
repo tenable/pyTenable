@@ -1,59 +1,79 @@
+import pytest
+
 from tenable.errors import *
 from ..checker import check
-import pytest, os
+
 
 def test_queries_constructor_sort_field_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.queries._constructor(sort_field=1, tool='1', type='1')
+        sc.queries._constructor(sort_field=1, tool='1', type='1', filters=[('filtername', 'operator', 'value')])
+
+
+def test_queries_constructor_description_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.queries._constructor(description=1, tool='1', type='1')
+
 
 def test_queries_constructor_sort_direction_typeerror(sc):
     with pytest.raises(TypeError):
         sc.queries._constructor(sort_direction=1, tool='1', type='1')
 
+
 def test_queries_constructor_sort_direction_unexpectedvalueerror(sc):
     with pytest.raises(UnexpectedValueError):
         sc.queries._constructor(sort_direction='nope', tool='1', type='1')
+
 
 def test_queries_constructor_offset_typeerror(sc):
     with pytest.raises(TypeError):
         sc.queries._constructor(offset='one', tool='1', type='1')
 
+
 def test_queries_constructor_limit_typeerror(sc):
     with pytest.raises(TypeError):
         sc.queries._constructor(limit='one', tool='1', type='1')
+
 
 def test_queries_constructor_owner_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.queries._constructor(owner_id='one', tool='1', type='1')
 
+
 def test_queries_constructor_context_typeerror(sc):
     with pytest.raises(TypeError):
         sc.queries._constructor(context=1, tool='1', type='1')
+
 
 def test_queries_constructor_browse_cols_typeerror(sc):
     with pytest.raises(TypeError):
         sc.queries._constructor(browse_cols=1, tool='1', type='1')
 
+
 def test_queries_constructor_browse_sort_col_typeerror(sc):
     with pytest.raises(TypeError):
         sc.queries._constructor(browse_sort_col=1, tool='1', type='1')
+
 
 def test_queries_constructor_browse_sort_dir_typeerror(sc):
     with pytest.raises(TypeError):
         sc.queries._constructor(browse_sort_direction=1, tool='1', type='1')
 
+
 def test_queries_constructor_browse_sort_dir_unexpectedvalueerror(sc):
     with pytest.raises(UnexpectedValueError):
         sc.queries._constructor(browse_sort_direction='nope', tool='1', type='1')
 
+
 def test_queries_constructor_tags_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.queries._constructor(tags=1, tool='1', type='1')
+        sc.queries._constructor(tags=1, tool='1', type='ticket', filters=[('filtername', 'operator', [1, 2])])
 
+
+@pytest.mark.vcr()
 def test_queries_constructor_success(sc):
     query = sc.queries._constructor(
         ('filtername', 'operator', 'value'),
-        ('f2', 'op', 'val'),
+        ('asset', 'op', 2),
         tool='vulndetails',
         type='thistype',
         tags='tag',
@@ -65,7 +85,8 @@ def test_queries_constructor_success(sc):
         context='nothing',
         browse_cols=['something'],
         browse_sort_col='yes',
-        browse_sort_direction='asc'
+        browse_sort_direction='asc',
+        query_id=1
     )
     assert isinstance(query, dict)
     assert query == {
@@ -77,13 +98,14 @@ def test_queries_constructor_success(sc):
             'operator': 'operator',
             'value': 'value'
         }, {
-            'filterName': 'f2',
+            'filterName': 'asset',
             'operator': 'op',
-            'value': 'val'
+            'value': {'id': '2'}
         }],
         'sortField': 'field1',
         'sortDir': 'ASC',
         'startOffset': 0,
+        'query_id': 1,
         'endOffset': 1000,
         'ownerID': '1',
         'context': 'nothing',
@@ -92,19 +114,23 @@ def test_queries_constructor_success(sc):
         'browseSortDirection': 'ASC'
     }
 
+
 @pytest.fixture
 def query(request, sc, vcr):
     with vcr.use_cassette('test_queries_create_success'):
         q = sc.queries.create('New Query', 'vulndetails', 'vuln',
-            ('pluginID', '=', '19506'))
+                              ('pluginID', '=', '19506'))
+
     def teardown():
         try:
             with vcr.use_cassette('test_queries_delete_success'):
                 sc.queries.delete(int(q['id']))
         except APIError:
             pass
+
     request.addfinalizer(teardown)
     return q
+
 
 @pytest.mark.vcr()
 def test_queries_create_success(sc, query):
@@ -148,9 +174,11 @@ def test_queries_create_success(sc, query):
     check(query['targetGroup'], 'name', str)
     check(query['targetGroup'], 'description', str)
 
+
 @pytest.mark.vcr()
 def test_queries_delete_success(sc, query):
     sc.queries.delete(int(query['id']))
+
 
 @pytest.mark.vcr()
 def test_queries_details_success(sc, query):
@@ -195,6 +223,16 @@ def test_queries_details_success(sc, query):
     check(q['targetGroup'], 'name', str)
     check(q['targetGroup'], 'description', str)
 
+
+@pytest.mark.vcr()
+def test_queries_details_success_for_fields(sc, query):
+    q = sc.queries.details(int(query['id']), fields=["id", "name", "description"])
+    assert isinstance(q, dict)
+    check(q, 'id', str)
+    check(q, 'name', str)
+    check(q, 'description', str)
+
+
 @pytest.mark.vcr()
 def test_queries_edit_success(sc, query):
     q = sc.queries.edit(int(query['id']), name='Updated Name')
@@ -237,6 +275,7 @@ def test_queries_edit_success(sc, query):
     check(q['targetGroup'], 'name', str)
     check(q['targetGroup'], 'description', str)
 
+
 @pytest.mark.vcr()
 def test_queries_list_success(sc, query):
     queries = sc.queries.list()
@@ -248,6 +287,18 @@ def test_queries_list_success(sc, query):
             check(q, 'name', str)
             check(q, 'description', str)
 
+
+@pytest.mark.vcr()
+def test_queries_list_success_for_fields(sc):
+    queries = sc.queries.list(fields=["id", "name"])
+    assert isinstance(queries, dict)
+    for type in ['manageable', 'usable']:
+        for query in queries[type]:
+            assert isinstance(query, dict)
+            check(query, 'id', str)
+            check(query, 'name', str)
+
+
 @pytest.mark.vcr()
 def test_queries_tags_success(sc):
     tags = sc.queries.tags()
@@ -255,15 +306,18 @@ def test_queries_tags_success(sc):
     for i in tags:
         assert isinstance(i, str)
 
+
 @pytest.mark.vcr()
 def test_queries_share_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.queries.share('one', 1)
 
+
 @pytest.mark.vcr()
 def test_queries_share_group_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.queries.share(1, 'one')
+
 
 @pytest.mark.vcr()
 def test_queries_share_success(sc, query, group):

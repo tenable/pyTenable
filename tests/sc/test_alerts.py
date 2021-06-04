@@ -1,6 +1,8 @@
+import pytest
+
 from tenable.errors import *
 from ..checker import check
-import datetime, sys, pytest, os
+
 
 @pytest.fixture
 def alert(request, vcr, sc):
@@ -14,49 +16,68 @@ def alert(request, vcr, sc):
                 'message': 'Example Message',
                 'users': [{'id': 1}]
             }])
+
     def teardown():
         try:
             sc.alerts.delete(int(alert['id']))
         except APIError:
             pass
+
     request.addfinalizer(teardown)
     return alert
+
 
 def test_alerts_constructor_name_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts._constructor(name=1)
 
+
 def test_alerts_constructor_description_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts._constructor(description=1)
+
 
 def test_alerts_constructor_query_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts._constructor(query=1)
 
+
 def test_alerts_constructor_always_exec_on_trigger_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts._constructor(always_exec_on_trigger='nope')
+
 
 def test_alerts_constructor_trigger_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts._constructor(trigger=1)
 
+
 def test_alerts_constructor_trigger_name_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts._constructor(trigger=(1, '=', 'something'))
+
 
 def test_alerts_constructor_trigger_operator_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts._constructor(trigger=('name', 1, 'something'))
 
+
 def test_alerts_constructor_trigger_operator_unexpectedvalueerror(sc):
     with pytest.raises(UnexpectedValueError):
         sc.alerts._constructor(trigger=('name', 'eq', 'something'))
 
+
 def test_alerts_constructor_trigger_value_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts._constructor(trigger=('name', '=', 1))
+
+
+def test_alerts_constructor_success(sc):
+    alert = sc.alerts._constructor(query_id=1,
+                                   always_exec_on_trigger=True,
+                                   schedule={'type': 'ical'})
+    assert isinstance(alert, dict)
+
 
 def test_alerts_constructor(sc):
     r = sc.alerts._constructor(
@@ -64,8 +85,8 @@ def test_alerts_constructor(sc):
         name='Example Alert',
         trigger=('sumip', '>=', '100'),
         action=[{
-            'type': 'notification', 
-            'message': 'Example Message', 
+            'type': 'notification',
+            'message': 'Example Message',
             'users': [{'id': 1}]}])
     assert r == {
         'name': 'Example Alert',
@@ -80,15 +101,17 @@ def test_alerts_constructor(sc):
                 'filterName': 'severity',
                 'operator': '=',
                 'value': '3,4'
-        }]},
+            }]},
         'triggerName': 'sumip',
         'triggerOperator': '>=',
         'triggerValue': '100'
     }
 
+
 def test_alerts_list_fields_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts.list(fields=1)
+
 
 @pytest.mark.vcr()
 def test_alerts_list_success(sc, alert):
@@ -100,13 +123,16 @@ def test_alerts_list_success(sc, alert):
         check(a, 'name', str)
         check(a, 'status', str)
 
+
 def test_alerts_details_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts.details('nope')
 
+
 def test_alerts_fields_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts.details(1, fields=1)
+
 
 @pytest.mark.vcr()
 def test_alerts_details_success(sc, alert):
@@ -160,7 +186,7 @@ def test_alerts_details_success(sc, alert):
             check(u, 'firstname', str)
             check(u, 'id', str)
             check(u, 'lastname', str)
-            check(u, 'username', str) 
+            check(u, 'username', str)
     check(a, 'canManage', str)
     check(a, 'canUse', str)
     check(a, 'description', str)
@@ -190,6 +216,7 @@ def test_alerts_details_success(sc, alert):
     check(a, 'triggerName', str)
     check(a, 'triggerOperator', str)
     check(a, 'triggerValue', str)
+
 
 @pytest.mark.vcr()
 def test_alerts_create_success(sc, alert):
@@ -243,7 +270,7 @@ def test_alerts_create_success(sc, alert):
             check(u, 'firstname', str)
             check(u, 'id', str)
             check(u, 'lastname', str)
-            check(u, 'username', str) 
+            check(u, 'username', str)
     check(a, 'canManage', str)
     check(a, 'canUse', str)
     check(a, 'description', str)
@@ -274,9 +301,11 @@ def test_alerts_create_success(sc, alert):
     check(a, 'triggerOperator', str)
     check(a, 'triggerValue', str)
 
+
 def test_alerts_edit_id_typerror(sc):
     with pytest.raises(TypeError):
         sc.alerts.edit('one')
+
 
 @pytest.mark.vcr()
 def test_alerts_edit_success(sc, alert):
@@ -330,7 +359,7 @@ def test_alerts_edit_success(sc, alert):
             check(u, 'firstname', str)
             check(u, 'id', str)
             check(u, 'lastname', str)
-            check(u, 'username', str) 
+            check(u, 'username', str)
     check(a, 'canManage', str)
     check(a, 'canUse', str)
     check(a, 'description', str)
@@ -361,17 +390,21 @@ def test_alerts_edit_success(sc, alert):
     check(a, 'triggerOperator', str)
     check(a, 'triggerValue', str)
 
+
 def test_alerts_delete_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts.delete('one')
+
 
 @pytest.mark.vcr()
 def test_alerts_delete_success(sc, alert):
     sc.alerts.delete(int(alert['id']))
 
+
 def test_alerts_execute_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.alerts.execute('one')
+
 
 @pytest.mark.vcr()
 def test_alerts_execute_successs(sc, alert):
@@ -425,7 +458,7 @@ def test_alerts_execute_successs(sc, alert):
             check(u, 'firstname', str)
             check(u, 'id', str)
             check(u, 'lastname', str)
-            check(u, 'username', str) 
+            check(u, 'username', str)
     check(a, 'canManage', str)
     check(a, 'canUse', str)
     check(a, 'description', str)

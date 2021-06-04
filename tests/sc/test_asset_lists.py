@@ -1,20 +1,30 @@
+import os
+import pytest
+
 from tenable.errors import *
 from ..checker import check
-import pytest, os
+
 
 def test_asset_lists_dynamic_rules_constructor_passthrough(sc):
     a = {'test': 'value'}
     assert a == sc.asset_lists._dynamic_rules_constructor(a)
 
+
 def test_asset_lists_dynamic_rules_constructor_typerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._dynamic_rules_constructor(1)
 
+
+def test_asset_lists_dynamic_rules_constructor_plugin_constraint_type_error(sc):
+    with pytest.raises(TypeError):
+        sc.asset_lists._dynamic_rules_constructor(('ip', 'contains', '192.168.', 'dummy'))
+
+
 def test_asset_lists_dynamic_rules_constructor_basic_pass(sc):
     rule = sc.asset_lists._dynamic_rules_constructor(
         ('any', ('dns', 'contains', 'something'),
-                ('ip', 'contains', '192.168.'),
-                ('severity', 'eq', 1)))
+         ('ip', 'contains', '192.168.'),
+         ('severity', 'eq', 1)))
     assert rule == {
         'operator': 'any',
         'children': [{
@@ -35,15 +45,16 @@ def test_asset_lists_dynamic_rules_constructor_basic_pass(sc):
         }]
     }
 
+
 def test_asset_lists_dynamic_rules_constructor_recursion_pass(sc):
     rule = sc.asset_lists._dynamic_rules_constructor(
         ('any', ('dns', 'contains', 'something'),
-                ('ip', 'contains', '192.168.'),
-                ('severity', 'eq', 1),
-                ('all', ('dns', 'contains', 'a'),
-                        ('dns', 'contains', 'b')
-                )
-        ))
+         ('ip', 'contains', '192.168.'),
+         ('severity', 'eq', 1),
+         ('all', ('dns', 'contains', 'a'),
+          ('dns', 'contains', 'b')
+          )
+         ))
     assert rule == {
         'operator': 'any',
         'children': [{
@@ -78,6 +89,7 @@ def test_asset_lists_dynamic_rules_constructor_recursion_pass(sc):
         }]
     }
 
+
 def test_asset_lists_dynamic_rules_constructor_single_pluginid_constraint(sc):
     rule = sc.asset_lists._dynamic_rules_constructor(
         ('any', ('plugintext', 'contains', 'stuff', 19506)))
@@ -91,6 +103,7 @@ def test_asset_lists_dynamic_rules_constructor_single_pluginid_constraint(sc):
             'pluginIDConstraint': '19506'
         }]
     }
+
 
 def test_asset_lists_dynamic_rules_constructor_multi_pluginid_constraint(sc):
     rule = sc.asset_lists._dynamic_rules_constructor(
@@ -106,145 +119,193 @@ def test_asset_lists_dynamic_rules_constructor_multi_pluginid_constraint(sc):
         }]
     }
 
+
 def test_asset_lists_constructor_type_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(type=1)
+
 
 def test_asset_lists_constructor_type_unexpectedvalueerror(sc):
     with pytest.raises(UnexpectedValueError):
         sc.asset_lists._constructor(type='something')
 
+
 def test_asset_lists_constructor_prep_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(prep='nope')
+
 
 def test_asset_lists_constructor_name_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(name=1)
 
+
 def test_asset_lists_constructor_description_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(description=1)
+
 
 def test_asset_lists_constructor_context_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(context=1)
 
+
 def test_asset_lists_constructor_tags_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(tags=1)
+
 
 def test_asset_lists_constructor_template_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(template='one')
 
+
 def test_asset_lists_constructor_filename_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(filename=1)
 
-def test_asset_lists_constructor_data_fields_typeerror(sc):
+
+def test_asset_lists_constructor_data_fields_typeerror(sc, vcr):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(data_fields=1)
+    with vcr.use_cassette('test_files_upload_clear_success'):
+        with open("file.xml", "w+") as file:
+            with pytest.raises(TypeError):
+                sc.asset_lists._constructor(data_fields=1, fobj=file)
+        os.remove("file.xml")
+
 
 def test_asset_lists_constructor_combinations_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(combinations=1)
 
+
+def test_asset_lists_constructor_combinations_tuple_typeerror(sc):
+    with pytest.raises(TypeError):
+        sc.asset_lists._constructor(combinations=(1, 2, 3, 4))
+    with pytest.raises(TypeError):
+        sc.asset_lists._constructor(combinations=(1,))
+
+
 def test_asset_lists_constructor_rules_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(rules=1)
+
 
 def test_asset_lists_constructor_dns_names_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(dns_names=1)
 
+
 def test_asset_lists_constructor_dns_names_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(dns_names=[1])
+
 
 def test_asset_lists_constructor_dn_requirements_unmet(sc):
     with pytest.raises(UnexpectedValueError):
         sc.asset_lists._constructor(dn='domething')
 
+
 def test_asset_lists_constructor_dn_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(dn=1, search_string='a', ldap_id=1)
+
 
 def test_asset_lists_constructor_search_string_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(dn='a', search_string=1, ldap_id=1)
 
+
 def test_asset_lists_constructor_ldap_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(dn='a', search_string='a', ldap_id='one')
+
 
 def test_asset_lists_constructor_ips_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(ips=1)
 
+
 def test_asset_lists_constructor_ips_list_item_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.asset_lists._constructor(ips=[1,])
+        sc.asset_lists._constructor(ips=[1, ])
+
 
 def test_asset_lists_constructor_filters_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(filters=1)
 
+
 def test_asset_lists_constructor_filters_item_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.asset_lists._constructor(filters=[1,])
+        sc.asset_lists._constructor(filters=[1, ])
+
 
 def test_asset_lists_constructor_filters_tuple_name_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(filters=[(1, 'eq', 'something')])
 
+
 def test_asset_lists_constructor_filters_tuple_operator_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(filters=[('name', 1, 'something')])
+
 
 def test_asset_lists_constructor_filters_tuple_value_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(filters=[('name', 'eq', 1)])
 
+
 def test_asset_lists_constructor_tool_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(tool=1)
+
 
 def test_asset_lists_constructor_source_type_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(source_type=1)
 
+
 def test_asset_lists_constructor_start_offset_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(start_offset='one')
+
 
 def test_asset_lists_constructor_end_offset_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(end_offset='one')
 
+
 def test_asset_lists_constructor_view_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(view=1)
+
 
 def test_asset_lists_constructor_lce_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(lce_id='one')
 
+
 def test_asset_lists_constructor_sort_field_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(sort_field=1)
+
 
 def test_asset_lists_constructor_sort_dir_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(sort_dir=1)
 
+
 def test_asset_lists_constructor_sort_field_unexpectedvalueerror(sc):
     with pytest.raises(UnexpectedValueError):
         sc.asset_lists._constructor(sort_dir='something')
 
+
 def test_asset_lists_constructor_scan_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(scan_id='one')
+
 
 def test_asset_lists_constructor_success(sc):
     resp = sc.asset_lists._constructor(
@@ -263,7 +324,7 @@ def test_asset_lists_constructor_success(sc):
         dn='company.tld',
         search_string='*',
         ldap_id=1,
-        ips=['192.168.0.1',],
+        ips=['192.168.0.1', ],
         source_type='type',
         exclude_managed_ips=True,
         filters=[('name', 'eq', 'value')],
@@ -312,15 +373,18 @@ def test_asset_lists_constructor_success(sc):
 @pytest.fixture
 def assetlist(request, sc, vcr):
     with vcr.use_cassette('test_asset_lists_create_success'):
-        a = sc.asset_lists.create('Example', 'static', ips=['192.168.0.1',])
+        a = sc.asset_lists.create('Example', 'static', ips=['192.168.0.1', ])
+
     def teardown():
         try:
             with vcr.use_cassette('test_asset_lists_delete_success'):
                 sc.asset_lists.delete(int(a['id']))
         except APIError:
             pass
+
     request.addfinalizer(teardown)
     return a
+
 
 @pytest.mark.vcr()
 def test_asset_lists_create_success(sc, assetlist):
@@ -364,9 +428,22 @@ def test_asset_lists_create_success(sc, assetlist):
     check(assetlist['ownerGroup'], 'name', str)
     check(assetlist['ownerGroup'], 'description', str)
 
+
 @pytest.mark.vcr()
 def test_asset_lists_delete_success(sc, assetlist):
     sc.asset_lists.delete(int(assetlist['id']))
+
+
+@pytest.mark.vcr()
+def test_asset_lists_details_success_for_fields(sc, assetlist):
+    asset = sc.asset_lists.details(int(assetlist['id']),
+                                   fields=['id', 'name', 'type', 'description'])
+    assert isinstance(asset, dict)
+    check(asset, 'id', str)
+    check(asset, 'name', str)
+    check(asset, 'type', str)
+    check(asset, 'description', str)
+
 
 @pytest.mark.vcr()
 def test_asset_lists_details_success(sc, assetlist):
@@ -411,6 +488,7 @@ def test_asset_lists_details_success(sc, assetlist):
     check(a['ownerGroup'], 'name', str)
     check(a['ownerGroup'], 'description', str)
 
+
 @pytest.mark.vcr()
 def test_asset_lists_edit_success(sc, assetlist):
     a = sc.asset_lists.edit(int(assetlist['id']), name='Updated')
@@ -454,6 +532,21 @@ def test_asset_lists_edit_success(sc, assetlist):
     check(a['ownerGroup'], 'name', str)
     check(a['ownerGroup'], 'description', str)
 
+
+@pytest.mark.vcr()
+def test_asset_lists_list_success_for_fields(sc):
+    asset_list = sc.asset_lists.list(fields=['id', 'name'])
+    assert isinstance(asset_list, dict)
+    check(asset_list, 'usable', list)
+    for i in asset_list['usable']:
+        check(i, 'id', str)
+        check(i, 'name', str)
+    check(asset_list, 'manageable', list)
+    for i in asset_list['manageable']:
+        check(i, 'id', str)
+        check(i, 'name', str)
+
+
 @pytest.mark.vcr()
 def test_asset_lists_list_success(sc, assetlist):
     alist = sc.asset_lists.list()
@@ -471,6 +564,7 @@ def test_asset_lists_list_success(sc, assetlist):
         check(i, 'description', str)
         check(i, 'status', str)
 
+
 @pytest.mark.vcr()
 def test_asset_lists_refresh_success(admin, assetlist):
     resp = admin.asset_lists.refresh(int(assetlist['id']), 1, 1)
@@ -485,7 +579,8 @@ def test_asset_lists_refresh_success(admin, assetlist):
     '..', 'test_files', 'asset_list.xml'))
 def test_asset_lists_import_definition_success(sc, assetlist, datafiles):
     with open(os.path.join(str(datafiles), 'asset_list.xml'), 'rb') as fobj:
-        sc.asset_lists.import_definition(fobj)
+        sc.asset_lists.import_definition(fobj, name='name')
+
 
 @pytest.mark.vcr()
 def test_asset_lists_export_definition_success(sc, assetlist):
@@ -493,10 +588,19 @@ def test_asset_lists_export_definition_success(sc, assetlist):
         sc.asset_lists.export_definition(int(assetlist['id']), fobj)
     os.remove('asset_list_export.xml')
 
+
+@pytest.mark.vcr()
+def test_asset_lists_export_definition_success_no_file(sc):
+    with open('1000007.xml', 'wb'):
+        sc.asset_lists.export_definition(1000007)
+    os.remove('1000007.xml')
+
+
 @pytest.mark.skip(reason='No LDAP Service to query against')
 @pytest.mark.vcr()
 def test_asset_lists_ldap_query_success(sc):
     resp = sc.asset_lists.ldap_query(1, 'company.tld', '*')
+
 
 @pytest.mark.vcr()
 def test_asset_lists_tags_success(sc):
@@ -504,15 +608,18 @@ def test_asset_lists_tags_success(sc):
     for tag in tags:
         single(tag, str)
 
+
 @pytest.mark.vcr()
 def test_asset_lists_share_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists.share('one')
 
+
 @pytest.mark.vcr()
 def test_asset_lists_share_group_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists.share(1, 'one')
+
 
 @pytest.mark.vcr()
 def test_asset_lists_share_success(sc, assetlist, group):

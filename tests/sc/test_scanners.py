@@ -1,85 +1,106 @@
-from tenable.errors import *
-from ..checker import check, single
 import pytest
+
+from tenable.errors import *
+from ..checker import check
+
 
 @pytest.fixture
 def scanner(request, admin, vcr):
     with vcr.use_cassette('test_scanners_create_success'):
         scanner = admin.scanners.create('Example', '127.0.0.1',
-            username='nouser',
-            password='nopassword')
+                                        username='nouser',
+                                        password='nopassword')
+
     def teardown():
         try:
             with vcr.use_cassette('test_scanners_delete_success'):
                 admin.scanners.delete(int(scanner['id']))
         except APIError:
             pass
+
     request.addfinalizer(teardown)
     return scanner
+
 
 def test_scanners_constructor_name_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(name=1)
 
+
 def test_scanners_constructor_description_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(description=1)
+
 
 def test_scanners_constructor_username_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(username=1)
 
+
 def test_scanners_constructor_cert_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(cert=1)
+
 
 def test_scanners_constructor_password_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(password=1)
 
+
 def test_scanners_constructor_address_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(address=1)
+
 
 def test_scanners_constructor_port_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(port='one')
 
+
 def test_scanners_constructor_proxy_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(proxy='one')
+
 
 def test_scanners_constructor_verify_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(verify='yup')
 
+
 def test_scanners_constructor_enabled_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(enabled='nope')
+
 
 def test_scanners_constructor_managed_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(managed='yup')
 
+
 def test_scanners_constructor_agent_capable_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(agent_capable='nope')
+
 
 def test_scanners_constructor_zone_ids_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(zone_ids=1)
 
+
 def test_scanners_constructor_zone_ids_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(zone_ids=['one'])
+
 
 def test_scanners_constructor_orgs_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(orgs=1)
 
+
 def test_scanners_constructor_orgs_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.scanners._constructor(orgs=['one'])
+
 
 def test_scanners_constructor_success(sc):
     resp = sc.scanners._constructor(
@@ -94,8 +115,8 @@ def test_scanners_constructor_success(sc):
         enabled=True,
         managed=False,
         agent_capable=False,
-        zone_ids=[1,2,3],
-        orgs=[1,2,3]
+        zone_ids=[1, 2, 3],
+        orgs=[1, 2, 3]
     )
     assert resp == {
         'name': 'Example',
@@ -113,6 +134,7 @@ def test_scanners_constructor_success(sc):
         'zones': [{'id': 1}, {'id': 2}, {'id': 3}],
         'nessusManagerOrgs': [{'id': 1}, {'id': 2}, {'id': 3}]
     }
+
 
 @pytest.mark.vcr()
 def test_scanners_create_success(admin, scanner):
@@ -157,6 +179,7 @@ def test_scanners_create_success(admin, scanner):
         check(o, 'name', str)
         check(o, 'description', str)
 
+
 @pytest.mark.vcr()
 def test_scanners_details_success(admin, scanner):
     s = admin.scanners.details(int(scanner['id']))
@@ -200,6 +223,16 @@ def test_scanners_details_success(admin, scanner):
         check(o, 'id', str)
         check(o, 'name', str)
         check(o, 'description', str)
+
+
+@pytest.mark.vcr()
+def test_scanners_details_success_for_fields(admin, scanner):
+    s = admin.scanners.details(int(scanner['id']), fields=['id', 'name', 'description'])
+    assert isinstance(s, dict)
+    check(s, 'id', str)
+    check(s, 'name', str)
+    check(s, 'description', str)
+
 
 @pytest.mark.vcr()
 def test_scanners_edit_success(admin, scanner):
@@ -246,17 +279,29 @@ def test_scanners_edit_success(admin, scanner):
         check(o, 'name', str)
         check(o, 'description', str)
 
+
 @pytest.mark.vcr()
 def test_scanners_delete_success(admin, scanner):
     admin.scanners.delete(int(scanner['id']))
 
+
 @pytest.mark.vcr()
-def test_scanners_list_success(admin, scanner):
-    for s in admin.scanners.list():
+def test_scanners_list_success(admin):
+    for scanner in admin.scanners.list():
+        check(scanner, 'id', str)
+        check(scanner, 'name', str)
+        check(scanner, 'description', str)
+        check(scanner, 'status', str)
+
+
+@pytest.mark.vcr()
+def test_scanners_list_success_for_fields(admin, scanner):
+    for s in admin.scanners.list(fields=['id', 'name', 'status', 'description']):
         check(s, 'id', str)
         check(s, 'name', str)
-        check(s, 'description', str)
         check(s, 'status', str)
+        check(s, 'description', str)
+
 
 @pytest.mark.vcr()
 @pytest.mark.skip(reason='No Agent Scanner in test env')
@@ -266,6 +311,7 @@ def test_scanners_agent_scans_success(admin, scanner):
     for i in resp:
         check(i, 'name', str)
         check(i, 'numResults', int)
+
 
 @pytest.mark.vcr()
 def test_scanners_update_status(admin, scanner):
