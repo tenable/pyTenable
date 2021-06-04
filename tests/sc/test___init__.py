@@ -1,3 +1,7 @@
+'''
+test for TenableSC
+'''
+
 import os
 
 import pytest
@@ -27,8 +31,8 @@ def test_enter(sc):
     assert sc == sc.__enter__()
 
 
-def test_exit_api_error(sc):
-    with pytest.raises(APIError):
+def test_exit_api(sc, vcr):
+    with vcr.use_cassette('sc_login'):
         sc.__exit__(exc_type='exc_type', exc_value='exc_value', exc_traceback='exc_traceback')
 
 
