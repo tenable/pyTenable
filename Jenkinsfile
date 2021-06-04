@@ -28,15 +28,33 @@ void unittests(String version) {
             checkout scm
 
             withContainer(image: "python:${version}-buster", registry: '', inside: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {
-                sh """
-                    python -m pip install --upgrade pip
-                    pip install -r test-requirements.txt
-                    pip install -r requirements.txt
+                try {
+                    sh """
+                        python -m pip install --upgrade pip
+                        pip install -r test-requirements.txt
+                        pip install -r requirements.txt
 
-                    pytest --vcr-record=none --cov-report html:test-reports/coverage --junitxml=test-reports/junit/results.xml --junit-prefix=${version} --cov=tenable tests
-                    find . -name *.html
-                    find . -name *.xml
-                """
+                        pytest --vcr-record=none --cov-report html:test-reports/coverage --junitxml=test-reports/junit/results.xml --junit-prefix=${version} --cov=tenable tests
+                        find . -name *.html
+                        find . -name *.xml
+                    """
+                }
+                catch(ex) {
+                    throw ex
+                }
+                finally {
+                    if (fileExists ('test-reports/coverage/index.html')) {
+                        publishHTML(
+                            [allowMissing: parameters.allowNoCoverageReport,
+                            alwaysLinkToLastBuild: true,
+                            keepAll     : true,
+                            reportDir   : 'test-reports/coverage/',
+                            reportFiles : 'index.html',
+                            reportName  : "Coverage${version}",
+                            reportTitles: "Coverage${version}"])
+                    }
+                    step([$class: 'JUnitResultArchiver', testResults: 'test-reports/junit/*.xml'])
+                }
             }
         }
     }
