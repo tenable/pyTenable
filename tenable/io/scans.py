@@ -184,9 +184,9 @@ class ScansAPI(TIOEndpoint):
 
         # if the schedule_scan attribute was set, then we will apply fields
         # required for scheduling a scan
-        if 'schedule_scan' in kw:
-            self._check('schedule_scan', kw['schedule_scan'], dict)
-            if kw['schedule_scan']['enabled']:
+        if 'schedule_scan' in kwargs:
+            self._check('schedule_scan', kwargs['schedule_scan'], dict)
+            if kwargs['schedule_scan']['enabled']:
                 keys = [self.schedule_const.enabled, self.schedule_const.launch, self.schedule_const.rrules,
                     self.schedule_const.schedule_scan, self.schedule_const.start_time, self.schedule_const.timezone]
             else:
@@ -194,9 +194,9 @@ class ScansAPI(TIOEndpoint):
 
             # update schedule values in scan settings based on enable parameter
             for k in keys:
-                scan['settings'][k] = kw['schedule_scan'][k]
+                scan['settings'][k] = kwargs['schedule_scan'][k]
 
-            del (kw['schedule_scan'])
+            del (kwargs['schedule_scan'])
 
         # any other remaining keyword arguments will be passed into the settings
         # sub-document.  The bulk of the data should go here...
