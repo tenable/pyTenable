@@ -6,8 +6,7 @@ import com.tenable.jenkins.Constants
 import com.tenable.jenkins.builds.snyk.*
 import com.tenable.jenkins.builds.nexusiq.*
 
-//pythonVersion = [ '3.6', '3.7', '3.8', '3.9' ]
-pythonVersion = [ '3.6' ]
+pythonVersion = [ '3.6', '3.7', '3.8', '3.9' ]
 
 bparams = new BuildParams(this, 1083)
 bparams.channels = '#jenkins-devel'
