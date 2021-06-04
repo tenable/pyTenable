@@ -1,4 +1,4 @@
-@Library('tenable.common@SNYK-EDGECASE')
+@Library('tenable.common')
 
 import com.tenable.jenkins.builds.*
 import com.tenable.jenkins.common.*
@@ -35,7 +35,7 @@ void unittests(String version) {
                     pip install -r test-requirements.txt
                     pip install -r requirements.txt
 
-                    pytest --vcr-record=none --cov-report html:test-reports/coverage  --cov=tenable tests
+                    pytest --vcr-record=none --cov-report html:test-reports/coverage --junitxml=test-reports/junit/results.xml --junit-prefix=${version} --cov=tenable tests
                 """
             }
         }
