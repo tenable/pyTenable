@@ -21,8 +21,8 @@ Methods available on ``tio.tags``:
     .. automethod:: list
     .. automethod:: list_categories
 '''
-from .base import TIOEndpoint, TIOIterator
 from tenable.errors import UnexpectedValueError
+from tenable.io.base import TIOEndpoint, TIOIterator
 
 class TagsIterator(TIOIterator):
     '''
@@ -46,19 +46,42 @@ class TagsIterator(TIOIterator):
     pass
 
 class TagsAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to tags
+    '''
     _filterset_tags = {
-        'value': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'category_name': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'description': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'updated_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None},
-        'updated_by': {'operators': ['eq'], 'pattern': None} # Add UUID regex here
+        'value': {
+            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
+        },
+        'category_name': {
+            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
+        },
+        'description': {
+            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
+        },
+        'updated_at': {
+            'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None
+        },
+        'updated_by': {
+            'operators': ['eq'], 'pattern': None
+        }  # Add UUID regex here
     }
     _filterset_categories = {
-        'name': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'description': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
-        'created_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None},
-        'updated_at': {'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None},
-        'updated_by': {'operators': ['eq'], 'pattern': None, 'choices': None} # Add UUID regex here
+        'name': {
+            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
+        },
+        'description': {
+            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
+        },
+        'created_at': {
+            'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None
+        },
+        'updated_at': {
+            'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None
+        },
+        'updated_by': {
+            'operators': ['eq'], 'pattern': None, 'choices': None
+        } # Add UUID regex here
     }
 
     def create(self, category, value, description=None, filters=None,
@@ -145,24 +168,37 @@ class TagsAPI(TIOEndpoint):
             payload['description'] = self._check('description', description, str)
         return self._api.post('tags/categories', json=payload).json()
 
-    def delete(self, tag_value_uuid):
+    def delete(self, *tag_value_uuids):
         '''
-        Deletes a tag category/value pair.
+        Deletes tag value(s).
 
         :devportal:`tag: delete tag value <tags-delete-tag-value>`
 
         Args:
-            tag_value_uuid (str):
-                The unique identifier for the c/v pair to be deleted.
+            *tag_value_uuid (str):
+                The unique identifier for the tag value to be deleted.
 
         Returns:
             :obj:`None`
 
         Examples:
+            Deleting a single tag value:
+
             >>> tio.tags.delete('00000000-0000-0000-0000-000000000000')
+
+            Deleting multiple tag values:
+
+            >>> tio.tags.delete('00000000-0000-0000-0000-000000000000',
+            ...     '10000000-0000-0000-0000-000000000001')
         '''
-        self._api.delete('tags/values/{}'.format(
-            self._check('tag_value_uuid', tag_value_uuid, 'uuid')))
+        if len(tag_value_uuids) <= 1:
+            self._api.delete('tags/values/{}'.format(
+                self._check('tag_value_uuid', tag_value_uuids[0], 'uuid')))
+        else:
+            self._api.post('tags/values/delete-requests',
+                json={'values': [
+                    self._check('tag_value_uuid', i, 'uuid') for i in tag_value_uuids
+                ]})
 
     def delete_category(self, tag_category_uuid):
         '''

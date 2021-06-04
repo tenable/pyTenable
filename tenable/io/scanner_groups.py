@@ -19,9 +19,12 @@ Methods available on ``tio.scanner_groups``:
     .. automethod:: list
     .. automethod:: list_scanners
 '''
-from .base import TIOEndpoint
+from tenable.io.base import TIOEndpoint
 
 class ScannerGroupsAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to scanner groups
+    '''
     def add_scanner(self, group_id, scanner_id):
         '''
         Add a scanner to a scanner group.
@@ -71,14 +74,14 @@ class ScannerGroupsAPI(TIOEndpoint):
                 default='load_balancing', choices=['load_balancing'])
         }).json()
 
-    def delete(self, id):
+    def delete(self, group_id):
         '''
         Deletes a scanner group.
 
         :devportal:`scanner-groups: delete <scanner-groups-delete>`
 
         Args:
-            id (int): The unique identifier for the scanner group to delete.
+            group_id (int): The unique identifier for the scanner group to delete.
 
         Returns:
             :obj:`None`:
@@ -87,7 +90,7 @@ class ScannerGroupsAPI(TIOEndpoint):
         Examples:
             >>> tio.scanner_groups.delete(1)
         '''
-        self._api.delete('scanner-groups/{}'.format(self._check('id', id, int)))
+        self._api.delete('scanner-groups/{}'.format(self._check('group_id', group_id, int)))
 
     def delete_scanner(self, group_id, scanner_id):
         '''
@@ -114,14 +117,14 @@ class ScannerGroupsAPI(TIOEndpoint):
             self._check('scanner_id', scanner_id, int)
         ))
 
-    def details(self, id):
+    def details(self, group_id):
         '''
         Retrieves the details about a scanner group.
 
         :devportal:`scanner-groups: details <scanner-groups-details>`
 
         Args:
-            id (int): The unique identifier for the scanner group.
+            group_id (int): The unique identifier for the scanner group.
 
         Returns:
             :obj:`dict`:
@@ -132,16 +135,16 @@ class ScannerGroupsAPI(TIOEndpoint):
             >>> pprint(group)
         '''
         return self._api.get('scanner-groups/{}'.format(
-            self._check('id', id, int))).json()
+            self._check('group_id', group_id, int))).json()
 
-    def edit(self, id, name):
+    def edit(self, group_id, name):
         '''
         Modifies a scanner group.
 
         :devportal:`scanner-groups: edit <scanner-groups-edit>`
 
         Args:
-            id (int): The unique identifier for the scanner group.
+            group_id (int): The unique identifier for the scanner group.
             name (str): The new name for the scanner group.
 
         Returns:
@@ -152,7 +155,7 @@ class ScannerGroupsAPI(TIOEndpoint):
             >>> tio.scanner_groups.edit(1, 'New Group Name')
         '''
         self._api.put('scanner-groups/{}'.format(
-            self._check('id', id, int)), json={
+            self._check('group_id', group_id, int)), json={
                 'name': self._check('name', name, str)
         })
 
@@ -172,14 +175,14 @@ class ScannerGroupsAPI(TIOEndpoint):
         '''
         return self._api.get('scanner-groups').json()['scanner_pools']
 
-    def list_scanners(self, id):
+    def list_scanners(self, group_id):
         '''
         List the scanners within a specific scanner group.
 
         :devportal:`scanner-groups: list-scanners scanner-groups-list-scanners>`
 
         Args:
-            id (int): The unique identifier of the scanner group.
+            group_id (int): The unique identifier of the scanner group.
 
         Returns:
             :obj:`list`:
@@ -190,5 +193,48 @@ class ScannerGroupsAPI(TIOEndpoint):
             ...     pprint(scanner)
         '''
         return self._api.get('scanner-groups/{}/scanners'.format(
-            self._check('id', id, int))).json()['scanners']
+            self._check('group_id', group_id, int))).json()['scanners']
 
+    def list_routes(self, group_id):
+        '''
+        List the hostnames, wildcards, IP addresses, and IP address ranges that Tenable.io
+        matches against targets in auto-routed scans
+
+        :devportal:`scanner-groups: list-routes <scanner-groups-list-routes>`
+
+        Args:
+            group_id (int): The unique identifier of the scanner group
+
+        Returns:
+            :obj:`list`:
+                List of routes associated to the scanner group.
+
+         Examples:
+            >>> for scanner in tio.scanner_groups.list_routes(1):
+            ...     pprint(scanner)
+        '''
+        return self._api.get('scanner-groups/{}/routes'.format(
+            self._check('group_id', group_id, int))).json()
+
+    def edit_routes(self, group_id, routes):
+        '''
+        Updates the hostnames, hostname wildcards, IP addresses, and IP address ranges
+        that Tenable.io matches against targets in auto-routed scans
+
+        :devportal:`scanner-groups: edit-routes <scanner-groups-edit-routes>`
+
+        Args:
+            group_id (int): The unique identifier of the scanner group
+            routes (list): The list of routes for scanner group
+
+        Returns:
+            :obj:`None`:
+                The scanner group routes has been successfully updated
+
+         Examples:
+            >>> tio.scanner_groups.edit_routes(1, ['127.0.0.1'])
+        '''
+        payload = {'routes': self._check('routes', routes, list)}
+
+        self._api.put('scanner-groups/{}/routes'.format(
+            self._check('group_id', group_id, int)), json=payload)

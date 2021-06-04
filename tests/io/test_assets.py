@@ -216,3 +216,48 @@ def test_assets_move_assets_success(api, network):
         '00000000-0000-0000-0000-000000000000', network['uuid'], ['192.168.254.1'])
     check(resp['response']['data'], 'asset_count', int)
     assert resp['response']['data']['asset_count'] == 1
+
+def test_assets_bulk_delete_filter_type_typeerror(api):
+    '''
+    test to raise exception when type of filter_type param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.assets.bulk_delete(filter_type=1)
+
+@pytest.mark.vcr()
+def test_assets_bulk_delete_filter_type_unexpectedvalueerror(api):
+    '''
+    test to raise exception when filter_type param value does not match the choices.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        api.assets.bulk_delete(filter_type='NOT')
+
+@pytest.mark.vcr()
+def test_assets_bulk_delete_bad_filter(api):
+    '''
+    test to raise exception when filter_type param value does not match the choices.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        api.assets.bulk_delete(('operating_system', 'contains', 'Linux'))
+
+@pytest.mark.vcr()
+def test_assets_bulk_delete_success(api):
+    '''
+    test to delete multiple assets
+    '''
+    api.assets.asset_import('pytest', {
+        'fqdn': ['example1.py.test'],
+        'ipv4': ['192.168.254.1'],
+        'netbios_name': '',
+        'mac_address': []
+    })
+    api.assets.asset_import('pytest', {
+        'fqdn': ['example2.py.test'],
+        'ipv4': ['192.168.254.1'],
+        'netbios_name': '',
+        'mac_address': []
+    })
+    time.sleep(5)
+    resp = api.assets.bulk_delete(('ipv4', 'eq', '192.168.254.1'))
+    check(resp['response']['data'], 'asset_count', int)
+    assert resp['response']['data']['asset_count'] == 2

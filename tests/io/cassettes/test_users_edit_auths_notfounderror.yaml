@@ -1,6 +1,7 @@
+---
 interactions:
   - request:
-      body: '{"auto_unlink": {"enabled": false}}'
+      body: null
       headers:
         Accept:
           - '*/*'
@@ -8,26 +9,22 @@ interactions:
           - gzip, deflate
         Connection:
           - keep-alive
-        Content-Length:
-          - '35'
-        Content-Type:
-          - application/json
         User-Agent:
           - Integration/1.0
             (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.2.8
             (pyTenable/1.2.8; Python/3.8.6; Windows/AMD64)
         X-APIKeys:
           - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
-      method: PUT
-      uri: https://cloud.tenable.com/scanners/1/agents/config
+      method: GET
+      uri: https://cloud.tenable.com/users/1/authorizations
     response:
       body:
         string: !!binary |
-          H4sIAAAAAAAAAwXBQQrAIAwEwL/s2UvpLZ+RiBGkEkUTWhD/3pkNduvRtVV9QBuinJpkUOG2JEC+
-          USdb7Qq6rxOwerGXp0QfmU1ANl3OD3jIqeBIAAAA
+          H4sIAAAAAAAAA6tWKi5JLCktds5PSVWyMjEw0VFKLSrKL1KyUvLLL1Fwyy/NS1HSUcpNLS5OTE9F
+          Ea0FAMTwqAY8AAAA
       headers:
         Cache-Control:
-          - no-cache
+          - no-store
         Connection:
           - keep-alive
         Content-Encoding:
@@ -35,9 +32,11 @@ interactions:
         Content-Type:
           - application/json; charset=utf-8
         Date:
-          - Thu, 25 Mar 2021 09:38:55 GMT
-        Server:
-          - tenable.io
+          - Thu, 08 Apr 2021 10:22:07 GMT
+        Expect-CT:
+          - enforce, max-age=86400
+        Pragma:
+          - no-cache
         Set-Cookie:
           - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
           - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
@@ -50,12 +49,12 @@ interactions:
         X-Content-Type-Options:
           - nosniff
         X-Gateway-Site-ID:
-          - nginx-router-2kedp-ap-southeast-1-prod
+          - nginx-router-uccx6-ap-southeast-1-prod
         X-Request-Uuid:
-          - 3f42bcc8cceeb79bc1f7b42d4b62af1c
+          - 9597133439ddd4f81ace49723409f5d0
         X-XSS-Protection:
           - 1; mode=block
       status:
-        code: 200
-        message: OK
+        code: 404
+        message: Not Found
 version: 1

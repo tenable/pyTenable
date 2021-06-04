@@ -1,0 +1,127 @@
+---
+interactions:
+  - request:
+      body: '{"name": "ee426bf7-8aaa-4b89-8e14-1ff2c1434972",
+      "type": "load_balancing"}'
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        Content-Length:
+          - '74'
+        Content-Type:
+          - application/json
+        User-Agent:
+          - Integration/1.0
+            (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.2.8
+            (pyTenable/1.2.8; Python/3.8.6; Windows/AMD64)
+        X-APIKeys:
+          - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+      method: POST
+      uri: https://cloud.tenable.com/scanner-groups
+    response:
+      body:
+        string: !!binary |
+          H4sIAAAAAAAAA3WP2WrFIBRF/+U854Aa45CfkeNUhMRcoqFcSv+9BtK+9XWz9vQF4UzUy1FdpJ5g
+          5YorLY3mcoKNWnf7EUsu4T/m+KzpdCXCKgTj0qhHghXau/W0wy9zXTcFScxMGKZRk1pQUpRomSFc
+          kvEmWKuWpIYnpkzX1t0rnXtpbZS3u3iCFqi6cFy1w8omeFJz9sp7GdCwnFEKskjEAtqFuCbPeAw0
+          Uvv7NfbDdlB0njaqodSPoVfabz0lKZTPGg0RofTGoklcIs9ZBC5nabUY9N3IhZ3V3//H/zz+/gFm
+          7UnTVgEAAA==
+      headers:
+        Cache-Control:
+          - no-store
+        Connection:
+          - keep-alive
+        Content-Encoding:
+          - gzip
+        Content-Type:
+          - application/json; charset=utf-8
+        Date:
+          - Fri, 26 Mar 2021 08:51:55 GMT
+        Expect-CT:
+          - enforce, max-age=86400
+        Pragma:
+          - no-cache
+        Server:
+          - tenable.io
+        Set-Cookie:
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+        Strict-Transport-Security:
+          - max-age=63072000; includeSubDomains
+        Transfer-Encoding:
+          - chunked
+        Vary:
+          - accept-encoding
+        X-Content-Type-Options:
+          - nosniff
+        X-Gateway-Site-ID:
+          - nginx-router-j8vzq-ap-southeast-1-prod
+        X-Request-Uuid:
+          - 6e6b50dcb1739feb6c50b064fdf74a77
+        X-XSS-Protection:
+          - 1; mode=block
+      status:
+        code: 200
+        message: OK
+  - request:
+      body: null
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        Content-Length:
+          - '0'
+        Cookie:
+          - nginx-cloud-site-id=us-2b
+        User-Agent:
+          - Integration/1.0
+            (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.2.8
+            (pyTenable/1.2.8; Python/3.8.6; Windows/AMD64)
+        X-APIKeys:
+          - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+      method: DELETE
+      uri: https://cloud.tenable.com/scanner-groups/129364
+    response:
+      body:
+        string: ''
+      headers:
+        Cache-Control:
+          - no-store
+        Connection:
+          - keep-alive
+        Date:
+          - Fri, 26 Mar 2021 08:51:56 GMT
+        Expect-CT:
+          - enforce, max-age=86400
+        Pragma:
+          - no-cache
+        Server:
+          - tenable.io
+        Set-Cookie:
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+        Strict-Transport-Security:
+          - max-age=63072000; includeSubDomains
+        Transfer-Encoding:
+          - chunked
+        X-Content-Type-Options:
+          - nosniff
+        X-Frame-Options:
+          - DENY
+        X-Gateway-Site-ID:
+          - nginx-router-j8vzq-ap-southeast-1-prod
+        X-Request-Uuid:
+          - 3637607f62fb6dfa3f82ae87b48baf97
+        X-Xss-Protection:
+          - 1; mode=block
+      status:
+        code: 200
+        message: OK
+version: 1

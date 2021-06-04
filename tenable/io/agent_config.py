@@ -13,9 +13,12 @@ Methods available on ``tio.agent_config``:
     .. automethod:: edit
     .. automethod:: details
 '''
-from .base import TIOEndpoint
+from tenable.io.base import TIOEndpoint
 
 class AgentConfigAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to agent config
+    '''
     def edit(self, scanner_id=1, software_update=None, auto_unlink=None):
         '''
         Edits the agent configuration.
@@ -56,7 +59,7 @@ class AgentConfigAPI(TIOEndpoint):
         payload = {'auto_unlink': {}}
         if not scanner_id:
             scanner_id = 1
-        if self._check('software_update', software_update, bool):
+        if self._check('software_update', software_update, bool) in [True, False]:
             payload['software_update'] = software_update
         if auto_unlink:
             payload['auto_unlink']['enabled'] = True
@@ -69,7 +72,7 @@ class AgentConfigAPI(TIOEndpoint):
         return self._api.put(
             'scanners/{}/agents/config'.format(
                 self._check('scanner_id', scanner_id, int)
-            )).json()
+            ), json=payload).json()
 
     def details(self, scanner_id=1):
         '''
