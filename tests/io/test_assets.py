@@ -6,7 +6,7 @@ import uuid
 import pytest
 from tenable.errors import UnexpectedValueError, PermissionError
 from tests.checker import check, single
-from tests.io.test_networks import network
+from tests.io.test_networks import fixture_network
 
 @pytest.mark.vcr()
 def test_assets_list(api):
