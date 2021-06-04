@@ -17,10 +17,14 @@ Methods available on ``tio.assets``:
     .. automethod:: list
     .. automethod:: list_import_jobs
     .. automethod:: tags
+    .. automethod:: bulk_delete
 '''
-from .base import TIOEndpoint
+from tenable.io.base import TIOEndpoint
 
 class AssetsAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to Assets
+    '''
     def list(self):
         '''
         Returns a list of assets.
@@ -99,7 +103,8 @@ class AssetsAPI(TIOEndpoint):
 
         Examples:
             >>> asset = tio.assets.assign_tags(
-            ...     'add', ['00000000-0000-0000-0000-000000000000'], ['00000000-0000-0000-0000-000000000000'])
+            ...     'add', ['00000000-0000-0000-0000-000000000000'],
+            ...     ['00000000-0000-0000-0000-000000000000'])
         '''
         return self._api.post(
             'tags/assets/assignments', json={
@@ -208,3 +213,40 @@ class AssetsAPI(TIOEndpoint):
                 self._check('uuid', uuid, str)
             )).json()
 
+    def bulk_delete(self, *filters, filter_type=None):
+        '''
+        Deletes the specified assets.
+
+        :devportal:`assets: bulk_delete <assets-bulk-delete>`
+
+        Args:
+             *filters (tuple):
+                A defined filter tuple consisting of the name, operator, and
+                value.  Example: ``('host.hostname', 'match', 'asset.com')``.
+            filter_type (str, optional):
+                If multiple filters are defined, the filter_type toggles the
+                behavior as to how these filters are used.  Either all of the
+                filters have to match (``AND``) or any of the filters have to
+                match (``OR``).  If not specified, the default behavior is to
+                assume filter_type is ``AND``.
+
+        Returns:
+            :obj:`dict`:
+                Returns the number of deleted assets.
+
+        Examples:
+            >>> asset = tio.assets.bulk_delete(
+            ...     ('host.hostname', 'match', 'asset.com'), filter_type='or')
+            >>> pprint(asset)
+        '''
+        payload = dict()
+
+        # run the rules through the filter parser...
+        filter_type = self._check('filter_type', filter_type, str,
+            choices=['and', 'or'], default='and', case='lower')
+        parsed = self._parse_filters(
+            filters, self._api.filters.workbench_asset_filters(), rtype='assets')['asset']
+
+        payload['query'] = {filter_type: parsed}
+
+        return self._api.post('api/v2/assets/bulk-jobs/delete', json=payload).json()

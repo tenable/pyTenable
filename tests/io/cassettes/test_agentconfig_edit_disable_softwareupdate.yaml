@@ -1,6 +1,6 @@
 interactions:
   - request:
-      body: '{"auto_unlink": {"enabled": false}}'
+      body: '{"auto_unlink": {}, "software_update": false}'
       headers:
         Accept:
           - '*/*'
@@ -9,7 +9,7 @@ interactions:
         Connection:
           - keep-alive
         Content-Length:
-          - '35'
+          - '45'
         Content-Type:
           - application/json
         User-Agent:
@@ -23,8 +23,8 @@ interactions:
     response:
       body:
         string: !!binary |
-          H4sIAAAAAAAAAwXBQQrAIAwEwL/s2UvpLZ+RiBGkEkUTWhD/3pkNduvRtVV9QBuinJpkUOG2JEC+
-          USdb7Qq6rxOwerGXp0QfmU1ANl3OD3jIqeBIAAAA
+          H4sIAAAAAAAAAy3KMQrAIAwF0Lv82aV0y2UkxQhSiaIJLYh379I3vwV2a9G1Fr1BC6J8VUmgzHVK
+          gLy9DLbSFHQeO2C2bA8Pid4Tm/xxf4ajd3xJAAAA
       headers:
         Cache-Control:
           - no-cache
@@ -35,7 +35,7 @@ interactions:
         Content-Type:
           - application/json; charset=utf-8
         Date:
-          - Thu, 25 Mar 2021 09:38:55 GMT
+          - Thu, 25 Mar 2021 09:39:01 GMT
         Server:
           - tenable.io
         Set-Cookie:
@@ -50,9 +50,9 @@ interactions:
         X-Content-Type-Options:
           - nosniff
         X-Gateway-Site-ID:
-          - nginx-router-2kedp-ap-southeast-1-prod
+          - nginx-router-iqdhs-ap-southeast-1-prod
         X-Request-Uuid:
-          - 3f42bcc8cceeb79bc1f7b42d4b62af1c
+          - f502d4c6b359700ad5f7a59b85fff462
         X-XSS-Protection:
           - 1; mode=block
       status:

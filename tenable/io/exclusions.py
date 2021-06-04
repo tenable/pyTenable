@@ -16,12 +16,16 @@ Methods available on ``tio.exclusions``:
     .. automethod:: details
     .. automethod:: edit
     .. automethod:: list
+    .. automethod:: exclusions_import
 '''
-from restfly.utils import dict_merge
-from .base import TIOEndpoint
 from datetime import datetime
+from restfly.utils import dict_merge
+from tenable.io.base import TIOEndpoint
 
 class ExclusionsAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to exclusions
+    '''
     def create(self, name, members, start_time=None, end_time=None,
                timezone=None, description=None, frequency=None,
                interval=None, weekdays=None, day_of_month=None,
@@ -62,7 +66,8 @@ class ExclusionsAPI(TIOEndpoint):
             enabled (bool, optional):
                 enable/disable exclusion. The default is ``True``
             network_id (uuid, optional):
-                The ID of the network object associated with scanners where Tenable.io applies the exclusion.
+                The ID of the network object associated with scanners
+                where Tenable.io applies the exclusion.
 
         Returns:
             :obj:`dict`:
@@ -152,11 +157,12 @@ class ExclusionsAPI(TIOEndpoint):
         if enabled is True:
             schedule = {
                 'enabled': True,
-                'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
+                'starttime':
+                    self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
+                'endtime':
+                    self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
                 'timezone': self._check('timezone', timezone, str,
-                                        choices=self._api._tz,
-                                        default='Etc/UTC'),
+                    choices=self._api._tz, default='Etc/UTC'),
                 'rrules': rrules
             }
         elif enabled is False:
@@ -177,14 +183,14 @@ class ExclusionsAPI(TIOEndpoint):
         # And now to make the call and return the data.
         return self._api.post('exclusions', json=payload).json()
 
-    def delete(self, id):
+    def delete(self, exclusion_id):
         '''
         Delete a scan target exclusion.
 
         :devportal:`exclusions: delete <exclusions-delete>`
 
         Args:
-            id (int): The exclusion identifier to delete
+            exclusion_id (int): The exclusion identifier to delete
 
         Returns:
             :obj:`None`:
@@ -193,16 +199,16 @@ class ExclusionsAPI(TIOEndpoint):
         Examples:
             >>> tio.exclusions.delete(1)
         '''
-        self._api.delete('exclusions/{}'.format(self._check('id', id, int)))
+        self._api.delete('exclusions/{}'.format(self._check('exclusion_id', exclusion_id, int)))
 
-    def details(self, id):
+    def details(self, exclusion_id):
         '''
         Retrieve the details for a specific scan target exclusion.
 
         :devportal:`exclusions: details <exclusions-details>`
 
         Args:
-            id (int): The exclusion identifier.
+            exclusion_id (int): The exclusion identifier.
 
         Returns:
             :obj:`dict`:
@@ -213,9 +219,9 @@ class ExclusionsAPI(TIOEndpoint):
             >>> pprint(exclusion)
         '''
         return self._api.get(
-            'exclusions/{}'.format(self._check('id', id, int))).json()
+            'exclusions/{}'.format(self._check('exclusion_id', exclusion_id, int))).json()
 
-    def edit(self, id, name=None, members=None, start_time=None,
+    def edit(self, exclusion_id, name=None, members=None, start_time=None,
              end_time=None, timezone=None, description=None, frequency=None,
              interval=None, weekdays=None, day_of_month=None, enabled=None, network_id=None):
         '''
@@ -228,7 +234,7 @@ class ExclusionsAPI(TIOEndpoint):
         then be pushed back to the API to modify the exclusion.
 
         Args:
-            id (int): The id of the exclusion object in Tenable.io
+            exclusion_id (int): The id of the exclusion object in Tenable.io
             scanner_id (int, optional): The scanner id.
             name (str, optional): The name of the exclusion to create.
             description (str, optional):
@@ -252,7 +258,8 @@ class ExclusionsAPI(TIOEndpoint):
             enabled (bool, optional):
                 enable/disable exclusion.
             network_id (uuid, optional):
-                The ID of the network object associated with scanners where Tenable.io applies the exclusion.
+                The ID of the network object associated with scanners
+                where Tenable.io applies the exclusion.
 
         Returns:
             :obj:`dict`:
@@ -265,7 +272,7 @@ class ExclusionsAPI(TIOEndpoint):
         '''
 
         # Lets start constructing the payload to be sent to the API...
-        payload = self.details(id)
+        payload = self.details(exclusion_id)
 
         if name:
             payload['name'] = self._check('name', name, str)
@@ -337,9 +344,8 @@ class ExclusionsAPI(TIOEndpoint):
                 payload['schedule']['rrules']['interval'] = self._check(
                     'interval', interval, int)
 
-            payload['schedule']['timezone'] = self._check('timezone', timezone, str,
-                                                          choices=self._api._tz,
-                                                          default='Etc/UTC')
+            payload['schedule']['timezone'] = self._check(
+                'timezone', timezone, str, choices=self._api._tz, default='Etc/UTC')
 
         if network_id:
             payload['network_id'] = self._check('network_id', network_id, 'uuid')
@@ -349,7 +355,7 @@ class ExclusionsAPI(TIOEndpoint):
         # error, then lets make the call.
         return self._api.put(
             'exclusions/{}'.format(
-                self._check('id', id, int)
+                self._check('exclusion_id', exclusion_id, int)
             ), json=payload).json()
 
     def list(self):
@@ -367,3 +373,24 @@ class ExclusionsAPI(TIOEndpoint):
             ...     pprint(exclusion)
         '''
         return self._api.get('exclusions').json()['exclusions']
+
+    def exclusions_import(self, fobj):
+        '''
+        Import exclusions into Tenable.io.
+
+        :devportal:`exclusions: import <exclusions-import>`
+
+        Args:
+            fobj (FileObject):
+                The file object of the exclusion(s) you wish to import.
+
+        Returns:
+            :obj:`None`:
+                Returned if Tenable.io successfully imports the exclusion file.
+
+        Examples:
+            >>> with open('import_example.csv') as exclusion:
+            ...     tio.exclusions.exclusions_import(exclusion)
+        '''
+        fid = self._api.files.upload(fobj)
+        return self._api.post('exclusions/import', json={'file': fid})

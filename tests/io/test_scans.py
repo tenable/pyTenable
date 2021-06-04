@@ -11,6 +11,23 @@ from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputErro
 from tests.checker import check, single
 from tests.io.conftest import SCAN_ID_WITH_RESULTS
 
+@pytest.fixture
+def scheduled_scan(request, api):
+    schedule_scan = api.scans.create_scan_schedule(enabled=True)
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        template='basic',
+        targets=['127.0.0.1'],
+        schedule_scan=schedule_scan
+    )
+    def teardown():
+        try:
+            api.scans.delete(scan['id'])
+        except NotFoundError:
+            pass
+    request.addfinalizer(teardown)
+    return scan
+
 @pytest.mark.vcr()
 def test_scan_create_scan_document_template_typeerror(api):
     '''
@@ -123,6 +140,106 @@ def test_scan_attachement_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scans.attachment(1, 1, 'none')
 
+@pytest.mark.vcr()
+def test_scan_create_scan_schedule_freq_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.create_scan_schedule(enabled=True, frequency=1)
+
+@pytest.mark.vcr()
+def test_scan_create_scan_schedule_freq_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.create_scan_schedule(enabled=True, frequency='nope')
+
+@pytest.mark.vcr()
+def test_scan_create_scan_schedule_interval_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.create_scan_schedule(enabled=True, interval='nope')
+
+@pytest.mark.vcr()
+def test_scan_create_scan_schedule_day_of_month_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.create_scan_schedule(enabled=True, frequency='monthly', day_of_month='nope')
+
+@pytest.mark.vcr()
+def test_scan_create_scan_schedule_day_of_month_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.create_scan_schedule(enabled=True, frequency='monthly', day_of_month=300)
+
+@pytest.mark.vcr()
+def test_scan_create_scan_schedule_weekdays_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.create_scan_schedule(enabled=True, frequency='weekly', weekdays='nope')
+
+@pytest.mark.vcr()
+def test_scan_create_scan_schedule_weekdays_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.create_scan_schedule(enabled=True, frequency='weekly', weekdays=['MO', 'WE', 'nope'])
+
+@pytest.mark.vcr()
+def test_scan_create_scan_schedule_starttime_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.create_scan_schedule(enabled=True, starttime='fail')
+
+@pytest.mark.vcr()
+def test_scan_create_scan_schedule_timezone_typeerror(api):
+    with pytest.raises(TypeError):
+        api.scans.create_scan_schedule(enabled=True, timezone=1)
+
+@pytest.mark.vcr()
+def test_scan_create_scan_schedule_timezone_unexpectedvalueerror(api):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.create_scan_schedule(enabled=True, timezone='the zone of time')
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_freq_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency=1)
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_freq_unexpectedvalueerror(api, scan):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='nope')
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_interval_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, interval='nope')
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_day_of_month_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='monthly', day_of_month='nope')
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_day_of_month_unexpectedvalueerror(api, scan):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='monthly', day_of_month=300)
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_weekdays_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='weekly', weekdays='nope')
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_weekdays_unexpectedvalueerror(api, scan):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='weekly', weekdays=['MO', 'WE', 'nope'])
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_starttime_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, starttime='fail')
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_timezone_typeerror(api, scan):
+    with pytest.raises(TypeError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, timezone=1)
+
+@pytest.mark.vcr()
+def test_scan_configure_scan_schedule_timezone_unexpectedvalueerror(api, scan):
+    with pytest.raises(UnexpectedValueError):
+        api.scans.configure_scan_schedule(scan['id'], enabled=True, timezone='the zone of time')
+
 #@pytest.mark.vcr()
 #def test_scan_configure_id_typeerror(api):
 #    with pytest.raises(TypeError):
@@ -149,6 +266,320 @@ def test_scan_configure(api, scan):
     mod = api.scans.configure(scan['id'], name='MODIFIED')
     assert mod['id'] == scan['id']
     assert mod['name'] == 'MODIFIED'
+
+@pytest.mark.vcr()
+def test_scan_configure_schedule_onetime_to_daily(api, scheduled_scan):
+    schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='daily')
+    mod = api.scans.configure(scheduled_scan['id'],
+        schedule_scan=schedule)
+    assert isinstance(mod, dict)
+    check(mod, 'creation_date', int)
+    check(mod, 'custom_targets', str)
+    check(mod, 'default_permissions', int)
+    check(mod, 'description', str, allow_none=True)
+    check(mod, 'emails', str, allow_none=True)
+    check(mod, 'enabled', bool)
+    check(mod, 'id', int)
+    check(mod, 'last_modification_date', int)
+    check(mod, 'owner', str)
+    check(mod, 'owner_id', int)
+    check(mod, 'policy_id', int)
+    check(mod, 'name', str)
+    check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'shared', int)
+    check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'timezone', str, allow_none=True)
+    check(mod, 'type', str)
+    check(mod, 'user_permissions', int)
+    check(mod, 'uuid', str)
+    assert mod['id'] == scheduled_scan['id']
+    assert mod['enabled'] == True
+    assert mod['rrules'] == 'FREQ=DAILY;INTERVAL=1'
+
+@pytest.mark.vcr()
+def test_scan_configure_schedule_onetime_to_weekly_valdefault(api, scheduled_scan):
+    schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='weekly')
+    mod = api.scans.configure(scheduled_scan['id'],
+        schedule_scan=schedule)
+    assert isinstance(mod, dict)
+    check(mod, 'creation_date', int)
+    check(mod, 'custom_targets', str)
+    check(mod, 'default_permissions', int)
+    check(mod, 'description', str, allow_none=True)
+    check(mod, 'emails', str, allow_none=True)
+    check(mod, 'enabled', bool)
+    check(mod, 'id', int)
+    check(mod, 'last_modification_date', int)
+    check(mod, 'owner', str)
+    check(mod, 'owner_id', int)
+    check(mod, 'policy_id', int)
+    check(mod, 'name', str)
+    check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'shared', int)
+    check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'timezone', str, allow_none=True)
+    check(mod, 'type', str)
+    check(mod, 'user_permissions', int)
+    check(mod, 'uuid', str)
+    assert mod['id'] == scheduled_scan['id']
+    assert mod['enabled'] == True
+    assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=SU,MO,TU,WE,TH,FR,SA'
+
+@pytest.mark.vcr()
+def test_scan_configure_schedule_onetime_to_weekly_valassigned(api, scheduled_scan):
+    schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='weekly', weekdays=['MO', 'TU'])
+    mod = api.scans.configure(scheduled_scan['id'],
+        schedule_scan=schedule)
+    assert isinstance(mod, dict)
+    check(mod, 'creation_date', int)
+    check(mod, 'custom_targets', str)
+    check(mod, 'default_permissions', int)
+    check(mod, 'description', str, allow_none=True)
+    check(mod, 'emails', str, allow_none=True)
+    check(mod, 'enabled', bool)
+    check(mod, 'id', int)
+    check(mod, 'last_modification_date', int)
+    check(mod, 'owner', str)
+    check(mod, 'owner_id', int)
+    check(mod, 'policy_id', int)
+    check(mod, 'name', str)
+    check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'shared', int)
+    check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'timezone', str, allow_none=True)
+    check(mod, 'type', str)
+    check(mod, 'user_permissions', int)
+    check(mod, 'uuid', str)
+    assert mod['id'] == scheduled_scan['id']
+    assert mod['enabled'] == True
+    assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU'
+
+@pytest.mark.vcr()
+def test_scan_configure_schedule_freq_weekly_valavailable(api):
+    create_schedule = api.scans.create_scan_schedule(enabled=True, frequency='weekly', weekdays=['MO', 'TU'])
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        template='basic',
+        targets=['127.0.0.1'],
+        schedule_scan=create_schedule)
+    update_schedule = api.scans.configure_scan_schedule(id=scan['id'], interval=2)
+    mod = api.scans.configure(scan['id'],
+        schedule_scan=update_schedule)
+    assert isinstance(mod, dict)
+    check(mod, 'creation_date', int)
+    check(mod, 'custom_targets', str)
+    check(mod, 'default_permissions', int)
+    check(mod, 'description', str, allow_none=True)
+    check(mod, 'emails', str, allow_none=True)
+    check(mod, 'enabled', bool)
+    check(mod, 'id', int)
+    check(mod, 'last_modification_date', int)
+    check(mod, 'owner', str)
+    check(mod, 'owner_id', int)
+    check(mod, 'policy_id', int)
+    check(mod, 'name', str)
+    check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'shared', int)
+    check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'timezone', str, allow_none=True)
+    check(mod, 'type', str)
+    check(mod, 'user_permissions', int)
+    check(mod, 'uuid', str)
+    assert mod['id'] == scan['id']
+    assert mod['enabled'] == True
+    assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TU'
+    api.scans.delete(mod['id'])
+
+@pytest.mark.vcr()
+def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_scan):
+    schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='monthly')
+    mod = api.scans.configure(scheduled_scan['id'],
+        schedule_scan=schedule)
+    assert isinstance(mod, dict)
+    check(mod, 'creation_date', int)
+    check(mod, 'custom_targets', str)
+    check(mod, 'default_permissions', int)
+    check(mod, 'description', str, allow_none=True)
+    check(mod, 'emails', str, allow_none=True)
+    check(mod, 'enabled', bool)
+    check(mod, 'id', int)
+    check(mod, 'last_modification_date', int)
+    check(mod, 'owner', str)
+    check(mod, 'owner_id', int)
+    check(mod, 'policy_id', int)
+    check(mod, 'name', str)
+    check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'shared', int)
+    check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'timezone', str, allow_none=True)
+    check(mod, 'type', str)
+    check(mod, 'user_permissions', int)
+    check(mod, 'uuid', str)
+    assert mod['id'] == scheduled_scan['id']
+    assert mod['enabled'] == True
+    assert mod['rrules'].split(';')[0] == 'FREQ=MONTHLY'
+    api.scans.delete(mod['id'])
+
+@pytest.mark.vcr()
+def test_scan_configure_schedule_onetime_to_monthly_valassigned(api, scheduled_scan):
+    schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='monthly', day_of_month=8)
+    mod = api.scans.configure(scheduled_scan['id'],
+        schedule_scan=schedule)
+    assert isinstance(mod, dict)
+    check(mod, 'creation_date', int)
+    check(mod, 'custom_targets', str)
+    check(mod, 'default_permissions', int)
+    check(mod, 'description', str, allow_none=True)
+    check(mod, 'emails', str, allow_none=True)
+    check(mod, 'enabled', bool)
+    check(mod, 'id', int)
+    check(mod, 'last_modification_date', int)
+    check(mod, 'owner', str)
+    check(mod, 'owner_id', int)
+    check(mod, 'policy_id', int)
+    check(mod, 'name', str)
+    check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'shared', int)
+    check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'timezone', str, allow_none=True)
+    check(mod, 'type', str)
+    check(mod, 'user_permissions', int)
+    check(mod, 'uuid', str)
+    assert mod['id'] == scheduled_scan['id']
+    assert mod['enabled'] == True
+    assert mod['rrules'] == 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=8'
+
+@pytest.mark.vcr()
+def test_scan_configure_schedule_freq_monthly_valavailable(api):
+    create_schedule = api.scans.create_scan_schedule(enabled=True, frequency='monthly', day_of_month=8)
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        template='basic',
+        targets=['127.0.0.1'],
+        schedule_scan=create_schedule)
+    update_schedule = api.scans.configure_scan_schedule(scan['id'], interval=2)
+    mod = api.scans.configure(scan['id'],
+        schedule_scan=update_schedule)
+    assert isinstance(mod, dict)
+    check(mod, 'creation_date', int)
+    check(mod, 'custom_targets', str)
+    check(mod, 'default_permissions', int)
+    check(mod, 'description', str, allow_none=True)
+    check(mod, 'emails', str, allow_none=True)
+    check(mod, 'enabled', bool)
+    check(mod, 'id', int)
+    check(mod, 'last_modification_date', int)
+    check(mod, 'owner', str)
+    check(mod, 'owner_id', int)
+    check(mod, 'policy_id', int)
+    check(mod, 'name', str)
+    check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'shared', int)
+    check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'timezone', str, allow_none=True)
+    check(mod, 'type', str)
+    check(mod, 'user_permissions', int)
+    check(mod, 'uuid', str)
+    assert mod['id'] == scan['id']
+    assert mod['enabled'] == True
+    assert mod['rrules'] == 'FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=8'
+    api.scans.delete(mod['id'])
+
+@pytest.mark.vcr()
+def test_scan_configure_schedule_freq_yearly(api, scheduled_scan):
+    update_schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='yearly', interval=2)
+    mod = api.scans.configure(scheduled_scan['id'],
+        schedule_scan=update_schedule)
+    assert isinstance(mod, dict)
+    check(mod, 'creation_date', int)
+    check(mod, 'custom_targets', str)
+    check(mod, 'default_permissions', int)
+    check(mod, 'description', str, allow_none=True)
+    check(mod, 'emails', str, allow_none=True)
+    check(mod, 'enabled', bool)
+    check(mod, 'id', int)
+    check(mod, 'last_modification_date', int)
+    check(mod, 'owner', str)
+    check(mod, 'owner_id', int)
+    check(mod, 'policy_id', int)
+    check(mod, 'name', str)
+    check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'shared', int)
+    check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'timezone', str, allow_none=True)
+    check(mod, 'type', str)
+    check(mod, 'user_permissions', int)
+    check(mod, 'uuid', str)
+    assert mod['id'] == scheduled_scan['id']
+    assert mod['enabled'] == True
+    assert mod['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
+
+@pytest.mark.vcr()
+def test_scan_configure_enable_scan_schedule(api, scan):
+    schedule = api.scans.configure_scan_schedule(scan['id'], enabled=True)
+    mod = api.scans.configure(scan['id'],
+        schedule_scan=schedule)
+    assert isinstance(mod, dict)
+    check(mod, 'creation_date', int)
+    check(mod, 'custom_targets', str)
+    check(mod, 'default_permissions', int)
+    check(mod, 'description', str, allow_none=True)
+    check(mod, 'emails', str, allow_none=True)
+    check(mod, 'enabled', bool)
+    check(mod, 'id', int)
+    check(mod, 'last_modification_date', int)
+    check(mod, 'owner', str)
+    check(mod, 'owner_id', int)
+    check(mod, 'policy_id', int)
+    check(mod, 'name', str)
+    check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'shared', int)
+    check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'timezone', str, allow_none=True)
+    check(mod, 'type', str)
+    check(mod, 'user_permissions', int)
+    check(mod, 'uuid', str)
+    assert mod['id'] == scan['id']
+    assert mod['enabled'] == True
+    assert mod['rrules'] == 'FREQ=ONETIME;INTERVAL=1'
+
+@pytest.mark.vcr()
+def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
+    schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], enabled=False)
+    mod = api.scans.configure(scheduled_scan['id'],
+        schedule_scan=schedule)
+    assert isinstance(mod, dict)
+    check(mod, 'creation_date', int)
+    check(mod, 'custom_targets', str)
+    check(mod, 'default_permissions', int)
+    check(mod, 'description', str, allow_none=True)
+    check(mod, 'emails', str, allow_none=True)
+    check(mod, 'enabled', bool)
+    check(mod, 'id', int)
+    check(mod, 'last_modification_date', int)
+    check(mod, 'owner', str)
+    check(mod, 'owner_id', int)
+    check(mod, 'policy_id', int)
+    check(mod, 'name', str)
+    check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'shared', int)
+    check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'timezone', str, allow_none=True)
+    check(mod, 'type', str)
+    check(mod, 'user_permissions', int)
+    check(mod, 'uuid', str)
+    assert mod['id'] == scheduled_scan['id']
+    assert mod['enabled'] == False
 
 #@pytest.mark.vcr()
 #def test_scan_copy_scan_id_typeerror(api):
@@ -230,6 +661,244 @@ def test_scan_create_no_template_pass(scan):
     check(scan, 'type', str)
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', str)
+
+@pytest.mark.vcr()
+def test_scan_create_scheduled_scan_default_schedule(api):
+    schedule_scan = api.scans.create_scan_schedule(enabled=True)
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        template='basic',
+        targets=['127.0.0.1'],
+        schedule_scan=schedule_scan
+    )
+    assert isinstance(scan, dict)
+    check(scan, 'creation_date', int)
+    check(scan, 'custom_targets', str)
+    check(scan, 'default_permissions', int)
+    check(scan, 'description', str, allow_none=True)
+    check(scan, 'emails', str, allow_none=True)
+    check(scan, 'enabled', bool)
+    check(scan, 'id', int)
+    check(scan, 'last_modification_date', int)
+    check(scan, 'owner', str)
+    check(scan, 'owner_id', int)
+    check(scan, 'policy_id', int)
+    check(scan, 'name', str)
+    check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'shared', int)
+    check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'timezone', str, allow_none=True)
+    check(scan, 'type', str)
+    check(scan, 'user_permissions', int)
+    check(scan, 'uuid', str)
+    assert scan['enabled'] == True
+    assert scan['rrules'] == 'FREQ=ONETIME;INTERVAL=1'
+    api.scans.delete(scan['id'])
+
+@pytest.mark.vcr()
+def test_scan_create_scheduled_scan_freq_daily(api):
+    schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='daily')
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        template='basic',
+        targets=['127.0.0.1'],
+        schedule_scan=schedule_scan
+    )
+    assert isinstance(scan, dict)
+    check(scan, 'creation_date', int)
+    check(scan, 'custom_targets', str)
+    check(scan, 'default_permissions', int)
+    check(scan, 'description', str, allow_none=True)
+    check(scan, 'emails', str, allow_none=True)
+    check(scan, 'enabled', bool)
+    check(scan, 'id', int)
+    check(scan, 'last_modification_date', int)
+    check(scan, 'owner', str)
+    check(scan, 'owner_id', int)
+    check(scan, 'policy_id', int)
+    check(scan, 'name', str)
+    check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'shared', int)
+    check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'timezone', str, allow_none=True)
+    check(scan, 'type', str)
+    check(scan, 'user_permissions', int)
+    check(scan, 'uuid', str)
+    assert scan['enabled'] == True
+    assert scan['rrules'] == 'FREQ=DAILY;INTERVAL=1'
+    api.scans.delete(scan['id'])
+
+@pytest.mark.vcr()
+def test_scan_create_scheduled_scan_freq_weekly_valdefault(api):
+    schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='weekly')
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        template='basic',
+        targets=['127.0.0.1'],
+        schedule_scan=schedule_scan
+    )
+    assert isinstance(scan, dict)
+    check(scan, 'creation_date', int)
+    check(scan, 'custom_targets', str)
+    check(scan, 'default_permissions', int)
+    check(scan, 'description', str, allow_none=True)
+    check(scan, 'emails', str, allow_none=True)
+    check(scan, 'enabled', bool)
+    check(scan, 'id', int)
+    check(scan, 'last_modification_date', int)
+    check(scan, 'owner', str)
+    check(scan, 'owner_id', int)
+    check(scan, 'policy_id', int)
+    check(scan, 'name', str)
+    check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'shared', int)
+    check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'timezone', str, allow_none=True)
+    check(scan, 'type', str)
+    check(scan, 'user_permissions', int)
+    check(scan, 'uuid', str)
+    assert scan['enabled'] == True
+    assert scan['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=SU,MO,TU,WE,TH,FR,SA'
+    api.scans.delete(scan['id'])
+
+@pytest.mark.vcr()
+def test_scan_create_scheduled_scan_freq_weekly_valassigned(api):
+    schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='weekly', weekdays=['MO', 'TU'])
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        template='basic',
+        targets=['127.0.0.1'],
+        schedule_scan=schedule_scan
+    )
+    assert isinstance(scan, dict)
+    check(scan, 'creation_date', int)
+    check(scan, 'custom_targets', str)
+    check(scan, 'default_permissions', int)
+    check(scan, 'description', str, allow_none=True)
+    check(scan, 'emails', str, allow_none=True)
+    check(scan, 'enabled', bool)
+    check(scan, 'id', int)
+    check(scan, 'last_modification_date', int)
+    check(scan, 'owner', str)
+    check(scan, 'owner_id', int)
+    check(scan, 'policy_id', int)
+    check(scan, 'name', str)
+    check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'shared', int)
+    check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'timezone', str, allow_none=True)
+    check(scan, 'type', str)
+    check(scan, 'user_permissions', int)
+    check(scan, 'uuid', str)
+    assert scan['enabled'] == True
+    assert scan['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU'
+    api.scans.delete(scan['id'])
+
+@pytest.mark.vcr()
+def test_scan_create_scheduled_scan_freq_monthly_valdefault(api):
+    schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='monthly')
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        template='basic',
+        targets=['127.0.0.1'],
+        schedule_scan=schedule_scan
+    )
+    assert isinstance(scan, dict)
+    check(scan, 'creation_date', int)
+    check(scan, 'custom_targets', str)
+    check(scan, 'default_permissions', int)
+    check(scan, 'description', str, allow_none=True)
+    check(scan, 'emails', str, allow_none=True)
+    check(scan, 'enabled', bool)
+    check(scan, 'id', int)
+    check(scan, 'last_modification_date', int)
+    check(scan, 'owner', str)
+    check(scan, 'owner_id', int)
+    check(scan, 'policy_id', int)
+    check(scan, 'name', str)
+    check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'shared', int)
+    check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'timezone', str, allow_none=True)
+    check(scan, 'type', str)
+    check(scan, 'user_permissions', int)
+    check(scan, 'uuid', str)
+    assert scan['enabled'] == True
+    assert scan['rrules'].split(';')[0] == 'FREQ=MONTHLY'
+    api.scans.delete(scan['id'])
+
+@pytest.mark.vcr()
+def test_scan_create_scheduled_scan_freq_monthly_valassigned(api):
+    schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='monthly', day_of_month=8)
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        template='basic',
+        targets=['127.0.0.1'],
+        schedule_scan=schedule_scan
+    )
+    assert isinstance(scan, dict)
+    check(scan, 'creation_date', int)
+    check(scan, 'custom_targets', str)
+    check(scan, 'default_permissions', int)
+    check(scan, 'description', str, allow_none=True)
+    check(scan, 'emails', str, allow_none=True)
+    check(scan, 'enabled', bool)
+    check(scan, 'id', int)
+    check(scan, 'last_modification_date', int)
+    check(scan, 'owner', str)
+    check(scan, 'owner_id', int)
+    check(scan, 'policy_id', int)
+    check(scan, 'name', str)
+    check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'shared', int)
+    check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'timezone', str, allow_none=True)
+    check(scan, 'type', str)
+    check(scan, 'user_permissions', int)
+    check(scan, 'uuid', str)
+    assert scan['enabled'] == True
+    assert scan['rrules'] == 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=8'
+    api.scans.delete(scan['id'])
+
+@pytest.mark.vcr()
+def test_scan_create_scheduled_scan_freq_yearly(api):
+    schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='yearly', interval=2)
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        template='basic',
+        targets=['127.0.0.1'],
+        schedule_scan=schedule_scan
+    )
+    assert isinstance(scan, dict)
+    check(scan, 'creation_date', int)
+    check(scan, 'custom_targets', str)
+    check(scan, 'default_permissions', int)
+    check(scan, 'description', str, allow_none=True)
+    check(scan, 'emails', str, allow_none=True)
+    check(scan, 'enabled', bool)
+    check(scan, 'id', int)
+    check(scan, 'last_modification_date', int)
+    check(scan, 'owner', str)
+    check(scan, 'owner_id', int)
+    check(scan, 'policy_id', int)
+    check(scan, 'name', str)
+    check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'shared', int)
+    check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'timezone', str, allow_none=True)
+    check(scan, 'type', str)
+    check(scan, 'user_permissions', int)
+    check(scan, 'uuid', str)
+    assert scan['enabled'] == True
+    assert scan['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
+    api.scans.delete(scan['id'])
 
 @pytest.mark.vcr()
 def test_scan_create_was_scan_pass(api):
