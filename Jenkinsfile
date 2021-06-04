@@ -45,13 +45,13 @@ void unittests(String version) {
                 finally {
                     if (fileExists ('test-reports/coverage/index.html')) {
                         publishHTML(
-                            [allowMissing: parameters.allowNoCoverageReport,
-                            alwaysLinkToLastBuild: true,
-                            keepAll     : true,
-                            reportDir   : 'test-reports/coverage/',
-                            reportFiles : 'index.html',
-                            reportName  : "Coverage${version}",
-                            reportTitles: "Coverage${version}"])
+                            [allowMissing: true,
+                             alwaysLinkToLastBuild: true,
+                             keepAll     : true,
+                             reportDir   : 'test-reports/coverage/',
+                             reportFiles : 'index.html',
+                             reportName  : "Coverage${version}",
+                             reportTitles: "Coverage${version}"])
                     }
                     step([$class: 'JUnitResultArchiver', testResults: 'test-reports/junit/*.xml'])
                 }
