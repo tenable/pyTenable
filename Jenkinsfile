@@ -65,19 +65,19 @@ try {
 
     pythonVersion.each {
         version ->
-            //tasks[version] = { unittests(version) }
+            tasks[version] = { unittests(version) }
     }
 
     tasks['snyk'] = {
         stage('snyk') {
             Snyk snyk = new Snyk(this, bparams)
-            //snyk.execute()
+            snyk.execute()
         }
     }
 
     tasks['sonarqube'] = {
         stage('sonarqube') {
-            //SonarQube.execute(this, bparams)
+            SonarQube.execute(this, bparams)
         }
     }
 
