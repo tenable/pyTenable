@@ -99,3 +99,16 @@ def test_access_group_filters_v2(api):
         check(filters[data ], 'choices', list, allow_none=True)
         check(filters[data ], 'operators', list)
         check(filters[data ], 'pattern', str, allow_none=True)
+        
+@pytest.mark.vcr()
+def test_asset_tag_filters(api):
+    '''
+    test to get asset tag filters
+    '''
+    filters = api.filters.asset_tag_filters()
+    assert isinstance(filters, dict)
+    for data in filters:
+        check(filters[data], 'choices', list, allow_none=True)
+        check(filters[data], 'operators', list)
+        check(filters[data], 'pattern', str, allow_none=True)
+
