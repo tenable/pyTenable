@@ -2,6 +2,7 @@
 .. autoclass:: TenableIO
 
 .. automodule:: tenable.io.access_groups
+.. automodule:: tenable.io.access_groups_v2
 .. automodule:: tenable.io.agent_config
 .. automodule:: tenable.io.agent_exclusions
 .. automodule:: tenable.io.agent_groups
@@ -60,6 +61,7 @@ import logging, os
 from tenable.errors import UnexpectedValueError
 from tenable.base.v1 import APISession
 from .access_groups import AccessGroupsAPI
+from .access_groups_v2 import AccessGroupsV2API
 from .agent_config import AgentConfigAPI
 from .agent_exclusions import AgentExclusionsAPI
 from .agent_groups import AgentGroupsAPI
@@ -152,6 +154,10 @@ class TenableIO(APISession):
     @property
     def access_groups(self):
         return AccessGroupsAPI(self)
+
+    @property
+    def access_groups_v2(self):
+        return AccessGroupsV2API(self)
 
     @property
     def agent_config(self):

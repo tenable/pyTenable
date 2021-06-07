@@ -97,6 +97,40 @@ class FiltersAPI(TIOEndpoint):
         return self._use_cache('access_groups',
             'access-groups/filters', normalize=normalize)
 
+    def access_group_filters_v2(self, normalize=True):
+        '''
+        Returns access group filters v2.
+
+        :devportal:`filters: access_group_filters_v2 <v2-access-groups-list-filters>`
+
+        Returns:
+            :obj:`dict`:
+                Filter resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.access_group_filters_v2()
+        '''
+        return self._use_cache('access_groups_v2',
+            'v2/access-groups/filters', normalize=normalize)
+
+    def access_group_asset_rules_filters_v2(self, normalize=True):
+        '''
+        Returns access group rules filters v2.
+
+        :devportal:`filters: access_group_asset_rules_filters_v2
+            <v2-access-groups-list-rule-filters>`
+
+        Returns:
+            :obj:`dict`:
+                Filter resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.access_group_rules_filters_v2()
+        '''
+        return self._use_cache('access_group_asset_filters_v2',
+            'v2/access-groups/rules/filters',
+            field_name='rules', normalize=normalize)
+
     def agents_filters(self, normalize=True):
         '''
         Returns agent filters.
