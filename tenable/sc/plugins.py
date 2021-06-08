@@ -23,77 +23,77 @@ class PluginResultsIterator(SCResultsIterator):
 
 
 class PluginAPI(SCEndpoint):
-    def _constructor(self, **kw):
+    def _constructor(self, **kwargs):
         '''
         Constructs the plugin query.
         '''
 
-        if 'fields' in kw:
-            kw['fields'] = ','.join([self._check('field', f, str)
-                                     for f in self._check('fields', kw['fields'], list)])
+        if 'fields' in kwargs:
+            kwargs['fields'] = ','.join([self._check('field', f, str)
+                                     for f in self._check('fields', kwargs['fields'], list)])
 
-        if 'filter' in kw:
+        if 'filter' in kwargs:
             # break down the filter tuple into the various query parameters
             # that the plugin api expects.
-            self._check('filter', kw['filter'], tuple)
-            if len(kw['filter']) != 3:
+            self._check('filter', kwargs['filter'], tuple)
+            if len(kwargs['filter']) != 3:
                 raise UnexpectedValueError(
                     'the filter tuple must be name, operator, value.')
-            kw['filterField'] = self._check('filter:field', kw['filter'][0], str)
-            kw['op'] = self._check('filter:operator', kw['filter'][1], str,
+            kwargs['filterField'] = self._check('filter:field', kwargs['filter'][0], str)
+            kwargs['op'] = self._check('filter:operator', kwargs['filter'][1], str,
                                    choices=['eq', 'gt', 'gte', 'like', 'lt', 'lte'])
-            kw['value'] = self._check('filter:value', kw['filter'][2], str)
-            del (kw['filter'])
+            kwargs['value'] = self._check('filter:value', kwargs['filter'][2], str)
+            del kwargs['filter']
 
-        if 'sort_field' in kw:
+        if 'sort_field' in kwargs:
             # convert the snake_cased variant of the parameter to the camelCased
             # variant that the API expects to see.
-            kw['sortField'] = self._check(
-                'sort_field', kw['sort_field'], str)
-            del (kw['sort_field'])
+            kwargs['sortField'] = self._check(
+                'sort_field', kwargs['sort_field'], str)
+            del kwargs['sort_field']
 
-        if 'sort_direction' in kw:
+        if 'sort_direction' in kwargs:
             # convert the snake_cased variant of the parameter to the camelCased
             # variant that the API expects to see.
-            kw['sortDirection'] = self._check(
-                'sort_direction', kw['sort_direction'], str,
+            kwargs['sortDirection'] = self._check(
+                'sort_direction', kwargs['sort_direction'], str,
                 choices=['ASC', 'DESC'], case='upper')
-            del (kw['sort_direction'])
+            del kwargs['sort_direction']
 
-        if 'since' in kw:
+        if 'since' in kwargs:
             # The since parameter should be an integer.
-            self._check('since', kw['since'], int)
+            self._check('since', kwargs['since'], int)
 
-        if 'type' in kw:
+        if 'type' in kwargs:
             # Validate that the plugin type is whats expected.
-            self._check('type', kw['type'], str, choices=[
+            self._check('type', kwargs['type'], str, choices=[
                 'active', 'all', 'compliance', 'custom',
                 'lce', 'notPassive', 'passive'
             ], default='all')
 
         # While the iterator will handle the offset & limits, a raw json result
         # may be requested instead.
-        if 'offset' in kw:
-            kw['startOffset'] = self._check('offset', kw['offset'], int)
-            del (kw['offset'])
+        if 'offset' in kwargs:
+            kwargs['startOffset'] = self._check('offset', kwargs['offset'], int)
+            del kwargs['offset']
 
-        if 'limit' in kw:
-            kw['endOffset'] = self._check(
-                'limit', kw['limit'], int) + kw.get('startOffset', 0)
-            del (kw['limit'])
+        if 'limit' in kwargs:
+            kwargs['endOffset'] = self._check(
+                'limit', kwargs['limit'], int) + kwargs.get('startOffset', 0)
+            del kwargs['limit']
 
         # Pages and json_result paramaters should be removed from the document
         # if they exist.
-        if 'pages' in kw:
-            del (kw['pages'])
+        if 'pages' in kwargs:
+            del kwargs['pages']
 
-        if 'json_result' in kw:
-            del (kw['json_result'])
+        if 'json_result' in kwargs:
+            del kwargs['json_result']
 
         # Return the modified keyword dict to the caller.
-        return kw
+        return kwargs
 
-    def list(self, **kw):
+    def list(self, **kwargs):
         '''
         Retrieves the list of plugins.
 
@@ -146,30 +146,29 @@ class PluginAPI(SCEndpoint):
 
             >>> plugins = sc.plugins.list(type='active')
         '''
-        offset = self._check('offset', kw.get('offset', 0), int)
-        limit = self._check('limit', kw.get('limit', 1000), int)
-        pages = self._check('pages', kw.get('pages'), int)
-        json_result = kw.get('json_result', False)
-        query = self._constructor(**kw)
+        offset = self._check('offset', kwargs.get('offset', 0), int)
+        limit = self._check('limit', kwargs.get('limit', 1000), int)
+        pages = self._check('pages', kwargs.get('pages'), int)
+        json_result = kwargs.get('json_result', False)
+        query = self._constructor(**kwargs)
 
         if json_result:
             return self._api.get('plugin', params=query).json()['response']
-        else:
-            return PluginResultsIterator(self._api,
+        return PluginResultsIterator(self._api,
                                          _resource='plugin',
                                          _offset=offset,
                                          _limit=limit,
                                          _query=query,
                                          _pages_total=pages)
 
-    def details(self, id, fields=None):
+    def details(self, plugin_id, fields=None):
         '''
         Returns the details for a specific plugin.
 
         :sc-api:`plugins: details <Plugin.html#PluginRESTReference-/plugin/{id}>`
 
         Args:
-            id (int): The identifier for the plugin.
+            plugin_id (int): The identifier for the plugin.
             fields (list, optional): A list of attributes to return.
 
         Returns:
@@ -183,10 +182,10 @@ class PluginAPI(SCEndpoint):
         if fields:
             params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
-        return self._api.get('plugin/{}'.format(self._check('id', id, int)),
+        return self._api.get('plugin/{}'.format(self._check('plugin_id', plugin_id, int)),
                              params=params).json()['response']
 
-    def family_list(self, **kw):
+    def family_list(self, **kwargs):
         '''
         Returns the list of plugin families.
 
@@ -217,17 +216,17 @@ class PluginAPI(SCEndpoint):
             >>> for fam in sc.plugins.family_list():
             ...     pprint(fam)
         '''
-        query = self._constructor(**kw)
+        query = self._constructor(**kwargs)
         return self._api.get('pluginFamily', params=query).json()['response']
 
-    def family_details(self, id, fields=None):
+    def family_details(self, plugin_id, fields=None):
         '''
         Returns the details for the specified plugin family.
 
         :sc-api:`plugin-family: details <https://docs.tenable.com/sccv/api/Plugin-Family.html#PluginFamilyRESTReference-/pluginFamily/{id}>`
 
         Args:
-            id (int): The plugin family numeric identifier.
+            plugin_id (int): The plugin family numeric identifier.
             fields (list, optional):
                 A list of attributes to return.
 
@@ -244,16 +243,16 @@ class PluginAPI(SCEndpoint):
             params['fields'] = ','.join([self._check('field', f, str)
                                          for f in fields])
 
-        return self._api.get('pluginFamily/{}'.format(self._check('id', id, int)), params=params).json()['response']
+        return self._api.get('pluginFamily/{}'.format(self._check('plugin_id', plugin_id, int)), params=params).json()['response']
 
-    def family_plugins(self, id, **kw):
+    def family_plugins(self, plugin_id, **kwargs):
         '''
         Retrieves the plugins for the specified family.
 
         :sc-api:`plugin-family: plugins <Plugin-Family.html#PluginFamilyRESTReference-/pluginFamily/{id}/plugins::GET>`
 
         Args:
-            id (int): The numberic identifier for the plugin family.
+            plugin_id (int): The numberic identifier for the plugin family.
             fields (list, optional):
                 A list of attributes to return.
             filter (tuple, optional):
@@ -287,18 +286,17 @@ class PluginAPI(SCEndpoint):
             >>> for plugin in plugins:
             ...     pprint(plugin)
         '''
-        offset = self._check('offset', kw.get('offset', 0), int)
-        limit = self._check('limit', kw.get('limit', 1000), int)
-        pages = self._check('pages', kw.get('pages'), int)
-        json_result = kw.get('json_result', False)
-        query = self._constructor(**kw)
+        offset = self._check('offset', kwargs.get('offset', 0), int)
+        limit = self._check('limit', kwargs.get('limit', 1000), int)
+        pages = self._check('pages', kwargs.get('pages'), int)
+        json_result = kwargs.get('json_result', False)
+        query = self._constructor(**kwargs)
 
         if json_result:
             return self._api.get('plugin', params=query).json()['response']
-        else:
-            return PluginResultsIterator(self._api,
+        return PluginResultsIterator(self._api,
                                          _resource='pluginFamily/{}/plugins'.format(
-                                             self._check('id', id, int)),
+                                             self._check('plugin_id', plugin_id, int)),
                                          _offset=offset,
                                          _limit=limit,
                                          _query=query,

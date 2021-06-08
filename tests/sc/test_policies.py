@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from tenable.errors import *
+from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check, single
 
 
@@ -91,7 +91,7 @@ def test_policies_constructor_owner_id_typeerror(sc):
 
 
 def test_policies_constructor(sc):
-    r = sc.policies._constructor(
+    resp = sc.policies._constructor(
         name='Example',
         context='',
         description='Something Special',
@@ -106,7 +106,7 @@ def test_policies_constructor(sc):
         xccdf=True,
         owner_id=1
     )
-    assert r == {
+    assert resp == {
         'name': 'Example',
         'context': '',
         'description': 'Something Special',
@@ -132,11 +132,11 @@ def test_policies_template_list_fields_typeerror(sc):
 def test_policies_template_list_success(sc):
     resp = sc.policies.template_list()
     assert isinstance(resp, list)
-    t = resp[0]
-    assert isinstance(t, dict)
-    check(t, 'description', str)
-    check(t, 'id', str)
-    check(t, 'name', str)
+    a_resp = resp[0]
+    assert isinstance(a_resp, dict)
+    check(a_resp, 'description', str)
+    check(a_resp, 'id', str)
+    check(a_resp, 'name', str)
 
 
 def test_policies_template_details_id_typeerror(sc):

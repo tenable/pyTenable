@@ -6,25 +6,24 @@ interactions:
         Accept: ['*/*']
         Accept-Encoding: ['gzip, deflate']
         Connection: [keep-alive]
+        Content-Length: ['0']
         Cookie: [TNS_SESSIONID=SESSIONID]
         User-Agent: [pyTenable/1.0.0 (pyTenable/1.0.0; Python/2.7.15)]
         X-SecurityCenter: ['0000000000']
-      method: GET
-      uri: https://securitycenter.home.cugnet.net/rest/repository?type=Local&fields=id,name
+      method: POST
+      uri: https://securitycenter.home.cugnet.net/rest/alert/8/execute
     response:
-      body: {string: !!python/unicode '{"type":"regular","response":[{"id":"7","name":"Example Repo7"},
-      {"id":"8","name":"Example Repo8"},
-      {"id":"9","name":"Example Repo9"},
-      {"id":"10","name":"Example Repo10"}],
-      "error_code":0,"error_msg":"","warnings":[],"timestamp":1550707449}
-
-  '}
+      body: {string: !!python/unicode '{"type":"regular","response":{"id":"8","name":"Example
+        Alert","description":"","triggerName":"sumip","triggerOperator":">=","triggerValue":"100","modifiedTime":"1550599951","createdTime":"1550599951","lastTriggered":"0","lastEvaluated":"0","executeOnEveryTrigger":"false","didTriggerLastEvaluation":"false","status":"0","action":[{"id":"9","type":"notification","definition":{"message":"Example
+        Message","users":[{"id":"1","username":"steve","firstname":"Steve","lastname":"McGrath"}]},"status":"0","users":[{"id":"1","username":"steve","firstname":"Steve","lastname":"McGrath"}],"objectID":null}],"schedule":{"type":"never","start":"","repeatRule":""},"query":{"id":"574","name":"Query
+        for alert ''Example Alert'' at 1550599951","description":""},"canUse":"true","canManage":"true","owner":{"id":"2","username":"api","firstname":"api","lastname":"user"},"ownerGroup":{"id":"0","name":"Full
+        Access","description":"Full Access group"}},"error_code":0,"error_msg":"","warnings":[],"timestamp":1550599952}'}
       headers:
         cache-control: ['no-store, no-cache, must-revalidate']
         connection: [Keep-Alive]
-        content-length: ['640']
+        content-length: ['1001']
         content-type: [application/json]
-        date: ['Thu, 21 Feb 2019 00:04:09 GMT']
+        date: ['Tue, 19 Feb 2019 18:12:32 GMT']
         expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
         keep-alive: ['timeout=15, max=100']
         pragma: [no-cache]
@@ -46,16 +45,15 @@ interactions:
         User-Agent: [pyTenable/1.0.0 (pyTenable/1.0.0; Python/2.7.15)]
         X-SecurityCenter: ['0000000000']
       method: DELETE
-      uri: https://securitycenter.home.cugnet.net/rest/repository/6
+      uri: https://securitycenter.home.cugnet.net/rest/alert/8
     response:
-      body: {string: !!python/unicode '{"type":"regular","response":"",
-            "error_code":0,"error_msg":"","warnings":[],"timestamp":1550707450}'}
+      body: {string: !!python/unicode '{"type":"regular","response":"","error_code":0,"error_msg":"","warnings":[],"timestamp":1550599953}'}
       headers:
         cache-control: ['no-store, no-cache, must-revalidate']
         connection: [Keep-Alive]
         content-length: ['100']
         content-type: [application/json]
-        date: ['Thu, 21 Feb 2019 00:04:10 GMT']
+        date: ['Tue, 19 Feb 2019 18:12:33 GMT']
         expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
         keep-alive: ['timeout=15, max=99']
         pragma: [no-cache]

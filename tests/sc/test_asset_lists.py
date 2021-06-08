@@ -1,13 +1,13 @@
 import os
 import pytest
 
-from tenable.errors import *
-from ..checker import check
+from tenable.errors import APIError, UnexpectedValueError
+from ..checker import check, single
 
 
 def test_asset_lists_dynamic_rules_constructor_passthrough(sc):
-    a = {'test': 'value'}
-    assert a == sc.asset_lists._dynamic_rules_constructor(a)
+    data = {'test': 'value'}
+    assert data == sc.asset_lists._dynamic_rules_constructor(data)
 
 
 def test_asset_lists_dynamic_rules_constructor_typerror(sc):
@@ -232,6 +232,7 @@ def test_asset_lists_constructor_ips_list_item_typeerror(sc):
         sc.asset_lists._constructor(ips=[1, ])
 
 
+
 def test_asset_lists_constructor_filters_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(filters=1)
@@ -240,6 +241,7 @@ def test_asset_lists_constructor_filters_typeerror(sc):
 def test_asset_lists_constructor_filters_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.asset_lists._constructor(filters=[1, ])
+
 
 
 def test_asset_lists_constructor_filters_tuple_name_typeerror(sc):
@@ -371,72 +373,72 @@ def test_asset_lists_constructor_success(sc):
 
 
 @pytest.fixture
-def assetlist(request, sc, vcr):
+def asset_list(request, sc, vcr):
     with vcr.use_cassette('test_asset_lists_create_success'):
-        a = sc.asset_lists.create('Example', 'static', ips=['192.168.0.1', ])
+        asset_list = sc.asset_lists.create('Example', 'static', ips=['192.168.0.1', ])
 
     def teardown():
         try:
             with vcr.use_cassette('test_asset_lists_delete_success'):
-                sc.asset_lists.delete(int(a['id']))
+                sc.asset_lists.delete(int(asset_list['id']))
         except APIError:
             pass
 
     request.addfinalizer(teardown)
-    return a
+    return asset_list
 
 
 @pytest.mark.vcr()
-def test_asset_lists_create_success(sc, assetlist):
-    assert isinstance(assetlist, dict)
-    check(assetlist, 'id', str)
-    check(assetlist, 'name', str)
-    check(assetlist, 'type', str)
-    check(assetlist, 'description', str)
-    check(assetlist, 'tags', str)
-    check(assetlist, 'context', str)
-    check(assetlist, 'status', str)
-    check(assetlist, 'createdTime', str)
-    check(assetlist, 'modifiedTime', str)
-    check(assetlist, 'typeFields', dict)
-    for key in assetlist['typeFields']:
-        check(assetlist['typeFields'], key, str)
-    check(assetlist, 'ipCount', int)
-    check(assetlist, 'repositories', list)
-    for i in assetlist['repositories']:
-        check(i, 'ipCount', str)
-        check(i, 'repository', dict)
-        check(i['repository'], 'id', str)
-        check(i['repository'], 'name', str)
-        check(i['repository'], 'description', str)
-    check(assetlist, 'assetDataFields', list)
-    check(assetlist, 'groups', list)
-    check(assetlist, 'canUse', str)
-    check(assetlist, 'canManage', str)
-    check(assetlist, 'creator', dict)
-    check(assetlist['creator'], 'id', str)
-    check(assetlist['creator'], 'firstname', str)
-    check(assetlist['creator'], 'lastname', str)
-    check(assetlist['creator'], 'username', str)
-    check(assetlist, 'owner', dict)
-    check(assetlist['owner'], 'id', str)
-    check(assetlist['owner'], 'firstname', str)
-    check(assetlist['owner'], 'lastname', str)
-    check(assetlist['owner'], 'username', str)
-    check(assetlist, 'ownerGroup', dict)
-    check(assetlist['ownerGroup'], 'id', str)
-    check(assetlist['ownerGroup'], 'name', str)
-    check(assetlist['ownerGroup'], 'description', str)
+def test_asset_lists_create_success(sc, asset_list):
+    assert isinstance(asset_list, dict)
+    check(asset_list, 'id', str)
+    check(asset_list, 'name', str)
+    check(asset_list, 'type', str)
+    check(asset_list, 'description', str)
+    check(asset_list, 'tags', str)
+    check(asset_list, 'context', str)
+    check(asset_list, 'status', str)
+    check(asset_list, 'createdTime', str)
+    check(asset_list, 'modifiedTime', str)
+    check(asset_list, 'typeFields', dict)
+    for key in asset_list['typeFields']:
+        check(asset_list['typeFields'], key, str)
+    check(asset_list, 'ipCount', int)
+    check(asset_list, 'repositories', list)
+    for repository in asset_list['repositories']:
+        check(repository, 'ipCount', str)
+        check(repository, 'repository', dict)
+        check(repository['repository'], 'id', str)
+        check(repository['repository'], 'name', str)
+        check(repository['repository'], 'description', str)
+    check(asset_list, 'assetDataFields', list)
+    check(asset_list, 'groups', list)
+    check(asset_list, 'canUse', str)
+    check(asset_list, 'canManage', str)
+    check(asset_list, 'creator', dict)
+    check(asset_list['creator'], 'id', str)
+    check(asset_list['creator'], 'firstname', str)
+    check(asset_list['creator'], 'lastname', str)
+    check(asset_list['creator'], 'username', str)
+    check(asset_list, 'owner', dict)
+    check(asset_list['owner'], 'id', str)
+    check(asset_list['owner'], 'firstname', str)
+    check(asset_list['owner'], 'lastname', str)
+    check(asset_list['owner'], 'username', str)
+    check(asset_list, 'ownerGroup', dict)
+    check(asset_list['ownerGroup'], 'id', str)
+    check(asset_list['ownerGroup'], 'name', str)
+    check(asset_list['ownerGroup'], 'description', str)
 
 
 @pytest.mark.vcr()
-def test_asset_lists_delete_success(sc, assetlist):
-    sc.asset_lists.delete(int(assetlist['id']))
+def test_asset_lists_delete_success(sc, asset_list):
+    sc.asset_lists.delete(int(asset_list['id']))
 
 
 @pytest.mark.vcr()
-def test_asset_lists_details_success_for_fields(sc, assetlist):
-    asset = sc.asset_lists.details(int(assetlist['id']),
+def test_asset_lists_details_success_for_fields(sc, asset_list):
+    asset = sc.asset_lists.details(int(asset_list['id']),
                                    fields=['id', 'name', 'type', 'description'])
     assert isinstance(asset, dict)
     check(asset, 'id', str)
@@ -446,91 +448,91 @@ def test_asset_lists_details_success_for_fields(sc, assetlist):
 
 
 @pytest.mark.vcr()
-def test_asset_lists_details_success(sc, assetlist):
-    a = sc.asset_lists.details(int(assetlist['id']))
-    assert isinstance(a, dict)
-    check(a, 'id', str)
-    check(a, 'name', str)
-    check(a, 'type', str)
-    check(a, 'description', str)
-    check(a, 'tags', str)
-    check(a, 'context', str)
-    check(a, 'status', str)
-    check(a, 'createdTime', str)
-    check(a, 'modifiedTime', str)
-    check(a, 'typeFields', dict)
-    for key in a['typeFields']:
-        check(a['typeFields'], key, str)
-    check(a, 'ipCount', int)
-    check(a, 'repositories', list)
-    for i in a['repositories']:
-        check(i, 'ipCount', str)
-        check(i, 'repository', dict)
-        check(i['repository'], 'id', str)
-        check(i['repository'], 'name', str)
-        check(i['repository'], 'description', str)
-    check(a, 'assetDataFields', list)
-    check(a, 'groups', list)
-    check(a, 'canUse', str)
-    check(a, 'canManage', str)
-    check(a, 'creator', dict)
-    check(a['creator'], 'id', str)
-    check(a['creator'], 'firstname', str)
-    check(a['creator'], 'lastname', str)
-    check(a['creator'], 'username', str)
-    check(a, 'owner', dict)
-    check(a['owner'], 'id', str)
-    check(a['owner'], 'firstname', str)
-    check(a['owner'], 'lastname', str)
-    check(a['owner'], 'username', str)
-    check(a, 'ownerGroup', dict)
-    check(a['ownerGroup'], 'id', str)
-    check(a['ownerGroup'], 'name', str)
-    check(a['ownerGroup'], 'description', str)
+def test_asset_lists_details_success(sc, asset_list):
+    asset = sc.asset_lists.details(int(asset_list['id']))
+    assert isinstance(asset, dict)
+    check(asset, 'id', str)
+    check(asset, 'name', str)
+    check(asset, 'type', str)
+    check(asset, 'description', str)
+    check(asset, 'tags', str)
+    check(asset, 'context', str)
+    check(asset, 'status', str)
+    check(asset, 'createdTime', str)
+    check(asset, 'modifiedTime', str)
+    check(asset, 'typeFields', dict)
+    for key in asset['typeFields']:
+        check(asset['typeFields'], key, str)
+    check(asset, 'ipCount', int)
+    check(asset, 'repositories', list)
+    for repository in asset['repositories']:
+        check(repository, 'ipCount', str)
+        check(repository, 'repository', dict)
+        check(repository['repository'], 'id', str)
+        check(repository['repository'], 'name', str)
+        check(repository['repository'], 'description', str)
+    check(asset, 'assetDataFields', list)
+    check(asset, 'groups', list)
+    check(asset, 'canUse', str)
+    check(asset, 'canManage', str)
+    check(asset, 'creator', dict)
+    check(asset['creator'], 'id', str)
+    check(asset['creator'], 'firstname', str)
+    check(asset['creator'], 'lastname', str)
+    check(asset['creator'], 'username', str)
+    check(asset, 'owner', dict)
+    check(asset['owner'], 'id', str)
+    check(asset['owner'], 'firstname', str)
+    check(asset['owner'], 'lastname', str)
+    check(asset['owner'], 'username', str)
+    check(asset, 'ownerGroup', dict)
+    check(asset['ownerGroup'], 'id', str)
+    check(asset['ownerGroup'], 'name', str)
+    check(asset['ownerGroup'], 'description', str)
 
 
 @pytest.mark.vcr()
-def test_asset_lists_edit_success(sc, assetlist):
-    a = sc.asset_lists.edit(int(assetlist['id']), name='Updated')
-    assert isinstance(a, dict)
-    check(a, 'id', str)
-    check(a, 'name', str)
-    check(a, 'type', str)
-    check(a, 'description', str)
-    check(a, 'tags', str)
-    check(a, 'context', str)
-    check(a, 'status', str)
-    check(a, 'createdTime', str)
-    check(a, 'modifiedTime', str)
-    check(a, 'typeFields', dict)
-    for key in a['typeFields']:
-        check(a['typeFields'], key, str)
-    check(a, 'ipCount', int)
-    check(a, 'repositories', list)
-    for i in a['repositories']:
-        check(i, 'ipCount', str)
-        check(i, 'repository', dict)
-        check(i['repository'], 'id', str)
-        check(i['repository'], 'name', str)
-        check(i['repository'], 'description', str)
-    check(a, 'assetDataFields', list)
-    check(a, 'groups', list)
-    check(a, 'canUse', str)
-    check(a, 'canManage', str)
-    check(a, 'creator', dict)
-    check(a['creator'], 'id', str)
-    check(a['creator'], 'firstname', str)
-    check(a['creator'], 'lastname', str)
-    check(a['creator'], 'username', str)
-    check(a, 'owner', dict)
-    check(a['owner'], 'id', str)
-    check(a['owner'], 'firstname', str)
-    check(a['owner'], 'lastname', str)
-    check(a['owner'], 'username', str)
-    check(a, 'ownerGroup', dict)
-    check(a['ownerGroup'], 'id', str)
-    check(a['ownerGroup'], 'name', str)
-    check(a['ownerGroup'], 'description', str)
+def test_asset_lists_edit_success(sc, asset_list):
+    asset = sc.asset_lists.edit(int(asset_list['id']), name='Updated')
+    assert isinstance(asset, dict)
+    check(asset, 'id', str)
+    check(asset, 'name', str)
+    check(asset, 'type', str)
+    check(asset, 'description', str)
+    check(asset, 'tags', str)
+    check(asset, 'context', str)
+    check(asset, 'status', str)
+    check(asset, 'createdTime', str)
+    check(asset, 'modifiedTime', str)
+    check(asset, 'typeFields', dict)
+    for key in asset['typeFields']:
+        check(asset['typeFields'], key, str)
+    check(asset, 'ipCount', int)
+    check(asset, 'repositories', list)
+    for repository in asset['repositories']:
+        check(repository, 'ipCount', str)
+        check(repository, 'repository', dict)
+        check(repository['repository'], 'id', str)
+        check(repository['repository'], 'name', str)
+        check(repository['repository'], 'description', str)
+    check(asset, 'assetDataFields', list)
+    check(asset, 'groups', list)
+    check(asset, 'canUse', str)
+    check(asset, 'canManage', str)
+    check(asset, 'creator', dict)
+    check(asset['creator'], 'id', str)
+    check(asset['creator'], 'firstname', str)
+    check(asset['creator'], 'lastname', str)
+    check(asset['creator'], 'username', str)
+    check(asset, 'owner', dict)
+    check(asset['owner'], 'id', str)
+    check(asset['owner'], 'firstname', str)
+    check(asset['owner'], 'lastname', str)
+    check(asset['owner'], 'username', str)
+    check(asset, 'ownerGroup', dict)
+    check(asset['ownerGroup'], 'id', str)
+    check(asset['ownerGroup'], 'name', str)
+    check(asset['ownerGroup'], 'description', str)
 
 
 @pytest.mark.vcr()
@@ -538,36 +540,36 @@ def test_asset_lists_list_success_for_fields(sc):
     asset_list = sc.asset_lists.list(fields=['id', 'name'])
     assert isinstance(asset_list, dict)
     check(asset_list, 'usable', list)
-    for i in asset_list['usable']:
-        check(i, 'id', str)
-        check(i, 'name', str)
+    for usable in asset_list['usable']:
+        check(usable, 'id', str)
+        check(usable, 'name', str)
     check(asset_list, 'manageable', list)
-    for i in asset_list['manageable']:
-        check(i, 'id', str)
-        check(i, 'name', str)
+    for manageable in asset_list['manageable']:
+        check(manageable, 'id', str)
+        check(manageable, 'name', str)
 
 
 @pytest.mark.vcr()
-def test_asset_lists_list_success(sc, assetlist):
-    alist = sc.asset_lists.list()
-    assert isinstance(alist, dict)
-    check(alist, 'usable', list)
-    for i in alist['usable']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-        check(i, 'status', str)
-    check(alist, 'manageable', list)
-    for i in alist['manageable']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-        check(i, 'status', str)
+def test_asset_lists_list_success(sc):
+    asset_list = sc.asset_lists.list()
+    assert isinstance(asset_list, dict)
+    check(asset_list, 'usable', list)
+    for usable in asset_list['usable']:
+        check(usable, 'id', str)
+        check(usable, 'name', str)
+        check(usable, 'description', str)
+        check(usable, 'status', str)
+    check(asset_list, 'manageable', list)
+    for manageable in asset_list['manageable']:
+        check(manageable, 'id', str)
+        check(manageable, 'name', str)
+        check(manageable, 'description', str)
+        check(manageable, 'status', str)
 
 
 @pytest.mark.vcr()
-def test_asset_lists_refresh_success(admin, assetlist):
-    resp = admin.asset_lists.refresh(int(assetlist['id']), 1, 1)
+def test_asset_lists_refresh_success(admin, asset_list):
+    resp = admin.asset_lists.refresh(int(asset_list['id']), 1, 1)
     assert isinstance(resp, dict)
     check(resp, 'orgID', int)
     check(resp, 'repIDs', list)
@@ -577,15 +579,15 @@ def test_asset_lists_refresh_success(admin, assetlist):
 @pytest.mark.datafiles(os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     '..', 'test_files', 'asset_list.xml'))
-def test_asset_lists_import_definition_success(sc, assetlist, datafiles):
+def test_asset_lists_import_definition_success(sc, datafiles):
     with open(os.path.join(str(datafiles), 'asset_list.xml'), 'rb') as fobj:
         sc.asset_lists.import_definition(fobj, name='name')
 
 
 @pytest.mark.vcr()
-def test_asset_lists_export_definition_success(sc, assetlist):
+def test_asset_lists_export_definition_success(sc, asset_list):
     with open('asset_list_export.xml', 'wb') as fobj:
-        sc.asset_lists.export_definition(int(assetlist['id']), fobj)
+        sc.asset_lists.export_definition(int(asset_list['id']), fobj)
     os.remove('asset_list_export.xml')
 
 
@@ -622,44 +624,44 @@ def test_asset_lists_share_group_id_typeerror(sc):
 
 
 @pytest.mark.vcr()
-def test_asset_lists_share_success(sc, assetlist, group):
-    a = sc.asset_lists.share(int(assetlist['id']), int(group['id']))
-    assert isinstance(a, dict)
-    check(a, 'id', str)
-    check(a, 'name', str)
-    check(a, 'type', str)
-    check(a, 'description', str)
-    check(a, 'tags', str)
-    check(a, 'context', str)
-    check(a, 'status', str)
-    check(a, 'createdTime', str)
-    check(a, 'modifiedTime', str)
-    check(a, 'typeFields', dict)
-    for key in a['typeFields']:
-        check(a['typeFields'], key, str)
-    check(a, 'ipCount', int)
-    check(a, 'repositories', list)
-    for i in a['repositories']:
-        check(i, 'ipCount', str)
-        check(i, 'repository', dict)
-        check(i['repository'], 'id', str)
-        check(i['repository'], 'name', str)
-        check(i['repository'], 'description', str)
-    check(a, 'assetDataFields', list)
-    check(a, 'groups', list)
-    check(a, 'canUse', str)
-    check(a, 'canManage', str)
-    check(a, 'creator', dict)
-    check(a['creator'], 'id', str)
-    check(a['creator'], 'firstname', str)
-    check(a['creator'], 'lastname', str)
-    check(a['creator'], 'username', str)
-    check(a, 'owner', dict)
-    check(a['owner'], 'id', str)
-    check(a['owner'], 'firstname', str)
-    check(a['owner'], 'lastname', str)
-    check(a['owner'], 'username', str)
-    check(a, 'ownerGroup', dict)
-    check(a['ownerGroup'], 'id', str)
-    check(a['ownerGroup'], 'name', str)
-    check(a['ownerGroup'], 'description', str)
+def test_asset_lists_share_success(sc, asset_list, group):
+    asset = sc.asset_lists.share(int(asset_list['id']), int(group['id']))
+    assert isinstance(asset, dict)
+    check(asset, 'id', str)
+    check(asset, 'name', str)
+    check(asset, 'type', str)
+    check(asset, 'description', str)
+    check(asset, 'tags', str)
+    check(asset, 'context', str)
+    check(asset, 'status', str)
+    check(asset, 'createdTime', str)
+    check(asset, 'modifiedTime', str)
+    check(asset, 'typeFields', dict)
+    for key in asset['typeFields']:
+        check(asset['typeFields'], key, str)
+    check(asset, 'ipCount', int)
+    check(asset, 'repositories', list)
+    for repository in asset['repositories']:
+        check(repository, 'ipCount', str)
+        check(repository, 'repository', dict)
+        check(repository['repository'], 'id', str)
+        check(repository['repository'], 'name', str)
+        check(repository['repository'], 'description', str)
+    check(asset, 'assetDataFields', list)
+    check(asset, 'groups', list)
+    check(asset, 'canUse', str)
+    check(asset, 'canManage', str)
+    check(asset, 'creator', dict)
+    check(asset['creator'], 'id', str)
+    check(asset['creator'], 'firstname', str)
+    check(asset['creator'], 'lastname', str)
+    check(asset['creator'], 'username', str)
+    check(asset, 'owner', dict)
+    check(asset['owner'], 'id', str)
+    check(asset['owner'], 'firstname', str)
+    check(asset['owner'], 'lastname', str)
+    check(asset['owner'], 'username', str)
+    check(asset, 'ownerGroup', dict)
+    check(asset['ownerGroup'], 'id', str)
+    check(asset['ownerGroup'], 'name', str)
+    check(asset['ownerGroup'], 'description', str)

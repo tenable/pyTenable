@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from tenable.errors import *
+from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check
 
 
@@ -183,35 +183,34 @@ def test_repositories_constructor_success(sc):
 @pytest.mark.vcr()
 def test_repositories_create_success(admin, repository):
     assert isinstance(repository, dict)
-    r = repository
-    check(r, 'createdTime', str)
-    check(r, 'dataFormat', str)
-    check(r, 'description', str)
-    check(r, 'downloadFormat', str)
-    check(r, 'id', str)
-    check(r, 'lastSyncTime', str)
-    check(r, 'lastVulnUpdate', str)
-    check(r, 'modifiedTime', str)
-    check(r, 'name', str)
-    check(r, 'organizations', list)
-    check(r, 'remoteID', str, allow_none=True)
-    check(r, 'remoteIP', str, allow_none=True)
-    check(r, 'running', str)
-    check(r, 'type', str)
-    check(r, 'typeFields', dict)
-    check(r['typeFields'], 'correlation', list)
-    check(r['typeFields'], 'ipCount', str)
-    check(r['typeFields'], 'ipRange', str)
-    check(r['typeFields'], 'lastGenerateNessusTime', str)
-    check(r['typeFields'], 'lastTrendUpdate', str)
-    check(r['typeFields'], 'nessusSchedule', dict)
-    check(r['typeFields']['nessusSchedule'], 'repeatRule', str)
-    check(r['typeFields']['nessusSchedule'], 'start', str)
-    check(r['typeFields']['nessusSchedule'], 'type', str)
-    check(r['typeFields'], 'runningNessus', str)
-    check(r['typeFields'], 'trendWithRaw', str)
-    check(r['typeFields'], 'trendingDays', str)
-    check(r, 'vulnCount', str)
+    check(repository, 'createdTime', str)
+    check(repository, 'dataFormat', str)
+    check(repository, 'description', str)
+    check(repository, 'downloadFormat', str)
+    check(repository, 'id', str)
+    check(repository, 'lastSyncTime', str)
+    check(repository, 'lastVulnUpdate', str)
+    check(repository, 'modifiedTime', str)
+    check(repository, 'name', str)
+    check(repository, 'organizations', list)
+    check(repository, 'remoteID', str, allow_none=True)
+    check(repository, 'remoteIP', str, allow_none=True)
+    check(repository, 'running', str)
+    check(repository, 'type', str)
+    check(repository, 'typeFields', dict)
+    check(repository['typeFields'], 'correlation', list)
+    check(repository['typeFields'], 'ipCount', str)
+    check(repository['typeFields'], 'ipRange', str)
+    check(repository['typeFields'], 'lastGenerateNessusTime', str)
+    check(repository['typeFields'], 'lastTrendUpdate', str)
+    check(repository['typeFields'], 'nessusSchedule', dict)
+    check(repository['typeFields']['nessusSchedule'], 'repeatRule', str)
+    check(repository['typeFields']['nessusSchedule'], 'start', str)
+    check(repository['typeFields']['nessusSchedule'], 'type', str)
+    check(repository['typeFields'], 'runningNessus', str)
+    check(repository['typeFields'], 'trendWithRaw', str)
+    check(repository['typeFields'], 'trendingDays', str)
+    check(repository, 'vulnCount', str)
 
 
 def test_repositories_details_id_typeerror(sc):
@@ -224,7 +223,7 @@ def test_repositories_details_fields_typeerror(sc):
         sc.repositories.details(1, fields=1)
 
 
-def test_repopsitories_details_field_item_typeerror(sc):
+def test_repositories_details_field_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.details(1, fields=[1])
 
@@ -241,36 +240,36 @@ def test_repositories_mobile_sync(admin):
 
 @pytest.mark.vcr()
 def test_repositories_details_success(admin, repository):
-    r = admin.repositories.details(int(repository['id']))
-    assert isinstance(r, dict)
-    check(r, 'createdTime', str)
-    check(r, 'dataFormat', str)
-    check(r, 'description', str)
-    check(r, 'downloadFormat', str)
-    check(r, 'id', str)
-    check(r, 'lastSyncTime', str)
-    check(r, 'lastVulnUpdate', str)
-    check(r, 'modifiedTime', str)
-    check(r, 'name', str)
-    check(r, 'organizations', list)
-    check(r, 'remoteID', str, allow_none=True)
-    check(r, 'remoteIP', str, allow_none=True)
-    check(r, 'running', str)
-    check(r, 'type', str)
-    check(r, 'typeFields', dict)
-    check(r['typeFields'], 'correlation', list)
-    check(r['typeFields'], 'ipCount', str)
-    check(r['typeFields'], 'ipRange', str)
-    check(r['typeFields'], 'lastGenerateNessusTime', str)
-    check(r['typeFields'], 'lastTrendUpdate', str)
-    check(r['typeFields'], 'nessusSchedule', dict)
-    check(r['typeFields']['nessusSchedule'], 'repeatRule', str)
-    check(r['typeFields']['nessusSchedule'], 'start', str)
-    check(r['typeFields']['nessusSchedule'], 'type', str)
-    check(r['typeFields'], 'runningNessus', str)
-    check(r['typeFields'], 'trendWithRaw', str)
-    check(r['typeFields'], 'trendingDays', str)
-    check(r, 'vulnCount', str)
+    repository = admin.repositories.details(int(repository['id']))
+    assert isinstance(repository, dict)
+    check(repository, 'createdTime', str)
+    check(repository, 'dataFormat', str)
+    check(repository, 'description', str)
+    check(repository, 'downloadFormat', str)
+    check(repository, 'id', str)
+    check(repository, 'lastSyncTime', str)
+    check(repository, 'lastVulnUpdate', str)
+    check(repository, 'modifiedTime', str)
+    check(repository, 'name', str)
+    check(repository, 'organizations', list)
+    check(repository, 'remoteID', str, allow_none=True)
+    check(repository, 'remoteIP', str, allow_none=True)
+    check(repository, 'running', str)
+    check(repository, 'type', str)
+    check(repository, 'typeFields', dict)
+    check(repository['typeFields'], 'correlation', list)
+    check(repository['typeFields'], 'ipCount', str)
+    check(repository['typeFields'], 'ipRange', str)
+    check(repository['typeFields'], 'lastGenerateNessusTime', str)
+    check(repository['typeFields'], 'lastTrendUpdate', str)
+    check(repository['typeFields'], 'nessusSchedule', dict)
+    check(repository['typeFields']['nessusSchedule'], 'repeatRule', str)
+    check(repository['typeFields']['nessusSchedule'], 'start', str)
+    check(repository['typeFields']['nessusSchedule'], 'type', str)
+    check(repository['typeFields'], 'runningNessus', str)
+    check(repository['typeFields'], 'trendWithRaw', str)
+    check(repository['typeFields'], 'trendingDays', str)
+    check(repository, 'vulnCount', str)
 
 
 @pytest.mark.vcr()
@@ -316,36 +315,36 @@ def test_repositories_edit_id_typeerror(sc):
 
 @pytest.mark.vcr()
 def test_repositories_edit_success(admin, repository):
-    r = admin.repositories.edit(int(repository['id']), name='New Name')
-    assert isinstance(r, dict)
-    check(r, 'createdTime', str)
-    check(r, 'dataFormat', str)
-    check(r, 'description', str)
-    check(r, 'downloadFormat', str)
-    check(r, 'id', str)
-    check(r, 'lastSyncTime', str)
-    check(r, 'lastVulnUpdate', str)
-    check(r, 'modifiedTime', str)
-    check(r, 'name', str)
-    check(r, 'organizations', list)
-    check(r, 'remoteID', str, allow_none=True)
-    check(r, 'remoteIP', str, allow_none=True)
-    check(r, 'running', str)
-    check(r, 'type', str)
-    check(r, 'typeFields', dict)
-    check(r['typeFields'], 'correlation', list)
-    check(r['typeFields'], 'ipCount', str)
-    check(r['typeFields'], 'ipRange', str)
-    check(r['typeFields'], 'lastGenerateNessusTime', str)
-    check(r['typeFields'], 'lastTrendUpdate', str)
-    check(r['typeFields'], 'nessusSchedule', dict)
-    check(r['typeFields']['nessusSchedule'], 'repeatRule', str)
-    check(r['typeFields']['nessusSchedule'], 'start', str)
-    check(r['typeFields']['nessusSchedule'], 'type', str)
-    check(r['typeFields'], 'runningNessus', str)
-    check(r['typeFields'], 'trendWithRaw', str)
-    check(r['typeFields'], 'trendingDays', str)
-    check(r, 'vulnCount', str)
+    repository = admin.repositories.edit(int(repository['id']), name='New Name')
+    assert isinstance(repository, dict)
+    check(repository, 'createdTime', str)
+    check(repository, 'dataFormat', str)
+    check(repository, 'description', str)
+    check(repository, 'downloadFormat', str)
+    check(repository, 'id', str)
+    check(repository, 'lastSyncTime', str)
+    check(repository, 'lastVulnUpdate', str)
+    check(repository, 'modifiedTime', str)
+    check(repository, 'name', str)
+    check(repository, 'organizations', list)
+    check(repository, 'remoteID', str, allow_none=True)
+    check(repository, 'remoteIP', str, allow_none=True)
+    check(repository, 'running', str)
+    check(repository, 'type', str)
+    check(repository, 'typeFields', dict)
+    check(repository['typeFields'], 'correlation', list)
+    check(repository['typeFields'], 'ipCount', str)
+    check(repository['typeFields'], 'ipRange', str)
+    check(repository['typeFields'], 'lastGenerateNessusTime', str)
+    check(repository['typeFields'], 'lastTrendUpdate', str)
+    check(repository['typeFields'], 'nessusSchedule', dict)
+    check(repository['typeFields']['nessusSchedule'], 'repeatRule', str)
+    check(repository['typeFields']['nessusSchedule'], 'start', str)
+    check(repository['typeFields']['nessusSchedule'], 'type', str)
+    check(repository['typeFields'], 'runningNessus', str)
+    check(repository['typeFields'], 'trendWithRaw', str)
+    check(repository['typeFields'], 'trendingDays', str)
+    check(repository, 'vulnCount', str)
 
 
 def test_repositories_rules_constructor_plugin_id_typeerror(sc):
@@ -399,7 +398,7 @@ def test_repositories_accept_risk_rules_id_typeerror(sc):
 
 @pytest.mark.skip(reason='Need VCRed data to test against')
 @pytest.mark.vcr()
-def test_repositories_accept_risk_rules_success(admin):
+def test_repositories_accept_risk_rules_success():
     pass
 
 
@@ -410,7 +409,7 @@ def test_repositories_recast_risk_rules_id_typeerror(sc):
 
 @pytest.mark.skip(reason='Need VCRed data to test against')
 @pytest.mark.vcr()
-def test_repositories_recast_risk_rules_success(admin):
+def test_repositories_recast_risk_rules_success():
     pass
 
 
@@ -444,10 +443,10 @@ def test_repositories_asset_intersections_success(admin, repository):
     asset_lists = admin.repositories.asset_intersections(
         int(repository['id']), ip='192.168.0.1')
     assert isinstance(asset_lists, list)
-    for a in asset_lists:
-        check(a, 'description', str)
-        check(a, 'id', str)
-        check(a, 'name', str)
+    for asset_list in asset_lists:
+        check(asset_list, 'description', str)
+        check(asset_list, 'id', str)
+        check(asset_list, 'name', str)
 
 
 def test_repositories_import_repository_id_typeerror(sc):
@@ -514,49 +513,49 @@ def test_repositories_device_info_field_item_typeerror(sc):
 
 @pytest.mark.vcr()
 def test_repositories_device_info_success(admin, repository):
-    r = admin.repositories.device_info(int(repository['id']), dns='server')
-    assert isinstance(r, dict)
-    check(r, 'biosGUID', str)
-    check(r, 'hasCompliance', str)
-    check(r, 'hasPassive', str)
-    check(r, 'ip', str)
-    check(r, 'lastAuthRun', str)
-    check(r, 'lastScan', str)
-    check(r, 'lastUnauthRun', str)
-    check(r, 'links', list)
-    check(r, 'macAddress', str)
-    check(r, 'mcafeeGUID', str)
-    check(r, 'netbiosName', str)
-    check(r, 'os', str)
-    check(r, 'osCPE', str)
-    check(r, 'pluginSet', str)
-    check(r, 'pluginSet', str)
-    check(r, 'policyName', str)
-    check(r, 'repository', dict)
-    check(r['repository'], 'description', str)
-    check(r['repository'], 'id', str)
-    check(r['repository'], 'name', str)
-    check(r, 'score', str)
-    check(r, 'severityAll', str)
-    check(r, 'severityCritical', str)
-    check(r, 'severityInfo', str)
-    check(r, 'severityLow', str)
-    check(r, 'severityMedium', str)
-    check(r, 'total', str)
-    check(r, 'tpmID', str)
-    check(r, 'uniqueness', str)
-    check(r, 'uuid', str)
+    repo = admin.repositories.device_info(int(repository['id']), dns='server')
+    assert isinstance(repo, dict)
+    check(repo, 'biosGUID', str)
+    check(repo, 'hasCompliance', str)
+    check(repo, 'hasPassive', str)
+    check(repo, 'ip', str)
+    check(repo, 'lastAuthRun', str)
+    check(repo, 'lastScan', str)
+    check(repo, 'lastUnauthRun', str)
+    check(repo, 'links', list)
+    check(repo, 'macAddress', str)
+    check(repo, 'mcafeeGUID', str)
+    check(repo, 'netbiosName', str)
+    check(repo, 'os', str)
+    check(repo, 'osCPE', str)
+    check(repo, 'pluginSet', str)
+    check(repo, 'pluginSet', str)
+    check(repo, 'policyName', str)
+    check(repo, 'repository', dict)
+    check(repo['repository'], 'description', str)
+    check(repo['repository'], 'id', str)
+    check(repo['repository'], 'name', str)
+    check(repo, 'score', str)
+    check(repo, 'severityAll', str)
+    check(repo, 'severityCritical', str)
+    check(repo, 'severityInfo', str)
+    check(repo, 'severityLow', str)
+    check(repo, 'severityMedium', str)
+    check(repo, 'total', str)
+    check(repo, 'tpmID', str)
+    check(repo, 'uniqueness', str)
+    check(repo, 'uuid', str)
 
 
 @pytest.mark.vcr()
 def test_repositories_device_info_success_ip_info(admin, repository):
     admin.repositories._api.version = "5.6.0"
-    r = admin.repositories.device_info(int(repository['id']), dns='server')
-    assert isinstance(r, dict)
-    check(r, 'biosGUID', str)
-    check(r, 'hasCompliance', str)
-    check(r, 'hasPassive', str)
-    check(r, 'ip', str)
+    repo = admin.repositories.device_info(int(repository['id']), dns='server')
+    assert isinstance(repo, dict)
+    check(repo, 'biosGUID', str)
+    check(repo, 'hasCompliance', str)
+    check(repo, 'hasPassive', str)
+    check(repo, 'ip', str)
 
 
 def test_repositories_remote_authorize_host_typeerror(sc):
@@ -569,13 +568,13 @@ def test_repositories_remote_authorize_username_typeerror(sc):
         sc.repositories.remote_authorize('host', 1, 'pass')
 
 
-def test_remositories_remote_authorize_password_typeerror(sc):
+def test_repositories_remote_authorize_password_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories.remote_authorize('host', 'user', 1)
 
 
 @pytest.mark.skip(reason='No Downstream SC to Test with yet')
-def test_repositories_remote_autorize_success(admin):
+def test_repositories_remote_authorize_success():
     pass
 
 
@@ -585,5 +584,5 @@ def test_repositories_remote_fetch_host_typeerror(sc):
 
 
 @pytest.mark.skip(reason='No Downstream SC to Test with yet')
-def test_repositories_remote_fetch_success(admin):
+def test_repositories_remote_fetch_success():
     pass

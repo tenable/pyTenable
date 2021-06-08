@@ -1,6 +1,6 @@
 import pytest
 
-from tenable.errors import *
+from tenable.errors import APIError
 from ..checker import check
 
 
@@ -103,49 +103,49 @@ def test_recast_risks_constructor_success(sc):
 @pytest.fixture
 def arisk(request, sc, vcr):
     with vcr.use_cassette('test_recast_risks_create_success'):
-        a = sc.recast_risks.create(19506, [1], 0,
+        arisk = sc.recast_risks.create(19506, [1], 0,
                                    ips=['127.0.0.1'])
 
     def teardown():
         try:
             with vcr.use_cassette('test_recast_risks_delete_success'):
-                sc.recast_risks.delete(int(a['id']))
+                sc.recast_risks.delete(int(arisk['id']))
         except APIError:
             pass
 
     request.addfinalizer(teardown)
-    return a
+    return arisk
 
 
 @pytest.mark.vcr()
-def test_recast_risks_list_success(sc, arisk):
+def test_recast_risks_list_success(sc):
     resp = sc.recast_risks.list()
     assert isinstance(resp, list)
-    a = resp[0]
-    check(a, 'id', str)
-    check(a, 'hostType', str)
-    check(a, 'hostValue', str)
-    check(a, 'port', str)
-    check(a, 'protocol', str)
-    check(a, 'newSeverity', str)
-    check(a, 'status', str)
-    check(a, 'repository', dict)
-    check(a['repository'], 'id', str)
-    check(a['repository'], 'name', str)
-    check(a['repository'], 'description', str)
-    check(a, 'organization', dict)
-    check(a['organization'], 'id', str)
-    check(a['organization'], 'name', str)
-    check(a['organization'], 'description', str)
-    check(a, 'user', dict)
-    check(a['user'], 'id', str)
-    check(a['user'], 'username', str)
-    check(a['user'], 'firstname', str)
-    check(a['user'], 'lastname', str)
-    check(a, 'plugin', dict)
-    check(a['plugin'], 'id', str)
-    check(a['plugin'], 'name', str)
-    check(a['plugin'], 'description', str)
+    risk = resp[0]
+    check(risk, 'id', str)
+    check(risk, 'hostType', str)
+    check(risk, 'hostValue', str)
+    check(risk, 'port', str)
+    check(risk, 'protocol', str)
+    check(risk, 'newSeverity', str)
+    check(risk, 'status', str)
+    check(risk, 'repository', dict)
+    check(risk['repository'], 'id', str)
+    check(risk['repository'], 'name', str)
+    check(risk['repository'], 'description', str)
+    check(risk, 'organization', dict)
+    check(risk['organization'], 'id', str)
+    check(risk['organization'], 'name', str)
+    check(risk['organization'], 'description', str)
+    check(risk, 'user', dict)
+    check(risk['user'], 'id', str)
+    check(risk['user'], 'username', str)
+    check(risk['user'], 'firstname', str)
+    check(risk['user'], 'lastname', str)
+    check(risk, 'plugin', dict)
+    check(risk['plugin'], 'id', str)
+    check(risk['plugin'], 'name', str)
+    check(risk['plugin'], 'description', str)
 
 
 @pytest.mark.vcr()
@@ -156,11 +156,11 @@ def test_recast_risks_list_success_params(sc):
                                 org_ids=[1234],
                                 repo_ids=[1234])
     assert isinstance(resp, list)
-    a = resp[0]
-    check(a, 'id', str)
-    check(a, 'hostType', str)
-    check(a, 'hostValue', str)
-    check(a, 'port', str)
+    risk = resp[0]
+    check(risk, 'id', str)
+    check(risk, 'hostType', str)
+    check(risk, 'hostValue', str)
+    check(risk, 'port', str)
 
 @pytest.mark.vcr()
 def test_recast_risks_create_success(sc, arisk):
@@ -194,32 +194,32 @@ def test_recast_risks_create_success(sc, arisk):
 
 @pytest.mark.vcr()
 def test_recast_risks_details_success(sc, arisk):
-    a = sc.recast_risks.details(int(arisk['id']))
-    check(a, 'id', str)
-    check(a, 'hostType', str)
-    check(a, 'hostValue', str)
-    check(a, 'port', str)
-    check(a, 'protocol', str)
-    check(a, 'comments', str)
-    check(a, 'newSeverity', str)
-    check(a, 'status', str)
-    check(a, 'repository', dict)
-    check(a['repository'], 'id', str)
-    check(a['repository'], 'name', str)
-    check(a['repository'], 'description', str)
-    check(a, 'organization', dict)
-    check(a['organization'], 'id', str)
-    check(a['organization'], 'name', str)
-    check(a['organization'], 'description', str)
-    check(a, 'user', dict)
-    check(a['user'], 'id', str)
-    check(a['user'], 'username', str)
-    check(a['user'], 'firstname', str)
-    check(a['user'], 'lastname', str)
-    check(a, 'plugin', dict)
-    check(a['plugin'], 'id', str)
-    check(a['plugin'], 'name', str)
-    check(a['plugin'], 'description', str)
+    risk = sc.recast_risks.details(int(arisk['id']))
+    check(risk, 'id', str)
+    check(risk, 'hostType', str)
+    check(risk, 'hostValue', str)
+    check(risk, 'port', str)
+    check(risk, 'protocol', str)
+    check(risk, 'comments', str)
+    check(risk, 'newSeverity', str)
+    check(risk, 'status', str)
+    check(risk, 'repository', dict)
+    check(risk['repository'], 'id', str)
+    check(risk['repository'], 'name', str)
+    check(risk['repository'], 'description', str)
+    check(risk, 'organization', dict)
+    check(risk['organization'], 'id', str)
+    check(risk['organization'], 'name', str)
+    check(risk['organization'], 'description', str)
+    check(risk, 'user', dict)
+    check(risk['user'], 'id', str)
+    check(risk['user'], 'username', str)
+    check(risk['user'], 'firstname', str)
+    check(risk['user'], 'lastname', str)
+    check(risk, 'plugin', dict)
+    check(risk['plugin'], 'id', str)
+    check(risk['plugin'], 'name', str)
+    check(risk['plugin'], 'description', str)
 
 
 @pytest.mark.vcr()

@@ -1,7 +1,7 @@
 import os
 import pytest
 
-from tenable.errors import *
+from tenable.errors import UnexpectedValueError
 from ..checker import check
 
 
@@ -17,21 +17,21 @@ def test_feeds_feed_type_unexpectedvalueerror(sc):
 
 @pytest.mark.vcr()
 def test_feeds_success(sc):
-    f = sc.feeds.status()
-    assert isinstance(f, dict)
-    for i in f.keys():
-        check(f[i], 'updateTime', str)
-        check(f[i], 'stale', str)
-        check(f[i], 'updateRunning', str)
+    feed = sc.feeds.status()
+    assert isinstance(feed, dict)
+    for key in feed.keys():
+        check(feed[key], 'updateTime', str)
+        check(feed[key], 'stale', str)
+        check(feed[key], 'updateRunning', str)
 
 
 @pytest.mark.vcr()
 def test_feeds_individual_success(sc):
-    f = sc.feeds.status('active')
-    assert isinstance(f, dict)
-    check(f, 'updateTime', str)
-    check(f, 'stale', str)
-    check(f, 'updateRunning', str)
+    feed = sc.feeds.status('active')
+    assert isinstance(feed, dict)
+    check(feed, 'updateTime', str)
+    check(feed, 'stale', str)
+    check(feed, 'updateRunning', str)
 
 
 def test_feeds_update_feed_type_typeerror(sc):
