@@ -16,7 +16,7 @@ class NessusReportv2(object):
     '''
     The NessusReportv2 generator will return vulnerability items from any
     Nessus version 2 formatted Nessus report file.  The returned data will be
-    a python dictionary representation of the ReportItem with the relevent
+    a python dictionary representation of the ReportItem with the relevant
     host properties attached.  The ReportItem's structure itself will determine
     the resulting dictionary, what attributes are returned, and what is not.
 

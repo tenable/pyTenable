@@ -40,7 +40,7 @@ The methods listed below aren't run through any naturalization by the library
 aside from the response code checking.  These methods effectively route
 directly into the requests session.  The responses will be Response objects from
 the ``requests`` library.  In all cases, the path is appended to the base
-``url`` paramater that the ``TenableIO`` object was instantiated with.
+``url`` parameter that the ``TenableIO`` object was instantiated with.
 
 Example:
 

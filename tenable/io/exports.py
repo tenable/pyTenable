@@ -384,7 +384,7 @@ class ExportsAPI(TIOEndpoint):
             has_plugin_results (bool, optional):
                 If True, returns only assets that have plugin results.  If False,
                 returns only assets that do not have any plugin results.  Assets
-                thats would not have plugin results would be assets created from
+                that's would not have plugin results would be assets created from
                 a connector, or a discovery scan.
             tags (list[tuple], optional):
                 List of tag key-value pairs that must be associated to the

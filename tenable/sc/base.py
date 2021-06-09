@@ -43,7 +43,7 @@ parameter is an
 `iCal DateTime Form #3 <https://tools.ietf.org/html/rfc5545#section-3.3.5>`_
 formatted string specifying the date and time in which to start the repeating
 event.  The ``repeatRule`` parameter is an
-`iCal Recurrance Rule <https://tools.ietf.org/html/rfc5545#section-3.3.10>`_
+`iCal Recurrence Rule <https://tools.ietf.org/html/rfc5545#section-3.3.10>`_
 formatted string.
 
 * Example Never Declaration:

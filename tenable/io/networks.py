@@ -90,7 +90,7 @@ class NetworksAPI(TIOEndpoint):
 
     def details(self, network_id):
         '''
-        Retreives the details of the specified network.
+        Retrieves the details of the specified network.
 
         :devportal:`networks: details <networks-details>`
 
@@ -172,7 +172,7 @@ class NetworksAPI(TIOEndpoint):
 
     def list_scanners(self, network_id):
         '''
-        Retreives the list of scanners associated to a given network.
+        Retrieves the list of scanners associated to a given network.
 
         :devportal:`networks: list-scanners <networks-list-scanners>`
 
@@ -193,7 +193,7 @@ class NetworksAPI(TIOEndpoint):
 
     def unassigned_scanners(self, network_id):
         '''
-        Retrives the list of scanners that are currently unassigned to the given
+        Retrieves the list of scanners that are currently unassigned to the given
         network.  This will include scanners and scanner groups that are
         currently assigned to the default network.
 

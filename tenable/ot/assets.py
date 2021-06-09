@@ -20,7 +20,7 @@ class AssetsAPI(APIEndpoint):
 
     def list(self, **kwargs):
         '''
-        Retreives a list of assets.
+        Retrieves a list of assets.
 
         Args:
             filters (list[tuple], optional):
@@ -48,7 +48,7 @@ class AssetsAPI(APIEndpoint):
 
     def details(self, id):
         '''
-        Retreive the details of a given asset
+        Retrieve the details of a given asset
 
         Args:
             id (str):
@@ -65,7 +65,7 @@ class AssetsAPI(APIEndpoint):
 
     def connections(self, id):
         '''
-        Retreive the connections of a given asset
+        Retrieve the connections of a given asset
 
         Args:
             id (str):

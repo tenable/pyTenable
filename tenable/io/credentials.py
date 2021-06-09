@@ -150,7 +150,7 @@ class CredentialsAPI(TIOEndpoint):
 
         Args:
             ad_hoc (bool, optional):
-                Determins whether the credential is managed (``False``) or an
+                Determines whether the credential is managed (``False``) or an
                 embedded credential in a scan or policy (``True``).
             cred_name (str, optional):
                 The name of the credential.
@@ -201,12 +201,12 @@ class CredentialsAPI(TIOEndpoint):
 
     def details(self, id):
         '''
-        Retrives the details of the specified credential.
+        Retrieves the details of the specified credential.
 
         :devportal:`credentials: details <credentials-details>`
 
         Args:
-            id (str): The UUID of the credential to retreive.
+            id (str): The UUID of the credential to retrieve.
 
         Returns:
             :obj:`dict`:
@@ -226,7 +226,7 @@ class CredentialsAPI(TIOEndpoint):
         :devportal:`credentials: delete <credentials-delete>`
 
         Args:
-            id (str): The UUID of the credential to retreive.
+            id (str): The UUID of the credential to retrieve.
 
         Returns:
             :obj:`bool`:

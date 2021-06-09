@@ -19,7 +19,7 @@ class NetworkInterfacesAPI(APIEndpoint):
 
     def details(self, id):
         '''
-        Retreives the details for the specified network interface
+        Retrieves the details for the specified network interface
 
         Args:
             id (str):

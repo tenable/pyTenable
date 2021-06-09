@@ -208,7 +208,7 @@ class TenableSC(APISession):
         # reusable if the user logs out and logs back in.
         self._ssl_verify = ssl_verify
 
-        # Now lets pass the relevent parts off to the APISession's constructor
+        # Now lets pass the relevant parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
         super(TenableSC, self).__init__(url,
             retries=retries,

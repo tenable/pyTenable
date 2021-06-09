@@ -30,7 +30,7 @@ class APIPlatform(Base):
             unspecified, the default is 1 second.
         box (bool, optional):
             Should responses be passed through Box?  If left unspecified, the
-            defaut is ``True``.
+            default is ``True``.
         box_attrs (dict, optional):
             Any additional attributes to pass to the Box constructor for this
             session?  For a list of attributes that can be sent, please refer
