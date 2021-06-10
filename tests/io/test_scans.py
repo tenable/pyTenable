@@ -22,6 +22,7 @@ def scheduled_scan(request, api):
     )
     def teardown():
         try:
+            api.scans.schedule(scan['id'], False)
             api.scans.delete(scan['id'])
         except NotFoundError:
             pass
