@@ -166,7 +166,7 @@ def test_exports_assets(api):
     check(a, 'first_seen', str, allow_none=True)
     check(a, 'fqdns', list)
     check(a, 'has_agent', bool)
-    check(a, 'has_plugin_results', bool)
+    # check(a, 'has_plugin_results', bool)
     check(a, 'hostnames', list)
     check(a, 'id', 'uuid')
     check(a, 'ipv4s', list)
