@@ -352,7 +352,8 @@ class OrganizationAPI(SCEndpoint):
         Retrieves the accepted risk rules for the organization and optionally
         will filter based on the paramaters specified.
 
-        :sc-api:`organization: accept-risk-rule <Organization.html#OrganizationRESTReference-/organization/{id}/acceptRiskRule>`
+        :sc-api:`organization: accept-risk-rule 
+        <Organization.html#OrganizationRESTReference-/organization/{organization_id}/acceptRiskRule>`
 
         Args:
             organization_id (int): The organization id.
@@ -387,7 +388,8 @@ class OrganizationAPI(SCEndpoint):
         Retrieves the recasted risk rules for the organization and optionally
         will filter based on the paramaters specified.
 
-        :sc-api:`organization: recast-risk-rule <Organization.html#OrganizationRESTReference-/organization/{id}/recastRiskRule>`
+        :sc-api:`organization: recast-risk-rule 
+        <Organization.html#OrganizationRESTReference-/organization/{organization_id}/recastRiskRule>`
 
         Args:
             organization_id (int): The organization id.
