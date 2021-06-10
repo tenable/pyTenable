@@ -7,7 +7,7 @@ pre-recorded API calls an validate that the code is performing as intended.
 
 .. code-block:: bash
 
-    pip install -r dev-requirements.txt
+    pip install -r test-requirements.txt
 
 Once the pre-requisites are installed, it's simply a matter of running the
 test suite:
