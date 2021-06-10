@@ -59,7 +59,7 @@ class IOConstants:
         This class inherits all variables from ScheduleConst and
         contains additional variables required for scan scheduling
         '''
-        # formatting and comparision values required in scan schedule
+        # formatting and comparison values required in scan schedule
         ffrequency = 'FREQ={}'
         finterval = 'INTERVAL={}'
         fbyweekday = 'BYDAY={}'

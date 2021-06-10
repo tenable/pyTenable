@@ -120,7 +120,7 @@ class Downloads(APIPlatform):
 
     def download(self, page, package, fobj=None):
         '''
-        Retreives the requested package and downloads the file.
+        Retrieves the requested package and downloads the file.
 
         :devportal:`API Endpoint Documentation <get_pages-slug-files-file>`
 

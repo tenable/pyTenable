@@ -476,19 +476,19 @@ class ScansAPI(TIOEndpoint):
 
         Args:
             scan_id (int): The unique identifier for the scan.
-            attachment_id (int): The unique identifier for the attachement
-            key (str): The attachement access token.
+            attachment_id (int): The unique identifier for the attachment
+            key (str): The attachment access token.
             fobj (FileObject, optional): a file-like object you wish for the
-                attachement to be written to.  If none is specified, a BytesIO
+                attachment to be written to.  If none is specified, a BytesIO
                 object will be returned with the contents of the attachment.
 
         Returns:
             :obj:`FileObject`:
-                A file-like object with the attachement written into it.
+                A file-like object with the attachment written into it.
 
         Examples:
             >>> with open('example.file', 'wb') as fobj:
-            ...     tio.scans.attachement(1, 1, 'abc', fobj)
+            ...     tio.scans.attachment(1, 1, 'abc', fobj)
         '''
         if not fobj:
             # if no file-like object is specified, then assign a BytesIO object
@@ -1140,7 +1140,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: pause <scans-pause>`
 
         Args:
-            scan_id (int or uuid): The unique identifier fo the scan to pause.
+            scan_id (int or uuid): The unique identifier of the scan to pause.
             block (bool, optional):
                 Block until the scan is actually paused.  Default is False.
 

@@ -81,7 +81,7 @@ class UserAPI(SCEndpoint):
 
         if 'timezone' in kw:
             # Convert the timezone parameter into the preference dictionary
-            # item thats expected by the API.
+            # item that's expected by the API.
             kw['preferences'] = [{
                 'name': 'timezone',
                 'tag': 'system',
@@ -170,7 +170,7 @@ class UserAPI(SCEndpoint):
                 Should the default report cards be created for the user?  If
                 left unspecified, the default is True.
             default_reports (bool, optional):
-                Should the default reports be created fro the user?  If left
+                Should the default reports be created for the user?  If left
                 unspecified, the default is True.
             email (str, optional):
                 The email address to associate to the user.
@@ -285,7 +285,7 @@ class UserAPI(SCEndpoint):
                 Should the default report cards be created for the user?  If
                 left unspecified, the default is True.
             default_reports (bool, optional):
-                Should the default reports be created fro the user?  If left
+                Should the default reports be created for the user?  If left
                 unspecified, the default is True.
             email (str, optional):
                 The email address to associate to the user.

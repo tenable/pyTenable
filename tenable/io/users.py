@@ -55,7 +55,7 @@ class UsersAPI(TIOEndpoint):
 
         Returns:
             :obj:`dict`:
-                The resorce record fo the new user.
+                The resource record of the new user.
 
         Examples:
             Create a standard user:

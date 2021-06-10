@@ -434,7 +434,7 @@ class ScanAPI(SCEndpoint):
 
         Args:
             id (int): The scan definition identifier to copy.
-            name (str): The name of the copy thats created.
+            name (str): The name of the copy that's created.
             user_id (int):
                 The user id to assign as the owner of the new scan definition.
 

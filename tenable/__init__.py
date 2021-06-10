@@ -23,7 +23,7 @@ different APIs between some of the products.
 
 .. note::
     pyTenable version 1.2 is the first release to drop support for Python
-    versions less than 3.6.  If you are still using any of these depricated
+    versions less than 3.6.  If you are still using any of these deprecated
     python versions the 1.1 release will still work, however is no longer being
     actively developed or maintained.
 
@@ -67,7 +67,7 @@ Getting started with Tenable.sc is equally as easy:
    for vuln in sc.analysis.vulns():
       print('{ip}:{pluginID}:{pluginName}'.format(**vuln))
 
-For more detailed information on whats available, please refer to the navigation
+For more detailed information on what's available, please refer to the navigation
 section for the Tenable application you're looking
 
 Logging

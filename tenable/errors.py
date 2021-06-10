@@ -111,7 +111,7 @@ class TioExportsTimeout(TenableException):
 class APIError(TenableException):
     '''
     The APIError Exception is a generic Exception for handling responses from
-    the API that aren't whats expected.  The APIError Exception itself attempts
+    the API that aren't what's expected.  The APIError Exception itself attempts
     to provide the developer with enough information around the response to
     ascertain what went wrong.
 
