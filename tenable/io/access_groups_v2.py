@@ -9,6 +9,7 @@ Methods available on ``tio.access_groups_v2``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AccessGroupsV2API
+
     .. automethod:: list
     .. automethod:: create
     .. automethod:: delete
