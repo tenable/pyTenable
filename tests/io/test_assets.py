@@ -211,11 +211,13 @@ def test_assets_move_assets_success(api, network):
         'netbios_name': '',
         'mac_address': []
     })
-    time.sleep(15)
+    time.sleep(60)
     resp = api.assets.move_assets(
         '00000000-0000-0000-0000-000000000000', network['uuid'], ['192.168.254.1'])
+    time.sleep(15)
     check(resp['response']['data'], 'asset_count', int)
     assert resp['response']['data']['asset_count'] == 1
+    api.assets.bulk_delete(('ipv4', 'eq', '192.168.254.1'))
 
 def test_assets_bulk_delete_filter_type_typeerror(api):
     '''
@@ -247,17 +249,18 @@ def test_assets_bulk_delete_success(api):
     '''
     api.assets.asset_import('pytest', {
         'fqdn': ['example1.py.test'],
-        'ipv4': ['192.168.254.1'],
+        'ipv4': ['192.168.254.2'],
         'netbios_name': '',
         'mac_address': []
     })
+    time.sleep(60)
     api.assets.asset_import('pytest', {
         'fqdn': ['example2.py.test'],
-        'ipv4': ['192.168.254.1'],
+        'ipv4': ['192.168.254.2'],
         'netbios_name': '',
         'mac_address': []
     })
-    time.sleep(5)
-    resp = api.assets.bulk_delete(('ipv4', 'eq', '192.168.254.1'))
+    time.sleep(60)
+    resp = api.assets.bulk_delete(('ipv4', 'eq', '192.168.254.2'))
     check(resp['response']['data'], 'asset_count', int)
     assert resp['response']['data']['asset_count'] == 2

@@ -10,7 +10,7 @@ def guser():
     '''
     Returns username
     '''
-    return '{}@pytenable.io'.format(uuid.uuid4())
+    return '{}@tenable.com'.format(uuid.uuid4())
 
 def gpass():
     '''
