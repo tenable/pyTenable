@@ -1,6 +1,9 @@
+Welcome to pyTenable's documentation!
+=====================================
+
 .. toctree::
-   :hidden:
-   :glob:
+   :maxdepth: 2
+   :caption: Contents:
 
    cs
    nessus
@@ -14,5 +17,16 @@
    errors
    testing
    api/index
+   ad
+   admodels
 
 .. automodule:: tenable
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
