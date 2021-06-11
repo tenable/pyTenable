@@ -33,7 +33,7 @@ class ImageAPI(CSEndpoint):
             has_malware (bool, optional):
                 Limits images to only those that either have or don't have malware.
             image_id (str, optional):
-                Limits the reponse to images with the specified image id.
+                Limits the response to images with the specified image id.
             name (str, optional):
                 Limits the response to images with the specified name.
             limit (int, optional): 

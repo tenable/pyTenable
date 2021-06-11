@@ -91,7 +91,7 @@ class BaseFilterRuleSchema(Schema):
 
     def get_filter(self, value):
         '''
-        Retreives a filter definition ruleset from the stored definitions and
+        Retrieves a filter definition ruleset from the stored definitions and
         then returns a copy with the appropriate validators.
         '''
         # We don't want to modify the original filter data, so we will be

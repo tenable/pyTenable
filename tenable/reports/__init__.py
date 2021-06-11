@@ -11,7 +11,7 @@ of this is the Nessus version 2 file format.
 The Nessus version 2 format is a XML-based format that allows for a wide range
 of flexibility in providing different and varied sets of data within a singular
 report.  While not very data dense (reports can get quite large in size), it's
-easily compressable and well understood.
+easily compressible and well understood.
 
 .. automodule:: tenable.reports.nessusv2
 '''

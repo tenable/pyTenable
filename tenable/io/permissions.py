@@ -26,7 +26,7 @@ class PermissionsAPI(TIOEndpoint):
             otype (str):
                 The type of object to change.
             id (int):
-                The unique identifier fo the object.
+                The unique identifier of the object.
             *acls (dict):
                 ACL dictionaries inform Tenable.io how to handle permissions of
                 the various objects within Tenable.io.  Please refer to the
