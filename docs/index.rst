@@ -19,6 +19,7 @@ Welcome to pyTenable's documentation!
    api/index
    ad
    admodels
+   adapi
 
 .. automodule:: tenable
 
