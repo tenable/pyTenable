@@ -10,7 +10,7 @@ apply some defaults to the expected data-types and options most likely to be
 returned.  As the filters are dependent on the tool and data-type that is being
 referenced, the best solution to understanding what filters are available when
 getting started is to simply pass a known bad filter string and use the
-resulting error as an indicator of whats available.  For example, you could
+resulting error as an indicator of what's available.  For example, you could
 perform the following action below while attempting to see the available filters
 for the mobile data-type when using the ``vulndetails`` tool:
 

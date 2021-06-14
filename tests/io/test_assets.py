@@ -2,9 +2,11 @@
 test assets
 '''
 import time
+import uuid
 import pytest
 from tenable.errors import UnexpectedValueError, PermissionError
 from tests.checker import check, single
+from tests.io.test_networks import fixture_network
 
 @pytest.mark.vcr()
 def test_assets_list(api):
@@ -159,6 +161,62 @@ def test_assign_tags(api):
         api.assets.assign_tags('foo', [], [])
 
 @pytest.mark.vcr()
+def test_assets_move_assets_source_typeerror(api):
+    '''
+    test to raise exception when type of source param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.assets.move_assets(1, str(uuid.uuid4()), ["127.0.0.1"])
+
+@pytest.mark.vcr()
+def test_assets_move_assets_source_unexpectedvalueerror(api):
+    '''
+    test to raise exception when source param value does not match the pattern.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        api.assets.move_assets('nope', str(uuid.uuid4()), ["127.0.0.1"])
+
+@pytest.mark.vcr()
+def test_assets_move_assets_destination_typeerror(api):
+    '''
+    test to raise exception when type of destination param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.assets.move_assets(str(uuid.uuid4()), 1, ["127.0.0.1"])
+
+@pytest.mark.vcr()
+def test_assets_move_assets_destination_unexpectedvalueerror(api):
+    '''
+    test to raise exception when destination param value does not match the pattern.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        api.assets.move_assets(str(uuid.uuid4()), 'nope', ["127.0.0.1"])
+
+@pytest.mark.vcr()
+def test_assets_move_assets_target_typeerror(api):
+    '''
+    test to raise exception when type of target param does not match the expected type.
+    '''
+    with pytest.raises(TypeError):
+        api.assets.move_assets(str(uuid.uuid4()), str(uuid.uuid4()), 1)
+
+@pytest.mark.vcr()
+def test_assets_move_assets_success(api, network):
+    '''
+    test to move assets from the specified network to another network
+    '''
+    api.assets.asset_import('pytest', {
+        'fqdn': ['example.py.test'],
+        'ipv4': ['192.168.254.1'],
+        'netbios_name': '',
+        'mac_address': []
+    })
+    time.sleep(15)
+    resp = api.assets.move_assets(
+        '00000000-0000-0000-0000-000000000000', network['uuid'], ['192.168.254.1'])
+    check(resp['response']['data'], 'asset_count', int)
+    assert resp['response']['data']['asset_count'] == 1
+
 def test_assets_bulk_delete_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.

@@ -2,6 +2,7 @@
 .. autoclass:: TenableIO
 
 .. automodule:: tenable.io.access_groups
+.. automodule:: tenable.io.access_groups_v2
 .. automodule:: tenable.io.agent_config
 .. automodule:: tenable.io.agent_exclusions
 .. automodule:: tenable.io.agent_groups
@@ -39,7 +40,7 @@ The methods listed below aren't run through any naturalization by the library
 aside from the response code checking.  These methods effectively route
 directly into the requests session.  The responses will be Response objects from
 the ``requests`` library.  In all cases, the path is appended to the base
-``url`` paramater that the ``TenableIO`` object was instantiated with.
+``url`` parameter that the ``TenableIO`` object was instantiated with.
 
 Example:
 
@@ -60,6 +61,7 @@ import logging, os
 from tenable.errors import UnexpectedValueError
 from tenable.base.v1 import APISession
 from .access_groups import AccessGroupsAPI
+from .access_groups_v2 import AccessGroupsV2API
 from .agent_config import AgentConfigAPI
 from .agent_exclusions import AgentExclusionsAPI
 from .agent_groups import AgentGroupsAPI
@@ -152,6 +154,10 @@ class TenableIO(APISession):
     @property
     def access_groups(self):
         return AccessGroupsAPI(self)
+
+    @property
+    def access_groups_v2(self):
+        return AccessGroupsV2API(self)
 
     @property
     def agent_config(self):

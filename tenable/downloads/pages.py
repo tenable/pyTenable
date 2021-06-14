@@ -49,7 +49,7 @@ class PageAPI(APIEndpoint):
 
     def download(self, page, package, fobj=None):
         '''
-        Retreives the requested package and downloads the file.
+        Retrieves the requested package and downloads the file.
 
         Args:
             page (str): The name of the page

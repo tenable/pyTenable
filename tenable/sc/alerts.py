@@ -19,7 +19,7 @@ Methods available on ``sc.alerts``:
 
 .. _iCal Date-Time:
     https://tools.ietf.org/html/rfc5545#section-3.3.5
-.. _iCal Recurrance Rule:
+.. _iCal Recurrence Rule:
     https://tools.ietf.org/html/rfc5545#section-3.3.10
 '''
 from .base import SCEndpoint
@@ -89,7 +89,7 @@ class AlertAPI(SCEndpoint):
 
     def list(self, fields=None):
         '''
-        Retreives the list of alerts.
+        Retrieves the list of alerts.
 
         :sc-api:`alert: list <Alert.html#AlertRESTReference-/alert>`
 

@@ -1,0 +1,58 @@
+---
+interactions:
+  - request:
+      body: null
+      headers:
+        Accept:
+          - '*/*'
+        Accept-Encoding:
+          - gzip, deflate
+        Connection:
+          - keep-alive
+        Content-Length:
+          - '0'
+        Cookie:
+          - nginx-cloud-site-id=us-2b
+        User-Agent:
+          - Integration/1.0
+            (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.2.8
+            (pyTenable/1.2.8; Python/3.8.6; Windows/AMD64)
+        X-APIKeys:
+          - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+      method: DELETE
+      uri: https://cloud.tenable.com/v2/access-groups/2b4bff6f-d8f7-49af-b712-1002061c7a08
+    response:
+      body:
+        string: ''
+      headers:
+        Cache-Control:
+          - no-store
+        Connection:
+          - keep-alive
+        Content-Length:
+          - '0'
+        Content-Type:
+          - application/octet-stream
+        Date:
+          - Mon, 10 May 2021 13:55:44 GMT
+        Expect-CT:
+          - enforce, max-age=86400
+        Pragma:
+          - no-cache
+        Set-Cookie:
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+          - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+        Strict-Transport-Security:
+          - max-age=63072000; includeSubDomains
+        X-Content-Type-Options:
+          - nosniff
+        X-Gateway-Site-ID:
+          - nginx-router-ssu2q-ap-southeast-1-prod
+        X-Request-Uuid:
+          - ecac68aeb99486d2301fab9ee738e00d
+        X-XSS-Protection:
+          - 1; mode=block
+      status:
+        code: 200
+        message: OK
+version: 1

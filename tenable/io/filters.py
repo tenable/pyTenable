@@ -16,9 +16,12 @@ Methods available on ``tio.filters``:
     .. automethod:: workbench_asset_filters
     .. automethod:: workbench_vuln_filters
 '''
-from .base import TIOEndpoint
+from tenable.io.base import TIOEndpoint
 
 class FiltersAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to filters
+    '''
     _cache = dict()
 
     def _normalize(self, filterset):
@@ -27,7 +30,7 @@ class FiltersAPI(TIOEndpoint):
         '''
         filters = dict()
         for item in filterset:
-            f = {
+            datablock = {
                 'operators': item['operators'],
                 'choices': None,
                 'pattern': None,
@@ -41,12 +44,12 @@ class FiltersAPI(TIOEndpoint):
                 # is a list of string values.
                 if isinstance(item['control']['list'][0], dict):
                     key = 'value' if 'value' in item['control']['list'][0] else 'id'
-                    f['choices'] = [str(i[key]) for i in item['control']['list']]
+                    datablock['choices'] = [str(i[key]) for i in item['control']['list']]
                 elif isinstance(item['control']['list'], list):
-                    f['choices'] = [str(i) for i in item['control']['list']]
+                    datablock['choices'] = [str(i) for i in item['control']['list']]
             if 'regex' in item['control']:
-                f['pattern'] = item['control']['regex']
-            filters[item['name']] = f
+                datablock['pattern'] = item['control']['regex']
+            filters[item['name']] = datablock
         return filters
 
     def _use_cache(self, name, path, field_name='filters', normalize=True):
@@ -58,8 +61,8 @@ class FiltersAPI(TIOEndpoint):
 
         if normalize:
             return self._normalize(self._cache[name])
-        else:
-            return self._cache[name]
+
+        return self._cache[name]
 
     def access_group_asset_rules_filters(self, normalize=True):
         '''
@@ -93,6 +96,40 @@ class FiltersAPI(TIOEndpoint):
         '''
         return self._use_cache('access_groups',
             'access-groups/filters', normalize=normalize)
+
+    def access_group_filters_v2(self, normalize=True):
+        '''
+        Returns access group filters v2.
+
+        :devportal:`filters: access_group_filters_v2 <v2-access-groups-list-filters>`
+
+        Returns:
+            :obj:`dict`:
+                Filter resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.access_group_filters_v2()
+        '''
+        return self._use_cache('access_groups_v2',
+            'v2/access-groups/filters', normalize=normalize)
+
+    def access_group_asset_rules_filters_v2(self, normalize=True):
+        '''
+        Returns access group rules filters v2.
+
+        :devportal:`filters: access_group_asset_rules_filters_v2
+            <v2-access-groups-list-rule-filters>`
+
+        Returns:
+            :obj:`dict`:
+                Filter resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.access_group_rules_filters_v2()
+        '''
+        return self._use_cache('access_group_asset_filters_v2',
+            'v2/access-groups/rules/filters',
+            field_name='rules', normalize=normalize)
 
     def agents_filters(self, normalize=True):
         '''
@@ -188,3 +225,18 @@ class FiltersAPI(TIOEndpoint):
             'choices': None,
             'pattern': None
         }}
+
+    def asset_tag_filters(self):
+        '''
+        Returns a list of filters that you can use to create the rules for applying dynamic tags.
+
+        :devportal:`tag: list asset tag filters <tags-list-asset-filters>`
+
+        Returns:
+            :obj:`dict`:
+                Filter resource dictionary
+
+        Examples:
+            >>> tio.tags.asset_tag_filters()
+        '''
+        return self._use_cache('tags', 'tags/assets/filters')

@@ -22,10 +22,18 @@ from requests.exceptions import (
     ConnectionError as RequestsConnectionError,
     RequestException as RequestsRequestException
 )
-from tenable.errors import *
 from tenable.utils import url_validator
 from tenable import __version__, __author__
 
+from tenable.errors import (
+		UnexpectedValueError,
+		InvalidInputError,
+		PermissionError,
+		NotFoundError,
+		UnsupportedError,
+		FileDownloadError,
+		ServerError
+)
 
 class APIResultsIterator(object):
     '''
@@ -515,7 +523,7 @@ class APISession(object):
             # The following code will run when a request successfully returned.
             else:
                 # If there is a Request UUID then we will want to log the UUID
-                # just incase we may need it for tracking down what happened
+                # just in case we may need it for tracking down what happened
                 # within the Tenable.io platform.
                 if resp.headers.get('x-request-uuid'):
                     self._log.debug('Request-UUID {} for {}'.format(
@@ -551,7 +559,7 @@ class APISession(object):
 
                 else:
                     # If all else fails, raise an error stating that we don't
-                    # even know whats happening.
+                    # even know what's happening.
                     raise UnknownError(resp)
         raise RetryError(resp, retries)
 

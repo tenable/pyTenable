@@ -208,7 +208,7 @@ class TenableSC(APISession):
         # reusable if the user logs out and logs back in.
         self._ssl_verify = ssl_verify
 
-        # Now lets pass the relevent parts off to the APISession's constructor
+        # Now lets pass the relevant parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
         super(TenableSC, self).__init__(url,
             retries=retries,
@@ -320,7 +320,7 @@ class TenableSC(APISession):
             })
 
         elif access_key != None and secret_key != None:
-            if semver.match(self.version, '<5.13.0'):
+            if semver.VersionInfo.parse(self.version).match('<5.13.0'):
                 raise ConnectionError(
                     'API Keys not supported on this version of Tenable.sc')
             self._session.headers.update({

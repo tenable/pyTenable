@@ -15,8 +15,8 @@ Methods available on ``tio.plugins``:
     .. automethod:: list
     .. automethod:: plugin_details
 '''
-from .base import TIOEndpoint, TIOIterator
 from datetime import date
+from tenable.io.base import TIOEndpoint, TIOIterator
 
 
 class PluginIterator(TIOIterator):
@@ -80,15 +80,23 @@ class PluginIterator(TIOIterator):
         # If the maptable exists, then graft on the plugin family information
         # on to to the item.
         if self._maptable:
-            fid = self._maptable['plugins'][item['id']]
-            item['family_id'] = fid
-            item['family_name'] = self._maptable['families'][fid]
+            try:
+                fid = self._maptable['plugins'][item['id']]
+                item['family_id'] = fid
+                item['family_name'] = self._maptable['families'][fid]
+            except KeyError:
+                self._log.warning("plugin id {} not found in plugin family".format(item['id']))
+                item['family_id'] = None
+                item['family_name'] = None
 
         return item
 
 
 
 class PluginsAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to plugins
+    '''
     def families(self):
         '''
         List the available plugin families.
@@ -105,14 +113,14 @@ class PluginsAPI(TIOEndpoint):
         '''
         return self._api.get('plugins/families').json()['families']
 
-    def family_details(self, id):
+    def family_details(self, family_id):
         '''
         Retrieve the details for a specific plugin family.
 
         :devportal:`plugins: family-details plugins-family-details>`
 
         Args:
-            id (int): The plugin family unique identifier.
+            family_id (int): The plugin family unique identifier.
 
         Returns:
             :obj:`dict`:
@@ -123,29 +131,29 @@ class PluginsAPI(TIOEndpoint):
             >>> family = tio.plugins.family_details(1)
         '''
         return self._api.get('plugins/families/{}'.format(
-                self._check('id', id, int)
+            self._check('family_id', family_id, int)
         )).json()
 
-    def plugin_details(self, id):
-            '''
-            Retrieve the details for a specific plugin.
+    def plugin_details(self, plugin_id):
+        '''
+        Retrieve the details for a specific plugin.
 
-            :devportal:`plugins: plugin-details <plugins-plugin-details>`
+        :devportal:`plugins: plugin-details <plugins-plugin-details>`
 
-            Args:
-                id (int): The plugin id for the requested plugin.
+        Args:
+            plugin_id (int): The plugin id for the requested plugin.
 
-            Returns:
-                :obj:`dict`:
-                    A dictionary stating the id, name, family, and any other
-                    relevant attributes associated to the plugin.
+        Returns:
+            :obj:`dict`:
+                A dictionary stating the id, name, family, and any other
+                relevant attributes associated to the plugin.
 
-            Examples:
-                >>> plugin = tio.plugins.plugin_details(19506)
-                >>> pprint(plugin)
-            '''
-            return self._api.get('plugins/plugin/{}'.format(
-                self._check('id', id, int))).json()
+        Examples:
+            >>> plugin = tio.plugins.plugin_details(19506)
+            >>> pprint(plugin)
+        '''
+        return self._api.get('plugins/plugin/{}'.format(
+            self._check('plugin_id', plugin_id, int))).json()
 
     def list(self, page=None, size=None, last_updated=None, num_pages=None):
         '''

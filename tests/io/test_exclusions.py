@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import pytest
 from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
 from tests.checker import check
-from tests.io.test_networks import network
+from tests.io.test_networks import fixture_network
 
 @pytest.fixture(name='exclusion')
 @pytest.mark.vcr()

@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0]
+### Added
+- PyLint and Codacy checks as part of PyTenable test suite / pipeline #316
+- move assets endpoint in tio.assets.move_assets #312
+- access group v2 endpoints added in tio.access_groups_v2 #308
+- add support for "schedule_scan" in tio.scans endpoints #288
+- add list_routes and edit_routes in tio.scanner_groups #290
+- add exclusions_import in tio.exclusions #293
+- add list_auths and edit_auths in tio.users #296
+- add check_auto_targets in tio.scans #301
+- add bulk_delete in tio.assets #302
+- add network_asset_count in tio.networks #303
+
+### Changed
+- tags.create and tags.edit now have access_control and filter #309
+- updated tio.exclusions.edit arguments #282
+- added sort arg in tio.scans.history, fixed sort in tio.tags #283
+- added network_id arg to tio.exclusions create/edit #284
+- support bulk delete in tio.tags.delete #295
+- 
+### Fixed
+- many errors and warnings across the code base #320, #317, #314, #313, #281
+- tio.agent_config.edit now returns payload #287
+- error handling in tio.plugins #291
+
+
+[1.3.0]: https://github.com/tenable/pyTenable/compare/1.2.8...1.3.0
+
 ## [1.2.8]
 ### Changed
 - Centralized the SSL Verification process and support passing the verify param

@@ -33,15 +33,16 @@ Methods available on ``tio.scans``:
     .. automethod:: status
     .. automethod:: stop
     .. automethod:: timezones
+    .. automethod:: check_auto_targets
 '''
-from .base import TIOEndpoint, TIOIterator
-from tenable.utils import dict_merge, policy_settings
-from tenable.errors import UnexpectedValueError, FileDownloadError
-from tenable.constants import IOConstants
-from datetime import datetime, timedelta
-from restfly.utils import dict_clean
-from io import BytesIO
 import time
+from datetime import datetime, timedelta
+from io import BytesIO
+from restfly.utils import dict_clean
+from tenable.constants import IOConstants
+from tenable.utils import dict_merge
+from tenable.errors import UnexpectedValueError
+from tenable.io.base import TIOEndpoint, TIOIterator
 
 
 class ScanHistoryIterator(TIOIterator):
@@ -67,6 +68,9 @@ class ScanHistoryIterator(TIOIterator):
 
 
 class ScansAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to scans
+    '''
     schedule_const = IOConstants.ScanScheduleConst
     case_const = IOConstants.CaseConst
 
@@ -83,17 +87,17 @@ class ScansAPI(TIOEndpoint):
             if running:
                 time.sleep(sleeper)
 
-    def _create_scan_document(self, kw):
+    def _create_scan_document(self, kwargs):
         '''
         Takes the key-worded arguments and will provide a scan settings document
         based on the values inputted.
 
         Args:
-            kw (dict): The keyword dict passed from the user
+            kwargs (dict): The keyword dict passed from the user
 
         Returns:
             :obj:`dict`:
-                The resulting scan document based on the kw provided.
+                The resulting scan document based on the kwargs provided.
         '''
         scan = {
             'settings': dict(),
@@ -101,18 +105,18 @@ class ScansAPI(TIOEndpoint):
 
         # If a template is specified, then we will pull the listing of available
         # templates and set the policy UUID to match the template name given.
-        if 'template' in kw:
+        if 'template' in kwargs:
             templates = self._api.policies.templates()
             scan['uuid'] = templates[self._check(
-                'template', kw['template'], str,
+                'template', kwargs['template'], str,
                 default='basic',
                 choices=list(templates.keys())
             )]
-            del(kw['template'])
+            del kwargs['template']
 
         # If a policy UUID is sent, then we will set the scan template UUID to
         # be the UUID that was specified.
-        if 'policy' in kw:
+        if 'policy' in kwargs:
             policies = self._api.policies.list()
             match = False
 
@@ -122,7 +126,7 @@ class ScansAPI(TIOEndpoint):
             # the editor config, and then use the policy id and scan policy
             # template uuid.
             for item in policies:
-                if kw['policy'] in [item['name'], item['id']] and not match:
+                if kwargs['policy'] in [item['name'], item['id']] and not match:
                     policy_tmpl = self._api.editor.details('scan/policy', item['id'])
                     scan['uuid'] = policy_tmpl['uuid']
                     scan['settings']['policy_id'] = item['id']
@@ -131,58 +135,58 @@ class ScansAPI(TIOEndpoint):
             # if no match was discovered, then raise an invalid warning.
             if not match:
                 raise UnexpectedValueError('policy setting is invalid.')
-            del(kw['policy'])
+            del kwargs['policy']
 
         # if the scanner attribute was set, then we will attempt to figure out
         # what scanner to use.
-        if 'scanner' in kw:
+        if 'scanner' in kwargs:
             scanners = self._api.scanners.allowed_scanners()
 
             # We will want to attempt to enumerate the scanner list and if
             # we see a name match, replace the scanner name with the UUID
             # of the scanner instead.
             for item in scanners:
-                if item['name'] == kw['scanner']:
-                    kw['scanner'] = item['id']
+                if item['name'] == kwargs['scanner']:
+                    kwargs['scanner'] = item['id']
 
             # we will always want to attempt to use the UUID first as it's
             # the cheapest check that we can run.
             scan['settings']['scanner_id'] = self._check(
-                'scanner', kw['scanner'], 'scanner-uuid',
+                'scanner', kwargs['scanner'], 'scanner-uuid',
                 choices=[s['id'] for s in scanners])
-            del(kw['scanner'])
+            del kwargs['scanner']
 
         # If the targets parameter is specified, then we will need to convert
         # the list of targets to a comma-delimited string and then set the
         # text_targets parameter with the result.
-        if 'targets' in kw:
+        if 'targets' in kwargs:
             scan['settings']['text_targets'] = ','.join(self._check(
-                'targets', kw['targets'], list))
-            del(kw['targets'])
+                'targets', kwargs['targets'], list))
+            del kwargs['targets']
 
         # For credentials, we will simply push the dictionary as-is into the
         # the credentials.add sub-document.
-        if 'credentials' in kw:
+        if 'credentials' in kwargs:
             scan['credentials'] = {'add': dict()}
             scan['credentials']['add'] = self._check(
-                'credentials', kw['credentials'], dict)
-            del(kw['credentials'])
+                'credentials', kwargs['credentials'], dict)
+            del kwargs['credentials']
 
         # Just like with credentials, we will push the dictionary as-is into the
         # correct sub-document of the scan definition.
-        if 'compliance' in kw:
-            scan['audits'] = self._check('compliance', kw['compliance'], dict)
-            del(kw['compliance'])
+        if 'compliance' in kwargs:
+            scan['audits'] = self._check('compliance', kwargs['compliance'], dict)
+            del kwargs['compliance']
 
-        if 'plugins' in kw:
-            scan['plugins'] = self._check('plugins', kw['plugins'], dict)
-            del(kw['plugins'])
+        if 'plugins' in kwargs:
+            scan['plugins'] = self._check('plugins', kwargs['plugins'], dict)
+            del kwargs['plugins']
 
         # if the schedule_scan attribute was set, then we will apply fields
         # required for scheduling a scan
-        if 'schedule_scan' in kw:
-            self._check('schedule_scan', kw['schedule_scan'], dict)
-            if kw['schedule_scan']['enabled']:
+        if 'schedule_scan' in kwargs:
+            self._check('schedule_scan', kwargs['schedule_scan'], dict)
+            if kwargs['schedule_scan']['enabled']:
                 keys = [self.schedule_const.enabled, self.schedule_const.launch, self.schedule_const.rrules,
                     self.schedule_const.schedule_scan, self.schedule_const.start_time, self.schedule_const.timezone]
             else:
@@ -190,13 +194,13 @@ class ScansAPI(TIOEndpoint):
 
             # update schedule values in scan settings based on enable parameter
             for k in keys:
-                scan['settings'][k] = kw['schedule_scan'][k]
+                scan['settings'][k] = kwargs['schedule_scan'][k]
 
-            del (kw['schedule_scan'])
+            del (kwargs['schedule_scan'])
 
         # any other remaining keyword arguments will be passed into the settings
         # sub-document.  The bulk of the data should go here...
-        scan['settings'] = dict_merge(scan['settings'], kw)
+        scan['settings'] = dict_merge(scan['settings'], kwargs)
         return scan
 
     def _get_schedule_details(self, details):
@@ -472,19 +476,19 @@ class ScansAPI(TIOEndpoint):
 
         Args:
             scan_id (int): The unique identifier for the scan.
-            attachment_id (int): The unique identifier for the attachement
-            key (str): The attachement access token.
+            attachment_id (int): The unique identifier for the attachment
+            key (str): The attachment access token.
             fobj (FileObject, optional): a file-like object you wish for the
-                attachement to be written to.  If none is specified, a BytesIO
+                attachment to be written to.  If none is specified, a BytesIO
                 object will be returned with the contents of the attachment.
 
         Returns:
             :obj:`FileObject`:
-                A file-like object with the attachement written into it.
+                A file-like object with the attachment written into it.
 
         Examples:
             >>> with open('example.file', 'wb') as fobj:
-            ...     tio.scans.attachement(1, 1, 'abc', fobj)
+            ...     tio.scans.attachment(1, 1, 'abc', fobj)
         '''
         if not fobj:
             # if no file-like object is specified, then assign a BytesIO object
@@ -505,14 +509,14 @@ class ScansAPI(TIOEndpoint):
         # Return the file object to the caller.
         return fobj
 
-    def configure(self, id, **kw):
+    def configure(self, scan_id, **kw):
         '''
         Overwrite the parameters specified on top of the existing scan record.
 
         :devportal:`scans: configure <scans-configure>`
 
         Args:
-            id (int): The unique identifier for the scan.
+            scan_id (int): The unique identifier for the scan.
             template (str, optional):
                 The scan policy template to use.  If no template is specified
                 then the default of `basic` will be used.
@@ -556,12 +560,12 @@ class ScansAPI(TIOEndpoint):
         # the correct format, and then merge them together to create the new
         # :func:`~.tenable.tenable_io.ScansAPI.details` method, however is not
         # scan record that we will be pushing to the API.
-        current = self.details(id)
+        current = self.details(scan_id)
         updated = self._create_scan_document(kw)
         scan = dict_merge(current, updated)
 
         # Performing the actual call to the API with the updated scan record.
-        return self._api.put('scans/{}'.format(id),
+        return self._api.put('scans/{}'.format(scan_id),
                     json=scan).json()
 
     def copy(self, scan_id, folder_id=None, name=None):
@@ -698,14 +702,14 @@ class ScansAPI(TIOEndpoint):
         '''
         self._api.delete('scans/{}'.format(scan_id))
 
-    def history(self, id, limit=None, offset=None, pages=None, sort=None):
+    def history(self, scan_id, limit=None, offset=None, pages=None, sort=None):
         '''
         Get the scan history of a given scan from Tenable.io.
 
         :devportal:`scans: history <scans-history>`
 
         Args:
-            id (int or uuid):
+            scan_id (int or uuid):
                 The unique identifier for the scan.
             limit (int, optional):
                 The number of records to retrieve.  Default is 50
@@ -736,7 +740,7 @@ class ScansAPI(TIOEndpoint):
             _offset=offset if offset else 0,
             _pages_total=pages,
             _query=query,
-            _path='scans/{}/history'.format(id),
+            _path='scans/{}/history'.format(scan_id),
             _resource='history'
         )
 
@@ -960,7 +964,7 @@ class ScansAPI(TIOEndpoint):
 
         # Next we will wait for the status of the export request to become
         # ready.
-        status = self._wait_for_download(
+        _ = self._wait_for_download(
             'scans/{}/export/{}/status'.format(scan_id, fid),
             'scans', scan_id, fid, params=dl_params)
 
@@ -1053,7 +1057,7 @@ class ScansAPI(TIOEndpoint):
             payload['folder_id'] = self._check('folder_id', folder_id, int)
         if password:
             payload['password'] = self._check('password', password, str)
-        if aggregate == None:
+        if aggregate is None:
             aggregate = True
 
         # Upload the file to the Tenable.io and store the resulting filename in
@@ -1136,7 +1140,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: pause <scans-pause>`
 
         Args:
-            scan_id (int or uuid): The unique identifier fo the scan to pause.
+            scan_id (int or uuid): The unique identifier of the scan to pause.
             block (bool, optional):
                 Block until the scan is actually paused.  Default is False.
 
@@ -1336,3 +1340,51 @@ class ScansAPI(TIOEndpoint):
             scan_id,
             self._check('history_uuid', history_uuid, 'scanner-uuid'))).json()
 
+    def check_auto_targets(self, limit, matched_resource_limit,
+            network_uuid=None, tags=None, targets=None):
+        '''
+        Evaluates a list of targets and/or tags against
+        the scan route configuration of scanner groups.
+
+        :devportal:`scan: check-auto-targets <scans-check-auto-targets>`
+
+        Args:
+            limit (int):
+                Limit the number of missed targets returned in the response.
+            matched_resource_limit (int):
+                Limit the number of matched resource UUIDs returned in the response.
+            network_uuid (uuid, optional):
+                The UUID of the network.
+            tags (list, optional):
+                A list of asset tags UUIDs.
+            targets (list, optional):
+                A list of valid targets.
+
+        Returns:
+            :obj:`dict`:
+                Return the list of missed targets (if any), and
+                the list of matched scanner groups (if any).
+
+        Examples:
+            >>> scan_routes_info = tio.scans.check_auto_targets(10, 5, targets=['127.0.0.1'])
+        '''
+        query = {
+            "limit": self._check('limit', limit, int),
+            "matched_resource_limit": self._check(
+                'matched_resource_limit', matched_resource_limit, int)
+        }
+
+        payload = dict()
+
+        payload['network_uuid'] = self._check('network_uuid', network_uuid, 'uuid',
+            default='00000000-0000-0000-0000-000000000000')
+
+        if tags:
+            payload['tags'] = [
+                self._check('tag', tag, 'uuid') for tag in self._check('tags', tags, list)
+            ]
+
+        if targets:
+            payload['target_list'] = ','.join(self._check('targets', targets, list))
+
+        return self._api.post('scans/check-auto-targets', params=query, json=payload).json()
