@@ -3,7 +3,7 @@ import os
 import pytest
 from requests.models import Response
 
-from tenable.errors import ConnectionError, APIError
+from tenable.errors import ConnectionError
 from tenable.sc import TenableSC
 
 
@@ -32,8 +32,7 @@ def test_exit(sc, vcr):
         sc.__exit__(exc_type='exc_type', exc_value='exc_value', exc_traceback='exc_traceback')
 
 
-
-def test_resp_error_check(sc, vcr):
+def test_resp_error_check(sc):
     with pytest.raises(AttributeError):
         response = Response()
         response._content = b'{ "error_code": 401}'

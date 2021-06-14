@@ -1,6 +1,6 @@
 import pytest
 
-from tenable.errors import *
+from tenable.errors import APIError
 from ..checker import check
 
 
@@ -101,20 +101,20 @@ def test_accept_risks_constructor_success(sc):
 
 
 @pytest.fixture
-def arisk(request, sc, vcr):
+def accept_risk(request, sc, vcr):
     with vcr.use_cassette('test_accept_risks_create_success'):
-        a = sc.accept_risks.create(19506, [1],
+        accept_risk = sc.accept_risks.create(19506, [1],
                                    ips=['127.0.0.1'])
 
     def teardown():
         try:
             with vcr.use_cassette('test_accept_risks_delete_success'):
-                sc.accept_risks.delete(int(a['id']))
+                sc.accept_risks.delete(int(accept_risk['id']))
         except APIError:
             pass
 
     request.addfinalizer(teardown)
-    return a
+    return accept_risk
 
 
 @pytest.mark.vcr()
@@ -163,38 +163,38 @@ def test_accept_risks_list_success(sc):
 
 
 @pytest.mark.vcr()
-def test_accept_risks_create_success(sc, arisk):
-    assert isinstance(arisk, dict)
-    check(arisk, 'id', str)
-    check(arisk, 'hostType', str)
-    check(arisk, 'hostValue', str)
-    check(arisk, 'port', str)
-    check(arisk, 'protocol', str)
-    check(arisk, 'comments', str)
-    check(arisk, 'expires', str)
-    check(arisk, 'status', str)
-    check(arisk, 'repository', dict)
-    check(arisk['repository'], 'id', str)
-    check(arisk['repository'], 'name', str)
-    check(arisk['repository'], 'description', str)
-    check(arisk, 'organization', dict)
-    check(arisk['organization'], 'id', str)
-    check(arisk['organization'], 'name', str)
-    check(arisk['organization'], 'description', str)
-    check(arisk, 'user', dict)
-    check(arisk['user'], 'id', str)
-    check(arisk['user'], 'username', str)
-    check(arisk['user'], 'firstname', str)
-    check(arisk['user'], 'lastname', str)
-    check(arisk, 'plugin', dict)
-    check(arisk['plugin'], 'id', str)
-    check(arisk['plugin'], 'name', str)
-    check(arisk['plugin'], 'description', str)
+def test_accept_risks_create_success(accept_risk):
+    assert isinstance(accept_risk, dict)
+    check(accept_risk, 'id', str)
+    check(accept_risk, 'hostType', str)
+    check(accept_risk, 'hostValue', str)
+    check(accept_risk, 'port', str)
+    check(accept_risk, 'protocol', str)
+    check(accept_risk, 'comments', str)
+    check(accept_risk, 'expires', str)
+    check(accept_risk, 'status', str)
+    check(accept_risk, 'repository', dict)
+    check(accept_risk['repository'], 'id', str)
+    check(accept_risk['repository'], 'name', str)
+    check(accept_risk['repository'], 'description', str)
+    check(accept_risk, 'organization', dict)
+    check(accept_risk['organization'], 'id', str)
+    check(accept_risk['organization'], 'name', str)
+    check(accept_risk['organization'], 'description', str)
+    check(accept_risk, 'user', dict)
+    check(accept_risk['user'], 'id', str)
+    check(accept_risk['user'], 'username', str)
+    check(accept_risk['user'], 'firstname', str)
+    check(accept_risk['user'], 'lastname', str)
+    check(accept_risk, 'plugin', dict)
+    check(accept_risk['plugin'], 'id', str)
+    check(accept_risk['plugin'], 'name', str)
+    check(accept_risk['plugin'], 'description', str)
 
 
 @pytest.mark.vcr()
-def test_accept_risks_details_success_for_fields(sc, arisk):
-    accept_risk = sc.accept_risks.details(int(arisk['id']), fields=['id', 'hostType', 'hostValue', 'port'])
+def test_accept_risks_details_success_for_fields(sc, accept_risk):
+    accept_risk = sc.accept_risks.details(int(accept_risk['id']), fields=['id', 'hostType', 'hostValue', 'port'])
     check(accept_risk, 'id', str)
     check(accept_risk, 'hostType', str)
     check(accept_risk, 'hostValue', str)
@@ -202,38 +202,38 @@ def test_accept_risks_details_success_for_fields(sc, arisk):
 
 
 @pytest.mark.vcr()
-def test_accept_risks_details_success(sc, arisk):
-    a = sc.accept_risks.details(int(arisk['id']))
-    check(a, 'id', str)
-    check(a, 'hostType', str)
-    check(a, 'hostValue', str)
-    check(a, 'port', str)
-    check(a, 'protocol', str)
-    check(a, 'comments', str)
-    check(a, 'expires', str)
-    check(a, 'status', str)
-    check(a, 'repository', dict)
-    check(a['repository'], 'id', str)
-    check(a['repository'], 'name', str)
-    check(a['repository'], 'description', str)
-    check(a, 'organization', dict)
-    check(a['organization'], 'id', str)
-    check(a['organization'], 'name', str)
-    check(a['organization'], 'description', str)
-    check(a, 'user', dict)
-    check(a['user'], 'id', str)
-    check(a['user'], 'username', str)
-    check(a['user'], 'firstname', str)
-    check(a['user'], 'lastname', str)
-    check(a, 'plugin', dict)
-    check(a['plugin'], 'id', str)
-    check(a['plugin'], 'name', str)
-    check(a['plugin'], 'description', str)
+def test_accept_risks_details_success(sc, accept_risk):
+    accept_risk = sc.accept_risks.details(int(accept_risk['id']))
+    check(accept_risk, 'id', str)
+    check(accept_risk, 'hostType', str)
+    check(accept_risk, 'hostValue', str)
+    check(accept_risk, 'port', str)
+    check(accept_risk, 'protocol', str)
+    check(accept_risk, 'comments', str)
+    check(accept_risk, 'expires', str)
+    check(accept_risk, 'status', str)
+    check(accept_risk, 'repository', dict)
+    check(accept_risk['repository'], 'id', str)
+    check(accept_risk['repository'], 'name', str)
+    check(accept_risk['repository'], 'description', str)
+    check(accept_risk, 'organization', dict)
+    check(accept_risk['organization'], 'id', str)
+    check(accept_risk['organization'], 'name', str)
+    check(accept_risk['organization'], 'description', str)
+    check(accept_risk, 'user', dict)
+    check(accept_risk['user'], 'id', str)
+    check(accept_risk['user'], 'username', str)
+    check(accept_risk['user'], 'firstname', str)
+    check(accept_risk['user'], 'lastname', str)
+    check(accept_risk, 'plugin', dict)
+    check(accept_risk['plugin'], 'id', str)
+    check(accept_risk['plugin'], 'name', str)
+    check(accept_risk['plugin'], 'description', str)
 
 
 @pytest.mark.vcr()
-def test_accept_risks_delete_success(sc, arisk):
-    sc.accept_risks.delete(int(arisk['id']))
+def test_accept_risks_delete_success(sc, accept_risk):
+    sc.accept_risks.delete(int(accept_risk['id']))
 
 
 def test_accept_risks_apply_id_typeerror(sc):
@@ -247,5 +247,5 @@ def test_accept_risks_apply_repo_typeerror(sc):
 
 
 @pytest.mark.vcr()
-def test_accept_risks_apply_success(sc, arisk):
-    sc.accept_risks.apply(int(arisk['id']), 1)
+def test_accept_risks_apply_success(sc, accept_risk):
+    sc.accept_risks.apply(int(accept_risk['id']), 1)

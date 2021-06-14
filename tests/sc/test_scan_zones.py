@@ -1,6 +1,6 @@
 import pytest
 
-from tenable.errors import *
+from tenable.errors import APIError
 from ..checker import check
 
 
@@ -66,7 +66,7 @@ def test_scan_zones_constructor_success(sc):
 
 
 @pytest.mark.vcr()
-def test_scan_zones_create_success(admin, zone):
+def test_scan_zones_create_success(zone):
     assert isinstance(zone, dict)
     check(zone, 'id', str)
     check(zone, 'name', str)
@@ -75,16 +75,16 @@ def test_scan_zones_create_success(admin, zone):
     check(zone, 'createdTime', str)
     check(zone, 'modifiedTime', str)
     check(zone, 'scanners', list)
-    for s in zone['scanners']:
-        check(s, 'id', str)
-        check(s, 'name', str)
-        check(s, 'description', str)
-        check(s, 'status', str)
+    for scanner in zone['scanners']:
+        check(scanner, 'id', str)
+        check(scanner, 'name', str)
+        check(scanner, 'description', str)
+        check(scanner, 'status', str)
     check(zone, 'organizations', list)
-    for o in zone['organizations']:
-        check(o, 'id', str)
-        check(o, 'name', str)
-        check(o, 'description', str)
+    for organization in zone['organizations']:
+        check(organization, 'id', str)
+        check(organization, 'name', str)
+        check(organization, 'description', str)
     check(zone, 'activeScanners', int)
     check(zone, 'totalScanners', int)
 
@@ -109,27 +109,27 @@ def test_scan_zones_details_fields_item_typeerror(admin):
 
 @pytest.mark.vcr()
 def test_scan_zones_details_success(admin, zone):
-    z = admin.scan_zones.details(int(zone['id']))
-    assert isinstance(z, dict)
-    check(z, 'id', str)
-    check(z, 'name', str)
-    check(z, 'description', str)
-    check(z, 'ipList', str)
-    check(z, 'createdTime', str)
-    check(z, 'modifiedTime', str)
-    check(z, 'scanners', list)
-    for s in z['scanners']:
-        check(s, 'id', str)
-        check(s, 'name', str)
-        check(s, 'description', str)
-        check(s, 'status', str)
-    check(z, 'organizations', list)
-    for o in z['organizations']:
-        check(o, 'id', str)
-        check(o, 'name', str)
-        check(o, 'description', str)
-    check(z, 'activeScanners', int)
-    check(z, 'totalScanners', int)
+    zone = admin.scan_zones.details(int(zone['id']))
+    assert isinstance(zone, dict)
+    check(zone, 'id', str)
+    check(zone, 'name', str)
+    check(zone, 'description', str)
+    check(zone, 'ipList', str)
+    check(zone, 'createdTime', str)
+    check(zone, 'modifiedTime', str)
+    check(zone, 'scanners', list)
+    for scanner in zone['scanners']:
+        check(scanner, 'id', str)
+        check(scanner, 'name', str)
+        check(scanner, 'description', str)
+        check(scanner, 'status', str)
+    check(zone, 'organizations', list)
+    for organization in zone['organizations']:
+        check(organization, 'id', str)
+        check(organization, 'name', str)
+        check(organization, 'description', str)
+    check(zone, 'activeScanners', int)
+    check(zone, 'totalScanners', int)
 
 
 @pytest.mark.vcr()
@@ -149,27 +149,27 @@ def test_scan_zones_edit_id_typeerror(admin):
 
 @pytest.mark.vcr()
 def test_scan_zones_edit_success(admin, zone):
-    z = admin.scan_zones.edit(int(zone['id']), name='NewName')
-    assert isinstance(z, dict)
-    check(z, 'id', str)
-    check(z, 'name', str)
-    check(z, 'description', str)
-    check(z, 'ipList', str)
-    check(z, 'createdTime', str)
-    check(z, 'modifiedTime', str)
-    check(z, 'scanners', list)
-    for s in z['scanners']:
-        check(s, 'id', str)
-        check(s, 'name', str)
-        check(s, 'description', str)
-        check(s, 'status', str)
-    check(z, 'organizations', list)
-    for o in z['organizations']:
-        check(o, 'id', str)
-        check(o, 'name', str)
-        check(o, 'description', str)
-    check(z, 'activeScanners', int)
-    check(z, 'totalScanners', int)
+    zone = admin.scan_zones.edit(int(zone['id']), name='NewName')
+    assert isinstance(zone, dict)
+    check(zone, 'id', str)
+    check(zone, 'name', str)
+    check(zone, 'description', str)
+    check(zone, 'ipList', str)
+    check(zone, 'createdTime', str)
+    check(zone, 'modifiedTime', str)
+    check(zone, 'scanners', list)
+    for scanner in zone['scanners']:
+        check(scanner, 'id', str)
+        check(scanner, 'name', str)
+        check(scanner, 'description', str)
+        check(scanner, 'status', str)
+    check(zone, 'organizations', list)
+    for organization in zone['organizations']:
+        check(organization, 'id', str)
+        check(organization, 'name', str)
+        check(organization, 'description', str)
+    check(zone, 'activeScanners', int)
+    check(zone, 'totalScanners', int)
 
 
 @pytest.mark.vcr()
