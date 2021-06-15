@@ -674,7 +674,7 @@ class ScansAPI(TIOEndpoint):
             assert callable(stream_hook)
             # See issue 305 for an example stream_hook callable
             # https://github.com/tenable/pyTenable/issues/305
-            stream_hook(resp, fobj)
+            stream_hook(resp, fobj, chunk_size=1024)
         else:
             # Lets stream the file into the file-like object...
             for chunk in resp.iter_content(chunk_size=1024):
