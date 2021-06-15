@@ -121,7 +121,7 @@ class SystemAPI(SCEndpoint):
 
     def current_locale(self):
         '''
-        Retreives the current system locale that Tenable.sc has been set to.
+        Retrieves the current system locale that Tenable.sc has been set to.
 
         :sc-api:`system: locale <System.html#SystemRESTReference-/system/locale>`
 
@@ -136,7 +136,7 @@ class SystemAPI(SCEndpoint):
 
     def list_locales(self):
         '''
-        Retreives the available system locales that Tenable.sc can be set to.
+        Retrieves the available system locales that Tenable.sc can be set to.
 
         :sc-api:`system: locales <System.html#SystemRESTReference-/system/locales>`
 

@@ -18,8 +18,11 @@ Methods available on ``tio.networks``:
     .. automethod:: list
     .. automethod:: list_scanners
     .. automethod:: unassigned_scanners
+    .. automethod:: network_asset_count
 '''
-from .base import TIOEndpoint, TIOIterator
+from tenable.io.base import TIOEndpoint, TIOIterator
+from tenable.errors import UnexpectedValueError
+
 
 class NetworksIterator(TIOIterator):
     '''
@@ -43,6 +46,9 @@ class NetworksIterator(TIOIterator):
     pass
 
 class NetworksAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to networks
+    '''
     def create(self, name, description=None):
         '''
         Creates a new network within Tenable.io
@@ -68,43 +74,43 @@ class NetworksAPI(TIOEndpoint):
             'description': self._check('description', description, str)
         }).json()
 
-    def delete(self, id):
+    def delete(self, network_id):
         '''
         Deletes the specified network.
 
         :devportal:`networks: delete <networks-delete>`
 
         Args:
-            id (str): The UUID of the network to remove.
+            network_id (str): The UUID of the network to remove.
 
         Examples:
             >>> tio.networks.delete('00000000-0000-0000-0000-000000000000')
         '''
-        self._api.delete('networks/{}'.format(self._check('id', id, 'uuid')))
+        self._api.delete('networks/{}'.format(self._check('network_id', network_id, 'uuid')))
 
-    def details(self, id):
+    def details(self, network_id):
         '''
-        Retreives the details of the specified network.
+        Retrieves the details of the specified network.
 
         :devportal:`networks: details <networks-details>`
 
         Args:
-            id (str): The UUID of the network.
+            network_id (str): The UUID of the network.
 
         Examples:
             >>> nw = tio.networks.details('00000000-0000-0000-0000-000000000000')
         '''
         return self._api.get('networks/{}'.format(
-            self._check('id', id, 'uuid'))).json()
+            self._check('network_id', network_id, 'uuid'))).json()
 
-    def edit(self, id, name, description=None):
+    def edit(self, network_id, name, description=None):
         '''
         Updates the specified network resource.
 
         :devportal:`networks: update <networks-update>`
 
         Args:
-            id (str): The UUID of the network resource to update.
+            network_id (str): The UUID of the network resource to update.
             name (str): The new name of the network resource.
             description (str, optional):
                 The new description of the network resource.
@@ -120,13 +126,13 @@ class NetworksAPI(TIOEndpoint):
         if not description:
             description = ''
 
-        return self._api.put('networks/{}'.format(self._check('id', id, 'uuid')),
+        return self._api.put('networks/{}'.format(self._check('network_id', network_id, 'uuid')),
             json={
                 'name': self._check('name', name, str),
                 'description': self._check('description', description, str)
             }).json()
 
-    def assign_scanners(self, id, *scanner_uuids):
+    def assign_scanners(self, network_id, *scanner_uuids):
         '''
         Assigns one or many scanners to a network.
 
@@ -134,7 +140,7 @@ class NetworksAPI(TIOEndpoint):
         :devportal:`networks: bulk-assign-scanner <networks-assign-scanner-bulk>`
 
         Args:
-            id (str): The UUID of the network.
+            network_id (str): The UUID of the network.
             *scanner_uuids (str): Scanner UUID(s) to assign to the network.
 
         Examples:
@@ -153,25 +159,25 @@ class NetworksAPI(TIOEndpoint):
         '''
         if len(scanner_uuids) == 1:
             self._api.post('networks/{}/scanners/{}'.format(
-                self._check('id', id, 'uuid'),
+                self._check('network_id', network_id, 'uuid'),
                 self._check('scanner_uuid', scanner_uuids[0], 'scanner-uuid')
             ))
         elif len(scanner_uuids) > 1:
             self._api.post('networks/{}/scanners'.format(
-                self._check('id', id, 'uuid')),
+                self._check('network_id', network_id, 'uuid')),
                     json={'scanner_uuids': [self._check('scanner_uuid', i, 'scanner-uuid')
                         for i in scanner_uuids]})
         else:
             raise UnexpectedValueError('No scanner_uuids were supplied.')
 
-    def list_scanners(self, id):
+    def list_scanners(self, network_id):
         '''
-        Retreives the list of scanners associated to a given network.
+        Retrieves the list of scanners associated to a given network.
 
         :devportal:`networks: list-scanners <networks-list-scanners>`
 
         Args:
-            id (str): The UUID of the network.
+            network_id (str): The UUID of the network.
 
         Returns:
             :obj:`list`:
@@ -183,11 +189,11 @@ class NetworksAPI(TIOEndpoint):
             ...     pprint(scanner)
         '''
         return self._api.get('networks/{}/scanners'.format(
-            self._check('id', id, 'uuid'))).json()['scanners']
+            self._check('network_id', network_id, 'uuid'))).json()['scanners']
 
-    def unassigned_scanners(self, id):
+    def unassigned_scanners(self, network_id):
         '''
-        Retrives the list of scanners that are currently unassigned to the given
+        Retrieves the list of scanners that are currently unassigned to the given
         network.  This will include scanners and scanner groups that are
         currently assigned to the default network.
 
@@ -206,7 +212,7 @@ class NetworksAPI(TIOEndpoint):
             ...     pprint(scanner)
         '''
         return self._api.get('networks/{}/assignable-scanners'.format(
-            self._check('id', id, 'uuid'))).json()['scanners']
+            self._check('network_id', network_id, 'uuid'))).json()['scanners']
 
     def list(self, *filters, **kw):
         '''
@@ -331,3 +337,26 @@ class NetworksAPI(TIOEndpoint):
             _resource='networks'
         )
 
+    def network_asset_count(self, network_id, num_days):
+        '''
+        get the total number of assets in the network along with the number of assets
+        that have not been seen for the specified number of days.
+
+        :devportal:`networks: network_asset_count <networks-asset-count-details>`
+
+        Args:
+            network_id (str): The UUID of the network.
+            num_days (int): count of assets that have not been seen for the specified number of days
+
+        Returns:
+            :obj:`dict`:
+                Returns the total number of assets in the network along with the number of assets
+                that have not been seen for the specified number of days.
+
+        Examples:
+            >>> network = '00000000-0000-0000-0000-000000000000'
+            >>> count = tio.networks.network_asset_count(network, 180)
+        '''
+        return self._api.get('networks/{}/counts/assets-not-seen-in/{}'.format(
+            self._check('network_id', network_id, 'uuid'),
+            self._check('num_days', num_days, int))).json()

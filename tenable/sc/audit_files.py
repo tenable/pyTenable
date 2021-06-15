@@ -160,14 +160,14 @@ class AuditFileAPI(SCEndpoint):
         '''
         kw['name'] = name
 
-        # Upload and store the relevent information on the audit file that has
+        # Upload and store the relevant information on the audit file that has
         # been provided.
         if audit_file:
             if hasattr(audit_file, 'name'):
                 kw['orig_filename'] = basename(audit_file.name)
             kw['filename'] = self._api.files.upload(audit_file)
 
-        # Upload and store the relevent information on the tailoring file that
+        # Upload and store the relevant information on the tailoring file that
         # has been provided.
         if tailoring_file:
             if hasattr(tailoring_file, 'name'):
@@ -254,14 +254,14 @@ class AuditFileAPI(SCEndpoint):
             >>> audit = sc.audit_files.edit()
         '''
 
-        # Upload and store the relevent information on the audit file that has
+        # Upload and store the relevant information on the audit file that has
         # been provided.
         if audit_file:
             if hasattr(audit_file, 'name'):
                 kw['orig_filename'] = basename(audit_file.name)
             kw['filename'] = self._api.files.upload(audit_file)
 
-        # Upload and store the relevent information on the tailoring file that
+        # Upload and store the relevant information on the tailoring file that
         # has been provided.
         if tailoring_file:
             if hasattr(tailoring_file, 'name'):
@@ -366,7 +366,7 @@ class AuditFileAPI(SCEndpoint):
             :obj:`list`:
                 List of audit file category listing dicts.
 
-        Exmaples:
+        Examples:
             >>> for cat in sc.audit_files.template_categorties():
             ...     pprint(cat)
         '''
@@ -388,7 +388,7 @@ class AuditFileAPI(SCEndpoint):
             :obj:`dict`:
                 The audit file template record.
 
-        Exmaples:
+        Examples:
             >>> tmpl = sc.audit_files.template_details(1)
         '''
         params = dict()
@@ -418,7 +418,7 @@ class AuditFileAPI(SCEndpoint):
             :obj:`list`:
                 List of audit file records.
 
-        Exmaples:
+        Examples:
             >>> for tmpl in sc.audit_files.template_list():
             ...     pprint(tmpl)
         '''

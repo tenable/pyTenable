@@ -3,15 +3,15 @@ Welcome to pyTenable's documentation!
 =====================================
 
 .. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ftenable%2FpyTenable%2Fbadge&label=build
-:target: https://github.com/tenable/pyTenable/actions
+   :target: https://travis-ci.org/tenable/pyTenable
 .. image:: https://img.shields.io/pypi/v/pytenable.svg
-:target: https://pypi.org/project/pyTenable/
+   :target: https://pypi.org/project/pyTenable/
 .. image:: https://img.shields.io/pypi/pyversions/pyTenable.svg
-:target: https://pypi.org/project/pyTenable/
-.. image:: https://img.shields.io/pypi/dm/pytenable
-:target: https://github.com/tenable/pytenable
+   :target: https://pypi.org/project/pyTenable/
+.. image:: https://img.shields.io/pypi/dm/pyTenable.svg
+   :target: https://github.com/tenable/pytenable
 .. image:: https://img.shields.io/github/license/tenable/pyTenable.svg
-:target: https://github.com/tenable/pytenable
+   :target: https://github.com/tenable/pytenable
 
 pyTenable is intended to be a pythonic interface into the Tenable application
 APIs.  Further by providing a common interface and a common structure between
@@ -23,7 +23,7 @@ different APIs between some of the products.
 
 .. note::
     pyTenable version 1.2 is the first release to drop support for Python
-    versions less than 3.6.  If you are still using any of these depricated
+    versions less than 3.6.  If you are still using any of these deprecated
     python versions the 1.1 release will still work, however is no longer being
     actively developed or maintained.
 
@@ -67,7 +67,7 @@ Getting started with Tenable.sc is equally as easy:
    for vuln in sc.analysis.vulns():
       print('{ip}:{pluginID}:{pluginName}'.format(**vuln))
 
-For more detailed information on whats available, please refer to the navigation
+For more detailed information on what's available, please refer to the navigation
 section for the Tenable application you're looking
 
 Logging

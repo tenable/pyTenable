@@ -33,13 +33,16 @@ Methods available on ``tio.scans``:
     .. automethod:: status
     .. automethod:: stop
     .. automethod:: timezones
+    .. automethod:: check_auto_targets
 '''
-from .base import TIOEndpoint, TIOIterator
-from tenable.utils import dict_merge, policy_settings
-from tenable.errors import UnexpectedValueError, FileDownloadError
+import time
 from datetime import datetime, timedelta
 from io import BytesIO
-import time
+from restfly.utils import dict_clean
+from tenable.constants import IOConstants
+from tenable.utils import dict_merge
+from tenable.errors import UnexpectedValueError
+from tenable.io.base import TIOEndpoint, TIOIterator
 
 
 class ScanHistoryIterator(TIOIterator):
@@ -65,6 +68,12 @@ class ScanHistoryIterator(TIOIterator):
 
 
 class ScansAPI(TIOEndpoint):
+    '''
+    This will contain all methods related to scans
+    '''
+    schedule_const = IOConstants.ScanScheduleConst
+    case_const = IOConstants.CaseConst
+
     def _block_while_running(self, scan_id, sleeper=5):
         '''
         A simple function to block while the scan_id specified is still in a
@@ -78,17 +87,17 @@ class ScansAPI(TIOEndpoint):
             if running:
                 time.sleep(sleeper)
 
-    def _create_scan_document(self, kw):
+    def _create_scan_document(self, kwargs):
         '''
         Takes the key-worded arguments and will provide a scan settings document
         based on the values inputted.
 
         Args:
-            kw (dict): The keyword dict passed from the user
+            kwargs (dict): The keyword dict passed from the user
 
         Returns:
             :obj:`dict`:
-                The resulting scan document based on the kw provided.
+                The resulting scan document based on the kwargs provided.
         '''
         scan = {
             'settings': dict(),
@@ -96,18 +105,18 @@ class ScansAPI(TIOEndpoint):
 
         # If a template is specified, then we will pull the listing of available
         # templates and set the policy UUID to match the template name given.
-        if 'template' in kw:
+        if 'template' in kwargs:
             templates = self._api.policies.templates()
             scan['uuid'] = templates[self._check(
-                'template', kw['template'], str,
+                'template', kwargs['template'], str,
                 default='basic',
                 choices=list(templates.keys())
             )]
-            del(kw['template'])
+            del kwargs['template']
 
         # If a policy UUID is sent, then we will set the scan template UUID to
         # be the UUID that was specified.
-        if 'policy' in kw:
+        if 'policy' in kwargs:
             policies = self._api.policies.list()
             match = False
 
@@ -117,7 +126,7 @@ class ScansAPI(TIOEndpoint):
             # the editor config, and then use the policy id and scan policy
             # template uuid.
             for item in policies:
-                if kw['policy'] in [item['name'], item['id']] and not match:
+                if kwargs['policy'] in [item['name'], item['id']] and not match:
                     policy_tmpl = self._api.editor.details('scan/policy', item['id'])
                     scan['uuid'] = policy_tmpl['uuid']
                     scan['settings']['policy_id'] = item['id']
@@ -126,57 +135,338 @@ class ScansAPI(TIOEndpoint):
             # if no match was discovered, then raise an invalid warning.
             if not match:
                 raise UnexpectedValueError('policy setting is invalid.')
-            del(kw['policy'])
+            del kwargs['policy']
 
         # if the scanner attribute was set, then we will attempt to figure out
         # what scanner to use.
-        if 'scanner' in kw:
+        if 'scanner' in kwargs:
             scanners = self._api.scanners.allowed_scanners()
 
             # We will want to attempt to enumerate the scanner list and if
             # we see a name match, replace the scanner name with the UUID
             # of the scanner instead.
             for item in scanners:
-                if item['name'] == kw['scanner']:
-                    kw['scanner'] = item['id']
+                if item['name'] == kwargs['scanner']:
+                    kwargs['scanner'] = item['id']
 
             # we will always want to attempt to use the UUID first as it's
             # the cheapest check that we can run.
             scan['settings']['scanner_id'] = self._check(
-                'scanner', kw['scanner'], 'scanner-uuid',
+                'scanner', kwargs['scanner'], 'scanner-uuid',
                 choices=[s['id'] for s in scanners])
-            del(kw['scanner'])
+            del kwargs['scanner']
 
         # If the targets parameter is specified, then we will need to convert
         # the list of targets to a comma-delimited string and then set the
         # text_targets parameter with the result.
-        if 'targets' in kw:
+        if 'targets' in kwargs:
             scan['settings']['text_targets'] = ','.join(self._check(
-                'targets', kw['targets'], list))
-            del(kw['targets'])
+                'targets', kwargs['targets'], list))
+            del kwargs['targets']
 
         # For credentials, we will simply push the dictionary as-is into the
         # the credentials.add sub-document.
-        if 'credentials' in kw:
+        if 'credentials' in kwargs:
             scan['credentials'] = {'add': dict()}
             scan['credentials']['add'] = self._check(
-                'credentials', kw['credentials'], dict)
-            del(kw['credentials'])
+                'credentials', kwargs['credentials'], dict)
+            del kwargs['credentials']
 
         # Just like with credentials, we will push the dictionary as-is into the
         # correct sub-document of the scan definition.
-        if 'compliance' in kw:
-            scan['audits'] = self._check('compliance', kw['compliance'], dict)
-            del(kw['compliance'])
+        if 'compliance' in kwargs:
+            scan['audits'] = self._check('compliance', kwargs['compliance'], dict)
+            del kwargs['compliance']
 
-        if 'plugins' in kw:
-            scan['plugins'] = self._check('plugins', kw['plugins'], dict)
-            del(kw['plugins'])
+        if 'plugins' in kwargs:
+            scan['plugins'] = self._check('plugins', kwargs['plugins'], dict)
+            del kwargs['plugins']
+
+        # if the schedule_scan attribute was set, then we will apply fields
+        # required for scheduling a scan
+        if 'schedule_scan' in kwargs:
+            self._check('schedule_scan', kwargs['schedule_scan'], dict)
+            if kwargs['schedule_scan']['enabled']:
+                keys = [self.schedule_const.enabled, self.schedule_const.launch, self.schedule_const.rrules,
+                    self.schedule_const.schedule_scan, self.schedule_const.start_time, self.schedule_const.timezone]
+            else:
+                keys = [self.schedule_const.enabled, self.schedule_const.schedule_scan]
+
+            # update schedule values in scan settings based on enable parameter
+            for k in keys:
+                scan['settings'][k] = kwargs['schedule_scan'][k]
+
+            del (kwargs['schedule_scan'])
 
         # any other remaining keyword arguments will be passed into the settings
         # sub-document.  The bulk of the data should go here...
-        scan['settings'] = dict_merge(scan['settings'], kw)
+        scan['settings'] = dict_merge(scan['settings'], kwargs)
         return scan
+
+    def _get_schedule_details(self, details):
+        '''
+        Existing schedule contains combined string of frequency, interval and
+        BYDAY or BYMONTHDAY in rrules. we will Split existing schedule details to
+        distributed schedule dictionary
+
+        Args:
+            details (dict): Dictionary of existing schedule
+
+        Returns:
+            :obj:`dict`:
+                Distributed dictionary of the keys required for scan schedule.
+        '''
+        schedule = {}
+        if details[self.schedule_const.rrules] is not None:
+            rrules = dict(rules.split('=') for rules in details[self.schedule_const.rrules].split(';'))
+            schedule = {
+                self.schedule_const.frequency: rrules['FREQ'],
+                self.schedule_const.interval: rrules['INTERVAL'],
+                self.schedule_const.weekdays: rrules.get('BYDAY', '').split(),
+                self.schedule_const.day_of_month: rrules.get('BYMONTHDAY', None),
+                self.schedule_const.start_time: datetime.strptime(
+                    details[self.schedule_const.start_time], self.schedule_const.time_format)
+                    if details[self.schedule_const.start_time] is not None else None,
+                self.schedule_const.timezone: details[self.schedule_const.timezone]
+                    if details[self.schedule_const.timezone] is not None else None,
+            }
+        return schedule
+
+    def create_scan_schedule(self, enabled=False, frequency=None, interval=None,
+            weekdays=None, day_of_month=None, starttime=None, timezone=None):
+        '''
+        Create dictionary of keys required for scan schedule
+
+        Args:
+            enabled (bool, optional): To enable/disable scan schedule
+            frequency (str, optional):
+                The frequency of the rule. The string inputted will be up-cased.
+                Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``,
+                ``MONTHLY``, ``YEARLY``.
+                Default value is ``ONETIME``.
+            interval (int, optional):
+                The interval of the rule.  The default interval is 1
+            weekdays (list, optional):
+                List of 2-character representations of the days of the week to
+                repeat the frequency rule on.  Valid values are:
+                *SU, MO, TU, WE, TH, FR, SA*
+                Default values: ``['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']``
+            day_of_month (int, optional):
+                The day of the month to repeat a **MONTHLY** frequency rule on.
+                The default is today.
+            starttime (datetime, optional): When the scan should start.
+            timezone (str, optional):
+                The timezone to use for the scan.  The default if none is
+                specified is to use UTC.  For the list of usable timezones,
+                please refer to :devportal:`scans-timezones`
+
+        Returns:
+            :obj:`dict`:
+                Dictionary of the keys required for scan schedule.
+
+        '''
+        self._check(self.schedule_const.enabled, enabled, bool)
+        schedule = {}
+
+        if enabled is True:
+            launch = self._check(self.schedule_const.frequency, frequency, str,
+                choices=self.schedule_const.frequency_choice,
+                default=self.schedule_const.frequency_default,
+                case=self.case_const.uppercase)
+            frequency = self.schedule_const.ffrequency.format(launch)
+            rrules = {
+                self.schedule_const.frequency: frequency,
+                self.schedule_const.interval: self.schedule_const.finterval.format(
+                    self._check(self.schedule_const.interval, interval, int,
+                    default=self.schedule_const.interval_default)),
+                self.schedule_const.weekdays: None,
+                self.schedule_const.day_of_month: None
+            }
+
+            # if the frequency is a weekly one, then we will need to specify the
+            # days of the week that the exclusion is run on.
+            if frequency == self.schedule_const.weekly_frequency:
+                rrules[self.schedule_const.weekdays] = self.schedule_const.fbyweekday.format(','.join(self._check(
+                    self.schedule_const.weekdays, weekdays, list,
+                    choices=self.schedule_const.weekdays_default,
+                    default=self.schedule_const.weekdays_default,
+                    case=self.case_const.uppercase)))
+                # In the same vein as the frequency check, we're accepting
+                # case-insensitive input, comparing it to our known list of
+                # acceptable responses, then joining them all together into a
+                # comma-separated string.
+
+            # if the frequency is monthly, then we will need to specify the day of
+            # the month that the rule will run on.
+            if frequency == self.schedule_const.monthly_frequency:
+                rrules[self.schedule_const.day_of_month] = self.schedule_const.fbymonthday.format(
+                    self._check(self.schedule_const.day_of_month, day_of_month, int,
+                        choices=self.schedule_const.day_of_month_choice,
+                        default=self.schedule_const.day_of_month_default))
+
+            # Now we have to remove unused keys from rrules and create rrules structure required by scan
+            # 'FREQ=ONETIME;INTERVAL=1', FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TH,FR', 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=22'
+            schedule[self.schedule_const.rrules] = ';'.join(dict_clean(rrules).values())
+
+            # Set enable and launch key for schedule
+            schedule[self.schedule_const.enabled] = True
+            schedule[self.schedule_const.launch] = launch
+
+            # starttime is rounded-off to 30 min schedule to match with values used in UI
+            # will assign schedule datetime in (19700101T013000) format
+            starttime = self._check(self.schedule_const.start_time, starttime, datetime,
+                default=self.schedule_const.start_time_default)
+            secs = timedelta(minutes=30).total_seconds()
+            starttime = datetime.fromtimestamp(starttime.timestamp() + secs - starttime.timestamp() % secs)
+            schedule[self.schedule_const.start_time] = starttime.strftime(self.schedule_const.time_format)
+
+            schedule[self.schedule_const.timezone] = self._check(self.schedule_const.timezone, timezone, str,
+                choices=self._api._tz, default=self.schedule_const.timezone_default)
+
+            schedule[self.schedule_const.schedule_scan] = 'yes'
+
+        if enabled is False:
+            # Set enable and schedule_scan key for schedule
+            schedule[self.schedule_const.enabled] = False
+            schedule[self.schedule_const.schedule_scan] = 'no'
+
+        return schedule
+
+    def configure_scan_schedule(self, id, enabled=None, frequency=None, interval=None,
+            weekdays=None, day_of_month=None, starttime=None, timezone=None):
+        '''
+        Create dictionary of keys required for scan schedule
+
+        Args:
+            id (int): The id of the Scan object in Tenable.io
+            enabled (bool, optional): To enable/disable scan schedule
+            frequency (str, optional):
+                The frequency of the rule. The string inputted will be up-cased.
+                Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``,
+                ``MONTHLY``, ``YEARLY``.
+                Default value is ``ONETIME``.
+            interval (int, optional):
+                The interval of the rule.  The default interval is 1
+            weekdays (list, optional):
+                List of 2-character representations of the days of the week to
+                repeat the frequency rule on.  Valid values are:
+                *SU, MO, TU, WE, TH, FR, SA*
+                Default values: ``['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']``
+            day_of_month (int, optional):
+                The day of the month to repeat a **MONTHLY** frequency rule on.
+                The default is today.
+            starttime (datetime, optional): When the scan should start.
+            timezone (str, optional):
+                The timezone to use for the scan.  The default if none is
+                specified is to use UTC.  For the list of usable timezones,
+                please refer to :devportal:`scans-timezones`
+
+        Returns:
+            :obj:`dict`:
+                Dictionary of the keys required for scan schedule.
+
+        '''
+        current = self.details(self._check('id', id, int))['settings']
+        if enabled in [True, False]:
+            current[self.schedule_const.enabled] = self._check(self.schedule_const.enabled, enabled, bool)
+        schedule = {}
+        if current[self.schedule_const.enabled] is True:
+            if current[self.schedule_const.rrules] is not None:
+                # create existing schedule dictionary
+                existing_rrules = {
+                    self.schedule_const.enabled: current[self.schedule_const.enabled],
+                    self.schedule_const.schedule_scan: 'yes' if current[self.schedule_const.enabled] is True else 'no',
+                    self.schedule_const.rrules: current[self.schedule_const.rrules],
+                    self.schedule_const.start_time: current[self.schedule_const.start_time],
+                    self.schedule_const.timezone: current[self.schedule_const.timezone]
+                }
+
+                # Restructure existing_rrule with distributed values
+                existing_rrules = self._get_schedule_details(existing_rrules)
+            else:
+                existing_rrules = {}
+
+            launch = self._check(self.schedule_const.frequency, frequency, str,
+                choices=self.schedule_const.frequency_choice,
+                default=existing_rrules.get(self.schedule_const.frequency, None) or
+                   self.schedule_const.frequency_default,
+                case=self.case_const.uppercase)
+
+            frequency = self.schedule_const.ffrequency.format(launch)
+
+            rrules = {
+                self.schedule_const.frequency: frequency,
+                self.schedule_const.interval: self.schedule_const.finterval.format(
+                    self._check(self.schedule_const.interval, interval, int,
+                    default=existing_rrules.get(self.schedule_const.interval, None)
+                        or self.schedule_const.interval_default)),
+                self.schedule_const.weekdays: None,
+                self.schedule_const.day_of_month: None
+            }
+
+            # if the frequency is a weekly one, then we will need to specify the
+            # days of the week that the exclusion is run on.
+            if frequency == self.schedule_const.weekly_frequency:
+                rrules[self.schedule_const.weekdays] = self.schedule_const.fbyweekday.format(','.join(self._check(
+                    self.schedule_const.weekdays, weekdays, list,
+                    choices=self.schedule_const.weekdays_default,
+                    default=existing_rrules.get(self.schedule_const.weekdays, '') or
+                        self.schedule_const.weekdays_default,
+                    case=self.case_const.uppercase)))
+                # In the same vein as the frequency check, we're accepting
+                # case-insensitive input, comparing it to our known list of
+                # acceptable responses, then joining them all together into a
+                # comma-separated string.
+
+            # if the frequency is monthly, then we will need to specify the day of
+            # the month that the rule will run on.
+            if frequency == self.schedule_const.monthly_frequency:
+                rrules[self.schedule_const.day_of_month] = self.schedule_const.fbymonthday.format(
+                    self._check(self.schedule_const.day_of_month, day_of_month, int,
+                    choices=self.schedule_const.day_of_month_choice,
+                    default=existing_rrules.get(self.schedule_const.day_of_month, None)
+                        or self.schedule_const.day_of_month_default))
+
+            # Now we have to remove unused keys from rrules and create rrules structure required by scan
+            # 'FREQ=ONETIME;INTERVAL=1', FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TH,FR', 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=22'
+            schedule[self.schedule_const.rrules] = ';'.join(dict_clean(rrules).values())
+
+            # Set enable and launch key for schedule
+            schedule[self.schedule_const.enabled] = True
+            schedule[self.schedule_const.launch] = launch
+
+            # starttime is rounded-off to 30 min schedule and
+            # will assign schedule datetime in (19700101T011223) manner
+            starttime = self._check(self.schedule_const.start_time, starttime, datetime,
+                default=existing_rrules.get(self.schedule_const.start_time, None)
+                    or self.schedule_const.start_time_default)
+            secs = timedelta(minutes=30).total_seconds()
+            starttime = datetime.fromtimestamp(starttime.timestamp() + secs - starttime.timestamp() % secs)
+            schedule[self.schedule_const.start_time] = starttime.strftime(self.schedule_const.time_format)
+
+            schedule[self.schedule_const.timezone] = self._check(self.schedule_const.timezone, timezone, str,
+                choices=self._api._tz, default=existing_rrules.get(self.schedule_const.timezone, None)
+                    or self.schedule_const.timezone_default)
+
+            schedule[self.schedule_const.schedule_scan] = 'yes'
+
+            # merge updated schedule values to existing schedule
+            dict_merge(existing_rrules, schedule)
+
+            # remove extra keys after merge
+            keys = [self.schedule_const.frequency, self.schedule_const.interval,
+                    self.schedule_const.weekdays, self.schedule_const.day_of_month]
+            for k in keys:
+                if k in existing_rrules:
+                    del(existing_rrules[k])
+
+            return existing_rrules
+
+        if current[self.schedule_const.enabled] is False:
+            # Set enable and launch key for schedule
+            schedule[self.schedule_const.enabled] = False
+            schedule[self.schedule_const.schedule_scan] = 'no'
+            return schedule
 
     def attachment(self, scan_id, attachment_id, key, fobj=None):
         '''
@@ -186,19 +476,19 @@ class ScansAPI(TIOEndpoint):
 
         Args:
             scan_id (int): The unique identifier for the scan.
-            attachment_id (int): The unique identifier for the attachement
-            key (str): The attachement access token.
+            attachment_id (int): The unique identifier for the attachment
+            key (str): The attachment access token.
             fobj (FileObject, optional): a file-like object you wish for the
-                attachement to be written to.  If none is specified, a BytesIO
+                attachment to be written to.  If none is specified, a BytesIO
                 object will be returned with the contents of the attachment.
 
         Returns:
             :obj:`FileObject`:
-                A file-like object with the attachement written into it.
+                A file-like object with the attachment written into it.
 
         Examples:
             >>> with open('example.file', 'wb') as fobj:
-            ...     tio.scans.attachement(1, 1, 'abc', fobj)
+            ...     tio.scans.attachment(1, 1, 'abc', fobj)
         '''
         if not fobj:
             # if no file-like object is specified, then assign a BytesIO object
@@ -219,14 +509,14 @@ class ScansAPI(TIOEndpoint):
         # Return the file object to the caller.
         return fobj
 
-    def configure(self, id, **kw):
+    def configure(self, scan_id, **kw):
         '''
         Overwrite the parameters specified on top of the existing scan record.
 
         :devportal:`scans: configure <scans-configure>`
 
         Args:
-            id (int): The unique identifier for the scan.
+            scan_id (int): The unique identifier for the scan.
             template (str, optional):
                 The scan policy template to use.  If no template is specified
                 then the default of `basic` will be used.
@@ -243,6 +533,8 @@ class ScansAPI(TIOEndpoint):
                 A list of compliance audiots to use.
             scanner (str, optional):
                 Define the scanner or scanner group uuid or name.
+            schedule_scan (dict, optional):
+                Define updated schedule for scan
             **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
@@ -257,18 +549,23 @@ class ScansAPI(TIOEndpoint):
 
         Examples:
             >>> tio.scans.configure(1, name='New Scan Name')
+
+            # configure a schedule for existing scan
+
+            >>> configure_schedule = api.scans.configure_scan_schedule(1, interval=2)
+            >>> tio.scans.configure(1, schedule_scan=configure_schedule)
         '''
 
         # We will get the current scan record, generate the new parameters in
         # the correct format, and then merge them together to create the new
         # :func:`~.tenable.tenable_io.ScansAPI.details` method, however is not
         # scan record that we will be pushing to the API.
-        current = self.details(id)
+        current = self.details(scan_id)
         updated = self._create_scan_document(kw)
         scan = dict_merge(current, updated)
 
         # Performing the actual call to the API with the updated scan record.
-        return self._api.put('scans/{}'.format(id),
+        return self._api.put('scans/{}'.format(scan_id),
                     json=scan).json()
 
     def copy(self, scan_id, folder_id=None, name=None):
@@ -325,6 +622,8 @@ class ScansAPI(TIOEndpoint):
                 A list of compliance audits to use.
             scanner (str, optional):
                 Define the scanner or scanner group uuid or name.
+            schedule_scan (dict, optional):
+                Define schedule for scan
             **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
@@ -364,6 +663,15 @@ class ScansAPI(TIOEndpoint):
             ...     }]}}
             ... )
 
+            Create an un-credentialed basic scheduled scan:
+
+            >>> schedule = api.scans.create_scan_schedule(
+            ...     enabled=True, frequency='daily', interval=2, starttime=datetime.utcnow())
+            >>> scan = tio.scans.create(
+            ...     name='Example Scan',
+            ...     targets=['127.0.0.1']
+            ...     schedule_scan=schedule)
+
             For further information on credentials, what settings to use, etc,
             refer to
             `this doc <https://developer.tenable.com/docs/determine-settings-for-credential-type>`_
@@ -394,14 +702,14 @@ class ScansAPI(TIOEndpoint):
         '''
         self._api.delete('scans/{}'.format(scan_id))
 
-    def history(self, id, limit=None, offset=None, pages=None, sort=None):
+    def history(self, scan_id, limit=None, offset=None, pages=None, sort=None):
         '''
         Get the scan history of a given scan from Tenable.io.
 
         :devportal:`scans: history <scans-history>`
 
         Args:
-            id (int or uuid):
+            scan_id (int or uuid):
                 The unique identifier for the scan.
             limit (int, optional):
                 The number of records to retrieve.  Default is 50
@@ -432,7 +740,7 @@ class ScansAPI(TIOEndpoint):
             _offset=offset if offset else 0,
             _pages_total=pages,
             _query=query,
-            _path='scans/{}/history'.format(id),
+            _path='scans/{}/history'.format(scan_id),
             _resource='history'
         )
 
@@ -661,7 +969,7 @@ class ScansAPI(TIOEndpoint):
 
         # Next we will wait for the status of the export request to become
         # ready.
-        status = self._wait_for_download(
+        _ = self._wait_for_download(
             'scans/{}/export/{}/status'.format(scan_id, fid),
             'scans', scan_id, fid, params=dl_params)
 
@@ -761,7 +1069,7 @@ class ScansAPI(TIOEndpoint):
             payload['folder_id'] = self._check('folder_id', folder_id, int)
         if password:
             payload['password'] = self._check('password', password, str)
-        if aggregate == None:
+        if aggregate is None:
             aggregate = True
 
         # Upload the file to the Tenable.io and store the resulting filename in
@@ -844,7 +1152,7 @@ class ScansAPI(TIOEndpoint):
         :devportal:`scans: pause <scans-pause>`
 
         Args:
-            scan_id (int or uuid): The unique identifier fo the scan to pause.
+            scan_id (int or uuid): The unique identifier of the scan to pause.
             block (bool, optional):
                 Block until the scan is actually paused.  Default is False.
 
@@ -1044,3 +1352,51 @@ class ScansAPI(TIOEndpoint):
             scan_id,
             self._check('history_uuid', history_uuid, 'scanner-uuid'))).json()
 
+    def check_auto_targets(self, limit, matched_resource_limit,
+            network_uuid=None, tags=None, targets=None):
+        '''
+        Evaluates a list of targets and/or tags against
+        the scan route configuration of scanner groups.
+
+        :devportal:`scan: check-auto-targets <scans-check-auto-targets>`
+
+        Args:
+            limit (int):
+                Limit the number of missed targets returned in the response.
+            matched_resource_limit (int):
+                Limit the number of matched resource UUIDs returned in the response.
+            network_uuid (uuid, optional):
+                The UUID of the network.
+            tags (list, optional):
+                A list of asset tags UUIDs.
+            targets (list, optional):
+                A list of valid targets.
+
+        Returns:
+            :obj:`dict`:
+                Return the list of missed targets (if any), and
+                the list of matched scanner groups (if any).
+
+        Examples:
+            >>> scan_routes_info = tio.scans.check_auto_targets(10, 5, targets=['127.0.0.1'])
+        '''
+        query = {
+            "limit": self._check('limit', limit, int),
+            "matched_resource_limit": self._check(
+                'matched_resource_limit', matched_resource_limit, int)
+        }
+
+        payload = dict()
+
+        payload['network_uuid'] = self._check('network_uuid', network_uuid, 'uuid',
+            default='00000000-0000-0000-0000-000000000000')
+
+        if tags:
+            payload['tags'] = [
+                self._check('tag', tag, 'uuid') for tag in self._check('tags', tags, list)
+            ]
+
+        if targets:
+            payload['target_list'] = ','.join(self._check('targets', targets, list))
+
+        return self._api.post('scans/check-auto-targets', params=query, json=payload).json()

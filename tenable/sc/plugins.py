@@ -64,7 +64,7 @@ class PluginAPI(SCEndpoint):
             self._check('since', kw['since'], int)
 
         if 'type' in kw:
-            # Validate that the plugin type is whats expected.
+            # Validate that the plugin type is what's expected.
             self._check('type', kw['type'], str, choices=[
                     'active', 'all', 'compliance', 'custom',
                     'lce', 'notPassive', 'passive'
@@ -82,7 +82,7 @@ class PluginAPI(SCEndpoint):
                 'limit', kw['limit'], int) + kw.get('startOffset', 0)
             del(kw['limit'])
 
-        # Pages and json_result paramaters should be removed from the document
+        # Pages and json_result parameters should be removed from the document
         # if they exist.
         if 'pages' in kw:
             del(kw['pages'])
@@ -253,7 +253,7 @@ class PluginAPI(SCEndpoint):
         :sc-api:`plugin-family: plugins <Plugin-Family.html#PluginFamilyRESTReference-/pluginFamily/{id}/plugins::GET>`
 
         Args:
-            id (int): The numberic identifier for the plugin family.
+            id (int): The numeric identifier for the plugin family.
             fields (list, optional):
                 A list of attributes to return.
             filter (tuple, optional):

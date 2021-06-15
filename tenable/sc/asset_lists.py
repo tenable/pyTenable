@@ -161,7 +161,7 @@ class AssetListAPI(SCEndpoint):
             del(kw['data_fields'])
 
         if 'combinations' in kw:
-            # if the combinations paramater is a tuple, then send the value to
+            # if the combinations parameter is a tuple, then send the value to
             # the combo_expansion method to convert the tuple to the dictionary
             # equivalent.  If the value is a dictionary, then simply pass the
             # value as-is.
@@ -346,7 +346,7 @@ class AssetListAPI(SCEndpoint):
                 an LDAP query.  must also provide a ``dn`` and a
                 ``search_string``.
             prep (bool, optional):
-                Should asset preperation be run after the list is created?  If
+                Should asset preparation be run after the list is created?  If
                 unspecified, the default action is ``True``.
             rules (tuple, optional):
                 For a dynamic asset list, the tuple definition of the rules to
@@ -511,7 +511,7 @@ class AssetListAPI(SCEndpoint):
             name (str, optional):
                 The name for the asset list to create.
             prep (bool, optional):
-                Should asset preperation be run after the list is created?  If
+                Should asset preparation be run after the list is created?  If
                 unspecified, the default action is ``True``.
             rules (tuple, optional):
                 For a dynamic asset list, the tuple definition of the rules to
@@ -676,7 +676,7 @@ class AssetListAPI(SCEndpoint):
         :sc-api:`asset-list: refresh <Asset.html#AssetRESTReference-/asset/{id}/refresh>`
 
         Args:
-            id (int): The numeric identifier fo the asset list to refresh.
+            id (int): The numeric identifier of the asset list to refresh.
             org_id (int): The organization associated to the asset list.
             *repos (int): Repository ids to perform the recalculation on.
 

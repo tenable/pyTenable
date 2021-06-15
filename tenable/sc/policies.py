@@ -251,7 +251,7 @@ class ScanPolicyAPI(SCEndpoint):
             profile_name (str, optional):
                 The profile of the scan.  Default is an empty string.
             owner_id (int, optional):
-                Define who shall own the policy by that user's integer identifer
+                Define who shall own the policy by that user's integer identifier
             tags (str, optional):
                 An optional tag identifier for the policy
             template_id (int, optional):
@@ -313,7 +313,7 @@ class ScanPolicyAPI(SCEndpoint):
             remove_prefs (list, optional):
                 A list of preferences to remove from the policy.
             owner_id (int, optional):
-                Define who shall own the policy by that user's integer identifer
+                Define who shall own the policy by that user's integer identifier
             tags (str, optional):
                 An optional tag identifier for the policy
             template_id (int, optional):

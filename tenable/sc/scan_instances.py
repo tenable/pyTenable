@@ -77,7 +77,7 @@ class ScanResultAPI(SCEndpoint):
 
     def details(self, id, fields=None):
         '''
-        Retreives the details for the specified scan instance.
+        Retrieves the details for the specified scan instance.
 
         :sc-api:`scan-result: details <Scan-Result.html#scanResult_id_GET>`
 
@@ -264,7 +264,7 @@ class ScanResultAPI(SCEndpoint):
                 A list of scan instance resources.
 
         Examples:
-            * Retreiving all of the manageable scans instances:
+            * Retrieving all of the manageable scans instances:
 
             >>> for scan in sc.scan_instances.list()['manageable']:
             ...     pprint(scan)

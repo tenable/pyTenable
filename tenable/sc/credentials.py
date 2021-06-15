@@ -45,7 +45,7 @@ class CredentialAPI(SCEndpoint):
                 choices=['database', 'windows', 'snmp', 'ssh'])
 
         if 'login' in kw:
-            # Validate that the login paramater is a string.
+            # Validate that the login parameter is a string.
             self._check('login', kw['login'], str)
 
         if 'sid' in kw:
@@ -53,7 +53,7 @@ class CredentialAPI(SCEndpoint):
             self._check('sid', kw['sid'], str)
 
         if 'auth_type' in kw:
-            # Validate that the auth_type paramater is a string of the expected
+            # Validate that the auth_type parameter is a string of the expected
             # values and then convert it to the camelCase equiv.
             kw['authType'] = self._check('auth_type', kw['auth_type'], str,
                 choices=['cyberark', 'lieberman', 'password', 'BeyondTrust',
@@ -545,7 +545,7 @@ class CredentialAPI(SCEndpoint):
                 Thycotic?  If left unspecified, the default is ``False``.
             vault_account_name (str, optional):
                 The unique name of the credential to retrieve from CyberArk.
-                Generally referred to as the *name* paramater within CyberArk.
+                Generally referred to as the *name* parameter within CyberArk.
             vault_address (str, optional):
                 The domain for the CyberArk account.  SSL must be configured
                 through IIS on the CCP before using.
@@ -574,7 +574,7 @@ class CredentialAPI(SCEndpoint):
             vault_port (int, optional):
                 The port in which the CyberArk Vault resides.
             vault_safe (str, optional):
-                The CyberArk safe that contains the credentials to retrive.
+                The CyberArk safe that contains the credentials to retrieve.
             vault_use_ssl (bool, optional):
                 Should the scanners communicate to CyberArk over SSL for
                 credential retrieval?  If left unspecified, the default is set
@@ -637,7 +637,7 @@ class CredentialAPI(SCEndpoint):
         kw['type'] = cred_type
         kw['auth_type'] = auth_type
 
-        # Setting some default values depending on whats passed.  Generally
+        # Setting some default values depending on what's passed.  Generally
         # speaking we want to default to using SSL, however by default not
         # verify the SSL certificate (as generally these are on-prem systems
         # with a self-signed cert)
@@ -844,7 +844,7 @@ class CredentialAPI(SCEndpoint):
                 Thycotic?  If left unspecified, the default is ``False``.
             vault_account_name (str, optional):
                 The unique name of the credential to retrieve from CyberArk.
-                Generally referred to as the *name* paramater within CyberArk.
+                Generally referred to as the *name* parameter within CyberArk.
             vault_address (str, optional):
                 The domain for the CyberArk account.  SSL must be configured
                 through IIS on the CCP before using.
@@ -873,7 +873,7 @@ class CredentialAPI(SCEndpoint):
             vault_port (int, optional):
                 The port in which the CyberArk Vault resides.
             vault_safe (str, optional):
-                The CyberArk safe that contains the credentials to retrive.
+                The CyberArk safe that contains the credentials to retrieve.
             vault_use_ssl (bool, optional):
                 Should the scanners communicate to CyberArk over SSL for
                 credential retrieval?  If left unspecified, the default is set

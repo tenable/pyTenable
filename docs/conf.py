@@ -20,6 +20,7 @@ autodoc_mock_imports = [
     'docker',
     'defusedxml',
     'ipaddress',
+    'arrow',
 ]
 
 import os, sys, datetime
