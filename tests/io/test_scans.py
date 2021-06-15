@@ -433,6 +433,35 @@ def test_scan_export_was(api):
     api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='web-app')
 
 @pytest.mark.vcr()
+def test_scan_export_stream_hook(api):
+    """Same as test_scan_export_bytesio except testing the stream_hook parameter with a simple callable, PR#311"""
+    def stream_hook(response, _fobj, chunk_size=1024):
+        """Hook the requests response stream to facilitate custom progress treacking"""
+        from sys import stdout
+        progress_bytes = 0
+        total_size = int(response.headers.get('content-length', 0))
+        # progress_bar = tqdm(total=total_size, unit='iB', unit_scale=True)
+        for chunk in response.iter_content(chunk_size=chunk_size):
+            if chunk:
+                progress_bytes += len(chunk)
+                stdout.write('Progress: %d / %d\n' % (progress_bytes, total_size))
+                # progress_bar.update(len(chunk))
+                _fobj.write(chunk)
+        # progress_bar.close()
+        stdout.write('Complete, %d/%d bytes received in stream_hook\n' % (progress_bytes, total_size))
+
+    from io import BytesIO
+    from tenable.reports.nessusv2 import NessusReportv2
+    fobj = api.scans.export(SCAN_ID_WITH_RESULTS, stream_hook=stream_hook)
+    assert isinstance(fobj, BytesIO)
+
+    counter = 0
+    for i in NessusReportv2(fobj):
+        counter += 1
+        if counter > 10:
+            break
+
+@pytest.mark.vcr()
 def test_scan_export_bytesio(api):
     from io import BytesIO
     from tenable.reports.nessusv2 import NessusReportv2
