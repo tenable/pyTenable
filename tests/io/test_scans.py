@@ -5,6 +5,7 @@ import uuid
 import time
 import os
 from io import BytesIO
+from sys import stdout
 import pytest
 from tenable.reports.nessusv2 import NessusReportv2
 from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputError
@@ -1207,6 +1208,31 @@ def test_scan_export_was(api):
     test to export was scan
     '''
     api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='web-app')
+
+@pytest.mark.vcr()
+def test_scan_export_bytesio(api):
+    '''
+    test to export scan using optional `stream_hook` kwarg, provided by user (Issue #305)
+    '''
+    def stream_hook(response, _fobj, chunk_size=1024):
+        """This is an example callable, the caller provides this"""
+        progress_bytes = 0
+        total_size = int(response.headers.get('content-length', 0))
+        for chunk in response.iter_content(chunk_size=chunk_size):
+            if chunk:
+                progress_bytes += len(chunk)
+                stdout.write('Progress: %d / %d\n' % (progress_bytes, total_size))
+                _fobj.write(chunk)
+        stdout.write('Complete, %d/%d bytes received in stream_hook\n' % (progress_bytes, total_size))
+
+    fobj = api.scans.export(SCAN_ID_WITH_RESULTS, stream_hook=stream_hook)
+    assert isinstance(fobj, BytesIO)
+
+    counter = 0
+    for _ in NessusReportv2(fobj):
+        counter += 1
+        if counter > 10:
+            break
 
 @pytest.mark.vcr()
 def test_scan_export_bytesio(api):
