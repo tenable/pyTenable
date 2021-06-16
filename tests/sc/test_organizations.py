@@ -1,125 +1,157 @@
-from tenable.errors import *
+import pytest
+
+from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check
-import pytest, os
+
 
 def test_organizations_constructor_name_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(name=1)
 
+
 def test_organizations_constructor_description_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(description=1)
+
 
 def test_organizations_constructor_address_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(address=1)
 
+
 def test_organizations_constructor_city_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(city=1)
+
 
 def test_organizations_constructor_state_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(state=1)
 
+
 def test_organizations_constructor_country_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(country=1)
+
 
 def test_organizations_constructor_phone_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(phone=1)
 
+
 def test_organizations_constructor_lce_ids_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(lce_ids=1)
 
+
 def test_organizations_constructor_lce_ids_item_typeerror(sc):
     with pytest.raises(TypeError):
-        sc.organizations._constructor(lce_ids=['one',])
+        sc.organizations._constructor(lce_ids=['one', ])
+
+
 
 def test_organizations_constructor_zone_selection_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(zone_selection=1)
 
+
 def test_organizations_constructor_zone_selection_unexpectedvalueerror(sc):
     with pytest.raises(UnexpectedValueError):
         sc.organizations._constructor(zone_selection='something')
+
 
 def test_organizations_constructor_restricted_ips_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(restricted_ips=1)
 
+
 def test_organizations_constructor_restricted_ips_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(restricted_ips=[1])
+
 
 def test_organizations_constructor_repos_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(repos=1)
 
+
 def test_organizations_constructor_repos_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(repos=['one'])
+
 
 def test_organizations_constructor_pub_sites_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(pub_sites=1)
 
+
 def test_organizations_constructor_pub_sites_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(pub_sites=['one'])
+
 
 def test_organizations_constructor_ldap_ids_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(ldap_ids=1)
 
+
 def test_organizations_constructor_ldap_ids_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(ldap_ids=['one'])
+
 
 def test_organizations_constructor_nessus_managers_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(nessus_managers=1)
 
+
 def test_organizations_constructor_nessus_managers_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(nessus_managers=['one'])
+
 
 def test_organizations_constructor_info_links_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(info_links=1)
 
+
 def test_organizations_constructor_info_links_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(info_links=[1])
+
 
 def test_organizations_constructor_info_links_item_name_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(info_links=[(1, 'http://site.com/%IP%')])
 
+
 def test_organizations_constructor_info_links_item_link_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(info_links=[('name', 1)])
+
 
 def test_organizations_constructor_vuln_score_low_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(vuln_score_low='one')
 
+
 def test_organizations_constructor_vuln_score_medium_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(vuln_score_medium='one')
+
 
 def test_organizations_constructor_vuln_score_high_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(vuln_score_high='one')
 
+
 def test_organizations_constructor_vuln_score_critical_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations._constructor(vuln_score_critical='one')
 
+
 def test_organizations_constructor_success(sc):
-    o = sc.organizations._constructor(
+    organization = sc.organizations._constructor(
         name='name',
         description='description',
         address='123 main street',
@@ -140,7 +172,7 @@ def test_organizations_constructor_success(sc):
         vuln_score_high=10,
         vuln_score_critical=40,
     )
-    assert o == {
+    assert organization == {
         'name': 'name',
         'description': 'description',
         'address': '123 main street',
@@ -162,18 +194,22 @@ def test_organizations_constructor_success(sc):
         'vulnScoreCritical': 40
     }
 
+
 @pytest.fixture
 def org(request, admin, vcr):
     with vcr.use_cassette('test_organizations_create_success'):
-        o = admin.organizations.create('New Org')
+        organization = admin.organizations.create('New Org')
+
     def teardown():
         try:
             with vcr.use_cassette('test_organizations_delete_success'):
-                admin.organizations.delete(int(o['id']))
+                admin.organizations.delete(int(organization['id']))
         except APIError:
             pass
+
     request.addfinalizer(teardown)
-    return o
+    return organization
+
 
 @pytest.mark.vcr()
 def test_organizations_create_success(admin, org):
@@ -202,270 +238,345 @@ def test_organizations_create_success(admin, org):
     check(org, 'modifiedTime', str)
     check(org, 'userCount', str)
     check(org, 'lces', list)
-    for i in org['lces']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
+    for lces in org['lces']:
+        check(lces, 'id', str)
+        check(lces, 'name', str)
+        check(lces, 'description', str)
     check(org, 'repositories', list)
-    for i in org['repositories']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-        check(i, 'type', str)
-        check(i, 'dataFormat', str)
-        check(i, 'groupAssign', str)
+    for repository in org['repositories']:
+        check(repository, 'id', str)
+        check(repository, 'name', str)
+        check(repository, 'description', str)
+        check(repository, 'type', str)
+        check(repository, 'dataFormat', str)
+        check(repository, 'groupAssign', str)
     check(org, 'zones', list)
-    for i in org['zones']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
+    for zone in org['zones']:
+        check(zone, 'id', str)
+        check(zone, 'name', str)
+        check(zone, 'description', str)
     check(org, 'ldaps', list)
-    for i in org['ldaps']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
+    for ldaps in org['ldaps']:
+        check(ldaps, 'id', str)
+        check(ldaps, 'name', str)
+        check(ldaps, 'description', str)
     check(org, 'nessusManagers', list)
-    for i in org['nessusManagers']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
+    for manager in org['nessusManagers']:
+        check(manager, 'id', str)
+        check(manager, 'name', str)
+        check(manager, 'description', str)
     check(org, 'pubSites', list)
-    for i in org['pubSites']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
+    for pub_sites in org['pubSites']:
+        check(pub_sites, 'id', str)
+        check(pub_sites, 'name', str)
+        check(pub_sites, 'description', str)
+
 
 @pytest.mark.vcr()
 def test_organizations_delete_success(admin, org):
     admin.organizations.delete(int(org['id']))
 
+
+@pytest.mark.vcr()
+def test_organizations_list_success(admin):
+    organizations = admin.organizations.list(fields=['id', 'name', 'description'])
+    assert isinstance(organizations, list)
+    for organization in organizations:
+        check(organization, 'id', str)
+        check(organization, 'name', str)
+        check(organization, 'description', str)
+
+
+@pytest.mark.vcr()
+def test_organizations_managers_list_success(admin):
+    managers = admin.organizations.managers_list(org_id=1, fields=['id', 'name', 'description'])
+    assert isinstance(managers, list)
+    for manager in managers:
+        check(manager, 'id', str)
+        check(manager, 'name', str)
+        check(manager, 'description', str)
+
+
+@pytest.mark.vcr()
+def test_organizations_manager_details_success(admin):
+    manager = admin.organizations.manager_details(org_id=1, user_id=1, fields=['id', 'name', 'description'])
+    assert isinstance(manager, dict)
+    check(manager, 'id', str)
+    check(manager, 'name', str)
+    check(manager, 'description', str)
+
+
+@pytest.mark.vcr()
+def test_organizations_manager_create_edit_delete_success(admin):
+    manager = admin.organizations.manager_create(org_id=1,
+                                                 username='username',
+                                                 password='password',
+                                                 role=1)
+    assert isinstance(manager, dict)
+    check(manager, 'id', str)
+    check(manager, 'name', str)
+    check(manager, 'description', str)
+
+    manager = admin.organizations.manager_edit(user_id=int(manager['id']),
+                                               org_id=1,
+                                               name='new mgr name')
+    assert isinstance(manager, dict)
+    check(manager, 'id', str)
+    check(manager, 'name', str)
+    check(manager, 'description', str)
+
+    admin.organizations.manager_delete(org_id=1, user_id=1, migrate_to=1)
+
+
 @pytest.mark.vcr()
 def test_organizations_details_success(admin, org):
-    o = admin.organizations.details(int(org['id']))
-    assert isinstance(o, dict)
-    check(o, 'id', str)
-    check(o, 'name', str)
-    check(o, 'description', str)
-    check(o, 'email', str)
-    check(o, 'address', str)
-    check(o, 'city', str)
-    check(o, 'state', str)
-    check(o, 'country', str)
-    check(o, 'phone', str)
-    check(o, 'fax', str)
-    check(o, 'ipInfoLinks', list)
-    for i in o['ipInfoLinks']:
-        check(i, 'name', str)
-        check(i, 'link', str)
-    check(o, 'zoneSelection', str)
-    check(o, 'restrictedIPs', str)
-    check(o, 'vulnScoreLow', str)
-    check(o, 'vulnScoreMedium', str)
-    check(o, 'vulnScoreHigh', str)
-    check(o, 'vulnScoreCritical', str)
-    check(o, 'createdTime', str)
-    check(o, 'modifiedTime', str)
-    check(o, 'userCount', str)
-    check(o, 'lces', list)
-    for i in o['lces']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-    check(o, 'repositories', list)
-    for i in o['repositories']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-        check(i, 'type', str)
-        check(i, 'dataFormat', str)
-        check(i, 'groupAssign', str)
-    check(o, 'zones', list)
-    for i in o['zones']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-    check(o, 'ldaps', list)
-    for i in o['ldaps']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-    check(o, 'nessusManagers', list)
-    for i in o['nessusManagers']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-    check(o, 'pubSites', list)
-    for i in o['pubSites']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
+    organization = admin.organizations.details(int(org['id']))
+    assert isinstance(organization, dict)
+    check(organization, 'id', str)
+    check(organization, 'name', str)
+    check(organization, 'description', str)
+    check(organization, 'email', str)
+    check(organization, 'address', str)
+    check(organization, 'city', str)
+    check(organization, 'state', str)
+    check(organization, 'country', str)
+    check(organization, 'phone', str)
+    check(organization, 'fax', str)
+    check(organization, 'ipInfoLinks', list)
+    for ip_info in organization['ipInfoLinks']:
+        check(ip_info, 'name', str)
+        check(ip_info, 'link', str)
+    check(organization, 'zoneSelection', str)
+    check(organization, 'restrictedIPs', str)
+    check(organization, 'vulnScoreLow', str)
+    check(organization, 'vulnScoreMedium', str)
+    check(organization, 'vulnScoreHigh', str)
+    check(organization, 'vulnScoreCritical', str)
+    check(organization, 'createdTime', str)
+    check(organization, 'modifiedTime', str)
+    check(organization, 'userCount', str)
+    check(organization, 'lces', list)
+    for lces in organization['lces']:
+        check(lces, 'id', str)
+        check(lces, 'name', str)
+        check(lces, 'description', str)
+    check(organization, 'repositories', list)
+    for repository in organization['repositories']:
+        check(repository, 'id', str)
+        check(repository, 'name', str)
+        check(repository, 'description', str)
+        check(repository, 'type', str)
+        check(repository, 'dataFormat', str)
+        check(repository, 'groupAssign', str)
+    check(organization, 'zones', list)
+    for zone in organization['zones']:
+        check(zone, 'id', str)
+        check(zone, 'name', str)
+        check(zone, 'description', str)
+    check(organization, 'ldaps', list)
+    for ldap in organization['ldaps']:
+        check(ldap, 'id', str)
+        check(ldap, 'name', str)
+        check(ldap, 'description', str)
+    check(organization, 'nessusManagers', list)
+    for manager in organization['nessusManagers']:
+        check(manager, 'id', str)
+        check(manager, 'name', str)
+        check(manager, 'description', str)
+    check(organization, 'pubSites', list)
+    for pub_site in organization['pubSites']:
+        check(pub_site, 'id', str)
+        check(pub_site, 'name', str)
+        check(pub_site, 'description', str)
+
+
+@pytest.mark.vcr()
+def test_organizations_details_success_for_fields(admin, org):
+    organization = admin.organizations.details(int(org['id']), fields=['id', 'name', 'description'])
+    assert isinstance(organization, dict)
+    check(organization, 'id', str)
+    check(organization, 'name', str)
+    check(organization, 'description', str)
+
 
 @pytest.mark.vcr()
 def test_organizations_edit_success(admin, org):
-    o = admin.organizations.edit(int(org['id']), name='new org name')
-    assert isinstance(o, dict)
-    check(o, 'id', str)
-    check(o, 'name', str)
-    check(o, 'description', str)
-    check(o, 'email', str)
-    check(o, 'address', str)
-    check(o, 'city', str)
-    check(o, 'state', str)
-    check(o, 'country', str)
-    check(o, 'phone', str)
-    check(o, 'fax', str)
-    check(o, 'ipInfoLinks', list)
-    for i in o['ipInfoLinks']:
-        check(i, 'name', str)
-        check(i, 'link', str)
-    check(o, 'zoneSelection', str)
-    check(o, 'restrictedIPs', str)
-    check(o, 'vulnScoreLow', str)
-    check(o, 'vulnScoreMedium', str)
-    check(o, 'vulnScoreHigh', str)
-    check(o, 'vulnScoreCritical', str)
-    check(o, 'createdTime', str)
-    check(o, 'modifiedTime', str)
-    check(o, 'userCount', str)
-    check(o, 'lces', list)
-    for i in o['lces']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-    check(o, 'repositories', list)
-    for i in o['repositories']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-        check(i, 'type', str)
-        check(i, 'dataFormat', str)
-        check(i, 'groupAssign', str)
-    check(o, 'zones', list)
-    for i in o['zones']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-    check(o, 'ldaps', list)
-    for i in o['ldaps']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-    check(o, 'nessusManagers', list)
-    for i in o['nessusManagers']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
-    check(o, 'pubSites', list)
-    for i in o['pubSites']:
-        check(i, 'id', str)
-        check(i, 'name', str)
-        check(i, 'description', str)
+    organization = admin.organizations.edit(int(org['id']), name='new org name')
+    assert isinstance(organization, dict)
+    check(organization, 'id', str)
+    check(organization, 'name', str)
+    check(organization, 'description', str)
+    check(organization, 'email', str)
+    check(organization, 'address', str)
+    check(organization, 'city', str)
+    check(organization, 'state', str)
+    check(organization, 'country', str)
+    check(organization, 'phone', str)
+    check(organization, 'fax', str)
+    check(organization, 'ipInfoLinks', list)
+    for ip_info in organization['ipInfoLinks']:
+        check(ip_info, 'name', str)
+        check(ip_info, 'link', str)
+    check(organization, 'zoneSelection', str)
+    check(organization, 'restrictedIPs', str)
+    check(organization, 'vulnScoreLow', str)
+    check(organization, 'vulnScoreMedium', str)
+    check(organization, 'vulnScoreHigh', str)
+    check(organization, 'vulnScoreCritical', str)
+    check(organization, 'createdTime', str)
+    check(organization, 'modifiedTime', str)
+    check(organization, 'userCount', str)
+    check(organization, 'lces', list)
+    for lces in organization['lces']:
+        check(lces, 'id', str)
+        check(lces, 'name', str)
+        check(lces, 'description', str)
+    check(organization, 'repositories', list)
+    for repository in organization['repositories']:
+        check(repository, 'id', str)
+        check(repository, 'name', str)
+        check(repository, 'description', str)
+        check(repository, 'type', str)
+        check(repository, 'dataFormat', str)
+        check(repository, 'groupAssign', str)
+    check(organization, 'zones', list)
+    for zone in organization['zones']:
+        check(zone, 'id', str)
+        check(zone, 'name', str)
+        check(zone, 'description', str)
+    check(organization, 'ldaps', list)
+    for ldap in organization['ldaps']:
+        check(ldap, 'id', str)
+        check(ldap, 'name', str)
+        check(ldap, 'description', str)
+    check(organization, 'nessusManagers', list)
+    for manager in organization['nessusManagers']:
+        check(manager, 'id', str)
+        check(manager, 'name', str)
+        check(manager, 'description', str)
+    check(organization, 'pubSites', list)
+    for pub_site in organization['pubSites']:
+        check(pub_site, 'id', str)
+        check(pub_site, 'name', str)
+        check(pub_site, 'description', str)
+
 
 @pytest.mark.vcr()
 def test_organizations_accept_risk_rules_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations.accept_risk_rules('one')
 
+
 @pytest.mark.vcr()
 def test_organizations_accept_risk_rules_repos_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations.accept_risk_rules(1, repos=1)
+
 
 @pytest.mark.vcr()
 def test_organizations_accept_risk_rules_repos_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations.accept_risk_rules(1, repos=['one'])
 
+
 @pytest.mark.vcr()
 def test_organizations_accept_risk_rules_plugin_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations.accept_risk_rules(1, plugin='one')
+
 
 @pytest.mark.vcr()
 def test_organizations_accept_risk_rules_port_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations.accept_risk_rules(1, port='one')
 
+
 @pytest.mark.vcr()
 def test_organizations_accept_risk_rules_success(admin, org):
     rules = admin.organizations.accept_risk_rules(int(org['id']))
     assert isinstance(rules, list)
-    for r in rules:
-        check(r, 'id', str)
-        check(r, 'hostType', str)
-        check(r, 'hostValue', str)
-        check(r, 'port', str)
-        check(r, 'protocol', str)
-        check(r, 'expires', str)
-        check(r, 'status', str)
-        check(r, 'repository', dict)
-        check(r['repository'], 'id', str)
-        check(r['repository'], 'name', str)
-        check(r['repository'], 'description', str)
-        check(r, 'organization', dict)
-        check(r['organization'], 'id', str)
-        check(r['organization'], 'name', str)
-        check(r['organization'], 'description', str)
-        check(r, 'user', dict)
-        check(r['user'], 'id', str)
-        check(r['user'], 'username', str)
-        check(r['user'], 'firstname', str)
-        check(r['user'], 'lastname', str)
-        check(r, 'plugin', dict)
-        check(r['plugin'], 'id', str)
-        check(r['plugin'], 'name', str)
-        check(r['plugin'], 'description', str)
+    for rule in rules:
+        check(rule, 'id', str)
+        check(rule, 'hostType', str)
+        check(rule, 'hostValue', str)
+        check(rule, 'port', str)
+        check(rule, 'protocol', str)
+        check(rule, 'expires', str)
+        check(rule, 'status', str)
+        check(rule, 'repository', dict)
+        check(rule['repository'], 'id', str)
+        check(rule['repository'], 'name', str)
+        check(rule['repository'], 'description', str)
+        check(rule, 'organization', dict)
+        check(rule['organization'], 'id', str)
+        check(rule['organization'], 'name', str)
+        check(rule['organization'], 'description', str)
+        check(rule, 'user', dict)
+        check(rule['user'], 'id', str)
+        check(rule['user'], 'username', str)
+        check(rule['user'], 'firstname', str)
+        check(rule['user'], 'lastname', str)
+        check(rule, 'plugin', dict)
+        check(rule['plugin'], 'id', str)
+        check(rule['plugin'], 'name', str)
+        check(rule['plugin'], 'description', str)
+
 
 @pytest.mark.vcr()
 def test_organizations_recast_risk_rules_id_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations.recast_risk_rules('one')
 
+
 @pytest.mark.vcr()
 def test_organizations_recast_risk_rules_repos_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations.recast_risk_rules(1, repos=1)
+
 
 @pytest.mark.vcr()
 def test_organizations_recast_risk_rules_repos_item_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations.recast_risk_rules(1, repos=['one'])
 
+
 @pytest.mark.vcr()
 def test_organizations_recast_risk_rules_plugin_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations.recast_risk_rules(1, plugin='one')
+
 
 @pytest.mark.vcr()
 def test_organizations_recast_risk_rules_port_typeerror(sc):
     with pytest.raises(TypeError):
         sc.organizations.recast_risk_rules(1, port='one')
 
+
 @pytest.mark.vcr()
 def test_organizations_recast_risk_rules_success(admin, org):
     rules = admin.organizations.recast_risk_rules(int(org['id']))
     assert isinstance(rules, list)
-    for r in rules:
-        check(r, 'id', str)
-        check(r, 'hostType', str)
-        check(r, 'hostValue', str)
-        check(r, 'port', str)
-        check(r, 'protocol', str)
-        check(r, 'status', str)
-        check(r, 'repository', dict)
-        check(r['repository'], 'id', str)
-        check(r['repository'], 'name', str)
-        check(r['repository'], 'description', str)
-        check(r, 'organization', dict)
-        check(r['organization'], 'id', str)
-        check(r['organization'], 'name', str)
-        check(r['organization'], 'description', str)
-        check(r, 'user', dict)
-        check(r['user'], 'id', str)
-        check(r['user'], 'username', str)
-        check(r['user'], 'firstname', str)
-        check(r['user'], 'lastname', str)
-        check(r, 'plugin', dict)
-        check(r['plugin'], 'id', str)
-        check(r['plugin'], 'name', str)
-        check(r['plugin'], 'description', str)
+    for rule in rules:
+        check(rule, 'id', str)
+        check(rule, 'hostType', str)
+        check(rule, 'hostValue', str)
+        check(rule, 'port', str)
+        check(rule, 'protocol', str)
+        check(rule, 'status', str)
+        check(rule, 'repository', dict)
+        check(rule['repository'], 'id', str)
+        check(rule['repository'], 'name', str)
+        check(rule['repository'], 'description', str)
+        check(rule, 'organization', dict)
+        check(rule['organization'], 'id', str)
+        check(rule['organization'], 'name', str)
+        check(rule['organization'], 'description', str)
+        check(rule, 'user', dict)
+        check(rule['user'], 'id', str)
+        check(rule['user'], 'username', str)
+        check(rule['user'], 'firstname', str)
+        check(rule['user'], 'lastname', str)
+        check(rule, 'plugin', dict)
+        check(rule['plugin'], 'id', str)
+        check(rule['plugin'], 'name', str)
+        check(rule['plugin'], 'description', str)
