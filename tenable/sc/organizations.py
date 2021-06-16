@@ -1,16 +1,12 @@
 '''
 organization
 ============
-
 The following methods allow for interaction with the Tenable.sc
 :sc-api:`Organization <Organization.html>` API. These items are typically seen
 under the **Organization** section of Tenable.sc.
-
 Methods available on ``sc.organizations``:
-
 .. rst-class:: hide-signature
 .. autoclass:: OrganizationAPI
-
     .. automethod:: create
     .. automethod:: list
     .. automethod:: details
@@ -144,9 +140,7 @@ class OrganizationAPI(SCEndpoint):
     def create(self, name, **kwargs):
         '''
         Create a new organization
-
         :sc-api:`SC Organization Create <Organization.html#organization_POST>`
-
         Args:
             name (str): The name for organization.
             info_links (list, optional):
@@ -191,18 +185,13 @@ class OrganizationAPI(SCEndpoint):
             zones (list, optional):
                 When ``zone_selection`` is not ``auto_only``, this field
                 must be filled with list of ids from available scan zone(s).
-
         Returns:
             :obj:`dict`:
                 The organization resource record for the newly created Org.
-
         Examples:
             Creating a new organization with automatic scan zone selection:
-
             >>> org = sc.organization.create('Sample Organization')
-
             Creating a new organization with custom analysis links:
-
             >>> org = sc.organization.create('Sample Organization', info_links=[
             ...     ('SANS', 'https://isc.sans.edu/ipinfo.html?ip=%IP%')])
         '''
@@ -214,22 +203,17 @@ class OrganizationAPI(SCEndpoint):
     def list(self, fields=None):
         '''
         Retrieves a list of organizations.
-
         :sc-api:`SC organization List <Organization.html#OrganizationRESTReference-/organization>`
-
         Args:
             fields (list, optional):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
                 request within the organization list API doc.
-
         Returns:
             :obj:`list`:
                 List of organization definitions.
-
         Examples:
             Retrieve all of all of the organizations:
-
             >>> repos = sc.organizations.list()
         '''
         params = dict()
@@ -241,20 +225,16 @@ class OrganizationAPI(SCEndpoint):
     def details(self, organization_id, fields=None):
         '''
         Retrieves the details for the specified organization.
-
         :sc-api:`SC Organization Details <Organization.html#organization_id_GET>`
-
         Args:
             organization_id (int): The numeric id of the organization.
             fields (list, optional):
                 The list of fields that are desired to be returned. For details
                 on what fields are available, please refer to the details on
                 the request within the organization details API doc.
-
         Returns:
             :obj:`dict`:
                 The organization resource record.
-
         Examples:
             >>> org = sc.organization.details(1)
         '''
@@ -267,13 +247,9 @@ class OrganizationAPI(SCEndpoint):
 
     def edit(self, organization_id, **kwargs):
         '''Updates an existing organization
-
-
         Edits the Organization associated with {organization_id}, changing only the passed
         in fields.
-
         :sc-api:`SC Organization Edit <Organization.html#organization_id_PATCH>`
-
         Args:
             organization_id: The numeric id of the organization.
             info_links (list, optional):
@@ -317,10 +293,8 @@ class OrganizationAPI(SCEndpoint):
             zones (list, optional):
                 When ``zone_selection`` is not ``auto_only``, this field
                 must be filled with list of ids from available scan zone(s).
-
         Returns:
             dict: The updated organization resource record.
-
         Examples:
             >>> sc.organization.edit(1, name='New Name')
         '''
@@ -331,16 +305,12 @@ class OrganizationAPI(SCEndpoint):
     def delete(self, organization_id):
         '''
         Remove the specified organization from Tenable.sc
-
         :sc-api:`SC organization Delete <Organization.html#organization_id_DELETE>`
-
         Args:
             organization_id (int): The numeric id of the organization to delete.
-
         Returns:
             :obj:`str`:
                 Empty response string
-
         Examples:
             >>> sc.organization.delete(1)
         '''
@@ -351,10 +321,8 @@ class OrganizationAPI(SCEndpoint):
         '''
         Retrieves the accepted risk rules for the organization and optionally
         will filter based on the parameters specified.
-
         :sc-api:`organization: accept-risk-rule
         <Organization.html#OrganizationRESTReference-/organization/{organization_id}/acceptRiskRule>`
-
         Args:
             organization_id (int): The organization id.
             repos (list, optional):
@@ -363,11 +331,9 @@ class OrganizationAPI(SCEndpoint):
                 A plugin id to restrict the search to.
             port (int, optional):
                 A port number to restrict the search to.
-
         Returns:
             :obj:`list`:
                 A list of rules that match the request.
-
         Examples:
             >>> for rule in sc.organizations.accept_risk_rules(1):
             ...     pprint(rule)
@@ -387,10 +353,8 @@ class OrganizationAPI(SCEndpoint):
         '''
         Retrieves the recasted risk rules for the organization and optionally
         will filter based on the parameters specified.
-
         :sc-api:`organization: recast-risk-rule
         <Organization.html#OrganizationRESTReference-/organization/{organization_id}/recastRiskRule>`
-
         Args:
             organization_id (int): The organization id.
             repos (list, optional):
@@ -399,11 +363,9 @@ class OrganizationAPI(SCEndpoint):
                 A plugin id to restrict the search to.
             port (int, optional):
                 A port number to restrict the search to.
-
         Returns:
             :obj:`list`:
                 A list of rules that match the request.
-
         Examples:
             >>> for rule in sc.organizations.recast_risk_rules(1):
             ...     pprint(rule)
@@ -422,9 +384,7 @@ class OrganizationAPI(SCEndpoint):
     def managers_list(self, org_id, fields=None):
         '''
         Retrieves a list of security managers.
-
         :sc-api:`organization-security-manager: list <Organization-Security-Manager.html#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager>`
-
         Args:
             org_id: (int):
                 The numeric identifier for the organization.
@@ -432,14 +392,11 @@ class OrganizationAPI(SCEndpoint):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
                 request within the organization list API doc.
-
         Returns:
             :obj:`list`:
                 List of user definitions.
-
         Examples:
             Retrieve all of the security managers for a given org.:
-
             >>> repos = sc.organizations.managers_list()
         '''
         params = dict()
@@ -454,9 +411,7 @@ class OrganizationAPI(SCEndpoint):
         Creates a new security manager for the given org.  For a complete list
         of parameters that are supported for this call, please refer to
         :py:meth:`tio.users.create() <UserAPI.create>` for more details.
-
         :sc-api:`organization-security-manager: create <Organization-Security-Manager.html#organization_orgID_securityManager_POST>`
-
         Args:
             org_id: (int):
                 The numeric identifier for the organization.
@@ -468,11 +423,9 @@ class OrganizationAPI(SCEndpoint):
                 The role that should be assigned to this user.
             **kwargs (dict):
                 The keyword args to pass to the user constructor.
-
         Returns:
             :obj:`dict`:
                 The newly created security manager.
-
         Examples:
             >>> secmngr = sc.organizations.manager_create(1,
             ...     'username', 'password', 1)
@@ -490,9 +443,7 @@ class OrganizationAPI(SCEndpoint):
         '''
         Retrieves the details of a specified security manager within a
         specified organization.
-
         :sc-api:`organization-security-manager: details <Organization-Security-Manager.html#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager/{id}>`
-
         Args:
             org_id: (int):
                 The numeric identifier for the organization.
@@ -502,11 +453,9 @@ class OrganizationAPI(SCEndpoint):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
                 request within the organization list API doc.
-
         Returns:
             :obj:`dict`:
                 The user resource record.
-
         Examples:
             >>> secmngr = sc.organizations.manager_details(1, 1)
         '''
@@ -524,9 +473,7 @@ class OrganizationAPI(SCEndpoint):
         Edits the specified security manager within the specified organization.
         For details on the supported arguments that may be passed, please refer
         to :py:meth:`tio.users.edit() <UserAPI.edit>` for more details.
-
         :sc-api:`organization-security-manager: edit <Organization-Security-Manager.html#organization_orgID_securityManager_id_PATCH>`
-
         Args:
             org_id: (int):
                 The numeric identifier for the organization.
@@ -534,11 +481,9 @@ class OrganizationAPI(SCEndpoint):
                 The numeric identifier for the user.
             **kwargs (dict):
                 The keyword args to pass to the user constructor.
-
         Returns:
             :obj:`dict`:
                 The updated user record.
-
         Examples:
             >>> secmngr = sc.organizations.manager_edit(1, 1,
             ...     username='updated')
@@ -552,15 +497,12 @@ class OrganizationAPI(SCEndpoint):
     def manager_delete(self, org_id, user_id, migrate_to=None):
         '''
         Removes the user specified.
-
         :sc-api:`organization-security-manager: delete <Organization-Security-Manager.html#organization_orgID_securityManager_id_DELETE>`
-
         Args:
             org_id: (int):
                 The numeric identifier for the organization.
             user_id: (int):
                 The numeric identifier for the user.
-
         Examples:
             >>> sc.organizations.manager_delete(1, 1)
         '''
