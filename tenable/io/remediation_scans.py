@@ -174,10 +174,10 @@ class RemediationScansAPI(TIOEndpoint):
             scan = tio.remediationscans.create_remediation_scan(
             uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
             name='Create Remediation Scan',
-            description='This is first remediation scan created',
+            description='Remediation scan created',
             scanner_id='10167769',
             scan_time_window=10,
-            targets=['172.26.103.174'],
+            targets=['127.0.0.1:3000'],
             template='advanced')
 
             For further information on credentials, what settings to use, etc,
@@ -188,7 +188,7 @@ class RemediationScansAPI(TIOEndpoint):
         '''
 
         if 'template' not in kwargs:
-            kwargs['template'] = 'basic'
+            kwargs['template'] = 'advanced'
 
         # validate all the parameters
         scan = self._create_scan_document(kwargs)
@@ -220,7 +220,7 @@ class RemediationScansAPI(TIOEndpoint):
             templates = self._api.policies.templates()
             scan['uuid'] = templates[self._check(
                 'template', kwargs['template'], str,
-                default='basic',
+                default='advanced',
                 choices=list(templates.keys())
             )]
             del kwargs['template']
@@ -295,21 +295,6 @@ class RemediationScansAPI(TIOEndpoint):
             scan['plugins'] = self._check('plugins', kwargs['plugins'], dict)
             del kwargs['plugins']
 
-        # if the schedule_scan attribute was set, then we will apply fields
-        # required for scheduling a scan
-        if 'schedule_scan' in kwargs:
-            self._check('schedule_scan', kwargs['schedule_scan'], dict)
-            if kwargs['schedule_scan']['enabled']:
-                keys = [self.schedule_const.enabled, self.schedule_const.launch, self.schedule_const.rrules,
-                    self.schedule_const.schedule_scan, self.schedule_const.start_time, self.schedule_const.timezone]
-            else:
-                keys = [self.schedule_const.enabled, self.schedule_const.schedule_scan]
-
-            # update schedule values in scan settings based on enable parameter
-            for k in keys:
-                scan['settings'][k] = kwargs['schedule_scan'][k]
-
-            del kwargs['schedule_scan']
 
         # any other remaining keyword arguments will be passed into the settings
         # sub-document.  The bulk of the data should go here...
