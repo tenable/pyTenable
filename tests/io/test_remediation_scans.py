@@ -19,13 +19,13 @@ def scheduled_scan(request, api):
         name='Create Remediation Scan',
         description='This is first remediation scan created',
         scan_time_window=10,
-        targets=['172.26.103.174'],
+        targets=['http://127.0.0.1:3000'],
         template='advanced'
     )
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='advanced',
-        targets=['172.26.103.174'],
+        targets=['http://127.0.0.1:3000'],
         schedule_scan=schedule_scan
     )
 
