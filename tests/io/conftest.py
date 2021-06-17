@@ -110,5 +110,23 @@ def scan(request, api):
     return scan
 
 @pytest.fixture
+def remediationscan(request, api):
+    scan = api.remediationscans.create_remediation_scan(
+        uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
+        name='RemedyScan',
+        description='RemediationScan Creation',
+        scan_time_window=10,
+        targets=['172.26.103.174'],
+        template='advanced')
+    def teardown():
+        try:
+            api.scans.delete(scan['id'])
+        except NotFoundError:
+            pass
+    request.addfinalizer(teardown)
+    return scan
+
+
+@pytest.fixture
 def scan_results(request, api):
     return api.scans.results(SCAN_ID_WITH_RESULTS)
