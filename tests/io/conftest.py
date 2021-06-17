@@ -116,7 +116,7 @@ def remediationscan(request, api):
         name='RemedyScan',
         description='RemediationScan Creation',
         scan_time_window=10,
-        targets=['172.26.103.174'],
+        targets=['http://127.0.0.1'],
         template='advanced')
     def teardown():
         try:
