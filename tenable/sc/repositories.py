@@ -25,130 +25,130 @@ Methods available on ``sc.repositories``:
     .. automethod:: remote_fetch
     .. automethod:: remote_sync
 '''
+import semver
+
 from .base import SCEndpoint
-from tenable.utils import dict_merge, policy_settings
-from io import BytesIO
-import json, semver
+
 
 class RepositoryAPI(SCEndpoint):
-    def _constructor(self, **kw):
+    def _constructor(self, **kwargs):
         '''
         Repository document constructor
         '''
-        if 'nessus_sched' in kw:
-            kw['nessusSchedule'] = self._schedule_constructor(kw['nessus_sched'])
-            del(kw['nessus_sched'])
-        if 'mobile_sched' in kw:
-            kw['mobileSchedule'] = self._schedule_constructor(kw['mobile_sched'])
-            del(kw['mobile_sched'])
-        if 'remote_sched' in kw:
-            kw['remoteSchedule'] = self._schedule_constructor(kw['remote_sched'])
-            del(kw['remote_sched'])
+        if 'nessus_sched' in kwargs:
+            kwargs['nessusSchedule'] = self._schedule_constructor(kwargs['nessus_sched'])
+            del kwargs['nessus_sched']
+        if 'mobile_sched' in kwargs:
+            kwargs['mobileSchedule'] = self._schedule_constructor(kwargs['mobile_sched'])
+            del kwargs['mobile_sched']
+        if 'remote_sched' in kwargs:
+            kwargs['remoteSchedule'] = self._schedule_constructor(kwargs['remote_sched'])
+            del kwargs['remote_sched']
 
-        if 'name' in kw:
+        if 'name' in kwargs:
             # Validate the name is a string
-            self._check('name', kw['name'], str)
+            self._check('name', kwargs['name'], str)
 
-        if 'description' in kw:
+        if 'description' in kwargs:
             # Verify that the description is a string
-            self._check('description', kw['description'], str)
+            self._check('description', kwargs['description'], str)
 
-        if 'format' in kw:
+        if 'format' in kwargs:
             # The data format for the repository.
-            kw['dataFormat'] = self._check('format', kw['format'], str,
-                choices=['agent', 'IPv4', 'IPv6', 'mobile'])
-            del(kw['format'])
+            kwargs['dataFormat'] = self._check('format', kwargs['format'], str,
+                                               choices=['agent', 'IPv4', 'IPv6', 'mobile'])
+            del kwargs['format']
 
-        if 'repo_type' in kw:
+        if 'repo_type' in kwargs:
             # The type of repository
-            kw['type'] = self._check('repo_type', kw['repo_type'], str,
-                choices=['Local', 'Remote', 'Offline'])
-            del(kw['repo_type'])
+            kwargs['type'] = self._check('repo_type', kwargs['repo_type'], str,
+                                         choices=['Local', 'Remote', 'Offline'])
+            del kwargs['repo_type']
 
-        if 'orgs' in kw:
+        if 'orgs' in kwargs:
             # Validate all of the organizational sub-documents.
-            kw['organizations'] = [{'id': self._check('org_id', o, int)}
-                for o in self._check('orgs', kw['orgs'], list)]
-            del(kw['orgs'])
+            kwargs['organizations'] = [{'id': self._check('org_id', o, int)}
+                                       for o in self._check('orgs', kwargs['orgs'], list)]
+            del kwargs['orgs']
 
-        if 'trending' in kw:
+        if 'trending' in kwargs:
             # Trending should be between 0 and 365.
-            kw['trendingDays'] = self._check('trending', kw['trending'], int,
-                choices=list(range(366)))
-            del(kw['trending'])
+            kwargs['trendingDays'] = self._check('trending', kwargs['trending'], int,
+                                                 choices=list(range(366)))
+            del kwargs['trending']
 
-        if 'fulltext_search' in kw:
-            # trendWithRaw is the backend parameter name for "Full Text Search"
+        if 'fulltext_search' in kwargs:
+            # trendWithRaw is the backend paramater name for "Full Text Search"
             # within the UI.  We will be calling it fulltest_search to more
             # closely align with what the frontend calls this feature.
-            kw['trendWithRaw'] = str(self._check('fulltext_search',
-                kw['fulltext_search'], bool)).lower()
-            del(kw['fulltext_search'])
+            kwargs['trendWithRaw'] = str(self._check('fulltext_search',
+                                                     kwargs['fulltext_search'], bool)).lower()
+            del kwargs['fulltext_search']
 
-        if 'lce_correlation' in kw:
+        if 'lce_correlation' in kwargs:
             # The correlation parameter isn't well named here, we will call it
             # out as LCE correlation to specifically note what it is for.
-            kw['correlation'] = [{'id': self._check('lce_id', l, int)}
-                for l in self._check('lce_correlation', kw['lce_correlation'], list)]
-            del(kw['lce_correlation'])
+            kwargs['correlation'] = [{'id': self._check('lce_id', l, int)}
+                                     for l in self._check('lce_correlation', kwargs['lce_correlation'], list)]
+            del kwargs['lce_correlation']
 
-        if 'allowed_ips' in kw:
+        if 'allowed_ips' in kwargs:
             # Using valid IPs here instead of ipRange to again more closely
             # align to the frontend and to more explicitly call out the
-            # function of this parameter
-            kw['ipRange'] = ','.join([self._check('ip', i, str)
-                for i in self._check('allowed_ips', kw['allowed_ips'], list)])
-            del(kw['allowed_ips'])
+            # function of this paramater
+            kwargs['ipRange'] = ','.join([self._check('ip', i, str)
+                                          for i in self._check('allowed_ips', kwargs['allowed_ips'], list)])
+            del kwargs['allowed_ips']
 
-        if 'remote_ip' in kw:
-            kw['remoteIP'] = self._check('remote_ip', kw['remote_ip'], str)
-            del(kw['remote_ip'])
+        if 'remote_ip' in kwargs:
+            kwargs['remoteIP'] = self._check('remote_ip', kwargs['remote_ip'], str)
+            del kwargs['remote_ip']
 
-        if 'remote_repo' in kw:
-            kw['remoteID'] = self._check('remote_repo', kw['remote_repo'], int)
-            del(kw['remote_repo'])
+        if 'remote_repo' in kwargs:
+            kwargs['remoteID'] = self._check('remote_repo', kwargs['remote_repo'], int)
+            del kwargs['remote_repo']
 
-        if 'preferences' in kw:
+        if 'preferences' in kwargs:
             # Validate that all of the preferences are K:V pairs of strings.
-            for key in self._check('preferences', kw['preferences'], dict):
+            for key in self._check('preferences', kwargs['preferences'], dict):
                 self._check('preference:{}'.format(key), key, str)
                 self._check('preference:{}:value'.format(key),
-                    kw['preferences'][key], str)
+                            kwargs['preferences'][key], str)
 
-        if 'mdm_id' in kw:
-            kw['mdm'] = {'id': self._check('mdm_id', kw['mdm_id'], int)}
-            del(kw['mdm_id'])
+        if 'mdm_id' in kwargs:
+            kwargs['mdm'] = {'id': self._check('mdm_id', kwargs['mdm_id'], int)}
+            del kwargs['mdm_id']
 
-        if 'scanner_id' in kw:
-            kw['scanner'] = {'id': self._check(
-                'scanner_id', kw['scanner_id'], int)}
-            del(kw['scanner_id'])
+        if 'scanner_id' in kwargs:
+            kwargs['scanner'] = {'id': self._check(
+                'scanner_id', kwargs['scanner_id'], int)}
+            del kwargs['scanner_id']
 
-        return kw
+        return kwargs
 
-    def _rules_constructor(self, **kw):
+    def _rules_constructor(self, **kwargs):
         '''
         Accept/Recast Rule Query Creator
         '''
-        if 'plugin_id' in kw:
+        if 'plugin_id' in kwargs:
             # Convert the snake_cased variant to the camelCased variant.
-            kw['pluginID'] = self._check('plugin_id', kw['plugin_id'], int)
-            del(kw['plugin_id'])
-        if 'port' in kw:
+            kwargs['pluginID'] = self._check('plugin_id', kwargs['plugin_id'], int)
+            del kwargs['plugin_id']
+        if 'port' in kwargs:
             # validate port is a integer
-            self._check('port', kw['port'], int)
-        if 'orgs' in kw:
+            self._check('port', kwargs['port'], int)
+        if 'orgs' in kwargs:
             # convert the list of organization IDs into the comma-separated
             # string that the API expects.
-            kw['organizationIDs'] = ','.join([str(self._check('org:id', o, int))
-                for o in self._check('orgs', kw['orgs'], list)])
-            del(kw['orgs'])
-        if 'fields' in kw:
+            kwargs['organizationIDs'] = ','.join([str(self._check('org:id', o, int))
+                                              for o in self._check('orgs', kwargs['orgs'], list)])
+            del kwargs['orgs']
+        if 'fields' in kwargs:
             # convert the list of field names into the comma-separated string
             # that the API expects.
-            kw['fields'] = ','.join([self._check('field', f, str)
-                for f in kw['fields']])
-        return kw
+            kwargs['fields'] = ','.join([self._check('field', f, str)
+                                     for f in kwargs['fields']])
+        return kwargs
 
     def list(self, fields=None, repo_type=None):
         '''
@@ -185,17 +185,17 @@ class RepositoryAPI(SCEndpoint):
                 'All', 'Local', 'Remote', 'Offline'])
         if fields:
             params['fields'] = ','.join([self._check('field', f, str)
-                for f in fields])
+                                         for f in fields])
         return self._api.get('repository', params=params).json()['response']
 
-    def create(self, **kw):
+    def create(self, **kwargs):
         '''
         Creates a new repository
 
         :sc-api:`repository: create <Repository.html#repository_POST>`
 
         Args:
-            name (str): The name for the repository.
+            name (str): The name for the respository.
             allowed_ips (list, optional):
                 Allowed IPs will restrict incoming data being inserted into the
                 repository to only the IPs that exist within the configured
@@ -211,7 +211,7 @@ class RepositoryAPI(SCEndpoint):
                 is ``IPv4``.
             fulltext_search (bool, optional):
                 Should full-text searching be enabled?  This option is used for
-                IPv4, IPv6, and agent repository formats and determines whether
+                IPv4, IPv6, and agent repository formats and determins whether
                 the plugin output is trended along with the normalized data.  If
                 left unspecified, the default is set to ``False``.
             lce_correlation (list, optional):
@@ -323,39 +323,39 @@ class RepositoryAPI(SCEndpoint):
             ...         'repeatRule': 'FREQ=DAILY;INTERVAL=1'
             ... })
         '''
-        kw = self._constructor(**kw)
-        kw['dataFormat'] = kw.get('dataFormat', 'IPv4')
-        kw['type'] = kw.get('type', 'Local')
+        kwargs = self._constructor(**kwargs)
+        kwargs['dataFormat'] = kwargs.get('dataFormat', 'IPv4')
+        kwargs['type'] = kwargs.get('type', 'Local')
 
-        if kw['dataFormat'] in ['IPv4', 'IPv6', 'agent']:
-            kw['trendingDays'] = kw.get('trendingDays', 0)
-            kw['trendWithRaw'] = kw.get('trendWithRaw', 'false')
+        if kwargs['dataFormat'] in ['IPv4', 'IPv6', 'agent']:
+            kwargs['trendingDays'] = kwargs.get('trendingDays', 0)
+            kwargs['trendWithRaw'] = kwargs.get('trendWithRaw', 'false')
 
-        if kw['dataFormat'] in ['IPv4', 'IPv6']:
-            kw['nessusSchedule'] = kw.get('nessusSchedule', {'type': 'never'})
+        if kwargs['dataFormat'] in ['IPv4', 'IPv6']:
+            kwargs['nessusSchedule'] = kwargs.get('nessusSchedule', {'type': 'never'})
 
-        if kw['dataFormat'] == 'IPv4':
-            kw['ipRange'] = kw.get('ipRange', '0.0.0.0/0')
+        if kwargs['dataFormat'] == 'IPv4':
+            kwargs['ipRange'] = kwargs.get('ipRange', '0.0.0.0/0')
 
-        if kw['dataFormat'] == 'IPv6':
-            kw['ipRange'] = kw.get('ipRange', '::/0')
+        if kwargs['dataFormat'] == 'IPv6':
+            kwargs['ipRange'] = kwargs.get('ipRange', '::/0')
 
-        if kw['dataFormat'] == 'mobile':
-            kw['mobileSchedule'] = kw.get('mobileSchedule', {'type': 'never'})
+        if kwargs['dataFormat'] == 'mobile':
+            kwargs['mobileSchedule'] = kwargs.get('mobileSchedule', {'type': 'never'})
 
-        if kw['type'] == 'remote':
-            kw['remoteSchedule'] = kw.get('remoteSchedule', {'type': 'never'})
+        if kwargs['type'] == 'remote':
+            kwargs['remoteSchedule'] = kwargs.get('remoteSchedule', {'type': 'never'})
 
-        return self._api.post('repository', json=kw).json()['response']
+        return self._api.post('repository', json=kwargs).json()['response']
 
-    def details(self, id, fields=None):
+    def details(self, repository_id, fields=None):
         '''
         Retrieves the details for the specified repository.
 
         :sc-api:`repository: details <Repository.html#repository_id_GET>`
 
         Args:
-            id (int): The numeric id of the repository.
+            repository_id (int): The numeric id of the repository.
             fields (list, optional):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
@@ -373,16 +373,16 @@ class RepositoryAPI(SCEndpoint):
             params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
         return self._api.get('repository/{}'.format(
-            self._check('id', id, int)), params=params).json()['response']
+            self._check('repository_id', repository_id, int)), params=params).json()['response']
 
-    def delete(self, id):
+    def delete(self, repository_id):
         '''
         Remove the specified repository from Tenable.sc
 
         :sc-api:`repository: delete <Repository.html#repository_id_DELETE>`
 
         Args:
-            id (int): The numeric id of the repository to delete.
+            repository_id (int): The numeric id of the repository to delete.
 
         Returns:
             :obj:`str`:
@@ -392,16 +392,16 @@ class RepositoryAPI(SCEndpoint):
             >>> sc.repositories.delete(1)
         '''
         return self._api.delete('repository/{}'.format(
-            self._check('id', id, int))).json()['response']
+            self._check('repository_id', repository_id, int))).json()['response']
 
-    def edit(self, id, **kw):
+    def edit(self, repository_id, **kwargs):
         '''
         Updates an existing repository
 
         :sc-api:`repository: edit <Repository.html#repository_id_PATCH>`
 
         Args:
-            id (int): The numeric id of the repository to edit.
+            repository_id (int): The numeric id of the repository to edit.
             allowed_ips (list, optional):
                 Allowed IPs will restrict incoming data being inserted into the
                 repository to only the IPs that exist within the configured
@@ -458,11 +458,11 @@ class RepositoryAPI(SCEndpoint):
         Examples:
             >>> repo = sc.repositories.edit(1, name='Example IPv4')
         '''
-        kw = self._constructor(**kw)
+        kwargs = self._constructor(**kwargs)
         return self._api.patch('repository/{}'.format(
-            self._check('id', id, int)), json=kw).json()['response']
+            self._check('repository_id', repository_id, int)), json=kwargs).json()['response']
 
-    def accept_risk_rules(self, id, **kw):
+    def accept_risk_rules(self, repository_id, **kwargs):
         '''
         Retrieves the accepted risk rules associated with the specified
         repository.
@@ -470,7 +470,7 @@ class RepositoryAPI(SCEndpoint):
         :sc-api:`repository: accept rules <Repository.html#RepositoryRESTReference-/repository/{id}/acceptRiskRule>`
 
         Args:
-            id (int): The numeric id of the repository.
+            repository_id (int): The numeric id of the repository.
             fields (list, optional):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
@@ -483,19 +483,20 @@ class RepositoryAPI(SCEndpoint):
         Examples:
             >>> rules = sc.repositories.accept_risk_rules(1)
         '''
-        params = self._rules_constructor(**kw)
+        params = self._rules_constructor(**kwargs)
         return self._api.get('repository/{}/acceptRiskRule'.format(
-            self._check('id', id, int)), params=params).json()['response']
+            self._check('repository_id', repository_id, int)), params=params).json()['response']
 
-    def recast_risk_rules(self, id, **kw):
+    def recast_risk_rules(self, repository_id, **kwargs):
         '''
         Retrieves the recast risk rules associated with the specified
         repository.
 
-        :sc-api:`repository: recast rules <Repository.html#RepositoryRESTReference-/repository/{id}/recastRiskRule>`
+        :sc-api:`repository: recast rules
+        <Repository.html#RepositoryRESTReference-/repository/{repository_id}/recastRiskRule>`
 
         Args:
-            id (int): The numeric id of the repository.
+            repository_id (int): The numeric id of the repository.
             fields (list, optional):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
@@ -508,20 +509,21 @@ class RepositoryAPI(SCEndpoint):
         Examples:
             >>> rules = sc.repositories.recast_risk_rules(1)
         '''
-        params = self._rules_constructor(**kw)
+        params = self._rules_constructor(**kwargs)
         return self._api.get('repository/{}/recastRiskRule'.format(
-            self._check('id', id, int)), params=params).json()['response']
+            self._check('repository_id', repository_id, int)), params=params).json()['response']
 
-    def asset_intersections(self, id, uuid=None, ip=None, dns=None):
+    def asset_intersections(self, repository_id, uuid=None, ip_address=None, dns=None):
         '''
         Retrieves the asset lists that a UUID, DNS address, or IP exists in.
 
-        :sc-api:`repository: asst intersections <Repository.html#RepositoryRESTReference-/repository/{id}/assetIntersections>`
+        :sc-api:`repository: asst intersections
+        <Repository.html#RepositoryRESTReference-/repository/{repository_id}/assetIntersections>`
 
         Args:
-            id (int): The numeric identifier of the repository to query.
+            repository_id (int): The numeric identifier of the repository to query.
             dns (str): The DNS name to query
-            ip (str): The IP address to query
+            ip_address (str): The IP address to query
             uuid (str): The UUID to query.
 
         Returns:
@@ -535,22 +537,22 @@ class RepositoryAPI(SCEndpoint):
         params = dict()
         if dns:
             params['dnsName'] = self._check('dns', dns, str)
-        if ip:
-            params['ip'] = self._check('ip', ip, str)
+        if ip_address:
+            params['ip'] = self._check('ip_address', ip_address, str)
         if uuid:
             params['uuid'] = self._check('uuid', uuid, 'uuid')
         return self._api.get('repository/{}/assetIntersections'.format(
-            self._check('id', id, int)),
+            self._check('repository_id', repository_id, int)),
             params=params).json()['response'].get('assets')
 
-    def import_repository(self, id, fobj):
+    def import_repository(self, repository_id, fobj):
         '''
         Imports the repository archive for an offline repository.
 
-        :sc-api:`repository: import <Repository.html#RepositoryRESTReference-/repository/{id}/import>`
+        :sc-api:`repository: import <Repository.html#RepositoryRESTReference-/repository/{repository_id}/import>`
 
         Args:
-            id (int): The numeric id associated to the offline repository.
+            repository_id (int): The numeric id associated to the offline repository.
             fobj (FileObject):
                 The file-like object containing the repository archive.
 
@@ -563,19 +565,19 @@ class RepositoryAPI(SCEndpoint):
             ...     sc.repositories.import_repository(1, archive)
         '''
         return self._api.post('repository/{}/import'.format(
-            self._check('id', id, int)), json={
-                'file': self._api.files.upload(fobj)
-            }).json()['response']
+            self._check('repository_id', repository_id, int)), json={
+            'file': self._api.files.upload(fobj)
+        }).json()['response']
 
-    def export_repository(self, id, fobj):
+    def export_repository(self, repository_id, fobj):
         '''
         Exports the repository and writes the archive tarball into the file
         object passed.
 
-        :sc-api:`repository: export <Repository.html#RepositoryRESTReference-/repository/{id}/export>`
+        :sc-api:`repository: export <Repository.html#RepositoryRESTReference-/repository/{repository_id}/export>`
 
         Args:
-            id (int): The numeric id associated to the repository.
+            repository_id (int): The numeric id associated to the repository.
             fobj (FileObject):
                 The file-like object for the repository archive.
 
@@ -588,7 +590,7 @@ class RepositoryAPI(SCEndpoint):
             ...     sc.repositories.export_repository(1, archive)
         '''
         resp = self._api.get('repository/{}/export'.format(
-            self._check('id', id, int)), stream=True)
+            self._check('repository_id', repository_id, int)), stream=True)
 
         # Lets stream the file into the file-like object...
         for chunk in resp.iter_content(chunk_size=1024):
@@ -598,15 +600,15 @@ class RepositoryAPI(SCEndpoint):
         resp.close()
         return fobj
 
-    def remote_sync(self, id):
+    def remote_sync(self, repository_id):
         '''
         Initiates a remote synchronization with a downstream Tenable.sc
         instance.  This action can only be performed on an offline repository.
 
-        :sc-api:`repository: sync <Repository.html#RepositoryRESTReference-/repository/{id}/sync>`
+        :sc-api:`repository: sync <Repository.html#RepositoryRESTReference-/repository/{repository_id}/sync>`
 
         Args:
-            id (int): The numeric id for the remote repository.
+            repository_id (int): The numeric id for the remote repository.
 
         Returns:
             :obj:`dict`:
@@ -616,17 +618,18 @@ class RepositoryAPI(SCEndpoint):
             >>> sc.repositories.remote_sync(1)
         '''
         return self._api.post('repository/{}/sync'.format(
-            self._check('id', id, int)), json={}).json()['response']
+            self._check('repository_id', repository_id, int)), json={}).json()['response']
 
-    def mobile_sync(self, id):
+    def mobile_sync(self, repository_id):
         '''
         Initiates a MDM synchronization with the configured MDM source on the
         mobile repository specified.
 
-        :sc-api:`repository: update mobile data <Repository.html#RepositoryRESTReference-/repository/{id}/updateMobileData>`
+        :sc-api:`repository: update mobile data
+        <Repository.html#RepositoryRESTReference-/repository/{repository_id}/updateMobileData>`
 
         Args:
-            id (int): The numeric id for the mobile repository to run the sync.
+            repository_id (int): The numeric id for the mobile repository to run the sync.
 
         Returns:
             :obj:`dict`:
@@ -636,25 +639,26 @@ class RepositoryAPI(SCEndpoint):
             >>> sc.repositories.mobile_sync(1)
         '''
         return self._api.post('repository/{}/updateMobileData'.format(
-            self._check('id', id, int)), json={}).json()['response']
+            self._check('repository_id', repository_id, int)), json={}).json()['response']
 
-    def device_info(self, id, dns=None, ip=None, uuid=None, fields=None):
+    def device_info(self, repository_id, dns=None, ip_address=None, uuid=None, fields=None):
         '''
         Retrieves the device information for the requested device on the
         associated repository.
 
-        :sc-api:`repository: device info <Repository.html#RepositoryRESTReference-/repository/{id}/deviceInfo>`
+        :sc-api:`repository: device info
+        <Repository.html#RepositoryRESTReference-/repository/{repository_id}/deviceInfo>`
 
         `repository: ip info <Repository.html#RepositoryRESTReference-/repository/{id}/ipInfo>`
 
         Args:
-            id (int): The numeric id for the repository to query.
+            repository_id (int): The numeric id for the repository to query.
             dns (str): The DNS name to query
             fields (list, optional):
                 The list of fields that are desired to be returned.  For details
                 on what fields are available, please refer to the details on the
                 request within the repository device info API doc.
-            ip (str): The IP address to query
+            ip_address (str): The IP address to query
             uuid (str): The UUID to query.
 
         Returns:
@@ -662,13 +666,13 @@ class RepositoryAPI(SCEndpoint):
                 The device resource.
 
         Examples:
-            >>> host = sc.repositories.device_info(1, ip='192.168.0.1')
+            >>> host = sc.repositories.device_info(1, ip_address='192.168.0.1')
         '''
         # We will generally want to query the deviceInfo action, however if we
         # happen to be on a Tenable.sc instance version that's less than 5.7, we
         # have to instead query ipInfo.
         method = 'deviceInfo'
-        if semver.match(self._api.version, '<5.7.0'):
+        if semver.VersionInfo.parse(self._api.version).match('<5.7.0'):
             method = 'ipInfo'
 
         params = dict()
@@ -676,13 +680,13 @@ class RepositoryAPI(SCEndpoint):
             params['fields'] = ','.join([self._check('field', f, str) for f in fields])
         if dns:
             params['dnsName'] = self._check('dns', dns, str)
-        if ip:
-            params['ip'] = self._check('ip', ip, str)
+        if ip_address:
+            params['ip'] = self._check('ip_address', ip_address, str)
         if uuid:
             params['uuid'] = self._check('uuid', uuid, 'uuid')
 
         return self._api.get('repository/{}/{}'.format(
-            self._check('id', id, int), method), params=params).json()['response']
+            self._check('repository_id', repository_id, int), method), params=params).json()['response']
 
     def remote_authorize(self, host, username, password):
         '''
@@ -726,5 +730,3 @@ class RepositoryAPI(SCEndpoint):
         '''
         return self._api.get('repository/fetchRemote', params={
             'host': self._check('host', host, str)}).json()['response']
-
-
