@@ -12,7 +12,7 @@ def fixture_network(request, api, vcr):
     Fixture to create network
     '''
     with vcr.use_cassette('test_networks_create_success'):
-        network = api.networks.create('Example')
+        network = api.networks.create('Network-{}'.format(uuid.uuid4()))
     def teardown():
         '''
         cleanup function to delete network
@@ -146,7 +146,7 @@ def test_networks_edit_success(api, network):
     '''
     test to update the specified network resource.
     '''
-    resp = api.networks.edit(network['uuid'], 'New Name')
+    resp = api.networks.edit(network['uuid'], 'New Name - {}'.format(uuid.uuid4()))
     assert isinstance(resp, dict)
     check(resp, 'owner_uuid', 'uuid')
     check(resp, 'created', int)
