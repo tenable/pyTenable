@@ -47,6 +47,6 @@ def test_auditlog_events(api):
     check(e, 'is_failure', bool, allow_none=True)
     check(e, 'received', 'datetime')
     check(e, 'target', dict)
-    check(e['target'], 'id', 'uuid')
-    check(e['target'], 'name', str)
+    check(e['target'], 'id', str)
+    check(e['target'], 'name', str, allow_none=True)
     check(e['target'], 'type', str)
