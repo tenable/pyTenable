@@ -75,7 +75,7 @@ def test_users_create_permissionserror(stdapi):
         stdapi.users.create(guser(), gpass(), 16)
 
 @pytest.mark.vcr()
-def test_users_create(api, user):
+def test_users_create(user):
     '''
     test to create user
     '''
