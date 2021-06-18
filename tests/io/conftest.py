@@ -65,7 +65,7 @@ def policy(request, api):
 @pytest.fixture
 def user(request, api):
     user = api.users.create(
-        '{}@pytenable.io'.format(uuid.uuid4()),
+        '{}@tenable.com'.format(uuid.uuid4()),
         '{}Tt!'.format(uuid.uuid4()),
         64)
     def teardown():
@@ -111,4 +111,7 @@ def scan(request, api):
 
 @pytest.fixture
 def scan_results(request, api):
-    return api.scans.results(SCAN_ID_WITH_RESULTS)
+    scan_list = [id['id'] for id in list(filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    if scan_list:
+        return {'results': api.scans.results(scan_list[0]), 'id': scan_list[0]}
+    raise NotFoundError("Scan not found")
