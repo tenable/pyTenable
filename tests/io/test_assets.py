@@ -207,12 +207,12 @@ def test_assets_move_assets_success(api, network):
     '''
     test to move assets from the specified network to another network
     '''
-    ip = '192.168.254.1'
+    ip_addr = '192.168.254.1'
 
     # import asset
     job_id = api.assets.asset_import('pytest', {
         'fqdn': ['example.py.test'],
-        'ipv4': [ip],
+        'ipv4': [ip_addr],
         'netbios_name': '',
         'mac_address': []
     })
@@ -237,7 +237,7 @@ def test_assets_move_assets_success(api, network):
         '00000000-0000-0000-0000-000000000000', network['uuid'], ['192.168.254.1'])
 
     # remove imported asset
-    api.assets.bulk_delete(('ipv4', 'eq', ip))
+    api.assets.bulk_delete(('ipv4', 'eq', ip_addr))
 
     check(resp['response']['data'], 'asset_count', int)
     assert resp['response']['data']['asset_count'] == 1
@@ -271,18 +271,18 @@ def test_assets_bulk_delete_success(api):
     '''
     test to delete multiple assets
     '''
-    ip = '192.168.254.2'
+    ip_addr = '192.168.254.2'
 
     # import assets
     first_asset = api.assets.asset_import('pytest', {
         'fqdn': ['example1.py.test'],
-        'ipv4': [ip],
+        'ipv4': [ip_addr],
         'netbios_name': '',
         'mac_address': []
     })
     second_asset = api.assets.asset_import('pytest', {
         'fqdn': ['example2.py.test'],
-        'ipv4': [ip],
+        'ipv4': [ip_addr],
         'netbios_name': '',
         'mac_address': []
     })
@@ -298,12 +298,13 @@ def test_assets_bulk_delete_success(api):
         iterate_count = iterate_count + 1
 
         # break iteration
-        if iterate_count == 5 or (len(asset) == 2 and len(set(asset)) == 1 and asset[0] == 'COMPLETE'):
+        if iterate_count == 5 or (
+                len(asset) == 2 and len(set(asset)) == 1 and asset[0] == 'COMPLETE'):
             print("breaking iteration")
             break
 
     # remove imported asset
     time.sleep(45)
-    resp = api.assets.bulk_delete(('ipv4', 'eq', ip))
+    resp = api.assets.bulk_delete(('ipv4', 'eq', ip_addr))
     check(resp['response']['data'], 'asset_count', int)
     assert resp['response']['data']['asset_count'] == 2
