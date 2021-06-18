@@ -8,12 +8,10 @@ def rules():
 
 @pytest.fixture
 def agroup(request, api, vcr, rules):
-    with vcr.use_cassette('test_access_groups_create_success'):
-        group = api.access_groups.create('Example', rules)
+    group = api.access_groups.create('Example', rules)
     def teardown():
         try:
-            with vcr.use_cassette('test_access_groups_delete_success'):
-                api.access_groups.delete(group['id'])
+            api.access_groups.delete(group['id'])
         except APIError:
             pass
     request.addfinalizer(teardown)
@@ -107,11 +105,12 @@ def test_access_groups_create_success(api, agroup):
         check(rule, 'type', str)
         check(rule, 'operator', str)
         check(rule, 'terms', list)
-    check(agroup, 'principals', list)
-    for principal in agroup['principals']:
-        check(principal, 'type', str)
-        check(principal, 'principal_id', 'uuid')
-        check(principal, 'principal_name', str)
+    if 'principals' in agroup and agroup['principals']:
+        check(agroup, 'principals', list)
+        for principal in agroup['principals']:
+            check(principal, 'type', str)
+            check(principal, 'principal_id', 'uuid')
+            check(principal, 'principal_name', str)
     check(agroup, 'created_by_uuid', 'uuid')
     check(agroup, 'updated_by_uuid', 'uuid')
     check(agroup, 'created_by_name', str)
@@ -147,11 +146,12 @@ def test_access_group_edit_success(api, agroup):
         check(rule, 'type', str)
         check(rule, 'operator', str)
         check(rule, 'terms', list)
-    check(g, 'principals', list)
-    for principal in agroup['principals']:
-        check(principal, 'type', str)
-        check(principal, 'principal_id', 'uuid')
-        check(principal, 'principal_name', str)
+    if 'principals' in g and g['principals']:
+        check(g, 'principals', list)
+        for principal in g['principals']:
+            check(principal, 'type', str)
+            check(principal, 'principal_id', 'uuid')
+            check(principal, 'principal_name', str)
     check(g, 'created_by_uuid', 'uuid')
     check(g, 'updated_by_uuid', 'uuid')
     check(g, 'created_by_name', str)
@@ -173,11 +173,12 @@ def test_access_groups_details_success(api, agroup):
         check(rule, 'type', str)
         check(rule, 'operator', str)
         check(rule, 'terms', list)
-    check(g, 'principals', list)
-    for principal in agroup['principals']:
-        check(principal, 'type', str)
-        check(principal, 'principal_id', 'uuid')
-        check(principal, 'principal_name', str)
+    if 'principals' in g and g['principals']:
+        check(g, 'principals', list)
+        for principal in g['principals']:
+            check(principal, 'type', str)
+            check(principal, 'principal_id', 'uuid')
+            check(principal, 'principal_name', str)
     check(g, 'created_by_uuid', 'uuid')
     check(g, 'updated_by_uuid', 'uuid')
     check(g, 'created_by_name', str)
