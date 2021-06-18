@@ -39,7 +39,6 @@ def test_groups_create(group):
     assert isinstance(group, dict)
     check(group, 'uuid', 'uuid')
     check(group, 'name', str)
-    check(group, 'permissions', int)
     check(group, 'id', int)
 
 @pytest.mark.vcr()
@@ -98,7 +97,6 @@ def test_groups_edit_success(api, group):
     assert isinstance(edited, dict)
     check(edited, 'uuid', 'uuid')
     check(edited, 'name', str)
-    check(edited, 'permissions', int)
     check(edited, 'user_count', int)
     check(edited, 'id', int)
 
