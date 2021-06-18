@@ -214,8 +214,11 @@ class AccessGroupsAPI(TIOEndpoint):
             'all_users': self._check('all_users', g['all_users'], bool),
             'all_assets': self._check('all_assets', g['all_assets'], bool),
             'rules': g['rules'],
-            'principals': g['principals']
+            # 'principals': g['principals']
         }
+
+        if 'principals' in g and g['principals']:
+            payload['principals'] = g['principals']
 
         # call the API endpoint and return the response to the caller.
         return self._api.put('access-groups/{}'.format(id),
