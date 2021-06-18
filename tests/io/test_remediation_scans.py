@@ -22,24 +22,19 @@ def scheduled_scan(request, api):
         targets=['http://127.0.0.1:3000'],
         template='advanced'
     )
-    scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
-        template='advanced',
-        targets=['http://127.0.0.1:3000'],
-        schedule_scan=schedule_scan
-    )
+
 
     def teardown():
         try:
-            api.scans.delete(scan['id'])
+            api.scans.delete(remedyscan['id'])
         except NotFoundError:
             pass
     request.addfinalizer(teardown)
-    return scan
+    return remedyscan
 
 
 @pytest.fixture
-def scanned_list(api):
+def remediationscanned_list(api):
     '''
     test to check remediation scan list
     '''
@@ -50,7 +45,7 @@ def scanned_list(api):
 
 
 @pytest.mark.vcr()
-def test_scan_create_scan_document_template_typeerror(api):
+def test_remediationscan_create_scan_document_template_typeerror(api):
     '''
     test to raise exception when type of template param does not match the expected type.
     '''
@@ -58,7 +53,7 @@ def test_scan_create_scan_document_template_typeerror(api):
         getattr(api.remediationscans, 'create_remediation_scan')({'template': 'advanced'})
 
 @pytest.mark.vcr()
-def test_scan_create_scan_document_template_unexpected_value_error(api):
+def test_remediationscan_create_scan_document_template_unexpected_value_error(api):
     '''
     test to raise exception when template param value does not match the choices.
     '''
@@ -66,7 +61,7 @@ def test_scan_create_scan_document_template_unexpected_value_error(api):
         getattr(api.remediationscans, '_create_scan_document')({'template': 'nothing_here'})
 
 @pytest.mark.vcr()
-def test_scan_create_scan_socument_template_pass(api):
+def test_remediationscan_create_scan_socument_template_pass(api):
     '''
     test to create scan document basic template
     '''
@@ -77,7 +72,7 @@ def test_scan_create_scan_socument_template_pass(api):
     assert resp['uuid'] == templates['basic']
 
 @pytest.mark.vcr()
-def test_scan_create_scan_document_policies_id_pass(api):
+def test_remediationscan_create_scan_document_policies_id_pass(api):
     '''
     test to create scan document policy param using id
     '''
@@ -90,7 +85,7 @@ def test_scan_create_scan_document_policies_id_pass(api):
     assert resp['settings']['policy_id'] == policy['id']
 
 @pytest.mark.vcr()
-def test_scan_create_scan_document_policies_name_pass(api):
+def test_remediationscan_create_scan_document_policies_name_pass(api):
     '''
     test to create scan document with policy param using name
     '''
@@ -106,7 +101,7 @@ def test_scan_create_scan_document_policies_name_pass(api):
 #def test_scan_create_scan_document_targets
 
 @pytest.mark.vcr()
-def test_scan_create_scan_document_scanner_unexpectedvalueerror(api):
+def test_remediationscan_create_scan_document_scanner_unexpectedvalueerror(api):
     '''
     test to raise exception when scanner param value does not match the choices.
     '''
@@ -114,7 +109,7 @@ def test_scan_create_scan_document_scanner_unexpectedvalueerror(api):
         getattr(api.remediationscans, '_create_scan_document')({'scanner': 'nothing to see here'})
 
 @pytest.mark.vcr()
-def test_scan_create_scan_document_scanner_uuid_pass(api):
+def test_remediationscan_create_scan_document_scanner_uuid_pass(api):
     '''
     test to create scan document with scanner uuid param
     '''
@@ -127,7 +122,7 @@ def test_scan_create_scan_document_scanner_uuid_pass(api):
     assert resp['settings']['scanner_id'] == scanner['id']
 
 @pytest.mark.vcr()
-def test_scan_create_scan_document_scanner_name_pass(api):
+def test_remediationscan_create_scan_document_scanner_name_pass(api):
     '''
     test to create scan document with scanner name param
     '''
@@ -140,7 +135,7 @@ def test_scan_create_scan_document_scanner_name_pass(api):
     assert resp['settings']['scanner_id'] == scanner['id']
 
 @pytest.mark.vcr()
-def test_scan_create_no_template_pass(scan):
+def test_remediationscan_create_no_template_pass(scan):
     '''
     test to create scan when no template is provided by user
     '''
@@ -167,11 +162,11 @@ def test_scan_create_no_template_pass(scan):
     check(scan, 'uuid', str)
 
 @pytest.mark.vcr()
-def test_scan_create_was_scan_pass(api):
+def test_remediationscan_create(api):
     '''
     test to create was scan
     '''
-    scan = api.scans.create(template='was_scan', name=str(uuid.uuid4()),
+    scan = api.scans.create(template='advanced', name=str(uuid.uuid4()),
         plugins={
             'Authentication & Session': {'status': 'enabled'},
             'Code Execution': {'status': 'enabled'},
@@ -210,7 +205,7 @@ def test_scan_create_was_scan_pass(api):
     check(scan, 'uuid', str)
 
 @pytest.mark.vcr()
-def test_scan_results(scan_results):
+def test_remediationscan_results(scan_results):
     '''
     test to get scan results
     '''
@@ -340,7 +335,7 @@ def test_scan_results(scan_results):
         check(compliance, 'plugin_family', str)
 
 @pytest.mark.vcr()
-def test_scan_status(api, scan):
+def test_remediationscan_status(api, scan):
     '''
     test to check scan status
     '''
@@ -348,14 +343,14 @@ def test_scan_status(api, scan):
     single(status, str)
 
 @pytest.mark.vcr()
-def test_scan_timezones(api):
+def test_remediationscan_timezones(api):
     '''
     test to get list of allowed timezone strings
     '''
     assert isinstance(api.scans.timezones(), list)
 
 @pytest.mark.vcr()
-def test_scan_check_auto_targets_success(api):
+def test_remediationscan_check_auto_targets_success(api):
     '''
     test to evaluates a list of targets and/or tags against
     the scan route configuration of scanner groups
@@ -368,7 +363,7 @@ def test_scan_check_auto_targets_success(api):
     check(resp, 'total_missed_targets', int)
 
 @pytest.mark.vcr()
-def test_scan_check_auto_targets_limit_typeerror(api):
+def test_remediationscan_check_auto_targets_limit_typeerror(api):
     '''
     test to raise exception when type of limit param does not match the expected type.
     '''
@@ -376,7 +371,7 @@ def test_scan_check_auto_targets_limit_typeerror(api):
         api.scans.check_auto_targets('nope', 5, targets=['192.168.16.108'])
 
 @pytest.mark.vcr()
-def test_scan_check_auto_targets_matched_resource_limit_typeerror(api):
+def test_remediationscan_check_auto_targets_matched_resource_limit_typeerror(api):
     '''
     test to raise exception when type of matched_resource_limit param
     does not match the expected type.
@@ -385,7 +380,7 @@ def test_scan_check_auto_targets_matched_resource_limit_typeerror(api):
         api.scans.check_auto_targets(10, 'nope', targets=['127.0.0.1'])
 
 @pytest.mark.vcr()
-def test_scan_check_auto_targets_network_uuid_unexpectedvalueerror(api):
+def test_remediationscan_check_auto_targets_network_uuid_unexpectedvalueerror(api):
     '''
     test to raise exception when network_uuid param value does not match the choices.
     '''
@@ -393,7 +388,7 @@ def test_scan_check_auto_targets_network_uuid_unexpectedvalueerror(api):
         api.scans.check_auto_targets(10, 5, network_uuid='nope', targets=['127.0.0.1'])
 
 @pytest.mark.vcr()
-def test_scan_check_auto_targets_network_uuid_typeerror(api):
+def test_remediationscan_check_auto_targets_network_uuid_typeerror(api):
     '''
     test to raise exception when type of network_uuid param does not match the expected type.
     '''
@@ -401,7 +396,7 @@ def test_scan_check_auto_targets_network_uuid_typeerror(api):
         api.scans.check_auto_targets(10, 5, network_uuid=1, targets=['127.0.0.1'])
 
 @pytest.mark.vcr()
-def test_scan_check_auto_targets_tags_unexpectedvalueerror(api):
+def test_remediationscan_check_auto_targets_tags_unexpectedvalueerror(api):
     '''
     test to raise exception when type of any value in tags param
     does not match the expected type.
@@ -410,7 +405,7 @@ def test_scan_check_auto_targets_tags_unexpectedvalueerror(api):
         api.scans.check_auto_targets(10, 5, tags=['nope'], targets=['127.0.0.1'])
 
 @pytest.mark.vcr()
-def test_scan_check_auto_targets_tags_typeerror(api):
+def test_remediationscan_check_auto_targets_tags_typeerror(api):
     '''
     test to raise exception when type of tags param does not match the expected type.
     '''
@@ -418,7 +413,7 @@ def test_scan_check_auto_targets_tags_typeerror(api):
         api.scans.check_auto_targets(10, 5, tags=1, targets=['127.0.0.1'])
 
 @pytest.mark.vcr()
-def test_scan_check_auto_targets_targets_typeerror(api):
+def test_remediationscan_check_auto_targets_targets_typeerror(api):
     '''
     test to raise exception when type of targets param does not match the expected type.
     '''
