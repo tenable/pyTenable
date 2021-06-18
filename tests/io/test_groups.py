@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from tenable.errors import *
 from ..checker import check, single
 import pytest, uuid
@@ -73,7 +75,6 @@ def test_groups_list(api, group):
         assert isinstance(g, dict)
         check(g, 'id', int)
         check(g, 'name', str)
-        check(g, 'permissions', int)
         check(g, 'user_count', int)
         check(g, 'uuid', 'uuid')
 
@@ -94,16 +95,15 @@ def test_groups_list_users_success(api, group, user):
     assert isinstance(users, list)
     for u in users:
         assert isinstance(u, dict)
-        check(u, 'id', int)
-        check(u, 'username', str)
-        check(u, 'name', str)
         check(u, 'email', str)
-        check(u, 'permissions', int)
-        check(u, 'type', str)
+        check(u, 'enabled', bool)
+        check(u, 'id', int)
         check(u, 'login_fail_count', int)
         check(u, 'login_fail_total', int)
-        check(u, 'last_login_attempt', int)
-        check(u, 'enabled', bool)
+        check(u, 'permissions', int)
+        check(u, 'type', str)
+        check(u, 'user_name', str)
+        check(u, 'username', str)
         check(u, 'uuid_id', 'uuid')
 
 @pytest.mark.vcr()
