@@ -13,7 +13,7 @@ def remedy_scan(request, api):
     test to create remediation scan document advanced template
     '''
     # remediation scan
-    remedyscan =api.remediationscans.create_remediation_scan(
+    remedyscan = api.remediationscans.create_remediation_scan(
         uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
         name='Create Remediation Scan',
         description='This is first remediation scan created',
@@ -21,6 +21,7 @@ def remedy_scan(request, api):
         targets=['http://127.0.0.1:3000'],
         template='advanced'
     )
+
 
     def teardown():
         try:
@@ -252,3 +253,43 @@ def test_remedyscan_check_auto_targets_targets_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.check_auto_targets(10, 5, targets=1)
+
+@pytest.mark.vcr()
+def test_remedyscan_results_datatype(api):
+    '''
+    test remedy scan results
+    '''
+   # scan_results = api.scans.details(remedyscan['id'])
+    result = api.remediationscans.create_remediation_scan(
+        uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
+        name='Create Remediation Scan',
+        description='This is first remediation scan created',
+        scan_time_window=10,
+        targets=['http://127.0.0.1:3000'],
+        template='advanced'
+    )
+    pprint(result)
+    assert isinstance(result, dict)
+    check(result, 'auto_routed', int)
+    check(result, 'container_id', str)
+    check(result, 'creation_date', int)
+    check(result, 'custom_targets', str)
+    check(result, 'default_permissions', int)
+    check(result, 'default_permissions', int)
+    check(result, 'enabled', bool)
+    check(result, 'id', int)
+    check(result, 'include_aggregate', bool)
+    check(result, 'last_modification_date', int)
+    check(result, 'name', str)
+    check(result, 'owner', str)
+    check(result, 'owner_uuid', str)
+    check(result, 'policy_id', int)
+    check(result, 'remediation', int)
+    check(result, 'scan_time_window', int)
+    check(result, 'scanner_uuid', str)
+    check(result, 'shared', int)
+    check(result, 'sms', str)
+    check(result, 'type', str)
+    check(result, 'user_permissions', int)
+
+
