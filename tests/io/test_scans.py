@@ -98,7 +98,7 @@ def test_scan_create_scan_document_scanner_uuid_pass(api):
     test to create scan document with scanner uuid param
     '''
     scanners = api.scanners.allowed_scanners()
-    scanner = scanners[0]
+    scanner = scanners[1]
     resp = getattr(api.scans, '_create_scan_document')({'scanner': scanner['id']})
     assert isinstance(resp, dict)
     check(resp, 'settings', dict)
@@ -111,7 +111,7 @@ def test_scan_create_scan_document_scanner_name_pass(api):
     test to create scan document with scanner name param
     '''
     scanners = api.scanners.allowed_scanners()
-    scanner = scanners[0]
+    scanner = scanners[1]
     resp = getattr(api.scans, '_create_scan_document')({'scanner': scanner['name']})
     assert isinstance(resp, dict)
     check(resp, 'settings', dict)
@@ -900,49 +900,6 @@ def test_scan_create_scheduled_scan_freq_yearly(api):
     assert scan['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
     api.scans.delete(scan['id'])
 
-@pytest.mark.vcr()
-def test_scan_create_was_scan_pass(api):
-    '''
-    test to create was scan
-    '''
-    scan = api.scans.create(template='was_scan', name=str(uuid.uuid4()),
-        plugins={
-            'Authentication & Session': {'status': 'enabled'},
-            'Code Execution': {'status': 'enabled'},
-            'Component Vulnerability': {'status': 'enabled'},
-            'Cross Site Request Forgery': {'status': 'enabled'},
-            'Cross Site Scripting': {'status': 'enabled'},
-            'Data Exposure': {'status': 'enabled'},
-            'File Inclusion': {'status': 'enabled'},
-            'Injection': {'status': 'enabled'},
-            'Web Applications': {'status': 'enabled'},
-            'Web Servers': {'status': 'enabled'},
-        },
-        assessment_mode='Quick',
-        targets=['http://127.0.0.1:3000'],
-        was_timeout='00:05:00'
-    )
-    check(scan, 'creation_date', int)
-    check(scan, 'custom_targets', str)
-    check(scan, 'default_permissions', int)
-    check(scan, 'description', str, allow_none=True)
-    check(scan, 'emails', str, allow_none=True)
-    check(scan, 'enabled', bool)
-    check(scan, 'id', int)
-    check(scan, 'last_modification_date', int)
-    check(scan, 'owner', str)
-    check(scan, 'owner_id', int)
-    check(scan, 'policy_id', int)
-    check(scan, 'name', str)
-    check(scan, 'rrules', str, allow_none=True)
-    check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
-    check(scan, 'shared', int)
-    check(scan, 'starttime', str, allow_none=True)
-    check(scan, 'timezone', str, allow_none=True)
-    check(scan, 'type', str)
-    check(scan, 'user_permissions', int)
-    check(scan, 'uuid', str)
-
 #@pytest.mark.vcr()
 #def test_scan_delete_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
@@ -995,134 +952,138 @@ def test_scan_details_history_it_typeerror(api):
         api.scans.details(1, 'nope')
 
 @pytest.mark.vcr()
-def test_scan_results(scan_results):
+def test_scan_results(api):
     '''
     test to get scan results
     '''
-    assert isinstance(scan_results, dict)
-    result = scan_results
-    check(result, 'info', dict)
-    info = result['info']
-    check(info, 'acls', list, allow_none=True)
-    for acls in result['info']['acls']:
-        check(acls, 'owner', int, allow_none=True)
-        check(acls, 'type', str, allow_none=True)
-        check(acls, 'permissions', int, allow_none=True)
-        check(acls, 'id', int, allow_none=True)
-        check(acls, 'name', str, allow_none=True)
-        check(acls, 'display_name', str, allow_none=True)
-    check(info, 'schedule_uuid', 'scanner-uuid', allow_none=True)
-    check(info, 'edit_allowed', bool)
-    check(info, 'status', str)
-    check(info, 'alt_targets_used', str, allow_none=True)
-    check(info, 'scanner_start', int, allow_none=True)
-    check(info, 'policy', str, allow_none=True)
-    check(info, 'pci-can-upload', bool, allow_none=True)
-    check(info, 'scan_start', int, allow_none=True)
-    check(info, 'hasaudittrail', bool)
-    check(info, 'user_permissions', int)
-    check(info, 'folder_id', int, allow_none=True)
-    check(info, 'no_target', bool)
-    check(info, 'owner', str)
-    check(info, 'targets', str, allow_none=True)
-    check(info, 'control', bool)
-    check(info, 'object_id', int)
-    check(info, 'scanner_name', str, allow_none=True)
-    check(info, 'uuid', str)
-    check(info, 'haskb', bool)
-    check(info, 'scanner_end', int, allow_none=True)
-    check(info, 'scan_end', int)
-    check(info, 'hostcount', int)
-    check(info, 'scan_type', str, allow_none=True)
-    check(info, 'name', str)
+    scan_list = [id['id'] for id in list(filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    if scan_list:
+        scan_results = api.scans.results(scan_list[0])
+        assert isinstance(scan_results, dict)
+        result = scan_results
+        check(result, 'info', dict)
+        info = result['info']
+        check(info, 'acls', list, allow_none=True)
+        for acls in result['info']['acls']:
+            check(acls, 'owner', int, allow_none=True)
+            check(acls, 'type', str, allow_none=True)
+            check(acls, 'permissions', int, allow_none=True)
+            check(acls, 'id', int, allow_none=True)
+            check(acls, 'name', str, allow_none=True)
+            check(acls, 'display_name', str, allow_none=True)
+        check(info, 'schedule_uuid', str, allow_none=True)
+        check(info, 'edit_allowed', bool)
+        check(info, 'status', str)
+        check(info, 'alt_targets_used', bool, allow_none=True)
+        check(info, 'scanner_start', int, allow_none=True)
+        check(info, 'policy', str, allow_none=True)
+        check(info, 'pci-can-upload', bool, allow_none=True)
+        check(info, 'scan_start', int, allow_none=True)
+        check(info, 'hasaudittrail', bool)
+        check(info, 'user_permissions', int)
+        check(info, 'folder_id', int, allow_none=True)
+        check(info, 'no_target', bool)
+        check(info, 'owner', str)
+        check(info, 'targets', str, allow_none=True)
+        check(info, 'control', bool)
+        check(info, 'object_id', int)
+        check(info, 'scanner_name', str, allow_none=True)
+        check(info, 'uuid', str)
+        check(info, 'haskb', bool)
+        check(info, 'scanner_end', int, allow_none=True)
+        check(info, 'scan_end', int)
+        check(info, 'hostcount', int)
+        check(info, 'scan_type', str, allow_none=True)
+        check(info, 'name', str)
 
-    check(result, 'comphosts', list)
-    for comphosts in result['comphosts']:
-        check(comphosts, 'totalchecksconsidered', int)
-        check(comphosts, 'numchecksconsidered', int)
-        check(comphosts, 'scanprogresstotal', int)
-        check(comphosts, 'scanprogresscurrent', int)
-        check(comphosts, 'host_index', int)
-        check(comphosts, 'score', int)
-        check(comphosts, 'severitycount', dict)
-        check(comphosts, 'progress', str)
-        check(comphosts, 'critical', int)
-        check(comphosts, 'high', int)
-        check(comphosts, 'medium', int)
-        check(comphosts, 'low', int)
-        check(comphosts, 'info', int)
-        check(comphosts, 'host_id', int)
-        check(comphosts, 'hostname', str)
+        check(result, 'comphosts', list)
+        if result['comphosts']:
+            for comphosts in result['comphosts']:
+                check(comphosts, 'totalchecksconsidered', int)
+                check(comphosts, 'numchecksconsidered', int)
+                check(comphosts, 'scanprogresstotal', int)
+                check(comphosts, 'scanprogresscurrent', int)
+                check(comphosts, 'host_index', int)
+                check(comphosts, 'score', int)
+                check(comphosts, 'severitycount', dict)
+                check(comphosts, 'progress', str)
+                check(comphosts, 'critical', int)
+                check(comphosts, 'high', int)
+                check(comphosts, 'medium', int)
+                check(comphosts, 'low', int)
+                check(comphosts, 'info', int)
+                check(comphosts, 'host_id', int)
+                check(comphosts, 'hostname', str)
 
-    check(result, 'hosts', list)
-    for hosts in result['hosts']:
-        check(hosts, 'totalchecksconsidered', int)
-        check(hosts, 'numchecksconsidered', int)
-        check(hosts, 'scanprogresstotal', int)
-        check(hosts, 'scanprogresscurrent', int)
-        check(hosts, 'host_index', int)
-        check(hosts, 'score', int)
-        check(hosts, 'severitycount', dict)
-        check(hosts, 'progress', str)
-        check(hosts, 'critical', int)
-        check(hosts, 'high', int)
-        check(hosts, 'medium', int)
-        check(hosts, 'low', int)
-        check(hosts, 'info', int)
-        check(hosts, 'host_id', int)
-        check(hosts, 'hostname', str)
+        check(result, 'hosts', list)
+        for hosts in result['hosts']:
+            check(hosts, 'totalchecksconsidered', int)
+            check(hosts, 'numchecksconsidered', int)
+            check(hosts, 'scanprogresstotal', int)
+            check(hosts, 'scanprogresscurrent', int)
+            check(hosts, 'host_index', int)
+            check(hosts, 'score', int)
+            check(hosts, 'severitycount', dict)
+            check(hosts, 'progress', str)
+            check(hosts, 'critical', int)
+            check(hosts, 'high', int)
+            check(hosts, 'medium', int)
+            check(hosts, 'low', int)
+            check(hosts, 'info', int)
+            check(hosts, 'host_id', int)
+            check(hosts, 'hostname', str)
 
-    check(result, 'notes', list)
-    for notes in result['notes']:
-        check(notes, 'title', str)
-        check(notes, 'message', str)
-        check(notes, 'severity', int)
+        check(result, 'notes', list)
+        for notes in result['notes']:
+            check(notes, 'title', str)
+            check(notes, 'message', str)
+            check(notes, 'severity', int)
 
-    check(result, 'remediations', dict)
-    check(result['remediations'], 'num_hosts', int)
-    check(result['remediations'], 'num_cves', int)
-    check(result['remediations'], 'num_impacted_hosts', int)
-    check(result['remediations'], 'num_remediated_cves', int)
-    check(result['remediations'], 'remediations', list)
-    for remediation in result['remediations']['remediations']:
-        check(remediation, 'value', str)
-        check(remediation, 'remediation', str)
-        check(remediation, 'hosts', int)
-        check(remediation, 'vulns', int)
+        check(result, 'remediations', dict)
+        check(result['remediations'], 'num_hosts', int)
+        check(result['remediations'], 'num_cves', int)
+        check(result['remediations'], 'num_impacted_hosts', int)
+        check(result['remediations'], 'num_remediated_cves', int)
+        check(result['remediations'], 'remediations', list)
+        for remediation in result['remediations']['remediations']:
+            check(remediation, 'value', str)
+            check(remediation, 'remediation', str)
+            check(remediation, 'hosts', int)
+            check(remediation, 'vulns', int)
 
-    check(result, 'vulnerabilities', list)
-    for vulnerability in result['vulnerabilities']:
-        check(vulnerability, 'count', int)
-        check(vulnerability, 'plugin_name', str)
-        check(vulnerability, 'vuln_index', int)
-        check(vulnerability, 'severity', int)
-        check(vulnerability, 'plugin_id', int)
-        # Mentioned in the docs, however doesn't appear to show in testing
-        #check(vulnerability, 'severity_index', int)
-        check(vulnerability, 'plugin_family', str)
+        check(result, 'vulnerabilities', list)
+        for vulnerability in result['vulnerabilities']:
+            check(vulnerability, 'count', int)
+            check(vulnerability, 'plugin_name', str)
+            check(vulnerability, 'vuln_index', int)
+            check(vulnerability, 'severity', int)
+            check(vulnerability, 'plugin_id', int)
+            # Mentioned in the docs, however doesn't appear to show in testing
+            # check(vulnerability, 'severity_index', int)
+            check(vulnerability, 'plugin_family', str)
 
-    check(result, 'history', list)
-    for history in result['history']:
-        check(history, 'alt_targets_used', bool)
-        check(history, 'scheduler', int)
-        check(history, 'status', str)
-        check(history, 'type', str, allow_none=True)
-        check(history, 'uuid', str)
-        check(history, 'last_modification_date', int)
-        check(history, 'creation_date', int)
-        check(history, 'owner_id', int)
-        check(history, 'history_id', int)
+        check(result, 'history', list)
+        for history in result['history']:
+            check(history, 'alt_targets_used', bool)
+            check(history, 'scheduler', int)
+            check(history, 'status', str)
+            check(history, 'type', str, allow_none=True)
+            check(history, 'uuid', str)
+            check(history, 'last_modification_date', int)
+            check(history, 'creation_date', int)
+            check(history, 'owner_id', int)
+            check(history, 'history_id', int)
 
-    check(result, 'compliance', list)
-    for compliance in result['compliance']:
-        check(compliance, 'count', int)
-        check(compliance, 'plugin_name', str)
-        check(compliance, 'vuln_index', int)
-        check(compliance, 'severity', int)
-        check(compliance, 'plugin_id', int)
-        # Mentioned in the docs, however doesn't appear to show in testing
-        #check(compliance, 'severity_index', int)
-        check(compliance, 'plugin_family', str)
+        check(result, 'compliance', list)
+        for compliance in result['compliance']:
+            check(compliance, 'count', int)
+            check(compliance, 'plugin_name', str)
+            check(compliance, 'vuln_index', int)
+            check(compliance, 'severity', int)
+            check(compliance, 'plugin_id', int)
+            # Mentioned in the docs, however doesn't appear to show in testing
+            # check(compliance, 'severity_index', int)
+            check(compliance, 'plugin_family', str)
 
 #@pytest.mark.vcr()
 #def test_scan_export_scan_id_typeerror(api):
@@ -1202,42 +1163,39 @@ def test_scan_export_was_typeerror(api):
         api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='bad-value')
 
 @pytest.mark.vcr()
-def test_scan_export_was(api):
-    '''
-    test to export was scan
-    '''
-    api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='web-app')
-
-@pytest.mark.vcr()
 def test_scan_export_bytesio(api):
     '''
     test to export scan
     '''
-    fobj = api.scans.export(SCAN_ID_WITH_RESULTS)
-    assert isinstance(fobj, BytesIO)
+    scan_list = [id['id'] for id in list(filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    if scan_list:
+        fobj = api.scans.export(scan_list[0])
+        assert isinstance(fobj, BytesIO)
 
-    counter = 0
-    for _ in NessusReportv2(fobj):
-        counter += 1
-        if counter > 10:
-            break
+        counter = 0
+        for _ in NessusReportv2(fobj):
+            counter += 1
+            if counter > 10:
+                break
 
 @pytest.mark.vcr()
 def test_scan_export_file_object(api):
     '''
     test to export scan file object
     '''
-    filename = '{}.nessus'.format(uuid.uuid4())
-    with open(filename, 'wb') as fobj:
-        api.scans.export(SCAN_ID_WITH_RESULTS, fobj=fobj)
+    scan_list = [id['id'] for id in list(filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    if scan_list:
+        filename = '{}.nessus'.format(uuid.uuid4())
+        with open(filename, 'wb') as fobj:
+            api.scans.export(scan_list[0], fobj=fobj)
 
-    with open(filename, 'rb') as fobj:
-        counter = 0
-        for _ in NessusReportv2(fobj):
-            counter += 1
-            if counter > 10:
-                break
-    os.remove(filename)
+        with open(filename, 'rb') as fobj:
+            counter = 0
+            for _ in NessusReportv2(fobj):
+                counter += 1
+                if counter > 10:
+                    break
+        os.remove(filename)
 
 #@pytest.mark.vcr()
 #def test_scan_host_details_scan_id_typeerror(api):
@@ -1274,13 +1232,13 @@ def test_scan_host_details(api, scan_results):
     test to retrieve the host details from a specific scan
     '''
     host = api.scans.host_details(
-        SCAN_ID_WITH_RESULTS, scan_results['hosts'][0]['asset_id'])
+        scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
     assert isinstance(host, dict)
     check(host, 'info', dict)
     check(host['info'], 'host-fqdn', str, allow_none=True)
     check(host['info'], 'host_end', str)
     check(host['info'], 'host_start', str)
-    check(host['info'], 'operating-system', list)
+    check(host['info'], 'operating-system', list, allow_none=True)
     check(host['info'], 'host-ip', str)
     check(host['info'], 'mac-address', str, allow_none=True)
 
@@ -1327,8 +1285,10 @@ def test_scan_import_scan(api):
     '''
     test to import scan
     '''
-    fobj = api.scans.export(SCAN_ID_WITH_RESULTS)
-    api.scans.import_scan(fobj)
+    scan_list = [id['id'] for id in list(filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    if scan_list:
+        fobj = api.scans.export(scan_list[0])
+        api.scans.import_scan(fobj)
 
 #@pytest.mark.vcr()
 #def test_scan_launch_scanid_typeerror(api):
@@ -1452,9 +1412,9 @@ def test_scan_plugin_output(api, scan_results):
     test to get scan plugin output
     '''
     host = api.scans.host_details(
-        SCAN_ID_WITH_RESULTS, scan_results['hosts'][0]['asset_id'])
+        scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
     output = api.scans.plugin_output(
-        SCAN_ID_WITH_RESULTS,
+        scan_results['id'],
         host['vulnerabilities'][0]['host_id'],
         host['vulnerabilities'][0]['plugin_id'])
     output_info_pdesc = output['info']['plugindescription']
