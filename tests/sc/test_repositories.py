@@ -182,7 +182,7 @@ def test_repositories_constructor_success(sc):
 
 
 @pytest.mark.vcr()
-def test_repositories_create_success(admin, repository):
+def test_repositories_create_success(repository):
     assert isinstance(repository, dict)
     check(repository, 'createdTime', str)
     check(repository, 'dataFormat', str)
@@ -442,7 +442,7 @@ def test_repositories_asset_intersections_ip_typeerror(sc):
 @pytest.mark.vcr()
 def test_repositories_asset_intersections_success(admin, repository):
     asset_lists = admin.repositories.asset_intersections(
-        int(repository['id']), ip='192.168.0.1')
+        int(repository['id']), ip_address='192.168.0.1')
     assert isinstance(asset_lists, list)
     for asset_list in asset_lists:
         check(asset_list, 'description', str)
