@@ -265,7 +265,7 @@ def test_remedyscan_results_datatype(api):
 		targets=['http://127.0.0.1'],
 		template='advanced'
 	)
-	 assert isinstance(result, dict)
+	assert isinstance(result, dict)
 	check(result, 'auto_routed', int)
 	check(result, 'container_id', str)
 	check(result, 'creation_date', int)
