@@ -79,8 +79,8 @@ interactions:
       - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.0
         (pyTenable/1.3.0; Python/3.8.6; Windows/AMD64)
       X-APIKeys:
-      - accessKey=d51363263a2c3c8c99e3aaf8e225655102f2080ca14879ec4f6d37281b8d5d03;
-        secretKey=d0d9c5c103bfe36865f840e5c708667c4d2f34a11fcdeba89aca8e23365dddc8;
+      - accessKey=TIO_ACCESS_KEY;
+        secretKey=TIO_SECRET_KEY;
     method: GET
     uri: https://cloud.tenable.com/policies
   response:
@@ -146,8 +146,8 @@ interactions:
       - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.0
         (pyTenable/1.3.0; Python/3.8.6; Windows/AMD64)
       X-APIKeys:
-      - accessKey=d51363263a2c3c8c99e3aaf8e225655102f2080ca14879ec4f6d37281b8d5d03;
-        secretKey=d0d9c5c103bfe36865f840e5c708667c4d2f34a11fcdeba89aca8e23365dddc8;
+      - accessKey=TIO_ACCESS_KEY;
+        secretKey=TIO_SECRET_KEY;
     method: GET
     uri: https://cloud.tenable.com/editor/scan/policy/154
   response:
