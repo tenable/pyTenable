@@ -18,18 +18,16 @@ def vcr_config():
 @pytest.fixture
 def api():
     return TenableIO(
-        os.getenv('TIO_TEST_ADMIN_ACCESS', '143b6a78cd48c0d2e6be31514b2fd2c0873086b2033e0bda872c347a51abb316'),
-        os.getenv('TIO_TEST_ADMIN_SECRET', '49fcc2e1a84273741a5c2c319a5f2cad9f68796df448c0446c747c7043d5d0f1'),
-        url='cloud.tenable.com',
+        os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
+        os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',
         product='pytenable-automated-testing')
 
 @pytest.fixture
 def stdapi():
     return TenableIO(
-        os.getenv('TIO_TEST_STD_ACCESS', '143b6a78cd48c0d2e6be31514b2fd2c0873086b2033e0bda872c347a51abb316'),
-        os.getenv('TIO_TEST_STD_SECRET', '49fcc2e1a84273741a5c2c319a5f2cad9f68796df448c0446c747c7043d5d0f1'),
-        url='cloud.tenable.com',
+        os.getenv('TIO_TEST_STD_ACCESS', 'ffffffffffffffffffffffffffffffff'),
+        os.getenv('TIO_TEST_STD_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',
         product='pytenable-automated-testing')
 
