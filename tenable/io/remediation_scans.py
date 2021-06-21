@@ -51,7 +51,7 @@ class RemediationScansAPI(TIOEndpoint):
     schedule_const = IOConstants.ScanScheduleConst
     case_const = IOConstants.CaseConst
 
-    def list_remediation_scan(self, limit, offset, sortval):
+    def list_remediation_scan(self, limit=50, offset=0, sortval='scan_creation_date:desc'):
         '''
         Retrieve the list of Remediation scans.
 
