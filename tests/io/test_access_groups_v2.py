@@ -5,6 +5,7 @@ import uuid
 import pytest
 from tenable.errors import UnexpectedValueError, APIError
 from tests.checker import check
+from tests.io.test_groups import group
 
 @pytest.fixture(name='rules')
 def fixture_rules():
@@ -13,6 +14,7 @@ def fixture_rules():
     '''
     return [('ipv4', 'eq', ['192.168.0.0/24'])]
 
+
 @pytest.fixture(name='agroup')
 def fixture_agroup(request, api, vcr, rules):
     '''
@@ -20,6 +22,7 @@ def fixture_agroup(request, api, vcr, rules):
     '''
     with vcr.use_cassette('test_access_groups_v2_create_success'):
         group = api.access_groups_v2.create('Example', rules)
+
     def teardown():
         '''
         cleanup function to delete access_group
@@ -29,8 +32,10 @@ def fixture_agroup(request, api, vcr, rules):
                 api.access_groups_v2.delete(group['id'])
         except APIError:
             pass
+
     request.addfinalizer(teardown)
     return group
+
 
 def test_access_group_v2_principal_constructor_type_typeerror(api):
     '''
@@ -39,12 +44,14 @@ def test_access_group_v2_principal_constructor_type_typeerror(api):
     with pytest.raises(TypeError):
         getattr(api.access_groups_v2, '_principal_constructor')([(1, 'something')])
 
+
 def test_access_group_v2_principal_constructor_type_unexpectedvalueerror(api):
     '''
     test to raise exception when type param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
         getattr(api.access_groups_v2, '_principal_constructor')([('something', 'something')])
+
 
 def test_access_group_v2_principal_constructor_id_typeerror(api):
     '''
@@ -53,12 +60,14 @@ def test_access_group_v2_principal_constructor_id_typeerror(api):
     with pytest.raises(TypeError):
         getattr(api.access_groups_v2, '_principal_constructor')([('user', 1)])
 
+
 def test_access_group_v2_principal_constructor_permission_typeerror(api):
     '''
     test to raise exception when type of permissions param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         getattr(api.access_groups_v2, '_principal_constructor')([('user', str(uuid.uuid4()), 1)])
+
 
 def test_access_group_v2_principal_constructor_permission_unexpectedvalueerror(api):
     '''
@@ -67,6 +76,7 @@ def test_access_group_v2_principal_constructor_permission_unexpectedvalueerror(a
     with pytest.raises(UnexpectedValueError):
         getattr(api.access_groups_v2, '_principal_constructor')([
             ('user', str(uuid.uuid4()), ['nope'])])
+
 
 def test_access_group_v2_principal_constructor_dict_type_typeerror(api):
     '''
@@ -79,6 +89,7 @@ def test_access_group_v2_principal_constructor_dict_type_typeerror(api):
             'principal_name': 'test@test.com'
         }])
 
+
 def test_access_group_v2_principal_constructor_dict_type_unexpectedvalueerror(api):
     '''
     test to raise exception when type param value does not match the choices.
@@ -89,6 +100,7 @@ def test_access_group_v2_principal_constructor_dict_type_unexpectedvalueerror(ap
             'principal_id': str(uuid.uuid4()),
             'principal_name': 'test@test.com'
         }])
+
 
 def test_access_group_v2_principal_constructor_dict_id_typeerror(api):
     '''
@@ -101,6 +113,7 @@ def test_access_group_v2_principal_constructor_dict_id_typeerror(api):
             'principal_name': 'test@test.com'
         }])
 
+
 def test_access_group_v2_principal_constructor_dict_name_typeerror(api):
     '''
     test to raise exception when type of name param does not match the expected type.
@@ -111,6 +124,7 @@ def test_access_group_v2_principal_constructor_dict_name_typeerror(api):
             'principal_id': str(uuid.uuid4()),
             'principal_name': 1
         }])
+
 
 def test_access_group_v2_principal_constructor_dict_permissions_typeerror(api):
     '''
@@ -123,6 +137,7 @@ def test_access_group_v2_principal_constructor_dict_permissions_typeerror(api):
             'permissions': 1
         }])
 
+
 def test_access_group_v2_principal_constructor_dict_permissions_unexpectedvalueerror(api):
     '''
     test to raise exception when permissions param value does not match the choices.
@@ -133,6 +148,7 @@ def test_access_group_v2_principal_constructor_dict_permissions_unexpectedvaluee
             'principal_id': str(uuid.uuid4()),
             'permissions': ['Nothing']
         }])
+
 
 def test_access_group_v2_principal_constructor_tuple_pass(api):
     '''
@@ -147,6 +163,7 @@ def test_access_group_v2_principal_constructor_tuple_pass(api):
         ('user', user_id)
     ]) == [{'permissions': ['CAN_VIEW'], 'type': 'user', 'principal_id': user_id}]
 
+
 def test_access_group_v2_principal_constructor_dict_pass(api):
     '''
     test to parse dict type principals
@@ -160,6 +177,7 @@ def test_access_group_v2_principal_constructor_dict_pass(api):
         {'type': 'user', 'principal_id': user_id}
     ]) == [{'permissions': ['CAN_VIEW'], 'type': 'user', 'principal_id': user_id}]
 
+
 def test_access_group_v2_list_clean_typeerror(api):
     '''
     test to raise exception when type of items param does not match the expected type.
@@ -167,12 +185,14 @@ def test_access_group_v2_list_clean_typeerror(api):
     with pytest.raises(TypeError):
         getattr(api.access_groups_v2, '_list_clean')(items='nope')
 
+
 def test_access_group_v2_list_clean_pass(api):
     '''
     test to remove duplicates from list
     '''
     resp = getattr(api.access_groups_v2, '_list_clean')(['one', 'two', 'one'])
     assert sorted(resp) == ['one', 'two']
+
 
 @pytest.mark.vcr()
 def test_access_groups_v2_create_name_typeerror(api, rules):
@@ -182,6 +202,7 @@ def test_access_groups_v2_create_name_typeerror(api, rules):
     with pytest.raises(TypeError):
         api.access_groups_v2.create(1, rules)
 
+
 @pytest.mark.vcr()
 def test_access_groups_v2_create_all_users_typeerror(api, rules):
     '''
@@ -189,6 +210,7 @@ def test_access_groups_v2_create_all_users_typeerror(api, rules):
     '''
     with pytest.raises(TypeError):
         api.access_groups_v2.create('Test', rules, all_users='nope')
+
 
 @pytest.mark.vcr()
 def test_access_groups_v2_create_access_group_type_typeerror(api, rules):
@@ -198,6 +220,7 @@ def test_access_groups_v2_create_access_group_type_typeerror(api, rules):
     with pytest.raises(TypeError):
         api.access_groups_v2.create('Test', rules, access_group_type=1)
 
+
 @pytest.mark.vcr()
 def test_access_groups_v2_create_access_group_type_unexpectedvalueerror(api, rules):
     '''
@@ -206,6 +229,7 @@ def test_access_groups_v2_create_access_group_type_unexpectedvalueerror(api, rul
     with pytest.raises(UnexpectedValueError):
         api.access_groups_v2.create('Test', rules, access_group_type='nope')
 
+
 @pytest.mark.vcr()
 def test_access_groups_v2_create_principals_typeerror(api, rules):
     '''
@@ -213,6 +237,7 @@ def test_access_groups_v2_create_principals_typeerror(api, rules):
     '''
     with pytest.raises(TypeError):
         api.access_groups_v2.create('Test', rules, principals='nope')
+
 
 @pytest.mark.vcr()
 def test_access_groups_v2_create_success(agroup):
@@ -245,12 +270,14 @@ def test_access_groups_v2_create_success(agroup):
     check(agroup, 'updated_by_name', str)
     check(agroup, 'processing_percent_complete', int)
 
+
 @pytest.mark.vcr()
 def test_access_groups_v2_delete_success(api, agroup):
     '''
     test to delete access group
     '''
     api.access_groups_v2.delete(agroup['id'])
+
 
 @pytest.mark.vcr()
 def test_access_group_v2_edit_id_typeerror(api):
@@ -260,6 +287,7 @@ def test_access_group_v2_edit_id_typeerror(api):
     with pytest.raises(TypeError):
         api.access_groups_v2.edit(1)
 
+
 @pytest.mark.vcr()
 def test_access_group_v2_edit_id_unexpectedvalueerror(api):
     '''
@@ -267,6 +295,7 @@ def test_access_group_v2_edit_id_unexpectedvalueerror(api):
     '''
     with pytest.raises(UnexpectedValueError):
         api.access_groups_v2.edit('something')
+
 
 @pytest.mark.vcr()
 def test_access_group_v2_edit_success(api, agroup):
@@ -299,6 +328,7 @@ def test_access_group_v2_edit_success(api, agroup):
     check(resp, 'created_by_name', str)
     check(resp, 'updated_by_name', str)
     check(resp, 'processing_percent_complete', int)
+
 
 @pytest.mark.vcr()
 def test_access_groups_v2_details_success(api):
@@ -334,6 +364,7 @@ def test_access_groups_v2_details_success(api):
     check(resp, 'processing_percent_complete', int)
     api.access_groups_v2.delete(group['id'])
 
+
 @pytest.mark.vcr()
 def test_access_groups_v2_list_offset_typeerror(api):
     '''
@@ -341,6 +372,7 @@ def test_access_groups_v2_list_offset_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.access_groups_v2.list(offset='nope')
+
 
 @pytest.mark.vcr()
 def test_access_groups_v2_list_limit_typeerror(api):
@@ -350,6 +382,7 @@ def test_access_groups_v2_list_limit_typeerror(api):
     with pytest.raises(TypeError):
         api.access_groups_v2.list(limit='nope')
 
+
 @pytest.mark.vcr()
 def test_access_groups_v2_list_sort_field_typeerror(api):
     '''
@@ -357,6 +390,7 @@ def test_access_groups_v2_list_sort_field_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.access_groups_v2.list(sort=((1, 'asc'),))
+
 
 @pytest.mark.vcr()
 def test_access_groups_v2_list_sort_direction_typeerror(api):
@@ -367,6 +401,7 @@ def test_access_groups_v2_list_sort_direction_typeerror(api):
     with pytest.raises(TypeError):
         api.access_groups_v2.list(sort=(('uuid', 1),))
 
+
 @pytest.mark.vcr()
 def test_access_groups_v2_list_sort_direction_unexpectedvalue(api):
     '''
@@ -374,6 +409,7 @@ def test_access_groups_v2_list_sort_direction_unexpectedvalue(api):
     '''
     with pytest.raises(UnexpectedValueError):
         api.access_groups_v2.list(sort=(('uuid', 'nope'),))
+
 
 @pytest.mark.vcr()
 def test_access_groups_v2_list_filter_name_typeerror(api):
@@ -383,6 +419,7 @@ def test_access_groups_v2_list_filter_name_typeerror(api):
     with pytest.raises(TypeError):
         api.access_groups_v2.list((1, 'match', 'win'))
 
+
 @pytest.mark.vcr()
 def test_access_groups_v2_list_filter_operator_typeerror(api):
     '''
@@ -390,6 +427,7 @@ def test_access_groups_v2_list_filter_operator_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.access_groups_v2.list(('name', 1, 'win'))
+
 
 @pytest.mark.vcr()
 def test_access_groups_v2_list_filter_value_typeerror(api):
@@ -399,6 +437,7 @@ def test_access_groups_v2_list_filter_value_typeerror(api):
     with pytest.raises(TypeError):
         api.access_groups_v2.list(('name', 'match', 1))
 
+
 @pytest.mark.vcr()
 def test_access_groups_v2_list_filter_type_typeerror(api):
     '''
@@ -406,6 +445,7 @@ def test_access_groups_v2_list_filter_type_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.access_groups_v2.list(filter_type=1)
+
 
 @pytest.mark.vcr()
 def test_access_groups_v2_list_wildcard_typeerror(api):
@@ -415,6 +455,7 @@ def test_access_groups_v2_list_wildcard_typeerror(api):
     with pytest.raises(TypeError):
         api.access_groups_v2.list(wildcard=1)
 
+
 @pytest.mark.vcr()
 def test_access_groups_v2_list_wildcard_fields_typeerror(api):
     '''
@@ -422,6 +463,7 @@ def test_access_groups_v2_list_wildcard_fields_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.access_groups_v2.list(wildcard_fields='nope')
+
 
 @pytest.mark.vcr()
 def test_access_groups_v2_list(api):
@@ -441,9 +483,40 @@ def test_access_groups_v2_list(api):
         check(group, 'version', int)
         check(group, 'status', str)
         check(group, 'access_group_type', str)
-        #check(group, 'created_by_uuid', 'uuid') # Will not return for default group
-        #check(group, 'updated_by_uuid', 'uuid') # Will not return for default group
+        # check(group, 'created_by_uuid', 'uuid') # Will not return for default group
+        # check(group, 'updated_by_uuid', 'uuid') # Will not return for default group
         check(group, 'created_by_name', str)
         check(group, 'updated_by_name', str)
         check(group, 'processing_percent_complete', int)
+    assert count == access_groups.total
+
+
+
+
+@pytest.mark.vcr()
+def test_access_groups_v2_list_fields(api):
+    '''
+    test to get the list of access groups v2 and to verify their types
+    '''
+    count = 0
+    access_groups = api.access_groups_v2.list(filter_type='or',
+                                           limit=45,
+                                           offset=2,
+                                           wildcard='match',
+                                           wildcard_fields=['name'])
+    for i in access_groups:
+        count += 1
+        assert isinstance(i, dict)
+        check(i, 'created_at', 'datetime')
+        check(i, 'updated_at', 'datetime')
+        check(i, 'id', 'uuid')
+        check(i, 'name', str)
+        check(i, 'all_assets', bool)
+        check(i, 'all_users', bool)
+        # check(i, 'created_by_uuid', 'uuid') # Will not return for default group
+        check(i, 'updated_by_uuid', 'uuid')
+        check(i, 'created_by_name', str)
+        check(i, 'updated_by_name', str)
+        check(i, 'processing_percent_complete', int)
+        check(i, 'status', str)
     assert count == access_groups.total
