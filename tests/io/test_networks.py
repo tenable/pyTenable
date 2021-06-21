@@ -422,3 +422,47 @@ def test_network_asset_count_network_success(api):
     assert isinstance(resp, dict)
     check(resp, 'numAssetsTotal', int)
     check(resp, 'numAssetsNotSeen', int)
+
+@pytest.mark.vcr()
+def test_networks_assign_multiple_scanners_success(api, network, scanner):
+    '''
+    test to pass multiple scanners
+    '''
+    scanner = api.networks.list_scanners('00000000-0000-0000-0000-000000000000')[0]
+    api.networks.assign_scanners(network['uuid'], scanner['uuid'], scanner['uuid'])
+
+
+@pytest.mark.vcr()
+def test_networks_unexpectedvalueerror(api, network):
+    '''
+    test to raise exception when scanner_uuids are not passed
+
+    '''
+    with pytest.raises(UnexpectedValueError):
+        api.networks.assign_scanners(network['uuid'])
+
+@pytest.mark.vcr()
+def test_networks_list_fileds(api):
+    '''
+    test to get list of configured networks.
+    '''
+    count = 0
+    networks = api.networks.list(filter_type='or',
+                                 include_deleted=True,
+                                 offset=2,
+                                 limit=50,
+                                 wildcard='match',
+                                 wildcard_fields=['name'])
+    for network in networks:
+        assert isinstance(network, dict)
+        check(network, 'owner_uuid', 'uuid')
+        check(network, 'created', int)
+        check(network, 'modified', int)
+        check(network, 'scanner_count', int)
+        check(network, 'uuid', 'uuid')
+        check(network, 'name', str)
+        check(network, 'is_default', bool)
+        check(network, 'created_by', 'uuid')
+        check(network, 'modified_by', 'uuid')
+        check(network, 'created_in_seconds', int)
+        check(network, 'modified_in_seconds', int)

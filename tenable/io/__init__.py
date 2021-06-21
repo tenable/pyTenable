@@ -228,6 +228,10 @@ class TenableIO(APISession):
         return PluginsAPI(self)
 
     @property
+    def pluginsIterator(self):
+        return plugins.PluginIterator(self)
+
+    @property
     def policies(self):
         return PoliciesAPI(self)
 
