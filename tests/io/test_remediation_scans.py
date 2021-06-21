@@ -57,7 +57,7 @@ def test_remedyscan_create_scan_document_template_unexpected_value_error(api):
 		getattr(api.remediationscans, '_create_scan_document')({'template': 'nothing_here'})
 
 @pytest.mark.vcr()
-def test_remedyscan_create_scan_socument_template_pass(api):
+def test_remedyscan_create_scan_document_template_pass(api):
 	'''
 	test to create scan document basic template
 	'''
