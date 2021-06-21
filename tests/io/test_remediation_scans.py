@@ -145,33 +145,6 @@ def test_remedyscan_create_scan_document_scanner_name_pass(api):
     check(resp['settings'], 'scanner_id', str)
     assert resp['settings']['scanner_id'] == scanner['id']
 
-@pytest.mark.vcr()
-@vcr.use_cassette('cassettes/test_notemplate_pass.yaml', record_mode='all')
-def test_remedyscan_create_no_template_pass(scan):
-    '''
-    test to create scan when no template is provided by user
-    '''
-    assert isinstance(scan, dict)
-    check(scan, 'creation_date', int)
-    check(scan, 'custom_targets', str)
-    check(scan, 'default_permissions', int)
-    check(scan, 'description', str, allow_none=True)
-    check(scan, 'emails', str, allow_none=True)
-    check(scan, 'enabled', bool)
-    check(scan, 'id', int)
-    check(scan, 'last_modification_date', int)
-    check(scan, 'owner', str)
-    check(scan, 'owner_id', int)
-    check(scan, 'policy_id', int)
-    check(scan, 'name', str)
-    check(scan, 'rrules', str, allow_none=True)
-    check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
-    check(scan, 'shared', int)
-    check(scan, 'starttime', str, allow_none=True)
-    check(scan, 'timezone', str, allow_none=True)
-    check(scan, 'type', str)
-    check(scan, 'user_permissions', int)
-    check(scan, 'uuid', str)
 
 @pytest.mark.vcr()
 @vcr.use_cassette('cassettes/test_remedyscan_status.yaml', record_mode='all')
