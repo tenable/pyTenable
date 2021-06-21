@@ -21,8 +21,8 @@ from tenable.io.base import TIOEndpoint, TIOIterator
 from tenable.utils import dict_merge
 
 
-class RemediationScans(TIOIterator):
-    '''
+class RemediationScansIteratorV2(TIOIterator):
+'''
 The Remediation scans iterator provides a scalable way to work through
 scan history result sets of any size. The iterator will walk through
 each page of data, returning one record at a time.  If it reaches the
@@ -81,6 +81,7 @@ class RemediationScansAPI(TIOEndpoint):
 
         '''
         params = dict()
+        pages = None
         if limit>0 and limit < 200:
             params['limit'] = self._check('limit', limit, int)
         if offset >= 0:
@@ -88,9 +89,14 @@ class RemediationScansAPI(TIOEndpoint):
         if 'scan_creation_date:asc' or 'scan_creation_date:desc' in sortval:
             params['sort'] = self._check('sort', sortval, str)
 
-        return self._api.get('scans/remediation', params=params).json()['scans']
-
-
+        return RemediationScansIteratorV2(self._api,
+            _limit=limit,
+            _offset=offset,
+            _pages_total=pages,
+            _query=params,
+            _path='scans/remediation',
+            _resource='remediation')
+ 
     def create_remediation_scan(self, **kwargs):
         '''
         Create a new remediation scan.
