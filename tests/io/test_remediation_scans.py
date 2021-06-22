@@ -6,7 +6,6 @@ import pytest
 from tenable.errors import UnexpectedValueError, NotFoundError
 from tests.checker import check, single
 
-@pytest.fixture
 def remedy_scan(request, api):
 	'''
 	test to create remediation scan document advanced template
@@ -29,7 +28,6 @@ def remedy_scan(request, api):
 	return remedyscan
 
 
-@pytest.fixture
 def remedy_scanned_list(api):
 	'''
 	test to check remediation scan list
