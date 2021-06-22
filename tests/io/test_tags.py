@@ -1030,3 +1030,23 @@ def test_tags_unassign_success(api, tagvalue):
     assets = api.assets.list()
     resp = api.tags.unassign([a['id'] for a in assets], [tagvalue['uuid']])
     single(resp, str)
+
+
+@pytest.mark.vcr()
+def test_tags_edit_without_filters(api):
+    '''
+    test to apply filters that are available in current payload when filter parameter is not passed.
+    '''
+
+    tags = api.tags.list()
+    flag = True
+    while flag:
+        try:
+            resp = tags.next()
+            tag_id = resp['uuid']
+            tag_details = api.tags.details(tag_id)
+            if 'filters' in tag_details:
+                api.tags.edit(tag_id)
+                flag = False
+        except:
+            flag = False
