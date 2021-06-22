@@ -22,7 +22,7 @@ from tenable.utils import dict_merge
 
 
 class RemediationScansIteratorV2(TIOIterator):
-'''
+    '''
 The Remediation scans iterator provides a scalable way to work through
 scan history result sets of any size. The iterator will walk through
 each page of data, returning one record at a time.  If it reaches the
@@ -79,7 +79,7 @@ class RemediationScansAPI(TIOEndpoint):
             `this doc <https://developer.tenable.com/reference#io-scans-remediation-list>`_
             on the developer portal.
 
-        '''
+            '''
         params = dict()
         pages = None
         if limit>0 and limit < 200:
@@ -96,7 +96,7 @@ class RemediationScansAPI(TIOEndpoint):
             _query=params,
             _path='scans/remediation',
             _resource='remediation')
- 
+
     def create_remediation_scan(self, **kwargs):
         '''
         Create a new remediation scan.
