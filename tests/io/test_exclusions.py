@@ -1114,7 +1114,7 @@ def test_exclusions_list(api):
             check(exclusion['schedule'], 'starttime', 'datetime')
             check(exclusion['schedule'], 'timezone', str)
 
-@pytest.mark.vcrx()
+@pytest.mark.vcr()
 @pytest.mark.datafiles(os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     '..', 'test_files', 'io_exclusion.csv'))
