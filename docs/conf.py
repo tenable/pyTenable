@@ -113,7 +113,7 @@ html_theme_options = {
     'github_user': 'tenable',
     'github_repo': 'pyTenable',
     'github_button': True,
-    'travis_button': True,
+#   'travis_button': True,
     'analytics_id': 'UA-131275974-1',
 }
 
