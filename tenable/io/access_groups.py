@@ -213,8 +213,7 @@ class AccessGroupsAPI(TIOEndpoint):
             'name': self._check('name', g['name'], str),
             'all_users': self._check('all_users', g['all_users'], bool),
             'all_assets': self._check('all_assets', g['all_assets'], bool),
-            'rules': g['rules'],
-            # 'principals': g['principals']
+            'rules': g['rules']
         }
 
         if 'principals' in g and g['principals']:
