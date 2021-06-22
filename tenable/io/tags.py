@@ -224,7 +224,7 @@ class TagsAPI(TIOEndpoint):
 
             >>> tio.tags.create('00000000-0000-0000-0000-000000000000', 'Madison')
         '''
-        all_permissions = ['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS']
+        all_permissions = ['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS', 'CAN_USE']
         payload = dict()
 
         # First lets see if the category is a UUID or a general string.  If its
