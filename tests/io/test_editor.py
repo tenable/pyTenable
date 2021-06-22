@@ -1,6 +1,7 @@
 '''
 test editor
 '''
+import uuid
 import pytest
 from tenable.errors import UnexpectedValueError
 
@@ -147,3 +148,25 @@ def test_editor_parse_audits(api):
                  [{'free': 0, 'type': 'Nothing', 'summary': 'File: file2', 'id': 2}],
              'name': 'Leo'}]
     api.editor.parse_audits(data)
+
+
+@pytest.mark.vcr()
+def test_editor_details(api):
+    '''
+    test the details of the editor for the given scan_id
+    '''
+    flag = True
+    scan_ids_list = []
+    while flag:
+        scan_id = api.scans.create(
+            name='pytest: {}'.format(uuid.uuid4()),
+            template='advanced',
+            targets=['127.0.0.1'])['id']
+        scan_ids_list.append(scan_id)
+        editor_details = api.editor.obj_details('scan', scan_id)
+        if 'compliance' in editor_details and 'plugins' in editor_details:
+            api.editor.details('scan', scan_id)
+            flag = False
+    for each_scan_id in scan_ids_list:
+        api.scans.delete(each_scan_id)
+
