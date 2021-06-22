@@ -90,12 +90,12 @@ class RemediationScansAPI(TIOEndpoint):
             params['sort'] = self._check('sort', sortval, str)
 
         return RemediationScansIteratorV2(self._api,
-            _limit=limit,
-            _offset=offset,
-            _pages_total=pages,
-            _query=params,
-            _path='scans/remediation',
-            _resource='remediation')
+        _limit=limit,
+        _offset=offset,
+        _pages_total=pages,
+        _query=params,
+        _path='scans/remediation',
+        _resource='scans')
 
     def create_remediation_scan(self, **kwargs):
         '''
@@ -177,14 +177,15 @@ class RemediationScansAPI(TIOEndpoint):
         Examples:
             Create remediation scan:
 
-            scan = tio.remediationscans.create_remediation_scan(
-            uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
-            name='Create Remediation Scan',
-            description='Remediation scan created',
-            scanner_id='10167769',
-            scan_time_window=10,
-            targets=['127.0.0.1:3000'],
-            template='advanced')
+
+        >>> scan = tio.remediationscans.create_remediation_scan(
+        ... uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
+        ... name='Create Remediation Scan',
+        ... description='Remediation scan created',
+        ... scanner_id='10167769',
+        ... scan_time_window=10,
+        ... targets=['127.0.0.1:3000'],
+        ... template='advanced')
 
             For further information on credentials, what settings to use, etc,
             refer to
@@ -196,7 +197,7 @@ class RemediationScansAPI(TIOEndpoint):
         if 'template' not in kwargs:
             kwargs['template'] = 'advanced'
 
-        # validate all the parameters
+
         scan = self._create_scan_document(kwargs)
 
         # Run the API call and return the result to the caller.
