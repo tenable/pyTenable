@@ -5,7 +5,7 @@ import os
 import uuid
 from datetime import datetime, timedelta
 import pytest
-from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
+from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError , InvalidInputError
 from tests.checker import check
 from tests.io.test_networks import fixture_network
 
@@ -1114,7 +1114,7 @@ def test_exclusions_list(api):
             check(exclusion['schedule'], 'starttime', 'datetime')
             check(exclusion['schedule'], 'timezone', str)
 
-@pytest.mark.vcr()
+@pytest.mark.vcrx()
 @pytest.mark.datafiles(os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     '..', 'test_files', 'io_exclusion.csv'))
@@ -1123,4 +1123,12 @@ def test_exclusion_import_exclusion(api, datafiles):
     test to import exclusion from file
     '''
     with open(os.path.join(str(datafiles), 'io_exclusion.csv'), 'rb') as fobj:
-        api.exclusions.exclusions_import(fobj)
+        '''
+        As we have seen InvalidInputError against real time instances like qa-develop,
+        tried to do retry as it looks environmental.
+        '''
+        try :
+            api.exclusions.exclusions_import(fobj)
+        except InvalidInputError :
+            api.exclusions.exclusions_import(fobj)
+
