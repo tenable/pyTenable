@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add tio.remediationscans endpoints #339
 
 ### Changed
-- ??
+- added stream_hook param to tio.scans.export endpoint #332
 
 ### Fixed
 - fix all_permisisons var in tio.tags to have correct values #340
