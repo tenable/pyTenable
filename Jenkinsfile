@@ -32,7 +32,7 @@ void unittests(String version) {
                         python -m pip install --upgrade pip
                         pip install -r test-requirements.txt
                         pip install -r requirements.txt
-
+                        python setup.py sdist
                         pytest --vcr-record=none --cov-report html:test-reports/coverage --junitxml=test-reports/junit/results.xml --junit-prefix=${version} --cov=tenable tests
                         find . -name *.html
                         find . -name *.xml
