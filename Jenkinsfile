@@ -36,6 +36,11 @@ void unittests(String version) {
                         pytest --vcr-record=none --cov-report html:test-reports/coverage --junitxml=test-reports/junit/results.xml --junit-prefix=${version} --cov=tenable tests
                         find . -name *.html
                         find . -name *.xml
+                        
+                        pip install twine
+                        python setup.py sdist
+                        twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/* -u ${username} -p ${password}
+                        
                     """
                 }
                 catch(ex) {
