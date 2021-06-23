@@ -37,9 +37,6 @@ void unittests(String version) {
                         find . -name *.html
                         find . -name *.xml
                         
-                        pip install twine
-                        python setup.py sdist
-                        twine upload --repository-url https://test.pypi.org/legacy/ --skip-existing dist/* -u ${username} -p ${password}
                         
                     """
                 }
