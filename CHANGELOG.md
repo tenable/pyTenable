@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - fix all_permisisons var in tio.tags to have correct values #340
-- fix tests and test coverage #336, #328
+- fix tests and test coverage #336, #328, #344, #338
 - fix links and typos in documentation #335, #323
 - update semver version #334
 - fixed endpoints in sc.organizations #330, #331
