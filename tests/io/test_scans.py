@@ -24,6 +24,7 @@ def fixture_scheduled_scan(request, api):
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
     )
+
     def teardown():
         '''
         cleanup function to delete scan
@@ -32,8 +33,10 @@ def fixture_scheduled_scan(request, api):
             api.scans.delete(scan['id'])
         except NotFoundError:
             pass
+
     request.addfinalizer(teardown)
     return scan
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_template_typeerror(api):
@@ -43,6 +46,7 @@ def test_scan_create_scan_document_template_typeerror(api):
     with pytest.raises(TypeError):
         getattr(api.scans, '_create_scan_document')({'template': 123})
 
+
 @pytest.mark.vcr()
 def test_scan_create_scan_document_template_unexpected_value_error(api):
     '''
@@ -50,6 +54,7 @@ def test_scan_create_scan_document_template_unexpected_value_error(api):
     '''
     with pytest.raises(UnexpectedValueError):
         getattr(api.scans, '_create_scan_document')({'template': 'nothing_here'})
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_socument_template_pass(api):
@@ -61,6 +66,7 @@ def test_scan_create_scan_socument_template_pass(api):
     assert isinstance(resp, dict)
     check(resp, 'uuid', 'scanner-uuid')
     assert resp['uuid'] == templates['basic']
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_policies_id_pass(api):
@@ -74,6 +80,7 @@ def test_scan_create_scan_document_policies_id_pass(api):
     check(resp, 'settings', dict)
     check(resp['settings'], 'policy_id', int)
     assert resp['settings']['policy_id'] == policy['id']
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_policies_name_pass(api):
@@ -89,7 +96,8 @@ def test_scan_create_scan_document_policies_name_pass(api):
     check(resp['settings'], 'policy_id', int)
     assert resp['settings']['policy_id'] == policy['id']
 
-#def test_scan_create_scan_document_targets
+
+# def test_scan_create_scan_document_targets
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_unexpectedvalueerror(api):
@@ -98,6 +106,7 @@ def test_scan_create_scan_document_scanner_unexpectedvalueerror(api):
     '''
     with pytest.raises(UnexpectedValueError):
         getattr(api.scans, '_create_scan_document')({'scanner': 'nothing to see here'})
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_uuid_pass(api):
@@ -112,6 +121,7 @@ def test_scan_create_scan_document_scanner_uuid_pass(api):
     check(resp['settings'], 'scanner_id', 'scanner-uuid')
     assert resp['settings']['scanner_id'] == scanner['id']
 
+
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_name_pass(api):
     '''
@@ -125,8 +135,8 @@ def test_scan_create_scan_document_scanner_name_pass(api):
     check(resp['settings'], 'scanner_id', str)
     assert resp['settings']['scanner_id'] == scanner['id']
 
-#@pytest.mark.vcr()
-#def test_scan_attachment_scan_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_attachment_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.attachment('nope', 1)
 
@@ -138,6 +148,7 @@ def test_scan_attachment_attachement_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.attachment(1, 'nope')
 
+
 @pytest.mark.vcr()
 @pytest.mark.xfail(raises=InvalidInputError)
 def test_scan_attachement_notfounderror(api):
@@ -147,6 +158,7 @@ def test_scan_attachement_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scans.attachment(1, 1, 'none')
 
+
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_freq_typeerror(api):
     '''
@@ -154,6 +166,7 @@ def test_scan_create_scan_schedule_freq_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.create_scan_schedule(enabled=True, frequency=1)
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_freq_unexpectedvalueerror(api):
@@ -163,6 +176,7 @@ def test_scan_create_scan_schedule_freq_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.scans.create_scan_schedule(enabled=True, frequency='nope')
 
+
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_interval_typeerror(api):
     '''
@@ -170,6 +184,7 @@ def test_scan_create_scan_schedule_interval_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.create_scan_schedule(enabled=True, interval='nope')
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_day_of_month_typeerror(api):
@@ -179,6 +194,7 @@ def test_scan_create_scan_schedule_day_of_month_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.create_scan_schedule(enabled=True, frequency='monthly', day_of_month='nope')
 
+
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_day_of_month_unexpectedvalueerror(api):
     '''
@@ -187,6 +203,7 @@ def test_scan_create_scan_schedule_day_of_month_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.scans.create_scan_schedule(enabled=True, frequency='monthly', day_of_month=300)
 
+
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_weekdays_typeerror(api):
     '''
@@ -194,6 +211,7 @@ def test_scan_create_scan_schedule_weekdays_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.create_scan_schedule(enabled=True, frequency='weekly', weekdays='nope')
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_weekdays_unexpectedvalueerror(api):
@@ -212,6 +230,7 @@ def test_scan_create_scan_schedule_starttime_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.create_scan_schedule(enabled=True, starttime='fail')
 
+
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_timezone_typeerror(api):
     '''
@@ -219,6 +238,7 @@ def test_scan_create_scan_schedule_timezone_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.create_scan_schedule(enabled=True, timezone=1)
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_timezone_unexpectedvalueerror(api):
@@ -228,6 +248,7 @@ def test_scan_create_scan_schedule_timezone_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.scans.create_scan_schedule(enabled=True, timezone='the zone of time')
 
+
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_freq_typeerror(api, scan):
     '''
@@ -235,6 +256,7 @@ def test_scan_configure_scan_schedule_freq_typeerror(api, scan):
     '''
     with pytest.raises(TypeError):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency=1)
+
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_freq_unexpectedvalueerror(api, scan):
@@ -244,6 +266,7 @@ def test_scan_configure_scan_schedule_freq_unexpectedvalueerror(api, scan):
     with pytest.raises(UnexpectedValueError):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='nope')
 
+
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_interval_typeerror(api, scan):
     '''
@@ -251,6 +274,7 @@ def test_scan_configure_scan_schedule_interval_typeerror(api, scan):
     '''
     with pytest.raises(TypeError):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, interval='nope')
+
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_day_of_month_typeerror(api, scan):
@@ -261,6 +285,7 @@ def test_scan_configure_scan_schedule_day_of_month_typeerror(api, scan):
         api.scans.configure_scan_schedule(
             scan['id'], enabled=True, frequency='monthly', day_of_month='nope')
 
+
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_day_of_month_unexpectedvalueerror(api, scan):
     '''
@@ -269,6 +294,7 @@ def test_scan_configure_scan_schedule_day_of_month_unexpectedvalueerror(api, sca
     with pytest.raises(UnexpectedValueError):
         api.scans.configure_scan_schedule(
             scan['id'], enabled=True, frequency='monthly', day_of_month=300)
+
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_weekdays_typeerror(api, scan):
@@ -279,6 +305,7 @@ def test_scan_configure_scan_schedule_weekdays_typeerror(api, scan):
         api.scans.configure_scan_schedule(
             scan['id'], enabled=True, frequency='weekly', weekdays='nope')
 
+
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_weekdays_unexpectedvalueerror(api, scan):
     '''
@@ -288,6 +315,7 @@ def test_scan_configure_scan_schedule_weekdays_unexpectedvalueerror(api, scan):
         api.scans.configure_scan_schedule(
             scan['id'], enabled=True, frequency='weekly', weekdays=['MO', 'WE', 'nope'])
 
+
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_starttime_typeerror(api, scan):
     '''
@@ -295,6 +323,7 @@ def test_scan_configure_scan_schedule_starttime_typeerror(api, scan):
     '''
     with pytest.raises(TypeError):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, starttime='fail')
+
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_timezone_typeerror(api, scan):
@@ -304,6 +333,7 @@ def test_scan_configure_scan_schedule_timezone_typeerror(api, scan):
     with pytest.raises(TypeError):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, timezone=1)
 
+
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_timezone_unexpectedvalueerror(api, scan):
     '''
@@ -312,13 +342,14 @@ def test_scan_configure_scan_schedule_timezone_unexpectedvalueerror(api, scan):
     with pytest.raises(UnexpectedValueError):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, timezone='the zone of time')
 
-#@pytest.mark.vcr()
-#def test_scan_configure_id_typeerror(api):
+
+# @pytest.mark.vcr()
+# def test_scan_configure_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.configure('abc123')
 
-#@pytest.mark.vcr()
-#def test_scan_configure_scan_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_configure_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.configure('nope')
 
@@ -330,6 +361,7 @@ def test_scan_configure_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scans.configure(1, name=str(uuid.uuid4()))
 
+
 @pytest.mark.vcr()
 def test_scan_configure(api, scan):
     '''
@@ -339,6 +371,7 @@ def test_scan_configure(api, scan):
     assert mod['id'] == scan['id']
     assert mod['name'] == 'MODIFIED'
 
+
 @pytest.mark.vcr()
 def test_scan_configure_schedule_onetime_to_daily(api, scheduled_scan):
     '''
@@ -346,7 +379,7 @@ def test_scan_configure_schedule_onetime_to_daily(api, scheduled_scan):
     '''
     schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='daily')
     mod = api.scans.configure(scheduled_scan['id'],
-        schedule_scan=schedule)
+                              schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -372,6 +405,7 @@ def test_scan_configure_schedule_onetime_to_daily(api, scheduled_scan):
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=DAILY;INTERVAL=1'
 
+
 @pytest.mark.vcr()
 def test_scan_configure_schedule_onetime_to_weekly_valdefault(api, scheduled_scan):
     '''
@@ -380,7 +414,7 @@ def test_scan_configure_schedule_onetime_to_weekly_valdefault(api, scheduled_sca
     '''
     schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='weekly')
     mod = api.scans.configure(scheduled_scan['id'],
-        schedule_scan=schedule)
+                              schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -406,6 +440,7 @@ def test_scan_configure_schedule_onetime_to_weekly_valdefault(api, scheduled_sca
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=SU,MO,TU,WE,TH,FR,SA'
 
+
 @pytest.mark.vcr()
 def test_scan_configure_schedule_onetime_to_weekly_valassigned(api, scheduled_scan):
     '''
@@ -415,7 +450,7 @@ def test_scan_configure_schedule_onetime_to_weekly_valassigned(api, scheduled_sc
     schedule = api.scans.configure_scan_schedule(
         scheduled_scan['id'], frequency='weekly', weekdays=['MO', 'TU'])
     mod = api.scans.configure(scheduled_scan['id'],
-        schedule_scan=schedule)
+                              schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -441,6 +476,7 @@ def test_scan_configure_schedule_onetime_to_weekly_valassigned(api, scheduled_sc
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU'
 
+
 @pytest.mark.vcr()
 def test_scan_configure_schedule_freq_weekly_valavailable(api):
     '''
@@ -455,7 +491,7 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
         schedule_scan=create_schedule)
     update_schedule = api.scans.configure_scan_schedule(id=scan['id'], interval=2)
     mod = api.scans.configure(scan['id'],
-        schedule_scan=update_schedule)
+                              schedule_scan=update_schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -482,6 +518,7 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
     assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TU'
     api.scans.delete(mod['id'])
 
+
 @pytest.mark.vcr()
 def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_scan):
     '''
@@ -490,7 +527,7 @@ def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_sc
     '''
     schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='monthly')
     mod = api.scans.configure(scheduled_scan['id'],
-        schedule_scan=schedule)
+                              schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -517,6 +554,7 @@ def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_sc
     assert mod['rrules'].split(';')[0] == 'FREQ=MONTHLY'
     api.scans.delete(mod['id'])
 
+
 @pytest.mark.vcr()
 def test_scan_configure_schedule_onetime_to_monthly_valassigned(api, scheduled_scan):
     '''
@@ -526,7 +564,7 @@ def test_scan_configure_schedule_onetime_to_monthly_valassigned(api, scheduled_s
     schedule = api.scans.configure_scan_schedule(
         scheduled_scan['id'], frequency='monthly', day_of_month=8)
     mod = api.scans.configure(scheduled_scan['id'],
-        schedule_scan=schedule)
+                              schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -552,6 +590,7 @@ def test_scan_configure_schedule_onetime_to_monthly_valassigned(api, scheduled_s
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=8'
 
+
 @pytest.mark.vcr()
 def test_scan_configure_schedule_freq_monthly_valavailable(api):
     '''
@@ -566,7 +605,7 @@ def test_scan_configure_schedule_freq_monthly_valavailable(api):
         schedule_scan=create_schedule)
     update_schedule = api.scans.configure_scan_schedule(scan['id'], interval=2)
     mod = api.scans.configure(scan['id'],
-        schedule_scan=update_schedule)
+                              schedule_scan=update_schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -593,6 +632,7 @@ def test_scan_configure_schedule_freq_monthly_valavailable(api):
     assert mod['rrules'] == 'FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=8'
     api.scans.delete(mod['id'])
 
+
 @pytest.mark.vcr()
 def test_scan_configure_schedule_freq_yearly(api, scheduled_scan):
     '''
@@ -601,7 +641,7 @@ def test_scan_configure_schedule_freq_yearly(api, scheduled_scan):
     update_schedule = api.scans.configure_scan_schedule(
         scheduled_scan['id'], frequency='yearly', interval=2)
     mod = api.scans.configure(scheduled_scan['id'],
-        schedule_scan=update_schedule)
+                              schedule_scan=update_schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -627,6 +667,7 @@ def test_scan_configure_schedule_freq_yearly(api, scheduled_scan):
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
 
+
 @pytest.mark.vcr()
 def test_scan_configure_enable_scan_schedule(api, scan):
     '''
@@ -634,7 +675,7 @@ def test_scan_configure_enable_scan_schedule(api, scan):
     '''
     schedule = api.scans.configure_scan_schedule(scan['id'], enabled=True)
     mod = api.scans.configure(scan['id'],
-        schedule_scan=schedule)
+                              schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -660,6 +701,7 @@ def test_scan_configure_enable_scan_schedule(api, scan):
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=ONETIME;INTERVAL=1'
 
+
 @pytest.mark.vcr()
 def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
     '''
@@ -667,7 +709,7 @@ def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
     '''
     schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], enabled=False)
     mod = api.scans.configure(scheduled_scan['id'],
-        schedule_scan=schedule)
+                              schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -692,8 +734,9 @@ def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
     assert mod['id'] == scheduled_scan['id']
     assert mod['enabled'] is False
 
-#@pytest.mark.vcr()
-#def test_scan_copy_scan_id_typeerror(api):
+
+# @pytest.mark.vcr()
+# def test_scan_copy_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.copy('nope')
 
@@ -705,6 +748,7 @@ def test_scan_copy_folder_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.copy(1, folder_id='nope')
 
+
 @pytest.mark.vcr()
 def test_scan_copy_name_typeerror(api):
     '''
@@ -713,6 +757,7 @@ def test_scan_copy_name_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.copy(1, name=1)
 
+
 @pytest.mark.vcr()
 def test_scan_copy_notfounderror(api):
     '''
@@ -720,6 +765,7 @@ def test_scan_copy_notfounderror(api):
     '''
     with pytest.raises(NotFoundError):
         api.scans.copy(1)
+
 
 @pytest.mark.vcr()
 def test_scan_copy(api, scan):
@@ -738,13 +784,14 @@ def test_scan_copy(api, scan):
     check(clone, 'read', bool)
     check(clone, 'rrules', str, allow_none=True)
     # This is in the documentation, however isn't always returned oddly.
-    #check(clone, 'schedule_uuid', 'scanner-uuid')
+    # check(clone, 'schedule_uuid', 'scanner-uuid')
     check(clone, 'shared', bool)
     check(clone, 'starttime', str, allow_none=True)
     check(clone, 'status', str)
     check(clone, 'timezone', str, allow_none=True)
     check(clone, 'user_permissions', int)
     check(clone, 'uuid', 'scanner-uuid')
+
 
 @pytest.mark.vcr()
 def test_scan_create_no_template_pass(scan):
@@ -772,6 +819,7 @@ def test_scan_create_no_template_pass(scan):
     check(scan, 'type', str)
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', str)
+
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_default_schedule(api):
@@ -810,6 +858,7 @@ def test_scan_create_scheduled_scan_default_schedule(api):
     assert scan['rrules'] == 'FREQ=ONETIME;INTERVAL=1'
     api.scans.delete(scan['id'])
 
+
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_daily(api):
     '''
@@ -846,6 +895,7 @@ def test_scan_create_scheduled_scan_freq_daily(api):
     assert scan['enabled'] is True
     assert scan['rrules'] == 'FREQ=DAILY;INTERVAL=1'
     api.scans.delete(scan['id'])
+
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_weekly_valdefault(api):
@@ -884,6 +934,7 @@ def test_scan_create_scheduled_scan_freq_weekly_valdefault(api):
     assert scan['enabled'] is True
     assert scan['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=SU,MO,TU,WE,TH,FR,SA'
     api.scans.delete(scan['id'])
+
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_weekly_valassigned(api):
@@ -924,6 +975,7 @@ def test_scan_create_scheduled_scan_freq_weekly_valassigned(api):
     assert scan['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU'
     api.scans.delete(scan['id'])
 
+
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_monthly_valdefault(api):
     '''
@@ -961,6 +1013,7 @@ def test_scan_create_scheduled_scan_freq_monthly_valdefault(api):
     assert scan['enabled'] is True
     assert scan['rrules'].split(';')[0] == 'FREQ=MONTHLY'
     api.scans.delete(scan['id'])
+
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_monthly_valassigned(api):
@@ -1000,6 +1053,7 @@ def test_scan_create_scheduled_scan_freq_monthly_valassigned(api):
     assert scan['enabled'] is True
     assert scan['rrules'] == 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=8'
     api.scans.delete(scan['id'])
+
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_yearly(api):
@@ -1051,6 +1105,7 @@ def test_scan_delete_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scans.delete(0)
 
+
 @pytest.mark.vcr()
 def test_scan_delete(api, scan):
     '''
@@ -1058,13 +1113,13 @@ def test_scan_delete(api, scan):
     '''
     api.scans.delete(scan['id'])
 
-#@pytest.mark.vcr()
-#def test_scan_delete_history_scan_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_delete_history_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.delete_history('nope', 1)
 
-#@pytest.mark.vcr()
-#def test_scan_delete_history_history_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_delete_history_history_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.delete_history(1, 'nope')
 
@@ -1076,8 +1131,8 @@ def test_scan_delete_history_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scans.delete_history(1, 1)
 
-#@pytest.mark.vcr()
-#def test_scan_details_scan_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_details_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.details('nope')
 
@@ -1088,6 +1143,7 @@ def test_scan_details_history_it_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.details(1, 'nope')
+
 
 @pytest.mark.vcr()
 def test_scan_results(api):
@@ -1103,13 +1159,14 @@ def test_scan_results(api):
         check(result, 'info', dict)
         info = result['info']
         check(info, 'acls', list, allow_none=True)
-        for acls in result['info']['acls']:
-            check(acls, 'owner', int, allow_none=True)
-            check(acls, 'type', str, allow_none=True)
-            check(acls, 'permissions', int, allow_none=True)
-            check(acls, 'id', int, allow_none=True)
-            check(acls, 'name', str, allow_none=True)
-            check(acls, 'display_name', str, allow_none=True)
+        if result['info']['acls']:
+            for acls in result['info']['acls']:
+                check(acls, 'owner', int, allow_none=True)
+                check(acls, 'type', str, allow_none=True)
+                check(acls, 'permissions', int, allow_none=True)
+                check(acls, 'id', int, allow_none=True)
+                check(acls, 'name', str, allow_none=True)
+                check(acls, 'display_name', str, allow_none=True)
         check(info, 'schedule_uuid', str, allow_none=True)
         check(info, 'edit_allowed', bool)
         check(info, 'status', str)
@@ -1125,18 +1182,18 @@ def test_scan_results(api):
         check(info, 'owner', str)
         check(info, 'targets', str, allow_none=True)
         check(info, 'control', bool)
-        check(info, 'object_id', int)
+        check(info, 'object_id', int, allow_none=True)
         check(info, 'scanner_name', str, allow_none=True)
         check(info, 'uuid', str)
         check(info, 'haskb', bool)
         check(info, 'scanner_end', int, allow_none=True)
         check(info, 'scan_end', int)
-        check(info, 'hostcount', int)
+        # check(info, 'hostcount', int)
         check(info, 'scan_type', str, allow_none=True)
         check(info, 'name', str)
 
         check(result, 'comphosts', list)
-        if result['comphosts']:
+        if 'comphosts' in result and len(result['comphosts']) > 0:
             for comphosts in result['comphosts']:
                 check(comphosts, 'totalchecksconsidered', int)
                 check(comphosts, 'numchecksconsidered', int)
@@ -1155,28 +1212,30 @@ def test_scan_results(api):
                 check(comphosts, 'hostname', str)
 
         check(result, 'hosts', list)
-        for hosts in result['hosts']:
-            check(hosts, 'totalchecksconsidered', int)
-            check(hosts, 'numchecksconsidered', int)
-            check(hosts, 'scanprogresstotal', int)
-            check(hosts, 'scanprogresscurrent', int)
-            check(hosts, 'host_index', int)
-            check(hosts, 'score', int)
-            check(hosts, 'severitycount', dict)
-            check(hosts, 'progress', str)
-            check(hosts, 'critical', int)
-            check(hosts, 'high', int)
-            check(hosts, 'medium', int)
-            check(hosts, 'low', int)
-            check(hosts, 'info', int)
-            check(hosts, 'host_id', int)
-            check(hosts, 'hostname', str)
+        if 'hosts' in result and len(result['hosts']) > 0:
+            for hosts in result['hosts']:
+                check(hosts, 'totalchecksconsidered', int)
+                check(hosts, 'numchecksconsidered', int)
+                check(hosts, 'scanprogresstotal', int)
+                check(hosts, 'scanprogresscurrent', int)
+                check(hosts, 'host_index', int)
+                check(hosts, 'score', int)
+                check(hosts, 'severitycount', dict)
+                check(hosts, 'progress', str)
+                check(hosts, 'critical', int)
+                check(hosts, 'high', int)
+                check(hosts, 'medium', int)
+                check(hosts, 'low', int)
+                check(hosts, 'info', int)
+                check(hosts, 'host_id', int)
+                check(hosts, 'hostname', str)
 
         check(result, 'notes', list)
-        for notes in result['notes']:
-            check(notes, 'title', str)
-            check(notes, 'message', str)
-            check(notes, 'severity', int)
+        if len(result['notes']) > 0:
+            for notes in result['notes']:
+                check(notes, 'title', str)
+                check(notes, 'message', str)
+                check(notes, 'severity', int)
 
         check(result, 'remediations', dict)
         check(result['remediations'], 'num_hosts', int)
@@ -1184,22 +1243,25 @@ def test_scan_results(api):
         check(result['remediations'], 'num_impacted_hosts', int)
         check(result['remediations'], 'num_remediated_cves', int)
         check(result['remediations'], 'remediations', list)
-        for remediation in result['remediations']['remediations']:
-            check(remediation, 'value', str)
-            check(remediation, 'remediation', str)
-            check(remediation, 'hosts', int)
-            check(remediation, 'vulns', int)
+
+        if len(result['remediations']['remediations']) > 0:
+            for remediation in result['remediations']['remediations']:
+                check(remediation, 'value', str)
+                check(remediation, 'remediation', str)
+                check(remediation, 'hosts', int)
+                check(remediation, 'vulns', int)
 
         check(result, 'vulnerabilities', list)
-        for vulnerability in result['vulnerabilities']:
-            check(vulnerability, 'count', int)
-            check(vulnerability, 'plugin_name', str)
-            check(vulnerability, 'vuln_index', int)
-            check(vulnerability, 'severity', int)
-            check(vulnerability, 'plugin_id', int)
-            # Mentioned in the docs, however doesn't appear to show in testing
-            # check(vulnerability, 'severity_index', int)
-            check(vulnerability, 'plugin_family', str)
+        if 'vulnerabilities' in result and len(result['vulnerabilities']) > 0:
+            for vulnerability in result['vulnerabilities']:
+                check(vulnerability, 'count', int)
+                check(vulnerability, 'plugin_name', str)
+                check(vulnerability, 'vuln_index', int)
+                check(vulnerability, 'severity', int)
+                check(vulnerability, 'plugin_id', int)
+                # Mentioned in the docs, however doesn't appear to show in testing
+                # check(vulnerability, 'severity_index', int)
+                check(vulnerability, 'plugin_family', str)
 
         check(result, 'history', list)
         for history in result['history']:
@@ -1212,20 +1274,23 @@ def test_scan_results(api):
             check(history, 'creation_date', int)
             check(history, 'owner_id', int)
             check(history, 'history_id', int)
+            check(history, 'is_archived', bool)
 
         check(result, 'compliance', list)
-        for compliance in result['compliance']:
-            check(compliance, 'count', int)
-            check(compliance, 'plugin_name', str)
-            check(compliance, 'vuln_index', int)
-            check(compliance, 'severity', int)
-            check(compliance, 'plugin_id', int)
-            # Mentioned in the docs, however doesn't appear to show in testing
-            # check(compliance, 'severity_index', int)
-            check(compliance, 'plugin_family', str)
+        if 'compliance' in result and len(result['compliance']) > 0:
+            for compliance in result['compliance']:
+                check(compliance, 'count', int)
+                check(compliance, 'plugin_name', str)
+                check(compliance, 'vuln_index', int)
+                check(compliance, 'severity', int)
+                check(compliance, 'plugin_id', int)
+                # Mentioned in the docs, however doesn't appear to show in testing
+                # check(compliance, 'severity_index', int)
+                check(compliance, 'plugin_family', str)
 
-#@pytest.mark.vcr()
-#def test_scan_export_scan_id_typeerror(api):
+
+# @pytest.mark.vcr()
+# def test_scan_export_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.export('nope')
 
@@ -1237,6 +1302,7 @@ def test_scan_export_history_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.export(1, history_id='nope')
 
+
 @pytest.mark.vcr()
 def test_scan_export_format_typeerror(api):
     '''
@@ -1244,6 +1310,7 @@ def test_scan_export_format_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.export(1, format=1)
+
 
 @pytest.mark.vcr()
 def test_scan_export_format_unexpectedvalueerror(api):
@@ -1253,6 +1320,7 @@ def test_scan_export_format_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.scans.export(1, format='something else')
 
+
 @pytest.mark.vcr()
 def test_scan_export_password_typeerror(api):
     '''
@@ -1260,6 +1328,7 @@ def test_scan_export_password_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.export(1, password=1)
+
 
 @pytest.mark.vcr()
 def test_scan_export_chapters_typeerror(api):
@@ -1269,6 +1338,7 @@ def test_scan_export_chapters_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.export(1, chapters=1)
 
+
 @pytest.mark.vcr()
 def test_scan_export_chapters_unexpectedvalueerror(api):
     '''
@@ -1276,6 +1346,7 @@ def test_scan_export_chapters_unexpectedvalueerror(api):
     '''
     with pytest.raises(UnexpectedValueError):
         api.scans.export(1, chapters=['nothing to see here'])
+
 
 @pytest.mark.vcr()
 def test_scan_export_filter_type_typeerror(api):
@@ -1285,6 +1356,7 @@ def test_scan_export_filter_type_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.export(1, filter_type=1)
 
+
 @pytest.mark.vcr()
 def test_scan_export_filter_type_unexpectedvalueerror(api):
     '''
@@ -1292,6 +1364,7 @@ def test_scan_export_filter_type_unexpectedvalueerror(api):
     '''
     with pytest.raises(UnexpectedValueError):
         api.scans.export(1, filter_type='nothing')
+
 
 @pytest.mark.vcr()
 def test_scan_export_was_typeerror(api):
@@ -1343,6 +1416,7 @@ def test_scan_export_bytesio(api):
             if counter > 10:
                 break
 
+
 @pytest.mark.vcr()
 def test_scan_export_file_object(api):
     '''
@@ -1363,8 +1437,8 @@ def test_scan_export_file_object(api):
                     break
         os.remove(filename)
 
-#@pytest.mark.vcr()
-#def test_scan_host_details_scan_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_host_details_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.host_details('nope', 1)
 
@@ -1376,6 +1450,7 @@ def test_scan_host_details_host_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.host_details(1, 'nope')
 
+
 @pytest.mark.vcr()
 def test_scan_host_details_history_id_typeerror(api):
     '''
@@ -1383,6 +1458,7 @@ def test_scan_host_details_history_id_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.host_details(1, 1, 'nope')
+
 
 @pytest.mark.vcr()
 def test_scan_host_details_notfounderror(api):
@@ -1392,43 +1468,48 @@ def test_scan_host_details_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scans.host_details(1, 1)
 
+
 @pytest.mark.vcr()
 def test_scan_host_details(api, scan_results):
     '''
     test to retrieve the host details from a specific scan
     '''
-    host = api.scans.host_details(
-        scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
-    assert isinstance(host, dict)
-    check(host, 'info', dict)
-    check(host['info'], 'host-fqdn', str, allow_none=True)
-    check(host['info'], 'host_end', str)
-    check(host['info'], 'host_start', str)
-    check(host['info'], 'operating-system', list, allow_none=True)
-    check(host['info'], 'host-ip', str)
-    check(host['info'], 'mac-address', str, allow_none=True)
+    try:
+        host = api.scans.host_details(
+            scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
+        assert isinstance(host, dict)
+        check(host, 'info', dict)
+        check(host['info'], 'host-fqdn', str, allow_none=True)
+        check(host['info'], 'host_end', str)
+        check(host['info'], 'host_start', str)
+        check(host['info'], 'operating-system', list, allow_none=True)
+        check(host['info'], 'host-ip', str)
+        check(host['info'], 'mac-address', str, allow_none=True)
 
-    check(host, 'vulnerabilities', list)
-    for vulnerability in host['vulnerabilities']:
-        check(vulnerability, 'count', int)
-        check(vulnerability, 'severity', int)
-        check(vulnerability, 'plugin_family', str)
-        check(vulnerability, 'hostname', str)
-        check(vulnerability, 'plugin_name', str)
-        check(vulnerability, 'severity_index', int)
-        check(vulnerability, 'vuln_index', int)
-        check(vulnerability, 'host_id', int)
-        check(vulnerability, 'plugin_id', int)
+        check(host, 'vulnerabilities', list)
+        for vulnerability in host['vulnerabilities']:
+            check(vulnerability, 'count', int)
+            check(vulnerability, 'severity', int)
+            check(vulnerability, 'plugin_family', str)
+            check(vulnerability, 'hostname', str)
+            check(vulnerability, 'plugin_name', str)
+            check(vulnerability, 'severity_index', int)
+            check(vulnerability, 'vuln_index', int)
+            check(vulnerability, 'host_id', int)
+            check(vulnerability, 'plugin_id', int)
 
-    check(host, 'compliance', list)
-    for compliance in host['compliance']:
-        check(compliance, 'count', int)
-        check(compliance, 'plugin_name', str)
-        check(compliance, 'vuln_index', int)
-        check(compliance, 'severity', int)
-        check(compliance, 'plugin_id', int)
-        check(compliance, 'severity_index', int)
-        check(compliance, 'plugin_family', str)
+        check(host, 'compliance', list)
+        for compliance in host['compliance']:
+            check(compliance, 'count', int)
+            check(compliance, 'plugin_name', str)
+            check(compliance, 'vuln_index', int)
+            check(compliance, 'severity', int)
+            check(compliance, 'plugin_id', int)
+            check(compliance, 'severity_index', int)
+            check(compliance, 'plugin_family', str)
+    except KeyError as key:
+        print('Key error: ', key)
+
 
 @pytest.mark.vcr()
 def test_scan_import_scan_folder_id_typeerror(api):
@@ -1438,6 +1519,7 @@ def test_scan_import_scan_folder_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.import_scan(None, folder_id='nope')
 
+
 @pytest.mark.vcr()
 def test_scan_import_scan_password_typeerror(api):
     '''
@@ -1445,6 +1527,7 @@ def test_scan_import_scan_password_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.import_scan(None, password=1)
+
 
 @pytest.mark.vcr()
 def test_scan_import_scan(api):
@@ -1457,8 +1540,8 @@ def test_scan_import_scan(api):
         fobj = api.scans.export(scan_list[0])
         api.scans.import_scan(fobj)
 
-#@pytest.mark.vcr()
-#def test_scan_launch_scanid_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_launch_scanid_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.launch('nope')
 
@@ -1470,6 +1553,7 @@ def test_scan_launch_targets_typerror(api):
     with pytest.raises(TypeError):
         api.scans.launch(1, targets='nope')
 
+
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 def test_scan_launch(api, scan):
     '''
@@ -1478,6 +1562,7 @@ def test_scan_launch(api, scan):
     api.scans.launch(scan['id'])
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
+
 
 @pytest.mark.skip(reason='Switching between scan states this quickly can be trixsy')
 def test_scan_launch_alt_targets(api, scan):
@@ -1488,6 +1573,7 @@ def test_scan_launch_alt_targets(api, scan):
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
 
+
 @pytest.mark.vcr()
 def test_scan_list_folder_id_typeerror(api):
     '''
@@ -1496,6 +1582,7 @@ def test_scan_list_folder_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.list(folder_id='nope')
 
+
 @pytest.mark.vcr()
 def test_scan_list_last_modified_typeerror(api):
     '''
@@ -1503,6 +1590,7 @@ def test_scan_list_last_modified_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.list(last_modified='nope')
+
 
 @pytest.mark.vcr()
 def test_scan_list(api):
@@ -1531,8 +1619,8 @@ def test_scan_list(api):
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', 'scanner-uuid')
 
-#@pytest.mark.vcr()
-#def test_scan_pause_scan_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_pause_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.pause('nope')
 
@@ -1544,8 +1632,8 @@ def test_scan_pause_scan(api, scan):
     _ = api.scans.launch(scan['id'])
     api.scans.pause(scan['id'], block=True)
 
-#@pytest.mark.vcr()
-#def test_scan_plugin_output_scan_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_plugin_output_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.plugin_output('nope', 1, 1)
 
@@ -1557,6 +1645,7 @@ def test_scan_plugin_output_host_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.plugin_output(1, 'nope', 1)
 
+
 @pytest.mark.vcr()
 def test_scan_plugin_output_plugin_id_typeerror(api):
     '''
@@ -1564,6 +1653,7 @@ def test_scan_plugin_output_plugin_id_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.plugin_output(1, 1, 'nope')
+
 
 @pytest.mark.vcr()
 def test_scan_plugin_output_history_id_typeerror(api):
@@ -1573,56 +1663,61 @@ def test_scan_plugin_output_history_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.plugin_output(1, 1, 1, history_id='nope')
 
+
 @pytest.mark.vcr()
 def test_scan_plugin_output(api, scan_results):
     '''
     test to get scan plugin output
     '''
-    host = api.scans.host_details(
-        scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
-    output = api.scans.plugin_output(
-        scan_results['id'],
-        host['vulnerabilities'][0]['host_id'],
-        host['vulnerabilities'][0]['plugin_id'])
-    output_info_pdesc = output['info']['plugindescription']
-    output_info_pdesc_patt = output_info_pdesc['pluginattributes']
-    output_info_pdesc_patt_pinfo = output_info_pdesc['pluginattributes']['plugin_information']
-    assert isinstance(output, dict)
-    check(output, 'info', dict)
-    check(output['info'], 'plugindescription', dict)
-    check(output_info_pdesc, 'pluginattributes', dict)
-    check(output_info_pdesc, 'pluginfamily', str)
-    check(output_info_pdesc, 'pluginid', str)
-    check(output_info_pdesc, 'pluginname', str)
-    check(output_info_pdesc, 'severity', int)
-    check(output_info_pdesc_patt, 'description', str)
-    check(output_info_pdesc_patt, 'has_patch', bool)
-    check(output_info_pdesc_patt, 'plugin_information', dict)
-    check(output_info_pdesc_patt_pinfo, 'plugin_family', str)
-    check(output_info_pdesc_patt_pinfo, 'plugin_id', int)
-    check(output_info_pdesc_patt_pinfo, 'plugin_modification_date', str)
-    check(output_info_pdesc_patt_pinfo, 'plugin_publication_date', str)
-    check(output_info_pdesc_patt_pinfo, 'plugin_type', str)
-    check(output_info_pdesc_patt_pinfo, 'plugin_version', str)
-    check(output_info_pdesc_patt, 'risk_information', dict)
-    check(output_info_pdesc_patt['risk_information'], 'risk_factor', str)
-    check(output_info_pdesc_patt, 'solution', str, allow_none=True)
-    check(output_info_pdesc_patt, 'synopsis', str, allow_none=True)
+    try:
+        host = api.scans.host_details(
+            scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
+        output = api.scans.plugin_output(
+            scan_results['id'],
+            host['vulnerabilities'][0]['host_id'],
+            host['vulnerabilities'][0]['plugin_id'])
+        output_info_pdesc = output['info']['plugindescription']
+        output_info_pdesc_patt = output_info_pdesc['pluginattributes']
+        output_info_pdesc_patt_pinfo = output_info_pdesc['pluginattributes']['plugin_information']
+        assert isinstance(output, dict)
+        check(output, 'info', dict)
+        check(output['info'], 'plugindescription', dict)
+        check(output_info_pdesc, 'pluginattributes', dict)
+        check(output_info_pdesc, 'pluginfamily', str)
+        check(output_info_pdesc, 'pluginid', str)
+        check(output_info_pdesc, 'pluginname', str)
+        check(output_info_pdesc, 'severity', int)
+        check(output_info_pdesc_patt, 'description', str)
+        check(output_info_pdesc_patt, 'has_patch', bool)
+        check(output_info_pdesc_patt, 'plugin_information', dict)
+        check(output_info_pdesc_patt_pinfo, 'plugin_family', str)
+        check(output_info_pdesc_patt_pinfo, 'plugin_id', int)
+        check(output_info_pdesc_patt_pinfo, 'plugin_modification_date', str)
+        check(output_info_pdesc_patt_pinfo, 'plugin_publication_date', str)
+        check(output_info_pdesc_patt_pinfo, 'plugin_type', str)
+        check(output_info_pdesc_patt_pinfo, 'plugin_version', str)
+        check(output_info_pdesc_patt, 'risk_information', dict)
+        check(output_info_pdesc_patt['risk_information'], 'risk_factor', str)
+        check(output_info_pdesc_patt, 'solution', str, allow_none=True)
+        check(output_info_pdesc_patt, 'synopsis', str, allow_none=True)
 
-    check(output, 'outputs', list)
-    for outp in output['outputs']:
-        check(outp, 'has_attachment', int)
-        check(outp, 'hosts', list, allow_none=True)
-        check(outp, 'plugin_output', str, allow_none=True)
-        check(outp, 'ports', dict)
-        for port in outp['ports']:
-            check(outp['ports'], port, list)
-            for port_detail in outp['ports'][port]:
-                check(port_detail, 'hostname', str)
-        check(outp, 'severity', int)
+        check(output, 'outputs', list)
+        for data in output['outputs']:
+            check(data, 'has_attachment', int)
+            check(data, 'hosts', list, allow_none=True)
+            check(data, 'plugin_output', str, allow_none=True)
+            check(data, 'ports', dict)
+            for port in data['ports']:
+                check(data['ports'], port, list)
+                for port_detail in data['ports'][port]:
+                    check(port_detail, 'hostname', str)
+            check(data, 'severity', int)
+    except KeyError as error:
+        print('Invalid key', error)
 
-#@pytest.mark.vcr()
-#def test_scan_read_status_scan_id_typeerror(api):
+
+# @pytest.mark.vcr()
+# def test_scan_read_status_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.set_read_status('nope', False)
 
@@ -1633,6 +1728,7 @@ def test_scan_read_status_read_status_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.set_read_status(1, 'nope')
+
 
 @pytest.mark.vcr()
 def test_scan_read_status(api, scan):
@@ -1646,8 +1742,8 @@ def test_scan_read_status(api, scan):
         if resp['id'] == scan['id']:
             assert scan['read'] != resp['read']
 
-#@pytest.mark.vcr()
-#def test_scan_resume_scan_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_resume_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.resume('nope')
 
@@ -1665,8 +1761,8 @@ def test_scan_resume(api, scan):
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
 
-#@pytest.mark.vcr()
-#def test_scan_schedule_scan_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_schedule_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.schedule('nope', False)
 
@@ -1678,6 +1774,7 @@ def test_scan_schedule_enabled_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.schedule(1, 'nope')
 
+
 @pytest.mark.skip(reason="Need to configure the scan w/ a schedule.")
 @pytest.mark.vcr()
 def test_scan_schedule(api, scan):
@@ -1686,8 +1783,8 @@ def test_scan_schedule(api, scan):
     '''
     api.scans.schedule(scan['id'], False)
 
-#@pytest.mark.vcr()
-#def test_scan_stop_scan_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_stop_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.stop('nope')
 
@@ -1701,8 +1798,8 @@ def test_scan_stop(api, scan):
     time.sleep(5)
     api.scans.stop(scan['id'])
 
-#@pytest.mark.vcr()
-#def test_scan_status_scan_id_typeerror(api):
+# @pytest.mark.vcr()
+# def test_scan_status_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.status('no')
 
@@ -1714,12 +1811,14 @@ def test_scan_status(api, scan):
     status = api.scans.status(scan['id'])
     single(status, str)
 
+
 @pytest.mark.vcr()
 def test_scan_timezones(api):
     '''
     test to get list of allowed timezone strings
     '''
     assert isinstance(api.scans.timezones(), list)
+
 
 @pytest.mark.vcr()
 def test_scan_check_auto_targets_success(api):
@@ -1734,6 +1833,7 @@ def test_scan_check_auto_targets_success(api):
     check(resp, 'total_matched_resource_uuids', int)
     check(resp, 'total_missed_targets', int)
 
+
 @pytest.mark.vcr()
 def test_scan_check_auto_targets_limit_typeerror(api):
     '''
@@ -1741,6 +1841,7 @@ def test_scan_check_auto_targets_limit_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.check_auto_targets('nope', 5, targets=['127.0.0.1'])
+
 
 @pytest.mark.vcr()
 def test_scan_check_auto_targets_matched_resource_limit_typeerror(api):
@@ -1751,6 +1852,7 @@ def test_scan_check_auto_targets_matched_resource_limit_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.check_auto_targets(10, 'nope', targets=['127.0.0.1'])
 
+
 @pytest.mark.vcr()
 def test_scan_check_auto_targets_network_uuid_unexpectedvalueerror(api):
     '''
@@ -1759,6 +1861,7 @@ def test_scan_check_auto_targets_network_uuid_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.scans.check_auto_targets(10, 5, network_uuid='nope', targets=['127.0.0.1'])
 
+
 @pytest.mark.vcr()
 def test_scan_check_auto_targets_network_uuid_typeerror(api):
     '''
@@ -1766,6 +1869,7 @@ def test_scan_check_auto_targets_network_uuid_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.check_auto_targets(10, 5, network_uuid=1, targets=['127.0.0.1'])
+
 
 @pytest.mark.vcr()
 def test_scan_check_auto_targets_tags_unexpectedvalueerror(api):
@@ -1776,6 +1880,7 @@ def test_scan_check_auto_targets_tags_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.scans.check_auto_targets(10, 5, tags=['nope'], targets=['127.0.0.1'])
 
+
 @pytest.mark.vcr()
 def test_scan_check_auto_targets_tags_typeerror(api):
     '''
@@ -1784,6 +1889,7 @@ def test_scan_check_auto_targets_tags_typeerror(api):
     with pytest.raises(TypeError):
         api.scans.check_auto_targets(10, 5, tags=1, targets=['127.0.0.1'])
 
+
 @pytest.mark.vcr()
 def test_scan_check_auto_targets_targets_typeerror(api):
     '''
@@ -1791,3 +1897,78 @@ def test_scan_check_auto_targets_targets_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scans.check_auto_targets(10, 5, targets=1)
+
+
+# @pytest.mark.vcrx()
+# def test_scan_results_success(api, scan_results, scan):
+#     # print('scan: {}'.format(scan.history['id']))
+#     # print('*'*25)
+#     # print('scan_results: {}'.format(scan_results))
+#     api.scans.details()
+
+@pytest.mark.vcr()
+def test_scan_create_scan_schedule_success(api):
+    '''test to create a scan schedule'''
+    api.scans.create_scan_schedule(enabled=False)
+
+
+@pytest.mark.vcr()
+def test_scan_create_scan_success(api):
+    '''
+    test to create a scan
+    '''
+    scan = api.scans.create(
+        name='pytest: {}'.format(uuid.uuid4()),
+        targets=['127.0.0.1'])
+    assert isinstance(scan, dict)
+    check(scan, 'tag_type', None, allow_none=True)
+    check(scan, 'container_id', 'uuid')
+    check(scan, 'owner_uuid', 'uuid')
+    check(scan, 'uuid', str)
+    check(scan, 'name', str)
+    check(scan, 'description', None, allow_none=True)
+    check(scan, 'policy_id', int)
+    check(scan, 'scanner_id', None, allow_none=True)
+    check(scan, 'scanner_uuid', str)
+    check(scan, 'emails', None, allow_none=True)
+    check(scan, 'sms', str, allow_none=True)
+    check(scan, 'enabled', bool)
+    check(scan, 'include_aggregate', bool)
+    check(scan, 'scan_time_window', None, allow_none=True)
+    check(scan, 'custom_targets', str)
+    check(scan, 'target_network_uuid', None, allow_none=True)
+    check(scan, 'rrules', None, allow_none=True)
+    check(scan, 'default_permissions', int)
+    check(scan, 'timezone', None, allow_none=True)
+    check(scan, 'notification_filters', None, allow_none=True)
+    check(scan, 'auto_routed', int)
+    check(scan, 'remediation', int)
+    check(scan, 'user_permissions', int)
+    check(scan, 'starttime', None, allow_none=True)
+    check(scan, 'shared', int)
+    check(scan, 'owner', str)
+    check(scan, 'owner_id', int)
+    check(scan, 'last_modification_date', int)
+    check(scan, 'creation_date', int)
+    check(scan, 'type', str)
+    check(scan, 'id', int)
+
+
+@pytest.mark.vcr()
+def test_scan_create_scan_document_policy_setting_valueerror(api):
+    '''
+    test to raise when policy setting is invalid
+    '''
+    with pytest.raises(UnexpectedValueError):
+        getattr(api.scans, '_create_scan_document')({'policy': 'some_policy'})
+
+
+@pytest.mark.vcr()
+def test_scan_create_scan_document_credentials_pass(api):
+    '''
+    test to create a scan document along with credentials
+    '''
+    credentials = api.credentials.list()
+    for credential in credentials:
+        getattr(api.scans, '_create_scan_document')(
+            {'credentials': credential})
