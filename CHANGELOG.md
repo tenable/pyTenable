@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix links and typos in documentation #335, #323
 - update semver version #334
 - fixed endpoints in sc.organizations #330, #331
+- missing import in ContainerSecurity class #299
 
 
 [1.3.1]: https://github.com/tenable/pyTenable/compare/1.3.0...1.3.1
