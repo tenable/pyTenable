@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1]
+### Added
+- add tio.remediationscans endpoints #339
+
+### Changed
+- added stream_hook param to tio.scans.export endpoint #332
+
+### Fixed
+- fix all_permisisons var in tio.tags to have correct values #340
+- fix tests and test coverage #336, #328, #344, #338
+- fix links and typos in documentation #335, #323
+- update semver version #334
+- fixed endpoints in sc.organizations #330, #331
+- missing import in ContainerSecurity class #299
+
+
+[1.3.1]: https://github.com/tenable/pyTenable/compare/1.3.0...1.3.1
+
+
 ## [1.3.0]
 ### Added
 - PyLint and Codacy checks as part of PyTenable test suite / pipeline #316
