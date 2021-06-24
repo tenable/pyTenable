@@ -24,6 +24,7 @@
 .. automodule:: tenable.io.scanner_groups
 .. automodule:: tenable.io.scanners
 .. automodule:: tenable.io.scans
+.. automodule:: tenable.io.remediation_scans
 .. automodule:: tenable.io.server
 .. automodule:: tenable.io.session
 .. automodule:: tenable.io.tags
@@ -83,6 +84,7 @@ from .policies import PoliciesAPI
 from .scanner_groups import ScannerGroupsAPI
 from .scanners import ScannersAPI
 from .scans import ScansAPI
+from .remediation_scans import RemediationScansAPI
 from .server import ServerAPI
 from .session import SessionAPI
 from .tags import TagsAPI
@@ -246,6 +248,10 @@ class TenableIO(APISession):
     @property
     def scans(self):
         return ScansAPI(self)
+
+    @property
+    def remediationscans(self):
+        return RemediationScansAPI(self)
 
     @property
     def server(self):
