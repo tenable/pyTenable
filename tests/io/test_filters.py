@@ -112,3 +112,44 @@ def test_asset_tag_filters(api):
         check(filters[data], 'operators', list)
         check(filters[data], 'pattern', str, allow_none=True)
 
+@pytest.mark.vcr()
+def test_use_cache_true_filters(api):
+    '''
+    test to raise the exception use_cache filter is normalized
+    '''
+    filters = getattr(api.filters, '_use_cache')\
+        ('rules', 'access-groups/rules/filters', 'rules', True)
+    assert isinstance(filters, dict)
+    for data in filters:
+        check(filters[data], 'choices', list, allow_none=True)
+        check(filters[data], 'operators', list)
+        check(filters[data], 'pattern', str, allow_none=True)
+
+
+
+@pytest.mark.vcr()
+def test_use_cache_false_filters(api):
+    '''
+    test to raise the exception use_cache filter is not normalized
+    '''
+    filters = getattr(api.filters, '_use_cache')\
+        ('rules', 'access-groups/rules/filters', 'rules', False)
+    assert isinstance(filters, list)
+    for data in enumerate(filters):
+        check(data[1], 'operators', list, allow_none=True)
+        check(data[1], 'name', str, allow_none=True)
+        check(data[1], 'readable_name', str, allow_none=True)
+        check(data[1], 'control', dict, allow_none=True)
+
+@pytest.mark.vcr()
+def test_filters_credentials_false_filters(api):
+    '''
+    test to raise the exception when the credentials filter is not normalized
+    '''
+    filters = api.filters.credentials_filters(normalize=False)
+    assert isinstance(filters, list)
+    for data in enumerate(filters):
+        check(data[1], 'name', str, allow_none=True)
+        check(data[1], 'readable_name', str, allow_none=True)
+        check(data[1], 'operators', list, allow_none=True)
+        check(data[1], 'control', dict, allow_none=True)

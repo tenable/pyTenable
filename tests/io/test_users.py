@@ -296,7 +296,7 @@ def test_users_two_factor_sms_typeerror(api):
     with pytest.raises(TypeError):
         api.users.two_factor('nope', False)
 
-@pytest.mark.vcrx()
+@pytest.mark.vcr()
 def test_users_two_factor_phone_typeerror(api):
     '''
     test to raise exception when type of phone param does not match the expected type.
