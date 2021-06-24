@@ -5,12 +5,12 @@ import uuid
 import time
 import os
 from io import BytesIO
+from sys import stdout
 import pytest
 from tenable.reports.nessusv2 import NessusReportv2
 from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputError
 from tests.checker import check, single
 from tests.io.conftest import SCAN_ID_WITH_RESULTS
-
 
 @pytest.fixture(name='scheduled_scan')
 def fixture_scheduled_scan(request, api):
@@ -135,8 +135,7 @@ def test_scan_create_scan_document_scanner_name_pass(api):
     check(resp['settings'], 'scanner_id', str)
     assert resp['settings']['scanner_id'] == scanner['id']
 
-
-# 
+# @pytest.mark.vcr()
 # def test_scan_attachment_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.attachment('nope', 1)
@@ -344,12 +343,12 @@ def test_scan_configure_scan_schedule_timezone_unexpectedvalueerror(api, scan):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, timezone='the zone of time')
 
 
-# 
+# @pytest.mark.vcr()
 # def test_scan_configure_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.configure('abc123')
 
-# 
+# @pytest.mark.vcr()
 # def test_scan_configure_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.configure('nope')
@@ -736,7 +735,7 @@ def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
     assert mod['enabled'] is False
 
 
-# 
+# @pytest.mark.vcr()
 # def test_scan_copy_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.copy('nope')
@@ -1093,9 +1092,8 @@ def test_scan_create_scheduled_scan_freq_yearly(api):
     assert scan['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
     api.scans.delete(scan['id'])
 
-
-# 
-# def test_scan_delete_scan_id_typeerror(api):
+#@pytest.mark.vcr()
+#def test_scan_delete_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.delete('nope')
 
@@ -1115,13 +1113,12 @@ def test_scan_delete(api, scan):
     '''
     api.scans.delete(scan['id'])
 
-
-# 
+# @pytest.mark.vcr()
 # def test_scan_delete_history_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.delete_history('nope', 1)
 
-# 
+# @pytest.mark.vcr()
 # def test_scan_delete_history_history_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.delete_history(1, 'nope')
@@ -1134,8 +1131,7 @@ def test_scan_delete_history_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scans.delete_history(1, 1)
 
-
-# 
+# @pytest.mark.vcr()
 # def test_scan_details_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.details('nope')
@@ -1196,8 +1192,7 @@ def test_scan_results(api):
         check(info, 'scan_type', str, allow_none=True)
         check(info, 'name', str)
 
-        # check(result, 'comphosts', list)
-
+        check(result, 'comphosts', list)
         if 'comphosts' in result and len(result['comphosts']) > 0:
             for comphosts in result['comphosts']:
                 check(comphosts, 'totalchecksconsidered', int)
@@ -1216,7 +1211,7 @@ def test_scan_results(api):
                 check(comphosts, 'host_id', int)
                 check(comphosts, 'hostname', str)
 
-        # check(result, 'hosts', list)
+        check(result, 'hosts', list)
         if 'hosts' in result and len(result['hosts']) > 0:
             for hosts in result['hosts']:
                 check(hosts, 'totalchecksconsidered', int)
@@ -1256,7 +1251,7 @@ def test_scan_results(api):
                 check(remediation, 'hosts', int)
                 check(remediation, 'vulns', int)
 
-        # check(result, 'vulnerabilities', list)
+        check(result, 'vulnerabilities', list)
         if 'vulnerabilities' in result and len(result['vulnerabilities']) > 0:
             for vulnerability in result['vulnerabilities']:
                 check(vulnerability, 'count', int)
@@ -1281,7 +1276,7 @@ def test_scan_results(api):
             check(history, 'history_id', int)
             check(history, 'is_archived', bool)
 
-        # check(result, 'compliance', list)
+        check(result, 'compliance', list)
         if 'compliance' in result and len(result['compliance']) > 0:
             for compliance in result['compliance']:
                 check(compliance, 'count', int)
@@ -1294,7 +1289,7 @@ def test_scan_results(api):
                 check(compliance, 'plugin_family', str)
 
 
-#
+# @pytest.mark.vcr()
 # def test_scan_export_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.export('nope')
@@ -1379,6 +1374,30 @@ def test_scan_export_was_typeerror(api):
     with pytest.raises(UnexpectedValueError):
         api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='bad-value')
 
+@pytest.mark.vcr()
+def test_scan_export_bytesio(api):
+    '''
+    test to export scan using optional `stream_hook` kwarg, provided by user (Issue #305)
+    '''
+    def stream_hook(response, _fobj, chunk_size=1024):
+        """This is an example callable, the caller provides this"""
+        progress_bytes = 0
+        total_size = int(response.headers.get('content-length', 0))
+        for chunk in response.iter_content(chunk_size=chunk_size):
+            if chunk:
+                progress_bytes += len(chunk)
+                stdout.write('Progress: %d / %d\n' % (progress_bytes, total_size))
+                _fobj.write(chunk)
+        stdout.write('Complete, %d/%d bytes received in stream_hook\n' % (progress_bytes, total_size))
+
+    fobj = api.scans.export(SCAN_ID_WITH_RESULTS, stream_hook=stream_hook)
+    assert isinstance(fobj, BytesIO)
+
+    counter = 0
+    for _ in NessusReportv2(fobj):
+        counter += 1
+        if counter > 10:
+            break
 
 @pytest.mark.vcr()
 def test_scan_export_bytesio(api):
@@ -1418,8 +1437,7 @@ def test_scan_export_file_object(api):
                     break
         os.remove(filename)
 
-
-# 
+# @pytest.mark.vcr()
 # def test_scan_host_details_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.host_details('nope', 1)
@@ -1492,6 +1510,7 @@ def test_scan_host_details(api, scan_results):
     except KeyError as key:
         print('Key error: ', key)
 
+
 @pytest.mark.vcr()
 def test_scan_import_scan_folder_id_typeerror(api):
     '''
@@ -1521,8 +1540,7 @@ def test_scan_import_scan(api):
         fobj = api.scans.export(scan_list[0])
         api.scans.import_scan(fobj)
 
-
-# 
+# @pytest.mark.vcr()
 # def test_scan_launch_scanid_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.launch('nope')
@@ -1601,8 +1619,7 @@ def test_scan_list(api):
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', 'scanner-uuid')
 
-
-# 
+# @pytest.mark.vcr()
 # def test_scan_pause_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.pause('nope')
@@ -1615,8 +1632,7 @@ def test_scan_pause_scan(api, scan):
     _ = api.scans.launch(scan['id'])
     api.scans.pause(scan['id'], block=True)
 
-
-# 
+# @pytest.mark.vcr()
 # def test_scan_plugin_output_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.plugin_output('nope', 1, 1)
@@ -1700,7 +1716,7 @@ def test_scan_plugin_output(api, scan_results):
         print('Invalid key', error)
 
 
-# 
+# @pytest.mark.vcr()
 # def test_scan_read_status_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.set_read_status('nope', False)
@@ -1726,8 +1742,7 @@ def test_scan_read_status(api, scan):
         if resp['id'] == scan['id']:
             assert scan['read'] != resp['read']
 
-
-# 
+# @pytest.mark.vcr()
 # def test_scan_resume_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.resume('nope')
@@ -1745,7 +1760,6 @@ def test_scan_resume(api, scan):
     api.scans.resume(scan['id'])
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
-
 
 # @pytest.mark.vcr()
 # def test_scan_schedule_scan_id_typeerror(api):
@@ -1769,7 +1783,6 @@ def test_scan_schedule(api, scan):
     '''
     api.scans.schedule(scan['id'], False)
 
-
 # @pytest.mark.vcr()
 # def test_scan_stop_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
@@ -1784,7 +1797,6 @@ def test_scan_stop(api, scan):
     api.scans.launch(scan['id'])
     time.sleep(5)
     api.scans.stop(scan['id'])
-
 
 # @pytest.mark.vcr()
 # def test_scan_status_scan_id_typeerror(api):

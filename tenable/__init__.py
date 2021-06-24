@@ -3,7 +3,7 @@ Welcome to pyTenable's documentation!
 =====================================
 
 .. image:: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Ftenable%2FpyTenable%2Fbadge&label=build
-   :target: https://travis-ci.org/tenable/pyTenable
+   :target: https://github.com/tenable/pyTenable/actions
 .. image:: https://img.shields.io/pypi/v/pytenable.svg
    :target: https://pypi.org/project/pyTenable/
 .. image:: https://img.shields.io/pypi/pyversions/pyTenable.svg

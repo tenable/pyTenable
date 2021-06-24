@@ -67,7 +67,6 @@ def test_workbench_assets(api):
         check(asset, 'gcp_zone', list)
         check(asset, 'has_agent', bool)
         check(asset, 'hostname', list)
-        check(asset, 'has_plugin_results', bool)
         check(asset, 'id', 'uuid')
         check(asset, 'installed_software', list)
         check(asset, 'interfaces', list)
@@ -172,13 +171,11 @@ def test_workbench_asset_activity(api):
                     check(data['details'], 'createdAt', 'datetime')
                     check(data['details'], 'firstScanTime', 'datetime')
                     check(data['details'], 'hasAgent', bool)
-                    check(data['details'], 'hasPluginResults', bool)
                     check(data['details'], 'lastLicensedScanTime', 'datetime')
                     check(data['details'], 'lastLicensedScanTimeV2', 'datetime')
                     check(data['details'], 'lastScanTime', 'datetime')
                     check(data['details'], 'properties', dict)
                     for keys in data['details']['properties'].keys():
-                        check(data['details']['properties'][keys], 'lastObserved', 'datetime')
                         check(data['details']['properties'][keys], 'values', list)
                     check(data['details'], 'sources', list)
                     for status in data['details']['sources']:
@@ -188,7 +185,7 @@ def test_workbench_asset_activity(api):
                     check(data['details'], 'updatedAt', 'datetime')
                 if data['type'] in ['discovered', 'seen', 'updated']:
                     check(data, 'scan_id', 'scanner-uuid')
-                    check(data, 'schedule_id', 'str')
+                    check(data, 'schedule_id', str)
                     check(data, 'source', str)
     except NotFoundError:
         print('Activity for the asset uuid is not found')
@@ -227,7 +224,6 @@ def test_workbench_asset_info(api):
     '''
     assets = api.workbenches.assets()
     api.workbenches.asset_info(assets[0]['id'])
-
 
 @pytest.mark.vcr()
 def test_workbench_asset_vulns_uuid_typeerror(api):
@@ -400,7 +396,6 @@ def test_workbench_asset_vuln_info(api):
             info = api.workbenches.asset_vuln_info(vuln[0]['id'], plugin_id)
             check(info, 'accepted_count', int)
             check(info, 'count', int)
-            check(info, 'description', str)
             check(info, 'discovery', dict)
             check(info['discovery'], 'seen_first', 'datetime', allow_none=True)
             check(info['discovery'], 'seen_last', 'datetime', allow_none=True)
@@ -427,7 +422,6 @@ def test_workbench_asset_vuln_info(api):
             check(info['risk_information'], 'stig_severity', str, allow_none=True)
             check(info, 'see_also', list)
             check(info, 'severity', int)
-            check(info, 'synopsis', str)
             check(info, 'vuln_count', int)
 
 
@@ -817,7 +811,6 @@ def test_workbench_vuln_info(api):
         assert isinstance(info, dict)
         check(info, 'accepted_count', int)
         check(info, 'count', int)
-        check(info, 'description', str)
         check(info, 'discovery', dict)
         check(info['discovery'], 'seen_first', 'datetime', allow_none=True)
         check(info['discovery'], 'seen_last', 'datetime', allow_none=True)
@@ -844,7 +837,6 @@ def test_workbench_vuln_info(api):
         check(info['risk_information'], 'stig_severity', str, allow_none=True)
         check(info, 'see_also', list)
         check(info, 'severity', int)
-        check(info, 'synopsis', str)
         check(info, 'vuln_count', int)
 
 
