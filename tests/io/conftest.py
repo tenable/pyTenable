@@ -5,6 +5,7 @@ from tests.checker import check, single
 
 SCAN_ID_WITH_RESULTS = 6799
 
+
 @pytest.fixture(scope='module')
 def vcr_config():
     return {
@@ -65,7 +66,7 @@ def policy(request, api):
 @pytest.fixture
 def user(request, api):
     user = api.users.create(
-        '{}@tenable.com'.format(uuid.uuid4()),
+        '{}@pytenable.com'.format(uuid.uuid4()),
         '{}Tt!'.format(uuid.uuid4()),
         64)
     def teardown():
@@ -108,6 +109,24 @@ def scan(request, api):
             pass
     request.addfinalizer(teardown)
     return scan
+
+@pytest.fixture
+def remediationscan(request, api):
+    scan = api.remediationscans.create_remediation_scan(
+        uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
+        name='RemedyScan',
+        description='RemediationScan Creation',
+        scan_time_window=10,
+        targets=['http://127.0.0.1'],
+        template='advanced')
+    def teardown():
+        try:
+            api.scans.delete(scan['id'])
+        except NotFoundError:
+            pass
+    request.addfinalizer(teardown)
+    return scan
+
 
 @pytest.fixture
 def scan_results(request, api):
