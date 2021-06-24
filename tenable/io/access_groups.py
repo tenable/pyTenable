@@ -43,6 +43,9 @@ class AccessGroupsIterator(TIOIterator):
     pass
 
 class AccessGroupsAPI(TIOEndpoint):
+    '''
+    This class contains all methods related to access-groups
+    '''
     def _principal_constructor(self, items):
         '''
         Simple principle tuple expander.  Also supports validating principle
@@ -60,7 +63,7 @@ class AccessGroupsAPI(TIOEndpoint):
                         'principal_id': self._check(
                             'principal:id', item[1], 'uuid')
                     })
-                except UnexpectedValueError as err:
+                except UnexpectedValueError:
                     resp.append({
                         'type': item[0],
                         'principal_name': self._check(
@@ -151,14 +154,14 @@ class AccessGroupsAPI(TIOEndpoint):
         # call the API endpoint and return the response to the caller.
         return self._api.post('access-groups', json=payload).json()
 
-    def edit(self, id, **kw):
+    def edit(self, group_id, **kw):
         '''
         Edits an access group
 
         :devportal:`access-groups: update <access-groups-edit>`
 
         Args:
-            id (str):
+            group_id (str):
                 The UUID of the access group to edit.
             name (str, optional):
                 The name of the access group to create.
@@ -206,44 +209,46 @@ class AccessGroupsAPI(TIOEndpoint):
 
         # get the details of the access group that we are supposed to be editing
         # and then merge in the keywords specified.
-        g = dict_merge(self.details(self._check('id', id, 'uuid')), kw)
+        group = dict_merge(self.details(self._check('group_id', group_id, 'uuid')), kw)
 
         # construct the payload from the merged details.
         payload = {
-            'name': self._check('name', g['name'], str),
-            'all_users': self._check('all_users', g['all_users'], bool),
-            'all_assets': self._check('all_assets', g['all_assets'], bool),
-            'rules': g['rules'],
-            'principals': g['principals']
+            'name': self._check('name', group['name'], str),
+            'all_users': self._check('all_users', group['all_users'], bool),
+            'all_assets': self._check('all_assets', group['all_assets'], bool),
+            'rules': group['rules']
         }
 
+        if 'principals' in group and group['principals']:
+            payload['principals'] = group['principals']
+
         # call the API endpoint and return the response to the caller.
-        return self._api.put('access-groups/{}'.format(id),
+        return self._api.put('access-groups/{}'.format(group_id),
             json=payload).json()
 
-    def delete(self, id):
+    def delete(self, group_id):
         '''
         Deletes the specified access group.
 
         :devportal:`access-groups: delete <access-groups-delete>`
 
         Args:
-            id (str): The UUID of the access group to remove.
+            group_id (str): The UUID of the access group to remove.
         '''
         self._api.delete('access-groups/{}'.format(
-            self._check('id', id, 'uuid')))
+            self._check('group_id', group_id, 'uuid')))
 
-    def details(self, id):
+    def details(self, group_id):
         '''
         Retrieves the details of the specified access group.
 
         :devportal:`access-groups: details <access-groups-details>`
 
         Args:
-            id (str): The UUID of the access group.
+            group_id (str): The UUID of the access group.
         '''
         return self._api.get('access-groups/{}'.format(
-            self._check('id', id, 'uuid'))).json()
+            self._check('group_id', group_id, 'uuid'))).json()
 
     def list(self, *filters, **kw):
         '''
@@ -263,8 +268,8 @@ class AccessGroupsAPI(TIOEndpoint):
 
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.filters.access_groups_filters() <FiltersAPI.access_groups_filters>`
-                endpoint to get more details.
+                the :py:meth:`tio.filters.access_groups_filters()
+                <FiltersAPI.access_groups_filters>` endpoint to get more details.
             filter_type (str, optional):
                 The filter_type operator determines how the filters are combined
                 together.  ``and`` will inform the API that all of the filter
@@ -361,4 +366,3 @@ class AccessGroupsAPI(TIOEndpoint):
             _path='access-groups',
             _resource='access_groups'
         )
-
