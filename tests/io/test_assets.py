@@ -300,7 +300,6 @@ def test_assets_bulk_delete_success(api):
         # break iteration
         if iterate_count == 5 or (
                 len(asset) == 2 and len(set(asset)) == 1 and asset[0] == 'COMPLETE'):
-            print("breaking iteration")
             break
 
     # remove imported asset
