@@ -22,10 +22,6 @@ buildsCommon = new BuildsCommon(this)
 
 void unittests(String version) {
     stage("unittest${version}") {
-	environment {
-		PYPI_USER = '__token__'
-		PYPI_PASS = 'pypi-AgENdGVzdC5weXBpLm9yZwIkZDcxOWZlNmEtZGMxZC00NzdkLWE2MmUtOTA0NGQwNjI0NzE0AAIleyJwZXJtaXNzaW9ucyI6ICJ1c2VyIiwgInZlcnNpb24iOiAxfQAABiDGChJWk6mFPf0g5KxexyeRjG9el2MsjleReTNBXX8Tpg'
-	}
         node(Constants.DOCKERNODE) {
             buildsCommon.cleanup()
             checkout scm
@@ -42,7 +38,7 @@ void unittests(String version) {
                         find . -name *.xml
    			rm -rf dist
 			python setup.py sdist
-			twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${env.PYPI_USER} -p ${env.PYPI_PASS}
+			#twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${env.PYPI_USER} -p ${env.PYPI_PASS}
 			
 			"""
                 }
