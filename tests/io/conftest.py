@@ -76,7 +76,7 @@ def policy(request, api):
 @pytest.fixture
 def user(request, api):
     user = api.users.create(
-        '{}@pytenable.com'.format(uuid.uuid4()),
+        '{}@tenable.com'.format(uuid.uuid4()),
         '{}Tt!'.format(uuid.uuid4()),
         64)
 
