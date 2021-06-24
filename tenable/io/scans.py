@@ -837,8 +837,7 @@ class ScansAPI(TIOEndpoint):
         return self._api.get('scans/{}'.format(
             scan_id), params=params).json()
 
-
-    def export(self, scan_id, *filters, **kw):
+    def export(self, scan_id, *filters, stream_hook=None, **kw):
         '''
         Export the scan report.
 
@@ -853,6 +852,11 @@ class ScansAPI(TIOEndpoint):
                 following example: `('plugin.id', 'eq', '19506')`.  For a
                 complete list of the available filters and options, please
                 refer to the API documentation linked above.
+            stream_hook (callable, optional):
+                If set, send the streaming response to this callable. The callable is
+                responsible for iterating over the stream but does *not* need to close
+                the file object. The signature for the callable is:
+                    def f(response: requests.Response, fobj: BytesIO, chunk_size) -> BytesIO
             history_id (int, optional):
                 The unique identifier for the instance of the scan.
             history_uuid (uuid, optional):
@@ -973,10 +977,17 @@ class ScansAPI(TIOEndpoint):
         resp = self._api.get('scans/{}/export/{}/download'.format(
             scan_id, fid), params=dl_params, stream=True)
 
-        # Lets stream the file into the file-like object...
-        for chunk in resp.iter_content(chunk_size=1024):
-            if chunk:
-                fobj.write(chunk)
+        if stream_hook is not None:
+            assert callable(stream_hook)
+            # See issue 305 for an example stream_hook callable
+            # https://github.com/tenable/pyTenable/issues/305
+            stream_hook(resp, fobj, chunk_size=1024)
+        else:
+            # Lets stream the file into the file-like object...
+            for chunk in resp.iter_content(chunk_size=1024):
+                if chunk:
+                    fobj.write(chunk)
+
         fobj.seek(0)
         resp.close()
 

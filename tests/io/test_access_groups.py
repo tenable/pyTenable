@@ -1,31 +1,30 @@
 '''
-test access groups
+test access_groups
 '''
 import uuid
 import pytest
-from tenable.errors import APIError, UnexpectedValueError
-from ..checker import check
+from tenable.errors import UnexpectedValueError, APIError
+from tests.checker import check
 
-@pytest.fixture
-def rules():
+@pytest.fixture(name='rules')
+def fixture_rules():
     '''
-    rules fixture
+    Fixture to return access_group rules structure
     '''
     return [('ipv4', 'eq', ['192.168.0.0/24'])]
 
-
-@pytest.fixture
-def agroup(request, api, vcr, rules):
+@pytest.fixture(name='agroup')
+def fixture_agroup(request, api, rules):
     '''
-    access group fixture
+    Fixture to create access_group
     '''
-    with vcr.use_cassette('test_access_groups_create_success'):
-        group = api.access_groups.create('Example', rules)
-
+    group = api.access_groups.create('Example', rules)
     def teardown():
+        '''
+        cleanup function to delete access_group
+        '''
         try:
-            with vcr.use_cassette('test_access_groups_delete_success'):
-                api.access_groups.delete(group['id'])
+            api.access_groups.delete(group['id'])
         except APIError:
             pass
 
@@ -35,32 +34,28 @@ def agroup(request, api, vcr, rules):
 
 def test_access_group_principal_constructor_type_typeerror(api):
     '''
-    test to raise the exception when principal constructor type doesnt match the expected type
+    test to raise exception when type of type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         getattr(api.access_groups, '_principal_constructor')([(1, 'something')])
 
-
 def test_access_group_principal_constructor_type_unexpectedvalueerror(api):
     '''
-    test to raise the exception when principal constructor type gets the value which isn't expected
+    test to raise exception when type param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
         getattr(api.access_groups, '_principal_constructor')([('something', 'something')])
 
-
 def test_access_group_principal_constructor_id_typeerror(api):
     '''
-    test to raise the exception when principal constructor
-    gets the type of the id which isn't expected
+    test to raise exception when type of id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         getattr(api.access_groups, '_principal_constructor')([('user', 1)])
 
-
 def test_access_group_principal_constructor_dict_type_typeerror(api):
     '''
-    test to raise the exception when principal constructor gets the type which isn't expected
+    test to raise exception when type of type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         getattr(api.access_groups, '_principal_constructor')([{
@@ -72,7 +67,7 @@ def test_access_group_principal_constructor_dict_type_typeerror(api):
 
 def test_access_group_principal_constructor_dict_type_unexpectedvalueerror(api):
     '''
-    test to raise the exception when principal constructor gets the value which isn't expected
+    test to raise exception when type param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
         getattr(api.access_groups, '_principal_constructor')([{
@@ -84,8 +79,7 @@ def test_access_group_principal_constructor_dict_type_unexpectedvalueerror(api):
 
 def test_access_group_principal_constructor_dict_id_typeerror(api):
     '''
-    test to raise the exception when type of id in the principal
-    constructor is not matching with defined
+    test to raise exception when type of id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         getattr(api.access_groups, '_principal_constructor')([{
@@ -97,8 +91,7 @@ def test_access_group_principal_constructor_dict_id_typeerror(api):
 
 def test_access_group_principal_constructor_dict_name_typeerror(api):
     '''
-    test to raise the exception when type of name in the principal
-    constructor is not matching with defined
+    test to raise exception when type of name param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         getattr(api.access_groups, '_principal_constructor')([{
@@ -110,35 +103,34 @@ def test_access_group_principal_constructor_dict_name_typeerror(api):
 
 def test_access_group_principal_constructor_tuple_pass(api):
     '''
-test to raise the exception to check the type of principal constructor
+    test to parse tuple type principals
     '''
-    resp = getattr(api.access_groups, '_principal_constructor')([('user', 'test@test.com')])
-    assert resp == [{'type': 'user', 'principal_name': 'test@test.com'}]
+    assert getattr(api.access_groups, '_principal_constructor')([
+        ('user', 'test@test.com')
+    ]) == [{'type': 'user', 'principal_name': 'test@test.com'}]
 
-    uuids = str(uuid.uuid4())
-    resp = getattr(api.access_groups, '_principal_constructor')([('user', uuids)])
-    assert resp == [{'type': 'user', 'principal_id': uuids}]
-
+    user = str(uuid.uuid4())
+    assert getattr(api.access_groups, '_principal_constructor')([
+        ('user', user)
+    ]) == [{'type': 'user', 'principal_id': user}]
 
 def test_access_group_principal_constructor_dict_pass(api):
     '''
-test to raise the exception to check the type of principal constructor
+    test to parse dict type principals
     '''
-    resp = getattr(api.access_groups, '_principal_constructor')([
+    assert getattr(api.access_groups, '_principal_constructor')([
         {'type': 'user', 'principal_name': 'test@test.com'}
-    ])
-    assert resp == [{'type': 'user', 'principal_name': 'test@test.com'}]
+    ]) == [{'type': 'user', 'principal_name': 'test@test.com'}]
 
-    uuids = str(uuid.uuid4())
-    resp = getattr(api.access_groups, '_principal_constructor')\
-        ([{'type': 'user', 'principal_id': uuids}])
-    assert resp == [{'type': 'user', 'principal_id': uuids}]
-
+    user = str(uuid.uuid4())
+    assert getattr(api.access_groups, '_principal_constructor')([
+        {'type': 'user', 'principal_id': user}
+    ]) == [{'type': 'user', 'principal_id': user}]
 
 @pytest.mark.vcr()
 def test_access_groups_create_name_typeerror(api, rules):
     '''
-    test to raise the exception when type of name is not matching with the defined type
+    test to raise exception when type of name param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.create(1, rules)
@@ -147,8 +139,7 @@ def test_access_groups_create_name_typeerror(api, rules):
 @pytest.mark.vcr()
 def test_access_groups_create_all_users_typeerror(api, rules):
     '''
-    test to raise the exception when type of argument
-    in create is not matching with the desired type
+    test to raise exception when type of all_users param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.create('Test', rules, all_users='nope')
@@ -157,8 +148,8 @@ def test_access_groups_create_all_users_typeerror(api, rules):
 @pytest.mark.vcr()
 def test_access_groups_create_success(agroup):
     '''
-    test to create the access group
-    '''
+   test to create access group
+   '''
     assert isinstance(agroup, dict)
     check(agroup, 'created_at', 'datetime')
     check(agroup, 'updated_at', 'datetime')
@@ -171,11 +162,12 @@ def test_access_groups_create_success(agroup):
         check(rule, 'type', str)
         check(rule, 'operator', str)
         check(rule, 'terms', list)
-    check(agroup, 'principals', list)
-    for principal in agroup['principals']:
-        check(principal, 'type', str)
-        check(principal, 'principal_id', 'uuid')
-        check(principal, 'principal_name', str)
+    if 'principals' in agroup and agroup['principals']:
+        check(agroup, 'principals', list)
+        for principal in agroup['principals']:
+            check(principal, 'type', str)
+            check(principal, 'principal_id', 'uuid')
+            check(principal, 'principal_name', str)
     check(agroup, 'created_by_uuid', 'uuid')
     check(agroup, 'updated_by_uuid', 'uuid')
     check(agroup, 'created_by_name', str)
@@ -186,7 +178,7 @@ def test_access_groups_create_success(agroup):
 @pytest.mark.vcr()
 def test_access_groups_delete_success(api, agroup):
     '''
-    test to delete the access group
+    test to delete access group
     '''
     api.access_groups.delete(agroup['id'])
 
@@ -194,7 +186,7 @@ def test_access_groups_delete_success(api, agroup):
 @pytest.mark.vcr()
 def test_access_group_edit_id_typeerror(api):
     '''
-    test to raise the exception when type of access group id is not matching with the defined type
+    test to raise exception when type of group_id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.edit(1)
@@ -203,7 +195,7 @@ def test_access_group_edit_id_typeerror(api):
 @pytest.mark.vcr()
 def test_access_group_edit_id_unexpectedvalueerror(api):
     '''
-    test to check raise the exception when access group id gets the non defined value
+    test to raise exception when group_id param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
         api.access_groups.edit('something')
@@ -212,7 +204,7 @@ def test_access_group_edit_id_unexpectedvalueerror(api):
 @pytest.mark.vcr()
 def test_access_group_edit_success(api, agroup):
     '''
-    test to edit the access group and verifying their types
+    test to edit access group
     '''
     group = api.access_groups.edit(agroup['id'], name='Updated')
     assert isinstance(group, dict)
@@ -227,22 +219,22 @@ def test_access_group_edit_success(api, agroup):
         check(rule, 'type', str)
         check(rule, 'operator', str)
         check(rule, 'terms', list)
-    check(group, 'principals', list)
-    for principal in agroup['principals']:
-        check(principal, 'type', str)
-        check(principal, 'principal_id', 'uuid')
-        check(principal, 'principal_name', str)
+    if 'principals' in group and group['principals']:
+        check(group, 'principals', list)
+        for principal in group['principals']:
+            check(principal, 'type', str)
+            check(principal, 'principal_id', 'uuid')
+            check(principal, 'principal_name', str)
     check(group, 'created_by_uuid', 'uuid')
     check(group, 'updated_by_uuid', 'uuid')
     check(group, 'created_by_name', str)
     check(group, 'updated_by_name', str)
     check(group, 'processing_percent_complete', int)
 
-
 @pytest.mark.vcr()
 def test_access_groups_details_success(api, agroup):
     '''
-    test to check the details of the access group and verifying their types
+    test to get details of specific access group
     '''
     group = api.access_groups.details(agroup['id'])
     assert isinstance(group, dict)
@@ -257,22 +249,22 @@ def test_access_groups_details_success(api, agroup):
         check(rule, 'type', str)
         check(rule, 'operator', str)
         check(rule, 'terms', list)
-    check(group, 'principals', list)
-    for principal in agroup['principals']:
-        check(principal, 'type', str)
-        check(principal, 'principal_id', 'uuid')
-        check(principal, 'principal_name', str)
+    if 'principals' in group and group['principals']:
+        check(group, 'principals', list)
+        for principal in group['principals']:
+            check(principal, 'type', str)
+            check(principal, 'principal_id', 'uuid')
+            check(principal, 'principal_name', str)
     check(group, 'created_by_uuid', 'uuid')
     check(group, 'updated_by_uuid', 'uuid')
     check(group, 'created_by_name', str)
     check(group, 'updated_by_name', str)
     check(group, 'processing_percent_complete', int)
 
-
 @pytest.mark.vcr()
 def test_access_groups_list_offset_typeerror(api):
     '''
-    test to raise the exception when type of limit name is not matching with the defined type
+    test to raise exception when type of offset param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.list(offset='nope')
@@ -281,7 +273,7 @@ def test_access_groups_list_offset_typeerror(api):
 @pytest.mark.vcr()
 def test_access_groups_list_limit_typeerror(api):
     '''
-    test to raise the exception when type of limit is not matching with the defined type
+    test to raise exception when type of limit param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.list(limit='nope')
@@ -290,7 +282,7 @@ def test_access_groups_list_limit_typeerror(api):
 @pytest.mark.vcr()
 def test_access_groups_list_sort_field_typeerror(api):
     '''
-    test to raise the exception when type of sorting field is not as defined
+    test to raise exception when type of sort field_name param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.list(sort=((1, 'asc'),))
@@ -299,8 +291,8 @@ def test_access_groups_list_sort_field_typeerror(api):
 @pytest.mark.vcr()
 def test_access_groups_list_sort_direction_typeerror(api):
     '''
-
-test to raise the exception when sort param doesnt get the expected type
+    test to raise exception when type of sort field_direction param
+    does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.list(sort=(('uuid', 1),))
@@ -309,7 +301,7 @@ test to raise the exception when sort param doesnt get the expected type
 @pytest.mark.vcr()
 def test_access_groups_list_sort_direction_unexpectedvalue(api):
     '''
-    test to raise the exception when sort param doesnt get the expected value
+    test to raise exception when sort_firection param value does not match the choices.
     '''
     with pytest.raises(UnexpectedValueError):
         api.access_groups.list(sort=(('uuid', 'nope'),))
@@ -318,7 +310,7 @@ def test_access_groups_list_sort_direction_unexpectedvalue(api):
 @pytest.mark.vcr()
 def test_access_groups_list_filter_name_typeerror(api):
     '''
-    test to raise the exception when type of filter name is not matching with the defined type
+    test to raise exception when type of filter_name param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.list((1, 'match', 'win'))
@@ -327,7 +319,7 @@ def test_access_groups_list_filter_name_typeerror(api):
 @pytest.mark.vcr()
 def test_access_groups_list_filter_operator_typeerror(api):
     '''
-    test to raise the exception when type of filter is not matching with the defined type
+    test to raise exception when type of filter_operator param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.list(('name', 1, 'win'))
@@ -336,8 +328,7 @@ def test_access_groups_list_filter_operator_typeerror(api):
 @pytest.mark.vcr()
 def test_access_groups_list_filter_value_typeerror(api):
     '''
-
-    test to raise the exception when type of filter_value is not matching with the defined type
+    test to raise exception when type of filter_value param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.list(('name', 'match', 1))
@@ -346,7 +337,7 @@ def test_access_groups_list_filter_value_typeerror(api):
 @pytest.mark.vcr()
 def test_access_groups_list_filter_type_typeerror(api):
     '''
-    test to raise the exception when type of filter_type is not matching with the defined type
+    test to raise exception when type of filter_type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.list(filter_type=1)
@@ -355,7 +346,7 @@ def test_access_groups_list_filter_type_typeerror(api):
 @pytest.mark.vcr()
 def test_access_groups_list_wildcard_typeerror(api):
     '''
-    test to raise the exception when type of wildcard is not matching with the defined type
+    test to raise exception when type of wildcard param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.list(wildcard=1)
@@ -364,7 +355,7 @@ def test_access_groups_list_wildcard_typeerror(api):
 @pytest.mark.vcr()
 def test_access_groups_list_wildcard_fields_typeerror(api):
     '''
-    test to raise the exception when type of wildcard fields is not matching with the defined type
+    test to raise exception when type of wildcard_fields param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.access_groups.list(wildcard_fields='nope')
@@ -373,29 +364,26 @@ def test_access_groups_list_wildcard_fields_typeerror(api):
 @pytest.mark.vcr()
 def test_access_groups_list(api):
     '''
-    test to raise the exception to list the access groups
+    test to get list of access groups
     '''
     count = 0
     access_groups = api.access_groups.list()
-    for i in access_groups:
+    for group in access_groups:
         count += 1
-        assert isinstance(i, dict)
-        check(i, 'created_at', 'datetime')
-        check(i, 'updated_at', 'datetime')
-        check(i, 'id', 'uuid')
-        check(i, 'name', str)
-        check(i, 'all_assets', bool)
-        check(i, 'all_users', bool)
-        # check(i, 'created_by_uuid', 'uuid') # Will not return for default group
-        check(i, 'updated_by_uuid', 'uuid')
-        check(i, 'created_by_name', str)
-        check(i, 'updated_by_name', str)
-        check(i, 'processing_percent_complete', int)
-        check(i, 'status', str)
+        assert isinstance(group, dict)
+        check(group, 'created_at', 'datetime')
+        check(group, 'updated_at', 'datetime')
+        check(group, 'id', 'uuid')
+        check(group, 'name', str)
+        check(group, 'all_assets', bool)
+        check(group, 'all_users', bool)
+        #check(group, 'created_by_uuid', 'uuid') # Will not return for default group
+        check(group, 'updated_by_uuid', 'uuid')
+        check(group, 'created_by_name', str)
+        check(group, 'updated_by_name', str)
+        check(group, 'processing_percent_complete', int)
+        check(group, 'status', str)
     assert count == access_groups.total
-
-
-
 
 @pytest.mark.vcr()
 def test_access_groups_list_fields(api):
@@ -408,19 +396,19 @@ def test_access_groups_list_fields(api):
                                            offset=2,
                                            wildcard='match',
                                            wildcard_fields=['name'])
-    for i in access_groups:
+    for group in access_groups:
         count += 1
-        assert isinstance(i, dict)
-        check(i, 'created_at', 'datetime')
-        check(i, 'updated_at', 'datetime')
-        check(i, 'id', 'uuid')
-        check(i, 'name', str)
-        check(i, 'all_assets', bool)
-        check(i, 'all_users', bool)
+        assert isinstance(group, dict)
+        check(group, 'created_at', 'datetime')
+        check(group, 'updated_at', 'datetime')
+        check(group, 'id', 'uuid')
+        check(group, 'name', str)
+        check(group, 'all_assets', bool)
+        check(group, 'all_users', bool)
         # check(i, 'created_by_uuid', 'uuid') # Will not return for default group
-        check(i, 'updated_by_uuid', 'uuid')
-        check(i, 'created_by_name', str)
-        check(i, 'updated_by_name', str)
-        check(i, 'processing_percent_complete', int)
-        check(i, 'status', str)
+        check(group, 'updated_by_uuid', 'uuid')
+        check(group, 'created_by_name', str)
+        check(group, 'updated_by_name', str)
+        check(group, 'processing_percent_complete', int)
+        check(group, 'status', str)
     assert count == access_groups.total
