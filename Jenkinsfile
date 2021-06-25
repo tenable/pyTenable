@@ -56,7 +56,45 @@ void unittests(String version) {
                 }
             }
         }
+        stage("pylint{version}") {
+        node(Constants.DOCKERNODE) {
+            buildsCommon.cleanup()
+            checkout scm
+
+            withContainer(image: "python:${version}-buster", registry: '', inside: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {
+                try {
+                    sh """
+                       pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
+                       pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log
+                       cat reports/pylint_tenable.log
+                       cat reports/pylint_tests.log
+                    """
+                }
+                catch(ex) {
+                    throw ex
+                }
+                finally {
+                    if (fileExists ('reports/pylint_tenable.log')) {
+                           result =  recordIssues(
+                                enabledForFailure: true,
+                                tool: pyLint(pattern: '**/pylint.log'),
+                                unstableTotalAll: 20,
+                                failedTotalAll: 30,
+                        )
+                    }
+                    if (fileExists ('reports/pylint_test.log')) {
+                           result =  recordIssues(
+                                enabledForFailure: true,
+                                tool: pyLint(pattern: 'reports/pylint_*.log'),
+                                unstableTotalAll: 20,
+                                failedTotalAll: 30,
+                        )
+                    }
+                }
+            }
+        }
     }
+}
 }
 
 try {
