@@ -33,6 +33,7 @@ Example:
     .. automethod:: put
     .. automethod:: delete
 '''
+import os
 from tenable.base import APISession
 from tenable.errors import UnexpectedValueError
 from .images import ImageAPI
