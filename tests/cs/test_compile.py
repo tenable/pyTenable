@@ -14,7 +14,7 @@ from tenable.errors import UnexpectedValueError
 from tests.cs.conftest import api
 
 
-def test_cs_init_catch_name_error():
+def test_cs_compile():
     '''
     test to raise the exception when no api keys are provided
     '''
@@ -31,10 +31,10 @@ def test_cs_init_catch_name_error():
         UsageAPI(api)
 
     except NameError as error:
-        print('\n', 'The following error exists-\n', error)
+        print('\n \n The following name error exists: {}'.format(error))
         pytest.raises(NameError)
         assert True
     except UnexpectedValueError as error:
-        print('\n', 'The following error exists-\n', error)
+        print('\n  \n The following value error exists: {}'.format(error))
         pytest.raises(UnexpectedValueError)
         assert True
