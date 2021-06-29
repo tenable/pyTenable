@@ -77,6 +77,7 @@ try {
                   credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',
                   passwordVariable : 'PYPIPASSWORD']]) {
                   sh """
+                    pip install twine
                     rm -rf dist
                     python setup.py sdist
                     twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
