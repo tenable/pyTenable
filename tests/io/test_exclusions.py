@@ -1188,7 +1188,7 @@ def test_exclusions_list(api):
 
 
 @pytest.mark.vcr()
-def test_exclusion_import_exclusion(api, datafiles):
+def test_exclusion_import_exclusion(api):
     '''
     test to import exclusion from file
     '''
