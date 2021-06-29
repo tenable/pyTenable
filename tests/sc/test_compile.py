@@ -1,6 +1,36 @@
+'''
+test compile
+'''
 import pytest
+
 from tenable.errors import ConnectionError
 from tenable.sc import TenableSC
+from tenable.sc.accept_risks import AcceptRiskAPI
+from tenable.sc.alerts import AlertAPI
+from tenable.sc.analysis import AnalysisResultsIterator, AnalysisAPI
+from tenable.sc.asset_lists import AssetListAPI
+from tenable.sc.audit_files import AuditFileAPI
+from tenable.sc.base import SCEndpoint, SCResultsIterator
+from tenable.sc.credentials import CredentialAPI
+from tenable.sc.current import CurrentSessionAPI
+from tenable.sc.feeds import FeedAPI
+from tenable.sc.files import FileAPI
+from tenable.sc.groups import GroupAPI
+from tenable.sc.organizations import OrganizationAPI
+from tenable.sc.plugins import PluginAPI, PluginResultsIterator
+from tenable.sc.policies import ScanPolicyAPI
+from tenable.sc.queries import QueryAPI
+from tenable.sc.recast_risks import RecastRiskAPI
+from tenable.sc.repositories import RepositoryAPI
+from tenable.sc.roles import RoleAPI
+from tenable.sc.scan_instances import ScanResultAPI
+from tenable.sc.scan_zones import ScanZoneAPI
+from tenable.sc.scanners import ScannerAPI
+from tenable.sc.scans import ScanAPI
+from tenable.sc.status import StatusAPI
+from tenable.sc.system import SystemAPI
+from tenable.sc.users import UserAPI
+from tests.sc.conftest import sc
 
 
 def test_sc_init_catch_name_error():
@@ -10,9 +40,43 @@ def test_sc_init_catch_name_error():
 
     try:
         TenableSC(host='127.0.0.1')
-    except NameError as error:
+        AcceptRiskAPI(sc)
+        AlertAPI(sc)
+        AnalysisResultsIterator(sc)
+        AnalysisAPI(sc)
+        AssetListAPI(sc)
+        AuditFileAPI(sc)
+        SCEndpoint(sc)
+        SCResultsIterator(sc)
+        CredentialAPI(sc)
+        CurrentSessionAPI(sc)
+        FeedAPI(sc)
+        FileAPI(sc)
+        GroupAPI(sc)
+        OrganizationAPI(sc)
+        PluginAPI(sc)
+        PluginResultsIterator(sc)
+        ScanPolicyAPI(sc)
+        QueryAPI(sc)
+        RecastRiskAPI(sc)
+        RepositoryAPI(sc)
+        RoleAPI(sc)
+        ScanResultAPI(sc)
+        ScanZoneAPI(sc)
+        ScannerAPI(sc)
+        ScanAPI(sc)
+        StatusAPI(sc)
+        SystemAPI(sc)
+        UserAPI(sc)
+
+    except NameError as err:
+        print("The following error exists: ", err)
         pytest.raises(NameError)
+        assert True
     except ConnectionError as err:
         print("The following error exists: ", err)
         pytest.raises(ConnectionError)
+        assert True
+    except TypeError as err:
+        print("The following error exists: ", err)
         assert True
