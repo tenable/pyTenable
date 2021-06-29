@@ -38,7 +38,7 @@ from tenable.io.workbenches import WorkbenchesAPI
 from tests.io.conftest import api
 
 
-def test_io_init_catch_value_error():
+def test_io_compile():
     '''
     test to raise the exception when value for api keys is not passed correctly
     '''
@@ -84,11 +84,11 @@ def test_io_init_catch_value_error():
         TargetGroupsAPI(api)
         UsersAPI(api)
         WorkbenchesAPI(api)
-    except NameError as err:
-        print('The following error exists: ', err)
+    except NameError as error:
+        print('\n \n The following name error exists: {}'.format(error))
         pytest.raises(NameError)
         assert True
-    except UnexpectedValueError as err:
-        print('The following error exists: ', err)
+    except UnexpectedValueError as error:
+        print('\n \n The following value error exists: {}'.format(error))
         pytest.raises(UnexpectedValueError)
         assert True

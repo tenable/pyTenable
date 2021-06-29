@@ -33,7 +33,7 @@ from tenable.sc.users import UserAPI
 from tests.sc.conftest import sc
 
 
-def test_sc_init_catch_name_error():
+def test_sc_compile():
     '''
     test to raise the exception when host is invalid, hence the connection wont be made
     '''
@@ -69,14 +69,14 @@ def test_sc_init_catch_name_error():
         SystemAPI(sc)
         UserAPI(sc)
 
-    except NameError as err:
-        print("The following error exists: ", err)
+    except NameError as error:
+        print("\n \n The following name error exists: {}".format(error))
         pytest.raises(NameError)
         assert True
-    except ConnectionError as err:
-        print("The following error exists: ", err)
+    except ConnectionError as error:
+        print("\n \n The following connection error exists: {}".format(error))
         pytest.raises(ConnectionError)
         assert True
-    except TypeError as err:
-        print("The following error exists: ", err)
+    except TypeError as error:
+        print("\n \n The following type error exists: {}".format(error))
         assert True
