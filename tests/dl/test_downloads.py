@@ -171,7 +171,7 @@ def test_download():
     '''
     responses.add(
         method='GET',
-        url=re.compile('https://www\.tenable\.com:443/downloads/api/v2/pages/.*/files/.*'),
+        url=re.compile(r'https://www\.tenable\.com:443/downloads/api/v2/pages/.*/files/.*'),
         body=b'Line1\nLine2\nLine3\nLine4\nLine5\nLine6\nLine7\nLine8\nLine9',
         stream=True
     )
