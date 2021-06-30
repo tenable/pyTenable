@@ -32,6 +32,8 @@ void unittests(String version) {
                         python -m pip install --upgrade pip
                         pip install -r test-requirements.txt
                         pip install -r requirements.txt
+                        pip 3 install yamllint
+                        touch yaml_log.log
 
                         pytest --vcr-record=none --cov-report html:test-reports/coverage --junitxml=test-reports/junit/results.xml --junit-prefix=${version} --cov=tenable tests
                         find . -name *.html
@@ -89,7 +91,24 @@ try {
     parallel(tasks)
 
     common.setResultIfNotSet(Constants.JSUCCESS)
-} 
+}
+
+    tasks['runYamllint']  {
+        stage('runYamllint')
+        {
+            try {
+                sh """
+                   yamllint -c config/.yamllint tests/io/cassettes >> yaml_log.log
+                   yamllint -c config/.yamllint tests/sc/cassettes >> yaml_log.log
+                   yamllint -c config/.yamllint tests/cs/cassettes >> yaml_log.log
+                """
+                }
+            catch(ex){
+                throw ex
+                }
+        }
+    }
+
 catch (ex) {
     common.logException(ex)
     common.setResultAbortedOrFailure()
