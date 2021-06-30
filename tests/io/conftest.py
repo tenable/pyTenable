@@ -110,9 +110,9 @@ def scannergroup(request, api):
     def teardown():
         try:
             api.scanner_groups.delete(scannergroup['id'])
-       except NotFoundError as notfound:
+        except NotFoundError as notfound:
             log_exception(notfound)
-             pass
+            pass
 
     request.addfinalizer(teardown)
     return scannergroup
@@ -128,9 +128,9 @@ def scan(request, api):
     def teardown():
         try:
             api.scans.delete(scan['id'])
-       except NotFoundError as notfound:
+        except NotFoundError as notfound:
             log_exception(notfound)
-             pass
+            pass
 
     request.addfinalizer(teardown)
     return scan
@@ -148,9 +148,9 @@ def remediationscan(request, api):
     def teardown():
         try:
             api.scans.delete(scan['id'])
-       except NotFoundError as notfound:
+        except NotFoundError as notfound:
             log_exception(notfound)
-             pass
+            pass
     request.addfinalizer(teardown)
     return scan
 
