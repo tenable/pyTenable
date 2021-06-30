@@ -2,9 +2,9 @@ import pytest, os, uuid
 from tenable.io import TenableIO
 from tenable.errors import *
 from tests.checker import check, single
+from tests.pytenable_log_handler import setup_logging_to_file, log_exception
 
 SCAN_ID_WITH_RESULTS = 6799
-
 
 @pytest.fixture(scope='module')
 def vcr_config():
@@ -18,6 +18,7 @@ def vcr_config():
 
 @pytest.fixture
 def api():
+    setup_logging_to_file()
     return TenableIO(
         os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
         os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'),
@@ -46,7 +47,8 @@ def folder(request, api):
     def teardown():
         try:
             api.folders.delete(folder)
-        except NotFoundError:
+        except NotFoundError as notfound:
+            log_exception(notfound)
             pass
 
     request.addfinalizer(teardown)
@@ -66,7 +68,8 @@ def policy(request, api):
     def teardown():
         try:
             api.policies.delete(policy['policy_id'])
-        except NotFoundError:
+        except NotFoundError as notfound:
+            log_exception(notfound)
             pass
 
     request.addfinalizer(teardown)
@@ -76,14 +79,15 @@ def policy(request, api):
 @pytest.fixture
 def user(request, api):
     user = api.users.create(
-        '{}@tenable.com'.format(uuid.uuid4()),
+        '{}@pytenable.com'.format(uuid.uuid4()),
         '{}Tt!'.format(uuid.uuid4()),
         64)
 
     def teardown():
         try:
             api.users.delete(user['id'])
-        except NotFoundError:
+        except NotFoundError as notfound:
+            log_exception(notfound)
             pass
 
     request.addfinalizer(teardown)
@@ -105,7 +109,8 @@ def scannergroup(request, api):
     def teardown():
         try:
             api.scanner_groups.delete(scannergroup['id'])
-        except NotFoundError:
+        except NotFoundError as notfound:
+            log_exception(notfound)
             pass
 
     request.addfinalizer(teardown)
@@ -141,7 +146,8 @@ def remediationscan(request, api):
     def teardown():
         try:
             api.scans.delete(scan['id'])
-        except NotFoundError:
+        except NotFoundError as notfound:
+            log_exception(notfound)
             pass
     request.addfinalizer(teardown)
     return scan
