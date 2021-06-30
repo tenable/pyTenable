@@ -7,13 +7,13 @@ from tenable.errors import NotFoundError
 from tests.checker import check
 from tests.pytenable_log_handler import log_exception
 
-
 @pytest.fixture(name='group')
 def fixture_group(request, api):
     '''
     Fixture to create group
     '''
     group = api.groups.create(str(uuid.uuid4()))
+
     def teardown():
         '''
         cleanup function to delete group
@@ -23,8 +23,10 @@ def fixture_group(request, api):
         except NotFoundError as err:
             log_exception(err)
             pass
+
     request.addfinalizer(teardown)
     return group
+
 
 @pytest.mark.vcr()
 def test_groups_create_name_typeerror(api):
@@ -33,6 +35,7 @@ def test_groups_create_name_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.groups.create(1)
+
 
 @pytest.mark.vcr()
 def test_groups_create(group):
@@ -52,6 +55,7 @@ def test_groups_delete_id_typerror(api):
     with pytest.raises(TypeError):
         api.groups.delete('nothing')
 
+
 @pytest.mark.vcr()
 def test_groups_delete_notfounderror(api):
     '''
@@ -59,6 +63,7 @@ def test_groups_delete_notfounderror(api):
     '''
     with pytest.raises(NotFoundError):
         api.groups.delete(1)
+
 
 @pytest.mark.vcr()
 def test_groups_delete_success(api, group):
@@ -162,6 +167,7 @@ def test_group_add_user_to_group_group_id_typeerror(api):
     with pytest.raises(TypeError):
         api.groups.add_user('nope', 1)
 
+
 @pytest.mark.vcr()
 def test_groups_add_user_to_group_user_id_typeerror(api):
     '''
@@ -170,6 +176,7 @@ def test_groups_add_user_to_group_user_id_typeerror(api):
     with pytest.raises(TypeError):
         api.groups.add_user(1, 'nope')
 
+
 @pytest.mark.vcr()
 def test_groups_add_user_to_group_notfounderror(api):
     '''
@@ -177,6 +184,7 @@ def test_groups_add_user_to_group_notfounderror(api):
     '''
     with pytest.raises(NotFoundError):
         api.groups.add_user(1, 1)
+
 
 @pytest.mark.vcr()
 def test_groups_add_user_to_group_success(api, group, user):
@@ -193,6 +201,7 @@ def test_groups_delete_user_from_group_group_id_tyupeerror(api):
     with pytest.raises(TypeError):
         api.groups.delete_user('nope', 1)
 
+
 @pytest.mark.vcr()
 def test_groups_delete_user_from_group_user_id_typeerror(api):
     '''
@@ -201,6 +210,7 @@ def test_groups_delete_user_from_group_user_id_typeerror(api):
     with pytest.raises(TypeError):
         api.groups.delete_user(1, 'nope')
 
+
 @pytest.mark.vcr()
 def test_groups_delete_user_from_group_notfounderror(api):
     '''
@@ -208,6 +218,7 @@ def test_groups_delete_user_from_group_notfounderror(api):
     '''
     with pytest.raises(NotFoundError):
         api.groups.delete_user(1, 1)
+
 
 @pytest.mark.vcr()
 def test_groups_delete_user_from_group_success(api, group, user):
