@@ -1,6 +1,15 @@
-from tenable.dl import Downloads
+"""
+Testing downloads functionality
+"""
+
+import re
+import warnings
 from io import BytesIO
-import pytest, responses, warnings, re
+import responses
+import pytest
+
+from tenable.dl import Downloads
+
 
 
 def test_downloads_init(monkeypatch):
@@ -11,17 +20,17 @@ def test_downloads_init(monkeypatch):
     # Test warning when no api token is set
     monkeypatch.delenv('TDL_API_TOKEN', False)
     with pytest.warns(Warning):
-        dl = Downloads()
+        download = Downloads()
 
     # Test that API token is being set properly with envvars
     monkeypatch.setenv('TDL_API_TOKEN', 'something')
-    dl = Downloads()
-    assert dl._session.headers.get('authorization') == 'Bearer something'
+    download = Downloads()
+    assert download._session.headers.get('authorization') == 'Bearer something'
     monkeypatch.delenv('TDL_API_TOKEN')
 
     # Test that API token is being set properly when being passed
-    dl = Downloads(api_token='something')
-    assert dl._session.headers.get('authorization') == 'Bearer something'
+    download = Downloads(api_token='something')
+    assert download._session.headers.get('authorization') == 'Bearer something'
 
 
 @responses.activate
@@ -47,13 +56,13 @@ def test_list():
         url='https://www.tenable.com:443/downloads/api/v2/pages',
         json=body
     )
-    dl = Downloads()
-    r = dl.list()
-    assert len(r) == 2
-    assert r[0].title == 'Nessus'
-    assert r[0].page_slug == 'nessus'
-    assert r[0].description == 'Download Nessus and Nessus Manager.'
-    assert r[0].files_index_url == 'https://www.tenable.com/downloads/api/v2/pages/nessus'
+    download = Downloads()
+    res = download.list()
+    assert len(res) == 2
+    assert res[0].title == 'Nessus'
+    assert res[0].page_slug == 'nessus'
+    assert res[0].description == 'Download Nessus and Nessus Manager.'
+    assert res[0].files_index_url == 'https://www.tenable.com/downloads/api/v2/pages/nessus'
 
 
 @responses.activate
@@ -75,7 +84,8 @@ def test_details():
                     'version': '6.12.1'
                 }, {
                     'file': 'nessus-updates-6.12.1.tar.gz',
-                    'file_url': 'https://www.tenable.com/downloads/api/v2/pages/nessus/files/nessus-updates-6.12.1.tar.gz',
+                    'file_url': \
+                        'https://www.tenable.com/downloads/api/v2/pages/nessus/files/nessus-updates-6.12.1.tar.gz',
                     'md5': 'b8e5c6f4298ddf136f82f9b0d8315335',
                     'product_release_date': '08/15/2019',
                     'release_date': '08/12/2019',
@@ -97,7 +107,8 @@ def test_details():
                         'version': '6.12.1'
                     }, {
                         'file': 'nessus-updates-6.12.1.tar.gz',
-                        'file_url': 'https://www.tenable.com/downloads/api/v2/pages/nessus/files/nessus-updates-6.12.1.tar.gz',
+                        'file_url': \
+                            'https://www.tenable.com/downloads/api/v2/pages/nessus/files/nessus-updates-6.12.1.tar.gz',
                         'md5': 'b8e5c6f4298ddf136f82f9b0d8315335',
                         'product_release_date': '08/15/2019',
                         'release_date': '08/12/2019',
@@ -129,34 +140,34 @@ def test_details():
         url='https://www.tenable.com:443/downloads/api/v2/pages/nessus',
         json=body
     )
-    dl = Downloads()
-    r = dl.details('nessus')
-    assert r.releases
-    keys = [i for i in r.releases.keys() if i != 'latest']
-    for version in r.releases:
+    download = Downloads()
+    test_res = download.details('nessus')
+    assert test_res.releases
+    keys = [i for i in test_res.releases.keys() if i != 'latest']
+    for version in test_res.releases:
         if version == 'latest':
             continue
-        for v in r.releases[version]:
-            assert v.file
-            assert v.file_url
-            assert v.md5
-            assert v.product_release_date
-            assert v.release_date
-            assert v.sha256
-            assert v.size
-            assert v.version
-    for version in r.releases.latest:
+        for _version in test_res.releases[version]:
+            assert _version.file
+            assert _version.file_url
+            assert _version.md5
+            assert _version.product_release_date
+            assert _version.release_date
+            assert _version.sha256
+            assert _version.size
+            assert _version.version
+    for version in test_res.releases.latest:
         assert version in keys
-        for v in r.releases.latest[version]:
-            assert v.file
-            assert v.file_url
-            assert v.md5
-            assert v.product_release_date
-            assert v.release_date
-            assert v.sha256
-            assert v.size
-            assert v.version
-    for item in r.signing_keys:
+        for _version in test_res.releases.latest[version]:
+            assert _version.file
+            assert _version.file_url
+            assert _version.md5
+            assert _version.product_release_date
+            assert _version.release_date
+            assert _version.sha256
+            assert _version.size
+            assert _version.version
+    for item in test_res.signing_keys:
         assert item.file
         assert item.file_url
         assert item.md5

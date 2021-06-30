@@ -1,118 +1,188 @@
+"""
+Test Module for Audit Files
+"""
 import os
 
 import pytest
-
+from tests.sc.conftest import sc as security_centre
 from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check
 
 
-def test_audit_files_constructor_name_typeerror(sc, vcr):
+def test_audit_files_constructor_name_typeerror(security_centre, vcr):
+    """
+    Testing Audit File's constructor
+    :param sc:
+    :param vcr:
+    :return: No return
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(name=1)
+        security_centre.audit_files._constructor(name=1)
     with vcr.use_cassette('test_files_upload_clear_success'):
         with open('audit-file.xml', 'w+') as file:
             with pytest.raises(TypeError):
-                sc.audit_files.create(name=1, audit_file=file)
+                security_centre.audit_files.create(name=1, audit_file=file)
         os.remove('audit-file.xml')
     with vcr.use_cassette('test_files_upload_clear_success'):
         with open('tailoring-file.xml', 'w+') as file:
             with pytest.raises(TypeError):
-                sc.audit_files.create(name=1, tailoring_file=file)
+                security_centre.audit_files.create(name=1, tailoring_file=file)
         os.remove('tailoring-file.xml')
     with vcr.use_cassette('test_files_upload_clear_success'):
         with open('audit-file.xml', 'w+') as file:
             with pytest.raises(TypeError):
-                sc.audit_files.edit(1, name=1, audit_file=file)
+                security_centre.audit_files.edit(1, name=1, audit_file=file)
         os.remove('audit-file.xml')
     with vcr.use_cassette('test_files_upload_clear_success'):
         with open('tailoring-file.xml', 'w+') as file:
             with pytest.raises(TypeError):
-                sc.audit_files.edit(1, name=1, tailoring_file=file)
+                security_centre.audit_files.edit(1, name=1, tailoring_file=file)
         os.remove('tailoring-file.xml')
 
 
-def test_audit_files_constructor_description_typeerror(sc):
+def test_audit_files_constructor_description_typeerror(security_centre):
+    """
+    Testing Audit File Constructor's Description Testing
+    :param security_centre:
+    :return: No return
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(description=1)
+        security_centre.audit_files._constructor(description=1)
 
 
-def test_audit_files_constructor_type_typeerror(sc):
+def test_audit_files_constructor_type_typeerror(security_centre):
+    """
+    Testing Audit File Constructor's Type
+    :param security_centre
+    :return: No return
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(type=1)
+        security_centre.audit_files._constructor(type=1)
 
 
-def test_audit_files_constructor_type_unexpectedvalueerror(sc):
+def test_audit_files_constructor_type_unexpectedvalueerror(security_centre):
+    """
+    Testing Audit File Constructor's Type
+    :param security_centre
+    :return: No return
+    """
     with pytest.raises(UnexpectedValueError):
-        sc.audit_files._constructor(type='something else')
+        security_centre.audit_files._constructor(type='something else')
 
 
-def test_audit_files_constructor_template_typeerror(sc):
+def test_audit_files_constructor_template_typeerror(security_centre):
+    """
+    Testing Audit File Constructor's Type
+    :param sc
+    :return: No return
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(template='one')
+        security_centre.audit_files._constructor(template='one')
 
 
-def test_audit_files_constructor_vars_typeerror(sc):
+def test_audit_files_constructor_vars_typeerror(security_centre):
+    """
+    Testing Audit File Constructor's Type
+    :param sc
+    :return: No return
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(vars='one')
+        security_centre.audit_files._constructor(vars='one')
 
 
-def test_audit_files_constructor_vars_key_typeerror(sc):
+def test_audit_files_constructor_vars_key_typeerror(security_centre):
+    """
+    test vars keys for the constructor
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(vars={1: 'one'})
+        security_centre.audit_files._constructor(vars={1: 'one'})
 
 
-def test_audit_files_constructor_vars_value_typeerror(sc):
+def test_audit_files_constructor_vars_value_typeerror(security_centre):
+    """
+    test vars keys for the constructor
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(vars={'one': 1})
+        security_centre.audit_files._constructor(vars={'one': 1})
 
 
-def test_audit_files_constructor_filename_typeerror(sc):
+def test_audit_files_constructor_filename_typeerror(security_centre):
+    """
+    test vars file name type error for constructor
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(filename=1)
+        security_centre.audit_files._constructor(filename=1)
 
 
-def test_audit_files_constructor_orig_filename_typeerror(sc):
+def test_audit_files_constructor_orig_filename_typeerror(security_centre):
+    """
+    test vars origin orig_filename name for constructor
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(orig_filename=1)
+        security_centre.audit_files._constructor(orig_filename=1)
 
 
-def test_audit_files_constructor_version_typeerror(sc):
+def test_audit_files_constructor_version_typeerror(security_centre):
+    """
+    test vars version for constructor
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(version=1)
+        security_centre.audit_files._constructor(version=1)
 
 
-def test_audit_files_constructor_version_unexpectedvalueerror(sc):
+def test_audit_files_constructor_version_unexpectedvalueerror(security_centre):
+    """
+    test vars origin file name and unexpected value error  for constructor
+    """
     with pytest.raises(UnexpectedValueError):
-        sc.audit_files._constructor(version='0.9')
+        security_centre.audit_files._constructor(version='0.9')
 
 
-def test_audit_files_constructor_benchmark_typeerror(sc):
+def test_audit_files_constructor_benchmark_typeerror(security_centre):
+    """
+    test audit files benchmark type error
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(benchmark=1)
+        security_centre.audit_files._constructor(benchmark=1)
 
 
-def test_audit_files_constructor_profile_typeerror(sc):
+def test_audit_files_constructor_profile_typeerror(security_centre):
+    """
+    test audit files constructor profile
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(profile=1)
+        security_centre.audit_files._constructor(profile=1)
 
 
-def test_audit_files_constructor_data_stream_typeerror(sc):
+def test_audit_files_constructor_data_stream_typeerror(security_centre):
+    """
+    test audit files constructor data stream
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(data_stream=1)
+        security_centre.audit_files._constructor(data_stream=1)
 
 
-def test_audit_files_constructor_tailoring_filename_typeerror(sc):
+def test_audit_files_constructor_tailoring_filename_typeerror(security_centre):
+    """
+    test audit files constructor tailoring
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(tailoring_filename=1)
+        security_centre.audit_files._constructor(tailoring_filename=1)
 
 
-def test_audit_files_constructor_tailoring_orig_filename_typeerror(sc):
+def test_audit_files_constructor_tailoring_orig_filename_typeerror(security_centre):
+    """
+    test audit files constructor tailoring origin filename type error
+    """
     with pytest.raises(TypeError):
-        sc.audit_files._constructor(tailoring_orig_filename=1)
+        security_centre.audit_files._constructor(tailoring_orig_filename=1)
 
 
-def test_audit_files_constructor_success(sc):
-    af = sc.audit_files._constructor(
+def test_audit_files_constructor_success(security_centre):
+    """
+    test audit files constructor creation
+    """
+    audit_file = security_centre.audit_files._constructor(
         name='name',
         description='description',
         type='',
@@ -129,7 +199,7 @@ def test_audit_files_constructor_success(sc):
         tailoring_filename='tf.audit',
         tailoring_orig_filename='orig-tf.audit'
     )
-    assert af == {
+    assert audit_file == {
         'name': 'name',
         'description': 'description',
         'filename': 'test.audit',
@@ -147,24 +217,27 @@ def test_audit_files_constructor_success(sc):
 
 
 @pytest.fixture
-def audit_file(request, sc, vcr):
+def audit_file(request, security_centre, vcr):
+    """
+    test audit files fixture
+    """
     with vcr.use_cassette('test_audit_files_create_success'):
-        audit_file = sc.audit_files.create('Example',
-                                  template=162,
-                                  vars={
-                                      'BANNER_TEXT': '',
-                                      'NTP_SERVER_1': '4.2.2.2',
-                                      'NTP_SERVER_2': '192.168.0.1',
-                                      'NTP_SERVER_3': '192.168.0.1',
-                                      'INTERNAL_NETWORK': '192.168.',
-                                      'HOSTS_ALLOW_NETWORK': '192.168.',
-                                      'LOG_SERVER': '192.168.0.1',
-                                  })
+        audit_file = security_centre.audit_files.create('Example',
+                                           template=162,
+                                           vars={
+                                               'BANNER_TEXT': '',
+                                               'NTP_SERVER_1': '4.2.2.2',
+                                               'NTP_SERVER_2': '192.168.0.1',
+                                               'NTP_SERVER_3': '192.168.0.1',
+                                               'INTERNAL_NETWORK': '192.168.',
+                                               'HOSTS_ALLOW_NETWORK': '192.168.',
+                                               'LOG_SERVER': '192.168.0.1',
+                                           })
 
     def teardown():
         try:
             with vcr.use_cassette('test_audit_files_delete_success'):
-                sc.audit_files.delete(int(audit_file['id']))
+                security_centre.audit_files.delete(int(audit_file['id']))
         except APIError:
             pass
 
@@ -172,7 +245,10 @@ def audit_file(request, sc, vcr):
     return audit_file
 
 
-def test_audit_files_create_success(sc, audit_file):
+def test_audit_files_create_success(security_centre, audit_file):
+    """
+    test audit files create success
+    """
     assert isinstance(audit_file, dict)
     check(audit_file, 'auditFileTemplate', dict)
     check(audit_file['auditFileTemplate'], 'id', str)
@@ -220,13 +296,19 @@ def test_audit_files_create_success(sc, audit_file):
 
 
 @pytest.mark.vcr()
-def test_audit_files_delete_success(sc, audit_file):
-    sc.audit_files.delete(int(audit_file['id']))
+def test_audit_files_delete_success(security_centre, audit_file):
+    """
+    test audit files delete function
+    """
+    security_centre.audit_files.delete(int(audit_file['id']))
 
 
 @pytest.mark.vcr()
-def test_audit_files_edit_success(sc, audit_file):
-    audit_file = sc.audit_files.edit(int(audit_file['id']), name='updates name')
+def test_audit_files_edit_success(security_centre, audit_file):
+    """
+    test audit files edit success
+    """
+    audit_file = security_centre.audit_files.edit(int(audit_file['id']), name='updates name')
     assert isinstance(audit_file, dict)
     check(audit_file, 'auditFileTemplate', dict)
     check(audit_file['auditFileTemplate'], 'id', str)
@@ -274,8 +356,11 @@ def test_audit_files_edit_success(sc, audit_file):
 
 
 @pytest.mark.vcr()
-def test_audit_files_details_success_for_fields(sc, audit_file):
-    audit_file = sc.audit_files.details(int(audit_file['id']), fields=['id', 'name', 'description'])
+def test_audit_files_details_success_for_fields(security_centre, audit_file):
+    """
+    test audit files details success for fields
+    """
+    audit_file = security_centre.audit_files.details(int(audit_file['id']), fields=['id', 'name', 'description'])
     assert isinstance(audit_file, dict)
     check(audit_file, 'id', str)
     check(audit_file, 'name', str)
@@ -283,8 +368,11 @@ def test_audit_files_details_success_for_fields(sc, audit_file):
 
 
 @pytest.mark.vcr()
-def test_audit_files_details_success(sc, audit_file):
-    audit_file = sc.audit_files.details(int(audit_file['id']))
+def test_audit_files_details_success(security_centre, audit_file):
+    """
+    test audit files details success
+    """
+    audit_file = security_centre.audit_files.details(int(audit_file['id']))
     assert isinstance(audit_file, dict)
     check(audit_file, 'auditFileTemplate', dict)
     check(audit_file['auditFileTemplate'], 'id', str)
@@ -332,57 +420,51 @@ def test_audit_files_details_success(sc, audit_file):
 
 
 @pytest.mark.vcr()
-def test_audit_files_list_success(sc):
-    a_files = sc.audit_files.list()
-    assert isinstance(a_files, dict)
+def test_audit_files_list_success(security_centre):
+    """
+    test audit files list success
+    """
+    audit_files = security_centre.audit_files.list()
+    assert isinstance(audit_files, dict)
     for file_type in ['usable', 'manageable']:
-        for type in a_files[file_type]:
-            check(type, 'name', str)
-            check(type, 'description', str)
-            check(type, 'type', str)
-            check(type, 'status', str)
-            check(type, 'id', str)
+        for audit_file in audit_files[file_type]:
+            check(audit_file, 'name', str)
+            check(audit_file, 'description', str)
+            check(audit_file, 'type', str)
+            check(audit_file, 'status', str)
+            check(audit_file, 'id', str)
 
 
 @pytest.mark.vcr()
-def test_audit_files_list_success_for_fields(sc):
-    audit_files = sc.audit_files.list(fields=('id', 'name', 'description'))
+def test_audit_files_list_success_for_fields(security_centre):
+    """
+    test audit files list success for fields
+    """
+    audit_files = security_centre.audit_files.list(fields=('id', 'name', 'description'))
     assert isinstance(audit_files, dict)
-    for c in ['usable', 'manageable']:
-        for a in audit_files[c]:
-            check(a, 'name', str)
-            check(a, 'description', str)
-            check(a, 'id', str)
+    for item in ['usable', 'manageable']:
+        for audit_file in audit_files[item]:
+            check(audit_file, 'name', str)
+            check(audit_file, 'description', str)
+            check(audit_file, 'id', str)
 
 
 @pytest.mark.vcr()
-def test_audit_files_export_audit(sc):
+def test_audit_files_export_audit(security_centre):
+    """
+    test audit files export audit
+    """
     with open('1000007.xml', 'wb') as file:
-        sc.audit_files.export_audit(1000007, fobj=file)
+        security_centre.audit_files.export_audit(1000007, fobj=file)
     os.remove('1000007.xml')
 
 
 @pytest.mark.vcr()
-def test_audit_files_export_audit_no_file(sc):
-    with open('1000007.xml', 'wb'):
-        sc.audit_files.export_audit(1000007)
-    os.remove('1000007.xml')
-
-
-@pytest.mark.vcr()
-def test_audit_files_template_details_success(sc):
-    template = sc.audit_files.template_details(1,
-                                               fields=['id', 'name', 'categoryName', 'categoryId'])
-    assert isinstance(template, dict)
-    check(template, 'id', str)
-    check(template, 'name', str)
-    check(template, 'categoryName', str)
-    check(template, 'categoryId', str)
-
-
-@pytest.mark.vcr()
-def test_audit_files_template_list_success(sc):
-    templates = sc.audit_files.template_list(fields=['id', 'name', 'categoryName', 'categoryId'],
+def test_audit_files_template_list_success(security_centre):
+    """
+    test audit files template list success
+    """
+    templates = security_centre.audit_files.template_list(fields=['id', 'name', 'categoryName', 'categoryId'],
                                              category=1,
                                              search='categoryName:Unix')
     assert isinstance(templates, list)
@@ -394,8 +476,11 @@ def test_audit_files_template_list_success(sc):
 
 
 @pytest.mark.vcr()
-def test_audit_files_template_categories(sc):
-    categories = sc.audit_files.template_categories()
+def test_audit_files_template_categories(security_centre):
+    """
+    test audit files template categories
+    """
+    categories = security_centre.audit_files.template_categories()
     assert isinstance(categories, list)
     for category in categories:
         check(category, 'categoryName', str)
@@ -403,116 +488,12 @@ def test_audit_files_template_categories(sc):
 
 
 @pytest.mark.vcr()
-def test_audit_files_list_success_for_fields(sc):
-    audit_files = sc.audit_files.list(fields=('id', 'name', 'description'))
-    assert isinstance(audit_files, dict)
-    for c in ['usable', 'manageable']:
-        for a in audit_files[c]:
-            check(a, 'name', str)
-            check(a, 'description', str)
-            check(a, 'id', str)
-
-
-@pytest.mark.vcr()
-def test_audit_files_export_audit(sc):
-    with open('1000007.xml', 'wb') as file:
-        sc.audit_files.export_audit(1000007, fobj=file)
-    os.remove('1000007.xml')
-
-
-@pytest.mark.vcr()
-def test_audit_files_export_audit_no_file(sc):
-    with open('1000007.xml', 'wb'):
-        sc.audit_files.export_audit(1000007)
-    os.remove('1000007.xml')
-
-
-@pytest.mark.vcr()
-def test_audit_files_template_details_success(sc):
-    template = sc.audit_files.template_details(1,
+def test_audit_files_template_details_success(security_centre):
+    """
+    test audit files template details success
+    """
+    template = security_centre.audit_files.template_details(1,
                                                fields=['id', 'name', 'categoryName', 'categoryId'])
     assert isinstance(template, dict)
     check(template, 'id', str)
     check(template, 'name', str)
-    check(template, 'categoryName', str)
-    check(template, 'categoryId', str)
-
-
-@pytest.mark.vcr()
-def test_audit_files_template_list_success(sc):
-    templates = sc.audit_files.template_list(fields=['id', 'name', 'categoryName', 'categoryId'],
-                                             category=1,
-                                             search='categoryName:Unix')
-    assert isinstance(templates, list)
-    for template in templates:
-        check(template, 'id', str)
-        check(template, 'name', str)
-        check(template, 'categoryName', str)
-        check(template, 'categoryId', str)
-
-
-@pytest.mark.vcr()
-def test_audit_files_template_categories(sc):
-    categories = sc.audit_files.template_categories()
-    assert isinstance(categories, list)
-    for category in categories:
-        check(category, 'categoryName', str)
-        check(category, 'categoryId', str)
-
-
-@pytest.mark.vcr()
-def test_audit_files_list_success_for_fields(sc):
-    audit_files = sc.audit_files.list(fields=('id', 'name', 'description'))
-    assert isinstance(audit_files, dict)
-    for c in ['usable', 'manageable']:
-        for a in audit_files[c]:
-            check(a, 'name', str)
-            check(a, 'description', str)
-            check(a, 'id', str)
-
-
-@pytest.mark.vcr()
-def test_audit_files_export_audit(sc):
-    with open('1000007.xml', 'wb') as file:
-        sc.audit_files.export_audit(1000007, fobj=file)
-    os.remove('1000007.xml')
-
-
-@pytest.mark.vcr()
-def test_audit_files_export_audit_no_file(sc):
-    with open('1000007.xml', 'wb'):
-        sc.audit_files.export_audit(1000007)
-    os.remove('1000007.xml')
-
-
-@pytest.mark.vcr()
-def test_audit_files_template_details_success(sc):
-    template = sc.audit_files.template_details(1,
-                                               fields=['id', 'name', 'categoryName', 'categoryId'])
-    assert isinstance(template, dict)
-    check(template, 'id', str)
-    check(template, 'name', str)
-    check(template, 'categoryName', str)
-    check(template, 'categoryId', str)
-
-
-@pytest.mark.vcr()
-def test_audit_files_template_list_success(sc):
-    templates = sc.audit_files.template_list(fields=['id', 'name', 'categoryName', 'categoryId'],
-                                             category=1,
-                                             search='categoryName:Unix')
-    assert isinstance(templates, list)
-    for template in templates:
-        check(template, 'id', str)
-        check(template, 'name', str)
-        check(template, 'categoryName', str)
-        check(template, 'categoryId', str)
-
-
-@pytest.mark.vcr()
-def test_audit_files_template_categories(sc):
-    categories = sc.audit_files.template_categories()
-    assert isinstance(categories, list)
-    for category in categories:
-        check(category, 'categoryName', str)
-        check(category, 'categoryId', str)
