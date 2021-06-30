@@ -86,16 +86,10 @@ try {
         }
     }
 
-    parallel(tasks)
-
-    common.setResultIfNotSet(Constants.JSUCCESS)
-
-
-    node('runPylint')  {
+    tasks['runPylint']  {
         stage('runPylint')
         {
             try {
-              step('runPylint') {
                 sh """
                    pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
                    pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log
@@ -109,7 +103,7 @@ try {
                        //result needs to outpyt, will test
                        result =  recordIssues(
                             enabledForFailure: true,
-                            tool: pyLint(pattern: '**/pylint.log'),
+                            tool: pyLint(pattern: 'reports/pylint_tenable.log'),
                             unstableTotalAll: 20,
                             failedTotalAll: 30,)
                                                                 }
@@ -117,7 +111,7 @@ try {
                        //result needs to outpyt, will test
                        result =  recordIssues(
                             enabledForFailure: true,
-                            tool: pyLint(pattern: 'reports/pylint_*.log'),
+                            tool: pyLint(pattern: 'reports/pylint_test.log'),
                             unstableTotalAll: 20,
                             failedTotalAll: 30,)
                                                               }
@@ -125,11 +119,15 @@ try {
         }
     }
 
+    parallel(tasks)
+
+    common.setResultIfNotSet(Constants.JSUCCESS)
+
+
     node('runPyPi')  {
         stage('runPyPi')
         {
             try {
-              step('runPyPi') {
                   String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
                   withCredentials([[$class : 'UsernamePasswordMultiBinding',
                   credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',
@@ -141,7 +139,6 @@ try {
                     twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
                   """
                                                         }
-                               }
             } catch(ex) {
                 throw ex
             }
