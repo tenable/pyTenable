@@ -1,6 +1,8 @@
 '''
 test exports
 '''
+import time
+import uuid
 import pytest
 from tenable.errors import UnexpectedValueError
 from tenable.io.exports import ExportsIterator
@@ -274,3 +276,92 @@ def test_exports_assets(api):
     check(asset, 'terminated_at', str, allow_none=True)
     check(asset, 'terminated_by', str, allow_none=True)
     check(asset, 'updated_at', str)
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_num_findings_typeerror(api):
+    '''test to raise exception when type of num_findings param does not match the expected type'''
+    with pytest.raises(TypeError):
+        api.exports.compliance(num_findings='something')
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_num_findings_unexpectedvalueerror(api):
+    '''test to raise exception when num_findings param value does not match the choices'''
+    with pytest.raises(UnexpectedValueError):
+        api.exports.compliance(num_findings=1)
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_asset_typeerror(api):
+    '''test to raise exception when type of asset param does not match the expected type'''
+    with pytest.raises(TypeError):
+        api.exports.compliance(asset='something')
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_asset_unexpectedvalueerror(api):
+    '''test to raise exception when any of asset param value
+    does not match the expected type'''
+    with pytest.raises(UnexpectedValueError):
+        api.exports.compliance(asset=['something'])
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_asset_limit_exceed_unexpectedvalueerror(api):
+    '''test to raise exception when count of asset param values exceeds allowed count'''
+    with pytest.raises(UnexpectedValueError):
+        api.exports.compliance(asset=[str(uuid.uuid4()) for _ in range(202)])
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_last_seen_typeerror(api):
+    ''''test to raise exception when type of last_seen param does not match the expected type'''
+    with pytest.raises(TypeError):
+        api.exports.compliance(last_seen='something')
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_first_seen_typeerror(api):
+    '''test to raise exception when type of first_seen param does not match the expected type'''
+    with pytest.raises(TypeError):
+        api.exports.compliance(last_seen=1, first_seen='something')
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_success(api):
+    '''test to export the compliance data'''
+    last_seen = int(time.time()) - (12 * 60 * 60)
+    compliance = api.exports.compliance(num_findings=51,
+                                        last_seen=last_seen)
+    assert isinstance(compliance, ExportsIterator)
+
+
+@pytest.mark.vcr()
+def test_exports_compliance(api):
+    '''test to export the compliance data'''
+    last_seen = int(time.time()) - (12 * 60 * 60)
+    compliance = api.exports.compliance(last_seen=last_seen)
+    assert isinstance(compliance, ExportsIterator)
+
+    for resp in compliance:
+        check(resp, 'asset_uuid', 'uuid')
+        check(resp, 'audit_file', str)
+        check(resp, 'check_error', str)
+        check(resp, 'check_id', str)
+        check(resp, 'check_info', str)
+        check(resp, 'check_name', str)
+        check(resp, 'first_seen', str)
+        check(resp, 'last_seen', str)
+        check(resp, 'plugin_id', int)
+        check(resp, 'reference', list)
+
+        if resp['reference']:
+            for data in resp['reference']:
+                check(data, 'control', str)
+                check(data, 'framework', str)
+
+        check(resp, 'see_also', str)
+        check(resp, 'solution', str)
+        check(resp, 'status', str)
+        break
