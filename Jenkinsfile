@@ -67,29 +67,6 @@ try {
             tasks[version] = { unittests(version) }
     }
 
-    tasks['runPyPi'] = {
-        stage('runPyPi')
-        {
-            try {
-              step('runPyPi') {
-                  String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
-                  withCredentials([[$class : 'UsernamePasswordMultiBinding',
-                  credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',
-                  passwordVariable : 'PYPIPASSWORD']]) {
-                  sh """
-                    pip install twine
-                    rm -rf dist
-                    python setup.py sdist
-                    twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
-                  """
-                  }
-                }
-            } catch(ex) {
-            throw ex
-            }
-        }`
-    }
-
     tasks['runPylint'] = {
         stage('runPylint')
         {
@@ -127,6 +104,29 @@ try {
                 }
             }
         }
+    }
+
+    tasks['runPyPi'] = {
+        stage('runPyPi')
+        {
+            try {
+              step('runPyPi') {
+                  String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
+                  withCredentials([[$class : 'UsernamePasswordMultiBinding',
+                  credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',
+                  passwordVariable : 'PYPIPASSWORD']]) {
+                  sh """
+                    pip install twine
+                    rm -rf dist
+                    python setup.py sdist
+                    twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+                  """
+                  }
+                }
+            } catch(ex) {
+            throw ex
+            }
+        }`
     }
 
     tasks['snyk'] = {
