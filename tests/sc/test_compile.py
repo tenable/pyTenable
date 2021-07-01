@@ -2,8 +2,6 @@
 test compile
 '''
 import pytest
-
-from tenable.errors import ConnectionError
 from tenable.sc import TenableSC
 from tenable.sc.accept_risks import AcceptRiskAPI
 from tenable.sc.alerts import AlertAPI
@@ -31,6 +29,7 @@ from tenable.sc.status import StatusAPI
 from tenable.sc.system import SystemAPI
 from tenable.sc.users import UserAPI
 from tests.sc.conftest import sc
+from tenable.errors import ConnectionError
 
 
 def test_sc_compile():
@@ -70,13 +69,13 @@ def test_sc_compile():
         UserAPI(sc)
 
     except NameError as error:
-        print("\n \n The following name error exists: {}".format(error))
+        print("\n The following name error exists: {}".format(error))
         pytest.raises(NameError)
         assert True
     except ConnectionError as error:
-        print("\n \n The following connection error exists: {}".format(error))
+        print("\n The following connection error exists: {}".format(error))
         pytest.raises(ConnectionError)
         assert True
     except TypeError as error:
-        print("\n \n The following type error exists: {}".format(error))
+        print("\n The following type error exists: {}".format(error))
         assert True
