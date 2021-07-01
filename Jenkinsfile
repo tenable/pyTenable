@@ -86,38 +86,45 @@ try {
         }
     }
 
-    tasks['runPylint']  {
+    tasks['runPylint'] = {
         stage('runPylint')
         {
-            try {
-                sh """
-                   pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
-                   pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log
-                   cat reports/pylint_tenable.log
-                   cat reports/pylint_tests.log
-                """
-            } catch(ex){
-                throw ex
-            } finally {
-                if (fileExists ('reports/pylint_tenable.log')) {
-                       //result needs to outpyt, will test
-                       result =  recordIssues(
-                            enabledForFailure: true,
-                            tool: pyLint(pattern: 'reports/pylint_tenable.log'),
-                            unstableTotalAll: 20,
-                            failedTotalAll: 30,)
-                                                                }
-                if (fileExists ('reports/pylint_test.log')) {
-                       //result needs to outpyt, will test
-                       result =  recordIssues(
-                            enabledForFailure: true,
-                            tool: pyLint(pattern: 'reports/pylint_test.log'),
-                            unstableTotalAll: 20,
-                            failedTotalAll: 30,)
-                                                              }
+            node(Constants.DOCKERNODE) {
+
+                withContainer(image: "python:${version}-buster", registry: '', inside: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {
+
+                    try {
+                        sh """
+                           pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
+                           pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log
+                           cat reports/pylint_tenable.log
+                           cat reports/pylint_tests.log
+                        """
+                    } catch(ex){
+                        throw ex
+                    } finally {
+                        if (fileExists ('reports/pylint_tenable.log')) {
+                               //result needs to outpyt, will test
+                               result =  recordIssues(
+                                    enabledForFailure: true,
+                                    tool: pyLint(pattern: 'reports/pylint_tenable.log'),
+                                    unstableTotalAll: 20,
+                                    failedTotalAll: 30,)
+                                                                        }
+                        if (fileExists ('reports/pylint_test.log')) {
+                               //result needs to outpyt, will test
+                               result =  recordIssues(
+                                    enabledForFailure: true,
+                                    tool: pyLint(pattern: 'reports/pylint_test.log'),
+                                    unstableTotalAll: 20,
+                                    failedTotalAll: 30,)
+                                                                      }
+                            }
                     }
+                }
         }
     }
+
 
     parallel(tasks)
 
