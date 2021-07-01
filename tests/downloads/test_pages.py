@@ -1,6 +1,6 @@
-from tenable.errors import *
+import pytest
 from ..checker import check
-import datetime, sys, pytest, os
+
 
 @pytest.mark.vcr()
 def test_pages_list_success(dl):
@@ -11,6 +11,7 @@ def test_pages_list_success(dl):
         check(p, 'files_index_url', str)
         check(p, 'page_slug', str)
         check(p, 'title', str)
+
 
 @pytest.mark.vcr()
 def test_pages_detail_success(dl):
@@ -30,7 +31,7 @@ def test_pages_detail_success(dl):
                 check(i, 'md5', str)
                 check(i, 'release_date', str)
                 check(i, 'size', int)
-        
+
         # for the latest release
         if isinstance(v, dict):
             for k, j in v.items():
@@ -43,7 +44,7 @@ def test_pages_detail_success(dl):
                     check(i, 'md5', str)
                     check(i, 'release_date', str)
                     check(i, 'size', int)
-    
+
     check(p, 'signing_keys', list)
     for i in p['signing_keys']:
         check(i, 'file', str)
@@ -52,9 +53,9 @@ def test_pages_detail_success(dl):
         check(i, 'sha256', str)
         check(i, 'size', int)
 
+
 @pytest.mark.vcr()
 @pytest.mark.skip(reason='Large File download')
 def test_pages_download_success(dl):
     with open('Nessus.deb', 'wb') as fobj:
         dl.pages.download('nessus', 'Nessus-latest-debian6_amd64.deb', fobj)
-    

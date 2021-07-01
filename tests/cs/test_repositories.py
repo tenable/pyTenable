@@ -1,32 +1,37 @@
-from tenable.errors import *
-from ..checker import check, single
-from tenable.cs.repositories import RepositoryIterator
 import pytest
+from ..checker import check
+from tenable.cs.repositories import RepositoryIterator
+
 
 @pytest.mark.vcr()
 def test_repositories_list_contains_typeerror(api):
     with pytest.raises(TypeError):
         api.repositories.list(contains=1)
 
+
 @pytest.mark.vcr()
 def test_repositories_list_image_typeerror(api):
     with pytest.raises(TypeError):
         api.repositories.list(image=1)
+
 
 @pytest.mark.vcr()
 def test_repositories_list_limit_typerror(api):
     with pytest.raises(TypeError):
         api.repositories.list(limit='onezeroone')
 
+
 @pytest.mark.vcr()
 def test_repositories_list_offset_typerror(api):
     with pytest.raises(TypeError):
         api.repositories.list(offset='onezeroone')
 
+
 @pytest.mark.vcr()
 def test_repositories_list_pages_typerror(api):
     with pytest.raises(TypeError):
         api.repositories.list(pages='onezeroone')
+
 
 @pytest.mark.vcr()
 def test_repositories_list_with_data(api):
@@ -43,10 +48,12 @@ def test_repositories_list_with_data(api):
     check(r, 'pushCount', int)
     check(r, 'totalBytes', int)
 
+
 @pytest.mark.vcr()
 def test_repositories_details_name_typerror(api):
     with pytest.raises(TypeError):
         api.repositories.details(1)
+
 
 @pytest.mark.vcr()
 def test_repositories_details_success(api):
@@ -63,10 +70,12 @@ def test_repositories_details_success(api):
     check(r, 'pushCount', int)
     check(r, 'totalBytes', int)
 
+
 @pytest.mark.vcr()
 def test_repositories_delete_name_typeerror(api):
     with pytest.raises(TypeError):
         api.repositories.delete(1)
+
 
 @pytest.mark.vcr()
 @pytest.mark.skip('We don\'t want to actually delete a repository')

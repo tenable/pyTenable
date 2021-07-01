@@ -1,9 +1,14 @@
-import pytest, os, uuid, warnings
+import os
+import warnings
+import pytest
 from tenable.downloads import Downloads
-from tenable.errors import *
+
 
 @pytest.fixture(scope='module')
 def vcr_config():
+    '''
+    vcr_config fixture
+    '''
     return {
         'filter_headers': [
             ('Authorization', 'Bearer 000'),
@@ -15,5 +20,5 @@ def vcr_config():
 def dl(request, vcr):
     warnings.filterwarnings('ignore', category=DeprecationWarning)
     return Downloads(os.getenv('DL_TOKEN'),
-        vendor='pytest',
-        product='pytenable-automated-testing')
+                     vendor='pytest',
+                     product='pytenable-automated-testing')

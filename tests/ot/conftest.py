@@ -1,4 +1,5 @@
-import pytest, responses
+import pytest
+import responses
 from tenable.version import version
 from tenable.ot import TenableOT
 

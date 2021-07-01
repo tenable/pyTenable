@@ -1,8 +1,7 @@
 import pytest
-
-from tenable.errors import UnexpectedValueError
 from tenable.sc.plugins import PluginResultsIterator
 from ..checker import check
+from tenable.errors import UnexpectedValueError
 
 
 def test_plugins_constructor_fields_typeerror(sc):

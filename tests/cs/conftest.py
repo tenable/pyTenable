@@ -1,7 +1,8 @@
-import pytest, os, uuid
+import os
+import pytest
 from tenable.cs import ContainerSecurity
-from tenable.errors import *
-from tests.checker import check
+from tests.pytenable_log_handler import setup_logging_to_file
+
 
 @pytest.fixture(scope='module')
 def vcr_config():
@@ -12,13 +13,16 @@ def vcr_config():
         ],
     }
 
+
 @pytest.fixture(autouse=True)
 def api():
+    setup_logging_to_file()
     return ContainerSecurity(
         os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
         os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',
         product='pytenable-automated-testing')
+
 
 @pytest.fixture(autouse=True)
 def stdapi():
@@ -27,6 +31,7 @@ def stdapi():
         os.getenv('TIO_TEST_STD_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',
         product='pytenable-automated-testing')
+
 
 @pytest.fixture
 def image_id(request, api):

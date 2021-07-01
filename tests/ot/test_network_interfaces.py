@@ -1,4 +1,4 @@
-import pytest, responses
+import responses
 
 
 @responses.activate

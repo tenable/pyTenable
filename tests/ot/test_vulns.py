@@ -1,7 +1,10 @@
-from tenable.ot.schemas.iterators import OTIterator
-from tenable.ot.vulns import VulnAssetIntermixer
+'''
+test vulns
+'''
+import re
+import pytest
+import responses
 from box import Box
-import pytest, responses, re
 
 
 def load_responses(responses):
@@ -13,44 +16,44 @@ def load_responses(responses):
         method='GET',
         url='https://localhost:443/v1/vulnerabilities',
         json=[
-        {'comment': '',
-         'cpeTree': None,
-         'cvss': {'accessComplexity': 'LOW',
-                  'accessVector': 'NETWORK',
-                  'authentication': 'NONE',
-                  'availabilityImpact': 'COMPLETE',
-                  'confidentialityImpact': 'COMPLETE',
-                  'integrityImpact': 'COMPLETE',
-                  'score': 10},
-         'descriptions': [{'cveId': 'CVE-2020-9633',
-                           'language': 'en',
-                           'value': 'Adobe Flash Player Desktop Runtime 32.0.0.371 and '
-                                    'earlier, Adobe Flash Player for Google Chrome '
-                                    '32.0.0.371 and earlier, and Adobe Flash Player '
-                                    'for Microsoft Edge and Internet Explorer '
-                                    '32.0.0.330 and earlier have an use after free '
-                                    'vulnerability. Successful exploitation could lead '
-                                    'to arbitrary code execution.'}],
-         'id': 'CVE-2020-9633',
-         'lastModifiedDate': '2020-07-06T14:15:00Z',
-         'publishedDate': '2020-06-12T14:15:00Z',
-         'references': [{'cveId': 'CVE-2020-9633',
-                         'name': 'https://helpx.adobe.com/security/products/flash-player/apsb20-30.html',
-                         'source': 'CONFIRM',
-                         'url': 'https://helpx.adobe.com/security/products/flash-player/apsb20-30.html'},
-                        {'cveId': 'CVE-2020-9633',
-                         'name': 'GLSA-202006-09',
-                         'source': 'GENTOO',
-                         'url': 'https://security.gentoo.org/glsa/202006-09'}],
-         'tvi': {'cveId': 'CVE-2020-9633',
-                 'cvssV3Score': 5.9,
-                 'exploitCodeMaturity': 'UnprovenExploitCodeMaturity',
-                 'productCoverage': 'LowProductCoverage',
-                 'threatIntensity': 'VeryLowThreatIntensity',
-                 'threatRecency': 'From120To365DaysThreatRecency',
-                 'threatSources': ['NoRecordedEventsThreatSource'],
-                 'vprScore': 5.9,
-                 'vulnerabilityAge': 'From60To180DaysVulnerabilityAge'}},
+            {'comment': '',
+             'cpeTree': None,
+             'cvss': {'accessComplexity': 'LOW',
+                      'accessVector': 'NETWORK',
+                      'authentication': 'NONE',
+                      'availabilityImpact': 'COMPLETE',
+                      'confidentialityImpact': 'COMPLETE',
+                      'integrityImpact': 'COMPLETE',
+                      'score': 10},
+             'descriptions': [{'cveId': 'CVE-2020-9633',
+                               'language': 'en',
+                               'value': 'Adobe Flash Player Desktop Runtime 32.0.0.371 and '
+                                        'earlier, Adobe Flash Player for Google Chrome '
+                                        '32.0.0.371 and earlier, and Adobe Flash Player '
+                                        'for Microsoft Edge and Internet Explorer '
+                                        '32.0.0.330 and earlier have an use after free '
+                                        'vulnerability. Successful exploitation could lead '
+                                        'to arbitrary code execution.'}],
+             'id': 'CVE-2020-9633',
+             'lastModifiedDate': '2020-07-06T14:15:00Z',
+             'publishedDate': '2020-06-12T14:15:00Z',
+             'references': [{'cveId': 'CVE-2020-9633',
+                             'name': 'https://helpx.adobe.com/security/products/flash-player/apsb20-30.html',
+                             'source': 'CONFIRM',
+                             'url': 'https://helpx.adobe.com/security/products/flash-player/apsb20-30.html'},
+                            {'cveId': 'CVE-2020-9633',
+                             'name': 'GLSA-202006-09',
+                             'source': 'GENTOO',
+                             'url': 'https://security.gentoo.org/glsa/202006-09'}],
+             'tvi': {'cveId': 'CVE-2020-9633',
+                     'cvssV3Score': 5.9,
+                     'exploitCodeMaturity': 'UnprovenExploitCodeMaturity',
+                     'productCoverage': 'LowProductCoverage',
+                     'threatIntensity': 'VeryLowThreatIntensity',
+                     'threatRecency': 'From120To365DaysThreatRecency',
+                     'threatSources': ['NoRecordedEventsThreatSource'],
+                     'vprScore': 5.9,
+                     'vulnerabilityAge': 'From60To180DaysVulnerabilityAge'}},
         ]
     )
     responses.add(
@@ -151,6 +154,9 @@ def test_list(ot):
 
 @responses.activate
 def test_assets_list(ot):
+    '''
+    test to list the assets
+    '''
     responses.add(
         method='GET',
         url='https://localhost:443/v1/vulnerabilities/assets',
@@ -165,6 +171,6 @@ def test_assets_list(ot):
         ]
     )
     counts = ot.vulns.assets_list()
-    for c in counts:
-        assert c.cveId
-        assert c.assetCount
+    for count in counts:
+        assert count.cveId
+        assert count.assetCount

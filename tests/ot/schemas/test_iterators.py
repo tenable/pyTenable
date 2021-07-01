@@ -1,5 +1,5 @@
+import responses
 from tenable.ot.schemas.iterators import OTIterator
-import responses, pytest, re
 
 
 @responses.activate

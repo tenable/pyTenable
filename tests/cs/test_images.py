@@ -1,5 +1,5 @@
 from tenable.errors import *
-from ..checker import check, single
+from ..checker import check
 from tenable.cs.images import ImageIterator
 import pytest
 

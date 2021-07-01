@@ -1,6 +1,9 @@
+import pytest
+import responses
+import warnings
+import re
 from tenable.dl import Downloads
 from io import BytesIO
-import pytest, responses, warnings, re
 
 
 def test_downloads_init(monkeypatch):
