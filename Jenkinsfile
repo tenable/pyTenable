@@ -90,9 +90,7 @@ try {
         stage('runPylint')
         {
             node(Constants.DOCKERNODE) {
-
-                withContainer(image: "python:${version}-buster", registry: '', inside: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {
-
+                withContainer(image: "python:${version}-buster", registry: '', inside: '-u root') {
                     try {
                         sh """
                            pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
