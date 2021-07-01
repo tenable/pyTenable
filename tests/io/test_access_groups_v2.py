@@ -5,7 +5,7 @@ import uuid
 import pytest
 from tenable.errors import UnexpectedValueError, APIError
 from tests.checker import check
-from tests.io.test_groups import group
+from tests.io.test_groups import fixture_group
 from tests.pytenable_log_handler import log_exception
 
 @pytest.fixture(name='rules')
