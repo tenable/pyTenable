@@ -145,13 +145,11 @@ try {
         }
     }
 
-}
-catch (ex) {
+} catch (ex) {
     common.logException(ex)
     common.setResultAbortedOrFailure()
     throw ex
-} 
-finally {
+} finally {
     common.setResultIfNotSet(Constants.JFAILURE)
     buildsCommon.notifyPostBuild(bparams)
 }
