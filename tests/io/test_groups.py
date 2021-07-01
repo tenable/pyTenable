@@ -5,6 +5,7 @@ import uuid
 import pytest
 from tenable.errors import NotFoundError
 from tests.checker import check
+from tests.pytenable_log_handler import log_exception
 
 @pytest.fixture(name='group')
 def fixture_group(request, api):
@@ -19,7 +20,8 @@ def fixture_group(request, api):
         '''
         try:
             api.groups.delete(group['id'])
-        except NotFoundError:
+        except NotFoundError as err:
+            log_exception(err)
             pass
 
     request.addfinalizer(teardown)

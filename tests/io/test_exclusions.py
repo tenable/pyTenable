@@ -8,6 +8,7 @@ import pytest
 from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
 from tests.checker import check
 from tests.io.test_networks import fixture_network
+from tests.pytenable_log_handler import log_exception
 
 @pytest.fixture(name='exclusion')
 @pytest.mark.vcr()
@@ -24,7 +25,8 @@ def fixture_exclusion(request, api):
         '''
         try:
             api.exclusions.delete(excl['id'])
-        except NotFoundError:
+        except NotFoundError as err:
+            log_exception(err)
             pass
     request.addfinalizer(teardown)
     return excl
