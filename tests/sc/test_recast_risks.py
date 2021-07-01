@@ -1,7 +1,7 @@
 import pytest
-
-from tenable.errors import APIError
 from ..checker import check
+from tenable.errors import APIError
+from tests.pytenable_log_handler import log_exception
 
 
 def test_recast_risks_constructor_repos_typeerror(sc):
@@ -110,8 +110,8 @@ def arisk(request, sc, vcr):
         try:
             with vcr.use_cassette('test_recast_risks_delete_success'):
                 sc.recast_risks.delete(int(arisk['id']))
-        except APIError:
-            pass
+        except APIError as error:
+            log_exception(error)
 
     request.addfinalizer(teardown)
     return arisk

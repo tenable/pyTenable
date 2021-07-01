@@ -1,7 +1,7 @@
 import pytest
-
-from tenable.errors import APIError
 from ..checker import check
+from tenable.errors import APIError
+from tests.pytenable_log_handler import log_exception
 
 
 def test_accept_risks_constructor_repos_typeerror(sc):
@@ -110,8 +110,8 @@ def accept_risk(request, sc, vcr):
         try:
             with vcr.use_cassette('test_accept_risks_delete_success'):
                 sc.accept_risks.delete(int(accept_risk['id']))
-        except APIError:
-            pass
+        except APIError as error:
+            log_exception(error)
 
     request.addfinalizer(teardown)
     return accept_risk

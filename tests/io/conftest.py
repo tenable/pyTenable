@@ -1,7 +1,7 @@
-import pytest, os, uuid
+import os
+import uuid
 from tenable.io import TenableIO
-from tenable.errors import *
-from tests.checker import check, single
+from tenable.errors import NotFoundError
 from tests.pytenable_log_handler import setup_logging_to_file, log_exception
 
 SCAN_ID_WITH_RESULTS = 6799

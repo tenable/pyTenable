@@ -2,10 +2,11 @@
 test agent exclusions
 '''
 import uuid
-from datetime import datetime as dtime, timedelta
 import pytest
-from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
+from datetime import datetime as dtime, timedelta
 from ..checker import check
+from tests.pytenable_log_handler import log_exception
+from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
 
 
 @pytest.fixture
@@ -21,8 +22,8 @@ def agentexclusion(request, api):
     def teardown():
         try:
             api.agent_exclusions.delete(excl['id'])
-        except NotFoundError:
-            pass
+        except NotFoundError as error:
+            log_exception(error)
 
     request.addfinalizer(teardown)
     return excl
