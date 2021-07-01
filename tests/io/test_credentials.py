@@ -5,6 +5,7 @@ import uuid
 import pytest
 from tenable.errors import UnexpectedValueError, APIError
 from ..checker import check, single
+from tests.pytenable_log_handler import log_exception
 
 def test_credentials_permissions_constructor_tuple_permission_type_typeerror(api):
     '''test to raise the exception when type of permission type is not passed as defined'''
@@ -130,7 +131,8 @@ def cred(request, api, vcr):
         try:
             with vcr.use_cassette('test_credentials_delete_success'):
                 api.credentials.delete(cred)
-        except APIError:
+        except APIError as err:
+            log_exception(err)
             pass
     request.addfinalizer(teardown)
     return cred
