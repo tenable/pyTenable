@@ -40,7 +40,10 @@ def fixture_tagvalue(request, api):
     '''
     Fixture to create tag value
     '''
-    tag = api.tags.create('Example', 'Test Tag3')
+    try:
+        tag = api.tags.create('Example', 'Test Tag3')
+    except Exception as err:
+        log_exception(err)
 
     def teardown():
         '''
@@ -62,7 +65,10 @@ def fixture_tagcat(request, api):
     '''
     Fixture to create tag category
     '''
-    tag = api.tags.create_category('Example3')
+    try:
+        tag = api.tags.create_category('Example3')
+    except Exception as err:
+        log_exception(err)
 
     def teardown():
         '''
@@ -1053,3 +1059,14 @@ def test_tags_edit_without_filters(api):
                 flag = False
         except:
             flag = False
+
+
+@pytest.mark.vcr()
+def test_tags_exception_handling_bugfix(api):
+    '''
+    test to log the exception when existing tag value or tag category is created
+    '''
+    try:
+        api.tags.create(category='Test', value='Test1')
+    except Exception as err:
+        log_exception(err)
