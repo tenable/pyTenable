@@ -6,7 +6,7 @@ import com.tenable.jenkins.Constants
 import com.tenable.jenkins.builds.snyk.*
 import com.tenable.jenkins.builds.nexusiq.*
 
-pythonVersion = [ '3.6', '3.7', '3.8', '3.9' ]
+pythonVersion = ['3.6', '3.7', '3.8', '3.9']
 
 bparams = new BuildParams(this, 1083)
 bparams.channels = '#jenkins-devel'
@@ -21,14 +21,14 @@ common = new Common(this)
 buildsCommon = new BuildsCommon(this)
 
 void unittests(String version) {
-    stage("unittest${version}") {
-        node(Constants.DOCKERNODE) {
-            buildsCommon.cleanup()
-            checkout scm
+	stage("unittest${version}") {
+		node(Constants.DOCKERNODE) {
+			buildsCommon.cleanup()
+			checkout scm
 
-            withContainer(image: "python:${version}-buster", registry: '', inside: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {
-                try {
-                    sh """
+			withContainer(image: "python:${version}-buster", registry: '', inside: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {
+				try {
+					sh """
                         python -m pip install --upgrade pip
                         pip install -r test-requirements.txt
                         pip install -r requirements.txt
@@ -37,124 +37,107 @@ void unittests(String version) {
                         find . -name *.html
                         find . -name *.xml
                     """
-                }
-                catch(ex) {
-                    throw ex
-                }
-                finally {
-                    if (fileExists ('test-reports/coverage/index.html')) {
-                        publishHTML(
-                            [allowMissing: true,
-                             alwaysLinkToLastBuild: true,
-                             keepAll     : true,
-                             reportDir   : 'test-reports/coverage/',
-                             reportFiles : 'index.html',
-                             reportName  : "Coverage${version}",
-                             reportTitles: "Coverage${version}"])
-                    }
-                    step([$class: 'JUnitResultArchiver', testResults: 'test-reports/junit/*.xml'])
-                }
-            }
-        }
-    }
+				}
+				catch(ex) {
+					throw ex
+				}
+				finally {
+					if (fileExists('test-reports/coverage/index.html')) {
+						publishHTML([allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'test-reports/coverage/', reportFiles: 'index.html', reportName: "Coverage${version}", reportTitles: "Coverage${version}"])
+					}
+					step([$class: 'JUnitResultArchiver', testResults: 'test-reports/junit/*.xml'])
+				}
+			}
+		}
+	}
 }
 
 try {
-    Map tasks = [ : ]
+	Map tasks = [: ]
 
-    pythonVersion.each {
-        version ->
-            tasks[version] = { unittests(version) }
-    }
+	pythonVersion.each {
+		version ->tasks[version] = {
+			unittests(version)
+		}
+	}
 
-    tasks['snyk'] = {
-        stage('snyk') {
-            Snyk snyk = new Snyk(this, bparams)
-            snyk.execute()
-        }
-    }
+	tasks['snyk'] = {
+		stage('snyk') {
+			Snyk snyk = new Snyk(this, bparams)
+			snyk.execute()
+		}
+	}
 
-    tasks['sonarqube'] = {
-        stage('sonarqube') {
-            SonarQube.execute(this, bparams)
-        }
-    }
+	tasks['sonarqube'] = {
+		stage('sonarqube') {
+			SonarQube.execute(this, bparams)
+		}
+	}
 
-    tasks['nexusiq'] = {
-        stage('nexusiq') {
-            Nexusiq.execute(this, bparams)
-        }
-    }
+	tasks['nexusiq'] = {
+		stage('nexusiq') {
+			Nexusiq.execute(this, bparams)
+		}
+	}
 
-    tasks['runPylint'] = {
-        stage('runPylint')
-        {
-            node(Constants.DOCKERNODE) {
-                withContainer(image: "python:${version}-buster", registry: '', inside: '-u root') {
-                    try {
-                        sh """
+	tasks['runPylint'] = {
+		stage('runPylint') {
+			node(Constants.DOCKERNODE) {
+				withContainer(image: "python:${version}-buster", registry: '', inside: '-u root') {
+					try {
+						sh """
+                           pip install pylint
                            pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
                            pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log
                            cat reports/pylint_tenable.log
                            cat reports/pylint_tests.log
                         """
-                    } catch(ex){
-                        throw ex
-                    } finally {
-                        if (fileExists ('reports/pylint_tenable.log')) {
-                               //result needs to outpyt, will test
-                               result =  recordIssues(
-                                    enabledForFailure: true,
-                                    tool: pyLint(pattern: 'reports/pylint_tenable.log'),
-                                    unstableTotalAll: 20,
-                                    failedTotalAll: 30,)
-                                                                        }
-                        if (fileExists ('reports/pylint_test.log')) {
-                               //result needs to outpyt, will test
-                               result =  recordIssues(
-                                    enabledForFailure: true,
-                                    tool: pyLint(pattern: 'reports/pylint_test.log'),
-                                    unstableTotalAll: 20,
-                                    failedTotalAll: 30,)
-                                                                      }
-                            }
-                    }
-                }
-        }
-    }
+					} catch(ex) {
+						throw ex
+					} finally {
+						if (fileExists('reports/pylint_tenable.log')) {
+							//result should available. TODO: to test
+							result = recordIssues(
+							enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 20, failedTotalAll: 30, )
+						}
+						if (fileExists('reports/pylint_test.log')) {
+							//result should available. TODO: to test
+							result = recordIssues(
+							enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_test.log'), unstableTotalAll: 20, failedTotalAll: 30, )
+						}
+					}
+				}
+			}
+		}
+	}
 
+	parallel(tasks)
 
-    parallel(tasks)
+	common.setResultIfNotSet(Constants.JSUCCESS)
 
-    common.setResultIfNotSet(Constants.JSUCCESS)
-
-
-    node('runPyPi')  {
-        stage('runPyPi')
-        {
-            try {
-                  String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
-                  withCredentials([[$class : 'UsernamePasswordMultiBinding',
-                  credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',
-                  passwordVariable : 'PYPIPASSWORD']]) {
-                  sh """
+	node('runPyPi') {
+		stage('runPyPi') {
+			try {
+				String prodOrTest = env.BRANCH_NAME == 'master' ? 'prod': 'test'
+				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYP${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
+					sh """
                     pip install twine
                     rm -rf dist
                     python setup.py sdist
                     twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
                   """
-                                                        }
-            } catch(ex) {
-                throw ex
-            }
-        }
-    }
+				}
+			} catch(ex) {
+				throw ex
+			}
+		}
+	}
 
-} catch (ex) {
-    common.logException(ex)
-    common.setResultAbortedOrFailure()
-    throw ex
+} catch(ex) {
+	common.logException(ex)
+	common.setResultAbortedOrFailure()
+	throw ex
 } finally {
-    common.setResultIfNotSet(Constants.JFAILURE)
-    buildsCommon.notifyPostBuild(bparams)
+	common.setResultIfNotSet(Constants.JFAILURE)
+	buildsCommon.notifyPostBuild(bparams)
 }
