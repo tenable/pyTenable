@@ -1,0 +1,41 @@
+name: Publish pyTenable as a Lambda Layer
+on: 
+  workflow_dispatch:
+    inputs:
+      bucket_prefix:
+        description: 'S3 buckets where pyTenable layers are stored'
+        default: 'pytenable-layers'
+        required: true
+jobs:
+  publish-lambda-layer:
+    name: Publish pyTenable as a Lambda Layer for use in AWS Lambda functions in multiple AWS regions
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials from Tenable Marketplace account
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.MP_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.MP_AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Publish Python 3.6  
+      env:
+        BUCKET_PREFIX: ${{ github.event.inputs.bucket_prefix }}
+      run: | 
+        bash .github/workflows/publish-layers.sh python3.6
+
+    - name: Publish Python 3.7 
+      env:
+        BUCKET_PREFIX: ${{ github.event.inputs.bucket_prefix }}
+      run: | 
+        bash .github/workflows/publish-layers.sh python3.7
+
+    - name: Publish Python 3.8
+      env:
+        BUCKET_PREFIX: ${{ github.event.inputs.bucket_prefix }}
+      run: | 
+        bash .github/workflows/publish-layers.sh python3.8
