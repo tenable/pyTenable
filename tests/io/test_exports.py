@@ -63,8 +63,8 @@ def test_exports_vuln_cidr_range_invalid_cidr(api):
 
 def test_process_page(api):
     '''test to process the page'''
-    exports_iterator = ExportsIterator(api.exports._api)
-    exports_iterator._process_page(page_data='page_data')
+    exports_iterator = ExportsIterator(getattr(api.exports, '_api'))
+    getattr(exports_iterator, '_process_page')(page_data='page_data')
     assert exports_iterator.page is not None
     assert exports_iterator.page == 'page_data'
 
@@ -340,28 +340,39 @@ def test_exports_compliance_success(api):
 @pytest.mark.vcr()
 def test_exports_compliance(api):
     '''test to export the compliance data'''
-    last_seen = int(time.time()) - (12 * 60 * 60)
+    last_seen = int(time.time()) - (24 * 60 * 60)
     compliance = api.exports.compliance(last_seen=last_seen)
     assert isinstance(compliance, ExportsIterator)
 
     for resp in compliance:
+        # common keys for all status types
         check(resp, 'asset_uuid', 'uuid')
         check(resp, 'audit_file', str)
-        check(resp, 'check_error', str)
         check(resp, 'check_id', str)
-        check(resp, 'check_info', str)
         check(resp, 'check_name', str)
         check(resp, 'first_seen', str)
         check(resp, 'last_seen', str)
         check(resp, 'plugin_id', int)
-        check(resp, 'reference', list)
+        check(resp, 'status', str)
 
-        if resp['reference']:
+        # keys available in failed and warning and may be available in other status types
+        if resp['status'] == 'FAILED' or resp['status'] == 'WARNING':
+            print("inside first if")
+            check(resp, 'check_info', str)
+            check(resp, 'see_also', str)
+            check(resp, 'solution', str)
+            check(resp, 'reference', list)
+
             for data in resp['reference']:
                 check(data, 'control', str)
                 check(data, 'framework', str)
 
-        check(resp, 'see_also', str)
-        check(resp, 'solution', str)
-        check(resp, 'status', str)
-        break
+        # keys available in passed, failed and warning type status
+        if resp['status'] == 'FAILED' or resp['status'] == 'WARNING':
+            print("inside second if")
+            check(resp, 'expected_value', str)
+
+        # keys available in error type status
+        if resp['status'] == 'ERROR':
+            print("inside third if")
+            check(resp, 'check_error', str)
