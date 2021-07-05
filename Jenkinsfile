@@ -115,23 +115,6 @@ try {
 
 	common.setResultIfNotSet(Constants.JSUCCESS)
 
-	node('runPyPi') {
-		stage('runPyPi') {
-			try {
-				String prodOrTest = env.BRANCH_NAME == 'master' ? 'prod': 'test'
-				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYP${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
-					sh """
-                    pip install twine
-                    rm -rf dist
-                    python setup.py sdist
-                    twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
-                  """
-				}
-			} catch(ex) {
-				throw ex
-			}
-		}
-	}
 
 } catch(ex) {
 	common.logException(ex)
