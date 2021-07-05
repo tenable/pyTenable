@@ -14,14 +14,15 @@ Methods available on ``tio.exports``:
     .. automethod:: vulns
     .. automethod:: compliance
 '''
-from .base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
-from tenable.errors import TioExportsError, TioExportsTimeout
+import time
+import sys
 from ipaddress import IPv4Network
+from tenable.errors import TioExportsError, TioExportsTimeout
+from .base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
 try:
     from json.decoder import JSONDecodeError
 except ImportError:
     JSONDecodeError = ValueError
-import time, sys
 
 class ExportsIterator(APIResultsIterator):
     '''
@@ -52,7 +53,8 @@ class ExportsIterator(APIResultsIterator):
         def get_status():
             # Query the API for the status of the export.
             status = self._api.get('{}/export/{}/status'.format(self.type, self.uuid)).json()
-            self._log.debug(f'EXPORT {self.type} {self.uuid} is status {status.get("status")}')
+            log_message = f'EXPORT {self.type} {self.uuid} is status {status.get("status")}'
+            self._log.debug(log_message)
 
             # We need to get the list of chunks that we haven't completed yet and are
             # available for download.
@@ -118,9 +120,10 @@ class ExportsIterator(APIResultsIterator):
                 self.page = self._api.get('{}/export/{}/chunks/{}'.format(
                     self.type, self.uuid, self.chunk_id)).json()
                 downloaded = True
-            except JSONDecodeError as err:
-                self._log.warn('Invalid Chunk {} on export {}'.format(
-                               str(self.chunk_id), str(self.uuid)))
+            except JSONDecodeError:
+                log_message = 'Invalid Chunk {} on export {}'.format(
+                               str(self.chunk_id), str(self.uuid))
+                self._log.warning(log_message)
                 self.page = list()
                 counter += 1
 
@@ -128,8 +131,9 @@ class ExportsIterator(APIResultsIterator):
         # next page of data.  This allows us to properly handle empty chunks of
         # data.
         if len(self.page) < 1:
-            self._log.warn('Empty Chunk {} on Export {}'.format(
-                           str(self.chunk_id), str(self.uuid)))
+            log_message = 'Empty Chunk {} on Export {}'.format(
+                           str(self.chunk_id), str(self.uuid))
+            self._log.warning(log_message)
             self._get_page()
 
     def next(self):
@@ -158,6 +162,9 @@ class ExportsIterator(APIResultsIterator):
 
 
 class ExportsAPI(TIOEndpoint):
+    '''
+    This class contains all methods related to exports
+    '''
     def vulns(self, **kw):
         '''
         Initiate an vulnerability export.
@@ -549,7 +556,8 @@ class ExportsAPI(TIOEndpoint):
         # the count of asset UUIDs can be maximum of 200 UUID values.
         if 'asset' in kw and self._check('asset', kw['asset'], list):
             if len(kw['asset']) <= 200:
-                payload['asset'] = [self._check('asset_value', asset, 'uuid') for asset in kw['asset']]
+                payload['asset'] = [
+                    self._check('asset_value', asset, 'uuid') for asset in kw['asset']]
             else:
                 raise UnexpectedValueError("The list can contain a maximum of 200 asset UUIDs")
 
