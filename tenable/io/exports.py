@@ -17,8 +17,9 @@ Methods available on ``tio.exports``:
 import time
 import sys
 from ipaddress import IPv4Network
+from appdirs import unicode
 from tenable.errors import TioExportsError, TioExportsTimeout
-from .base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
+from tenable.io.base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
 try:
     from json.decoder import JSONDecodeError
 except ImportError:
@@ -29,6 +30,16 @@ class ExportsIterator(APIResultsIterator):
     The exports iterator handles the chunk status and retrieval management
     functions in order to provide a simplistic iterator that can be used with
     minimal effort in the calling application.
+
+     Attributes:
+        count (int): The current number of records that have been returned
+        page (list):
+            The current page of data being walked through.  pages will be
+            cycled through as the iterator requests more information from the
+            API.
+        page_count (int): The number of record returned from the current page.
+        total (int):
+            The total number of records that exist for the current request.
     '''
     def __init__(self, api, **kw):
         self.type = None
