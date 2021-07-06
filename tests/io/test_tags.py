@@ -38,9 +38,14 @@ def fixture_filterdefs():
 @pytest.mark.vcr()
 def fixture_tagvalue(request, api):
     '''
-    Fixture to create tag value
+    Fixture to create tag value. Please note that If the tag value already exist
+    in the instance, it deletes that tag and create one
     '''
-    tag = api.tags.create('Example', 'Test Tag')
+    value = 'Test Tag'
+    for tag in api.tags.list():
+        if value in tag['value']:
+            api.tags.delete(tag['uuid'])
+    tag = api.tags.create('Example', value)
 
     def teardown():
         '''
@@ -380,6 +385,8 @@ def test_tags_create_success(tagvalue):
     check(tagvalue['access_control'], 'current_user_permissions', list)
     check(tagvalue['access_control'], 'defined_domain_permissions', list)
     # check(tagvalue, 'filters', str, allow_none=True)
+
+
 
 
 @pytest.mark.vcr()
@@ -1069,13 +1076,3 @@ def test_tags_edit_without_filters(api):
         except:
             flag = False
 
-
-@pytest.mark.vcr()
-def test_tags_exception_handling_bugfix(api):
-    '''
-    test to log the exception when existing tag value or tag category is created
-    '''
-    try:
-        api.tags.create(category='Test', value='Test1')
-    except Exception as err:
-        log_exception(err)
