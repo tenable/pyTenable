@@ -1073,6 +1073,7 @@ def test_tags_edit_without_filters(api):
             if 'filters' in tag_details:
                 api.tags.edit(tag_id)
                 flag = False
-        except:
+        except Exception as err:
             flag = False
+            log_exception(err)
 
