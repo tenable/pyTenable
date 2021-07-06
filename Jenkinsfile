@@ -103,8 +103,13 @@ try {
 
 	Map task_PyPi = [ : ]
 	task_PyPi['runPyPi'] = {
-		stage('runPyPi')
-		{
+	stage('runPyPi')
+	{
+		node(Constants.DOCKERNODE) {
+		buildsCommon.cleanup()
+		checkout scm
+		withContainer(image: "python:${version}-buster", registry: '', inside: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {
+
 			if (!isVersionTag(readCurrentTag())) {
 				step('runPyPi') {
 					try {
@@ -122,7 +127,9 @@ try {
 						throw ex
 					}
 				}
-			}	
+			}
+		}
+		}
 		}
 	}
 
