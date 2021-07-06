@@ -106,10 +106,7 @@ try {
 	stage('runPyPi')
 	{
 		node(Constants.DOCKERNODE) {
-		buildsCommon.cleanup()
-		checkout scm
-		withContainer(image: "python:${version}-buster", registry: '', inside: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {
-
+		withContainer(image: "python:${version}-buster", registry: '', inside: '-u root) {
 			if (!isVersionTag(readCurrentTag())) {
 				step('runPyPi') {
 					try {
