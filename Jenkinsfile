@@ -80,65 +80,35 @@ try {
 		}
 	}
 
-	tasks['runPylint'] = {
-		stage('runPylint') {
-			node(Constants.DOCKERNODE) {
-				withContainer(image: "python:${version}-buster", registry: '', inside: '-u root') {
+	parallel(tasks)
+
+	Map task_PyPi = [ : ]
+	task_PyPi['runPyPi'] = {
+		stage('runPyPi')
+		{
+			if (!isVersionTag(readCurrentTag())) {
+				step('runPyPi') {
 					try {
+						String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
+						withCredentials([[$class : 'UsernamePasswordMultiBinding',
+						credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',
+						passwordVariable : 'PYPIPASSWORD']]) {
 						sh """
-                           pip install pylint
-                           pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
-                           pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log
-                           cat reports/pylint_tenable.log
-                           cat reports/pylint_tests.log
-                        """
+							rm -rf dist
+							python setup.py sdist
+							twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+						"""
+						}
 					} catch(ex) {
 						throw ex
-					} finally {
-						if (fileExists('reports/pylint_tenable.log')) {
-							//result should available. TODO: to test
-							result = recordIssues(
-							enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 20, failedTotalAll: 30, )
-						}
-						if (fileExists('reports/pylint_test.log')) {
-							//result should available. TODO: to test
-							result = recordIssues(
-							enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_test.log'), unstableTotalAll: 20, failedTotalAll: 30, )
-						}
 					}
 				}
-			}
+			}	
 		}
 	}
 
-	parallel(tasks)
-
-    Map task_PyPi = [ : ]
-    task_PyPi['runPyPi'] = {
-        stage('runPyPi')
-        {
-		  if (!isVersionTag(readCurrentTag())) {
-            step('runPyPi') {
-				try {
-                  String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
-                  withCredentials([[$class : 'UsernamePasswordMultiBinding',
-                  credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',
-                  passwordVariable : 'PYPIPASSWORD']]) {
-                  sh """
-                    rm -rf dist
-                    python setup.py sdist
-                    twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
-                  """
-                  }
-				} catch(ex) {
-					throw ex
-				}
-			}
-		  }
-		}
-    }
-    parallel(task_PyPi)
-
+	parallel(task_PyPi)
+	
 	common.setResultIfNotSet(Constants.JSUCCESS)
 
 
