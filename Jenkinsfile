@@ -20,6 +20,8 @@ GlobalContext.put('appid', bparams.appid)
 common = new Common(this)
 buildsCommon = new BuildsCommon(this)
 
+
+
 void unittests(String version) {
 	stage("unittest${version}") {
 		node(Constants.DOCKERNODE) {
@@ -52,6 +54,24 @@ void unittests(String version) {
 	}
 }
 
+def boolean isVersionTag(String tag) {
+    echo "checking version tag $tag"
+
+    if (tag == null) {
+        return false
+    }
+
+    // use your preferred pattern
+    def tagMatcher = tag =~ /\d+\.\d+\.\d+/
+
+    return tagMatcher.matches()
+}
+
+def String readCurrentTag() {
+
+    return sh(returnStdout: true, script: "git describe --tags").trim()           
+}
+
 try {
 	Map tasks = [: ]
 
@@ -64,13 +84,12 @@ try {
 	tasks['snyk'] = {
 		stage('snyk') {
 			Snyk snyk = new Snyk(this, bparams)
-			snyk.execute()
 		}
 	}
 
 	tasks['sonarqube'] = {
 		stage('sonarqube') {
-			SonarQube.execute(this, bparams)
+		SonarQube.execute(this, bparams)
 		}
 	}
 
