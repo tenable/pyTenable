@@ -25,7 +25,6 @@ import json
 import re
 
 from tenable.utils import dict_merge
-from tenable.errors import UnexpectedValueError
 from tenable.io.base import TIOEndpoint, TIOIterator
 
 class TagsIterator(TIOIterator):
