@@ -23,25 +23,25 @@ from tenable.utils import dict_merge
 
 class RemediationScansIteratorV2(TIOIterator):
     '''
-The Remediation scans iterator provides a scalable way to work through
-scan history result sets of any size. The iterator will walk through
-each page of data, returning one record at a time.  If it reaches the
-end of a page of records, then it will request the next page of
-information and then continue to return records from the next page
-(and the next, and the next) until the counter reaches the total number
-of records that the API has reported.
+    The Remediation scans iterator provides a scalable way to work through
+    scan history result sets of any size. The iterator will walk through
+    each page of data, returning one record at a time.  If it reaches the
+    end of a page of records, then it will request the next page of
+    information and then continue to return records from the next page
+    (and the next, and the next) until the counter reaches the total number
+    of records that the API has reported.
 
-Attributes:
-    count (int): The current number of records that have been returned
-    page (list):
-        The current page of data being walked through.  pages will be
-        cycled through as the iterator requests more information from the
-        API.
-    page_count (int): The number of record returned from the current page.
-    total (int):
-        The total number of records that exist for the current request.
-'''
-pass
+    Attributes:
+        count (int): The current number of records that have been returned
+        page (list):
+            The current page of data being walked through.  pages will be
+            cycled through as the iterator requests more information from the
+            API.
+        page_count (int): The number of record returned from the current page.
+        total (int):
+            The total number of records that exist for the current request.
+    '''
+    pass
 
 
 class RemediationScansAPI(TIOEndpoint):
@@ -63,8 +63,8 @@ class RemediationScansAPI(TIOEndpoint):
             offset (int): This value needs to be > 0
 
             sort (str): scan_creation_date:desc/scan_creation_date:asc
-                        Returns the remediation scan list with the ascending
-            or descending order with offset and limit
+                Returns the remediation scan list with the ascending
+                or descending order with offset and limit
 
         Returns:
             :obj:`list`:
@@ -106,7 +106,7 @@ class RemediationScansAPI(TIOEndpoint):
             uuid (str): UUID of Remediation scan template
 
             Settings Object Parameters :
-            These are parameters passed through the keywords
+                These are parameters passed through the keywords
 
             name (str): The name of the remediation scan to create.
 
@@ -124,13 +124,13 @@ class RemediationScansAPI(TIOEndpoint):
                 scan routes.
 
             target_network_uuid (str): For remediation scans, enter a valid target
-             network UUID from a previous scan you wish to remediate.
+                network UUID from a previous scan you wish to remediate.
 
             scan_time_window (int32): The time frame, in minutes, during which agents
-            must transmit scan results to Tenable.io in order to be included in
-            dashboards and reports. If your request omits this parameter,
-            the default value is 180 minutes.
-            For non-agent scans, this attribute is null.
+                must transmit scan results to Tenable.io in order to be included in
+                dashboards and reports. If your request omits this parameter,
+                the default value is 180 minutes.
+                For non-agent scans, this attribute is null.
 
             text_targets (str): The List of targets to scan
 
@@ -140,26 +140,27 @@ class RemediationScansAPI(TIOEndpoint):
                 A list of targets to scan
 
             target_groups (int[]):
-            For remediation scans, enter a valid target group ID from a previous scan you wish to remediate.
+                For remediation scans, enter a valid target group ID from a previous scan you wish to remediate.
 
             file_targets (string):
-            The name of a file containing the list of targets to scan.
+                The name of a file containing the list of targets to scan.
 
-            tag_targets (str[])
-            The list of asset tag identifiers that the scan uses to determine which assets it evaluates
+            tag_targets (str[]):
+                The list of asset tag identifiers that the scan uses to determine which assets it evaluates
 
-            agent_group_id (str[])
-            An array of agent group UUIDs to scan.
+            agent_group_id (str[]):
+                An array of agent group UUIDs to scan.
 
-            emails (str)
-            A comma-separated list of accounts that receive the email summary report.
+            emails (str):
+                A comma-separated list of accounts that receive the email summary report.
 
-            acls (obj[])
+            acls (list[dict], optional):
+                A list of dictionaries containing permissions to apply to the scan.
 
             credentials (dict, optional):
                 A list of credentials to use.
 
-            enabled plugins (dict, optional):
+            enabled plugins (list, optional):
                 A list of plugins enabled to use.
 
             **kw (dict, optional):
@@ -179,13 +180,13 @@ class RemediationScansAPI(TIOEndpoint):
 
 
         >>> scan = tio.remediationscans.create_remediation_scan(
-        ... uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
-        ... name='Create Remediation Scan',
-        ... description='Remediation scan created',
-        ... scanner_id='10167769',
-        ... scan_time_window=10,
-        ... targets=['127.0.0.1:3000'],
-        ... template='advanced')
+        ...     uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
+        ...     name='Create Remediation Scan',
+        ...     description='Remediation scan created',
+        ...     scanner_id='10167769',
+        ...     scan_time_window=10,
+        ...     targets=['127.0.0.1:3000'],
+        ...     template='advanced')
 
             For further information on credentials, what settings to use, etc,
             refer to
@@ -196,7 +197,6 @@ class RemediationScansAPI(TIOEndpoint):
 
         if 'template' not in kwargs:
             kwargs['template'] = 'advanced'
-
 
         scan = self._create_scan_document(kwargs)
 
@@ -298,10 +298,13 @@ class RemediationScansAPI(TIOEndpoint):
             scan['audits'] = self._check('compliance', kwargs['compliance'], dict)
             del kwargs['compliance']
 
-        if 'plugins' in kwargs:
-            scan['plugins'] = self._check('plugins', kwargs['plugins'], dict)
-            del kwargs['plugins']
-
+        # for enabled_plugins, we will push the list of plugin ids as-is into the
+        # correct sub-document of the scan definition.
+        if 'enabled_plugins' in kwargs:
+            scan['enabled_plugins'] = [
+                self._check('plugin_id', plugin_id, int)
+                for plugin_id in self._check('enabled_plugins', kwargs['enabled_plugins'], list)]
+            del kwargs['enabled_plugins']
 
         # any other remaining keyword arguments will be passed into the settings
         # sub-document.  The bulk of the data should go here...
