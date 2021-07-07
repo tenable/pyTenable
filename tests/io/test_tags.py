@@ -6,6 +6,7 @@ import pytest
 from tests.checker import check, single
 from tenable.errors import UnexpectedValueError, NotFoundError
 from tenable.io.tags import TagsIterator
+from tests.pytenable_log_handler import log_exception
 
 
 @pytest.fixture(name='tagfilters')
@@ -47,7 +48,8 @@ def fixture_tagvalue(request, api):
         '''
         try:
             api.tags.delete(tag['uuid'])
-        except NotFoundError:
+        except NotFoundError as err:
+            log_exception(err)
             pass
 
     request.addfinalizer(teardown)
@@ -68,7 +70,8 @@ def fixture_tagcat(request, api):
         '''
         try:
             api.tags.delete_category(tag['uuid'])
-        except NotFoundError:
+        except NotFoundError as err:
+            log_exception(err)
             pass
 
     request.addfinalizer(teardown)

@@ -5,6 +5,7 @@ import uuid
 import pytest
 from tenable.errors import UnexpectedValueError, APIError, InvalidInputError
 from tests.checker import check
+from tests.pytenable_log_handler import log_exception
 
 @pytest.fixture(name='network')
 def fixture_network(request, api, vcr):
@@ -20,7 +21,8 @@ def fixture_network(request, api, vcr):
         try:
             with vcr.use_cassette('test_networks_delete_success'):
                 api.networks.delete(network['uuid'])
-        except APIError:
+        except APIError as err:
+            log_exception(err)
             pass
     request.addfinalizer(teardown)
     return network
