@@ -28,14 +28,29 @@ def remedy_scan(request, api):
 	return remedyscan
 
 
-def remedy_scanned_list(api):
+@pytest.mark.vcr()
+def test_remedy_scanned_list(api):
 	'''
 	test to check remediation scan list
 	'''
-	scan_list = api.remediationscans.list_remediation_scan(5, 5, 'scan_creation_date:asc')
+	scan_list = api.remediationscans.list_remediation_scan(5, 0, 'scan_creation_date:asc')
 	for remediation_scan in scan_list:
-		pprint(remediation_scan)
-	return scan_list
+		check(remediation_scan, 'control', bool)
+		check(remediation_scan, 'creation_date', int)
+		check(remediation_scan, 'enabled', bool)
+		check(remediation_scan, 'id', int)
+		check(remediation_scan, 'last_modification_date', int)
+		check(remediation_scan, 'name', str)
+		check(remediation_scan, 'owner', str)
+		check(remediation_scan, 'permissions', int)
+		check(remediation_scan, 'policy_id', int)
+		check(remediation_scan, 'read', bool)
+		check(remediation_scan, 'remediation', int)
+		check(remediation_scan, 'scan_creation_date', int)
+		check(remediation_scan, 'schedule_uuid', str)
+		check(remediation_scan, 'shared', bool)
+		check(remediation_scan, 'status', str)
+		check(remediation_scan, 'user_permissions', int)
 
 
 @pytest.mark.vcr()
@@ -133,7 +148,7 @@ def test_remedyscan_status(api):
 	'''
 	test to check scan status
 	'''
-	remedyscan =api.remediationscans.create_remediation_scan(
+	remedyscan = api.remediationscans.create_remediation_scan(
 		uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
 		name='Create Remediation Scan',
 		description='This is first remediation scan created',
