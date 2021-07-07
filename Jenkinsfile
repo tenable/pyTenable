@@ -103,30 +103,27 @@ try {
 
 	Map task_PyPi = [ : ]
 	task_PyPi['runPyPi'] = {
-	stage('runPyPi')
-	{
-		node(Constants.DOCKERNODE) {
-		withContainer(image: "python:${version}-buster", registry: '', inside: '-u root) {
-			if (!isVersionTag(readCurrentTag())) {
-				step('runPyPi') {
-					try {
-						String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
-						withCredentials([[$class : 'UsernamePasswordMultiBinding',
-						credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',
-						passwordVariable : 'PYPIPASSWORD']]) {
-						sh """
-							rm -rf dist
-							python setup.py sdist
-							twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
-						"""
+		stage('runPyPi') {
+			node(Constants.DOCKERNODE) {
+				if (!isVersionTag(readCurrentTag())) {
+					step('runPyPi') {
+						try {
+							String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
+							withCredentials([[$class : 'UsernamePasswordMultiBinding',
+							credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',
+							passwordVariable : 'PYPIPASSWORD']]) {
+								sh """
+								rm -rf dist
+								python setup.py sdist
+								twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+								"""
+							}
+						} catch(ex) {
+							throw ex
 						}
-					} catch(ex) {
-						throw ex
 					}
 				}
 			}
-		}
-		}
 		}
 	}
 
