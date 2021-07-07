@@ -83,15 +83,15 @@ try {
 	tasks['runPylint'] = {
 		stage('runPylint') {
 			node(Constants.DOCKERNODE) {
-				withContainer(image: "python:${version}-buster", registry: '', inside: '-u root') {
+				withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
 					try {
 						sh """
-                           pip install pylint
-                           pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
-                           pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log
-                           cat reports/pylint_tenable.log
-                           cat reports/pylint_tests.log
-                        """
+                           			pip install pylint
+                           			pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
+                           			pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log
+                           			cat reports/pylint_tenable.log
+                           			cat reports/pylint_tests.log
+                        			"""
 					} catch(ex) {
 						throw ex
 					} finally {
