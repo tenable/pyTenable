@@ -169,7 +169,6 @@ class ExportsIterator(APIResultsIterator):
         Cancels the export.
         '''
         self._api.get('{}/export/{}/cancel'.format(self.type, self.uuid)).json()
-        raise
 
 
 class ExportsAPI(TIOEndpoint):
