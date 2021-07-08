@@ -4,8 +4,8 @@ import os
 import uuid
 import pytest
 from tenable.io import TenableIO
-from tenable.errors import NotFoundError
 from tests.pytenable_log_handler import setup_logging_to_file, log_exception
+from tenable.errors import NotFoundError
 
 SCAN_ID_WITH_RESULTS = 6799
 
@@ -59,6 +59,7 @@ def folder(request, api):
             api.folders.delete(folder)
         except NotFoundError as notfound:
             log_exception(notfound)
+            pass
 
     request.addfinalizer(teardown)
     return folder
@@ -81,6 +82,7 @@ def policy(request, api):
             api.policies.delete(policy['policy_id'])
         except NotFoundError as notfound:
             log_exception(notfound)
+            pass
 
     request.addfinalizer(teardown)
     return policy
