@@ -82,18 +82,19 @@ def fixture_tagcat(request, api):
 
 @pytest.fixture(name='custom_tagvalue')
 @pytest.mark.vcr()
-def fixture_custom_tagvalue(request, api, user):
+def fixture_custom_tagvalue(request, api, user, tagfilters):
     '''
     Fixture to create tag value. Please note that If the tag value already exist
     in the instance, it deletes that tag and create one
     '''
-    value = 'Test'
+    value = 'Custom Test'
     for tag in api.tags.list():
         if value in tag['value']:
             api.tags.delete(tag['uuid'])
-    tag = api.tags.create('Example', value,
+    tag = api.tags.create('Example', value=value,
                           all_users_permissions=['CAN_EDIT'],
-                          current_domain_permissions=[(user['uuid'], user['username'], 'user', ['CAN_EDIT'])])
+                          current_domain_permissions=[(user['uuid'], user['username'], 'user', ['CAN_EDIT'])],
+                          filters=tagfilters)
 
     def teardown():
         '''
@@ -419,32 +420,26 @@ def test_tags_create_filters_and_access_control_success(api, tagfilters, user, c
     test to create tag value and assign all_users_permissions,
     current_domain_permission and filters
     '''
-    try:
-        tagvalue = api.tags.create(custom_tagvalue, filters=tagfilters)
-        assert isinstance(tagvalue, dict)
-        check(tagvalue, 'uuid', 'uuid')
-        check(tagvalue, 'created_at', 'datetime')
-        check(tagvalue, 'updated_at', 'datetime')
-        check(tagvalue, 'updated_by', str)
-        check(tagvalue, 'category_uuid', 'uuid')
-        check(tagvalue, 'value', str)
-        # check(tagvalue, 'description', str, allow_none=True)
-        # check(tagvalue, 'category_description', str, allow_none=True)
-        check(tagvalue, 'access_control', dict)
-        check(tagvalue['access_control'], 'all_users_permissions', list)
-        check(tagvalue['access_control'], 'current_domain_permissions', list)
-        check(tagvalue['access_control'], 'current_user_permissions', list)
-        check(tagvalue['access_control'], 'defined_domain_permissions', list)
-        check(tagvalue, 'filters', dict, allow_none=True)
-        assert tagvalue['access_control']['all_users_permissions'] == ['CAN_EDIT']
-        assert any(v['id'] == user['uuid']
-                   for v in tagvalue['access_control']['current_domain_permissions'])
-        assert tagvalue['filters'] == {
-            'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"192.168.0.0/24"}]}'}
-        api.tags.delete(tagvalue['uuid'])
-    except Exception as err:
-        log_exception(err)
-
+    assert isinstance(custom_tagvalue, dict)
+    check(custom_tagvalue, 'uuid', 'uuid')
+    check(custom_tagvalue, 'created_at', 'datetime')
+    check(custom_tagvalue, 'updated_at', 'datetime')
+    check(custom_tagvalue, 'updated_by', str)
+    check(custom_tagvalue, 'category_uuid', 'uuid')
+    check(custom_tagvalue, 'value', str)
+    # check(tagvalue, 'description', str, allow_none=True)
+    # check(tagvalue, 'category_description', str, allow_none=True)
+    check(custom_tagvalue, 'access_control', dict)
+    check(custom_tagvalue['access_control'], 'all_users_permissions', list)
+    check(custom_tagvalue['access_control'], 'current_domain_permissions', list)
+    check(custom_tagvalue['access_control'], 'current_user_permissions', list)
+    check(custom_tagvalue['access_control'], 'defined_domain_permissions', list)
+    check(custom_tagvalue, 'filters', dict, allow_none=True)
+    assert custom_tagvalue['access_control']['all_users_permissions'] == ['CAN_EDIT']
+    assert any(v['id'] == user['uuid']
+               for v in custom_tagvalue['access_control']['current_domain_permissions'])
+    assert custom_tagvalue['filters'] == {
+        'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"192.168.0.0/24"}]}'}
 
 @pytest.mark.vcr()
 def test_tags_create_category_name_typeerror(api):
@@ -748,37 +743,34 @@ def test_tags_edit_filters_and_access_control_success(api, user, tagfilters, cus
     test to edit tag value and update all_users_permissions,
     current_domain_permission and filters
     '''
-    try:
-        tagvalue = api.tags.create(custom_tagvalue, filters=tagfilters)
-        resp = api.tags.edit(tagvalue['uuid'], filters=[('ipv4', 'eq', ['127.0.0.1'])],
-                             all_users_permissions=[], current_domain_permissions=[])
-        assert isinstance(resp, dict)
-        check(resp, 'uuid', 'uuid')
-        check(resp, 'created_at', 'datetime')
-        check(resp, 'created_by', str)
-        check(resp, 'updated_at', 'datetime')
-        check(resp, 'updated_by', str)
-        check(resp, 'category_uuid', 'uuid')
-        check(resp, 'value', str)
-        check(resp, 'type', str)
-        # check(t, 'description', str, allow_none=True)
-        check(resp, 'category_name', str)
-        # check(t, 'category_description', str, allow_none=True)
-        check(resp, 'access_control', dict)
-        check(resp['access_control'], 'all_users_permissions', list)
-        check(resp['access_control'], 'current_domain_permissions', list)
-        check(resp['access_control'], 'current_user_permissions', list)
-        check(resp['access_control'], 'defined_domain_permissions', list)
-        check(tagvalue, 'filters', dict, allow_none=True)
-        assert resp['access_control']['all_users_permissions'] == []
-        assert not any(v['id'] == user['uuid']
-                       for v in resp['access_control']['current_domain_permissions'])
-        assert resp['filters'] == {
-            'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"127.0.0.1"}]}'}
-        assert resp['access_control']['version'] == 1
-        api.tags.delete(tagvalue['uuid'])
-    except Exception as err:
-        log_exception(err)
+    resp = api.tags.edit(custom_tagvalue['uuid'],
+                         filters=[('ipv4', 'eq', ['127.0.0.1'])],
+                         all_users_permissions=[],
+                         current_domain_permissions=[])
+    assert isinstance(resp, dict)
+    check(resp, 'uuid', 'uuid')
+    check(resp, 'created_at', 'datetime')
+    check(resp, 'created_by', str)
+    check(resp, 'updated_at', 'datetime')
+    check(resp, 'updated_by', str)
+    check(resp, 'category_uuid', 'uuid')
+    check(resp, 'value', str)
+    check(resp, 'type', str)
+    # check(t, 'description', str, allow_none=True)
+    check(resp, 'category_name', str)
+    # check(t, 'category_description', str, allow_none=True)
+    check(resp, 'access_control', dict)
+    check(resp['access_control'], 'all_users_permissions', list)
+    check(resp['access_control'], 'current_domain_permissions', list)
+    check(resp['access_control'], 'current_user_permissions', list)
+    check(resp['access_control'], 'defined_domain_permissions', list)
+    check(custom_tagvalue, 'filters', dict, allow_none=True)
+    assert resp['access_control']['all_users_permissions'] == []
+    assert not any(v['id'] == user['uuid']
+                   for v in resp['access_control']['current_domain_permissions'])
+    assert resp['filters'] == {
+        'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"127.0.0.1"}]}'}
+    assert resp['access_control']['version'] == 1
 
 
 @pytest.mark.vcr()
