@@ -12,21 +12,34 @@ Methods available on ``tio.exports``:
 
     .. automethod:: assets
     .. automethod:: vulns
+    .. automethod:: compliance
 '''
-from .base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
-from tenable.errors import TioExportsError, TioExportsTimeout
+import time
+import sys
 from ipaddress import IPv4Network
+from appdirs import unicode
+from tenable.errors import TioExportsError, TioExportsTimeout
+from tenable.io.base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
 try:
     from json.decoder import JSONDecodeError
 except ImportError:
     JSONDecodeError = ValueError
-import time, sys
 
 class ExportsIterator(APIResultsIterator):
     '''
     The exports iterator handles the chunk status and retrieval management
     functions in order to provide a simplistic iterator that can be used with
     minimal effort in the calling application.
+
+     Attributes:
+        count (int): The current number of records that have been returned
+        page (list):
+            The current page of data being walked through.  pages will be
+            cycled through as the iterator requests more information from the
+            API.
+        page_count (int): The number of record returned from the current page.
+        total (int):
+            The total number of records that exist for the current request.
     '''
     def __init__(self, api, **kw):
         self.type = None
@@ -51,11 +64,14 @@ class ExportsIterator(APIResultsIterator):
         def get_status():
             # Query the API for the status of the export.
             status = self._api.get('{}/export/{}/status'.format(self.type, self.uuid)).json()
-            self._log.debug(f'EXPORT {self.type} {self.uuid} is status {status.get("status")}')
+            log_message = f'EXPORT {self.type} {self.uuid} is status {status.get("status")}'
+            self._log.debug(log_message)
 
             # We need to get the list of chunks that we haven't completed yet and are
             # available for download.
-            unfinished = [c for c in status['chunks_available'] if c not in self.processed]
+            chunks_available = status['chunks_available'] \
+                if 'chunks_available' in status else list()
+            unfinished = [c for c in chunks_available if c not in self.processed]
 
             # Add the chunks_unfinished key with the unfinished list as the
             # associated value and then return the status to the caller.
@@ -115,9 +131,10 @@ class ExportsIterator(APIResultsIterator):
                 self.page = self._api.get('{}/export/{}/chunks/{}'.format(
                     self.type, self.uuid, self.chunk_id)).json()
                 downloaded = True
-            except JSONDecodeError as err:
-                self._log.warn('Invalid Chunk {} on export {}'.format(
-                               str(self.chunk_id), str(self.uuid)))
+            except JSONDecodeError:
+                log_message = 'Invalid Chunk {} on export {}'.format(
+                               str(self.chunk_id), str(self.uuid))
+                self._log.warning(log_message)
                 self.page = list()
                 counter += 1
 
@@ -125,8 +142,9 @@ class ExportsIterator(APIResultsIterator):
         # next page of data.  This allows us to properly handle empty chunks of
         # data.
         if len(self.page) < 1:
-            self._log.warn('Empty Chunk {} on Export {}'.format(
-                           str(self.chunk_id), str(self.uuid)))
+            log_message = 'Empty Chunk {} on Export {}'.format(
+                           str(self.chunk_id), str(self.uuid))
+            self._log.warning(log_message)
             self._get_page()
 
     def next(self):
@@ -151,10 +169,12 @@ class ExportsIterator(APIResultsIterator):
         Cancels the export.
         '''
         self._api.get('{}/export/{}/cancel'.format(self.type, self.uuid)).json()
-        raise
 
 
 class ExportsAPI(TIOEndpoint):
+    '''
+    This class contains all methods related to exports
+    '''
     def vulns(self, **kw):
         '''
         Initiate an vulnerability export.
@@ -474,6 +494,100 @@ class ExportsAPI(TIOEndpoint):
         return ExportsIterator(
             self._api,
             type='assets',
+            uuid=uuid,
+            timeout=self._check('timeout', kw.get('timeout'), int),
+            _wait_for_cmplete=self._check('when_done', kw.get('when_done'), bool, default=False)
+        )
+
+    def compliance(self, **kw):
+        '''
+        Export all compliance data from Tenable.io.
+
+        :devportal:`exports: export-compliance-data <io-exports-compliance-create>`
+
+        Args:
+            num_findings (int, optional):
+                Specifies the number of compliance findings per exported chunk.
+                The range is 50-5000
+            asset (list[uuid], optional):
+                A list of asset UUIDs for which you want to return compliance data.
+                The list can contain a maximum of 200 asset UUIDs.
+            last_seen (int, optional):
+                Filters assets that were last seen by a scan between
+                the specified date (in Unix time) and now.
+            first_seen (int, optional):
+                Filters assets that were first seen by a scan between
+                the specified date (in Unix time) and now.
+
+                Note: The first_seen filter cannot be used by itself.
+                You must use last_seen and first_seen together or only last_seen.
+            timeout (int, optional):
+                Number of seconds to wait before timing out the export.  If left
+                unspecified the iterator will wait indefinitely for the export to
+                complete.
+            uuid (str, optional):
+                To re-request an iterator based off of an existing export, pass
+                the UUID of the export to bypass the initial request and instead
+                use the UUID passed to build the export iterator.
+            when_done (bool, optional):
+                Wait to start working through the data until the export has finished
+                processing.  If left unspecified the default behavior is to download
+                chunks as they are available.
+
+        Returns:
+            :obj:`ExportIterator`:
+                An iterator to walk through the results.
+
+        Examples:
+            Export all of the compliance data within Tenable.io:
+
+            >>> compliance_data = tio.exports.compliance()
+            >>> for compliance in compliance_data:
+            ...     pprint(compliance)
+
+            Export only the compliance data between last week and now:
+
+            >>> import time
+            >>> last_week = int(time.time()) - 604800
+            >>> for compliance in tio.exports.compliance(last_seen=last_week):
+            ...     pprint(compliance)
+
+        '''
+        # initialize payload
+        payload=dict()
+        uuid = kw.get('uuid')
+
+        # set the number of compliance findings per exported chunk
+        if 'num_findings' in kw and self._check('num_findings', kw['num_findings'], int,
+                                                choices=list(range(50, 5001))):
+            payload['num_findings'] = kw['num_findings']
+
+        # set list of asset UUIDs for which you want to return compliance data
+        # the count of asset UUIDs can be maximum of 200 UUID values.
+        if 'asset' in kw and self._check('asset', kw['asset'], list):
+            if len(kw['asset']) <= 200:
+                payload['asset'] = [
+                    self._check('asset_value', asset, 'uuid') for asset in kw['asset']]
+            else:
+                raise UnexpectedValueError("The list can contain a maximum of 200 asset UUIDs")
+
+        # set last seen and first seen filters
+        # we are checking first seen filter only if last seen is available
+        if 'last_seen' in kw:
+            payload['filters'] = dict()
+            payload['filters']['last_seen'] = self._check('last_seen', kw['last_seen'], int)
+
+            if 'first_seen' in kw:
+                payload['filters']['first_seen'] = self._check('first_seen', kw['first_seen'], int)
+
+        if not uuid:
+            uuid = self._api.post(
+                'compliance/export', json=payload).json()['export_uuid']
+            self._api._log.debug('Initiated compliance export {}'.format(uuid))
+
+        return ExportsIterator(
+            self._api,
+            type='compliance',
             uuid=uuid,
             timeout=self._check('timeout', kw.get('timeout'), int),
             _wait_for_cmplete=self._check('when_done', kw.get('when_done'), bool, default=False)
