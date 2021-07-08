@@ -4,9 +4,10 @@ test exports
 import time
 import uuid
 import pytest
-from tenable.errors import UnexpectedValueError
-from tenable.io.exports import ExportsIterator
 from ..checker import check
+from tenable.io.exports import ExportsIterator
+from tests.pytenable_log_handler import log_exception
+from tenable.errors import UnexpectedValueError, TioExportsError
 
 
 @pytest.mark.vcr()
@@ -84,7 +85,6 @@ def test_exports_vulns_success(api):
         tags=[('tag_name', 'tag_value')],
         vpr={'gte': 7},
     )
-    print(vulns)
     assert isinstance(vulns, ExportsIterator)
 
 
@@ -244,7 +244,6 @@ def test_exports_assets(api):
     check(asset, 'first_seen', str, allow_none=True)
     check(asset, 'fqdns', list)
     check(asset, 'has_agent', bool)
-    check(asset, 'has_plugin_results', bool)
     check(asset, 'hostnames', list)
     check(asset, 'id', 'uuid')
     check(asset, 'ipv4s', list)
@@ -332,9 +331,17 @@ def test_exports_compliance_first_seen_typeerror(api):
 def test_exports_compliance_success(api):
     '''test to export the compliance data'''
     last_seen = int(time.time()) - (12 * 60 * 60)
-    compliance = api.exports.compliance(num_findings=51,
-                                        last_seen=last_seen)
-    assert isinstance(compliance, ExportsIterator)
+    try:
+        compliance = api.exports.compliance(num_findings=51,
+                                            last_seen=last_seen
+                                            )
+        assert isinstance(compliance, ExportsIterator)
+    except TioExportsError as error:
+        print('\nNo data available. Please retry')
+        log_exception(error)
+    except UnexpectedValueError as error:
+        print('\n', error.msg)
+        log_exception(error)
 
 
 @pytest.mark.vcr()
@@ -343,33 +350,38 @@ def test_exports_compliance(api):
     last_seen = int(time.time()) - (24 * 60 * 60)
     compliance = api.exports.compliance(last_seen=last_seen)
     assert isinstance(compliance, ExportsIterator)
+    try:
+        for resp in compliance:
+            # common keys for all status types
+            check(resp, 'asset_uuid', 'uuid')
+            if 'audit_file' in resp:
+                check(resp, 'audit_file', str)
+            check(resp, 'check_id', str)
+            if 'check_name' in resp:
+                check(resp, 'check_name', str)
+            check(resp, 'first_seen', str)
+            check(resp, 'last_seen', str)
+            check(resp, 'plugin_id', int)
+            check(resp, 'status', str)
 
-    for resp in compliance:
-        # common keys for all status types
-        check(resp, 'asset_uuid', 'uuid')
-        check(resp, 'audit_file', str)
-        check(resp, 'check_id', str)
-        check(resp, 'check_name', str)
-        check(resp, 'first_seen', str)
-        check(resp, 'last_seen', str)
-        check(resp, 'plugin_id', int)
-        check(resp, 'status', str)
+            # keys available in failed and warning and may be available in other status types
+            if resp['status'] == 'FAILED' or resp['status'] == 'WARNING':
+                check(resp, 'check_info', str)
+                check(resp, 'see_also', str)
+                check(resp, 'solution', str)
+                check(resp, 'reference', list)
 
-        # keys available in failed and warning and may be available in other status types
-        if resp['status'] == 'FAILED' or resp['status'] == 'WARNING':
-            check(resp, 'check_info', str)
-            check(resp, 'see_also', str)
-            check(resp, 'solution', str)
-            check(resp, 'reference', list)
+                for data in resp['reference']:
+                    check(data, 'control', str)
+                    check(data, 'framework', str)
 
-            for data in resp['reference']:
-                check(data, 'control', str)
-                check(data, 'framework', str)
+            # keys available in passed, failed and warning type status
+            if resp['status'] == 'FAILED' or resp['status'] == 'WARNING':
+                check(resp, 'expected_value', str)
 
-        # keys available in passed, failed and warning type status
-        if resp['status'] == 'FAILED' or resp['status'] == 'WARNING':
-            check(resp, 'expected_value', str)
-
-        # keys available in error type status
-        if resp['status'] == 'ERROR':
-            check(resp, 'check_error', str)
+            # keys available in error type status
+            if resp['status'] == 'ERROR':
+                check(resp, 'check_error', str)
+    except TioExportsError as error:
+        print('\nNo data available. Please retry')
+        log_exception(error)
