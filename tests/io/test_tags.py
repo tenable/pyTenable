@@ -349,7 +349,8 @@ def test_tags_create_value_category_description_typeerror(api):
     param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags.create('', '', category_description=1)
+        api.tags.create('a7b7ebf6-8aaf-4509-a5b3-872b7647fa86', '', category_description=1)
+
 
 
 @pytest.mark.vcr()
