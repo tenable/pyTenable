@@ -3,6 +3,7 @@ import os
 import uuid
 import pytest
 from tenable.io import TenableIO
+from tests.checker import check, single
 from tests.pytenable_log_handler import setup_logging_to_file, log_exception
 from tenable.errors import NotFoundError
 
@@ -99,6 +100,7 @@ def user(request, api):
             api.users.delete(user['id'])
         except NotFoundError as notfound:
             log_exception(notfound)
+            pass
 
     request.addfinalizer(teardown)
     return user
@@ -126,6 +128,7 @@ def scannergroup(request, api):
             api.scanner_groups.delete(scannergroup['id'])
         except NotFoundError as notfound:
             log_exception(notfound)
+            pass
 
     request.addfinalizer(teardown)
     return scannergroup
