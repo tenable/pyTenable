@@ -3,8 +3,8 @@
 import os
 import uuid
 import pytest
-from tenable.io import TenableIO
 from tenable.errors import NotFoundError
+from tenable.io import TenableIO
 from tests.pytenable_log_handler import setup_logging_to_file, log_exception
 
 SCAN_ID_WITH_RESULTS = 6799
