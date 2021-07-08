@@ -49,7 +49,7 @@ class NetworksAPI(TIOEndpoint):
     '''
     This will contain all methods related to networks
     '''
-    def create(self, name, description=None):
+    def create(self, name, description=None, assets_ttl_days=None):
         '''
         Creates a new network within Tenable.io
 
@@ -58,6 +58,10 @@ class NetworksAPI(TIOEndpoint):
         Args:
             name (str): The name of the new network.
             description (str, optional): Description of the network.
+            assets_ttl_days (int, optional): The number of days to wait before assets age out.
+            Assets will be permanently deleted if they are not seen on a scan within the specified number of days.
+            Minimum value: 90
+            Maximum value: 365
 
         Returns:
             :obj:`dict`:
@@ -71,7 +75,8 @@ class NetworksAPI(TIOEndpoint):
 
         return self._api.post('networks', json={
             'name': self._check('name', name, str),
-            'description': self._check('description', description, str)
+            'description': self._check('description', description, str),
+            'assets_ttl_days': self._check('assets_ttl_days', assets_ttl_days, int)
         }).json()
 
     def delete(self, network_id):
@@ -103,7 +108,7 @@ class NetworksAPI(TIOEndpoint):
         return self._api.get('networks/{}'.format(
             self._check('network_id', network_id, 'uuid'))).json()
 
-    def edit(self, network_id, name, description=None):
+    def edit(self, network_id, name, description=None, assets_ttl_days=None):
         '''
         Updates the specified network resource.
 
@@ -114,6 +119,10 @@ class NetworksAPI(TIOEndpoint):
             name (str): The new name of the network resource.
             description (str, optional):
                 The new description of the network resource.
+            assets_ttl_days (int, optional): The number of days to wait before assets age out.
+            Assets will be permanently deleted if they are not seen on a scan within the specified number of days.
+            Minimum value: 90
+            Maximum value: 365
 
         Returns:
             :obj:`dict`:
@@ -121,7 +130,7 @@ class NetworksAPI(TIOEndpoint):
 
         Examples:
             >>> nw = tio.networks.edit('00000000-0000-0000-0000-000000000000',
-            ...     'Updated Network', 'Updated Description')
+            ...     'Updated Network', 'Updated Description', 180)
         '''
         if not description:
             description = ''
@@ -129,7 +138,8 @@ class NetworksAPI(TIOEndpoint):
         return self._api.put('networks/{}'.format(self._check('network_id', network_id, 'uuid')),
             json={
                 'name': self._check('name', name, str),
-                'description': self._check('description', description, str)
+                'description': self._check('description', description, str),
+                'assets_ttl_days': self._check('assets_ttl_days', assets_ttl_days, int)
             }).json()
 
     def assign_scanners(self, network_id, *scanner_uuids):
