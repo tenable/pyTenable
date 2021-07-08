@@ -2,10 +2,12 @@
 test credentials
 '''
 import uuid
+
 import pytest
-from ..checker import check, single
-from tests.pytenable_log_handler import log_exception
+
 from tenable.errors import UnexpectedValueError, APIError
+from tests.pytenable_log_handler import log_exception
+from ..checker import check, single
 
 
 def test_credentials_permissions_constructor_tuple_permission_type_typeerror(api):
@@ -147,7 +149,6 @@ def cred(request, api, vcr):
                 api.credentials.delete(cred)
         except APIError as err:
             log_exception(err)
-            pass
 
     request.addfinalizer(teardown)
     return cred

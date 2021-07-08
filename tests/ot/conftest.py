@@ -1,12 +1,17 @@
+'''
+conftest
+'''
 import pytest
 import responses
-from tenable.version import version
+
 from tenable.ot import TenableOT
+from tenable.version import version
 
 
 @pytest.fixture
 @responses.activate
 def ot():
+    '''fixture ot'''
     responses.add(
         method='GET',
         url='https://localhost:443/v1/version',

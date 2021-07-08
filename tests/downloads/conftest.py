@@ -1,3 +1,6 @@
+'''
+conftest
+'''
 import os
 import warnings
 import pytest
@@ -17,7 +20,8 @@ def vcr_config():
 
 
 @pytest.fixture(autouse=True, scope='module')
-def dl(request, vcr):
+def dl():
+    '''dl fixture'''
     warnings.filterwarnings('ignore', category=DeprecationWarning)
     return Downloads(os.getenv('DL_TOKEN'),
                      vendor='pytest',
