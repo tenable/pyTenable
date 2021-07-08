@@ -5,7 +5,7 @@ import re
 import pytest
 import responses
 from box import Box
-
+from tests.ot.conftest import ot as fixture_ot
 
 def load_responses(responses):
     '''
@@ -110,29 +110,29 @@ def load_responses(responses):
 
 
 @responses.activate
-def test_vuln_asset_intermixer(ot):
+def test_vuln_asset_intermixer(fixture_ot):
     '''
     Tests the intermixer iterator
     '''
     load_responses(responses)
-    vulns = ot.vulns.extract()
+    vulns = fixture_ot.vulns.extract()
 
     # assert the iterator returns itself.
     assert vulns == vulns.__iter__()
 
     # as __next__() calls next(), we will use the internal method to clear the
     # testing requirements.
-    v = vulns.__next__()
+    vuln = vulns.__next__()
 
-    assert v.asset.id == '8fe5cdb1-723e-4996-9d3c-7787445bc38a'
-    assert v.asset.connections
-    assert v.asset.connections[0].networkInterface.id == 'd7f06b04-5733-44ac-9e84-096f6fdb181b'
-    assert v.cvss.score == 10
+    assert vuln.asset.id == '8fe5cdb1-723e-4996-9d3c-7787445bc38a'
+    assert vuln.asset.connections
+    assert vuln.asset.connections[0].networkInterface.id == 'd7f06b04-5733-44ac-9e84-096f6fdb181b'
+    assert vuln.cvss.score == 10
 
     # Validate that merge_cache should always return the same asset cache.
-    w = vulns._merge_cache(Box({'id': '8fe5cdb1-723e-4996-9d3c-7787445bc38a'}))
-    assert v.asset.id == w.asset.id
-    assert v.id == w.id
+    data = vulns._merge_cache(Box({'id': '8fe5cdb1-723e-4996-9d3c-7787445bc38a'}))
+    assert vuln.asset.id == data.asset.id
+    assert vuln.id == data.id
 
     # test that the stop iterator works as expected.
     with pytest.raises(StopIteration):
@@ -140,12 +140,12 @@ def test_vuln_asset_intermixer(ot):
 
 
 @responses.activate
-def test_list(ot):
+def test_list(fixture_ot):
     '''
     Tests the list method
     '''
     load_responses(responses)
-    vulns = ot.vulns.list()
+    vulns = fixture_ot.vulns.list()
 
     for vuln in vulns:
         assert vuln.id == 'CVE-2020-9633'
@@ -153,7 +153,7 @@ def test_list(ot):
 
 
 @responses.activate
-def test_assets_list(ot):
+def test_assets_list(fixture_ot):
     '''
     test to list the assets
     '''
@@ -170,7 +170,7 @@ def test_assets_list(ot):
             }
         ]
     )
-    counts = ot.vulns.assets_list()
+    counts = fixture_ot.vulns.assets_list()
     for count in counts:
         assert count.cveId
         assert count.assetCount

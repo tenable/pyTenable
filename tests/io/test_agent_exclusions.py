@@ -2,11 +2,13 @@
 test agent exclusions
 '''
 import uuid
-import pytest
 from datetime import datetime as dtime, timedelta
-from ..checker import check
-from tests.pytenable_log_handler import log_exception
+
+import pytest
+
 from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
+from tests.pytenable_log_handler import log_exception
+from ..checker import check
 
 
 @pytest.fixture

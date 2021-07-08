@@ -1,3 +1,6 @@
+'''
+test base
+'''
 import responses
 from tenable.ot.assets import AssetsAPI
 from tenable.ot.network_interfaces import NetworkInterfacesAPI
