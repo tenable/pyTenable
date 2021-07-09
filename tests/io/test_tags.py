@@ -6,7 +6,8 @@ import pytest
 from tests.checker import check, single
 from tenable.io.tags import TagsIterator
 from tests.pytenable_log_handler import log_exception
-from tenable.errors import UnexpectedValueError, NotFoundError
+from tenable.errors import UnexpectedValueError
+
 
 @pytest.fixture(name='tagfilters')
 def fixture_tagfilters():
@@ -40,20 +41,14 @@ def fixture_tagvalue(request, api):
     Fixture to create tag value. Please note that If the tag value already exist
     in the instance, it deletes that tag and create one
     '''
-    value = 'Test Tag'
-    for tag in api.tags.list():
-        if value in tag['value']:
-            api.tags.delete(tag['uuid'])
-    tag = api.tags.create('Example', value)
+    tag = api.tags.create('Example', str(uuid.uuid4()))
 
     def teardown():
         '''
         cleanup function to delete tag value
         '''
-        try:
-            api.tags.delete(tag['uuid'])
-        except NotFoundError as err:
-            log_exception(err)
+        api.tags.delete(tag['uuid'])
+        assert not tag_exists(api, tag['uuid'])
 
     request.addfinalizer(teardown)
     return tag
@@ -71,10 +66,7 @@ def fixture_tagcat(request, api):
         '''
         cleanup function to delete tag category
         '''
-        try:
-            api.tags.delete_category(tag['uuid'])
-        except NotFoundError as err:
-            log_exception(err)
+        api.tags.delete_category(tag['uuid'])
 
     request.addfinalizer(teardown)
     return tag
@@ -87,11 +79,8 @@ def fixture_custom_tagvalue(request, api, user, tagfilters):
     Fixture to create tag value. Please note that If the tag value already exist
     in the instance, it deletes that tag and create one
     '''
-    value = 'Custom Test'
-    for tag in api.tags.list():
-        if value in tag['value']:
-            api.tags.delete(tag['uuid'])
-    tag = api.tags.create('Example', value=value,
+    value_uuid = 'tag value uuid: {}'.format(str(uuid.uuid4()))
+    tag = api.tags.create('Example', value=value_uuid,
                           all_users_permissions=['CAN_EDIT'],
                           current_domain_permissions=[(user['uuid'], user['username'], 'user', ['CAN_EDIT'])],
                           filters=tagfilters)
@@ -100,10 +89,9 @@ def fixture_custom_tagvalue(request, api, user, tagfilters):
         '''
         cleanup function to delete tag value
         '''
-        try:
-            api.tags.delete(tag['uuid'])
-        except NotFoundError as err:
-            log_exception(err)
+        api.tags.delete(tag['uuid'])
+
+        assert not tag_exists(api, tag['uuid'])
 
     request.addfinalizer(teardown)
     return tag
@@ -353,7 +341,6 @@ def test_tags_create_value_category_description_typeerror(api):
         api.tags.create('a7b7ebf6-8aaf-4509-a5b3-872b7647fa86', '', category_description=1)
 
 
-
 @pytest.mark.vcr()
 def test_tags_create_all_users_permissions_typeerror(api):
     '''
@@ -440,6 +427,7 @@ def test_tags_create_filters_and_access_control_success(api, tagfilters, user, c
                for v in custom_tagvalue['access_control']['current_domain_permissions'])
     assert custom_tagvalue['filters'] == {
         'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"192.168.0.0/24"}]}'}
+
 
 @pytest.mark.vcr()
 def test_tags_create_category_name_typeerror(api):
@@ -529,8 +517,8 @@ def test_tags_delete_bulk_success(api):
     '''
     test to delete multiple tags .
     '''
-    tag1 = api.tags.create('Example', 'Test1')
-    tag2 = api.tags.create('Example', 'Test2')
+    tag1 = api.tags.create('Example', str(uuid.uuid4()))
+    tag2 = api.tags.create('Example', str(uuid.uuid4()))
     api.tags.delete(tag1['uuid'], tag2['uuid'])
 
 
@@ -1083,3 +1071,12 @@ def test_tags_edit_without_filters(api):
         except Exception as err:
             flag = False
             log_exception(err)
+
+
+
+def tag_exists(api, tag_uuid):
+    '''function to check whether the tag value exists or not '''
+    if tag_uuid in api.tags.list():
+        return True
+    else:
+        return False
