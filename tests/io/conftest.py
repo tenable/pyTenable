@@ -1,5 +1,4 @@
 '''conftest'''
-
 import os
 import uuid
 import pytest
@@ -116,7 +115,9 @@ def scanner(api):
 
 @pytest.fixture
 def scannergroup(request, api):
-    '''fixture to create a scanner_group'''
+    '''
+    fixture to create a scanner_group
+    '''
     scannergroup = api.scanner_groups.create(str(uuid.uuid4()))
 
     def teardown():
