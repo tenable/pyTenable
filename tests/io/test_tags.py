@@ -529,12 +529,9 @@ def test_tags_delete_bulk_success(api):
     '''
     test to delete multiple tags .
     '''
-    try:
-        tag1 = api.tags.create('Example', 'Test1')
-        tag2 = api.tags.create('Example', 'Test2')
-        api.tags.delete(tag1['uuid'], tag2['uuid'])
-    except Exception as err:
-        log_exception(err)
+    tag1 = api.tags.create('Example', 'Test1')
+    tag2 = api.tags.create('Example', 'Test2')
+    api.tags.delete(tag1['uuid'], tag2['uuid'])
 
 
 @pytest.mark.vcr()
