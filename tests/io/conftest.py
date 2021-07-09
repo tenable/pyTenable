@@ -1,9 +1,9 @@
 '''conftest'''
-
 import os
 import uuid
 import pytest
 from tenable.io import TenableIO
+from tests.checker import check, single
 from tests.pytenable_log_handler import setup_logging_to_file, log_exception
 from tenable.errors import NotFoundError
 
@@ -23,7 +23,7 @@ def vcr_config():
 
 @pytest.fixture
 def api():
-    '''api keys fixture'''
+    '''api fixture'''
     setup_logging_to_file()
     return TenableIO(
         os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
@@ -59,7 +59,6 @@ def folder(request, api):
             api.folders.delete(folder)
         except NotFoundError as notfound:
             log_exception(notfound)
-            pass
 
     request.addfinalizer(teardown)
     return folder
@@ -82,7 +81,6 @@ def policy(request, api):
             api.policies.delete(policy['policy_id'])
         except NotFoundError as notfound:
             log_exception(notfound)
-            pass
 
     request.addfinalizer(teardown)
     return policy
@@ -102,6 +100,7 @@ def user(request, api):
             api.users.delete(user['id'])
         except NotFoundError as notfound:
             log_exception(notfound)
+            pass
 
     request.addfinalizer(teardown)
     return user
@@ -118,7 +117,9 @@ def scanner(api):
 
 @pytest.fixture
 def scannergroup(request, api):
-    '''fixture to create a scanner_group'''
+    '''
+    fixture to create a scanner_group
+    '''
     scannergroup = api.scanner_groups.create(str(uuid.uuid4()))
 
     def teardown():
@@ -127,6 +128,7 @@ def scannergroup(request, api):
             api.scanner_groups.delete(scannergroup['id'])
         except NotFoundError as notfound:
             log_exception(notfound)
+            pass
 
     request.addfinalizer(teardown)
     return scannergroup
