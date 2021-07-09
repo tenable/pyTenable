@@ -454,6 +454,14 @@ class APISession(object):
             ])
         })
 
+    def _close_session(self):
+        '''
+        Requests session destroyer
+        '''
+        if self._session:
+            self._session.close()
+            self._session = None
+
     def _resp_error_check(self, response, **kwargs): #stub
         '''
         A more general response error checker that can be overloaded if needed.
