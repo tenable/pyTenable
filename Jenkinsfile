@@ -127,16 +127,34 @@ try {
 	}
 
 	parallel(tasks)
-	
 
 	common.setResultIfNotSet(Constants.JSUCCESS)
 	
-	tasks('runPyPI') {
-	  withGithubNotify(context: 'Release') {
-	    releasePackages()
+	tasks['runPyPI'] = {
+	  stage('runPyPI') {
+	    node(Constants.DOCKERNODE) {
+	      withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
+		steps {
+		  try {
+		  sh """
+		        sudo apt-get install jq
+		        pypi_version=`curl -Ls https://pypi.org/pypi/pyTenable/json | jq -r .info.version`
+			current_version=$(python -c "import tenable;print (tenable.__version__)")
+			if [ $pypi_version != $current_version ]
+			then
+		    """
+			releasePackages()
+		    sh """
+			fi
+		    """
+		  } catch(ex) {
+		    throw ex
+		  }
+		}
+	      }
+	    }
 	  }
 	}
-
 } catch(ex) {
 	common.logException(ex)
 	common.setResultAbortedOrFailure()
