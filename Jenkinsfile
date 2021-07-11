@@ -130,12 +130,14 @@ try {
 
 	common.setResultIfNotSet(Constants.JSUCCESS)
 	
- 	stage('Release') {
+ 	stage('RunPyPI') {
+	  node(Constants.DOCKERNODE) {
+	    withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
 		environment {
 		   REPO = 'pyTenable'
     		   BASE_DIR = "src/github.com/tenable/${env.REPO}"
 		}
-		steps {
+		step {
 			withGithubNotify(context: 'Release') {
 				deleteDir()
               			unstash 'source'
@@ -145,8 +147,9 @@ try {
 	      			}
 			}
 		}
+	    }
+	  }
 	}
-
 } catch(ex) {
 	common.logException(ex)
 	common.setResultAbortedOrFailure()
