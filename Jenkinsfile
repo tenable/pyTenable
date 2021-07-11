@@ -20,6 +20,18 @@ GlobalContext.put('appid', bparams.appid)
 common = new Common(this)
 buildsCommon = new BuildsCommon(this)
 
+def releasePackages() {
+
+	String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
+	withCredentials([[$class : 'UsernamePasswordMultiBinding',credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',passwordVariable : 'PYPIPASSWORD']]) { 
+		sh """
+			rm -rf dist
+			python setup.py sdist
+			pip install twine
+			twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+		   """
+	}
+}
 
 
 void unittests(String version) {
@@ -54,24 +66,6 @@ void unittests(String version) {
 	}
 }
 
-def boolean isVersionTag(String tag) {
-    echo "checking version tag $tag"
-
-    if (tag == null) {
-        return false
-    }
-
-    // use your preferred pattern
-    def tagMatcher = tag =~ /\d+\.\d+\.\d+/
-
-    return tagMatcher.matches()
-}
-
-def String readCurrentTag() {
-
-    return sh(returnStdout: true, script: "git describe --tags").trim()           
-}
-
 try {
 	Map tasks = [: ]
 
@@ -84,12 +78,13 @@ try {
 	tasks['snyk'] = {
 		stage('snyk') {
 			Snyk snyk = new Snyk(this, bparams)
+			snyk.execute()
 		}
 	}
 
 	tasks['sonarqube'] = {
 		stage('sonarqube') {
-		SonarQube.execute(this, bparams)
+			SonarQube.execute(this, bparams)
 		}
 	}
 
@@ -99,27 +94,31 @@ try {
 		}
 	}
 
-	parallel(tasks)
-
-	Map task_PyPi = [ : ]
-	task_PyPi['runPyPi'] = {
-		stage('runPyPi') {
+	tasks['runPylint'] = {
+		stage('runPylint') {
 			node(Constants.DOCKERNODE) {
-				if (!isVersionTag(readCurrentTag())) {
-					step('runPyPi') {
-						try {
-							String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
-							withCredentials([[$class : 'UsernamePasswordMultiBinding',
-							credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',
-							passwordVariable : 'PYPIPASSWORD']]) {
-								sh """
-								rm -rf dist
-								python setup.py sdist
-								twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
-								"""
-							}
-						} catch(ex) {
-							throw ex
+				withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
+					try {
+						sh """
+						mkdir reports
+						pip install pylint
+                           			pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
+                           			pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log
+                           			cat reports/pylint_tenable.log
+                           			cat reports/pylint_tests.log
+                        			"""
+					} catch(ex) {
+						throw ex
+					} finally {
+						if (fileExists('reports/pylint_tenable.log')) {
+							//result should available. TODO: to test
+							result = recordIssues(
+							enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 20, failedTotalAll: 30, )
+						}
+						if (fileExists('reports/pylint_test.log')) {
+							//result should available. TODO: to test
+							result = recordIssues(
+							enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_test.log'), unstableTotalAll: 20, failedTotalAll: 30, )
 						}
 					}
 				}
@@ -127,10 +126,26 @@ try {
 		}
 	}
 
-	parallel(task_PyPi)
-	
-	common.setResultIfNotSet(Constants.JSUCCESS)
+	parallel(tasks)
 
+	common.setResultIfNotSet(Constants.JSUCCESS)
+	
+ 	stage('Release') {
+		environment {
+		   REPO = 'pyTenable'
+    		   BASE_DIR = "src/github.com/tenable/${env.REPO}"
+		}
+		steps {
+			withGithubNotify(context: 'Release') {
+				deleteDir()
+              			unstash 'source'
+              			unstash('packages')
+              			dir("${BASE_DIR}") {
+					releasePackages()
+	      			}
+			}
+		}
+	}
 
 } catch(ex) {
 	common.logException(ex)
