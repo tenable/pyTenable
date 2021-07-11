@@ -131,8 +131,10 @@ try {
 
 	common.setResultIfNotSet(Constants.JSUCCESS)
 	
-	withGithubNotify(context: 'Release') {
-		releasePackages()
+	tasks('runPyPI') {
+	  withGithubNotify(context: 'Release') {
+	    releasePackages()
+	  }
 	}
 
 } catch(ex) {
