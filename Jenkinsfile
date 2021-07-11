@@ -127,9 +127,13 @@ try {
 	}
 
 	parallel(tasks)
+	
 
 	common.setResultIfNotSet(Constants.JSUCCESS)
 	
+	withGithubNotify(context: 'Release') {
+		releasePackages()
+	}
 
 } catch(ex) {
 	common.logException(ex)
@@ -139,3 +143,5 @@ try {
 	common.setResultIfNotSet(Constants.JFAILURE)
 	buildsCommon.notifyPostBuild(bparams)
 }
+
+
