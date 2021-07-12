@@ -3,7 +3,8 @@ Remediation Scans
 =================
 
 The following methods allow for interaction into the Tenable.io
-:devportal:`scans <scans>` API endpoints.
+:devportal:`scans <Create Remediation Scans>` API endpoints.
+:devportal:`scans <List Remediation Scans>` API endpoints.
 
 Methods available on ``tio.remediation_scans``:
 
