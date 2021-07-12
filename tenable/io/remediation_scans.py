@@ -3,15 +3,15 @@ Remediation Scans
 =================
 
 The following methods allow for interaction into the Tenable.io
-:devportal:`scans <Create Remediation Scans>` API endpoints.
-:devportal:`scans <List Remediation Scans>` API endpoints.
+:devportal:`scans <scans>` API endpoints.
+
 Methods available on ``tio.remediation_scans``:
 
 .. rst-class:: hide-signature
 .. autoclass:: RemediationScansAPI
 
-.. automethod:: create_remediation_scans
-.. automethod:: list_remediation_scans
+    .. automethod:: create_remediation_scans
+    .. automethod:: list_remediation_scans
 '''
 
 
@@ -48,27 +48,24 @@ class RemediationScansAPI(TIOEndpoint):
     '''
     This will contain all methods related to Remediation scans
     '''
-    schedule_const = IOConstants.ScanScheduleConst
-    case_const = IOConstants.CaseConst
-
     def list_remediation_scan(self, limit=50, offset=0, sortval='scan_creation_date:desc'):
         '''
         Retrieve the list of Remediation scans.
 
-        :devportal:`scans/remediation: list <remediationscans-list>`
+        :devportal:`scans: list_remediation_scan <io-scans-remediation-list>`
 
         Args:
-            limit (int): This value needs to be between 0 and 200
-
-            offset (int): This value needs to be > 0
-
-            sort (str): scan_creation_date:desc/scan_creation_date:asc
+            limit (int, optional): This value needs to be between 0 and 200
+            offset (int, optional): This value needs to be > 0
+            sort (str, optional):
+                scan_creation_date:desc/scan_creation_date:asc
                 Returns the remediation scan list with the ascending
                 or descending order with offset and limit
 
         Returns:
-            :obj:`list`:
-                A list containing the list of remediation scan records.
+            :obj:`RemediationScansIteratorV2`:
+                An iterator that handles the page management of the requested
+                records.
 
         Examples:
             >>> for remediation_scan in tio.scans.list():
@@ -100,69 +97,52 @@ class RemediationScansAPI(TIOEndpoint):
     def create_remediation_scan(self, **kwargs):
         '''
         Create a new remediation scan.
-        :devportal:`scans/remediation: create <remediationscans-create>`
+
+        :devportal:`scans: create_remediation_scan <io-scans-remediation-create>`
+
         Args:
-
-            uuid (str): UUID of Remediation scan template
-
-            Settings Object Parameters :
-                These are parameters passed through the keywords
-
+            uuid (str, optional): UUID of Remediation scan template
+                Settings Object Parameters -
+                    These are parameters passed through the keywords
             name (str): The name of the remediation scan to create.
-
-            description (str): The name of the scan to create.
-
+            description (str, optional): The name of the scan to create.
             policy (int, optional):
                 The id or title of the scan policy to use (if not using one of
                 the pre-defined templates).  Specifying a a policy id will
                 override the the template parameter.
-
-            scanner_id (str): The unique id of the scanner to use.
+            scanner_id (str, optional): The unique id of the scanner to use.
                 Use the GET /scanners endpoint to find the scanner ID.
                 You can use the special value AUTO-ROUTED to assign scan
                 targets to scanner groups based on the groups' configured
                 scan routes.
-
-            target_network_uuid (str): For remediation scans, enter a valid target
+            target_network_uuid (str, optional): For remediation scans, enter a valid target
                 network UUID from a previous scan you wish to remediate.
-
-            scan_time_window (int32): The time frame, in minutes, during which agents
+            scan_time_window (int, optional): The time frame, in minutes, during which agents
                 must transmit scan results to Tenable.io in order to be included in
                 dashboards and reports. If your request omits this parameter,
                 the default value is 180 minutes.
                 For non-agent scans, this attribute is null.
-
-            text_targets (str): The List of targets to scan
-
+            text_targets (str, optional): The List of targets to scan
             targets (list, optional):
                 If defined, then a list of targets can be specified and will
                 be formatted to an appropriate text_target attribute.
                 A list of targets to scan
-
-            target_groups (int[]):
+            target_groups (list[int]):
                 For remediation scans, enter a valid target group ID from a previous scan you wish to remediate.
-
-            file_targets (string):
+            file_targets (string, optional):
                 The name of a file containing the list of targets to scan.
-
-            tag_targets (str[]):
+            tag_targets (list[str], optional):
                 The list of asset tag identifiers that the scan uses to determine which assets it evaluates
-
-            agent_group_id (str[]):
+            agent_group_id (list[str], optional):
                 An array of agent group UUIDs to scan.
-
-            emails (str):
+            emails (list[str], optional):
                 A comma-separated list of accounts that receive the email summary report.
-
             acls (list[dict], optional):
                 A list of dictionaries containing permissions to apply to the scan.
-
             credentials (dict, optional):
                 A list of credentials to use.
-
-            enabled plugins (list, optional):
-                A list of plugins enabled to use.
-
+            enabled_plugins (list, optional):
+                A list of plugins IDs to add to a remediation scan.
             **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
