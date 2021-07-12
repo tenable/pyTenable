@@ -83,16 +83,16 @@ def test_plugins_list_success(api):
         last_updated=date(2019, 1, 1),
         num_pages=2,
         size=10)
-    for p in plugins:
-        check(p, 'attributes', dict)
-        check(p['attributes'], 'description', str)
-        check(p['attributes'], 'plugin_publication_date', str)
-        check(p['attributes'], 'plugin_modification_date', str)
-        check(p['attributes'], 'plugin_version', str)
-        check(p['attributes'], 'synopsis', str)
-        check(p['attributes'], 'risk_factor', str)
-        check(p, 'id', int)
-        check(p, 'name', str)
+    for plugin in plugins:
+        check(plugin, 'attributes', dict)
+        check(plugin['attributes'], 'description', str)
+        check(plugin['attributes'], 'plugin_publication_date', str)
+        check(plugin['attributes'], 'plugin_modification_date', str)
+        check(plugin['attributes'], 'plugin_version', str)
+        check(plugin['attributes'], 'synopsis', str)
+        check(plugin['attributes'], 'risk_factor', str)
+        check(plugin, 'id', int)
+        check(plugin, 'name', str)
 
 
 @pytest.mark.vcr()

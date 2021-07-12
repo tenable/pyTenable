@@ -157,16 +157,15 @@ def test_agents_details_agent_details(api, agent):
     '''
     test to get the agent details
     '''
-    resp = api.agents.details(agent['id'])
-    check(resp, 'distro', str)
-    check(resp, 'id', int)
-    check(resp, 'ip', str)
-    check(resp, 'linked_on', int)
-    check(resp, 'name', str)
-    check(resp, 'platform', str)
-    check(resp, 'status', str)
-    check(resp, 'uuid', 'uuid')
-    assert resp['id'] == agent['id']
+    for resp in agent:
+        check(resp, 'distro', str)
+        check(resp, 'id', int)
+        check(resp, 'ip', str)
+        check(resp, 'linked_on', int)
+        check(resp, 'name', str)
+        check(resp, 'platform', str)
+        check(resp, 'status', str)
+        check(resp, 'uuid', 'uuid')
 
 
 # Add tests for singular & bulk agent deletion.

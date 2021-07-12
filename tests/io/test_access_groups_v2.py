@@ -22,7 +22,7 @@ def fixture_agroup(request, api, vcr, rules):
     Fixture to create access_group
     '''
     with vcr.use_cassette('test_access_groups_v2_create_success'):
-        group = api.access_groups_v2.create('Example', rules)
+        group = api.access_groups_v2.create(str(uuid.uuid4()), rules)
 
     def teardown():
         '''
@@ -33,7 +33,6 @@ def fixture_agroup(request, api, vcr, rules):
                 api.access_groups_v2.delete(group['id'])
         except APIError as api_exception:
             log_exception(api_exception)
-            pass
 
     request.addfinalizer(teardown)
     return group
@@ -300,7 +299,7 @@ def test_access_group_v2_edit_id_unexpectedvalueerror(api):
 
 
 @pytest.mark.vcr()
-def test_access_group_v2_edit_success(api, agroup):
+def test_access_groups_v2_edit_success(api, agroup):
     '''
     test to edit access group
     '''
@@ -477,7 +476,8 @@ def test_access_groups_v2_list(api):
     for group in access_groups:
         count += 1
         assert isinstance(group, dict)
-        check(group, 'created_at', 'datetime')
+        if 'created_at' in group:
+            check(group, 'created_at', 'datetime')
         check(group, 'updated_at', 'datetime')
         check(group, 'id', 'uuid')
         check(group, 'name', str)
@@ -488,7 +488,8 @@ def test_access_groups_v2_list(api):
         # check(group, 'created_by_uuid', 'uuid') # Will not return for default group
         # check(group, 'updated_by_uuid', 'uuid') # Will not return for default group
         check(group, 'created_by_name', str)
-        check(group, 'updated_by_name', str)
+        if 'updated_by_name' in group:
+            check(group, 'updated_by_name', str)
         check(group, 'processing_percent_complete', int)
     assert count == access_groups.total
 

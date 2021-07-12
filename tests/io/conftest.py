@@ -45,7 +45,7 @@ def stdapi():
 @pytest.fixture
 def agent(api):
     '''agent fixture'''
-    return api.agents.list().next()
+    return api.agents.list()
 
 
 @pytest.fixture
