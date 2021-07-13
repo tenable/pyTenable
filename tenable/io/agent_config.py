@@ -13,13 +13,21 @@ Methods available on ``tio.agent_config``:
     .. automethod:: edit
     .. automethod:: details
 '''
+from typing import Optional, Dict
 from tenable.io.base import TIOEndpoint
+
 
 class AgentConfigAPI(TIOEndpoint):
     '''
     This will contain all methods related to agent config
     '''
-    def edit(self, scanner_id=1, software_update=None, auto_unlink=None):
+
+    def edit(
+            self,
+            scanner_id: Optional[int] = 1,
+            software_update: Optional[bool] = None,
+            auto_unlink: Optional[int] = None
+    ) -> Dict:
         '''
         Edits the agent configuration.
 
@@ -74,7 +82,10 @@ class AgentConfigAPI(TIOEndpoint):
                 self._check('scanner_id', scanner_id, int)
             ), json=payload).json()
 
-    def details(self, scanner_id=1):
+    def details(
+            self,
+            scanner_id: Optional[int] = 1
+    ) -> Dict:
         '''
         Returns the current agent configuration.
 
