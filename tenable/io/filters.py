@@ -16,7 +16,9 @@ Methods available on ``tio.filters``:
     .. automethod:: workbench_asset_filters
     .. automethod:: workbench_vuln_filters
 '''
+from typing import Dict, List, Optional
 from tenable.io.base import TIOEndpoint
+
 
 class FiltersAPI(TIOEndpoint):
     '''
@@ -24,7 +26,10 @@ class FiltersAPI(TIOEndpoint):
     '''
     _cache = dict()
 
-    def _normalize(self, filterset):
+    def _normalize(
+            self,
+            filterset: List[Dict]
+    ) -> Dict:
         '''
         Converts the filters into an easily pars-able dictionary
         '''
@@ -52,7 +57,13 @@ class FiltersAPI(TIOEndpoint):
             filters[item['name']] = datablock
         return filters
 
-    def _use_cache(self, name, path, field_name='filters', normalize=True):
+    def _use_cache(
+            self,
+            name: str,
+            path: str,
+            field_name: Optional[str] = 'filters',
+            normalize=True
+    ) -> Dict:
         '''
         Leverages the filter cache and will return the results as expected.
         '''
@@ -64,7 +75,10 @@ class FiltersAPI(TIOEndpoint):
 
         return self._cache[name]
 
-    def access_group_asset_rules_filters(self, normalize=True):
+    def access_group_asset_rules_filters(
+            self,
+            normalize: Optional[bool] = True
+    ) -> Dict:
         '''
         Returns access group rules filters.
 
@@ -77,11 +91,15 @@ class FiltersAPI(TIOEndpoint):
         Examples:
             >>> filters = tio.filters.access_group_rules_filters()
         '''
-        return self._use_cache('access_group_asset_filters',
+        return self._use_cache(
+            'access_group_asset_filters',
             'access-groups/rules/filters',
             field_name='rules', normalize=normalize)
 
-    def access_group_filters(self, normalize=True):
+    def access_group_filters(
+            self,
+            normalize: Optional[bool] = True
+    ) -> Dict:
         '''
         Returns access group filters.
 
@@ -94,10 +112,13 @@ class FiltersAPI(TIOEndpoint):
         Examples:
             >>> filters = tio.filters.access_group_filters()
         '''
-        return self._use_cache('access_groups',
-            'access-groups/filters', normalize=normalize)
+        return self._use_cache(
+            'access_groups', 'access-groups/filters', normalize=normalize)
 
-    def access_group_filters_v2(self, normalize=True):
+    def access_group_filters_v2(
+            self,
+            normalize: Optional[bool] = True
+    ) -> Dict:
         '''
         Returns access group filters v2.
 
@@ -110,10 +131,13 @@ class FiltersAPI(TIOEndpoint):
         Examples:
             >>> filters = tio.filters.access_group_filters_v2()
         '''
-        return self._use_cache('access_groups_v2',
-            'v2/access-groups/filters', normalize=normalize)
+        return self._use_cache(
+            'access_groups_v2', 'v2/access-groups/filters', normalize=normalize)
 
-    def access_group_asset_rules_filters_v2(self, normalize=True):
+    def access_group_asset_rules_filters_v2(
+            self,
+            normalize: Optional[bool] = True
+    ) -> Dict:
         '''
         Returns access group rules filters v2.
 
@@ -127,11 +151,15 @@ class FiltersAPI(TIOEndpoint):
         Examples:
             >>> filters = tio.filters.access_group_rules_filters_v2()
         '''
-        return self._use_cache('access_group_asset_filters_v2',
+        return self._use_cache(
+            'access_group_asset_filters_v2',
             'v2/access-groups/rules/filters',
             field_name='rules', normalize=normalize)
 
-    def agents_filters(self, normalize=True):
+    def agents_filters(
+            self,
+            normalize: Optional[bool] = True
+    ) -> Dict:
         '''
         Returns agent filters.
 
@@ -147,7 +175,10 @@ class FiltersAPI(TIOEndpoint):
         return self._use_cache('agents', 'filters/scans/agents',
                                normalize=normalize)
 
-    def workbench_vuln_filters(self, normalize=True):
+    def workbench_vuln_filters(
+            self,
+            normalize: Optional[bool] = True
+    ) -> Dict:
         '''
         Returns the vulnerability workbench filters
 
@@ -160,10 +191,13 @@ class FiltersAPI(TIOEndpoint):
         Examples:
             >>> filters = tio.filters.workbench_vuln_filters()
         '''
-        return self._use_cache('vulns',
-            'filters/workbenches/vulnerabilities', normalize=normalize)
+        return self._use_cache(
+            'vulns', 'filters/workbenches/vulnerabilities', normalize=normalize)
 
-    def workbench_asset_filters(self, normalize=True):
+    def workbench_asset_filters(
+            self,
+            normalize: Optional[bool] = True
+    ) -> Dict:
         '''
         Returns the asset workbench filters.
 
@@ -179,7 +213,10 @@ class FiltersAPI(TIOEndpoint):
         return self._use_cache('asset', 'filters/workbenches/assets',
                                normalize=normalize)
 
-    def scan_filters(self, normalize=True):
+    def scan_filters(
+            self,
+            normalize: Optional[bool] = True
+    ) -> Dict:
         '''
         Returns the individual scan filters.
 
@@ -193,7 +230,10 @@ class FiltersAPI(TIOEndpoint):
         return self._use_cache('scan', 'filters/scans/reports',
                                normalize=normalize)
 
-    def credentials_filters(self, normalize=True):
+    def credentials_filters(
+            self,
+            normalize: Optional[bool] = True
+    ) -> Dict:
         '''
         Returns the individual scan filters.
 
@@ -209,7 +249,7 @@ class FiltersAPI(TIOEndpoint):
         return self._use_cache('scan', 'filters/credentials',
                                normalize=normalize)
 
-    def networks_filters(self):
+    def networks_filters(self) -> Dict:
         '''
         Returns the networks filters.
 
@@ -226,7 +266,7 @@ class FiltersAPI(TIOEndpoint):
             'pattern': None
         }}
 
-    def asset_tag_filters(self):
+    def asset_tag_filters(self) -> Dict:
         '''
         Returns a list of filters that you can use to create the rules for applying dynamic tags.
 
