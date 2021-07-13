@@ -13,10 +13,17 @@ Methods available on ``tio.permissions``:
     .. automethod:: change
     .. automethod:: list
 '''
+from typing import Dict, List
 from .base import TIOEndpoint
 
+
 class PermissionsAPI(TIOEndpoint):
-    def change(self, otype, id, *acls):
+    def change(
+            self,
+            otype: str,
+            id: int,
+            *acls: Dict
+    ) -> None:
         '''
         Modify the permission of a specific object.
 
@@ -49,7 +56,11 @@ class PermissionsAPI(TIOEndpoint):
             self._check('id', id, int)
         ), json={'acls': acls})
 
-    def list(self, otype, id):
+    def list(
+            self,
+            otype: str,
+            id: int
+    ) -> List[Dict]:
         '''
         List the permissions of a specific object.
 
