@@ -15,10 +15,15 @@ Methods available on ``tio.folders``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import List, Dict
 from .base import TIOEndpoint
 
+
 class FoldersAPI(TIOEndpoint):
-    def create(self, name):
+    def create(
+            self,
+            name: str
+    ) -> int:
         '''
         Create a folder.
 
@@ -39,7 +44,10 @@ class FoldersAPI(TIOEndpoint):
             'name': self._check('name', name, str)
         }).json()['id']
 
-    def delete(self, id):
+    def delete(
+            self,
+            id: int
+    ) -> None:
         '''
         Delete a folder.
 
@@ -56,7 +64,11 @@ class FoldersAPI(TIOEndpoint):
         '''
         self._api.delete('folders/{}'.format(self._check('id', id, int)))
 
-    def edit(self, id, name):
+    def edit(
+            self,
+            id: int,
+            name: str
+    ) -> None:
         '''
         Edit a folder.
 
@@ -77,7 +89,7 @@ class FoldersAPI(TIOEndpoint):
             'name': self._check('name', name, str)
         })
 
-    def list(self):
+    def list(self) -> List[Dict]:
         '''
         Lists the available folders.
 
