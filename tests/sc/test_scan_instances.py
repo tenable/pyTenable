@@ -1,59 +1,95 @@
+'''
+test file for testing various scenarios in security center's
+scan instances functionality
+'''
 import os
-import pytest
 import time
-from ..checker import check
+
+import pytest
+
 from tenable.errors import APIError, UnexpectedValueError
+from ..checker import check
 
 
 @pytest.fixture
-def scan_instance(vcr, sc):
+def scan_instance(vcr, security_center):
+    '''
+    test fixture for scan instance
+    '''
     with vcr.use_cassette('scan_instance'):
-        return sc.scan_instances.list()['manageable'][0]
+        return security_center.scan_instances.list()['manageable'][0]
 
 
-def test_scan_instance_copy_id_typeerror(sc):
+def test_scan_instance_copy_id_typeerror(security_center):
+    '''
+    test scan instance copy for 'id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.copy('nothing', 1)
+        security_center.scan_instances.copy('nothing', 1)
 
 
-def test_scan_instance_copy_users_typeerror(sc):
+def test_scan_instance_copy_users_typeerror(security_center):
+    '''
+    test scan instance copy for 'users' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.copy(1, 'user_id')
+        security_center.scan_instances.copy(1, 'user_id')
 
 
 @pytest.mark.vcr()
-def test_scan_instances_copy_success(sc, scan_instance):
-    sc.scan_instances.copy(int(scan_instance['id']), 1)
+def test_scan_instances_copy_success(security_center, scan_instance):
+    '''
+    test scan instances copy for success
+    '''
+    security_center.scan_instances.copy(int(scan_instance['id']), 1)
 
 
-def test_scan_instances_delete_id_typeerror(sc):
+def test_scan_instances_delete_id_typeerror(security_center):
+    '''
+    test scan instances delete for 'id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.delete('nothing')
+        security_center.scan_instances.delete('nothing')
 
 
 @pytest.mark.vcr()
-def test_scan_instances_delete_success(sc, scan_instance):
-    sc.scan_instances.delete(int(scan_instance['id']))
+def test_scan_instances_delete_success(security_center, scan_instance):
+    '''
+    test scan instance delete for success
+    '''
+    security_center.scan_instances.delete(int(scan_instance['id']))
 
 
-def test_scan_instances_details_id_typeerror(sc):
+def test_scan_instances_details_id_typeerror(security_center):
+    '''
+    test scan instances details for 'id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.details('nothing')
+        security_center.scan_instances.details('nothing')
 
 
-def test_scan_instances_details_fields_typeerror(sc):
+def test_scan_instances_details_fields_typeerror(security_center):
+    '''
+    test scan instances details for 'fields' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.details(1, 'something')
+        security_center.scan_instances.details(1, 'something')
 
 
-def test_scan_instances_details_field_item_typeerror(sc):
+def test_scan_instances_details_field_item_typeerror(security_center):
+    '''
+    test scan instances details for 'field item' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.details(1, [1])
+        security_center.scan_instances.details(1, [1])
 
 
 @pytest.mark.vcr()
-def test_scan_instances_details_success(sc, scan_instance):
-    scan = sc.scan_instances.details(int(scan_instance['id']))
+def test_scan_instances_details_success(security_center, scan_instance):
+    '''
+    test scan instances details for success
+    '''
+    scan = security_center.scan_instances.details(int(scan_instance['id']))
     assert isinstance(scan, dict)
     check(scan, 'dataFormat', str)
     check(scan, 'description', str)
@@ -137,47 +173,71 @@ def test_scan_instances_details_success(sc, scan_instance):
     check(scan, 'totalIPs', str)
 
 
-def test_scan_instances_email_id_typeerror(sc):
+def test_scan_instances_email_id_typeerror(security_center):
+    '''
+    test scan instances email for 'id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.email('nope')
+        security_center.scan_instances.email('nope')
 
 
-def test_scan_instances_email_email_typeerror(sc):
+def test_scan_instances_email_email_typeerror(security_center):
+    '''
+    test scan instances email for 'email' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.email(1, 1)
+        security_center.scan_instances.email(1, 1)
 
 
 @pytest.mark.vcr()
-def test_scan_instances_email_success(sc, scan_instance):
-    sc.scan_instances.email(int(scan_instance['id']), 'no-reply@tenable.com')
+def test_scan_instances_email_success(security_center, scan_instance):
+    '''
+    test scan instances email for success
+    '''
+    security_center.scan_instances.email(int(scan_instance['id']), 'no-reply@tenable.com')
 
 
-def test_scan_instances_export_scan_id_typeerror(sc):
+def test_scan_instances_export_scan_id_typeerror(security_center):
+    '''
+    test scan instances export for 'scan id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.export_scan('nothing')
+        security_center.scan_instances.export_scan('nothing')
 
 
-def test_scan_instances_export_scan_export_format_typeerror(sc):
+def test_scan_instances_export_scan_export_format_typeerror(security_center):
+    '''
+    test scan instances export scan for 'export format' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.export_scan(1, export_format=1)
+        security_center.scan_instances.export_scan(1, export_format=1)
 
 
-def test_scan_instances_export_scan_export_format_unexpectedvalueerror(sc):
+def test_scan_instances_export_scan_export_format_unexpectedvalueerror(security_center):
+    '''
+    test scan instances export scan for 'export format' unexpected value error
+    '''
     with pytest.raises(UnexpectedValueError):
-        sc.scan_instances.export_scan(1, export_format='something')
+        security_center.scan_instances.export_scan(1, export_format='something')
 
 
 @pytest.mark.vcr()
-def test_scan_instances_export_scan_success(sc, scan_instance):
+def test_scan_instances_export_scan_success(security_center, scan_instance):
+    '''
+    test scan instances export scan for success
+    '''
     with open('{}.zip'.format(scan_instance['id']), 'wb') as scanfile:
-        sc.scan_instances.export_scan(124, fobj=scanfile)
+        security_center.scan_instances.export_scan(124, fobj=scanfile)
     os.remove('{}.zip'.format(scan_instance['id']))
 
 
 @pytest.mark.vcr()
-def test_scan_instances_export_scan_success_no_file(sc, scan_instance):
+def test_scan_instances_export_scan_success_no_file(security_center, scan_instance):
+    '''
+    test scan instances export scan success with no file
+    '''
     with open('{}.zip'.format(scan_instance['id']), 'wb'):
-        sc.scan_instances.export_scan(124)
+        security_center.scan_instances.export_scan(124)
     os.remove('{}.zip'.format(scan_instance['id']))
 
 
@@ -185,34 +245,52 @@ def test_scan_instances_export_scan_success_no_file(sc, scan_instance):
 @pytest.mark.datafiles(os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
     '..', 'test_files', 'example.nessus'))
-def test_scan_instances_import_scan_success(sc, datafiles):
+def test_scan_instances_import_scan_success(security_center, datafiles):
+    '''
+    test scan instances import scan for success
+    '''
     with open(os.path.join(str(datafiles), 'example.nessus'), 'rb') as fobj:
-        sc.scan_instances.import_scan(fobj, 1)
+        security_center.scan_instances.import_scan(fobj, 1)
 
 
-def test_scan_instances_reimport_scan_id_typeerror(sc):
+def test_scan_instances_reimport_scan_id_typeerror(security_center):
+    '''
+    test scan instances reimport scan for 'id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.reimport_scan('nope')
+        security_center.scan_instances.reimport_scan('nope')
 
 
 @pytest.mark.vcr()
-def test_scan_instances_reimport_success(sc, scan_instance):
-    sc.scan_instances.reimport_scan(int(scan_instance['id']))
+def test_scan_instances_reimport_success(security_center, scan_instance):
+    '''
+    test scan instances reimport for success
+    '''
+    security_center.scan_instances.reimport_scan(int(scan_instance['id']))
 
 
-def test_scan_instances_list_start_time_typerror(sc):
+def test_scan_instances_list_start_time_typerror(security_center):
+    '''
+    test scan instances list for 'start time' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.list(start_time='none')
+        security_center.scan_instances.list(start_time='none')
 
 
-def test_scan_instances_list_end_time_typerror(sc):
+def test_scan_instances_list_end_time_typerror(security_center):
+    '''
+    test scan instances list for 'end time' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.list(end_time='none')
+        security_center.scan_instances.list(end_time='none')
 
 
 @pytest.mark.vcr()
-def test_scan_instances_list(sc):
-    scans = sc.scan_instances.list()
+def test_scan_instances_list(security_center):
+    '''
+    test scan instances list for success
+    '''
+    scans = security_center.scan_instances.list()
     assert isinstance(scans, dict)
     check(scans, 'manageable', list)
     for manageable in scans['manageable']:
@@ -229,8 +307,11 @@ def test_scan_instances_list(sc):
 
 
 @pytest.mark.vcr()
-def test_scan_instances_list_for_fields(sc):
-    scan_instances = sc.scan_instances.list(fields=['id', 'name', 'description'])
+def test_scan_instances_list_for_fields(security_center):
+    '''
+    test scan instances list success for fields
+    '''
+    scan_instances = security_center.scan_instances.list(fields=['id', 'name', 'description'])
     assert isinstance(scan_instances, dict)
     check(scan_instances, 'manageable', list)
     for manageable in scan_instances['manageable']:
@@ -244,23 +325,29 @@ def test_scan_instances_list_for_fields(sc):
         check(usable, 'description', str)
 
 
-def test_scan_instances_pause_id_typeerror(sc):
+def test_scan_instances_pause_id_typeerror(security_center):
+    '''
+    test scan instances pause for 'id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.pause('nope')
+        security_center.scan_instances.pause('nope')
 
 
 @pytest.mark.skip(reason='Switching between scan states this quickly can be trixsy')
 @pytest.mark.vcr()
-def test_scan_instances_pause_success(sc):
-    scan = sc.scans.create('Example Scan', 1,
-                           schedule_type='template',
-                           targets=['192.168.101.0/24'],
-                           policy_id=1000001)
-    instance = sc.scans.launch(int(scan['id']))
+def test_scan_instances_pause_success(security_center):
+    '''
+    test scan instances pause for success
+    '''
+    scan = security_center.scans.create('Example Scan', 1,
+                                        schedule_type='template',
+                                        targets=['192.168.101.0/24'],
+                                        policy_id=1000001)
+    instance = security_center.scans.launch(int(scan['id']))
     time.sleep(120)
     try:
-        scan = sc.scan_instances.pause(int(instance['scanResult']['id']))
-    except APIError as error:
+        scan = security_center.scan_instances.pause(int(instance['scanResult']['id']))
+    except APIError:
         pass
     else:
         check(scan, 'canManage', str)
@@ -316,28 +403,34 @@ def test_scan_instances_pause_success(sc):
         check(scan, 'totalIPs', str)
 
 
-def test_scan_instances_resume_id_typeerror(sc):
+def test_scan_instances_resume_id_typeerror(security_center):
+    '''
+    test scan instances resume for 'id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.resume('nope')
+        security_center.scan_instances.resume('nope')
 
 
 @pytest.mark.skip(reason='Switching between scan states this quickly can be trixsy')
 @pytest.mark.vcr()
-def test_scan_instances_resume_success(sc):
-    scan = sc.scans.create('Example Scan', 1,
-                           schedule_type='template',
-                           targets=['192.168.101.0/24'],
-                           policy_id=1000001)
-    instance = sc.scans.launch(int(scan['id']))
+def test_scan_instances_resume_success(security_center):
+    '''
+    test scan instances resume for success
+    '''
+    scan = security_center.scans.create('Example Scan', 1,
+                                        schedule_type='template',
+                                        targets=['192.168.101.0/24'],
+                                        policy_id=1000001)
+    instance = security_center.scans.launch(int(scan['id']))
     time.sleep(120)
     try:
-        scan = sc.scan_instances.pause(int(instance['scanResult']['id']))
+        security_center.scan_instances.pause(int(instance['scanResult']['id']))
     except APIError:
         pass
 
     time.sleep(30)
     try:
-        scan = sc.scan_instances.resume(int(instance['scanResult']['id']))
+        scan = security_center.scan_instances.resume(int(instance['scanResult']['id']))
     except APIError:
         pass
     else:
@@ -394,22 +487,28 @@ def test_scan_instances_resume_success(sc):
         check(scan, 'totalIPs', str)
 
 
-def test_scan_instances_stop_id_typeerror(sc):
+def test_scan_instances_stop_id_typeerror(security_center):
+    '''
+    test scan instances stop for 'id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.scan_instances.pause('nope')
+        security_center.scan_instances.pause('nope')
 
 
 @pytest.mark.skip(reason='Switching between scan states this quickly can be trixsy')
 @pytest.mark.vcr()
-def test_scan_instances_stop_success(sc):
-    scan = sc.scans.create('Example Scan', 1,
-                           schedule_type='template',
-                           targets=['192.168.101.0/24'],
-                           policy_id=1000001)
-    instance = sc.scans.launch(int(scan['id']))
+def test_scan_instances_stop_success(security_center):
+    '''
+    test scan instances stop for success
+    '''
+    scan = security_center.scans.create('Example Scan', 1,
+                                        schedule_type='template',
+                                        targets=['192.168.101.0/24'],
+                                        policy_id=1000001)
+    instance = security_center.scans.launch(int(scan['id']))
     time.sleep(120)
     try:
-        scan = sc.scan_instances.stop(int(instance['scanResult']['id']))
+        scan = security_center.scan_instances.stop(int(instance['scanResult']['id']))
     except APIError:
         pass
     else:

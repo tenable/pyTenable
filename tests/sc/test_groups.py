@@ -1,35 +1,55 @@
+'''
+test file for testing various scenarios in security center groups
+functionality
+'''
 import pytest
+
 from ..checker import check
 
 
-def test_groups_constructor_name_typeerror(sc):
+def test_groups_constructor_name_typeerror(security_center):
+    '''
+    test groups constructor name for type error
+    '''
     with pytest.raises(TypeError):
-        sc.groups._constructor(name=1)
+        security_center.groups._constructor(name=1)
 
 
-def test_groups_constructor_description_typeerror(sc):
+def test_groups_constructor_description_typeerror(security_center):
+    '''
+    test groups constructor description for type error
+    '''
     with pytest.raises(TypeError):
-        sc.groups._constructor(description=1)
+        security_center.groups._constructor(description=1)
 
 
-def test_groups_constructor_list_mapping_typeerror(sc):
+def test_groups_constructor_list_mapping_typeerror(security_center):
+    '''
+    test groups constructor 'list mapping' for type error
+    '''
     items = ['viewable', 'repos', 'lce_ids', 'asset_lists', 'scan_policies',
              'query_ids', 'scan_creds', 'dashboards', 'report_cards', 'audit_files']
     for i in items:
         with pytest.raises(TypeError):
-            sc.groups._constructor(**{i: 1})
+            security_center.groups._constructor(**{i: 1})
 
 
-def test_groups_constructor_list_item_mapping_typeerror(sc):
+def test_groups_constructor_list_item_mapping_typeerror(security_center):
+    '''
+    test groups constructor 'list item mapping' for type error
+    '''
     items = ['viewable', 'repos', 'lce_ids', 'asset_lists', 'scan_policies',
              'query_ids', 'scan_creds', 'dashboards', 'report_cards', 'audit_files']
     for item in items:
         with pytest.raises(TypeError):
-            sc.groups._constructor(**{item: ['one']})
+            security_center.groups._constructor(**{item: ['one']})
 
 
-def test_groups_constructor_success(sc):
-    group = sc.groups._constructor(
+def test_groups_constructor_success(security_center):
+    '''
+    test groups constructor for success
+    '''
+    group = security_center.groups._constructor(
         name='Example',
         description='Stuff',
         viewable=[1, 2, 3],
@@ -61,7 +81,10 @@ def test_groups_constructor_success(sc):
 
 
 @pytest.mark.vcr()
-def test_groups_create_success(sc, group):
+def test_groups_create_success(security_center, group):
+    '''
+    test groups create for success
+    '''
     assert isinstance(group, dict)
     check(group, 'id', str)
     check(group, 'name', str)
@@ -86,8 +109,11 @@ def test_groups_create_success(sc, group):
 
 
 @pytest.mark.vcr()
-def test_groups_edit_success(sc, group):
-    group = sc.groups.edit(int(group['id']), name='new name')
+def test_groups_edit_success(security_center, group):
+    '''
+    test groups edit for success
+    '''
+    group = security_center.groups.edit(int(group['id']), name='new name')
     assert isinstance(group, dict)
     check(group, 'id', str)
     check(group, 'name', str)
@@ -112,8 +138,11 @@ def test_groups_edit_success(sc, group):
 
 
 @pytest.mark.vcr()
-def test_groups_details_success_for_fields(sc, group):
-    group = sc.groups.details(int(group['id']), fields=['id', 'name', 'description'])
+def test_groups_details_success_for_fields(security_center, group):
+    '''
+    test groups details success for fields
+    '''
+    group = security_center.groups.details(int(group['id']), fields=['id', 'name', 'description'])
     assert isinstance(group, dict)
     check(group, 'id', str)
     check(group, 'name', str)
@@ -121,8 +150,11 @@ def test_groups_details_success_for_fields(sc, group):
 
 
 @pytest.mark.vcr()
-def test_groups_list_success_for_fields(sc, group):
-    groups = sc.groups.list(fields=['id', 'name', 'description'])
+def test_groups_list_success_for_fields(security_center, group):
+    '''
+    test groups list success for fields
+    '''
+    groups = security_center.groups.list(fields=['id', 'name', 'description'])
     assert isinstance(groups, list)
     for group in groups:
         check(group, 'id', str)
@@ -131,8 +163,11 @@ def test_groups_list_success_for_fields(sc, group):
 
 
 @pytest.mark.vcr()
-def test_groups_details_success(sc, group):
-    g = sc.groups.details(int(group['id']))
+def test_groups_details_success(security_center, group):
+    '''
+    test groups details for success
+    '''
+    g = security_center.groups.details(int(group['id']))
     assert isinstance(g, dict)
     check(g, 'id', str)
     check(g, 'name', str)
@@ -157,5 +192,8 @@ def test_groups_details_success(sc, group):
 
 
 @pytest.mark.vcr()
-def test_groups_delete_success(sc, group):
-    sc.groups.delete(int(group['id']))
+def test_groups_delete_success(security_center, group):
+    '''
+    test groups delete for success
+    '''
+    security_center.groups.delete(int(group['id']))
