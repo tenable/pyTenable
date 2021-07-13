@@ -91,14 +91,12 @@ try {
 						sh """
 						mkdir reports
 						cd reports
-						touch pylint_tenable.log 
-						touch pylint_tests.log
+						touch pylint_tenable.log
+						touch pylint_tests.log				
 						cd ..
 						pip install pylint
                            			pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
-                           			pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log
-                           			cat reports/pylint_tenable.log
-                           			cat reports/pylint_tests.log
+                           			pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log                           			
                         			"""
 					} catch(ex) {
 						throw ex
@@ -106,7 +104,7 @@ try {
 						result = recordIssues(
 						enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 20, failedTotalAll: 30 )
 						result = recordIssues(
-						enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_test.log'), unstableTotalAll: 20, failedTotalAll: 30 )
+						enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_test.log'), unstableTotalAll: 200, failedTotalAll: 300 )
 					}
 				}
 			}
