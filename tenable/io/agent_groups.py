@@ -19,11 +19,17 @@ Methods available on ``tio.agent_groups``:
     .. automethod:: list
     .. automethod:: task_status
 '''
+from typing import Union, Dict, Optional, Tuple, List
 from .base import TIOEndpoint
 
 
 class AgentGroupsAPI(TIOEndpoint):
-    def add_agent(self, group_id, *agent_ids, **kw):
+    def add_agent(
+            self,
+            group_id: int,
+            *agent_ids: int,
+            **kw
+    ) -> Union[None, Dict]:
         '''
         Adds an agent or multiple agents to the agent group specified.
 
@@ -69,7 +75,12 @@ class AgentGroupsAPI(TIOEndpoint):
                     self._check('group_id', group_id, int)),
                 json={'items': [self._check('agent_id', i, int) for i in agent_ids]}).json()
 
-    def configure(self, group_id, name, scanner_id=1):
+    def configure(
+            self,
+            group_id: int,
+            name: str,
+            scanner_id: Optional[int] = 1
+    ) -> None:
         '''
         Renames an existing agent group.
 
@@ -91,7 +102,11 @@ class AgentGroupsAPI(TIOEndpoint):
             self._check('group_id', group_id, int)
         ), json={'name': self._check('name', name, str)}).json()
 
-    def create(self, name, scanner_id=1):
+    def create(
+            self,
+            name: str,
+            scanner_id: Optional[int] = 1
+    ) -> Dict:
         '''
         Creates a new agent group.
 
@@ -114,7 +129,11 @@ class AgentGroupsAPI(TIOEndpoint):
                 self._check('scanner_id', scanner_id, int)
             ), json={'name': self._check('name', name, str)}).json()
 
-    def delete(self, group_id, scanner_id=1):
+    def delete(
+            self,
+            group_id: int,
+            scanner_id: Optional[int] = 1
+    ) -> None:
         '''
         Delete an agent group.
 
@@ -135,7 +154,12 @@ class AgentGroupsAPI(TIOEndpoint):
             self._check('group_id', group_id, int)
         ))
 
-    def delete_agent(self, group_id, *agent_ids, **kw):
+    def delete_agent(
+            self,
+            group_id: int,
+            *agent_ids: int,
+            **kw
+    ) -> Union[None, Dict]:
         '''
         Delete one or many agents from an agent group.
 
@@ -181,7 +205,13 @@ class AgentGroupsAPI(TIOEndpoint):
                     self._check('group_id', group_id, int)),
                 json={'items': [self._check('agent_ids', i, int) for i in agent_ids]}).json()
 
-    def details(self, group_id, scanner_id=1, *filters, **kw):
+    def details(
+            self,
+            group_id: int,
+            scanner_id: Optional[int] = 1,
+            *filters: Optional[Tuple[str, str, str]],
+            **kw
+    ) -> Dict:
         '''
         Retrieve the details about the specified agent group.
 
@@ -235,8 +265,8 @@ class AgentGroupsAPI(TIOEndpoint):
         limit = 50
         offset = 0
         pages = None
-        query = self._parse_filters(filters,
-            self._api.filters.agents_filters(), rtype='colon')
+        query = self._parse_filters(
+            filters, self._api.filters.agents_filters(), rtype='colon')
 
         # Overload the scanner_id with a new value if it has been requested
         # to do so.
@@ -264,7 +294,7 @@ class AgentGroupsAPI(TIOEndpoint):
         # The default is 'and', however you can always explicitly define 'and'
         # or 'or'.
         if 'filter_type' in kw and self._check(
-            'filter_type', kw['filter_type'], str, choices=['and', 'or']):
+                'filter_type', kw['filter_type'], str, choices=['and', 'or']):
             query['ft'] = kw['filter_type']
 
         # The wild-card filter text refers to how the API will pattern match
@@ -275,7 +305,7 @@ class AgentGroupsAPI(TIOEndpoint):
         # The wildcard_fields parameter allows the user to restrict the fields
         # that the wild-card pattern match pertains to.
         if 'wildcard_fields' in kw and self._check(
-            'wildcard_fields', kw['wildcard_fields'], list):
+                'wildcard_fields', kw['wildcard_fields'], list):
             query['wf'] = ','.join(kw['wildcard_fields'])
 
         # If the offset was set to something other than the default starting
@@ -296,7 +326,10 @@ class AgentGroupsAPI(TIOEndpoint):
             ), params=query
         ).json()
 
-    def list(self, scanner_id=1):
+    def list(
+            self,
+            scanner_id: Optional[int] = 1
+    ) -> List[Dict]:
         '''
         Retrieves the list of agent groups configured
 
@@ -317,7 +350,12 @@ class AgentGroupsAPI(TIOEndpoint):
         return self._api.get('scanners/{}/agent-groups'.format(
             self._check('scanner_id', scanner_id, int))).json()['groups']
 
-    def task_status(self, group_id, task_uuid, scanner_id=1):
+    def task_status(
+            self,
+            group_id: int,
+            task_uuid: str,
+            scanner_id: Optional[int] = 1
+    ):
         '''
         Retrieves the current status of a bulk task.
 
