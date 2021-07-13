@@ -3,16 +3,16 @@ Remediation Scans
 =================
 
 The following methods allow for interaction into the Tenable.io
-:devportal:`Remediation scan create <Create Remediation Scans>` API endpoints.
-:devportal:`Remediation scan list <List Remediation Scans>` API endpoints.
+:devportal:`Remediation scan create <io-scans-remediation-creates>` API endpoints.
+:devportal:`Remediation scan list <io-scans-remediation-list>` API endpoints.
 
 Methods available on ``tio.remediation_scans``:
 
 .. rst-class:: hide-signature
 .. autoclass:: RemediationScansAPI
 
-    .. automethod:: create_remediation_scans
-    .. automethod:: list_remediation_scans
+    .. automethod:: create_remediation_scan
+    .. automethod:: list_remediation_scan
 '''
 
 
