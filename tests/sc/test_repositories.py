@@ -1,8 +1,8 @@
 import os
 import pytest
-
-from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check
+from tenable.errors import APIError, UnexpectedValueError
+from tests.pytenable_log_handler import log_exception
 
 
 @pytest.fixture
@@ -13,8 +13,8 @@ def repository(request, vcr, admin):
     def teardown():
         try:
             admin.repositories.delete(int(repo['id']))
-        except APIError:
-            pass
+        except APIError as error:
+            log_exception(error)
 
     request.addfinalizer(teardown)
     return repo
@@ -116,7 +116,6 @@ def test_repositories_constructor_preferences_typeerror(sc):
 def test_repositories_constructor_preferences_key_typeerror(sc):
     with pytest.raises(TypeError):
         sc.repositories._constructor(preferences={1: 'one'})
-
 
 
 def test_repositories_constructor_preferences_value_typeerror(sc):

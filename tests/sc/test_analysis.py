@@ -1,8 +1,7 @@
 import pytest
-
-from tenable.errors import UnexpectedValueError
 from tenable.sc.analysis import AnalysisResultsIterator
 from ..checker import check
+from tenable.errors import UnexpectedValueError
 
 
 def test_analysis_constructor_type_error(sc):

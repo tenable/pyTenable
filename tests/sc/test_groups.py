@@ -1,5 +1,4 @@
 import pytest
-
 from ..checker import check
 
 

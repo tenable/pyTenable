@@ -1,9 +1,8 @@
 import os
-
 import pytest
-
-from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check, single
+from tenable.errors import APIError, UnexpectedValueError
+from tests.pytenable_log_handler import log_exception
 
 
 def test_credentials_constructor_name_typeerror(sc):
@@ -518,8 +517,8 @@ def cred(request, sc, vcr):
         try:
             with vcr.use_cassette('test_credentials_delete_success'):
                 sc.credentials.delete(int(credential['id']))
-        except APIError:
-            pass
+        except APIError as error:
+            log_exception(error)
 
     request.addfinalizer(teardown)
     return credential

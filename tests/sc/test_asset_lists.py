@@ -1,8 +1,8 @@
 import os
 import pytest
-
-from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check, single
+from tenable.errors import APIError, UnexpectedValueError
+from tests.pytenable_log_handler import log_exception
 
 
 def test_asset_lists_dynamic_rules_constructor_passthrough(sc):
@@ -381,8 +381,8 @@ def asset_list(request, sc, vcr):
         try:
             with vcr.use_cassette('test_asset_lists_delete_success'):
                 sc.asset_lists.delete(int(asset_list['id']))
-        except APIError:
-            pass
+        except APIError as error:
+            log_exception(error)
 
     request.addfinalizer(teardown)
     return asset_list
