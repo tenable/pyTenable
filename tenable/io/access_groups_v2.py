@@ -17,8 +17,10 @@ Methods available on ``tio.access_groups_v2``:
     .. automethod:: details
 '''
 from restfly.utils import dict_merge
+from typing import List, Any, Union, Tuple, Dict, Optional
 from tenable.errors import UnexpectedValueError
 from tenable.io.base import TIOEndpoint, TIOIterator
+
 
 class AccessGroupsIteratorV2(TIOIterator):
     '''
@@ -42,11 +44,16 @@ class AccessGroupsIteratorV2(TIOIterator):
     '''
     pass
 
+
 class AccessGroupsV2API(TIOEndpoint):
     '''
     This will contain all methods related to access group
     '''
-    def _list_clean(self, items):
+
+    def _list_clean(
+            self,
+            items: List[Any]
+    ) -> List[Any]:
         '''
         Removes duplicate values from list
 
@@ -59,7 +66,10 @@ class AccessGroupsV2API(TIOEndpoint):
         '''
         return list(set(self._check('items', items, list)))
 
-    def _principal_constructor(self, items):
+    def _principal_constructor(
+            self,
+            items: Union[Tuple, Dict]
+    ) -> List[Dict[str, Union[str, List[str]]]]:
         '''
         Simple principle tuple expander.  Also supports validating principle
         dictionaries for transparent passthrough.
@@ -72,7 +82,7 @@ class AccessGroupsV2API(TIOEndpoint):
                 if len(item) == 2:
                     item = item + ([],)
                 data['type'] = self._check('principal:type', item[0], str,
-                    choices=['user', 'group'])
+                                           choices=['user', 'group'])
 
                 try:
                     data['principal_id'] = self._check('principal:id', item[1], 'uuid')
@@ -81,8 +91,8 @@ class AccessGroupsV2API(TIOEndpoint):
 
                 data['permissions'] = self._list_clean(
                     [self._check('permission', permission, str,
-                        choices=['CAN_VIEW', 'CAN_SCAN'], case='upper')
-                    for permission in self._check('permissions', item[2], list)])
+                                 choices=['CAN_VIEW', 'CAN_SCAN'], case='upper')
+                     for permission in self._check('permissions', item[2], list)])
 
                 # if permissions are empty, we will assign default value to it
                 if not data['permissions']:
@@ -91,14 +101,14 @@ class AccessGroupsV2API(TIOEndpoint):
                 resp.append(data)
             else:
                 self._check('principal:type', item['type'], str,
-                    choices=['user', 'group'])
+                            choices=['user', 'group'])
                 if 'principal_id' in item:
                     self._check('principal_id', item['principal_id'], 'uuid')
                 if 'principal_name' in item:
                     self._check('principal_name', item['principal_name'], str)
                 item['permissions'] = self._list_clean([
                     self._check('permission', permission, str,
-                        choices=['CAN_VIEW', 'CAN_SCAN'], case='upper')
+                                choices=['CAN_VIEW', 'CAN_SCAN'], case='upper')
                     for permission in self._check('permissions', item['permissions']
                     if 'permissions' in item and item['permissions']
                     else None, list, default=['CAN_VIEW'])]
@@ -108,7 +118,11 @@ class AccessGroupsV2API(TIOEndpoint):
 
         return resp
 
-    def list(self, *filters, **kw):
+    def list(
+            self,
+            *filters,
+            **kw
+    ) -> 'AccessGroupsIteratorV2':
         '''
         Get the listing of configured access groups from Tenable.io.
 
@@ -166,7 +180,7 @@ class AccessGroupsV2API(TIOEndpoint):
         offset = 0
         pages = None
         query = self._parse_filters(filters,
-            self._api.filters.access_group_filters_v2(), rtype='colon')
+                                    self._api.filters.access_group_filters_v2(), rtype='colon')
 
         # If the offset was set to something other than the default starting
         # point of 0, then we will update offset to reflect that.
@@ -200,7 +214,7 @@ class AccessGroupsV2API(TIOEndpoint):
         # The default is 'and', however you can always explicitly define 'and'
         # or 'or'.
         if 'filter_type' in kw and self._check(
-            'filter_type', kw['filter_type'], str, choices=['and', 'or']):
+                'filter_type', kw['filter_type'], str, choices=['and', 'or']):
             query['ft'] = kw['filter_type']
 
         # The wild-card filter text refers to how the API will pattern match
@@ -211,11 +225,12 @@ class AccessGroupsV2API(TIOEndpoint):
         # The wildcard_fields parameter allows the user to restrict the fields
         # that the wild-card pattern match pertains to.
         if 'wildcard_fields' in kw and self._check(
-            'wildcard_fields', kw['wildcard_fields'], list):
+                'wildcard_fields', kw['wildcard_fields'], list):
             query['wf'] = ','.join(kw['wildcard_fields'])
 
         # Return the Iterator.
-        return AccessGroupsIteratorV2(self._api,
+        return AccessGroupsIteratorV2(
+            self._api,
             _limit=limit,
             _offset=offset,
             _pages_total=pages,
@@ -224,7 +239,14 @@ class AccessGroupsV2API(TIOEndpoint):
             _resource='access_groups'
         )
 
-    def create(self, name, rules, principals=None, all_users=False, access_group_type=None):
+    def create(
+            self,
+            name: str,
+            rules: List[Tuple[str, str, Union[str, List[str]]]],
+            principals: Optional[List[Tuple[str, str, List[str]]]] = None,
+            all_users: Optional[bool] = False,
+            access_group_type: Optional[str] = None
+    ) -> Dict:
         '''
         Creates a new access group
 
@@ -294,23 +316,26 @@ class AccessGroupsV2API(TIOEndpoint):
         payload = {
             # run the rules through the filter parser...
             'rules': self._parse_filters(rules,
-                self._api.filters.access_group_asset_rules_filters_v2(),
-                    rtype='accessgroup')['rules'],
+                                         self._api.filters.access_group_asset_rules_filters_v2(),
+                                         rtype='accessgroup')['rules'],
 
             # run the principals through the principal parser...
             'principals': self._principal_constructor(principals),
             'name': self._check('name', name, str),
             'all_users': self._check('all_users', all_users, bool),
             'access_group_type': self._check('access_group_type', access_group_type, str,
-                choices=['MANAGE_ASSETS', 'SCAN_TARGETS'],
-                default='MANAGE_ASSETS',
-                case='upper')
+                                             choices=['MANAGE_ASSETS', 'SCAN_TARGETS'],
+                                             default='MANAGE_ASSETS',
+                                             case='upper')
         }
 
         # call the API endpoint and return the response to the caller.
         return self._api.post('v2/access-groups', json=payload).json()
 
-    def delete(self, group_id):
+    def delete(
+            self,
+            group_id: str
+    ) -> None:
         '''
         Deletes the specified access group.
 
@@ -322,7 +347,11 @@ class AccessGroupsV2API(TIOEndpoint):
         self._api.delete('v2/access-groups/{}'.format(
             self._check('group_id', group_id, 'uuid')))
 
-    def edit(self, group_id, **kw):
+    def edit(
+            self,
+            group_id: str,
+            **kw
+    ) -> Dict:
         '''
         Edits an access group
 
@@ -372,9 +401,10 @@ class AccessGroupsV2API(TIOEndpoint):
 
         # If any rules are specified, then run them through the filter parser.
         if 'rules' in kw:
-            kw['rules'] = self._parse_filters(kw['rules'],
+            kw['rules'] = self._parse_filters(
+                kw['rules'],
                 self._api.filters.access_group_asset_rules_filters_v2(),
-                    rtype='accessgroup')['rules']
+                rtype='accessgroup')['rules']
 
         # if any principals are specified, then run them through the principal
         # parser.
@@ -398,7 +428,10 @@ class AccessGroupsV2API(TIOEndpoint):
         # call the API endpoint and return the response to the caller.
         return self._api.put('v2/access-groups/{}'.format(group_id), json=payload).json()
 
-    def details(self, group_id):
+    def details(
+            self,
+            group_id: str
+    ) -> Dict:
         '''
         Retrieves the details of the specified access group.
 
