@@ -16,7 +16,9 @@ Methods available on ``tio.agents``:
     .. automethod:: task_status
 
 '''
+from typing import Optional, Tuple, Union, Dict
 from .base import TIOIterator, TIOEndpoint
+
 
 class AgentsIterator(TIOIterator):
     '''
@@ -41,7 +43,11 @@ class AgentsIterator(TIOIterator):
 
 
 class AgentsAPI(TIOEndpoint):
-    def list(self, *filters, **kw):
+    def list(
+            self,
+            *filters: Optional[Tuple[str, str, str]],
+            **kw
+    ) -> 'AgentsIterator':
         '''
         Get the listing of configured agents from Tenable.io.
 
@@ -102,8 +108,8 @@ class AgentsAPI(TIOEndpoint):
         limit = 50
         offset = 0
         pages = None
-        query = self._parse_filters(filters,
-            self._api.filters.agents_filters(), rtype='colon')
+        query = self._parse_filters(
+            filters, self._api.filters.agents_filters(), rtype='colon')
 
         # Overload the scanner_id with a new value if it has been requested
         # to do so.
@@ -142,7 +148,7 @@ class AgentsAPI(TIOEndpoint):
         # The default is 'and', however you can always explicitly define 'and'
         # or 'or'.
         if 'filter_type' in kw and self._check(
-            'filter_type', kw['filter_type'], str, choices=['and', 'or']):
+                'filter_type', kw['filter_type'], str, choices=['and', 'or']):
             query['ft'] = kw['filter_type']
 
         # The wild-card filter text refers to how the API will pattern match
@@ -153,11 +159,12 @@ class AgentsAPI(TIOEndpoint):
         # The wildcard_fields parameter allows the user to restrict the fields
         # that the wild-card pattern match pertains to.
         if 'wildcard_fields' in kw and self._check(
-            'wildcard_fields', kw['wildcard_fields'], list):
+                'wildcard_fields', kw['wildcard_fields'], list):
             query['wf'] = ','.join(kw['wildcard_fields'])
 
         # Return the Iterator.
-        return AgentsIterator(self._api,
+        return AgentsIterator(
+            self._api,
             _limit=limit,
             _offset=offset,
             _pages_total=pages,
@@ -166,7 +173,11 @@ class AgentsAPI(TIOEndpoint):
             _resource='agents'
         )
 
-    def details(self, agent_id, scanner_id=1):
+    def details(
+            self,
+            agent_id: int,
+            scanner_id: Optional[int] = 1
+    ):
         '''
         Retrieves the details of an agent.
 
@@ -192,7 +203,11 @@ class AgentsAPI(TIOEndpoint):
                 self._check('agent_id', agent_id, int)
             )).json()
 
-    def unlink(self, *agent_ids, **kw):
+    def unlink(
+            self,
+            *agent_ids: int,
+            **kw
+    ) -> Union[None, Dict]:
         '''
         Unlink one or multiple agents from the Tenable.io instance.
 
@@ -235,7 +250,11 @@ class AgentsAPI(TIOEndpoint):
                 self._check('scanner_id', scanner_id, int)),
                 json={'items': [self._check('agent_ids', i, int) for i in agent_ids]}).json()
 
-    def task_status(self, task_uuid, scanner_id=1):
+    def task_status(
+            self,
+            task_uuid: str,
+            scanner_id: Optional[int] = 1
+    ) -> Dict:
         '''
         Retrieves the current status of the task requested.
 
