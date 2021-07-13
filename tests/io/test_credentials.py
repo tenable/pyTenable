@@ -5,9 +5,9 @@ import uuid
 
 import pytest
 
-from tenable.errors import UnexpectedValueError, APIError
 from tests.pytenable_log_handler import log_exception
 from ..checker import check, single
+from tenable.errors import UnexpectedValueError, APIError
 
 
 def test_credentials_permissions_constructor_tuple_permission_type_typeerror(api):
@@ -417,7 +417,7 @@ def test_credentials_types_success(api):
                 check(config, 'id', str)
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr()
 def test_credentials_list_fields(api, scan):
     """
     test to check the list of credentials and their types

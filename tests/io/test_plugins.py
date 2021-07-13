@@ -1,17 +1,16 @@
 from ..checker import check, single
 from datetime import date
 import pytest
-from tenable.io.plugins import PluginIterator
 
 
 @pytest.mark.vcr()
 def test_families(api):
     families = api.plugins.families()
     assert isinstance(families, list)
-    for f in families:
-        check(f, 'count', int)
-        check(f, 'id', int)
-        check(f, 'name', str)
+    for family in families:
+        check(family, 'count', int)
+        check(family, 'id', int)
+        check(family, 'name', str)
 
 
 @pytest.mark.vcr()
@@ -22,15 +21,15 @@ def test_family_details_family_id_typeerror(api):
 
 @pytest.mark.vcr()
 def test_family_details(api):
-    f = api.plugins.family_details(27)
-    assert isinstance(f, dict)
-    check(f, 'name', str)
-    check(f, 'id', int)
-    check(f, 'plugins', list)
-    for p in f['plugins']:
-        check(p, 'id', int)
-        check(p, 'name', str)
-    assert f['id'] == 27
+    data = api.plugins.family_details(27)
+    assert isinstance(data, dict)
+    check(data, 'name', str)
+    check(data, 'id', int)
+    check(data, 'plugins', list)
+    for plugin in data['plugins']:
+        check(plugin, 'id', int)
+        check(plugin, 'name', str)
+    assert data['id'] == 27
 
 
 @pytest.mark.vcr()
@@ -41,16 +40,16 @@ def test_plugin_details_plugin_id_typerror(api):
 
 @pytest.mark.vcr()
 def test_plugin_details(api):
-    p = api.plugins.plugin_details(19506)
-    assert isinstance(p, dict)
-    check(p, 'attributes', list)
-    for a in p['attributes']:
+    detail = api.plugins.plugin_details(19506)
+    assert isinstance(detail, dict)
+    check(detail, 'attributes', list)
+    for a in detail['attributes']:
         check(a, 'attribute_name', str)
         check(a, 'attribute_value', str)
-    check(p, 'family_name', str)
-    check(p, 'id', int)
-    check(p, 'name', str)
-    assert p['id'] == 19506
+    check(detail, 'family_name', str)
+    check(detail, 'id', int)
+    check(detail, 'name', str)
+    assert detail['id'] == 19506
 
 
 @pytest.mark.vcr()
@@ -88,7 +87,8 @@ def test_plugins_list_success(api):
         check(plugin['attributes'], 'description', str)
         check(plugin['attributes'], 'plugin_publication_date', str)
         check(plugin['attributes'], 'plugin_modification_date', str)
-        check(plugin['attributes'], 'plugin_version', str)
+        if 'plugin_version' in plugin['attributes']:
+            check(plugin['attributes'], 'plugin_version', str)
         check(plugin['attributes'], 'synopsis', str)
         check(plugin['attributes'], 'risk_factor', str)
         check(plugin, 'id', int)
