@@ -18,10 +18,16 @@ Methods available on ``tio.groups``:
     .. automethod:: list
     .. automethod:: list_users
 '''
+from typing import Dict, List
 from .base import TIOEndpoint
 
+
 class GroupsAPI(TIOEndpoint):
-    def add_user(self, group_id, user_id):
+    def add_user(
+            self,
+            group_id: int,
+            user_id: int
+    ) -> None:
         '''
         Add a user to a user group.
 
@@ -45,7 +51,7 @@ class GroupsAPI(TIOEndpoint):
             self._check('user_id', user_id, int), json={}
         ))
 
-    def create(self, name):
+    def create(self, name: str) -> Dict:
         '''
         Create a new user group.
 
@@ -66,7 +72,7 @@ class GroupsAPI(TIOEndpoint):
             'name': self._check('name', name, str)
         }).json()
 
-    def delete(self, id):
+    def delete(self, id: int) -> None:
         '''
         Delete a user group.
 
@@ -84,7 +90,11 @@ class GroupsAPI(TIOEndpoint):
         '''
         self._api.delete('groups/{}'.format(self._check('id', id, int)))
 
-    def delete_user(self, group_id, user_id):
+    def delete_user(
+            self,
+            group_id: int,
+            user_id: int
+    ) -> None:
         '''
         Delete a user from a user group.
 
@@ -108,7 +118,11 @@ class GroupsAPI(TIOEndpoint):
             self._check('user_id', user_id, int)
         ))
 
-    def edit(self, id, name):
+    def edit(
+            self,
+            id: int,
+            name: str
+    ) -> Dict:
         '''
         Edit a user group.
 
@@ -128,9 +142,9 @@ class GroupsAPI(TIOEndpoint):
             >>> tio.groups.edit(1, 'Updated name')
         '''
         return self._api.put('groups/{}'.format(self._check('id', id, int)),
-            json={'name': self._check('name', name, str)}).json()
+                             json={'name': self._check('name', name, str)}).json()
 
-    def list(self):
+    def list(self) -> List[Dict]:
         '''
         Lists all of the available user groups.
 
@@ -146,7 +160,7 @@ class GroupsAPI(TIOEndpoint):
         '''
         return self._api.get('groups').json()['groups']
 
-    def list_users(self, id):
+    def list_users(self, id: int) -> List[Dict]:
         '''
         List the user memberships within a specific user group.
 
@@ -166,4 +180,3 @@ class GroupsAPI(TIOEndpoint):
         '''
         return self._api.get('groups/{}/users'.format(
             self._check('id', id, int))).json()['users']
-
