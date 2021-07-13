@@ -24,8 +24,10 @@ Methods available on ``tio.tags``:
 import json
 import re
 
+from typing import List, Dict, Union, Tuple, Optional
 from tenable.utils import dict_merge
 from tenable.io.base import TIOEndpoint, TIOIterator
+
 
 class TagsIterator(TIOIterator):
     '''
@@ -47,6 +49,7 @@ class TagsIterator(TIOIterator):
             The total number of records that exist for the current request.
     '''
     pass
+
 
 class TagsAPI(TIOEndpoint):
     '''
@@ -84,10 +87,13 @@ class TagsAPI(TIOEndpoint):
         },
         'updated_by': {
             'operators': ['eq'], 'pattern': None, 'choices': None
-        } # Add UUID regex here
+        }  # Add UUID regex here
     }
 
-    def _permission_constructor(self, items):
+    def _permission_constructor(
+            self,
+            items: List[Union[Tuple, Dict]]
+    ) -> List[Dict]:
         '''
         Simple current_domain_permission tuple expander. Also supports validation of values
         '''
@@ -100,35 +106,42 @@ class TagsAPI(TIOEndpoint):
                 resp.append({
                     'id': self._check('id', item[0], 'uuid'),
                     "name": self._check('name', item[1], str),
-                    "type": self._check('type', item[2], str,
+                    "type": self._check(
+                        'type', item[2], str,
                         choices=['user', 'group'], case='upper'),
-                    "permissions": [
-                        self._check('i', i, str,
-                            choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'], case='upper')
+                    "permissions": [self._check(
+                        'i', i, str,
+                        choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'], case='upper')
                         for i in self._check('permissions', item[3], list)],
                 })
             else:
                 data = dict()
                 data['id'] = self._check('id', item['id'], 'uuid')
                 data['name'] = self._check('name', item['name'], str)
-                data['type'] = self._check('type', item['type'], str,
+                data['type'] = self._check(
+                    'type', item['type'], str,
                     choices=['user', 'group'], case='upper')
-                data['permissions'] = [
-                    self._check('i', i, str,
-                        choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'], case='upper')
+                data['permissions'] = [self._check(
+                    'i', i, str,
+                    choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'], case='upper')
                     for i in self._check('permissions', item['permissions']
-                        if 'permissions' in item else None, list,
-                            default=list())]
+                    if 'permissions' in item else None, list, default=list())]
                 resp.append(data)
 
         return resp
 
-    def _tag_value_constructor(self, filters, filterdefs, filter_type):
+    def _tag_value_constructor(
+            self,
+            filters: List[Tuple[str, str, Union[str, List[str]]]],
+            filterdefs: Dict,
+            filter_type: str
+    ) -> Dict:
         '''
         A simple constructor to handle constructing the filter parameters for the
         create and edit tag value.
         '''
-        filter_type = self._check('filter_type', filter_type, str,
+        filter_type = self._check(
+            'filter_type', filter_type, str,
             choices=['and', 'or'], default='and', case='lower')
 
         # created default dictionary for payload filters key
@@ -145,9 +158,17 @@ class TagsAPI(TIOEndpoint):
 
         return payload_filters
 
-    def create(self, category, value, description=None, category_description=None,
-               filters=None, filter_type=None, all_users_permissions=None,
-               current_domain_permissions=None):
+    def create(
+            self,
+            category: str,
+            value: str,
+            description: Optional[str] = None,
+            category_description: Optional[str] = None,
+            filters: Optional[List[Tuple[str, str, Union[str, List[str]]]]] = None,
+            filter_type: Optional[str] = None,
+            all_users_permissions: Optional[List[str]] = None,
+            current_domain_permissions: Optional[List[Union[Tuple, Dict]]] = None
+    ) -> Dict:
         '''
         Create a tag category/value pair
 
@@ -257,7 +278,8 @@ class TagsAPI(TIOEndpoint):
             # check and assign all_users_permissions
             'all_users_permissions': [
                 self._check('i', i, str, choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'])
-                for i in self._check('all_users_permissions', all_users_permissions, list,
+                for i in self._check(
+                    'all_users_permissions', all_users_permissions, list,
                     default=list(), case='upper')],
 
             # run the current_domain_permissions through the permission_constructor
@@ -272,7 +294,11 @@ class TagsAPI(TIOEndpoint):
 
         return self._api.post('tags/values', json=payload).json()
 
-    def create_category(self, name, description=None):
+    def create_category(
+            self,
+            name: str,
+            description: Optional[str] = None
+    ) -> Dict:
         '''
         Creates a new category
 
@@ -295,7 +321,7 @@ class TagsAPI(TIOEndpoint):
             payload['description'] = self._check('description', description, str)
         return self._api.post('tags/categories', json=payload).json()
 
-    def delete(self, *tag_value_uuids):
+    def delete(self, *tag_value_uuids: str) -> None:
         '''
         Deletes tag value(s).
 
@@ -322,12 +348,13 @@ class TagsAPI(TIOEndpoint):
             self._api.delete('tags/values/{}'.format(
                 self._check('tag_value_uuid', tag_value_uuids[0], 'uuid')))
         else:
-            self._api.post('tags/values/delete-requests',
+            self._api.post(
+                'tags/values/delete-requests',
                 json={'values': [
                     self._check('tag_value_uuid', i, 'uuid') for i in tag_value_uuids
                 ]})
 
-    def delete_category(self, tag_category_uuid):
+    def delete_category(self, tag_category_uuid: str) -> None:
         '''
         Deletes a tag category.
 
@@ -346,7 +373,7 @@ class TagsAPI(TIOEndpoint):
         self._api.delete('tags/categories/{}'.format(
             self._check('tag_category_uuid', tag_category_uuid, 'uuid')))
 
-    def details(self, tag_value_uuid):
+    def details(self, tag_value_uuid: str) -> Dict:
         '''
         Retrieves the details for a specific tag category/value pair.
 
@@ -366,7 +393,7 @@ class TagsAPI(TIOEndpoint):
         return self._api.get('tags/values/{}'.format(self._check(
             'tag_value_uuid', tag_value_uuid, 'uuid'))).json()
 
-    def details_category(self, tag_category_uuid):
+    def details_category(self, tag_category_uuid: str) -> Dict:
         '''
         Retrieves the details for a specific tag category.
 
@@ -386,8 +413,16 @@ class TagsAPI(TIOEndpoint):
         return self._api.get('tags/categories/{}'.format(self._check(
             'tag_category_uuid', tag_category_uuid, 'uuid'))).json()
 
-    def edit(self, tag_value_uuid, value=None, description=None, filters=None, filter_type=None,
-             all_users_permissions=None, current_domain_permissions=None):
+    def edit(
+            self,
+            tag_value_uuid: str,
+            value: Optional[str] = None,
+            description: Optional[str] = None,
+            filters: Optional[List[Tuple[str, str, Union[str, List[str]]]]] = None,
+            filter_type: Optional[str] = None,
+            all_users_permissions: Optional[List[str]] = None,
+            current_domain_permissions: Optional[List[Union[Tuple, Dict]]] = None
+    ) -> Dict:
         '''
         Updates Tag category/value pair information.
 
@@ -458,7 +493,7 @@ class TagsAPI(TIOEndpoint):
             current_access_control['all_users_permissions'] = [
                 self._check('i', i, str, choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'])
                 for i in self._check('all_users_permissions', all_users_permissions, list,
-                    case='upper')]
+                                     case='upper')]
 
         # run current_domain_permissions through permission parser
         if current_domain_permissions is not None:
@@ -494,7 +529,12 @@ class TagsAPI(TIOEndpoint):
         return self._api.put('tags/values/{}'.format(self._check(
             'tag_value_uuid', tag_value_uuid, 'uuid')), json=payload).json()
 
-    def edit_category(self, tag_category_uuid, name=None, description=None):
+    def edit_category(
+            self,
+            tag_category_uuid: str,
+            name: Optional[str] = None,
+            description: Optional[str] = None
+    ) -> Dict:
         '''
         Updates Tag category information.
 
@@ -523,14 +563,21 @@ class TagsAPI(TIOEndpoint):
         return self._api.put('tags/categories/{}'.format(self._check(
             'tag_category_uuid', tag_category_uuid, 'uuid')), json=payload).json()
 
-    def _tag_list_constructor(self, filters, filterdefs, filter_type, sort):
+    def _tag_list_constructor(
+            self,
+            filters: Tuple[Tuple],
+            filterdefs: Dict,
+            filter_type: str,
+            sort: Tuple[Tuple[str, str]]
+    ) -> Dict:
         '''
         A simple constructor to handle constructing the query parameters for the
         list and list_category methods.
         '''
         query = self._parse_filters(filters, filterdefs, rtype='colon')
         if filter_type:
-            query['ft'] = self._check('filter_type', filter_type, str,
+            query['ft'] = self._check(
+                'filter_type', filter_type, str,
                 choices=['AND', 'OR'], case='upper')
         if sort and self._check('sort', sort, tuple):
             query['sort'] = ','.join(['{}:{}'.format(
@@ -539,7 +586,11 @@ class TagsAPI(TIOEndpoint):
             ) for i in sort])
         return query
 
-    def list(self, *filters, **kw):
+    def list(
+            self,
+            *filters: Tuple,
+            **kw
+    ) -> 'TagsIterator':
         '''
         Retrieves a list of tag category/value pairs based off of the filters
         defined within the query.
@@ -583,10 +634,13 @@ class TagsAPI(TIOEndpoint):
             >>> for tag in tio.tags.list(('category_name', 'eq', 'Location')):
             ...     pprint(tag)
         '''
-        query = self._tag_list_constructor(filters, self._filterset_tags,
+        query = self._tag_list_constructor(
+            filters, self._filterset_tags,
             kw['filter_type'] if 'filter_type' in kw else None,
             kw['sort'] if 'sort' in kw else None)
-        return TagsIterator(self._api,
+
+        return TagsIterator(
+            self._api,
             _limit=self._check('limit', kw.get('limit', 1000), int),
             _offset=self._check('offset', kw.get('offset', 0), int),
             _pages_total=self._check('pages', kw.get('pages'), int),
@@ -595,7 +649,11 @@ class TagsAPI(TIOEndpoint):
             _resource='values'
         )
 
-    def list_categories(self, *filters, **kw):
+    def list_categories(
+            self,
+            *filters: Tuple,
+            **kw
+    ) -> 'TagsIterator':
         '''
         Retrieves a list of tag categories based off of the filters defined
         within the query.
@@ -640,10 +698,13 @@ class TagsAPI(TIOEndpoint):
             ...   ('name', 'eq', 'Location')):
             ...     pprint(tag)
         '''
-        query = self._tag_list_constructor(filters, self._filterset_categories,
+        query = self._tag_list_constructor(
+            filters, self._filterset_categories,
             kw['filter_type'] if 'filter_type' in kw else None,
             kw['sort'] if 'sort' in kw else None)
-        return TagsIterator(self._api,
+        
+        return TagsIterator(
+            self._api,
             _limit=self._check('limit', kw.get('limit', 1000), int),
             _offset=self._check('offset', kw.get('offset', 0), int),
             _pages_total=self._check('pages', kw.get('pages'), int),
@@ -652,7 +713,11 @@ class TagsAPI(TIOEndpoint):
             _resource='categories'
         )
 
-    def assign(self, assets, tags):
+    def assign(
+            self,
+            assets: List[str],
+            tags: List[str]
+    ) -> str:
         '''
         Assigns the tag category/value pairs defined to the assets defined.
 
@@ -681,7 +746,11 @@ class TagsAPI(TIOEndpoint):
             'tags': [self._check('tag', t, 'uuid') for t in tags],
         }).json()['job_uuid']
 
-    def unassign(self, assets, tags):
+    def unassign(
+            self,
+            assets: List[str],
+            tags: List[str]
+    ) -> str:
         '''
         Un-assigns the tag category/value pairs defined to the assets defined.
 
