@@ -25,15 +25,25 @@ Methods available on ``tio.users``:
     .. automethod:: list_auths
     .. automethod:: edit_auths
 '''
+from typing import Dict, Optional, List
 from tenable.utils import dict_merge
 from tenable.io.base import TIOEndpoint
+
 
 class UsersAPI(TIOEndpoint):
     '''
     This will contain all methods related to Users
     '''
-    def create(self, username, password, permissions,
-            name=None, email=None, account_type=None):
+
+    def create(
+            self,
+            username: str,
+            password: str,
+            permissions: int,
+            name: Optional[str] = None,
+            email: Optional[str] = None,
+            account_type: Optional[str] = None
+    ) -> Dict:
         '''
         Create a new user.
 
@@ -82,7 +92,7 @@ class UsersAPI(TIOEndpoint):
 
         return self._api.post('users', json=payload).json()
 
-    def delete(self, user_id):
+    def delete(self, user_id: int) -> None:
         '''
         Removes a user from Tenable.io.
 
@@ -100,7 +110,7 @@ class UsersAPI(TIOEndpoint):
         '''
         self._api.delete('users/{}'.format(self._check('user_id', user_id, int)))
 
-    def details(self, user_id):
+    def details(self, user_id: int) -> Dict:
         '''
         Retrieve the details of a user.
 
@@ -118,7 +128,14 @@ class UsersAPI(TIOEndpoint):
         '''
         return self._api.get('users/{}'.format(self._check('user_id', user_id, int))).json()
 
-    def edit(self, user_id, permissions=None, name=None, email=None, enabled=None):
+    def edit(
+            self,
+            user_id: int,
+            permissions: Optional[int] = None,
+            name: Optional[str] = None,
+            email: Optional[str] = None,
+            enabled: Optional[bool] = None
+    ) -> Dict:
         '''
         Modify an existing user.
 
@@ -165,7 +182,11 @@ class UsersAPI(TIOEndpoint):
         }, payload)
         return self._api.put('users/{}'.format(user_id), json=payload).json()
 
-    def enabled(self, user_id, enabled):
+    def enabled(
+            self,
+            user_id: int,
+            enabled: bool
+    ) -> Dict:
         '''
         Enable the user account.
 
@@ -190,9 +211,15 @@ class UsersAPI(TIOEndpoint):
         '''
         return self._api.put('users/{}/enabled'.format(
             self._check('user_id', user_id, int)), json={
-                'enabled': self._check('enabled', enabled, bool)}).json()
+            'enabled': self._check('enabled', enabled, bool)}).json()
 
-    def two_factor(self, user_id, email, sms, phone=None):
+    def two_factor(
+            self,
+            user_id: int,
+            email: bool,
+            sms: bool,
+            phone: Optional[str] = None
+    ) -> None:
         '''
         Configure two-factor authorization for a specific user.
 
@@ -230,7 +257,11 @@ class UsersAPI(TIOEndpoint):
         self._api.put('users/{}/two-factor'.format(
             self._check('user_id', user_id, int)), json=payload)
 
-    def enable_two_factor(self, user_id, phone):
+    def enable_two_factor(
+            self,
+            user_id: int,
+            phone: str
+    ) -> None:
         '''
         Enable phone-based two-factor authorization for a specific user.
 
@@ -248,9 +279,13 @@ class UsersAPI(TIOEndpoint):
         '''
         self._api.post('users/{}/two-factor/send-verification'.format(
             self._check('user_id', user_id, int)), json={
-                'sms_phone': self._check('phone', phone, str)})
+            'sms_phone': self._check('phone', phone, str)})
 
-    def verify_two_factor(self, user_id, code):
+    def verify_two_factor(
+            self,
+            user_id: int,
+            code: str
+    ) -> None:
         '''
         Send the verification code for two-factor authorization.
 
@@ -268,9 +303,9 @@ class UsersAPI(TIOEndpoint):
         '''
         self._api.post('users/{}/two-factor/verify-code'.format(
             self._check('user_id', user_id, int)), json={
-                'verification_code': self._check('code', code, str)})
+            'verification_code': self._check('code', code, str)})
 
-    def impersonate(self, name):
+    def impersonate(self, name: str) -> None:
         '''
         Impersonate as a specific user.
 
@@ -290,7 +325,7 @@ class UsersAPI(TIOEndpoint):
             'X-Impersonate': 'username={}'.format(self._check('name', name, str))
         })
 
-    def list(self):
+    def list(self) -> List[Dict]:
         '''
         Retrieves a list of users.
 
@@ -306,7 +341,12 @@ class UsersAPI(TIOEndpoint):
         '''
         return self._api.get('users').json()['users']
 
-    def change_password(self, user_id, old_password, new_password):
+    def change_password(
+            self,
+            user_id: int,
+            old_password: str,
+            new_password: str
+    ) -> None:
         '''
         Change the password for a specific user.
 
@@ -329,7 +369,7 @@ class UsersAPI(TIOEndpoint):
             'current_password': self._check('old_password', old_password, str)
         })
 
-    def gen_api_keys(self, user_id):
+    def gen_api_keys(self, user_id: str) -> Dict:
         '''
         Generate the API keys for a specific user.
 
@@ -348,7 +388,7 @@ class UsersAPI(TIOEndpoint):
         return self._api.put('users/{}/keys'.format(
             self._check('user_id', user_id, int))).json()
 
-    def list_auths(self, user_id):
+    def list_auths(self, user_id: int) -> Dict:
         '''
         list user authorizations for accessing a Tenable.io instance.
 
@@ -367,7 +407,13 @@ class UsersAPI(TIOEndpoint):
         return self._api.get('users/{}/authorizations'.format(
             self._check('user_id', user_id, int))).json()
 
-    def edit_auths(self, user_id, api_permitted=None, password_permitted=None, saml_permitted=None):
+    def edit_auths(
+            self,
+            user_id: int,
+            api_permitted: Optional[bool] = None,
+            password_permitted: Optional[bool] = None,
+            saml_permitted: Optional[bool] = None
+    ) -> None:
         '''
         update user authorizations for accessing a Tenable.io instance.
 
@@ -395,11 +441,14 @@ class UsersAPI(TIOEndpoint):
 
         # update payload with new settings
         payload = {
-            'api_permitted': self._check('api_permitted', api_permitted, bool,
+            'api_permitted': self._check(
+                'api_permitted', api_permitted, bool,
                 default=current['api_permitted']),
-            'password_permitted': self._check('password_permitted', password_permitted, bool,
+            'password_permitted': self._check(
+                'password_permitted', password_permitted, bool,
                 default=current['password_permitted']),
-            'saml_permitted': self._check('saml_permitted', saml_permitted, bool,
+            'saml_permitted': self._check(
+                'saml_permitted', saml_permitted, bool,
                 default=current['saml_permitted'])
         }
 
