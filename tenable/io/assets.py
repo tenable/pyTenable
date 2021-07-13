@@ -19,13 +19,16 @@ Methods available on ``tio.assets``:
     .. automethod:: tags
     .. automethod:: bulk_delete
 '''
+from typing import List, Dict, Tuple, Optional
 from tenable.io.base import TIOEndpoint
+
 
 class AssetsAPI(TIOEndpoint):
     '''
     This will contain all methods related to Assets
     '''
-    def list(self):
+
+    def list(self) -> List[Dict]:
         '''
         Returns a list of assets.
 
@@ -41,7 +44,10 @@ class AssetsAPI(TIOEndpoint):
         '''
         return self._api.get('assets').json()['assets']
 
-    def delete(self, uuid):
+    def delete(
+            self,
+            uuid: str
+    ) -> None:
         '''
         Deletes the asset.
 
@@ -60,7 +66,10 @@ class AssetsAPI(TIOEndpoint):
         self._api.delete('workbenches/assets/{}'.format(
             self._check('uuid', uuid, 'uuid')))
 
-    def details(self, uuid):
+    def details(
+            self,
+            uuid: str
+    ) -> Dict:
         '''
         Retrieves the details about a specific asset.
 
@@ -83,7 +92,12 @@ class AssetsAPI(TIOEndpoint):
                 self._check('uuid', uuid, str)
             )).json()
 
-    def assign_tags(self, action, assets, tags):
+    def assign_tags(
+            self,
+            action: str,
+            assets: List[str],
+            tags: List[str]
+    ) -> Dict:
         '''
         Add/remove tags for asset(s).
 
@@ -113,7 +127,10 @@ class AssetsAPI(TIOEndpoint):
                 'tags': [self._check('source', i, 'uuid') for i in tags]
             }).json()
 
-    def tags(self, uuid):
+    def tags(
+            self,
+            uuid: str
+    ) -> Dict:
         '''
         Retrieves the details about a specific asset.
 
@@ -136,7 +153,11 @@ class AssetsAPI(TIOEndpoint):
                 self._check('uuid', uuid, 'uuid')
             )).json()
 
-    def asset_import(self, source, *assets):
+    def asset_import(
+            self,
+            source: str,
+            *assets: List[Dict]
+    ) -> str:
         '''
         Imports asset information into Tenable.io from an external source.
 
@@ -174,7 +195,7 @@ class AssetsAPI(TIOEndpoint):
                 'source': self._check('source', source, str)
             }).json()['asset_import_job_uuid']
 
-    def list_import_jobs(self):
+    def list_import_jobs(self) -> List[Dict]:
         '''
         Returns a list of asset import jobs.
 
@@ -190,7 +211,10 @@ class AssetsAPI(TIOEndpoint):
         '''
         return self._api.get('import/asset-jobs').json()['asset_import_jobs']
 
-    def import_job_details(self, uuid):
+    def import_job_details(
+            self,
+            uuid: str
+    ) -> Dict:
         '''
         Returns the details about a specific asset import job.
 
@@ -213,7 +237,12 @@ class AssetsAPI(TIOEndpoint):
                 self._check('uuid', uuid, str)
             )).json()
 
-    def move_assets(self, source, destination, targets):
+    def move_assets(
+            self,
+            source: str,
+            destination: str,
+            targets: List[str]
+    ) -> int:
         '''
         Moves assets from the specified network to another network.
 
@@ -243,7 +272,11 @@ class AssetsAPI(TIOEndpoint):
 
         return self._api.post('api/v2/assets/bulk-jobs/move-to-network', json=payload).json()
 
-    def bulk_delete(self, *filters, filter_type=None):
+    def bulk_delete(
+            self,
+            *filters: Tuple[str, str, str],
+            filter_type: Optional[str] = None
+    ) -> Dict:
         '''
         Deletes the specified assets.
 
@@ -273,7 +306,7 @@ class AssetsAPI(TIOEndpoint):
 
         # run the rules through the filter parser...
         filter_type = self._check('filter_type', filter_type, str,
-            choices=['and', 'or'], default='and', case='lower')
+                                  choices=['and', 'or'], default='and', case='lower')
         parsed = self._parse_filters(
             filters, self._api.filters.workbench_asset_filters(), rtype='assets')['asset']
 
