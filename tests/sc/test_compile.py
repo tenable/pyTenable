@@ -28,7 +28,7 @@ from tenable.sc.scans import ScanAPI
 from tenable.sc.status import StatusAPI
 from tenable.sc.system import SystemAPI
 from tenable.sc.users import UserAPI
-from tests.sc.conftest import sc
+from tests.sc.conftest import security_center
 from tenable.errors import ConnectionError
 
 
@@ -39,34 +39,34 @@ def test_sc_compile():
 
     try:
         TenableSC(host='127.0.0.1')
-        AcceptRiskAPI(sc)
-        AlertAPI(sc)
-        AnalysisResultsIterator(sc)
-        AnalysisAPI(sc)
-        AssetListAPI(sc)
-        AuditFileAPI(sc)
-        SCEndpoint(sc)
-        SCResultsIterator(sc)
-        CredentialAPI(sc)
-        CurrentSessionAPI(sc)
-        FeedAPI(sc)
-        FileAPI(sc)
-        GroupAPI(sc)
-        OrganizationAPI(sc)
-        PluginAPI(sc)
-        PluginResultsIterator(sc)
-        ScanPolicyAPI(sc)
-        QueryAPI(sc)
-        RecastRiskAPI(sc)
-        RepositoryAPI(sc)
-        RoleAPI(sc)
-        ScanResultAPI(sc)
-        ScanZoneAPI(sc)
-        ScannerAPI(sc)
-        ScanAPI(sc)
-        StatusAPI(sc)
-        SystemAPI(sc)
-        UserAPI(sc)
+        AcceptRiskAPI(security_center)
+        AlertAPI(security_center)
+        AnalysisResultsIterator(security_center)
+        AnalysisAPI(security_center)
+        AssetListAPI(security_center)
+        AuditFileAPI(security_center)
+        SCEndpoint(security_center)
+        SCResultsIterator(security_center)
+        CredentialAPI(security_center)
+        CurrentSessionAPI(security_center)
+        FeedAPI(security_center)
+        FileAPI(security_center)
+        GroupAPI(security_center)
+        OrganizationAPI(security_center)
+        PluginAPI(security_center)
+        PluginResultsIterator(security_center)
+        ScanPolicyAPI(security_center)
+        QueryAPI(security_center)
+        RecastRiskAPI(security_center)
+        RepositoryAPI(security_center)
+        RoleAPI(security_center)
+        ScanResultAPI(security_center)
+        ScanZoneAPI(security_center)
+        ScannerAPI(security_center)
+        ScanAPI(security_center)
+        StatusAPI(security_center)
+        SystemAPI(security_center)
+        UserAPI(security_center)
 
     except NameError as error:
         print("\n The following name error exists: {}".format(error))
