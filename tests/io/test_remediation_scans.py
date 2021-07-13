@@ -28,14 +28,29 @@ def remedy_scan(request, api):
 	return remedyscan
 
 
-def remedy_scanned_list(api):
+@pytest.mark.vcr()
+def test_remedy_scanned_list(api):
 	'''
 	test to check remediation scan list
 	'''
-	scan_list = api.remediationscans.list_remediation_scan(5, 5, 'scan_creation_date:asc')
+	scan_list = api.remediationscans.list_remediation_scan(5, 0, 'scan_creation_date:asc')
 	for remediation_scan in scan_list:
-		pprint(remediation_scan)
-	return scan_list
+		check(remediation_scan, 'control', bool)
+		check(remediation_scan, 'creation_date', int)
+		check(remediation_scan, 'enabled', bool)
+		check(remediation_scan, 'id', int)
+		check(remediation_scan, 'last_modification_date', int)
+		check(remediation_scan, 'name', str)
+		check(remediation_scan, 'owner', str)
+		check(remediation_scan, 'permissions', int)
+		check(remediation_scan, 'policy_id', int)
+		check(remediation_scan, 'read', bool)
+		check(remediation_scan, 'remediation', int)
+		check(remediation_scan, 'scan_creation_date', int)
+		check(remediation_scan, 'schedule_uuid', str)
+		check(remediation_scan, 'shared', bool)
+		check(remediation_scan, 'status', str)
+		check(remediation_scan, 'user_permissions', int)
 
 
 @pytest.mark.vcr()
@@ -133,7 +148,7 @@ def test_remedyscan_status(api):
 	'''
 	test to check scan status
 	'''
-	remedyscan =api.remediationscans.create_remediation_scan(
+	remedyscan = api.remediationscans.create_remediation_scan(
 		uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
 		name='Create Remediation Scan',
 		description='This is first remediation scan created',
@@ -143,6 +158,54 @@ def test_remedyscan_status(api):
 	)
 	status = api.scans.status(remedyscan['id'])
 	single(status, str)
+
+@pytest.mark.vcr()
+def test_remedyscan_enable_selected_plugins(api):
+	'''
+	test to enable selected plugin ids
+	'''
+	plugin_families = sorted(api.plugins.families(), key= lambda family: family['count'])[0]['id']
+	plugin_list = [plugin['id'] for plugin in api.plugins.family_details(plugin_families)['plugins']]
+
+	resp = api.remediationscans.create_remediation_scan(
+		name='Create Remediation Scan',
+		description='This is first remediation scan created',
+		scan_time_window=10,
+		targets=['http://127.0.0.1'],
+		template='advanced',
+		enabled_plugins=plugin_list
+	)
+
+	assert isinstance(resp, dict)
+	check(resp, 'auto_routed', int)
+	check(resp, 'creation_date', int)
+	check(resp, 'custom_targets', str)
+	check(resp, 'default_permissions', int)
+	check(resp, 'description', str)
+	check(resp, 'emails', str, allow_none=True)
+	check(resp, 'enabled', bool)
+	check(resp, 'id', int)
+	check(resp, 'include_aggregate', bool)
+	check(resp, 'last_modification_date', int)
+	check(resp, 'name', str)
+	check(resp, 'owner', str)
+	check(resp, 'owner_id', int)
+	check(resp, 'owner_uuid', 'uuid')
+	check(resp, 'policy_id', int)
+	check(resp, 'remediation', int)
+	check(resp, 'rrules', dict, allow_none=True)
+	check(resp, 'scan_time_window', int)
+	check(resp, 'scanner_id', int, allow_none=True)
+	check(resp, 'scanner_uuid', 'scanner-uuid')
+	check(resp, 'shared', int)
+	check(resp, 'sms', str)
+	check(resp, 'starttime', str, allow_none=True)
+	check(resp, 'target_network_uuid', 'uuid', allow_none=True)
+	check(resp, 'timezone', str, allow_none=True)
+	check(resp, 'type', str)
+	check(resp, 'user_permissions', int)
+	check(resp, 'uuid', str)
+
 
 @pytest.mark.vcr()
 def test_remedyscan_timezones(api):
