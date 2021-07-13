@@ -14,9 +14,7 @@ Methods available on ``tio.remediation_scans``:
     .. automethod:: create_remediation_scan
     .. automethod:: list_remediation_scan
 '''
-
-
-from tenable.constants import IOConstants
+from typing import Optional, Dict
 from tenable.errors import UnexpectedValueError
 from tenable.io.base import TIOEndpoint, TIOIterator
 from tenable.utils import dict_merge
@@ -49,7 +47,13 @@ class RemediationScansAPI(TIOEndpoint):
     '''
     This will contain all methods related to Remediation scans
     '''
-    def list_remediation_scan(self, limit=50, offset=0, sortval='scan_creation_date:desc'):
+
+    def list_remediation_scan(
+            self,
+            limit: Optional[int] = 50,
+            offset: Optional[int] = 0,
+            sortval: Optional[str] = 'scan_creation_date:desc'
+    ) -> 'RemediationScansIteratorV2':
         '''
         Retrieve the list of Remediation scans.
 
@@ -80,22 +84,23 @@ class RemediationScansAPI(TIOEndpoint):
             '''
         params = dict()
         pages = None
-        if limit>0 and limit < 200:
+        if limit > 0 and limit < 200:
             params['limit'] = self._check('limit', limit, int)
         if offset >= 0:
             params['offset'] = self._check('offset', offset, int)
         if 'scan_creation_date:asc' or 'scan_creation_date:desc' in sortval:
             params['sort'] = self._check('sort', sortval, str)
 
-        return RemediationScansIteratorV2(self._api,
-        _limit=limit,
-        _offset=offset,
-        _pages_total=pages,
-        _query=params,
-        _path='scans/remediation',
-        _resource='scans')
+        return RemediationScansIteratorV2(
+            self._api,
+            _limit=limit,
+            _offset=offset,
+            _pages_total=pages,
+            _query=params,
+            _path='scans/remediation',
+            _resource='scans')
 
-    def create_remediation_scan(self, **kwargs):
+    def create_remediation_scan(self, **kwargs) -> Dict:
         '''
         Create a new remediation scan.
 
@@ -182,9 +187,9 @@ class RemediationScansAPI(TIOEndpoint):
         scan = self._create_scan_document(kwargs)
 
         # Run the API call and return the result to the caller.
-        return  self._api.post('scans/remediation', json=scan).json()['scan']
+        return self._api.post('scans/remediation', json=scan).json()['scan']
 
-    def _create_scan_document(self, kwargs):
+    def _create_scan_document(self, kwargs: Dict) -> Dict:
         '''
 
         Takes the key-worded arguments and will provide a scan settings document
@@ -204,7 +209,6 @@ class RemediationScansAPI(TIOEndpoint):
         # If a template is specified, then we will pull the listing of available
         # templates and set the policy UUID to match the template name given.
         if 'template' in kwargs:
-
             templates = self._api.policies.templates()
             scan['uuid'] = templates[self._check(
                 'template', kwargs['template'], str,
@@ -260,7 +264,6 @@ class RemediationScansAPI(TIOEndpoint):
         # the list of targets to a comma-delimited string and then set the
         # text_targets parameter with the result.
         if 'targets' in kwargs:
-
             scan['settings']['text_targets'] = ','.join(self._check(
                 'targets', kwargs['targets'], list))
             del kwargs['targets']
