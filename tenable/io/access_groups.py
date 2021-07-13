@@ -16,9 +16,11 @@ Methods available on ``tio.access_groups``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import Union, Dict, Tuple, List, Optional
 from tenable.errors import UnexpectedValueError
 from tenable.utils import dict_merge
 from .base import TIOEndpoint, TIOIterator
+
 
 class AccessGroupsIterator(TIOIterator):
     '''
@@ -42,10 +44,12 @@ class AccessGroupsIterator(TIOIterator):
     '''
     pass
 
+
 class AccessGroupsAPI(TIOEndpoint):
     '''
     This class contains all methods related to access-groups
     '''
+
     def _principal_constructor(self, items):
         '''
         Simple principle tuple expander.  Also supports validating principle
@@ -56,7 +60,7 @@ class AccessGroupsAPI(TIOEndpoint):
             self._check('principal', item, (tuple, dict))
             if isinstance(item, tuple):
                 self._check('principal:type', item[0], str,
-                    choices=['user', 'group'])
+                            choices=['user', 'group'])
                 try:
                     resp.append({
                         'type': item[0],
@@ -71,7 +75,7 @@ class AccessGroupsAPI(TIOEndpoint):
                     })
             else:
                 self._check('principal:type', item['type'], str,
-                    choices=['user', 'group'])
+                            choices=['user', 'group'])
                 if 'principal_id' in item:
                     self._check('principal_id', item['principal_id'], 'uuid')
                 if 'principal_name' in item:
@@ -79,7 +83,13 @@ class AccessGroupsAPI(TIOEndpoint):
                 resp.append(item)
         return resp
 
-    def create(self, name, rules, principals=None, all_users=False):
+    def create(
+            self,
+            name: str,
+            rules: List[Tuple[str, str, Union[str, List[str]]]],
+            principals: Optional[List[Tuple[str, str]]] = None,
+            all_users: Optional[bool] = False
+    ) -> Dict[str, Union[str, Dict[str, str]]]:
         '''
         Creates a new access group
 
@@ -141,9 +151,9 @@ class AccessGroupsAPI(TIOEndpoint):
         # construct the payload dictionary
         payload = {
             # run the rules through the filter parser...
-            'rules': self._parse_filters(rules,
-                self._api.filters.access_group_asset_rules_filters(),
-                    rtype='accessgroup')['rules'],
+            'rules': self._parse_filters(
+                rules, self._api.filters.access_group_asset_rules_filters(),
+                rtype='accessgroup')['rules'],
 
             # run the principals through the principal parser...
             'principals': self._principal_constructor(principals),
@@ -154,7 +164,11 @@ class AccessGroupsAPI(TIOEndpoint):
         # call the API endpoint and return the response to the caller.
         return self._api.post('access-groups', json=payload).json()
 
-    def edit(self, group_id, **kw):
+    def edit(
+            self,
+            group_id: str,
+            **kw
+    ) -> Dict:
         '''
         Edits an access group
 
@@ -198,9 +212,10 @@ class AccessGroupsAPI(TIOEndpoint):
 
         # If any rules are specified, then run them through the filter parser.
         if 'rules' in kw:
-            kw['rules'] = self._parse_filters(kw['rules'],
+            kw['rules'] = self._parse_filters(
+                kw['rules'],
                 self._api.filters.access_group_asset_rules_filters(),
-                    rtype='accessgroup')['rules']
+                rtype='accessgroup')['rules']
 
         # if any principals are specified, then run them through the principal
         # parser.
@@ -223,10 +238,14 @@ class AccessGroupsAPI(TIOEndpoint):
             payload['principals'] = group['principals']
 
         # call the API endpoint and return the response to the caller.
-        return self._api.put('access-groups/{}'.format(group_id),
+        return self._api.put(
+            'access-groups/{}'.format(group_id),
             json=payload).json()
 
-    def delete(self, group_id):
+    def delete(
+            self,
+            group_id: str
+    ) -> None:
         '''
         Deletes the specified access group.
 
@@ -238,7 +257,10 @@ class AccessGroupsAPI(TIOEndpoint):
         self._api.delete('access-groups/{}'.format(
             self._check('group_id', group_id, 'uuid')))
 
-    def details(self, group_id):
+    def details(
+            self,
+            group_id: str
+    ) -> Dict:
         '''
         Retrieves the details of the specified access group.
 
@@ -250,7 +272,11 @@ class AccessGroupsAPI(TIOEndpoint):
         return self._api.get('access-groups/{}'.format(
             self._check('group_id', group_id, 'uuid'))).json()
 
-    def list(self, *filters, **kw):
+    def list(
+            self,
+            *filters: Tuple,
+            **kw
+    ) -> 'AccessGroupsIterator':
         '''
         Get the listing of configured access groups from Tenable.io.
 
@@ -309,7 +335,7 @@ class AccessGroupsAPI(TIOEndpoint):
         offset = 0
         pages = None
         query = self._parse_filters(filters,
-            self._api.filters.access_group_filters(), rtype='colon')
+                                    self._api.filters.access_group_filters(), rtype='colon')
 
         # If the offset was set to something other than the default starting
         # point of 0, then we will update offset to reflect that.
@@ -343,7 +369,7 @@ class AccessGroupsAPI(TIOEndpoint):
         # The default is 'and', however you can always explicitly define 'and'
         # or 'or'.
         if 'filter_type' in kw and self._check(
-            'filter_type', kw['filter_type'], str, choices=['and', 'or']):
+                'filter_type', kw['filter_type'], str, choices=['and', 'or']):
             query['ft'] = kw['filter_type']
 
         # The wild-card filter text refers to how the API will pattern match
@@ -354,11 +380,12 @@ class AccessGroupsAPI(TIOEndpoint):
         # The wildcard_fields parameter allows the user to restrict the fields
         # that the wild-card pattern match pertains to.
         if 'wildcard_fields' in kw and self._check(
-            'wildcard_fields', kw['wildcard_fields'], list):
+                'wildcard_fields', kw['wildcard_fields'], list):
             query['wf'] = ','.join(kw['wildcard_fields'])
 
         # Return the Iterator.
-        return AccessGroupsIterator(self._api,
+        return AccessGroupsIterator(
+            self._api,
             _limit=limit,
             _offset=offset,
             _pages_total=pages,
