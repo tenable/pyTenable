@@ -20,6 +20,7 @@ Methods available on ``tio.networks``:
     .. automethod:: unassigned_scanners
     .. automethod:: network_asset_count
 '''
+from typing import Dict, Optional, List
 from tenable.io.base import TIOEndpoint, TIOIterator
 from tenable.errors import UnexpectedValueError
 
@@ -45,11 +46,18 @@ class NetworksIterator(TIOIterator):
     '''
     pass
 
+
 class NetworksAPI(TIOEndpoint):
     '''
     This will contain all methods related to networks
     '''
-    def create(self, name, description=None, assets_ttl_days=None):
+
+    def create(
+            self,
+            name: str,
+            description: Optional[str] = None,
+            assets_ttl_days: Optional[int] = None
+    ) -> Dict:
         '''
         Creates a new network within Tenable.io
 
@@ -79,7 +87,7 @@ class NetworksAPI(TIOEndpoint):
             'assets_ttl_days': self._check('assets_ttl_days', assets_ttl_days, int)
         }).json()
 
-    def delete(self, network_id):
+    def delete(self, network_id: str) -> None:
         '''
         Deletes the specified network.
 
@@ -93,7 +101,7 @@ class NetworksAPI(TIOEndpoint):
         '''
         self._api.delete('networks/{}'.format(self._check('network_id', network_id, 'uuid')))
 
-    def details(self, network_id):
+    def details(self, network_id: str) -> Dict:
         '''
         Retrieves the details of the specified network.
 
@@ -108,7 +116,13 @@ class NetworksAPI(TIOEndpoint):
         return self._api.get('networks/{}'.format(
             self._check('network_id', network_id, 'uuid'))).json()
 
-    def edit(self, network_id, name, description=None, assets_ttl_days=None):
+    def edit(
+            self,
+            network_id: str,
+            name: str,
+            description: Optional[str] = None,
+            assets_ttl_days: Optional[int] = None
+    ) -> Dict:
         '''
         Updates the specified network resource.
 
@@ -135,14 +149,19 @@ class NetworksAPI(TIOEndpoint):
         if not description:
             description = ''
 
-        return self._api.put('networks/{}'.format(self._check('network_id', network_id, 'uuid')),
+        return self._api.put(
+            'networks/{}'.format(self._check('network_id', network_id, 'uuid')),
             json={
                 'name': self._check('name', name, str),
                 'description': self._check('description', description, str),
                 'assets_ttl_days': self._check('assets_ttl_days', assets_ttl_days, int)
             }).json()
 
-    def assign_scanners(self, network_id, *scanner_uuids):
+    def assign_scanners(
+            self,
+            network_id: str,
+            *scanner_uuids: str
+    ) -> None:
         '''
         Assigns one or many scanners to a network.
 
@@ -175,12 +194,12 @@ class NetworksAPI(TIOEndpoint):
         elif len(scanner_uuids) > 1:
             self._api.post('networks/{}/scanners'.format(
                 self._check('network_id', network_id, 'uuid')),
-                    json={'scanner_uuids': [self._check('scanner_uuid', i, 'scanner-uuid')
-                        for i in scanner_uuids]})
+                json={'scanner_uuids': [self._check('scanner_uuid', i, 'scanner-uuid')
+                                        for i in scanner_uuids]})
         else:
             raise UnexpectedValueError('No scanner_uuids were supplied.')
 
-    def list_scanners(self, network_id):
+    def list_scanners(self, network_id: str) -> List[Dict]:
         '''
         Retrieves the list of scanners associated to a given network.
 
@@ -201,7 +220,7 @@ class NetworksAPI(TIOEndpoint):
         return self._api.get('networks/{}/scanners'.format(
             self._check('network_id', network_id, 'uuid'))).json()['scanners']
 
-    def unassigned_scanners(self, network_id):
+    def unassigned_scanners(self, network_id: str) -> List[Dict]:
         '''
         Retrieves the list of scanners that are currently unassigned to the given
         network.  This will include scanners and scanner groups that are
@@ -224,7 +243,11 @@ class NetworksAPI(TIOEndpoint):
         return self._api.get('networks/{}/assignable-scanners'.format(
             self._check('network_id', network_id, 'uuid'))).json()['scanners']
 
-    def list(self, *filters, **kw):
+    def list(
+            self,
+            *filters,
+            **kw
+    ) -> 'NetworksIterator':
         '''
         Get the listing of configured networks from Tenable.io.
 
@@ -284,8 +307,8 @@ class NetworksAPI(TIOEndpoint):
         limit = 50
         offset = 0
         pages = None
-        query = self._parse_filters(filters,
-            self._api.filters.networks_filters(), rtype='colon')
+        query = self._parse_filters(
+            filters, self._api.filters.networks_filters(), rtype='colon')
 
         # If the offset was set to something other than the default starting
         # point of 0, then we will update offset to reflect that.
@@ -319,7 +342,7 @@ class NetworksAPI(TIOEndpoint):
         # The default is 'and', however you can always explicitly define 'and'
         # or 'or'.
         if 'filter_type' in kw and self._check(
-            'filter_type', kw['filter_type'], str, choices=['and', 'or']):
+                'filter_type', kw['filter_type'], str, choices=['and', 'or']):
             query['ft'] = kw['filter_type']
 
         # The wild-card filter text refers to how the API will pattern match
@@ -330,15 +353,16 @@ class NetworksAPI(TIOEndpoint):
         # The wildcard_fields parameter allows the user to restrict the fields
         # that the wild-card pattern match pertains to.
         if 'wildcard_fields' in kw and self._check(
-            'wildcard_fields', kw['wildcard_fields'], list):
+                'wildcard_fields', kw['wildcard_fields'], list):
             query['wf'] = ','.join(kw['wildcard_fields'])
 
         if 'include_deleted' in kw and self._check(
-            'include_deleted', kw['include_deleted'], bool):
+                'include_deleted', kw['include_deleted'], bool):
             query['includeDeleted'] = kw['include_deleted']
 
         # Return the Iterator.
-        return NetworksIterator(self._api,
+        return NetworksIterator(
+            self._api,
             _limit=limit,
             _offset=offset,
             _pages_total=pages,
@@ -347,7 +371,11 @@ class NetworksAPI(TIOEndpoint):
             _resource='networks'
         )
 
-    def network_asset_count(self, network_id, num_days):
+    def network_asset_count(
+            self,
+            network_id: str,
+            num_days: int
+    ) -> Dict:
         '''
         get the total number of assets in the network along with the number of assets
         that have not been seen for the specified number of days.
