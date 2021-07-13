@@ -12,10 +12,16 @@ Methods available on ``io.audit_log``:
 
     .. automethod:: events
 '''
+from typing import List, Dict, Tuple, Optional
 from .base import TIOEndpoint
 
+
 class AuditLogAPI(TIOEndpoint):
-    def events(self, *filters, **kw):
+    def events(
+            self,
+            *filters: Optional[Tuple[str, str, str]],
+            **kw
+    ) -> List[Dict]:
         '''
         Retrieve audit logs from Tenable.io.
 
