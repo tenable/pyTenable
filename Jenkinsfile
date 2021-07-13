@@ -83,12 +83,16 @@ try {
 	tasks['runPylint'] = {
 		stage('runPylint') {
 			node(Constants.DOCKERNODE) {
+				buildsCommon.cleanup()
+				checkout scm
+				
 				withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
 					try {
 						sh """
 						mkdir reports
 						cd reports
-						touch pylint_tenable.log pylint_tests.log
+						touch pylint_tenable.log 
+						touch pylint_tests.log
 						cd ..
 						pip install pylint
                            			pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
