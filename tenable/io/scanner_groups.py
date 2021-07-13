@@ -19,13 +19,20 @@ Methods available on ``tio.scanner_groups``:
     .. automethod:: list
     .. automethod:: list_scanners
 '''
+from typing import Dict, Optional, List
 from tenable.io.base import TIOEndpoint
+
 
 class ScannerGroupsAPI(TIOEndpoint):
     '''
     This will contain all methods related to scanner groups
     '''
-    def add_scanner(self, group_id, scanner_id):
+
+    def add_scanner(
+            self,
+            group_id: int,
+            scanner_id: int
+    ) -> None:
         '''
         Add a scanner to a scanner group.
 
@@ -49,7 +56,11 @@ class ScannerGroupsAPI(TIOEndpoint):
             self._check('scanner_id', scanner_id, int)
         ))
 
-    def create(self, name, group_type=None):
+    def create(
+            self,
+            name: str,
+            group_type: Optional[str] = None
+    ) -> Dict:
         '''
         Create a scanner group.
 
@@ -70,11 +81,12 @@ class ScannerGroupsAPI(TIOEndpoint):
         '''
         return self._api.post('scanner-groups', json={
             'name': self._check('name', name, str),
-            'type': self._check('group_type', group_type, str,
+            'type': self._check(
+                'group_type', group_type, str,
                 default='load_balancing', choices=['load_balancing'])
         }).json()
 
-    def delete(self, group_id):
+    def delete(self, group_id: int) -> None:
         '''
         Deletes a scanner group.
 
@@ -92,7 +104,11 @@ class ScannerGroupsAPI(TIOEndpoint):
         '''
         self._api.delete('scanner-groups/{}'.format(self._check('group_id', group_id, int)))
 
-    def delete_scanner(self, group_id, scanner_id):
+    def delete_scanner(
+            self,
+            group_id: int,
+            scanner_id: int
+    ) -> None:
         '''
         Removes a scanner from a scanner group.
 
@@ -117,7 +133,7 @@ class ScannerGroupsAPI(TIOEndpoint):
             self._check('scanner_id', scanner_id, int)
         ))
 
-    def details(self, group_id):
+    def details(self, group_id: int) -> Dict:
         '''
         Retrieves the details about a scanner group.
 
@@ -137,7 +153,11 @@ class ScannerGroupsAPI(TIOEndpoint):
         return self._api.get('scanner-groups/{}'.format(
             self._check('group_id', group_id, int))).json()
 
-    def edit(self, group_id, name):
+    def edit(
+            self,
+            group_id: int,
+            name: str
+    ) -> None:
         '''
         Modifies a scanner group.
 
@@ -155,11 +175,12 @@ class ScannerGroupsAPI(TIOEndpoint):
             >>> tio.scanner_groups.edit(1, 'New Group Name')
         '''
         self._api.put('scanner-groups/{}'.format(
-            self._check('group_id', group_id, int)), json={
+            self._check('group_id', group_id, int)),
+            json={
                 'name': self._check('name', name, str)
-        })
+            })
 
-    def list(self):
+    def list(self) -> List[Dict]:
         '''
         Lists the configured scanner groups.
 
@@ -175,7 +196,7 @@ class ScannerGroupsAPI(TIOEndpoint):
         '''
         return self._api.get('scanner-groups').json()['scanner_pools']
 
-    def list_scanners(self, group_id):
+    def list_scanners(self, group_id: int) -> List[Dict]:
         '''
         List the scanners within a specific scanner group.
 
@@ -195,7 +216,7 @@ class ScannerGroupsAPI(TIOEndpoint):
         return self._api.get('scanner-groups/{}/scanners'.format(
             self._check('group_id', group_id, int))).json()['scanners']
 
-    def list_routes(self, group_id):
+    def list_routes(self, group_id: int) -> List[Dict]:
         '''
         List the hostnames, wildcards, IP addresses, and IP address ranges that Tenable.io
         matches against targets in auto-routed scans
@@ -216,7 +237,11 @@ class ScannerGroupsAPI(TIOEndpoint):
         return self._api.get('scanner-groups/{}/routes'.format(
             self._check('group_id', group_id, int))).json()
 
-    def edit_routes(self, group_id, routes):
+    def edit_routes(
+            self,
+            group_id: int,
+            routes: int
+    ) -> None:
         '''
         Updates the hostnames, hostname wildcards, IP addresses, and IP address ranges
         that Tenable.io matches against targets in auto-routed scans
