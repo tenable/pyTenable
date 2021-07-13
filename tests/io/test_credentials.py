@@ -2,12 +2,10 @@
 test credentials
 '''
 import uuid
-
 import pytest
-
 from tests.pytenable_log_handler import log_exception
-from ..checker import check, single
 from tenable.errors import UnexpectedValueError, APIError
+from ..checker import check, single
 
 
 def test_credentials_permissions_constructor_tuple_permission_type_typeerror(api):
