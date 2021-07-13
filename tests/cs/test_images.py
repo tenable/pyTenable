@@ -1,4 +1,4 @@
-from tenable.errors import *
+from tenable.errors import UnexpectedValueError
 from ..checker import check
 from tenable.cs.images import ImageIterator
 import pytest
