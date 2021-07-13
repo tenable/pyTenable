@@ -25,6 +25,7 @@ try:
 except ImportError:
     JSONDecodeError = ValueError
 
+
 class ExportsIterator(APIResultsIterator):
     '''
     The exports iterator handles the chunk status and retrieval management
@@ -41,6 +42,7 @@ class ExportsIterator(APIResultsIterator):
         total (int):
             The total number of records that exist for the current request.
     '''
+
     def __init__(self, api, **kw):
         self.type = None
         self.uuid = None
@@ -61,6 +63,7 @@ class ExportsIterator(APIResultsIterator):
         '''
         Get the next chunk
         '''
+
         def get_status():
             # Query the API for the status of the export.
             status = self._api.get('{}/export/{}/status'.format(self.type, self.uuid)).json()
@@ -80,7 +83,7 @@ class ExportsIterator(APIResultsIterator):
             # if there are no more chunks to process and the export status is
             # set to finished, then we will break the iteration.
             if (status['status'] == 'FINISHED'
-              and len(status['chunks_unfinished']) < 1):
+                    and len(status['chunks_unfinished']) < 1):
                 raise StopIteration()
 
             if status['status'] != 'FINISHED' and self._wait_for_complete:
@@ -90,7 +93,7 @@ class ExportsIterator(APIResultsIterator):
                 raise TioExportsError(self.type, self.uuid)
 
             if (status['status'] == 'QUEUED' and self.timeout
-              and time.time() > self.timeout):
+                    and time.time() > self.timeout):
                 self.cancel()
                 raise TioExportsTimeout(self.type, self.uuid)
 
@@ -133,7 +136,7 @@ class ExportsIterator(APIResultsIterator):
                 downloaded = True
             except JSONDecodeError:
                 log_message = 'Invalid Chunk {} on export {}'.format(
-                               str(self.chunk_id), str(self.uuid))
+                    str(self.chunk_id), str(self.uuid))
                 self._log.warning(log_message)
                 self.page = list()
                 counter += 1
@@ -143,7 +146,7 @@ class ExportsIterator(APIResultsIterator):
         # data.
         if len(self.page) < 1:
             log_message = 'Empty Chunk {} on Export {}'.format(
-                           str(self.chunk_id), str(self.uuid))
+                str(self.chunk_id), str(self.uuid))
             self._log.warning(log_message)
             self._get_page()
 
@@ -175,7 +178,8 @@ class ExportsAPI(TIOEndpoint):
     '''
     This class contains all methods related to exports
     '''
-    def vulns(self, **kw):
+
+    def vulns(self, **kw) -> 'ExportsIterator':
         '''
         Initiate an vulnerability export.
 
@@ -276,8 +280,8 @@ class ExportsAPI(TIOEndpoint):
             if self._check(option, kw.get(option), int) is not None:
                 payload['filters'][option] = kw[option]
 
-        payload['num_assets'] = str(self._check('num_assets',
-            kw['num_assets'] if 'num_assets' in kw else None, int, default=500))
+        payload['num_assets'] = str(self._check(
+            'num_assets', kw['num_assets'] if 'num_assets' in kw else None, int, default=500))
 
         if self._check('include_unlicensed', kw.get('include_unlicensed'), bool):
             payload['include_unlicensed'] = kw.get('include_unlicensed')
@@ -287,11 +291,13 @@ class ExportsAPI(TIOEndpoint):
         if self._check('plugin_id', kw.get('plugin_id'), list):
             payload['filters']['plugin_id'] = [int(p) for p in kw['plugin_id']]
 
-        if 'severity' in kw and self._check('severity', kw['severity'], list,
+        if 'severity' in kw and self._check(
+                'severity', kw['severity'], list,
                 choices=['info', 'low', 'medium', 'high', 'critical'], case='lower'):
             payload['filters']['severity'] = kw['severity']
 
-        if 'state' in kw and self._check('state', kw['state'], list,
+        if 'state' in kw and self._check(
+                'state', kw['state'], list,
                 choices=['OPEN', 'REOPENED', 'FIXED'], case='upper'):
             payload['filters']['state'] = kw['state']
 
@@ -347,14 +353,15 @@ class ExportsAPI(TIOEndpoint):
                 'vulns/export', json=payload).json()['export_uuid']
             self._api._log.debug('Initiated vuln export {}'.format(uuid))
 
-        return ExportsIterator(self._api,
+        return ExportsIterator(
+            self._api,
             type='vulns',
             uuid=uuid,
             timeout=self._check('timeout', kw.get('timeout'), int),
             _wait_for_cmplete=self._check('when_done', kw.get('when_done'), bool, default=False)
         )
 
-    def assets(self, **kw):
+    def assets(self, **kw) -> 'ExportsIterator':
         '''
         Export asset data from Tenable.io.
 
@@ -443,10 +450,9 @@ class ExportsAPI(TIOEndpoint):
         '''
         uuid = kw.get('uuid')
         payload = {'filters': dict()}
-        payload['chunk_size'] = self._check('chunk_size',
-            kw['chunk_size'] if 'chunk_size' in kw else None,
+        payload['chunk_size'] = self._check(
+            'chunk_size', kw['chunk_size'] if 'chunk_size' in kw else None,
             int, default=1000)
-
 
         # Instead of a long and drawn-out series of if statements for all of
         # these integer filters, lets instead just loop through all of them
@@ -499,7 +505,7 @@ class ExportsAPI(TIOEndpoint):
             _wait_for_cmplete=self._check('when_done', kw.get('when_done'), bool, default=False)
         )
 
-    def compliance(self, **kw):
+    def compliance(self, **kw) -> 'ExportsIterator':
         '''
         Export all compliance data from Tenable.io.
 
@@ -554,7 +560,7 @@ class ExportsAPI(TIOEndpoint):
 
         '''
         # initialize payload
-        payload=dict()
+        payload = dict()
         uuid = kw.get('uuid')
 
         # set the number of compliance findings per exported chunk
