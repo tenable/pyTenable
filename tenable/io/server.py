@@ -13,10 +13,12 @@ Methods available on ``tio.server``:
     .. automethod:: properties
     .. automethod:: status
 '''
+from typing import Dict
 from .base import TIOEndpoint
 
+
 class ServerAPI(TIOEndpoint):
-    def properties(self):
+    def properties(self) -> Dict:
         '''
         Retrieves the various properties used within the Tenable.io instance.
 
@@ -32,7 +34,7 @@ class ServerAPI(TIOEndpoint):
         '''
         return self._api.get('server/properties').json()
 
-    def status(self):
+    def status(self) -> Dict:
         '''
         Retrieves the server status of the Tenable.io instance.
 
