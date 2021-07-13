@@ -15,9 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed invalid creation date in row num  #341
 - Verified the import os problem of PR 299 #351 
 - Fixed the documentation issue in exclusions #352
-- Fixed github issue 321 update_assets_ttl_days #360
-- Fixed github issue 304 tags.create() function #357
+- Fixed self log in tenable.io, base, cs, downloads, dl, ot, reports #353
 - Fixed github issue 298 io_exception_handling #354
+- Fixed github issue 304 tags.create() function #357
+- Fixed github issue 321 update_assets_ttl_days #360
 - Fixed Remediation scan with selected plugins only #362
 - Fixed Remediation and Compliance doc #365
 
