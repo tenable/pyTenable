@@ -1,12 +1,20 @@
+'''
+configuration which would be used for testing sc.
+'''
 import os
+
 import pytest
+
+from tenable.errors import APIError, NotFoundError
 from tenable.sc import TenableSC
 from tests.pytenable_log_handler import setup_logging_to_file, log_exception
-from tenable.errors import APIError, NotFoundError
 
 
 @pytest.fixture(scope='module')
 def vcr_config():
+    '''
+    test fixture for vcr_config
+    '''
     return {
         'filter_headers': [
             ('Cookie', 'TNS_SESSIONID=SESSIONID'),
@@ -14,9 +22,11 @@ def vcr_config():
         ],
     }
 
-
 @pytest.fixture(autouse=True, scope='module')
-def sc(request, vcr):
+def security_center(request, vcr):
+    '''
+    test fixture for sc(security center)
+    '''
     setup_logging_to_file()
     with vcr.use_cassette('sc_login',
                           filter_post_data_parameters=['username', 'password']):
@@ -38,9 +48,11 @@ def sc(request, vcr):
     request.addfinalizer(teardown)
     return sc
 
-
 @pytest.fixture(autouse=True, scope='module')
 def admin(request, vcr):
+    '''
+    test fixture for admin
+    '''
     with vcr.use_cassette('sc_login',
                           filter_post_data_parameters=['username', 'password']):
         sc = TenableSC(
@@ -58,9 +70,11 @@ def admin(request, vcr):
     request.addfinalizer(teardown)
     return sc
 
-
 @pytest.fixture(autouse=True, scope='module')
-def unauth(request, vcr):
+def unauth(vcr):
+    '''
+    test fixture for un_authorization
+    '''
     with vcr.use_cassette('sc_login',
                           filter_post_data_parameters=['username', 'password']):
         sc = TenableSC(
@@ -69,16 +83,18 @@ def unauth(request, vcr):
             product='pytenable-automated-testing')
     return sc
 
-
 @pytest.fixture
-def group(request, sc, vcr):
+def group(request, security_center, vcr):
+    '''
+    test fixture for un_authorization
+    '''
     with vcr.use_cassette('test_groups_create_success'):
-        group = sc.groups.create('groupname')
+        group = security_center.groups.create('groupname')
 
     def teardown():
         try:
             with vcr.use_cassette('test_groups_delete_success'):
-                sc.groups.delete(int(group['id']))
+                security_center.groups.delete(int(group['id']))
         except APIError:
             pass
 

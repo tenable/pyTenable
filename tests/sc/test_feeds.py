@@ -1,22 +1,36 @@
+'''
+test file for testing various scenarios in feeds
+'''
 import os
+
 import pytest
-from ..checker import check
+
 from tenable.errors import UnexpectedValueError
+from ..checker import check
 
 
-def test_feeds_feed_type_typeerror(sc):
+def test_feeds_feed_type_typeerror(security_center):
+    '''
+    test feeds feed type for type error
+    '''
     with pytest.raises(TypeError):
-        sc.feeds.status(1)
+        security_center.feeds.status(1)
 
 
-def test_feeds_feed_type_unexpectedvalueerror(sc):
+def test_feeds_feed_type_unexpectedvalueerror(security_center):
+    '''
+    test feeds feed type for unexpected value error
+    '''
     with pytest.raises(UnexpectedValueError):
-        sc.feeds.status('something else')
+        security_center.feeds.status('something else')
 
 
 @pytest.mark.vcr()
-def test_feeds_success(sc):
-    feed = sc.feeds.status()
+def test_feeds_success(security_center):
+    '''
+    test feeds for success
+    '''
+    feed = security_center.feeds.status()
     assert isinstance(feed, dict)
     for key in feed.keys():
         check(feed[key], 'updateTime', str)
@@ -25,27 +39,39 @@ def test_feeds_success(sc):
 
 
 @pytest.mark.vcr()
-def test_feeds_individual_success(sc):
-    feed = sc.feeds.status('active')
+def test_feeds_individual_success(security_center):
+    '''
+    test feeds individual for success
+    '''
+    feed = security_center.feeds.status('active')
     assert isinstance(feed, dict)
     check(feed, 'updateTime', str)
     check(feed, 'stale', str)
     check(feed, 'updateRunning', str)
 
 
-def test_feeds_update_feed_type_typeerror(sc):
+def test_feeds_update_feed_type_typeerror(security_center):
+    '''
+    test feeds 'update feed type' for type error
+    '''
     with pytest.raises(TypeError):
-        sc.feeds.update(1)
+        security_center.feeds.update(1)
 
 
-def test_feeds_update_feed_type_unexpectedvalueerror(sc):
+def test_feeds_update_feed_type_unexpectedvalueerror(security_center):
+    '''
+    test feeds 'update feed type' for unexpected value
+    '''
     with pytest.raises(UnexpectedValueError):
-        sc.feeds.update('somethign else')
+        security_center.feeds.update('somethign else')
 
 
 @pytest.mark.vcr()
-def test_feeds_update_success(sc):
-    sc.feeds.update('active')
+def test_feeds_update_success(security_center):
+    '''
+    test feeds 'update' for success
+    '''
+    security_center.feeds.update('active')
 
 
 @pytest.mark.vcr()
@@ -54,5 +80,8 @@ def test_feeds_update_success(sc):
     '..', 'test_files', 'sc-plugins-diff.tar.gz'))
 @pytest.mark.skip(reason='no plugin tarball to download')
 def test_feeds_process_success(admin, datafiles):
+    '''
+    test feeds 'process' for success
+    '''
     with open(os.path.join(str(datafiles), 'sc-plugins-diff.tar.gz'), 'rb') as plugfeed:
         admin.feeds.process('active', plugfeed)

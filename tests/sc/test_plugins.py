@@ -1,100 +1,157 @@
+'''
+test class for testing various scenarios in security center plugins
+functionality
+'''
 import pytest
+
+from tenable.errors import UnexpectedValueError
 from tenable.sc.plugins import PluginResultsIterator
 from ..checker import check
-from tenable.errors import UnexpectedValueError
 
 
-def test_plugins_constructor_fields_typeerror(sc):
+def test_plugins_constructor_fields_typeerror(security_center):
+    '''
+    test plugins constructor for fields type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(fields=1)
+        security_center.plugins._constructor(fields=1)
 
 
-def test_plugins_constructor_field_item_typeerror(sc):
+def test_plugins_constructor_field_item_typeerror(security_center):
+    '''
+    test plugins constructor for 'fields item' type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(fields=[1])
+        security_center.plugins._constructor(fields=[1])
 
 
-def test_plugins_constructor_filter_typeerror(sc):
+def test_plugins_constructor_filter_typeerror(security_center):
+    '''
+    test plugins constructor for filter type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(filter=1)
+        security_center.plugins._constructor(filter=1)
 
 
-def test_plugins_constructor_filter_name_typeerror(sc):
+def test_plugins_constructor_filter_name_typeerror(security_center):
+    '''
+    test plugins constructor for 'filter name' type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(filter=(1, 'eq', 'something'))
+        security_center.plugins._constructor(filter=(1, 'eq', 'something'))
 
 
-def test_plugins_constructor_filter_operator_typeerror(sc):
+def test_plugins_constructor_filter_operator_typeerror(security_center):
+    '''
+    test plugins constructor for 'filter operator' type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(filter=('name', 1, 'something'))
+        security_center.plugins._constructor(filter=('name', 1, 'something'))
 
 
-def test_plugins_constructor_filter_operator_unexpectedvalueerror(sc):
+def test_plugins_constructor_filter_operator_unexpectedvalueerror(security_center):
+    '''
+    test plugins constructor for 'filter operator' unexpected value error
+    '''
     with pytest.raises(UnexpectedValueError):
-        sc.plugins._constructor(filter=('name', 'something', 'something'))
+        security_center.plugins._constructor(filter=('name', 'something', 'something'))
 
 
-def test_plugins_constructor_filter_operator_unexpected_tuple_length(sc):
+def test_plugins_constructor_filter_operator_unexpected_tuple_length(security_center):
+    '''
+    test plugins constructor for 'filter operator tuple length'
+    unexpected value error
+    '''
     with pytest.raises(UnexpectedValueError):
-        sc.plugins._constructor(filter=('name', 'something'))
+        security_center.plugins._constructor(filter=('name', 'something'))
 
 
-def test_plugins_constructor_filter_value_typeerror(sc):
+def test_plugins_constructor_filter_value_typeerror(security_center):
+    '''
+    test plugins constructor for 'filter value' type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(filter=('name', 'eq', 1))
+        security_center.plugins._constructor(filter=('name', 'eq', 1))
 
 
-def test_plugins_constructor_sort_field_typeerror(sc):
+def test_plugins_constructor_sort_field_typeerror(security_center):
+    '''
+    test plugins constructor for 'sor field' type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(sort_field=1)
+        security_center.plugins._constructor(sort_field=1)
 
 
-def test_plugins_constructor_sort_direction_typeerror(sc):
+def test_plugins_constructor_sort_direction_typeerror(security_center):
+    '''
+    test plugins constructor for 'sort direction' type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(sort_direction=1)
+        security_center.plugins._constructor(sort_direction=1)
 
 
-def test_plugins_constructor_sort_direction_unexpectedvalueerror(sc):
+def test_plugins_constructor_sort_direction_unexpectedvalueerror(security_center):
+    '''
+    test plugins constructor for 'sor direction' unexpected value error
+    '''
     with pytest.raises(UnexpectedValueError):
-        sc.plugins._constructor(sort_direction='no')
+        security_center.plugins._constructor(sort_direction='no')
 
 
-def test_plugins_constructor_since_typeerror(sc):
+def test_plugins_constructor_since_typeerror(security_center):
+    '''
+    test plugins constructor for since type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(since='no')
+        security_center.plugins._constructor(since='no')
 
 
-def test_plugins_constructor_type_typeerror(sc):
+def test_plugins_constructor_type_typeerror(security_center):
+    '''
+    test plugins constructor for type type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(type=1)
+        security_center.plugins._constructor(type=1)
 
 
-def test_plugins_constructor_type_unexpectedvalueerror(sc):
+def test_plugins_constructor_type_unexpectedvalueerror(security_center):
+    '''
+    test plugins constructor for type unexpected value error
+    '''
     with pytest.raises(UnexpectedValueError):
-        sc.plugins._constructor(type='nope')
+        security_center.plugins._constructor(type='nope')
 
 
-def test_plugins_constructor_offset_typeerror(sc):
+def test_plugins_constructor_offset_typeerror(security_center):
+    '''
+    test plugins constructor for offset type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(offset='nope')
+        security_center.plugins._constructor(offset='nope')
 
 
-def test_plugins_constructor_limit_typeerror(sc):
+def test_plugins_constructor_limit_typeerror(security_center):
+    '''
+    test plugins constructor for limit type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins._constructor(limit='nope')
+        security_center.plugins._constructor(limit='nope')
 
 
-def test_plugins_constructor(sc):
-    resp = sc.plugins._constructor(fields=['one', 'two'],
-                                   filter=('name', 'eq', 'value'),
-                                   sort_field='name',
-                                   sort_direction='asc',
-                                   since=0,
-                                   type='all',
-                                   offset=0,
-                                   limit=200,
-                                   pages=1,
-                                   json_result=True)
+def test_plugins_constructor(security_center):
+    '''
+    test plugins constructor for success
+    '''
+    resp = security_center.plugins._constructor(fields=['one', 'two'],
+                                                filter=('name', 'eq', 'value'),
+                                                sort_field='name',
+                                                sort_direction='asc',
+                                                since=0,
+                                                type='all',
+                                                offset=0,
+                                                limit=200,
+                                                pages=1,
+                                                json_result=True)
     assert resp == {
         'fields': 'one,two',
         'filterField': 'name',
@@ -110,8 +167,11 @@ def test_plugins_constructor(sc):
 
 
 @pytest.mark.vcr()
-def test_plugins_list_success(sc):
-    plugins = sc.plugins.list(pages=2, limit=200)
+def test_plugins_list_success(security_center):
+    '''
+    test plugins list for success
+    '''
+    plugins = security_center.plugins.list(pages=2, limit=200)
     assert isinstance(plugins, PluginResultsIterator)
     for plugin in plugins:
         assert isinstance(plugin, dict)
@@ -121,8 +181,11 @@ def test_plugins_list_success(sc):
 
 
 @pytest.mark.vcr()
-def test_plugins_list_success_for_json_result(sc):
-    plugins = sc.plugins.list(pages=1, limit=200, json_result=True)
+def test_plugins_list_success_for_json_result(security_center):
+    '''
+    test plugins list success for json result
+    '''
+    plugins = security_center.plugins.list(pages=1, limit=200, json_result=True)
     assert isinstance(plugins, list)
     for plugin in plugins:
         assert isinstance(plugin, dict)
@@ -131,24 +194,36 @@ def test_plugins_list_success_for_json_result(sc):
         check(plugin, 'description', str)
 
 
-def test_plugins_details_id_typeerror(sc):
+def test_plugins_details_id_typeerror(security_center):
+    '''
+    test plugins details for id type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins.details('one')
+        security_center.plugins.details('one')
 
 
-def test_plugins_details_fields_typeerror(sc):
+def test_plugins_details_fields_typeerror(security_center):
+    '''
+    test plugins details for fields type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins.details(19506, fields=1)
+        security_center.plugins.details(19506, fields=1)
 
 
-def test_plugins_details_field_item_typeerror(sc):
+def test_plugins_details_field_item_typeerror(security_center):
+    '''
+    test plugins details for 'fields item' type error
+    '''
     with pytest.raises(TypeError):
-        sc.plugins.details(19506, fields=[1])
+        security_center.plugins.details(19506, fields=[1])
 
 
 @pytest.mark.vcr()
-def test_plugins_details_success(sc):
-    plug_in = sc.plugins.details(19506)
+def test_plugins_details_success(security_center):
+    '''
+    test plugins details for success
+    '''
+    plug_in = security_center.plugins.details(19506)
     assert isinstance(plug_in, dict)
     check(plug_in, 'baseScore', str, allow_none=True)
     check(plug_in, 'checkType', str)
@@ -197,28 +272,37 @@ def test_plugins_details_success(sc):
 
 
 @pytest.mark.vcr()
-def test_plugins_family_list_success(sc):
-    f = sc.plugins.family_list()
-    assert isinstance(f, list)
-    for i in f:
-        check(i, 'id', str)
-        check(i, 'name', str)
+def test_plugins_family_list_success(security_center):
+    '''
+    test plugins family list for success
+    '''
+    families = security_center.plugins.family_list()
+    assert isinstance(families, list)
+    for family in families:
+        check(family, 'id', str)
+        check(family, 'name', str)
 
 
 @pytest.mark.vcr()
-def test_plugins_family_details_success(sc):
-    f = sc.plugins.family_details(10)
-    assert isinstance(f, dict)
-    check(f, 'id', str)
-    check(f, 'name', str)
-    check(f, 'type', str)
-    check(f, 'plugins', list)
-    check(f, 'count', int)
+def test_plugins_family_details_success(security_center):
+    '''
+    test plugins family details for success
+    '''
+    family_details = security_center.plugins.family_details(10)
+    assert isinstance(family_details, dict)
+    check(family_details, 'id', str)
+    check(family_details, 'name', str)
+    check(family_details, 'type', str)
+    check(family_details, 'plugins', list)
+    check(family_details, 'count', int)
 
 
 @pytest.mark.vcr()
-def test_plugins_family_details_success_for_fields(sc):
-    family_details = sc.plugins.family_details(10, fields=['id', 'name', 'type'])
+def test_plugins_family_details_success_for_fields(security_center):
+    '''
+    test plugins family details success for fields
+    '''
+    family_details = security_center.plugins.family_details(10, fields=['id', 'name', 'type'])
     assert isinstance(family_details, dict)
     check(family_details, 'id', str)
     check(family_details, 'name', str)
@@ -226,30 +310,26 @@ def test_plugins_family_details_success_for_fields(sc):
 
 
 @pytest.mark.vcr()
-def test_plugins_family_plugins_success(sc):
-    plugs = sc.plugins.family_plugins(10, limit=100, pages=2)
+def test_plugins_family_plugins_success(security_center):
+    '''
+    test plugins family plugins success
+    '''
+    plugs = security_center.plugins.family_plugins(10, limit=100, pages=2)
     assert isinstance(plugs, PluginResultsIterator)
-    for p in plugs:
-        check(p, 'id', str)
-        check(p, 'name', str)
-        check(p, 'description', str)
+    for plugin in plugs:
+        check(plugin, 'id', str)
+        check(plugin, 'name', str)
+        check(plugin, 'description', str)
 
 
 @pytest.mark.vcr()
-def test_plugins_family_plugins_success_for_json_result(sc):
-    plugs = sc.plugins.family_plugins(10, limit=100, pages=1, json_result=True)
+def test_plugins_family_plugins_success_for_json_result(security_center):
+    '''
+    test plugins family plugins success for json result
+    '''
+    plugs = security_center.plugins.family_plugins(10, limit=100, pages=1, json_result=True)
     assert isinstance(plugs, list)
-    for p in plugs:
-        check(p, 'id', str)
-        check(p, 'name', str)
-        check(p, 'description', str)
-
-
-@pytest.mark.vcr()
-def test_plugins_family_plugins_success_for_json_result(sc):
-    plugs = sc.plugins.family_plugins(10, limit=100, pages=1, json_result=True)
-    assert isinstance(plugs, list)
-    for p in plugs:
-        check(p, 'id', str)
-        check(p, 'name', str)
-        check(p, 'description', str)
+    for plugin in plugs:
+        check(plugin, 'id', str)
+        check(plugin, 'name', str)
+        check(plugin, 'description', str)
