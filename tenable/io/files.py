@@ -12,11 +12,18 @@ Methods available on ``tio.files``:
 
     .. automethod:: upload
 '''
+from typing import Any, Optional
+from typing.io import IO
 from .base import TIOEndpoint
 import uuid
 
+
 class FileAPI(TIOEndpoint):
-    def upload(self, fobj, encrypted=False):
+    def upload(
+            self,
+            fobj: IO[Any],
+            encrypted: Optional[bool] = False
+    ) -> str:
         '''
         Uploads a file into Tenable.io.
 
