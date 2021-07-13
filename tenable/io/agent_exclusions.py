@@ -16,15 +16,27 @@ Methods available on ``tio.agent_exclusions``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import Optional, List, Dict
 from restfly.utils import dict_merge, dict_clean
 from .base import TIOEndpoint
 from datetime import date, datetime, timedelta
 
+
 class AgentExclusionsAPI(TIOEndpoint):
-    def create(self, name, scanner_id=1, start_time=None, end_time=None,
-               timezone=None, description=None, frequency=None,
-               interval=None, weekdays=None, day_of_month=None,
-               enabled=True):
+    def create(
+            self,
+            name: str,
+            scanner_id: Optional[int] = 1,
+            start_time: Optional[datetime] = None,
+            end_time: Optional[datetime] = None,
+            timezone: Optional[str] = None,
+            description: Optional[str] = None,
+            frequency: Optional[str] = None,
+            interval: Optional[int] = None,
+            weekdays: Optional[List[str]] = None,
+            day_of_month: Optional[int] = None,
+            enabled: Optional[bool] = True
+    ) -> Dict:
         '''
         Creates a new agent exclusion.
 
@@ -113,7 +125,8 @@ class AgentExclusionsAPI(TIOEndpoint):
         '''
         # Starting with the innermost part of the payload, lets construct the
         # rrules dictionary.
-        frequency = self._check('frequency', frequency, str,
+        frequency = self._check(
+            'frequency', frequency, str,
             choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
             default='ONETIME',
             case='upper')
@@ -139,8 +152,9 @@ class AgentExclusionsAPI(TIOEndpoint):
         # if the frequency is monthly, then we will need to specify the day of
         # the month that the rule will run on.
         if frequency == 'MONTHLY':
-            rrules['bymonthday'] = self._check('day_of_month', day_of_month, int,
-                choices=list(range(1,32)),
+            rrules['bymonthday'] = self._check(
+                'day_of_month', day_of_month, int,
+                choices=list(range(1, 32)),
                 default=datetime.today().day)
 
         # Next we need to construct the rest of the payload
@@ -150,12 +164,12 @@ class AgentExclusionsAPI(TIOEndpoint):
             'schedule': {
                 'enabled': self._check('enabled', enabled, bool, default=True),
                 'starttime': self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
-                    if enabled is True else datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
+                if enabled is True else datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
                 'endtime': self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
-                    if enabled is True else (datetime.utcnow() + timedelta(hours=1)).strftime('%Y-%m-%d %H:%M:%S'),
+                if enabled is True else (datetime.utcnow() + timedelta(hours=1)).strftime('%Y-%m-%d %H:%M:%S'),
                 'timezone': self._check('timezone', timezone, str,
-                    choices=self._api._tz,
-                    default='Etc/UTC'),
+                                        choices=self._api._tz,
+                                        default='Etc/UTC'),
                 'rrules': rrules
             }
         }
@@ -168,7 +182,11 @@ class AgentExclusionsAPI(TIOEndpoint):
                 self._check('scanner_id', scanner_id, int)
             ), json=payload).json()
 
-    def delete(self, exclusion_id, scanner_id=1):
+    def delete(
+            self,
+            exclusion_id: int,
+            scanner_id: Optional[int] = 1
+    ) -> None:
         '''
         Delete an agent exclusion.
 
@@ -189,7 +207,11 @@ class AgentExclusionsAPI(TIOEndpoint):
             self._check('exclusion_id', exclusion_id, int)
         ))
 
-    def details(self, exclusion_id, scanner_id=1):
+    def details(
+            self,
+            exclusion_id: int,
+            scanner_id: Optional[int] = 1
+    ) -> Dict:
         '''
         Retrieve the details for a specific agent exclusion.
 
@@ -211,9 +233,21 @@ class AgentExclusionsAPI(TIOEndpoint):
                 self._check('exclusion_id', exclusion_id, int)
             )).json()
 
-    def edit(self, exclusion_id, scanner_id=1, name=None, start_time=None,
-            end_time=None, timezone=None, description=None, frequency=None,
-            interval=None, weekdays=None, day_of_month=None, enabled=None):
+    def edit(
+            self,
+            exclusion_id: int,
+            scanner_id: Optional[int] = 1,
+            name: Optional[str] = None,
+            start_time: Optional[datetime] = None,
+            end_time: Optional[datetime] = None,
+            timezone: Optional[str] = None,
+            description: Optional[str] = None,
+            frequency: Optional[str] = None,
+            interval: Optional[int] = None,
+            weekdays: Optional[List[str]] = None,
+            day_of_month: Optional[int] = None,
+            enabled: Optional[bool] = None
+    ) -> Dict:
         '''
         Edit an existing agent exclusion.
 
@@ -331,9 +365,12 @@ class AgentExclusionsAPI(TIOEndpoint):
             'scanners/{}/agents/exclusions/{}'.format(
                 self._check('scanner_id', scanner_id, int),
                 self._check('exclusion_id', exclusion_id, int)
-        ), json=payload).json()
+            ), json=payload).json()
 
-    def list(self, scanner_id=1):
+    def list(
+            self,
+            scanner_id: Optional[int] = 1
+    ) -> List[Dict]:
         '''
         Lists all of the currently configured agent exclusions.
 
