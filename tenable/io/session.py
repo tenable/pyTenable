@@ -19,11 +19,17 @@ Methods available on ``tio.session``:
     .. automethod:: verify_two_factor
     .. automethod:: restore
 '''
+from typing import Dict, Optional
 from .base import TIOEndpoint
 from tenable.errors import ImpersonationError, UnknownError
 
+
 class SessionAPI(TIOEndpoint):
-    def edit(self, name, email):
+    def edit(
+            self,
+            name: str,
+            email: str
+    ) -> Dict:
         '''
         Modify the currently logged-in user.
 
@@ -43,9 +49,9 @@ class SessionAPI(TIOEndpoint):
         return self._api.put('session', json={
             'name': self._check('name', name, str),
             'email': self._check('email', email, str)
-            }).json()
+        }).json()
 
-    def details(self):
+    def details(self) -> Dict:
         '''
         Retrieve the current users resource record.
 
@@ -61,7 +67,11 @@ class SessionAPI(TIOEndpoint):
         '''
         return self._api.get('session').json()
 
-    def change_password(self, old_password, new_password):
+    def change_password(
+            self,
+            old_password: str,
+            new_password: str
+    ) -> None:
         '''
         Change the password of the current user.
 
@@ -83,7 +93,7 @@ class SessionAPI(TIOEndpoint):
             'current_password': self._check('old_password', old_password, str)
         })
 
-    def gen_api_keys(self):
+    def gen_api_keys(self) -> Dict:
         '''
         Generate new API keys for the current user.
 
@@ -98,7 +108,12 @@ class SessionAPI(TIOEndpoint):
         '''
         return self._api.put('session/keys').json()
 
-    def two_factor(self, email, sms, phone=None):
+    def two_factor(
+            self,
+            email: bool,
+            sms: bool,
+            phone: Optional[str] = None
+    ) -> None:
         '''
         Configure two-factor authorization.
 
@@ -134,7 +149,7 @@ class SessionAPI(TIOEndpoint):
             payload['sms_phone'] = self._check('phone', phone, str)
         self._api.put('session/two-factor', json=payload)
 
-    def enable_two_factor(self, phone):
+    def enable_two_factor(self, phone: str) -> None:
         '''
         Initiate the phone-based two-factor authorization verification process.
 
@@ -154,7 +169,7 @@ class SessionAPI(TIOEndpoint):
             'sms_phone': self._check('phone', phone, str)
         })
 
-    def verify_two_factor(self, code):
+    def verify_two_factor(self, code: str) -> None:
         '''
         Send the verification code for two-factor authorization.
 
@@ -174,7 +189,7 @@ class SessionAPI(TIOEndpoint):
             'verification_code': self._check('code', code, str)
         })
 
-    def restore(self):
+    def restore(self) -> None:
         '''
         Restore the session to the logged-in user.  This will remove any user
         impersonation setting that have been set.
