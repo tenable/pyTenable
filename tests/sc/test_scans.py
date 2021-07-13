@@ -1,7 +1,7 @@
 import pytest
-
-from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check
+from tenable.errors import APIError, UnexpectedValueError
+from tests.pytenable_log_handler import log_exception
 
 
 def test_schedule_constructor_type_typeerror(sc):
@@ -270,8 +270,8 @@ def scan(request, sc, vcr):
     def teardown():
         try:
             sc.scans.delete(int(scan['id']))
-        except APIError:
-            pass
+        except APIError as error:
+            log_exception(error)
 
     request.addfinalizer(teardown)
     return scan

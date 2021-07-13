@@ -1,4 +1,7 @@
-import pytest, responses
+'''
+test assets
+'''
+import responses
 
 @responses.activate
 def test_list(ot):
@@ -100,6 +103,6 @@ def test_connections(ot):
     for item in resp:
         assert item.asset == '026fd8a1-2d50-4b2b-9cd5-285489d7fda4'
         assert item.networkInterface == 'd7f06b04-5733-44ac-9e84-096f6fdb181b'
-        assert item.local == True
-        assert item.direct == True
+        assert item.local is True
+        assert item.direct is True
         assert item.connector.parts[0].connectionType == 'Direct'

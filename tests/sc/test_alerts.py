@@ -1,7 +1,7 @@
 import pytest
-
-from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check
+from tenable.errors import APIError, UnexpectedValueError
+from tests.pytenable_log_handler import log_exception
 
 
 @pytest.fixture
@@ -20,8 +20,8 @@ def alert(request, vcr, sc):
     def teardown():
         try:
             sc.alerts.delete(int(alert['id']))
-        except APIError:
-            pass
+        except APIError as error:
+            log_exception(error)
 
     request.addfinalizer(teardown)
     return alert
