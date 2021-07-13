@@ -20,12 +20,18 @@ Methods available on ``io.editor``:
     .. automethod:: template_details
     .. automethod:: template_list
 '''
+from typing import Dict, List, Union, Optional, Any, AnyStr
+from typing.io import IO
 from .base import TIOEndpoint
 from tenable.utils import dict_merge, policy_settings
 from io import BytesIO
 
+
 class EditorAPI(TIOEndpoint):
-    def parse_creds(self, data):
+    def parse_creds(
+            self,
+            data: List[Dict]
+    ) -> Dict:
         '''
         Walks through the credential data list and returns the configured
         settings for a given scan policy/scan
@@ -54,7 +60,10 @@ class EditorAPI(TIOEndpoint):
                         resp[dtype['name']][item['name']].append(settings)
         return resp
 
-    def parse_audits(self, data):
+    def parse_audits(
+            self,
+            data: List[Dict]
+    ) -> Dict[str, Union[list, dict]]:
         '''
         Walks through the compliance data list and returns the configured
         settings for a given policy/scan
@@ -93,7 +102,13 @@ class EditorAPI(TIOEndpoint):
                         })
         return resp
 
-    def parse_plugins(self, etype, families, id, callfmt='editor/{etype}/{id}/families/{fam}'):
+    def parse_plugins(
+            self,
+            etype: str,
+            families: Dict,
+            id: int,
+            callfmt: Optional[str] = 'editor/{etype}/{id}/families/{fam}'
+    ) -> Dict:
         '''
         Walks through the plugin settings and will return the the configured
         settings for a given scan/policy
@@ -124,7 +139,13 @@ class EditorAPI(TIOEndpoint):
                 }
         return resp
 
-    def audits(self, etype, object_id, file_id, fobj=None):
+    def audits(
+            self,
+            etype: str,
+            object_id: int,
+            file_id: int,
+            fobj: Optional[IO[AnyStr]] = None
+    ) -> IO[AnyStr]:
         '''
         Retrieves an audit file from Tenable.io
 
@@ -169,7 +190,11 @@ class EditorAPI(TIOEndpoint):
         # lastly return the file object.
         return fobj
 
-    def template_details(self, etype, uuid):
+    def template_details(
+            self,
+            etype: str,
+            uuid: str
+    ) -> Dict:
         '''
         Retrieves details about a specific template.
 
@@ -192,7 +217,11 @@ class EditorAPI(TIOEndpoint):
                 self._check('uuid', uuid, str)
             )).json()
 
-    def obj_details(self, etype, id):
+    def obj_details(
+            self,
+            etype: str,
+            id: int
+    ) -> Dict:
         '''
         Retrieves details about a specific object.
 
@@ -213,7 +242,10 @@ class EditorAPI(TIOEndpoint):
             'editor/{}/{}'.format(
                 self._check('etype', etype, str, choices=['scan', 'policy', 'scan/policy']), id)).json()
 
-    def template_list(self, etype):
+    def template_list(
+            self,
+            etype: str
+    ) -> List[Dict]:
         '''
         List template objects.
 
@@ -233,7 +265,12 @@ class EditorAPI(TIOEndpoint):
                 self._check('etype', etype, str, choices=['scan', 'policy'])
             )).json()['templates']
 
-    def plugin_description(self, policy_id, family_id, plugin_id):
+    def plugin_description(
+            self,
+            policy_id: int,
+            family_id: int,
+            plugin_id: int
+    ) -> Dict:
         '''
         Retrieves the plugin description for the specified plugin.
 
@@ -258,7 +295,11 @@ class EditorAPI(TIOEndpoint):
                 self._check('plugin_id', plugin_id, int)
             )).json()['plugindescription']
 
-    def details(self, etype, id):
+    def details(
+            self,
+            etype: str,
+            id: int
+    ) -> Dict:
         '''
         Constructs a valid scan document from the specified item.
 
@@ -347,7 +388,7 @@ class EditorAPI(TIOEndpoint):
         if etype == 'scan/policy':
             for key in list(obj['settings'].keys()):
                 if obj['settings'][key] == None:
-                    del(obj['settings'][key])
+                    del (obj['settings'][key])
 
         # return the scan document to the caller.
         return obj
