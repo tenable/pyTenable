@@ -19,12 +19,15 @@ Methods available on ``tio.policies``:
     .. automethod:: policy_export
     .. automethod:: list
 '''
+from typing import Dict, AnyStr, Optional, List
+from typing.io import IO
 from .base import TIOEndpoint
 from tenable.utils import policy_settings, dict_merge
 from io import BytesIO
 
+
 class PoliciesAPI(TIOEndpoint):
-    def templates(self):
+    def templates(self) -> Dict:
         '''
         returns a dictionary of the scan policy templates using the
         format of dict['name'] = 'UUID'.  This is useful for being able to
@@ -36,7 +39,7 @@ class PoliciesAPI(TIOEndpoint):
             policies[item['name']] = item['uuid']
         return policies
 
-    def template_details(self, name):
+    def template_details(self, name: str) -> Dict:
         '''
         Calls the editor API and parses the policy template config to return a
         document that closely matches what the API expects to be POSTed or PUTed
@@ -120,7 +123,11 @@ class PoliciesAPI(TIOEndpoint):
         # return the scan document to the caller.
         return scan
 
-    def configure(self, id, policy):
+    def configure(
+            self,
+            id: int,
+            policy: Dict
+    ) -> None:
         '''
         Configures an existing policy.
 
@@ -143,9 +150,9 @@ class PoliciesAPI(TIOEndpoint):
             >>> tio.policies.configure(policy)
         '''
         self._api.put('policies/{}'.format(self._check('id', id, int)),
-            json=self._check('policy', policy, dict))
+                      json=self._check('policy', policy, dict))
 
-    def copy(self, id):
+    def copy(self, id: int) -> Dict:
         '''
         Duplicates a scan policy and returns the copy.
 
@@ -164,7 +171,7 @@ class PoliciesAPI(TIOEndpoint):
         return self._api.post('policies/{}/copy'.format(
             self._check('id', id, int))).json()
 
-    def create(self, policy):
+    def create(self, policy: Dict) -> Dict:
         '''
         Creates a new scan policy based on the policy dictionary passed.
 
@@ -185,10 +192,10 @@ class PoliciesAPI(TIOEndpoint):
             >>> policy['settings']['name'] = 'New Scan Policy'
             >>> info = tio.policies.create(policy)
         '''
-        return self._api.post('policies',
-            json=self._check('policy', policy, dict)).json()
+        return self._api.post(
+            'policies', json=self._check('policy', policy, dict)).json()
 
-    def delete(self, id):
+    def delete(self, id: int) -> None:
         '''
         Delete a custom policy.
 
@@ -206,7 +213,7 @@ class PoliciesAPI(TIOEndpoint):
         '''
         self._api.delete('policies/{}'.format(self._check('id', id, int)))
 
-    def details(self, id):
+    def details(self, id: int) -> Dict:
         '''
         Retrieve the details for a specific policy.
 
@@ -225,7 +232,7 @@ class PoliciesAPI(TIOEndpoint):
         return self._api.get('policies/{}'.format(
             self._check('id', id, int))).json()
 
-    def policy_import(self, fobj):
+    def policy_import(self, fobj: IO[AnyStr]):
         '''
         Imports a policy into Tenable.io.
 
@@ -246,7 +253,11 @@ class PoliciesAPI(TIOEndpoint):
         fid = self._api.files.upload(fobj)
         return self._api.post('policies/import', json={'file': fid}).json()
 
-    def policy_export(self, id, fobj=None):
+    def policy_export(
+            self,
+            id: int,
+            fobj: Optional[IO[AnyStr]] = None
+    ) -> IO[AnyStr]:
         '''
         Exports a specified policy from Tenable.io.
 
@@ -287,7 +298,7 @@ class PoliciesAPI(TIOEndpoint):
         # return the FileObject.
         return fobj
 
-    def list(self):
+    def list(self) -> List[Dict]:
         '''
         List the available custom policies.
 
