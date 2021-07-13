@@ -29,13 +29,21 @@ Methods available on ``tio.workbenches``:
     .. automethod:: vuln_info
     .. automethod:: vuln_outputs
 '''
+from typing import Dict, List, Tuple, Union, Optional, AnyStr
+from typing.io import IO
 from .base import TIOEndpoint
 from tenable.errors import UnexpectedValueError
 from io import BytesIO
 import time
 
+
 class WorkbenchesAPI(TIOEndpoint):
-    def _workbench_query(self, filters, kw, filterdefs):
+    def _workbench_query(
+            self,
+            filters: Union[List[Tuple], Tuple[Tuple]],
+            kw: Dict,
+            filterdefs: Dict
+    ) -> Dict:
         '''
         '''
         # Initiate the query dictionary with the filters parser.
@@ -56,8 +64,11 @@ class WorkbenchesAPI(TIOEndpoint):
         # Return the query to the caller
         return query
 
-
-    def assets(self, *filters, **kw):
+    def assets(
+            self,
+            *filters: Tuple,
+            **kw
+    ) -> List[Dict]:
         '''
         The assets workbench allows for filtering and interactively querying the
         asset data stored within Tenable.io.  There are a wide variety of
@@ -102,8 +113,8 @@ class WorkbenchesAPI(TIOEndpoint):
             ...     pprint(asset)
         '''
         # Call the query builder to handle construction
-        query = self._workbench_query(filters, kw,
-            self._api.filters.workbench_asset_filters())
+        query = self._workbench_query(
+            filters, kw, self._api.filters.workbench_asset_filters())
 
         # If all_fields is set to true or is unspecified, then we will set the
         # all_fields parameter to "full".
@@ -137,7 +148,11 @@ class WorkbenchesAPI(TIOEndpoint):
         return self._api.get('workbenches/assets/{}/activity'.format(
             self._check('uuid', uuid, 'uuid'))).json()['activity']
 
-    def asset_info(self, uuid, all_fields=True):
+    def asset_info(
+            self,
+            uuid: str,
+            all_fields: Optional[bool] = True
+    ) -> Dict:
         '''
         Query for the information for a specific asset within the asset
         workbench.
@@ -166,12 +181,17 @@ class WorkbenchesAPI(TIOEndpoint):
             # query dictionary.  The documentation states that the existence of
             # the parameter is what triggers the expanded dataset, which we
             # are returning by default.
-            del(query['all_fields'])
+            del (query['all_fields'])
 
         return self._api.get('workbenches/assets/{}/info'.format(
             self._check('uuid', uuid, 'uuid')), params=query).json()['info']
 
-    def asset_vulns(self, uuid, *filters, **kw):
+    def asset_vulns(
+            self,
+            uuid: str,
+            *filters: Tuple,
+            **kw
+    ) -> List[Dict]:
         '''
         Return the vulnerabilities for a specific asset.
 
@@ -204,14 +224,20 @@ class WorkbenchesAPI(TIOEndpoint):
             ...     pprint(vuln)
         '''
         # Call the query builder to handle construction
-        query = self._workbench_query(filters, kw,
-            self._api.filters.workbench_vuln_filters())
+        query = self._workbench_query(
+            filters, kw, self._api.filters.workbench_vuln_filters())
 
         return self._api.get(
             'workbenches/assets/{}/vulnerabilities'.format(
                 self._check('uuid', uuid, 'uuid')), params=query).json()['vulnerabilities']
 
-    def asset_vuln_info(self, uuid, plugin_id, *filters, **kw):
+    def asset_vuln_info(
+            self,
+            uuid: str,
+            plugin_id: int,
+            *filters: Tuple,
+            **kw
+    ) -> List[Dict]:
         '''
         Retrieves the vulnerability information for a specific plugin on a
         specific asset within Tenable.io.
@@ -247,15 +273,21 @@ class WorkbenchesAPI(TIOEndpoint):
             >>> pprint(vuln)
         '''
         # Call the query builder to handle construction
-        query = self._workbench_query(filters, kw,
-            self._api.filters.workbench_vuln_filters())
+        query = self._workbench_query(
+            filters, kw, self._api.filters.workbench_vuln_filters())
 
         return self._api.get(
             'workbenches/assets/{}/vulnerabilities/{}/info'.format(
                 self._check('uuid', uuid, 'uuid'),
                 self._check('plugin_id', plugin_id, int)), params=query).json()['info']
 
-    def asset_vuln_output(self, uuid, plugin_id, *filters, **kw):
+    def asset_vuln_output(
+            self,
+            uuid: str,
+            plugin_id: int,
+            *filters: Tuple,
+            **kw
+    ) -> List[Dict]:
         '''
         Retrieves the vulnerability output for a specific vulnerability on a
         specific asset within Tenable.io.
@@ -291,15 +323,15 @@ class WorkbenchesAPI(TIOEndpoint):
             >>> pprint(output)
         '''
         # Call the query builder to handle construction
-        query = self._workbench_query(filters, kw,
-            self._api.filters.workbench_vuln_filters())
+        query = self._workbench_query(
+            filters, kw, self._api.filters.workbench_vuln_filters())
 
         return self._api.get(
             'workbenches/assets/{}/vulnerabilities/{}/outputs'.format(
                 self._check('uuid', uuid, 'uuid'),
                 self._check('plugin_id', plugin_id, int)), params=query).json()['outputs']
 
-    def asset_delete(self, asset_uuid):
+    def asset_delete(self, asset_uuid: str) -> None:
         '''
         Deletes the asset.
 
@@ -318,7 +350,11 @@ class WorkbenchesAPI(TIOEndpoint):
         self._api.delete('workbenches/assets/{}'.format(
             self._check('asset_uuid', asset_uuid, 'uuid')))
 
-    def vuln_assets(self, *filters, **kw):
+    def vuln_assets(
+            self,
+            *filters: Tuple,
+            **kw
+    ) -> List[Dict]:
         '''
         Retrieve assets based on the vulnerability data.
 
@@ -348,13 +384,17 @@ class WorkbenchesAPI(TIOEndpoint):
             ...     pprint(asset)
         '''
         # Call the query builder to handle construction
-        query = self._workbench_query(filters, kw,
-            self._api.filters.workbench_vuln_filters())
+        query = self._workbench_query(
+            filters, kw, self._api.filters.workbench_vuln_filters())
 
         return self._api.get(
             'workbenches/assets/vulnerabilities', params=query).json()['assets']
 
-    def export(self, *filters, **kw):
+    def export(
+            self,
+            *filters: Tuple,
+            **kw
+    ) -> IO[AnyStr]:
         '''
         Export data from the vulnerability workbench.  These exports can be in
         a number of different formats, however the defaults are set to export
@@ -407,8 +447,8 @@ class WorkbenchesAPI(TIOEndpoint):
         '''
 
         # initiate the payload and parameters dictionaries.
-        params = self._parse_filters(filters,
-            self._api.filters.workbench_vuln_filters())
+        params = self._parse_filters(
+            filters, self._api.filters.workbench_vuln_filters())
         params['report'] = 'vulnerabilities'
         params['chapter'] = 'vuln_by_asset'
         params['format'] = 'nessus'
@@ -422,12 +462,11 @@ class WorkbenchesAPI(TIOEndpoint):
                 'asset_uuid', kw['asset_uuid'], 'uuid')
 
         if 'format' in kw:
-            params['format'] = self._check('format', kw['format'], str,
+            params['format'] = self._check(
+                'format', kw['format'], str,
                 default='nessus',
-                choices=[
-                'nessus', 'csv', 'html', 'pdf'
-            ])
-            if kw['format'] not in ['nessus',]:
+                choices=['nessus', 'csv', 'html', 'pdf'])
+            if kw['format'] not in ['nessus', ]:
                 # The chapters are sent to us in a list, and we need to collapse
                 # that down to a comma-delimited string.  Note that if the nessus
                 # format is specified, we must use the vuln_by_asset report, so
@@ -435,21 +474,21 @@ class WorkbenchesAPI(TIOEndpoint):
                 if 'chapters' not in kw:
                     raise UnexpectedValueError('no chapters were specified')
                 else:
-                    params['chapter'] = ';'.join(
-                        self._check('chapters', kw['chapters'], list,
-                            default='vuln_by_asset',
-                            choices=[
-                                'diff',
-                                'exec_summary',
-                                'vuln_by_host',
-                                'vuln_by_plugin',
-                                'vuln_hosts_summary',
-                                'vuln_by_asset',
+                    params['chapter'] = ';'.join(self._check(
+                        'chapters', kw['chapters'], list,
+                        default='vuln_by_asset',
+                        choices=[
+                            'diff',
+                            'exec_summary',
+                            'vuln_by_host',
+                            'vuln_by_plugin',
+                            'vuln_hosts_summary',
+                            'vuln_by_asset',
                         ]))
 
         if 'filter_type' in kw:
             params['filter.search_type'] = self._check(
-                    'filter_type', kw['filter_type'], str, choices=['and', 'or'])
+                'filter_type', kw['filter_type'], str, choices=['and', 'or'])
 
         # Now we need to set the FileObject.  If one was passed to us, then lets
         # just use that, otherwise we will need to instantiate a BytesIO object
@@ -461,8 +500,8 @@ class WorkbenchesAPI(TIOEndpoint):
 
         # The first thing that we need to do is make the request and get the
         # File id for the job.
-        fid = self._api.get('workbenches/export',
-            params=params).json()['file']
+        fid = self._api.get(
+            'workbenches/export', params=params).json()['file']
         self._api._log.debug('Initiated workbench export {}'.format(fid))
 
         # Next we will wait for the state of the export request to become
@@ -485,7 +524,11 @@ class WorkbenchesAPI(TIOEndpoint):
         resp.close()
         return fobj
 
-    def vulns(self, *filters, **kw):
+    def vulns(
+            self,
+            *filters: Tuple,
+            **kw
+    ) -> Dict:
         '''
         The vulnerability workbench allows for filtering and interactively
         querying the vulnerability data stored within Tenable.io.  There are a
@@ -524,8 +567,8 @@ class WorkbenchesAPI(TIOEndpoint):
                 Vulnerability info resource
         '''
         # Call the query builder to handle construction
-        query = self._workbench_query(filters, kw,
-            self._api.filters.workbench_vuln_filters())
+        query = self._workbench_query(
+            filters, kw, self._api.filters.workbench_vuln_filters())
 
         if 'authenticated' in kw and self._check('authenticated', kw['authenticated'], bool):
             query['authenticated'] = True
@@ -533,14 +576,20 @@ class WorkbenchesAPI(TIOEndpoint):
             query['exploitable'] = True
         if 'resolvable' in kw and self._check('resolvable', kw['resolvable'], bool):
             query['resolvable'] = True
-        if 'severity' in kw and self._check('severity', kw['severity'], str,
+        if 'severity' in kw and self._check(
+                'severity', kw['severity'], str,
                 choices=['critical', 'high', 'medium', 'low']):
             query['severity'] = kw['severity']
 
         return self._api.get(
             'workbenches/vulnerabilities', params=query).json()['vulnerabilities']
 
-    def vuln_info(self, plugin_id, *filters, **kw):
+    def vuln_info(
+            self,
+            plugin_id: int,
+            *filters: Tuple,
+            **kw
+    ) -> Dict:
         '''
         Retrieve the vulnerability information for a specific vulnerability.
 
@@ -570,14 +619,20 @@ class WorkbenchesAPI(TIOEndpoint):
             >>> pprint(info)
         '''
         # Call the query builder to handle construction
-        query = self._workbench_query(filters, kw,
+        query = self._workbench_query(
+            filters, kw,
             self._api.filters.workbench_vuln_filters())
 
         return self._api.get(
             'workbenches/vulnerabilities/{}/info'.format(
                 self._check('plugin_id', plugin_id, int)), params=query).json()['info']
 
-    def vuln_outputs(self, plugin_id, *filters, **kw):
+    def vuln_outputs(
+            self,
+            plugin_id: int,
+            *filters: Tuple,
+            **kw
+    ) -> Dict:
         '''
         Retrieve the vulnerability output for a given vulnerability.
 
@@ -607,8 +662,8 @@ class WorkbenchesAPI(TIOEndpoint):
             >>> pprint(outputs)
         '''
         # Call the query builder to handle construction
-        query = self._workbench_query(filters, kw,
-            self._api.filters.workbench_vuln_filters())
+        query = self._workbench_query(
+            filters, kw, self._api.filters.workbench_vuln_filters())
 
         return self._api.get(
             'workbenches/vulnerabilities/{}/outputs'.format(
