@@ -15,7 +15,8 @@ Methods available on ``tio.plugins``:
     .. automethod:: list
     .. automethod:: plugin_details
 '''
-from datetime import date
+from datetime import date, datetime
+from typing import Dict, List, Optional
 from tenable.io.base import TIOEndpoint, TIOIterator
 
 
@@ -44,7 +45,7 @@ class PluginIterator(TIOIterator):
     _maptable = None
     populate_maptable = False
 
-    def _populate_family_cache(self):
+    def _populate_family_cache(self) -> None:
         '''
         Generates the maptable to use to graft on the plugin family information
         to the plugins.  Effectively what we doing is generating a dictionary of
@@ -70,7 +71,7 @@ class PluginIterator(TIOIterator):
             for plugin in self._api.plugins.family_details(fam_id)['plugins']:
                 self._maptable['plugins'][plugin['id']] = fam_id
 
-    def next(self):
+    def next(self) -> Dict:
         item = super(PluginIterator, self).next()
 
         # If the populate_maptable flag is set, then we will build the mappings.
@@ -92,12 +93,12 @@ class PluginIterator(TIOIterator):
         return item
 
 
-
 class PluginsAPI(TIOEndpoint):
     '''
     This will contain all methods related to plugins
     '''
-    def families(self):
+
+    def families(self) -> List[Dict]:
         '''
         List the available plugin families.
 
@@ -113,7 +114,7 @@ class PluginsAPI(TIOEndpoint):
         '''
         return self._api.get('plugins/families').json()['families']
 
-    def family_details(self, family_id):
+    def family_details(self, family_id: int) -> Dict:
         '''
         Retrieve the details for a specific plugin family.
 
@@ -134,7 +135,7 @@ class PluginsAPI(TIOEndpoint):
             self._check('family_id', family_id, int)
         )).json()
 
-    def plugin_details(self, plugin_id):
+    def plugin_details(self, plugin_id: int) -> Dict:
         '''
         Retrieve the details for a specific plugin.
 
@@ -155,7 +156,13 @@ class PluginsAPI(TIOEndpoint):
         return self._api.get('plugins/plugin/{}'.format(
             self._check('plugin_id', plugin_id, int))).json()
 
-    def list(self, page=None, size=None, last_updated=None, num_pages=None):
+    def list(
+            self,
+            page: Optional[int] = None,
+            size: Optional[int] = None,
+            last_updated: Optional[datetime] = None,
+            num_pages: Optional[int] = None
+    ) -> 'PluginIterator':
         '''
         Get the listing of plugin details from Tenable.io.
 
@@ -196,7 +203,8 @@ class PluginsAPI(TIOEndpoint):
             >>> for plugin in plugins:
             ...     pprint(plugin)
         '''
-        return PluginIterator(self._api,
+        return PluginIterator(
+            self._api,
             _api_version=2,
             _size=self._check('size', size, int, default=1000),
             _page_num=self._check('page', page, int, default=1),
