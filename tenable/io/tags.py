@@ -702,7 +702,7 @@ class TagsAPI(TIOEndpoint):
             filters, self._filterset_categories,
             kw['filter_type'] if 'filter_type' in kw else None,
             kw['sort'] if 'sort' in kw else None)
-        
+
         return TagsIterator(
             self._api,
             _limit=self._check('limit', kw.get('limit', 1000), int),

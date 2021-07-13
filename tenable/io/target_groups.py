@@ -16,12 +16,19 @@ Methods available on ``tio.target_groups``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import Dict, List
 from .base import TIOEndpoint
 from tenable.errors import UnexpectedValueError
 from tenable.utils import dict_merge
 
+
 class TargetGroupsAPI(TIOEndpoint):
-    def create(self, name, members, **kw):
+    def create(
+            self,
+            name: str,
+            members: List[str],
+            **kw
+    ) -> Dict:
         '''
         Create a target-group.
 
@@ -57,7 +64,7 @@ class TargetGroupsAPI(TIOEndpoint):
 
         return self._api.post('target-groups', json=payload).json()
 
-    def delete(self, id):
+    def delete(self, id: int) -> None:
         '''
         Delete a target group.
 
@@ -75,7 +82,7 @@ class TargetGroupsAPI(TIOEndpoint):
         '''
         self._api.delete('target-groups/{}'.format(self._check('id', id, int)))
 
-    def details(self, id):
+    def details(self, id: int) -> Dict:
         '''
         Retrieve the details of a target group.
 
@@ -94,7 +101,11 @@ class TargetGroupsAPI(TIOEndpoint):
         return self._api.get('target-groups/{}'.format(
             self._check('id', id, int))).json()
 
-    def edit(self, id, **kw):
+    def edit(
+            self,
+            id: int,
+            **kw
+    ) -> Dict:
         '''
         Edit an existing target group.
 
@@ -143,7 +154,7 @@ class TargetGroupsAPI(TIOEndpoint):
         payload = dict_merge(current, payload)
         return self._api.put('target-groups/{}'.format(id), json=payload).json()
 
-    def list(self):
+    def list(self) -> List[Dict]:
         '''
         Retrieve the list of target groups configured.
 
