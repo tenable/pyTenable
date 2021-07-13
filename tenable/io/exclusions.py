@@ -20,16 +20,31 @@ Methods available on ``tio.exclusions``:
 '''
 from datetime import datetime
 from restfly.utils import dict_merge
+from typing import Dict, List, Optional, AnyStr
+from typing.io import IO
 from tenable.io.base import TIOEndpoint
+
 
 class ExclusionsAPI(TIOEndpoint):
     '''
     This will contain all methods related to exclusions
     '''
-    def create(self, name, members, start_time=None, end_time=None,
-               timezone=None, description=None, frequency=None,
-               interval=None, weekdays=None, day_of_month=None,
-               enabled=True, network_id=None):
+
+    def create(
+            self,
+            name: str,
+            members: List[str],
+            start_time: Optional[datetime] = None,
+            end_time: Optional[datetime] = None,
+            timezone: Optional[str] = None,
+            description: Optional[str] = None,
+            frequency: Optional[str] = None,
+            interval: Optional[int] = None,
+            weekdays: Optional[List[str]] = None,
+            day_of_month: Optional[int] = None,
+            enabled: Optional[bool] = True,
+            network_id: Optional[str] = None
+    ) -> Dict:
         '''
         Create a scan target exclusion.
 
@@ -64,8 +79,8 @@ class ExclusionsAPI(TIOEndpoint):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
                 The default is today.
             enabled (bool, optional):
-		If enabled is true, the exclusion schedule is active.
-		If enabled is false, the exclusion is "Always Active"  
+                If enabled is true, the exclusion schedule is active.
+                If enabled is false, the exclusion is "Always Active"
                 The default value is ``True``
             network_id (uuid, optional):
                 The ID of the network object associated with scanners
@@ -125,7 +140,8 @@ class ExclusionsAPI(TIOEndpoint):
         '''
         # Starting with the innermost part of the payload, lets construct the
         # rrules dictionary.
-        frequency = self._check('frequency', frequency, str,
+        frequency = self._check(
+            'frequency', frequency, str,
             choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
             default='ONETIME',
             case='upper')
@@ -151,19 +167,21 @@ class ExclusionsAPI(TIOEndpoint):
         # if the frequency is monthly, then we will need to specify the day of
         # the month that the rule will run on.
         if frequency == 'MONTHLY':
-            rrules['bymonthday'] = self._check('day_of_month', day_of_month, int,
-                choices=list(range(1,32)),
+            rrules['bymonthday'] = self._check(
+                'day_of_month', day_of_month, int,
+                choices=list(range(1, 32)),
                 default=datetime.today().day)
 
         # construct payload schedule based on enable
         if enabled is True:
             schedule = {
                 'enabled': True,
-                'starttime':
-                    self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'endtime':
-                    self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'timezone': self._check('timezone', timezone, str,
+                'starttime': self._check(
+                    'start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
+                'endtime': self._check(
+                    'end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
+                'timezone': self._check(
+                    'timezone', timezone, str,
                     choices=self._api._tz, default='Etc/UTC'),
                 'rrules': rrules
             }
@@ -185,7 +203,10 @@ class ExclusionsAPI(TIOEndpoint):
         # And now to make the call and return the data.
         return self._api.post('exclusions', json=payload).json()
 
-    def delete(self, exclusion_id):
+    def delete(
+            self,
+            exclusion_id: int
+    ) -> None:
         '''
         Delete a scan target exclusion.
 
@@ -203,7 +224,10 @@ class ExclusionsAPI(TIOEndpoint):
         '''
         self._api.delete('exclusions/{}'.format(self._check('exclusion_id', exclusion_id, int)))
 
-    def details(self, exclusion_id):
+    def details(
+            self,
+            exclusion_id: int
+    ) -> Dict:
         '''
         Retrieve the details for a specific scan target exclusion.
 
@@ -223,9 +247,22 @@ class ExclusionsAPI(TIOEndpoint):
         return self._api.get(
             'exclusions/{}'.format(self._check('exclusion_id', exclusion_id, int))).json()
 
-    def edit(self, exclusion_id, name=None, members=None, start_time=None,
-             end_time=None, timezone=None, description=None, frequency=None,
-             interval=None, weekdays=None, day_of_month=None, enabled=None, network_id=None):
+    def edit(
+            self,
+            exclusion_id: int,
+            name: Optional[str] = None,
+            members: Optional[List[str]] = None,
+            start_time: Optional[datetime] = None,
+            end_time: Optional[datetime] = None,
+            timezone: Optional[str] = None,
+            description: Optional[str] = None,
+            frequency: Optional[str] = None,
+            interval: Optional[int] = None,
+            weekdays: Optional[List[str]] = None,
+            day_of_month: Optional[int] = None,
+            enabled: Optional[bool] = None,
+            network_id: Optional[str] = None
+    ) -> Dict:
         '''
         Edit an existing scan target exclusion.
 
@@ -360,7 +397,7 @@ class ExclusionsAPI(TIOEndpoint):
                 self._check('exclusion_id', exclusion_id, int)
             ), json=payload).json()
 
-    def list(self):
+    def list(self) -> List[Dict]:
         '''
         List the currently configured scan target exclusions.
 
@@ -376,7 +413,10 @@ class ExclusionsAPI(TIOEndpoint):
         '''
         return self._api.get('exclusions').json()['exclusions']
 
-    def exclusions_import(self, fobj):
+    def exclusions_import(
+            self,
+            fobj: IO[AnyStr]
+    ) -> None:
         '''
         Import exclusions into Tenable.io.
 
