@@ -96,16 +96,10 @@ try {
 					} catch(ex) {
 						throw ex
 					} finally {
-						if (fileExists('reports/pylint_tenable.log')) {
-							//result should available. TODO: to test
-							result = recordIssues(
-							enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 20, failedTotalAll: 30, )
-						}
-						if (fileExists('reports/pylint_test.log')) {
-							//result should available. TODO: to test
-							result = recordIssues(
-							enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_test.log'), unstableTotalAll: 20, failedTotalAll: 30, )
-						}
+						result = recordIssues(
+						enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 20, failedTotalAll: 30 )
+						result = recordIssues(
+						enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_test.log'), unstableTotalAll: 20, failedTotalAll: 30 )
 					}
 				}
 			}
