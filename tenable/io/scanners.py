@@ -21,11 +21,13 @@ Methods available on ``tio.scanners``:
     .. automethod:: list
     .. automethod:: toggle_link_state
 '''
+from typing import List, Dict
 from .base import TIOEndpoint
+
 
 class ScannersAPI(TIOEndpoint):
 
-    def linking_key(self):
+    def linking_key(self) -> str:
         '''
         The linking key for the Tenable.io instance.
 
@@ -41,7 +43,7 @@ class ScannersAPI(TIOEndpoint):
             if scanner['uuid'] == '00000000-0000-0000-0000-00000000000000000000000000001':
                 return scanner['key']
 
-    def allowed_scanners(self):
+    def allowed_scanners(self) -> List:
         '''
         A simple convenience function that returns the list of scanners that the
         current user is allowed to use.
@@ -54,6 +56,7 @@ class ScannersAPI(TIOEndpoint):
             >>> for scanner in tio.scanners.allowed_scanners():
             ...     pprint(scanner)
         '''
+
         # We want to get the scanners that are available for scanning.  To do so,
         # we will want to pull the information from the scan template.  This
         # isn't the prettiest way to handle this, however it will consistently
@@ -71,7 +74,12 @@ class ScannersAPI(TIOEndpoint):
             scanners.extend(get_scanners(self._api.editor.template_details('scan', was_tmpl)))
         return scanners
 
-    def control_scan(self, scanner_id, scan_uuid, action):
+    def control_scan(
+            self,
+            scanner_id: int,
+            scan_uuid: str,
+            action: str
+    ) -> None:
         '''
         Perform actions against scans on a given scanner.
 
@@ -98,10 +106,12 @@ class ScannersAPI(TIOEndpoint):
         self._api.post('scanners/{}/scans/{}/control'.format(
             self._check('scanner_id', scanner_id, int),
             self._check('scan_uuid', scan_uuid, str),
-            ), json={'action': self._check('action', action, str,
-                                        choices=['stop', 'pause', 'resume'])})
+        ), json={'action': self._check(
+            'action', action, str,
+            choices=['stop', 'pause', 'resume'])
+        })
 
-    def delete(self, id):
+    def delete(self, id: int) -> None:
         '''
         Delete a scanner from Tenable.io.
 
@@ -120,7 +130,7 @@ class ScannersAPI(TIOEndpoint):
         '''
         self._api.delete('scanners/{}'.format(self._check('id', id, int)))
 
-    def details(self, id):
+    def details(self, id: int) -> Dict:
         '''
         Retrieve the details for a specified scanner.
 
@@ -141,7 +151,11 @@ class ScannersAPI(TIOEndpoint):
         return self._api.get('scanners/{}'.format(
             self._check('id', id, int))).json()
 
-    def edit(self, id, **kwargs):
+    def edit(
+            self,
+            id: int,
+            **kwargs
+    ) -> None:
         '''
         Modify the scanner.
 
@@ -174,25 +188,25 @@ class ScannersAPI(TIOEndpoint):
         '''
         payload = dict()
         if ('force_plugin_update' in kwargs
-            and self._check('force_plugin_update', kwargs['force_plugin_update'], bool)):
+                and self._check('force_plugin_update', kwargs['force_plugin_update'], bool)):
             payload['force_plugin_update'] = 1
         if ('force_ui_update' in kwargs
-            and self._check('force_ui_update', kwargs['force_ui_update'], bool)):
+                and self._check('force_ui_update', kwargs['force_ui_update'], bool)):
             payload['force_ui_update'] = 1
         if ('finish_update' in kwargs
-            and self._check('finish_update', kwargs['finish_update'], bool)):
+                and self._check('finish_update', kwargs['finish_update'], bool)):
             payload['finish_update'] = 1
         if ('registration_code' in kwargs
-            and self._check('registration_code', kwargs['registration_code'], str)):
+                and self._check('registration_code', kwargs['registration_code'], str)):
             payload['registration_code'] = kwargs['registration_code']
         if ('aws_update_interval' in kwargs
-            and self._check('aws_update_interval', kwargs['aws_update_interval'], int)):
+                and self._check('aws_update_interval', kwargs['aws_update_interval'], int)):
             payload['aws_update_interval'] = kwargs['aws_update_interval']
 
-        self._api.put('settings/{}'.format(self._check('id', id, int)),
-            json=payload)
+        self._api.put('settings/{}'.format(
+            self._check('id', id, int)), json=payload)
 
-    def get_aws_targets(self, id):
+    def get_aws_targets(self, id: int) -> List:
         '''
         Returns the list of AWS targets the scanner can reach.
 
@@ -210,9 +224,9 @@ class ScannersAPI(TIOEndpoint):
             ...      pprint(target)
         '''
         return self._api.get('scanners/{}/aws-targets'.format(
-                    self._check('id', id, int))).json()['targets']
+            self._check('id', id, int))).json()['targets']
 
-    def get_scanner_key(self, id):
+    def get_scanner_key(self, id: int) -> str:
         '''
         Return the key associated with the scanner.
 
@@ -231,7 +245,7 @@ class ScannersAPI(TIOEndpoint):
         return str(self._api.get('scanners/{}/key'.format(
             self._check('id', id, int))).json()['key'])
 
-    def get_scans(self, id):
+    def get_scans(self, id: int) -> List[Dict]:
         '''
         Retrieves the scans associated to the scanner.
 
@@ -251,7 +265,7 @@ class ScannersAPI(TIOEndpoint):
         return self._api.get('scanners/{}/scans'.format(
             self._check('id', id, int))).json()['scans']
 
-    def list(self):
+    def list(self) -> List[Dict]:
         '''
         Retrieves the list of scanners.
 
@@ -267,7 +281,11 @@ class ScannersAPI(TIOEndpoint):
         '''
         return self._api.get('scanners').json()['scanners']
 
-    def toggle_link_state(self, id, linked):
+    def toggle_link_state(
+            self,
+            id: int,
+            linked: bool
+    ) -> None:
         '''
         Toggles the scanner's activated state.
 
@@ -289,9 +307,9 @@ class ScannersAPI(TIOEndpoint):
             >>> tio.scanners.toggle_link_state(1, False)
         '''
         self._api.put('scanners/{}/link'.format(self._check('id', id, int)),
-            json={'link': int(self._check('linked', linked, bool))})
+                      json={'link': int(self._check('linked', linked, bool))})
 
-    def get_permissions(self, id):
+    def get_permissions(self, id: int) -> Dict:
         '''
         Returns the permission list for a given scanner.
 
@@ -307,7 +325,11 @@ class ScannersAPI(TIOEndpoint):
         '''
         return self._api.permissions.list('scanner', self._check('id', id, int))
 
-    def edit_permissions(self, id, *acls):
+    def edit_permissions(
+            self,
+            id: int,
+            *acls: Dict
+    ) -> None:
         '''
         Modifies the permissions list for the given scanner.
 
