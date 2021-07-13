@@ -18,8 +18,11 @@ Methods available on ``tio.credentials``:
     .. automethod:: types
     .. automethod:: upload
 '''
+from typing import Dict, Union, Tuple, List, Optional, AnyStr
+from typing.io import IO
 from tenable.utils import dict_merge
 from .base import TIOEndpoint, TIOIterator
+
 
 class CredentialsIterator(TIOIterator):
     '''
@@ -42,8 +45,12 @@ class CredentialsIterator(TIOIterator):
     '''
     pass
 
+
 class CredentialsAPI(TIOEndpoint):
-    def _permissions_constructor(self, permissions):
+    def _permissions_constructor(
+            self,
+            permissions: Dict[Union[Tuple, Dict]]
+    ) -> List[Dict]:
         '''
         Validates and/or transforms thew permissions items into the desired
         format.  If a dict it will validate.  If a tuple, will convert.
@@ -60,30 +67,36 @@ class CredentialsAPI(TIOEndpoint):
                     'edit': 64,
                 }
                 resp.append({
-                    'type': self._check('permission:type', p[0], str,
-                        choices=['user', 'group']),
-                    'permissions': ptnx[self._check('permissions:permission',
-                        p[1], (str, int), choices=[32, 64, 'use', 'edit'])],
+                    'type': self._check(
+                        'permission:type', p[0], str, choices=['user', 'group']),
+                    'permissions': ptnx[self._check(
+                        'permissions:permission', p[1], (str, int),
+                        choices=[32, 64, 'use', 'edit'])],
                     'grantee_uuid': self._check('permission:uuid', p[2], 'uuid')
                 })
 
-            elif isinstance(p, dict) :
+            elif isinstance(p, dict):
                 # if the item is a dictionary, validate it and then pass into
                 # the response list.
                 self._check('permission:type', p['type'], str,
-                    choices=['user', 'group'])
+                            choices=['user', 'group'])
                 self._check('permission:permissions', p['permissions'], int,
-                    choices=[32, 64])
+                            choices=[32, 64])
                 self._check('permission:grantee_uuid', p['grantee_uuid'], 'uuid')
                 resp.append(p)
 
-            else :
+            else:
                 raise TypeError('permission object is not tuple or dict type')
         return resp
 
-
-    def create(self, cred_name, cred_type, description=None,
-               permissions=None, **settings):
+    def create(
+            self,
+            cred_name: str,
+            cred_type: str,
+            description: Optional[str] = None,
+            permissions: List[Tuple[str, str, str]] = None,
+            **settings: Dict
+    ) -> str:
         '''
         Creates a new managed credential.
 
@@ -141,8 +154,15 @@ class CredentialsAPI(TIOEndpoint):
             'permissions': self._permissions_constructor(permissions)
         }).json()['uuid']
 
-    def edit(self, cred_uuid, cred_name=None, description=None,
-             permissions=None, ad_hoc=None, **settings):
+    def edit(
+            self,
+            cred_uuid: str,
+            cred_name: Optional[str] = None,
+            description: Optional[str] = None,
+            permissions: Optional[List[Tuple[str, str, str]]] = None,
+            ad_hoc: Optional[bool] = None,
+            **settings
+    ) -> bool:
         '''
         Creates a new managed credential.
 
@@ -185,21 +205,24 @@ class CredentialsAPI(TIOEndpoint):
         current = self.details(cred_uuid)
 
         payload = {
-            'name': self._check('cred_name', cred_name, str,
-                default=current['name']),
-            'description': self._check('description', description, str,
-                default=current['description']),
-            'ad_hoc': self._check('ad_hoc', ad_hoc, bool,
-                default=current['ad_hoc']),
+            'name': self._check(
+                'cred_name', cred_name, str, default=current['name']),
+            'description': self._check(
+                'description', description, str, default=current['description']),
+            'ad_hoc': self._check(
+                'ad_hoc', ad_hoc, bool, default=current['ad_hoc']),
         }
         if permissions:
             payload['permissions'] = self._permissions_constructor(permissions)
         payload['settings'] = dict_merge(current['settings'], settings)
 
         return self._api.put('credentials/{}'.format(cred_uuid),
-            json=payload).json()['updated']
+                             json=payload).json()['updated']
 
-    def details(self, id):
+    def details(
+            self,
+            id: str
+    ) -> Dict:
         '''
         Retrieves the details of the specified credential.
 
@@ -219,7 +242,10 @@ class CredentialsAPI(TIOEndpoint):
         return self._api.get('credentials/{}'.format(
             self._check('id', id, 'uuid'))).json()
 
-    def delete(self, id):
+    def delete(
+            self,
+            id: str
+    ) -> bool:
         '''
         Deletes the specified credential.
 
@@ -239,7 +265,7 @@ class CredentialsAPI(TIOEndpoint):
         return self._api.delete('credentials/{}'.format(
             self._check('id', id, 'uuid'))).json()['deleted']
 
-    def types(self):
+    def types(self) -> List:
         '''
         Lists all of the available credential types.
 
@@ -254,7 +280,11 @@ class CredentialsAPI(TIOEndpoint):
         '''
         return self._api.get('credentials/types').json()['credentials']
 
-    def list(self, *filters, **kw):
+    def list(
+            self,
+            *filters: Optional[Tuple[str, str, str]],
+            **kw
+    ) -> 'CredentialsIterator':
         '''
         Get the listing of configured credentials from Tenable.io.
 
@@ -308,8 +338,8 @@ class CredentialsAPI(TIOEndpoint):
         limit = 50
         offset = 0
         pages = None
-        query = self._parse_filters(filters,
-            self._api.filters.networks_filters(), rtype='colon')
+        query = self._parse_filters(
+            filters, self._api.filters.networks_filters(), rtype='colon')
 
         # If a referrer owner uuid is passed, then add it to the query.
         if 'owner_uuid' in kw and self._check('owner_uuid', kw['owner_uuid'], 'uuid'):
@@ -347,7 +377,7 @@ class CredentialsAPI(TIOEndpoint):
         # The default is 'and', however you can always explicitly define 'and'
         # or 'or'.
         if 'filter_type' in kw and self._check(
-            'filter_type', kw['filter_type'], str, choices=['and', 'or']):
+                'filter_type', kw['filter_type'], str, choices=['and', 'or']):
             query['ft'] = kw['filter_type']
 
         # The wild-card filter text refers to how the API will pattern match
@@ -358,11 +388,12 @@ class CredentialsAPI(TIOEndpoint):
         # The wildcard_fields parameter allows the user to restrict the fields
         # that the wild-card pattern match pertains to.
         if 'wildcard_fields' in kw and self._check(
-            'wildcard_fields', kw['wildcard_fields'], list):
+                'wildcard_fields', kw['wildcard_fields'], list):
             query['wf'] = ','.join(kw['wildcard_fields'])
 
         # Return the Iterator.
-        return CredentialsIterator(self._api,
+        return CredentialsIterator(
+            self._api,
             _limit=limit,
             _offset=offset,
             _pages_total=pages,
@@ -371,7 +402,10 @@ class CredentialsAPI(TIOEndpoint):
             _resource='credentials'
         )
 
-    def upload(self, fobj):
+    def upload(
+            self,
+            fobj: IO[AnyStr]
+    ) -> str:
         '''
         Uploads a file for use with a managed credential.
 
