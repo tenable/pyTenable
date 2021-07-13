@@ -133,6 +133,9 @@ try {
 	tasks['runPyPI'] = {
 	  stage('runPyPI') {
 	    node(Constants.DOCKERNODE) {
+	      buildsCommon.cleanup()
+	      checkout scm
+
 	      withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
 		steps {
 		  try {
