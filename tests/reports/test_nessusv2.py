@@ -1,6 +1,12 @@
+'''
+test nessusv2
+'''
+import os
+import datetime
+import pytest
 from tenable.reports.nessusv2 import NessusReportv2
 from ..checker import check
-import datetime, sys, pytest, os
+
 
 @pytest.mark.datafiles(os.path.join(
     os.path.dirname(os.path.realpath(__file__)),

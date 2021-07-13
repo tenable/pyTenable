@@ -1,9 +1,8 @@
 import os
 import pytest
 import time
-
-from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check
+from tenable.errors import APIError, UnexpectedValueError
 
 
 @pytest.fixture

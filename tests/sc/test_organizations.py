@@ -1,7 +1,7 @@
 import pytest
-
-from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check
+from tenable.errors import APIError, UnexpectedValueError
+from tests.pytenable_log_handler import log_exception
 
 
 def test_organizations_constructor_name_typeerror(sc):
@@ -204,8 +204,8 @@ def org(request, admin, vcr):
         try:
             with vcr.use_cassette('test_organizations_delete_success'):
                 admin.organizations.delete(int(organization['id']))
-        except APIError:
-            pass
+        except APIError as error:
+            log_exception(error)
 
     request.addfinalizer(teardown)
     return organization

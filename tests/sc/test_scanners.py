@@ -1,7 +1,7 @@
 import pytest
-
-from tenable.errors import APIError
 from ..checker import check
+from tenable.errors import APIError
+from tests.pytenable_log_handler import log_exception
 
 
 @pytest.fixture
@@ -15,8 +15,8 @@ def scanner(request, admin, vcr):
         try:
             with vcr.use_cassette('test_scanners_delete_success'):
                 admin.scanners.delete(int(scanner['id']))
-        except APIError:
-            pass
+        except APIError as error:
+            log_exception(error)
 
     request.addfinalizer(teardown)
     return scanner
