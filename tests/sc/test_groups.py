@@ -167,14 +167,14 @@ def test_groups_details_success(security_center, group):
     '''
     test groups details for success
     '''
-    g = security_center.groups.details(int(group['id']))
-    assert isinstance(g, dict)
-    check(g, 'id', str)
-    check(g, 'name', str)
-    check(g, 'description', str)
-    check(g, 'createdTime', str)
-    check(g, 'modifiedTime', str)
-    check(g, 'userCount', int)
+    group_details = security_center.groups.details(int(group['id']))
+    assert isinstance(group_details, dict)
+    check(group_details, 'id', str)
+    check(group_details, 'name', str)
+    check(group_details, 'description', str)
+    check(group_details, 'createdTime', str)
+    check(group_details, 'modifiedTime', str)
+    check(group_details, 'userCount', int)
     keylist = ['definingAssets', 'lces', 'repositories', 'assets', 'policies',
                'queries', 'credentials', 'dashboardTabs', 'arcs', 'auditFiles']
     for i in keylist:

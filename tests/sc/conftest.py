@@ -30,23 +30,23 @@ def security_center(request, vcr):
     setup_logging_to_file()
     with vcr.use_cassette('sc_login',
                           filter_post_data_parameters=['username', 'password']):
-        sc = TenableSC(
+        tenable_security_center = TenableSC(
             os.getenv('SC_TEST_HOST', 'securitycenter.home.cugnet.net'),
             vendor='pytest',
             product='pytenable-automated-testing')
-        sc.login(
+        tenable_security_center.login(
             os.getenv('SC_TEST_USER', 'username'),
             os.getenv('SC_TEST_PASS', 'password'))
 
     def teardown():
         try:
             with vcr.use_cassette('sc_login'):
-                sc.logout()
+                tenable_security_center.logout()
         except NotFoundError as error:
             log_exception(error)
 
     request.addfinalizer(teardown)
-    return sc
+    return tenable_security_center
 
 @pytest.fixture(autouse=True, scope='module')
 def admin(request, vcr):
