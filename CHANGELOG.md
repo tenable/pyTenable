@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.3.2]
 ### Added
 - code owners file is added #366
+- Added export compliance API in IO package #358
 
 ### Changed
 
@@ -17,7 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed the documentation issue in exclusions #352
 - Fixed self log in tenable.io, base, cs, downloads, dl, ot, reports #353 #370
 - Fixed github issue 298 io_exception_handling #354
-- Added export compliance API in IO package #358
 - Fixed github issue 304 tags.create() function #357
 - Fixed github issue 321 update_assets_ttl_days #360
 - Fixed Remediation scan with selected plugins only #362
