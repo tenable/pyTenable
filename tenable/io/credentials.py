@@ -49,7 +49,7 @@ class CredentialsIterator(TIOIterator):
 class CredentialsAPI(TIOEndpoint):
     def _permissions_constructor(
             self,
-            permissions: Dict[Union[Tuple, Dict]]
+            permissions: List[Union[Tuple, Dict]]
     ) -> List[Dict]:
         '''
         Validates and/or transforms thew permissions items into the desired

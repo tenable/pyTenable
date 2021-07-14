@@ -14,7 +14,7 @@ Methods available on ``tio.remediation_scans``:
     .. automethod:: create_remediation_scan
     .. automethod:: list_remediation_scan
 '''
-from typing import Optional, Dict
+from typing import Optional, Dict, Any
 from tenable.errors import UnexpectedValueError
 from tenable.io.base import TIOEndpoint, TIOIterator
 from tenable.utils import dict_merge
@@ -50,9 +50,9 @@ class RemediationScansAPI(TIOEndpoint):
 
     def list_remediation_scan(
             self,
-            limit: Optional[int] = 50,
-            offset: Optional[int] = 0,
-            sortval: Optional[str] = 'scan_creation_date:desc'
+            limit: int = 50,
+            offset: int = 0,
+            sortval: str = 'scan_creation_date:desc'
     ) -> 'RemediationScansIteratorV2':
         '''
         Retrieve the list of Remediation scans.
@@ -202,7 +202,7 @@ class RemediationScansAPI(TIOEndpoint):
                 The resulting scan document based on the kwargs provided.
 
         '''
-        scan = {
+        scan: Dict[str, Dict[Any, Any]] = {
             'settings': dict(),
         }
 
