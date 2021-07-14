@@ -101,8 +101,6 @@ try {
 					} finally {
 						result = recordIssues(
 						enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 1000, failedTotalAll: 1000 )
-						result = recordIssues(
-						enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tests.log'), unstableTotalAll: 1000, failedTotalAll: 1000 )
 					}
 				}
 			}
