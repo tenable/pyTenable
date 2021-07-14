@@ -529,7 +529,7 @@ def asset_list(request, security_center, vcr):
 
 
 @pytest.mark.vcr()
-cdef test_asset_lists_create_success(security_center, asset_list):
+def test_asset_lists_create_success(security_center, asset_list):
     '''
     test asset lists create for success
     '''
