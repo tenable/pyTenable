@@ -340,12 +340,11 @@ def test_exports_compliance_success(api):
 @pytest.mark.vcr()
 def test_exports_compliance(api):
     '''test to export the compliance data'''
-    last_seen = int(time.time()) - (24 * 60 * 60)
-    compliance = api.exports.compliance(last_seen=last_seen)
+    compliance = api.exports.compliance(last_seen=1624996774)
     assert isinstance(compliance, ExportsIterator)
     try:
         for resp in compliance:
-                # common keys for all status types
+            # common keys for all status types
             check(resp, 'asset_uuid', 'uuid')
             if 'audit_file' in resp:
                 check(resp, 'audit_file', str)
