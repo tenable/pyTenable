@@ -100,7 +100,7 @@ try {
 						throw ex
 					} finally {
 						result = recordIssues(
-						enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 1000, failedTotalAll: 1000 )
+						enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 5000, failedTotalAll: 5000 )
 					}
 				}
 			}
