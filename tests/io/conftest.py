@@ -23,7 +23,7 @@ def vcr_config():
 @pytest.fixture
 def api():
     '''api keys fixture'''
-    setup_logging_to_file()
+    # setup_logging_to_file()
     return TenableIO(
         os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
         os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'),
