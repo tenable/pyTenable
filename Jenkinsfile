@@ -92,11 +92,9 @@ try {
 						mkdir reports
 						cd reports
 						touch pylint_tenable.log
-						touch pylint_tests.log				
 						cd ..
 						pip install pylint
-                           			pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
-                           			pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log                           			
+                           			pylint --rcfile=.pylintrc --exit-zero --output-format=parseable --reports=n tenable tests > reports/pylint_tenable.log
                         			"""
 					} catch(ex) {
 						throw ex
