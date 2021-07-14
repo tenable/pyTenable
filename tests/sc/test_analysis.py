@@ -727,7 +727,7 @@ def test_analysis_vulns_sumseverity_tool(security_center):
 
 
 @pytest.mark.vcr()
-def test_analysis_vulns_sumuserresponsibility_tool(security_center):
+def test_analysis_vulns_sum_userresponsibility_tool(security_center):
     '''
     test analysis vulnerabilities sum user responsibility tool for success
     '''
@@ -737,7 +737,7 @@ def test_analysis_vulns_sumuserresponsibility_tool(security_center):
 
 
 @pytest.mark.vcr()
-def test_analysis_vulns_sumuserresponsibility_tool(security_center):
+def test_analysis_vulns_sum_user_responsibility_tool(security_center):
     '''
     test analysis vulnerabilities sum user responsibility tool for success
     '''
