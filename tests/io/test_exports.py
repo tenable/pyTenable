@@ -340,7 +340,7 @@ def test_exports_compliance_success(api):
 @pytest.mark.vcr()
 def test_exports_compliance(api):
     '''test to export the compliance data'''
-    compliance = api.exports.compliance(last_seen=1624996774)
+    compliance = api.exports.compliance(last_seen=1626168578)
     assert isinstance(compliance, ExportsIterator)
     try:
         for resp in compliance:

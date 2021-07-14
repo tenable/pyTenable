@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: '{"filters": {"last_seen": 1624996774}}'
+    body: '{"filters": {"last_seen": 1626168578}}'
     headers:
       Accept:
       - '*/*'
@@ -22,8 +22,8 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6tWSq0oyC8qiS8tzUxRslIyMTQxTjJLstRNTrZI0TVJM7DUTTK0NNY1SzEytkg2
-        MDQ1tDBTqgUAvAut2jYAAAA=
+        H4sIAAAAAAAAA6tWSq0oyC8qiS8tzUxRslKyMEhMMbM0MtK1SLW01DVJNrXQtbAwTdJNNjIxskw0
+        MDYzNjRUqgUAmUIlVzYAAAA=
     headers:
       Cache-Control:
       - no-store
@@ -34,7 +34,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 30 Jun 2021 07:59:34 GMT
+      - Wed, 14 Jul 2021 09:38:34 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -53,9 +53,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-c3gdt-ap-southeast-1-prod
+      - nginx-router-4b6sq-ap-southeast-1-prod
       X-Request-Uuid:
-      - c3b85ca2010069f9feaec89cf981e24d
+      - 3ea465afcf5b85c4eb3a68d418232b51
       X-Xss-Protection:
       - 1; mode=block
     status:
@@ -78,7 +78,125 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
-    uri: https://cloud.tenable.com/compliance/export/4143b6b9-cc8d-4f09-b193-6d238c015186/status
+    uri: https://cloud.tenable.com/compliance/export/80ad6922-8e99-4c58-885b-c2429a036311/status
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWKi5JLCktVrJSCgjyd3YNDvb0c1eqBQAxkK5bFwAAAA==
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 14 Jul 2021 09:38:35 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-4b6sq-ap-southeast-1-prod
+      X-Request-Uuid:
+      - e149c2be47b44eb063131d18b07edbad
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.1
+        (pyTenable/1.3.1; Python/3.8.6; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/compliance/export/80ad6922-8e99-4c58-885b-c2429a036311/status
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6tWKi5JLCktVrJSCgjyd3YNDvb0c1eqBQAxkK5bFwAAAA==
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 14 Jul 2021 09:38:37 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-4b6sq-ap-southeast-1-prod
+      X-Request-Uuid:
+      - c7221a8a04c23a41e4c91e17efd55a14
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.1
+        (pyTenable/1.3.1; Python/3.8.6; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/compliance/export/80ad6922-8e99-4c58-885b-c2429a036311/status
   response:
     body:
       string: !!binary |
@@ -94,7 +212,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 30 Jun 2021 07:59:36 GMT
+      - Wed, 14 Jul 2021 09:38:40 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -113,9 +231,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-c3gdt-ap-southeast-1-prod
+      - nginx-router-4b6sq-ap-southeast-1-prod
       X-Request-Uuid:
-      - 2c4e42ba35e2a3c259d81badc8fc70b5
+      - ebd44190585329bf8e2c38ebea0a4840
       X-Xss-Protection:
       - 1; mode=block
     status:
@@ -138,7 +256,7 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
-    uri: https://cloud.tenable.com/compliance/export/4143b6b9-cc8d-4f09-b193-6d238c015186/chunks/1
+    uri: https://cloud.tenable.com/compliance/export/80ad6922-8e99-4c58-885b-c2429a036311/chunks/1
   response:
     body:
       string: '[]'
@@ -150,13 +268,13 @@ interactions:
       Connection:
       - keep-alive
       Content-Disposition:
-      - attachment; filename=d8631403-ed95-4aa9-9137-e691b6dc3b4e4143b6b9-cc8d-4f09-b193-6d238c015186.json
+      - attachment; filename=d8631403-ed95-4aa9-9137-e691b6dc3b4e80ad6922-8e99-4c58-885b-c2429a036311.json
       Content-Length:
       - '2'
       Content-Type:
       - application/octet-stream
       Date:
-      - Wed, 30 Jun 2021 07:59:37 GMT
+      - Wed, 14 Jul 2021 09:38:42 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -171,9 +289,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-c3gdt-ap-southeast-1-prod
+      - nginx-router-4b6sq-ap-southeast-1-prod
       X-Request-Uuid:
-      - a83c0802da4548226525bec98b5a1c47
+      - 81e15656b4a1e2f3c8953fa5dab312f3
       X-Xss-Protection:
       - 1; mode=block
     status:
@@ -196,7 +314,7 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
-    uri: https://cloud.tenable.com/compliance/export/4143b6b9-cc8d-4f09-b193-6d238c015186/status
+    uri: https://cloud.tenable.com/compliance/export/80ad6922-8e99-4c58-885b-c2429a036311/status
   response:
     body:
       string: !!binary |
@@ -212,7 +330,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 30 Jun 2021 07:59:38 GMT
+      - Wed, 14 Jul 2021 09:38:43 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -231,9 +349,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-c3gdt-ap-southeast-1-prod
+      - nginx-router-4b6sq-ap-southeast-1-prod
       X-Request-Uuid:
-      - 4b0fbeaada4cf10719078147643a6255
+      - d4ccf8d48299647461b33449df82ffab
       X-Xss-Protection:
       - 1; mode=block
     status:
