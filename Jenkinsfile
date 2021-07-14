@@ -81,30 +81,28 @@ try {
 	}
 
 	tasks['runPylint'] = {
-		stage('runPylint') {
-			node(Constants.DOCKERNODE) {
-				buildsCommon.cleanup()
-				checkout scm
+	    stage('runPylint') {
+		node(Constants.DOCKERNODE) {
+	        buildsCommon.cleanup()
+		    checkout scm
 				
-				withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
-					try {
-						sh """
-						mkdir reports
-						cd reports
-						touch pylint_tenable.log
-						cd ..
-						pip install pylint
-                           			pylint --rcfile=.pylintrc --exit-zero --output-format=parseable --reports=n tenable tests > reports/pylint_tenable.log
-                        			"""
-					} catch(ex) {
-						throw ex
-					} finally {
-						result = recordIssues(
-						enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 5000, failedTotalAll: 5000 )
-					}
-				}
+		    withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
+			try {
+			    sh """
+				mkdir reports
+				touch reports/pylint_tenable.log
+				pip install pylint
+                           	pylint --rcfile=.pylintrc --exit-zero --output-format=parseable --reports=n tenable tests > reports/pylint_tenable.log
+                        	"""
+			     } catch(ex) {
+			       throw ex
+			     } finally {
+			       result = recordIssues(
+			       enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 5000, failedTotalAll: 5000 )
+			     }
 			}
 		}
+	    }
 	}
 
 	parallel(tasks)
