@@ -13,12 +13,12 @@ def test_analysis_constructor_type_error(security_center):
     test analysis constructor for type error
     '''
     with pytest.raises(TypeError):
-        security_center.analysis._analysis(tool=1, type='type',
+        getattr(security_center.analysis, '_analysis')(tool=1, type='type',
                                            sort_field='field',
                                            sort_direction=1)
 
     with pytest.raises(TypeError):
-        security_center.analysis._analysis(tool=1, type='type',
+        getattr(security_center.analysis, '_analysis')(tool=1, type='type',
                                            sort_field='field',
                                            sort_direction='ASC',
                                            offset=0,
@@ -29,7 +29,7 @@ def test_analysis_constructor_success(security_center):
     '''
     test analysis constructor for success
     '''
-    analysis = security_center.analysis._analysis(tool=1, type='type',
+    analysis = getattr(security_center.analysis, '_analysis')(tool=1, type='type',
                                                   sort_field='field',
                                                   sort_direction='ASC',
                                                   offset=0,
@@ -41,7 +41,7 @@ def test_analysis_asset_expansion_simple(security_center):
     '''
     test analysis asset expansion simple for success
     '''
-    resp = security_center.analysis._combo_expansion(('or', 1, 2))
+    resp = getattr(security_center.analysis, '_combo_expansion')(('or', 1, 2))
     assert resp == {
         'operator': 'union',
         'operand1': {'id': '1'},
@@ -53,7 +53,7 @@ def test_analysis_asset_expansion_complex(security_center):
     '''
     test analysis asset expansion complex for success
     '''
-    resp = security_center.analysis._combo_expansion(
+    resp = getattr(security_center.analysis, '_combo_expansion')(
         ('or', ('and', 1, 2), ('not', ('or', 3, 4))))
     assert resp == {
         'operator': 'union',
@@ -77,7 +77,7 @@ def test_analysis_query_constructor_simple(security_center):
     '''
     test analysis query constructor simple for success
     '''
-    resp = security_center.analysis._query_constructor(
+    resp = getattr(security_center.analysis, '_query_constructor')(
         ('filter1', 'operator1', 'value1'),
         ('filter2', 'operator2', 'value2'),
         tool='tool_test',
@@ -104,7 +104,7 @@ def test_analysis_query_constructor_replace(security_center):
     '''
     test analysis query constructor replace for success
     '''
-    resp = security_center.analysis._query_constructor(
+    resp = getattr(security_center.analysis, '_query_constructor')(
         ('filter1', 'operator1', 'badvalue'),
         ('filter1', 'operator1', 'value1'),
         ('filter2', 'operator2', 'value2'),
@@ -132,7 +132,7 @@ def test_analysis_query_constructor_remove(security_center):
     '''
     test analysis query constructor remove for success
     '''
-    resp = security_center.analysis._query_constructor(
+    resp = getattr(security_center.analysis, '_query_constructor')(
         ('filter3', 'operator1', 'badvalue'),
         ('filter1', 'operator1', 'value1'),
         ('filter2', 'operator2', 'value2'),
@@ -161,7 +161,7 @@ def test_analysis_query_constructor_asset(security_center):
     '''
     test analysis query constructor asset for success
     '''
-    resp = security_center.analysis._query_constructor(('asset', '~', ('or', 1, 2)),
+    resp = getattr(security_center.analysis, '_query_constructor')(('asset', '~', ('or', 1, 2)),
                                                        tool='tool', type='type')
     assert resp == {
         'tool': 'tool',
@@ -269,7 +269,8 @@ def test_analysis_vulns_iavmipdetail_tool(security_center):
 
 @pytest.mark.vcr()
 def test_analysis_vulns_iplist_tool(security_center):
-    vulns = security_center.analysis.vulns(tool='iplist', pages=2, limit=5)
+    '''test to get the iplist'''
+    vulns = getattr(security_center.analysis, 'vulns')(tool='iplist', pages=2, limit=5)
     assert isinstance(vulns, dict)
     for vuln in vulns:
         check(vulns, vuln, str)
@@ -724,16 +725,6 @@ def test_analysis_vulns_sumseverity_tool(security_center):
         check(vuln['severity'], 'description', str)
         check(vuln['severity'], 'id', str)
         check(vuln['severity'], 'name', str)
-
-
-@pytest.mark.vcr()
-def test_analysis_vulns_sum_userresponsibility_tool(security_center):
-    '''
-    test analysis vulnerabilities sum user responsibility tool for success
-    '''
-    vulns = security_center.analysis.vulns(tool='sumuserresponsibility', pages=2, limit=5)
-    for vuln in vulns:
-        assert isinstance(vuln, dict)
 
 
 @pytest.mark.vcr()
