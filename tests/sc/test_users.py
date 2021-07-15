@@ -1,36 +1,58 @@
+'''
+test file for testing various scenarios in security center's users functionality
+'''
 import pytest
-from ..checker import check
+
 from tenable.errors import APIError, UnexpectedValueError
 from tests.pytenable_log_handler import log_exception
+from ..checker import check
 
 
-def test_users_constructor_role_typeerror(sc):
+def test_users_constructor_role_typeerror(security_center):
+    '''
+    test users constructor for role type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(role='one')
+        security_center.users._constructor(role='one')
 
 
-def test_users_constructor_group_typeerror(sc):
+def test_users_constructor_group_typeerror(security_center):
+    '''
+    test users constructor for group type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(group='one')
+        security_center.users._constructor(group='one')
 
 
-def test_users_constructor_org_typeerror(sc):
+def test_users_constructor_org_typeerror(security_center):
+    '''
+    test users constructor for org type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(org='one')
+        security_center.users._constructor(org='one')
 
 
-def test_users_constructor_responsibility_typeerror(sc):
+def test_users_constructor_responsibility_typeerror(security_center):
+    '''
+    test users constructor for responsibility type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(responsibility='one')
+        security_center.users._constructor(responsibility='one')
 
 
-def test_users_constructor_ldap_id(sc):
-    kwargs = sc.users._constructor(ldap_id=1)
+def test_users_constructor_ldap_id(security_center):
+    '''
+    test users constructor for 'ldap id' success
+    '''
+    kwargs = security_center.users._constructor(ldap_id=1)
     check(kwargs, 'ldap', object)
     assert kwargs.get('ldap')['id'] == 1
 
 
-def test_users_constructor_keys_typeerror(sc):
+def test_users_constructor_keys_typeerror(security_center):
+    '''
+    test users constructor for keys type error
+    '''
     keys = [
         'ldapUsername', 'username', 'firstname', 'lastname', 'title',
         'email', 'address', 'city', 'state', 'country', 'phone', 'fax',
@@ -38,81 +60,126 @@ def test_users_constructor_keys_typeerror(sc):
     ]
     for key in keys:
         with pytest.raises(TypeError):
-            sc.users._constructor(*{key: 1})
+            security_center.users._constructor(*{key: 1})
 
 
-def test_users_constructor_is_locked_typeerror(sc):
+def test_users_constructor_is_locked_typeerror(security_center):
+    '''
+    test users constructor for 'is locked' type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(is_locked='yup')
+        security_center.users._constructor(is_locked='yup')
 
 
-def test_users_constructor_auth_type_typeerror(sc):
+def test_users_constructor_auth_type_typeerror(security_center):
+    '''
+    test users constructor for 'auth type' type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(auth_type=1)
+        security_center.users._constructor(auth_type=1)
 
 
-def test_users_constructor_auth_type_unexpectedvalueerror(sc):
+def test_users_constructor_auth_type_unexpectedvalueerror(security_center):
+    '''
+    test users constructor for auth type unexpected value error
+    '''
     with pytest.raises(UnexpectedValueError):
-        sc.users._constructor(auth_type='something')
+        security_center.users._constructor(auth_type='something')
 
 
-def test_users_constructor_email_notice_typeerror(sc):
+def test_users_constructor_email_notice_typeerror(security_center):
+    '''
+    test users constructor for email notice type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(email_notice=1)
+        security_center.users._constructor(email_notice=1)
 
 
-def test_users_constructor_email_notice_unexpectedvalueerror(sc):
+def test_users_constructor_email_notice_unexpectedvalueerror(security_center):
+    '''
+    test users constructor for email notice unexpected value error
+    '''
     with pytest.raises(UnexpectedValueError):
-        sc.users._constructor(email_notice='something')
+        security_center.users._constructor(email_notice='something')
 
 
-def test_users_constructor_timezone_typeerror(sc):
+def test_users_constructor_timezone_typeerror(security_center):
+    '''
+    test users constructor for timezone type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(timezone=1)
+        security_center.users._constructor(timezone=1)
 
 
-def test_users_constructor_update_password_typeerror(sc):
+def test_users_constructor_update_password_typeerror(security_center):
+    '''
+    test users constructor for 'update password' type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(update_password='nope')
+        security_center.users._constructor(update_password='nope')
 
 
-def test_users_constructor_managed_usergroups_typeerror(sc):
+def test_users_constructor_managed_usergroups_typeerror(security_center):
+    '''
+    test users constructor for 'manage user groups' type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(managed_usergroups=1)
+        security_center.users._constructor(managed_usergroups=1)
 
 
-def test_users_constructor_managed_usergroups_item_typeerror(sc):
+def test_users_constructor_managed_usergroups_item_typeerror(security_center):
+    '''
+    test users constructor for 'manage user groups item' type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(managed_usergroups=['one'])
+        security_center.users._constructor(managed_usergroups=['one'])
 
 
-def test_users_constructor_managed_userobjs_typeerror(sc):
+def test_users_constructor_managed_userobjs_typeerror(security_center):
+    '''
+    test users constructor for 'manage user objs' type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(managed_userobjs=1)
+        security_center.users._constructor(managed_userobjs=1)
 
 
-def test_users_constructor_managed_userobjs_item_typeerror(sc):
+def test_users_constructor_managed_userobjs_item_typeerror(security_center):
+    '''
+    test users constructor for 'manage user objs item' type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(managed_userobjs=['one'])
+        security_center.users._constructor(managed_userobjs=['one'])
 
 
-def test_users_constructor_def_reports_typeerror(sc):
+def test_users_constructor_def_reports_typeerror(security_center):
+    '''
+    test users constructor for 'def reports' type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(default_reports='nope')
+        security_center.users._constructor(default_reports='nope')
 
 
-def test_users_constructor_def_dashboards_typeerror(sc):
+def test_users_constructor_def_dashboards_typeerror(security_center):
+    '''
+    test users constructor for 'def dashboards' type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(default_dashboards='nope')
+        security_center.users._constructor(default_dashboards='nope')
 
 
-def test_users_constructor_def_reportcards_typeerror(sc):
+def test_users_constructor_def_reportcards_typeerror(security_center):
+    '''
+    test users constructor for 'def report cards' type error
+    '''
     with pytest.raises(TypeError):
-        sc.users._constructor(default_reportcards='nope')
+        security_center.users._constructor(default_reportcards='nope')
 
 
-def test_users_constructor_success(sc):
-    user = sc.users._constructor(
+def test_users_constructor_success(security_center):
+    '''
+    test users constructor for success
+    '''
+    user = security_center.users._constructor(
         username='jsmith',
         password='notmypassword',
         role=1,
@@ -162,14 +229,17 @@ def test_users_constructor_success(sc):
 
 
 @pytest.fixture
-def user(request, sc, vcr):
+def user(request, security_center, vcr):
+    '''
+    test fixture for user
+    '''
     with vcr.use_cassette('test_users_create_success'):
-        user = sc.users.create('user', 'password', 2, group=0)
+        user = security_center.users.create('user', 'password', 2, group=0)
 
     def teardown():
         try:
             with vcr.use_cassette('test_users_delete_success'):
-                sc.users.delete(int(user['id']))
+                security_center.users.delete(int(user['id']))
         except APIError as error:
             log_exception(error)
 
@@ -179,6 +249,9 @@ def user(request, sc, vcr):
 
 @pytest.mark.vcr()
 def test_users_create_success(user):
+    '''
+    test users create for success
+    '''
     assert isinstance(user, dict)
     check(user, 'id', str)
     check(user, 'status', str)
@@ -238,8 +311,11 @@ def test_users_create_success(user):
 
 
 @pytest.mark.vcr()
-def test_users_edit_success(sc, user):
-    user = sc.users.edit(int(user['id']), username='newusername')
+def test_users_edit_success(security_center, user):
+    '''
+    test users edit for success
+    '''
+    user = security_center.users.edit(int(user['id']), username='newusername')
     assert isinstance(user, dict)
     check(user, 'id', str)
     check(user, 'status', str)
@@ -299,8 +375,11 @@ def test_users_edit_success(sc, user):
 
 
 @pytest.mark.vcr()
-def test_users_details_success(sc, user):
-    user = sc.users.details(int(user['id']))
+def test_users_details_success(security_center, user):
+    '''
+    test users details for success
+    '''
+    user = security_center.users.details(int(user['id']))
     assert isinstance(user, dict)
     check(user, 'id', str)
     check(user, 'status', str)
@@ -360,8 +439,11 @@ def test_users_details_success(sc, user):
 
 
 @pytest.mark.vcr()
-def test_users_details_success_for_fields(sc, user):
-    user = sc.users.details(int(user['id']), fields=['id', 'status', 'username'])
+def test_users_details_success_for_fields(security_center, user):
+    '''
+    test users details success for fields
+    '''
+    user = security_center.users.details(int(user['id']), fields=['id', 'status', 'username'])
     assert isinstance(user, dict)
     check(user, 'id', str)
     check(user, 'status', str)
@@ -369,8 +451,11 @@ def test_users_details_success_for_fields(sc, user):
 
 
 @pytest.mark.vcr()
-def test_users_list_success(sc):
-    users = sc.users.list(fields=['id', 'status', 'username'])
+def test_users_list_success(security_center):
+    '''
+    test users list for success
+    '''
+    users = security_center.users.list(fields=['id', 'status', 'username'])
     for user in users['users']:
         assert isinstance(user, dict)
         check(user, 'id', str)
@@ -379,5 +464,8 @@ def test_users_list_success(sc):
 
 
 @pytest.mark.vcr()
-def test_users_delete_success(sc, user):
-    sc.users.delete(int(user['id']))
+def test_users_delete_success(security_center, user):
+    '''
+    test users delete for success
+    '''
+    security_center.users.delete(int(user['id']))
