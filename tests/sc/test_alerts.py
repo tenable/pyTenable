@@ -1,13 +1,20 @@
+'''
+test file to test various scenarios in sc alerts
+'''
 import pytest
-from ..checker import check
+
 from tenable.errors import APIError, UnexpectedValueError
 from tests.pytenable_log_handler import log_exception
+from ..checker import check
 
 
 @pytest.fixture
-def alert(request, vcr, sc):
+def alert(request, vcr, security_center):
+    '''
+    test fixture for alert
+    '''
     with vcr.use_cassette('alert'):
-        alert = sc.alerts.create(
+        alert = security_center.alerts.create(
             ('severity', '=', '3,4'),
             name='Example Alert',
             trigger=('sumip', '>=', '100'),
@@ -19,7 +26,7 @@ def alert(request, vcr, sc):
 
     def teardown():
         try:
-            sc.alerts.delete(int(alert['id']))
+            security_center.alerts.delete(int(alert['id']))
         except APIError as error:
             log_exception(error)
 
@@ -27,60 +34,93 @@ def alert(request, vcr, sc):
     return alert
 
 
-def test_alerts_constructor_name_typeerror(sc):
+def test_alerts_constructor_name_typeerror(security_center):
+    '''
+    test alerts constructor for name type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(name=1)
+        security_center.alerts._constructor(name=1)
 
 
-def test_alerts_constructor_description_typeerror(sc):
+def test_alerts_constructor_description_typeerror(security_center):
+    '''
+    test alerts constructor for description type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(description=1)
+        security_center.alerts._constructor(description=1)
 
 
-def test_alerts_constructor_query_typeerror(sc):
+def test_alerts_constructor_query_typeerror(security_center):
+    '''
+    test alerts constructor for query type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(query=1)
+        security_center.alerts._constructor(query=1)
 
 
-def test_alerts_constructor_always_exec_on_trigger_typeerror(sc):
+def test_alerts_constructor_always_exec_on_trigger_typeerror(security_center):
+    '''
+    test alerts constructor for 'always exec on trigger' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(always_exec_on_trigger='nope')
+        security_center.alerts._constructor(always_exec_on_trigger='nope')
 
 
-def test_alerts_constructor_trigger_typeerror(sc):
+def test_alerts_constructor_trigger_typeerror(security_center):
+    '''
+    test alerts constructor for trigger type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(trigger=1)
+        security_center.alerts._constructor(trigger=1)
 
 
-def test_alerts_constructor_trigger_name_typeerror(sc):
+def test_alerts_constructor_trigger_name_typeerror(security_center):
+    '''
+    test alerts constructor for 'trigger name' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(trigger=(1, '=', 'something'))
+        security_center.alerts._constructor(trigger=(1, '=', 'something'))
 
 
-def test_alerts_constructor_trigger_operator_typeerror(sc):
+def test_alerts_constructor_trigger_operator_typeerror(security_center):
+    '''
+    test alerts constructor for 'trigger operator' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(trigger=('name', 1, 'something'))
+        security_center.alerts._constructor(trigger=('name', 1, 'something'))
 
 
-def test_alerts_constructor_trigger_operator_unexpectedvalueerror(sc):
+def test_alerts_constructor_trigger_operator_unexpectedvalueerror(security_center):
+    '''
+    test alerts constructor for 'trigger operator' unexpected value error
+    '''
     with pytest.raises(UnexpectedValueError):
-        sc.alerts._constructor(trigger=('name', 'eq', 'something'))
+        security_center.alerts._constructor(trigger=('name', 'eq', 'something'))
 
 
-def test_alerts_constructor_trigger_value_typeerror(sc):
+def test_alerts_constructor_trigger_value_typeerror(security_center):
+    '''
+    test alerts constructor for 'trigger value' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(trigger=('name', '=', 1))
+        security_center.alerts._constructor(trigger=('name', '=', 1))
 
 
-def test_alerts_constructor_success(sc):
-    alert = sc.alerts._constructor(query_id=1,
-                                   always_exec_on_trigger=True,
-                                   schedule={'type': 'ical'})
+def test_alerts_constructor_success(security_center):
+    '''
+    test alerts constructor for success
+    '''
+    alert = security_center.alerts._constructor(query_id=1,
+                                                always_exec_on_trigger=True,
+                                                schedule={'type': 'ical'})
     assert isinstance(alert, dict)
 
 
-def test_alerts_constructor(sc):
-    alert = sc.alerts._constructor(
+def test_alerts_constructor(security_center):
+    '''
+    test alerts constructor
+    '''
+    alert = security_center.alerts._constructor(
         ('severity', '=', '3,4'),
         name='Example Alert',
         trigger=('sumip', '>=', '100'),
@@ -108,14 +148,20 @@ def test_alerts_constructor(sc):
     }
 
 
-def test_alerts_list_fields_typeerror(sc):
+def test_alerts_list_fields_typeerror(security_center):
+    '''
+    test alerts for list fields type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts.list(fields=1)
+        security_center.alerts.list(fields=1)
 
 
 @pytest.mark.vcr()
-def test_alerts_list_success(sc, alert):
-    alerts = sc.alerts.list()
+def test_alerts_list_success(security_center, alert):
+    '''
+    test alerts for list success
+    '''
+    alerts = security_center.alerts.list()
     assert isinstance(alerts, dict)
     for alert in alerts['manageable']:
         check(alert, 'description', str)
@@ -124,19 +170,28 @@ def test_alerts_list_success(sc, alert):
         check(alert, 'status', str)
 
 
-def test_alerts_details_id_typeerror(sc):
+def test_alerts_details_id_typeerror(security_center):
+    '''
+    test alerts for 'details id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts.details('nope')
+        security_center.alerts.details('nope')
 
 
-def test_alerts_fields_typeerror(sc):
+def test_alerts_fields_typeerror(security_center):
+    '''
+    test alerts for fields type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts.details(1, fields=1)
+        security_center.alerts.details(1, fields=1)
 
 
 @pytest.mark.vcr()
-def test_alerts_details_success(sc, alert):
-    alert = sc.alerts.details(int(alert['id']))
+def test_alerts_details_success(security_center, alert):
+    '''
+    test alerts for details success
+    '''
+    alert = security_center.alerts.details(int(alert['id']))
     assert isinstance(alert, dict)
     check(alert, 'action', list)
     for action in alert['action']:
@@ -219,7 +274,10 @@ def test_alerts_details_success(sc, alert):
 
 
 @pytest.mark.vcr()
-def test_alerts_create_success(sc, alert):
+def test_alerts_create_success(alert):
+    '''
+    test alerts for create success
+    '''
     assert isinstance(alert, dict)
     check(alert, 'action', list)
     for action in alert['action']:
@@ -301,14 +359,20 @@ def test_alerts_create_success(sc, alert):
     check(alert, 'triggerValue', str)
 
 
-def test_alerts_edit_id_typerror(sc):
+def test_alerts_edit_id_typerror(security_center):
+    '''
+    test alerts for 'edit id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts.edit('one')
+        security_center.alerts.edit('one')
 
 
 @pytest.mark.vcr()
-def test_alerts_edit_success(sc, alert):
-    alert = sc.alerts.edit(int(alert['id']), name='new name for example')
+def test_alerts_edit_success(security_center, alert):
+    '''
+    test alerts for edit success
+    '''
+    alert = security_center.alerts.edit(int(alert['id']), name='new name for example')
     assert isinstance(alert, dict)
     check(alert, 'action', list)
     for action in alert['action']:
@@ -390,24 +454,36 @@ def test_alerts_edit_success(sc, alert):
     check(alert, 'triggerValue', str)
 
 
-def test_alerts_delete_id_typeerror(sc):
+def test_alerts_delete_id_typeerror(security_center):
+    '''
+    test alerts for 'delete id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts.delete('one')
+        security_center.alerts.delete('one')
 
 
 @pytest.mark.vcr()
-def test_alerts_delete_success(sc, alert):
-    sc.alerts.delete(int(alert['id']))
+def test_alerts_delete_success(security_center, alert):
+    '''
+    test alerts for delete success
+    '''
+    security_center.alerts.delete(int(alert['id']))
 
 
-def test_alerts_execute_id_typeerror(sc):
+def test_alerts_execute_id_typeerror(security_center):
+    '''
+    test alerts for 'execute id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts.execute('one')
+        security_center.alerts.execute('one')
 
 
 @pytest.mark.vcr()
-def test_alerts_execute_success(sc, alert):
-    alert = sc.alerts.execute(int(alert['id']))
+def test_alerts_execute_success(security_center, alert):
+    '''
+    test alerts for execute success
+    '''
+    alert = security_center.alerts.execute(int(alert['id']))
     assert isinstance(alert, dict)
     check(alert, 'action', list)
     for action in alert['action']:

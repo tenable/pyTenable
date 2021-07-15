@@ -1,35 +1,54 @@
+'''
+test file for testing various scenarios in security center's role functionality
+'''
 import pytest
-from ..checker import check
+
 from tenable.errors import APIError, UnexpectedValueError
 from tests.pytenable_log_handler import log_exception
+from ..checker import check
 
 
-def test_roles_constructor_name_typeerror(sc):
+def test_roles_constructor_name_typeerror(security_center):
+    '''
+    test roles constructor for name type error
+    '''
     with pytest.raises(TypeError):
-        sc.roles._constructor(name=1)
+        security_center.roles._constructor(name=1)
 
 
-def test_roles_constructor_description_typeerror(sc):
+def test_roles_constructor_description_typeerror(security_center):
+    '''
+    test roles constructor for description type error
+    '''
     with pytest.raises(TypeError):
-        sc.roles._constructor(description=1)
+        security_center.roles._constructor(description=1)
 
 
-def test_roles_constructor_role_mapping_typeerror(sc):
+def test_roles_constructor_role_mapping_typeerror(security_center):
+    '''
+    test roles constructor for 'role mapping' type error
+    '''
     with pytest.raises(TypeError):
-        sc.roles._constructor(can_view_logs='nothing')
+        security_center.roles._constructor(can_view_logs='nothing')
 
 
-def test_roles_constructor_can_scan_(sc):
+def test_roles_constructor_can_scan_(security_center):
+    '''
+    test roles constructor for 'can scan' type error
+    '''
     with pytest.raises(TypeError):
-        sc.roles._constructor(can_scan=True)
+        security_center.roles._constructor(can_scan=True)
     with pytest.raises(UnexpectedValueError):
-        sc.roles._constructor(can_scan='something')
-    assert sc.roles._constructor(can_scan='full') == {'permScan': 'full'}
-    assert sc.roles._constructor(can_scan='Full') == {'permScan': 'full'}
+        security_center.roles._constructor(can_scan='something')
+    assert security_center.roles._constructor(can_scan='full') == {'permScan': 'full'}
+    assert security_center.roles._constructor(can_scan='Full') == {'permScan': 'full'}
 
 
-def test_roles_constructor_success(sc):
-    role = sc.roles._constructor(
+def test_roles_constructor_success(security_center):
+    '''
+    test roles constructor for success
+    '''
+    role = security_center.roles._constructor(
         name='Example',
         description='stuff',
         manage_attributes=True,
@@ -49,14 +68,17 @@ def test_roles_constructor_success(sc):
 
 
 @pytest.fixture
-def role(request, sc, vcr):
+def role(request, security_center, vcr):
+    '''
+    test fixture for role
+    '''
     with vcr.use_cassette('test_roles_create_success'):
-        role = sc.roles.create('Example Role')
+        role = security_center.roles.create('Example Role')
 
     def teardown():
         try:
             with vcr.use_cassette('test_roles_delete_success'):
-                sc.roles.delete(int(role['id']))
+                security_center.roles.delete(int(role['id']))
         except APIError as error:
             log_exception(error)
 
@@ -65,7 +87,10 @@ def role(request, sc, vcr):
 
 
 @pytest.mark.vcr()
-def test_roles_create_success(sc, role):
+def test_roles_create_success(role):
+    '''
+    test roles create for success
+    '''
     assert isinstance(role, dict)
     check(role, 'id', str)
     check(role, 'name', str)
@@ -99,8 +124,11 @@ def test_roles_create_success(sc, role):
 
 
 @pytest.mark.vcr()
-def test_roles_details_success(sc, role):
-    role = sc.roles.details(int(role['id']))
+def test_roles_details_success(security_center, role):
+    '''
+    test roles details for success
+    '''
+    role = security_center.roles.details(int(role['id']))
     assert isinstance(role, dict)
     check(role, 'id', str)
     check(role, 'name', str)
@@ -143,8 +171,11 @@ def test_roles_details_success(sc, role):
 
 
 @pytest.mark.vcr()
-def test_roles_details_success_for_fields(sc, role):
-    role = sc.roles.details(int(role['id']), fields=['id', 'name', 'description'])
+def test_roles_details_success_for_fields(security_center, role):
+    '''
+    test roles details success for fields
+    '''
+    role = security_center.roles.details(int(role['id']), fields=['id', 'name', 'description'])
     assert isinstance(role, dict)
     check(role, 'id', str)
     check(role, 'name', str)
@@ -152,16 +183,22 @@ def test_roles_details_success_for_fields(sc, role):
 
 
 @pytest.mark.vcr()
-def test_roles_list_success(sc):
-    for role in sc.roles.list(fields=['id', 'name']):
+def test_roles_list_success(security_center):
+    '''
+    test roles list for success
+    '''
+    for role in security_center.roles.list(fields=['id', 'name']):
         assert isinstance(role, dict)
         check(role, 'id', str)
         check(role, 'name', str)
 
 
 @pytest.mark.vcr()
-def test_roles_edit_success(sc, role):
-    role = sc.roles.edit(int(role['id']), name='Updated Role')
+def test_roles_edit_success(security_center, role):
+    '''
+    test roles edit for success
+    '''
+    role = security_center.roles.edit(int(role['id']), name='Updated Role')
     assert isinstance(role, dict)
     check(role, 'id', str)
     check(role, 'name', str)
@@ -195,5 +232,8 @@ def test_roles_edit_success(sc, role):
 
 
 @pytest.mark.vcr()
-def test_roles_delete_success(sc, role):
-    sc.roles.delete(int(role['id']))
+def test_roles_delete_success(security_center, role):
+    '''
+    test roles delete for success
+    '''
+    security_center.roles.delete(int(role['id']))
