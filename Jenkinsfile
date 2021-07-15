@@ -134,7 +134,9 @@ try {
 	common.setResultIfNotSet(Constants.JSUCCESS)
 
 
-} catch(ex) {
+}
+}
+catch(ex) {
 	common.logException(ex)
 	common.setResultAbortedOrFailure()
 	throw ex
