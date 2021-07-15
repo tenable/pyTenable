@@ -90,9 +90,7 @@ try {
 			    sh """
 				mkdir reports
 				touch reports/pylint_tenable.log
-				touch reports/yamllint_tenable.log
 				pip install pylint
-				pip install yamllint
                 pylint --rcfile=.pylintrc --exit-zero --output-format=parseable --reports=n tenable tests > reports/pylint_tenable.log
                 """
 			     } catch(ex) {
@@ -114,9 +112,10 @@ try {
 			try {
 			    sh
 			    """
-                yamllint -c config/.yamllint tests/io/cassettes >> reports/yamllint_tenable.log
-                yamllint -c config/.yamllint tests/sc/cassettes >> reports/yamllint_tenable.log
-                yamllint -c config/.yamllint tests/cs/cassettes >> reports/yamllint_tenable.log
+			    mkdir reports
+			    touch reports/yamllint_tenable.log
+			    pip install yamllint
+                yamllint -c .yamllint tests/io/cassettes tests/sc/cassettes tests/cs/cassettes > reports/yamllint_tenable.log
                 """
 			     } catch(ex) {
 			       throw ex
