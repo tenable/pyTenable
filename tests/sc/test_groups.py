@@ -12,7 +12,7 @@ def test_groups_constructor_name_typeerror(security_center):
     test groups constructor name for type error
     '''
     with pytest.raises(TypeError):
-        security_center.groups._constructor(name=1)
+        getattr(security_center.groups, '_constructor')(name=1)
 
 
 def test_groups_constructor_description_typeerror(security_center):
@@ -20,7 +20,7 @@ def test_groups_constructor_description_typeerror(security_center):
     test groups constructor description for type error
     '''
     with pytest.raises(TypeError):
-        security_center.groups._constructor(description=1)
+        getattr(security_center.groups, '_constructor')(description=1)
 
 
 def test_groups_constructor_list_mapping_typeerror(security_center):
@@ -31,7 +31,7 @@ def test_groups_constructor_list_mapping_typeerror(security_center):
              'query_ids', 'scan_creds', 'dashboards', 'report_cards', 'audit_files']
     for i in items:
         with pytest.raises(TypeError):
-            security_center.groups._constructor(**{i: 1})
+            getattr(security_center.groups, '_constructor')(**{i: 1})
 
 
 def test_groups_constructor_list_item_mapping_typeerror(security_center):
@@ -42,14 +42,14 @@ def test_groups_constructor_list_item_mapping_typeerror(security_center):
              'query_ids', 'scan_creds', 'dashboards', 'report_cards', 'audit_files']
     for item in items:
         with pytest.raises(TypeError):
-            security_center.groups._constructor(**{item: ['one']})
+            getattr(security_center.groups, '_constructor')(**{item: ['one']})
 
 
 def test_groups_constructor_success(security_center):
     '''
     test groups constructor for success
     '''
-    group = security_center.groups._constructor(
+    group = getattr(security_center.groups, '_constructor')(
         name='Example',
         description='Stuff',
         viewable=[1, 2, 3],
@@ -175,20 +175,20 @@ def test_groups_details_success(security_center, group):
     check(group_details, 'createdTime', str)
     check(group_details, 'modifiedTime', str)
     check(group_details, 'userCount', int)
-    keylist = ['definingAssets', 'lces', 'repositories', 'assets', 'policies',
+    key_list = ['definingAssets', 'lces', 'repositories', 'assets', 'policies',
                'queries', 'credentials', 'dashboardTabs', 'arcs', 'auditFiles']
-    for i in keylist:
-        check(g, i, list)
-        for j in g[i]:
-            check(j, 'id', str)
-            check(j, 'name', str)
-            check(j, 'description', str)
-            if i == 'lces':
-                check(j, 'version', str)
-            if i == 'repositories':
-                check(j, 'lastVulnUpdate', str)
-                check(j, 'type', str)
-                check(j, 'dataFormat', str)
+    for data in key_list:
+        check(group_details, data, list)
+        for info in group_details[data]:
+            check(info, 'id', str)
+            check(info, 'name', str)
+            check(info, 'description', str)
+            if data == 'lces':
+                check(info, 'version', str)
+            if data == 'repositories':
+                check(info, 'lastVulnUpdate', str)
+                check(info, 'type', str)
+                check(info, 'dataFormat', str)
 
 
 @pytest.mark.vcr()
