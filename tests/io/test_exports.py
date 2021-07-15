@@ -1,10 +1,13 @@
 '''
 test exports
 '''
+import time
+import uuid
 import pytest
-from tenable.errors import UnexpectedValueError
-from tenable.io.exports import ExportsIterator
 from ..checker import check
+from tenable.io.exports import ExportsIterator
+from tests.pytenable_log_handler import log_exception
+from tenable.errors import UnexpectedValueError, TioExportsError
 
 
 @pytest.mark.vcr()
@@ -61,8 +64,8 @@ def test_exports_vuln_cidr_range_invalid_cidr(api):
 
 def test_process_page(api):
     '''test to process the page'''
-    exports_iterator = ExportsIterator(api.exports._api)
-    exports_iterator._process_page(page_data='page_data')
+    exports_iterator = ExportsIterator(getattr(api.exports, '_api'))
+    getattr(exports_iterator, '_process_page')(page_data='page_data')
     assert exports_iterator.page is not None
     assert exports_iterator.page == 'page_data'
 
@@ -82,7 +85,6 @@ def test_exports_vulns_success(api):
         tags=[('tag_name', 'tag_value')],
         vpr={'gte': 7},
     )
-    print(vulns)
     assert isinstance(vulns, ExportsIterator)
 
 
@@ -242,7 +244,6 @@ def test_exports_assets(api):
     check(asset, 'first_seen', str, allow_none=True)
     check(asset, 'fqdns', list)
     check(asset, 'has_agent', bool)
-    check(asset, 'has_plugin_results', bool)
     check(asset, 'hostnames', list)
     check(asset, 'id', 'uuid')
     check(asset, 'ipv4s', list)
@@ -274,3 +275,105 @@ def test_exports_assets(api):
     check(asset, 'terminated_at', str, allow_none=True)
     check(asset, 'terminated_by', str, allow_none=True)
     check(asset, 'updated_at', str)
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_num_findings_typeerror(api):
+    '''test to raise exception when type of num_findings param does not match the expected type'''
+    with pytest.raises(TypeError):
+        api.exports.compliance(num_findings='something')
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_num_findings_unexpectedvalueerror(api):
+    '''test to raise exception when num_findings param value does not match the choices'''
+    with pytest.raises(UnexpectedValueError):
+        api.exports.compliance(num_findings=1)
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_asset_typeerror(api):
+    '''test to raise exception when type of asset param does not match the expected type'''
+    with pytest.raises(TypeError):
+        api.exports.compliance(asset='something')
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_asset_unexpectedvalueerror(api):
+    '''test to raise exception when any of asset param value
+    does not match the expected type'''
+    with pytest.raises(UnexpectedValueError):
+        api.exports.compliance(asset=['something'])
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_asset_limit_exceed_unexpectedvalueerror(api):
+    '''test to raise exception when count of asset param values exceeds allowed count'''
+    with pytest.raises(UnexpectedValueError):
+        api.exports.compliance(asset=[str(uuid.uuid4()) for _ in range(202)])
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_last_seen_typeerror(api):
+    ''''test to raise exception when type of last_seen param does not match the expected type'''
+    with pytest.raises(TypeError):
+        api.exports.compliance(last_seen='something')
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_first_seen_typeerror(api):
+    '''test to raise exception when type of first_seen param does not match the expected type'''
+    with pytest.raises(TypeError):
+        api.exports.compliance(last_seen=1, first_seen='something')
+
+
+@pytest.mark.vcr()
+def test_exports_compliance_success(api):
+    '''test to export the compliance data'''
+    last_seen = int(time.time()) - (12 * 60 * 60)
+    compliance = api.exports.compliance(num_findings=51,
+                                        last_seen=last_seen
+                                        )
+    assert isinstance(compliance, ExportsIterator)
+
+
+@pytest.mark.vcr()
+def test_exports_compliance(api):
+    '''test to export the compliance data'''
+    compliance = api.exports.compliance(last_seen=1626168578)
+    assert isinstance(compliance, ExportsIterator)
+    try:
+        for resp in compliance:
+            # common keys for all status types
+            check(resp, 'asset_uuid', 'uuid')
+            if 'audit_file' in resp:
+                check(resp, 'audit_file', str)
+            check(resp, 'check_id', str)
+            if 'check_name' in resp:
+                check(resp, 'check_name', str)
+            check(resp, 'first_seen', str)
+            check(resp, 'last_seen', str)
+            check(resp, 'plugin_id', int)
+            check(resp, 'status', str)
+
+            # keys available in failed and warning and may be available in other status types
+            if resp['status'] == 'FAILED' or resp['status'] == 'WARNING':
+                check(resp, 'check_info', str)
+                check(resp, 'see_also', str)
+                check(resp, 'solution', str)
+                check(resp, 'reference', list)
+
+                for data in resp['reference']:
+                    check(data, 'control', str)
+                    check(data, 'framework', str)
+
+            # keys available in passed, failed and warning type status
+            if resp['status'] == 'FAILED' or resp['status'] == 'WARNING':
+                check(resp, 'expected_value', str)
+
+            # keys available in error type status
+            if resp['status'] == 'ERROR':
+                check(resp, 'check_error', str)
+    except TioExportsError as error:
+        print(error.msg)
+        log_exception(error)

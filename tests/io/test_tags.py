@@ -4,8 +4,9 @@ test tags
 import uuid
 import pytest
 from tests.checker import check, single
-from tenable.errors import UnexpectedValueError, NotFoundError
 from tenable.io.tags import TagsIterator
+from tests.pytenable_log_handler import log_exception
+from tenable.errors import UnexpectedValueError
 
 
 @pytest.fixture(name='tagfilters')
@@ -37,18 +38,17 @@ def fixture_filterdefs():
 @pytest.mark.vcr()
 def fixture_tagvalue(request, api):
     '''
-    Fixture to create tag value
+    Fixture to create tag value. Please note that If the tag value already exist
+    in the instance, it deletes that tag and create one
     '''
-    tag = api.tags.create('Example', 'Test Tag3')
+    tag = api.tags.create('Example', str(uuid.uuid4()))
 
     def teardown():
         '''
         cleanup function to delete tag value
         '''
-        try:
-            api.tags.delete(tag['uuid'])
-        except NotFoundError:
-            pass
+        api.tags.delete(tag['uuid'])
+        assert not tag_exists(api, tag['uuid'])
 
     request.addfinalizer(teardown)
     return tag
@@ -60,16 +60,38 @@ def fixture_tagcat(request, api):
     '''
     Fixture to create tag category
     '''
-    tag = api.tags.create_category('Example3')
+    tag = api.tags.create_category('Example category')
 
     def teardown():
         '''
         cleanup function to delete tag category
         '''
-        try:
-            api.tags.delete_category(tag['uuid'])
-        except NotFoundError:
-            pass
+        api.tags.delete_category(tag['uuid'])
+
+    request.addfinalizer(teardown)
+    return tag
+
+
+@pytest.fixture(name='custom_tagvalue')
+@pytest.mark.vcr()
+def fixture_custom_tagvalue(request, api, user, tagfilters):
+    '''
+    Fixture to create tag value. Please note that If the tag value already exist
+    in the instance, it deletes that tag and create one
+    '''
+    value_uuid = 'tag value uuid: {}'.format(str(uuid.uuid4()))
+    tag = api.tags.create('Example', value=value_uuid,
+                          all_users_permissions=['CAN_EDIT'],
+                          current_domain_permissions=[(user['uuid'], user['username'], 'user', ['CAN_EDIT'])],
+                          filters=tagfilters)
+
+    def teardown():
+        '''
+        cleanup function to delete tag value
+        '''
+        api.tags.delete(tag['uuid'])
+
+        assert not tag_exists(api, tag['uuid'])
 
     request.addfinalizer(teardown)
     return tag
@@ -316,7 +338,7 @@ def test_tags_create_value_category_description_typeerror(api):
     param does not match the expected type.
     '''
     with pytest.raises(TypeError):
-        api.tags.create('', '', category_description=1)
+        api.tags.create('a7b7ebf6-8aaf-4509-a5b3-872b7647fa86', '', category_description=1)
 
 
 @pytest.mark.vcr()
@@ -380,36 +402,31 @@ def test_tags_create_success(tagvalue):
 
 
 @pytest.mark.vcr()
-def test_tags_create_filters_and_access_control_success(api, user, tagfilters):
+def test_tags_create_filters_and_access_control_success(api, tagfilters, user, custom_tagvalue):
     '''
     test to create tag value and assign all_users_permissions,
     current_domain_permission and filters
     '''
-    tagvalue = api.tags.create('Example', 'Test',
-                               all_users_permissions=['CAN_EDIT'],
-                               current_domain_permissions=[(user['uuid'], user['username'], 'user', ['CAN_EDIT'])],
-                               filters=tagfilters)
-    assert isinstance(tagvalue, dict)
-    check(tagvalue, 'uuid', 'uuid')
-    check(tagvalue, 'created_at', 'datetime')
-    check(tagvalue, 'updated_at', 'datetime')
-    check(tagvalue, 'updated_by', str)
-    check(tagvalue, 'category_uuid', 'uuid')
-    check(tagvalue, 'value', str)
+    assert isinstance(custom_tagvalue, dict)
+    check(custom_tagvalue, 'uuid', 'uuid')
+    check(custom_tagvalue, 'created_at', 'datetime')
+    check(custom_tagvalue, 'updated_at', 'datetime')
+    check(custom_tagvalue, 'updated_by', str)
+    check(custom_tagvalue, 'category_uuid', 'uuid')
+    check(custom_tagvalue, 'value', str)
     # check(tagvalue, 'description', str, allow_none=True)
     # check(tagvalue, 'category_description', str, allow_none=True)
-    check(tagvalue, 'access_control', dict)
-    check(tagvalue['access_control'], 'all_users_permissions', list)
-    check(tagvalue['access_control'], 'current_domain_permissions', list)
-    check(tagvalue['access_control'], 'current_user_permissions', list)
-    check(tagvalue['access_control'], 'defined_domain_permissions', list)
-    check(tagvalue, 'filters', dict, allow_none=True)
-    assert tagvalue['access_control']['all_users_permissions'] == ['CAN_EDIT']
+    check(custom_tagvalue, 'access_control', dict)
+    check(custom_tagvalue['access_control'], 'all_users_permissions', list)
+    check(custom_tagvalue['access_control'], 'current_domain_permissions', list)
+    check(custom_tagvalue['access_control'], 'current_user_permissions', list)
+    check(custom_tagvalue['access_control'], 'defined_domain_permissions', list)
+    check(custom_tagvalue, 'filters', dict, allow_none=True)
+    assert custom_tagvalue['access_control']['all_users_permissions'] == ['CAN_EDIT']
     assert any(v['id'] == user['uuid']
-               for v in tagvalue['access_control']['current_domain_permissions'])
-    assert tagvalue['filters'] == {
+               for v in custom_tagvalue['access_control']['current_domain_permissions'])
+    assert custom_tagvalue['filters'] == {
         'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"192.168.0.0/24"}]}'}
-    api.tags.delete(tagvalue['uuid'])
 
 
 @pytest.mark.vcr()
@@ -417,8 +434,11 @@ def test_tags_create_category_name_typeerror(api):
     '''
     test to raise exception when type of name param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
-        api.tags.create_category(1)
+    try:
+        with pytest.raises(TypeError):
+            api.tags.create_category(1)
+    except Exception as err:
+        log_exception(err)
 
 
 @pytest.mark.vcr()
@@ -426,8 +446,11 @@ def test_tags_create_category_description_typeerror(api):
     '''
     test to raise exception when type of description param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
-        api.tags.create_category('', description=1)
+    try:
+        with pytest.raises(TypeError):
+            api.tags.create_category('', description=1)
+    except Exception as err:
+        log_exception(err)
 
 
 @pytest.mark.vcr()
@@ -494,8 +517,8 @@ def test_tags_delete_bulk_success(api):
     '''
     test to delete multiple tags .
     '''
-    tag1 = api.tags.create('Example', 'Test1')
-    tag2 = api.tags.create('Example', 'Test2')
+    tag1 = api.tags.create('Example', str(uuid.uuid4()))
+    tag2 = api.tags.create('Example', str(uuid.uuid4()))
     api.tags.delete(tag1['uuid'], tag2['uuid'])
 
 
@@ -700,17 +723,15 @@ def test_tags_edit_success(api, tagvalue):
 
 
 @pytest.mark.vcr()
-def test_tags_edit_filters_and_access_control_success(api, user, tagfilters):
+def test_tags_edit_filters_and_access_control_success(api, user, tagfilters, custom_tagvalue):
     '''
     test to edit tag value and update all_users_permissions,
     current_domain_permission and filters
     '''
-    tagvalue = api.tags.create('Example', 'Test',
-                               all_users_permissions=['CAN_EDIT'],
-                               current_domain_permissions=[(user['uuid'], user['username'], 'user', ['CAN_EDIT'])],
-                               filters=tagfilters)
-    resp = api.tags.edit(tagvalue['uuid'], filters=[('ipv4', 'eq', ['127.0.0.1'])],
-                         all_users_permissions=[], current_domain_permissions=[])
+    resp = api.tags.edit(custom_tagvalue['uuid'],
+                         filters=[('ipv4', 'eq', ['127.0.0.1'])],
+                         all_users_permissions=[],
+                         current_domain_permissions=[])
     assert isinstance(resp, dict)
     check(resp, 'uuid', 'uuid')
     check(resp, 'created_at', 'datetime')
@@ -728,14 +749,13 @@ def test_tags_edit_filters_and_access_control_success(api, user, tagfilters):
     check(resp['access_control'], 'current_domain_permissions', list)
     check(resp['access_control'], 'current_user_permissions', list)
     check(resp['access_control'], 'defined_domain_permissions', list)
-    check(tagvalue, 'filters', dict, allow_none=True)
+    check(custom_tagvalue, 'filters', dict, allow_none=True)
     assert resp['access_control']['all_users_permissions'] == []
     assert not any(v['id'] == user['uuid']
                    for v in resp['access_control']['current_domain_permissions'])
     assert resp['filters'] == {
         'asset': '{"and":[{"field":"ipv4","operator":"eq","value":"127.0.0.1"}]}'}
     assert resp['access_control']['version'] == 1
-    api.tags.delete(tagvalue['uuid'])
 
 
 @pytest.mark.vcr()
@@ -1048,5 +1068,15 @@ def test_tags_edit_without_filters(api):
             if 'filters' in tag_details:
                 api.tags.edit(tag_id)
                 flag = False
-        except:
+        except Exception as err:
             flag = False
+            log_exception(err)
+
+
+
+def tag_exists(api, tag_uuid):
+    '''function to check whether the tag value exists or not '''
+    if tag_uuid in api.tags.list():
+        return True
+    else:
+        return False

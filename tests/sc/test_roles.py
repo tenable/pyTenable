@@ -1,7 +1,7 @@
 import pytest
-
-from tenable.errors import APIError, UnexpectedValueError
 from ..checker import check
+from tenable.errors import APIError, UnexpectedValueError
+from tests.pytenable_log_handler import log_exception
 
 
 def test_roles_constructor_name_typeerror(sc):
@@ -57,8 +57,8 @@ def role(request, sc, vcr):
         try:
             with vcr.use_cassette('test_roles_delete_success'):
                 sc.roles.delete(int(role['id']))
-        except APIError:
-            pass
+        except APIError as error:
+            log_exception(error)
 
     request.addfinalizer(teardown)
     return role

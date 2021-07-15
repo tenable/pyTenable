@@ -11,6 +11,7 @@ from tenable.reports.nessusv2 import NessusReportv2
 from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputError
 from tests.checker import check, single
 from tests.io.conftest import SCAN_ID_WITH_RESULTS
+from tests.pytenable_log_handler import log_exception
 
 @pytest.fixture(name='scheduled_scan')
 def fixture_scheduled_scan(request, api):
@@ -31,7 +32,8 @@ def fixture_scheduled_scan(request, api):
         '''
         try:
             api.scans.delete(scan['id'])
-        except NotFoundError:
+        except NotFoundError as err:
+            log_exception(err)
             pass
 
     request.addfinalizer(teardown)
@@ -1375,7 +1377,7 @@ def test_scan_export_was_typeerror(api):
         api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='bad-value')
 
 @pytest.mark.vcr()
-def test_scan_export_bytesio(api):
+def test_scan_export_bytesio_stream_hook(api, scan_results):
     '''
     test to export scan using optional `stream_hook` kwarg, provided by user (Issue #305)
     '''
@@ -1390,7 +1392,7 @@ def test_scan_export_bytesio(api):
                 _fobj.write(chunk)
         stdout.write('Complete, %d/%d bytes received in stream_hook\n' % (progress_bytes, total_size))
 
-    fobj = api.scans.export(SCAN_ID_WITH_RESULTS, stream_hook=stream_hook)
+    fobj = api.scans.export(scan_results['id'], stream_hook=stream_hook)
     assert isinstance(fobj, BytesIO)
 
     counter = 0
@@ -1508,7 +1510,8 @@ def test_scan_host_details(api, scan_results):
             check(compliance, 'severity_index', int)
             check(compliance, 'plugin_family', str)
     except KeyError as key:
-        print('Key error: ', key)
+       log_exception(key)
+       print('Key error: ', key)
 
 
 @pytest.mark.vcr()
@@ -1713,6 +1716,7 @@ def test_scan_plugin_output(api, scan_results):
                     check(port_detail, 'hostname', str)
             check(data, 'severity', int)
     except KeyError as error:
+        log_exception(error)
         print('Invalid key', error)
 
 

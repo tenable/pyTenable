@@ -5,6 +5,7 @@ import uuid
 import pytest
 from tenable.errors import UnexpectedValueError, APIError
 from tests.checker import check
+from tests.pytenable_log_handler import log_exception
 
 @pytest.fixture(name='rules')
 def fixture_rules():
@@ -25,7 +26,8 @@ def fixture_agroup(request, api, rules):
         '''
         try:
             api.access_groups.delete(group['id'])
-        except APIError:
+        except APIError as err:
+            log_exception(err)
             pass
 
     request.addfinalizer(teardown)

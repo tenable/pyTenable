@@ -1,8 +1,7 @@
 import os
 import pytest
-
-from tenable.errors import UnexpectedValueError
 from ..checker import check
+from tenable.errors import UnexpectedValueError
 
 
 def test_feeds_feed_type_typeerror(sc):

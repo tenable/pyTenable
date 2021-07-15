@@ -5,6 +5,8 @@ import uuid
 import pytest
 from tenable.errors import UnexpectedValueError, APIError, InvalidInputError
 from tests.checker import check
+from tests.pytenable_log_handler import log_exception
+
 
 @pytest.fixture(name='network')
 def fixture_network(request, api, vcr):
@@ -13,6 +15,7 @@ def fixture_network(request, api, vcr):
     '''
     with vcr.use_cassette('test_networks_create_success'):
         network = api.networks.create('Network-{}'.format(uuid.uuid4()))
+
     def teardown():
         '''
         cleanup function to delete network
@@ -20,10 +23,13 @@ def fixture_network(request, api, vcr):
         try:
             with vcr.use_cassette('test_networks_delete_success'):
                 api.networks.delete(network['uuid'])
-        except APIError:
+        except APIError as err:
+            log_exception(err)
             pass
+
     request.addfinalizer(teardown)
     return network
+
 
 def test_networks_create_name_typeerror(api):
     '''
@@ -32,12 +38,14 @@ def test_networks_create_name_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.create(1, 'something')
 
+
 def test_networks_create_description_typeerror(api):
     '''
     test to raise exception when type of description param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.networks.create('something', 1)
+
 
 @pytest.mark.vcr()
 def test_networks_create_success(network):
@@ -58,12 +66,14 @@ def test_networks_create_success(network):
     check(network, 'created_in_seconds', int)
     check(network, 'modified_in_seconds', int)
 
+
 def test_networks_delete_id_typeerror(api):
     '''
     test to raise exception when type of network_id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.networks.delete(1)
+
 
 def test_networks_delete_id_unexpectedvalueerror(api):
     '''
@@ -72,12 +82,14 @@ def test_networks_delete_id_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.networks.delete('something')
 
+
 @pytest.mark.vcr()
 def test_networks_delete_success(api, network):
     '''
     test to delete network.
     '''
     api.networks.delete(network['uuid'])
+
 
 def test_networks_details_id_typeerror(api):
     '''
@@ -86,12 +98,14 @@ def test_networks_details_id_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.details(1)
 
+
 def test_networks_details_id_unexpectedvalueerror(api):
     '''
     test to raise exception when value of network_id param does not match the expected pattern.
     '''
     with pytest.raises(UnexpectedValueError):
         api.networks.details('something')
+
 
 @pytest.mark.vcr()
 def test_networks_details_success(api, network):
@@ -113,12 +127,14 @@ def test_networks_details_success(api, network):
     check(resp, 'created_in_seconds', int)
     check(resp, 'modified_in_seconds', int)
 
+
 def test_networks_edit_id_typeerror(api):
     '''
     test to raise exception when type of network_id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.networks.edit(1, 'something')
+
 
 def test_networks_edit_id_unexpectedvalueerror(api):
     '''
@@ -127,6 +143,7 @@ def test_networks_edit_id_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.networks.edit('something', 'something')
 
+
 def test_networks_edit_name_typeerror(api):
     '''
     test to raise exception when type of name param does not match the expected type.
@@ -134,12 +151,14 @@ def test_networks_edit_name_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.edit(str(uuid.uuid4()), 1)
 
+
 def test_networks_edit_description_typeerror(api):
     '''
     test to raise exception when type of description param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.networks.edit(str(uuid.uuid4()), 'something', 1)
+
 
 @pytest.mark.vcr()
 def test_networks_edit_success(api, network):
@@ -161,6 +180,7 @@ def test_networks_edit_success(api, network):
     check(resp, 'created_in_seconds', int)
     check(resp, 'modified_in_seconds', int)
 
+
 def test_networks_list_scanners_id_typeerror(api):
     '''
     test to raise exception when type of network_id param does not match the expected type.
@@ -168,12 +188,14 @@ def test_networks_list_scanners_id_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.list_scanners(1)
 
+
 def test_networks_list_scanners_id_unexpectedvalueerror(api):
     '''
     test to raise exception when value of network_id param does not match the expected pattern.
     '''
     with pytest.raises(UnexpectedValueError):
         api.networks.list_scanners('something')
+
 
 @pytest.mark.vcr()
 def test_networks_list_scanners_success(api):
@@ -192,6 +214,7 @@ def test_networks_list_scanners_success(api):
         check(scanner, 'status', str)
         check(scanner, 'group', bool)
 
+
 def test_networks_unassigned_scanners_id_typeerror(api):
     '''
     test to raise exception when type of network_id param does not match the expected type.
@@ -199,12 +222,14 @@ def test_networks_unassigned_scanners_id_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.unassigned_scanners(1)
 
+
 def test_networks_unassigned_scanners_id_unexpectedvalueerror(api):
     '''
     test to raise exception when value of network_id param does not match the expected pattern.
     '''
     with pytest.raises(UnexpectedValueError):
         api.networks.unassigned_scanners('something')
+
 
 @pytest.mark.vcr()
 def test_networks_unassigned_scanners_success(api, network):
@@ -223,12 +248,14 @@ def test_networks_unassigned_scanners_success(api, network):
         check(scanner, 'status', str)
         check(scanner, 'group', bool)
 
+
 def test_networks_assign_scanners_id_typeerror(api):
     '''
     test to raise exception when type of network_id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.networks.assign_scanners(1, str(uuid.uuid4()))
+
 
 def test_networks_assign_scanners_id_unexpectedvalueerror(api):
     '''
@@ -237,6 +264,7 @@ def test_networks_assign_scanners_id_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.networks.assign_scanners('something', str(uuid.uuid4()))
 
+
 def test_networks_assign_scanners_scanner_id_typeerror(api):
     '''
     test to raise exception when type of scanner_uuis param does not match the expected type.
@@ -244,12 +272,14 @@ def test_networks_assign_scanners_scanner_id_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.assign_scanners(str(uuid.uuid4()), 1)
 
+
 def test_networks_assign_scanners_scanner_id_unexpectedvalueerror(api):
     '''
     test to raise exception when value of scanner_uuid param does not match the expected pattern.
     '''
     with pytest.raises(UnexpectedValueError):
         api.networks.assign_scanners(str(uuid.uuid4()), 'something')
+
 
 @pytest.mark.vcr()
 def test_networks_assign_scanners_success(api, network, vcr):
@@ -261,6 +291,7 @@ def test_networks_assign_scanners_success(api, network, vcr):
             '00000000-0000-0000-0000-000000000000')[0]
     api.networks.assign_scanners(network['uuid'], scanner['uuid'])
 
+
 @pytest.mark.vcr()
 def test_networks_list_offset_typeerror(api):
     '''
@@ -268,6 +299,7 @@ def test_networks_list_offset_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.networks.list(offset='nope')
+
 
 @pytest.mark.vcr()
 def test_networks_list_limit_typeerror(api):
@@ -277,6 +309,7 @@ def test_networks_list_limit_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.list(limit='nope')
 
+
 @pytest.mark.vcr()
 def test_networks_list_sort_field_typeerror(api):
     '''
@@ -284,6 +317,7 @@ def test_networks_list_sort_field_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.networks.list(sort=((1, 'asc'),))
+
 
 @pytest.mark.vcr()
 def test_networks_list_sort_direction_typeerror(api):
@@ -293,6 +327,7 @@ def test_networks_list_sort_direction_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.list(sort=(('uuid', 1),))
 
+
 @pytest.mark.vcr()
 def test_networks_list_sort_direction_unexpectedvalue(api):
     '''
@@ -300,6 +335,7 @@ def test_networks_list_sort_direction_unexpectedvalue(api):
     '''
     with pytest.raises(UnexpectedValueError):
         api.networks.list(sort=(('uuid', 'nope'),))
+
 
 @pytest.mark.vcr()
 def test_networks_list_filter_name_typeerror(api):
@@ -309,6 +345,7 @@ def test_networks_list_filter_name_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.list((1, 'match', 'win'))
 
+
 @pytest.mark.vcr()
 def test_networks_list_filter_operator_typeerror(api):
     '''
@@ -316,6 +353,7 @@ def test_networks_list_filter_operator_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.networks.list(('name', 1, 'win'))
+
 
 @pytest.mark.vcr()
 def test_networks_list_filter_value_typeerror(api):
@@ -325,6 +363,7 @@ def test_networks_list_filter_value_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.list(('name', 'match', 1))
 
+
 @pytest.mark.vcr()
 def test_networks_list_filter_type_typeerror(api):
     '''
@@ -332,6 +371,7 @@ def test_networks_list_filter_type_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.networks.list(filter_type=1)
+
 
 @pytest.mark.vcr()
 def test_networks_list_wildcard_typeerror(api):
@@ -341,6 +381,7 @@ def test_networks_list_wildcard_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.list(wildcard=1)
 
+
 @pytest.mark.vcr()
 def test_networks_list_wildcard_fields_typeerror(api):
     '''
@@ -349,6 +390,7 @@ def test_networks_list_wildcard_fields_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.list(wildcard_fields='nope')
 
+
 @pytest.mark.vcr()
 def test_networks_list_include_deleted_typeerror(api):
     '''
@@ -356,6 +398,7 @@ def test_networks_list_include_deleted_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.networks.list(include_deleted='nope')
+
 
 @pytest.mark.vcr()
 def test_networks_list(api):
@@ -380,6 +423,7 @@ def test_networks_list(api):
         check(network, 'modified_in_seconds', int)
     assert count == networks.total
 
+
 @pytest.mark.vcr()
 def test_network_asset_count_network_id_typeerror(api):
     '''
@@ -387,6 +431,7 @@ def test_network_asset_count_network_id_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.networks.network_asset_count(1, 180)
+
 
 @pytest.mark.vcr()
 def test_network_asset_count_network_id_unexpectedvalueerror(api):
@@ -396,6 +441,7 @@ def test_network_asset_count_network_id_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.networks.network_asset_count('nope', 180)
 
+
 @pytest.mark.vcr()
 def test_network_asset_count_network_num_days_typeerror(api):
     '''
@@ -404,6 +450,7 @@ def test_network_asset_count_network_num_days_typeerror(api):
     with pytest.raises(TypeError):
         api.networks.network_asset_count('00000000-0000-0000-0000-000000000000', 'nope')
 
+
 @pytest.mark.vcr()
 def test_network_asset_count_network_num_days_invalidinputerror(api):
     '''
@@ -411,6 +458,7 @@ def test_network_asset_count_network_num_days_invalidinputerror(api):
     '''
     with pytest.raises(InvalidInputError):
         api.networks.network_asset_count('00000000-0000-0000-0000-000000000000', -180)
+
 
 @pytest.mark.vcr()
 def test_network_asset_count_network_success(api):
@@ -422,6 +470,7 @@ def test_network_asset_count_network_success(api):
     assert isinstance(resp, dict)
     check(resp, 'numAssetsTotal', int)
     check(resp, 'numAssetsNotSeen', int)
+
 
 @pytest.mark.vcr()
 def test_networks_assign_multiple_scanners_success(api, network, scanner):
@@ -440,6 +489,7 @@ def test_networks_unexpectedvalueerror(api, network):
     '''
     with pytest.raises(UnexpectedValueError):
         api.networks.assign_scanners(network['uuid'])
+
 
 @pytest.mark.vcr()
 def test_networks_list_fileds(api):
@@ -466,3 +516,31 @@ def test_networks_list_fileds(api):
         check(network, 'modified_by', 'uuid')
         check(network, 'created_in_seconds', int)
         check(network, 'modified_in_seconds', int)
+
+def test_network_create_assets_ttl_days_typeerror(api):
+    with pytest.raises(TypeError):
+        api.networks.create('New Name - {}'.format(uuid.uuid4()), 'something', 'something')
+
+
+@pytest.mark.vcr()
+def test_network_create_assets_ttl_days_invalid_input_error(api):
+    with pytest.raises(InvalidInputError):
+        api.networks.create('New Name - {}'.format(uuid.uuid4()), 'something', -5)
+
+
+@pytest.mark.vcr()
+def test_network_edit_assets_ttl_days_type_error(api):
+    with pytest.raises(TypeError):
+        network = api.networks.create('Network-{}'.format(uuid.uuid4()))
+        api.networks.edit(network_id=network['uuid'],
+                          name='New Name - {}'.format(uuid.uuid4()),
+                          assets_ttl_days='something')
+
+
+@pytest.mark.vcr()
+def test_network_edit_assets_ttl_days_invalid_input_error(api):
+    with pytest.raises(InvalidInputError):
+        network = api.networks.create('Network-{}'.format(uuid.uuid4()))
+        api.networks.edit(network_id=network['uuid'],
+                          name='something',
+                          assets_ttl_days=-5)

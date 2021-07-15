@@ -6,6 +6,7 @@ import time
 import pytest
 from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
 from ..checker import check
+from tests.pytenable_log_handler import log_exception
 
 
 @pytest.fixture
@@ -19,7 +20,8 @@ def agentgroup(request, api):
     def teardown():
         try:
             api.agent_groups.delete(group['id'])
-        except NotFoundError:
+        except NotFoundError as err:
+            log_exception(err)
             pass
 
     request.addfinalizer(teardown)

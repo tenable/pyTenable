@@ -1,7 +1,11 @@
+'''
+test base
+'''
+import responses
 from tenable.ot.assets import AssetsAPI
 from tenable.ot.network_interfaces import NetworkInterfacesAPI
 from tenable.ot.vulns import VulnsAPI
-import pytest, responses
+
 
 def test_ot_interfaces(ot):
     '''
@@ -50,4 +54,4 @@ def test_graph_api(ot):
     assert resp.data.asset.type == 'EngType'
     assert resp.data.asset.name == 'Eng. Station #40'
     assert resp.data.asset.criticality == 'HighCriticality'
-    assert resp.data.asset.location == None
+    assert resp.data.asset.location is None
