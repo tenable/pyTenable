@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.2]
+### Added
+- code owners file is added #366
+- Added export compliance API in IO package #358
+
+### Changed
+
+### Fixed
+
+- Fixed invalid creation date in row num  #341
+- Verified the import os problem of PR 299 #351 
+- Fixed the documentation issue in exclusions #352
+- Fixed self log in tenable.io, base, cs, downloads, dl, ot, reports #353 #370
+- Fixed github issue 298 io_exception_handling #354
+- Fixed github issue 304 tags.create() function #357
+- Fixed github issue 321 update_assets_ttl_days #360
+- Fixed Remediation scan with selected plugins only #362
+- Fixed Remediation and Compliance doc #365
+
+
+[1.3.2]: https://github.com/tenable/pyTenable/compare/1.3.1...1.3.2
+
+
 ## [1.3.1]
 ### Added
 - add tio.remediationscans endpoints #339
