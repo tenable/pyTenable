@@ -20,20 +20,6 @@ GlobalContext.put('appid', bparams.appid)
 common = new Common(this)
 buildsCommon = new BuildsCommon(this)
 
-def releasePackages() {
-
-	String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
-	withCredentials([[$class : 'UsernamePasswordMultiBinding',credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',passwordVariable : 'PYPIPASSWORD']]) { 
-		sh """
-			rm -rf dist
-			python setup.py sdist
-			pip install twine
-			twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
-		   """
-	}
-}
-
-
 void unittests(String version) {
 	stage("unittest${version}") {
 		node(Constants.DOCKERNODE) {
@@ -43,14 +29,14 @@ void unittests(String version) {
 			withContainer(image: "python:${version}-buster", registry: '', inside: '-u root --privileged -v /var/run/docker.sock:/var/run/docker.sock') {
 				try {
 					sh """
-                        python -m pip install --upgrade pip
-                        pip install -r test-requirements.txt
-                        pip install -r requirements.txt
+                        		python -m pip install --upgrade pip
+                        		pip install -r test-requirements.txt
+                        		pip install -r requirements.txt
 
-                        pytest --vcr-record=none --cov-report html:test-reports/coverage --junitxml=test-reports/junit/results.xml --junit-prefix=${version} --cov=tenable tests
-                        find . -name *.html
-                        find . -name *.xml
-                    """
+                        		pytest --vcr-record=none --cov-report html:test-reports/coverage --junitxml=test-reports/junit/results.xml --junit-prefix=${version} --cov=tenable tests
+                        		find . -name *.html
+                        		find . -name *.xml
+                    			"""
 				}
 				catch(ex) {
 					throw ex
@@ -95,30 +81,55 @@ try {
 	}
 
 	tasks['runPylint'] = {
-		stage('runPylint') {
+	  stage('runPylint') {
+		node(Constants.DOCKERNODE) {
+	        buildsCommon.cleanup()
+		    checkout scm
+				
+		    withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
+			try {
+			    sh """
+				mkdir reports
+				touch reports/pylint_tenable.log
+				pip install pylint
+               			pylint --rcfile=.pylintrc --exit-zero --output-format=parseable --reports=n tenable tests > reports/pylint_tenable.log
+               			"""
+			    } catch(ex) {
+			       throw ex
+			    } finally {
+			       result = recordIssues(
+			       enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 5000, failedTotalAll: 5000 )
+			    }
+			}
+		}
+	  }
+	}
+
+	parallel(tasks)
+
+	common.setResultIfNotSet(Constants.JSUCCESS)
+	tasks['runPyPI'] = {
+		stage('runPyPI') {
 			node(Constants.DOCKERNODE) {
+				buildsCommon.cleanup()
+				checkout scm
+
 				withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
+					steps {
 					try {
-						sh """
-						mkdir reports
-						pip install pylint
-                           			pylint --exit-zero --output-format=parseable --reports=n tenable > reports/pylint_tenable.log
-                           			pylint --exit-zero --output-format=parseable --reports=n tests > reports/pylint_tests.log
-                           			cat reports/pylint_tenable.log
-                           			cat reports/pylint_tests.log
-                        			"""
-					} catch(ex) {
-						throw ex
-					} finally {
-						if (fileExists('reports/pylint_tenable.log')) {
-							//result should available. TODO: to test
-							result = recordIssues(
-							enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 20, failedTotalAll: 30, )
-						}
-						if (fileExists('reports/pylint_test.log')) {
-							//result should available. TODO: to test
-							result = recordIssues(
-							enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_test.log'), unstableTotalAll: 20, failedTotalAll: 30, )
+						sh 	'''
+							sudo apt-get install jq
+							pypi_version=$(curl -Ls https://pypi.org/pypi/pyTenable/json | jq -r .info.version)
+							current_version=$(python -c "import tenable;print (tenable.__version__)")
+							if [ $pypi_version != $current_version ]
+							then
+							'''
+							releasePackages()
+						sh 	'''
+							fi
+							'''
+						} catch(ex) {
+							throw ex
 						}
 					}
 				}
@@ -126,38 +137,6 @@ try {
 		}
 	}
 
-	parallel(tasks)
-
-	common.setResultIfNotSet(Constants.JSUCCESS)
-	
-	tasks['runPyPI'] = {
-	  stage('runPyPI') {
-	    node(Constants.DOCKERNODE) {
-	      buildsCommon.cleanup()
-	      checkout scm
-
-	      withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
-		steps {
-		  try {
-		  sh '''
-		        sudo apt-get install jq
-		        pypi_version=$(curl -Ls https://pypi.org/pypi/pyTenable/json | jq -r .info.version)
-			current_version=$(python -c "import tenable;print (tenable.__version__)")
-			if [ $pypi_version != $current_version ]
-			then
-		    '''
-			releasePackages()
-		    sh '''
-			fi
-		    '''
-		  } catch(ex) {
-		    throw ex
-		  }
-		}
-	      }
-	    }
-	  }
-	}
 } catch(ex) {
 	common.logException(ex)
 	common.setResultAbortedOrFailure()
@@ -166,5 +145,3 @@ try {
 	common.setResultIfNotSet(Constants.JFAILURE)
 	buildsCommon.notifyPostBuild(bparams)
 }
-
-
