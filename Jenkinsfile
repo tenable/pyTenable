@@ -20,6 +20,19 @@ GlobalContext.put('appid', bparams.appid)
 common = new Common(this)
 buildsCommon = new BuildsCommon(this)
 
+def releasePackages() {
+
+	String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
+	withCredentials([[$class : 'UsernamePasswordMultiBinding',credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',passwordVariable : 'PYPIPASSWORD']]) { 
+		sh """
+			rm -rf dist
+			python setup.py sdist
+			pip install twine
+			twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+		   """
+	}
+}
+
 void unittests(String version) {
 	stage("unittest${version}") {
 		node(Constants.DOCKERNODE) {
