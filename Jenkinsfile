@@ -97,7 +97,7 @@ try {
             Nexusiq.execute(this, bparams)
         }
     }
-	tasks['runPylint'] = {
+    tasks['runPylint'] = {
 		stage('runPylint') {
 			node(Constants.DOCKERNODE) {
 				buildsCommon.cleanup()
@@ -105,12 +105,12 @@ try {
 				
 				withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
 					try {
-						sh """
+					sh """
 						mkdir reports
 						touch reports/pylint_tenable.log
 						pip install pylint
 						pylint --rcfile=.pylintrc --exit-zero --output-format=parseable --reports=n tenable tests > reports/pylint_tenable.log
-						"""
+					"""
 					} catch(ex) {
 						throw ex
 					} finally {
@@ -120,22 +120,21 @@ try {
 				}
 			}
 		}
-	}
+    }
 
 
     parallel(tasks)
 
     common.setResultIfNotSet(Constants.JSUCCESS)
 
-	tasks['runPyPI'] = {
+    tasks['runPyPI'] = {
 		stage('runPyPI') {
 			node(Constants.DOCKERNODE) {
 				buildsCommon.cleanup()
 				checkout scm
-
 				withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
 					steps {
-					try {
+						try {
 						sh 	'''
 							sudo apt-get install jq
 							pypi_version=$(curl -Ls https://pypi.org/pypi/pyTenable/json | jq -r .info.version)
