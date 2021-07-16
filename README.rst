@@ -5,7 +5,7 @@ Welcome to pyTenable's documentation!
    :target: https://github.com/tenable/pyTenable/actions
 .. image:: https://img.shields.io/pypi/v/pytenable.svg
    :target: https://pypi.org/project/pyTenable/
-.. image:: https://img.shields.io/pypi/pyversions/pyTenable.svg
+.. image:: https://img.shields.io/badge/python-3.6%203.7%203.8%203.9-blue
    :target: https://pypi.org/project/pyTenable/
 .. image:: https://img.shields.io/pypi/dm/pytenable
    :target: https://github.com/tenable/pytenable
