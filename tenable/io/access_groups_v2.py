@@ -68,7 +68,7 @@ class AccessGroupsV2API(TIOEndpoint):
 
     def _principal_constructor(
             self,
-            items: Union[Tuple, Dict]
+            items: List[Union[Tuple, Dict]]
     ) -> List[Dict[str, Union[str, List[str]]]]:
         '''
         Simple principle tuple expander.  Also supports validating principle
@@ -243,7 +243,7 @@ class AccessGroupsV2API(TIOEndpoint):
             self,
             name: str,
             rules: List[Tuple[str, str, Union[str, List[str]]]],
-            principals: Optional[List[Tuple[str, str, List[str]]]] = None,
+            principals: Optional[List[Union[Tuple, Dict]]] = None,
             all_users: Optional[bool] = False,
             access_group_type: Optional[str] = None
     ) -> Dict:

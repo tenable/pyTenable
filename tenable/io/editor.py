@@ -36,7 +36,7 @@ class EditorAPI(TIOEndpoint):
         Walks through the credential data list and returns the configured
         settings for a given scan policy/scan
         '''
-        resp = dict()
+        resp: Dict[str,dict] = dict()
         for dtype in data:
             for item in dtype['types']:
                 if len(item['instances']) > 0:
@@ -68,7 +68,7 @@ class EditorAPI(TIOEndpoint):
         Walks through the compliance data list and returns the configured
         settings for a given policy/scan
         '''
-        resp = {
+        resp: Dict[str, Any] = {
             'custom': list(),
             'feed': dict()
         }
@@ -107,7 +107,7 @@ class EditorAPI(TIOEndpoint):
             etype: str,
             families: Dict,
             id: int,
-            callfmt: Optional[str] = 'editor/{etype}/{id}/families/{fam}'
+            callfmt: str = 'editor/{etype}/{id}/families/{fam}'
     ) -> Dict:
         '''
         Walks through the plugin settings and will return the the configured

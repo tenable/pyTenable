@@ -30,7 +30,7 @@ Methods available on ``tio.workbenches``:
     .. automethod:: vuln_outputs
 '''
 from typing import Dict, List, Tuple, Union, Optional, AnyStr
-from typing.io import IO
+from typing import IO
 from .base import TIOEndpoint
 from tenable.errors import UnexpectedValueError
 from io import BytesIO
@@ -40,7 +40,7 @@ import time
 class WorkbenchesAPI(TIOEndpoint):
     def _workbench_query(
             self,
-            filters: Union[List[Tuple], Tuple[Tuple]],
+            filters: Tuple[tuple,...],
             kw: Dict,
             filterdefs: Dict
     ) -> Dict:

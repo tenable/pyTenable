@@ -132,9 +132,9 @@ class TagsAPI(TIOEndpoint):
 
     def _tag_value_constructor(
             self,
-            filters: List[Tuple[str, str, Union[str, List[str]]]],
+            filters: Optional[List[Tuple[str, str, Union[str, List[str]]]]],
             filterdefs: Dict,
-            filter_type: str
+            filter_type: Optional[str]
     ) -> Dict:
         '''
         A simple constructor to handle constructing the filter parameters for the
@@ -145,12 +145,13 @@ class TagsAPI(TIOEndpoint):
             choices=['and', 'or'], default='and', case='lower')
 
         # created default dictionary for payload filters key
-        payload_filters = dict({
+        payload_filters: Dict[str,dict] = dict({
             'asset': dict({
                 filter_type: list()
             })
         })
 
+        assert filters is not None
         if len(filters) > 0:
             # run the filters through the filter parser and update payload_filters
             parsed_filters = self._parse_filters(filters, filterdefs, rtype='assets')['asset']
@@ -565,7 +566,7 @@ class TagsAPI(TIOEndpoint):
 
     def _tag_list_constructor(
             self,
-            filters: Tuple[Tuple],
+            filters: Tuple[Tuple,...],
             filterdefs: Dict,
             filter_type: str,
             sort: Tuple[Tuple[str, str]]

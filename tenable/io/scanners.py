@@ -21,13 +21,13 @@ Methods available on ``tio.scanners``:
     .. automethod:: list
     .. automethod:: toggle_link_state
 '''
-from typing import List, Dict
+from typing import List, Dict, Union
 from .base import TIOEndpoint
 
 
 class ScannersAPI(TIOEndpoint):
 
-    def linking_key(self) -> str:
+    def linking_key(self) -> Union[str, None]:
         '''
         The linking key for the Tenable.io instance.
 
@@ -42,7 +42,7 @@ class ScannersAPI(TIOEndpoint):
         for scanner in scanners:
             if scanner['uuid'] == '00000000-0000-0000-0000-00000000000000000000000000001':
                 return scanner['key']
-
+        return None
     def allowed_scanners(self) -> List:
         '''
         A simple convenience function that returns the list of scanners that the

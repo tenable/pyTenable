@@ -202,7 +202,7 @@ class RemediationScansAPI(TIOEndpoint):
                 The resulting scan document based on the kwargs provided.
 
         '''
-        scan: Dict[str, Dict[Any, Any]] = {
+        scan: Dict[str, Any] = {
             'settings': dict(),
         }
 

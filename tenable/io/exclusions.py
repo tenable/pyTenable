@@ -21,7 +21,7 @@ Methods available on ``tio.exclusions``:
 from datetime import datetime
 from restfly.utils import dict_merge
 from typing import Dict, List, Optional, AnyStr
-from typing.io import IO
+from typing import IO
 from tenable.io.base import TIOEndpoint
 
 

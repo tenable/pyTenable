@@ -17,6 +17,7 @@ Methods available on ``tio.exports``:
 import time
 import sys
 from ipaddress import IPv4Network
+from typing import Dict, Any
 from appdirs import unicode
 from tenable.errors import TioExportsError, TioExportsTimeout
 from tenable.io.base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
@@ -267,7 +268,7 @@ class ExportsAPI(TIOEndpoint):
             ...     pprint(vuln)
         '''
         uuid = kw.get('uuid')
-        payload = {'filters': dict()}
+        payload: Dict[str, Any] = {'filters': dict()}
 
         # Instead of a long and drawn-out series of if statements for all of
         # these integer filters, lets instead just loop through all of them
@@ -449,7 +450,7 @@ class ExportsAPI(TIOEndpoint):
             ...     pprint(asset)
         '''
         uuid = kw.get('uuid')
-        payload = {'filters': dict()}
+        payload: Dict[str, dict] = {'filters': dict()}
         payload['chunk_size'] = self._check(
             'chunk_size', kw['chunk_size'] if 'chunk_size' in kw else None,
             int, default=1000)

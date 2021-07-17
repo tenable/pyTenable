@@ -19,7 +19,7 @@ from .base import TIOEndpoint
 class AuditLogAPI(TIOEndpoint):
     def events(
             self,
-            *filters: Optional[Tuple[str, str, str]],
+            *filters,
             **kw
     ) -> List[Dict]:
         '''

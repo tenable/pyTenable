@@ -24,7 +24,7 @@ class FiltersAPI(TIOEndpoint):
     '''
     This will contain all methods related to filters
     '''
-    _cache = dict()
+    _cache: Dict = dict()
 
     def _normalize(
             self,

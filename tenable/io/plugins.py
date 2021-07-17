@@ -64,6 +64,7 @@ class PluginIterator(TIOIterator):
             'plugins': dict(),
             'families': dict()
         }
+        assert self._api is not None
         for family in self._api.plugins.families():
             self._maptable['families'][family['id']] = family['name']
 

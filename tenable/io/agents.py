@@ -245,6 +245,7 @@ class AgentsAPI(TIOEndpoint):
                 self._check('scanner_id', scanner_id, int),
                 self._check('agent_id', agent_ids[0], int)
             ))
+            return None
         else:
             return self._api.post('scanners/{}/agents/_bulk/unlink'.format(
                 self._check('scanner_id', scanner_id, int)),

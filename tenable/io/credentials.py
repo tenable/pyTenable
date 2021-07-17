@@ -19,7 +19,7 @@ Methods available on ``tio.credentials``:
     .. automethod:: upload
 '''
 from typing import Dict, Union, Tuple, List, Optional, AnyStr
-from typing.io import IO
+from typing import IO
 from tenable.utils import dict_merge
 from .base import TIOEndpoint, TIOIterator
 
@@ -49,7 +49,7 @@ class CredentialsIterator(TIOIterator):
 class CredentialsAPI(TIOEndpoint):
     def _permissions_constructor(
             self,
-            permissions: List[Union[Tuple, Dict]]
+            permissions: List[Union[Dict,Tuple[str, str, str]]]
     ) -> List[Dict]:
         '''
         Validates and/or transforms thew permissions items into the desired
@@ -94,7 +94,7 @@ class CredentialsAPI(TIOEndpoint):
             cred_name: str,
             cred_type: str,
             description: Optional[str] = None,
-            permissions: List[Tuple[str, str, str]] = None,
+            permissions: List[Union[Dict,Tuple[str, str, str]]] = None,
             **settings: Dict
     ) -> str:
         '''
@@ -159,7 +159,7 @@ class CredentialsAPI(TIOEndpoint):
             cred_uuid: str,
             cred_name: Optional[str] = None,
             description: Optional[str] = None,
-            permissions: Optional[List[Tuple[str, str, str]]] = None,
+            permissions: List[Union[Dict,Tuple[str, str, str]]] = None,
             ad_hoc: Optional[bool] = None,
             **settings
     ) -> bool:

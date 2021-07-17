@@ -79,7 +79,7 @@ class ScansAPI(TIOEndpoint):
     def _block_while_running(
             self,
             scan_id: Union[str, int],
-            sleeper: Optional[int] = 5
+            sleeper: int = 5
     ):
         '''
         A simple function to block while the scan_id specified is still in a
@@ -105,7 +105,7 @@ class ScansAPI(TIOEndpoint):
             :obj:`dict`:
                 The resulting scan document based on the kwargs provided.
         '''
-        scan = {
+        scan: Dict[str, dict] = {
             'settings': dict(),
         }
 
@@ -284,7 +284,7 @@ class ScansAPI(TIOEndpoint):
 
         '''
         self._check(self.schedule_const.enabled, enabled, bool)
-        schedule = {}
+        schedule: Dict[str, Union[str, bool]] = {}
 
         if enabled is True:
             launch = self._check(
@@ -337,6 +337,7 @@ class ScansAPI(TIOEndpoint):
                 self.schedule_const.start_time, starttime, datetime,
                 default=self.schedule_const.start_time_default)
             secs = timedelta(minutes=30).total_seconds()
+            assert starttime is not None
             starttime = datetime.fromtimestamp(starttime.timestamp() + secs - starttime.timestamp() % secs)
             schedule[self.schedule_const.start_time] = starttime.strftime(self.schedule_const.time_format)
 
@@ -400,7 +401,7 @@ class ScansAPI(TIOEndpoint):
         current = self.details(self._check('id', id, int))['settings']
         if enabled in [True, False]:
             current[self.schedule_const.enabled] = self._check(self.schedule_const.enabled, enabled, bool)
-        schedule = {}
+        schedule: Dict[str, Union[str, bool]] = {}
         if current[self.schedule_const.enabled] is True:
             if current[self.schedule_const.rrules] is not None:
                 # create existing schedule dictionary
@@ -472,6 +473,7 @@ class ScansAPI(TIOEndpoint):
             starttime = self._check(self.schedule_const.start_time, starttime, datetime,
                                     default=existing_rrules.get(self.schedule_const.start_time, None)
                                             or self.schedule_const.start_time_default)
+            assert starttime is not None
             secs = timedelta(minutes=30).total_seconds()
             starttime = datetime.fromtimestamp(starttime.timestamp() + secs - starttime.timestamp() % secs)
             schedule[self.schedule_const.start_time] = starttime.strftime(self.schedule_const.time_format)
@@ -496,7 +498,7 @@ class ScansAPI(TIOEndpoint):
 
             return existing_rrules
 
-        if current[self.schedule_const.enabled] is False:
+        else:
             # Set enable and launch key for schedule
             schedule[self.schedule_const.enabled] = False
             schedule[self.schedule_const.schedule_scan] = 'no'
