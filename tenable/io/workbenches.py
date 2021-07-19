@@ -40,7 +40,7 @@ import time
 class WorkbenchesAPI(TIOEndpoint):
     def _workbench_query(
             self,
-            filters: Tuple[tuple,...],
+            filters: Tuple[Tuple, ...],
             kw: Dict,
             filterdefs: Dict
     ) -> Dict:

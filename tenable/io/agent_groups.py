@@ -66,7 +66,6 @@ class AgentGroupsAPI(TIOEndpoint):
                 self._check('group_id', group_id, int),
                 self._check('agent_id', agent_ids[0], int)
             ))
-            return None
         else:
             # If there are many agent_ids, then we will want to perform a bulk
             # operation.
@@ -197,7 +196,6 @@ class AgentGroupsAPI(TIOEndpoint):
                 self._check('group_id', group_id, int),
                 self._check('agent_id', agent_ids[0], int)
             ))
-            return None
         else:
             # if multiple agent ids were requested to be deleted, then we will
             # call the bulk deletion API.

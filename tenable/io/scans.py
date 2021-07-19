@@ -498,7 +498,7 @@ class ScansAPI(TIOEndpoint):
 
             return existing_rrules
 
-        else:
+        if current[self.schedule_const.enabled] is False:
             # Set enable and launch key for schedule
             schedule[self.schedule_const.enabled] = False
             schedule[self.schedule_const.schedule_scan] = 'no'

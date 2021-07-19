@@ -42,7 +42,7 @@ class ScannersAPI(TIOEndpoint):
         for scanner in scanners:
             if scanner['uuid'] == '00000000-0000-0000-0000-00000000000000000000000000001':
                 return scanner['key']
-        return None
+
     def allowed_scanners(self) -> List:
         '''
         A simple convenience function that returns the list of scanners that the
