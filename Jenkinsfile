@@ -117,7 +117,7 @@ try {
     node(Constants.DOCKERNODE) {
 	buildsCommon.cleanup()
 	checkout scm
-	withContainer(image: "python:${version}-buster", registry: '', inside: '-u root') {
+	withContainer(image: "3.6-buster", registry: '', inside: '-u root') {
 		try {
 			String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
 			withCredentials([[$class : 'UsernamePasswordMultiBinding',credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',passwordVariable : 'PYPIPASSWORD']]) { 
