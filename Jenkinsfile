@@ -115,7 +115,6 @@ try {
     parallel(tasks)
 
     node(Constants.DOCKERNODE) {
-	when { tag pattern: "\\d+", comparator: "REGEXP"}
 	buildsCommon.cleanup()
 	checkout scm
 	withContainer(image: "python:${version}-buster", registry: '', inside: '-u root') {
