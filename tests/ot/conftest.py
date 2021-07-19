@@ -10,7 +10,7 @@ from tenable.version import version
 
 @pytest.fixture
 @responses.activate
-def ot():
+def fixture_ot():
     '''fixture ot'''
     responses.add(
         method='GET',

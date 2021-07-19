@@ -5,7 +5,7 @@ import responses
 
 
 @responses.activate
-def test_details(ot):
+def test_details(fixture_ot):
     '''
     Tests the details method
     '''
@@ -21,17 +21,17 @@ def test_details(ot):
             'family': 'Unknown'
         }
     )
-    resp = ot.network_interfaces.details('d7f06b04-5733-44ac-9e84-096f6fdb181b')
+    resp = fixture_ot.network_interfaces.details('d7f06b04-5733-44ac-9e84-096f6fdb181b')
     assert resp.id == 'd7f06b04-5733-44ac-9e84-096f6fdb181b'
     assert resp.ips == ['192.168.101.154']
-    assert resp.dnsNames == None
+    assert resp.dnsNames is None
     assert resp.lastSeen == '2020-07-09T00:10:51.125735Z'
     assert resp.firstSeen == '2020-07-09T00:01:22.618953Z'
     assert resp.family == 'Unknown'
 
 
 @responses.activate
-def test_connections(ot):
+def test_connections(fixture_ot):
     '''
     Test the connections method
     '''
@@ -50,7 +50,7 @@ def test_connections(ot):
             }
         }]
     )
-    resp = ot.network_interfaces.connections('d7f06b04-5733-44ac-9e84-096f6fdb181b')
+    resp = fixture_ot.network_interfaces.connections('d7f06b04-5733-44ac-9e84-096f6fdb181b')
     for item in resp:
         assert item.asset == '026fd8a1-2d50-4b2b-9cd5-285489d7fda4'
         assert item.networkInterface == 'd7f06b04-5733-44ac-9e84-096f6fdb181b'
