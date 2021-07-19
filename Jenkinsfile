@@ -58,25 +58,14 @@ void unittests(String version) {
     }
 }
 
-def releasePackages() {
-
-	String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
-	withCredentials([[$class : 'UsernamePasswordMultiBinding',credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',passwordVariable : 'PYPIPASSWORD']]) { 
-		sh """
-			rm -rf dist
-			python setup.py sdist
-			pip install twine
-			twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
-		   """
-	}
-}
-
 try {
-    Map tasks = [ : ]
+    Map tasks = [: ]
 
     pythonVersion.each {
         version ->
-            tasks[version] = { unittests(version) }
+            tasks[version] = {
+                unittests(version)
+            }
     }
 
     tasks['snyk'] = {
@@ -97,31 +86,32 @@ try {
             Nexusiq.execute(this, bparams)
         }
     }
+    
     tasks['runPylint'] = {
-		stage('runPylint') {
-			node(Constants.DOCKERNODE) {
-				buildsCommon.cleanup()
-				checkout scm
-				
-				withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
-					try {
-					sh """
-						mkdir reports
-						touch reports/pylint_tenable.log
-						pip install pylint
-						pylint --rcfile=.pylintrc --exit-zero --output-format=parseable --reports=n tenable tests > reports/pylint_tenable.log
-					"""
-					} catch(ex) {
-						throw ex
-					} finally {
-						result = recordIssues(
-						enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 5000, failedTotalAll: 5000 )
-					}
-				}
-			}
-		}
-    }
+        stage('runPylint') {
+            node(Constants.DOCKERNODE) {
+                buildsCommon.cleanup()
+                checkout scm
 
+                withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
+                    try {
+                        sh ""
+                        "
+                        mkdir reports
+                        touch reports / pylint_tenable.log
+                        pip install pylint
+                        pylint--rcfile = .pylintrc--exit - zero--output - format = parseable--reports = n tenable tests > reports / pylint_tenable.log ""
+                        "
+                    } catch (ex) {
+                        throw ex
+                    } finally {
+                        result = recordIssues(
+                            enabledForFailure: true, tool: pyLint(pattern: 'reports/pylint_tenable.log'), unstableTotalAll: 5000, failedTotalAll: 5000)
+                    }
+                }
+            }
+        }
+    }
 
     parallel(tasks)
 
