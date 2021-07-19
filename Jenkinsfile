@@ -58,6 +58,33 @@ void unittests(String version) {
     }
 }
 
+uploadToPYPI() {
+    stage('Build Release') {
+        node(Constants.DOCKERNODE) {
+            when { tag pattern: "\\d+", comparator: "REGEXP"}
+            buildsCommon.cleanup()
+            checkout scm
+            withContainer(image: "python:${version}-buster", registry: '', inside: '-u root) {
+                try {
+                   	String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
+                 	withCredentials([[$class : 'UsernamePasswordMultiBinding',credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',passwordVariable : 'PYPIPASSWORD']]) { 
+		            sh """
+			            rm -rf dist
+			            python setup.py sdist
+			            pip install twine
+			            twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+		             """
+	                }
+                } catch(ex) {
+                    throw ex
+                } finally {
+                    print ("Upload Done successfully")
+                 }
+            }
+        }
+    }
+}
+
 try {
     Map tasks = [: ]
 
@@ -113,7 +140,8 @@ try {
     }
 
     parallel(tasks)
-
+       
+    uploadToPYPI()
     common.setResultIfNotSet(Constants.JSUCCESS)
 } catch (ex) {
     common.logException(ex)
