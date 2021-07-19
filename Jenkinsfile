@@ -14,6 +14,7 @@ bparams.snykContainer = 'python:3.6-buster'
 bparams.snykRegistry = ''
 bparams.snykType = 'PYTHON'
 bparams.nexusiqtype = 'PREQUIREMENT'
+releaseBuild = 'Yes'
 
 GlobalContext.put('appid', bparams.appid)
 
@@ -53,6 +54,30 @@ void unittests(String version) {
                     }
                     step([$class: 'JUnitResultArchiver', testResults: 'test-reports/junit/*.xml'])
                 }
+            }
+        }
+    }
+}
+
+void uploadPackagePyPI() {
+    node(Constants.DOCKERNODE) {
+        buildsCommon.cleanup()
+        checkout scm
+        withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
+            try {
+                String prodOrTest = env.BRANCH_NAME == 'master' ? 'prod' : 'test'
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYP${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
+                    sh """
+                    rm -rf dist
+                    python setup.py sdist
+                    pip install twine
+    		    twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+                    """
+                }
+            } catch (ex) {
+                throw ex
+            } finally {
+                print("Upload Done successfully")
             }
         }
     }
@@ -113,30 +138,10 @@ try {
     }
 
     parallel(tasks)
-
-    node(Constants.DOCKERNODE) {
-	buildsCommon.cleanup()
-	checkout scm
-	withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
-		try {
-			String prodOrTest = env.BRANCH_NAME == 'master' ?  'prod' : 'test'
-			withCredentials([[$class : 'UsernamePasswordMultiBinding',credentialsId : "PYP${prodOrTest}", usernameVariable : 'PYPIUSERNAME',passwordVariable : 'PYPIPASSWORD']]) { 
-			sh """
-				rm -rf dist
-				python setup.py sdist
-				pip install twine
-				twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
-			 """
-			}
-		} catch(ex) {
-			throw ex
-		} finally {
-			print ("Upload Done successfully")
-		 }
-	 }
-    }	
-	
     common.setResultIfNotSet(Constants.JSUCCESS)
+    if (releaseBuild == 'Yes') {
+	uploadPackagePyPI()
+    }
 } catch (ex) {
     common.logException(ex)
     common.setResultAbortedOrFailure()
