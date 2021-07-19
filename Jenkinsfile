@@ -95,13 +95,12 @@ try {
 
                 withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
                     try {
-                        sh ""
-                        "
+                        sh """
                         mkdir reports
                         touch reports / pylint_tenable.log
                         pip install pylint
-                        pylint--rcfile = .pylintrc--exit - zero--output - format = parseable--reports = n tenable tests > reports / pylint_tenable.log ""
-                        "
+                        pylint--rcfile = .pylintrc--exit - zero--output - format = parseable--reports = n tenable tests > reports / pylint_tenable.log 
+                        """
                     } catch (ex) {
                         throw ex
                     } finally {
