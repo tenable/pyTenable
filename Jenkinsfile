@@ -65,7 +65,7 @@ void uploadPackagePyPI() {
         checkout scm
         withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
             try {
-                String prodOrTest = env.BRANCH_NAME == 'master' ? 'prod' : 'test'
+                String prodOrTest = env.BRANCH_NAME == 'master' ? 'PROD' : 'TEST'
                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPI${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
                     sh """
                     rm -rf dist
