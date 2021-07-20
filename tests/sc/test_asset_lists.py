@@ -6,6 +6,7 @@ import os
 import pytest
 
 from tenable.errors import APIError, UnexpectedValueError
+from tenable.sc import TenableSC
 from tests.pytenable_log_handler import log_exception
 from ..checker import check, single
 
@@ -587,8 +588,7 @@ def test_asset_lists_details_success_for_fields(security_center, asset_list):
     '''
     test asset lists details success for fields
     '''
-    asset = security_center.asset_lists.details(int(asset_list['id']),
-                                                fields=['id', 'name', 'type', 'description'])
+    asset = security_center.asset_lists.details(int(asset_list['id']),1)
     assert isinstance(asset, dict)
     check(asset, 'id', str)
     check(asset, 'name', str)
@@ -601,48 +601,46 @@ def test_asset_lists_details_success(security_center, asset_list):
     '''
     test asset lists details for success
     '''
-    organizations = security_center.organizations.list(fields=['id', 'name', 'description'])
-    for organization in organizations:
-        asset = security_center.asset_lists.details(int(asset_list['id']),organization['id'])
-        assert isinstance(asset, dict)
-        check(asset, 'id', str)
-        check(asset, 'name', str)
-        check(asset, 'type', str)
-        check(asset, 'description', str)
-        check(asset, 'tags', str)
-        check(asset, 'context', str)
-        check(asset, 'status', str)
-        check(asset, 'createdTime', str)
-        check(asset, 'modifiedTime', str)
-        check(asset, 'typeFields', dict)
-        for key in asset['typeFields']:
-            check(asset['typeFields'], key, str)
-        check(asset, 'ipCount', int)
-        check(asset, 'repositories', list)
-        for repository in asset['repositories']:
-            check(repository, 'ipCount', str)
-            check(repository, 'repository', dict)
-            check(repository['repository'], 'id', str)
-            check(repository['repository'], 'name', str)
-            check(repository['repository'], 'description', str)
-        check(asset, 'assetDataFields', list)
-        check(asset, 'groups', list)
-        check(asset, 'canUse', str)
-        check(asset, 'canManage', str)
-        check(asset, 'creator', dict)
-        check(asset['creator'], 'id', str)
-        check(asset['creator'], 'firstname', str)
-        check(asset['creator'], 'lastname', str)
-        check(asset['creator'], 'username', str)
-        check(asset, 'owner', dict)
-        check(asset['owner'], 'id', str)
-        check(asset['owner'], 'firstname', str)
-        check(asset['owner'], 'lastname', str)
-        check(asset['owner'], 'username', str)
-        check(asset, 'ownerGroup', dict)
-        check(asset['ownerGroup'], 'id', str)
-        check(asset['ownerGroup'], 'name', str)
-        check(asset['ownerGroup'], 'description', str)
+    asset = security_center.asset_lists.details(1,1)
+    assert isinstance(asset, dict)
+    check(asset, 'id', str)
+    check(asset, 'name', str)
+    check(asset, 'type', str)
+    check(asset, 'description', str)
+    check(asset, 'tags', str)
+    check(asset, 'context', str)
+    check(asset, 'status', str)
+    check(asset, 'createdTime', str)
+    check(asset, 'modifiedTime', str)
+    check(asset, 'typeFields', dict)
+    for key in asset['typeFields']:
+        check(asset['typeFields'], key, str)
+    check(asset, 'ipCount', int)
+    check(asset, 'repositories', list)
+    for repository in asset['repositories']:
+        check(repository, 'ipCount', str)
+        check(repository, 'repository', dict)
+        check(repository['repository'], 'id', str)
+        check(repository['repository'], 'name', str)
+        check(repository['repository'], 'description', str)
+    check(asset, 'assetDataFields', list)
+    check(asset, 'groups', list)
+    check(asset, 'canUse', str)
+    check(asset, 'canManage', str)
+    check(asset, 'creator', dict)
+    check(asset['creator'], 'id', str)
+    check(asset['creator'], 'firstname', str)
+    check(asset['creator'], 'lastname', str)
+    check(asset['creator'], 'username', str)
+    check(asset, 'owner', dict)
+    check(asset['owner'], 'id', str)
+    check(asset['owner'], 'firstname', str)
+    check(asset['owner'], 'lastname', str)
+    check(asset['owner'], 'username', str)
+    check(asset, 'ownerGroup', dict)
+    check(asset['ownerGroup'], 'id', str)
+    check(asset['ownerGroup'], 'name', str)
+    check(asset['ownerGroup'], 'description', str)
 
 
 @pytest.mark.vcr()
