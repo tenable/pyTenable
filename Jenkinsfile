@@ -66,7 +66,7 @@ void uploadPackagePyPI() {
         withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
             try {
                 String prodOrTest = env.BRANCH_NAME == 'master' ? 'prod' : 'test'
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYP${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPI${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
                     sh """
                     rm -rf dist
                     python setup.py sdist
