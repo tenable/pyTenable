@@ -43,7 +43,6 @@ setup(
         'restfly>=1.3.5',
         'marshmallow>=3.6',
         'python-box>=4.0',
-        'appdirs',
     ],
     extras_require={
         'NessusReportv2': ['defusedxml>=0.5.0'],
