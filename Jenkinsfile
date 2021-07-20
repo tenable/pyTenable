@@ -71,7 +71,7 @@ void uploadPackagePyPI() {
                     rm -rf dist
                     python setup.py sdist
                     pip install twine
-    		    twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+    		        twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
                     """
                 }
             } catch (ex) {
