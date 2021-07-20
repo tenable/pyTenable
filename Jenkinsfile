@@ -14,7 +14,7 @@ bparams.snykContainer = 'python:3.6-buster'
 bparams.snykRegistry = ''
 bparams.snykType = 'PYTHON'
 bparams.nexusiqtype = 'PREQUIREMENT'
-releaseBuild = 'Yes'
+releaseBuild = 'No'
 
 GlobalContext.put('appid', bparams.appid)
 
@@ -65,7 +65,7 @@ void uploadPackagePyPI() {
         checkout scm
         withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
             try {
-                String prodOrTest = env.BRANCH_NAME == 'master' ? 'PROD' : 'TEST'
+                String prodOrTest = 'PROD'
                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPI${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
                     sh """
                     rm -rf dist
@@ -140,7 +140,7 @@ try {
     parallel(tasks)
     common.setResultIfNotSet(Constants.JSUCCESS)
     if (releaseBuild == 'Yes') {
-	uploadPackagePyPI()
+        uploadPackagePyPI()
     }
 } catch (ex) {
     common.logException(ex)
