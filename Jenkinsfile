@@ -65,14 +65,16 @@ void uploadPackagePyPI() {
         checkout scm
         withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
             try {
-                String prodOrTest = 'PROD'
-                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPI${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
-                    sh """
-                    rm -rf dist
-                    python setup.py sdist
-                    pip install twine
-    		        twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
-                    """
+                if (env.BRANCH_NAME == 'master') {
+                    String prodOrTest = 'PROD'
+                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPI${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
+                        sh """
+                        rm -rf dist
+                        python setup.py sdist
+                        pip install twine
+    		            twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+                        """
+                    }
                 }
             } catch (ex) {
                 throw ex
