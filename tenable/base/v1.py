@@ -26,13 +26,14 @@ from tenable.utils import url_validator
 from tenable import __version__, __author__
 
 from tenable.errors import (
-		UnexpectedValueError,
-		InvalidInputError,
-		PermissionError,
-		NotFoundError,
-		UnsupportedError,
-		FileDownloadError,
-		ServerError
+    UnexpectedValueError,
+    InvalidInputError,
+    PermissionError,
+    NotFoundError,
+    UnsupportedError,
+    FileDownloadError,
+    ServerError,
+    RetryError
 )
 
 class APIResultsIterator(object):
