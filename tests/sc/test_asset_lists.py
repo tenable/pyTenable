@@ -6,7 +6,6 @@ import os
 import pytest
 
 from tenable.errors import APIError, UnexpectedValueError
-from tenable.sc import TenableSC
 from tests.pytenable_log_handler import log_exception
 from ..checker import check, single
 
