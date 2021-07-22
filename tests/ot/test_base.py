@@ -2,22 +2,23 @@
 test base
 '''
 import responses
+
 from tenable.ot.assets import AssetsAPI
 from tenable.ot.network_interfaces import NetworkInterfacesAPI
 from tenable.ot.vulns import VulnsAPI
 
 
-def test_ot_interfaces(ot):
+def test_ot_interfaces(fixture_ot):
     '''
     Testing that the right interfaces are returned.
     '''
-    assert isinstance(ot.assets, AssetsAPI)
-    assert isinstance(ot.network_interfaces, NetworkInterfacesAPI)
-    assert isinstance(ot.vulns, VulnsAPI)
+    assert isinstance(fixture_ot.assets, AssetsAPI)
+    assert isinstance(fixture_ot.network_interfaces, NetworkInterfacesAPI)
+    assert isinstance(fixture_ot.vulns, VulnsAPI)
 
 
 @responses.activate
-def test_graph_api(ot):
+def test_graph_api(fixture_ot):
     '''
     Test the graph api method.
     '''
@@ -36,7 +37,7 @@ def test_graph_api(ot):
             }
         }
     )
-    resp = ot.graphql(
+    resp = fixture_ot.graphql(
         variables={'asset': 'something'},
         query='''
             query getAssetDetails($asset: ID!) {
