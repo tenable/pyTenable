@@ -16,18 +16,11 @@ interactions:
       X-SecurityCenter:
       - '0000000000'
     method: GET
-    uri: https://securitycenter.home.cugnet.net/rest/asset/37?orgID=1
+    uri: https://securitycenter.home.cugnet.net/rest/asset/35?fields=id,name,type,description&orgID=1
   response:
     body:
-      string: '{"type":"regular","response":{"id":"37","name":"Example","type":"static","description":"","tags":"","context":"","status":"0","createdTime":"1626785130","modifiedTime":"1626785130","ioSyncStatus":"Not
-        Synced","ioFirstSyncTime":"-1","ioLastSyncSuccess":"-1","ioLastSyncFailure":"-1","ioSyncErrorDetails":null,"typeFields":{"definedIPs":"192.168.0.1"},"repositories":[{"ipCount":"-1","repository":{"id":"5","name":"Ministry
-        of Magic - Hogwarts","description":""}},{"ipCount":"-1","repository":{"id":"6","name":"Ministry
-        of Zerg Defense - Sigma Quadrant","description":""}},{"ipCount":"-1","repository":{"id":"7","name":"United
-        Federation of Planets - Section 10","description":""}},{"ipCount":"-1","repository":{"id":"8","name":"Bureau
-        of SG Program - SGC","description":""}}],"ipCount":-1,"groups":[],"assetDataFields":[],"canUse":"true","canManage":"true","creator":{"id":"1","username":"secmanager","firstname":"","lastname":""},"owner":{"id":"1","username":"secmanager","firstname":"","lastname":""},"ownerGroup":{"id":"0","name":"Full
-        Access","description":"Full Access group"},"targetGroup":{"id":-1,"name":"","description":""},"template":{"id":-1,"name":"","description":""}},"error_code":0,"error_msg":"","warnings":[],"timestamp":1626785131}
-
-        '
+      string: '{"type":"regular","response":{"id":"35","name":"Example","type":"static","description":""},
+      "error_code":0,"error_msg":"","warnings":[],"timestamp":1626785131}'
     headers:
       Cache-Control:
       - no-cache, no-store
