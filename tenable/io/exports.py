@@ -17,7 +17,6 @@ Methods available on ``tio.exports``:
 import time
 import sys
 from ipaddress import IPv4Network
-from appdirs import unicode
 from tenable.errors import TioExportsError, TioExportsTimeout
 from tenable.io.base import TIOEndpoint, APIResultsIterator, UnexpectedValueError
 try:
@@ -69,9 +68,7 @@ class ExportsIterator(APIResultsIterator):
 
             # We need to get the list of chunks that we haven't completed yet and are
             # available for download.
-            chunks_available = status['chunks_available'] \
-                if 'chunks_available' in status else list()
-            unfinished = [c for c in chunks_available if c not in self.processed]
+            unfinished = [c for c in status.get('chunks_available', list()) if c not in self.processed]
 
             # Add the chunks_unfinished key with the unfinished list as the
             # associated value and then return the status to the caller.
