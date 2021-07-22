@@ -331,24 +331,16 @@ def test_exports_compliance_first_seen_typeerror(api):
 def test_exports_compliance_success(api):
     '''test to export the compliance data'''
     last_seen = int(time.time()) - (12 * 60 * 60)
-    try:
-        compliance = api.exports.compliance(num_findings=51,
-                                            last_seen=last_seen
-                                            )
-        assert isinstance(compliance, ExportsIterator)
-    except TioExportsError as error:
-        print('\nNo data available. Please retry')
-        log_exception(error)
-    except UnexpectedValueError as error:
-        print('\n', error.msg)
-        log_exception(error)
+    compliance = api.exports.compliance(num_findings=51,
+                                        last_seen=last_seen
+                                        )
+    assert isinstance(compliance, ExportsIterator)
 
 
 @pytest.mark.vcr()
 def test_exports_compliance(api):
     '''test to export the compliance data'''
-    last_seen = int(time.time()) - (24 * 60 * 60)
-    compliance = api.exports.compliance(last_seen=last_seen)
+    compliance = api.exports.compliance(last_seen=1626168578)
     assert isinstance(compliance, ExportsIterator)
     try:
         for resp in compliance:
@@ -383,5 +375,5 @@ def test_exports_compliance(api):
             if resp['status'] == 'ERROR':
                 check(resp, 'check_error', str)
     except TioExportsError as error:
-        print('\nNo data available. Please retry')
+        print(error.msg)
         log_exception(error)

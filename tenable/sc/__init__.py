@@ -67,7 +67,7 @@ Example:
     .. automethod:: delete
 '''
 from tenable.base.v1 import APISession
-from tenable.errors import *
+from tenable.errors import APIError, InvalidInputError, NotFoundError, ServerError, ConnectionError
 from .accept_risks import AcceptRiskAPI
 from .alerts import AlertAPI
 from .analysis import AnalysisAPI

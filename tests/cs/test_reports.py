@@ -1,67 +1,73 @@
-from tenable.errors import *
-from ..checker import check, single
+'''
+test reports
+'''
 import pytest
+from ..checker import check, single
+
 
 @pytest.mark.vcr()
 def test_reports_report_digest_typeerror(api):
+    '''test to raise the exception when the parameter passed is not as the expected type'''
     with pytest.raises(TypeError):
         api.reports.report(1)
 
+
 @pytest.mark.vcr()
 def test_reports_report(api):
+    '''test to get the image report by the image digest'''
     images = api.images.list()
-    i = images.next()
-    r = api.reports.report(i['digest'])
-    assert isinstance(r, dict)
-    check(r, 'image_name', str)
-    check(r, 'docker_image_id', str)
-    check(r, 'created_at', 'datetime')
-    check(r, 'updated_at', 'datetime')
-    check(r, 'platform', str)
-    check(r, 'findings', list)
-    for v in r['findings']:
-        check(v, 'nvdFinding', dict)
-        check(v['nvdFinding'], 'cve', str)
-        check(v['nvdFinding'], 'published_date', str)
-        check(v['nvdFinding'], 'modified_date', str)
-        check(v['nvdFinding'], 'description', str)
-        check(v['nvdFinding'], 'cvss_score', str)
-        check(v['nvdFinding'], 'access_vector', str)
-        check(v['nvdFinding'], 'access_complexity', str)
-        check(v['nvdFinding'], 'auth', str)
-        check(v['nvdFinding'], 'availability_impact', str)
-        check(v['nvdFinding'], 'confidentiality_impact', str)
-        check(v['nvdFinding'], 'integrity_impact', str)
-        check(v['nvdFinding'], 'cwe', str)
-        check(v['nvdFinding'], 'cpe', list)
-        for i in v['nvdFinding']['cpe']:
-            single(i, str)
-        check(v['nvdFinding'], 'remediation', str)
-        check(v['nvdFinding'], 'references', list)
-        for i in v['nvdFinding']['references']:
-            single(i, str)
-        check(v, 'packages', list)
-        for p in v['packages']:
-            check(p, 'name', str)
-            check(p, 'version', str)
-    check(r, 'malware', list)
-    for m in r['malware']:
-        check(m, 'infectedFile', str)
-        check(m, 'fileTypeDescriptor', str)
-        check(m, 'md5', str)
-        check(m, 'sha256', str)
-    check(r, 'potentially_unwanted_programs', list)
-    for p in r['potentially_unwanted_programs']:
-        check(p, 'file', str)
-        check(p, 'md5', str)
-        check(p, 'sha256', str)
-    check(r, 'sha256', str)
-    check(r, 'os', str)
-    check(r, 'os_version', str)
-    check(r, 'os_architecture', str)
-    check(r, 'installed_packages', list)
-    for i in r['installed_packages']:
-        check(i, 'name', str)
-        check(i, 'version', str)
-    check(r, 'risk_score', int)
-    check(r, 'digest', str)
+    image = images.next()
+    resp = api.reports.report(image['digest'])
+    assert isinstance(resp, dict)
+    check(resp, 'image_name', str)
+    check(resp, 'docker_image_id', str)
+    check(resp, 'created_at', 'datetime')
+    check(resp, 'updated_at', 'datetime')
+    check(resp, 'platform', str)
+    check(resp, 'findings', list)
+    for data in resp['findings']:
+        check(data, 'nvdFinding', dict)
+        check(data['nvdFinding'], 'cve', str)
+        check(data['nvdFinding'], 'published_date', str)
+        check(data['nvdFinding'], 'modified_date', str)
+        check(data['nvdFinding'], 'description', str)
+        check(data['nvdFinding'], 'cvss_score', str)
+        check(data['nvdFinding'], 'access_vector', str)
+        check(data['nvdFinding'], 'access_complexity', str)
+        check(data['nvdFinding'], 'auth', str)
+        check(data['nvdFinding'], 'availability_impact', str)
+        check(data['nvdFinding'], 'confidentiality_impact', str)
+        check(data['nvdFinding'], 'integrity_impact', str)
+        check(data['nvdFinding'], 'cwe', str)
+        check(data['nvdFinding'], 'cpe', list)
+        for info in data['nvdFinding']['cpe']:
+            single(info, str)
+        check(data['nvdFinding'], 'remediation', str)
+        check(data['nvdFinding'], 'references', list)
+        for info in data['nvdFinding']['references']:
+            single(info, str)
+        check(data, 'packages', list)
+        for info in data['packages']:
+            check(info, 'name', str)
+            check(info, 'version', str)
+    check(resp, 'malware', list)
+    for info in resp['malware']:
+        check(info, 'infectedFile', str)
+        check(info, 'fileTypeDescriptor', str)
+        check(info, 'md5', str)
+        check(info, 'sha256', str)
+    check(resp, 'potentially_unwanted_programs', list)
+    for info in resp['potentially_unwanted_programs']:
+        check(info, 'file', str)
+        check(info, 'md5', str)
+        check(info, 'sha256', str)
+    check(resp, 'sha256', str)
+    check(resp, 'os', str)
+    check(resp, 'os_version', str)
+    check(resp, 'os_architecture', str)
+    check(resp, 'installed_packages', list)
+    for info in resp['installed_packages']:
+        check(info, 'name', str)
+        check(info, 'version', str)
+    check(resp, 'risk_score', int)
+    check(resp, 'digest', str)
