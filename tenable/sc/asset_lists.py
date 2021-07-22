@@ -440,29 +440,29 @@ class AssetListAPI(SCEndpoint):
         payload = self._constructor(**kw)
         return self._api.post('asset', json=payload).json()['response']
 
-    def details(self, id, fields=None):
+    def details(self, id, orgID, fields=None):
         '''
         Returns the details for a specific asset-list.
 
-        :sc-api:`asset-list: details <Asset.html#AssetRESTReference-/asset/{id}>`
+        :sc-api:`asset-list: details<Asset.html#AssetRESTReference-/asset/{id}?orgID={orgID}>`
 
         Args:
             id (int): The identifier for the asset-list.
+            orgID (int): The organizationID for the asset-list.
             fields (list, optional): A list of attributes to return.
 
         Returns:
-            dict: The asset-list resource record.
+            dict: The details of asset id.
 
         Examples:
-            >>> asset-list = sc.asset_lists.details(1)
-            >>> pprint(asset-list)
+            >>> asset_id_details = sc.asset_lists.details(1,1)
+            >>> pprint(asset_id_details)
         '''
         params = dict()
         if fields:
             params['fields'] = ','.join([self._check('field', f, str) for f in fields])
-
-        return self._api.get('asset/{}'.format(self._check('id', id, int)),
-            params=params).json()['response']
+        params['orgID']   = orgID
+        return self._api.get('asset/{}'.format(self._check('id', id,int)),params=params).json()['response']
 
     def edit(self, id, **kw):
         '''
