@@ -318,6 +318,9 @@ class TenableSC(APISession):
             self._session.headers.update({
                 'X-SecurityCenter': str(resp.json()['response']['token'])
             })
+            self._session.headers.update({
+                'TNS_SESSIONID': str(resp.headers['Set-Cookie'])[14:46]
+            })
 
         elif access_key != None and secret_key != None:
             if semver.VersionInfo.parse(self.version).match('<5.13.0'):
