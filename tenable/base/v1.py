@@ -463,7 +463,6 @@ class APISession(object):
         if self._session:
             self._session.close()
         self._session = None
-        return response
 
     def _resp_error_check(self, response, **kwargs): #stub
         '''
