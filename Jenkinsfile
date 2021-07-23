@@ -138,7 +138,7 @@ try {
 
     parallel(tasks)
     common.setResultIfNotSet(Constants.JSUCCESS)
-    if env.BRANCH_NAME == 'master' && releaseBuild == 'Yes' {
+    if (env.BRANCH_NAME == 'master' && releaseBuild == 'Yes') {
         uploadPackagePyPI()
     }
 
