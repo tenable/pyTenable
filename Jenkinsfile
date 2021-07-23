@@ -65,18 +65,16 @@ void uploadPackagePyPI() {
         checkout scm
         withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
             try {
-                if ((env.BRANCH_NAME == 'master') && (releaseBuild == 'Yes')) {
-                    String prodOrTest = 'PROD'
-                    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPI${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
-                        sh """
-                        rm -rf dist
-                        python setup.py sdist
-                        pip install twine
-    		            twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
-                        """
-                    }
-                }
-            } catch (ex) {
+			    String prodOrTest = 'PROD'
+			    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPI${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
+				sh """
+				rm -rf dist
+				python setup.py sdist
+				pip install twine
+				twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+				"""
+			    }
+		    } catch (ex) {
                 throw ex
             } finally {
                 print("Upload Done successfully")
@@ -141,7 +139,9 @@ try {
 
     parallel(tasks)
     common.setResultIfNotSet(Constants.JSUCCESS)
-    uploadPackagePyPI()
+    if ((env.BRANCH_NAME == 'master') && (releaseBuild == 'Yes')) {
+        uploadPackagePyPI()
+    }
 
 } catch (ex) {
     common.logException(ex)
