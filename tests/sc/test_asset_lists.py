@@ -587,7 +587,7 @@ def test_asset_lists_details_success_for_fields(security_center, asset_list):
     '''
     test asset lists details success for fields
     '''
-    asset = security_center.asset_lists.details(int(asset_list['id']),
+    asset = security_center.asset_lists.details(int(asset_list['id']), 1,
                                                 fields=['id', 'name', 'type', 'description'])
     assert isinstance(asset, dict)
     check(asset, 'id', str)
@@ -601,7 +601,7 @@ def test_asset_lists_details_success(security_center, asset_list):
     '''
     test asset lists details for success
     '''
-    asset = security_center.asset_lists.details(int(asset_list['id']))
+    asset = security_center.asset_lists.details(1, 1)
     assert isinstance(asset, dict)
     check(asset, 'id', str)
     check(asset, 'name', str)
