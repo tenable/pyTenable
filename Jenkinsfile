@@ -65,15 +65,16 @@ void uploadPackagePyPI() {
         checkout scm
         withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
             try {
-		    	withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPIPROD", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
-				sh """
-					rm -rf dist
-					python setup.py sdist
-					pip install twine
-					twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
-				"""
-			    }
-		    } catch (ex) {
+                withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPIPROD", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
+                    sh
+                    """
+                    rm -rf dist
+                    python setup.py sdist
+                    pip install twine
+                    twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+                    """
+                }
+            } catch (ex) {
                 throw ex
             } finally {
                 print("Upload Done successfully")
@@ -81,6 +82,7 @@ void uploadPackagePyPI() {
         }
     }
 }
+
 
 try {
     Map tasks = [: ]
