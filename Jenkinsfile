@@ -65,8 +65,7 @@ void uploadPackagePyPI() {
         checkout scm
         withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
             try {
-			    String prodOrTest = 'PROD'
-			    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPI${prodOrTest}", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
+		    	withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPIPROD", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
 				sh """
 				rm -rf dist
 				python setup.py sdist
@@ -139,7 +138,7 @@ try {
 
     parallel(tasks)
     common.setResultIfNotSet(Constants.JSUCCESS)
-    if ((env.BRANCH_NAME == 'master') && (releaseBuild == 'Yes')) {
+    if env.BRANCH_NAME == 'master' && releaseBuild == 'Yes' {
         uploadPackagePyPI()
     }
 
