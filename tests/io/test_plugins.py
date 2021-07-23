@@ -88,7 +88,6 @@ def test_plugins_list_success(api):
         check(p['attributes'], 'description', str)
         check(p['attributes'], 'plugin_publication_date', str)
         check(p['attributes'], 'plugin_modification_date', str)
-        check(p['attributes'], 'plugin_version', str)
         check(p['attributes'], 'synopsis', str)
         check(p['attributes'], 'risk_factor', str)
         check(p, 'id', int)
