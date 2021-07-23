@@ -67,10 +67,10 @@ void uploadPackagePyPI() {
             try {
 		    	withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: "PYPIPROD", usernameVariable: 'PYPIUSERNAME', passwordVariable: 'PYPIPASSWORD']]) {
 				sh """
-				rm -rf dist
-				python setup.py sdist
-				pip install twine
-				twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
+					rm -rf dist
+					python setup.py sdist
+					pip install twine
+					twine upload --repository-url https://upload.pypi.org/legacy/ --skip-existing dist/* -u ${PYPIUSERNAME} -p ${PYPIPASSWORD}
 				"""
 			    }
 		    } catch (ex) {
