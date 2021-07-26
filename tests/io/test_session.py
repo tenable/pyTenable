@@ -17,7 +17,7 @@ def test_session_edit_email_typeerror(api):
 
 @pytest.mark.vcr()
 def test_session_edit(api):
-    api.session.edit(str(uuid.uuid4()), 'noreply@pytenable.test')
+    api.session.edit(str(uuid.uuid4()), 'noreply@tenable.com')
 
 
 @pytest.mark.vcr()
