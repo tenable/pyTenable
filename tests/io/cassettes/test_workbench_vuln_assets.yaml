@@ -109,11 +109,19 @@ interactions:
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
-      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+      Accept:
+        - '*/*'
+      Accept-Encoding:
+        - gzip, deflate
+      Connection:
+        - keep-alive
+      Cookie:
+        - nginx-cloud-site-id=us-2b
+      User-Agent:
+        - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.2
+          (pyTenable/1.3.2; Python/3.7.0; Windows/AMD64)
+      X-APIKeys:
+        - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
     uri: https://cloud.tenable.com/workbenches/assets/vulnerabilities
   response:
@@ -166,21 +174,40 @@ interactions:
         9qQCEasPUkC0MnXz0A0iWoSanKyhBYfl6B7u+zPYCUl5dZFpTfcEIamvdeDpN3cwOQgQslMDypnh
         k/hyVa+u/y+lV5+/E+0+/hcCxbL+XkkAAA==
     headers:
-      cache-control: [no-cache]
-      connection: [keep-alive]
-      content-encoding: [gzip]
-      content-type: [application/json; charset=utf-8]
-      date: ['Thu, 06 Dec 2018 23:22:56 GMT']
-      server: [tenable.io]
-      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
-          path=/; HttpOnly]
-      strict-transport-security: [max-age=63072000; includeSubDomains]
-      transfer-encoding: [chunked]
-      vary: [accept-encoding]
-      x-content-type-options: [nosniff]
-      x-frame-options: [DENY]
-      x-gateway-site-id: [nginx-router-a-prod-us-east-2]
-      x-request-uuid: [1558cd4ef1e8942c17290c8397289424]
-      x-xss-protection: [mode=block]
-    status: {code: 200, message: OK}
+      Cache-Control:
+        - no-store
+      Connection:
+        - keep-alive
+      Content-Encoding:
+        - gzip
+      Content-Type:
+        - application/json; charset=utf-8
+      Date:
+        - Mon, 26 Jul 2021 12:57:27 GMT
+      Expect-CT:
+        - enforce, max-age=86400
+      Pragma:
+        - no-cache
+      Set-Cookie:
+        - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+        - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+        - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+        - chunked
+      Vary:
+        - accept-encoding
+      X-Content-Type-Options:
+        - nosniff
+      X-Frame-Options:
+        - DENY
+      X-Gateway-Site-ID:
+        - nginx-router-4b6sq-ap-southeast-1-prod
+      X-Request-Uuid:
+        - ac2c25152cb6781a2c7e8db5aff8605d
+      X-Xss-Protection:
+        - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1
