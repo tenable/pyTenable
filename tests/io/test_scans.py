@@ -486,14 +486,26 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
     '''
     create_schedule = api.scans.create_scan_schedule(
         enabled=True, frequency='weekly', weekdays=['MO', 'TU'])
+    scan_creds = {
+        'Cloud Services': {
+            'Amazon AWS': [{'access_key_id': 'ACCESS1', 'secret_key': 'SECRET1'}]
+        }
+    }
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
+        credentials=scan_creds,
         schedule_scan=create_schedule)
     update_schedule = api.scans.configure_scan_schedule(id=scan['id'], interval=2)
+
+    scan_creds_new = {
+        'Cloud Services': {
+            'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]
+        }
+    }
     mod = api.scans.configure(scan['id'],
-                              schedule_scan=update_schedule)
+                              schedule_scan=update_schedule, credentials=scan_creds_new)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)

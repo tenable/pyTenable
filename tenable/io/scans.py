@@ -563,10 +563,36 @@ class ScansAPI(TIOEndpoint):
         current = self.details(scan_id)
         updated = self._create_scan_document(kw)
         scan = dict_merge(current, updated)
-
+        scan = self._check_add_edit_aws_credentials(scan)
         # Performing the actual call to the API with the updated scan record.
         return self._api.put('scans/{}'.format(scan_id),
                     json=scan).json()
+
+    def _check_add_edit_aws_credentials(self, scan):
+        '''
+        checks the credential dict of scan dict to derive operation add or edit.
+        Args:
+            scan: scan object to update edit credential if it matches criteria
+        Returns:
+            :obj:`dict`:
+                The scan with updated credentials.
+        '''
+        if 'credentials' in scan:
+            aws_existing_credential = {}
+            aws_new_credential = {}
+            if 'current' in scan['credentials'] and 'Cloud Services' in scan['credentials']['current'] and 'Amazon AWS' in scan['credentials']['current']['Cloud Services']:
+                aws_existing_credential = scan['credentials']['current']['Cloud Services']['Amazon AWS']
+            else:
+                return scan
+            if 'add' in scan['credentials'] and 'Cloud Services' in scan['credentials']['add'] and 'Amazon AWS' in scan['credentials']['add']['Cloud Services']:
+                aws_new_credential = scan['credentials']['add']['Cloud Services']['Amazon AWS']
+            else:
+                return scan
+            if aws_existing_credential != aws_new_credential:
+                aws_edit_credential = scan['credentials']['add']['Cloud Services']['Amazon Aws']
+                scan['credentials']['edit'] = {'Cloud Services': {'Amazon AWS', aws_edit_credential}}
+                del scan['credentials']['add']['Cloud Services']['Amazon Aws']
+        return scan
 
     def copy(self, scan_id, folder_id=None, name=None):
         '''
