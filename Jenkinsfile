@@ -113,8 +113,8 @@ try {
         }
     }
     
-    tasks['runPylint'] = {
-        stage('runPylint') {
+    tasks['runLint'] = {
+        stage('runLint') {
             node(Constants.DOCKERNODE) {
                 buildsCommon.cleanup()
                 checkout scm
@@ -126,6 +126,9 @@ try {
                         touch reports / pylint_tenable.log
                         pip install pylint
                         pylint --rcfile=.pylintrc --exit-zero --output-format=parseable --reports=n tenable tests > reports/pylint_tenable.log
+                        touch reports / yamllint_tenable.log
+                        pip install yamllint
+                        yamllint -c .yamllint tests/io/cassettes tests/sc/cassettes tests/cs/cassettes > reports/yamllint_tenable.log
                        """
                     } catch (ex) {
                         throw ex
