@@ -23,6 +23,10 @@ from .base import TIOEndpoint
 from tenable.errors import ImpersonationError, UnknownError
 
 class SessionAPI(TIOEndpoint):
+    '''
+    Tenable.io session API is deprecated.
+    it is recommended to use ``users`` endpoint instead
+    '''
     def edit(self, name, email):
         '''
         Modify the currently logged-in user.
