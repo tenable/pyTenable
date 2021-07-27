@@ -486,26 +486,14 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
     '''
     create_schedule = api.scans.create_scan_schedule(
         enabled=True, frequency='weekly', weekdays=['MO', 'TU'])
-    scan_creds = {
-        'Cloud Services': {
-            'Amazon AWS': [{'access_key_id': 'ACCESS1', 'secret_key': 'SECRET1'}]
-        }
-    }
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
-        credentials=scan_creds,
         schedule_scan=create_schedule)
     update_schedule = api.scans.configure_scan_schedule(id=scan['id'], interval=2)
-
-    scan_creds_new = {
-        'Cloud Services': {
-            'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]
-        }
-    }
     mod = api.scans.configure(scan['id'],
-                              schedule_scan=update_schedule, credentials=scan_creds_new)
+                              schedule_scan=update_schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -531,6 +519,59 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TU'
     api.scans.delete(mod['id'])
+
+
+def test_upsert_aws_credentials(api):
+    '''
+        test to check if aws credentials can be added to edit section of credentials
+        dict of scan
+    '''
+    scan = {
+        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS1', 'secret_key': 'SECRET1'}]}},
+                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}}
+                        },
+    }
+
+    scan_output = {
+        'credentials': {
+            'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS1', 'secret_key': 'SECRET1'}]}},
+            'add': {'Cloud Services': {}},
+            'edit': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}}
+            },
+    }
+    scan_actual = api.scans.upsert_aws_credentials(scan)
+    assert isinstance(scan_actual, dict)
+    assert scan_output == scan_actual
+
+
+def test_upsert_aws_credentials_no_current(api):
+    '''
+        test to check if aws credentials can be added to edit section of credentials
+        dict of scan when there is no current
+    '''
+    scan = {
+        'credentials': {'current': {},
+                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}}
+                        },
+    }
+    scan_actual = api.scans.upsert_aws_credentials(scan)
+    assert isinstance(scan_actual, dict)
+    assert scan == scan_actual
+
+
+def test_upsert_aws_credentials_no_add(api):
+    '''
+        test to check if aws credentials can be added to edit section of credentials
+        dict of scan when there is no add
+    '''
+    scan = {
+        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}},
+                        'add': {}
+                        },
+    }
+    scan_actual = api.scans.upsert_aws_credentials(scan)
+    assert isinstance(scan_actual, dict)
+    assert scan == scan_actual
 
 
 @pytest.mark.vcr()
