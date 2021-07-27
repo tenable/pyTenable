@@ -159,7 +159,7 @@ def test_workbench_asset_activity(api):
             for data in history:
                 check(data, 'timestamp', 'datetime')
                 check(data, 'type', str)
-                if data['type'] in ['tagging', 'updated', 'attribute-change']:
+                if data['type'] in ['tagging', 'updated']:
                     check(data, 'updates', list)
                     for update in data['updates']:
                         check(update, 'method', str)
