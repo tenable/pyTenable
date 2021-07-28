@@ -333,13 +333,13 @@ class ScansAPI(TIOEndpoint):
 
         return schedule
 
-    def configure_scan_schedule(self, id, enabled=None, frequency=None, interval=None,
+    def configure_scan_schedule(self, scan_id, enabled=None, frequency=None, interval=None,
                                 weekdays=None, day_of_month=None, starttime=None, timezone=None):
         '''
         Create dictionary of keys required for scan schedule
 
         Args:
-            id (int): The id of the Scan object in Tenable.io
+            scan_id (int): The id of the Scan object in Tenable.io
             enabled (bool, optional): To enable/disable scan schedule
             frequency (str, optional):
                 The frequency of the rule. The string inputted will be up-cased.
@@ -367,7 +367,7 @@ class ScansAPI(TIOEndpoint):
                 Dictionary of the keys required for scan schedule.
 
         '''
-        current = self.details(self._check('id', id, int))['settings']
+        current = self.details(self._check('scan_id', scan_id, int))['settings']
         if enabled in [True, False]:
             current[self.schedule_const.enabled] = self._check(self.schedule_const.enabled, enabled, bool)
         schedule = {}
@@ -584,19 +584,20 @@ class ScansAPI(TIOEndpoint):
         if 'credentials' in scan:
             aws_existing_credential = list()
             aws_new_credential = list()
+            change_needed = True
             if 'current' in scan['credentials'] \
                     and 'Cloud Services' in scan['credentials']['current'] \
                     and 'Amazon AWS' in scan['credentials']['current']['Cloud Services']:
                 aws_existing_credential = scan['credentials']['current']['Cloud Services']['Amazon AWS']
             else:
-                return scan
-            if 'add' in scan['credentials'] \
+                change_needed = False
+            if change_needed and 'add' in scan['credentials'] \
                     and 'Cloud Services' in scan['credentials']['add'] \
                     and 'Amazon AWS' in scan['credentials']['add']['Cloud Services']:
                 aws_new_credential = scan['credentials']['add']['Cloud Services']['Amazon AWS']
             else:
-                return scan
-            if aws_existing_credential != aws_new_credential:
+                change_needed = False
+            if change_needed and aws_existing_credential != aws_new_credential:
                 scan['credentials']['edit'] = {'Cloud Services': {'Amazon AWS': aws_new_credential}}
                 del scan['credentials']['add']['Cloud Services']['Amazon AWS']
         return scan
