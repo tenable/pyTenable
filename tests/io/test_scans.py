@@ -13,6 +13,7 @@ from tests.checker import check, single
 from tests.io.conftest import SCAN_ID_WITH_RESULTS
 from tests.pytenable_log_handler import log_exception
 
+
 @pytest.fixture(name='scheduled_scan')
 def fixture_scheduled_scan(request, api):
     '''
@@ -491,7 +492,7 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=create_schedule)
-    update_schedule = api.scans.configure_scan_schedule(id=scan['id'], interval=2)
+    update_schedule = api.scans.configure_scan_schedule(scan_id=scan['id'], interval=2)
     mod = api.scans.configure(scan['id'],
                               schedule_scan=update_schedule)
     assert isinstance(mod, dict)
@@ -1563,8 +1564,8 @@ def test_scan_host_details(api, scan_results):
             check(compliance, 'severity_index', int)
             check(compliance, 'plugin_family', str)
     except KeyError as key:
-       log_exception(key)
-       print('Key error: ', key)
+        log_exception(key)
+        print('Key error: ', key)
 
 
 @pytest.mark.vcr()
