@@ -188,7 +188,7 @@ class ScansAPI(TIOEndpoint):
             self._check('schedule_scan', kwargs['schedule_scan'], dict)
             if kwargs['schedule_scan']['enabled']:
                 keys = [self.schedule_const.enabled, self.schedule_const.launch, self.schedule_const.rrules,
-                    self.schedule_const.schedule_scan, self.schedule_const.start_time, self.schedule_const.timezone]
+                        self.schedule_const.schedule_scan, self.schedule_const.start_time, self.schedule_const.timezone]
             else:
                 keys = [self.schedule_const.enabled, self.schedule_const.schedule_scan]
 
@@ -226,14 +226,14 @@ class ScansAPI(TIOEndpoint):
                 self.schedule_const.day_of_month: rrules.get('BYMONTHDAY', None),
                 self.schedule_const.start_time: datetime.strptime(
                     details[self.schedule_const.start_time], self.schedule_const.time_format)
-                    if details[self.schedule_const.start_time] is not None else None,
+                if details[self.schedule_const.start_time] is not None else None,
                 self.schedule_const.timezone: details[self.schedule_const.timezone]
-                    if details[self.schedule_const.timezone] is not None else None,
+                if details[self.schedule_const.timezone] is not None else None,
             }
         return schedule
 
     def create_scan_schedule(self, enabled=False, frequency=None, interval=None,
-            weekdays=None, day_of_month=None, starttime=None, timezone=None):
+                             weekdays=None, day_of_month=None, starttime=None, timezone=None):
         '''
         Create dictionary of keys required for scan schedule
 
@@ -270,15 +270,15 @@ class ScansAPI(TIOEndpoint):
 
         if enabled is True:
             launch = self._check(self.schedule_const.frequency, frequency, str,
-                choices=self.schedule_const.frequency_choice,
-                default=self.schedule_const.frequency_default,
-                case=self.case_const.uppercase)
+                                 choices=self.schedule_const.frequency_choice,
+                                 default=self.schedule_const.frequency_default,
+                                 case=self.case_const.uppercase)
             frequency = self.schedule_const.ffrequency.format(launch)
             rrules = {
                 self.schedule_const.frequency: frequency,
                 self.schedule_const.interval: self.schedule_const.finterval.format(
                     self._check(self.schedule_const.interval, interval, int,
-                    default=self.schedule_const.interval_default)),
+                                default=self.schedule_const.interval_default)),
                 self.schedule_const.weekdays: None,
                 self.schedule_const.day_of_month: None
             }
@@ -301,8 +301,8 @@ class ScansAPI(TIOEndpoint):
             if frequency == self.schedule_const.monthly_frequency:
                 rrules[self.schedule_const.day_of_month] = self.schedule_const.fbymonthday.format(
                     self._check(self.schedule_const.day_of_month, day_of_month, int,
-                        choices=self.schedule_const.day_of_month_choice,
-                        default=self.schedule_const.day_of_month_default))
+                                choices=self.schedule_const.day_of_month_choice,
+                                default=self.schedule_const.day_of_month_default))
 
             # Now we have to remove unused keys from rrules and create rrules structure required by scan
             # 'FREQ=ONETIME;INTERVAL=1', FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TH,FR', 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=22'
@@ -315,13 +315,14 @@ class ScansAPI(TIOEndpoint):
             # starttime is rounded-off to 30 min schedule to match with values used in UI
             # will assign schedule datetime in (19700101T013000) format
             starttime = self._check(self.schedule_const.start_time, starttime, datetime,
-                default=self.schedule_const.start_time_default)
+                                    default=self.schedule_const.start_time_default)
             secs = timedelta(minutes=30).total_seconds()
             starttime = datetime.fromtimestamp(starttime.timestamp() + secs - starttime.timestamp() % secs)
             schedule[self.schedule_const.start_time] = starttime.strftime(self.schedule_const.time_format)
 
             schedule[self.schedule_const.timezone] = self._check(self.schedule_const.timezone, timezone, str,
-                choices=self._api._tz, default=self.schedule_const.timezone_default)
+                                                                 choices=self._api._tz,
+                                                                 default=self.schedule_const.timezone_default)
 
             schedule[self.schedule_const.schedule_scan] = 'yes'
 
@@ -332,13 +333,13 @@ class ScansAPI(TIOEndpoint):
 
         return schedule
 
-    def configure_scan_schedule(self, id, enabled=None, frequency=None, interval=None,
-            weekdays=None, day_of_month=None, starttime=None, timezone=None):
+    def configure_scan_schedule(self, scan_id, enabled=None, frequency=None, interval=None,
+                                weekdays=None, day_of_month=None, starttime=None, timezone=None):
         '''
         Create dictionary of keys required for scan schedule
 
         Args:
-            id (int): The id of the Scan object in Tenable.io
+            scan_id (int): The id of the Scan object in Tenable.io
             enabled (bool, optional): To enable/disable scan schedule
             frequency (str, optional):
                 The frequency of the rule. The string inputted will be up-cased.
@@ -366,7 +367,7 @@ class ScansAPI(TIOEndpoint):
                 Dictionary of the keys required for scan schedule.
 
         '''
-        current = self.details(self._check('id', id, int))['settings']
+        current = self.details(self._check('scan_id', scan_id, int))['settings']
         if enabled in [True, False]:
             current[self.schedule_const.enabled] = self._check(self.schedule_const.enabled, enabled, bool)
         schedule = {}
@@ -387,10 +388,10 @@ class ScansAPI(TIOEndpoint):
                 existing_rrules = {}
 
             launch = self._check(self.schedule_const.frequency, frequency, str,
-                choices=self.schedule_const.frequency_choice,
-                default=existing_rrules.get(self.schedule_const.frequency, None) or
-                   self.schedule_const.frequency_default,
-                case=self.case_const.uppercase)
+                                 choices=self.schedule_const.frequency_choice,
+                                 default=existing_rrules.get(self.schedule_const.frequency, None) or
+                                         self.schedule_const.frequency_default,
+                                 case=self.case_const.uppercase)
 
             frequency = self.schedule_const.ffrequency.format(launch)
 
@@ -398,8 +399,8 @@ class ScansAPI(TIOEndpoint):
                 self.schedule_const.frequency: frequency,
                 self.schedule_const.interval: self.schedule_const.finterval.format(
                     self._check(self.schedule_const.interval, interval, int,
-                    default=existing_rrules.get(self.schedule_const.interval, None)
-                        or self.schedule_const.interval_default)),
+                                default=existing_rrules.get(self.schedule_const.interval, None)
+                                        or self.schedule_const.interval_default)),
                 self.schedule_const.weekdays: None,
                 self.schedule_const.day_of_month: None
             }
@@ -411,7 +412,7 @@ class ScansAPI(TIOEndpoint):
                     self.schedule_const.weekdays, weekdays, list,
                     choices=self.schedule_const.weekdays_default,
                     default=existing_rrules.get(self.schedule_const.weekdays, '') or
-                        self.schedule_const.weekdays_default,
+                            self.schedule_const.weekdays_default,
                     case=self.case_const.uppercase)))
                 # In the same vein as the frequency check, we're accepting
                 # case-insensitive input, comparing it to our known list of
@@ -423,9 +424,9 @@ class ScansAPI(TIOEndpoint):
             if frequency == self.schedule_const.monthly_frequency:
                 rrules[self.schedule_const.day_of_month] = self.schedule_const.fbymonthday.format(
                     self._check(self.schedule_const.day_of_month, day_of_month, int,
-                    choices=self.schedule_const.day_of_month_choice,
-                    default=existing_rrules.get(self.schedule_const.day_of_month, None)
-                        or self.schedule_const.day_of_month_default))
+                                choices=self.schedule_const.day_of_month_choice,
+                                default=existing_rrules.get(self.schedule_const.day_of_month, None)
+                                        or self.schedule_const.day_of_month_default))
 
             # Now we have to remove unused keys from rrules and create rrules structure required by scan
             # 'FREQ=ONETIME;INTERVAL=1', FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TH,FR', 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=22'
@@ -438,15 +439,16 @@ class ScansAPI(TIOEndpoint):
             # starttime is rounded-off to 30 min schedule and
             # will assign schedule datetime in (19700101T011223) manner
             starttime = self._check(self.schedule_const.start_time, starttime, datetime,
-                default=existing_rrules.get(self.schedule_const.start_time, None)
-                    or self.schedule_const.start_time_default)
+                                    default=existing_rrules.get(self.schedule_const.start_time, None)
+                                            or self.schedule_const.start_time_default)
             secs = timedelta(minutes=30).total_seconds()
             starttime = datetime.fromtimestamp(starttime.timestamp() + secs - starttime.timestamp() % secs)
             schedule[self.schedule_const.start_time] = starttime.strftime(self.schedule_const.time_format)
 
             schedule[self.schedule_const.timezone] = self._check(self.schedule_const.timezone, timezone, str,
-                choices=self._api._tz, default=existing_rrules.get(self.schedule_const.timezone, None)
-                    or self.schedule_const.timezone_default)
+                                                                 choices=self._api._tz, default=existing_rrules.get(
+                    self.schedule_const.timezone, None)
+                                                                                                or self.schedule_const.timezone_default)
 
             schedule[self.schedule_const.schedule_scan] = 'yes'
 
@@ -458,7 +460,7 @@ class ScansAPI(TIOEndpoint):
                     self.schedule_const.weekdays, self.schedule_const.day_of_month]
             for k in keys:
                 if k in existing_rrules:
-                    del(existing_rrules[k])
+                    del (existing_rrules[k])
 
             return existing_rrules
 
@@ -499,7 +501,7 @@ class ScansAPI(TIOEndpoint):
         resp = self._api.get('scans/{}/attachments/{}'.format(
             scan_id,
             attachment_id
-            ), params={'key': self._check('key', key, str)}, stream=True)
+        ), params={'key': self._check('key', key, str)}, stream=True)
         for chunk in resp.iter_content(chunk_size=1024):
             if chunk:
                 fobj.write(chunk)
@@ -563,10 +565,42 @@ class ScansAPI(TIOEndpoint):
         current = self.details(scan_id)
         updated = self._create_scan_document(kw)
         scan = dict_merge(current, updated)
-
+        scan = self.upsert_aws_credentials(scan)
         # Performing the actual call to the API with the updated scan record.
         return self._api.put('scans/{}'.format(scan_id),
-                    json=scan).json()
+                             json=scan).json()
+
+    def upsert_aws_credentials(self, scan):
+        '''
+        Checks the credential dict of scan dict to derive operation add or edit.
+        This function assumes there are no edit credentials in the credentials dict.
+        If there is any edit credentials,it would override the same.
+        Args:
+            scan: scan object to update edit credential if it matches criteria
+        Returns:
+            :obj:`dict`:
+                The scan with updated credentials.
+        '''
+        if 'credentials' in scan:
+            aws_existing_credential_id = None
+            if 'current' in scan['credentials'] \
+                    and 'Cloud Services' in scan['credentials']['current'] \
+                    and 'Amazon AWS' in scan['credentials']['current']['Cloud Services']:
+                aws_existing_credential = scan['credentials']['current']['Cloud Services']['Amazon AWS']
+                if len(aws_existing_credential) == 1:
+                    aws_existing_credential_id = aws_existing_credential[0]['id']
+            if 'add' in scan['credentials'] \
+                    and 'Cloud Services' in scan['credentials']['add'] \
+                    and 'Amazon AWS' in scan['credentials']['add']['Cloud Services']:
+                aws_new_credential = scan['credentials']['add']['Cloud Services']['Amazon AWS']
+                aws_new_credential_id = None
+                if len(aws_new_credential) == 1:
+                    aws_new_credential_id = aws_new_credential[0]['id']
+                if aws_existing_credential_id is not None and aws_existing_credential_id != aws_new_credential_id:
+                    scan['credentials']['edit'] = \
+                        {'Cloud Services': {'Amazon AWS': scan['credentials']['add']['Cloud Services']['Amazon AWS']}}
+                    del scan['credentials']['add']['Cloud Services']['Amazon AWS']
+        return scan
 
     def copy(self, scan_id, folder_id=None, name=None):
         '''
@@ -596,7 +630,7 @@ class ScansAPI(TIOEndpoint):
 
         # make the call and return the resulting JSON document to the caller.
         return self._api.post('scans/{}/copy'.format(scan_id),
-            json=payload).json()
+                              json=payload).json()
 
     def create(self, **kw):
         '''
@@ -736,13 +770,13 @@ class ScansAPI(TIOEndpoint):
             ) for i in sort])
 
         return ScanHistoryIterator(self._api,
-            _limit=limit if limit else 50,
-            _offset=offset if offset else 0,
-            _pages_total=pages,
-            _query=query,
-            _path='scans/{}/history'.format(scan_id),
-            _resource='history'
-        )
+                                   _limit=limit if limit else 50,
+                                   _offset=offset if offset else 0,
+                                   _pages_total=pages,
+                                   _query=query,
+                                   _path='scans/{}/history'.format(scan_id),
+                                   _resource='history'
+                                   )
 
     def delete_history(self, scan_id, history_id):
         '''
@@ -911,9 +945,9 @@ class ScansAPI(TIOEndpoint):
         # instead of as an argument list.  As this seems to be a common
         # issue, we should be supporting this methodology.
         filters = self._check('filters',
-            kw.get('filters', filters), (list, tuple))
+                              kw.get('filters', filters), (list, tuple))
         payload = self._parse_filters(filters,
-            self._api.filters.scan_filters(), rtype='sjson')
+                                      self._api.filters.scan_filters(), rtype='sjson')
         params = dict()
         dl_params = dict()
 
@@ -934,19 +968,19 @@ class ScansAPI(TIOEndpoint):
             payload['password'] = self._check('password', kw['password'], str)
 
         payload['format'] = self._check('format',
-            kw['format'] if 'format' in kw else None,
-            str, choices=['nessus', 'html', 'pdf', 'csv', 'db'],
-            default='nessus')
+                                        kw['format'] if 'format' in kw else None,
+                                        str, choices=['nessus', 'html', 'pdf', 'csv', 'db'],
+                                        default='nessus')
 
         # The chapters are sent to us in a list, and we need to collapse that
         # down to a comma-delimited string.
         payload['chapters'] = ';'.join(
             self._check('chapters',
-                kw['chapters'] if 'chapters' in kw else None,
-                list,
-                choices=['vuln_hosts_summary', 'vuln_by_host', 'vuln_by_plugin',
-                    'compliance_exec', 'compliance', 'remediations'],
-                default=['vuln_by_host']))
+                        kw['chapters'] if 'chapters' in kw else None,
+                        list,
+                        choices=['vuln_hosts_summary', 'vuln_by_host', 'vuln_by_plugin',
+                                 'compliance_exec', 'compliance', 'remediations'],
+                        default=['vuln_by_host']))
 
         if 'filter_type' in kw:
             payload['filter.search_type'] = self._check(
@@ -963,7 +997,7 @@ class ScansAPI(TIOEndpoint):
         # The first thing that we need to do is make the request and get the
         # File id for the job.
         fid = self._api.post('scans/{}/export'.format(scan_id),
-            params=params, json=payload).json()['file']
+                             params=params, json=payload).json()['file']
         self._api._log.debug('Initiated scan export {}'.format(fid))
 
         # Next we will wait for the status of the export request to become
@@ -1024,10 +1058,9 @@ class ScansAPI(TIOEndpoint):
                 'history_uuid', history_uuid, 'scanner-uuid')
 
         return self._api.get('scans/{}/hosts/{}'.format(
-                scan_id,
-                self._check('host_id', host_id, int)),
+            scan_id,
+            self._check('host_id', host_id, int)),
             params=params).json()
-
 
     def import_scan(self, fobj, folder_id=None, password=None, aggregate=None):
         '''
@@ -1110,7 +1143,7 @@ class ScansAPI(TIOEndpoint):
             payload['alt_targets'] = self._check('targets', targets, list)
 
         return self._api.post('scans/{}/launch'.format(
-                scan_id),
+            scan_id),
             json=payload).json()['scan_uuid']
 
     def list(self, folder_id=None, last_modified=None):
@@ -1352,7 +1385,7 @@ class ScansAPI(TIOEndpoint):
             self._check('history_uuid', history_uuid, 'scanner-uuid'))).json()
 
     def check_auto_targets(self, limit, matched_resource_limit,
-            network_uuid=None, tags=None, targets=None):
+                           network_uuid=None, tags=None, targets=None):
         '''
         Evaluates a list of targets and/or tags against
         the scan route configuration of scanner groups.
@@ -1388,7 +1421,7 @@ class ScansAPI(TIOEndpoint):
         payload = dict()
 
         payload['network_uuid'] = self._check('network_uuid', network_uuid, 'uuid',
-            default='00000000-0000-0000-0000-000000000000')
+                                              default='00000000-0000-0000-0000-000000000000')
 
         if tags:
             payload['tags'] = [
