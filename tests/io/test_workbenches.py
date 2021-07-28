@@ -183,7 +183,7 @@ def test_workbench_asset_activity(api):
                         check(status, 'lastSeen', 'datetime')
                         check(status, 'name', str)
                     check(data['details'], 'updatedAt', 'datetime')
-                if data['type'] in ['discovered', 'seen', 'updated']:
+                if data['type'] in ['discovered', 'seen']:
                     check(data, 'scan_id', 'scanner-uuid')
                     check(data, 'schedule_id', str)
                     check(data, 'source', str)
@@ -531,19 +531,21 @@ def test_workbench_vuln_assets(api):
     assets = api.workbenches.vuln_assets()
     assert isinstance(assets, list)
     asset = assets[0]
-    check(asset, 'agent_name', list)
     check(asset, 'fqdn', list)
     check(asset, 'id', 'uuid')
     check(asset, 'ipv4', list)
     check(asset, 'ipv6', list)
-    check(asset, 'last_seen', 'datetime')
-    check(asset, 'netbios_name', list)
     check(asset, 'severities', list)
     for severity in asset['severities']:
         check(severity, 'count', int)
         check(severity, 'level', int)
         check(severity, 'name', str)
     check(asset, 'total', int)
+
+    # loop on list of keys which may be present in response
+    for key, value in {'agent_name': list, 'last_seen': 'datetime', 'netbios_name': list}.items():
+        if key in asset:
+            check(asset, key, value)
 
 @pytest.mark.vcr()
 def test_workbench_export_asset_uuid_typeerror(api):
