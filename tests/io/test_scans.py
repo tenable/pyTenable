@@ -555,9 +555,14 @@ def test_upsert_aws_credentials_no_current(api):
                         'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}}
                         },
     }
+    scan_expected = {
+        'credentials': {'current': {},
+                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}}
+                        },
+    }
     scan_actual = api.scans.upsert_aws_credentials(scan)
     assert isinstance(scan_actual, dict)
-    assert scan == scan_actual
+    assert scan_expected == scan_actual
 
 
 def test_upsert_aws_credentials_no_add(api):
@@ -570,9 +575,14 @@ def test_upsert_aws_credentials_no_add(api):
                         'add': {}
                         },
     }
+    scan_expected = {
+        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}},
+                        'add': {}
+                        },
+    }
     scan_actual = api.scans.upsert_aws_credentials(scan)
     assert isinstance(scan_actual, dict)
-    assert scan == scan_actual
+    assert scan_expected == scan_actual
 
 
 @pytest.mark.vcr()
