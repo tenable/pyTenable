@@ -582,24 +582,18 @@ class ScansAPI(TIOEndpoint):
                 The scan with updated credentials.
         '''
         if 'credentials' in scan:
-            aws_existing_credential = list()
-            aws_new_credential = list()
-            change_needed = True
+            aws_existing_credential = None
             if 'current' in scan['credentials'] \
                     and 'Cloud Services' in scan['credentials']['current'] \
                     and 'Amazon AWS' in scan['credentials']['current']['Cloud Services']:
                 aws_existing_credential = scan['credentials']['current']['Cloud Services']['Amazon AWS']
-            else:
-                change_needed = False
-            if change_needed and 'add' in scan['credentials'] \
+            if 'add' in scan['credentials'] \
                     and 'Cloud Services' in scan['credentials']['add'] \
                     and 'Amazon AWS' in scan['credentials']['add']['Cloud Services']:
                 aws_new_credential = scan['credentials']['add']['Cloud Services']['Amazon AWS']
-            else:
-                change_needed = False
-            if change_needed and aws_existing_credential != aws_new_credential:
-                scan['credentials']['edit'] = {'Cloud Services': {'Amazon AWS': aws_new_credential}}
-                del scan['credentials']['add']['Cloud Services']['Amazon AWS']
+                if aws_existing_credential is not None and aws_existing_credential != aws_new_credential:
+                    scan['credentials']['edit'] = {'Cloud Services': {'Amazon AWS': aws_new_credential}}
+                    del scan['credentials']['add']['Cloud Services']['Amazon AWS']
         return scan
 
     def copy(self, scan_id, folder_id=None, name=None):
