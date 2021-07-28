@@ -1,7 +1,10 @@
+'''
+test file to test various scenarios in iterators
+'''
 import responses
 
 from tenable.ot.schemas.iterators import OTIterator
-from tests.ot.conftest import ot as fixture_ot
+
 
 @responses.activate
 def test_iterator(fixture_ot):

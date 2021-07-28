@@ -21,7 +21,6 @@ autodoc_mock_imports = [
     'defusedxml',
     'ipaddress',
     'arrow',
-    'appdirs',
 ]
 
 import os, sys, datetime

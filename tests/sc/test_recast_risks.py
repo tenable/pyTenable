@@ -1,71 +1,115 @@
+'''
+test file for testing various scenarios in security center's recast risk
+functionality
+'''
 import pytest
-from ..checker import check
+
 from tenable.errors import APIError
 from tests.pytenable_log_handler import log_exception
+from ..checker import check
 
 
-def test_recast_risks_constructor_repos_typeerror(sc):
+def test_recast_risks_constructor_repos_typeerror(security_center):
+    '''
+    test recast risks constructor for repos type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(repos=1)
+        security_center.recast_risks._constructor(repos=1)
 
 
-def test_recast_risks_constructor_repos_item_typeerror(sc):
+def test_recast_risks_constructor_repos_item_typeerror(security_center):
+    '''
+    test recast risks constructor for 'repos item' type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(repos=['one'])
+        security_center.recast_risks._constructor(repos=['one'])
 
 
-def test_recast_risks_constructor_plugin_id_typeerror(sc):
+def test_recast_risks_constructor_plugin_id_typeerror(security_center):
+    '''
+    test recast risks constructor for 'plugin id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(plugin_id='nope')
+        security_center.recast_risks._constructor(plugin_id='nope')
 
 
-def test_recast_risks_constructor_port_typeerror(sc):
+def test_recast_risks_constructor_port_typeerror(security_center):
+    '''
+    test recast risks constructor for port type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(port='nope')
+        security_center.recast_risks._constructor(port='nope')
 
 
-def test_recast_risks_constructor_protocol_typeerror(sc):
+def test_recast_risks_constructor_protocol_typeerror(security_center):
+    '''
+    test recast risks constructor for protocol type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(protocol='nothing')
+        security_center.recast_risks._constructor(protocol='nothing')
 
 
-def test_recast_risks_constructor_comments_typeerror(sc):
+def test_recast_risks_constructor_comments_typeerror(security_center):
+    '''
+    test recast risks constructor for comments type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(comments=1)
+        security_center.recast_risks._constructor(comments=1)
 
 
-def test_recast_risks_constructor_severity_id_typeerror(sc):
+def test_recast_risks_constructor_severity_id_typeerror(security_center):
+    '''
+    test recast risks constructor for 'severity id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(severity_id='nope')
+        security_center.recast_risks._constructor(severity_id='nope')
 
 
-def test_recast_risks_constructor_ips_typeerror(sc):
+def test_recast_risks_constructor_ips_typeerror(security_center):
+    '''
+    test recast risks constructor for ips type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(ips=1)
+        security_center.recast_risks._constructor(ips=1)
 
 
-def test_recast_risks_constructor_ips_item_typeerror(sc):
+def test_recast_risks_constructor_ips_item_typeerror(security_center):
+    '''
+    test recast risks constructor for 'ips item' type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(ips=[1])
+        security_center.recast_risks._constructor(ips=[1])
 
 
-def test_recast_risks_constructor_uuids_typeerror(sc):
+def test_recast_risks_constructor_uuids_typeerror(security_center):
+    '''
+    test recast risks constructor for uuids type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(uuids=1)
+        security_center.recast_risks._constructor(uuids=1)
 
 
-def test_recast_risks_constructor_uuids_item_typeerror(sc):
+def test_recast_risks_constructor_uuids_item_typeerror(security_center):
+    '''
+    test recast risks constructor for 'uuids item' type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(uuids=[1])
+        security_center.recast_risks._constructor(uuids=[1])
 
 
-def test_recast_risks_constructor_asset_list_typeerror(sc):
+def test_recast_risks_constructor_asset_list_typeerror(security_center):
+    '''
+    test recast risks constructor for 'asset list' type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks._constructor(asset_list='nope')
+        security_center.recast_risks._constructor(asset_list='nope')
 
 
-def test_recast_risks_constructor_success(sc):
-    resp = sc.recast_risks._constructor(
+def test_recast_risks_constructor_success(security_center):
+    '''
+    test recast risks constructor for success
+    '''
+    resp = security_center.recast_risks._constructor(
         repos=[1, 2],
         plugin_id=19506,
         port=0,
@@ -84,14 +128,14 @@ def test_recast_risks_constructor_success(sc):
         'hostType': 'ip',
         'hostValue': '192.168.0.1'
     }
-    resp = sc.recast_risks._constructor(
+    resp = security_center.recast_risks._constructor(
         uuids=['UUID1', 'UUID2']
     )
     assert resp == {
         'hostType': 'uuid',
         'hostValue': 'UUID1,UUID2'
     }
-    resp = sc.recast_risks._constructor(
+    resp = security_center.recast_risks._constructor(
         asset_list=1
     )
     assert resp == {
@@ -101,15 +145,18 @@ def test_recast_risks_constructor_success(sc):
 
 
 @pytest.fixture
-def arisk(request, sc, vcr):
+def arisk(request, security_center, vcr):
+    '''
+    test fixture for a risk
+    '''
     with vcr.use_cassette('test_recast_risks_create_success'):
-        arisk = sc.recast_risks.create(19506, [1], 0,
-                                   ips=['127.0.0.1'])
+        arisk = security_center.recast_risks.create(19506, [1], 0,
+                                                    ips=['127.0.0.1'])
 
     def teardown():
         try:
             with vcr.use_cassette('test_recast_risks_delete_success'):
-                sc.recast_risks.delete(int(arisk['id']))
+                security_center.recast_risks.delete(int(arisk['id']))
         except APIError as error:
             log_exception(error)
 
@@ -118,8 +165,11 @@ def arisk(request, sc, vcr):
 
 
 @pytest.mark.vcr()
-def test_recast_risks_list_success(sc):
-    resp = sc.recast_risks.list()
+def test_recast_risks_list_success(security_center):
+    '''
+    test recast risks list for success
+    '''
+    resp = security_center.recast_risks.list()
     assert isinstance(resp, list)
     risk = resp[0]
     check(risk, 'id', str)
@@ -149,12 +199,15 @@ def test_recast_risks_list_success(sc):
 
 
 @pytest.mark.vcr()
-def test_recast_risks_list_success_params(sc):
-    resp = sc.recast_risks.list(fields=['id', 'hostType', 'hostValue', 'port'],
-                                plugin_id=1234,
-                                port=1234,
-                                org_ids=[1234],
-                                repo_ids=[1234])
+def test_recast_risks_list_success_params(security_center):
+    '''
+    test recast risks list success for params
+    '''
+    resp = security_center.recast_risks.list(fields=['id', 'hostType', 'hostValue', 'port'],
+                                             plugin_id=1234,
+                                             port=1234,
+                                             org_ids=[1234],
+                                             repo_ids=[1234])
     assert isinstance(resp, list)
     risk = resp[0]
     check(risk, 'id', str)
@@ -163,7 +216,10 @@ def test_recast_risks_list_success_params(sc):
     check(risk, 'port', str)
 
 @pytest.mark.vcr()
-def test_recast_risks_create_success(sc, arisk):
+def test_recast_risks_create_success(arisk):
+    '''
+    test recast risks create for success
+    '''
     assert isinstance(arisk, dict)
     check(arisk, 'id', str)
     check(arisk, 'hostType', str)
@@ -193,8 +249,11 @@ def test_recast_risks_create_success(sc, arisk):
 
 
 @pytest.mark.vcr()
-def test_recast_risks_details_success(sc, arisk):
-    risk = sc.recast_risks.details(int(arisk['id']))
+def test_recast_risks_details_success(security_center, arisk):
+    '''
+    test recast risks details for success
+    '''
+    risk = security_center.recast_risks.details(int(arisk['id']))
     check(risk, 'id', str)
     check(risk, 'hostType', str)
     check(risk, 'hostValue', str)
@@ -223,9 +282,12 @@ def test_recast_risks_details_success(sc, arisk):
 
 
 @pytest.mark.vcr()
-def test_recast_risks_details_success_for_fields(sc, arisk):
-    details = sc.recast_risks.details(int(arisk['id']),
-                                      fields=['id', 'hostType', 'hostValue', 'port'])
+def test_recast_risks_details_success_for_fields(security_center, arisk):
+    '''
+    test recast risks details success for fields
+    '''
+    details = security_center.recast_risks.details(int(arisk['id']),
+                                                   fields=['id', 'hostType', 'hostValue', 'port'])
     check(details, 'id', str)
     check(details, 'hostType', str)
     check(details, 'hostValue', str)
@@ -233,20 +295,32 @@ def test_recast_risks_details_success_for_fields(sc, arisk):
 
 
 @pytest.mark.vcr()
-def test_recast_risks_delete_success(sc, arisk):
-    sc.recast_risks.delete(int(arisk['id']))
+def test_recast_risks_delete_success(security_center, arisk):
+    '''
+    test recast risks delete for success
+    '''
+    security_center.recast_risks.delete(int(arisk['id']))
 
 
-def test_recast_risks_apply_id_typeerror(sc):
+def test_recast_risks_apply_id_typeerror(security_center):
+    '''
+    test recast risks apply for id type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks.apply('one', 1)
+        security_center.recast_risks.apply('one', 1)
 
 
-def test_recast_risks_apply_repo_typeerror(sc):
+def test_recast_risks_apply_repo_typeerror(security_center):
+    '''
+    test recast risks apply for repo type error
+    '''
     with pytest.raises(TypeError):
-        sc.recast_risks.apply(1, 'one')
+        security_center.recast_risks.apply(1, 'one')
 
 
 @pytest.mark.vcr()
-def test_recast_risks_apply_success(sc, arisk):
-    sc.recast_risks.apply(int(arisk['id']), 1)
+def test_recast_risks_apply_success(security_center, arisk):
+    '''
+    test recast risks apply for success
+    '''
+    security_center.recast_risks.apply(int(arisk['id']), 1)

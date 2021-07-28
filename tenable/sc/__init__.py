@@ -184,7 +184,7 @@ class TenableSC(APISession):
         https://github.com/m-click/requests_pkcs12
     '''
     _apikeys = False
-    _restricted_paths = ['token']
+    _restricted_paths = ['token','credential']
     _timeout = 300
     _error_codes = {
         400: InvalidInputError,
@@ -318,6 +318,9 @@ class TenableSC(APISession):
             self._session.headers.update({
                 'X-SecurityCenter': str(resp.json()['response']['token'])
             })
+            self._session.headers.update({
+                'TNS_SESSIONID': str(resp.headers['Set-Cookie'])[14:46]
+            })
 
         elif access_key != None and secret_key != None:
             if semver.VersionInfo.parse(self.version).match('<5.13.0'):
@@ -341,7 +344,7 @@ class TenableSC(APISession):
         '''
         if not self._apikeys:
             resp = self.delete('token')
-        self._build_session()
+        self._close_session()
         self._apikeys = False
 
     @property
