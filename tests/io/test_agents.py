@@ -130,7 +130,7 @@ def test_agents_list(api):
         check(agent, 'name', str)
         check(agent, 'platform', str)
         check(agent, 'status', str)
-        check(agent, 'uuid', 'uuid')
+        check(agent, 'uuid', str)
     assert count == agents.total
 
 
@@ -157,15 +157,15 @@ def test_agents_details_agent_details(api, agent):
     '''
     test to get the agent details
     '''
-    for resp in agent:
-        check(resp, 'distro', str)
-        check(resp, 'id', int)
-        check(resp, 'ip', str)
-        check(resp, 'linked_on', int)
-        check(resp, 'name', str)
-        check(resp, 'platform', str)
-        check(resp, 'status', str)
-        check(resp, 'uuid', 'uuid')
+    resp = api.agents.details(agent['id'])
+    check(resp, 'distro', str)
+    check(resp, 'id', int)
+    check(resp, 'ip', str)
+    check(resp, 'linked_on', int)
+    check(resp, 'name', str)
+    check(resp, 'platform', str)
+    check(resp, 'status', str)
+    check(resp, 'uuid', str)
 
 
 # Add tests for singular & bulk agent deletion.

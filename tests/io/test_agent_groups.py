@@ -77,25 +77,23 @@ def test_agentgroups_add_agent_to_group(api, agentgroup, agent):
     '''
     test to add single agent to the group
     '''
-    for each_agent in agent:
-        api.agent_groups.add_agent(agentgroup['id'], each_agent['id'])
+    api.agent_groups.add_agent(agentgroup['id'], agent['id'])
 
 
 @pytest.mark.vcr()
-def test_agentgroups_add_mult_agents_to_group(api, agentgroup):
+def test_agentgroups_add_mult_agents_to_group(api, agentgroup, agent):
     '''
     test to add multiple agents to group
     '''
     agents = api.agents.list()
-    for agent in agents:
-        task = api.agent_groups.add_agent(agentgroup['id'],
-                                          agent['id'],
-                                          agent['id']
-                                          )
-        assert isinstance(task, dict)
-        check(task, 'container_uuid', str)
-        check(task, 'status', str)
-        check(task, 'task_id', str)
+    task = api.agent_groups.add_agent(agentgroup['id'],
+                                      agents.next()['id'],
+                                      agents.next()['id']
+                                      )
+    assert isinstance(task, dict)
+    check(task, 'container_uuid', str)
+    check(task, 'status', str)
+    check(task, 'task_id', str)
 
 
 @pytest.mark.vcr()
@@ -272,28 +270,24 @@ def test_agentgroups_delete_agent_from_group_standard_user_permissionerror(stdap
 def test_agentgroups_delete_agent_from_group(api, agent, agentgroup):
     '''
     test to delete single agent from the group
-
     '''
-    for each_agent in agent:
-        api.agent_groups.add_agent(agentgroup['id'], each_agent['id'])
-        api.agent_groups.delete_agent(agentgroup['id'], each_agent['id'])
+    api.agent_groups.delete_agent(agentgroup['id'], agent['id'])
 
 
 @pytest.mark.vcr()
-def test_agentgroups_delete_mult_agents_from_group(api, agentgroup):
+def test_agentgroups_delete_mult_agents_from_group(api, agentgroup, agent):
     '''
     test to delete the multiple agents from the group
     '''
     agents = api.agents.list()
-    for agent in agents:
-        alist = [agent['id'], agent['id']]
-        api.agent_groups.add_agent(agentgroup['id'], *alist)
-        time.sleep(1)
-        task = api.agent_groups.delete_agent(agentgroup['id'], *alist)
-        assert isinstance(task, dict)
-        check(task, 'container_uuid', str)
-        check(task, 'status', str)
-        check(task, 'task_id', str)
+    alist = [agents.next()['id'], agents.next()['id']]
+    api.agent_groups.add_agent(agentgroup['id'], *alist)
+    time.sleep(1)
+    task = api.agent_groups.delete_agent(agentgroup['id'], *alist)
+    assert isinstance(task, dict)
+    check(task, 'container_uuid', str)
+    check(task, 'status', str)
+    check(task, 'task_id', str)
 
 
 @pytest.mark.vcr()
@@ -377,23 +371,22 @@ def test_agentgroups_task_status_task_uuid_unexpectedvalueerror(api):
 
 
 @pytest.mark.vcr()
-def test_agentgroups_task_status(api, agentgroup):
+def test_agentgroups_task_status(api, agentgroup, agent):
     '''
     test to get the task status of the agent group
     '''
     agents = api.agents.list()
-    for agent in agents:
-        resp = api.agent_groups.add_agent(agentgroup['id'],
-                                        agent['id'],
-                                        agent['id']
-                                        )
-        task = api.agent_groups.task_status(agentgroup['id'], resp['task_id'])
-        assert isinstance(task, dict)
-        check(task, 'container_uuid', str)
-        check(task, 'last_update_time', int)
-        check(task, 'start_time', int)
-        check(task, 'status', str)
-        check(task, 'task_id', str)
+    resp = api.agent_groups.add_agent(agentgroup['id'],
+                                      agents.next()['id'],
+                                      agents.next()['id']
+                                      )
+    task = api.agent_groups.task_status(agentgroup['id'], resp['task_id'])
+    assert isinstance(task, dict)
+    check(task, 'container_uuid', str)
+    check(task, 'last_update_time', int)
+    check(task, 'start_time', int)
+    check(task, 'status', str)
+    check(task, 'task_id', str)
 
 
 @pytest.mark.vcr()

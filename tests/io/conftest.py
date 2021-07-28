@@ -2,6 +2,7 @@
 import os
 import uuid
 import pytest
+from tests.io.test_setup_agent import AgentSetup
 from tenable.errors import NotFoundError
 from tenable.io import TenableIO
 from tests.pytenable_log_handler import setup_logging_to_file, log_exception
@@ -42,9 +43,18 @@ def stdapi():
 
 
 @pytest.fixture
-def agent(api):
-    '''agent fixture'''
-    return api.agents.list()
+def agent(request, api):
+    '''agent fixture to create a fake agents'''
+    fake_agent_one = AgentSetup().setup_agent(api)
+    fake_agent_two = AgentSetup().setup_agent(api)
+
+    def teardown():
+        '''function to unlink fake agents'''
+        AgentSetup().teardown_agent(api, token=fake_agent_one)
+        AgentSetup().teardown_agent(api, token=fake_agent_two)
+
+    request.addfinalizer(teardown)
+    return api.agents.list().next()
 
 
 @pytest.fixture
