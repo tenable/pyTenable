@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: '{"name": "9c84cdcc-833a-4c2f-a410-0054b615bab9"}'
+    body: '{"name": "b3a55a0f-7f98-4f8e-9185-447a59041a9f"}'
     headers:
       Accept:
       - '*/*'
@@ -13,8 +13,8 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.2
-        (pyTenable/1.3.2; Python/3.8.6; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.3
+        (pyTenable/1.3.3; Python/3.8.6; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: POST
@@ -22,11 +22,11 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3WP20rGMBAG3yXXDSTp5uTLlM1mqwHT/jQpIuK7m0q9UPByP2Zg9kOULJ60j6D9
-        JM7zuoRy5IJPTgIZLSFZLQPiKtGvloH8Gq0Vk9iw8qAjBaBMJMM846UMELSSSllITtuEKQ6aDsZe
-        9m3J2IemnfFzNBDsJF6x9aXuuayF/mN6qdw61sfvub3gwaNZTWJ/2/gYPe29da7iHpbrI2OUhuB+
-        pjv8D3g/z2ZWJigvPTorATPIqAJKyyEFitFZdsM521AefNTS2ihu3wn4zFtvC+3n1sfw+QUY+Roc
-        XgEAAA==
+        H4sIAAAAAAAAA3WQ0WrEIBBF/8XnDGji6NifCbNxbIWaLNFQSum/r1nShxb66PFeOHe+VI7qxfiA
+        OA3qOM6XQu/ZRWeBRGuwJjkgTwSRLFNIi+CU1KBWLtLTt4kRWSfwKRDYRALBEIK1njFoazic6WUX
+        bnlb58it14wbve2/iIN659rmssWc8vJfpuUitXG5/8b1jXfpznpQ28cqe/epn7VJUReYz0XjqI0l
+        94Mu8T/Ba7yMkx5Je+g36CM4WgiaGFDoRksIDsX1zlF75S57ybV24/pU4FdZW52X7VhbB98PfIQG
+        HV4BAAA=
     headers:
       Cache-Control:
       - no-cache
@@ -37,7 +37,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 27 Jul 2021 13:28:05 GMT
+      - Wed, 28 Jul 2021 16:40:55 GMT
       Set-Cookie:
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
@@ -52,9 +52,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-5u5xw-ap-southeast-1-prod
+      - nginx-router-1jys0-ap-southeast-1-prod
       X-Request-Uuid:
-      - 1fdf0f74aa0834817ad38babeaef508b
+      - 6a8ad3082696c75bd6a247381bffc90d
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -74,12 +74,12 @@ interactions:
       Cookie:
       - nginx-cloud-site-id=us-2b
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.2
-        (pyTenable/1.3.2; Python/3.8.6; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.3
+        (pyTenable/1.3.3; Python/3.8.6; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: DELETE
-    uri: https://cloud.tenable.com/scanners/1/agent-groups/179417
+    uri: https://cloud.tenable.com/scanners/1/agent-groups/179553
   response:
     body:
       string: ''
@@ -89,7 +89,7 @@ interactions:
       Connection:
       - keep-alive
       Date:
-      - Tue, 27 Jul 2021 13:28:09 GMT
+      - Wed, 28 Jul 2021 16:40:58 GMT
       Set-Cookie:
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
@@ -102,9 +102,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-5u5xw-ap-southeast-1-prod
+      - nginx-router-1jys0-ap-southeast-1-prod
       X-Request-Uuid:
-      - 4fdc77c1876ef8f3cff895c67e2b3ac6
+      - ccd65e1a0539e2a58e831740c2824e5f
       X-Xss-Protection:
       - 1; mode=block
     status:
@@ -122,8 +122,8 @@ interactions:
       Cookie:
       - nginx-cloud-site-id=us-2b
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.2
-        (pyTenable/1.3.2; Python/3.8.6; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.3
+        (pyTenable/1.3.3; Python/3.8.6; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
@@ -162,7 +162,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 27 Jul 2021 13:28:09 GMT
+      - Wed, 28 Jul 2021 16:40:59 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -181,9 +181,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-5u5xw-ap-southeast-1-prod
+      - nginx-router-1jys0-ap-southeast-1-prod
       X-Request-Uuid:
-      - 5c6fb9d7c8a0569df9627cdd70035ed6
+      - 34384549693cf0f6ee5bc47b5505c35e
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -201,12 +201,12 @@ interactions:
       Cookie:
       - nginx-cloud-site-id=us-2b
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.2
-        (pyTenable/1.3.2; Python/3.8.6; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.3
+        (pyTenable/1.3.3; Python/3.8.6; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
-    uri: https://cloud.tenable.com/scanners/1/agent-groups/179417
+    uri: https://cloud.tenable.com/scanners/1/agent-groups/179553
   response:
     body:
       string: !!binary |
@@ -221,7 +221,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 27 Jul 2021 13:28:13 GMT
+      - Wed, 28 Jul 2021 16:41:02 GMT
       Set-Cookie:
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
@@ -236,9 +236,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-5u5xw-ap-southeast-1-prod
+      - nginx-router-1jys0-ap-southeast-1-prod
       X-Request-Uuid:
-      - cadebc575f03db114f40f9f708e4a7dd
+      - 3a516e58f53939565266455784a188d7
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -258,17 +258,17 @@ interactions:
       Cookie:
       - nginx-cloud-site-id=us-2b
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.2
-        (pyTenable/1.3.2; Python/3.8.6; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.3
+        (pyTenable/1.3.3; Python/3.8.6; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: DELETE
-    uri: https://cloud.tenable.com/scanners/1/agent-groups/179417
+    uri: https://cloud.tenable.com/scanners/1/agent-groups/179553
   response:
     body:
       string: !!binary |
         H4sIAAAAAAAAA6tWKi5JLCktds5PSVWyMjEw0VFKLSrKL1KyUvLLL1Fwyy/NS1HSUcpNLS5OTAeq
-        UHJMT80rcS/KLy1QKM8syVDITFEwNLc0MTRXyAOqTwOp11OqBQDOnLUiVwAAAA==
+        UHJMT80rcS/KLy1QKM8syVDITFEwNLc0NTVWyAOqTwOp11OqBQAn5w0fVwAAAA==
     headers:
       Cache-Control:
       - no-cache
@@ -279,7 +279,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 27 Jul 2021 13:28:17 GMT
+      - Wed, 28 Jul 2021 16:41:06 GMT
       Set-Cookie:
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
@@ -294,9 +294,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-5u5xw-ap-southeast-1-prod
+      - nginx-router-1jys0-ap-southeast-1-prod
       X-Request-Uuid:
-      - 8784fc59d27c03b8089e8250d3d714b7
+      - 72c6c41a46378842671ca2588e81563a
       X-XSS-Protection:
       - 1; mode=block
     status:
