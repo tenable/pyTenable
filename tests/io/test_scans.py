@@ -528,16 +528,20 @@ def test_upsert_aws_credentials(api):
         dict of scan
     '''
     scan = {
-        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS1', 'secret_key': 'SECRET1'}]}},
-                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}}
+        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS1',
+                                                                       'secret_key': 'SECRET1', 'id': 12346}]}},
+                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
+                                                                   'id': 12347}]}}
                         },
     }
 
     scan_output = {
         'credentials': {
-            'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS1', 'secret_key': 'SECRET1'}]}},
+            'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS1',
+                                                           'secret_key': 'SECRET1', 'id': 12346}]}},
             'add': {'Cloud Services': {}},
-            'edit': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}}
+            'edit': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
+                                                        'id': 12347}]}}
             },
     }
     scan_actual = api.scans.upsert_aws_credentials(scan)
@@ -552,12 +556,14 @@ def test_upsert_aws_credentials_no_current(api):
     '''
     scan = {
         'credentials': {'current': {},
-                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}}
+                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
+                                                                   'id': 12347}]}}
                         },
     }
     scan_expected = {
         'credentials': {'current': {},
-                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}}
+                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
+                                                                   'id': 12347}]}}
                         },
     }
     scan_actual = api.scans.upsert_aws_credentials(scan)
@@ -571,12 +577,14 @@ def test_upsert_aws_credentials_no_add(api):
         dict of scan when there is no add
     '''
     scan = {
-        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}},
+        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
+                                                                       'id': 12346}]}},
                         'add': {}
                         },
     }
     scan_expected = {
-        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2'}]}},
+        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
+                                                                       'id': 12346}]}},
                         'add': {}
                         },
     }

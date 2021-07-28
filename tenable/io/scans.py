@@ -582,17 +582,23 @@ class ScansAPI(TIOEndpoint):
                 The scan with updated credentials.
         '''
         if 'credentials' in scan:
-            aws_existing_credential = None
+            aws_existing_credential_id = None
             if 'current' in scan['credentials'] \
                     and 'Cloud Services' in scan['credentials']['current'] \
                     and 'Amazon AWS' in scan['credentials']['current']['Cloud Services']:
                 aws_existing_credential = scan['credentials']['current']['Cloud Services']['Amazon AWS']
+                if len(aws_existing_credential) == 1:
+                    aws_existing_credential_id = aws_existing_credential[0]['id']
             if 'add' in scan['credentials'] \
                     and 'Cloud Services' in scan['credentials']['add'] \
                     and 'Amazon AWS' in scan['credentials']['add']['Cloud Services']:
                 aws_new_credential = scan['credentials']['add']['Cloud Services']['Amazon AWS']
-                if aws_existing_credential is not None and aws_existing_credential != aws_new_credential:
-                    scan['credentials']['edit'] = {'Cloud Services': {'Amazon AWS': aws_new_credential}}
+                aws_new_credential_id = None
+                if len(aws_new_credential) == 1:
+                    aws_new_credential_id = aws_new_credential[0]['id']
+                if aws_existing_credential_id is not None and aws_existing_credential_id != aws_new_credential_id:
+                    scan['credentials']['edit'] = \
+                        {'Cloud Services': {'Amazon AWS': scan['credentials']['add']['Cloud Services']['Amazon AWS']}}
                     del scan['credentials']['add']['Cloud Services']['Amazon AWS']
         return scan
 
