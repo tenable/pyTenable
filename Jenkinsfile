@@ -122,8 +122,9 @@ try {
                         sh """
                         mkdir reports
                         touch reports/yamllint_tenable.log
+                        echo "Created the log file for yamllint" > reports/yamllint_tenable.log
                         pip install yamllint
-                        yamllint --config-file=.yamllint --format=parsable tests/io/cassettes tests/sc/cassettes tests/cs/cassettes > reports/yamllint_tenable.log
+                        yamllint --config-file=.yamllint --format=parsable tests/io/cassettes tests/sc/cassettes tests/cs/cassettes >> reports/yamllint_tenable.log
                         """
                     } catch(ex) {
                         throw ex
