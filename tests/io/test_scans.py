@@ -100,6 +100,32 @@ def test_scan_create_scan_document_policies_name_pass(api):
     assert resp['settings']['policy_id'] == policy['id']
 
 
+@pytest.mark.vcr()
+def test_create_scan_document_file_target_name(api):
+    '''
+    test to create scan document with file targets param 
+	and uploaded file name
+    '''
+    lines = ['scan create document with fileUpload ', 'only file name in file target']
+    with open('file.txt', 'w') as targetFile:
+        for line in lines:
+            targetFile.write(line)
+            targetFile.write('\n')
+        targetFile.close()
+
+        with open('file.txt') as fobj:
+            api.files.upload(fobj)
+            fobj.close()
+
+        resp = getattr(api.scans, '_create_scan_document')({'file_targets': 'file.txt'})
+
+        assert isinstance(resp, dict)
+        check(resp, 'settings', dict)
+        check(resp['settings'], 'file_targets', str)
+        assert resp['settings']['file_targets'] == 'file.txt'
+
+        os.remove('file.txt')
+
 # def test_scan_create_scan_document_targets
 
 @pytest.mark.vcr()
