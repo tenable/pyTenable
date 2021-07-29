@@ -1,33 +1,227 @@
 interactions:
 - request:
+    body: '{"vulnScoringSystem": "CVSSv2", "name": "New Org", "zoneSelection": "auto_only"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '80'
+      Content-Type:
+      - application/json
+      Cookie:
+      - TNS_SESSIONID=SESSIONID
+      TNS_SESSIONID:
+      - a3e580857318b12388f4ae3d0ab31a98
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.3
+        (pyTenable/1.3.3; Python/3.8.6; Windows/AMD64)
+      X-SecurityCenter:
+      - '0000000000'
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/organization
+  response:
+    body:
+      string: '{"type":"regular","response":{"id":"66","name":"New Org","description":"","email":"","address":"","city":"","state":"","country":"","phone":"","fax":"","ipInfoLinks":[],"zoneSelection":"auto_only","restrictedIPs":"","vulnScoreLow":"1","vulnScoreMedium":"3","vulnScoreHigh":"10","vulnScoreCritical":"40","vulnScoringSystem":"CVSSv2","createdTime":"1627573435","modifiedTime":"1627573435","userCount":"0","lces":[],"repositories":[],"zones":[],"nessusManagers":[],"pubSites":[],"ldaps":[]},"error_code":0,"error_msg":"","warnings":[],"timestamp":1627573435}
+
+        '
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '556'
+      Content-Security-Policy:
+      - 'default-src ''self''; script-src ''self'' ''unsafe-eval'' pendo-io-static.storage.googleapis.com
+        app.pendo.io cdn.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        data.pendo.io cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com
+        *.cloudfront.net; connect-src ''self'' app.pendo.io data.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com *.cloudfront.net;
+        img-src ''self'' data: cdn.pendo.io app.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        data.pendo.io; style-src ''self'' ''unsafe-inline'' app.pendo.io cdn.pendo.io
+        pendo-static-6165929460760576.storage.googleapis.com; frame-ancestors app.pendo.io;
+        form-action ''self''; block-all-mixed-content; upgrade-insecure-requests;
+        object-src ''none'''
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 29 Jul 2021 15:43:55 GMT
+      Expect-CT:
+      - max-age=31536000
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - no-cache
+      SecurityCenter:
+      - 5.18.0
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - x-apikey
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['0']
-      Cookie: [TNS_SESSIONID=SESSIONID]
-      User-Agent: [pyTenable/0.3.18 (pyTenable/0.3.18; Python/2.7.15)]
-      X-SecurityCenter: ['0000000000']
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Cookie:
+      - TNS_SESSIONID=SESSIONID
+      TNS_SESSIONID:
+      - a3e580857318b12388f4ae3d0ab31a98
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.3
+        (pyTenable/1.3.3; Python/3.8.6; Windows/AMD64)
+      X-SecurityCenter:
+      - '0000000000'
     method: DELETE
-    uri: https://securitycenter.home.cugnet.net/rest/organization/2
+    uri: https://securitycenter.home.cugnet.net/rest/organization/65
   response:
-    body: {string: !!python/unicode '{"type":"regular","response":"","error_code":0,"error_msg":"","warnings":[],"timestamp":1557322697}
+    body:
+      string: '{"type":"regular","response":"","error_code":0,"error_msg":"","warnings":[],"timestamp":1627573436}
 
-'}
+        '
     headers:
-      cache-control: ['no-store, no-cache, must-revalidate']
-      connection: [Keep-Alive]
-      content-length: ['100']
-      content-type: [application/json]
-      date: ['Wed, 08 May 2019 13:38:17 GMT']
-      expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      keep-alive: ['timeout=15, max=100']
-      pragma: [no-cache]
-      securitycenter: [5.8.0]
-      server: [Apache]
-      strict-transport-security: [max-age=31536000; includeSubDomains]
-      x-content-type-options: [nosniff]
-      x-frame-options: [DENY]
-      x-xss-protection: [1; mode=block]
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-cache, no-store
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '100'
+      Content-Security-Policy:
+      - 'default-src ''self''; script-src ''self'' ''unsafe-eval'' pendo-io-static.storage.googleapis.com
+        app.pendo.io cdn.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        data.pendo.io cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com
+        *.cloudfront.net; connect-src ''self'' app.pendo.io data.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com *.cloudfront.net;
+        img-src ''self'' data: cdn.pendo.io app.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        data.pendo.io; style-src ''self'' ''unsafe-inline'' app.pendo.io cdn.pendo.io
+        pendo-static-6165929460760576.storage.googleapis.com; frame-ancestors app.pendo.io;
+        form-action ''self''; block-all-mixed-content; upgrade-insecure-requests;
+        object-src ''none'''
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 29 Jul 2021 15:43:56 GMT
+      Expect-CT:
+      - max-age=31536000
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=99
+      Pragma:
+      - no-cache
+      SecurityCenter:
+      - 5.18.0
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - x-apikey
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Cookie:
+      - TNS_SESSIONID=SESSIONID
+      TNS_SESSIONID:
+      - a3e580857318b12388f4ae3d0ab31a98
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.3
+        (pyTenable/1.3.3; Python/3.8.6; Windows/AMD64)
+      X-SecurityCenter:
+      - '0000000000'
+    method: DELETE
+    uri: https://securitycenter.home.cugnet.net/rest/organization/65
+  response:
+    body:
+      string: '{"type":"regular","response":"","error_code":146,"error_msg":"Delete
+        Organization failed.\nOrganization #66 does not exist.\n","warnings":[],"timestamp":1627573437}
+
+        '
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '165'
+      Content-Security-Policy:
+      - 'default-src ''self''; script-src ''self'' ''unsafe-eval'' pendo-io-static.storage.googleapis.com
+        app.pendo.io cdn.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        data.pendo.io cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com
+        *.cloudfront.net; connect-src ''self'' app.pendo.io data.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com *.cloudfront.net;
+        img-src ''self'' data: cdn.pendo.io app.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        data.pendo.io; style-src ''self'' ''unsafe-inline'' app.pendo.io cdn.pendo.io
+        pendo-static-6165929460760576.storage.googleapis.com; frame-ancestors app.pendo.io;
+        form-action ''self''; block-all-mixed-content; upgrade-insecure-requests;
+        object-src ''none'''
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 29 Jul 2021 15:43:57 GMT
+      Expect-CT:
+      - max-age=31536000
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=98
+      Pragma:
+      - no-cache
+      SecurityCenter:
+      - 5.18.0
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - x-apikey
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 403
+      message: Forbidden
+version: 1
