@@ -429,28 +429,32 @@ def test_organizations_manager_details_success(admin, org):
 
 
 @pytest.mark.vcr()
-def test_organizations_manager_create_edit_delete_success(admin):
+def test_organizations_manager_create_edit_delete_success(admin, org):
     '''
     test organizations manager create, edit and delete for success
     '''
-    manager = admin.organizations.manager_create(org_id=1,
+    manager = admin.organizations.manager_create(org_id=org['id'],
                                                  username='username',
                                                  password='password',
-                                                 role=1)
+                                                 role=2)
     assert isinstance(manager, dict)
-    check(manager, 'id', str)
-    check(manager, 'name', str)
-    check(manager, 'description', str)
+    check(manager['role'], 'id', str)
+    check(manager['role'], 'name', str)
+    check(manager['role'], 'description', str)
 
     manager = admin.organizations.manager_edit(user_id=int(manager['id']),
-                                               org_id=1,
+                                               org_id=org['id'],
                                                name='new mgr name')
     assert isinstance(manager, dict)
-    check(manager, 'id', str)
-    check(manager, 'name', str)
-    check(manager, 'description', str)
+    check(manager['role'], 'id', str)
+    check(manager['role'], 'name', str)
+    check(manager['role'], 'description', str)
 
-    admin.organizations.manager_delete(org_id=1, user_id=1, migrate_to=1)
+    manager_two = admin.organizations.manager_create(org_id=org['id'],
+                                                 username='user',
+                                                 password='password',
+                                                 role=2)
+    admin.organizations.manager_delete(org_id=org['id'], user_id=manager_two['id'], migrate_to=1)
 
 
 @pytest.mark.vcr()
