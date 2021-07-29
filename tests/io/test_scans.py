@@ -522,7 +522,7 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
     api.scans.delete(mod['id'])
 
 
-def test_upsert_aws_credentials(api):
+def test_upsert_aws_credentials_different_id(api):
     '''
         test to check if aws credentials can be added to edit section of credentials
         dict of scan
@@ -539,9 +539,35 @@ def test_upsert_aws_credentials(api):
         'credentials': {
             'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS1',
                                                            'secret_key': 'SECRET1', 'id': 12346}]}},
-            'add': {'Cloud Services': {}},
-            'edit': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
+            'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
                                                         'id': 12347}]}}
+            },
+    }
+    scan_actual = api.scans.upsert_aws_credentials(scan)
+    assert isinstance(scan_actual, dict)
+    assert scan_output == scan_actual
+
+
+def test_upsert_aws_credentials_same_id(api):
+    '''
+        test to check if aws credentials can be added to edit section of credentials
+        dict of scan
+    '''
+    scan = {
+        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS1',
+                                                                       'secret_key': 'SECRET1', 'id': 12346}]}},
+                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
+                                                                   'id': 12346}]}}
+                        },
+    }
+
+    scan_output = {
+        'credentials': {
+            'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS1',
+                                                           'secret_key': 'SECRET1', 'id': 12346}]}},
+            'add': {'Cloud Services': {'Amazon AWS': []}},
+            'edit': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
+                                                        'id': 12346}]}}
             },
     }
     scan_actual = api.scans.upsert_aws_credentials(scan)
