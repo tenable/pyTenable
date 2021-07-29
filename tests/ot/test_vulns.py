@@ -2,10 +2,11 @@
 test vulns
 '''
 import re
+
 import pytest
 import responses
 from box import Box
-from tests.ot.conftest import ot as fixture_ot
+
 
 def load_responses(responses):
     '''

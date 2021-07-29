@@ -4,6 +4,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.3]
+### Added
+
+- Added Python 3.9 in the pypi changes #380 #376
+- Added pylint to JenkinsFile #378
+- code owners file is added #366
+- Added export compliance API in IO package #358
+- Added for the session object,in logout ,session close in tenable.sc  
+  and Added 'UnknownError' and 'RetryError' (PR #386,PR #363 closed)
+  added that changes in PR #387
+
+### Changed
+
+- Deprecation warning for io session API #391
+- For attribute plugin_version in plugin_detail #389 
+- Reverse of Appsdir dependencies PR #382
+- Requirements patch 1.3.2 for library appdir #379 
+
+### Fixed
+
+- had added the fix for the issue #236 and fix done for credentials safe in PR #388
+- Bugfix asset details PR #384
+- Fixed pylint issues in tenable.sc PR #381
+- Fixed self log in tenable.io, base, cs, downloads, dl, ot, reports #353 #370,#371
+- Fixed Remediation and Compliance doc #365
+- Fixed Remediation scan with selected plugins only #362
+- Fixed github issue 321 update_assets_ttl_days #360
+- Fixed github issue 304 tags.create() function #357
+- Fixed github issue 298 io_exception_handling #354
+- Fixed the documentation issue in exclusions #352
+- Fixed the import os problem of PR 299 #351 
+- Fixed invalid creation date in row num  #341
+
+
+[1.3.3]: https://github.com/tenable/pyTenable/compare/1.3.1...1.3.3
+
+[1.3.2] : yanked
+
 ## [1.3.1]
 ### Added
 - add tio.remediationscans endpoints #339
