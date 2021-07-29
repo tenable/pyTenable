@@ -117,8 +117,10 @@ try {
 				buildsCommon.cleanup()
 				checkout scm
 				try {
+					sh """
 		                        python -m pip install --upgrade pip
 		                        pip install yamllint
+					"""
 					def lintOut = sh(script: 'yamllint -c --config-file=.yamllint  --format=parsable  tests/io/cassettes tests/sc/cassettes tests/cs/cassettes || true', returnStdout: true)
 					lintOutTrimmed = lintOut.trim()
 				} catch(ex) {
