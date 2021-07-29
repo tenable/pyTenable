@@ -130,7 +130,7 @@ try {
                     } finally {
                         if (fileExists ('reports/yamllint_tenable.log')) {
                             result = recordIssues(
-                                enabledForFailure: false, tool: yamlLint(pattern: 'reports/yamllint_tenable.log'), unstableTotalAll: 5000, failedTotalAll: 5000 )
+                                enabledForFailure: true, tool: yamlLint(pattern: 'reports/yamllint_tenable.log'), unstableTotalAll: 50000, failedTotalAll: 50000 )
                         }
                     }
                 }
