@@ -943,6 +943,33 @@ class ScansAPI(TIOEndpoint):
 
             >>> with open('example.nessus', 'wb') as reportobj:
             ...     tio.scans.export(1, history_id=1, fobj=reportobj)
+
+            Export a specific instance of the scan and leverage the stream_hook
+            kwarg to provide a real-time progress meter while the report is
+            downloading, using the tqdm library. Useful when enumerating and
+            exporting very large reports. The realtime_progress() function can
+            live in any package/module. It must be in the namespace of the
+            calling module, either via an import or by defining it in the
+            module directly. Any callable will work, it can also be a class
+            method (static or from a class instance):
+
+            >>> from tqdm import tqdm
+            >>> def realtime_progress(response, fobj, chunk_size=1024):
+            ...     """Simple hook to provide a tqdm progress meter to the console"""
+            ...     total_size = int(response.headers.get('content-length', 0))
+            ...     with tqdm(total=total_size, unit='iB', unit_scale=True) as pbar:
+            ...         for chunk in response.iter_content(chunk_size=chunk_size):
+            ...             if chunk:
+            ...                 pbar.update(len(chunk))
+            ...                 fobj.write(chunk)
+            # (Optional) If in a different module, import the function:
+            >>> from mymodule.tenutils import realtime_progress
+            >>> with open('example.nessus', 'wb') as reportobj:
+            >>> tio.scans.export(
+            ...     1,
+            ...     history_id=1,
+            ...     stream_hook=realtime_progress,
+            ...     fobj=reportobj)
         '''
 
         # initiate the payload and parameters dictionaries.  We are also
