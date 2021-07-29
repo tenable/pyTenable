@@ -116,6 +116,7 @@ try {
 			node(Constants.DOCKERNODE) {
 				buildsCommon.cleanup()
 				checkout scm
+               			withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
 				try {
 					sh """
 		                        python -m pip install --upgrade pip
@@ -127,6 +128,7 @@ try {
 					throw ex
 				} finally {
 					print('YamlLint done')
+				}
 				}
 			}
 		}
