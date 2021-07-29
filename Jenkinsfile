@@ -122,7 +122,7 @@ try {
 		                        python -m pip install --upgrade pip
 		                        pip install yamllint
 					"""
-					def lintOut = sh(script: 'yamllint -c --config-file=.yamllint  --format=parsable  tests/io/cassettes tests/sc/cassettes tests/cs/cassettes || true', returnStdout: true)
+					def lintOut = sh(script: 'yamllint -c .yamllint  --format=parsable  tests/io/cassettes tests/sc/cassettes tests/cs/cassettes || true', returnStdout: true)
 					lintOutTrimmed = lintOut.trim()
 				} catch(ex) {
 					throw ex
