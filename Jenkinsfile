@@ -110,13 +110,14 @@ try {
                 }
             }
         }
-        tasks['runYamllint'] = {
-	        stage('runYamllint') {
-		        node(Constants.DOCKERNODE) {
-	                buildsCommon.cleanup()
-		            checkout scm
+    }
+    tasks['runYamllint'] = {
+        stage('runYamllint') {
+            node(Constants.DOCKERNODE) {
+                buildsCommon.cleanup()
+                checkout scm
 
-                    withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
+                withContainer(image: "python:3.6-buster", registry: '', inside: '-u root') {
                     try {
                         sh """
                         mkdir reports
@@ -124,17 +125,16 @@ try {
                         pip install yamllint
                         yamllint -c .yamllint tests/io/cassettes tests/sc/cassettes tests/cs/cassettes > reports/yamllint_tenable.log
                         """
-                        } catch(ex) {
-                            throw ex
-                         } finally {
-                             result = recordIssues(
-                                 enabledForFailure: true, tool: yamlLint(pattern: 'reports/yamllint_tenable.log'), unstableTotalAll: 5000, failedTotalAll: 5000 )
-			          }
-			    }
-		   }
-	   }
-
-	}
+                    } catch(ex) {
+                        throw ex
+                    } finally {
+                        result = recordIssues(
+                            enabledForFailure: true, tool: yamlLint(pattern: 'reports/yamllint_tenable.log'), unstableTotalAll: 5000, failedTotalAll: 5000 )
+                    }
+                }
+           }
+       }
+    }
 
     parallel(tasks)
 
