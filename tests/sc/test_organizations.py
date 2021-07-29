@@ -295,7 +295,7 @@ def org(request, admin, vcr):
     test fixture for organization
     '''
     with vcr.use_cassette('test_organizations_create_success'):
-        organization = admin.organizations.create('New Org')
+        organization = admin.organizations.create('New Org', vulnScoringSystem="CVSSv2")
 
     def teardown():
         try:
@@ -394,28 +394,38 @@ def test_organizations_list_success(admin):
 
 
 @pytest.mark.vcr()
-def test_organizations_managers_list_success(admin):
+def test_organizations_managers_list_success(admin, org):
     '''
     test organization managers list for success
     '''
-    managers = admin.organizations.managers_list(org_id=1, fields=['id', 'name', 'description'])
+    admin.users.create('user', 'password', 2, group=0, org=org['id'])
+    managers = admin.organizations.managers_list(org_id=org['id'], fields=['id', 'username', 'role'])
     assert isinstance(managers, list)
     for manager in managers:
         check(manager, 'id', str)
-        check(manager, 'name', str)
-        check(manager, 'description', str)
+        check(manager, 'username', str)
+        check(manager, 'role', dict)
+        check(manager['role'], 'id', str)
+        check(manager['role'], 'name', str)
+        check(manager['role'], 'description', str)
 
 
 @pytest.mark.vcr()
-def test_organizations_manager_details_success(admin):
+def test_organizations_manager_details_success(admin, org):
     '''
     test organizations manager details for success
     '''
-    manager = admin.organizations.manager_details(org_id=1, user_id=1, fields=['id', 'name', 'description'])
+    users = admin.users.create('user', 'password', 2, group=0, org=org['id'])
+
+    manager = admin.organizations.manager_details(org_id=org['id'], user_id=int(users['id']),
+                                                  fields=['id', 'username', 'role'])
     assert isinstance(manager, dict)
     check(manager, 'id', str)
-    check(manager, 'name', str)
-    check(manager, 'description', str)
+    check(manager, 'username', str)
+    check(manager, 'role', dict)
+    check(manager['role'], 'id', str)
+    check(manager['role'], 'name', str)
+    check(manager['role'], 'description', str)
 
 
 @pytest.mark.vcr()
