@@ -164,6 +164,11 @@ class ScansAPI(TIOEndpoint):
                 'targets', kwargs['targets'], list))
             del kwargs['targets']
 
+        # The uploaded file, can be given in file targets,
+        # then give the file name directly in the file target parameter
+        if 'file_targets' in kwargs:
+            scan['settings']['file_targets'] = self._check('file_targets', kwargs['file_targets'],str)
+
         # For credentials, we will simply push the dictionary as-is into the
         # the credentials.add sub-document.
         if 'credentials' in kwargs:
