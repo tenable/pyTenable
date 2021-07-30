@@ -20,6 +20,16 @@ GlobalContext.put('appid', bparams.appid)
 common = new Common(this)
 buildsCommon = new BuildsCommon(this)
 
+properties(
+    [
+        pipelineTriggers([
+                [
+                    $class: 'TimerTrigger',
+                    spec: 'H 0,0 * * *'
+                ]
+         ])
+    ]
+)
 
 void unittests(String version) {
     stage("unittest${version}") {
