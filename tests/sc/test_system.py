@@ -1,6 +1,8 @@
-from tenable.errors import *
-from ..checker import check, single
-import pytest, zipfile
+import zipfile
+import pytest
+from ..checker import check
+from tenable.errors import UnexpectedValueError
+
 
 @pytest.mark.vcr()
 def test_system_details(unauth):
@@ -33,35 +35,42 @@ def test_system_details(unauth):
     check(s, 'uuid', str)
     check(s, 'version', str)
 
+
 @pytest.mark.vcr()
 def test_system_diagnostics_task_typeerror(admin):
     with pytest.raises(TypeError):
         admin.system.diagnostics(task=1)
+
 
 @pytest.mark.vcr()
 def test_system_diagnostics_type_unexpectedvalueerror(admin):
     with pytest.raises(UnexpectedValueError):
         admin.system.diagnostics(task='something else')
 
+
 @pytest.mark.vcr()
 def test_system_diagnostics_options_typeerror(admin):
     with pytest.raises(TypeError):
         admin.system.diagnostics(options=1)
+
 
 @pytest.mark.vcr()
 def test_system_diagnostics_options_item_typeerror(admin):
     with pytest.raises(TypeError):
         admin.system.diagnostics(options=[1])
 
+
 @pytest.mark.vcr()
 def test_system_diagnostics_options_item_unexpectedvalueerror(admin):
     with pytest.raises(UnexpectedValueError):
         admin.system.diagnostics(options=['something else'])
 
+
 @pytest.mark.vcr()
 def test_system_diagnostics_success(admin):
     fobj = admin.system.diagnostics()
     assert zipfile.is_zipfile(fobj)
+
 
 @pytest.mark.vcr()
 def test_system_current_locale_success(admin):
@@ -71,6 +80,7 @@ def test_system_current_locale_success(admin):
     check(l, 'description', str)
     check(l, 'name', str)
 
+
 @pytest.mark.vcr()
 def test_system_list_locales_success(admin):
     l = admin.system.list_locales()
@@ -79,16 +89,19 @@ def test_system_list_locales_success(admin):
         check(l[key], 'code', str)
         check(l[key], 'name', str)
 
+
 @pytest.mark.vcr()
 def test_system_set_locale_locale_typeerror(admin):
     with pytest.raises(TypeError):
         admin.system.set_locale(1)
+
 
 @pytest.mark.vcr()
 @pytest.mark.skip(reason='This appears to be 1-way, need a sacrificial system to test with')
 def test_system_set_locale_success(admin):
     locales = admin.system.list_locales()
     assert admin.system.set_locale('ja') == 'ja'
+
 
 @pytest.mark.vcr()
 def test_system_status_success(admin):

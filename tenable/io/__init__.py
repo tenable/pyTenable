@@ -24,6 +24,7 @@
 .. automodule:: tenable.io.scanner_groups
 .. automodule:: tenable.io.scanners
 .. automodule:: tenable.io.scans
+.. automodule:: tenable.io.remediation_scans
 .. automodule:: tenable.io.server
 .. automodule:: tenable.io.session
 .. automodule:: tenable.io.tags
@@ -57,7 +58,7 @@ Example:
     .. automethod:: put
     .. automethod:: delete
 '''
-import logging, os
+import logging, os, warnings
 from tenable.errors import UnexpectedValueError
 from tenable.base.v1 import APISession
 from .access_groups import AccessGroupsAPI
@@ -83,6 +84,7 @@ from .policies import PoliciesAPI
 from .scanner_groups import ScannerGroupsAPI
 from .scanners import ScannersAPI
 from .scans import ScansAPI
+from .remediation_scans import RemediationScansAPI
 from .server import ServerAPI
 from .session import SessionAPI
 from .tags import TagsAPI
@@ -228,6 +230,10 @@ class TenableIO(APISession):
         return PluginsAPI(self)
 
     @property
+    def pluginsIterator(self):
+        return plugins.PluginIterator(self)
+
+    @property
     def policies(self):
         return PoliciesAPI(self)
 
@@ -244,11 +250,20 @@ class TenableIO(APISession):
         return ScansAPI(self)
 
     @property
+    def remediationscans(self):
+        return RemediationScansAPI(self)
+
+    @property
     def server(self):
         return ServerAPI(self)
 
     @property
     def session(self):
+        warnings.warn(
+            'Tenable.io session API is deprecated. '
+            'we recommends that you use users endpoint instead',
+            DeprecationWarning, 2
+        )
         return SessionAPI(self)
 
     @property

@@ -4,6 +4,91 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.3]
+### Added
+
+- Added Python 3.9 in the pypi changes #380 #376
+- Added pylint to JenkinsFile #378
+- code owners file is added #366
+- Added export compliance API in IO package #358
+- Added for the session object,in logout ,session close in tenable.sc  
+  and Added 'UnknownError' and 'RetryError' (PR #386,PR #363 closed)
+  added that changes in PR #387
+
+### Changed
+
+- Deprecation warning for io session API #391
+- For attribute plugin_version in plugin_detail #389 
+- Reverse of Appsdir dependencies PR #382
+- Requirements patch 1.3.2 for library appdir #379 
+
+### Fixed
+
+- had added the fix for the issue #236 and fix done for credentials safe in PR #388
+- Bugfix asset details PR #384
+- Fixed pylint issues in tenable.sc PR #381
+- Fixed self log in tenable.io, base, cs, downloads, dl, ot, reports #353 #370,#371
+- Fixed Remediation and Compliance doc #365
+- Fixed Remediation scan with selected plugins only #362
+- Fixed github issue 321 update_assets_ttl_days #360
+- Fixed github issue 304 tags.create() function #357
+- Fixed github issue 298 io_exception_handling #354
+- Fixed the documentation issue in exclusions #352
+- Fixed the import os problem of PR 299 #351 
+- Fixed invalid creation date in row num  #341
+
+
+[1.3.3]: https://github.com/tenable/pyTenable/compare/1.3.1...1.3.3
+
+[1.3.2] : yanked
+
+## [1.3.1]
+### Added
+- add tio.remediationscans endpoints #339
+
+### Changed
+- added stream_hook param to tio.scans.export endpoint #332
+
+### Fixed
+- fix all_permisisons var in tio.tags to have correct values #340
+- fix tests and test coverage #336, #328, #344, #338
+- fix links and typos in documentation #335, #323
+- update semver version #334
+- fixed endpoints in sc.organizations #330, #331
+- missing import in ContainerSecurity class #299
+
+
+[1.3.1]: https://github.com/tenable/pyTenable/compare/1.3.0...1.3.1
+
+
+## [1.3.0]
+### Added
+- PyLint and Codacy checks as part of PyTenable test suite / pipeline #316
+- move assets endpoint in tio.assets.move_assets #312
+- access group v2 endpoints added in tio.access_groups_v2 #308
+- add support for "schedule_scan" in tio.scans endpoints #288
+- add list_routes and edit_routes in tio.scanner_groups #290
+- add exclusions_import in tio.exclusions #293
+- add list_auths and edit_auths in tio.users #296
+- add check_auto_targets in tio.scans #301
+- add bulk_delete in tio.assets #302
+- add network_asset_count in tio.networks #303
+
+### Changed
+- tags.create and tags.edit now have access_control and filter #309
+- updated tio.exclusions.edit arguments #282
+- added sort arg in tio.scans.history, fixed sort in tio.tags #283
+- added network_id arg to tio.exclusions create/edit #284
+- support bulk delete in tio.tags.delete #295
+- 
+### Fixed
+- many errors and warnings across the code base #320, #317, #314, #313, #281
+- tio.agent_config.edit now returns payload #287
+- error handling in tio.plugins #291
+
+
+[1.3.0]: https://github.com/tenable/pyTenable/compare/1.2.8...1.3.0
+
 ## [1.2.8]
 ### Changed
 - Centralized the SSL Verification process and support passing the verify param

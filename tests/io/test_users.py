@@ -10,7 +10,7 @@ def guser():
     '''
     Returns username
     '''
-    return '{}@pytenable.io'.format(uuid.uuid4())
+    return '{}@tenable.com'.format(uuid.uuid4())
 
 def gpass():
     '''
@@ -75,20 +75,20 @@ def test_users_create_permissionserror(stdapi):
         stdapi.users.create(guser(), gpass(), 16)
 
 @pytest.mark.vcr()
-def test_users_create(api, user):
+def test_users_create(user):
     '''
     test to create user
     '''
     assert isinstance(user, dict)
-    check(user, 'id', int)
-    check(user, 'username', str)
-    check(user, 'name', str)
     check(user, 'email', str)
-    check(user, 'permissions', int)
-    check(user, 'type', str)
+    check(user, 'enabled', bool)
+    check(user, 'id', int)
     check(user, 'login_fail_count', int)
     check(user, 'login_fail_total', int)
-    check(user, 'enabled', bool)
+    check(user, 'permissions', int)
+    check(user, 'type', str)
+    check(user, 'user_name', str)
+    check(user, 'username', str)
     check(user, 'uuid_id', 'uuid')
 
 @pytest.mark.vcr()
@@ -145,15 +145,15 @@ def test_users_details(api, user):
     '''
     resp = api.users.details(user['id'])
     assert isinstance(user, dict)
-    check(resp, 'id', int)
-    check(resp, 'username', str)
-    check(resp, 'name', str)
     check(resp, 'email', str)
-    check(resp, 'permissions', int)
-    check(resp, 'type', str)
+    check(resp, 'enabled', bool)
+    check(resp, 'id', int)
     check(resp, 'login_fail_count', int)
     check(resp, 'login_fail_total', int)
-    check(resp, 'enabled', bool)
+    check(resp, 'permissions', int)
+    check(resp, 'type', str)
+    check(resp, 'user_name', str)
+    check(resp, 'username', str)
     check(resp, 'uuid_id', 'uuid')
 
 @pytest.mark.vcr()
@@ -296,7 +296,7 @@ def test_users_two_factor_sms_typeerror(api):
     with pytest.raises(TypeError):
         api.users.two_factor('nope', False)
 
-@pytest.mark.vcrx()
+@pytest.mark.vcr()
 def test_users_two_factor_phone_typeerror(api):
     '''
     test to raise exception when type of phone param does not match the expected type.

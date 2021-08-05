@@ -1,7 +1,7 @@
-from tenable.errors import *
-from ..checker import check, single
-from tenable.cs.images import ImageIterator
 import pytest
+from ..checker import check
+from tenable.cs.images import ImageIterator
+from tenable.errors import UnexpectedValueError
 
 @pytest.mark.vcr()
 def test_images_list_has_malware_typeerror(api):

@@ -22,8 +22,9 @@ Methods available on ``tio.tags``:
     .. automethod:: list_categories
 '''
 import json
+import re
+
 from tenable.utils import dict_merge
-from tenable.errors import UnexpectedValueError
 from tenable.io.base import TIOEndpoint, TIOIterator
 
 class TagsIterator(TIOIterator):
@@ -224,16 +225,19 @@ class TagsAPI(TIOEndpoint):
 
             >>> tio.tags.create('00000000-0000-0000-0000-000000000000', 'Madison')
         '''
-        all_permissions = ['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS', 'CAN_USE']
+        all_permissions = ['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS']
         payload = dict()
 
         # First lets see if the category is a UUID or a general string.  If its
         # a UUID, then we will pass the value of category into the category_uuid
         # parameter, if not (but is still a string), then we will pass into
         # category_name
-        try:
+
+        uuid_pattern = re.compile(r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$')
+
+        if uuid_pattern.search(category):
             payload['category_uuid'] = self._check('category', category, 'uuid')
-        except UnexpectedValueError:
+        else:
             payload['category_name'] = self._check('category', category, str)
 
         payload['value'] = self._check('value', value, str)

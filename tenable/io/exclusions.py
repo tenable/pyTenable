@@ -64,7 +64,9 @@ class ExclusionsAPI(TIOEndpoint):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
                 The default is today.
             enabled (bool, optional):
-                enable/disable exclusion. The default is ``True``
+		If enabled is true, the exclusion schedule is active.
+		If enabled is false, the exclusion is "Always Active"  
+                The default value is ``True``
             network_id (uuid, optional):
                 The ID of the network object associated with scanners
                 where Tenable.io applies the exclusion.

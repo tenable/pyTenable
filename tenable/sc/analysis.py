@@ -82,7 +82,7 @@ Methods available on ``sc.analysis``:
 '''
 from .base import SCEndpoint, SCResultsIterator
 from tenable.utils import dict_merge
-from tenable.errors import *
+from tenable.errors import UnexpectedValueError
 
 class AnalysisResultsIterator(SCResultsIterator):
     def _get_page(self):

@@ -1,6 +1,5 @@
-from tenable.errors import *
-from ..checker import check, single
 import pytest
+from ..checker import check, single
 
 @pytest.mark.vcr()
 def test_status_status(admin):

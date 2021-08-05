@@ -1,7 +1,10 @@
-import pytest, responses
+'''
+test assets
+'''
+import responses
 
 @responses.activate
-def test_list(ot):
+def test_list(fixture_ot):
     '''
     Tests the list iterator
     '''
@@ -28,7 +31,7 @@ def test_list(ot):
             }
         ]
     )
-    resp = ot.assets.list()
+    resp = fixture_ot.assets.list()
     item = resp.next()
     assert item.id == '000b3456-35f6-4b83-8ffe-45aceb288ce4'
     assert item.name == 'Endpoint #548'
@@ -41,7 +44,7 @@ def test_list(ot):
 
 
 @responses.activate
-def test_details(ot):
+def test_details(fixture_ot):
     '''
     Tests the details method
     '''
@@ -66,7 +69,7 @@ def test_details(ot):
             'type': 'UnknownType'
         }
     )
-    resp = ot.assets.details('026fd8a1-2d50-4b2b-9cd5-285489d7fda4')
+    resp = fixture_ot.assets.details('026fd8a1-2d50-4b2b-9cd5-285489d7fda4')
     assert resp.id == '026fd8a1-2d50-4b2b-9cd5-285489d7fda4'
     assert resp.name == 'Endpoint #608'
     assert resp.lastSeen == '2020-07-09T00:10:51.125735Z'
@@ -77,7 +80,7 @@ def test_details(ot):
 
 
 @responses.activate
-def test_connections(ot):
+def test_connections(fixture_ot):
     '''
     Tests the connections method
     '''
@@ -96,10 +99,10 @@ def test_connections(ot):
             }
         }]
     )
-    resp = ot.assets.connections('026fd8a1-2d50-4b2b-9cd5-285489d7fda4')
+    resp = fixture_ot.assets.connections('026fd8a1-2d50-4b2b-9cd5-285489d7fda4')
     for item in resp:
         assert item.asset == '026fd8a1-2d50-4b2b-9cd5-285489d7fda4'
         assert item.networkInterface == 'd7f06b04-5733-44ac-9e84-096f6fdb181b'
-        assert item.local == True
-        assert item.direct == True
+        assert item.local is True
+        assert item.direct is True
         assert item.connector.parts[0].connectionType == 'Direct'

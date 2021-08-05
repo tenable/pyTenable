@@ -1,0 +1,66 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.0
+        (pyTenable/1.3.0; Python/3.8.6; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/policies
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA82QyW7EIBBE/4WzidjM4lP+I4oQSztBwosATzQazb8HR8ktc06OVFcX1e+G9i2n
+        kKCi6eWG1s02V96goQnNLldAA2qw7Nk1sMeRYtcVp07DyDAHJ7FjhmIIxOHI5plIagI1UfmotI7S
+        g6bay7HHRKihpL2lbUXTeuQ8oNUt0AMDBzND0JhIJbHgwWNDmcZC++CYF2MkqgdsHyuUbt+vDVbn
+        M9gGtdmjQnn+Vp7CtnTnJdXkU07tetpLuvT2Xa7vrkC/gAzoXLI7lCXV2gv14/uHA8quBy5bTHMK
+        7mxq47k6Uck4o1wZPqBQ4NHoq6E9ITFGqDBsQOeDjuI+/BFbycdxjJRjZwjHQpKAtZoBg9E86kgF
+        of+ArWFCMfEr25/RA7aMy/vr/RO8CQ2fxgIAAA==
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 18 Jun 2021 04:35:02 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Expires:
+      - '0'
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-ssu2q-ap-southeast-1-prod
+      X-Request-Uuid:
+      - f853537004328b627728f8bb3201d157
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

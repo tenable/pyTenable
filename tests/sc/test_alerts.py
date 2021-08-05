@@ -1,11 +1,20 @@
-from tenable.errors import *
+'''
+test file to test various scenarios in sc alerts
+'''
+import pytest
+
+from tenable.errors import APIError, UnexpectedValueError
+from tests.pytenable_log_handler import log_exception
 from ..checker import check
-import datetime, sys, pytest, os
+
 
 @pytest.fixture
-def alert(request, vcr, sc):
+def alert(request, vcr, security_center):
+    '''
+    test fixture for alert
+    '''
     with vcr.use_cassette('alert'):
-        alert = sc.alerts.create(
+        alert = security_center.alerts.create(
             ('severity', '=', '3,4'),
             name='Example Alert',
             trigger=('sumip', '>=', '100'),
@@ -14,60 +23,112 @@ def alert(request, vcr, sc):
                 'message': 'Example Message',
                 'users': [{'id': 1}]
             }])
+
     def teardown():
         try:
-            sc.alerts.delete(int(alert['id']))
-        except APIError:
-            pass
+            security_center.alerts.delete(int(alert['id']))
+        except APIError as error:
+            log_exception(error)
+
     request.addfinalizer(teardown)
     return alert
 
-def test_alerts_constructor_name_typeerror(sc):
-    with pytest.raises(TypeError):
-        sc.alerts._constructor(name=1)
 
-def test_alerts_constructor_description_typeerror(sc):
+def test_alerts_constructor_name_typeerror(security_center):
+    '''
+    test alerts constructor for name type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(description=1)
+        security_center.alerts._constructor(name=1)
 
-def test_alerts_constructor_query_typeerror(sc):
+
+def test_alerts_constructor_description_typeerror(security_center):
+    '''
+    test alerts constructor for description type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(query=1)
+        security_center.alerts._constructor(description=1)
 
-def test_alerts_constructor_always_exec_on_trigger_typeerror(sc):
+
+def test_alerts_constructor_query_typeerror(security_center):
+    '''
+    test alerts constructor for query type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(always_exec_on_trigger='nope')
+        security_center.alerts._constructor(query=1)
 
-def test_alerts_constructor_trigger_typeerror(sc):
+
+def test_alerts_constructor_always_exec_on_trigger_typeerror(security_center):
+    '''
+    test alerts constructor for 'always exec on trigger' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(trigger=1)
+        security_center.alerts._constructor(always_exec_on_trigger='nope')
 
-def test_alerts_constructor_trigger_name_typeerror(sc):
+
+def test_alerts_constructor_trigger_typeerror(security_center):
+    '''
+    test alerts constructor for trigger type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(trigger=(1, '=', 'something'))
+        security_center.alerts._constructor(trigger=1)
 
-def test_alerts_constructor_trigger_operator_typeerror(sc):
+
+def test_alerts_constructor_trigger_name_typeerror(security_center):
+    '''
+    test alerts constructor for 'trigger name' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(trigger=('name', 1, 'something'))
+        security_center.alerts._constructor(trigger=(1, '=', 'something'))
 
-def test_alerts_constructor_trigger_operator_unexpectedvalueerror(sc):
+
+def test_alerts_constructor_trigger_operator_typeerror(security_center):
+    '''
+    test alerts constructor for 'trigger operator' type error
+    '''
+    with pytest.raises(TypeError):
+        security_center.alerts._constructor(trigger=('name', 1, 'something'))
+
+
+def test_alerts_constructor_trigger_operator_unexpectedvalueerror(security_center):
+    '''
+    test alerts constructor for 'trigger operator' unexpected value error
+    '''
     with pytest.raises(UnexpectedValueError):
-        sc.alerts._constructor(trigger=('name', 'eq', 'something'))
+        security_center.alerts._constructor(trigger=('name', 'eq', 'something'))
 
-def test_alerts_constructor_trigger_value_typeerror(sc):
+
+def test_alerts_constructor_trigger_value_typeerror(security_center):
+    '''
+    test alerts constructor for 'trigger value' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts._constructor(trigger=('name', '=', 1))
+        security_center.alerts._constructor(trigger=('name', '=', 1))
 
-def test_alerts_constructor(sc):
-    r = sc.alerts._constructor(
+
+def test_alerts_constructor_success(security_center):
+    '''
+    test alerts constructor for success
+    '''
+    alert = security_center.alerts._constructor(query_id=1,
+                                                always_exec_on_trigger=True,
+                                                schedule={'type': 'ical'})
+    assert isinstance(alert, dict)
+
+
+def test_alerts_constructor(security_center):
+    '''
+    test alerts constructor
+    '''
+    alert = security_center.alerts._constructor(
         ('severity', '=', '3,4'),
         name='Example Alert',
         trigger=('sumip', '>=', '100'),
         action=[{
-            'type': 'notification', 
-            'message': 'Example Message', 
+            'type': 'notification',
+            'message': 'Example Message',
             'users': [{'id': 1}]}])
-    assert r == {
+    assert alert == {
         'name': 'Example Alert',
         'action': [{
             'message': 'Example Message',
@@ -80,378 +141,425 @@ def test_alerts_constructor(sc):
                 'filterName': 'severity',
                 'operator': '=',
                 'value': '3,4'
-        }]},
+            }]},
         'triggerName': 'sumip',
         'triggerOperator': '>=',
         'triggerValue': '100'
     }
 
-def test_alerts_list_fields_typeerror(sc):
+
+def test_alerts_list_fields_typeerror(security_center):
+    '''
+    test alerts for list fields type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts.list(fields=1)
+        security_center.alerts.list(fields=1)
+
 
 @pytest.mark.vcr()
-def test_alerts_list_success(sc, alert):
-    alerts = sc.alerts.list()
+def test_alerts_list_success(security_center, alert):
+    '''
+    test alerts for list success
+    '''
+    alerts = security_center.alerts.list()
     assert isinstance(alerts, dict)
-    for a in alerts['manageable']:
-        check(a, 'description', str)
-        check(a, 'id', str)
-        check(a, 'name', str)
-        check(a, 'status', str)
+    for alert in alerts['manageable']:
+        check(alert, 'description', str)
+        check(alert, 'id', str)
+        check(alert, 'name', str)
+        check(alert, 'status', str)
 
-def test_alerts_details_id_typeerror(sc):
-    with pytest.raises(TypeError):
-        sc.alerts.details('nope')
 
-def test_alerts_fields_typeerror(sc):
+def test_alerts_details_id_typeerror(security_center):
+    '''
+    test alerts for 'details id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts.details(1, fields=1)
+        security_center.alerts.details('nope')
+
+
+def test_alerts_fields_typeerror(security_center):
+    '''
+    test alerts for fields type error
+    '''
+    with pytest.raises(TypeError):
+        security_center.alerts.details(1, fields=1)
+
 
 @pytest.mark.vcr()
-def test_alerts_details_success(sc, alert):
-    a = sc.alerts.details(int(alert['id']))
-    assert isinstance(a, dict)
-    check(a, 'action', list)
-    for i in a['action']:
-        assert isinstance(i, dict)
-        check(i, 'type', str)
-        check(i, 'definition', dict)
-        if i['type'] == 'notification':
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'users', list)
-            for u in i['definition']['users']:
-                check(u, 'firstname', str)
-                check(u, 'id', str)
-                check(u, 'lastname', str)
-                check(u, 'username', str)
-        if i['type'] == 'email':
-            check(i['definition'], 'subject', str)
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'addresses', str)
-            check(i['definition'], 'users', list)
-            for u in i['definition']['users']:
-                check(u, 'firstname', str)
-                check(u, 'id', str)
-                check(u, 'lastname', str)
-                check(u, 'username', str)
-            check(i['definition'], 'includeResults', str)
-        if i['type'] == 'report':
-            check(i['definition'], 'report', dict)
-            check(i['definition']['report'], 'id', str)
-        if i['type'] == 'scan':
-            check(i['definition'], 'scan', dict)
-            check(i['definition']['scan'], 'id', int)
-        if i['type'] == 'syslog':
-            check(i['definition'], 'host', str)
-            check(i['definition'], 'port', str)
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'severity', str)
-        if i['type'] == 'ticket':
-            check(i['definition'], 'assignee', dict)
-            check(i['definition']['assignee'], 'id', str)
-            check(i['definition'], 'name', str)
-            check(i['definition'], 'description', str)
-            check(i['definition'], 'notes', str)
-        check(i, 'id', str)
-        check(i, 'objectID', str, allow_none=True)
-        check(i, 'users', list)
-        for u in i['users']:
-            check(u, 'firstname', str)
-            check(u, 'id', str)
-            check(u, 'lastname', str)
-            check(u, 'username', str) 
-    check(a, 'canManage', str)
-    check(a, 'canUse', str)
-    check(a, 'description', str)
-    check(a, 'didTriggerLastEvaluation', str)
-    check(a, 'executeOnEveryTrigger', str)
-    check(a, 'id', str)
-    check(a, 'lastEvaluated', str)
-    check(a, 'lastTriggered', str)
-    check(a, 'modifiedTime', str)
-    check(a, 'name', str)
-    check(a, 'owner', dict)
-    check(a['owner'], 'firstname', str)
-    check(a['owner'], 'id', str)
-    check(a['owner'], 'lastname', str)
-    check(a['owner'], 'username', str)
-    check(a, 'ownerGroup', dict)
-    check(a['ownerGroup'], 'description', str)
-    check(a['ownerGroup'], 'id', str)
-    check(a['ownerGroup'], 'name', str)
-    check(a, 'query', dict)
-    check(a['query'], 'description', str)
-    check(a['query'], 'id', str)
-    check(a['query'], 'name', str)
-    check(a, 'schedule', dict)
-    check(a['schedule'], 'type', str)
-    check(a, 'status', str)
-    check(a, 'triggerName', str)
-    check(a, 'triggerOperator', str)
-    check(a, 'triggerValue', str)
+def test_alerts_details_success(security_center, alert):
+    '''
+    test alerts for details success
+    '''
+    alert = security_center.alerts.details(int(alert['id']))
+    assert isinstance(alert, dict)
+    check(alert, 'action', list)
+    for action in alert['action']:
+        assert isinstance(action, dict)
+        check(action, 'type', str)
+        check(action, 'definition', dict)
+        if action['type'] == 'notification':
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'users', list)
+            for user in action['definition']['users']:
+                check(user, 'firstname', str)
+                check(user, 'id', str)
+                check(user, 'lastname', str)
+                check(user, 'username', str)
+        if action['type'] == 'email':
+            check(action['definition'], 'subject', str)
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'addresses', str)
+            check(action['definition'], 'users', list)
+            for user in action['definition']['users']:
+                check(user, 'firstname', str)
+                check(user, 'id', str)
+                check(user, 'lastname', str)
+                check(user, 'username', str)
+            check(action['definition'], 'includeResults', str)
+        if action['type'] == 'report':
+            check(action['definition'], 'report', dict)
+            check(action['definition']['report'], 'id', str)
+        if action['type'] == 'scan':
+            check(action['definition'], 'scan', dict)
+            check(action['definition']['scan'], 'id', int)
+        if action['type'] == 'syslog':
+            check(action['definition'], 'host', str)
+            check(action['definition'], 'port', str)
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'severity', str)
+        if action['type'] == 'ticket':
+            check(action['definition'], 'assignee', dict)
+            check(action['definition']['assignee'], 'id', str)
+            check(action['definition'], 'name', str)
+            check(action['definition'], 'description', str)
+            check(action['definition'], 'notes', str)
+        check(action, 'id', str)
+        check(action, 'objectID', str, allow_none=True)
+        check(action, 'users', list)
+        for user in action['users']:
+            check(user, 'firstname', str)
+            check(user, 'id', str)
+            check(user, 'lastname', str)
+            check(user, 'username', str)
+    check(alert, 'canManage', str)
+    check(alert, 'canUse', str)
+    check(alert, 'description', str)
+    check(alert, 'didTriggerLastEvaluation', str)
+    check(alert, 'executeOnEveryTrigger', str)
+    check(alert, 'id', str)
+    check(alert, 'lastEvaluated', str)
+    check(alert, 'lastTriggered', str)
+    check(alert, 'modifiedTime', str)
+    check(alert, 'name', str)
+    check(alert, 'owner', dict)
+    check(alert['owner'], 'firstname', str)
+    check(alert['owner'], 'id', str)
+    check(alert['owner'], 'lastname', str)
+    check(alert['owner'], 'username', str)
+    check(alert, 'ownerGroup', dict)
+    check(alert['ownerGroup'], 'description', str)
+    check(alert['ownerGroup'], 'id', str)
+    check(alert['ownerGroup'], 'name', str)
+    check(alert, 'query', dict)
+    check(alert['query'], 'description', str)
+    check(alert['query'], 'id', str)
+    check(alert['query'], 'name', str)
+    check(alert, 'schedule', dict)
+    check(alert['schedule'], 'type', str)
+    check(alert, 'status', str)
+    check(alert, 'triggerName', str)
+    check(alert, 'triggerOperator', str)
+    check(alert, 'triggerValue', str)
+
 
 @pytest.mark.vcr()
-def test_alerts_create_success(sc, alert):
-    a = alert
-    assert isinstance(a, dict)
-    check(a, 'action', list)
-    for i in a['action']:
-        assert isinstance(i, dict)
-        check(i, 'type', str)
-        check(i, 'definition', dict)
-        if i['type'] == 'notification':
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'users', list)
-            for u in i['definition']['users']:
-                check(u, 'firstname', str)
-                check(u, 'id', str)
-                check(u, 'lastname', str)
-                check(u, 'username', str)
-        if i['type'] == 'email':
-            check(i['definition'], 'subject', str)
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'addresses', str)
-            check(i['definition'], 'users', list)
-            for u in i['definition']['users']:
-                check(u, 'firstname', str)
-                check(u, 'id', str)
-                check(u, 'lastname', str)
-                check(u, 'username', str)
-            check(i['definition'], 'includeResults', str)
-        if i['type'] == 'report':
-            check(i['definition'], 'report', dict)
-            check(i['definition']['report'], 'id', str)
-        if i['type'] == 'scan':
-            check(i['definition'], 'scan', dict)
-            check(i['definition']['scan'], 'id', int)
-        if i['type'] == 'syslog':
-            check(i['definition'], 'host', str)
-            check(i['definition'], 'port', str)
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'severity', str)
-        if i['type'] == 'ticket':
-            check(i['definition'], 'assignee', dict)
-            check(i['definition']['assignee'], 'id', str)
-            check(i['definition'], 'name', str)
-            check(i['definition'], 'description', str)
-            check(i['definition'], 'notes', str)
-        check(i, 'id', str)
-        check(i, 'objectID', str, allow_none=True)
-        check(i, 'users', list)
-        for u in i['users']:
-            check(u, 'firstname', str)
-            check(u, 'id', str)
-            check(u, 'lastname', str)
-            check(u, 'username', str) 
-    check(a, 'canManage', str)
-    check(a, 'canUse', str)
-    check(a, 'description', str)
-    check(a, 'didTriggerLastEvaluation', str)
-    check(a, 'executeOnEveryTrigger', str)
-    check(a, 'id', str)
-    check(a, 'lastEvaluated', str)
-    check(a, 'lastTriggered', str)
-    check(a, 'modifiedTime', str)
-    check(a, 'name', str)
-    check(a, 'owner', dict)
-    check(a['owner'], 'firstname', str)
-    check(a['owner'], 'id', str)
-    check(a['owner'], 'lastname', str)
-    check(a['owner'], 'username', str)
-    check(a, 'ownerGroup', dict)
-    check(a['ownerGroup'], 'description', str)
-    check(a['ownerGroup'], 'id', str)
-    check(a['ownerGroup'], 'name', str)
-    check(a, 'query', dict)
-    check(a['query'], 'description', str)
-    check(a['query'], 'id', str)
-    check(a['query'], 'name', str)
-    check(a, 'schedule', dict)
-    check(a['schedule'], 'type', str)
-    check(a, 'status', str)
-    check(a, 'triggerName', str)
-    check(a, 'triggerOperator', str)
-    check(a, 'triggerValue', str)
+def test_alerts_create_success(alert):
+    '''
+    test alerts for create success
+    '''
+    assert isinstance(alert, dict)
+    check(alert, 'action', list)
+    for action in alert['action']:
+        assert isinstance(action, dict)
+        check(action, 'type', str)
+        check(action, 'definition', dict)
+        if action['type'] == 'notification':
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'users', list)
+            for user in action['definition']['users']:
+                check(user, 'firstname', str)
+                check(user, 'id', str)
+                check(user, 'lastname', str)
+                check(user, 'username', str)
+        if action['type'] == 'email':
+            check(action['definition'], 'subject', str)
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'addresses', str)
+            check(action['definition'], 'users', list)
+            for user in action['definition']['users']:
+                check(user, 'firstname', str)
+                check(user, 'id', str)
+                check(user, 'lastname', str)
+                check(user, 'username', str)
+            check(action['definition'], 'includeResults', str)
+        if action['type'] == 'report':
+            check(action['definition'], 'report', dict)
+            check(action['definition']['report'], 'id', str)
+        if action['type'] == 'scan':
+            check(action['definition'], 'scan', dict)
+            check(action['definition']['scan'], 'id', int)
+        if action['type'] == 'syslog':
+            check(action['definition'], 'host', str)
+            check(action['definition'], 'port', str)
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'severity', str)
+        if action['type'] == 'ticket':
+            check(action['definition'], 'assignee', dict)
+            check(action['definition']['assignee'], 'id', str)
+            check(action['definition'], 'name', str)
+            check(action['definition'], 'description', str)
+            check(action['definition'], 'notes', str)
+        check(action, 'id', str)
+        check(action, 'objectID', str, allow_none=True)
+        check(action, 'users', list)
+        for user in action['users']:
+            check(user, 'firstname', str)
+            check(user, 'id', str)
+            check(user, 'lastname', str)
+            check(user, 'username', str)
+    check(alert, 'canManage', str)
+    check(alert, 'canUse', str)
+    check(alert, 'description', str)
+    check(alert, 'didTriggerLastEvaluation', str)
+    check(alert, 'executeOnEveryTrigger', str)
+    check(alert, 'id', str)
+    check(alert, 'lastEvaluated', str)
+    check(alert, 'lastTriggered', str)
+    check(alert, 'modifiedTime', str)
+    check(alert, 'name', str)
+    check(alert, 'owner', dict)
+    check(alert['owner'], 'firstname', str)
+    check(alert['owner'], 'id', str)
+    check(alert['owner'], 'lastname', str)
+    check(alert['owner'], 'username', str)
+    check(alert, 'ownerGroup', dict)
+    check(alert['ownerGroup'], 'description', str)
+    check(alert['ownerGroup'], 'id', str)
+    check(alert['ownerGroup'], 'name', str)
+    check(alert, 'query', dict)
+    check(alert['query'], 'description', str)
+    check(alert['query'], 'id', str)
+    check(alert['query'], 'name', str)
+    check(alert, 'schedule', dict)
+    check(alert['schedule'], 'type', str)
+    check(alert, 'status', str)
+    check(alert, 'triggerName', str)
+    check(alert, 'triggerOperator', str)
+    check(alert, 'triggerValue', str)
 
-def test_alerts_edit_id_typerror(sc):
+
+def test_alerts_edit_id_typerror(security_center):
+    '''
+    test alerts for 'edit id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts.edit('one')
+        security_center.alerts.edit('one')
+
 
 @pytest.mark.vcr()
-def test_alerts_edit_success(sc, alert):
-    a = sc.alerts.edit(int(alert['id']), name='new name for example')
-    assert isinstance(a, dict)
-    check(a, 'action', list)
-    for i in a['action']:
-        assert isinstance(i, dict)
-        check(i, 'type', str)
-        check(i, 'definition', dict)
-        if i['type'] == 'notification':
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'users', list)
-            for u in i['definition']['users']:
-                check(u, 'firstname', str)
-                check(u, 'id', str)
-                check(u, 'lastname', str)
-                check(u, 'username', str)
-        if i['type'] == 'email':
-            check(i['definition'], 'subject', str)
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'addresses', str)
-            check(i['definition'], 'users', list)
-            for u in i['definition']['users']:
-                check(u, 'firstname', str)
-                check(u, 'id', str)
-                check(u, 'lastname', str)
-                check(u, 'username', str)
-            check(i['definition'], 'includeResults', str)
-        if i['type'] == 'report':
-            check(i['definition'], 'report', dict)
-            check(i['definition']['report'], 'id', str)
-        if i['type'] == 'scan':
-            check(i['definition'], 'scan', dict)
-            check(i['definition']['scan'], 'id', int)
-        if i['type'] == 'syslog':
-            check(i['definition'], 'host', str)
-            check(i['definition'], 'port', str)
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'severity', str)
-        if i['type'] == 'ticket':
-            check(i['definition'], 'assignee', dict)
-            check(i['definition']['assignee'], 'id', str)
-            check(i['definition'], 'name', str)
-            check(i['definition'], 'description', str)
-            check(i['definition'], 'notes', str)
-        check(i, 'id', str)
-        check(i, 'objectID', str, allow_none=True)
-        check(i, 'users', list)
-        for u in i['users']:
-            check(u, 'firstname', str)
-            check(u, 'id', str)
-            check(u, 'lastname', str)
-            check(u, 'username', str) 
-    check(a, 'canManage', str)
-    check(a, 'canUse', str)
-    check(a, 'description', str)
-    check(a, 'didTriggerLastEvaluation', str)
-    check(a, 'executeOnEveryTrigger', str)
-    check(a, 'id', str)
-    check(a, 'lastEvaluated', str)
-    check(a, 'lastTriggered', str)
-    check(a, 'modifiedTime', str)
-    check(a, 'name', str)
-    check(a, 'owner', dict)
-    check(a['owner'], 'firstname', str)
-    check(a['owner'], 'id', str)
-    check(a['owner'], 'lastname', str)
-    check(a['owner'], 'username', str)
-    check(a, 'ownerGroup', dict)
-    check(a['ownerGroup'], 'description', str)
-    check(a['ownerGroup'], 'id', str)
-    check(a['ownerGroup'], 'name', str)
-    check(a, 'query', dict)
-    check(a['query'], 'description', str)
-    check(a['query'], 'id', str)
-    check(a['query'], 'name', str)
-    check(a, 'schedule', dict)
-    check(a['schedule'], 'type', str)
-    check(a, 'status', str)
-    check(a, 'triggerName', str)
-    check(a, 'triggerOperator', str)
-    check(a, 'triggerValue', str)
+def test_alerts_edit_success(security_center, alert):
+    '''
+    test alerts for edit success
+    '''
+    alert = security_center.alerts.edit(int(alert['id']), name='new name for example')
+    assert isinstance(alert, dict)
+    check(alert, 'action', list)
+    for action in alert['action']:
+        assert isinstance(action, dict)
+        check(action, 'type', str)
+        check(action, 'definition', dict)
+        if action['type'] == 'notification':
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'users', list)
+            for user in action['definition']['users']:
+                check(user, 'firstname', str)
+                check(user, 'id', str)
+                check(user, 'lastname', str)
+                check(user, 'username', str)
+        if action['type'] == 'email':
+            check(action['definition'], 'subject', str)
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'addresses', str)
+            check(action['definition'], 'users', list)
+            for user in action['definition']['users']:
+                check(user, 'firstname', str)
+                check(user, 'id', str)
+                check(user, 'lastname', str)
+                check(user, 'username', str)
+            check(action['definition'], 'includeResults', str)
+        if action['type'] == 'report':
+            check(action['definition'], 'report', dict)
+            check(action['definition']['report'], 'id', str)
+        if action['type'] == 'scan':
+            check(action['definition'], 'scan', dict)
+            check(action['definition']['scan'], 'id', int)
+        if action['type'] == 'syslog':
+            check(action['definition'], 'host', str)
+            check(action['definition'], 'port', str)
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'severity', str)
+        if action['type'] == 'ticket':
+            check(action['definition'], 'assignee', dict)
+            check(action['definition']['assignee'], 'id', str)
+            check(action['definition'], 'name', str)
+            check(action['definition'], 'description', str)
+            check(action['definition'], 'notes', str)
+        check(action, 'id', str)
+        check(action, 'objectID', str, allow_none=True)
+        check(action, 'users', list)
+        for user in action['users']:
+            check(user, 'firstname', str)
+            check(user, 'id', str)
+            check(user, 'lastname', str)
+            check(user, 'username', str)
+    check(alert, 'canManage', str)
+    check(alert, 'canUse', str)
+    check(alert, 'description', str)
+    check(alert, 'didTriggerLastEvaluation', str)
+    check(alert, 'executeOnEveryTrigger', str)
+    check(alert, 'id', str)
+    check(alert, 'lastEvaluated', str)
+    check(alert, 'lastTriggered', str)
+    check(alert, 'modifiedTime', str)
+    check(alert, 'name', str)
+    check(alert, 'owner', dict)
+    check(alert['owner'], 'firstname', str)
+    check(alert['owner'], 'id', str)
+    check(alert['owner'], 'lastname', str)
+    check(alert['owner'], 'username', str)
+    check(alert, 'ownerGroup', dict)
+    check(alert['ownerGroup'], 'description', str)
+    check(alert['ownerGroup'], 'id', str)
+    check(alert['ownerGroup'], 'name', str)
+    check(alert, 'query', dict)
+    check(alert['query'], 'description', str)
+    check(alert['query'], 'id', str)
+    check(alert['query'], 'name', str)
+    check(alert, 'schedule', dict)
+    check(alert['schedule'], 'type', str)
+    check(alert, 'status', str)
+    check(alert, 'triggerName', str)
+    check(alert, 'triggerOperator', str)
+    check(alert, 'triggerValue', str)
 
-def test_alerts_delete_id_typeerror(sc):
+
+def test_alerts_delete_id_typeerror(security_center):
+    '''
+    test alerts for 'delete id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts.delete('one')
+        security_center.alerts.delete('one')
+
 
 @pytest.mark.vcr()
-def test_alerts_delete_success(sc, alert):
-    sc.alerts.delete(int(alert['id']))
+def test_alerts_delete_success(security_center, alert):
+    '''
+    test alerts for delete success
+    '''
+    security_center.alerts.delete(int(alert['id']))
 
-def test_alerts_execute_id_typeerror(sc):
+
+def test_alerts_execute_id_typeerror(security_center):
+    '''
+    test alerts for 'execute id' type error
+    '''
     with pytest.raises(TypeError):
-        sc.alerts.execute('one')
+        security_center.alerts.execute('one')
+
 
 @pytest.mark.vcr()
-def test_alerts_execute_successs(sc, alert):
-    a = sc.alerts.execute(int(alert['id']))
-    assert isinstance(a, dict)
-    check(a, 'action', list)
-    for i in a['action']:
-        assert isinstance(i, dict)
-        check(i, 'type', str)
-        check(i, 'definition', dict)
-        if i['type'] == 'notification':
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'users', list)
-            for u in i['definition']['users']:
-                check(u, 'firstname', str)
-                check(u, 'id', str)
-                check(u, 'lastname', str)
-                check(u, 'username', str)
-        if i['type'] == 'email':
-            check(i['definition'], 'subject', str)
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'addresses', str)
-            check(i['definition'], 'users', list)
-            for u in i['definition']['users']:
-                check(u, 'firstname', str)
-                check(u, 'id', str)
-                check(u, 'lastname', str)
-                check(u, 'username', str)
-            check(i['definition'], 'includeResults', str)
-        if i['type'] == 'report':
-            check(i['definition'], 'report', dict)
-            check(i['definition']['report'], 'id', str)
-        if i['type'] == 'scan':
-            check(i['definition'], 'scan', dict)
-            check(i['definition']['scan'], 'id', int)
-        if i['type'] == 'syslog':
-            check(i['definition'], 'host', str)
-            check(i['definition'], 'port', str)
-            check(i['definition'], 'message', str)
-            check(i['definition'], 'severity', str)
-        if i['type'] == 'ticket':
-            check(i['definition'], 'assignee', dict)
-            check(i['definition']['assignee'], 'id', str)
-            check(i['definition'], 'name', str)
-            check(i['definition'], 'description', str)
-            check(i['definition'], 'notes', str)
-        check(i, 'id', str)
-        check(i, 'objectID', str, allow_none=True)
-        check(i, 'users', list)
-        for u in i['users']:
-            check(u, 'firstname', str)
-            check(u, 'id', str)
-            check(u, 'lastname', str)
-            check(u, 'username', str) 
-    check(a, 'canManage', str)
-    check(a, 'canUse', str)
-    check(a, 'description', str)
-    check(a, 'didTriggerLastEvaluation', str)
-    check(a, 'executeOnEveryTrigger', str)
-    check(a, 'id', str)
-    check(a, 'lastEvaluated', str)
-    check(a, 'lastTriggered', str)
-    check(a, 'modifiedTime', str)
-    check(a, 'name', str)
-    check(a, 'owner', dict)
-    check(a['owner'], 'firstname', str)
-    check(a['owner'], 'id', str)
-    check(a['owner'], 'lastname', str)
-    check(a['owner'], 'username', str)
-    check(a, 'ownerGroup', dict)
-    check(a['ownerGroup'], 'description', str)
-    check(a['ownerGroup'], 'id', str)
-    check(a['ownerGroup'], 'name', str)
-    check(a, 'query', dict)
-    check(a['query'], 'description', str)
-    check(a['query'], 'id', str)
-    check(a['query'], 'name', str)
-    check(a, 'schedule', dict)
-    check(a['schedule'], 'type', str)
-    check(a, 'status', str)
-    check(a, 'triggerName', str)
-    check(a, 'triggerOperator', str)
-    check(a, 'triggerValue', str)
+def test_alerts_execute_success(security_center, alert):
+    '''
+    test alerts for execute success
+    '''
+    alert = security_center.alerts.execute(int(alert['id']))
+    assert isinstance(alert, dict)
+    check(alert, 'action', list)
+    for action in alert['action']:
+        assert isinstance(action, dict)
+        check(action, 'type', str)
+        check(action, 'definition', dict)
+        if action['type'] == 'notification':
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'users', list)
+            for user in action['definition']['users']:
+                check(user, 'firstname', str)
+                check(user, 'id', str)
+                check(user, 'lastname', str)
+                check(user, 'username', str)
+        if action['type'] == 'email':
+            check(action['definition'], 'subject', str)
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'addresses', str)
+            check(action['definition'], 'users', list)
+            for user in action['definition']['users']:
+                check(user, 'firstname', str)
+                check(user, 'id', str)
+                check(user, 'lastname', str)
+                check(user, 'username', str)
+            check(action['definition'], 'includeResults', str)
+        if action['type'] == 'report':
+            check(action['definition'], 'report', dict)
+            check(action['definition']['report'], 'id', str)
+        if action['type'] == 'scan':
+            check(action['definition'], 'scan', dict)
+            check(action['definition']['scan'], 'id', int)
+        if action['type'] == 'syslog':
+            check(action['definition'], 'host', str)
+            check(action['definition'], 'port', str)
+            check(action['definition'], 'message', str)
+            check(action['definition'], 'severity', str)
+        if action['type'] == 'ticket':
+            check(action['definition'], 'assignee', dict)
+            check(action['definition']['assignee'], 'id', str)
+            check(action['definition'], 'name', str)
+            check(action['definition'], 'description', str)
+            check(action['definition'], 'notes', str)
+        check(action, 'id', str)
+        check(action, 'objectID', str, allow_none=True)
+        check(action, 'users', list)
+        for user in action['users']:
+            check(user, 'firstname', str)
+            check(user, 'id', str)
+            check(user, 'lastname', str)
+            check(user, 'username', str)
+    check(alert, 'canManage', str)
+    check(alert, 'canUse', str)
+    check(alert, 'description', str)
+    check(alert, 'didTriggerLastEvaluation', str)
+    check(alert, 'executeOnEveryTrigger', str)
+    check(alert, 'id', str)
+    check(alert, 'lastEvaluated', str)
+    check(alert, 'lastTriggered', str)
+    check(alert, 'modifiedTime', str)
+    check(alert, 'name', str)
+    check(alert, 'owner', dict)
+    check(alert['owner'], 'firstname', str)
+    check(alert['owner'], 'id', str)
+    check(alert['owner'], 'lastname', str)
+    check(alert['owner'], 'username', str)
+    check(alert, 'ownerGroup', dict)
+    check(alert['ownerGroup'], 'description', str)
+    check(alert['ownerGroup'], 'id', str)
+    check(alert['ownerGroup'], 'name', str)
+    check(alert, 'query', dict)
+    check(alert['query'], 'description', str)
+    check(alert['query'], 'id', str)
+    check(alert['query'], 'name', str)
+    check(alert, 'schedule', dict)
+    check(alert['schedule'], 'type', str)
+    check(alert, 'status', str)
+    check(alert, 'triggerName', str)
+    check(alert, 'triggerOperator', str)
+    check(alert, 'triggerValue', str)

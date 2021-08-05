@@ -79,7 +79,7 @@ def test_create_scanner_group_permissionerror(stdapi):
         stdapi.scanner_groups.create(str(uuid.uuid4()))
 
 @pytest.mark.vcr()
-def test_create_scanner_group(api, scannergroup):
+def test_create_scanner_group(scannergroup):
     '''
     test to create scanner_group
     '''
