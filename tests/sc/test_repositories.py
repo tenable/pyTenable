@@ -387,7 +387,7 @@ def test_repositories_create_success_data_format_ipv6(admin):
     '''
     test repositories create success with data format ipv6
     '''
-    repo = admin.repositories.create(dataFormat='IPv6', type='remote')
+    repo = admin.repositories.create(name='Example remote repo', dataFormat='IPv6', type='remote')
     assert isinstance(repo, dict)
     check(repo, 'name', str)
     check(repo, 'id', str)
@@ -399,7 +399,7 @@ def test_repositories_create_success_data_format_mobile(admin):
     '''
     test repositories create success with data format mobile
     '''
-    repo = admin.repositories.create(dataFormat='mobile')
+    repo = admin.repositories.create(name='Example mobile repo', dataFormat='mobile')
     assert isinstance(repo, dict)
     check(repo, 'name', str)
     check(repo, 'id', str)
