@@ -390,7 +390,7 @@ class AssetListAPI(SCEndpoint):
 
                 * Available rules are ``dns``, ``exploitAvailable``,
                   ``exploitFrameworks``, ``firstseen``, ``mac``, ``os``, ``ip``,
-                  ``lastseen``, ``netbioshost``, ``netbiosworkgroup``,
+                  ``uuid``, ``lastseen``, ``netbioshost``, ``netbiosworkgroup``,
                   ``pluginid``, ``plugintext``, ``port``, ``severity``, ``sshv1``,
                   ``sshv2``, ``tcpport``, ``udpport``, and ``xref``.
                 * Available operators are ``contains``, ``eq``, ``lt``, ``lte``,
