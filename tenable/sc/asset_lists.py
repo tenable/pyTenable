@@ -63,7 +63,7 @@ class AssetListAPI(SCEndpoint):
                     'type': 'clause',
                     'filterName': self._check('rule:name', rule[0], str,
                         choices=['dns', 'exploitAvailable', 'exploitFrameworks',
-                            'firstseen', 'mac', 'os', 'ip', 'lastseen',
+                            'firstseen', 'mac', 'os', 'ip', 'uuid', 'lastseen',
                             'netbioshost', 'netbiosworkgroup', 'pluginid',
                             'plugintext', 'port', 'severity', 'sshv1', 'sshv2',
                             'tcpport', 'udpport', 'xref']),
