@@ -90,12 +90,6 @@ try {
         }
     }
 
-    tasks['sonarqube'] = {
-        stage('sonarqube') {
-            SonarQube.execute(this, bparams)
-        }
-    }
-
     tasks['nexusiq'] = {
         stage('nexusiq') {
             Nexusiq.execute(this, bparams)
