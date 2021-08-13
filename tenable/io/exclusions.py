@@ -19,17 +19,31 @@ Methods available on ``tio.exclusions``:
     .. automethod:: exclusions_import
 '''
 from datetime import datetime
-from restfly.utils import dict_merge
+from typing import Dict, Any, ClassVar, List, IO
+from restfly.utils import dict_merge, dict_clean
 from tenable.io.base import TIOEndpoint
+from tenable.io.schema.exclusion_schema import ExclusionSchema
+
 
 class ExclusionsAPI(TIOEndpoint):
     '''
-    This will contain all methods related to exclusions
+    This class contain all methods related to exclusions
     '''
-    def create(self, name, members, start_time=None, end_time=None,
-               timezone=None, description=None, frequency=None,
-               interval=None, weekdays=None, day_of_month=None,
-               enabled=True, network_id=None):
+    _path: ClassVar[str] = 'exclusions'
+
+    def _validate(
+            self,
+            data: Dict[Any, Any],
+            validator=ExclusionSchema
+    ) -> Dict:
+        return validator().load(data)
+
+    def create(
+            self,
+            name: str,
+            members: List[str],
+            **kwargs
+    ) -> Dict:
         '''
         Create a scan target exclusion.
 
@@ -64,8 +78,8 @@ class ExclusionsAPI(TIOEndpoint):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
                 The default is today.
             enabled (bool, optional):
-		If enabled is true, the exclusion schedule is active.
-		If enabled is false, the exclusion is "Always Active"  
+                If enabled is true, the exclusion schedule is active.
+                If enabled is false, the exclusion is "Always Active"
                 The default value is ``True``
             network_id (uuid, optional):
                 The ID of the network object associated with scanners
@@ -123,26 +137,22 @@ class ExclusionsAPI(TIOEndpoint):
             ...     start_time=datetime.utcnow(),
             ...     end_time=datetime.utcnow() + timedelta(hours=1))
         '''
+        # validate user inputs
+        kwargs = self._validate(kwargs)
+
         # Starting with the innermost part of the payload, lets construct the
         # rrules dictionary.
-        frequency = self._check('frequency', frequency, str,
-            choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-            default='ONETIME',
-            case='upper')
+        frequency = kwargs.get('frequency', 'ONETIME')
 
         rrules = {
             'freq': frequency,
-            'interval': self._check('interval', interval, int, default=1)
+            'interval': kwargs.get('interval', 1)
         }
 
         # if the frequency is a weekly one, then we will need to specify the
         # days of the week that the exclusion is run on.
         if frequency == 'WEEKLY':
-            rrules['byweekday'] = ','.join(self._check(
-                'weekdays', weekdays, list,
-                choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                default=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                case='upper'))
+            rrules['byweekday'] = kwargs.get('weekdays', ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'])
             # In the same vein as the frequency check, we're accepting
             # case-insensitive input, comparing it to our known list of
             # acceptable responses, then joining them all together into a
@@ -151,23 +161,19 @@ class ExclusionsAPI(TIOEndpoint):
         # if the frequency is monthly, then we will need to specify the day of
         # the month that the rule will run on.
         if frequency == 'MONTHLY':
-            rrules['bymonthday'] = self._check('day_of_month', day_of_month, int,
-                choices=list(range(1,32)),
-                default=datetime.today().day)
+            rrules['bymonthday'] = kwargs.get('day_of_month', datetime.today().day)
 
         # construct payload schedule based on enable
-        if enabled is True:
+        kwargs['enabled'] = kwargs.get('enabled', True)
+        if kwargs.get('enabled') is True:
             schedule = {
                 'enabled': True,
-                'starttime':
-                    self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'endtime':
-                    self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'timezone': self._check('timezone', timezone, str,
-                    choices=self._api._tz, default='Etc/UTC'),
+                'starttime': kwargs.get('start_time').strftime('%Y-%m-%d %H:%M:%S'),
+                'endtime': kwargs.get('end_time').strftime('%Y-%m-%d %H:%M:%S'),
+                'timezone': kwargs.get('timezone', 'Etc/UTC'),
                 'rrules': rrules
             }
-        elif enabled is False:
+        elif kwargs.get('enabled') is False:
             schedule = {'enabled': False}
         else:
             raise TypeError('enabled must be a boolean value.')
@@ -176,16 +182,18 @@ class ExclusionsAPI(TIOEndpoint):
         payload = {
             'name': self._check('name', name, str),
             'members': ','.join(self._check('members', members, list)),
-            'description': self._check('description', description, str, default=''),
-            'network_id': self._check('network_id', network_id, 'uuid',
-                                      default='00000000-0000-0000-0000-000000000000'),
+            'description': kwargs.get('description', ''),
+            'network_id': kwargs.get('network_id', '00000000-0000-0000-0000-000000000000'),
             'schedule': schedule
         }
 
         # And now to make the call and return the data.
-        return self._api.post('exclusions', json=payload).json()
+        return self._api.post(f'{self._path}', json=payload).json()
 
-    def delete(self, exclusion_id):
+    def delete(
+            self,
+            exclusion_id: int
+    ) -> None:
         '''
         Delete a scan target exclusion.
 
@@ -201,9 +209,13 @@ class ExclusionsAPI(TIOEndpoint):
         Examples:
             >>> tio.exclusions.delete(1)
         '''
-        self._api.delete('exclusions/{}'.format(self._check('exclusion_id', exclusion_id, int)))
+        self._check('exclusion_id', exclusion_id, int)
+        self._api.delete(f'{self._path}/{exclusion_id}')
 
-    def details(self, exclusion_id):
+    def details(
+            self,
+            exclusion_id: int
+    ) -> Dict:
         '''
         Retrieve the details for a specific scan target exclusion.
 
@@ -220,12 +232,14 @@ class ExclusionsAPI(TIOEndpoint):
             >>> exclusion = tio.exclusions.details(1)
             >>> pprint(exclusion)
         '''
-        return self._api.get(
-            'exclusions/{}'.format(self._check('exclusion_id', exclusion_id, int))).json()
+        self._check('exclusion_id', exclusion_id, int)
+        return self._api.get(f'{self._path}/{exclusion_id}').json()
 
-    def edit(self, exclusion_id, name=None, members=None, start_time=None,
-             end_time=None, timezone=None, description=None, frequency=None,
-             interval=None, weekdays=None, day_of_month=None, enabled=None, network_id=None):
+    def edit(
+            self,
+            exclusion_id: int,
+            **kwargs
+    ) -> Dict[Any, Any]:
         '''
         Edit an existing scan target exclusion.
 
@@ -237,8 +251,10 @@ class ExclusionsAPI(TIOEndpoint):
 
         Args:
             exclusion_id (int): The id of the exclusion object in Tenable.io
-            scanner_id (int, optional): The scanner id.
             name (str, optional): The name of the exclusion to create.
+            members (list, optional):
+                The exclusions members.  Each member should be a string with
+                either a FQDN, IP Address, IP Range, or CIDR.
             description (str, optional):
                 Some further detail about the exclusion.
             start_time (datetime, optional): When the exclusion should start.
@@ -274,93 +290,86 @@ class ExclusionsAPI(TIOEndpoint):
         '''
 
         # Lets start constructing the payload to be sent to the API...
-        payload = self.details(exclusion_id)
+        payload = self.details(self._check('exclusion_id', exclusion_id, int))
+        payload['schedule'] = dict_clean(payload['schedule'])
 
-        if name:
-            payload['name'] = self._check('name', name, str)
+        # validate user inputs
+        kwargs = self._validate(kwargs)
 
-        if members:
-            payload['members'] = ','.join(self._check('members', members, list))
+        if kwargs.get('name'):
+            payload['name'] = kwargs.get('name')
 
-        if description:
-            payload['description'] = self._check('description', description, str)
+        if kwargs.get('members'):
+            payload['members'] = kwargs.get('members')
 
-        if enabled is not None:
-            payload['schedule']['enabled'] = self._check('enabled', enabled, bool)
+        if kwargs.get('description'):
+            payload['description'] = kwargs.get('description')
+
+        if kwargs.get('enabled'):
+            payload['schedule']['enabled'] = kwargs.get('enabled')
 
         if payload['schedule']['enabled']:
-            frequency = self._check('frequency', frequency, str,
-                                    choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-                                    default=payload['schedule']['rrules'].get('freq')
-                                    if payload['schedule']['rrules'] is not None else 'ONETIME',
-                                    case='upper')
+            # we will create a dict of default values from existing payload or
+            # set individually if not existing schedule exist
+            if payload['schedule'].get('rrules') is not None:
+                default_rrule_values = {
+                    'frequency': payload['schedule']['rrules'].get('freq'),
+                    'interval': payload['schedule']['rrules'].get('interval', 1),
+                    'weekdays': payload['schedule']['rrules'].get(
+                        'byweekday', ','.join(['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'])),
+                    'day_of_month': payload['schedule']['rrules'].get(
+                        'bymonthday', datetime.today().day),
+                }
+            else:
+                default_rrule_values = {
+                    'frequency': 'ONETIME',
+                    'interval': 1,
+                    'weekdays': ','.join(['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']),
+                    'day_of_month': datetime.today().day,
+                }
 
-            # interval needs to be handled in schedule enabled excusion
+            frequency = kwargs.get('frequency', default_rrule_values.get('frequency'))
+
+            # interval needs to be handled in schedule enabled exclusion
             rrules = {
                 'freq': frequency,
-                'interval': payload['schedule']['rrules'].get('interval', None) or 1
-                if payload['schedule']['rrules'] is not None else 1
+                'interval': default_rrule_values.get('interval')
             }
 
-            # frequency default value is designed for weekly and monthly based on below conditions
-            # - if schedule rrules is None and not defined in edit params, assign default values
-            # - if schedule rrules is not None and not defined in edit params, assign old values
-            # - if schedule rrules is not None and not defined in edit params
-            # and byweekday/bymonthday key not already exist, assign default values
-            # - if schedule rrules is not None and defined in edit params, assign new values
             if frequency == 'WEEKLY':
-                rrules['byweekday'] = ','.join(self._check(
-                    'weekdays', weekdays, list,
-                    choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                    default=payload['schedule']['rrules'].get('byweekday', '').split()
-                            or ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']
-                    if payload['schedule']['rrules'] is not None else
-                    ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                    case='upper'))
-                # In the same vein as the frequency check, we're accepting
-                # case-insensitive input, comparing it to our known list of
-                # acceptable responses, then joining them all together into a
-                # comma-separated string.
+                rrules['byweekday'] = kwargs.get('weekdays', default_rrule_values.get('weekdays'))
 
             if frequency == 'MONTHLY':
-                rrules['bymonthday'] = self._check(
-                    'day_of_month', day_of_month, int, choices=list(range(1, 32)),
-                    default=payload['schedule']['rrules'].get('bymonthday', datetime.today().day)
-                    if payload['schedule']['rrules'] is not None else datetime.today().day)
+                rrules['bymonthday'] = kwargs.get(
+                    'day_of_month', default_rrule_values.get('day_of_month'))
 
             # update new rrules in existing payload
-            if payload['schedule']['rrules'] is not None:
+            if payload['schedule'].get('rrules') is not None:
                 dict_merge(payload['schedule']['rrules'], rrules)
             else:
                 payload['schedule']['rrules'] = rrules
 
-            if start_time:
-                payload['schedule']['starttime'] = self._check(
-                    'start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+            if kwargs.get('start_time'):
+                payload['schedule']['starttime'] = kwargs.get('start_time').strftime('%Y-%m-%d %H:%M:%S')
 
-            if end_time:
-                payload['schedule']['endtime'] = self._check(
-                    'end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+            if kwargs.get('end_time'):
+                payload['schedule']['endtime'] = kwargs.get('end_time').strftime('%Y-%m-%d %H:%M:%S')
 
-            if interval:
-                payload['schedule']['rrules']['interval'] = self._check(
-                    'interval', interval, int)
+            if kwargs.get('interval'):
+                payload['schedule']['rrules']['interval'] = kwargs.get('interval')
 
-            payload['schedule']['timezone'] = self._check(
-                'timezone', timezone, str, choices=self._api._tz, default='Etc/UTC')
+            payload['schedule']['timezone'] = kwargs.get(
+                'timezone', payload['schedule'].get('timezone', 'Etc/UTC'))
 
-        if network_id:
-            payload['network_id'] = self._check('network_id', network_id, 'uuid')
+        if kwargs.get('network_id'):
+            payload['network_id'] = kwargs.get('network_id')
 
         # Lets check to make sure that the scanner_id  and exclusion_id are
         # integers as the API documentation requests and if we don't raise an
         # error, then lets make the call.
-        return self._api.put(
-            'exclusions/{}'.format(
-                self._check('exclusion_id', exclusion_id, int)
-            ), json=payload).json()
+        return self._api.put(f'{self._path}/{exclusion_id}', json=payload).json()
 
-    def list(self):
+    def list(self) -> List[Dict]:
         '''
         List the currently configured scan target exclusions.
 
@@ -374,9 +383,12 @@ class ExclusionsAPI(TIOEndpoint):
             >>> for exclusion in tio.exclusions.list():
             ...     pprint(exclusion)
         '''
-        return self._api.get('exclusions').json()['exclusions']
+        return self._api.get(f'{self._path}').json()['exclusions']
 
-    def exclusions_import(self, fobj):
+    def exclusions_import(
+            self,
+            fobj: IO
+    ) -> None:
         '''
         Import exclusions into Tenable.io.
 
@@ -395,4 +407,4 @@ class ExclusionsAPI(TIOEndpoint):
             ...     tio.exclusions.exclusions_import(exclusion)
         '''
         fid = self._api.files.upload(fobj)
-        return self._api.post('exclusions/import', json={'file': fid})
+        return self._api.post(f'{self._path}/import', json={'file': fid})

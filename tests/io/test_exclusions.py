@@ -5,7 +5,8 @@ import os
 import uuid
 from datetime import datetime, timedelta
 import pytest
-from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError, InvalidInputError
+from marshmallow import ValidationError
+from tenable.errors import NotFoundError, PermissionError, InvalidInputError
 from tests.checker import check
 from tests.io.test_networks import fixture_network
 from tests.pytenable_log_handler import log_exception
@@ -58,33 +59,33 @@ def test_exclusions_create_members_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_start_time_typeerror(api):
+def test_exclusions_create_start_time_type_validationerror(api):
     '''
     test to raise exception when type of start_time param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4), ['127.0.0.1'],
                               start_time='now',
                               end_time=datetime.utcnow() + timedelta(hours=1))
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_end_time_typeerror(api):
+def test_exclusions_create_end_time_type_validationerrorr(api):
     '''
     test to raise exception when type of end_time param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4), ['127.0.0.1'],
                               start_time=datetime.utcnow(),
                               end_time='later')
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_timezone_typeerror(api):
+def test_exclusions_create_timezone_type_validationerror(api):
     '''
     test to raise exception when type of timezone param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                               timezone=1,
                               start_time=datetime.utcnow(),
@@ -92,23 +93,11 @@ def test_exclusions_create_timezone_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_timezone_unexpectedvalue(api):
-    '''
-    test to raise exception when timezone param value does not match the choices.
-    '''
-    with pytest.raises(UnexpectedValueError):
-        api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
-                              timezone='the zone of time',
-                              start_time=datetime.utcnow(),
-                              end_time=datetime.utcnow() + timedelta(hours=1))
-
-
-@pytest.mark.vcr()
-def test_exclusions_create_description_typeerror(api):
+def test_exclusions_create_description_type_validationerror(api):
     '''
     test to raise exception when type of description param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                               description=1,
                               start_time=datetime.utcnow(),
@@ -116,11 +105,11 @@ def test_exclusions_create_description_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_frequency_typeerror(api):
+def test_exclusions_create_frequency_type_validationerror(api):
     '''
     test to raise exception when type of frequency param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                               frequency=1,
                               start_time=datetime.utcnow(),
@@ -128,11 +117,11 @@ def test_exclusions_create_frequency_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_frequency_unexpectedvalue(api):
+def test_exclusions_create_frequency_value_validationerror(api):
     '''
     test to raise exception when frequency param value does not match the choices.
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                               frequency='nope',
                               start_time=datetime.utcnow(),
@@ -140,11 +129,11 @@ def test_exclusions_create_frequency_unexpectedvalue(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_interval_typeerror(api):
+def test_exclusions_create_interval_type_validationerror(api):
     '''
     test to raise exception when type of interval param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                               interval='nope',
                               start_time=datetime.utcnow(),
@@ -152,11 +141,11 @@ def test_exclusions_create_interval_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_weekdays_typeerror(api):
+def test_exclusions_create_weekdays_type_validationerror(api):
     '''
     test to raise exception when type of weekdays param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                               weekdays='nope',
                               frequency='weekly',
@@ -165,11 +154,11 @@ def test_exclusions_create_weekdays_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_weekdays_unexpectedvalue(api):
+def test_exclusions_create_weekdays_value_validationerror(api):
     '''
     test to raise exception when weekdays param value does not match the choices.
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                               weekdays=['MO', 'WE', 'nope'],
                               frequency='weekly',
@@ -178,11 +167,11 @@ def test_exclusions_create_weekdays_unexpectedvalue(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_day_of_month_typeerror(api):
+def test_exclusions_create_day_of_month_type_validationerror(api):
     '''
     test to raise exception when type of day_of_month param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                               day_of_month='nope',
                               frequency='monthly',
@@ -191,11 +180,11 @@ def test_exclusions_create_day_of_month_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_day_of_month_unexpectedvalue(api):
+def test_exclusions_create_day_of_month_value_validationerror(api):
     '''
     test to raise exception when day_of_month param value does not match the choices.
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                               day_of_month=82,
                               frequency='monthly',
@@ -204,11 +193,11 @@ def test_exclusions_create_day_of_month_unexpectedvalue(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_enabled_typeerror(api):
+def test_exclusions_create_enabled_type_validationerror(api):
     '''
     test to raise exception when type of enabled param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'], enabled='yup')
 
 
@@ -224,11 +213,11 @@ def test_exclusions_create_standard_user_permissionerror(stdapi):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_with_selected_network_unexpectedvalueerror(api):
+def test_exclusions_create_with_selected_network_value_validationerror(api):
     '''
     test to raise exception when network_id param value does not match the choices.
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                               start_time=datetime.utcnow(),
                               end_time=datetime.utcnow() + timedelta(hours=1),
@@ -236,11 +225,11 @@ def test_exclusions_create_with_selected_network_unexpectedvalueerror(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_create_with_selected_network_typeerror(api):
+def test_exclusions_create_with_selected_network_type_validationerror(api):
     '''
     test to raise exception when type of network_id param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                               start_time=datetime.utcnow(),
                               end_time=datetime.utcnow() + timedelta(hours=1),
@@ -514,119 +503,110 @@ def test_exclusions_edit_exclusion_id_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_members_typeerror(api, exclusion):
+def test_exclusions_edit_members_type_validationerror(api, exclusion):
     '''
     test to raise exception when type of members param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], members='192.168.0.1')
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_name_typeerror(api, exclusion):
+def test_exclusions_edit_name_type_validationerror(api, exclusion):
     '''
     test to raise exception when type of name param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], name=1.02)
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_starttime_typerror(api, exclusion):
+def test_exclusions_edit_starttime_type_validationerror(api, exclusion):
     '''
     test to raise exception when type of start time param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], start_time='nope')
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_timezone_typerror(api, exclusion):
+def test_exclusions_edit_timezone_type_validationerror(api, exclusion):
     '''
     test to raise exception when type of timezone param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], timezone=1)
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_timezone_unexpectedvalue(api, exclusion):
-    '''
-    test to raise exception when timezone param value does not match the choices.
-    '''
-    with pytest.raises(UnexpectedValueError):
-        api.exclusions.edit(exclusion['id'], timezone='nope')
-
-
-@pytest.mark.vcr()
-def test_exclusions_edit_description_typerror(api, exclusion):
+def test_exclusions_edit_description_type_validationerror(api, exclusion):
     '''
     test to raise exception when type of description param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], description=1)
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_frequency_typerror(api, exclusion):
+def test_exclusions_edit_frequency_type_validationerror(api, exclusion):
     '''
     test to raise exception when type of frequency param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], frequency=1)
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_frequency_unexpectedvalue(api, exclusion):
+def test_exclusions_edit_frequency_value_validationerror(api, exclusion):
     '''
     test to raise exception when frequency param value does not match the choices.
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], frequency='nope')
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_interval_typerror(api, exclusion):
+def test_exclusions_edit_interval_type_validationerror(api, exclusion):
     '''
     test to raise exception when type of interval param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], interval='nope')
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_weekdays_typerror(api, exclusion):
+def test_exclusions_edit_weekdays_type_validationerror(api, exclusion):
     '''
     test to raise exception when type of weekdays param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], frequency='Weekly', weekdays='nope')
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_weekdays_unexpectedvalue(api, exclusion):
+def test_exclusions_edit_weekdays_value_validationerror(api, exclusion):
     '''
     test to raise exception when weekdays param value does not match the choices.
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], frequency='Weekly', weekdays=['MO', 'WE', 'nope'])
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_dayofmonth_typerror(api, exclusion):
+def test_exclusions_edit_dayofmonth_type_validationerror(api, exclusion):
     '''
     test to raise exception when type of day_of_month param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], frequency='monthly', day_of_month='nope')
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_dayofmonth_unexpectedvalue(api, exclusion):
+def test_exclusions_edit_dayofmonth_value_validationerror(api, exclusion):
     '''
     test to raise exception when day_of_month param value does not match the choices.
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], frequency='monthly', day_of_month=0)
 
 
@@ -649,20 +629,20 @@ def test_exclusions_edit_network_select_notfounderror(api, exclusion):
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_network_select_unexpectedvalueerror(api, exclusion):
+def test_exclusions_edit_network_select_value_validationerror(api, exclusion):
     '''
     test to raise exception when network_id param value does not match the choices.
     '''
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], network_id='nope')
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_network_select_typeerror(api, exclusion):
+def test_exclusions_edit_network_select_type_validationerrorr(api, exclusion):
     '''
     test to raise exception when type of network_id param does not match the expected type.
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(ValidationError):
         api.exclusions.edit(exclusion['id'], network_id=1)
 
 
