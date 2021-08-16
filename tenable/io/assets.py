@@ -167,17 +167,17 @@ class AssetsAPI(TIOEndpoint):
             ... })
 
             import multiple asset
-            >>>tio.assets.asset_import('example_source', {
-            ...'fqdn': ['example_one.py.test'],
-            ...'ipv4': ['192.168.254.1'],
-            ...'netbios_name': 'example_one',
-            ...'mac_address': ['00:00:00:00:00:00']
-            ...},
-            ...{'fqdn': ['example_two.py.test'],
-            ...'ipv4': ['192.168.254.1'],
-            ...'netbios_name': 'example_two',
-            ...'mac_address': ['00:00:00:00:00:00']
-            ...})
+            >>>tio.assets.asset_import('multiple_asset_example_source', {
+            ...    'fqdn': ['example_one.py.test'],
+            ...    'ipv4': ['192.168.1.1'],
+            ...    'netbios_name': 'example_one',
+            ...    'mac_address': ['00:00:00:00:00:00']
+            ...    },
+            ...    {'fqdn': ['example_two.py.test'],
+            ...    'ipv4': ['192.168.255.1'],
+            ...    'netbios_name': 'example_two',
+            ...    'mac_address': ['00:00:00:00:00:00']
+            ...    })
 
         '''
         # We will likely want to perform some more stringent checking of the
