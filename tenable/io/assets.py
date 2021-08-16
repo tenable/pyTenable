@@ -158,7 +158,8 @@ class AssetsAPI(TIOEndpoint):
                 The job UUID.
 
         Examples:
-            import single asset
+            import single asset:
+
             >>> tio.assets.asset_import('example_source', {
             ...     'fqdn': ['example.py.test'],
             ...     'ipv4': ['192.168.254.1'],
@@ -166,19 +167,20 @@ class AssetsAPI(TIOEndpoint):
             ...     'mac_address': ['00:00:00:00:00:00']
             ... })
 
-            import multiple asset
-            >>>tio.assets.asset_import('multiple_asset_example_source', {
-            ...    'fqdn': ['example_one.py.test'],
-            ...    'ipv4': ['192.168.1.1'],
-            ...    'netbios_name': 'example_one',
-            ...    'mac_address': ['00:00:00:00:00:00']
-            ...    },
-            ...    {'fqdn': ['example_two.py.test'],
-            ...    'ipv4': ['192.168.255.1'],
-            ...    'netbios_name': 'example_two',
-            ...    'mac_address': ['00:00:00:00:00:00']
-            ...    })
+            import multiple asset:
 
+            >>> tio.assets.asset_import('multiple_asset_example_source',
+            ...     {
+            ...         'fqdn': ['example_one.py.test'],
+            ...         'ipv4': ['192.168.1.1'],
+            ...         'netbios_name': 'example_one',
+            ...         'mac_address': ['00:00:00:00:00:00']
+            ...     },{
+            ...         'fqdn': ['example_two.py.test'],
+            ...         'ipv4': ['192.168.255.1'],
+            ...         'netbios_name': 'example_two',
+            ...         'mac_address': ['00:00:00:00:00:00']
+            ...     })
         '''
         # We will likely want to perform some more stringent checking of the
         # asset resources that are being defined, however a simple type check
