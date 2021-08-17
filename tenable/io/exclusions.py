@@ -22,7 +22,7 @@ from datetime import datetime
 from typing import Dict, Any, ClassVar, List, IO
 from restfly.utils import dict_merge, dict_clean
 from tenable.io.base import TIOEndpoint
-from tenable.io.schema.exclusion_schema import ExclusionSchema
+from tenable.io.schemas.exclusion_schema import ExclusionSchema
 
 
 class ExclusionsAPI(TIOEndpoint):
