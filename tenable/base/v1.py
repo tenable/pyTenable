@@ -32,7 +32,9 @@ from tenable.errors import (
 		NotFoundError,
 		UnsupportedError,
 		FileDownloadError,
-		ServerError
+		ServerError,
+        UnknownError,
+        RetryError
 )
 
 class APIResultsIterator(object):
@@ -456,11 +458,10 @@ class APISession(object):
 
     def _close_session(self):
         '''
-        Requests session destroyer
+        Requests session destroy and close
         '''
         if self._session:
             self._session.close()
-            self._session = None
 
     def _resp_error_check(self, response, **kwargs): #stub
         '''

@@ -58,7 +58,7 @@ Example:
     .. automethod:: put
     .. automethod:: delete
 '''
-import logging, os
+import logging, os, warnings
 from tenable.errors import UnexpectedValueError
 from tenable.base.v1 import APISession
 from .access_groups import AccessGroupsAPI
@@ -259,6 +259,11 @@ class TenableIO(APISession):
 
     @property
     def session(self):
+        warnings.warn(
+            'Tenable.io session API is deprecated. '
+            'we recommends that you use users endpoint instead',
+            DeprecationWarning, 2
+        )
         return SessionAPI(self)
 
     @property
