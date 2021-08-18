@@ -270,29 +270,29 @@ class RepositoryAPI(SCEndpoint):
         Examples:
             Creating a new IPv4 Repository leveraging the defaults:
 
-            >>> repo = sc.repositories.create(name='example_ipv4')
+            >>> repo = sc.repositories.create(name='Example IPv4')
 
             Creating a new IPv4 Repository with 90 days of trending and linked
             to the first Organization:
 
             >>> repo = sc.repositories.create(
-            ...     name='example_trending', trending=90, orgs=[1])
+            ...     name='Example Trending', trending=90, orgs=[1])
 
             Creating an IPv6 repository:
 
             >>> repo = sc.repositories.create(
-            ...     name='example_ipv6', format='IPv6')
+            ...     name='Example IPv6', format='IPv6')
 
             Creating an agent repository:
 
             >>> repo = sc.repositories.create(
-            ...     name='example_agent', format='agent')
+            ...     name='Example Agent', format='agent')
 
             Creating an MDM repository for ActiveSync that will sync every day
             at 6am eastern:
 
             >>> repo = sc.repositories.create(
-            ...     name='example_active_sync', mdm_id=1, scanner_id=1,
+            ...     name='Example ActiveSync', mdm_id=1, scanner_id=1,
             ...     format='mobile', orgs=[1],
             ...     mobile_sched={
             ...         'repeatRule': 'FREQ=DAILY;INTERVAL=1',
@@ -311,7 +311,7 @@ class RepositoryAPI(SCEndpoint):
             days:
 
             >>> repo = sc.repositories.create(
-            ...     name='example_remote_repo',
+            ...     name='Example Remote Repo',
             ...     repo_type='Remote',
             ...     remote_ip='192.168.0.101',
             ...     remote_repo=1,
@@ -456,7 +456,7 @@ class RepositoryAPI(SCEndpoint):
                 The repository resource record for the newly created Repo.
 
         Examples:
-            >>> repo = sc.repositories.edit(1, name='example_iPv4')
+            >>> repo = sc.repositories.edit(1, name='Example IPv4')
         '''
         kwargs = self._constructor(**kwargs)
         return self._api.patch('repository/{}'.format(
