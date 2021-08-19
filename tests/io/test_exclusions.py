@@ -503,15 +503,6 @@ def test_exclusions_edit_exclusion_id_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_members_type_validationerror(api, exclusion):
-    '''
-    test to raise exception when type of members param does not match the expected type.
-    '''
-    with pytest.raises(ValidationError):
-        api.exclusions.edit(exclusion['id'], members='192.168.0.1')
-
-
-@pytest.mark.vcr()
 def test_exclusions_edit_name_type_validationerror(api, exclusion):
     '''
     test to raise exception when type of name param does not match the expected type.

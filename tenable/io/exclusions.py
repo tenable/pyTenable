@@ -19,7 +19,8 @@ Methods available on ``tio.exclusions``:
     .. automethod:: exclusions_import
 '''
 from datetime import datetime
-from typing import Dict, Any, ClassVar, List, IO
+from typing import Dict, Any, ClassVar, List, IO, Callable
+from marshmallow import EXCLUDE
 from restfly.utils import dict_merge, dict_clean
 from tenable.io.base import TIOEndpoint
 from tenable.io.schemas.exclusion_schema import ExclusionSchema
@@ -34,8 +35,11 @@ class ExclusionsAPI(TIOEndpoint):
     def _validate(
             self,
             data: Dict[Any, Any],
-            validator=ExclusionSchema
+            validator: Callable = ExclusionSchema,
+            exclude: bool = False
     ) -> Dict:
+        if exclude:
+            return validator(unknown=EXCLUDE).load(data)
         return validator().load(data)
 
     def create(
@@ -137,55 +141,27 @@ class ExclusionsAPI(TIOEndpoint):
             ...     start_time=datetime.utcnow(),
             ...     end_time=datetime.utcnow() + timedelta(hours=1))
         '''
-        # validate user inputs
-        kwargs = self._validate(kwargs)
-
-        # Starting with the innermost part of the payload, lets construct the
-        # rrules dictionary.
-        frequency = kwargs.get('frequency', 'ONETIME')
-
-        rrules = {
-            'freq': frequency,
-            'interval': kwargs.get('interval', 1)
-        }
-
-        # if the frequency is a weekly one, then we will need to specify the
-        # days of the week that the exclusion is run on.
-        if frequency == 'WEEKLY':
-            rrules['byweekday'] = kwargs.get('weekdays', ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'])
-            # In the same vein as the frequency check, we're accepting
-            # case-insensitive input, comparing it to our known list of
-            # acceptable responses, then joining them all together into a
-            # comma-separated string.
-
-        # if the frequency is monthly, then we will need to specify the day of
-        # the month that the rule will run on.
-        if frequency == 'MONTHLY':
-            rrules['bymonthday'] = kwargs.get('day_of_month', datetime.today().day)
-
-        # construct payload schedule based on enable
-        kwargs['enabled'] = kwargs.get('enabled', True)
-        if kwargs.get('enabled') is True:
-            schedule = {
-                'enabled': True,
-                'starttime': kwargs.get('start_time').strftime('%Y-%m-%d %H:%M:%S'),
-                'endtime': kwargs.get('end_time').strftime('%Y-%m-%d %H:%M:%S'),
-                'timezone': kwargs.get('timezone', 'Etc/UTC'),
-                'rrules': rrules
-            }
-        elif kwargs.get('enabled') is False:
-            schedule = {'enabled': False}
-        else:
-            raise TypeError('enabled must be a boolean value.')
-
-        # Next we need to construct the rest of the payload
+        # create a payload required for API
         payload = {
             'name': self._check('name', name, str),
-            'members': ','.join(self._check('members', members, list)),
-            'description': kwargs.get('description', ''),
-            'network_id': kwargs.get('network_id', '00000000-0000-0000-0000-000000000000'),
-            'schedule': schedule
+            'members': self._check('members', members, list),
+            'description': kwargs.get('description'),
+            'network_id': kwargs.get('network_id'),
+            'schedule': {
+                'enabled': kwargs.get('enabled'),
+                'starttime': kwargs.get('start_time'),
+                'endtime': kwargs.get('end_time'),
+                'timezone': kwargs.get('timezone'),
+                'rrules': {
+                    'freq': kwargs.get('frequency'),
+                    'interval': kwargs.get('interval'),
+                    'byweekday': kwargs.get('weekdays'),
+                    'bymonthday': kwargs.get('day_of_month')
+                }
+            }
         }
+
+        payload = self._validate(payload)
 
         # And now to make the call and return the data.
         return self._api.post(f'{self._path}', json=payload).json()
@@ -288,85 +264,38 @@ class ExclusionsAPI(TIOEndpoint):
 
             >>> exclusion = tio.exclusions.edit(1, name='New Name')
         '''
+        # get the existing values
+        existing_payload = self.details(self._check('exclusion_id', exclusion_id, int))
 
-        # Lets start constructing the payload to be sent to the API...
-        payload = self.details(self._check('exclusion_id', exclusion_id, int))
-        payload['schedule'] = dict_clean(payload['schedule'])
-
-        # validate user inputs
-        kwargs = self._validate(kwargs)
-
-        if kwargs.get('name'):
-            payload['name'] = kwargs.get('name')
-
-        if kwargs.get('members'):
-            payload['members'] = kwargs.get('members')
-
-        if kwargs.get('description'):
-            payload['description'] = kwargs.get('description')
-
-        if kwargs.get('enabled'):
-            payload['schedule']['enabled'] = kwargs.get('enabled')
-
-        if payload['schedule']['enabled']:
-            # we will create a dict of default values from existing payload or
-            # set individually if not existing schedule exist
-            if payload['schedule'].get('rrules') is not None:
-                default_rrule_values = {
-                    'frequency': payload['schedule']['rrules'].get('freq'),
-                    'interval': payload['schedule']['rrules'].get('interval', 1),
-                    'weekdays': payload['schedule']['rrules'].get(
-                        'byweekday', ','.join(['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'])),
-                    'day_of_month': payload['schedule']['rrules'].get(
-                        'bymonthday', datetime.today().day),
+        # create updated payload template
+        updated_payload = {
+            'name': kwargs.get('name'),
+            'members': kwargs.get('members'),
+            'description': kwargs.get('description'),
+            'network_id': kwargs.get('network_id'),
+            'schedule': {
+                'enabled': kwargs.get('enabled'),
+                'starttime': kwargs.get('start_time'),
+                'endtime': kwargs.get('end_time'),
+                'timezone': kwargs.get('timezone'),
+                'rrules': {
+                    'freq': kwargs.get('frequency'),
+                    'interval': kwargs.get('interval'),
+                    'byweekday': kwargs.get('weekdays'),
+                    'bymonthday': kwargs.get('day_of_month')
                 }
-            else:
-                default_rrule_values = {
-                    'frequency': 'ONETIME',
-                    'interval': 1,
-                    'weekdays': ','.join(['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']),
-                    'day_of_month': datetime.today().day,
-                }
-
-            frequency = kwargs.get('frequency', default_rrule_values.get('frequency'))
-
-            # interval needs to be handled in schedule enabled exclusion
-            rrules = {
-                'freq': frequency,
-                'interval': default_rrule_values.get('interval')
             }
+        }
 
-            if frequency == 'WEEKLY':
-                rrules['byweekday'] = kwargs.get('weekdays', default_rrule_values.get('weekdays'))
+        # filter all None values from updated payload
+        updated_payload = dict_clean(updated_payload)
 
-            if frequency == 'MONTHLY':
-                rrules['bymonthday'] = kwargs.get(
-                    'day_of_month', default_rrule_values.get('day_of_month'))
+        # merge new values to existing payload
+        dict_merge(existing_payload, updated_payload)
 
-            # update new rrules in existing payload
-            if payload['schedule'].get('rrules') is not None:
-                dict_merge(payload['schedule']['rrules'], rrules)
-            else:
-                payload['schedule']['rrules'] = rrules
+        # validate payload
+        payload = self._validate(existing_payload, exclude=True)
 
-            if kwargs.get('start_time'):
-                payload['schedule']['starttime'] = kwargs.get('start_time').strftime('%Y-%m-%d %H:%M:%S')
-
-            if kwargs.get('end_time'):
-                payload['schedule']['endtime'] = kwargs.get('end_time').strftime('%Y-%m-%d %H:%M:%S')
-
-            if kwargs.get('interval'):
-                payload['schedule']['rrules']['interval'] = kwargs.get('interval')
-
-            payload['schedule']['timezone'] = kwargs.get(
-                'timezone', payload['schedule'].get('timezone', 'Etc/UTC'))
-
-        if kwargs.get('network_id'):
-            payload['network_id'] = kwargs.get('network_id')
-
-        # Lets check to make sure that the scanner_id  and exclusion_id are
-        # integers as the API documentation requests and if we don't raise an
-        # error, then lets make the call.
         return self._api.put(f'{self._path}/{exclusion_id}', json=payload).json()
 
     def list(self) -> List[Dict]:
