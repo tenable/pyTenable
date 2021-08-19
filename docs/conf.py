@@ -28,7 +28,6 @@ sys.path.insert(0, os.path.abspath('..'))
 
 import tenable
 
-
 # -- Project information -----------------------------------------------------
 
 project = u'pyTenable'
@@ -212,4 +211,5 @@ extlinks = {
     'devportal': ('https://developer.tenable.com/reference#%s', 'devportal'),
     'sc-api': ('https://docs.tenable.com/sccv/api/%s', 'sc-api'),
     'requests': ('https://requests.readthedocs.io/en/master/%s', 'requests'),
+    'tenableAD': ('https://doc.tenable.ad/reference#%s', 'tenableAD'),
 }
