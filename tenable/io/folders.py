@@ -15,10 +15,16 @@ Methods available on ``tio.folders``:
     .. automethod:: edit
     .. automethod:: list
 '''
+from typing import List, ClassVar
 from .base import TIOEndpoint
 
 class FoldersAPI(TIOEndpoint):
-    def create(self, name):
+    _path: ClassVar[str] = 'folders'
+
+    def create(
+            self,
+            name: str
+    ) -> int:
         '''
         Create a folder.
 
@@ -35,11 +41,13 @@ class FoldersAPI(TIOEndpoint):
         Examples:
             >>> folder = tio.folders.create('New Folder Name')
         '''
-        return self._api.post('folders', json={
-            'name': self._check('name', name, str)
-        }).json()['id']
+        payload = {'name': self._check('name', name, str)}
+        return self._api.post(self._path, json=payload).json()['id']
 
-    def delete(self, id):
+    def delete(
+            self,
+            id: int
+    ) -> None:
         '''
         Delete a folder.
 
@@ -54,9 +62,14 @@ class FoldersAPI(TIOEndpoint):
         Examples:
             >>> tio.folders.delete(1)
         '''
-        self._api.delete('folders/{}'.format(self._check('id', id, int)))
+        self._check('id', id, int)
+        self._api.delete(f'{self._path}/{id}')
 
-    def edit(self, id, name):
+    def edit(
+            self,
+            id: int,
+            name: str
+    ) -> None:
         '''
         Edit a folder.
 
@@ -73,11 +86,11 @@ class FoldersAPI(TIOEndpoint):
         Examples:
             >>> tio.folders.edit(1, 'Updated Folder Name')
         '''
-        self._api.put('folders/{}'.format(self._check('id', id, int)), json={
-            'name': self._check('name', name, str)
-        })
+        self._check('id', id, int)
+        payload = {'name': self._check('name', name, str)}
+        self._api.put(f'{self._path}/{id}', json=payload)
 
-    def list(self):
+    def list(self) -> List:
         '''
         Lists the available folders.
 
@@ -91,4 +104,4 @@ class FoldersAPI(TIOEndpoint):
             >>> for folder in tio.folders.list():
             ...     pprint(folder)
         '''
-        return self._api.get('folders').json()['folders']
+        return self._api.get(self._path).json()['folders']

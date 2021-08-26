@@ -13,10 +13,18 @@ Methods available on ``tio.permissions``:
     .. automethod:: change
     .. automethod:: list
 '''
+from typing import Dict, List
 from .base import TIOEndpoint
 
 class PermissionsAPI(TIOEndpoint):
-    def change(self, otype, id, *acls):
+    _path = 'permissions'
+
+    def change(
+            self,
+            otype: str,
+            id: int,
+            *acls: Dict
+    ) -> None:
         '''
         Modify the permission of a specific object.
 
@@ -43,13 +51,16 @@ class PermissionsAPI(TIOEndpoint):
         for item in acls:
             self._check('acl', item, dict)
 
-        # Make the API call.
-        self._api.put('permissions/{}/{}'.format(
-            self._check('otype', otype, str),
+            # validate inputs and make the API call.
+            self._check('otype', otype, str)
             self._check('id', id, int)
-        ), json={'acls': acls})
+            self._api.put(f'{self._path}/{otype}/{id}', json={'acls': acls})
 
-    def list(self, otype, id):
+    def list(
+            self,
+            otype: str,
+            id: int
+    ) -> List:
         '''
         List the permissions of a specific object.
 
@@ -65,8 +76,7 @@ class PermissionsAPI(TIOEndpoint):
             :obj:`list`:
                 The permission recourse record listings for the specified object.
         '''
-        return self._api.get(
-            'permissions/{}/{}'.format(
-                self._check('otype', otype, str),
-                self._check('id', id, int)
-            )).json()['acls']
+        # validate inputs and make the API call.
+        self._check('otype', otype, str)
+        self._check('id', id, int)
+        return self._api.get(f'{self._path}/{otype}/{id}').json()['acls']

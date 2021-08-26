@@ -18,10 +18,17 @@ Methods available on ``tio.groups``:
     .. automethod:: list
     .. automethod:: list_users
 '''
+from typing import ClassVar, Dict, List
 from .base import TIOEndpoint
 
 class GroupsAPI(TIOEndpoint):
-    def add_user(self, group_id, user_id):
+    _path: ClassVar[str] = 'groups'
+
+    def add_user(
+            self,
+            group_id: int,
+            user_id: int
+    ) -> None:
         '''
         Add a user to a user group.
 
@@ -40,12 +47,14 @@ class GroupsAPI(TIOEndpoint):
         Examples:
             >>> tio.groups.add_user(1, 1)
         '''
-        self._api.post('groups/{}/users/{}'.format(
-            self._check('group_id', group_id, int),
-            self._check('user_id', user_id, int), json={}
-        ))
+        self._check('group_id', group_id, int)
+        self._check('user_id', user_id, int)
+        self._api.post(f'{self._path}/{group_id}/users/{user_id}', json={})
 
-    def create(self, name):
+    def create(
+            self,
+            name: str
+    ) -> Dict:
         '''
         Create a new user group.
 
@@ -62,11 +71,13 @@ class GroupsAPI(TIOEndpoint):
         Examples:
             >>> group = tio.groups.create('Group Name')
         '''
-        return self._api.post('groups', json={
-            'name': self._check('name', name, str)
-        }).json()
+        self._check('name', name, str)
+        return self._api.post(f'{self._path}', json={'name': name}).json()
 
-    def delete(self, id):
+    def delete(
+            self,
+            id: int
+    ) -> None:
         '''
         Delete a user group.
 
@@ -82,9 +93,14 @@ class GroupsAPI(TIOEndpoint):
         Examples:
             >>> tio.groups.delete(1)
         '''
-        self._api.delete('groups/{}'.format(self._check('id', id, int)))
+        self._check('id', id, int)
+        self._api.delete(f'{self._path}/{id}')
 
-    def delete_user(self, group_id, user_id):
+    def delete_user(
+            self,
+            group_id: int,
+            user_id: int
+    ) -> None:
         '''
         Delete a user from a user group.
 
@@ -103,12 +119,15 @@ class GroupsAPI(TIOEndpoint):
         Examples:
             >>> tio.groups.delete_user(1, 1)
         '''
-        self._api.delete('groups/{}/users/{}'.format(
-            self._check('group_id', group_id, int),
-            self._check('user_id', user_id, int)
-        ))
+        self._check('group_id', group_id, int)
+        self._check('user_id', user_id, int)
+        self._api.delete(f'{self._path}/{group_id}/users/{user_id}')
 
-    def edit(self, id, name):
+    def edit(
+            self,
+            id: int,
+            name: str
+    ) -> Dict:
         '''
         Edit a user group.
 
@@ -127,10 +146,11 @@ class GroupsAPI(TIOEndpoint):
         Examples:
             >>> tio.groups.edit(1, 'Updated name')
         '''
-        return self._api.put('groups/{}'.format(self._check('id', id, int)),
-            json={'name': self._check('name', name, str)}).json()
+        self._check('id', id, int)
+        self._check('name', name, str)
+        return self._api.put(f'{self._path}/{id}', json={'name': name}).json()
 
-    def list(self):
+    def list(self) -> List:
         '''
         Lists all of the available user groups.
 
@@ -144,9 +164,12 @@ class GroupsAPI(TIOEndpoint):
             >>> for group in tio.groups.list():
             ...     pprint(group)
         '''
-        return self._api.get('groups').json()['groups']
+        return self._api.get(self._path).json()['groups']
 
-    def list_users(self, id):
+    def list_users(
+            self,
+            id: int
+    ) -> List:
         '''
         List the user memberships within a specific user group.
 
@@ -164,6 +187,5 @@ class GroupsAPI(TIOEndpoint):
             >>> for user in tio.groups.list_users(1):
             ...     pprint(user)
         '''
-        return self._api.get('groups/{}/users'.format(
-            self._check('id', id, int))).json()['users']
-
+        self._check('id', id, int)
+        return self._api.get(f'{self._path}/{id}/users').json()['users']

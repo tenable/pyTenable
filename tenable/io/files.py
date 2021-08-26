@@ -12,11 +12,16 @@ Methods available on ``tio.files``:
 
     .. automethod:: upload
 '''
+from typing import IO, Optional, Dict, Union
 from .base import TIOEndpoint
 import uuid
 
 class FileAPI(TIOEndpoint):
-    def upload(self, fobj, encrypted=False):
+    def upload(
+            self,
+            fobj: IO,
+            encrypted: Optional[bool] = False
+    ) -> str:
         '''
         Uploads a file into Tenable.io.
 
@@ -40,7 +45,7 @@ class FileAPI(TIOEndpoint):
         # We will attempt to discover the name of the file stored within the
         # file object.  If none exists however, we will generate a random
         # uuid string to use instead.
-        kw = dict()
+        kw: Dict[str, Union[Dict[str, int], Dict[str, IO]]] = dict()
         if encrypted:
             kw['data'] = {'no_enc': int(encrypted)}
         kw['files'] = {'Filedata': fobj}
