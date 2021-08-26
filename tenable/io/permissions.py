@@ -51,10 +51,10 @@ class PermissionsAPI(TIOEndpoint):
         for item in acls:
             self._check('acl', item, dict)
 
-            # validate inputs and make the API call.
-            self._check('otype', otype, str)
-            self._check('id', id, int)
-            self._api.put(f'{self._path}/{otype}/{id}', json={'acls': acls})
+        # validate inputs and make the API call.
+        self._check('otype', otype, str)
+        self._check('id', id, int)
+        self._api.put(f'{self._path}/{otype}/{id}', json={'acls': acls})
 
     def list(
             self,
