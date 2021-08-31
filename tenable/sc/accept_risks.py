@@ -226,8 +226,9 @@ class AcceptRiskAPI(SCEndpoint):
             comments (str, optional):
                 The comment associated to the accept risk rule.
             expires (int, optional):
-                When should the rule expire?  if no expiration is set, the rule
-                will never expire.
+                Timestamp. When should the rule expire?  if no expiration is set, the rule
+                will never expire. If not mentioned, value is -1
+                (-1 represents December 31st 1969 23:59:59 hours GMT)
             ips (list, optional):
                 A list of IPs to apply the accept risk rule to.  Please note
                 that ``asset_list``, ``ips``, and ``uuids`` are mutually
@@ -248,10 +249,10 @@ class AcceptRiskAPI(SCEndpoint):
                 The newly created accept risk rule definition.
 
         Examples:
-            Create a rule to accept 97737 on 2 IPs for 90 days.
+            Create a rule to accept 97737 on 2 IPs till Aug 25th 2021 00:00 Hrs GMT.
 
             >>> rule = sc.accept_risks.create(97737, [1],
-            ...     ips=['192.168.0.101', '192.168.0.102'], expires=90)
+            ...     ips=['192.168.0.101', '192.168.0.102'], expires=1629849600)
 
             Create a rule to accept 97737 on all IPs on repository 1:
 
