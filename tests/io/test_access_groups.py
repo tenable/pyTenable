@@ -19,7 +19,7 @@ def fixture_agroup(request, api, rules):
     '''
     Fixture to create access_group
     '''
-    group = api.access_groups.create('Example', rules)
+    group = api.access_groups.create(str(uuid.uuid4()), rules)
     def teardown():
         '''
         cleanup function to delete access_group
@@ -380,7 +380,8 @@ def test_access_groups_list(api):
         check(group, 'all_assets', bool)
         check(group, 'all_users', bool)
         #check(group, 'created_by_uuid', 'uuid') # Will not return for default group
-        check(group, 'updated_by_uuid', 'uuid')
+        if 'updated_by_uuid' in group:
+            check(group, 'updated_by_uuid', 'uuid')
         check(group, 'created_by_name', str)
         check(group, 'updated_by_name', str)
         check(group, 'processing_percent_complete', int)
