@@ -304,7 +304,7 @@ def test_access_groups_v2_edit_success(api, agroup):
     '''
     test to edit access group
     '''
-    resp = api.access_groups_v2.edit(agroup['id'], name='Updated', all_users=False)
+    resp = api.access_groups_v2.edit(agroup['id'], name=str(uuid.uuid4()), all_users=False)
     assert isinstance(resp, dict)
     check(resp, 'created_at', 'datetime')
     check(resp, 'updated_at', 'datetime')
