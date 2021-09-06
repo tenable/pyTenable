@@ -241,7 +241,7 @@ class PoliciesAPI(TIOEndpoint):
 
         Examples:
             >>> with open('example.nessus') as policy:
-            ...     tio.policies.import(policy)
+            ...     tio.policies.policy_import(policy)
         '''
         fid = self._api.files.upload(fobj)
         return self._api.post('policies/import', json={'file': fid}).json()
@@ -266,7 +266,7 @@ class PoliciesAPI(TIOEndpoint):
 
         Examples:
             >>> with open('example.nessus', 'wb') as policy:
-            ...     tio.policies.export(1, policy)
+            ...     tio.policies.policy_export(1, policy)
         '''
         # If no file object was givent to us, then lets create a new BytesIO
         # object to dump the data into.
