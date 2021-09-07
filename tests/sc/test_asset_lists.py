@@ -2,6 +2,7 @@
 test file to test various scenarios in sc asset lists
 '''
 import os
+import uuid
 
 import pytest
 
@@ -853,3 +854,8 @@ def test_asset_lists_share_success(security_center, asset_list, group):
     check(asset['ownerGroup'], 'id', str)
     check(asset['ownerGroup'], 'name', str)
     check(asset['ownerGroup'], 'description', str)
+
+@pytest.mark.vcr()
+def test_asset_lists_create_asset_list_check_uuid(security_center):
+    asset_list = security_center.asset_lists.create('tio_test2', 'dynamic', rules=('any', ('uuid', 'eq', str(uuid.uuid4()))))
+    security_center.asset_lists.delete(int(asset_list['id']))
