@@ -35,17 +35,6 @@ interactions:
       - Keep-Alive
       Content-Length:
       - '556'
-      Content-Security-Policy:
-      - 'default-src ''self''; script-src ''self'' ''unsafe-eval'' pendo-io-static.storage.googleapis.com
-        app.pendo.io cdn.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        data.pendo.io cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com
-        *.cloudfront.net; connect-src ''self'' app.pendo.io data.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com *.cloudfront.net;
-        img-src ''self'' data: cdn.pendo.io app.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        data.pendo.io; style-src ''self'' ''unsafe-inline'' app.pendo.io cdn.pendo.io
-        pendo-static-6165929460760576.storage.googleapis.com; frame-ancestors app.pendo.io;
-        form-action ''self''; block-all-mixed-content; upgrade-insecure-requests;
-        object-src ''none'''
       Content-Type:
       - application/json
       Date:
@@ -120,17 +109,6 @@ interactions:
       - Keep-Alive
       Content-Length:
       - '1425'
-      Content-Security-Policy:
-      - 'default-src ''self''; script-src ''self'' ''unsafe-eval'' pendo-io-static.storage.googleapis.com
-        app.pendo.io cdn.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        data.pendo.io cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com
-        *.cloudfront.net; connect-src ''self'' app.pendo.io data.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com *.cloudfront.net;
-        img-src ''self'' data: cdn.pendo.io app.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        data.pendo.io; style-src ''self'' ''unsafe-inline'' app.pendo.io cdn.pendo.io
-        pendo-static-6165929460760576.storage.googleapis.com; frame-ancestors app.pendo.io;
-        form-action ''self''; block-all-mixed-content; upgrade-insecure-requests;
-        object-src ''none'''
       Content-Type:
       - application/json
       Date:
@@ -198,17 +176,6 @@ interactions:
       - Keep-Alive
       Content-Length:
       - '621'
-      Content-Security-Policy:
-      - 'default-src ''self''; script-src ''self'' ''unsafe-eval'' pendo-io-static.storage.googleapis.com
-        app.pendo.io cdn.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        data.pendo.io cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com
-        *.cloudfront.net; connect-src ''self'' app.pendo.io data.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com *.cloudfront.net;
-        img-src ''self'' data: cdn.pendo.io app.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        data.pendo.io; style-src ''self'' ''unsafe-inline'' app.pendo.io cdn.pendo.io
-        pendo-static-6165929460760576.storage.googleapis.com; frame-ancestors app.pendo.io;
-        form-action ''self''; block-all-mixed-content; upgrade-insecure-requests;
-        object-src ''none'''
       Content-Type:
       - application/json
       Date:
@@ -272,17 +239,6 @@ interactions:
       - Keep-Alive
       Content-Length:
       - '100'
-      Content-Security-Policy:
-      - 'default-src ''self''; script-src ''self'' ''unsafe-eval'' pendo-io-static.storage.googleapis.com
-        app.pendo.io cdn.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        data.pendo.io cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com
-        *.cloudfront.net; connect-src ''self'' app.pendo.io data.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com *.cloudfront.net;
-        img-src ''self'' data: cdn.pendo.io app.pendo.io pendo-static-6165929460760576.storage.googleapis.com
-        data.pendo.io; style-src ''self'' ''unsafe-inline'' app.pendo.io cdn.pendo.io
-        pendo-static-6165929460760576.storage.googleapis.com; frame-ancestors app.pendo.io;
-        form-action ''self''; block-all-mixed-content; upgrade-insecure-requests;
-        object-src ''none'''
       Content-Type:
       - application/json
       Date:
