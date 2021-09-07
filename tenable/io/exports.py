@@ -224,19 +224,26 @@ class ExportsAPI(TIOEndpoint):
             vpr (dict, optional):
                 Restricts the results to the export to only vulnerabilities that
                 match the VPR criteria specified.  As this supports a range of
-                operations, it's worth detailing a couple of examples:
+                operations which are ``gte`` (for greater than or equal to), ``lte`` (for less than or equal to),
+                ``eq`` (for equal to), ``neq`` (for not equal to),
+                it's worth detailing a couple of examples.
+                (``eq`` and ``neq`` takes the value in list):
 
                 VPR Scores greater than or equal to 7.0:
 
-                .. python::
-
-                    vpr={'gte': 7}
+                >>> vpr={'gte': 7}
 
                 VPR Score less than 7, but not 5:
 
-                .. python::
+                >>> vpr={'lt': 7, 'neq': [5]}
 
-                    vpr={'lt': 7, 'neq': [5]}
+                VPR Score equal to 5:
+
+                >>> vpr={'eq': [5]}
+
+                VPR Score less than or equal to 7:
+
+                >>> vpr={'lte': 7.0}
 
             when_done (bool, optional):
                 Wait to start working through the data until the export has finished
