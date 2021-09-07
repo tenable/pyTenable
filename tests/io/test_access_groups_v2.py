@@ -337,7 +337,7 @@ def test_access_groups_v2_details_success(api):
     '''
     test to get details of specific access group
     '''
-    group = api.access_groups_v2.create('Test', [('ipv4', 'eq', ['192.168.0.0/24'])])
+    group = api.access_groups_v2.create(str(uuid.uuid4()), [('ipv4', 'eq', ['192.168.0.0/24'])])
     resp = api.access_groups_v2.details(group['id'])
     assert isinstance(resp, dict)
     check(resp, 'created_at', 'datetime')
