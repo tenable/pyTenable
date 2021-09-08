@@ -101,8 +101,6 @@ def test_plugins_list_success(api):
         check(plugin['attributes'], 'description', str)
         check(plugin['attributes'], 'plugin_publication_date', str)
         check(plugin['attributes'], 'plugin_modification_date', str)
-        if 'plugin_version' in plugin['attributes']:
-            check(plugin['attributes'], 'plugin_version', str)
         check(plugin['attributes'], 'synopsis', str)
         check(plugin['attributes'], 'risk_factor', str)
         check(plugin, 'id', int)
