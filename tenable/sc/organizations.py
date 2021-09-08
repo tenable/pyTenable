@@ -4,9 +4,12 @@ organization
 The following methods allow for interaction with the Tenable.sc
 :sc-api:`Organization <Organization.html>` API. These items are typically seen
 under the **Organization** section of Tenable.sc.
+
 Methods available on ``sc.organizations``:
+
 .. rst-class:: hide-signature
 .. autoclass:: OrganizationAPI
+
     .. automethod:: create
     .. automethod:: list
     .. automethod:: details
@@ -137,12 +140,16 @@ class OrganizationAPI(SCEndpoint):
 
         return kwargs
 
-    def create(self, name, **kwargs):
+    def create(self, name, vulnScoringSystem, **kwargs):
         '''
         Create a new organization
+
         :sc-api:`SC Organization Create <Organization.html#organization_POST>`
+
         Args:
             name (str): The name for organization.
+            vulnScoringSystem (str):
+                specifies the scoring system. Possible values are ``CVSSv2`` and ``CVSSv3``.
             info_links (list, optional):
                 A list of custom analysis links provided to users within the
                 host vulnerability details when analyzing data outside of
@@ -185,17 +192,25 @@ class OrganizationAPI(SCEndpoint):
             zones (list, optional):
                 When ``zone_selection`` is not ``auto_only``, this field
                 must be filled with list of ids from available scan zone(s).
+
         Returns:
             :obj:`dict`:
                 The organization resource record for the newly created Org.
+
         Examples:
+
             Creating a new organization with automatic scan zone selection:
-            >>> org = sc.organization.create('Sample Organization')
+
+            >>> org = sc.organization.create('Sample Organization', vulnScoringSystem='CVSSv2')
+
             Creating a new organization with custom analysis links:
-            >>> org = sc.organization.create('Sample Organization', info_links=[
+
+            >>> org = sc.organization.create('Sample Organization', vulnScoringSystem='CVSSv2', info_links=[
             ...     ('SANS', 'https://isc.sans.edu/ipinfo.html?ip=%IP%')])
+
         '''
         kwargs['name'] = name
+        kwargs['vulnScoringSystem'] = self._check('vulnScoringSystem', vulnScoringSystem, str, choices=['CVSSv2', 'CVSSv3'])
         kwargs['zone_selection'] = kwargs.get('zone_selection', 'auto_only')
         kwargs = self._constructor(**kwargs)
         return self._api.post('organization', json=kwargs).json()['response']
@@ -212,10 +227,14 @@ class OrganizationAPI(SCEndpoint):
         Returns:
             :obj:`list`:
                 List of organization definitions.
+
         Examples:
+
             Retrieve all of all of the organizations:
+
             >>> repos = sc.organizations.list()
         '''
+
         params = dict()
         if fields:
             params['fields'] = ','.join([self._check('field', f, str)
@@ -235,8 +254,11 @@ class OrganizationAPI(SCEndpoint):
         Returns:
             :obj:`dict`:
                 The organization resource record.
+
         Examples:
+
             >>> org = sc.organization.details(1)
+
         '''
         params = dict()
         if fields:
@@ -295,8 +317,11 @@ class OrganizationAPI(SCEndpoint):
                 must be filled with list of ids from available scan zone(s).
         Returns:
             dict: The updated organization resource record.
+
         Examples:
+
             >>> sc.organization.edit(1, name='New Name')
+
         '''
         kwargs = self._constructor(**kwargs)
         return self._api.patch('organization/{}'.format(
@@ -311,8 +336,11 @@ class OrganizationAPI(SCEndpoint):
         Returns:
             :obj:`str`:
                 Empty response string
+
         Examples:
+
             >>> sc.organization.delete(1)
+
         '''
         return self._api.delete('organization/{}'.format(
             self._check('organization_id', organization_id, int))).json()['response']
@@ -334,9 +362,12 @@ class OrganizationAPI(SCEndpoint):
         Returns:
             :obj:`list`:
                 A list of rules that match the request.
+
         Examples:
+
             >>> for rule in sc.organizations.accept_risk_rules(1):
             ...     pprint(rule)
+
         '''
         params = dict()
         if repos:
@@ -366,7 +397,9 @@ class OrganizationAPI(SCEndpoint):
         Returns:
             :obj:`list`:
                 A list of rules that match the request.
+
         Examples:
+
             >>> for rule in sc.organizations.recast_risk_rules(1):
             ...     pprint(rule)
         '''
@@ -395,9 +428,13 @@ class OrganizationAPI(SCEndpoint):
         Returns:
             :obj:`list`:
                 List of user definitions.
+
         Examples:
+
             Retrieve all of the security managers for a given org.:
+
             >>> repos = sc.organizations.managers_list()
+
         '''
         params = dict()
         if fields:
@@ -426,9 +463,12 @@ class OrganizationAPI(SCEndpoint):
         Returns:
             :obj:`dict`:
                 The newly created security manager.
+
         Examples:
+
             >>> secmngr = sc.organizations.manager_create(1,
             ...     'username', 'password', 1)
+
         '''
         kwargs['username'] = username
         kwargs['password'] = password
@@ -456,8 +496,11 @@ class OrganizationAPI(SCEndpoint):
         Returns:
             :obj:`dict`:
                 The user resource record.
+
         Examples:
+
             >>> secmngr = sc.organizations.manager_details(1, 1)
+
         '''
         params = dict()
         if fields:
@@ -484,9 +527,12 @@ class OrganizationAPI(SCEndpoint):
         Returns:
             :obj:`dict`:
                 The updated user record.
+
         Examples:
+
             >>> secmngr = sc.organizations.manager_edit(1, 1,
             ...     username='updated')
+
         '''
         payload = self._api.users._constructor(**kwargs)
         return self._api.patch('organization/{}/securityManager/{}'.format(
@@ -503,8 +549,11 @@ class OrganizationAPI(SCEndpoint):
                 The numeric identifier for the organization.
             user_id: (int):
                 The numeric identifier for the user.
+
         Examples:
+
             >>> sc.organizations.manager_delete(1, 1)
+
         '''
         payload = dict()
         if migrate_to:
