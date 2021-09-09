@@ -22,6 +22,7 @@ Methods available on ``tio.policies``:
 from .base import TIOEndpoint
 from tenable.utils import policy_settings, dict_merge
 from io import BytesIO
+import six
 
 class PoliciesAPI(TIOEndpoint):
     def templates(self):
@@ -61,7 +62,7 @@ class PoliciesAPI(TIOEndpoint):
 
         # Get the policy template UUID
         tmpl = self.templates()
-        tmpl_uuid = tmpl[self._check('name', name, str, choices=tmpl.keys())]
+        tmpl_uuid = tmpl[self._check('name', name, str, choices=list(tmpl.keys()))] if six.PY3 else tmpl[self._check('name', name, str, choices=tmpl.keys())]
 
         # Get the editor object
         editor = self._api.editor.template_details('policy', tmpl_uuid)
@@ -74,7 +75,7 @@ class PoliciesAPI(TIOEndpoint):
 
         # graft on the basic settings that aren't stored in any input sections.
         for item in editor['settings']['basic']['groups']:
-            for setting in item.keys():
+            for setting in list(item.keys()) if six.PY3 else item.keys():
                 if setting not in ['name', 'title', 'inputs', 'sections']:
                     scan['settings'][setting] = item[setting]
 

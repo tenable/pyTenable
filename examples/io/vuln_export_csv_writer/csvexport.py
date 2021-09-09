@@ -2,18 +2,20 @@
 from tenable.io import TenableIO
 from csv import DictWriter
 import collections, click, logging
+import six
 
 
 def flatten(d, parent_key='', sep='.'):
     '''
-    Flattens a nested dict.  Shamelessly ripped from 
+    Flattens a nested dict.  Shamelessly ripped from
     `this <https://stackoverflow.com/a/6027615>`_ Stackoverflow answer.
     '''
     items = []
-    for k, v in d.items():
+    for k, v in list(d.items()) if six.PY3 else d.items():
         new_key = parent_key + sep + k if parent_key else k
         if isinstance(v, collections.MutableMapping):
-            items.extend(flatten(v, new_key, sep=sep).items())
+            items.extend(list(flatten(v, new_key, sep=sep).items())) if six.PY3 else items.extend(
+                flatten(v, new_key, sep=sep).items())
         else:
             items.append((new_key, v))
     return dict(items)
@@ -27,17 +29,17 @@ def export_vulns_to_csv(fobj, vulns, *fields):
     Args:
         fobj (str): The file object of the csv file to write.
         *fields (list): A listing of fields to export.
-    
+
     Returns:
         None
-    
+
     Examples:
         Basic Export:
 
         >>> export_vulns_to_csv('example.csv')
 
         Choosing the Fields to Export for high and critical vulns:
-        
+
         >>> fields = ['plugin.id', 'plugin.name', 'asset.uuid']
         >>> vulns = tio.exports.vulns()
         >>> with open('example.csv', 'w') as report:
@@ -45,8 +47,8 @@ def export_vulns_to_csv(fobj, vulns, *fields):
     '''
     if not fields:
         fields = [
-            'asset.fqdn', 
-            'asset.hostname', 
+            'asset.fqdn',
+            'asset.hostname',
             'asset.operating_system',
             'asset.uuid',
             'first_found',
@@ -61,7 +63,7 @@ def export_vulns_to_csv(fobj, vulns, *fields):
             'severity',
             'state'
         ]
-    
+
     # Instantiate the dictionary writer, pass it the fields that we would like
     # to have recorded to the file, and inform the writer that we want it to
     # ignore the rest of the fields that may be passed to it.
@@ -74,10 +76,10 @@ def export_vulns_to_csv(fobj, vulns, *fields):
         # We need the vulnerability dictionary flattened out and all of the
         # lists converted into a pipe-delimited string.
         flat = flatten(vuln)
-        for k, v in flat.items():
+        for k, v in list(flat.items()) if six.PY3 else flat.items():
             if isinstance(v, list):
                 flat[k] = '|'.join([str(i) for i in v])
-        
+
         # Write the vulnerability to the CSV File.
         writer.writerow(flat)
     return counter
@@ -88,15 +90,15 @@ def export_vulns_to_csv(fobj, vulns, *fields):
 @click.option('--tio-access-key', 'akey', help='Tenable.io API Access Key')
 @click.option('--tio-secret-key', 'skey', help='Tenable.io API Secret Key')
 @click.option('--severity', 'sevs', multiple=True, help='Vulnerability Severity')
-@click.option('--last-found', type=click.INT, 
-    help='Vulnerability Last Found Timestamp')
+@click.option('--last-found', type=click.INT,
+              help='Vulnerability Last Found Timestamp')
 @click.option('--cidr', help='Restrict export to this CIDR range')
 @click.option('--tag', 'tags', multiple=True, nargs=2, type=(str, str),
-    help='Tag Key/Value pair to restrict the export to.')
-@click.option('--field', '-f', 'fields', multiple=True, 
-    help='Field to export to CSV')
+              help='Tag Key/Value pair to restrict the export to.')
+@click.option('--field', '-f', 'fields', multiple=True,
+              help='Field to export to CSV')
 @click.option('--verbose', '-v', envvar='VERBOSITY', default=0,
-    count=True, help='Logging Verbosity')
+              count=True, help='Logging Verbosity')
 def cli(output, akey, skey, sevs, last_found, cidr, tags, fields, verbose):
     '''
     Export -> CSV Writer
@@ -111,12 +113,12 @@ def cli(output, akey, skey, sevs, last_found, cidr, tags, fields, verbose):
         logging.basicConfig(level=logging.INFO)
     if verbose > 1:
         logging.basicConfig(level=logging.DEBUG)
-    
+
     # Instantiate the Tenable.io instance & initiate the vulnerability export.
     tio = TenableIO(akey, skey)
-    vulns = tio.exports.vulns(last_found=last_found, severity=list(sevs), 
-        cidr_range=cidr, tags=list(tags))
-    
+    vulns = tio.exports.vulns(last_found=last_found, severity=list(sevs),
+                              cidr_range=cidr, tags=list(tags))
+
     # Pass everything to the CSV generator.
     total = export_vulns_to_csv(output, vulns, *fields)
     click.echo('Processed {} Vulnerabilities'.format(total))

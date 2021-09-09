@@ -17,6 +17,7 @@ Methods available on ``tio.plugins``:
 '''
 from datetime import date
 from tenable.io.base import TIOEndpoint, TIOIterator
+import six
 
 
 class PluginIterator(TIOIterator):
@@ -66,12 +67,12 @@ class PluginIterator(TIOIterator):
         for family in self._api.plugins.families():
             self._maptable['families'][family['id']] = family['name']
 
-        for fam_id in self._maptable['families'].keys():
+        for fam_id in list(self._maptable['families'].keys()) if six.PY3 else self._maptable['families'].keys():
             for plugin in self._api.plugins.family_details(fam_id)['plugins']:
                 self._maptable['plugins'][plugin['id']] = fam_id
 
-    def next(self):
-        item = super(PluginIterator, self).next()
+    def __next__(self):
+        item = next(super(PluginIterator, self))
 
         # If the populate_maptable flag is set, then we will build the mappings.
         if not self._maptable and self.populate_maptable:

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from tenable.sc import TenableSC
+import six
 
 # Login to Tenable.sc
 sc = TenableSC('ADDRESS')
@@ -15,4 +16,4 @@ for vuln in sc.analysis.vulns(('severity', '=', '4,3,2,1'), tool='sumid'):
         sevs[vuln['severity']['name']] += 1
 
 # Output the final counts:
-print('Crits : {Critical}\nHighs : {High}\nMediums : {Medium}\nLows : {Low}'.format(**sevs))
+print(('Crits : {Critical}\nHighs : {High}\nMediums : {Medium}\nLows : {Low}'.format(**sevs))) if six.PY3 else print('Crits : {Critical}\nHighs : {High}\nMediums : {Medium}\nLows : {Low}'.format(**sevs))

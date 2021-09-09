@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from tenable.reports import NessusReportv2
 import click, re
+import  six
 
 @click.command()
 @click.argument('report', type=click.File('r'))
@@ -14,7 +15,10 @@ def run(report):
         if v['pluginID'] == 19506:
             res = redur.findall(v['plugin_output'])
             if len(res) > 0:
-                print('{} Took {} seconds to complete.'.format(
+                print(('{} Took {} seconds to complete.'.format(
+                    v['host-ip'],
+                    res[0]
+                ))) if six.PY3 else print('{} Took {} seconds to complete.'.format(
                     v['host-ip'],
                     res[0]
                 ))

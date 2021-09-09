@@ -26,6 +26,7 @@ import re
 
 from tenable.utils import dict_merge
 from tenable.io.base import TIOEndpoint, TIOIterator
+import six
 
 class TagsIterator(TIOIterator):
     '''
@@ -533,10 +534,16 @@ class TagsAPI(TIOEndpoint):
             query['ft'] = self._check('filter_type', filter_type, str,
                 choices=['AND', 'OR'], case='upper')
         if sort and self._check('sort', sort, tuple):
-            query['sort'] = ','.join(['{}:{}'.format(
-                self._check('sort_field', i[0], str, choices=[k for k in filterdefs.keys()]),
-                self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
-            ) for i in sort])
+            if six.PY3:
+                query['sort'] = ','.join(['{}:{}'.format(
+                    self._check('sort_field', i[0], str, choices=[k for k in list(filterdefs.keys())]),
+                    self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
+                ) for i in sort])
+            else:
+                query['sort'] = ','.join(['{}:{}'.format(
+                    self._check('sort_field', i[0], str, choices=[k for k in filterdefs.keys()]),
+                    self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
+                ) for i in sort])
         return query
 
     def list(self, *filters, **kw):

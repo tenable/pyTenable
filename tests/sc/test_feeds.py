@@ -4,6 +4,7 @@ test file for testing various scenarios in feeds
 import os
 
 import pytest
+import six
 
 from tenable.errors import UnexpectedValueError
 from ..checker import check
@@ -32,7 +33,7 @@ def test_feeds_success(security_center):
     '''
     feed = security_center.feeds.status()
     assert isinstance(feed, dict)
-    for key in feed.keys():
+    for key in list(feed.keys()) if six.PY3 else feed.keys():
         check(feed[key], 'updateTime', str)
         check(feed[key], 'stale', str)
         check(feed[key], 'updateRunning', str)

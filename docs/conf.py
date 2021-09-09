@@ -27,14 +27,18 @@ import os, sys, datetime
 sys.path.insert(0, os.path.abspath('..'))
 
 import tenable
-
+import six
 
 # -- Project information -----------------------------------------------------
 
-project = u'pyTenable'
+project = 'pyTenable' if six.PY3 else u'pyTenable'
 year = datetime.datetime.now().year
-copyright = u'{}, Tenable, Inc.'.format(year)
-author = u'Tenable, Inc.'
+if six.PY3:
+    copyright = '{}, Tenable, Inc.'.format(year)
+    author = 'Tenable, Inc.'
+else:
+    copyright = u'{}, Tenable, Inc.'.format(year)
+    author = u'Tenable, Inc.'
 
 # The short X.Y version
 version = tenable.__version__
@@ -168,32 +172,44 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, 'pyTenable.tex', u'pyTenable Documentation',
-     u'Steven McGrath', 'manual'),
-]
 
+if six.PY3:
+    latex_documents = [
+    (master_doc, 'pyTenable.tex', 'pyTenable Documentation',
+     'Steven McGrath', 'manual'),]
+else:
+    latex_documents = [
+        (master_doc, 'pyTenable.tex', u'pyTenable Documentation',
+         u'Steven McGrath', 'manual'),
+    ]
 
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'pytenable', u'pyTenable Documentation',
-     [author], 1)
-]
-
+if six.PY3:
+    man_pages = [ (master_doc, 'pytenable', 'pyTenable Documentation', [author], 1) ]
+else:
+    man_pages = [ (master_doc, 'pytenable', u'pyTenable Documentation', [author], 1)]
 
 # -- Options for Texinfo output ----------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
-texinfo_documents = [
-    (master_doc, 'pyTenable', u'pyTenable Documentation',
+
+if six.PY3:
+    texinfo_documents = [
+    (master_doc, 'pyTenable', 'pyTenable Documentation',
      author, 'pyTenable', 'One line description of project.',
      'Miscellaneous'),
 ]
+else:
+    texinfo_documents = [
+        (master_doc, 'pyTenable', u'pyTenable Documentation',
+         author, 'pyTenable', 'One line description of project.',
+         'Miscellaneous'),
+    ]
 
 
 # -- Extension configuration -------------------------------------------------
