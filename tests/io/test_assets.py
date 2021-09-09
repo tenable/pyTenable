@@ -345,9 +345,9 @@ def test_assets_details_success_fields(api):
         check(tag, 'added_by', 'uuid')
         check(tag, 'added_at', 'datetime')
 
-    check(resp, 'acr_score', str, allow_none=True)
+    check(resp, 'acr_score', int, allow_none=True)
     check(resp, 'exposure_score', int, allow_none=True)
-    check(resp, 'acr_drivers', str, allow_none=True)
+    check(resp, 'acr_drivers', list, allow_none=True)
     check(resp, 'scan_frequency', list, allow_none=True)
     check(resp, 'interfaces', list)
 
