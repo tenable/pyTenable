@@ -7,6 +7,7 @@ from io import BytesIO
 import pytest
 import responses
 from tenable.dl import Downloads
+import six
 
 
 def test_downloads_init(monkeypatch):
@@ -152,7 +153,7 @@ def test_details():
     download = Downloads()
     data = download.details('nessus')
     assert data.releases
-    keys = [i for i in data.releases.keys() if i != 'latest']
+    keys = [i for i in list(data.releases.keys()) if i != 'latest'] if six.PY3 else [i for i in data.releases.keys() if i != 'latest']
     for version in data.releases:
         if version == 'latest':
             continue

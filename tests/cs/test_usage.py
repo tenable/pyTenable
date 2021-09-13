@@ -2,6 +2,8 @@
 test usage
 '''
 import pytest
+import six
+
 from ..checker import check, single
 
 
@@ -17,7 +19,7 @@ def test_usage_stats(api):
     check(stats, 'imagesCount', int)
     check(stats, 'policiesCount', int)
     check(stats, 'osCount', dict)
-    for key in stats['osCount'].keys():
+    for key in list(stats['osCount'].keys()) if six.PY3 else stats['osCount'].keys():
         single(stats['osCount'][key], int)
     check(stats, 'imagesSummary', dict)
     check(stats['imagesSummary'], 'total', int)

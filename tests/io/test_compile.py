@@ -2,6 +2,8 @@
 test compile
 '''
 import pytest
+import six
+
 from tenable.io import TenableIO
 from tenable.io.access_groups import AccessGroupsIterator, AccessGroupsAPI
 from tenable.io.access_groups_v2 import AccessGroupsIteratorV2, AccessGroupsV2API
@@ -84,10 +86,16 @@ def test_io_compile():
         UsersAPI(api)
         WorkbenchesAPI(api)
     except NameError as error:
-        print('\n The following name error exists: {}'.format(error))
+        if six.PY3:
+            print(('\n The following name error exists: {}'.format(error)))
+        else:
+            print('\n The following name error exists: {}'.format(error))
         pytest.raises(NameError)
         assert True
     except UnexpectedValueError as error:
-        print('\n The following value error exists: {}'.format(error))
+        if six.PY3:
+            print(('\n The following value error exists: {}'.format(error)))
+        else:
+            print('\n The following value error exists: {}'.format(error))
         pytest.raises(UnexpectedValueError)
         assert True

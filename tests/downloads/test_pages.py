@@ -2,6 +2,8 @@
 test pages
 '''
 import pytest
+import six
+
 from ..checker import check
 from tests.downloads.conftest import dl as download
 
@@ -24,7 +26,7 @@ def test_pages_detail_success(download):
     detail = download.pages.details('nessus')
     assert isinstance(detail, dict)
     check(detail, 'releases', dict)
-    for key, value in detail['releases'].items():
+    for key, value in list(detail['releases'].items()) if six.PY3 else detail['releases'].items():
         assert isinstance(value, (list, dict))
         # For regular releases
         if isinstance(value, list):
@@ -40,7 +42,7 @@ def test_pages_detail_success(download):
 
         # for the latest release
         if isinstance(value, dict):
-            for key, val in value.items():
+            for key, val in list(value.items()) if six.PY3 else value.items():
                 for data in val:
                     assert isinstance(data, dict)
                     check(data, 'file', str)

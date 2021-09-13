@@ -4,6 +4,7 @@ test credentials
 import uuid
 
 import pytest
+import six
 
 from tenable.errors import UnexpectedValueError, APIError
 from tests.pytenable_log_handler import log_exception
@@ -412,12 +413,12 @@ def test_credentials_types_success(api):
             for config in each_type.get('configuration'):
                 check(config, 'type', str)
                 check(config, 'name', str)
-                if 'hint' in config.keys():
+                if 'hint' in list(config.keys()) if six.PY3 else config.keys():
                     check(config, 'hint', str, allow_none=True)
                 check(config, 'id', str)
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr()
 def test_credentials_list_fields(api, scan):
     """
     test to check the list of credentials and their types

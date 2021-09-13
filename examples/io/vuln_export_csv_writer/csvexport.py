@@ -91,14 +91,14 @@ def export_vulns_to_csv(fobj, vulns, *fields):
 @click.option('--tio-secret-key', 'skey', help='Tenable.io API Secret Key')
 @click.option('--severity', 'sevs', multiple=True, help='Vulnerability Severity')
 @click.option('--last-found', type=click.INT,
-              help='Vulnerability Last Found Timestamp')
+    help='Vulnerability Last Found Timestamp')
 @click.option('--cidr', help='Restrict export to this CIDR range')
 @click.option('--tag', 'tags', multiple=True, nargs=2, type=(str, str),
-              help='Tag Key/Value pair to restrict the export to.')
+    help='Tag Key/Value pair to restrict the export to.')
 @click.option('--field', '-f', 'fields', multiple=True,
-              help='Field to export to CSV')
+    help='Field to export to CSV')
 @click.option('--verbose', '-v', envvar='VERBOSITY', default=0,
-              count=True, help='Logging Verbosity')
+    count=True, help='Logging Verbosity')
 def cli(output, akey, skey, sevs, last_found, cidr, tags, fields, verbose):
     '''
     Export -> CSV Writer
@@ -117,7 +117,7 @@ def cli(output, akey, skey, sevs, last_found, cidr, tags, fields, verbose):
     # Instantiate the Tenable.io instance & initiate the vulnerability export.
     tio = TenableIO(akey, skey)
     vulns = tio.exports.vulns(last_found=last_found, severity=list(sevs),
-                              cidr_range=cidr, tags=list(tags))
+        cidr_range=cidr, tags=list(tags))
 
     # Pass everything to the CSV generator.
     total = export_vulns_to_csv(output, vulns, *fields)

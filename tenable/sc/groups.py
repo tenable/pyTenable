@@ -18,6 +18,7 @@ Methods available on ``sc.groups``:
     .. automethod:: list
 '''
 from .base import SCEndpoint
+import six
 
 class GroupAPI(SCEndpoint):
     def _constructor(self, **kw):
@@ -42,7 +43,7 @@ class GroupAPI(SCEndpoint):
             'report_cards': 'arcs',
             'audit_files': 'auditFiles'
         }
-        for k, v in mapping.items():
+        for k, v in list(mapping.items()) if six.PY3 else mapping.items():
             if k in kw:
                 # For each item in the mapping, expand the kwarg if it exists
                 # into a list of dictionaries with an id attribute.  Associate

@@ -5,6 +5,7 @@ import pytest
 from tenable.errors import NotFoundError
 from tenable.io import TenableIO
 from tests.pytenable_log_handler import setup_logging_to_file, log_exception
+import six
 
 SCAN_ID_WITH_RESULTS = 6799
 
@@ -25,8 +26,9 @@ def api():
     '''api keys fixture'''
     setup_logging_to_file()
     return TenableIO(
-        os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
-        os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'),
+        os.getenv('TIO_TEST_ADMIN_ACCESS', '96145aa9d78b5a7eb503c7025077c30f8d42a9d003f10801fa71b5c73e4499ce'), # qa-s
+        os.getenv('TIO_TEST_ADMIN_SECRET', '1d2c72edf4f62d3c2d1db7967278921d7a55751c2d1017de3ed3375b3e8892b2'), # qa-s
+        url='https://qa-staging.cloud.aws.tenablesecurity.com',
         vendor='pytest',
         product='pytenable-automated-testing')
 
@@ -44,7 +46,7 @@ def stdapi():
 @pytest.fixture
 def agent(api):
     '''agent fixture'''
-    return api.agents.list().next()
+    return next(api.agents.list())
 
 
 @pytest.fixture
@@ -183,7 +185,10 @@ def remediationscan(request, api):
 @pytest.fixture
 def scan_results(api):
     '''fixture to get the scan results'''
-    scan_list = [id['id'] for id in list(filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    if six.PY3:
+        scan_list = [id['id'] for id in list([value for value in api.scans.list() if value['status'] == 'completed'])]
+    else:
+        scan_list = [id['id'] for id in list(filter(lambda value: value['status'] == 'completed', api.scans.list()))]
     if scan_list:
         return {'results': api.scans.results(scan_list[0]), 'id': scan_list[0]}
     raise NotFoundError("Scan not found")
