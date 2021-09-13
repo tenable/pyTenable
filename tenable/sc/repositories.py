@@ -78,7 +78,7 @@ class RepositoryAPI(SCEndpoint):
             del kwargs['trending']
 
         if 'fulltext_search' in kwargs:
-            # trendWithRaw is the backend paramater name for "Full Text Search"
+            # trendWithRaw is the backend parameter name for "Full Text Search"
             # within the UI.  We will be calling it fulltest_search to more
             # closely align with what the frontend calls this feature.
             kwargs['trendWithRaw'] = str(self._check('fulltext_search',
@@ -95,7 +95,7 @@ class RepositoryAPI(SCEndpoint):
         if 'allowed_ips' in kwargs:
             # Using valid IPs here instead of ipRange to again more closely
             # align to the frontend and to more explicitly call out the
-            # function of this paramater
+            # function of this parameter
             kwargs['ipRange'] = ','.join([self._check('ip', i, str)
                                           for i in self._check('allowed_ips', kwargs['allowed_ips'], list)])
             del kwargs['allowed_ips']
@@ -195,7 +195,7 @@ class RepositoryAPI(SCEndpoint):
         :sc-api:`repository: create <Repository.html#repository_POST>`
 
         Args:
-            name (str): The name for the respository.
+            name (str): The name for the repository.
             allowed_ips (list, optional):
                 Allowed IPs will restrict incoming data being inserted into the
                 repository to only the IPs that exist within the configured
@@ -211,7 +211,7 @@ class RepositoryAPI(SCEndpoint):
                 is ``IPv4``.
             fulltext_search (bool, optional):
                 Should full-text searching be enabled?  This option is used for
-                IPv4, IPv6, and agent repository formats and determins whether
+                IPv4, IPv6, and agent repository formats and determines whether
                 the plugin output is trended along with the normalized data.  If
                 left unspecified, the default is set to ``False``.
             lce_correlation (list, optional):

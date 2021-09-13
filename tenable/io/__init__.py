@@ -307,7 +307,7 @@ class TenableIO(APISession):
             self._secret_key = os.getenv('TIO_SECRET_KEY')
 
         if not self._access_key or not self._secret_key:
-            raise UnexpectedValueError('No valid API Keypair Defined')
+            raise UnexpectedValueError('No valid API Key pair Defined')
 
         super(TenableIO, self).__init__(url,
             retries=retries,
@@ -331,7 +331,7 @@ class TenableIO(APISession):
 
         if 'X-Request-Uuid' in response.headers:
             # if the request uuid exists in the response, then we will sent the
-            # uuid back so that there is solid requesty chain in any subsiquent
+            # uuid back so that there is solid requesty chain in any subsequent
             # logs.
             kwargs['headers']['X-Tio-Last-Request-Uuid'] = response.headers['X-Request-Uuid']
 

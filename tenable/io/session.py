@@ -95,7 +95,7 @@ class SessionAPI(TIOEndpoint):
 
         Returns:
             :obj:`dict`:
-                A dictionary containing the new API Keypair.
+                A dictionary containing the new API Key pair.
 
         Examples:
             >>> keys = tio.session.gen_api_keys()

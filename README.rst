@@ -60,7 +60,7 @@ Getting started with Tenable.sc is equally as easy:
    for vuln in sc.analysis.vulns():
       print('{ip}:{pluginID}:{pluginName}'.format(**vuln))
 
-For more detailed information on whats available, please refer to the
+For more detailed information on what's available, please refer to the
 `pyTenable Documentation <https://pytenable.readthedocs.io/>`_
 
 Logging
