@@ -32,7 +32,7 @@ def test_list(fixture_ot):
         ]
     )
     resp = fixture_ot.assets.list()
-    item = resp.next()
+    item = next(resp)
     assert item.id == '000b3456-35f6-4b83-8ffe-45aceb288ce4'
     assert item.name == 'Endpoint #548'
     assert item.firstSeen == '2020-05-22T15:36:48.323534Z'

@@ -883,7 +883,7 @@ def test_tags_list_success(api):
     '''
     tags = api.tags.list()
     assert isinstance(tags, TagsIterator)
-    resp = tags.next()
+    resp = next(tags)
     check(resp, 'uuid', 'uuid')
     check(resp, 'created_at', 'datetime')
     check(resp, 'created_by', str)
@@ -904,7 +904,7 @@ def test_tags_list_category_success(api):
     '''
     tags = api.tags.list_categories()
     assert isinstance(tags, TagsIterator)
-    resp = tags.next()
+    resp = next(tags)
     check(resp, 'uuid', 'uuid')
     check(resp, 'created_at', 'datetime')
     check(resp, 'created_by', str)
@@ -1062,7 +1062,7 @@ def test_tags_edit_without_filters(api):
     flag = True
     while flag:
         try:
-            resp = tags.next()
+            resp = next(tags)
             tag_id = resp['uuid']
             tag_details = api.tags.details(tag_id)
             if 'filters' in tag_details:

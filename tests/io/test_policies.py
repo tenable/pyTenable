@@ -3,6 +3,8 @@ test policies
 '''
 import io
 import pytest
+import six
+
 from tenable.errors import NotFoundError
 from ..checker import check
 
@@ -248,5 +250,5 @@ def test_policies_template_details_new_success(api):
     test to get template details
     '''
     templates = api.policies.templates()
-    for keys in templates.keys():
+    for keys in list(templates.keys()) if six.PY3 else templates.keys():
         api.policies.template_details(keys)

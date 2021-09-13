@@ -11,6 +11,7 @@ from tenable.cs.uploads import UploadAPI
 from tenable.cs.usage import UsageAPI
 from tests.cs.conftest import api
 from tenable.errors import UnexpectedValueError
+import six
 
 
 def test_cs_compile():
@@ -30,10 +31,16 @@ def test_cs_compile():
         UsageAPI(api)
 
     except NameError as error:
-        print('\n The following name error exists: {}'.format(error))
+        if six.PY3:
+            print(('\n The following name error exists: {}'.format(error)))
+        else:
+            print('\n The following name error exists: {}'.format(error))
         pytest.raises(NameError)
         assert True
     except UnexpectedValueError as error:
-        print('\n The following value error exists: {}'.format(error))
+        if six.PY3:
+            print(('\n The following value error exists: {}'.format(error)))
+        else:
+            print('\n The following value error exists: {}'.format(error))
         pytest.raises(UnexpectedValueError)
         assert True

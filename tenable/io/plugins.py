@@ -71,8 +71,8 @@ class PluginIterator(TIOIterator):
             for plugin in self._api.plugins.family_details(fam_id)['plugins']:
                 self._maptable['plugins'][plugin['id']] = fam_id
 
-    def __next__(self):
-        item = next(super(PluginIterator, self))
+    def next(self):
+        item = super(PluginIterator, self).next()
 
         # If the populate_maptable flag is set, then we will build the mappings.
         if not self._maptable and self.populate_maptable:

@@ -7,6 +7,8 @@ import os
 from io import BytesIO
 from sys import stdout
 import pytest
+import six
+
 from tenable.reports.nessusv2 import NessusReportv2
 from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputError
 from tests.checker import check, single
@@ -1235,8 +1237,12 @@ def test_scan_results(api):
     '''
     test to get scan results
     '''
-    scan_list = [id['id'] for id in list(
-        filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    if six.PY3:
+        scan_list = [id['id'] for id in list(
+            [value for value in api.scans.list() if value['status'] == 'completed'])]
+    else:
+        scan_list = [id['id'] for id in list(
+            filter(lambda value: value['status'] == 'completed', api.scans.list()))]
     if scan_list:
         scan_results = api.scans.results(scan_list[0])
         assert isinstance(scan_results, dict)
@@ -1489,8 +1495,12 @@ def test_scan_export_bytesio(api):
     '''
     test to export scan
     '''
-    scan_list = [id['id'] for id in list(
-        filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    if six.PY3:
+        scan_list = [id['id'] for id in list(
+            [value for value in api.scans.list() if value['status'] == 'completed'])]
+    else:
+        scan_list = [id['id'] for id in list(
+            filter(lambda value: value['status'] == 'completed', api.scans.list()))]
     if scan_list:
         fobj = api.scans.export(scan_list[0])
         assert isinstance(fobj, BytesIO)
@@ -1507,8 +1517,12 @@ def test_scan_export_file_object(api):
     '''
     test to export scan file object
     '''
-    scan_list = [id['id'] for id in list(
-        filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    if six.PY3:
+        scan_list = [id['id'] for id in list(
+            [value for value in api.scans.list() if value['status'] == 'completed'])]
+    else:
+        scan_list = [id['id'] for id in list(
+            filter(lambda value: value['status'] == 'completed', api.scans.list()))]
     if scan_list:
         filename = '{}.nessus'.format(uuid.uuid4())
         with open(filename, 'wb') as fobj:
@@ -1594,7 +1608,10 @@ def test_scan_host_details(api, scan_results):
             check(compliance, 'plugin_family', str)
     except KeyError as key:
         log_exception(key)
-        print('Key error: ', key)
+        if six.PY3:
+            print(('Key error: ', key))
+        else:
+            print('Key error: ', key)
 
 
 @pytest.mark.vcr()
@@ -1620,8 +1637,12 @@ def test_scan_import_scan(api):
     '''
     test to import scan
     '''
-    scan_list = [id['id'] for id in list(
-        filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    if six.PY3:
+        scan_list = [id['id'] for id in list(
+            [value for value in api.scans.list() if value['status'] == 'completed'])]
+    else:
+        scan_list = [id['id'] for id in list(
+            filter(lambda value: value['status'] == 'completed', api.scans.list()))]
     if scan_list:
         fobj = api.scans.export(scan_list[0])
         api.scans.import_scan(fobj)
@@ -1800,7 +1821,10 @@ def test_scan_plugin_output(api, scan_results):
             check(data, 'severity', int)
     except KeyError as error:
         log_exception(error)
-        print('Invalid key', error)
+        if six.PY3:
+            print(('Invalid key', error))
+        else:
+            print('Invalid key', error)
 
 
 # @pytest.mark.vcr()
