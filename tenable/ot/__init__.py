@@ -23,6 +23,7 @@ import os, semver
 from .assets import AssetsAPI
 from .network_interfaces import NetworkInterfacesAPI
 from .vulns import VulnsAPI
+import six
 
 class TenableOT(APIPlatform):
     '''
@@ -67,9 +68,16 @@ class TenableOT(APIPlatform):
         '''
         Authentication method for Tenable.ot platform
         '''
-        api_token = kwargs.get('secret_key',
-            os.getenv(f'{self._env_base}_SECRET_KEY')
-        )
+        if six.PY3:
+            api_token = kwargs.get('secret_key', os.getenv('{}_SECRET_KEY').format(self._env_base))
+
+            self._session.headers.update({
+                'X-APIKeys': 'key={}'.format(api_token),
+            })
+        else:
+            api_token = kwargs.get('secret_key',
+                                   os.getenv(f'{self._env_base}_SECRET_KEY')
+                                   )
 
         self._session.headers.update({
             'X-APIKeys': f'key={api_token}',

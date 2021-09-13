@@ -1,5 +1,8 @@
+import six
 from dateutil.parser import parse as dateparse
 import datetime, sys, re
+
+from pyparsing import unicode
 
 
 def check(i, name, val_type, allow_none=False):
@@ -21,6 +24,9 @@ def single(var, val_type):
         elif val_type == 'scanner-uuid':
             assert len(re.findall(reuuids, var)) > 0
         elif sys.version_info.major == 2 and val_type == str:
-            assert isinstance(var, unicode) or isinstance(var, str)
+            if six.PY3:
+                assert isinstance(var, str) or isinstance(var, str)
+            else:
+                assert isinstance(var, unicode) or isinstance(var, str)
         else:
             assert isinstance(var, val_type)

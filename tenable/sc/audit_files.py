@@ -24,6 +24,7 @@ Methods available on ``sc.audit_files``:
 from .base import SCEndpoint
 from io import BytesIO
 from os.path import basename
+import six
 
 class AuditFileAPI(SCEndpoint):
     def _constructor(self, **kw):
@@ -53,11 +54,18 @@ class AuditFileAPI(SCEndpoint):
 
         if 'vars' in kw:
             # expand the the vars dict into a series of key/value documents.
-            kw['variables'] = [{
+            if six.PY3:
+                kw['variables'] = [{
+                        'name': self._check('var:name', k, str),
+                        'value': self._check('var:value', v, str)
+                    } for k,v in list(self._check('vars', kw['vars'], dict).items())]
+                del(kw['vars'])
+            else:
+                kw['variables'] = [{
                     'name': self._check('var:name', k, str),
                     'value': self._check('var:value', v, str)
-                } for k,v in self._check('vars', kw['vars'], dict).items()]
-            del(kw['vars'])
+                } for k, v in self._check('vars', kw['vars'], dict).items()]
+                del (kw['vars'])
 
         if 'filename' in kw:
             # Validate that the filename parameter is a string.

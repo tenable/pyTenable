@@ -137,7 +137,7 @@ def test_vuln_asset_intermixer(fixture_ot):
 
     # test that the stop iterator works as expected.
     with pytest.raises(StopIteration):
-        vulns.next()
+        next(vulns)
 
 
 @responses.activate

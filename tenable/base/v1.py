@@ -18,6 +18,7 @@ interface to use for your own uses, take a look at the RESTfly library.
 '''
 
 import requests, sys, platform, logging, re, time, logging, warnings, json
+from pyparsing import unicode
 from requests.exceptions import (
     ConnectionError as RequestsConnectionError,
     RequestException as RequestsRequestException
@@ -95,9 +96,9 @@ class APIResultsIterator(object):
         return self
 
     def __next__(self):
-        return next(self)
+        return self.next()
 
-    def __next__(self):
+    def next(self):
         '''
         Ask for the next record
         '''
@@ -234,8 +235,11 @@ class APIEndpoint(object):
         str_types = (str)
         if str in etypes:
             try:
-                etypes.append(str) if six.PY3 else etypes.append('unicode')
-                str_types = (str, str) if six.PY3 else str_types = (str, 'unicode')
+                etypes.append(str) if six.PY3 else etypes.append(unicode)
+                if six.PY3:
+                    str_types = (str, str)
+                else:
+                    str_types = (str, unicode)
             except NameError:
                 pass
 

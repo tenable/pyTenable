@@ -4,6 +4,8 @@ test workbenches
 import uuid
 from io import BytesIO
 import pytest
+import six
+
 from tenable.errors import UnexpectedValueError, NotFoundError
 from tests.checker import check
 
@@ -175,7 +177,7 @@ def test_workbench_asset_activity(api):
                     check(data['details'], 'lastLicensedScanTimeV2', 'datetime')
                     check(data['details'], 'lastScanTime', 'datetime')
                     check(data['details'], 'properties', dict)
-                    for keys in data['details']['properties'].keys():
+                    for keys in list(data['details']['properties'].keys()) if six.PY3 else data['details']['properties'].keys():
                         check(data['details']['properties'][keys], 'values', list)
                     check(data['details'], 'sources', list)
                     for status in data['details']['sources']:
@@ -543,7 +545,7 @@ def test_workbench_vuln_assets(api):
     check(asset, 'total', int)
 
     # loop on list of keys which may be present in response
-    for key, value in {'agent_name': list, 'last_seen': 'datetime', 'netbios_name': list}.items():
+    for key, value in list({'agent_name': list, 'last_seen': 'datetime', 'netbios_name': list}.items()) if six.PY3 else {'agent_name': list, 'last_seen': 'datetime', 'netbios_name': list}.items():
         if key in asset:
             check(asset, key, value)
 

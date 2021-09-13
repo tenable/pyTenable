@@ -18,6 +18,7 @@ Methods available on ``sc.roles``:
     .. automethod:: list
 '''
 from .base import SCEndpoint
+import six
 
 class RoleAPI(SCEndpoint):
     def _constructor(self, **kw):
@@ -66,7 +67,7 @@ class RoleAPI(SCEndpoint):
 
         # iterate through the keys, converting the boolean values to the
         # lowercased strings values that the API expects to see.
-        for key in mapping.keys():
+        for key in list(mapping.keys()) if six.PY3 else mapping.keys():
             if key in kw:
                 kw[mapping[key]] = str(self._check(key, kw[key], bool)).lower()
                 del(kw[key])
