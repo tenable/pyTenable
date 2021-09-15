@@ -417,7 +417,7 @@ def test_credentials_types_success(api):
                 check(config, 'id', str)
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr()
 def test_credentials_list_fields(api, scan):
     """
     test to check the list of credentials and their types
