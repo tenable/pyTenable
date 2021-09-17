@@ -164,12 +164,11 @@ def test_access_groups_create_success(agroup):
         check(rule, 'type', str)
         check(rule, 'operator', str)
         check(rule, 'terms', list)
-    if 'principals' in agroup and agroup['principals']:
-        check(agroup, 'principals', list)
-        for principal in agroup['principals']:
-            check(principal, 'type', str)
-            check(principal, 'principal_id', 'uuid')
-            check(principal, 'principal_name', str)
+    check(agroup, 'principals', list, missing=True)
+    for principal in agroup.get('principals', list()):
+        check(principal, 'type', str)
+        check(principal, 'principal_id', 'uuid')
+        check(principal, 'principal_name', str)
     check(agroup, 'created_by_uuid', 'uuid')
     check(agroup, 'updated_by_uuid', 'uuid')
     check(agroup, 'created_by_name', str)
@@ -221,12 +220,11 @@ def test_access_group_edit_success(api, agroup):
         check(rule, 'type', str)
         check(rule, 'operator', str)
         check(rule, 'terms', list)
-    if 'principals' in group and group['principals']:
-        check(group, 'principals', list)
-        for principal in group['principals']:
-            check(principal, 'type', str)
-            check(principal, 'principal_id', 'uuid')
-            check(principal, 'principal_name', str)
+    check(group, 'principals', list, missing=True)
+    for principal in group.get('principals', list()):
+        check(principal, 'type', str)
+        check(principal, 'principal_id', 'uuid')
+        check(principal, 'principal_name', str)
     check(group, 'created_by_uuid', 'uuid')
     check(group, 'updated_by_uuid', 'uuid')
     check(group, 'created_by_name', str)
@@ -251,12 +249,11 @@ def test_access_groups_details_success(api, agroup):
         check(rule, 'type', str)
         check(rule, 'operator', str)
         check(rule, 'terms', list)
-    if 'principals' in group and group['principals']:
-        check(group, 'principals', list)
-        for principal in group['principals']:
-            check(principal, 'type', str)
-            check(principal, 'principal_id', 'uuid')
-            check(principal, 'principal_name', str)
+    check(group, 'principals', list, missing=True)
+    for principal in group.get('principals', list()):
+        check(principal, 'type', str)
+        check(principal, 'principal_id', 'uuid')
+        check(principal, 'principal_name', str)
     check(group, 'created_by_uuid', 'uuid')
     check(group, 'updated_by_uuid', 'uuid')
     check(group, 'created_by_name', str)
@@ -380,8 +377,7 @@ def test_access_groups_list(api):
         check(group, 'all_assets', bool)
         check(group, 'all_users', bool)
         #check(group, 'created_by_uuid', 'uuid') # Will not return for default group
-        if 'updated_by_uuid' in group:
-            check(group, 'updated_by_uuid', 'uuid')
+        check(group, 'updated_by_uuid', 'uuid', missing=True)
         check(group, 'created_by_name', str)
         check(group, 'updated_by_name', str)
         check(group, 'processing_percent_complete', int)
@@ -409,7 +405,7 @@ def test_access_groups_list_fields(api):
         check(group, 'all_assets', bool)
         check(group, 'all_users', bool)
         # check(i, 'created_by_uuid', 'uuid') # Will not return for default group
-        check(group, 'updated_by_uuid', 'uuid')
+        check(group, 'updated_by_uuid', 'uuid', missing=True)
         check(group, 'created_by_name', str)
         check(group, 'updated_by_name', str)
         check(group, 'processing_percent_complete', int)

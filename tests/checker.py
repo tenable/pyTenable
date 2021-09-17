@@ -2,7 +2,9 @@ from dateutil.parser import parse as dateparse
 import datetime, sys, re
 
 
-def check(i, name, val_type, allow_none=False):
+def check(i, name, val_type, allow_none=False, missing=False):
+    if missing and name not in i:
+        return
     assert name in i
     if not allow_none:
         assert i[name] != None

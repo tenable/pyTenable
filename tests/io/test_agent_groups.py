@@ -386,7 +386,7 @@ def test_agentgroups_task_status(api, agentgroup):
     task = api.agent_groups.task_status(agentgroup['id'], resp['task_id'])
     assert isinstance(task, dict)
     check(task, 'container_uuid', str)
-    check(task, 'last_update_time', int)
+    check(task, 'last_update_time', int, missing=True)
     check(task, 'start_time', int)
     check(task, 'status', str)
     check(task, 'task_id', str)

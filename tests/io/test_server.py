@@ -26,13 +26,10 @@ def test_server_properties(api):
     check(resp, 'evaluation', dict)
     check(resp['evaluation'], 'limitEnabled', bool)
     check(resp['evaluation'], 'targets', int)
-    if 'expiration' in resp:
-        check(resp, 'expiration', int)
-    if 'expiration_time' in resp:
-        check(resp, 'expiration_time', int)
+    check(resp, 'expiration', int, missing=True)
+    check(resp, 'expiration_time', int, missing=True)
     check(resp, 'force_ui_reload', bool)
-    if 'idle_timeout' in resp:
-        check(resp, 'idle_timeout', str)
+    check(resp, 'idle_timeout', str, missing=True)
     if 'license' in resp:
         check(resp, 'license', dict)
         check(resp['license'], 'agents', int)
@@ -42,21 +39,15 @@ def test_server_properties(api):
         check(resp['license'], 'ips', int)
         check(resp['license'], 'scanners', int)
         check(resp['license'], 'users', int)
-    if 'loaded_plugin_set' in resp:
-        check(resp, 'loaded_plugin_set', str)
-    if 'login_banner' in resp:
-        check(resp, 'login_banner', str, allow_none=True)
-    if 'msp' in resp:
-        check(resp, 'msp', bool)
+    check(resp, 'loaded_plugin_set', str, missing=True)
+    check(resp, 'login_banner', str, allow_none=True, missing=True)
+    check(resp, 'msp', bool, missing=True)
     check(resp, 'nessus_type', str)
     check(resp, 'nessus_ui_build', str)
     check(resp, 'nessus_ui_version', str)
-    if 'notifications' in resp:
-        check(resp, 'notifications', list)
-    if 'plugin_set' in resp:
-        check(resp, 'plugin_set', str)
-    if 'update' in resp:
-        check(resp, 'update', dict)
+    check(resp, 'notifications', list, missing=True)
+    check(resp, 'plugin_set', str, missing=True)
+    check(resp, 'update', dict, missing=True)
 
 @pytest.mark.vcr()
 def test_server_status(api):

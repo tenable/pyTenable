@@ -101,7 +101,7 @@ def test_groups_edit_success(api, group):
     '''
     test to edit group
     '''
-    edited = api.groups.edit(group['id'], 'New Example Name')
+    edited = api.groups.edit(group['id'], str(uuid.uuid4()))
     assert isinstance(edited, dict)
     check(edited, 'uuid', 'uuid')
     check(edited, 'name', str)

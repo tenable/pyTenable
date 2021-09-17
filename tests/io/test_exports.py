@@ -102,7 +102,7 @@ def test_exports_vulns(api):
     check(vuln, 'asset', dict)
     check(vuln, 'first_found', str)
     check(vuln, 'last_found', str)
-    check(vuln, 'output', str)
+    check(vuln, 'output', str, missing=True)
     check(vuln, 'plugin', dict)
 
     # Just like with the asset dictionary, the plug-in sub-document is highly
@@ -346,11 +346,9 @@ def test_exports_compliance(api):
         for resp in compliance:
             # common keys for all status types
             check(resp, 'asset_uuid', 'uuid')
-            if 'audit_file' in resp:
-                check(resp, 'audit_file', str)
+            check(resp, 'audit_file', str, missing=True)
             check(resp, 'check_id', str)
-            if 'check_name' in resp:
-                check(resp, 'check_name', str)
+            check(resp, 'check_name', str, missing=True)
             check(resp, 'first_seen', str)
             check(resp, 'last_seen', str)
             check(resp, 'plugin_id', int)

@@ -141,7 +141,7 @@ def test_scanner_details(api, scanner):
     check(each_scanner, 'scan_count', int)
     check(each_scanner, 'engine_version', str)
     check(each_scanner, 'platform', str)
-    check(each_scanner, 'loaded_plugin_set', str)
+    check(each_scanner, 'loaded_plugin_set', str, missing=True)
     check(each_scanner, 'owner', str)
     check(each_scanner, 'pool', bool)
 

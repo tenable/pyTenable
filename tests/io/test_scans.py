@@ -5,10 +5,10 @@ import uuid
 import time
 import os
 from io import BytesIO
-from sys import stdout
+from sys import stdout, version
 import pytest
 from tenable.reports.nessusv2 import NessusReportv2
-from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputError
+from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputError, UnsupportedError
 from tests.checker import check, single
 from tests.io.conftest import SCAN_ID_WITH_RESULTS
 from tests.pytenable_log_handler import log_exception
@@ -21,7 +21,7 @@ def fixture_scheduled_scan(request, api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True)
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -33,6 +33,8 @@ def fixture_scheduled_scan(request, api):
         '''
         try:
             api.scans.delete(scan['id'])
+        except UnsupportedError:
+            pass
         except NotFoundError as err:
             log_exception(err)
             pass
@@ -499,7 +501,7 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
     create_schedule = api.scans.create_scan_schedule(
         enabled=True, frequency='weekly', weekdays=['MO', 'TU'])
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=create_schedule)
@@ -637,7 +639,6 @@ def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_sc
     assert mod['id'] == scheduled_scan['id']
     assert mod['enabled'] is True
     assert mod['rrules'].split(';')[0] == 'FREQ=MONTHLY'
-    api.scans.delete(mod['id'])
 
 
 @pytest.mark.vcr()
@@ -684,7 +685,7 @@ def test_scan_configure_schedule_freq_monthly_valavailable(api):
     create_schedule = api.scans.create_scan_schedule(
         enabled=True, frequency='monthly', day_of_month=8)
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=create_schedule)
@@ -913,7 +914,7 @@ def test_scan_create_scheduled_scan_default_schedule(api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True)
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -951,7 +952,7 @@ def test_scan_create_scheduled_scan_freq_daily(api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='daily')
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -990,7 +991,7 @@ def test_scan_create_scheduled_scan_freq_weekly_valdefault(api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='weekly')
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -1030,7 +1031,7 @@ def test_scan_create_scheduled_scan_freq_weekly_valassigned(api):
     schedule_scan = api.scans.create_scan_schedule(
         enabled=True, frequency='weekly', weekdays=['MO', 'TU'])
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -1069,7 +1070,7 @@ def test_scan_create_scheduled_scan_freq_monthly_valdefault(api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='monthly')
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -1109,7 +1110,7 @@ def test_scan_create_scheduled_scan_freq_monthly_valassigned(api):
     schedule_scan = api.scans.create_scan_schedule(
         enabled=True, frequency='monthly', day_of_month=8)
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -1147,7 +1148,7 @@ def test_scan_create_scheduled_scan_freq_yearly(api):
     '''
     schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='yearly', interval=2)
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
         schedule_scan=schedule_scan
@@ -1175,6 +1176,7 @@ def test_scan_create_scheduled_scan_freq_yearly(api):
     check(scan, 'uuid', str)
     assert scan['enabled'] is True
     assert scan['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
+    api.scans.schedule(scan['id'], False)
     api.scans.delete(scan['id'])
 
 #@pytest.mark.vcr()
@@ -1277,7 +1279,6 @@ def test_scan_results(api):
         check(info, 'scan_type', str, allow_none=True)
         check(info, 'name', str)
 
-        check(result, 'comphosts', list)
         if 'comphosts' in result and len(result['comphosts']) > 0:
             for comphosts in result['comphosts']:
                 check(comphosts, 'totalchecksconsidered', int)
@@ -1296,7 +1297,6 @@ def test_scan_results(api):
                 check(comphosts, 'host_id', int)
                 check(comphosts, 'hostname', str)
 
-        check(result, 'hosts', list)
         if 'hosts' in result and len(result['hosts']) > 0:
             for hosts in result['hosts']:
                 check(hosts, 'totalchecksconsidered', int)
@@ -1315,12 +1315,10 @@ def test_scan_results(api):
                 check(hosts, 'host_id', int)
                 check(hosts, 'hostname', str)
 
-        check(result, 'notes', list)
         if len(result['notes']) > 0:
             for notes in result['notes']:
                 check(notes, 'title', str)
                 check(notes, 'message', str)
-                check(notes, 'severity', int)
 
         check(result, 'remediations', dict)
         check(result['remediations'], 'num_hosts', int)
@@ -1336,7 +1334,6 @@ def test_scan_results(api):
                 check(remediation, 'hosts', int)
                 check(remediation, 'vulns', int)
 
-        check(result, 'vulnerabilities', list)
         if 'vulnerabilities' in result and len(result['vulnerabilities']) > 0:
             for vulnerability in result['vulnerabilities']:
                 check(vulnerability, 'count', int)
@@ -1348,7 +1345,6 @@ def test_scan_results(api):
                 # check(vulnerability, 'severity_index', int)
                 check(vulnerability, 'plugin_family', str)
 
-        check(result, 'history', list)
         for history in result['history']:
             check(history, 'alt_targets_used', bool)
             check(history, 'scheduler', int)
@@ -1361,7 +1357,6 @@ def test_scan_results(api):
             check(history, 'history_id', int)
             check(history, 'is_archived', bool)
 
-        check(result, 'compliance', list)
         if 'compliance' in result and len(result['compliance']) > 0:
             for compliance in result['compliance']:
                 check(compliance, 'count', int)
@@ -1560,38 +1555,38 @@ def test_scan_host_details(api, scan_results):
     test to retrieve the host details from a specific scan
     '''
     try:
-        host = api.scans.host_details(
-            scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
-        assert isinstance(host, dict)
-        check(host, 'info', dict)
-        check(host['info'], 'host-fqdn', str, allow_none=True)
-        check(host['info'], 'host_end', str)
-        check(host['info'], 'host_start', str)
-        check(host['info'], 'operating-system', list, allow_none=True)
-        check(host['info'], 'host-ip', str)
-        check(host['info'], 'mac-address', str, allow_none=True)
+        if scan_results['results']['hosts']:
+            host = api.scans.host_details(scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
+            assert isinstance(host, dict)
+            check(host, 'info', dict)
+            check(host['info'], 'host-fqdn', str, allow_none=True)
+            check(host['info'], 'host_end', str)
+            check(host['info'], 'host_start', str)
+            check(host['info'], 'operating-system', list, allow_none=True)
+            check(host['info'], 'host-ip', str)
+            check(host['info'], 'mac-address', str, allow_none=True)
 
-        check(host, 'vulnerabilities', list)
-        for vulnerability in host['vulnerabilities']:
-            check(vulnerability, 'count', int)
-            check(vulnerability, 'severity', int)
-            check(vulnerability, 'plugin_family', str)
-            check(vulnerability, 'hostname', str)
-            check(vulnerability, 'plugin_name', str)
-            check(vulnerability, 'severity_index', int)
-            check(vulnerability, 'vuln_index', int)
-            check(vulnerability, 'host_id', int)
-            check(vulnerability, 'plugin_id', int)
+            check(host, 'vulnerabilities', list)
+            for vulnerability in host['vulnerabilities']:
+                check(vulnerability, 'count', int)
+                check(vulnerability, 'severity', int)
+                check(vulnerability, 'plugin_family', str)
+                check(vulnerability, 'hostname', str)
+                check(vulnerability, 'plugin_name', str)
+                check(vulnerability, 'severity_index', int)
+                check(vulnerability, 'vuln_index', int)
+                check(vulnerability, 'host_id', int)
+                check(vulnerability, 'plugin_id', int)
 
-        check(host, 'compliance', list)
-        for compliance in host['compliance']:
-            check(compliance, 'count', int)
-            check(compliance, 'plugin_name', str)
-            check(compliance, 'vuln_index', int)
-            check(compliance, 'severity', int)
-            check(compliance, 'plugin_id', int)
-            check(compliance, 'severity_index', int)
-            check(compliance, 'plugin_family', str)
+            check(host, 'compliance', list)
+            for compliance in host['compliance']:
+                check(compliance, 'count', int)
+                check(compliance, 'plugin_name', str)
+                check(compliance, 'vuln_index', int)
+                check(compliance, 'severity', int)
+                check(compliance, 'plugin_id', int)
+                check(compliance, 'severity_index', int)
+                check(compliance, 'plugin_family', str)
     except KeyError as key:
         log_exception(key)
         print('Key error: ', key)
@@ -1623,8 +1618,22 @@ def test_scan_import_scan(api):
     scan_list = [id['id'] for id in list(
         filter(lambda value: value['status'] == 'completed', api.scans.list()))]
     if scan_list:
-        fobj = api.scans.export(scan_list[0])
-        api.scans.import_scan(fobj)
+        fname = str(uuid.uuid4())
+        filename = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                '..', 'test_files', f'{fname}.nessus')
+
+        # export last completed scan to file
+        with open(filename, 'wb') as reportobj:
+            api.scans.export(scan_list[0], fobj=reportobj)
+
+        try:
+            with open(filename, 'rb') as fobj:
+                api.scans.import_scan(fobj)
+        except:
+            raise
+        finally:
+            # remove created file
+            os.remove(filename)
 
 # @pytest.mark.vcr()
 # def test_scan_launch_scanid_typeerror(api):
@@ -1697,7 +1706,7 @@ def test_scan_list(api):
     check(scan, 'permissions', int)
     check(scan, 'read', bool)
     check(scan, 'rrules', str, allow_none=True)
-    check(scan, 'schedule_uuid', 'scanner-uuid')
+    check(scan, 'schedule_uuid', str, allow_none=True)
     check(scan, 'shared', bool)
     check(scan, 'starttime', str, allow_none=True)
     check(scan, 'status', str)
@@ -1756,48 +1765,49 @@ def test_scan_plugin_output(api, scan_results):
     test to get scan plugin output
     '''
     try:
-        host = api.scans.host_details(
-            scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
-        output = api.scans.plugin_output(
-            scan_results['id'],
-            host['vulnerabilities'][0]['host_id'],
-            host['vulnerabilities'][0]['plugin_id'])
-        output_info_pdesc = output['info']['plugindescription']
-        output_info_pdesc_patt = output_info_pdesc['pluginattributes']
-        output_info_pdesc_patt_pinfo = output_info_pdesc['pluginattributes']['plugin_information']
-        assert isinstance(output, dict)
-        check(output, 'info', dict)
-        check(output['info'], 'plugindescription', dict)
-        check(output_info_pdesc, 'pluginattributes', dict)
-        check(output_info_pdesc, 'pluginfamily', str)
-        check(output_info_pdesc, 'pluginid', str)
-        check(output_info_pdesc, 'pluginname', str)
-        check(output_info_pdesc, 'severity', int)
-        check(output_info_pdesc_patt, 'description', str)
-        check(output_info_pdesc_patt, 'has_patch', bool)
-        check(output_info_pdesc_patt, 'plugin_information', dict)
-        check(output_info_pdesc_patt_pinfo, 'plugin_family', str)
-        check(output_info_pdesc_patt_pinfo, 'plugin_id', int)
-        check(output_info_pdesc_patt_pinfo, 'plugin_modification_date', str)
-        check(output_info_pdesc_patt_pinfo, 'plugin_publication_date', str)
-        check(output_info_pdesc_patt_pinfo, 'plugin_type', str)
-        check(output_info_pdesc_patt_pinfo, 'plugin_version', str)
-        check(output_info_pdesc_patt, 'risk_information', dict)
-        check(output_info_pdesc_patt['risk_information'], 'risk_factor', str)
-        check(output_info_pdesc_patt, 'solution', str, allow_none=True)
-        check(output_info_pdesc_patt, 'synopsis', str, allow_none=True)
+        if scan_results['results']['hosts']:
+            host = api.scans.host_details(
+                scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
+            output = api.scans.plugin_output(
+                scan_results['id'],
+                host['vulnerabilities'][0]['host_id'],
+                host['vulnerabilities'][0]['plugin_id'])
+            output_info_pdesc = output['info']['plugindescription']
+            output_info_pdesc_patt = output_info_pdesc['pluginattributes']
+            output_info_pdesc_patt_pinfo = output_info_pdesc['pluginattributes']['plugin_information']
+            assert isinstance(output, dict)
+            check(output, 'info', dict)
+            check(output['info'], 'plugindescription', dict)
+            check(output_info_pdesc, 'pluginattributes', dict)
+            check(output_info_pdesc, 'pluginfamily', str)
+            check(output_info_pdesc, 'pluginid', str)
+            check(output_info_pdesc, 'pluginname', str)
+            check(output_info_pdesc, 'severity', int)
+            check(output_info_pdesc_patt, 'description', str)
+            check(output_info_pdesc_patt, 'has_patch', bool)
+            check(output_info_pdesc_patt, 'plugin_information', dict)
+            check(output_info_pdesc_patt_pinfo, 'plugin_family', str)
+            check(output_info_pdesc_patt_pinfo, 'plugin_id', int)
+            check(output_info_pdesc_patt_pinfo, 'plugin_modification_date', str)
+            check(output_info_pdesc_patt_pinfo, 'plugin_publication_date', str)
+            check(output_info_pdesc_patt_pinfo, 'plugin_type', str)
+            check(output_info_pdesc_patt_pinfo, 'plugin_version', str)
+            check(output_info_pdesc_patt, 'risk_information', dict)
+            check(output_info_pdesc_patt['risk_information'], 'risk_factor', str)
+            check(output_info_pdesc_patt, 'solution', str, allow_none=True)
+            check(output_info_pdesc_patt, 'synopsis', str, allow_none=True)
 
-        check(output, 'outputs', list)
-        for data in output['outputs']:
-            check(data, 'has_attachment', int)
-            check(data, 'hosts', list, allow_none=True)
-            check(data, 'plugin_output', str, allow_none=True)
-            check(data, 'ports', dict)
-            for port in data['ports']:
-                check(data['ports'], port, list)
-                for port_detail in data['ports'][port]:
-                    check(port_detail, 'hostname', str)
-            check(data, 'severity', int)
+            check(output, 'outputs', list)
+            for data in output['outputs']:
+                check(data, 'has_attachment', int)
+                check(data, 'hosts', list, allow_none=True)
+                check(data, 'plugin_output', str, allow_none=True)
+                check(data, 'ports', dict)
+                for port in data['ports']:
+                    check(data['ports'], port, list)
+                    for port_detail in data['ports'][port]:
+                        check(port_detail, 'hostname', str)
+                check(data, 'severity', int)
     except KeyError as error:
         log_exception(error)
         print('Invalid key', error)
@@ -1824,10 +1834,10 @@ def test_scan_read_status(api, scan):
     '''
     scans = api.scans.list()
     scan = scans[0]
-    api.scans.set_read_status(scans[0]['id'], not scans[0]['read'])
+    api.scans.set_read_status(scans[0]['id'], False)
     for resp in api.scans.list():
         if resp['id'] == scan['id']:
-            assert scan['read'] != resp['read']
+            assert resp['read'] is False
 
 # @pytest.mark.vcr()
 # def test_scan_resume_scan_id_typeerror(api):
@@ -2005,7 +2015,7 @@ def test_scan_create_scan_success(api):
     test to create a scan
     '''
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
+        name='py: {} pytest: {}'.format(version[0:3], uuid.uuid4()),
         targets=['127.0.0.1'])
     assert isinstance(scan, dict)
     check(scan, 'tag_type', None, allow_none=True)
