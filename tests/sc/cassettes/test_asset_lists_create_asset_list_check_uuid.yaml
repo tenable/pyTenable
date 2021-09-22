@@ -1,0 +1,134 @@
+interactions:
+- request:
+    body: '{"rules": {"operator": "any", "children": [{"type": "clause", "filterName":
+      "uuid", "operator": "eq", "value": "88a6713b-7ce7-4484-93f2-d4765dbd91f3"}]},
+      "name": "tio_test2", "type": "dynamic"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '193'
+      Content-Type:
+      - application/json
+      Cookie:
+      - TNS_SESSIONID=SESSIONID
+      TNS_SESSIONID:
+      - 46170dd18aab5091df572ed248543aa1
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.3
+        (pyTenable/1.3.3; Python/3.8.6; Windows/AMD64)
+      X-SecurityCenter:
+      - '0000000000'
+    method: POST
+    uri: https://securitycenter.home.cugnet.net/rest/asset
+  response:
+    body:
+      string: '{"type":"regular","response":{"id":"71","name":"tio_test2","type":"dynamic","description":"","tags":"","context":"","status":"0","createdTime":"1628680863","modifiedTime":"1628680863","ioSyncStatus":"Not
+        Synced","ioFirstSyncTime":"-1","ioLastSyncSuccess":"-1","ioLastSyncFailure":"-1","ioSyncErrorDetails":null,"typeFields":{"rules":{"operator":"any","children":[{"filterName":"uuid","operator":"eq","value":"88a6713b-7ce7-4484-93f2-d4765dbd91f3","pluginIDConstraint":"-1","type":"clause"}],"type":"group"}},"repositories":[],"ipCount":0,"groups":[],"assetDataFields":[],"canUse":"true","canManage":"true","creator":{"id":"1","username":"pytenable_test_user","firstname":"","lastname":""},"owner":{"id":"1","username":"pytenable_test_user","firstname":"","lastname":""},"ownerGroup":{"id":"0","name":"Full
+        Access","description":"Full Access group"},"targetGroup":{"id":-1,"name":"","description":""},"template":{"id":-1,"name":"","description":""}},"error_code":0,"error_msg":"","warnings":[],"timestamp":1628680863}
+
+        '
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '1017'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 11 Aug 2021 11:21:02 GMT
+      Expect-CT:
+      - max-age=31536000
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - no-cache
+      SecurityCenter:
+      - 5.18.0
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - x-apikey
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Cookie:
+      - TNS_SESSIONID=SESSIONID
+      TNS_SESSIONID:
+      - 46170dd18aab5091df572ed248543aa1
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.3
+        (pyTenable/1.3.3; Python/3.8.6; Windows/AMD64)
+      X-SecurityCenter:
+      - '0000000000'
+    method: DELETE
+    uri: https://securitycenter.home.cugnet.net/rest/asset/71
+  response:
+    body:
+      string: '{"type":"regular","response":"","error_code":0,"error_msg":"","warnings":[],"timestamp":1628680863}
+
+        '
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '100'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 11 Aug 2021 11:21:03 GMT
+      Expect-CT:
+      - max-age=31536000
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=99
+      Pragma:
+      - no-cache
+      SecurityCenter:
+      - 5.18.0
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - x-apikey
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
