@@ -77,4 +77,4 @@ the python logging package.  An easy example is detailed here:
 License
 -------
 
-The project is licensed under the MIT license.
+The project is licensed under the MIT license. 
