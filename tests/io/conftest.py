@@ -187,3 +187,20 @@ def scan_results(api):
     if scan_list:
         return {'results': api.scans.results(scan_list[0]), 'id': scan_list[0]}
     raise NotFoundError("Scan not found")
+
+
+@pytest.fixture
+def target_file(request, api):
+    lines = ['scan create document with fileUpload ', 'only file name in file target']
+    with open('file.txt', 'w') as targetFile:
+        for line in lines:
+            targetFile.write(line)
+            targetFile.write('\n')
+    targetFile.close()
+    api.files.upload(targetFile.name)
+
+    def teardown():
+        os.remove(targetFile.name)
+
+    request.addfinalizer(teardown)
+    return targetFile

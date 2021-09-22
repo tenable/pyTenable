@@ -100,7 +100,18 @@ def test_scan_create_scan_document_policies_name_pass(api):
     assert resp['settings']['policy_id'] == policy['id']
 
 
-# def test_scan_create_scan_document_targets
+@pytest.mark.vcr()
+def test_scan_create_scan_document_file_target_name(api, target_file):
+    '''
+    test to create scan document with file targets param and uploaded file name
+    '''
+    resp = getattr(api.scans, '_create_scan_document')({'file_targets': target_file.name})
+    assert isinstance(resp, dict)
+    check(resp, 'settings', dict)
+    check(resp['settings'], 'file_targets', str)
+    assert resp['settings']['file_targets'] == target_file.name
+
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_unexpectedvalueerror(api):
