@@ -16,3 +16,4 @@ docs/source/tenable*.rst
 /tests/sc/cassettes/scan_policy.yml-backup
 /test_*.py
 __pycache__
+/.secrets
