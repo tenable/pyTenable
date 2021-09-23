@@ -37,21 +37,12 @@ setup(
     keywords='tenable tenable_io securitycenter containersecurity',
     packages=find_packages(exclude=['docs', 'tests']),
     install_requires=[
-        'requests>=2.19',
+        'requests>=2.26',
         'python-dateutil>=2.6',
         'semver>=2.8.1',
         'restfly>=1.3.5',
         'marshmallow>=3.6',
         'python-box>=4.0',
+        'defusedxml>=0.5.0',
     ],
-    extras_require={
-        'NessusReportv2': ['defusedxml>=0.5.0'],
-        'PWCertAuth': ['requests-pkcs12>=1.3'],
-        'docker': ['docker>=3.7.2'],
-        'complete': [
-            'defusedxml>=0.5.0',
-            'requests-pkcs12>=1.3',
-            'docker>=3.7.2',
-        ]
-    }
 )

@@ -1,0 +1,20 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.22.1
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  'snyk:lic:pip:chardet:LGPL-2.1':
+    - '*':
+        reason: License required by requests dependency
+        expires: 2099-12-31T00:00:00.000Z
+        created: 2021-09-27T16:27:20.960Z
+  'snyk:lic:pip:certifi:MPL-2.0':
+    - '*':
+        reason: License required by requests dependency
+        expires: 2099-12-31T00:00:00.000Z
+        created: 2021-09-27T16:27:43.000Z
+  SNYK-PYTHON-URLLIB3-1533435:
+    - '*':
+        reason: urllib3 is vendored by requests
+        expires: 2021-12-31T00:00:00.000Z
+        created: 2021-09-27T16:30:30.936Z
+patch: {}
