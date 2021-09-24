@@ -440,7 +440,7 @@ class AssetListAPI(SCEndpoint):
         payload = self._constructor(**kw)
         return self._api.post('asset', json=payload).json()['response']
 
-    def details(self, id, orgID, fields=None):
+    def details(self, id, orgID=None, fields=None):
         '''
         Returns the details for a specific asset-list.
 
@@ -448,7 +448,7 @@ class AssetListAPI(SCEndpoint):
 
         Args:
             id (int): The identifier for the asset-list.
-            orgID (int): The organizationID for the asset-list.
+            orgID (int, optional): The organizationID for the asset-list.
             fields (list, optional): A list of attributes to return.
 
         Returns:
@@ -461,7 +461,8 @@ class AssetListAPI(SCEndpoint):
         params = dict()
         if fields:
             params['fields'] = ','.join([self._check('field', f, str) for f in fields])
-        params['orgID']   = orgID
+        if orgID:
+            params['orgID']   = orgID
         return self._api.get('asset/{}'.format(self._check('id', id,int)),params=params).json()['response']
 
     def edit(self, id, **kw):
