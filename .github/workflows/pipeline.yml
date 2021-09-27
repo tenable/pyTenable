@@ -1,4 +1,4 @@
-name: Automated checks on push
+name: Automated Checks
 
 on: [push]
 
@@ -48,16 +48,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python-3.8@master
+      - uses: snyk/actions/setup@master
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Setup environment
+        run: pip install -r requirements.txt
+      - name: Snyk Library check
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: snyk test --org=pytenable
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python-3.8@master
+        run: snyk test --org=pytenable
+      - name: Snyk static code check
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: |
-            snyk code test tenable --org=pytenable
+        run: snyk code test tenable --org=pytenable
