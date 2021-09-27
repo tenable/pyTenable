@@ -16,11 +16,9 @@ Here are some important resources:
 2. Create your own fork, and check it out.
 3. Write your code locally. It is preferred if you create a branch for each issue or feature you work on, though not required.
 4. Please add a test for any bug fix or feature being added. (Not required, but we will love you if you do)
-5. To run tests and lint:
-    * Step 1...
-    * Step 2...
-    * Lint your code by running PyLint.
-6. Once all tests have passed, commit your changes to your fork and then create a Pull Request for review. Please make sure to fill out the PR template when submitting.
+5. Run all test cases and add any additional test cases for code you've contributed. 
+6. Lint your code by running PyLint.
+7. Once all tests have passed, commit your changes to your fork and then create a Pull Request for review. Please make sure to fill out the PR template when submitting.
 
 ### Pull Requests and Code Contributions
 
