@@ -797,11 +797,15 @@ class CredentialAPI(SCEndpoint):
                 The password for the credential.
             port (int, optional):
                 A valid port number for a database credential.
+            private_key (file, optional):
+                The fileobject containing the SSH private key.
             privilege_escalation (str, optional):
                 The type of privilege escalation to perform once authenticated.
                 Valid values are ``.k5login``, ``cisco``, ``dzdo``, ``none``,
                 ``pbrun``, ``su``, ``su+sudo``, ``sudo``.  If left unspecified,
                 the default is ``none``.
+            public_key (file, optional):
+                The fileobject containing the SSH public key or certificate.
             oracle_auth_type (str, optional):
                 The type of authentication to use when communicating to an
                 Oracle database server.  Supported values are ``sysdba``,
