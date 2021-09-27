@@ -1,4 +1,4 @@
-# How to contribute
+# Contributing
 
 I'm really glad you're reading this, because we need volunteer developers to help this project come to fruition.
 
@@ -8,20 +8,55 @@ Here are some important resources:
   * [Our roadmap](https://github.com/tenable/pyTenable/milestones) is a 10k ft. view of where we're headed.
   * [The Tenable Community Integrations Section](https://community.tenable.com/s/topic/0TOf2000000HPDKGA4) is a great place to discuss working with the Tenable APIs in general.
   * Bugs? [Github Issues](https://github.com/tenable/pyTenable/issues) is where to report them
+  * [SECURITY.md](./SECURITY.md) outlines our process for reviewing security bugs that are reported.
+
+## Steps to contribute
+
+1. If one doesn't already exist, [create an issue](https://github.com/tenable/pyTenable/issues/new) for the bug or feature you intend to work on.
+2. Create your own fork, and check it out.
+3. Write your code locally. It is preferred if you create a branch for each issue or feature you work on, though not required.
+4. Please add a test for any bug fix or feature being added. (Not required, but we will love you if you do)
+5. To run tests and lint:
+    * Step 1...
+    * Step 2...
+    * Lint your code by running PyLint.
+6. Once all tests have passed, commit your changes to your fork and then create a Pull Request for review. Please make sure to fill out the PR template when submitting.
+
+### Pull Requests and Code Contributions
+
+* All tests must pass before any PR will be merged.
+* Please follow [Coding Conventions](#coding-conventions) for styling guidelines
+* Always write a clear log message for your commits. One-line messages are fine for small changes, but bigger changes should look like this:
+
+```
+    $ git commit -m "A brief summary of the commit
+    > 
+    > A paragraph describing what changed and its impact."
+```
+### Branches
+
+The ```master``` branch is used for the current release 
+Work on future releases are done on the corresponding branch name, e.g. ```1.0```, ```2.x```, etc.
 
 ## Testing
 
 We use py.test extensively to test inputs, outputs, and failure conditions.  Further we use tooling to record the interactions with the APIs (VCRpy) when we would be making a successful call so that there is a consistency to whats being tested against.
 
-## Submitting changes
+### Security Testing
 
-Please send a [GitHub Pull Request to pyTenable](https://github.com/tenable/pyTenable/pull/new/master) with a clear list of what you've done (read more about [pull requests](http://help.github.com/pull-requests/)). When you send a pull request, we will love you forever if you include unit tests, documentation, and code comments.  We can always use more test coverage. Please follow our coding conventions (below) and make sure all of your commits are atomic (one feature per commit).
+We have implemented a few required security checks before allowing a merge to master. 
 
-Always write a clear log message for your commits. One-line messages are fine for small changes, but bigger changes should look like this:
+#### Source Code Scanning
 
-    $ git commit -m "A brief summary of the commit
-    > 
-    > A paragraph describing what changed and its impact."
+Static Code Analysis is implemented to scan the codebase for any vulnerabilities that may exist. The code base is scanned daily at a minimum to monitor for new vulnerabilities.
+
+#### Software Composition Analysis
+
+Software Composition Analysis is performed to monitor third party dependencies for vulnerabilities that may exist in direct or transitive dependencies. 
+
+#### Secret Scanning
+
+Each commit is scanned for the presence of any value that may contain a secret. If a commit contains a secret, it will be blocked from being merged. 
 
 ## Coding conventions
 
