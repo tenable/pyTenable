@@ -306,11 +306,6 @@ class ExportsAPI(TIOEndpoint):
         if 'cidr_range' in kw and self._check('cidr_range', kw['cidr_range'], str):
             cidr = kw['cidr_range']
 
-            # if the python version is less than 3, then we will need to
-            # recast it as a unicode string.
-            if sys.version_info < (3, 0):
-                cidr = unicode(cidr)
-
             # Validate the cidr_range attribute as an actual CIDR range.  If it
             # returns an error back to us, then we can safely assume that it's
             # not a valid CIDR and throw a UnexpectedValueError informing the
