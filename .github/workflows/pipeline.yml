@@ -1,4 +1,5 @@
-name: pyTenable Unit Tests
+name: Automated Checks
+3852012 (Reworked pipeline to use bare setup instead.)
 
 on: [push]
 
@@ -48,6 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+<<<<<<< HEAD
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/python-3.8@master
       #  continue-on-error: true
@@ -80,3 +82,19 @@ jobs:
           skip_existing: true
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
+=======
+      - uses: snyk/actions/setup@master
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Setup environment
+        run: pip install -r requirements.txt
+      - name: Snyk Library check
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk test --org=pytenable
+      - name: Snyk static code check
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk code test tenable --org=pytenable
+>>>>>>> 3852012 (Reworked pipeline to use bare setup instead.)
