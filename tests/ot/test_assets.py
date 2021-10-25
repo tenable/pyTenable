@@ -3,6 +3,7 @@ test assets
 '''
 import responses
 
+
 @responses.activate
 def test_list(fixture_ot):
     '''
@@ -10,7 +11,7 @@ def test_list(fixture_ot):
     '''
     responses.add(
         method='POST',
-        url='https://localhost:443/v1/assets',
+        url='https://localhost/v1/assets',
         json=[
             {
                 'id': '000b3456-35f6-4b83-8ffe-45aceb288ce4',
@@ -50,7 +51,7 @@ def test_details(fixture_ot):
     '''
     responses.add(
         method='GET',
-        url='https://localhost:443/v1/assets/026fd8a1-2d50-4b2b-9cd5-285489d7fda4',
+        url='https://localhost/v1/assets/026fd8a1-2d50-4b2b-9cd5-285489d7fda4',
         json={
             'addresses': ['192.168.101.154'],
             'criticality': 'LowCriticality',
@@ -86,7 +87,7 @@ def test_connections(fixture_ot):
     '''
     responses.add(
         method='GET',
-        url='https://localhost:443/v1/assets/026fd8a1-2d50-4b2b-9cd5-285489d7fda4/connections',
+        url='https://localhost/v1/assets/026fd8a1-2d50-4b2b-9cd5-285489d7fda4/connections',
         json=[{
             'asset': '026fd8a1-2d50-4b2b-9cd5-285489d7fda4',
             'networkInterface': 'd7f06b04-5733-44ac-9e84-096f6fdb181b',

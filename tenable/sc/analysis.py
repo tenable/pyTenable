@@ -29,7 +29,7 @@ for the mobile data-type when using the ``vulndetails`` tool:
         return self._request('POST', path, **kwargs)
       File "tenable/base.py", line 379, in _request
         raise self._error_codes[status](resp)
-    PermissionError: 00000000-0000-0000-0000-000000000000:403 {"type":"regular",
+    ForbiddenError: 00000000-0000-0000-0000-000000000000:403 {"type":"regular",
     "response":"","error_code":146,"error_msg":"Invalid parameters specified for
     mobile vuln query.  The filter 'something' is invalid (valid filters:
     repositoryIDs, port, pluginID, familyID, pluginOutput, lastSeen,

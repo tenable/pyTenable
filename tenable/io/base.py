@@ -6,8 +6,10 @@ The following methods in classes allow for page iteration
 and centralized data processing utility
 '''
 import time
-from tenable.base import APIResultsIterator, APIEndpoint, FileDownloadError
-from tenable.errors import UnexpectedValueError
+from tenable.base.endpoint import APIEndpoint
+from tenable.base.v1 import APIResultsIterator
+from tenable.errors import UnexpectedValueError, FileDownloadError
+
 
 class TIOEndpoint(APIEndpoint):
     '''

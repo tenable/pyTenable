@@ -3,7 +3,7 @@ test networks
 '''
 import uuid
 import pytest
-from tenable.errors import UnexpectedValueError, APIError, InvalidInputError
+from tenable.errors import UnexpectedValueError, APIError, BadRequestError
 from tests.checker import check
 from tests.pytenable_log_handler import log_exception
 
@@ -456,7 +456,7 @@ def test_network_asset_count_network_num_days_invalidinputerror(api):
     '''
     test to raise exception when value of num_days param is not valid.
     '''
-    with pytest.raises(InvalidInputError):
+    with pytest.raises(BadRequestError):
         api.networks.network_asset_count('00000000-0000-0000-0000-000000000000', -180)
 
 
@@ -524,7 +524,7 @@ def test_network_create_assets_ttl_days_typeerror(api):
 
 @pytest.mark.vcr()
 def test_network_create_assets_ttl_days_invalid_input_error(api):
-    with pytest.raises(InvalidInputError):
+    with pytest.raises(BadRequestError):
         api.networks.create('New Name - {}'.format(uuid.uuid4()), 'something', -5)
 
 
@@ -539,7 +539,7 @@ def test_network_edit_assets_ttl_days_type_error(api):
 
 @pytest.mark.vcr()
 def test_network_edit_assets_ttl_days_invalid_input_error(api):
-    with pytest.raises(InvalidInputError):
+    with pytest.raises(BadRequestError):
         network = api.networks.create('Network-{}'.format(uuid.uuid4()))
         api.networks.edit(network_id=network['uuid'],
                           name='something',

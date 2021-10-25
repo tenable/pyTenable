@@ -15,7 +15,7 @@ def load_responses(responses):
     '''
     responses.add(
         method='GET',
-        url='https://localhost:443/v1/vulnerabilities',
+        url='https://localhost/v1/vulnerabilities',
         json=[
             {'comment': '',
              'cpeTree': None,
@@ -59,7 +59,7 @@ def load_responses(responses):
     )
     responses.add(
         method='POST',
-        url=re.compile('https://localhost:443/v1/vulnerabilities/[^/]+/assets'),
+        url=re.compile('https://localhost/v1/vulnerabilities/[^/]+/assets'),
         json=[{
             'id': '8fe5cdb1-723e-4996-9d3c-7787445bc38a',
             'name': 'CP-487F0A',
@@ -83,7 +83,7 @@ def load_responses(responses):
     )
     responses.add(
         method='GET',
-        url=re.compile('https://localhost:443/v1/assets/[^/]+/connections'),
+        url=re.compile('https://localhost/v1/assets/[^/]+/connections'),
         json=[{
             'asset': '8fe5cdb1-723e-4996-9d3c-7787445bc38a',
             'networkInterface': 'd7f06b04-5733-44ac-9e84-096f6fdb181b',
@@ -98,7 +98,7 @@ def load_responses(responses):
     )
     responses.add(
         method='GET',
-        url=re.compile('https://localhost:443/v1/networkinterfaces/.*'),
+        url=re.compile('https://localhost/v1/networkinterfaces/.*'),
         json={
             'id': 'd7f06b04-5733-44ac-9e84-096f6fdb181b',
             'ips': ['192.168.101.154'],
@@ -160,7 +160,7 @@ def test_assets_list(fixture_ot):
     '''
     responses.add(
         method='GET',
-        url='https://localhost:443/v1/vulnerabilities/assets',
+        url='https://localhost/v1/vulnerabilities/assets',
         json=[
             {
                 'cveId': 'CVE-2017-14463',

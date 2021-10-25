@@ -1,5 +1,4 @@
 name: Automated Checks
-3852012 (Reworked pipeline to use bare setup instead.)
 
 on: [push]
 
@@ -21,10 +20,15 @@ jobs:
           pip install pytest            \
                       pytest-vcr        \
                       pytest-datafiles  \
+                      pytest-cov        \
                       responses
           pip install -r requirements.txt
       - name: Run the unit test suite.
-        run: pytest --vcr-record=none tests
+        run: |
+          pytest tests                \
+            --vcr-record=none         \
+            --cov-report term-missing \
+            --cov=tenable tests
 
   style:
     runs-on: ubuntu-latest
@@ -39,22 +43,39 @@ jobs:
         pip install flake8          \
                     flake8-fixme    \
                     flake8-author   \
-                    pylint
+                    flake8-pylint   \
+                    flake8-plugin-utils
     - name: Run flake8
       run: |
-        flake8 tenable --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 tenable --count --exit-zero --max-complexity=10 --statistics
+        flake8 tenable            \
+          --count                 \
+          --select=E9,F63,F7,F82  \
+          --show-source           \
+          --statistics
+        flake8 tenable            \
+          --count                 \
+          --exit-zero             \
+          --max-complexity=12     \
+          --statistics
 
   security:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-<<<<<<< HEAD
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python-3.8@master
-      #  continue-on-error: true
+      - uses: snyk/actions/setup@master
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Setup environment
+        run: pip install -r requirements.txt
+      - name: Snyk Library check
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk test --org=pytenable
+      - name: Snyk static code check
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk code test tenable --org=pytenable
       # This will be enabled at a later date...
       #  with:
       #    args: "--sarif-file-output=snyk.sarif --project-name=pyTenable --fail-on=all"
@@ -82,19 +103,3 @@ jobs:
           skip_existing: true
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
-=======
-      - uses: snyk/actions/setup@master
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Setup environment
-        run: pip install -r requirements.txt
-      - name: Snyk Library check
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk test --org=pytenable
-      - name: Snyk static code check
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk code test tenable --org=pytenable
->>>>>>> 3852012 (Reworked pipeline to use bare setup instead.)

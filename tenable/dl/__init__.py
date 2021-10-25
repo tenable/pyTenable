@@ -58,16 +58,16 @@ class Downloads(APIPlatform):
         >>> dl = Downloads(
         >>>     vendor='Company Name', product='Widget', build='1.0.0')
     '''
-    _base_path = '/v1'
+    _box = True
     _env_base = 'TDL'
-    _address = 'www.tenable.com'
+    _url = 'https://www.tenable.com'
     _base_path = 'downloads/api/v2'
 
     def __init__(self, api_token=None, **kwargs):
         if not api_token:
             api_token = os.getenv('{}_API_TOKEN'.format(self._env_base))
         kwargs['api_token'] = api_token
-        super(Downloads, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
     def _authenticate(self, **kwargs):
         '''

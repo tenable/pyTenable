@@ -39,8 +39,8 @@ Even though the ``TenableIO`` object pythonizes the Tenable.io API for you,
 there may still bee the occasional need to make raw HTTP calls to the IO API.
 The methods listed below aren't run through any naturalization by the library
 aside from the response code checking.  These methods effectively route
-directly into the requests session.  The responses will be Response objects from
-the ``requests`` library.  In all cases, the path is appended to the base
+directly into the requests session.  The responses will be Response objects
+from the ``requests`` library.  In all cases, the path is appended to the base
 ``url`` parameter that the ``TenableIO`` object was instantiated with.
 
 Example:
@@ -58,9 +58,9 @@ Example:
     .. automethod:: put
     .. automethod:: delete
 '''
-import logging, os, warnings
-from tenable.errors import UnexpectedValueError
-from tenable.base.v1 import APISession
+from typing import Dict, List, Optional
+from requests import Response
+from tenable.base.platform import APIPlatform
 from .access_groups import AccessGroupsAPI
 from .access_groups_v2 import AccessGroupsV2API
 from .agent_config import AgentConfigAPI
@@ -93,7 +93,7 @@ from .users import UsersAPI
 from .workbenches import WorkbenchesAPI
 
 
-class TenableIO(APISession):
+class TenableIO(APIPlatform):  # noqa: PLR0904
     '''
     The Tenable.io object is the primary interaction point for users to
     interface with Tenable.io via the pyTenable library.  All of the API
@@ -148,10 +148,54 @@ class TenableIO(APISession):
         >>> tio = TenableIO(
         >>>     vendor='Company Name', product='Widget', build='1.0.0')
     '''
-
+    _env_base = 'TIO'
     _tzcache = None
     _url = 'https://cloud.tenable.com'
     _timeout = 120
+
+    def __init__(self,
+                 access_key: Optional[str] = None,
+                 secret_key: Optional[str] = None,
+                 **kwargs
+                 ):
+        if access_key:
+            kwargs['access_key'] = access_key
+        if secret_key:
+            kwargs['secret_key'] = secret_key
+        super().__init__(**kwargs)
+
+    def _retry_request(self,
+                       response: Response,
+                       retries: int,
+                       **kwargs) -> Dict:
+        '''
+        If the call is retried, we will need to set some additional headers
+        '''
+        kwargs['headers'] = kwargs.get('headers', {})
+        # if the request uuid exists in the response, then we will send the
+        # uuid back so that there is solid request chain in the Tenable.io
+        # platform logs.
+        request_uuid = response.headers.get('X-Tio-Last-Request-Uuid')
+        if request_uuid:
+            kwargs['headers']['X-Tio-Last-Request-Uuid'] = request_uuid
+
+        # We also need to return the number of times that we have attempted to
+        # retry this call.
+        kwargs['headers']['X-Tio-Retry-Count'] = str(retries)
+
+        # Return the keyword arguments back to the caller.
+        return kwargs
+
+    @property
+    def _tz(self):
+        '''
+        As we will be using the timezone listing in a lot of parameter
+        checking, we should probably cache the response as a private attribute
+        to speed up checking times.
+        '''
+        if not self._tzcache:
+            self._tzcache = self.scans.timezones()
+        return self._tzcache
 
     @property
     def access_groups(self):
@@ -229,10 +273,6 @@ class TenableIO(APISession):
     def plugins(self):
         return PluginsAPI(self)
 
-    #@property
-    #def pluginsIterator(self):
-    #    return plugins.PluginIterator(self)
-
     @property
     def policies(self):
         return PoliciesAPI(self)
@@ -259,11 +299,6 @@ class TenableIO(APISession):
 
     @property
     def session(self):
-        warnings.warn(
-            'Tenable.io session API is deprecated. '
-            'we recommends that you use users endpoint instead',
-            DeprecationWarning, 2
-        )
         return SessionAPI(self)
 
     @property
@@ -281,72 +316,3 @@ class TenableIO(APISession):
     @property
     def workbenches(self):
         return WorkbenchesAPI(self)
-
-    @property
-    def _tz(self):
-        '''
-        As we will be using the timezone listing in a lot of parameter checking,
-        we should probably cache the response as a private attribute to speed
-        up checking times.
-        '''
-        if not self._tzcache:
-            self._tzcache = self.scans.timezones()
-        return self._tzcache
-
-    def __init__(self, access_key=None, secret_key=None, url=None, retries=None,
-                 backoff=None, ua_identity=None, session=None, proxies=None,
-                 vendor=None, product=None, build=None, timeout=None, ssl_verify=None):
-        if access_key:
-            self._access_key = access_key
-        else:
-            self._access_key = os.getenv('TIO_ACCESS_KEY')
-
-        if secret_key:
-            self._secret_key = secret_key
-        else:
-            self._secret_key = os.getenv('TIO_SECRET_KEY')
-
-        if not self._access_key or not self._secret_key:
-            raise UnexpectedValueError('No valid API Keypair Defined')
-
-        super(TenableIO, self).__init__(url,
-            retries=retries,
-            backoff=backoff,
-            ua_identity=ua_identity,
-            session=session,
-            proxies=proxies,
-            vendor=vendor,
-            product=product,
-            build=build,
-            timeout=timeout,
-            ssl_verify=ssl_verify
-        )
-
-    def _retry_request(self, response, retries, kwargs):
-        '''
-        If the call is retried, we will need to set some additional headers
-        '''
-        if 'headers' not in kwargs:
-            kwargs['headers'] = dict()
-
-        if 'X-Request-Uuid' in response.headers:
-            # if the request uuid exists in the response, then we will sent the
-            # uuid back so that there is solid requesty chain in any subsiquent
-            # logs.
-            kwargs['headers']['X-Tio-Last-Request-Uuid'] = response.headers['X-Request-Uuid']
-
-        # We also need to return the number of times that we have attempted to
-        # retry this call.
-        kwargs['headers']['X-Tio-Retry-Count'] = str(retries)
-        return kwargs
-
-
-    def _build_session(self, session=None):
-        '''
-        Build the session and add the API Keys into the session
-        '''
-        super(TenableIO, self)._build_session(session)
-        self._session.headers.update({
-            'X-APIKeys': 'accessKey={}; secretKey={};'.format(
-                self._access_key, self._secret_key)
-        })

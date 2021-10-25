@@ -3,7 +3,7 @@ test scanner_groups
 '''
 import uuid
 import pytest
-from tenable.errors import InvalidInputError, PermissionError, \
+from tenable.errors import BadRequestError, ForbiddenError, \
     NotFoundError, UnexpectedValueError, ServerError
 from tests.checker import check
 
@@ -36,7 +36,7 @@ def test_add_scanner_to_scanner_group_permissionerror(stdapi):
     '''
     test to raise exception when standard user try to add scanner to group.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.add_scanner(1, 1)
 
 @pytest.mark.vcr()
@@ -75,7 +75,7 @@ def test_create_scanner_group_permissionerror(stdapi):
     '''
     test to raise exception when standard user try to create scanner group.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.create(str(uuid.uuid4()))
 
 @pytest.mark.vcr()
@@ -118,7 +118,7 @@ def test_delete_scanner_group_permissionserror(stdapi):
     '''
     test to raise exception when standard user try to delete scanner group.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.delete(1)
 
 @pytest.mark.vcr()
@@ -157,7 +157,7 @@ def test_remove_scanner_from_scanner_group_permissionserror(stdapi):
     '''
     test to raise exception when standard user try to remove scanner from scanner group.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.delete_scanner(1, 1)
 
 @pytest.mark.vcr()
@@ -190,7 +190,7 @@ def test_scannergroup_details_permissionerror(stdapi):
     '''
     test to raise exception when standard user try to get details of scanner group.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.details(1)
 
 @pytest.mark.vcr()
@@ -243,7 +243,7 @@ def test_edit_scanner_group_permissionerror(stdapi):
     '''
     test to raise exception when standard user try to edit name of scanner group.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.edit(1, str(uuid.uuid4()))
 
 @pytest.mark.vcr()
@@ -284,7 +284,7 @@ def test_list_scanner_groups_permissionerror(stdapi):
     '''
     test to raise exception when standard user try to get list of scanner groups.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.list()
 
 @pytest.mark.vcr()
@@ -300,7 +300,7 @@ def test_list_scanners_in_scanner_group_permissionerror(stdapi, scannergroup):
     '''
     test to raise exception when standard user try to get list of scanners in scanner groups.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.list_scanners(scannergroup['id'])
 
 @pytest.mark.vcr()
@@ -347,7 +347,7 @@ def test_edit_routes_in_scanner_group_invalidinputerror(api, scannergroup):
     '''
     test to raise exception when values in routes are invalid
     '''
-    with pytest.raises(InvalidInputError):
+    with pytest.raises(BadRequestError):
         api.scanner_groups.edit_routes(scannergroup['id'], ['127.0.0.256'])
 
 @pytest.mark.vcr()

@@ -17,3 +17,6 @@ docs/source/tenable*.rst
 /test_*.py
 __pycache__
 /.secrets
+/*.nessus
+/pyTenable.egg-info
+Jenkinsfile

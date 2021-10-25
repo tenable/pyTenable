@@ -12,11 +12,13 @@ Methods available on ``tio.files``:
 
     .. automethod:: upload
 '''
+from typing import BinaryIO
 from .base import TIOEndpoint
 import uuid
 
 class FileAPI(TIOEndpoint):
-    def upload(self, fobj, encrypted=False):
+    
+    def upload(self, fobj: BinaryIO, encrypted: bool = False):
         '''
         Uploads a file into Tenable.io.
 

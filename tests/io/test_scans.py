@@ -8,7 +8,7 @@ from io import BytesIO
 from sys import stdout
 import pytest
 from tenable.reports.nessusv2 import NessusReportv2
-from tenable.errors import UnexpectedValueError, NotFoundError, InvalidInputError
+from tenable.errors import UnexpectedValueError, NotFoundError, BadRequestError
 from tests.checker import check, single
 from tests.io.conftest import SCAN_ID_WITH_RESULTS
 from tests.pytenable_log_handler import log_exception
@@ -164,7 +164,7 @@ def test_scan_attachment_attachement_id_typeerror(api):
 
 
 @pytest.mark.vcr()
-@pytest.mark.xfail(raises=InvalidInputError)
+@pytest.mark.xfail(raises=BadRequestError)
 def test_scan_attachement_notfounderror(api):
     '''
     test to raise exception when attachment not found.

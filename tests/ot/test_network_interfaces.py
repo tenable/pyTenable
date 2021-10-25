@@ -11,7 +11,7 @@ def test_details(fixture_ot):
     '''
     responses.add(
         method='GET',
-        url='https://localhost:443/v1/networkinterfaces/d7f06b04-5733-44ac-9e84-096f6fdb181b',
+        url='https://localhost/v1/networkinterfaces/d7f06b04-5733-44ac-9e84-096f6fdb181b',
         json={
             'id': 'd7f06b04-5733-44ac-9e84-096f6fdb181b',
             'ips': ['192.168.101.154'],
@@ -37,7 +37,7 @@ def test_connections(fixture_ot):
     '''
     responses.add(
         method='GET',
-        url='https://localhost:443/v1/networkinterfaces/d7f06b04-5733-44ac-9e84-096f6fdb181b/connections',
+        url='https://localhost/v1/networkinterfaces/d7f06b04-5733-44ac-9e84-096f6fdb181b/connections',
         json=[{
             'asset': '026fd8a1-2d50-4b2b-9cd5-285489d7fda4',
             'networkInterface': 'd7f06b04-5733-44ac-9e84-096f6fdb181b',

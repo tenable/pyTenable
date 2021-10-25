@@ -2,7 +2,7 @@
 test audit-log
 '''
 import pytest
-from tenable.errors import PermissionError
+from tenable.errors import ForbiddenError
 from tests.checker import check
 
 @pytest.mark.vcr()
@@ -42,7 +42,7 @@ def test_auditlog_events_standard_user_permissionerror(stdapi):
     '''
     test to raise exception when standard_user tries to get audit log.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.audit_log.events()
 
 @pytest.mark.vcr()

@@ -4,7 +4,7 @@ test agent groups
 import uuid
 import time
 import pytest
-from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
+from tenable.errors import NotFoundError, UnexpectedValueError, ForbiddenError
 from ..checker import check
 from tests.pytenable_log_handler import log_exception
 
@@ -69,7 +69,7 @@ def test_agentgroups_add_agent_to_group_standard_user_permissionerror(stdapi):
     '''
     test to raise the exception when standard user adds agent to group
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.agent_groups.add_agent(1, 1)
 
 
@@ -126,7 +126,7 @@ def test_agentgroups_configure_standard_user_permissionerror(stdapi, agentgroup)
     test to raise the exception when standard user tries to configure
 
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.agent_groups.configure(agentgroup['id'], str(uuid.uuid4()))
 
 
@@ -161,7 +161,7 @@ def test_agentgroups_create_standard_user_permissionerror(stdapi):
     '''
     test to raise the exception for standard user for creating agent group
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.agent_groups.create(str(uuid.uuid4()))
 
 
@@ -263,7 +263,7 @@ def test_agentgroups_delete_agent_from_group_standard_user_permissionerror(stdap
     '''
     test to raise the exception when standard user tris to delete the agent from the group
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.agent_groups.delete_agent(1, 1)
 
 
@@ -321,7 +321,7 @@ def test_agentgroups_details_standard_user_permissionserror(stdapi, agentgroup):
     '''
     test to raise the exception when standard user tries to get the details of agent group
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.agent_groups.details(agentgroup['id'])
 
 

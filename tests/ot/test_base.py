@@ -24,7 +24,7 @@ def test_graph_api(fixture_ot):
     '''
     responses.add(
         method='POST',
-        url='https://localhost:443/graphql',
+        url='https://localhost/graphql',
         json={
             'data': {
                 'asset': {

@@ -4,7 +4,7 @@ test assets
 import time
 import uuid
 import pytest
-from tenable.errors import UnexpectedValueError, PermissionError
+from tenable.errors import UnexpectedValueError, ForbiddenError
 from tests.checker import check, single
 from tests.io.test_networks import fixture_network
 
@@ -58,7 +58,7 @@ def test_assets_import_standard_user_permissionerror(stdapi):
     '''
     test to raise exception when standard user try to import asset.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.assets.asset_import( 'pytest', {
             'fqdn': ['example.py.test'],
             'ipv4': ['192.168.254.1'],

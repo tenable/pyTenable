@@ -62,6 +62,7 @@ class TenableOT(APIPlatform):
     _base_path = 'v1'
     _env_base = 'TOT'
     _ssl_verify = False
+    _box = True
 
     def _authenticate(self, **kwargs):
         '''

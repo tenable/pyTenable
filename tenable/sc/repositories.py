@@ -25,8 +25,7 @@ Methods available on ``sc.repositories``:
     .. automethod:: remote_fetch
     .. automethod:: remote_sync
 '''
-import semver
-
+from semver import VersionInfo
 from .base import SCEndpoint
 
 
@@ -672,12 +671,14 @@ class RepositoryAPI(SCEndpoint):
         # happen to be on a Tenable.sc instance version that's less than 5.7, we
         # have to instead query ipInfo.
         method = 'deviceInfo'
-        if semver.VersionInfo.parse(self._api.version).match('<5.7.0'):
+        if VersionInfo.parse(self._api.version).match('<5.7.0'):
             method = 'ipInfo'
 
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
+            params['fields'] = ','.join(
+                [self._check('field', f, str) for f in fields]
+            )
         if dns:
             params['dnsName'] = self._check('dns', dns, str)
         if ip_address:
@@ -685,8 +686,10 @@ class RepositoryAPI(SCEndpoint):
         if uuid:
             params['uuid'] = self._check('uuid', uuid, 'uuid')
 
-        return self._api.get('repository/{}/{}'.format(
-            self._check('repository_id', repository_id, int), method), params=params).json()['response']
+        self._check('repository_id', repository_id, int)
+        return self._api.get(f'repository/{repository_id}/{method}',
+                             params=params
+                             ).json()['response']
 
     def remote_authorize(self, host, username, password):
         '''

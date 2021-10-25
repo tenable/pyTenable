@@ -32,7 +32,7 @@ from tests.sc.conftest import security_center
 from tenable.errors import ConnectionError
 
 
-def test_sc_compile():
+def test_sc_compile(security_center):
     '''
     test to raise the exception when host is invalid, hence the connection wont be made
     '''

@@ -77,7 +77,8 @@ these recurrence rules.  Further there are some packages out there to aid in
 converting more human-readable text into recurrence rules, such as the
 `recurrent package <https://pypi.org/project/recurrent/>`_ for example.
 '''
-from tenable.base import APIEndpoint, APIResultsIterator
+from tenable.base.endpoint import APIEndpoint
+from tenable.base.v1 import APIResultsIterator
 
 class SCEndpoint(APIEndpoint):
     def _combo_expansion(self, item):
@@ -108,9 +109,9 @@ class SCEndpoint(APIEndpoint):
         if len(item) < 2 or len(item) > 3:
             raise TypeError('{} must be exactly 1 operator and 1-2 items'.format(item))
         self._check('operator', item[0], str, choices=oper.keys())
-        self._check('operand1', item[1], [int, tuple])
+        self._check('operand1', item[1], (int, tuple))
         if len(item) == 3:
-            self._check('operand2', item[2], [int, tuple])
+            self._check('operand2', item[2], (int, tuple))
 
         resp = {'operator': oper[item[0].lower()]}
 

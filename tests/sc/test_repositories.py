@@ -759,7 +759,7 @@ def test_repositories_device_info_success_ip_info(admin, repository):
     '''
     test repositories device info success with ip info
     '''
-    admin.repositories._api.version = "5.6.0"
+    admin._version = "5.6.0"
     repo = admin.repositories.device_info(int(repository['id']), dns='server')
     assert isinstance(repo, dict)
     check(repo, 'biosGUID', str)

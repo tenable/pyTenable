@@ -5,7 +5,7 @@ import os
 import uuid
 from datetime import datetime, timedelta
 import pytest
-from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError, InvalidInputError
+from tenable.errors import NotFoundError, UnexpectedValueError, ForbiddenError, BadRequestError
 from tests.checker import check
 from tests.io.test_networks import fixture_network
 from tests.pytenable_log_handler import log_exception
@@ -217,7 +217,7 @@ def test_exclusions_create_standard_user_permissionerror(stdapi):
     '''
     test to raise exception when standard_user tries to create exclusion.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.exclusions.create(str(uuid.uuid4()), ['127.0.0.1'],
                                  start_time=datetime.utcnow(),
                                  end_time=datetime.utcnow() + timedelta(hours=1))
@@ -491,7 +491,7 @@ def test_exclusions_delete_standard_user_fail(stdapi, exclusion):
     '''
     test to raise exception when standard user try to delete exclusion.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.exclusions.delete(exclusion['id'])
 
 
@@ -635,7 +635,7 @@ def test_exclusions_edit_standard_user_permission_error(stdapi, exclusion):
     '''
     test to raise exception when standard user try to edit exclusion.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.exclusions.edit(exclusion['id'], name=str(uuid.uuid4()))
 
 
@@ -1211,7 +1211,7 @@ def test_exclusion_import_exclusion(api):
     try:
         with open(filename, 'r') as fobj:
             api.exclusions.exclusions_import(fobj)
-    except InvalidInputError:
+    except BadRequestError:
         raise
     finally:
         # remove created file

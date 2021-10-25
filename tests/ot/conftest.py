@@ -14,7 +14,7 @@ def fixture_ot():
     '''fixture ot'''
     responses.add(
         method='GET',
-        url='https://localhost:443/v1/version',
+        url='https://localhost/v1/version',
         json={
             'Module': 'Cobex',
             'Version': '3.7.0',
@@ -22,7 +22,7 @@ def fixture_ot():
         }
     )
     return TenableOT(
-        address='localhost',
+        url='https://localhost',
         vendor='pytest',
         product='pytenable-automated-testing',
         build=version
