@@ -3,7 +3,7 @@ test agent_config
 '''
 import pytest
 from tests.checker import check
-from tenable.errors import UnexpectedValueError, PermissionError
+from tenable.errors import UnexpectedValueError, ForbiddenError
 
 
 @pytest.mark.vcr()
@@ -47,7 +47,7 @@ def test_agentconfig_edit_standard_user_should_fail(stdapi):
     '''
     test to raise exception when standard_user tries to edit agent_config.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.agent_config.edit(auto_unlink=30)
 
 
@@ -120,7 +120,7 @@ def test_agentconfig_show_standard_user_should_fail(stdapi):
     '''
     test to raise exception when standard user try to view details of agent_config
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.agent_config.details()
 
 

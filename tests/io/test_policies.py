@@ -3,7 +3,7 @@ test policies
 '''
 import io
 import pytest
-from tenable.errors import NotFoundError
+from tenable.errors import NotFoundError, UnexpectedValueError
 from ..checker import check
 
 
@@ -229,7 +229,7 @@ def test_policy_template_details_keyerror(api):
     '''
     test to raise the exception when key of template details is not as defined
     '''
-    with pytest.raises(KeyError):
+    with pytest.raises(UnexpectedValueError):
         api.policies.template_details('one')
 
 

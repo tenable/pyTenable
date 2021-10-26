@@ -33,11 +33,11 @@ from tenable.io.tags import TagsAPI, TagsIterator
 from tenable.io.target_groups import TargetGroupsAPI
 from tenable.io.users import UsersAPI
 from tenable.io.workbenches import WorkbenchesAPI
-from tests.io.conftest import api
-from tenable.errors import UnexpectedValueError
+#from tests.io.conftest import api
+from tenable.errors import UnexpectedValueError, AuthenticationWarning
 
 
-def test_io_compile():
+def test_io_compile(api):
     '''
     test to raise the exception when value for api keys is not passed correctly
     '''

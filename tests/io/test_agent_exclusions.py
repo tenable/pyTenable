@@ -6,7 +6,7 @@ from datetime import datetime as dtime, timedelta
 
 import pytest
 
-from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
+from tenable.errors import NotFoundError, UnexpectedValueError, ForbiddenError
 from tests.pytenable_log_handler import log_exception
 from ..checker import check
 
@@ -375,7 +375,7 @@ def test_agentexclusions_create_standard_users_cant_create(stdapi):
     '''
     test to raise the exception when user try to create the exclusion
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.agent_exclusions.create(str(uuid.uuid4()),
                                        start_time=dtime.utcnow(),
                                        end_time=dtime.utcnow() + timedelta(hours=1))
@@ -403,7 +403,7 @@ def test_agentexclusions_delete_standard_user_fail(stdapi, agentexclusion):
     '''
     test to raise the exception when failed to delete the agent exclusion
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.agent_exclusions.delete(agentexclusion['id'])
 
 
@@ -549,7 +549,7 @@ def test_agentexclusions_edit_standard_user_permission_error(stdapi, agentexclus
     '''
     test to raise the exception when there is no permission to edit the agent exclusion
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.agent_exclusions.edit(agentexclusion['id'], name=str(uuid.uuid4()))
 
 

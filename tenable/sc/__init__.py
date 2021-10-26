@@ -66,8 +66,11 @@ Example:
     .. automethod:: put
     .. automethod:: delete
 '''
-from tenable.base.v1 import APISession
-from tenable.errors import APIError, InvalidInputError, NotFoundError, ServerError, ConnectionError
+import warnings
+from typing import Optional
+from semver import VersionInfo
+from tenable.errors import APIError, ConnectionError
+from tenable.base.platform import APIPlatform
 from .accept_risks import AcceptRiskAPI
 from .alerts import AlertAPI
 from .analysis import AnalysisAPI
@@ -92,10 +95,9 @@ from .scan_zones import ScanZoneAPI
 from .status import StatusAPI
 from .system import SystemAPI
 from .users import UserAPI
-import warnings, logging, semver
 
 
-class TenableSC(APISession):
+class TenableSC(APIPlatform):  # noqa PLR0904
     '''TenableSC API Wrapper
     The Tenable.sc object is the primary interaction point for users to
     interface with Tenable.sc via the pyTenable library.  All of the API
@@ -103,7 +105,9 @@ class TenableSC(APISession):
 
     Args:
         host (str):
-            The address of the Tenable.sc instance to connect to.
+            The address of the Tenable.sc instance to connect to.  (NOTE: The
+            `hos`t parameter will be deprecated in favor of the `url` parameter
+            in future releases).
         access_key (str, optional):
             The API access key to use for sessionless authentication.
         adapter (requests.Adaptor, optional):
@@ -122,18 +126,22 @@ class TenableSC(APISession):
             The password to use for session authentication.
         port (int, optional):
             The port number to connect to on the specified host.  The
-            default is port ``443``.
+            default is port ``443``.  (NOTE: The `port` parameter will be
+            deprecated in favor of the unified `url` parameter in future
+            releases).
         retries (int, optional):
             The number of retries to make before failing a request.  The
             default is ``5``.
         scheme (str, optional):
             What HTTP scheme should be used for URI path construction.  The
-            default is ``https``.
+            default is ``https``.  (NOTE: The `scheme` parameter will be
+            deprecated in favor of the unified `url` parameter in future
+            releases).
         secret_key (str, optional):
             The API secret key to use for sessionless authentication.
         session (requests.Session, optional):
-            If a requests Session is provided, the provided session will be used
-            instead of constructing one during initialization.
+            If a requests Session is provided, the provided session will be
+            used instead of constructing one during initialization.
         ssl_verify (bool, optional):
             Should the SSL certificate on the Tenable.sc instance be verified?
             Default is False.
@@ -167,7 +175,10 @@ class TenableSC(APISession):
 
         Using API Keys to communicate to Tenable.sc:
 
-        >>> sc = TenableSC('sc.compant.tld', access_key='key', secret_key='key')
+        >>> sc = TenableSC('sc.company.tld',
+        ...     access_key='key',
+        ...     secret_key='key'
+        ... )
 
         Using context management to handle
 
@@ -183,89 +194,38 @@ class TenableSC(APISession):
     .. _requests_pkcs12:
         https://github.com/m-click/requests_pkcs12
     '''
-    _apikeys = False
-    _restricted_paths = ['token','credential']
+    _env_base = 'TSC'
+    _base_path: str = 'rest'
+    _error_map = {403: APIError}
+    _restricted_paths = ['token', 'credential']
     _timeout = 300
-    _error_codes = {
-        400: InvalidInputError,
-        403: APIError,
-        404: NotFoundError,
-        500: ServerError,
-    }
 
-    def __init__(self, host, access_key=None, secret_key=None, username=None,
-                 password=None, port=443, ssl_verify=False, cert=None,
-                 adapter=None, scheme='https', retries=None, backoff=None,
-                 ua_identity=None, session=None, proxies=None, timeout=None,
-                 vendor=None, product=None, build=None, base_path='rest',):
+    def __init__(self,  # noqa: PLR0913
+                 host: Optional[str] = None,
+                 access_key: Optional[str] = None,
+                 secret_key: Optional[str] = None,
+                 **kwargs
+                 ):
         # As we will always be passing a URL to the APISession class, we will
         # want to construct a URL that APISession (and further requests)
         # understands.
-        base = '{}://{}:{}'.format(scheme, host, port)
-        url = '{}/{}'.format(base, base_path)
-
-        # Setting the SSL Verification flag on the object itself so that it's
-        # reusable if the user logs out and logs back in.
-        self._ssl_verify = ssl_verify
+        if host:
+            warnings.warn('The "host", "port", and "scheme" parameters are '
+                          'deprecated and will be removed from the TenableSC '
+                          'class in version 2.0.',
+                          DeprecationWarning
+                          )
+            kwargs['url'] = (f'{kwargs.get("scheme", "https")}://'
+                             f'{host}:{kwargs.get("port", 443)}'
+                             )
+        if access_key:
+            kwargs['access_key'] = access_key
+        if secret_key:
+            kwargs['secret_key'] = secret_key
 
         # Now lets pass the relevant parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
-        super(TenableSC, self).__init__(url,
-            retries=retries,
-            backoff=backoff,
-            ua_identity=ua_identity,
-            session=session,
-            proxies=proxies,
-            vendor=vendor,
-            product=product,
-            build=build,
-            timeout=timeout,
-            ssl_verify=ssl_verify
-        )
-
-        # If a client-side certificate is specified, then we will want to add
-        # it into the session object as well.  The cert parameter is expecting
-        # a path pointing to the client certificate file.
-        if cert:
-            self._session.cert = cert
-
-        # If an adapter for requests was provided, we should pull that in as
-        # well.
-        if adapter:
-            self._session.mount(base, adapter)
-
-        # We will attempt to make the first call to the Tenable.sc instance
-        # and get the system information.  If this call fails, then we likely
-        # aren't pointing to a SecurityCenter at all and should throw an error
-        # stating this.
-        try:
-            self.info = self.system.details()
-        except:
-            raise ConnectionError('No Tenable.sc Instance at {}:{}'.format(host, port))
-
-        # Now we will try to interpret the Tenable.sc information into
-        # something usable.
-        try:
-            self.version = self.info['version']
-            self.build_id = self.info['buildID']
-            self.license = self.info['licenseStatus']
-            self.uuid = self.info['uuid']
-            if 'token' in self.info:
-                # if a token was passed in the system info page, then we should
-                # update the X-SecurityCenter header with the token info.
-                self._session.headers.update({
-                    'X-SecurityCenter': str(self.info['token'])
-                })
-        except:
-            raise ConnectionError('Invalid Tenable.sc Instance')
-
-        # Now we will attempt to authenticate to the API using any auth settings
-        # passed into the constructor.
-        self.login(
-            username=username,
-            password=password,
-            access_key=access_key,
-            secret_key=secret_key)
+        super().__init__(**kwargs)
 
     def __enter__(self):
         return self
@@ -276,12 +236,36 @@ class TenableSC(APISession):
     def _resp_error_check(self, response, **kwargs):
         if not kwargs.get('stream', False):
             try:
-                d = response.json()
-                if d['error_code']:
+                data = response.json()
+                if data['error_code']:
                     raise APIError(response)
             except ValueError:
                 pass
         return response
+
+    def _key_auth(self, access_key, secret_key):
+        if VersionInfo.parse(self.version).match('<5.13.0'):
+            raise ConnectionError(
+               f'API Keys not supported on Tenable.sc {self.version}'
+            )
+        self._session.headers.update({
+            'X-APIKey': f'accessKey={access_key}; secretKey={secret_key}'
+        })
+        self._auth_mech = 'keys'
+
+    def _session_auth(self, username, password):
+        resp = self.post('token', json={
+            'username': username,
+            'password': password
+        })
+        self._auth_mech = 'user'
+        self._session.headers.update({
+            'X-SecurityCenter': str(resp.json()['response']['token']),
+            'TNS_SESSIONID': str(resp.headers['Set-Cookie'])[14:46]
+        })
+
+    def _deauthenticate(self):  # noqa PLW0221
+        super()._deauthenticate(path='token')
 
     def login(self, username=None, password=None,
               access_key=None, secret_key=None):
@@ -309,43 +293,27 @@ class TenableSC(APISession):
             >>> sc = TenableSC('127.0.0.1', port=8443)
             >>> sc.login(access_key='ACCESSKEY', secret_key='SECRETKEY')
         '''
-
-        if username != None and password != None:
-            resp = self.post('token', json={
-                'username': username,
-                'password': password
-            })
-            self._session.headers.update({
-                'X-SecurityCenter': str(resp.json()['response']['token'])
-            })
-            self._session.headers.update({
-                'TNS_SESSIONID': str(resp.headers['Set-Cookie'])[14:46]
-            })
-
-        elif access_key != None and secret_key != None:
-            if semver.VersionInfo.parse(self.version).match('<5.13.0'):
-                raise ConnectionError(
-                    'API Keys not supported on this version of Tenable.sc')
-            self._session.headers.update({
-                'X-APIKey': 'accessKey={}; secretKey={}'.format(
-                    access_key, secret_key)
-            })
-            self._apikeys = True
+        self._authenticate(**{
+            'username': username,
+            'password': password,
+            'access_key': access_key,
+            'secret_key': secret_key
+        })
 
     def logout(self):
         '''
         Logs out of Tenable.sc and resets the session.
 
-        Returns:
-            None
-
         Examples:
             >>> sc.logout()
         '''
-        if not self._apikeys:
-            resp = self.delete('token')
-        self._close_session()
-        self._apikeys = False
+        self._deauthenticate()
+
+    @property
+    def version(self):
+        if not getattr(self, '_version', None):
+            self._version = self.system.details()['version']
+        return self._version
 
     @property
     def accept_risks(self):

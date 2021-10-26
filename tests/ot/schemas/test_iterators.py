@@ -11,7 +11,7 @@ def test_iterator(fixture_ot):
     '''test iterator'''
     responses.add(
         method='POST',
-        url='https://localhost:443/v1/iterator_test',
+        url='https://localhost/v1/iterator_test',
         json=['item1', 'item2', 'item3', 'item4', 'item5', 'item6']
     )
 

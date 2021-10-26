@@ -50,7 +50,7 @@ def test_list():
     ]
     responses.add(
         method='GET',
-        url='https://www.tenable.com:443/downloads/api/v2/pages',
+        url='https://www.tenable.com/downloads/api/v2/pages',
         json=body
     )
     download = Downloads()
@@ -146,7 +146,7 @@ def test_details():
     }
     responses.add(
         method='GET',
-        url='https://www.tenable.com:443/downloads/api/v2/pages/nessus',
+        url='https://www.tenable.com/downloads/api/v2/pages/nessus',
         json=body
     )
     download = Downloads()
@@ -191,7 +191,7 @@ def test_download():
     '''
     responses.add(
         method='GET',
-        url=re.compile(r'https://www\.tenable\.com:443/downloads/api/v2/pages/.*/files/.*'),
+        url=re.compile(r'https://www\.tenable\.com/downloads/api/v2/pages/.*/files/.*'),
         body=b'Line1\nLine2\nLine3\nLine4\nLine5\nLine6\nLine7\nLine8\nLine9',
         stream=True
     )

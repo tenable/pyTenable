@@ -3,7 +3,7 @@ test scanners
 '''
 import uuid
 import pytest
-from tenable.errors import NotFoundError, UnexpectedValueError, PermissionError
+from tenable.errors import NotFoundError, UnexpectedValueError, ForbiddenError
 from ..checker import check
 
 
@@ -60,7 +60,7 @@ def test_scanner_control_scans_permissionerror(stdapi):
     test to raise the exception when standard user performs actions against
     given scanner
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanners.control_scan(1,
                                      'c5e3e4c9-ee47-4fbc-9e1d-d6f39801f56c', 'stop')
 
@@ -88,7 +88,7 @@ def test_scanner_delete_permissionerror(stdapi, scanner):
     '''
     test to raise the exception when the standard user gets when tried to delete the scanner
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanners.delete(scanner['id'])
 
 
@@ -123,7 +123,7 @@ def test_scanner_details_permissionerror(stdapi, scanner):
     '''
     test to raise the exception when standatd user tries to get the details
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanners.details(scanner['id'])
 
 
@@ -201,7 +201,7 @@ def test_scanner_edit_aws_update_typeerror(api, scanner):
 
 
 @pytest.mark.vcr()
-@pytest.mark.xfail(raises=PermissionError)
+@pytest.mark.xfail(raises=ForbiddenError)
 def test_scanner_edit_notfounderror(api):
     '''
     test to raise the exception when tried to edit the scanner which is not found
@@ -215,12 +215,12 @@ def test_scanner_edit_permissionserror(stdapi, scanner):
     '''
     test to raise the exception when standard user gets when tried to edit the scanners
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanners.edit(scanner['id'], force_ui_update=True)
 
 
 @pytest.mark.vcr()
-@pytest.mark.xfail(raises=PermissionError)
+@pytest.mark.xfail(raises=ForbiddenError)
 def test_scanner_edit(api, scanner):
     '''
     test to raise the exception when doing the edit scanner operation
@@ -252,7 +252,7 @@ def test_scanner_get_aws_targets_permissionerror(stdapi):
     '''
     test to raise the exception when standard user gets the aws targets
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanners.get_aws_targets(1)
 
 
@@ -305,7 +305,7 @@ def test_get_scans_permissionerror(stdapi, scanner):
     '''
     test to raise the exception when the standard user gets the scans
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanners.get_scans(scanner['id'])
 
 
@@ -322,7 +322,7 @@ def test_list_scanners_permissionerror(stdapi):
     '''
     test to raise the exception when standard user gets the list of scanners
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanners.list()
 
 
@@ -357,7 +357,7 @@ def test_link_state_permissionerror(stdapi, scanner):
     '''
     test to raise the exception when standard user toggle the link state
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.scanners.toggle_link_state(scanner['id'], True)
 
 

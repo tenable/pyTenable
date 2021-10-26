@@ -3,7 +3,7 @@ test users
 '''
 import uuid
 import pytest
-from tenable.errors import PermissionError, NotFoundError, InvalidInputError
+from tenable.errors import ForbiddenError, NotFoundError, BadRequestError
 from tests.checker import check
 
 def guser():
@@ -71,7 +71,7 @@ def test_users_create_permissionserror(stdapi):
     '''
     test to raise exception when standard_user tries to create user.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.users.create(guser(), gpass(), 16)
 
 @pytest.mark.vcr()
@@ -112,7 +112,7 @@ def test_users_delete_permissionerror(stdapi, user):
     '''
     test to raise exception when standard_user tries to delete user.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.users.delete(user['id'])
 
 @pytest.mark.vcr()
@@ -209,7 +209,7 @@ def test_users_edit_permissionerror(stdapi, user):
     '''
     test to raise exception when standard user try to edit user.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.users.edit(user['id'], name=str(uuid.uuid4()))
 
 @pytest.mark.vcr()
@@ -260,7 +260,7 @@ def test_users_enabled_permissionerror(stdapi, user):
     '''
     test to raise exception when standard user try to disable user.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.users.enabled(user['id'], False)
 
 @pytest.mark.vcr()
@@ -305,7 +305,7 @@ def test_users_two_factor_phone_typeerror(api):
         api.users.two_factor(False, False, 8675309)
 
 @pytest.mark.vcr()
-@pytest.mark.xfail(raises=InvalidInputError)
+@pytest.mark.xfail(raises=BadRequestError)
 def test_users_two_factor(api, user):
     '''
     test to configure two-factor authorization for a specific user
@@ -358,7 +358,7 @@ def test_users_impersonate_notfounderror(api):
     '''
     test to raise exception when user provided user_id not found.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         api.users.impersonate(guser())
         api.session.details()
         api.session.restore()
@@ -368,7 +368,7 @@ def test_users_impersonate_permissionerror(stdapi, user):
     '''
     test to raise exception when standard user try to impersonate user.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.users.impersonate(user['username'])
         stdapi.session.details()
         stdapi.session.restore()
@@ -429,7 +429,7 @@ def test_users_change_password_permissionserror(stdapi, user):
     '''
     test to raise exception when standard user try to change password.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.users.change_password(user['id'], 'nope', 'nope')
 
 @pytest.mark.vcr()
@@ -476,7 +476,7 @@ def test_users_list_auths_permissionerror(stdapi, user):
     '''
     test to raise exception when standard user try to get list of user auths.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.users.list_auths(user['id'])
 
 @pytest.mark.vcr()
@@ -535,5 +535,5 @@ def test_users_edit_auths_permissionerror(stdapi, user):
     '''
     test to raise exception when standard user try to edit user auths.
     '''
-    with pytest.raises(PermissionError):
+    with pytest.raises(ForbiddenError):
         stdapi.users.edit_auths(user['id'])

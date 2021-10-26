@@ -22,6 +22,7 @@ def vcr_config():
         ],
     }
 
+
 @pytest.fixture(autouse=True, scope='module')
 def security_center(request, vcr):
     '''
@@ -29,7 +30,9 @@ def security_center(request, vcr):
     '''
     setup_logging_to_file()
     with vcr.use_cassette('sc_login',
-                          filter_post_data_parameters=['username', 'password']):
+                          filter_post_data_parameters=['username',
+                                                       'password'
+                                                       ]):
         tenable_security_center = TenableSC(
             os.getenv('SC_TEST_HOST', 'securitycenter.home.cugnet.net'),
             vendor='pytest',
@@ -37,6 +40,7 @@ def security_center(request, vcr):
         tenable_security_center.login(
             os.getenv('SC_TEST_USER', 'username'),
             os.getenv('SC_TEST_PASS', 'password'))
+        tenable_security_center.version  # noqa: PLW0104
 
     def teardown():
         try:
@@ -48,20 +52,24 @@ def security_center(request, vcr):
     request.addfinalizer(teardown)
     return tenable_security_center
 
+
 @pytest.fixture(autouse=True, scope='module')
 def admin(request, vcr):
     '''
     test fixture for admin
     '''
     with vcr.use_cassette('sc_login',
-                          filter_post_data_parameters=['username', 'password']):
-        sc = TenableSC(
+                          filter_post_data_parameters=['username',
+                                                       'password'
+                                                       ]):
+        sc = TenableSC(  # noqa: PLC0103
             os.getenv('SC_TEST_HOST', 'securitycenter.home.cugnet.net'),
             vendor='pytest',
             product='pytenable-automated-testing')
         sc.login(
             os.getenv('SC_TEST_ADMIN_USER', 'admin'),
             os.getenv('SC_TEST_ADMIN_PASS', 'password'))
+        sc.version  # noqa: PLW0104
 
     def teardown():
         with vcr.use_cassette('sc_login'):
@@ -70,18 +78,22 @@ def admin(request, vcr):
     request.addfinalizer(teardown)
     return sc
 
+
 @pytest.fixture(autouse=True, scope='module')
 def unauth(vcr):
     '''
     test fixture for un_authorization
     '''
     with vcr.use_cassette('sc_login',
-                          filter_post_data_parameters=['username', 'password']):
-        sc = TenableSC(
+                          filter_post_data_parameters=['username',
+                                                       'password'
+                                                       ]):
+        sc = TenableSC(  # noqa: PLC0103
             os.getenv('SC_TEST_HOST', 'securitycenter.home.cugnet.net'),
             vendor='pytest',
             product='pytenable-automated-testing')
     return sc
+
 
 @pytest.fixture
 def group(request, security_center, vcr):
@@ -89,14 +101,14 @@ def group(request, security_center, vcr):
     test fixture for un_authorization
     '''
     with vcr.use_cassette('test_groups_create_success'):
-        group = security_center.groups.create('groupname')
+        grp = security_center.groups.create('groupname')
 
     def teardown():
         try:
             with vcr.use_cassette('test_groups_delete_success'):
-                security_center.groups.delete(int(group['id']))
+                security_center.groups.delete(int(grp['id']))
         except APIError:
             pass
 
     request.addfinalizer(teardown)
-    return group
+    return grp
