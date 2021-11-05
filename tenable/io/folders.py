@@ -9,11 +9,7 @@ Methods available on ``tio.folders``:
 
 .. rst-class:: hide-signature
 .. autoclass:: FoldersAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: edit
-    .. automethod:: list
+    :members:
 '''
 from .base import TIOEndpoint
 

@@ -40,32 +40,32 @@ class ImagesAPI(APIEndpoint):
         :devportal:`API Documentation <container-security-v2-list-images>`
 
         Args:
-            name:
+            name (str, optional):
                 Image name to filter on.  Filter is case-sensitive
                 and enforces an exact match.
-            repo:
+            repo (str, optional):
                 Repository name to filter on.  Filter is case-sensitive
                 and enforces an exact match.
-            tag:
+            tag (str, optional):
                 Tag to filter on.  Filter is case-sensitive and enforces
                 an exact match.
-            has_malware:
+            has_malware (bool, optional):
                 Specifies whether to return only images with malware
                 associated to them.
-            score:
+            score (int, optional):
                 The score value to filter on.
-            score_operator:
+            score_operator (str, optional):
                 The score operator to use with the score value.  Supported
                 operations are ``EQ`` (equal), ``GT`` (greater-than), and
                 ``LT`` (less-than).
-            os:
+            os (str, optional):
                 The operating system to filter on.  Filter is case-sensitive
                 and enforces an exact match.
-            offset:
+            offset (int, optional):
                 The number of records to skip before starting to return data.
-            limit:
+            limit (int, optional):
                 The number of records to return for each page of data.
-            return_json:
+            return_json (bool, optional):
                 If set, then the response will instead be a Dict object instead
                 of an iterable.
 
@@ -109,11 +109,11 @@ class ImagesAPI(APIEndpoint):
         :devportal:`API Documentation <container-security-v2-get-image-details>`  # noqa: E501
 
         Args:
-            repository:
+            repository (str):
                 The repository name.
-            image:
+            image (str):
                 The image name.
-            tag:
+            tag (str):
                 The tag name.
 
         Examples:
@@ -129,11 +129,11 @@ class ImagesAPI(APIEndpoint):
         :devportal:`API Documentation <container-security-v2-delete-image>`
 
         Args:
-            repository:
+            repository (str):
                 The repository name.
-            image:
+            image (str):
                 The image name.
-            tag:
+            tag (str):
                 The tag name.
 
         Examples:

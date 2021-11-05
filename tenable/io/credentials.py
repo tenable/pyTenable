@@ -1,5 +1,5 @@
 '''
-credentials
+Credentials
 ===========
 
 The following methods allow for interaction into the Tenable.io
@@ -9,14 +9,7 @@ Methods available on ``tio.credentials``:
 
 .. rst-class:: hide-signature
 .. autoclass:: CredentialsAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
-    .. automethod:: types
-    .. automethod:: upload
+    :members:
 '''
 from tenable.utils import dict_merge
 from .base import TIOEndpoint, TIOIterator

@@ -1,5 +1,5 @@
 '''
-audit_log
+Audit Log
 =========
 
 The following methods allow for interaction into the Tenable.io
@@ -9,8 +9,7 @@ Methods available on ``io.audit_log``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AuditLogAPI
-
-    .. automethod:: events
+    :members:
 '''
 from .base import TIOEndpoint
 

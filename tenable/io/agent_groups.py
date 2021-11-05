@@ -1,5 +1,5 @@
 '''
-agent_groups
+Agent Groups
 ============
 
 The following methods allow for interaction into the Tenable.io
@@ -9,15 +9,7 @@ Methods available on ``tio.agent_groups``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AgentGroupsAPI
-
-    .. automethod:: add_agent
-    .. automethod:: configure
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: delete_agent
-    .. automethod:: details
-    .. automethod:: list
-    .. automethod:: task_status
+    :members:
 '''
 from .base import TIOEndpoint
 

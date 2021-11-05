@@ -9,17 +9,7 @@ Methods available on ``tio.tags``:
 
 .. rst-class:: hide-signature
 .. autoclass:: TagsAPI
-
-    .. automethod:: create
-    .. automethod:: create_category
-    .. automethod:: delete
-    .. automethod:: delete_category
-    .. automethod:: details
-    .. automethod:: details_category
-    .. automethod:: edit
-    .. automethod:: edit_category
-    .. automethod:: list
-    .. automethod:: list_categories
+    :members:
 '''
 import json
 import re

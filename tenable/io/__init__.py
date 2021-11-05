@@ -1,62 +1,46 @@
 '''
+Tenable.io
+==========
+
 .. autoclass:: TenableIO
+   :members:
 
-.. automodule:: tenable.io.access_groups
-.. automodule:: tenable.io.access_groups_v2
-.. automodule:: tenable.io.agent_config
-.. automodule:: tenable.io.agent_exclusions
-.. automodule:: tenable.io.agent_groups
-.. automodule:: tenable.io.agents
-.. automodule:: tenable.io.assets
-.. automodule:: tenable.io.audit_log
-.. automodule:: tenable.io.credentials
-.. automodule:: tenable.io.editor
-.. automodule:: tenable.io.exclusions
-.. automodule:: tenable.io.exports
-.. automodule:: tenable.io.files
-.. automodule:: tenable.io.filters
-.. automodule:: tenable.io.folders
-.. automodule:: tenable.io.groups
-.. automodule:: tenable.io.networks
-.. automodule:: tenable.io.permissions
-.. automodule:: tenable.io.plugins
-.. automodule:: tenable.io.policies
-.. automodule:: tenable.io.scanner_groups
-.. automodule:: tenable.io.scanners
-.. automodule:: tenable.io.scans
-.. automodule:: tenable.io.remediation_scans
-.. automodule:: tenable.io.server
-.. automodule:: tenable.io.session
-.. automodule:: tenable.io.tags
-.. automodule:: tenable.io.target_groups
-.. automodule:: tenable.io.users
-.. automodule:: tenable.io.workbenches
 
-Raw HTTP Calls
-==============
+.. toctree::
+    :hidden:
+    :glob:
 
-Even though the ``TenableIO`` object pythonizes the Tenable.io API for you,
-there may still bee the occasional need to make raw HTTP calls to the IO API.
-The methods listed below aren't run through any naturalization by the library
-aside from the response code checking.  These methods effectively route
-directly into the requests session.  The responses will be Response objects
-from the ``requests`` library.  In all cases, the path is appended to the base
-``url`` parameter that the ``TenableIO`` object was instantiated with.
-
-Example:
-
-.. code-block:: python
-
-   resp = tio.get('scans')
-
-.. py:module:: tenable.io
-.. rst-class:: hide-signature
-.. py:class:: TenableIO
-
-    .. automethod:: get
-    .. automethod:: post
-    .. automethod:: put
-    .. automethod:: delete
+    cs/index
+    access_groups_v2
+    access_groups
+    agent_config
+    agent_exclusions
+    agent_groups
+    agents
+    assets
+    audit_log
+    credentials
+    editor
+    exclusions
+    exports
+    files
+    filters
+    folders
+    groups
+    networks
+    permissions
+    plugins
+    policies
+    remediation_scans
+    scanner_groups
+    scanners
+    scans
+    server
+    session
+    tags
+    target_groups
+    users
+    workbenches
 '''
 from typing import Dict, List, Optional
 from requests import Response
@@ -199,120 +183,240 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
 
     @property
     def access_groups(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Access Groups APIs <access_groups>`.
+        '''
         return AccessGroupsAPI(self)
 
     @property
     def access_groups_v2(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Access Groups v2 APIs <access_groups_v2>`.
+        '''
         return AccessGroupsV2API(self)
 
     @property
     def agent_config(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Agent Config APIs <agent_config>`.
+        '''
         return AgentConfigAPI(self)
 
     @property
     def agent_groups(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Agent Groups APIs <agent_groups>`.
+        '''
         return AgentGroupsAPI(self)
 
     @property
     def agent_exclusions(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Agent Exclusions APIs <agent_exclusions>`.
+        '''
         return AgentExclusionsAPI(self)
 
     @property
     def agents(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Agents APIs <agents>`.
+        '''
         return AgentsAPI(self)
 
     @property
     def assets(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io assets APIs <assets>`.
+        '''
         return AssetsAPI(self)
 
     @property
     def audit_log(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Audit Log APIs <audit_log>`.
+        '''
         return AuditLogAPI(self)
 
     @property
     def credentials(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Credentials APIs <credentials>`.
+        '''
         return CredentialsAPI(self)
 
     @property
     def editor(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Editor APIs <editor>`.
+        '''
         return EditorAPI(self)
 
     @property
     def exclusions(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Exclusions APIs <exclusions>`.
+        '''
         return ExclusionsAPI(self)
 
     @property
     def exports(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Exports APIs <exports>`.
+        '''
         return ExportsAPI(self)
 
     @property
     def files(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Files APIs <files>`.
+        '''
         return FileAPI(self)
 
     @property
     def filters(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Filters APIs <filters>`.
+        '''
         return FiltersAPI(self)
 
     @property
     def folders(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Folders APIs <folders>`.
+        '''
         return FoldersAPI(self)
 
     @property
     def groups(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Groups APIs <groups>`.
+        '''
         return GroupsAPI(self)
 
     @property
     def networks(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Networks APIs <networks>`.
+        '''
         return NetworksAPI(self)
 
     @property
     def permissions(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Permissions APIs <permissions>`.
+        '''
         return PermissionsAPI(self)
 
     @property
     def plugins(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Plugins APIs <plugins>`.
+        '''
         return PluginsAPI(self)
 
     @property
     def policies(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Policies APIs <policies>`.
+        '''
         return PoliciesAPI(self)
 
     @property
     def scanner_groups(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Scanner Groups APIs <scanner_groups>`.
+        '''
         return ScannerGroupsAPI(self)
 
     @property
     def scanners(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Scanners APIs <scanners>`.
+        '''
         return ScannersAPI(self)
 
     @property
     def scans(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Scans APIs <scans>`.
+        '''
         return ScansAPI(self)
 
     @property
     def remediationscans(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Remediation Scans APIs <remediation_scans>`.
+        '''
         return RemediationScansAPI(self)
 
     @property
     def server(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Server APIs <server>`.
+        '''
         return ServerAPI(self)
 
     @property
     def session(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Session APIs <session>`.
+        '''
         return SessionAPI(self)
 
     @property
     def tags(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Tags APIs <tags>`.
+        '''
         return TagsAPI(self)
 
     @property
     def target_groups(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Target Groups APIs <target_groups>`.
+        '''
         return TargetGroupsAPI(self)
 
     @property
     def users(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Users APIs <users>`.
+        '''
         return UsersAPI(self)
 
     @property
     def workbenches(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Workbenches APIs <workbenches>`.
+        '''
         return WorkbenchesAPI(self)

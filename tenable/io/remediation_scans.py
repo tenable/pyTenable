@@ -10,9 +10,7 @@ Methods available on ``tio.remediation_scans``:
 
 .. rst-class:: hide-signature
 .. autoclass:: RemediationScansAPI
-
-    .. automethod:: create_remediation_scan
-    .. automethod:: list_remediation_scan
+    :members:
 '''
 
 

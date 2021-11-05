@@ -9,16 +9,7 @@ Methods available on ``tio.networks``:
 
 .. rst-class:: hide-signature
 .. autoclass:: NetworksAPI
-
-    .. automethod:: assign_scanners
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
-    .. automethod:: list_scanners
-    .. automethod:: unassigned_scanners
-    .. automethod:: network_asset_count
+    :members:
 '''
 from tenable.io.base import TIOEndpoint, TIOIterator
 from tenable.errors import UnexpectedValueError

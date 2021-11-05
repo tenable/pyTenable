@@ -1,18 +1,10 @@
 '''
-.. autoclass:: APIError
-.. autoclass:: ConnectionError
+.. autoclass:: AuthenticationWarning
+.. autoclass:: FileDownloadError
 .. autoclass:: ImpersonationError
-.. autoclass:: NotFoundError
-.. autoclass:: PackageMissingError
 .. autoclass:: PasswordComplexityError
-.. autoclass:: RetryError
-.. autoclass:: ServerError
-.. autoclass:: TenableException
 .. autoclass:: TioExportsError
 .. autoclass:: TioExportsTimeout
-.. autoclass:: UnexpectedValueError
-.. autoclass:: UnknownError
-.. autoclass:: UnsupportedError
 '''
 from restfly.errors import *
 

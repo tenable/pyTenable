@@ -28,6 +28,8 @@ sys.path.insert(0, os.path.abspath('..'))
 
 import tenable
 
+def setup(app):
+    app.add_css_file('custom.css')
 
 # -- Project information -----------------------------------------------------
 
@@ -59,7 +61,6 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
     'sphinx.ext.extlinks',
-    #'sphinx_markdown_builder',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -87,7 +88,8 @@ language = None
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "default"
+pygments_dark_style = "monokai"
 
 add_module_names = False
 napoleon_google_docstring = True
@@ -97,47 +99,20 @@ napoleon_numpy_docstring = False
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
-html_theme = 'alabaster'
+html_theme = 'furo'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#
+html_logo = '_static/logo.png'
 html_theme_options = {
-    'description': 'A Python library for Tenable application APIs',
-    'fixed_sidebar': False,
-    'logo': 'logo.png',
-    'touch_icon': 'logo.png',
-    'logo_name': 'pyTenable',
-    'github_user': 'tenable',
-    'github_repo': 'pyTenable',
-    'github_button': True,
-#   'travis_button': True,
-    'analytics_id': 'UA-131275974-1',
+    'sidebar_hide_name': True,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-
-# Custom sidebar templates, must be a dictionary that maps document names
-# to template names.
-#
-# The default sidebars (for documents that don't match any pattern) are
-# defined by theme itself.  Builtin themes are using these templates by
-# default: ``['localtoc.html', 'relations.html', 'sourcelink.html',
-# 'searchbox.html']``.
-#
-# html_sidebars = {}
-html_sidebars = {
-    '**': [
-        'about.html',
-        'navigation.html',
-        'searchbox.html',
-    ]
-}
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

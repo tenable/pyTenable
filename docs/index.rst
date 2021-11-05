@@ -2,14 +2,12 @@
    :hidden:
    :glob:
 
-   cs
    nessus
    reports
-   io
+   api/io/index
    sc
    api/ot/index
    api/dl/index
-   downloads
    common
    errors
    testing

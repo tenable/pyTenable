@@ -36,16 +36,16 @@ class RepositoriesAPI(APIEndpoint):
         :devportal:`API Documentation <container-security-v2-list-repositories>`  # noqa: E501
 
         Args:
-            name:
+            name (str, optional):
                 Image name to filter on.  Filter is case-sensitive
                 and enforces an exact match.
-            contains:
+            contains (str, optional):
                 Partial name to filter on.  Filter is case-sensitive.
-            offset:
+            offset (int, optional):
                 The number of records to skip before starting to return data.
-            limit:
+            limit (int, optional):
                 The number of records to return for each page of data.
-            return_json:
+            return_json (bool, optional):
                 If set, then the response will instead be a Dict object instead
                 of an iterable.
 
@@ -84,7 +84,7 @@ class RepositoriesAPI(APIEndpoint):
         :devportal:`API Documentation <container-security-v2-get-repository-details>`  # noqa: E501
 
         Args:
-            name:
+            name (str):
                 The repository name.
 
         Examples:
@@ -100,7 +100,7 @@ class RepositoriesAPI(APIEndpoint):
         :devportal:`API Documentation <container-security-v2-delete-repository>`  # noqa: E501
 
         Args:
-            name:
+            name (str):
                 The repository name.
 
         Examples:

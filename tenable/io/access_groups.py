@@ -1,5 +1,5 @@
 '''
-access_groups
+Access Groups
 =============
 
 The following methods allow for interaction into the Tenable.io
@@ -9,12 +9,7 @@ Methods available on ``tio.access_groups``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AccessGroupsAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
+    :members:
 '''
 from tenable.errors import UnexpectedValueError
 from tenable.utils import dict_merge

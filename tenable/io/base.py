@@ -1,6 +1,6 @@
 '''
-base
-=====
+Base
+====
 
 The following methods in classes allow for page iteration
 and centralized data processing utility

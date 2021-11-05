@@ -9,10 +9,7 @@ Methods available on ``tio.exports``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ExportsAPI
-
-    .. automethod:: assets
-    .. automethod:: vulns
-    .. automethod:: compliance
+    :members:
 '''
 import time
 import sys
