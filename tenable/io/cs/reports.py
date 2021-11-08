@@ -27,11 +27,11 @@ class ReportsAPI(APIEndpoint):  # noqa: PLR0903
         :devportal:`API Documentation <container-security-v2-get-image-report>`
 
         Args:
-            repository:
+            repository (str):
                 The repository name.
-            image:
+            image (str):
                 The image name.
-            tag:
+            tag (str):
                 The tag name.
 
         Examples:

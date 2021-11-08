@@ -9,21 +9,7 @@ Methods available on ``tio.users``:
 
 .. rst-class:: hide-signature
 .. autoclass:: UsersAPI
-
-    .. automethod:: create
-    .. automethod:: change_password
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: enabled
-    .. automethod:: gen_api_keys
-    .. automethod:: two_factor
-    .. automethod:: enable_two_factor
-    .. automethod:: verify_two_factor
-    .. automethod:: impersonate
-    .. automethod:: list
-    .. automethod:: list_auths
-    .. automethod:: edit_auths
+    :members:
 '''
 from tenable.utils import dict_merge
 from tenable.io.base import TIOEndpoint

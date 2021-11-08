@@ -1,5 +1,5 @@
 '''
-agent_config
+Agent Config
 ============
 
 The following methods allow for interaction into the Tenable.io
@@ -9,9 +9,7 @@ Methods available on ``tio.agent_config``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AgentConfigAPI
-
-    .. automethod:: edit
-    .. automethod:: details
+    :members:
 '''
 from tenable.io.base import TIOEndpoint
 

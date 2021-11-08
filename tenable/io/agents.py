@@ -1,5 +1,5 @@
 '''
-agents
+Agents
 ======
 
 The following methods allow for interaction into the Tenable.io
@@ -9,12 +9,7 @@ Methods available on ``tio.agents``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AgentsAPI
-
-    .. automethod:: details
-    .. automethod:: list
-    .. automethod:: unlink
-    .. automethod:: task_status
-
+    :members:
 '''
 from .base import TIOIterator, TIOEndpoint
 

@@ -9,15 +9,7 @@ Methods available on ``tio.policies``:
 
 .. rst-class:: hide-signature
 .. autoclass:: PoliciesAPI
-
-    .. automethod:: configure
-    .. automethod:: copy
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: policy_import
-    .. automethod:: policy_export
-    .. automethod:: list
+    :members:
 '''
 from .base import TIOEndpoint
 from tenable.utils import policy_settings, dict_merge

@@ -9,9 +9,7 @@ Methods available on ``tio.permissions``:
 
 .. rst-class:: hide-signature
 .. autoclass:: PermissionsAPI
-
-    .. automethod:: change
-    .. automethod:: list
+    :members:
 '''
 from .base import TIOEndpoint
 

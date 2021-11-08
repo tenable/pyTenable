@@ -9,9 +9,7 @@ Methods available on ``tio.server``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ServerAPI
-
-    .. automethod:: properties
-    .. automethod:: status
+    :members:
 '''
 from .base import TIOEndpoint
 

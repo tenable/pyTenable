@@ -9,12 +9,7 @@ Methods available on ``tio.filters``:
 
 .. rst-class:: hide-signature
 .. autoclass:: FiltersAPI
-
-    .. automethod:: agents_filters
-    .. automethod:: scan_filters
-    .. automethod:: networks_filters
-    .. automethod:: workbench_asset_filters
-    .. automethod:: workbench_vuln_filters
+    :members:
 '''
 from tenable.io.base import TIOEndpoint
 

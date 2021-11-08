@@ -9,15 +9,14 @@ Methods available on ``tio.files``:
 
 .. rst-class:: hide-signature
 .. autoclass:: FileAPI
-
-    .. automethod:: upload
+    :members:
 '''
 from typing import BinaryIO
 from .base import TIOEndpoint
 import uuid
 
 class FileAPI(TIOEndpoint):
-    
+
     def upload(self, fobj: BinaryIO, encrypted: bool = False):
         '''
         Uploads a file into Tenable.io.

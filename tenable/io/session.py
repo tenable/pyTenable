@@ -9,15 +9,7 @@ Methods available on ``tio.session``:
 
 .. rst-class:: hide-signature
 .. autoclass:: SessionAPI
-
-    .. automethod:: change_password
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: gen_api_keys
-    .. automethod:: two_factor
-    .. automethod:: enable_two_factor
-    .. automethod:: verify_two_factor
-    .. automethod:: restore
+    :members:
 '''
 from .base import TIOEndpoint
 

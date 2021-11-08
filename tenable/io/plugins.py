@@ -9,11 +9,7 @@ Methods available on ``tio.plugins``:
 
 .. rst-class:: hide-signature
 .. autoclass:: PluginsAPI
-
-    .. automethod:: families
-    .. automethod:: family_details
-    .. automethod:: list
-    .. automethod:: plugin_details
+    :members:
 '''
 from datetime import date
 from tenable.io.base import TIOEndpoint, TIOIterator

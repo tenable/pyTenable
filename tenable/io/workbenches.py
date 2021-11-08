@@ -15,19 +15,7 @@ Methods available on ``tio.workbenches``:
 
 .. rst-class:: hide-signature
 .. autoclass:: WorkbenchesAPI
-
-    .. automethod:: assets
-    .. automethod:: asset_activity
-    .. automethod:: asset_delete
-    .. automethod:: asset_info
-    .. automethod:: asset_vulns
-    .. automethod:: asset_vuln_info
-    .. automethod:: asset_vuln_output
-    .. automethod:: export
-    .. automethod:: vulns
-    .. automethod:: vuln_assets
-    .. automethod:: vuln_info
-    .. automethod:: vuln_outputs
+    :members:
 '''
 from .base import TIOEndpoint
 from tenable.errors import UnexpectedValueError

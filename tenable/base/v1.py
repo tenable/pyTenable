@@ -12,9 +12,6 @@ interface to use for your own uses, take a look at the RESTfly library.
 
 .. autoclass:: APIResultsIterator
     :members:
-
-.. autoclass:: APISession
-    :members:
 '''
 from __future__ import absolute_import
 import logging

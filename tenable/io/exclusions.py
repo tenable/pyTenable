@@ -1,5 +1,5 @@
 '''
-exclusions
+Exclusions
 ==========
 
 The following methods allow for interaction into the Tenable.io
@@ -10,13 +10,7 @@ Methods available on ``tio.exclusions``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ExclusionsAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
-    .. automethod:: exclusions_import
+    :members:
 '''
 from datetime import datetime
 from restfly.utils import dict_merge
@@ -65,7 +59,7 @@ class ExclusionsAPI(TIOEndpoint):
                 The default is today.
             enabled (bool, optional):
 		If enabled is true, the exclusion schedule is active.
-		If enabled is false, the exclusion is "Always Active"  
+		If enabled is false, the exclusion is "Always Active"
                 The default value is ``True``
             network_id (uuid, optional):
                 The ID of the network object associated with scanners

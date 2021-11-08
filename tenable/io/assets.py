@@ -1,5 +1,5 @@
 '''
-assets
+Assets
 ======
 
 The following methods allow for interaction into the Tenable.io
@@ -9,15 +9,7 @@ Methods available on ``tio.assets``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AssetsAPI
-
-    .. automethod:: asset_import
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: import_job_details
-    .. automethod:: list
-    .. automethod:: list_import_jobs
-    .. automethod:: tags
-    .. automethod:: bulk_delete
+    :members:
 '''
 from tenable.io.base import TIOEndpoint
 

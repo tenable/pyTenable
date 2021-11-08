@@ -9,31 +9,7 @@ Methods available on ``tio.scans``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScansAPI
-
-    .. automethod:: attachment
-    .. automethod:: configure
-    .. automethod:: copy
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: delete_history
-    .. automethod:: details
-    .. automethod:: export
-    .. automethod:: history
-    .. automethod:: host_details
-    .. automethod:: import_scan
-    .. automethod:: info
-    .. automethod:: launch
-    .. automethod:: list
-    .. automethod:: pause
-    .. automethod:: plugin_output
-    .. automethod:: results
-    .. automethod:: resume
-    .. automethod:: schedule
-    .. automethod:: set_read_status
-    .. automethod:: status
-    .. automethod:: stop
-    .. automethod:: timezones
-    .. automethod:: check_auto_targets
+    :members:
 '''
 import time
 from datetime import datetime, timedelta

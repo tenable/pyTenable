@@ -1,6 +1,6 @@
 '''
-access_groups_v2
-=============
+Access Groups v2
+================
 
 The following methods allow for interaction into the Tenable.io
 :devportal:`access-groups-v2 <v2-access-groups>` API endpoints.
@@ -9,12 +9,7 @@ Methods available on ``tio.access_groups_v2``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AccessGroupsV2API
-
-    .. automethod:: list
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: edit
-    .. automethod:: details
+    :members:
 '''
 from restfly.utils import dict_merge
 from tenable.errors import UnexpectedValueError

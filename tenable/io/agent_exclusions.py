@@ -1,5 +1,5 @@
 '''
-agent_exclusions
+Agent Exclusions
 ================
 
 The following methods allow for interaction into the Tenable.io
@@ -9,12 +9,7 @@ Methods available on ``tio.agent_exclusions``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AgentExclusionsAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
+    :members:
 '''
 from restfly.utils import dict_merge, dict_clean
 from .base import TIOEndpoint

@@ -9,15 +9,7 @@ Methods available on ``tio.scanner_groups``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScannerGroupsAPI
-
-    .. automethod:: add_scanner
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: delete_scanner
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
-    .. automethod:: list_scanners
+    :members:
 '''
 from tenable.io.base import TIOEndpoint
 
