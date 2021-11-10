@@ -1,5 +1,5 @@
 '''
-scanner_groups
+Scanner Groups
 ==============
 
 The following methods allow for interaction into the Tenable.io

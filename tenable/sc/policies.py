@@ -1,5 +1,5 @@
 '''
-policies
+Policies
 ========
 
 The following methods allow for interaction into the Tenable.sc
@@ -10,18 +10,7 @@ Methods available on ``sc.policies``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScanPolicyAPI
-
-    .. automethod:: copy
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: export_policy
-    .. automethod:: import_policy
-    .. automethod:: list
-    .. automethod:: share
-    .. automethod:: template_details
-    .. automethod:: template_list
+    :members:
 '''
 from .base import SCEndpoint
 from tenable.errors import UnexpectedValueError

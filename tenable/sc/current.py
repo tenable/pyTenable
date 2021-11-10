@@ -1,6 +1,6 @@
 '''
-current
-=======
+Current Session
+===============
 
 The following methods allow for interaction with the Tenable.sc
 :sc-api:`CurrentOrganization <Current-Organization.html>` API and the
@@ -10,10 +10,7 @@ Methods available on ``sc.current``:
 
 .. rst-class:: hide-signature
 .. autoclass:: CurrentSessionAPI
-
-    .. automethod:: associate_cert
-    .. automethod:: org
-    .. automethod:: user
+    :members:
 '''
 from .base import SCEndpoint
 

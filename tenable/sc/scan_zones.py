@@ -1,5 +1,5 @@
 '''
-scan_zones
+Scan Zones
 ==========
 
 The following methods allow for interaction into the Tenable.sc
@@ -10,12 +10,7 @@ Methods available on ``sc.scan_zones``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScanZoneAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
+    :members:
 '''
 from .base import SCEndpoint
 

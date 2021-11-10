@@ -1,5 +1,5 @@
 '''
-repositories
+Repositories
 ============
 
 The following methods allow for interaction with the Tenable.sc
@@ -10,20 +10,7 @@ Methods available on ``sc.repositories``:
 
 .. rst-class:: hide-signature
 .. autoclass:: RepositoryAPI
-
-    .. automethod:: accept_risk_rules
-    .. automethod:: asset_intersections
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: device_info
-    .. automethod:: edit
-    .. automethod:: export_repository
-    .. automethod:: import_repository
-    .. automethod:: recast_risk_rules
-    .. automethod:: remote_authorize
-    .. automethod:: remote_fetch
-    .. automethod:: remote_sync
+    :members:
 '''
 from semver import VersionInfo
 from .base import SCEndpoint
@@ -223,13 +210,11 @@ class RepositoryAPI(SCEndpoint):
                 repository formats.  This option should only be used if there
                 is a need to consume the Repository in a raw Nessus XML format.
                 If left unspecified, it will default to ``{'type': 'never'}``.
-                For more information refer to `Schedule Dictionaries`_
             mobile_sched (dict, optional):
                 When using the mobile repository format, this option will inform
                 Tenable.sc how often to perform the MDM synchronization into the
                 repository.  If left unspecified, it will default to
-                ``{'type': 'never'}``.  For more information refer to
-                `Schedule Dictionaries`_
+                ``{'type': 'never'}``.
             orgs (list, optional):
                 A list of Organization IDs used to assign the repository to 1 or
                 many organizations.
@@ -248,8 +233,7 @@ class RepositoryAPI(SCEndpoint):
                 When the Remote repository type is used, this is the schedule
                 dictionary that will inform Tenable.sc how often to synchronize
                 with the downstream Tenable.sc instance.  If left unspecified
-                then we will default to ``{'type': 'never'}``.  For more
-                information refer to `Schedule Dictionaries`_
+                then we will default to ``{'type': 'never'}``.
             repo_type (str, optional):
                 What type of repository is this?  Valid choices are ``Local``,
                 ``Remote``, and ``Offline``.  The default if unspecified is
@@ -417,12 +401,10 @@ class RepositoryAPI(SCEndpoint):
                 This is the .Nessus file generation schedule for IPv4 and IPv6
                 repository formats.  This option should only be used if there
                 is a need to consume the Repository in a raw Nessus XML format.
-                For more information refer to `Schedule Dictionaries`_
             mobile_sched (dict, optional):
                 When using the mobile repository format, this option will inform
                 Tenable.sc how often to perform the MDM synchronization into the
-                repository.  For more information refer to
-                `Schedule Dictionaries`_
+                repository.
             orgs (list, optional):
                 A list of Organization IDs used to assign the repository to 1 or
                 many organizations.
@@ -440,8 +422,7 @@ class RepositoryAPI(SCEndpoint):
             remote_sched (dict, optional):
                 When the Remote repository type is used, this is the schedule
                 dictionary that will inform Tenable.sc how often to synchronize
-                with the downstream Tenable.sc instance.  For more
-                information refer to `Schedule Dictionaries`_
+                with the downstream Tenable.sc instance.
             scanner_id (int, optional):
                 When using the mobile repository format, we must specify the
                 scanner from which to query the MDM source.

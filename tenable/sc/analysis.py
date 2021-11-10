@@ -1,5 +1,5 @@
 '''
-analysis
+Analysis
 ========
 
 The following methods allow for interaction into the Tenable.sc
@@ -73,12 +73,7 @@ Methods available on ``sc.analysis``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AnalysisAPI
-
-    .. automethod:: console
-    .. automethod:: events
-    .. automethod:: mobile
-    .. automethod:: scan
-    .. automethod:: vulns
+    :members:
 '''
 from .base import SCEndpoint, SCResultsIterator
 from tenable.utils import dict_merge

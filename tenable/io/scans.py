@@ -1,5 +1,5 @@
 '''
-scans
+Scans
 =====
 
 The following methods allow for interaction into the Tenable.io
@@ -871,7 +871,13 @@ class ScansAPI(TIOEndpoint):
                 If set, send the streaming response to this callable. The callable is
                 responsible for iterating over the stream but does *not* need to close
                 the file object. The signature for the callable is:
-                    def f(response: requests.Response, fobj: BytesIO, chunk_size) -> BytesIO
+
+                .. code-block:: python
+
+                    def f(response: requests.Response,
+                          fobj: BytesIO,
+                          chunk_size: int) -> BytesIO:
+
             history_id (int, optional):
                 The unique identifier for the instance of the scan.
             history_uuid (uuid, optional):

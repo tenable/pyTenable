@@ -1,5 +1,5 @@
 '''
-plugins
+Plugins
 =======
 
 The following methods allow for interaction with the Tenable.sc
@@ -10,9 +10,7 @@ Methods available on ``sc.plugins``:
 
 .. rst-class:: hide-signature
 .. autoclass:: PluginAPI
-
-    .. automethod:: list
-    .. automethod:: details
+    :members:
 '''
 from .base import SCEndpoint, SCResultsIterator
 from tenable.errors import UnexpectedValueError
@@ -175,7 +173,7 @@ class PluginAPI(SCEndpoint):
             dict: The plugin resource record.
 
         Examples:
-            >>> plugin = sc.alerts.detail(19506)
+            >>> plugin = sc.plugins.detail(19506)
             >>> pprint(plugin)
        '''
         params = dict()
