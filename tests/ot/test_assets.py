@@ -109,3 +109,4 @@ def test_list(fixture_ot):
 
     resp = fixture_ot.assets.list()
     assert resp.next() == expected
+

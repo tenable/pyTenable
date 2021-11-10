@@ -57,7 +57,7 @@ class GraphqlParsingError(Exception):
 
     def __init__(self, message):
         self.message = message
-        super(GraphqlParsingError, self).__init__()
+        super().__init__()
 
     def __str__(self):
         return self.message

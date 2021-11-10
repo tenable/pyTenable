@@ -293,7 +293,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             >>> sc = TenableSC('127.0.0.1', port=8443)
             >>> sc.login(access_key='ACCESSKEY', secret_key='SECRETKEY')
         '''
-        self.e_authenticate(**{
+        self._authenticate(**{
             'username': username,
             'password': password,
             'access_key': access_key,

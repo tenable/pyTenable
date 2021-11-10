@@ -16,7 +16,7 @@ class OTGraphIterator(APIIterator):
 
     def __init__(self, api, graph_object, **kwargs):
         self._graph_object = graph_object
-        super(OTGraphIterator, self).__init__(api, **kwargs)
+        super().__init__(api, **kwargs)
 
     def _get_page(self):
         '''
@@ -27,8 +27,7 @@ class OTGraphIterator(APIIterator):
             'variables': self._graph_object.query_variables
         }
 
-        resp = self._api.post(
-            'graphql', json=graph_full_object).json()
+        resp = self._api.graphql(**graph_full_object)
         if 'error' in resp:
             errors = GraphqlErrorSchema(many=True).load(
                 resp['error']['errors'], unknown=EXCLUDE)

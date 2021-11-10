@@ -12,6 +12,7 @@ This package covers the Tenable.ot interface.
     :hidden:
     :glob:
 
+    assets
 '''
 import os
 import warnings
@@ -111,7 +112,7 @@ class TenableOT(APIPlatform):
             ...         }
             ... \'\'\')
         '''
-        return self.post('graphql', json=kwargs).json()
+        return self.post('graphql', json=kwargs)
 
     @property
     def assets(self):
