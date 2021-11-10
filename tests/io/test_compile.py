@@ -15,7 +15,8 @@ from tenable.io.base import TIOEndpoint, TIOIterator
 from tenable.io.credentials import CredentialsIterator, CredentialsAPI
 from tenable.io.editor import EditorAPI
 from tenable.io.exclusions import ExclusionsAPI
-from tenable.io.exports import ExportsIterator, ExportsAPI
+from tenable.io.exports.api import ExportsAPI
+from tenable.io.exports.iterator import ExportsIterator
 from tenable.io.files import FileAPI
 from tenable.io.filters import FiltersAPI
 from tenable.io.folders import FoldersAPI
