@@ -1,5 +1,5 @@
 '''
-users
+Users
 =====
 
 The following methods allow for interaction into the Tenable.sc
@@ -10,12 +10,7 @@ Methods available on ``sc.users``:
 
 .. rst-class:: hide-signature
 .. autoclass:: UserAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
+    :members:
 '''
 from .base import SCEndpoint
 

@@ -11,7 +11,8 @@ Methods available on ``tio.cs.images``:
 .. autoclass:: ImagesAPI
     :members:
 '''
-from typing import Optional, Dict, Literal, Union
+from typing_extensions import Literal
+from typing import Optional, Dict, Union
 from restfly.utils import dict_clean
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.cs.iterator import CSIterator

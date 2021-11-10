@@ -1,5 +1,5 @@
 '''
-files
+Files
 =====
 
 The following methods allow for interaction into the Tenable.sc
@@ -9,9 +9,7 @@ Methods available on ``sc.files``:
 
 .. rst-class:: hide-signature
 .. autoclass:: FileAPI
-
-    .. automethod:: clear
-    .. automethod:: upload
+    :members:
 '''
 from .base import SCEndpoint
 

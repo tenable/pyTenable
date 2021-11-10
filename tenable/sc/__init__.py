@@ -1,4 +1,6 @@
 '''
+Tenable.sc
+==========
 
 .. note::
     Please refer to the common themes section for TenableSC for details on how
@@ -9,62 +11,39 @@
     method calls, which is conveniently linked in each method's docs.
 
 .. autoclass:: TenableSC
-
-    .. automethod:: login
-    .. automethod:: logout
-
-.. automodule:: tenable.sc.alerts
-.. automodule:: tenable.sc.accept_risks
-.. automodule:: tenable.sc.analysis
-.. automodule:: tenable.sc.asset_lists
-.. automodule:: tenable.sc.audit_files
-.. automodule:: tenable.sc.credentials
-.. automodule:: tenable.sc.current
-.. automodule:: tenable.sc.feeds
-.. automodule:: tenable.sc.files
-.. automodule:: tenable.sc.groups
-.. automodule:: tenable.sc.organizations
-.. automodule:: tenable.sc.plugins
-.. automodule:: tenable.sc.policies
-.. automodule:: tenable.sc.queries
-.. automodule:: tenable.sc.repositories
-.. automodule:: tenable.sc.roles
-.. automodule:: tenable.sc.scan_zones
-.. automodule:: tenable.sc.scans
-.. automodule:: tenable.sc.scan_instances
-.. automodule:: tenable.sc.scanners
-.. automodule:: tenable.sc.status
-.. automodule:: tenable.sc.system
-.. automodule:: tenable.sc.users
-.. automodule:: tenable.sc.base
+   :members:
 
 
-Raw HTTP Calls
-==============
+.. toctree::
+    :hidden:
+    :glob:
 
-Even though the ``TenableSC`` object pythonizes the Tenable.sc API for
-you, there may still bee the occasional need to make raw HTTP calls to the
-Tenable.sc API.  The methods listed below aren't run through any
-naturalization by the library aside from the response code checking.  These
-methods effectively route directly into the requests session.  The responses
-will be Response objects from the ``requests`` library.  In all cases, the path
-is appended to the base ``url`` parameter that the ``TenableSC`` object was
-instantiated with.
+    base
+    accept_risks
+    alerts
+    analysis
+    asset_lists
+    audit_files
+    credentials
+    current
+    feeds
+    files
+    groups
+    organizations
+    plugins
+    policies
+    queries
+    recast_risks
+    repositories
+    roles
+    scan_instances
+    scan_zones
+    scanners
+    scans
+    status
+    system
+    users
 
-Example:
-
-.. code-block:: python
-
-   resp = sc.get('feed')
-
-.. py:module:: tenable.sc
-.. rst-class:: hide-signature
-.. py:class:: TenableSC
-
-    .. automethod:: get
-    .. automethod:: post
-    .. automethod:: put
-    .. automethod:: delete
 '''
 import warnings
 from typing import Optional
@@ -317,96 +296,192 @@ class TenableSC(APIPlatform):  # noqa PLR0904
 
     @property
     def accept_risks(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Accept Risks APIs <accept_risks>`.
+        '''
         return AcceptRiskAPI(self)
 
     @property
     def alerts(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Alerts APIs <alerts>`.
+        '''
         return AlertAPI(self)
 
     @property
     def analysis(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Analysis APIs <analysis>`.
+        '''
         return AnalysisAPI(self)
 
     @property
     def asset_lists(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Asset Lists APIs <asset_lists>`.
+        '''
         return AssetListAPI(self)
 
     @property
     def audit_files(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Audit Files APIs <audit_files>`.
+        '''
         return AuditFileAPI(self)
 
     @property
     def credentials(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Credentials APIs <credentials>`.
+        '''
         return CredentialAPI(self)
 
     @property
     def current(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Current Session APIs <current>`.
+        '''
         return CurrentSessionAPI(self)
 
     @property
     def feeds(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Feeds APIs <feeds>`.
+        '''
         return FeedAPI(self)
 
     @property
     def files(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Files APIs <files>`.
+        '''
         return FileAPI(self)
 
     @property
     def groups(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Groups APIs <groups>`.
+        '''
         return GroupAPI(self)
 
     @property
     def organizations(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Organization APIs <organizations>`.
+        '''
         return OrganizationAPI(self)
 
     @property
     def plugins(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Plugins APIs <plugins>`.
+        '''
         return PluginAPI(self)
 
     @property
     def policies(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Policies APIs <policies>`.
+        '''
         return ScanPolicyAPI(self)
 
     @property
     def queries(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Queries APIs <queries>`.
+        '''
         return QueryAPI(self)
 
     @property
     def recast_risks(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Recast Risks APIs <recast_risks>`.
+        '''
         return RecastRiskAPI(self)
 
     @property
     def repositories(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Repositories APIs <repositories>`.
+        '''
         return RepositoryAPI(self)
 
     @property
     def roles(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Roles APIs <roles>`.
+        '''
         return RoleAPI(self)
 
     @property
     def scanners(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Scanners APIs <scanners>`.
+        '''
         return ScannerAPI(self)
 
     @property
     def scans(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Scans APIs <scans>`.
+        '''
         return ScanAPI(self)
 
     @property
     def scan_instances(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Scan Instances APIs <scan_instances>`.
+        '''
         return ScanResultAPI(self)
 
     @property
     def scan_zones(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Scan Zones APIs <scan_zones>`.
+        '''
         return ScanZoneAPI(self)
 
     @property
     def status(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Status APIs <status>`.
+        '''
         return StatusAPI(self)
 
     @property
     def system(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc System APIs <system>`.
+        '''
         return SystemAPI(self)
 
     @property
     def users(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc Users APIs <users>`.
+        '''
         return UserAPI(self)

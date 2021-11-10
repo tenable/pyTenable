@@ -1,5 +1,5 @@
 '''
-system
+System
 ======
 
 The following methods allow for interaction into the Tenable.sc
@@ -10,13 +10,7 @@ Methods available on ``sc.system``:
 
 .. rst-class:: hide-signature
 .. autoclass:: SystemAPI
-
-    .. automethod:: current_locale
-    .. automethod:: details
-    .. automethod:: diagnostics
-    .. automethod:: list_locales
-    .. automethod:: set_locale
-    .. automethod:: status
+    :members:
 '''
 from .base import SCEndpoint
 from io import BytesIO

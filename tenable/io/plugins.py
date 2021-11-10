@@ -1,5 +1,5 @@
 '''
-plugins
+Plugins
 =======
 
 The following methods allow for interaction into the Tenable.io
@@ -155,7 +155,7 @@ class PluginsAPI(TIOEndpoint):
         '''
         Get the listing of plugin details from Tenable.io.
 
-        :devportal:`plugins: list <>`_
+        :devportal:`plugins: list <io-plugins-list>`
 
         Args:
             size (int, optional):

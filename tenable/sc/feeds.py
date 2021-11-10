@@ -1,5 +1,5 @@
 '''
-feeds
+Feeds
 =====
 
 The following methods allow for interaction into the Tenable.sc
@@ -9,10 +9,7 @@ Methods available on ``sc.feeds``:
 
 .. rst-class:: hide-signature
 .. autoclass:: FeedAPI
-
-    .. automethod:: process
-    .. automethod:: status
-    .. automethod:: update
+    :members:
 '''
 from .base import SCEndpoint
 

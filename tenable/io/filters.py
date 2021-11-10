@@ -1,5 +1,5 @@
 '''
-filters
+Filters
 =======
 
 The following methods allow for interaction into the Tenable.io
@@ -112,8 +112,7 @@ class FiltersAPI(TIOEndpoint):
         '''
         Returns access group rules filters v2.
 
-        :devportal:`filters: access_group_asset_rules_filters_v2
-            <v2-access-groups-list-rule-filters>`
+        :devportal:`filters: access_group_asset_rules_filters_v2 <v2-access-groups-list-rule-filters>`
 
         Returns:
             :obj:`dict`:

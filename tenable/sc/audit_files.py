@@ -1,5 +1,5 @@
 '''
-audit_files
+Audit Files
 ===========
 
 The following methods allow for interaction into the Tenable.sc
@@ -11,15 +11,7 @@ Methods available on ``sc.audit_files``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AuditFileAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
-    .. automethod:: template_categories
-    .. automethod:: template_details
-    .. automethod:: template_list
+    :members:
 '''
 from .base import SCEndpoint
 from io import BytesIO

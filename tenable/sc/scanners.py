@@ -1,5 +1,5 @@
 '''
-scanners
+Scanners
 ========
 
 The following methods allow for interaction into the Tenable.sc
@@ -10,14 +10,7 @@ Methods available on ``sc.scanners``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScannerAPI
-
-    .. automethod:: agent_scans
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
-    .. automethod:: update_status
+    :members:
 '''
 from .base import SCEndpoint
 from tenable.utils import dict_merge

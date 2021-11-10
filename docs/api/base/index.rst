@@ -7,5 +7,4 @@ Cross-Package Tooling
 
     platform
     endpoint
-    schemas
     v1

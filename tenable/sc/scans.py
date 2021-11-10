@@ -1,5 +1,5 @@
 '''
-scans
+Scans
 =====
 
 The following methods allow for interaction into the Tenable.sc
@@ -13,14 +13,7 @@ Methods available on ``sc.scans``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScanAPI
-
-    .. automethod:: copy
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: launch
-    .. automethod:: list
+    :members:
 '''
 from .base import SCEndpoint
 from tenable.utils import dict_merge
@@ -275,7 +268,6 @@ class ScanAPI(SCEndpoint):
                 then the default of "0" or "All Zones" is selected.
             schedule (dict, optional):
                 A dictionary detailing the repeating schedule of the scan.
-                For more information refer to `Schedule Dictionaries`_
             targets (list, optional):
                 A list of valid targets.  These targets could be IPs, FQDNs,
                 CIDRs, or IP ranges.
@@ -384,7 +376,6 @@ class ScanAPI(SCEndpoint):
                 The zone identifier to use for the scan.
             schedule (dict, optional):
                 A dictionary detailing the repeating schedule of the scan.
-                For more information refer to `Schedule Dictionaries`_
             targets (list, optional):
                 A list of valid targets.  These targets could be IPs, FQDNs,
                 CIDRs, or IP ranges.

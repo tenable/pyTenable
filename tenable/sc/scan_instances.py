@@ -1,5 +1,5 @@
 '''
-scan_instances
+Scan Instances
 ==============
 
 The following methods allow for interaction into the Tenable.sc
@@ -14,18 +14,7 @@ Methods available on ``sc.scan_instances``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScanResultAPI
-
-    .. automethod:: copy
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: email
-    .. automethod:: export_scan
-    .. automethod:: import_scan
-    .. automethod:: list
-    .. automethod:: pause
-    .. automethod:: reimport_scan
-    .. automethod:: resume
-    .. automethod:: stop
+    :members:
 '''
 from .base import SCEndpoint
 from tenable.utils import dict_merge

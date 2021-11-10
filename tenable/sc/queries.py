@@ -1,5 +1,5 @@
 '''
-queries
+Queries
 =======
 
 The following methods allow for interaction into the Tenable.sc
@@ -10,14 +10,7 @@ Methods available on ``sc.queries``:
 
 .. rst-class:: hide-signature
 .. autoclass:: QueryAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
-    .. automethod:: share
-    .. automethod:: tags
+    :members:
 '''
 from .base import SCEndpoint
 from tenable.utils import dict_merge

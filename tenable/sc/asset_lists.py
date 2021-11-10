@@ -1,5 +1,5 @@
 '''
-asset_lists
+Asset Lists
 ===========
 
 The following methods allow for interaction into the Tenable.sc
@@ -10,12 +10,7 @@ Methods available on ``sc.asset_lists``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AssetListAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: list
+    :members:
 '''
 from .base import SCEndpoint
 from tenable.errors import UnexpectedValueError

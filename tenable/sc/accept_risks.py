@@ -1,5 +1,5 @@
 '''
-accept_risks
+Accept Risks
 ============
 
 The following methods allow for interaction into the Tenable.sc
@@ -9,12 +9,7 @@ Methods available on ``sc.accept_risks``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AcceptRiskAPI
-
-    .. automethod:: apply
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: list
+    :members:
 '''
 from .base import SCEndpoint
 

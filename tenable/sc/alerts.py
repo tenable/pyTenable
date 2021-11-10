@@ -1,5 +1,5 @@
 '''
-alerts
+Alerts
 ======
 
 The following methods allow for interaction into the Tenable.sc
@@ -9,13 +9,7 @@ Methods available on ``sc.alerts``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AlertAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: edit
-    .. automethod:: execute
-    .. automethod:: list
+    :members:
 
 .. _iCal Date-Time:
     https://tools.ietf.org/html/rfc5545#section-3.3.5
@@ -166,8 +160,7 @@ class AlertAPI(SCEndpoint):
             schedule (dict, optional):
                 This is the schedule dictionary that will inform Tenable.sc how
                 often to run the alert.  If left unspecified then we will
-                default to ``{'type': 'never'}``.  For more information refer to
-                `Schedule Dictionaries`_
+                default to ``{'type': 'never'}``.
             action (list):
                 The action(s) that will be performed when the alert trigger
                 fires.  Each action is a dictionary detailing what type of
@@ -234,6 +227,7 @@ class AlertAPI(SCEndpoint):
                 The alert resource created.
 
         Examples:
+
             >>> sc.alerts.create(
             ...     ('severity', '=', '3,4'),
             ...     ('exploitAvailable', '=', 'true'),
@@ -277,8 +271,7 @@ class AlertAPI(SCEndpoint):
             schedule (dict, optional):
                 This is the schedule dictionary that will inform Tenable.sc how
                 often to run the alert.  If left unspecified then we will
-                default to ``{'type': 'never'}``.  For more information refer to
-                `Schedule Dictionaries`_
+                default to ``{'type': 'never'}``.
             action (list):
                 The action(s) that will be performed when the alert trigger
                 fires.  Each action is a dictionary detailing what type of
@@ -289,6 +282,7 @@ class AlertAPI(SCEndpoint):
                 The modified alert resource.
 
         Examples:
+
             >>> sc.alerts.update(1, name='New Alert Name')
         '''
         payload = self._constructor(*filters, **kw)

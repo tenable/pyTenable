@@ -44,10 +44,10 @@ class RemediationScansIteratorV2(TIOIterator):
 
 
 class RemediationScansAPI(TIOEndpoint):
-    '''
-    This will contain all methods related to Remediation scans
-    '''
-    def list_remediation_scan(self, limit=50, offset=0, sortval='scan_creation_date:desc'):
+    def list_remediation_scan(self,
+                              limit=50,
+                              offset=0,
+                              sortval='scan_creation_date:desc'):
         '''
         Retrieve the list of Remediation scans.
 
@@ -67,12 +67,13 @@ class RemediationScansAPI(TIOEndpoint):
                 records.
 
         Examples:
+
             >>> for remediation_scan in tio.scans.list():
             ...     pprint(remediation_scan)
 
             For further information on credentials, what settings to use, etc,
             refer to
-            `this doc <https://developer.tenable.com/reference#io-scans-remediation-list>`_
+            `this doc <https://developer.tenable.com/reference#io-scans-remediation-list>`_  # noqa: E501
             on the developer portal.
 
             '''
@@ -86,23 +87,21 @@ class RemediationScansAPI(TIOEndpoint):
             params['sort'] = self._check('sort', sortval, str)
 
         return RemediationScansIteratorV2(self._api,
-        _limit=limit,
-        _offset=offset,
-        _pages_total=pages,
-        _query=params,
-        _path='scans/remediation',
-        _resource='scans')
+                                          _limit=limit,
+                                          _offset=offset,
+                                          _pages_total=pages,
+                                          _query=params,
+                                          _path='scans/remediation',
+                                          _resource='scans')
 
     def create_remediation_scan(self, **kwargs):
         '''
         Create a new remediation scan.
 
-        :devportal:`scans: create_remediation_scan <io-scans-remediation-create>`
+        :devportal:`scans: create_remediation_scan <io-scans-remediation-create>`  # noqa: E501
 
         Args:
             uuid (str, optional): UUID of Remediation scan template
-                Settings Object Parameters -
-                    These are parameters passed through the keywords
             name (str): The name of the remediation scan to create.
             description (str, optional): The name of the scan to create.
             policy (int, optional):
@@ -114,12 +113,13 @@ class RemediationScansAPI(TIOEndpoint):
                 You can use the special value AUTO-ROUTED to assign scan
                 targets to scanner groups based on the groups' configured
                 scan routes.
-            target_network_uuid (str, optional): For remediation scans, enter a valid target
-                network UUID from a previous scan you wish to remediate.
-            scan_time_window (int, optional): The time frame, in minutes, during which agents
-                must transmit scan results to Tenable.io in order to be included in
-                dashboards and reports. If your request omits this parameter,
-                the default value is 180 minutes.
+            target_network_uuid (str, optional): For remediation scans, enter
+                a valid target network UUID from a previous scan you wish to
+                remediate.
+            scan_time_window (int, optional): The time frame, in minutes,
+                during which agents must transmit scan results to Tenable.io
+                in order to be included in dashboards and reports. If your
+                request omits this parameter, the default value is 180 minutes.
                 For non-agent scans, this attribute is null.
             text_targets (str, optional): The List of targets to scan
             targets (list, optional):
@@ -127,28 +127,33 @@ class RemediationScansAPI(TIOEndpoint):
                 be formatted to an appropriate text_target attribute.
                 A list of targets to scan
             target_groups (list[int]):
-                For remediation scans, enter a valid target group ID from a previous scan you wish to remediate.
+                For remediation scans, enter a valid target group ID from a
+                previous scan you wish to remediate.
             file_targets (string, optional):
                 The name of a file containing the list of targets to scan.
             tag_targets (list[str], optional):
-                The list of asset tag identifiers that the scan uses to determine which assets it evaluates
+                The list of asset tag identifiers that the scan uses to
+                determine which assets it evaluates
             agent_group_id (list[str], optional):
                 An array of agent group UUIDs to scan.
             emails (list[str], optional):
-                A comma-separated list of accounts that receive the email summary report.
+                A comma-separated list of accounts that receive the email
+                summary report.
             acls (list[dict], optional):
-                A list of dictionaries containing permissions to apply to the scan.
+                A list of dictionaries containing permissions to apply to the
+                scan.
             credentials (dict, optional):
                 A list of credentials to use.
             enabled_plugins (list, optional):
                 A list of plugins IDs to add to a remediation scan.
             **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
-                API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
-                more detailed information, please refer to the API documentation
-                linked above.  Further, any keyword arguments passed that are
-                not explicitly documented will be automatically appended to the
-                settings document.  There is no need to pass settings directly.
+                API.  Examples would be `name`, `email`, `scanner_id`, etc.
+                For more detailed information, please refer to the API
+                documentation linked above.  Further, any keyword arguments
+                passed that are not explicitly documented will be automatically
+                appended to the settings document.  There is no need to pass
+                settings directly.
 
         Returns:
             :obj:`dict`:
@@ -180,13 +185,12 @@ class RemediationScansAPI(TIOEndpoint):
         scan = self._create_scan_document(kwargs)
 
         # Run the API call and return the result to the caller.
-        return  self._api.post('scans/remediation', json=scan).json()['scan']
+        return self._api.post('scans/remediation', json=scan).json()['scan']
 
     def _create_scan_document(self, kwargs):
         '''
-
-        Takes the key-worded arguments and will provide a scan settings document
-        based on the values inputted.
+        Takes the key-worded arguments and will provide a scan settings
+        document based on the values inputted.
 
         Args:
             kwargs (dict): The keyword dict passed from the user

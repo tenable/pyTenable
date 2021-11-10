@@ -1,5 +1,5 @@
 '''
-status
+Status
 ======
 
 The following methods allow for interaction into the Tenable.sc
@@ -10,8 +10,7 @@ Methods available on ``sc.status``:
 
 .. rst-class:: hide-signature
 .. autoclass:: StatusAPI
-
-    .. automethod:: status
+    :members:
 '''
 from .base import SCEndpoint
 
