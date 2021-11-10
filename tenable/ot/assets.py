@@ -9,73 +9,73 @@ These methods can be accessed at ``TenableOT.assets``.
 .. autoclass:: AssetsAPI
     :members:
 '''
+from typing import List, Optional
 from tenable.base.endpoint import APIEndpoint
-from .schemas.paging import PaginationSchema
-from .schemas.iterators import OTIterator
-from box import BoxList
+from tenable.ot.graphql.assets import (
+    ASSETS_QUERY,
+    ASSETS_QUERY_OBJECT_NAME,
+    AssetsSchema
+)
+from tenable.ot.graphql.definitions import GraphObject
+from tenable.ot.graphql.iterators import OTGraphIterator
 
 
 class AssetsAPI(APIEndpoint):
     _path = 'assets'
 
-    def list(self, **kwargs):
+    def list(self,
+             filter: Optional[dict] = None,
+             search: Optional[str] = None,
+             sort: Optional[List[dict]] = None,
+             start_at: Optional[str] = None,
+             limit: Optional[int] = 200,
+             **kwargs):
         '''
-        Retrieves a list of assets.
+        Retrieves a list of assets via the GraphQL API.
 
         Args:
-            filters (list[tuple], optional):
-                A list of filter tuples.
-            orderBy (list[dict], optional):
-                A list of order documents, each of which must contain both the
-                ``field`` and ``direction`` keys.
-            search (str, optional):
+            filter(dict, optional):
+                A document as defined by Tenable.ot online documentation.
+            search(str, optional):
                 A search string to further limit the response.
+            sort(list[dict], optional):
+                A list of order documents, each of which must contain both the
+                ``field`` and ``direction`` keys and may also contain the
+                optional ``function`` key. Default sort is by descending id
+                order. Please refer to Tenable.ot online documentation for more
+                information.
+            start_at(str, optional):
+                The cursor to start the scan from (the default is an empty
+                cursor).
+            limit(int, optional):
+                Max number of objects that get retrieved per page (the default
+                is 200).
 
         Returns:
-            :obj:`OTIterator`:
+            :obj:`OTGraphIterator`:
                 An iterator object that will handle pagination of the data.
 
         Example:
-            >>> for asset in ot.assets.list():
-            ...     print(asset)
+            >>>     for asset in tot.assets.list(limit=500):
+                        print(asset)
         '''
-        schema = PaginationSchema()
-        kwargs['model'] = 'assets'
-        return OTIterator(self._api,
-            path=self._path,
-            payload=schema.load(kwargs)
+        if not sort:
+            sort = [{'field': 'id', 'direction': 'DescNullLast'}]
+
+        query_variables = {
+            'search': search,
+            'sort': sort,
+            'startAt': start_at,
+            'limit': limit
+        }
+        if filter:
+            query_variables['filter'] = filter
+
+        graph_obj = GraphObject(
+            object_name=ASSETS_QUERY_OBJECT_NAME,
+            query=ASSETS_QUERY,
+            resp_schema=AssetsSchema,
+            query_variables=query_variables
         )
 
-    def details(self, id):
-        '''
-        Retrieve the details of a given asset
-
-        Args:
-            id (str):
-                The unique identifier for the asset.
-
-        Returns:
-            :obj:`dict`:
-                The resource record for the asset
-
-        Example:
-            >>> asset = ot.assets.details(id)
-        '''
-        return self._get(id)
-
-    def connections(self, id):
-        '''
-        Retrieve the connections of a given asset
-
-        Args:
-            id (str):
-                The unique identifier for the asset.
-
-        Returns:
-            :obj:`list`:
-                The list of connections present on the given asset.
-
-        Example:
-            >>> connections = ot.assets.connections(id)
-        '''
-        return self._get('{}/connections'.format(id), box=BoxList)
+        return OTGraphIterator(self._api, graph_obj, **kwargs)
