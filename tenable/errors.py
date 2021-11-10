@@ -6,6 +6,7 @@
 .. autoclass:: TioExportsError
 .. autoclass:: TioExportsTimeout
 '''
+from typing import Optional
 from restfly.errors import *
 
 
@@ -46,10 +47,13 @@ class TioExportsError(RestflyException):
     will throw this error in turn to relay that context to the user.
     '''
 
-    def __init__(self, export: str, uuid: str):
+    def __init__(self, export: str, uuid: str, msg: Optional[str] = None):
         self.export = export
         self.uuid = uuid
-        super().__init__(self, r'{export} export {uuid} has errored.')
+        if not msg:
+            msg = f'{export} export {uuid} has errored.'
+        self.msg = msg
+        super().__init__(msg)
 
 
 class TioExportsTimeout(TioExportsError):
@@ -57,10 +61,15 @@ class TioExportsTimeout(TioExportsError):
     When an export has been cancelled due to timeout, this error is thrown.
     '''
 
+    def __init__(self, export: str, uuid: str, msg: Optional[str] = None):
+        msg = f'{export} export {uuid} has timed out.'
+        super().__init__(export, uuid, msg)
+
 
 class ImpersonationError(APIError):
     '''
-    An ImpersonationError exists when there is an issue with user impersonation.
+    An ImpersonationError exists when there is an issue with user
+    impersonation.
 
     Attributes:
         code (int):

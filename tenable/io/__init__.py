@@ -56,7 +56,7 @@ from .audit_log import AuditLogAPI
 from .credentials import CredentialsAPI
 from .editor import EditorAPI
 from .exclusions import ExclusionsAPI
-from .exports import ExportsAPI
+from .exports.api import ExportsAPI
 from .files import FileAPI
 from .filters import FiltersAPI
 from .folders import FoldersAPI
