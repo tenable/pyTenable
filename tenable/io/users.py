@@ -216,14 +216,16 @@ class UsersAPI(TIOEndpoint):
         self._api.put('users/{}/two-factor'.format(
             self._check('user_id', user_id, int)), json=payload)
 
-    def enable_two_factor(self, user_id, phone):
+    def enable_two_factor(self, user_id, phone, password):
         '''
         Enable phone-based two-factor authorization for a specific user.
 
         :devportal:`users: two-factor-enable <users-two-factor-enable>`
 
         Args:
+            user_id (int): The user id
             phone (str): The phone number to use for two-factor auth.
+            password (str): The user password.
 
         Returns:
             :obj:`None`:
@@ -234,7 +236,9 @@ class UsersAPI(TIOEndpoint):
         '''
         self._api.post('users/{}/two-factor/send-verification'.format(
             self._check('user_id', user_id, int)), json={
-                'sms_phone': self._check('phone', phone, str)})
+                'sms_phone': self._check('phone', phone, str),
+                'password': self._check('password', password, str)
+            })
 
     def verify_two_factor(self, user_id, code):
         '''
