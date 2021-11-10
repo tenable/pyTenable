@@ -2,10 +2,13 @@
 test base
 '''
 import responses
-
 from tenable.ot.assets import AssetsAPI
-from tenable.ot.network_interfaces import NetworkInterfacesAPI
-from tenable.ot.vulns import VulnsAPI
+from tenable.ot.graphql.definitions import (
+    Extensions,
+    GraphqlError,
+    GraphqlErrorSchema,
+    Location,
+)
 
 
 def test_ot_interfaces(fixture_ot):
@@ -13,12 +16,10 @@ def test_ot_interfaces(fixture_ot):
     Testing that the right interfaces are returned.
     '''
     assert isinstance(fixture_ot.assets, AssetsAPI)
-    assert isinstance(fixture_ot.network_interfaces, NetworkInterfacesAPI)
-    assert isinstance(fixture_ot.vulns, VulnsAPI)
 
 
 @responses.activate
-def test_graph_api(fixture_ot):
+def test_graphql_direct_api(fixture_ot):
     '''
     Test the graph api method.
     '''
@@ -51,8 +52,42 @@ def test_graph_api(fixture_ot):
             }
         '''
     )
-    assert resp.data.asset.id == 'something'
-    assert resp.data.asset.type == 'EngType'
-    assert resp.data.asset.name == 'Eng. Station #40'
-    assert resp.data.asset.criticality == 'HighCriticality'
-    assert resp.data.asset.location is None
+    assert resp['data']['asset']['id'] == 'something'
+    assert resp['data']['asset']['type'] == 'EngType'
+    assert resp['data']['asset']['name'] == 'Eng. Station #40'
+    assert resp['data']['asset']['criticality'] == 'HighCriticality'
+    assert resp['data']['asset']['location'] is None
+
+
+def test_graphql_error_parsing():
+    '''
+    Test GraphQL single error parsing.
+    '''
+    raw_err = {
+        "message": "Test error",
+        "locations": [
+            {
+                "line": 4,
+                "column": 7
+            }
+        ],
+        "path": ['asset'],
+        "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+        }
+    }
+
+    expected_err = GraphqlError(
+        message="Test error",
+        locations=[
+            Location(
+                line=4,
+                column=7
+            )
+        ],
+        path=['asset'],
+        extensions=Extensions(code='GRAPHQL_VALIDATION_FAILED')
+    )
+
+    parsed_err = GraphqlErrorSchema().load(raw_err)
+    assert parsed_err == expected_err

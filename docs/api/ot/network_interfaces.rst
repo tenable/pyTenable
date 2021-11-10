@@ -1,1 +1,0 @@
-.. automodule:: tenable.ot.network_interfaces

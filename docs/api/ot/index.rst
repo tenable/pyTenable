@@ -1,1 +1,1 @@
-.. automodule:: tenable.ot
+.. automodule:: tenable.ot.session
