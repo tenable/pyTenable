@@ -15,6 +15,7 @@ This package covers the Tenable.ad interface.
     about
     api_keys
     directories
+    users
     widget
 '''
 from .session import TenableAD  # noqa: F401
