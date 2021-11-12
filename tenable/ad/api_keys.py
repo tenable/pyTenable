@@ -2,14 +2,13 @@
 APIKeys
 =======
 
-Methods described in this section relate to the the about API.
+Methods described in this section relate to the the APIKeys API.
 These methods can be accessed at ``TenableAD.api_keys``.
 
 .. rst-class:: hide-signature
 .. autoclass:: APIKeyAPI
     :members:
 '''
-from typing import List, Dict
 from tenable.base.endpoint import APIEndpoint
 
 

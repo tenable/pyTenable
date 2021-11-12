@@ -1,5 +1,5 @@
 from marshmallow import fields
-from .base.schema import CamelCaseSchema
+from tenable.ad.base.schema import CamelCaseSchema
 
 
 class DirectorySchema(CamelCaseSchema):

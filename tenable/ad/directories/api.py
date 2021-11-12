@@ -1,6 +1,24 @@
 '''
+Directory
+=========
+
+Methods described in this section relate to the the directory API.
+These methods can be accessed at ``TenableAD.directories``.
+
+.. rst-class:: hide-signature
+.. autoclass:: DirectoriesAPI
+
+    .. automethod:: create
+    .. automethod:: delete
+    .. automethod:: details
+    .. automethod:: update
+    .. automethod:: list
 '''
 from typing import List, Dict
+
+from marshmallow import INCLUDE
+from restfly.utils import dict_clean
+
 from tenable.base.endpoint import APIEndpoint
 from .schema import DirectorySchema
 
@@ -8,7 +26,7 @@ from .schema import DirectorySchema
 class DirectoriesAPI(APIEndpoint):
     _path = 'directories'
 
-    def list(self) -> List:
+    def list(self) -> List[Dict]:
         '''
         Retrieve all directory instances
 
@@ -20,42 +38,39 @@ class DirectoriesAPI(APIEndpoint):
 
             >>> tad.directories.list()
         '''
-        schema = DirectorySchema()
+        schema = DirectorySchema(unknown=INCLUDE)
         return schema.load(self._get(), many=True)
 
     def create(self,
                infrastructure_id: int,
                name: str,
                ip: str,
-               directory_type: str,
                dns: str,
-               ldap_port: int = 389,
-               global_catalog_port: int = 3268,
-               smb_port: int = 445,
-               ) -> Dict:
+               **kwargs
+               ) -> List[Dict]:
         '''
         Create a new directory instance
 
         Args:
-            infrastructure_id:
+            infrastructure_id (int):
                 The infrastructure object to bind this directory to.
-            name:
+            name (str):
                 Name of the directory instance.
-            ip:
+            ip (str):
                 The IP Address of the directory server.
-            directory_type:
-                ???
-            dns:
+            dns (str):
                 The DNS domain that this directory is tied to.
-            ldap_port:
-                The port number associated to the LDAP service on the directory
-                server.
-            global_catalog_port:
+            directory_type (optional, str):
+                ???
+            ldap_port (optional, str):
+                The port number associated to the LDAP service on the
+                directory server.
+            global_catalog_port (optional, str):
                 The port number associated to the Global Catalog service
                 running on the directory server.
-            smb_port:
-                The port number associated to the Server Messaging Block (SMB)
-                service running on the directory server.
+            smb_port (optional, str):
+                The port number associated to the Server Messaging
+                Block (SMB) service running on the directory server.
 
         Returns:
             dict:
@@ -71,25 +86,27 @@ class DirectoriesAPI(APIEndpoint):
             ...     dns='company.tld',
             ...     )
         '''
-        schema = DirectorySchema()
-        payload = schema.dump(schema.load({
-            'infrastructureId': infrastructure_id,
-            'name': name,
-            'ip': ip,
-            'type': directory_type,
-            'dns': dns,
-            'ldapPort': ldap_port,
-            'globalCatalogPort': global_catalog_port,
-            'smbPort': smb_port,
-        }))
-        return schema.load(self._post(json=payload))
+        schema = DirectorySchema(unknown=INCLUDE)
+        payload = [schema.dump(schema.load(
+            dict_clean({
+                'infrastructureId': infrastructure_id,
+                'name': name,
+                'ip': ip,
+                'type': kwargs.get('directory_type'),
+                'dns': dns,
+                'ldapPort': kwargs.get('ldap_port'),
+                'globalCatalogPort': kwargs.get('global_catalog_port'),
+                'smbPort': kwargs.get('smb_port')
+            })
+        ))]
+        return schema.load(self._post(json=payload), many=True)
 
-    def details(self, directory_id: int) -> Dict:
+    def details(self, directory_id: str) -> Dict:
         '''
         Retrieves the details for a specific directory instance.
 
         Args:
-            directory_id: The directory instance identifier.
+            directory_id (str): The directory instance identifier.
 
         Returns:
             dict:
@@ -99,7 +116,8 @@ class DirectoriesAPI(APIEndpoint):
 
             >>> tad.directories.details(1)
         '''
-        return self._get(directory_id)
+        schema = DirectorySchema(unknown=INCLUDE)
+        return schema.load(self._get(directory_id))
 
     def update(self,
                infrastructure_id: int,
@@ -107,8 +125,49 @@ class DirectoriesAPI(APIEndpoint):
                **kwargs
                ) -> Dict:
         '''
+        Updates the directory instance based on infrastrcture_id and
+        directory_id.
+
+        Args:
+            infrastructure_id (int):
+                The infrastructure instance identifier.
+            directory_id (int):
+                The directory instance identifier.
+            name (optional, str):
+                Name of the directory instance.
+            ip (optional, str):
+                The IP Address of the directory server.
+            directory_type (optional, str):
+                ???
+            dns (optional, str):
+                The DNS domain that this directory is tied to.
+            ldap_port (optional, int):
+                The port number associated to the LDAP service on the
+                directory server.
+            global_catalog_port (optional, str):
+                The port number associated to the Global Catalog service
+                running on the directory server.
+            smb_port (optional, str):
+                The port number associated to the Server Messaging
+                Block (SMB) service running on the directory server.
+
+        Returns:
+            dict:
+                The updated directory object.
+
+        Examples:
+
+            >>> tad.directories.update(infrastructure_id=2,
+            ...     directory_id=9,
+            ...     name='updated_new_name')
+
+            >>> tad.directories.update(infrastructure_id=2,
+            ...     directory_id=9,
+            ...     name='updated_new_name',
+            ...     ldap_port=390)
+
         '''
-        schema = DirectorySchema()
+        schema = DirectorySchema(unknown=INCLUDE)
         payload = schema.dump(schema.load(kwargs))
         return schema.load(
             self._api.patch((f'infrastructures/{infrastructure_id}'
@@ -117,6 +176,22 @@ class DirectoriesAPI(APIEndpoint):
 
     def delete(self, infrastructure_id: int, directory_id: int) -> None:
         '''
+        Deletes the directory instance.
+
+        Args:
+            infrastructure_id (int):
+                The infrastructure instance identifier.
+            directory_id (int):
+                The directory instance identifier.
+
+        Returns:
+            None:
+
+        Examples:
+
+            >>> tad.directories.delete(infrastructure_id=2,
+            ...     directory_id='12')
+
         '''
         self._api.delete((f'infrastructures/{infrastructure_id}'
                           f'/directories/{directory_id}'))

@@ -13,7 +13,8 @@ This package covers the Tenable.ad interface.
     :glob:
 
     about
-    api_key
+    api_keys
     directories
+    widget
 '''
 from .session import TenableAD  # noqa: F401

@@ -9,7 +9,6 @@ These methods can be accessed at ``TenableAD.about``.
 .. autoclass:: AboutAPI
     :members:
 '''
-from typing import List, Dict
 from tenable.base.endpoint import APIEndpoint
 
 
