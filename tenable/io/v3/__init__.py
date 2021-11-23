@@ -1,5 +1,7 @@
 from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.users import UsersAPI
+
+from .groups import GroupsAPI
+from .users import UsersAPI
 
 '''
 Version3API
@@ -16,6 +18,7 @@ Version3API APIs.
     :hidden:
     :glob:
 
+    groups
     users
 
 '''
@@ -25,6 +28,14 @@ class Version3API(APIEndpoint):
     '''
     Version 3 API base class
     '''
+
+    @property
+    def groups(self):
+        '''
+        The interface object for the Groups APIs
+        :doc:`Tenable.io.v3.groups Groups APIs <groups>`.
+        '''
+        return GroupsAPI(self._api)
 
     @property
     def users(self):
