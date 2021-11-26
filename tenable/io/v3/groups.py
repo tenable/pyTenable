@@ -1,4 +1,4 @@
-"""
+'''
 Groups
 ======
 
@@ -10,23 +10,23 @@ Methods available on ``tio.v3.groups``:
 .. rst-class:: hide-signature
 .. autoclass:: GroupsAPI
     :members:
-"""
+'''
 from typing import Dict, List
 from uuid import UUID
 
-from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
+from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 
-class GroupsAPI(UWBaseEndpoint):
-    """
+class GroupsAPI(ExploreBaseEndpoint):
+    '''
     This will contain all methods related to Groups
-    """
+    '''
 
-    _path = "api/v3/groups"
+    _path = 'api/v3/groups'
     _conv_json = True
 
-    def add_user(self, group_id: UUID, user_id: UUID) -> None:
-        """
+    def add_user(self, group_id: UUID, user_id: UUID) -> List:
+        '''
         Add a user to a user group.
 
         :devportal:`groups: add-user <groups-add-user>`
@@ -38,19 +38,21 @@ class GroupsAPI(UWBaseEndpoint):
                 The unique identifier of the user to add.
 
         Returns:
-            None:
-                The user was successfully added to the group.
+            List:
+                List of user resource records based on membership to the
+                specified group.
 
         Examples:
             >>> tio.v3.groups.add_user(
                     '00000000-0000-0000-0000-000000000000',
                     '00000000-0000-0000-0000-000000000000'
                 )
-        """
-        self._post(f"{group_id}/users/{user_id}")
+        '''
+        self._post(f'{group_id}/users/{user_id}')
+        return self.list_users(group_id)
 
     def create(self, name: str) -> Dict:
-        """
+        '''
         Create a new user group.
 
         :devportal:`groups: create <groups-create>`
@@ -65,11 +67,11 @@ class GroupsAPI(UWBaseEndpoint):
 
         Examples:
             >>> group = tio.v3.groups.create('Group Name')
-        """
-        return self._post(json={"name": name})
+        '''
+        return self._post(json={'name': name})
 
     def delete(self, group_id: UUID) -> None:
-        """
+        '''
         Delete a user group.
 
         :devportal:`groups: delete <groups-delete>`
@@ -83,11 +85,11 @@ class GroupsAPI(UWBaseEndpoint):
 
         Examples:
             >>> tio.v3.groups.delete('00000000-0000-0000-0000-000000000000')
-        """
+        '''
         self._delete(group_id)
 
     def delete_user(self, group_id: UUID, user_id: UUID) -> None:
-        """
+        '''
         Delete a user from a user group.
 
         :devportal:`groups: delete-user <groups-delete-user>`
@@ -107,11 +109,11 @@ class GroupsAPI(UWBaseEndpoint):
                     '00000000-0000-0000-0000-000000000000',
                     '00000000-0000-0000-0000-000000000000'
                 )
-        """
-        self._delete(f"{group_id}/users/{user_id}")
+        '''
+        self._delete(f'{group_id}/users/{user_id}')
 
     def edit(self, group_id: UUID, name: str) -> Dict:
-        """
+        '''
         Edit a user group.
 
         :devportal:`groups: edit <groups/edit>`
@@ -127,12 +129,13 @@ class GroupsAPI(UWBaseEndpoint):
                 The group resource record.
 
         Examples:
-            >>> tio.v3.groups.edit('00000000-0000-0000-0000-000000000000', 'Updated name')
-        """
-        return self._put(group_id, json={"name": name})
+            >>> tio.v3.groups.edit('00000000-0000-0000-0000-000000000000',
+            ...                    'Updated name')
+        '''
+        return self._put(group_id, json={'name': name})
 
     def list(self) -> List:
-        """
+        '''
         Lists all of the available user groups.
 
         :devportal:`groups: list <groups-list>`
@@ -144,11 +147,11 @@ class GroupsAPI(UWBaseEndpoint):
         Examples:
             >>> for group in tio.v3.groups.list():
             ...     pprint(group)
-        """
-        return self._post("search", json={})["groups"]
+        '''
+        return self._post('search', json={})['groups']
 
     def list_users(self, group_id: UUID) -> List:
-        """
+        '''
         List the user memberships within a specific user group.
 
         :devportal:`groups: list-users <groups-list-users>`
@@ -164,11 +167,11 @@ class GroupsAPI(UWBaseEndpoint):
         Example:
             >>> for user in tio.v3.groups.list_users('00000000-0000-0000-0000-000000000000'):
             ...     pprint(user)
-        """
-        return self._get(f"{group_id}/users")["users"]
+        '''
+        return self._get(f'{group_id}/users')['users']
 
     def search(self, **kw) -> List:
-        """
+        '''
         Search endpoint introduced in v3.
 
         :devportal:`scanners: search <scanners-search>`
@@ -180,5 +183,5 @@ class GroupsAPI(UWBaseEndpoint):
                 UWSearchIterator needs to be updated at v3/base/iterator
         Examples:
             TODO
-        """
-        raise NotImplementedError("Search functionality is yet to be implemented")
+        '''
+        raise NotImplementedError('Search functionality is yet to be implemented')

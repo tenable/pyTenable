@@ -14,14 +14,14 @@ Methods available on ``tio.v3.vm.users``:
 from restfly.utils import dict_clean
 from typing import Dict
 
-from tenable.io.v3.base.endpoints.uw import UWBaseEndpoint
-from tenable.io.v3.base.schema.uw.filters import FilterSchema
-from tenable.io.v3.base.schema.uw.search import SearchSchema
+from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.base.schema.explore.filters import FilterSchema
+from tenable.io.v3.base.schema.explore.search import SearchSchema
 from tenable.io.v3.schema import UserEditSchema, UsersCreateSchema
 from tenable.utils import dict_merge
 
 
-class UsersAPI(UWBaseEndpoint):
+class UsersAPI(ExploreBaseEndpoint):
     '''
     This will contain all methods related to Users
     '''

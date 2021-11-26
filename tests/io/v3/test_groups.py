@@ -17,7 +17,46 @@ def test_add_user(api):
         responses.POST,
         f"{GROUPS_BASE_URL}/{GROUP_ID}/users/{USER_ID}"
     )
-    assert None is api.v3.groups.add_user(GROUP_ID, USER_ID)
+
+    responses.add(
+        responses.GET,
+        f"{GROUPS_BASE_URL}/{GROUP_ID}/users",
+        json={
+            "users": [
+                {
+                    "id": "e9f23194-adb7-4c02-8632-615c694c787e",
+                    "username": "jyoti.patel@crestdatasys.com",
+                    "email": "jyoti.patel@crestdatasys.com",
+                    "name": "jyoti.patel@crestdatasys.com",
+                    "type": "local",
+                    "permissions": 64,
+                    "login_fail_count": 0,
+                    "login_fail_total": 0,
+                    "last_apikey_access": 1636464654829,
+                    "enabled": True,
+                    "lockout": 0,
+                    "lastlogin": 1635924062814,
+                },
+                {
+                    "id": "d3402235-7fa2-49e1-9a8f-15e97707c929",
+                    "username": "tomeara@crestdatasys.com",
+                    "email": "tomeara@crestdatasys.com",
+                    "name": "tomeara@crestdatasys.com",
+                    "type": "local",
+                    "permissions": 64,
+                    "login_fail_count": 0,
+                    "login_fail_total": 0,
+                    "enabled": True,
+                    "lockout": 0,
+                },
+            ]
+        },
+    )
+
+    resp = api.v3.groups.add_user(GROUP_ID, USER_ID)
+    user_ids = [user['id'] for user in resp]
+
+    assert USER_ID in user_ids
 
 
 @responses.activate
