@@ -1,5 +1,5 @@
 '''
-Base Universal Workspace Export Schema
+Base Explore Export Schema
 '''
 from marshmallow import Schema, fields
 

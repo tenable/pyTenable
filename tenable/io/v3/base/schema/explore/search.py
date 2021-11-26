@@ -1,5 +1,5 @@
 '''
-Base Universal Workspace Search Schema
+Base Explore Search Schema
 '''
 from marshmallow import Schema
 from marshmallow import fields as marshm_fields

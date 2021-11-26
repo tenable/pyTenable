@@ -1,5 +1,5 @@
 '''
-Base Universal Workspace Analysis Schema
+Base Explore Analysis Schema
 '''
 from marshmallow import Schema, fields
 

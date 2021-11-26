@@ -74,8 +74,8 @@ from .session import SessionAPI
 from .tags import TagsAPI
 from .target_groups import TargetGroupsAPI
 from .users import UsersAPI
-from .workbenches import WorkbenchesAPI
 from .v3 import Version3API
+from .workbenches import WorkbenchesAPI
 
 
 class TenableIO(APIPlatform):  # noqa: PLR0904
@@ -417,7 +417,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     @property
     def v3(self):
         '''
-        The interface object for the
+        The interface object for the v3 API's
         :doc:`Tenable.io v3 APIs`.
         '''
         return Version3API(self)
