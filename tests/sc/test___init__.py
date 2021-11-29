@@ -75,3 +75,14 @@ def test_log_in(security_center):
     security_center._version = '5.14.0'
     security_center.login(access_key='access_key', secret_key='secret_key')
     assert security_center._auth_mech == 'keys'
+
+
+def test_init_version(security_center_with_version):
+    '''
+    test version set at initialization
+    '''
+    security_center_with_version.login(
+        access_key='access_key',
+        secret_key='secret_key'
+    )
+    assert security_center_with_version._version == '5.20.0'

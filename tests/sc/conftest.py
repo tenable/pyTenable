@@ -54,6 +54,37 @@ def security_center(request, vcr):
 
 
 @pytest.fixture(autouse=True, scope='module')
+def security_center_with_version(request, vcr):
+    '''
+    test fixture for sc(security center)
+    '''
+    setup_logging_to_file()
+    with vcr.use_cassette('sc_login_no_version',
+                          filter_post_data_parameters=['username',
+                                                       'password'
+                                                       ]):
+        tenable_security_center = TenableSC(
+            os.getenv('SC_TEST_HOST', 'securitycenter.home.cugnet.net'),
+            vendor='pytest',
+            product='pytenable-automated-testing',
+            version='5.20.0')
+        tenable_security_center.login(
+            os.getenv('SC_TEST_USER', 'username'),
+            os.getenv('SC_TEST_PASS', 'password'))
+        tenable_security_center.version  # noqa: PLW0104
+
+    def teardown():
+        try:
+            with vcr.use_cassette('sc_login'):
+                tenable_security_center.logout()
+        except NotFoundError as error:
+            log_exception(error)
+
+    request.addfinalizer(teardown)
+    return tenable_security_center
+
+
+@pytest.fixture(autouse=True, scope='module')
 def admin(request, vcr):
     '''
     test fixture for admin

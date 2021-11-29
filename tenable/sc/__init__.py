@@ -126,6 +126,9 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             Default is False.
         username (str, optional):
             The username to use for session authentication.
+        version (str, optional):
+            The version to use with Tenable.sc. No longer supplied by from the
+            /rest/token API response in versions 5.20.0 and after.
         timeout (int, optional):
             The connection timeout parameter informing the library how long to
             wait in seconds for a stalled response before terminating the
@@ -183,6 +186,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
                  host: Optional[str] = None,
                  access_key: Optional[str] = None,
                  secret_key: Optional[str] = None,
+                 version: Optional[str] = None,
                  **kwargs
                  ):
         # As we will always be passing a URL to the APISession class, we will
@@ -201,6 +205,8 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             kwargs['access_key'] = access_key
         if secret_key:
             kwargs['secret_key'] = secret_key
+        if version:
+            self._version = version
 
         # Now lets pass the relevant parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
@@ -291,7 +297,16 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     @property
     def version(self):
         if not getattr(self, '_version', None):
-            self._version = self.system.details()['version']
+            try:
+                self._version = self.system.details()['version']
+            except KeyError:
+                raise ConnectionError(
+                    """
+                    Tenable.sc version was not defined. Server is likely running
+                    a version of 5.20.0 or greater, and the version number will
+                    need to be set explicitly during connection instantiation.
+                    """
+                )
         return self._version
 
     @property

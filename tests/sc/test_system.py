@@ -33,7 +33,7 @@ def test_system_details(unauth):
         check(i, 'gmtOffset', (int, float))
         check(i, 'name', str)
     check(s, 'uuid', str)
-    check(s, 'version', str)
+    check(s, 'version', str, True)
 
 
 @pytest.mark.vcr()
