@@ -40,6 +40,7 @@ Tenable.io
     tags
     target_groups
     users
+    v3/index
     workbenches
 '''
 from typing import Dict, List, Optional
@@ -417,8 +418,8 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     @property
     def v3(self):
         '''
-        The interface object for the v3 API's
-        :doc:`Tenable.io v3 APIs`.
+        The interface object for the
+        :doc:`Tenable.io v3 APIs <v3/index>`.
         '''
         return Version3API(self)
 
