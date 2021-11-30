@@ -16,7 +16,7 @@ class CSIterator(APIIterator):
     def _get_page(self):
         self._params['limit'] = self._limit
         self._params['offset'] = self._offset
-        resp = self._api.get(self._path, params=self._params, box=True)
+        resp = self._api.get(self._path, params=self._params, conv_json=True)
         self._offset += self._limit
-        self.total = resp.pagination.total
-        self.page = resp.items
+        self.total = resp['pagination']['total']
+        self.page = resp['items']

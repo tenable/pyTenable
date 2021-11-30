@@ -16,7 +16,7 @@ from tenable.base.endpoint import APIEndpoint
 
 
 class ReportsAPI(APIEndpoint):  # noqa: PLR0903
-    _path = 'container_security/api/v2/reports'
+    _path = 'container-security/api/v2/reports'
     _box = True
     _box_attrs = {'camel_killer_box': True}
 
