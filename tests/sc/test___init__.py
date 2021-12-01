@@ -65,13 +65,21 @@ def test_resp_error_check(security_center):
     security_center._resp_error_check(response)
 
 
-def test_log_in(security_center):
+def test_log_in(vcr):
     '''
     test log in
     '''
-    security_center._version = '5.12.0'
+    tsc = TenableSC(url='https://localhost')
+    tsc._version = '5.12.0'
     with pytest.raises(ConnectionError):
-        security_center.login(access_key='access_key', secret_key='secret_key')
-    security_center._version = '5.14.0'
-    security_center.login(access_key='access_key', secret_key='secret_key')
-    assert security_center._auth_mech == 'keys'
+        tsc.login(access_key='access_key', secret_key='secret_key')
+
+    tsc._version = '5.14.0'
+    tsc.login(access_key='access_key', secret_key='secret_key')
+    assert tsc._auth_mech == 'keys'
+
+    tsc._version = None
+    tsc._auth_mech = None
+    with vcr.use_cassette('sc_login_5_20_0'):
+        tsc.login(access_key='access_key', secret_key='secret_key')
+        assert tsc._auth_mech == 'keys'
