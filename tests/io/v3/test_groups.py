@@ -108,37 +108,6 @@ def test_edit(api):
 
 
 @responses.activate
-def test_list(api):
-    responses.add(
-        responses.POST,
-        f"{GROUPS_BASE_URL}/search",
-        match=[matchers.json_params_matcher({})],
-        json={
-            "groups": [
-                {
-                    "id": "b27778c1-af10-4218-a1a4-c2c36b236e05",
-                    "name": "Test Group",
-                    "user_count": 0,
-                },
-                {
-                    "id": "00000000-0000-0000-0000-000000000000",
-                    "immutable": True,
-                    "membership_fixed": True,
-                    "name": "All Users",
-                    "role": "BASIC",
-                    "user_count": 2,
-                },
-            ]
-        },
-    )
-
-    resp = api.v3.groups.list()
-    assert resp[1]["user_count"] == 2
-    assert resp[1]["id"] == "00000000-0000-0000-0000-000000000000"
-    assert resp[0]["name"] == "Test Group"
-
-
-@responses.activate
 def test_list_users(api):
 
     responses.add(

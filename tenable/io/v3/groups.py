@@ -98,7 +98,8 @@ class GroupsAPI(ExploreBaseEndpoint):
             group_id:
                 The unique identifier for the group to be modified.
             user_id:
-                The unique identifier for the user to be removed from the group.
+                The unique identifier for the user to be removed
+                from the group.
 
         Returns:
             None:
@@ -134,22 +135,6 @@ class GroupsAPI(ExploreBaseEndpoint):
         '''
         return self._put(group_id, json={'name': name})
 
-    def list(self) -> List:
-        '''
-        Lists all of the available user groups.
-
-        :devportal:`groups: list <groups-list>`
-
-        Returns:
-            List:
-                List of the group resource records
-
-        Examples:
-            >>> for group in tio.v3.groups.list():
-            ...     pprint(group)
-        '''
-        return self._post('search', json={})['groups']
-
     def list_users(self, group_id: UUID) -> List:
         '''
         List the user memberships within a specific user group.
@@ -165,23 +150,24 @@ class GroupsAPI(ExploreBaseEndpoint):
                 specified group.
 
         Example:
-            >>> for user in tio.v3.groups.list_users('00000000-0000-0000-0000-000000000000'):
+            >>> group_id = '00000000-0000-0000-0000-000000000000'
+            >>> for user in tio.v3.groups.list_users(group_id):
             ...     pprint(user)
         '''
         return self._get(f'{group_id}/users')['users']
 
     def search(self, **kw) -> List:
         '''
-        Search endpoint introduced in v3.
+        Lists the user groups based on the provided fields and filter.
 
-        :devportal:`scanners: search <scanners-search>`
+        :devportal:`groups: search <groups-list>`
 
         Returns:
             List:
-                Iterator Class object
-                TODO Implementation of base iterator class
-                UWSearchIterator needs to be updated at v3/base/iterator
+                List of the group resource records
+
         Examples:
-            TODO
+            >>> for group in tio.v3.groups.search():
+            ...     pprint(group)
         '''
-        raise NotImplementedError('Search functionality is yet to be implemented')
+        raise NotImplementedError('Search functionality is not implemented')

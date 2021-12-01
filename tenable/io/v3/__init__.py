@@ -5,6 +5,8 @@ Version3API
 The following sub-package allows for interaction with the Tenable.io
 Version3API APIs.
 
+Methods available on ``tio.v3``:
+
 .. rst-class:: hide-signature
 .. autoclass:: Version3API
     :members:
@@ -15,13 +17,13 @@ Version3API APIs.
 
     groups
     users
-    vm
+    vm/index
 '''
 from tenable.base.endpoint import APIEndpoint
-
-from .vm.api import VulnerabilityManagement
 from tenable.io.v3.groups import GroupsAPI
 from tenable.io.v3.users import UsersAPI
+from tenable.io.v3.vm.api import VulnerabilityManagement
+
 
 class Version3API(APIEndpoint):  # noqa: PLR0904
     '''
@@ -32,7 +34,7 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     def groups(self):
         '''
         The interface object for the Groups APIs
-        :doc:`Tenable.io.v3 groups APIs`.
+        :doc:`tenable.io v3 groups APIs <groups>`.
         '''
         return GroupsAPI(self._api)
 
@@ -40,14 +42,14 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     def users(self):
         '''
         The interface object for the
-        :doc:`Tenable.io users APIs`.
+        :doc:`Tenable.io v3 users APIs <users>`.
         '''
         return UsersAPI(self._api)
 
-    # pylint: disable=invalid-name, too-few-public-methods
     @property
     def vm(self):
         '''
-        The interface object for the Vulnerability Management API's
+        The interface object for the
+        :doc:`Vulnerability Management <vm/index>`
         '''
         return VulnerabilityManagement(self._api)
