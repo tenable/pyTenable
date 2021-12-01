@@ -13,7 +13,25 @@ This package covers the Nessus interface.
     :glob:
 
     agent_groups
-
+    agents
+    editor
+    files
+    folders
+    groups
+    mail
+    migration
+    permissions
+    plugin_rules
+    plugins
+    policies
+    proxy
+    scanners
+    scans
+    server
+    settings
+    software_update
+    tokens
+    users
 '''
 from tenable.base.platform import APIPlatform
 from .agent_groups import AgentGroupsAPI
