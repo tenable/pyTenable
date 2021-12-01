@@ -15,8 +15,9 @@ Methods available on ``tio.v3.vm.scanners``:
 from typing import Dict, List
 from uuid import UUID
 
-from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from typing_extensions import Literal
+
+from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 from .schema import ScannerEditSchema
 

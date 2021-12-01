@@ -30,16 +30,16 @@ class ExploreBaseEndpoint(APIEndpoint):
         '''
         self._get(obj_id).json()
 
-    def search(self, *,
-        fields: Optional[List[str]] = None,
-        sort: Optional[List[Dict]] = None,
-        filter: Optional[Dict] = None,
-        limit: int = 1000,
-        next: Optional[str] = None,
-        return_resp: bool = False,
-        iterator_cls=None,
-        schema_cls: Optional[Type[SearchSchema]] = None,
-        **kwargs,
+    def search(
+            self,
+            *,
+            fields: Optional[List[str]] = None,
+            sort: Optional[List[Dict]] = None,
+            filter: Optional[Dict] = None, limit: int = 1000,
+            next: Optional[str] = None, return_resp: bool = False,
+            iterator_cls=None,
+            schema_cls: Optional[Type[SearchSchema]] = None,
+            **kwargs
     ):
         '''
         Initiate a search
@@ -97,13 +97,13 @@ class ExploreBaseEndpoint(APIEndpoint):
         if return_resp:
             return self._post('search', json=payload)
         return iterator_cls(
-                self._api,
-                _path=f'{self._path}/search',
-                _payload=payload
-            )
+            self._api,
+            _path=f'{self._path}/search',
+            _payload=payload
+        )
 
     def search_results(self, search_id: str, wait_for_results: bool = True):
-        ''' 
+        '''
         '''
         resp = self._get(f'search/{search_id}')
         if resp.status_code == 202:

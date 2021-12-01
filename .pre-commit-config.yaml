@@ -5,12 +5,6 @@ repos:
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
 
--   repo: https://github.com/psf/black
-    rev: 19.3b0
-    hooks:
-    -   id: black
-        args: [--skip-string-normalization]
-
 -   repo: https://gitlab.com/pycqa/flake8
     rev: 3.7.9
     hooks:

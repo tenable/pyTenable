@@ -3,10 +3,8 @@ Testing the users schemas
 '''
 import pytest
 from marshmallow.exceptions import ValidationError
-from tenable.io.v3.schema import (
-    UserEditSchema,
-    UsersCreateSchema
-)
+
+from tenable.io.v3.schema import UserEditSchema, UsersCreateSchema
 
 
 @pytest.fixture
