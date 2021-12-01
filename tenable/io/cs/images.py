@@ -19,7 +19,7 @@ from tenable.io.cs.iterator import CSIterator
 
 
 class ImagesAPI(APIEndpoint):
-    _path = 'container_security/api/v2/images'
+    _path = 'container-security/api/v2/images'
     _box = True
     _box_attrs = {'camel_killer_box': True}
 
