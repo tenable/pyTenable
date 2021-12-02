@@ -12,8 +12,8 @@ These methods can be accessed at ``Nessus.agents``.
 from typing import List, Dict, Optional, Union, Tuple
 from typing_extensions import Literal
 from tenable.base.endpoint import APIEndpoint
-from .base.schema.pagination import ListSchema
-from .base.iterator import PaginationIterator
+from .schema.pagination import ListSchema
+from .iterators.pagination import PaginationIterator
 
 class AgentsAPI(APIEndpoint):
     _path = 'agents'

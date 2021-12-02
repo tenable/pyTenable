@@ -36,6 +36,7 @@ This package covers the Nessus interface.
 from tenable.base.platform import APIPlatform
 from .agent_groups import AgentGroupsAPI
 from .agents import AgentsAPI
+from .plugins import PluginsAPI
 
 
 class Nessus(APIPlatform):
@@ -69,7 +70,13 @@ class Nessus(APIPlatform):
     @property
     def agents(self):
         '''
-        The interface object for the
-        :doc:`Nessus Agents APIs <agents>`.
+        The interface object for the :doc:`Nessus Agents APIs <agents>`.
         '''
         return AgentsAPI(self)
+
+    @property
+    def plugins(self):
+        '''
+        The interface object for the :doc:`Nessus Plugins APIs <plugins>`.
+        '''
+        return PluginsAPI(self)
