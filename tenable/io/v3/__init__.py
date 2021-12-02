@@ -15,10 +15,12 @@ Methods available on ``tio.v3``:
     :hidden:
     :glob:
 
+    groups
     users
     vm/index
 '''
 from tenable.base.endpoint import APIEndpoint
+from tenable.io.v3.groups import GroupsAPI
 from tenable.io.v3.users import UsersAPI
 from tenable.io.v3.vm.api import VulnerabilityManagement
 
@@ -29,6 +31,14 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     i.e Container Security, Web Application Security.
     '''
     @property
+    def groups(self):
+        '''
+        The interface object for the Groups APIs
+        :doc:`tenable.io v3 groups APIs <groups>`.
+        '''
+        return GroupsAPI(self._api)
+
+    @property
     def users(self):
         '''
         The interface object for the
@@ -36,7 +46,6 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
         '''
         return UsersAPI(self._api)
 
-    # pylint: disable=invalid-name, too-few-public-methods
     @property
     def vm(self):
         '''
