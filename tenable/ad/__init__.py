@@ -16,6 +16,7 @@ This package covers the Tenable.ad interface.
     api_keys
     dashboard
     directories
+    profiles
     users
     widget
 '''
