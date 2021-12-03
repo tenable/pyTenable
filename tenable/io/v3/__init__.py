@@ -10,8 +10,8 @@ Methods available on ``tio.v3``:
 .. rst-class:: hide-signature
 .. autoclass:: Version3API
     :members:
-
 .. toctree::
+
     :hidden:
     :glob:
 
@@ -25,11 +25,13 @@ from tenable.io.v3.users import UsersAPI
 from tenable.io.v3.vm.api import VulnerabilityManagement
 
 
+
 class Version3API(APIEndpoint):  # noqa: PLR0904
     '''
     This will contain property for all resources/app under io
     i.e Container Security, Web Application Security.
     '''
+
     @property
     def groups(self):
         '''
