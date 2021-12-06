@@ -18,12 +18,13 @@ Methods available on ``tio.v3``:
     groups
     users
     vm/index
+    cs/index
 '''
 from tenable.base.endpoint import APIEndpoint
+from tenable.io.v3.cs.api import ContainerSecurity
 from tenable.io.v3.groups import GroupsAPI
 from tenable.io.v3.users import UsersAPI
 from tenable.io.v3.vm.api import VulnerabilityManagement
-
 
 
 class Version3API(APIEndpoint):  # noqa: PLR0904
@@ -31,6 +32,13 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     This will contain property for all resources/app under io
     i.e Container Security, Web Application Security.
     '''
+    @property
+    def cs(self):
+        '''
+        The interface object for the Container Security APIs
+        :doc:`tenable.io v3 Container Security APIs <groups>`.
+        '''
+        return ContainerSecurity(self._api)
 
     @property
     def groups(self):
