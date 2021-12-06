@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Integration/1.0 (unknown; unknown; Build/unknown) pyTenable/1.4.0 (Restfly/1.4.4;
+        Python/3.8.6; Darwin/x86_64)
+      X-APIKey:
+      - accessKey=access_key; secretKey=secret_key
+    method: GET
+    uri: https://localhost/rest/system
+  response:
+    body:
+      string: '{"type":"regular","response":"","error_code":0,"error_msg":"","warnings":[],"timestamp":1638312171}'
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '99'
+      Content-Security-Policy:
+      - 'default-src ''self''; script-src ''self'' pendo-io-static.storage.googleapis.com
+        app.pendo.io cdn.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        data.pendo.io cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com
+        *.cloudfront.net; connect-src ''self'' app.pendo.io data.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com *.cloudfront.net;
+        img-src ''self'' data: cdn.pendo.io app.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        data.pendo.io; style-src ''self'' app.pendo.io cdn.pendo.io pendo-static-6165929460760576.storage.googleapis.com;
+        frame-ancestors ''self'' app.pendo.io; form-action ''self''; block-all-mixed-content;
+        Upgrade-Insecure-Requests: 1; object-src ''none'''
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Tue, 30 Nov 2021 22:42:51 GMT
+      Expect-CT:
+      - max-age=31536000
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Set-Cookie:
+      - TNS_SESSIONID=7ff8456183afc3708902f593f131500b; path=/; secure; HttpOnly;
+        SameSite=Strict
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - x-apikey
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 403
+      message: Forbidden
+version: 1

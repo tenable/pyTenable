@@ -178,6 +178,8 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     _error_map = {403: APIError}
     _restricted_paths = ['token', 'credential']
     _timeout = 300
+    _ssl_verify = False
+    _version = None
 
     def __init__(self,  # noqa: PLR0913
                  host: Optional[str] = None,
@@ -223,14 +225,20 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         return response
 
     def _key_auth(self, access_key, secret_key):
-        if VersionInfo.parse(self.version).match('<5.13.0'):
+        # if we can pull a version, check to see that the version is at least
+        # 5.13, which is the minimum version of SC that supports API Keys.  If
+        # we cant pull a version, then we will assume it's ok.
+        if (not self.version
+            or VersionInfo.parse(self.version).match('>=5.13.0')
+        ):
+            self._session.headers.update({
+                'X-APIKey': f'accessKey={access_key}; secretKey={secret_key}'
+            })
+            self._auth_mech = 'keys'
+        else:
             raise ConnectionError(
-               f'API Keys not supported on Tenable.sc {self.version}'
-            )
-        self._session.headers.update({
-            'X-APIKey': f'accessKey={access_key}; secretKey={secret_key}'
-        })
-        self._auth_mech = 'keys'
+                   f'API Keys not supported on Tenable.sc {self.version}'
+                )
 
     def _session_auth(self, username, password):
         resp = self.post('token', json={
@@ -290,8 +298,16 @@ class TenableSC(APIPlatform):  # noqa PLR0904
 
     @property
     def version(self):
-        if not getattr(self, '_version', None):
-            self._version = self.system.details()['version']
+        if not self._version:
+            # We will attempt to pull the version number from the system
+            # details method.  If we get an APRError response, then we will
+            # simply pass through.
+            try:
+                version = self.system.details().get('version')
+            except APIError:
+                pass
+            else:
+                self._version = version
         return self._version
 
     @property

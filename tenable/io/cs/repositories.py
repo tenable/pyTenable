@@ -19,7 +19,7 @@ from tenable.io.cs.iterator import CSIterator
 
 
 class RepositoriesAPI(APIEndpoint):
-    _path = 'container_security/api/v2/repositories'
+    _path = 'container-security/api/v2/repositories'
     _box = True
     _box_attrs = {'camel_killer_box': True}
 
