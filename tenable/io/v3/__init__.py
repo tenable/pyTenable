@@ -10,20 +10,19 @@ Methods available on ``tio.v3``:
 .. rst-class:: hide-signature
 .. autoclass:: Version3API
     :members:
-.. toctree::
 
+.. toctree::
     :hidden:
     :glob:
 
-    groups
     users
     vm/index
+    was/index
 '''
 from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.groups import GroupsAPI
 from tenable.io.v3.users import UsersAPI
 from tenable.io.v3.vm.api import VulnerabilityManagement
-
+from tenable.io.v3.was.api import WebApplicationScanning
 
 
 class Version3API(APIEndpoint):  # noqa: PLR0904
@@ -31,15 +30,6 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     This will contain property for all resources/app under io
     i.e Container Security, Web Application Security.
     '''
-
-    @property
-    def groups(self):
-        '''
-        The interface object for the Groups APIs
-        :doc:`tenable.io v3 groups APIs <groups>`.
-        '''
-        return GroupsAPI(self._api)
-
     @property
     def users(self):
         '''
@@ -48,6 +38,7 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
         '''
         return UsersAPI(self._api)
 
+    # pylint: disable=invalid-name, too-few-public-methods
     @property
     def vm(self):
         '''
@@ -55,3 +46,11 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
         :doc:`Vulnerability Management <vm/index>`
         '''
         return VulnerabilityManagement(self._api)
+
+    @property
+    def was(self):
+        '''
+        The interface object for the
+         :doc:`Web Application Scanning <was/index>`
+        '''
+        return WebApplicationScanning(self._api)
