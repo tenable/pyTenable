@@ -39,7 +39,6 @@ SAMPLE_USER = {
 }
 
 
-
 @responses.activate
 def test_details(api):
     responses.add(

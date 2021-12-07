@@ -5,7 +5,7 @@ Plugins
 The following methods allow for interaction into the Tenable.io
 :devportal:`plugins <plugins>` API endpoints.
 
-Methods available on ``tio.plugins``:
+Methods available on ``tio.v3.vm.plugins``:
 
 .. rst-class:: hide-signature
 .. autoclass:: PluginsAPI
