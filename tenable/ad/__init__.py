@@ -14,6 +14,7 @@ This package covers the Tenable.ad interface.
 
     about
     api_keys
+    checker
     dashboard
     directories
     users
