@@ -12,6 +12,7 @@ from .category.api import CategoryAPI
 from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
 from .profiles.api import ProfilesAPI
+from .roles.api import RolesAPI
 from .users.api import UsersAPI
 from .widget.api import WidgetsAPI
 
@@ -87,6 +88,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Profiles APIs <profiles>`.
         '''
         return ProfilesAPI(self)
+
+    @property
+    def roles(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Roles APIs <roles>`.
+        '''
+        return RolesAPI(self)
 
     @property
     def users(self):

@@ -18,6 +18,7 @@ This package covers the Tenable.ad interface.
     dashboard
     directories
     profiles
+    roles
     users
     widget
 '''
