@@ -8,6 +8,7 @@ from tenable.base.platform import APIPlatform
 
 from .about import AboutAPI
 from .api_keys import APIKeyAPI
+from .category.api import CategoryAPI
 from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
 from .users.api import UsersAPI
@@ -53,6 +54,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad API-Keys APIs <api_keys>`.
         '''
         return APIKeyAPI(self)
+
+    @property
+    def category(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Category APIs <category>`.
+        '''
+        return CategoryAPI(self)
 
     @property
     def dashboard(self):
