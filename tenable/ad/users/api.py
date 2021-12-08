@@ -72,11 +72,15 @@ class UsersAPI(APIEndpoint):
             ...     active=True
             ...     )
         '''
-        payload = [self._schema.dump(dict_merge({
-            'name': name,
-            'email': email,
-            'password': password
-        }, kwargs))]
+        payload = [
+            self._schema.dump(self._schema.load(
+                dict_merge({
+                    'name': name,
+                    'email': email,
+                    'password': password
+                }, kwargs)
+            ))
+        ]
 
         return self._schema.load(
             self._post(json=payload),
@@ -150,7 +154,7 @@ class UsersAPI(APIEndpoint):
             ...     name='EDITED'
             ...     )
         '''
-        payload = self._schema.dump(kwargs)
+        payload = self._schema.dump(self._schema.load(kwargs))
         return self._schema.load(
             self._patch(f"{user_id}", json=payload),
             unknown=INCLUDE)
@@ -185,9 +189,9 @@ class UsersAPI(APIEndpoint):
         Examples:
             >>> tad.users.create_password(email='test@domain.com')
         '''
-        payload = self._schema.dump({
+        payload = self._schema.dump(self._schema.load({
             'email': email
-        })
+        }))
         self._post('forgotten-password', json=payload)
 
     def retrieve_password(self,
@@ -269,7 +273,7 @@ class UsersAPI(APIEndpoint):
             ...     roles=[1, 2, 3]
             ...     )
         '''
-        payload = self._schema.dump({
+        payload = self._schema.dump(self._schema.load({
             'roles': roles
-        })
+        }))
         return self._schema.load(self._put(f'{user_id}/roles', json=payload))

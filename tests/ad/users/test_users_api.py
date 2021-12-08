@@ -158,7 +158,7 @@ def test_users_update(api):
                             department='AD',
                             biography='some biography',
                             active=False,
-                            pictures=[1, 2])
+                            picture=[1, 2])
     assert isinstance(resp, dict)
     assert resp['name'] == 'name'
     assert resp['active'] is False
