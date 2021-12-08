@@ -17,6 +17,7 @@ This package covers the Tenable.ad interface.
     category
     dashboard
     directories
+    profiles
     users
     widget
 '''
