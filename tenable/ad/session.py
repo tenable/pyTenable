@@ -8,9 +8,11 @@ from tenable.base.platform import APIPlatform
 
 from .about import AboutAPI
 from .api_keys import APIKeyAPI
+from .category.api import CategoryAPI
 from .checker.api import CheckerAPI
 from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
+from .profiles.api import ProfilesAPI
 from .users.api import UsersAPI
 from .widget.api import WidgetsAPI
 
@@ -56,6 +58,14 @@ class TenableAD(APIPlatform):
         return APIKeyAPI(self)
 
     @property
+    def category(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Category APIs <category>`.
+        '''
+        return CategoryAPI(self)
+
+    @property
     def checker(self):
         '''
         The interface object for the
@@ -78,6 +88,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Directories APIs <directories>`.
         '''
         return DirectoriesAPI(self)
+
+    @property
+    def profiles(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Profiles APIs <profiles>`.
+        '''
+        return ProfilesAPI(self)
 
     @property
     def users(self):
