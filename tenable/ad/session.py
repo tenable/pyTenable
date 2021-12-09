@@ -12,6 +12,7 @@ from .category.api import CategoryAPI
 from .checker.api import CheckerAPI
 from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
+from .infrastructure.api import InfrastructureAPI
 from .profiles.api import ProfilesAPI
 from .users.api import UsersAPI
 from .widget.api import WidgetsAPI
@@ -88,6 +89,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Directories APIs <directories>`.
         '''
         return DirectoriesAPI(self)
+
+    @property
+    def infrastructure(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Infrastructure APIs <infrastructure>`.
+        '''
+        return InfrastructureAPI(self)
 
     @property
     def profiles(self):
