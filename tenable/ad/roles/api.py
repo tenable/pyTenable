@@ -209,27 +209,6 @@ class RolesAPI(APIEndpoint):
             ... )
         '''
         schema = RolePermissionsSchema()
-
-        payload = []
-        required_fields = ['action', 'entity_ids', 'entity_name']
-
-        # loop through all permissions and create payload for API call
-        # and if any of required fields is missing then it will raise
-        # validationError
-        for permission in permissions:
-            if all(key in permission for key in required_fields):
-                payload.append({
-                    'dynamicId': permission.get('dynamic_id'),
-                    'entityIds': permission.get('entity_ids'),
-                    'entityName': permission.get('entity_name'),
-                    'action': permission.get('action')
-                })
-            else:
-                raise ValidationError(
-                    'Missing required fields. '
-                    'Required: ["action", "entity_name", "entity_ids"]')
-
-        payload = schema.dump(schema.load(payload, many=True), many=True)
-
+        payload = schema.dump(schema.load(permissions, many=True), many=True)
         return self._schema.load(
             self._put(f'{role_id}/permissions', json=payload))
