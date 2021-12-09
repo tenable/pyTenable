@@ -19,6 +19,8 @@ This package covers the Tenable.ad interface.
     dashboard
     directories
     infrastructure
+    preference
+    infrastructure
     profiles
     roles
     users
