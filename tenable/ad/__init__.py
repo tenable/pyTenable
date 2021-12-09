@@ -20,6 +20,7 @@ This package covers the Tenable.ad interface.
     directories
     infrastructure
     profiles
+    roles
     users
     widget
 '''
