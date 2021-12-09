@@ -18,6 +18,7 @@ This package covers the Tenable.ad interface.
     checker
     dashboard
     directories
+    preference
     profiles
     users
     widget
