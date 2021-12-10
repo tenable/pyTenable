@@ -16,6 +16,7 @@ This package covers the Tenable.ad interface.
     api_keys
     category
     checker
+    checker_option
     dashboard
     directories
     infrastructure
