@@ -13,6 +13,7 @@ from .checker.api import CheckerAPI
 from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
 from .infrastructure.api import InfrastructureAPI
+from .lockout_policy.api import LockoutPolicyAPI
 from .preference.api import PreferenceAPI
 from .profiles.api import ProfilesAPI
 from .roles.api import RolesAPI
@@ -99,6 +100,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Infrastructure APIs <infrastructure>`.
         '''
         return InfrastructureAPI(self)
+
+    @property
+    def lockout_policy(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Lockout Policy APIs <lockout_policy>`.
+        '''
+        return LockoutPolicyAPI(self)
       
     @property
     def preference(self):
