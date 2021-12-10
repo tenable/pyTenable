@@ -19,6 +19,7 @@ Methods available on ``tio.v3.vm``:
 
     agent_config
     files
+    networks
     plugins
     scanners
 '''
@@ -26,6 +27,7 @@ from restfly.endpoint import APIEndpoint
 
 from tenable.io.v3.vm.agent_config import AgentConfigAPI
 from tenable.io.v3.vm.files import FileAPI
+from tenable.io.v3.vm.networks import NetworksAPI
 from tenable.io.v3.vm.plugins import PluginsAPI
 from tenable.io.v3.vm.scanners import ScannersAPI
 
@@ -52,6 +54,14 @@ class VulnerabilityManagement(APIEndpoint):  # noqa: PLR0904
         :doc:`Files API <files>`
         '''
         return FileAPI(self._api)
+
+    @property
+    def networks(self):
+        '''
+        The interface object for the
+        :doc:`Networks API <networks>`
+        '''
+        return NetworksAPI(self._api)
 
     @property
     def plugins(self):
