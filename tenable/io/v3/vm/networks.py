@@ -44,6 +44,8 @@ class NetworksAPI(TIOEndpoint):
     '''
     This will contain all methods related to networks
     '''
+    _path = 'api/v3/networks'
+    _conv_json = True
 
     def create(self,
                name: str,
@@ -75,11 +77,11 @@ class NetworksAPI(TIOEndpoint):
         if not description:
             description = ''
 
-        return self._api.post('networks', json={
+        return self._post('', json={
             'name': name,
             'description': description,
             'assets_ttl_days': assets_ttl_days
-        }).json()
+        })
 
     def delete(self, network_id: str) -> None:
         '''
@@ -95,7 +97,7 @@ class NetworksAPI(TIOEndpoint):
                     '00000000-0000-0000-0000-000000000000'
                 )
         '''
-        self._api.delete(f'networks/{network_id}')
+        self._delete(f'{network_id}')
 
     def details(self, network_id: str) -> Dict:
         '''
@@ -111,7 +113,7 @@ class NetworksAPI(TIOEndpoint):
                     '00000000-0000-0000-0000-000000000000'
                 )
         '''
-        return self._get(f'networks/{network_id}')
+        return self._get(f'{network_id}')
 
     def edit(self,
              network_id: str,
@@ -149,7 +151,7 @@ class NetworksAPI(TIOEndpoint):
         if not description:
             description = ''
 
-        return self._put(f'networks/{network_id}',
+        return self._put(f'{network_id}',
                          json={
                              'name': name,
                              'description': description,
@@ -187,9 +189,9 @@ class NetworksAPI(TIOEndpoint):
             ...     '00000000-0000-0000-0000-000000000000') # Scanner2 UUID
         '''
         if len(scanner_uuids) == 1:
-            self._post(f'networks/{network_id}/scanners/{scanner_uuids[0]}')
+            self._post(f'{network_id}/scanners/{scanner_uuids[0]}')
         elif len(scanner_uuids) > 1:
-            self._post(f'networks/{network_id}/scanners',
+            self._post(f'{network_id}/scanners',
                        json={'scanner_uuids': [id for id in scanner_uuids]}
                        )
         else:
@@ -213,7 +215,7 @@ class NetworksAPI(TIOEndpoint):
             >>> for scanner in tio.v3.vm.networks.list_scanners(network):
             ...     pprint(scanner)
         '''
-        return self._get(f'networks/{network_id}/scanners')['scanners']
+        return self._get(f'{network_id}/scanners')['scanners']
 
     def unassigned_scanners(self, network_id: str) -> List:
         '''
@@ -237,7 +239,7 @@ class NetworksAPI(TIOEndpoint):
             ...     pprint(scanner)
         '''
         return self._get(
-            f'networks/{network_id}/assignable-scanners'
+            f'{network_id}/assignable-scanners'
         )['scanners']
 
     def search(self, *filters, **kw):
@@ -323,5 +325,5 @@ class NetworksAPI(TIOEndpoint):
             >>> count = tio.v3.vm.networks.network_asset_count(network, 180)
         '''
         return self._get(
-            f'networks/{network_id}/counts/assets-not-seen-in/{num_days}'
+            f'{network_id}/counts/assets-not-seen-in/{num_days}'
         )
