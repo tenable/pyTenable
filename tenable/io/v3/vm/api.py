@@ -13,7 +13,6 @@ Methods available on ``tio.v3.vm``:
     :members:
 
 .. toctree::
-
     :hidden:
     :glob:
 

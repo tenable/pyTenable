@@ -168,7 +168,7 @@ class NetworksAPI(TIOEndpoint):
 
         :devportal:`networks: assign-scanner <networks-assign-scanner>`
         :devportal:`networks: bulk-assign-scanner
-            <networks-assign-scanner-bulk>`
+        <networks-assign-scanner-bulk>`
 
         Args:
             network_id: The UUID of the network.
@@ -307,7 +307,7 @@ class NetworksAPI(TIOEndpoint):
         of assets that have not been seen for the specified number of days.
 
         :devportal:`networks: network_asset_count
-            <networks-asset-count-details>`
+        <networks-asset-count-details>`
 
         Args:
             network_id: The UUID of the network.

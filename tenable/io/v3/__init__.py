@@ -10,8 +10,8 @@ Methods available on ``tio.v3``:
 .. rst-class:: hide-signature
 .. autoclass:: Version3API
     :members:
-.. toctree::
 
+.. toctree::
     :hidden:
     :glob:
 
