@@ -14,7 +14,15 @@ This package covers the Tenable.ad interface.
 
     about
     api_keys
+    category
+    checker
+    dashboard
     directories
+    infrastructure
+    preference
+    infrastructure
+    profiles
+    roles
     users
     widget
 '''

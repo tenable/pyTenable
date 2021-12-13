@@ -39,7 +39,7 @@ class AssetExportSchema(Schema):
     servicenow_sysid = fields.Bool()
 
     # Other params
-    chunk_size = fields.Int(default=1000)
+    chunk_size = fields.Int(dump_default=1000)
     network_id = fields.UUID()
     sources = fields.List(fields.Str())
     tags = fields.List(fields.Tuple((fields.Str(), fields.Str())))
@@ -90,7 +90,7 @@ class VulnExportSchema(Schema):
     include_unlicensed = fields.Bool()
 
     # Chunking fields
-    num_assets = fields.Int(default=500)
+    num_assets = fields.Int(dump_default=500)
 
     @post_dump
     def post_serialization(self, data, **kwargs):  # noqa PLR0201 PLW0613
@@ -111,7 +111,7 @@ class ComplianceExportSchema(Schema):
 
     # Other params
     asset = fields.List(fields.UUID())
-    num_findings = fields.Int(default=5000)
+    num_findings = fields.Int(dump_default=5000)
 
     @post_dump
     def post_serialization(self, data, **kwargs):  # noqa PLR0201 PLW0613

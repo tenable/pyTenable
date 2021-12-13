@@ -5,17 +5,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [1.4.1]
+## [1.4.3]
+### Added
+
+- Initial support for Tenable.ad #487 #484 #468 #466
+
+### Fixed
+
+- Fixed PR pipeline issue #490
+- typing-extension requirement fixed #489
+- Added required init files #491
+- deprecated use of "default" in marshmallow schemas #493
+
+[1.4.3]: https://github.com/tenable/pyTenable/compare/1.4.2...1.4.3
+
+## [1.4.2]
 ### Added
 
 - TenableSC version checking refactored to handle an APIError on the response
   when unauthenticated. (breaking issue for 5.20.0) #475
-
-[1.4.1]: https://github.com/tenable/pyTenable/compare/1.4.0...1.4.1
-
-## [1.4.0]
-### Added
-
 - GraphQL support for TenableOT #461
 - hard_delete param #465
 
@@ -32,7 +40,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - OrgID should be optional for repositories #444
 
-[1.4.0]: https://github.com/tenable/pyTenable/compare/1.3.3...1.4.0
+[1.4.2]: https://github.com/tenable/pyTenable/compare/1.3.3...1.4.2
+
+## [1.4.1]: yanked - broken build
+## [1.4.0]: yanked - broken build
 
 ## [1.3.3]
 ### Added
@@ -70,7 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [1.3.3]: https://github.com/tenable/pyTenable/compare/1.3.1...1.3.3
 
-[1.3.2] : yanked
+## [1.3.2] : yanked - broken build
 
 ## [1.3.1]
 ### Added
