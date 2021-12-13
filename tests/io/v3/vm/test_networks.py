@@ -3,6 +3,7 @@ Testing the Networks endpoints
 '''
 import uuid
 
+import pytest
 import responses
 from responses import matchers
 
@@ -147,10 +148,8 @@ def test_assign_scanners_multiple(api):
         match=[matchers.json_params_matcher(payload)],
     )
     resp = api.v3.vm.networks.assign_scanners(NETWORK_ID,
-                                              "c017f3a8-599f-11ec-a805-\
-                                                0a8bb8b04db8",
-                                              "bf841a0c-599f-11ec-a0d1-\
-                                                0a8bb8b04db8"
+                                              "c017f3a8-599f-11ec-a805-0a8bb8b04db8",  # noqa: E501
+                                              "bf841a0c-599f-11ec-a0d1-0a8bb8b04db8"  # noqa: E501
                                               )
     assert resp is None
 
@@ -203,6 +202,11 @@ def test_list_scanners(api):
     )
     resp = api.v3.vm.networks.list_scanners(NETWORK_ID)
     assert resp == api_resp["scanners"]
+
+
+@pytest.mark.skip("This test will be implemented later")
+def test_search(api):
+    pass
 
 
 @responses.activate
@@ -267,8 +271,7 @@ def test_network_asset_count(api):
     }
     responses.add(
         responses.GET,
-        f'{SCANNER_BASE_URL}/{NETWORK_ID}/\
-            counts/assets-not-seen-in/{num_days}',
+        f'{SCANNER_BASE_URL}/{NETWORK_ID}/counts/assets-not-seen-in/{num_days}',  # noqa: E501
         json=api_resp
     )
     resp = api.v3.vm.networks.network_asset_count(NETWORK_ID, num_days)
