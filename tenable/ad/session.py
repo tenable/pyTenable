@@ -13,6 +13,7 @@ from .checker.api import CheckerAPI
 from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
 from .infrastructure.api import InfrastructureAPI
+from .ldap_configuration.api import LDAPConfigurationAPI
 from .lockout_policy.api import LockoutPolicyAPI
 from .preference.api import PreferenceAPI
 from .profiles.api import ProfilesAPI
@@ -100,6 +101,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Infrastructure APIs <infrastructure>`.
         '''
         return InfrastructureAPI(self)
+
+    @property
+    def ldap_configuration(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad LDAP Configuration APIs <ldap_configuration>`.
+        '''
+        return LDAPConfigurationAPI(self)
 
     @property
     def lockout_policy(self):

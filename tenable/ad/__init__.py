@@ -19,6 +19,7 @@ This package covers the Tenable.ad interface.
     dashboard
     directories
     infrastructure
+    ldap_configuration
     lockout_policy
     preference
     profiles
