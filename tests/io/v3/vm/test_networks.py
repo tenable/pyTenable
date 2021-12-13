@@ -7,7 +7,7 @@ import pytest
 import responses
 from responses import matchers
 
-SCANNER_BASE_URL = r'https://cloud.tenable.com/api/v3/networks'
+NETWORK_BASE_URL = r'https://cloud.tenable.com/api/v3/networks'
 BASE_URL = r'https://cloud.tenable.com'
 NETWORK_ID = str(uuid.uuid1())
 
@@ -33,7 +33,7 @@ def test_create(api):
     }
     responses.add(
         responses.POST,
-        f'{SCANNER_BASE_URL}',
+        f'{NETWORK_BASE_URL}',
         json=api_resp
     )
     resp = api.v3.vm.networks.create('test_network_name')
@@ -48,7 +48,7 @@ def test_delete(api):
     '''
     responses.add(
         responses.DELETE,
-        f'{SCANNER_BASE_URL}/{NETWORK_ID}',
+        f'{NETWORK_BASE_URL}/{NETWORK_ID}',
     )
     assert api.v3.vm.networks.delete(NETWORK_ID) is None
 
@@ -75,7 +75,7 @@ def test_details(api):
     }
     responses.add(
         responses.GET,
-        f'{SCANNER_BASE_URL}/{NETWORK_ID}',
+        f'{NETWORK_BASE_URL}/{NETWORK_ID}',
         json=api_resp
     )
     resp = api.v3.vm.networks.details(NETWORK_ID)
@@ -108,7 +108,7 @@ def test_edit(api):
     }
     responses.add(
         responses.PUT,
-        f'{SCANNER_BASE_URL}/{NETWORK_ID}',
+        f'{NETWORK_BASE_URL}/{NETWORK_ID}',
         match=[matchers.json_params_matcher(payload)],
         json=api_resp_after_edit
     )
@@ -127,7 +127,7 @@ def test_assign_scanners_single(api):
     scanner_id = 'c017f3a8-599f-11ec-a805-0a8bb8b04db8'
     responses.add(
         responses.POST,
-        f'{SCANNER_BASE_URL}/{NETWORK_ID}/scanners/{scanner_id}',
+        f'{NETWORK_BASE_URL}/{NETWORK_ID}/scanners/{scanner_id}',
     )
     resp = api.v3.vm.networks.assign_scanners(NETWORK_ID, scanner_id)
     assert resp is None
@@ -144,7 +144,7 @@ def test_assign_scanners_multiple(api):
     payload = {'scanner_uuids': scanner_id_list}
     responses.add(
         responses.POST,
-        f'{SCANNER_BASE_URL}/{NETWORK_ID}/scanners',
+        f'{NETWORK_BASE_URL}/{NETWORK_ID}/scanners',
         match=[matchers.json_params_matcher(payload)],
     )
     resp = api.v3.vm.networks.assign_scanners(NETWORK_ID,
@@ -197,7 +197,7 @@ def test_list_scanners(api):
     }
     responses.add(
         responses.GET,
-        f'{SCANNER_BASE_URL}/{NETWORK_ID}/scanners',
+        f'{NETWORK_BASE_URL}/{NETWORK_ID}/scanners',
         json=api_resp
     )
     resp = api.v3.vm.networks.list_scanners(NETWORK_ID)
@@ -252,7 +252,7 @@ def test_unassigned_scanners(api):
     }
     responses.add(
         responses.GET,
-        f'{SCANNER_BASE_URL}/{NETWORK_ID}/assignable-scanners',
+        f'{NETWORK_BASE_URL}/{NETWORK_ID}/assignable-scanners',
         json=api_resp
     )
     resp = api.v3.vm.networks.unassigned_scanners(NETWORK_ID)
@@ -271,7 +271,7 @@ def test_network_asset_count(api):
     }
     responses.add(
         responses.GET,
-        f'{SCANNER_BASE_URL}/{NETWORK_ID}/counts/assets-not-seen-in/{num_days}',  # noqa: E501
+        f'{NETWORK_BASE_URL}/{NETWORK_ID}/counts/assets-not-seen-in/{num_days}',  # noqa: E501
         json=api_resp
     )
     resp = api.v3.vm.networks.network_asset_count(NETWORK_ID, num_days)
