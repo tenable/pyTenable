@@ -19,8 +19,8 @@ def test_create(api):
     '''
     api_resp = {
         'owner_id': 'e9f23194-adb7-4c02-8632-615c694c787e',
-        'created': 1639119695411,
-        'modified': 1639119695411,
+        'created': '1984-06-02T19:05:00',
+        'modified': '1984-06-02T19:09:00',
         'scanner_count': 0,
         'id': 'ca92cffe-8aed-4478-ac76-1acb155bac2a',
         'name': 'test_network_name',
@@ -36,7 +36,7 @@ def test_create(api):
         f'{SCANNER_BASE_URL}',
         json=api_resp
     )
-    resp = api.v3.vm.networks.create("test_network_name")
+    resp = api.v3.vm.networks.create('test_network_name')
 
     assert resp == api_resp
 
@@ -61,8 +61,8 @@ def test_details(api):
 
     api_resp = {
         'owner_id': 'e9f23194-adb7-4c02-8632-615c694c787e',
-        'created': 1639119695411,
-        'modified': 1639119695411,
+        'created': '2004-06-02T19:05:00',
+        'modified': '2004-06-02T19:05:00',
         'scanner_count': 0,
         'id': NETWORK_ID,
         'name': 'test_network_name',
@@ -89,8 +89,8 @@ def test_edit(api):
     '''
     api_resp_after_edit = {
         'owner_id': 'e9f23194-adb7-4c02-8632-615c694c787e',
-        'created': 1639119695411,
-        'modified': 1639119695411,
+        'created': '2004-06-02T19:05:00',
+        'modified': '2004-06-02T19:05:00',
         'scanner_count': 0,
         'id': NETWORK_ID,
         'name': 'test_network_name',
@@ -124,7 +124,7 @@ def test_assign_scanners_single(api):
     '''
     Test case for validating assign_scanners_single action of Networks API
     '''
-    scanner_id = "c017f3a8-599f-11ec-a805-0a8bb8b04db8"
+    scanner_id = 'c017f3a8-599f-11ec-a805-0a8bb8b04db8'
     responses.add(
         responses.POST,
         f'{SCANNER_BASE_URL}/{NETWORK_ID}/scanners/{scanner_id}',
@@ -139,8 +139,8 @@ def test_assign_scanners_multiple(api):
     Test case for validating assign_scanners_multiple action of Networks API
     '''
     scanner_id_list = [
-        "c017f3a8-599f-11ec-a805-0a8bb8b04db8",
-        "bf841a0c-599f-11ec-a0d1-0a8bb8b04db8"]
+        'c017f3a8-599f-11ec-a805-0a8bb8b04db8',
+        'bf841a0c-599f-11ec-a0d1-0a8bb8b04db8']
     payload = {'scanner_uuids': scanner_id_list}
     responses.add(
         responses.POST,
@@ -148,8 +148,8 @@ def test_assign_scanners_multiple(api):
         match=[matchers.json_params_matcher(payload)],
     )
     resp = api.v3.vm.networks.assign_scanners(NETWORK_ID,
-                                              "c017f3a8-599f-11ec-a805-0a8bb8b04db8",  # noqa: E501
-                                              "bf841a0c-599f-11ec-a0d1-0a8bb8b04db8"  # noqa: E501
+                                              'c017f3a8-599f-11ec-a805-0a8bb8b04db8',  # noqa: E501
+                                              'bf841a0c-599f-11ec-a0d1-0a8bb8b04db8'  # noqa: E501
                                               )
     assert resp is None
 
@@ -160,39 +160,39 @@ def test_list_scanners(api):
     Test case for validating list_scanners action of Networks API
     '''
     api_resp = {
-        "scanners": [{
-            "creation_date": "1521065518",
-            "distro": "2.6.32-504.8.1.el6.x86_64",
-            "engine_build": "201710101",
-            "engine_version": "NNM 5.4.0",
-            "group": False,
-            "key": "bd98a384ff0e91c8f94fa7f786f8827c1eb7b28dffcfb9895f9d85bd",
-            "last_connect": "1524524576",
-            "last_modification_date": "1524523493",
-            "linked": 1,
-            "loaded_plugin_set": "201803271415",
-            "name": "NNM-540",
-            "num_hosts": 0,
-            "num_scans": 0,
-            "num_sessions": 0,
-            "num_tcp_sessions": 0,
-            "owner": {
-                "name": "system",
-                "id": 1,
-                "uuid": "ddbd3e11-3311-4682-9912-8e81805fd8a9"
+        'scanners': [{
+            'creation_date': '2004-06-02T19:05:00',
+            'distro': '2.6.32-504.8.1.el6.x86_64',
+            'engine_build': '201710101',
+            'engine_version': 'NNM 5.4.0',
+            'group': False,
+            'key': 'bd98a384ff0e91c8f94fa7f786f8827c1eb7b28dffcfb9895f9d85bd',
+            'last_connect': '1524524576',
+            'last_modification_date': '2004-06-02T19:05:00',
+            'linked': 1,
+            'loaded_plugin_set': '201803271415',
+            'name': 'NNM-540',
+            'num_hosts': 0,
+            'num_scans': 0,
+            'num_sessions': 0,
+            'num_tcp_sessions': 0,
+            'owner': {
+                'name': 'system',
+                'id': 1,
+                'uuid': 'ddbd3e11-3311-4682-9912-8e81805fd8a9'
             },
-            "platform": "LINUX",
-            "pool": False,
-            "report_frequency": 3600,
-            "settings": {},
-            "scan_count": 0,
-            "source": "service",
-            "status": "off",
-            "timestamp": 1524523493,
-            "type": "managed_pvs",
-            "id": "946df0af-0597-4d1e-993d-36a5c25b0d36",
-            "remote_uuid": "4e7b9e29-b128-4ae5-9108-b936b35c6f1a9b9a533780b",
-            "supports_remote_logs": False
+            'platform': 'LINUX',
+            'pool': False,
+            'report_frequency': 3600,
+            'settings': {},
+            'scan_count': 0,
+            'source': 'service',
+            'status': 'off',
+            'timestamp': '2004-06-02T19:05:00',
+            'type': 'managed_pvs',
+            'id': '946df0af-0597-4d1e-993d-36a5c25b0d36',
+            'remote_uuid': '4e7b9e29-b128-4ae5-9108-b936b35c6f1a9b9a533780b',
+            'supports_remote_logs': False
         }]
     }
     responses.add(
@@ -201,10 +201,10 @@ def test_list_scanners(api):
         json=api_resp
     )
     resp = api.v3.vm.networks.list_scanners(NETWORK_ID)
-    assert resp == api_resp["scanners"]
+    assert resp == api_resp['scanners']
 
 
-@pytest.mark.skip("This test will be implemented later")
+@pytest.mark.skip('This test will be implemented later')
 def test_search(api):
     pass
 
@@ -215,39 +215,39 @@ def test_unassigned_scanners(api):
     Test case for validating unassigned_scanners action of Networks API
     '''
     api_resp = {
-        "scanners": [{
-            "creation_date": "1521065518",
-            "distro": "2.6.32-504.8.1.el6.x86_64",
-            "engine_build": "201710101",
-            "engine_version": "NNM 5.4.0",
-            "group": False,
-            "key": "bd98a384ff0e91c8f94fa7f786f8827c1eb7b28dffcfb9895f9d85b",
-            "last_connect": "1524524576",
-            "last_modification_date": "1524523493",
-            "linked": 1,
-            "loaded_plugin_set": "201803271415",
-            "name": "NNM-540",
-            "num_hosts": 0,
-            "num_scans": 0,
-            "num_sessions": 0,
-            "num_tcp_sessions": 0,
-            "owner": {
-                "name": "system",
-                "id": 1,
-                "uuid": "ddbd3e11-3311-4682-9912-8e81805fd8a9"
+        'scanners': [{
+            'creation_date': '2004-06-02T19:05:00',
+            'distro': '2.6.32-504.8.1.el6.x86_64',
+            'engine_build': '201710101',
+            'engine_version': 'NNM 5.4.0',
+            'group': False,
+            'key': 'bd98a384ff0e91c8f94fa7f786f8827c1eb7b28dffcfb9895f9d85b',
+            'last_connect': '1524524576',
+            'last_modification_date': '2004-06-02T19:05:00',
+            'linked': 1,
+            'loaded_plugin_set': '201803271415',
+            'name': 'NNM-540',
+            'num_hosts': 0,
+            'num_scans': 0,
+            'num_sessions': 0,
+            'num_tcp_sessions': 0,
+            'owner': {
+                'name': 'system',
+                'id': 1,
+                'uuid': 'ddbd3e11-3311-4682-9912-8e81805fd8a9'
             },
-            "platform": "LINUX",
-            "pool": False,
-            "report_frequency": 3600,
-            "settings": {},
-            "scan_count": 0,
-            "source": "service",
-            "status": "off",
-            "timestamp": 1524523493,
-            "type": "managed_pvs",
-            "id": "946df0af-0597-4d1e-993d-36a5c25b0d36",
-            "remote_uuid": "4e7b9e29-b128-4ae5-9108-b936b35c6f1a9b9a533780bd",
-            "supports_remote_logs": False
+            'platform': 'LINUX',
+            'pool': False,
+            'report_frequency': 3600,
+            'settings': {},
+            'scan_count': 0,
+            'source': 'service',
+            'status': 'off',
+            'timestamp': '2004-06-02T19:05:00',
+            'type': 'managed_pvs',
+            'id': '946df0af-0597-4d1e-993d-36a5c25b0d36',
+            'remote_uuid': '4e7b9e29-b128-4ae5-9108-b936b35c6f1a9b9a533780bd',
+            'supports_remote_logs': False
         }]
     }
     responses.add(
@@ -256,7 +256,7 @@ def test_unassigned_scanners(api):
         json=api_resp
     )
     resp = api.v3.vm.networks.unassigned_scanners(NETWORK_ID)
-    assert resp == api_resp["scanners"]
+    assert resp == api_resp['scanners']
 
 
 @responses.activate
@@ -266,8 +266,8 @@ def test_network_asset_count(api):
     '''
     num_days = 20
     api_resp = {
-        "numAssetsNotSeen": 200,
-        "numAssetsTotal": 1000
+        'numAssetsNotSeen': 200,
+        'numAssetsTotal': 1000
     }
     responses.add(
         responses.GET,
