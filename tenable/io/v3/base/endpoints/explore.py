@@ -28,7 +28,7 @@ class ExploreBaseEndpoint(APIEndpoint):
 
             >>> tio.{PATHWAY}.details('00000000-0000-0000-0000-000000000000')
         '''
-        self._get(obj_id).json()
+        self._get(obj_id, conv_json=self._conv_json)
 
     def search(
             self,

@@ -8,7 +8,7 @@ import pytest
 import responses
 from responses import matchers
 
-from tenable.io.v3.vm.schema import ScannerEditSchema
+from tenable.io.v3.vm.scanners.schema import ScannerEditSchema
 
 SCANNER_BASE_URL = r'https://cloud.tenable.com/api/v3/scanners'
 BASE_URL = r'https://cloud.tenable.com'

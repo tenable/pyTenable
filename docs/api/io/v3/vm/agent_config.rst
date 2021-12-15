@@ -1,1 +1,1 @@
-.. automodule:: tenable.io.v3.vm.agent_config
+.. automodule:: tenable.io.v3.vm.agent_config.api

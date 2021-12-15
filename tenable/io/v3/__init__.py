@@ -1,6 +1,6 @@
 '''
-Version3API
-===========
+Version3 API
+============
 
 The following sub-package allows for interaction with the Tenable.io
 Version3API APIs.
@@ -21,10 +21,10 @@ Methods available on ``tio.v3``:
     was/index
 '''
 from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.groups import GroupsAPI
-from tenable.io.v3.users import UsersAPI
-from tenable.io.v3.vm.api import VulnerabilityManagement
-from tenable.io.v3.was.api import WebApplicationScanning
+from tenable.io.v3.groups.api import GroupsAPI
+from tenable.io.v3.users.api import UsersAPI
+from tenable.io.v3.vm import VulnerabilityManagement
+from tenable.io.v3.was import WebApplicationScanning
 
 
 class Version3API(APIEndpoint):  # noqa: PLR0904

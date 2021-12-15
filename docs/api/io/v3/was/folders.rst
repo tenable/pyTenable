@@ -1,1 +1,1 @@
-.. automodule:: tenable.io.v3.was.folders
+.. automodule:: tenable.io.v3.was.folders.api
