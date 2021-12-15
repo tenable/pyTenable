@@ -4,6 +4,9 @@ repos:
     hooks:
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
+    -   id: mixed-line-ending
+        args:
+          - '--fix=crlf'
 
 -   repo: https://gitlab.com/pycqa/flake8
     rev: 3.7.9
