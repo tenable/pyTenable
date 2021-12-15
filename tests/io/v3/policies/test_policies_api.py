@@ -280,7 +280,7 @@ def test_search(api):
 
 def test_templates(api):
     '''
-    Test the search method
+    Test the templates method
     '''
     with pytest.raises(NotImplementedError):
         api.v3.policies.templates()
@@ -288,7 +288,7 @@ def test_templates(api):
 
 def test_templates_details(api):
     '''
-    Test the search method
+    Test the template details method
     '''
     with pytest.raises(NotImplementedError):
         api.v3.policies.template_details('basic')

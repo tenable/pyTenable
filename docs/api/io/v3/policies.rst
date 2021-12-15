@@ -1,1 +1,1 @@
-.. automodule:: tenable.io.v3.policies
+.. automodule:: tenable.io.v3.policies.api
