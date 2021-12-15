@@ -3,7 +3,6 @@ Testing the Networks endpoints
 '''
 import uuid
 
-import pytest
 import responses
 from responses import matchers
 
@@ -31,9 +30,11 @@ def test_create(api):
         'created_in_seconds': 1639119695,
         'modified_in_seconds': 1639119695
     }
+    payload = {'name': 'test_network_name', 'description': ''}
     responses.add(
         responses.POST,
         f'{NETWORK_BASE_URL}',
+        match=[matchers.json_params_matcher(payload)],
         json=api_resp
     )
     resp = api.v3.vm.networks.create('test_network_name')
@@ -103,8 +104,7 @@ def test_edit(api):
     }
     payload = {
         'name': 'test_network_name',
-        'description': 'test_description',
-        'assets_ttl_days': None
+        'description': 'test_description'
     }
     responses.add(
         responses.PUT,
@@ -115,7 +115,9 @@ def test_edit(api):
     resp = api.v3.vm.networks.edit(
         NETWORK_ID,
         'test_network_name',
-        'test_description')
+        'test_description',
+        assets_ttl_days=None
+    )
     assert resp == api_resp_after_edit
 
 
@@ -204,9 +206,15 @@ def test_list_scanners(api):
     assert resp == api_resp['scanners']
 
 
-@pytest.mark.skip('This test will be implemented later')
 def test_search(api):
-    pass
+    '''
+    Test case for validating search action of Networks API
+    '''
+    try:
+        api.v3.vm.networks.search()
+        assert False
+    except NotImplementedError:
+        assert True
 
 
 @responses.activate

@@ -11,36 +11,15 @@ Methods available on ``tio.v3.vm.networks``:
 .. autoclass:: NetworksAPI
     :members:
 '''
-from typing import Dict, List, Union
+from typing import Dict, List, NoReturn, Union
+from uuid import UUID
 
 from tenable.errors import UnexpectedValueError
-from tenable.io.base import TIOEndpoint, TIOIterator
+from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.vm.networks.schema import NetworkSchema
 
 
-class NetworksIterator(TIOIterator):
-    '''
-    The networks iterator provides a scalable way to work through networks
-    result sets of any size.  The iterator will walk through each page
-    of data, returning one record at a time.  If it reaches the end of a
-    page of records, then it will request the next page of information and
-    then continue to return records from the next page (and the next, and the
-    next) until the counter reaches the total number of records that the API
-    has reported.
-
-    Attributes:
-        count (int): The current number of records that have been returned
-        page (list):
-            The current page of data being walked through.  pages will be
-            cycled through as the iterator requests more information from the
-            API.
-        page_count (int): The number of record returned from the current page.
-        total (int):
-            The total number of records that exist for the current request.
-    '''
-    pass
-
-
-class NetworksAPI(TIOEndpoint):
+class NetworksAPI(ExploreBaseEndpoint):
     '''
     This will contain all methods related to networks
     '''
@@ -74,16 +53,21 @@ class NetworksAPI(TIOEndpoint):
         Examples:
             >>> nw = tio.v3.vm.networks.create('Example')
         '''
-        if not description:
-            description = ''
+        schema = NetworkSchema(only=[
+            'name',
+            'description',
+            'assets_ttl_days'
+        ])
+        payload = schema.dump(
+            schema.load({
+                'name': name,
+                'description': description,
+                'assets_ttl_days': assets_ttl_days
+            })
+        )
+        return self._post(json=payload)
 
-        return self._post('', json={
-            'name': name,
-            'description': description,
-            'assets_ttl_days': assets_ttl_days
-        })
-
-    def delete(self, network_id: str) -> None:
+    def delete(self, network_id: UUID) -> NoReturn:
         '''
         Deletes the specified network.
 
@@ -99,7 +83,7 @@ class NetworksAPI(TIOEndpoint):
         '''
         self._delete(f'{network_id}')
 
-    def details(self, network_id: str) -> Dict:
+    def details(self, network_id: UUID) -> Dict:
         '''
         Retrieves the details of the specified network.
 
@@ -116,7 +100,7 @@ class NetworksAPI(TIOEndpoint):
         return self._get(f'{network_id}')
 
     def edit(self,
-             network_id: str,
+             network_id: UUID,
              name: str,
              description=None,
              assets_ttl_days=None
@@ -148,21 +132,24 @@ class NetworksAPI(TIOEndpoint):
                     'Updated Network', 'Updated Description', 180
                 )
         '''
-        if not description:
-            description = ''
-
-        return self._put(f'{network_id}',
-                         json={
-                             'name': name,
-                             'description': description,
-                             'assets_ttl_days': assets_ttl_days
-                         }
-                         )
+        schema = NetworkSchema(only=[
+            'name',
+            'description',
+            'assets_ttl_days'
+        ])
+        payload = schema.dump(
+            schema.load({
+                'name': name,
+                'description': description,
+                'assets_ttl_days': assets_ttl_days
+            })
+        )
+        return self._put(f'{network_id}', json=payload)
 
     def assign_scanners(self,
-                        network_id: str,
+                        network_id: UUID,
                         *scanner_uuids: Union[str, List]
-                        ) -> None:
+                        ) -> NoReturn:
         '''
         Assigns one or many scanners to a network.
 
@@ -188,16 +175,19 @@ class NetworksAPI(TIOEndpoint):
             ...     '00000000-0000-0000-0000-000000000000', # Scanner1 UUID
             ...     '00000000-0000-0000-0000-000000000000') # Scanner2 UUID
         '''
+
+        schema = NetworkSchema(only=['scanner_uuids'])
+        payload = schema.dump(
+            schema.load({'scanner_uuids': scanner_uuids})
+        )
         if len(scanner_uuids) == 1:
             self._post(f'{network_id}/scanners/{scanner_uuids[0]}')
         elif len(scanner_uuids) > 1:
-            self._post(f'{network_id}/scanners',
-                       json={'scanner_uuids': [id for id in scanner_uuids]}
-                       )
+            self._post(f'{network_id}/scanners', json=payload)
         else:
             raise UnexpectedValueError('No scanner_uuids were supplied.')
 
-    def list_scanners(self, network_id: str) -> List:
+    def list_scanners(self, network_id: UUID) -> List:
         '''
         Retrieves the list of scanners associated to a given network.
 
@@ -217,7 +207,7 @@ class NetworksAPI(TIOEndpoint):
         '''
         return self._get(f'{network_id}/scanners')['scanners']
 
-    def unassigned_scanners(self, network_id: str) -> List:
+    def unassigned_scanners(self, network_id: UUID) -> List:
         '''
         Retrieves the list of scanners that are currently unassigned to the
         given network.  This will include scanners and scanner groups that
@@ -299,9 +289,9 @@ class NetworksAPI(TIOEndpoint):
             >>> for nw in tio.access_groups.list(('name', 'match', 'win')):
             ...     pprint(nw)
         '''
-        return NotImplementedError("Search method will be implemented later")
+        raise NotImplementedError('Search method will be implemented later')
 
-    def network_asset_count(self, network_id: str, num_days: int) -> Dict:
+    def network_asset_count(self, network_id: UUID, num_days: int) -> Dict:
         '''
         get the total number of assets in the network along with the number
         of assets that have not been seen for the specified number of days.
