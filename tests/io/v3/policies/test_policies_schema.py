@@ -32,8 +32,8 @@ def test_policies_schema(policies_schema):
         schema.load(policies_schema)
     )
     assert payload['uuid'] == policies_schema['uuid']
-    assert payload['settings'] is Dict
-    assert payload['credentials'] is Dict
+    assert isinstance(payload['settings'], Dict)
+    assert isinstance(payload['credentials'], Dict)
 
 
 def test_policies_schema_invalid(policies_schema):
