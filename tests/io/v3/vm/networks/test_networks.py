@@ -3,6 +3,7 @@ Testing the Networks endpoints
 '''
 import uuid
 
+import pytest
 import responses
 from responses import matchers
 
@@ -210,11 +211,8 @@ def test_search(api):
     '''
     Test case for validating search action of Networks API
     '''
-    try:
+    with pytest.raises(NotImplementedError):
         api.v3.vm.networks.search()
-        assert False
-    except NotImplementedError:
-        assert True
 
 
 @responses.activate

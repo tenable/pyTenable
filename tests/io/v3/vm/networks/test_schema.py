@@ -1,6 +1,7 @@
 '''
 Testing the Network schemas
 '''
+import pytest
 from marshmallow.exceptions import ValidationError
 
 from tenable.io.v3.vm.networks.schema import NetworkSchema
@@ -15,11 +16,7 @@ def test_create_fields_positive():
             'description': 'description',
             'assets_ttl_days': 64
         }
-    schema = NetworkSchema(only=[
-            'name',
-            'description',
-            'assets_ttl_days'
-        ])
+    schema = NetworkSchema()
     payload = schema.dump(
         schema.load({
             'name': 'name',
@@ -38,16 +35,11 @@ def test_field_assets_ttl_days():
             'name': 'name',
             'description': 'description'
         }
-    schema = NetworkSchema(only=[
-            'name',
-            'description',
-            'assets_ttl_days'
-        ])
+    schema = NetworkSchema()
     payload = schema.dump(
         schema.load({
             'name': 'name',
-            'description': 'description',
-            'assets_ttl_days': None
+            'description': 'description'
         })
     )
     assert expected_payload == payload
@@ -61,18 +53,8 @@ def test_field_description():
             'name': 'name',
             'description': ''
         }
-    schema = NetworkSchema(only=[
-            'name',
-            'description',
-            'assets_ttl_days'
-        ])
-    payload = schema.dump(
-        schema.load({
-            'name': 'name',
-            'description': None,
-            'assets_ttl_days': None
-        })
-    )
+    schema = NetworkSchema()
+    payload = schema.dump(schema.load({'name': 'name'}))
     assert expected_payload == payload
 
 
@@ -82,7 +64,7 @@ def test_field_scanner_uuids_positive():
     '''
     scanner_uuids = ['00000000-0000-0000-0000-000000000000']
     expected_payload = {'scanner_uuids': scanner_uuids}
-    schema = NetworkSchema(only=['scanner_uuids'])
+    schema = NetworkSchema(only=["scanner_uuids"])
     payload = schema.dump(
         schema.load({'scanner_uuids': scanner_uuids})
     )
@@ -93,12 +75,9 @@ def test_field_scanner_uuids_negative():
     '''
     Test the vulnerability finding schema
     '''
-    try:
-        scanner_uuids = ['invalid_uuid']
-        schema = NetworkSchema(only=['scanner_uuids'])
+    scanner_uuids = ['invalid_uuid']
+    schema = NetworkSchema()
+    with pytest.raises(ValidationError):
         schema.dump(
             schema.load({'scanner_uuids': scanner_uuids})
         )
-        assert False
-    except ValidationError:
-        assert True

@@ -11,8 +11,10 @@ Methods available on ``tio.v3.vm.networks``:
 .. autoclass:: NetworksAPI
     :members:
 '''
-from typing import Dict, List, NoReturn, Union
+from typing import Dict, List, Union
 from uuid import UUID
+
+from restfly.utils import dict_clean
 
 from tenable.errors import UnexpectedValueError
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
@@ -25,10 +27,11 @@ class NetworksAPI(ExploreBaseEndpoint):
     '''
     _path = 'api/v3/networks'
     _conv_json = True
+    _schema = NetworkSchema()
 
     def create(self,
                name: str,
-               description: str = None,
+               description: str = '',
                assets_ttl_days: int = None
                ) -> Dict:
         '''
@@ -37,9 +40,9 @@ class NetworksAPI(ExploreBaseEndpoint):
         :devportal:`networks: create <networks-create>`
 
         Args:
-            name: The name of the new network.
-            description (optional): Description of the network.
-            assets_ttl_days (optional):
+            name (str): The name of the new network.
+            description (str, optional): Description of the network.
+            assets_ttl_days (int, optional):
                 The number of days to wait before assets age out.
                 Assets will be permanently deleted if they are not seen on
                 a scan within the specified number of days.
@@ -53,28 +56,23 @@ class NetworksAPI(ExploreBaseEndpoint):
         Examples:
             >>> nw = tio.v3.vm.networks.create('Example')
         '''
-        schema = NetworkSchema(only=[
-            'name',
-            'description',
-            'assets_ttl_days'
-        ])
-        payload = schema.dump(
-            schema.load({
+        payload = self._schema.dump(
+            self._schema.load(dict_clean({
                 'name': name,
                 'description': description,
                 'assets_ttl_days': assets_ttl_days
-            })
+            }))
         )
         return self._post(json=payload)
 
-    def delete(self, network_id: UUID) -> NoReturn:
+    def delete(self, network_id: UUID) -> None:
         '''
         Deletes the specified network.
 
         :devportal:`networks: delete <networks-delete>`
 
         Args:
-            network_id: The UUID of the network to remove.
+            network_id (UUID): The UUID of the network to remove.
 
         Examples:
             >>> tio.v3.vm.networks.delete(
@@ -90,7 +88,7 @@ class NetworksAPI(ExploreBaseEndpoint):
         :devportal:`networks: details <networks-details>`
 
         Args:
-            network_id : The UUID of the network.
+            network_id (UUID): The UUID of the network.
 
         Examples:
             >>> nw = tio.v3.vm.networks.details(
@@ -111,8 +109,8 @@ class NetworksAPI(ExploreBaseEndpoint):
         :devportal:`networks: update <networks-update>`
 
         Args:
-            network_id: The UUID of the network resource to update.
-            name: The new name of the network resource.
+            network_id (UUID): The UUID of the network resource to update.
+            name (str): The new name of the network resource.
             description (str, optional):
                 The new description of the network resource.
             assets_ttl_days (int, optional):
@@ -132,24 +130,20 @@ class NetworksAPI(ExploreBaseEndpoint):
                     'Updated Network', 'Updated Description', 180
                 )
         '''
-        schema = NetworkSchema(only=[
-            'name',
-            'description',
-            'assets_ttl_days'
-        ])
+        schema = NetworkSchema()
         payload = schema.dump(
-            schema.load({
+            schema.load(dict_clean({
                 'name': name,
                 'description': description,
                 'assets_ttl_days': assets_ttl_days
-            })
+            }))
         )
         return self._put(f'{network_id}', json=payload)
 
     def assign_scanners(self,
                         network_id: UUID,
-                        *scanner_uuids: Union[str, List]
-                        ) -> NoReturn:
+                        *scanner_uuids: Union[UUID, List]
+                        ) -> None:
         '''
         Assigns one or many scanners to a network.
 
@@ -158,8 +152,8 @@ class NetworksAPI(ExploreBaseEndpoint):
         <networks-assign-scanner-bulk>`
 
         Args:
-            network_id: The UUID of the network.
-            *scanner_uuids: Scanner UUID(s) to assign to the network.
+            network_id (UUID): The UUID of the network.
+            *scanner_uuids (UUID): Scanner UUID(s) to assign to the network.
 
         Examples:
             Assign a single scanner:
@@ -194,7 +188,7 @@ class NetworksAPI(ExploreBaseEndpoint):
         :devportal:`networks: list-scanners <networks-list-scanners>`
 
         Args:
-            network_id (str): The UUID of the network.
+            network_id (UUID): The UUID of the network.
 
         Returns:
             :obj:`list`:
@@ -217,7 +211,7 @@ class NetworksAPI(ExploreBaseEndpoint):
             <networks-list-assignable-scanners>`
 
         Args:
-            id: The UUID of the network.
+            id (UUID): The UUID of the network.
 
         Returns:
             :obj:`list`:
@@ -300,8 +294,8 @@ class NetworksAPI(ExploreBaseEndpoint):
         <networks-asset-count-details>`
 
         Args:
-            network_id: The UUID of the network.
-            num_days: count of assets that have not been seen for the
+            network_id (UUID): The UUID of the network.
+            num_days (int): count of assets that have not been seen for the
             specified number of days
 
         Returns:
