@@ -13,8 +13,7 @@ FILE_PATH = os.path.join(
             os.path.abspath(__file__)
             ), 'policies_test.nessus'
         )
-POLICIES_BASE_URL = r'https://cloud.tenable.com/policies'
-# POLICIES_BASE_URL = r'https://cloud.tenable.com/api/v3/policies'
+POLICIES_BASE_URL = r'https://cloud.tenable.com/api/v3/policies'
 POLICY_ID = 25
 POLICY_DETAILS = {
     'settings': {
@@ -257,7 +256,7 @@ def test_policy_export(api):
 
     output_file_name = 'export_output_file.txt'
     with open(output_file_name, 'wb') as output_file_obj:
-        api.v3.policies.export(
+        api.v3.policies.policy_export(
             POLICY_ID,
             output_file_obj
         )
@@ -266,7 +265,7 @@ def test_policy_export(api):
         assert output_file_obj.read() == file_contents
 
     # Validate the method when fileObj is not passed
-    assert file_contents == api.v3.policies.export(POLICY_ID)
+    assert file_contents == api.v3.policies.policy_export(POLICY_ID)
 
     os.remove(output_file_name)
 

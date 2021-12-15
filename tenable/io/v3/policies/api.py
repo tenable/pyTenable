@@ -25,8 +25,7 @@ class PoliciesAPI(ExploreBaseEndpoint):
     This class contain all methods related to Policies Endpoint
     '''
 
-    # _path = 'api/v3/policies'
-    _path = 'policies'
+    _path = 'api/v3/policies'
     _conv_json = True
     _schema = PoliciesSchema()
 
