@@ -244,12 +244,12 @@ def test_policy_export(api):
         file_contents = fobj.read()
 
     responses.add(
-        responses.POST,
+        responses.GET,
         f'{POLICIES_BASE_URL}/{POLICY_ID}/export',
         body=file_contents
     )
     responses.add(
-        responses.POST,
+        responses.GET,
         f'{POLICIES_BASE_URL}/{POLICY_ID}/export',
         body=file_contents
     )
