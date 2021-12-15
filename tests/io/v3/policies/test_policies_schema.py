@@ -1,6 +1,5 @@
 import pytest
 from marshmallow.exceptions import ValidationError
-from marshmallow.fields import Dict
 
 from tenable.io.v3.policies.schema import PoliciesSchema
 
@@ -32,8 +31,8 @@ def test_policies_schema(policies_schema):
         schema.load(policies_schema)
     )
     assert payload['uuid'] == policies_schema['uuid']
-    assert isinstance(payload['settings'], Dict)
-    assert isinstance(payload['credentials'], Dict)
+    assert isinstance(payload['settings'], dict)
+    assert isinstance(payload['credentials'], dict)
 
 
 def test_policies_schema_invalid(policies_schema):

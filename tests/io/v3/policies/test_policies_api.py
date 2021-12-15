@@ -265,7 +265,7 @@ def test_policy_export(api):
         assert output_file_obj.read() == file_contents
 
     # Validate the method when fileObj is not passed
-    assert file_contents == api.v3.policies.policy_export(POLICY_ID)
+    assert file_contents == (api.v3.policies.policy_export(POLICY_ID)).read()
 
     os.remove(output_file_name)
 
