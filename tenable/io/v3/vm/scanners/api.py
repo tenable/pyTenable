@@ -18,8 +18,7 @@ from uuid import UUID
 from typing_extensions import Literal
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-
-from .schema import ScannerEditSchema
+from tenable.io.v3.vm.scanners.schema import ScannerEditSchema
 
 
 class ScannersAPI(ExploreBaseEndpoint):

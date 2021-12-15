@@ -1,7 +1,7 @@
 '''
 Testing the Scanner schemas
 '''
-from tenable.io.v3.vm.schema import ScannerEditSchema
+from tenable.io.v3.vm.scanners.schema import ScannerEditSchema
 
 
 def test_scanner_edit_schema():

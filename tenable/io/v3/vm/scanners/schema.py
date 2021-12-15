@@ -6,7 +6,7 @@ from marshmallow import Schema, fields, post_dump
 
 class ScannerEditSchema(Schema):
     '''
-    Schema for edit functions in scanners.py
+    Schema for edit functions in api.py
 
     Args:
 

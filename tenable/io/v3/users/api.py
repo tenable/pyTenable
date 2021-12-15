@@ -1,5 +1,5 @@
 '''
-users
+Users
 =====
 
 The following methods allow for interaction into the Tenable.io
@@ -18,7 +18,7 @@ from restfly.utils import dict_clean
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.schema.explore.filters import FilterSchema
 from tenable.io.v3.base.schema.explore.search import SearchSchema
-from tenable.io.v3.schema import UserEditSchema, UsersCreateSchema
+from tenable.io.v3.users.schema import UserEditSchema, UsersCreateSchema
 from tenable.utils import dict_merge
 
 
@@ -294,8 +294,8 @@ class UsersAPI(ExploreBaseEndpoint):
         '''
         Retrieves the users.
 
-        Requires -
-            fields -- list of string = ['field1', 'field2']
+        Args:
+            fields (list): ['field1', 'field2']
             filter -- tuple
                 ('field_name', 'operator', 'value') --
                 ('and', ('test', 'oper', '1'),
