@@ -23,6 +23,7 @@ This package covers the Tenable.ad interface.
     preference
     profiles
     roles
+    score
     users
     widget
 '''
