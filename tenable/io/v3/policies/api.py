@@ -262,11 +262,10 @@ class PoliciesAPI(ExploreBaseEndpoint):
         fid = self._api.v3.vm.files.upload(fobj)
         return self._post('import', json={'file': fid})
 
-    def policy_export(
-        self,
-        id: int,
-        fobj: Optional[Union[BytesIO, BinaryIO]] = None
-    ) -> Union[BytesIO, BinaryIO]:
+    def policy_export(self,
+                      id: int,
+                      fobj: Optional[Union[BytesIO, BinaryIO]] = None
+                      ) -> Union[BytesIO, BinaryIO]:
         '''
         Exports a specified policy from Tenable.io.
 
