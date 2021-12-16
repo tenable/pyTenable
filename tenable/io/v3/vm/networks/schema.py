@@ -4,7 +4,7 @@ Networks API Endpoint Schemas
 from marshmallow import Schema, fields
 
 
-class NetworkSchema(Schema):
+class NetworksSchema(Schema):
     '''
     Schema for edit and create functions in networks/api.py
 

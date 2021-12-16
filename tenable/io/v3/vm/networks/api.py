@@ -18,16 +18,16 @@ from restfly.utils import dict_clean
 
 from tenable.errors import UnexpectedValueError
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.networks.schema import NetworkSchema
+from tenable.io.v3.vm.networks.schema import NetworksSchema
 
 
 class NetworksAPI(ExploreBaseEndpoint):
     '''
-    This will contain all methods related to networks
+    This class contains methods related to Networks API
     '''
     _path = 'api/v3/networks'
     _conv_json = True
-    _schema = NetworkSchema()
+    _schema = NetworksSchema()
 
     def create(self,
                name: str,
@@ -130,7 +130,7 @@ class NetworksAPI(ExploreBaseEndpoint):
                     'Updated Network', 'Updated Description', 180
                 )
         '''
-        schema = NetworkSchema()
+        schema = NetworksSchema()
         payload = schema.dump(
             schema.load(dict_clean({
                 'name': name,
@@ -158,19 +158,19 @@ class NetworksAPI(ExploreBaseEndpoint):
         Examples:
             Assign a single scanner:
 
-            >>> tio.v3.vm.networks,assign_scanners(
+            >>> tio.v3.vm.networks.assign_scanners(
             ...     '00000000-0000-0000-0000-000000000000', # Network UUID
             ...     '00000000-0000-0000-0000-000000000000') # Scanner UUID
 
             Assign multiple scanners:
 
-            >>> tio.v3.vm.networks,assign_scanners(
+            >>> tio.v3.vm.networks.assign_scanners(
             ...     '00000000-0000-0000-0000-000000000000', # Network UUID
             ...     '00000000-0000-0000-0000-000000000000', # Scanner1 UUID
             ...     '00000000-0000-0000-0000-000000000000') # Scanner2 UUID
         '''
 
-        schema = NetworkSchema(only=['scanner_uuids'])
+        schema = NetworksSchema(only=['scanner_uuids'])
         payload = schema.dump(
             schema.load({'scanner_uuids': scanner_uuids})
         )
