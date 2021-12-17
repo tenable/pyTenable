@@ -1,7 +1,7 @@
 from marshmallow import Schema, fields
 
 
-class PoliciesSchema(Schema):
+class PolicySchema(Schema):
     '''
     Base schema for validating Policies API
     '''

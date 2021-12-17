@@ -15,7 +15,7 @@ from io import BytesIO
 from typing import BinaryIO, Dict, List, Optional, Union
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.policies.schema import PoliciesSchema
+from tenable.io.v3.policies.schema import PolicySchema
 
 # from tenable.utils import dict_merge, policy_settings
 
@@ -27,7 +27,7 @@ class PoliciesAPI(ExploreBaseEndpoint):
 
     _path = 'api/v3/policies'
     _conv_json = True
-    _schema = PoliciesSchema()
+    _schema = PolicySchema()
 
     def templates(self):
         '''

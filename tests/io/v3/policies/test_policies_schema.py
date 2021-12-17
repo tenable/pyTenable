@@ -1,7 +1,7 @@
 import pytest
 from marshmallow.exceptions import ValidationError
 
-from tenable.io.v3.policies.schema import PoliciesSchema
+from tenable.io.v3.policies.schema import PolicySchema
 
 
 @pytest.fixture
@@ -26,7 +26,7 @@ def test_policies_schema(policies_schema):
     '''
     Test the policies schema
     '''
-    schema = PoliciesSchema()
+    schema = PolicySchema()
     payload = schema.dump(
         schema.load(policies_schema)
     )
@@ -39,7 +39,7 @@ def test_policies_schema_invalid(policies_schema):
     '''
     Test the policies schema
     '''
-    schema = PoliciesSchema()
+    schema = PolicySchema()
     policies_schema['uuid'] = 1
     with pytest.raises(ValidationError):
         schema.dump(
