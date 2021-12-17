@@ -42,7 +42,7 @@ def test_users_schema(users_schema):
 
     schema = UserSchema()
     del users_schema['password']
-    req = schema.dump(users_schema)
+    req = schema.dump(schema.load(users_schema))
     for key in users_schema:
         assert test_resp[key] == req[key]
     with pytest.raises(ValidationError):
@@ -86,7 +86,7 @@ def test_users_schema_many(users_schema_many):
 
     schema = UserSchema()
     del users_schema_many[0]['password']
-    req = schema.dump(users_schema_many, many=True)
+    req = schema.dump(schema.load(users_schema_many, many=True), many=True)
     for key in users_schema_many[0]:
         assert test_resp[0][key] == req[0][key]
     with pytest.raises(ValidationError):

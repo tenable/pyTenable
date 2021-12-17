@@ -1,1 +1,1 @@
-.. automodule:: tenable.io.v3.users
+.. automodule:: tenable.io.v3.users.api

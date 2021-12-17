@@ -1,1 +1,1 @@
-.. automodule:: tenable.io.v3.was.api
+.. automodule:: tenable.io.v3.was

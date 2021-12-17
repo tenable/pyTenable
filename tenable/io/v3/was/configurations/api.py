@@ -1,0 +1,411 @@
+'''
+Configurations
+==============
+
+The following methods allow for interaction into the Tenable.io
+:devportal:`configurations <was-v2-configurations>` API.
+
+Methods available on ``tio.v3.was.configurations``:
+
+.. rst-class:: hide-signature
+.. autoclass:: ConfigurationsAPI
+    :members:
+'''
+from typing import Dict, List, Optional
+from uuid import UUID
+
+from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.was.configurations.schema import ConfigurationSchema
+
+
+class ConfigurationsAPI(ExploreBaseEndpoint):
+    '''
+    This class contains methods related to Configurations API
+    '''
+
+    _path = 'api/v3/was/configs'
+    _conv_json = True
+    _schema = ConfigurationSchema()
+
+    def create(self,
+               name: str,
+               owner_id: UUID,
+               template_id: UUID,
+               targets: List[str],
+               settings: Dict,
+               **kw
+               ) -> Dict:
+        '''
+        Create a scan configuration.
+
+        :devportal:`configuration: create <was-v2-config-create>`
+
+        Args:
+            name:
+                The name of the scan configuration.
+
+            owner_id:
+                The UUID of the owner of the scan configuration.
+
+            settings:
+                The scan configuration settings.
+
+            targets:
+                A List of distinct absolute URLs that were targeted in the
+                scan.
+
+            template_id:
+                The UUID of the Tenable-provided configuration template.
+
+            description (str):
+                A description of the scan configuration.
+
+            folder_id (str):
+                The UUID of the folder to assign for the scan configuration.
+
+            user_template_id (str):
+                The UUID of the user-defined configuration template from which
+                this configuration was derived.
+
+            scanner_id (int):
+                The ID of the scanner (if the type is set to managed_webapp),
+                or scanner group (if the type is pool or local) that performs
+                the scan.
+
+            schedule (Dict):
+                The schedule when the scan configuration will be run.
+
+            notifications (Dict):
+                Contact information used to send scan notifications
+                upon scan completion.
+
+            permissions (List):
+                The permissions for the scan configuration.
+
+        Returns:
+            :obj:`dict`:
+                The resource record of the newly created scan configuration.
+
+        Examples:
+            >>> configuration_settings = {
+            ...     'description': 'Test Security Scan Configuration'
+            ... }
+            >>> targets = [
+            ...     'https://example.com',
+            ...     'https://example1.com'
+            ... ]
+            >>> scan_configuration = tio.v3.was.configurations.create(
+            ...     'New Scan Configuration Name',
+            ...     '00000000-0000-0000-0000-000000000000',
+            ...     settings=configuration_settings,
+            ...     targets=targets,
+            ...     template_id='00000000-0000-0000-0000-000000000000'
+            ... )
+        '''
+        payload = {
+            'name': name,
+            'owner_id': owner_id,
+            'template_id': template_id,
+            'targets': targets,
+            'settings': settings
+        }
+        payload.update(kw)
+
+        payload = self._schema.dump(self._schema.load(payload))
+        return self._post(json=payload)
+
+    def delete(self, config_id: UUID) -> None:
+        '''
+        Delete a scan configuration.
+
+        :devportal:`configuration: delete <was-v2-config-delete>`
+
+        Args:
+            config_id:
+                The unique identifier for the scan configuration.
+
+        Returns:
+            :obj:`None`
+
+        Examples:
+            >>> tio.v3.was.folders.delete(
+            ...     '00000000-0000-0000-0000-000000000000'
+            ... )
+        '''
+
+        return self._delete(str(config_id))
+
+    def details(self, config_id: UUID) -> Dict:
+        '''
+        Returns details for the specified scan configuration.
+
+        :devportal:`configuration: details <was-v2-config-details>`
+
+        Args:
+            config_id:
+                The UUID of the scan configuration that you want to
+                retrieve details for.
+
+        Returns:
+            :obj:`dict`:
+                The details of the specified scan configuration.
+
+        Examples:
+            >>> tio.v3.was.configurations.details(
+            ...     '00000000-0000-0000-0000-000000000000'
+            ... )
+        '''
+
+        return super().details(config_id)
+
+    def get_processing_status(self,
+                              config_id: UUID,
+                              tracking_id: UUID
+                              ) -> Dict:
+        '''
+        Tracks the current status of a scan configuration
+        creation, update, or upsert process.
+
+        :devportal:`configuration: processing status <was-v2-config-status>`
+
+        Args:
+            config_id:
+                The UUID of the scan configuration.
+
+            tracking_id:
+                The tracking UUID for the request you want to retrieve
+                the status for.
+
+        Returns:
+            :obj:`dict`:
+                The procesing status for the scan configuration.
+
+        Examples:
+            >>> tio.v3.was.configurations.get_processing_status(
+            ...     '00000000-0000-0000-0000-000000000000',
+            ...     '00000000-0000-0000-0000-000000000000'
+            ... )
+        '''
+
+        return self._get(f'{config_id}/status/{tracking_id}')
+
+    def move(self, config_id: UUID, folder_name: str) -> None:
+        '''
+        Moves the scan configuration to the specified folder.
+
+        :devportal:`configuration: move <was-v2-config-move>`
+
+        Args:
+            config_id:
+                The UUID of the scan configuration you want to update.
+
+            folder_name:
+                The name of the folder to set for the scan configuration.
+
+        Returns:
+            :obj:`None`
+
+        Examples:
+            >>> tio.v3.was.configurations.move(
+            ...     '00000000-0000-0000-0000-000000000000',
+            ...     'Destination Folder'
+            ... )
+
+        '''
+        payload = self._schema.dump(self._schema.load(
+            {
+                'folder_name': folder_name
+            }
+        ))
+        return self._patch(str(config_id), json=payload)
+
+    def search(self,
+               *,
+               fields: Optional[List[str]] = None,
+               sort: Optional[List[Dict]] = None,
+               filter: Optional[Dict] = None, limit: int = 1000,
+               next: Optional[str] = None, return_resp: bool = False,
+               iterator_cls=None,
+               schema_cls=None,
+               **kwargs
+               ) -> Dict:
+        '''
+        Returns a list of web application scan configurations.
+        If a scan has been run using the configuration, the list also
+        contains information about the last scan that was run.
+
+        :devportal:`configuration: search <was-v2-config-search>`
+
+        Args:
+            fields (list):
+                The list of field names to return from the Tenable API.
+                Example:
+                    - ``['field1', 'field2']``
+
+            filter (tuple, Dict):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                    ...            ('test', 'oper', '2')
+                    ...     ),
+                    ... 'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {'or': [
+                    ...         {'and': [
+                    ...                 {
+                    ...                     'value': '1',
+                    ...                     'operator': 'oper',
+                    ...                     'property': '1'
+                    ...                 },
+                    ...                 {
+                    ...                     'value': '2',
+                    ...                     'operator': 'oper',
+                    ...                     'property': '2'
+                    ...                 }
+                    ...             ]
+                    ...         }
+                    ...     ],
+                    ... 'and': [
+                    ...         {
+                    ...             'value': '3',
+                    ...             'operator': 'oper',
+                    ...             'property': 3
+                    ...         }
+                    ...     ]
+                    ... }
+
+            sort list(tuple, Dict):
+                A list of dictionaries describing how to sort the data
+                that is to be returned.
+                Examples:
+                    - ``[("field_name_1", "asc"),
+                             ("field_name_2", "desc")]``
+                    - ``[{'property': 'last_observed', 'order': 'desc'}]``
+
+            limit (int):
+                Number of objects to be returned in each request.
+                Default is 1000.
+
+            next (str):
+                The pagination token to use when requesting the next page of
+                results.  This token is presented in the previous response.
+
+            return_resp (bool):
+                If set to true, will override the default behavior to return
+                an iterable and will instead return the results for the
+                specific page of data.
+
+            return_csv (bool):
+                If set to true, It wil return the CSV Iterable. Returns all
+                data in text/csv format on each next call with row headers
+                on each page.
+        Returns:
+            Iterable:
+                The iterable that handles the pagination and potentially
+                async requests for the job.
+            requests.Response:
+                If ``return_json`` was set to ``True``, then a response
+                object is instead returned instead of an iterable.
+        Examples:
+            >>> tio.v3.was.configurations.search()
+        '''
+        raise NotImplementedError("Search is yet to be implemented")
+
+    def upsert(self,
+               config_id: UUID,
+               name: str,
+               owner_id: UUID,
+               template_id: str,
+               targets: List[str],
+               settings: Dict,
+               **kw
+               ) -> Dict:
+        '''
+        Updates an existing scan configuration or creates a new
+        scan configuration.
+
+        :devportal:`configuration: updsert <was-v2-config-upsert>`
+
+        Args:
+            config_id:
+                If updating an existing scan configuration, the UUID of the
+                scan configuration you want to update. If creating a new scan
+                configuration, a new UUID generated with a tool like uuidgen.
+
+            name:
+                The name of the scan configuration.
+
+            owner_id:
+                The UUID of the owner of the scan configuration.
+
+            settings:
+                The scan configuration settings.
+
+            targets:
+                A List of distinct absolute URLs that were targeted in
+                the scan.
+
+            template_id:
+                The UUID of the Tenable-provided configuration template.
+
+            description (str):
+                A description of the scan configuration.
+
+            folder_id (str):
+                The UUID of the folder to assign for the scan configuration.
+
+            user_template_id (str):
+                The UUID of the user-defined configuration template from which
+                this configuration was derived.
+
+            scanner_id (int):
+                The ID of the scanner (if the type is set to managed_webapp),
+                or scanner group (if the type is pool or local) that performs
+                the scan.
+
+            schedule (Dict):
+                The schedule when the scan configuration will be run.
+
+            notifications (Dict):
+                Contact information used to send scan notifications upon scan
+                completion.
+
+            permissions (List):
+                The permissions for the scan configuration.
+
+        Returns:
+            :obj:`dict`:
+                The resource record of the updated scan configuration.
+
+        Examples:
+            >>> configuration_settings = {
+            ...     'description': 'Update Scan Configuration Description'
+            ... }
+            >>> targets = [
+            ...     'https://example.com',
+            ...     'https://example1.com'
+            ... ]
+            >>> scan_configuration = tio.v3.was.configurations.upsert(
+            ...     '00000000-0000-0000-0000-000000000000',
+            ...     'Updated Configuration Name',
+            ...     '00000000-0000-0000-0000-000000000000',
+            ...     settings=configuration_settings,
+            ...     targets=targets,
+            ...     template_id='00000000-0000-0000-0000-000000000000'
+            ... )
+        '''
+
+        payload = {
+            'name': name,
+            'owner_id': owner_id,
+            'template_id': template_id,
+            'targets': targets,
+            'settings': settings
+        }
+        payload.update(kw)
+
+        payload = self._schema.dump(self._schema.load(payload))
+
+        return self._put(str(config_id), json=payload)

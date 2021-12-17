@@ -8,7 +8,14 @@ from tenable.base.platform import APIPlatform
 
 from .about import AboutAPI
 from .api_keys import APIKeyAPI
+from .category.api import CategoryAPI
+from .checker.api import CheckerAPI
+from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
+from .infrastructure.api import InfrastructureAPI
+from .preference.api import PreferenceAPI
+from .profiles.api import ProfilesAPI
+from .roles.api import RolesAPI
 from .users.api import UsersAPI
 from .widget.api import WidgetsAPI
 
@@ -54,12 +61,68 @@ class TenableAD(APIPlatform):
         return APIKeyAPI(self)
 
     @property
+    def category(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Category APIs <category>`.
+        '''
+        return CategoryAPI(self)
+
+    @property
+    def checker(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Checker APIs <checker>`.
+        '''
+        return CheckerAPI(self)
+
+    @property
+    def dashboard(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Dashboard APIs <dashboard>`.
+        '''
+        return DashboardAPI(self)
+
+    @property
     def directories(self):
         '''
         The interface object for the
         :doc:`Tenable.ad Directories APIs <directories>`.
         '''
         return DirectoriesAPI(self)
+
+    @property
+    def infrastructure(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Infrastructure APIs <infrastructure>`.
+        '''
+        return InfrastructureAPI(self)
+      
+    @property
+    def preference(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Preference APIs <preference>`.
+        '''
+        return PreferenceAPI(self)
+
+    @property
+    def profiles(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Profiles APIs <profiles>`.
+        '''
+        return ProfilesAPI(self)
+
+    @property
+    def roles(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Roles APIs <roles>`.
+        '''
+        return RolesAPI(self)
 
     @property
     def users(self):

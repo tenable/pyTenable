@@ -1,1 +1,1 @@
-.. automodule:: tenable.io.v3.vm.plugins
+.. automodule:: tenable.io.v3.vm.plugins.api
