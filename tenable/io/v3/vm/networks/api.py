@@ -18,7 +18,7 @@ from restfly.utils import dict_clean
 
 from tenable.errors import UnexpectedValueError
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.networks.schema import NetworksSchema
+from tenable.io.v3.vm.networks.schema import NetworkSchema
 
 
 class NetworksAPI(ExploreBaseEndpoint):
@@ -27,7 +27,7 @@ class NetworksAPI(ExploreBaseEndpoint):
     '''
     _path = 'api/v3/networks'
     _conv_json = True
-    _schema = NetworksSchema()
+    _schema = NetworkSchema()
 
     def create(self,
                name: str,
@@ -130,7 +130,7 @@ class NetworksAPI(ExploreBaseEndpoint):
                     'Updated Network', 'Updated Description', 180
                 )
         '''
-        schema = NetworksSchema()
+        schema = NetworkSchema()
         payload = schema.dump(
             schema.load(dict_clean({
                 'name': name,
@@ -170,7 +170,7 @@ class NetworksAPI(ExploreBaseEndpoint):
             ...     '00000000-0000-0000-0000-000000000000') # Scanner2 UUID
         '''
 
-        schema = NetworksSchema(only=['scanner_uuids'])
+        schema = NetworkSchema(only=['scanner_uuids'])
         payload = schema.dump(
             schema.load({'scanner_uuids': scanner_uuids})
         )
