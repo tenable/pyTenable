@@ -17,9 +17,13 @@ Methods available on ``tio.v3.was``:
     :glob:
 
     folders
+    templates
+    user-templates
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.was.folders.api import FoldersAPI
+from tenable.io.v3.was.templates.api import TemplatesAPI
+from tenable.io.v3.was.user_templates.api import UserTemplatesAPI
 
 
 class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
@@ -35,3 +39,19 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Folders API <folders>`
         '''
         return FoldersAPI(self._api)
+
+    @property
+    def templates(self):
+        '''
+        The interface object for the
+        :doc:`Folders API <folders>`
+        '''
+        return TemplatesAPI(self._api)
+
+    @property
+    def user_templates(self):
+        '''
+        The interface object for the
+        :doc:`Folders API <folders>`
+        '''
+        return UserTemplatesAPI(self._api)
