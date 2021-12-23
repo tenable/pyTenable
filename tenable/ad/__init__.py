@@ -24,6 +24,7 @@ This package covers the Tenable.ad interface.
     preference
     profiles
     roles
+    saml_configuration
     score
     users
     widget

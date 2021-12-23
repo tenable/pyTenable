@@ -187,11 +187,11 @@ class RolesAPI(APIEndpoint):
             entity_name (str):
                 The name of entity.
             action (str):
-                ???
+                The code of action to perform.
             entity_ids (List[int]):
                 The list of entity identifiers.
             dynamic_id (optional, str):
-                ???
+                The dynamicId to use associated with the action.
 
         Returns:
             dict:
