@@ -123,7 +123,8 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
             ...             'entity_id':
             ...                 '3fa85f64-5717-4562-b3fc-2c963f66afa6',
             ...             'permissions_id':
-            ...                 '3fa85f64-5717-4562-b3fc-2c963f66afa6'
+            ...                 '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+            ...             'level': 'no_access'
             ...         }
             ...     ]
             ...     description = 'Template for containing threat'
@@ -140,4 +141,4 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
         }
         schema = UserTemplateSchema()
         payload = dict_clean(schema.dump(schema.load(payload)))
-        self._put(f'{user_template_id}', json=payload)
+        return self._put(f'{user_template_id}', json=payload)

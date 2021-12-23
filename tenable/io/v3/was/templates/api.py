@@ -43,7 +43,7 @@ class TemplatesAPI(ExploreBaseEndpoint):
         '''
         return super().details(template_id)
 
-    def search(self, **kwargs) -> None:
+    def search(self, **kwargs) -> Dict:
         '''
         Not Implemented
         '''
