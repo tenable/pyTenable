@@ -248,11 +248,6 @@ def test_policy_export(api):
         f'{POLICIES_BASE_URL}/{POLICY_ID}/export',
         body=file_contents
     )
-    responses.add(
-        responses.GET,
-        f'{POLICIES_BASE_URL}/{POLICY_ID}/export',
-        body=file_contents
-    )
 
     output_file_name = 'export_output_file.txt'
     with open(output_file_name, 'wb') as output_file_obj:
