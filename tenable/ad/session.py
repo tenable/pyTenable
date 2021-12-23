@@ -17,6 +17,7 @@ from .lockout_policy.api import LockoutPolicyAPI
 from .preference.api import PreferenceAPI
 from .profiles.api import ProfilesAPI
 from .roles.api import RolesAPI
+from .saml_configuration.api import SAMLConfigurationAPI
 from .score.api import ScoreAPI
 from .users.api import UsersAPI
 from .widget.api import WidgetsAPI
@@ -133,6 +134,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Roles APIs <roles>`.
         '''
         return RolesAPI(self)
+
+    @property
+    def saml_configuration(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad SAML configuration APIs <saml_configuration>`.
+        '''
+        return SAMLConfigurationAPI(self)
 
     @property
     def score(self):
