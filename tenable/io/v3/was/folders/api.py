@@ -11,8 +11,8 @@ Methods available on ``tio.v3.was.folders``:
 .. autoclass:: FoldersAPI
     :members:
 '''
-import uuid
 from typing import Dict, List
+from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
@@ -28,26 +28,24 @@ class FoldersAPI(ExploreBaseEndpoint):
         :devportal:`was folders: create <was-v2-folders-create>`
 
         Args:
-            name:
-                The name of the new folder.
+            name (str): The name of the new folder.
 
         Returns:
-            :obj:`dict`:
-                The resource record of the newly created folder.
+            :obj:`dict`: The resource record of the newly created folder.
 
         Examples:
             >>> folder = tio.v3.was.folders.create('New Folder Name')
         '''
         return self._post(json={'name': name})
 
-    def delete(self, id: uuid.UUID) -> None:
+    def delete(self, id: UUID) -> None:
         '''
         Delete a folder.
 
         :devportal:`was folders: delete <was-v2-folders-delete>`
 
         Args:
-            id: The unique identifier for the folder.
+            id (UUID): The unique identifier for the folder.
 
         Returns:
             :obj:`None`
@@ -57,19 +55,18 @@ class FoldersAPI(ExploreBaseEndpoint):
         '''
         self._delete(f'{id}')
 
-    def edit(self, id: uuid.UUID, name: str) -> Dict:
+    def edit(self, id: UUID, name: str) -> Dict:
         '''
         Edit a folder.
 
         :devportal:`was folders: edit <was-v2-folders-update>`
 
         Args:
-            id: The unique identifier for the folder.
-            name: The new name for the folder.
+            id (UUID): The unique identifier for the folder.
+            name (str): The new name for the folder.
 
         Returns:
-            :obj:`dict`:
-                The resource record of the updated folder.
+            :obj:`dict`: The resource record of the updated folder.
 
         Examples:
             >>> tio.v3.was.folders.edit('91843ecb-ecb8-48a3-b623-d4682c2594',
@@ -77,18 +74,8 @@ class FoldersAPI(ExploreBaseEndpoint):
         '''
         return self._put(f'{id}', json={'name': name})
 
-    def list(self) -> List:
-        '''
-        Lists the available folders.
-
-        :devportal:`was folders: list <was-v2-folders-list>`
-
-        Returns:
-            :obj:`list`:
-                List of folder resource records.
-
-        Examples:
-            >>> for folder in tio.v3.was.folders.list():
-            ...     pprint(folder)
-        '''
-        return self._get()
+    def search(self, **kwargs) -> List:
+        raise NotImplementedError(
+            'This method will be updated once ExploreSearchIterator is \
+                implemented for v3'
+        )
