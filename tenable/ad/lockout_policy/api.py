@@ -39,13 +39,14 @@ class LockoutPolicyAPI(APIEndpoint):
 
         Args:
             enabled (optional, bool):
-                ???
+                Whether the lockout policy enabled?
             lockout_duration (optional, int):
-                ???
+                The time duration for which user will be locked out after
+                several failed login attempts.
             failed_attempt_threshold (optional, int):
-                ???
+                The number of failed login attempts to trigger lockout.
             failed_attempt_period (optional, int):
-                ???
+                The time to wait before the login attempts count is reseted.
 
         Return:
             None

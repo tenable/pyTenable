@@ -61,7 +61,7 @@ class DirectoriesAPI(APIEndpoint):
             dns (str):
                 The DNS domain that this directory is tied to.
             directory_type (optional, str):
-                ???
+                The directorie's type.
             ldap_port (optional, str):
                 The port number associated to the LDAP service on the
                 directory server.
