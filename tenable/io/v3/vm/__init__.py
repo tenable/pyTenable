@@ -17,6 +17,7 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     agent_config
+    agent_groups
     agents
     files
     folders
@@ -27,6 +28,7 @@ Methods available on ``tio.v3.vm``:
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
+from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
 from tenable.io.v3.vm.files.api import FileAPI
 from tenable.io.v3.vm.folders.api import FoldersAPI
@@ -50,6 +52,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Agent Config APIs <agent_config>`.
         '''
         return AgentConfigAPI(self._api)
+
+    @property
+    def agent_groups(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Agent Groups APIs <agent_groups>`.
+        '''
+        return AgentGroupsAPI(self)
 
     @property
     def agents(self):
