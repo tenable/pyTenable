@@ -15,15 +15,13 @@ class PermissionSchema(Schema):
 
 
 class UserTemplateSchema(Schema):
-    name = fields.Str(required=True)
+    name = fields.Str()
     description = fields.Str()
-    owner_id = fields.UUID(required=True)
+    owner_id = fields.UUID()
     default_permissions = fields.Str(
-        required=True,
         validate=validate.OneOf(['no_access', 'view', 'configure', 'control'])
     )
     results_visibility = fields.Str(
-        required=True,
         validate=validate.OneOf(['dashboard', 'private'])
     )
-    permissions = fields.List(fields.Nested(PermissionSchema), required=True)
+    permissions = fields.List(fields.Nested(PermissionSchema))

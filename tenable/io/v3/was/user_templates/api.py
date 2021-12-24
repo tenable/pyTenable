@@ -11,12 +11,12 @@ Methods available on ``tio.v3.was.user_templates``:
 .. autoclass:: UserTemplatesAPI
     :members:
 '''
-from typing import Dict, List
+from typing import Dict
 from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.was.user_templates.schema import UserTemplateSchema
-from tenable.utils import dict_clean
+from tenable.utils import dict_clean, dict_merge
 
 
 class UserTemplatesAPI(ExploreBaseEndpoint):
@@ -81,12 +81,7 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
 
     def update(self,
                user_template_id: UUID,
-               name: str,
-               owner_id: UUID,
-               default_permissions: str,
-               results_visibility: str,
-               permissions: List,
-               description: str = None
+               **kwargs
                ) -> Dict:
         '''
         Updates the specified user-defined template.
@@ -96,14 +91,15 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
 
         Args:
             user_template_id (UUID): The UUID of the user-defined template.
-            name (str): The name of the user-defined template.
-            owner_id (UUID):
+            name (str, optional): The name of the user-defined template.
+            owner_id (UUID, optiona;):
                 The UUID of the owner of the user-defined template.
-            default_permissions (str):
+            default_permissions (str, optional):
                 The scan permissions level, as described in Permissions.
-            results_visibility (str):
+            results_visibility (str, optional):
                 The visibility of the results (private or dashboard).
-            permissions (list): The permissions for the user-defined template.
+            permissions (list, optional):
+                The permissions for the user-defined template.
             description (str, optional):
                 The description for the user-defined template.
 
@@ -131,14 +127,10 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
             ... )
             >>> pprint(template)
         '''
-        payload = {
-            'name': name,
-            'owner_id': owner_id,
-            'default_permissions': default_permissions,
-            'results_visibility': results_visibility,
-            'permissions': permissions,
-            'description': description
-        }
         schema = UserTemplateSchema()
-        payload = dict_clean(schema.dump(schema.load(payload)))
+        payload = dict_clean(kwargs)
+        payload = schema.dump(schema.load(payload))
+        current_template = schema.dump(self.details(user_template_id))
+        payload = dict_merge(current_template, payload)
+        print(payload)
         return self._put(f'{user_template_id}', json=payload)

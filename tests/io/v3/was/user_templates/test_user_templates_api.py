@@ -142,24 +142,15 @@ def test_update(api):
     '''
     name = 'Edited template name'
     default_permissions = 'no_access'
-    permissions = [
-        {
-            'entity': 'user',
-            'entity_id': '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-            'permissions_id': '3fa85f64-5717-4562-b3fc-2c963f66afa6',
-            'level': 'no_access',
-        }
-    ]
-    description = 'edited description'
-    owner_id = 'a8ff6f60-a7e0-43a5-a9d4-0bd079e1d9fa'
-    results_visibility = 'private'
 
-    USER_TEMPLATE['name'] = name
+    responses.add(
+        responses.GET,
+        f'{WAS_USER_TEMPLATES_URL}/{USER_TEMPLATE_ID}',
+        json=USER_TEMPLATE
+    )
+
+    USER_TEMPLATE['name'] = 'name'
     USER_TEMPLATE['default_permissions'] = default_permissions
-    USER_TEMPLATE['permissions'] = permissions
-    USER_TEMPLATE['description'] = description
-    USER_TEMPLATE['owner_id'] = owner_id
-    USER_TEMPLATE['results_visibility'] = results_visibility
 
     responses.add(
         responses.PUT,
@@ -169,10 +160,6 @@ def test_update(api):
     resp = api.v3.was.user_templates.update(
         USER_TEMPLATE_ID,
         name=name,
-        default_permissions=default_permissions,
-        permissions=permissions,
-        description=description,
-        owner_id=owner_id,
-        results_visibility=results_visibility,
+        default_permissions=default_permissions
     )
     assert resp == USER_TEMPLATE
