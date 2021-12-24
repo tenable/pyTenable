@@ -56,7 +56,6 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         return FileAPI(self._api)
 
     @property
-
     def networks(self):
         '''
         The interface object for the
@@ -64,6 +63,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         '''
         return NetworksAPI(self._api)
 
+    @property
     def permissions(self):
         '''
         The interface object for the
