@@ -12,6 +12,12 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import datetime
+import os
+import sys
+
+import tenable
+
 autodoc_mock_imports = [
     'lxml',
     'dateutil',
@@ -23,15 +29,14 @@ autodoc_mock_imports = [
     'arrow',
 ]
 
-import os, sys, datetime
 sys.path.insert(0, os.path.abspath('..'))
 
-import tenable
 
 def setup(app):
     app.add_css_file('custom.css')
 
 # -- Project information -----------------------------------------------------
+
 
 project = u'pyTenable'
 year = datetime.datetime.now().year
@@ -64,7 +69,7 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-#templates_path = ['_templates']
+# templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -184,7 +189,7 @@ intersphinx_mapping = {
 }
 
 extlinks = {
-    'devportal': ('https://developer.tenable.com/reference#%s', 'devportal'),
+    'devportal': ('https://developer.tenable.com/reference/%s', 'devportal'),
     'sc-api': ('https://docs.tenable.com/sccv/api/%s', 'sc-api'),
     'requests': ('https://requests.readthedocs.io/en/master/%s', 'requests'),
 }
