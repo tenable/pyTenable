@@ -4,7 +4,7 @@ import responses
 WAS_TEMPLATES_BASE_URL = 'https://cloud.tenable.com/api/v3/was/templates'
 TEMPLATE_ID = '74ce1a64-acf1-4eca-955e-5668302585ba'
 TEMPLATE = {
-    'id': TEMPLATE_ID,
+    'template_id': TEMPLATE_ID,
     'name': 'config_audit',
     'description': 'An audit of web application compliance with '
                    'configuration security guidelines.',

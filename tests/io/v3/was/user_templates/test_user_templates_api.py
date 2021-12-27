@@ -12,7 +12,7 @@ USER_TEMPLATE = {
     'permissions': [],
     'container_id': 'f00eb050-a179-4980-94f8-3b3e04e2d7ee',
     'is_shared': True,
-    'id': USER_TEMPLATE_ID,
+    'user_template_id': USER_TEMPLATE_ID,
     'user_permissions': 'configure',
     'default_permissions': 'configure',
     'created_at': '2021-03-16T06:12:56.107846Z',
