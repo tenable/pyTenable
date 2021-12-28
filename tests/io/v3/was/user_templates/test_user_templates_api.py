@@ -123,7 +123,7 @@ def test_details(api):
     )
     resp = api.v3.was.user_templates.details(USER_TEMPLATE_ID)
     assert resp == USER_TEMPLATE
-    assert resp['id'] == USER_TEMPLATE_ID
+    assert resp['user_template_id'] == USER_TEMPLATE_ID
 
 
 @responses.activate

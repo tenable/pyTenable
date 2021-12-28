@@ -440,7 +440,7 @@ def test_details(api):
     )
     template = api.v3.was.templates.details(TEMPLATE_ID)
     assert template == TEMPLATE
-    assert template['id'] == TEMPLATE_ID
+    assert template['template_id'] == TEMPLATE_ID
 
 
 @responses.activate
