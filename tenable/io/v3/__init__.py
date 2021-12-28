@@ -16,12 +16,14 @@ Methods available on ``tio.v3``:
     :glob:
 
     groups
+    mssp/index
     users
     vm/index
     was/index
 '''
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.groups.api import GroupsAPI
+from tenable.io.v3.mssp import ManagedSecurityServiceProvider
 from tenable.io.v3.users.api import UsersAPI
 from tenable.io.v3.vm import VulnerabilityManagement
 from tenable.io.v3.was import WebApplicationScanning
@@ -40,6 +42,15 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
         :doc:`tenable.io v3 groups APIs <groups>`.
         '''
         return GroupsAPI(self._api)
+
+    @property
+    def mssp(self):
+        '''
+        The interface object for the
+        :doc:`tenable.io v3 Managed Security Service Provider APIs
+        <mssp/index>`.
+        '''
+        return ManagedSecurityServiceProvider(self._api)
 
     @property
     def users(self):
