@@ -132,5 +132,4 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
         payload = schema.dump(schema.load(payload))
         current_template = schema.dump(self.details(user_template_id))
         payload = dict_merge(current_template, payload)
-        print(payload)
         return self._put(f'{user_template_id}', json=payload)
