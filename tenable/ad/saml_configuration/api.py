@@ -88,4 +88,4 @@ class SAMLConfigurationAPI(APIEndpoint):
         Examples:
             >>> tad.saml_configuration.generate_saml_certificate()
         '''
-        return self._schema.load(self._get('generate-certificate'))
+        return self._schema.load(self._get(f'generate-certificate'))
