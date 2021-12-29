@@ -1,1 +1,1 @@
-.. automodule:: tenable.io.v3.mssp.logos
+.. automodule:: tenable.io.v3.mssp.logos.api

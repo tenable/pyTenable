@@ -81,11 +81,11 @@ def test_list(api):
     Test case for validating list action for Logos API
     '''
     api_resp = {
-        "logos": [{
-            "id": "1028c13f-9cb5-40ec-a1a4-a458b21ae2f7",
-            "container_id": "cfdabb09-6aef-481d-b28f-aecb1c38f297",
-            "name": "download1.png",
-            "filename": "download1.png"
+        'logos': [{
+            'id': '1028c13f-9cb5-40ec-a1a4-a458b21ae2f7',
+            'container_id': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
+            'name': 'download1.png',
+            'filename': 'download1.png'
         }]
     }
     responses.add(
