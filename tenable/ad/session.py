@@ -8,6 +8,7 @@ from tenable.base.platform import APIPlatform
 
 from .about import AboutAPI
 from .api_keys import APIKeyAPI
+from .attack_types.api import AttackTypesAPI
 from .category.api import CategoryAPI
 from .checker.api import CheckerAPI
 from .dashboard.api import DashboardAPI
@@ -63,6 +64,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad API-Keys APIs <api_keys>`.
         '''
         return APIKeyAPI(self)
+
+    @property
+    def attack_types(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Attack Types APIs <attack_types>`.
+        '''
+        return AttackTypesAPI(self)
 
     @property
     def category(self):
