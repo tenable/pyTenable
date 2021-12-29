@@ -8,8 +8,6 @@ import pytest
 import responses
 from responses import matchers
 
-# from responses import matchers
-
 LOGOS_BASE_URL = r'https://cloud.tenable.com/api/v3/mssp/logos'
 BASE_URL = r'https://cloud.tenable.com'
 LOGO_ID = str(uuid.uuid1())
@@ -133,22 +131,30 @@ def test_update(api):
     assert resp == api_resp['id']
 
 
-@pytest.mark.skip
 @responses.activate
 def test_donwload_png(api):
     '''
     Test case for validating donwload_png action for Logos API
     '''
     PATH = LOGO_PATH.replace('test_image', 'test_download')
+    with open(LOGO_PATH, 'rb') as fobj:
+        file_contents = fobj.read()
     responses.add(
         responses.GET,
         f'{LOGOS_BASE_URL}/{LOGO_ID}/logo.png',
+        body=file_contents
     )
     with open(PATH, 'wb') as f1:
         api.v3.mssp.logos.download_png(LOGO_ID, fobj=f1)
 
+    with open(PATH, 'rb') as fobj:
+        assert file_contents == fobj.read()
+    os.remove(PATH)
 
-@pytest.mark.skip
+    # Validate the method when fileObj is not passed
+    assert file_contents == api.v3.mssp.logos.download_png(LOGO_ID).read()
+
+
 @responses.activate
 def test_donwload_base64(api):
     '''
@@ -158,7 +164,7 @@ def test_donwload_base64(api):
     responses.add(
         responses.GET,
         f'{LOGOS_BASE_URL}/{LOGO_ID}/logo.base64',
-
+        body=api_resp
     )
     resp = api.v3.mssp.logos.download_base64(LOGO_ID)
     assert resp == api_resp

@@ -29,6 +29,6 @@ class ManagedSecurityServiceProvider(ExploreBaseEndpoint):  # noqa: PLR0904
     def logos(self):
         '''
         The interface object for the
-        :doc:`Accounts API <accounts>`
+        :doc:`Logos API <logos>`
         '''
         return LogosAPI(self._api)

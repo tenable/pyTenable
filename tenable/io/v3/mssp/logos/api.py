@@ -11,7 +11,6 @@ Methods available on ``tio.v3.mssp.logos``:
 .. autoclass:: LogosAPI
     :members:
 '''
-import os
 from io import BytesIO
 from typing import BinaryIO, Dict, List, Optional, Union
 from uuid import UUID
@@ -203,14 +202,8 @@ class LogosAPI(ExploreBaseEndpoint):
                         fobj=f
                     )
         '''
-        logo_name = self.details(logo_id)['name']
         if not fobj:
-            logo_path = os.path.join(
-                os.getcwd(),
-                os.path.dirname(__file__),
-                logo_name
-            )
-            fobj = open(logo_path, 'wb')
+            fobj = BytesIO()
 
         image = self._get(f'{logo_id}/logo.png', stream=True)
         for chunk in image.iter_content(chunk_size=1024):
@@ -218,6 +211,7 @@ class LogosAPI(ExploreBaseEndpoint):
                 fobj.write(chunk)
         fobj.seek(0)
         image.close()
+        return fobj
 
     def download_base64(self, logo_id: UUID) -> str:
         '''
