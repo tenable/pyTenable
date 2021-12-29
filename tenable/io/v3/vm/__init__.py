@@ -17,6 +17,7 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     agent_config
+    agent_exclusions
     agent_groups
     agents
     files
@@ -28,6 +29,7 @@ Methods available on ``tio.v3.vm``:
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
+from tenable.io.v3.vm.agent_exclusions.api import AgentExclusionsAPI
 from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
 from tenable.io.v3.vm.files.api import FileAPI
@@ -52,6 +54,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Agent Config APIs <agent_config>`.
         '''
         return AgentConfigAPI(self._api)
+
+    @property
+    def agent_exclusions(self):
+        '''
+        The interface object for the
+        :doc:`Agent Exclusions APIs <agent_exclusions>`.
+        '''
+        return AgentExclusionsAPI(self._api)
 
     @property
     def agent_groups(self):
