@@ -21,14 +21,12 @@ Methods available on ``tio.v3.vm``:
     agents
     files
     folders
-    mssp/index
     networks
     permissions
     plugins
     scanners
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.mssp import ManagedSecurityServiceProvider
 from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
 from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
@@ -86,15 +84,6 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Folders API <folders>`
         '''
         return FoldersAPI(self._api)
-
-    @property
-    def mssp(self):
-        '''
-        The interface object for the
-        :doc:`tenable.io v3 Managed Security Service Provider APIs
-        <mssp/index>`.
-        '''
-        return ManagedSecurityServiceProvider(self._api)
 
     @property
     def networks(self):
