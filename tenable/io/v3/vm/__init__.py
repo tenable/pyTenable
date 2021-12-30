@@ -19,6 +19,7 @@ Methods available on ``tio.v3.vm``:
     agent_config
     files
     plugins
+    scans
     scanners
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
@@ -26,6 +27,7 @@ from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
 from tenable.io.v3.vm.files.api import FileAPI
 from tenable.io.v3.vm.plugins.api import PluginsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
+from tenable.io.v3.vm.scans.api import ScansAPI
 
 
 class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
@@ -58,6 +60,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Plugins API <plugins>`
         '''
         return PluginsAPI(self._api)
+
+    @property
+    def scans(self):
+        '''
+        The interface object for the
+        :doc:`Scans API <scans>`
+        '''
+        return ScansAPI(self._api)
 
     @property
     def scanners(self):
