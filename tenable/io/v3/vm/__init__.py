@@ -30,6 +30,7 @@ from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
 from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
+from tenable.io.v3.vm.editor.api import EditorAPI
 from tenable.io.v3.vm.files.api import FileAPI
 from tenable.io.v3.vm.folders.api import FoldersAPI
 from tenable.io.v3.vm.networks.api import NetworksAPI
@@ -84,6 +85,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Folders API <folders>`
         '''
         return FoldersAPI(self._api)
+
+    @property
+    def editor(self):
+        '''
+        The interface object for the
+        :doc:`Folders API <folders>`
+        '''
+        return EditorAPI(self._api)
 
     @property
     def networks(self):
