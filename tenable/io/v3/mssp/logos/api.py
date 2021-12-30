@@ -1,6 +1,6 @@
 '''
 Logos
-========
+=====
 
 The following methods allow for interaction into the Tenable.io
 :devportal:`Logos <io-mssp-logos>` API endpoints.
@@ -43,7 +43,7 @@ class LogosAPI(ExploreBaseEndpoint):
 
         Example:
             >>>> with open('/opt/download1.png', 'rb') as fobj:
-                    resp = tio.v3.mssp.logos.add(fobj, 'logo1')
+            ....    resp = tio.v3.mssp.logos.add(fobj, 'logo1')
         '''
         payload = {'files': {'logo': logo, 'name': name}}
         return self._post(**payload)['id']
@@ -103,7 +103,7 @@ class LogosAPI(ExploreBaseEndpoint):
 
         Example:
             >>>> tio.v3.mssp.logos.details(
-                '61a36add-d29b-4a52-bbce-c8215952ede5')
+            ....    '61a36add-d29b-4a52-bbce-c8215952ede5')
         '''
         return self._get(f'{logo_id}')
 
@@ -120,10 +120,10 @@ class LogosAPI(ExploreBaseEndpoint):
 
         Example:
             >>>> fobj = open('/opt/test_image.png', 'rb')
-                 update_resp = tio.v3.mssp.logos.update(
-                     '0cba902a-bd11-4481-bd28-999c88ffe22f',
-                     name='update_name.png',
-                     logo=fobj)
+            ....     update_resp = tio.v3.mssp.logos.update(
+            ....     '0cba902a-bd11-4481-bd28-999c88ffe22f',
+            ....     name='update_name.png',
+            ....     logo=fobj)
         '''
         logo_dict = {}
         if kw.get('name'):
@@ -145,7 +145,7 @@ class LogosAPI(ExploreBaseEndpoint):
 
         Example:
             >>>> tio.v3.mssp.logos.delete(
-                '61a36add-d29b-4a52-bbce-c8215952ede5')
+            ....    '61a36add-d29b-4a52-bbce-c8215952ede5')
         '''
         self._delete(f'{logo_id}')
 
@@ -165,8 +165,8 @@ class LogosAPI(ExploreBaseEndpoint):
 
         Example:
             >>>> tio.v3.mssp.logos.assign_logos(
-                    'a39f6b74-9b7f-4372-a7ac-a2a4bcb8dbad',
-                    ['0fc4ef49-2649-4c76-bfa7-c181be3adf26'])
+            ....    'a39f6b74-9b7f-4372-a7ac-a2a4bcb8dbad',
+            ....        ['0fc4ef49-2649-4c76-bfa7-c181be3adf26'])
         '''
         payload = {'account_ids': account_ids, 'logo_id': logo_id}
         self._schema.load(self._schema.dump({
@@ -195,9 +195,9 @@ class LogosAPI(ExploreBaseEndpoint):
 
         Example:
             >>>> with open('/opt/f2.png', 'wb') as f:
-                    tio.v3.mssp.logos.download_png(
-                        'a39f6b74-9b7f-4372-a7ac-a2a4bcb8dbad',
-                        fobj=f)
+            ....        tio.v3.mssp.logos.download_png(
+            ....        'a39f6b74-9b7f-4372-a7ac-a2a4bcb8dbad',
+            ....        fobj=f)
         '''
         if not fobj:
             fobj = BytesIO()
@@ -223,7 +223,7 @@ class LogosAPI(ExploreBaseEndpoint):
 
         Example:
             >>>> resp = tio.v3.mssp.logos.download_base64(
-                    '61a36add-d29b-4a52-bbce-c8215952ede5')
+            ....    '61a36add-d29b-4a52-bbce-c8215952ede5')
         '''
         image = self._get(f'{logo_id}/logo.base64')
         return image.content
