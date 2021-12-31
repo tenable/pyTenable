@@ -30,6 +30,6 @@ class ManagedSecurityServiceProvider(ExploreBaseEndpoint):  # noqa: PLR0904
     def logos(self):
         '''
         The interface object for the
-        :doc:`Logos API <logos>`
+        :doc:`Tenable.io v3 Logos APIs <logos>`
         '''
         return LogosAPI(self._api)

@@ -47,7 +47,7 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     def mssp(self):
         '''
         The interface object for the
-        :doc:`tenable.io v3 Managed Security Service Provider APIs
+        :doc:`Tenable.io v3 Managed Security Service Provider APIs
         <mssp/index>`.
         '''
         return ManagedSecurityServiceProvider(self._api)
