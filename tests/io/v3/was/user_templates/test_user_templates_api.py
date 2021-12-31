@@ -1,3 +1,6 @@
+'''
+Test User Templates API
+'''
 import pytest
 import responses
 

@@ -18,9 +18,9 @@ Methods available on ``tio.v3.was``:
 
     attachments
     folders
-    templates
-    user-templates
     scans
+    templates
+    user_templates
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.was.attachments.api import AttachmentsAPI
@@ -64,7 +64,7 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     def templates(self):
         '''
         The interface object for the
-        :doc:`Folders API <folders>`
+        :doc:`Templates API <templates>`
         '''
         return TemplatesAPI(self._api)
 
@@ -72,6 +72,6 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     def user_templates(self):
         '''
         The interface object for the
-        :doc:`Folders API <folders>`
+        :doc:`User-Templates API <user_templates>`
         '''
         return UserTemplatesAPI(self._api)

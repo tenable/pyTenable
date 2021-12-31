@@ -1,3 +1,6 @@
+'''
+Test User Template Schema
+'''
 from tenable.io.v3.was.user_templates.schema import (PermissionSchema,
                                                      UserTemplateSchema)
 
@@ -19,10 +22,16 @@ user_template_obj = {
 
 
 def test_user_template_schema():
+    '''
+    Test user template schema
+    '''
     schema = UserTemplateSchema()
     assert user_template_obj == schema.dump(schema.load(user_template_obj))
 
 
 def test_permission_schema():
+    '''
+    Test permission schema
+    '''
     schema = PermissionSchema()
     assert permission_obj == schema.dump(schema.load(permission_obj))

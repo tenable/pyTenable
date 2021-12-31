@@ -1,7 +1,13 @@
+'''
+User Templates API Endpoint Schemas
+'''
 from marshmallow import Schema, fields, validate
 
 
 class PermissionSchema(Schema):
+    '''
+    Permission Schema for user-tempaltes
+    '''
     entity = fields.Str(
         required=True,
         validate=validate.OneOf(['user', 'group'])
@@ -15,6 +21,9 @@ class PermissionSchema(Schema):
 
 
 class UserTemplateSchema(Schema):
+    '''
+    User-Templates Schema
+    '''
     name = fields.Str()
     description = fields.Str()
     owner_id = fields.UUID()
