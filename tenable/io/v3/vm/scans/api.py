@@ -24,6 +24,7 @@ from tenable.errors import UnexpectedValueError
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.scans.schema import (ScanCheckAutoTargetSchema,
                                            ScanConfigureScheduleSchema,
+                                           ScanConvertCredSchema,
                                            ScanDocumentCreateSchema,
                                            ScanExportSchema, ScanSchema)
 from tenable.utils import dict_merge
@@ -1118,7 +1119,6 @@ class ScansAPI(ExploreBaseEndpoint):
         # just use that, otherwise we will need to instantiate a BytesIO object
         # to push the data into.
 
-
         # The first thing that we need to do is make the request and get the
         # File id for the job.
         fid = self._post(
@@ -1573,3 +1573,92 @@ class ScansAPI(ExploreBaseEndpoint):
         return self._post(
             'check-auto-targets', params=query, json=payload
         )
+
+    def convert_credentials(self,
+             cred_id: UUID,
+             scan_id: UUID,
+             cred_name: Optional[str] = None,
+             cred_type: Optional[str] = None,
+             permissions: Optional[list] = None,
+             ad_hoc: Optional[bool] = None,
+             category: Optional[str] = None,
+             **settings: Optional[dict]
+             ) -> str:
+        '''
+        Convert the Credentials.
+
+        :devportal:`credentials: create <credentials-create>`
+
+        Args:
+            cred_id (UUID):
+                Credentials uuid
+            scan_id (UUID):
+                Scan uuid
+            ad_hoc (bool, optional):
+                Determines whether the credential is managed (``False``) or an
+                embedded credential in a scan or policy (``True``).
+            cred_name (str, optional):
+                The name of the credential.
+            category (str, optional):
+                The name of the category
+
+                Examples: ('host').
+
+            cred_type (str, optional):
+                A type for the credential
+
+                Examples: (windows).
+
+            permissions (list, optional):
+                A list of permissions (in either tuple or native dict format)
+                detailing whom is allowed to use or edit this credential set.
+                For the dictionary format, refer to the API docs.  The tuple
+                format uses the customary ``(type, perm, uuid)`` format.
+
+                Examples:
+                    - ``('user', 32, user_id)``
+                    - ``('group', 32, group_id)``
+                    - ``('user', 'use', user_id)``
+                    - ``('group', 'edit', group_id)``
+
+            **settings (dict, optional):
+                Additional keywords passed will be added to the settings dict
+                within the API call.  As this dataset can be highly variable,
+                it will not be validated and simply passed as-is.
+
+        Returns:
+            :obj:`str`:
+                The status of the update process.
+
+        Examples:
+            >>> cred_id = '00000000-0000-0000-0000-000000000000'
+            >>> scan_id = '00000000-0000-0000-0000-000000000000'
+            >>> tio.v3.vm.remediation_scans.convert_credentials(cred_id,
+            ...     scan_id,
+            ...     password='sekretsquirrel',
+            ...     escalation_password='sudopassword')
+        '''
+        current = self._api.credentials.details(cred_id)
+
+        if not cred_name:
+            cred_name = current.get('name')
+        if not cred_type:
+            cred_type = current.get('type')['name']
+        if not ad_hoc:
+            ad_hoc = current.get('ad_hoc')
+        if not category:
+            category = current.get('category')['name']
+
+        settings = dict_merge(current.get('settings'), settings)
+        schema = ScanConvertCredSchema()
+        payload = dict_clean(dict(
+            name=cred_name,
+            ad_hoc=ad_hoc,
+            permissions=permissions,
+            category=category,
+            type=cred_type,
+            settings=settings
+        ))
+        payload = schema.dump(schema.load(payload))
+        return self._post(f'{scan_id}/credentials/{cred_id}/upgrade',
+                          json=payload)['id']

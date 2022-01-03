@@ -853,3 +853,59 @@ def test_configure_scan_schedule(api):
 
     resp = api.v3.vm.scans.configure_scan_schedule(scan_id, enabled=True)
     assert resp['timezone'] == validated_data['timezone']
+
+
+@responses.activate
+def test_convert_credentials(api):
+    '''
+    Test the convert credentials endpoint
+    '''
+
+    details_resp_data = {
+        'name': 'Windows devices (Headquarters)',
+        'description': 'Use for scans of Windows devices located at headquarters.',
+        'category': {
+            'id': 'Host',
+            'name': 'Host',
+        },
+        'type': {
+            'id': 'Windows',
+            'name': 'Windows',
+        },
+        'ad_hoc': False,
+        'user_permissions': 64,
+        'settings': {
+            'domain': "",
+            'username': 'user@example.com',
+            'auth_method': 'Password',
+        },
+        'permissions': [
+            {
+                'grantee_id': '59042c90-5379-43a2-8cf4-87d97f7cb68f',
+                'type': 'user',
+                'permissions': 64,
+                'name': 'user1@tenable.com',
+            }
+        ],
+    }
+    updated_cred_id = 'aa57ae93-45e5-4316-8e16-501ebce4ecb7'
+    cred_id = 'cdd60f2b-8108-49d5-89df-58add7fa1075'
+    scan_id = '00000000-0000-0000-0000-000000000000'
+    responses.add(
+        responses.GET,
+        url=f'{BASE_URL}/credentials/{cred_id}',
+        json=details_resp_data
+    )
+    responses.add(
+            responses.POST,
+            url=f'{SCAN_BASE_URL}/{scan_id}/credentials/{cred_id}/upgrade',
+            json={
+                'id': updated_cred_id
+            }
+        )
+
+    data = api.v3.vm.scans.convert_credentials(
+        cred_id,
+        scan_id
+    )
+    assert data == updated_cred_id

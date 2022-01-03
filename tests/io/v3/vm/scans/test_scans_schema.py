@@ -1,10 +1,13 @@
 '''
 Testing Schema for scans endpoint
 '''
+import pytest
 import responses
+from marshmallow import ValidationError
 
 from tenable.io.v3.vm.scans.schema import (ScanCheckAutoTargetSchema,
                                            ScanConfigureScheduleSchema,
+                                           ScanConvertCredSchema,
                                            ScanDocumentCreateSchema,
                                            ScanExportSchema, ScanSchema)
 
@@ -143,3 +146,58 @@ def test_export():
     schema = ScanExportSchema()
     payload = schema.dump(schema.load(data))
     assert payload == validated_data
+
+
+def test_credentials_edit_schema():
+    permission_data = [
+        ('group', 64, '00000000-0000-0000-0000-000000000000'),
+        ('group', 'use', '00000000-0000-0000-0000-000000000000'),
+        ('group', 'edit', '00000000-0000-0000-0000-000000000000'),
+        ('user', 32, '00000000-0000-0000-0000-000000000000'),
+    ]
+
+    permissions_validated_data = [
+        {
+            'grantee_id': '00000000-0000-0000-0000-000000000000',
+            'type': 'group',
+            'permissions': 64,
+        },
+        {
+            'grantee_id': '00000000-0000-0000-0000-000000000000',
+            'type': 'group',
+            'permissions': 32,
+        },
+        {
+            'grantee_id': '00000000-0000-0000-0000-000000000000',
+            'type': 'group',
+            'permissions': 64,
+        },
+        {
+            'grantee_id': '00000000-0000-0000-0000-000000000000',
+            'type': 'user',
+            'permissions': 32,
+        },
+    ]
+
+    payload = {
+        'name': 'test1',
+        'category': 'SSH',
+        'type': 'windows',
+        'ad_hoc': True,
+        'settings': {},
+        'permissions': permission_data,
+    }
+    test_resp = {
+        'name': 'test1',
+        'category': 'SSH',
+        'type': 'windows',
+        'ad_hoc': True,
+        'settings': {},
+        'permissions': permissions_validated_data,
+    }
+    schema = ScanConvertCredSchema()
+    assert test_resp == schema.dump(schema.load(payload))
+
+    with pytest.raises(ValidationError):
+        data = 'something'
+        schema.load(data)
