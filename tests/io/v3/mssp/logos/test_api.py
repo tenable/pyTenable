@@ -76,28 +76,6 @@ def test_details(api):
 
 
 @responses.activate
-def test_list(api):
-    '''
-    Test case for validating list action for Logos API
-    '''
-    api_resp = {
-        'logos': [{
-            'id': '1028c13f-9cb5-40ec-a1a4-a458b21ae2f7',
-            'container_id': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
-            'name': 'download1.png',
-            'filename': 'download1.png'
-        }]
-    }
-    responses.add(
-        responses.GET,
-        LOGOS_BASE_URL,
-        json=api_resp
-    )
-    resp = api.v3.mssp.logos.list()
-    assert resp == api_resp['logos']
-
-
-@responses.activate
 def test_assign_logos(api):
     '''
     Test case for validating assign_logos action for Logos API
