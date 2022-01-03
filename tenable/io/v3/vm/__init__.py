@@ -25,6 +25,7 @@ Methods available on ``tio.v3.vm``:
     networks
     permissions
     plugins
+    remediation_scans
     scanners
     scanner_groups
 '''
@@ -38,6 +39,7 @@ from tenable.io.v3.vm.folders.api import FoldersAPI
 from tenable.io.v3.vm.networks.api import NetworksAPI
 from tenable.io.v3.vm.permissions.api import PermissionsAPI
 from tenable.io.v3.vm.plugins.api import PluginsAPI
+from tenable.io.v3.vm.remediation_scans.api import RemediationScansAPI
 from tenable.io.v3.vm.scanner_groups.api import ScannerGroupsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
 
@@ -120,6 +122,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Plugins API <plugins>`
         '''
         return PluginsAPI(self._api)
+
+    @property
+    def remediation_scans(self):
+        '''
+        The interface object for the
+        :doc:`Remediation Scans API <remediation_scans>`
+        '''
+        return RemediationScansAPI(self._api)
 
     @property
     def scanners(self):
