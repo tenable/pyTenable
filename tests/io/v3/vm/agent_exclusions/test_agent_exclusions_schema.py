@@ -1,5 +1,5 @@
 '''
-Testing the Agent Exclusion schemas
+Test cases the Agent Exclusions APIs schemas
 '''
 import re
 from datetime import datetime, timedelta

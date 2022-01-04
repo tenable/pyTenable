@@ -24,23 +24,23 @@ from tenable.io.v3.vm.agent_exclusions.schema import AgentExclusionSchema
 
 class AgentExclusionsAPI(ExploreBaseEndpoint):
     '''
-    This will contain all methods related to agent exclusion
+    This class contains methods related to Agent Exclusions APIs
     '''
     _path: str = 'api/v3/agents'
     _conv_json: bool = True
 
     def create(self,
                agent_id: UUID,
-               frequency: str,
                name: str,
                start_time: str,
-               timezone: str,
+               end_time: str = None,
+               timezone: str = 'Etc/UTC',
+               description: str = None,
+               frequency: str = 'ONETIME',
+               interval: int = 1,
+               weekdays: list = None,
                day_of_month: int = None,
                enabled: bool = True,
-               end_time: str = None,
-               description: str = None,
-               interval: int = None,
-               weekdays: list = None
                ) -> Dict:
         '''
         Creates a new agent exclusion.
@@ -50,8 +50,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
         Args:
             agent_id (UUID): Than unique idetifier for agent
             name (str): The name of the exclusion to create.
-            description (str, optional):
-                Some further detail about the exclusion.
             start_time (datetime): When the exclusion should start.
             end_time (datetime): When the exclusion should end.
             timezone (str):
@@ -59,6 +57,8 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
                 specified is to use UTC.  For the list of usable timezones,
                 please refer to:
                 https://cloud.tenable.com/api#/resources/scans/timezones
+            description (str, optional):
+                Some further detail about the exclusion.
             frequency (str, optional):
                 The frequency of the rule. The string inputted will be
                 up-cased. Valid values are:``ONETIME``, ``DAILY``, ``WEEKLY``,
@@ -125,7 +125,7 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             ...         datetime.utcnow() + timedelta(hours=1)
             ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
 
-            Creating a monthly esxclusion:
+            Creating a monthly exclusion:
 
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
             ...     agent_id = '00000000-0000-0000-0000-000000000000',
@@ -253,16 +253,16 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
     def edit(self,
              agent_id: UUID,
              exclusion_id: UUID,
-             day_of_month: int = None,
-             description: str = None,
-             enabled: bool = None,
-             end_time: str = None,
-             frequency: str = None,
-             interval: int = None,
              name: str = None,
              start_time: str = None,
+             end_time: str = None,
              timezone: str = None,
-             weekdays: list = None
+             description: str = None,
+             frequency: str = None,
+             interval: int = None,
+             weekdays: list = None,
+             day_of_month: int = None,
+             enabled: bool = None,
              ) -> Dict:
         '''
         Edit an existing agent exclusion.
@@ -277,13 +277,13 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             agent_id (str): The unique identifier for agent
             exclusion_id (int): The id of the exclusion object in Tenable.io
             name (str, optional): The name of the exclusion to create.
-            description (str, optional):
-                Some further detail about the exclusion.
             start_time (datetime, optional): When the exclusion should start.
             end_time (datetime, optional): When the exclusion should end.
             timezone (str, optional):
                 The timezone to use for the exclusion.  The default if none is
                 specified is to use UTC.
+            description (str, optional):
+                Some further detail about the exclusion.
             frequency (str, optional):
                 The frequency of the rule.
                 The string inputted will be up-cased.
@@ -312,6 +312,16 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
 
         # Lets start constructing the payload to be sent to the API...
         payload = self.details(agent_id=agent_id, exclusion_id=exclusion_id)
+        
+        unwanted_keys = [
+            'id', 
+            'creation_date', 
+            'last_modification_date',
+            'core_updates_blocked'
+        ]
+        for key in unwanted_keys:
+            payload.pop(key, None)
+        
 
         field_dict: dict = {
             'name': name,
@@ -379,11 +389,10 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
         payload = dict_clean(payload)
 
         # validate payload using marshmallow
+        # let's remove addtional keys from payload
         schema = AgentExclusionSchema(
-            context={'valid_timezone': self._api._tz},
-            unknown=EXCLUDE
+            context={'valid_timezone': self._api._tz}
         )
-
         payload = schema.dump(schema.load(payload))
 
         return self._put(f'{agent_id}/exclusions/{exclusion_id}', json=payload)

@@ -59,7 +59,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def agent_exclusions(self):
         '''
         The interface object for the
-        :doc:`Agent Exclusions APIs <agent_exclusions>`.
+        :doc:`Tenable.io v3 Agent Exclusions APIs <agent_exclusions>`.
         '''
         return AgentExclusionsAPI(self._api)
 

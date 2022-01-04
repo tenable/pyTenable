@@ -1,5 +1,5 @@
 '''
-Test Case For Agent Exclusion
+Test Cases For Agent Exclusions APIs
 '''
 import re
 from datetime import datetime, timedelta
@@ -28,6 +28,7 @@ def test_create(api):
     end_time: str = (
             datetime.utcnow() + timedelta(hours=1)
     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+
     test_response = {
         'id': 'c941af88-c514-4fdc-9657-ec72bd242ef7',
         'name': name,
@@ -48,6 +49,7 @@ def test_create(api):
             }
         }
     }
+
     payload = {
         'name': name,
         'description': description,
@@ -63,6 +65,8 @@ def test_create(api):
             }
         }
     }
+
+    # Let's mock the response for scans/timezones API endpoint
     responses.add(
         responses.GET,
         re.compile(f'{TIMEZONE_URL}/scans/timezones'),
@@ -87,12 +91,15 @@ def test_create(api):
             ]
         }
     )
+
+    # Let's mock the response for create agent exclusion API endpoint
     responses.add(
         responses.POST,
         re.compile(f'{BASE_URL}/{agent_id}/exclusions'),
         match=[responses.matchers.json_params_matcher(payload)],
         json=test_response
     )
+
     res = api.v3.vm.agent_exclusions.create(
         agent_id=agent_id,
         frequency=frequency,
@@ -105,6 +112,7 @@ def test_create(api):
         interval=interval,
         weekdays=weekdays
     )
+
     assert isinstance(res, dict)
     assert res['name'] == name
 
@@ -116,14 +124,18 @@ def test_delete(api):
     '''
     agent_id: str = 'a3c9b1f5-d8a2-454a-9eeb-6330694c9fb7'
     exclusion_id: str = 'a3c9b1f5-ft45-cd4f-5fr3-6330694c9fb7'
+
+    # Let's mock the Response for delete agent exlusion API endpoint
     responses.add(
         responses.DELETE,
         re.compile(f'{BASE_URL}/{agent_id}/exclusions/{exclusion_id}'),
     )
+
     res = api.v3.vm.agent_exclusions.delete(
         agent_id=agent_id,
         exclusion_id=exclusion_id
     )
+    
     assert res is None
 
 
@@ -134,6 +146,7 @@ def test_details(api):
     '''
     agent_id: str = 'c941af88-dd32-de54-zsa2-ec72bd242ef7'
     exclusion_id: str = 'c941af88-c514-4fdc-9657-ec72bd242ef7'
+    
     test_response = {
         'id': exclusion_id,
         'name': 'Example Weekly Exclusion',
@@ -153,6 +166,8 @@ def test_details(api):
             'timezone': 'Etc/UTC'
         }
     }
+    
+    # Let's mock the response for details agent exlusion API endpoint
     responses.add(
         responses.GET,
         re.compile(f'{BASE_URL}/{agent_id}/exclusions/{exclusion_id}'),
@@ -175,6 +190,7 @@ def test_edit(api):
     exclusion_id: str = 'c941af88-c514-4fdc-9657-ec72bd242ef7'
     new_name: str = 'Test Edit Method 1'
     timezone: str = 'Africa/Abidjan'
+
     test_response = {
         'id': 'c941af88-c514-4fdc-9657-ec72bd242ef7',
         'name': new_name,
@@ -194,6 +210,7 @@ def test_edit(api):
             'timezone': timezone
         }
     }
+
     payload = {
         'name': new_name,
         'description': '',
@@ -209,6 +226,8 @@ def test_edit(api):
             }
         }
     }
+
+    # Let's mock the response for scans/timezone API endpoint
     responses.add(
         responses.GET,
         re.compile(f'{TIMEZONE_URL}/scans/timezones'),
@@ -233,6 +252,8 @@ def test_edit(api):
             ]
         }
     )
+
+    # Let's mock the response for details agent exclusion API endpoint
     responses.add(
         responses.GET,
         re.compile(f'{BASE_URL}/{agent_id}/exclusions/{exclusion_id}'),
@@ -256,18 +277,22 @@ def test_edit(api):
             }
         }
     )
+
+    # Let's mock the response for edit agent exclusion API endpoint
     responses.add(
         responses.PUT,
         re.compile(f'{BASE_URL}/{agent_id}/exclusions/{exclusion_id}'),
         match=[responses.matchers.json_params_matcher(payload)],
         json=test_response
     )
+
     res = api.v3.vm.agent_exclusions.edit(
         agent_id=agent_id,
         exclusion_id=exclusion_id,
         name=new_name,
         timezone=timezone
     )
+    
     assert isinstance(res, dict)
     assert res['name'] == new_name
     assert res['schedule']['timezone'] == timezone
