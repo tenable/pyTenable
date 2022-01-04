@@ -6,7 +6,7 @@ from marshmallow import Schema, fields, validate
 
 class PermissionSchema(Schema):
     '''
-    Permission Schema for user-tempaltes
+    Permission Schema for User-Templates
     '''
     entity = fields.Str(
         required=True,

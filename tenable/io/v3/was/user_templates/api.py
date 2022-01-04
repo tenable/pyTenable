@@ -92,7 +92,7 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
         Args:
             user_template_id (UUID): The UUID of the user-defined template.
             name (str, optional): The name of the user-defined template.
-            owner_id (UUID, optiona;):
+            owner_id (UUID, optional):
                 The UUID of the owner of the user-defined template.
             default_permissions (str, optional):
                 The scan permissions level, as described in Permissions.
