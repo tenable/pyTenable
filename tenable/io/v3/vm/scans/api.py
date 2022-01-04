@@ -77,7 +77,7 @@ class ScansAPI(ExploreBaseEndpoint):
             if running:
                 time.sleep(sleeper)
 
-    def _update_policy(self, kwargs, scan):
+    def _update_policy(self, kwargs: dict, scan: dict) -> None:
         policies = self._api.policies.list()
         match = False
 
@@ -100,7 +100,7 @@ class ScansAPI(ExploreBaseEndpoint):
         if not match:
             raise UnexpectedValueError('policy setting is invalid.')
 
-    def _update_sub_doc_data(self, kwargs, scan):
+    def _update_sub_doc_data(self, kwargs: dict, scan: dict) -> None:
         if 'scanner' in kwargs:
             scan['settings']['scanner_id'] = kwargs['scanner']
             del kwargs['scanner']
@@ -551,9 +551,9 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: attachments <scans-attachments>`
 
         Args:
-            scan_id (int):
+            scan_id (UUID):
                 The unique identifier for the scan.
-            attachment_id (int):
+            attachment_id (UUID):
                 The unique identifier for the attachment
             key (str):
                 The attachment access token.
@@ -568,7 +568,9 @@ class ScansAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> with open('example.file', 'wb') as fobj:
-            ...     tio.scans.attachment(1, 1, 'abc', fobj)
+            ...     tio.v3.vm.scans.attachment(
+            ...     'aa57ae93-45e5-4316-8e16-501ebce4ecb7',
+            ...     'aa57ae93-45e5-4316-8e16-501ebce4ecb7', 'abc', fobj)
         '''
         if not fobj:
             # if no file-like object is specified, then assign a BytesIO object
@@ -599,7 +601,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: configure <scans-configure>`
 
         Args:
-            scan_id (int):
+            scan_id (UUID):
                 The unique identifier for the scan.
             template (str, optional):
                 The scan policy template to use.  If no template is specified
@@ -621,8 +623,8 @@ class ScansAPI(ExploreBaseEndpoint):
                 Define updated schedule for scan
             **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
-                API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
-                more detailed information, please refer to the API documentation
+                API.  Examples would be `name`, `email`, `scanner_id`, etc. For
+                more detailed info, please refer to the API documentation
                 linked above.  Further, any keyword arguments passed that are
                 not explicitly documented will be automatically appended to the
                 settings document.  There is no need to pass settings directly.
@@ -632,13 +634,13 @@ class ScansAPI(ExploreBaseEndpoint):
                 The scan resource record.
 
         Examples:
-            >>> tio.scans.configure(1, name='New Scan Name')
+            >>>  tio.v3.vm.scans.configure(1, name='New Scan Name')
 
             # configure a schedule for existing scan
 
             >>> configure_schedule = api.scans.configure_scan_schedule(
             ... 1, interval=2)
-            >>> tio.scans.configure(1, schedule_scan=configure_schedule)
+            >>>  tio.v3.vm.scans.configure(1, schedule_scan=configure_schedule)
         '''
 
         # We will get the current scan record, generate the new parameters in
@@ -654,7 +656,7 @@ class ScansAPI(ExploreBaseEndpoint):
 
     def upsert_aws_credentials(self, scan: dict) -> dict:
         '''
-        Checks the credential dict of scan dict to derive operation add or edit.
+        Checks the credential dict of scan dict to derive operation add or edit
         This function assumes there are no edit credentials in the
         credentials dict.
         If there is any edit credentials,it would override the same.
@@ -730,7 +732,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The scan resource record for the copied scan.
 
         Examples:
-            >>> new_scan = tio.scans.copy(1, 'New Scan Name')
+            >>> new_scan =  tio.v3.vm.scans.copy(1, 'New Scan Name')
         '''
 
         payload = dict_clean(dict(
@@ -771,8 +773,8 @@ class ScansAPI(ExploreBaseEndpoint):
                 Define schedule for scan
             **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
-                API.  Examples would be `name`, `email`, `scanner_id`, etc.  For
-                more detailed information, please refer to the API documentation
+                API.  Examples would be `name`, `email`, `scanner_id`, etc. For
+                more detailed info, please refer to the API documentation
                 linked above.  Further, any keyword arguments passed that are
                 not explicitly documented will be automatically appended to the
                 settings document.  There is no need to pass settings directly.
@@ -784,20 +786,20 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             Create an un-credentialed basic scan:
 
-            >>> scan = tio.scans.create(
+            >>> scan =  tio.v3.vm.scans.create(
             ...     name='Example Scan',
             ...     targets=['127.0.0.1'])
 
             Creating a scan with a set of managed credentials:
 
-            >>> scan = tio.scans.create(
+            >>> scan =  tio.v3.vm.scans.create(
             ...     name='Example Managed Cred Scan',
             ...     targets=['127.0.0.1'],
             ...     credentials={'Host': {'SSH': [{'id': 'CREDENTIAL-UUID'}]}}
 
             Creating a scan with a set of embedded credentials:
 
-            >>> scan = tio.scans.create(
+            >>> scan =  tio.v3.vm.scans.create(
             ...     name='Example Embedded Cred Scan',
             ...     targets=['127.0.0.1'],
             ...     credentials={'Host': {'Windows': [{
@@ -813,7 +815,7 @@ class ScansAPI(ExploreBaseEndpoint):
             >>> schedule = api.scans.create_scan_schedule(
             ...     enabled=True, frequency='daily', interval=2,
             ... starttime=datetime.utcnow())
-            >>> scan = tio.scans.create(
+            >>> scan =  tio.v3.vm.scans.create(
             ...     name='Example Scan',
             ...     targets=['127.0.0.1']
             ...     schedule_scan=schedule)
@@ -821,8 +823,7 @@ class ScansAPI(ExploreBaseEndpoint):
             For further information on credentials, what settings to use, etc,
             refer to
             `this doc
-             <https://developer.tenable.com/docs/determine-
-             settings-for-credential-type>`_
+             <https://developer.tenable.com/docs/determine-settings-for-credential-type>`_  # noqa E501
             on the developer portal.
         '''
         if 'template' not in kw:
@@ -847,7 +848,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The scan was successfully deleted.
 
         Examples:
-            >>> tio.scans.delete(1)
+            >>>  tio.v3.vm.scans.delete(1)
         '''
         self._delete(f'{scan_id}')
 
@@ -881,7 +882,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 records.
 
         Examples:
-            >>> for history in tio.scans.history(1):
+            >>> for history in  tio.v3.vm.scans.history(1):
             ...     pprint(history)
         '''
         # query = dict()
@@ -929,7 +930,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 Scan history successfully deleted.
 
         Examples:
-            >>> tio.scans.delete_history(1, 1)
+            >>>  tio.v3.vm.scans.delete_history(1, 1)
         '''
         self._delete(f'{scan_id}/history/{history_id}')
 
@@ -943,10 +944,10 @@ class ScansAPI(ExploreBaseEndpoint):
 
         .. important::
             Please note that the details method is reverse-engineered from the
-            responses from the editor API, and while we are reasonably sure that
+            responses from the editor API, and while we're reasonably sure that
             the response should align almost exactly to what the API expects to
-            be pushed to it, this method by very nature of what it's doing isn't
-            guaranteed to always work.
+            be pushed to it, this method by very nature of what it's doing
+            isn't guaranteed to always work.
 
         .. note::
             If you're looking for the results of the most recent scan, and what
@@ -961,12 +962,15 @@ class ScansAPI(ExploreBaseEndpoint):
                 The scan configuration resource.
 
         Examples:
-            >>> scan = tio.scans.details(1)
+            >>> scan =  tio.v3.vm.scans.details(1)
             >>> pprint(scan)
         '''
         return self._api.editor.details('scan', scan_id)
 
-    def results(self, scan_id: UUID, history_id: Optional[UUID] = None)->dict:
+    def results(self,
+                scan_id: UUID,
+                history_id: Optional[UUID] = None
+                ) -> dict:
         '''
         Return the scan results from either the latest scan or a specific scan
         instance in the history.
@@ -986,11 +990,11 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             Retrieve the latest results:
 
-            >>> results = tio.scans.results(1)
+            >>> results =  tio.v3.vm.scans.results(1)
 
             Retrieve a specific instance of the result set:
 
-            >>> results = tio.scans.results(1, 1)
+            >>> results =  tio.v3.vm.scans.results(1, 1)
         '''
         params = dict_clean(dict(
             history_id=history_id
@@ -1038,7 +1042,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The UUID for the instance of the scan.
             format (str, optional):
                 What format would you like the resulting data to be in.  The
-                default would be nessus output.  Available options are `nessus`,
+                default would be nessus output. Available options are `nessus`,
                 `csv`, `html`, `pdf`, `db`.  Default is `nessus`.
             password (str, optional):
                 If the export format is `db`, then what is the password used to
@@ -1059,10 +1063,10 @@ class ScansAPI(ExploreBaseEndpoint):
                 This parameter is required only when using the API with
                 Web Application Scanning. Available option is 'web-app'.
             fobj (FileObject, optional):
-                The file-like object to be returned with the exported data.  If
+                The file-like object to be returned with the exported data. If
                 no object is specified, a BytesIO object is returned with the
                 data.  While this is an optional parameter, it is highly
-                recommended to use this parameter as exported files can be quite
+                recommended to use this param as exported files can be quite
                 large, and BytesIO objects are stored in memory, not on disk.
 
         Returns:
@@ -1073,12 +1077,12 @@ class ScansAPI(ExploreBaseEndpoint):
             Export the full report of the latest instance of the scan:
 
             >>> with open('example.nessus', 'wb') as reportobj:
-            ...     tio.scans.export(1, fobj=reportobj)
+            ...      tio.v3.vm.scans.export(1, fobj=reportobj)
 
             Export a specific instance of the scan:
 
             >>> with open('example.nessus', 'wb') as reportobj:
-            ...     tio.scans.export(1, history_id=1, fobj=reportobj)
+            ...      tio.v3.vm.scans.export(1, history_id=1, fobj=reportobj)
         '''
 
         # initiate the payload and parameters dictionaries.  We are also
@@ -1184,7 +1188,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The information related to the host requested.
 
         Examples:
-            >>> host = tio.scans.host_details(1, 1)
+            >>> host =  tio.v3.vm.scans.host_details(1, 1)
         '''
         params = dict_clean(dict(
             history_id=history_id
@@ -1224,12 +1228,12 @@ class ScansAPI(ExploreBaseEndpoint):
             Import a .nessusv2 report:
 
             >>> with open('example.nessus', 'rb') as reportobj:
-            ...     tio.scans.import(reportobj)
+            ...      tio.v3.vm.scans.import(reportobj)
 
             Import a NessusDB report.
 
             >>> with open('example.db', 'rb') as reportobj:
-            ...     tio.scans.import(reportobj, password='sekret')
+            ...      tio.v3.vm.scans.import(reportobj, password='sekret')
         '''
         # First lets verify that the folder_id and password are typed correctly
         # before initiating any uploads.
@@ -1276,11 +1280,11 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             Launch the scan with the configured targets:
 
-            >>> tio.scans.launch(1)
+            >>>  tio.v3.vm.scans.launch(1)
 
             Launch the scan with some custom targets:
 
-            >>> tio.scans.launch(1, targets=['127.0.0.1'])
+            >>>  tio.v3.vm.scans.launch(1, targets=['127.0.0.1'])
         '''
         payload = dict_clean(dict(
             alt_targets=targets
@@ -1311,7 +1315,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 A list containing the list of scan resource records.
 
         Examples:
-            >>> for scan in tio.scans.list():
+            >>> for scan in  tio.v3.vm.scans.list():
             ...     pprint(scan)
         '''
         params = dict()
@@ -1348,7 +1352,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The scan was successfully requested to be paused.
 
         Examples:
-            >>> tio.scans.pause(1)
+            >>>  tio.v3.vm.scans.pause(1)
         '''
         self._post(f'{scan_id}/pause', json={})
         if block:
@@ -1375,7 +1379,7 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             Set a scan to unread:
 
-            >>> tio.scans.set_read_status(1, False)
+            >>>  tio.v3.vm.scans.set_read_status(1, False)
         '''
         payload = self._schema.dump(self._schema.load(dict(
             read_status=read_status
@@ -1400,7 +1404,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The scan was successfully requested to resume.
 
         Examples:
-            >>> tio.scans.resume(1)
+            >>>  tio.v3.vm.scans.resume(1)
         '''
         self._post(f'{scan_id}/resume')
 
@@ -1423,7 +1427,9 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             Enable a scan schedule:
 
-            >>> tio.scans.schedule(1, True)
+            >>>  tio.v3.vm.scans.schedule(
+            ...  'aa57ae93-45e5-4316-8e16-501ebce4ecb7',
+            ...     True)
         '''
         payload = self._schema.dump(self._schema.load(dict(
             enabled=enabled
@@ -1452,11 +1458,11 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             Stop the scan asynchronously:
 
-            >>> tio.scans.stop(1)
+            >>>  tio.v3.vm.scans.stop(1)
 
             Stop the scan and wait for the scan to stop:
 
-            >>> tio.scans.stop(1, True)
+            >>>  tio.v3.vm.scans.stop(1, True)
         '''
         self._post(f'{scan_id}/stop')
         if block:
@@ -1476,7 +1482,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The current status of the last instance.
 
         Examples:
-            >>> tio.scans.status(1)
+            >>>  tio.v3.vm.scans.status(1)
             u'completed'
         '''
         return self._get(f'{scan_id}/latest-status')['status']
@@ -1492,7 +1498,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 List of allowed timezone strings accepted by Tenable.IO
 
         Examples:
-            >>> for item in tio.scans.timezones():
+            >>> for item in  tio.v3.vm.scans.timezones():
             ...     pprint(item)
         '''
         resp = self._get('timezones')['timezones']
@@ -1516,7 +1522,9 @@ class ScansAPI(ExploreBaseEndpoint):
                 The metadata about the scan instance specified.
 
         Examples:
-            >>> info = tio.scans.info(1, 'BA0ED610-C27B-4096-A8F4-3189279AFFE7')
+            >>> info =  tio.v3.vm.scans.info(
+            ... 'aa57ae93-45e5-4316-8e16-501ebce4ecb7',
+            ...  'BA0ED610-C27B-4096-A8F4-3189279AFFE7')
         '''
         return self._get(f'{scan_id}/history/{history_id}')
 
@@ -1552,7 +1560,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 the list of matched scanner groups (if any).
 
         Examples:
-            >>> scan_routes_info = tio.scans.check_auto_targets(
+            >>> scan_routes_info =  tio.v3.vm.scans.check_auto_targets(
             ... 10, 5, targets=['127.0.0.1'])
         '''
         query = {
