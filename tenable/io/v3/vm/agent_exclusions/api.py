@@ -30,7 +30,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
     _conv_json: bool = True
 
     def create(self,
-               agent_id: UUID,
                name: str,
                start_time: str,
                end_time: str = None,
@@ -48,7 +47,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
         :devportal:`agent-exclusions: create <agent-exclusions-create>`
 
         Args:
-            agent_id (UUID): Than unique idetifier for agent
             name (str): The name of the exclusion to create.
             start_time (datetime): When the exclusion should start.
             end_time (datetime): When the exclusion should end.
@@ -85,7 +83,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
 
             >>> from datetime import datetime, timedelta
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
-            ...     agent_id = '00000000-0000-0000-0000-000000000000',
             ...     name = 'Example One-Time Agent Exclusion',
             ...     frequency = 'ONETIME',
             ...     timezone = 'Etc/UTC',
@@ -99,7 +96,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             Creating a daily exclusion:
 
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
-            ...     agent_id = '00000000-0000-0000-0000-000000000000',
             ...     name = 'Example Daily Agent Exclusion',
             ...     frequency='DAILY',
             ...     timezone = 'Etc/UTC',
@@ -113,7 +109,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             Creating a weekly exclusion:
 
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
-            ...     agent_id = '00000000-0000-0000-0000-000000000000',
             ...     name = 'Example Weekly Exclusion',
             ...     frequency='WEEKLY',
             ...     timezone = 'Etc/UTC',
@@ -128,7 +123,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             Creating a monthly exclusion:
 
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
-            ...     agent_id = '00000000-0000-0000-0000-000000000000',
             ...     name = 'Example Monthly Agent Exclusion',
             ...     frequency='MONTHLY',
             ...     timezone = 'Etc/UTC',
@@ -143,7 +137,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             Creating a yearly exclusion:
 
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
-            ...     agent_id = '00000000-0000-0000-0000-000000000000',
             ...     name = 'Example Yearly Agent Exclusion',
             ...     frequency='YEARLY',
             ...     timezone = 'Etc/UTC',
@@ -206,16 +199,15 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
         )
         payload = schema.dump(schema.load(payload))
 
-        return self._post(f'{agent_id}/exclusions', json=payload)
+        return self._post(f'exclusions', json=payload)
 
-    def delete(self, agent_id: UUID, exclusion_id: UUID) -> None:
+    def delete(self, exclusion_id: UUID) -> None:
         '''
         Delete an agent exclusion.
 
         :devportal:`agent-exclusions: delete <agent-exclusions-delete>`
 
         Args:
-            agent_id (str): The unique identifier of the agent
             exclusion_id (str): The id of the exclusion object in Tenable.io
 
         Returns:
@@ -223,20 +215,18 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> tio.v3.vm.agent_exclusions.delete(
-            ...     agent_id = '00000000-0000-0000-0000-000000000000',
             ...     exclusion_id = '00000000-0000-0000-0000-000000000000'
             ... )
         '''
-        self._delete(f'{agent_id}/exclusions/{exclusion_id}')
+        self._delete(f'exclusions/{exclusion_id}')
 
-    def details(self, agent_id: UUID, exclusion_id: UUID) -> Dict:
+    def details(self, exclusion_id: UUID) -> Dict:
         '''
         Retrieve the details for a specific agent exclusion.
 
         :devportal:`agent-exclusion: details <agent-exclusions-details>`
 
         Args:
-            agent_id (str): The unique identifier of the agent
             exclusion_id (int): The id of the exclusion object in Tenable.io
 
         Returns:
@@ -244,14 +234,12 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> exclusion = tio.v3.vm.agent_exclusions.details(
-            ...     agent_id = '00000000-0000-0000-0000-000000000000',
             ...     exclusion_id = '00000000-0000-0000-0000-000000000000'
             ... )
         '''
-        return self._get(f'{agent_id}/exclusions/{exclusion_id}')
+        return self._get(f'exclusions/{exclusion_id}')
 
     def edit(self,
-             agent_id: UUID,
              exclusion_id: UUID,
              name: str = None,
              start_time: str = None,
@@ -274,7 +262,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
         then be pushed back to the API to modify the exclusion.
 
         Args:
-            agent_id (str): The unique identifier for agent
             exclusion_id (int): The id of the exclusion object in Tenable.io
             name (str, optional): The name of the exclusion to create.
             start_time (datetime, optional): When the exclusion should start.
@@ -304,14 +291,13 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> exclusion = tio.v3.vm.agent_exclusions.edit(
-            ...     agent_id = '00000000-0000-0000-0000-000000000000',
             ...     exclusion_id = '00000000-0000-0000-0000-000000000000',
             ...     name='New Name'
             ... )
         '''
 
         # Lets start constructing the payload to be sent to the API...
-        payload = self.details(agent_id=agent_id, exclusion_id=exclusion_id)
+        payload = self.details(exclusion_id=exclusion_id)
         
         unwanted_keys = [
             'id', 
@@ -395,7 +381,7 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
         )
         payload = schema.dump(schema.load(payload))
 
-        return self._put(f'{agent_id}/exclusions/{exclusion_id}', json=payload)
+        return self._put(f'exclusions/{exclusion_id}', json=payload)
 
     def search(self):
         raise NotImplementedError(
