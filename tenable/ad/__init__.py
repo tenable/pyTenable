@@ -15,6 +15,7 @@ This package covers the Tenable.ad interface.
     about
     api_keys
     attack_types
+    application_settings
     category
     checker
     checker_option
