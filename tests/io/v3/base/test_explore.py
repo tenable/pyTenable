@@ -117,9 +117,9 @@ RESPONSE_2 = {
     'pagination': {
         'next':
             'H4sIAAAAAAAAADWOwQrCMBBE/2WO0kBrqtj+SillTTa4UE1JclBK/t2t4GlgZt/'
-        'M7giyFk4Yd7xiOWRLceNUPhjhJdN9Zb9QQYPDphL1FvyWXDJqbZBjUmzaIV4Dyg'
-        '51VpcpucdC4dc9obX+PHhm44O7mv4SOjMMxCZ0tu3I2T7cWii3ylO0zjb/N4T'
-        'zwZ90Xwfm+gXgzWmZsQAAAA',
+            'M7giyFk4Yd7xiOWRLceNUPhjhJdN9Zb9QQYPDphL1FvyWXDJqbZBjUmzaIV4Dyg'
+            '51VpcpucdC4dc9obX+PHhm44O7mv4SOjMMxCZ0tu3I2T7cWii3ylO0zjb/N4T'
+            'zwZ90Xwfm+gXgzWmZsQAAAA',
         'limit': 3,
         'total': 123,
     },
@@ -147,3 +147,130 @@ def test_search_response(api):
     )
     assert isinstance(response, Response)
     assert RESPONSE_2 == response.json()
+
+
+def test_parse_filter():
+    '''
+    Test case for parse filter method
+    '''
+    # Sampel filter value
+    f_input: list = [
+        ('name 1', 'operator 1', ['value 1', 'value 2']),
+        ('name 1', 'operator 2', 'value 3,value 4')
+    ]
+
+    # filter response if rtype is sjson
+    sjson_filter_response: dict = {
+        'filter.0.filter': 'name 1',
+        'filter.0.quality': 'operator 1',
+        'filter.0.value': 'value 1,value 2',
+        'filter.1.filter': 'name 1',
+        'filter.1.quality': 'operator 2',
+        'filter.1.value': 'value 3,value 4'
+    }
+
+    # filter response if rtype is json
+    json_filter_response: dict = {
+        'filters': [
+            {
+                'filter': 'name 1',
+                'quality': 'operator 1',
+                'value': 'value 1,value 2'
+            },
+            {
+                'filter': 'name 1',
+                'quality': 'operator 2',
+                'value': 'value 3,value 4'
+            }
+        ]
+    }
+
+    # filter response if rtype is colon
+    colon_filter_response: dict = {
+        'f': [
+            'name 1:operator 1:value 1,value 2',
+            'name 1:operator 2:value 3,value 4'
+        ]
+    }
+
+    # filter response if rtype is accessgroup
+    accessgroup_filter_response: dict = {
+        'rules': [
+            {
+                'operator': 'operator 1',
+                'terms': [
+                    'value 1',
+                    'value 2'
+                ],
+                'type': 'name 1'
+            },
+            {
+                'operator': 'operator 2',
+                'terms': [
+                    'value 3',
+                    'value 4'
+                ],
+                'type': 'name 1'
+            }
+        ]
+    }
+
+    # filter response if rtype is assets
+    assets_filter_response: dict = {
+        'asset': [
+            {
+                'field': 'name 1',
+                'operator': 'operator 1',
+                'value': 'value 1,value 2'
+            },
+            {
+                'field': 'name 1',
+                'operator': 'operator 2',
+                'value': 'value 3,value 4'
+            }
+        ]
+    }
+
+    # sample filter to validate data
+    filter_set: dict = {
+        'name 1': {
+            'operators': [
+                'operator 1',
+                'operator 2'
+            ],
+            'choices': None,
+            'pattern': '.*'
+        }
+    }
+
+    sjson_filter_result = ExploreBaseEndpoint._parse_filters(
+        finput=f_input,
+        filterset=filter_set,
+        rtype='sjson'
+    )
+    json_filter_result = ExploreBaseEndpoint._parse_filters(
+        finput=f_input,
+        filterset=filter_set,
+        rtype='json'
+    )
+    colon_filter_result = ExploreBaseEndpoint._parse_filters(
+        finput=f_input,
+        filterset=filter_set,
+        rtype='colon'
+    )
+    accessgroup_filter_result = ExploreBaseEndpoint._parse_filters(
+        finput=f_input,
+        filterset=filter_set,
+        rtype='accessgroup'
+    )
+    assets_filter_result = ExploreBaseEndpoint._parse_filters(
+        finput=f_input,
+        filterset=filter_set,
+        rtype='assets'
+    )
+
+    assert sjson_filter_result == sjson_filter_response
+    assert json_filter_result == json_filter_response
+    assert colon_filter_result == colon_filter_response
+    assert accessgroup_filter_result == accessgroup_filter_response
+    assert assets_filter_result == assets_filter_response
