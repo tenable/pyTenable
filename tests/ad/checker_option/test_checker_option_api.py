@@ -9,8 +9,7 @@ RE_BASE = 'https://pytenable.tenable.ad/api'
 @responses.activate
 def test_checker_option_list(api):
     responses.add(responses.GET,
-                  f'{RE_BASE}/profiles/1/checkers/1/checker-options'
-                  f'?perPage=1&staged=0&page=1',
+                  f'{RE_BASE}/profiles/1/checkers/1/checker-options?staged=0',
                   json=[{
                       'checkerId': 1,
                       'codename': 'O-DUMMY-OPTION',
@@ -27,9 +26,8 @@ def test_checker_option_list(api):
                   )
     resp = api.checker_option.list(profile_id='1',
                                    checker_id='1',
-                                   staged='0',
-                                   per_page='1',
-                                   page='1')
+                                   staged=False,
+                                   )
     assert isinstance(resp, list)
     assert len(resp) == 1
     assert resp[0]['checker_id'] == 1
@@ -63,32 +61,3 @@ def test_checker_option_create(api):
     assert len(resp) == 1
     assert resp[0]['checker_id'], resp[0]['profile_id'] == 1
     assert resp[0]['staged'] is True
-
-
-@responses.activate
-def test_checker_option_validation_error(api):
-    '''
-    test to raise validation error when ``staged`` param is
-    other than str or boolean
-    '''
-    responses.add(responses.POST,
-                  f'{RE_BASE}/profiles/1/checkers/1/checker-options',
-                  json=[{
-                      'checkerId': 1,
-                      'codename': 'codename',
-                      'description': None,
-                      'directoryId': None,
-                      'id': 3269,
-                      'name': None,
-                      'profileId': 1,
-                      'staged': 1,  # passing as int
-                      'value': 'false',
-                      'valueType': 'boolean'
-                  }]
-                  )
-    with pytest.raises(ValidationError):
-        api.checker_option.create(profile_id='1',
-                                  checker_id='1',
-                                  codename='codename',
-                                  value='false',
-                                  value_type='boolean')

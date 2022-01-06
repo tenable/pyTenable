@@ -16,10 +16,8 @@ def checker_option_schema():
         "valueType": "string",
         "name": "string",
         "description": "string",
-        "staged": 'true',
-        "translations": ['string'],
-        "perPage": '1',
-        "page": '1'
+        "staged": True,
+        "translations": ['string']
     }]
 
 
@@ -34,20 +32,11 @@ def test_checker_option_schema(checker_option_schema):
         "valueType": "string",
         "name": "string",
         "description": "string",
-        "staged": 'true',
-        "perPage": '1',
-        "page": '1'
+        "staged": True
     }]
     schema = CheckerOptionSchema()
     assert test_response[0]['name'] == schema.dump(schema.load(
         checker_option_schema[0]))['name']
     with pytest.raises(ValidationError):
-        checker_option_schema[0]['new_val'] = 'something'
-        schema.load(checker_option_schema)
-
-
-def test_checker_option_schema_validation_error(checker_option_schema):
-    schema = CheckerOptionSchema()
-    with pytest.raises(ValidationError):
-        checker_option_schema[0]['staged'] = 1
-        schema.load(checker_option_schema)
+        checker_option_schema[0]['new_val'] = 1
+        schema.load(checker_option_schema[0])

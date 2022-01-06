@@ -10,7 +10,6 @@ These methods can be accessed at ``TenableAD.checker_option``.
     :members:
 '''
 from typing import List, Dict
-from restfly.utils import dict_clean
 from tenable.ad.checker_option.schema import CheckerOptionSchema
 from tenable.base.endpoint import APIEndpoint
 
@@ -31,33 +30,25 @@ class CheckerOptionAPI(APIEndpoint):
                 The profile instance identifier.
             checker_id (str):
                 The checker instance identifier.
-            staged (optional, str):
-                ???
-            per_page (optional, str):
-                ???
-            page (optional, str):
-                ???
+            staged (optional, bool):
+                Get only the checker-options that are staged. Accepted
+                values are ``True`` and ``False``. Added checker options
+                are first staged until the profile is commited. The staged
+                profile options are not activated and don't affect
+                yet the IOE and the exposure detection.
 
         Returns:
             list:
                 List of checker options.
 
         Examples:
-
             >>> tad.checker_option.list(
             ...     profile_id='9',
             ...     checker_id='1',
-            ...     staged='1',
-            ...     per_page='5',
-            ...     page='1')
-
+            ...     staged=True
+            ...     )
         '''
-        params = self._schema.dump(self._schema.load(
-            dict_clean({
-                'perPage': kwargs.get('per_page'),
-                'page': kwargs.get('page'),
-                'staged': kwargs.get('staged')
-            })))
+        params = self._schema.dump(self._schema.load(kwargs, partial=True))
         return self._schema.load(
             self._api.get(
                 f'profiles/{profile_id}/checkers/{checker_id}/checker-options',
@@ -66,9 +57,6 @@ class CheckerOptionAPI(APIEndpoint):
     def create(self,
                profile_id: str,
                checker_id: str,
-               codename: str,
-               value: str,
-               value_type: str,
                **kwargs
                ) -> List[Dict]:
         '''
@@ -80,11 +68,15 @@ class CheckerOptionAPI(APIEndpoint):
             checker_id (str):
                 The checker instance identifier.
             codename (str):
-                ???
+                The codename of the checker option.
             value (str):
-                ???
+                The value of the checker option.
             value_type (str):
-                ???
+                The type of the checker option. Accepted values are:
+                ``string``, ``regex``, ``float``, ``integer``, ``boolean``,
+                ``date``, ``object``, ``array/string``, ``array/regex``,
+                ``array/integer``, ``array/boolean``, ``array/select``,
+                ``array/object``.
             directory_id (optional, int):
                 The directory instance identifier.
 
@@ -93,25 +85,16 @@ class CheckerOptionAPI(APIEndpoint):
                 Created checker option instance.
 
         Examples:
-
             >>> tad.checker_option.create(
             ...     profile_id='9',
             ...     checker_id='2',
             ...     codename='codename',
             ...     value='false',
             ...     value_type='boolean'
-            ...     directory_id=3)
+            ...     directory_id=3
+            ...     )
         '''
-        payload = [
-            self._schema.dump(self._schema.load(
-                dict_clean({
-                    'directoryId': kwargs.get('directory_id'),
-                    'codename': codename,
-                    'value': value,
-                    'valueType': value_type,
-                })
-            ))
-        ]
+        payload = [self._schema.dump(self._schema.load(kwargs))]
         return self._schema.load(
             self._api.post(
                 f'profiles/{profile_id}/checkers/{checker_id}/checker-options',
