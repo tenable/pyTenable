@@ -41,44 +41,33 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         :devportal:`configuration: create <was-v2-config-create>`
 
         Args:
-            name:
+            name (str):
                 The name of the scan configuration.
-
-            owner_id:
+            owner_id (UUID):
                 The UUID of the owner of the scan configuration.
-
-            settings:
-                The scan configuration settings.
-
-            targets:
+            template_id (UUID):
+                The UUID of the Tenable-provided configuration template.
+            targets (List[str]):
                 A List of distinct absolute URLs that were targeted in the
                 scan.
-
-            template_id:
-                The UUID of the Tenable-provided configuration template.
-
+            settings (Dict):
+                The scan configuration settings.
             description (str):
                 A description of the scan configuration.
-
             folder_id (str):
                 The UUID of the folder to assign for the scan configuration.
-
             user_template_id (str):
                 The UUID of the user-defined configuration template from which
                 this configuration was derived.
-
             scanner_id (int):
                 The ID of the scanner (if the type is set to managed_webapp),
                 or scanner group (if the type is pool or local) that performs
                 the scan.
-
             schedule (Dict):
                 The schedule when the scan configuration will be run.
-
             notifications (Dict):
                 Contact information used to send scan notifications
                 upon scan completion.
-
             permissions (List):
                 The permissions for the scan configuration.
 
@@ -121,7 +110,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         :devportal:`configuration: delete <was-v2-config-delete>`
 
         Args:
-            config_id:
+            config_id (UUID):
                 The unique identifier for the scan configuration.
 
         Returns:
@@ -133,7 +122,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
             ... )
         '''
 
-        return self._delete(str(config_id))
+        return self._delete(f'{config_id}')
 
     def details(self, config_id: UUID) -> Dict:
         '''
@@ -142,7 +131,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         :devportal:`configuration: details <was-v2-config-details>`
 
         Args:
-            config_id:
+            config_id (UUID):
                 The UUID of the scan configuration that you want to
                 retrieve details for.
 
@@ -169,12 +158,19 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         :devportal:`configuration: processing status <was-v2-config-status>`
 
         Args:
-            config_id:
+            config_id (UUID):
                 The UUID of the scan configuration.
-
-            tracking_id:
+                NOTE: The config_id can be retrieved from the URI provided in
+                the Location header of the 202 Accepted response from the POST
+                /was/v2/configs or PUT /was/v2/configs/{config_id} request
+                used to create or update the scan configuration.
+            tracking_id (UUID):
                 The tracking UUID for the request you want to retrieve
                 the status for.
+                NOTE: The tracking_id can be retrieved from the URI provided in
+                the Location header of the 202 Accepted response from the POST
+                /was/v2/configs or PUT /was/v2/configs/{config_id} request
+                used to create or update the scan configuration.
 
         Returns:
             :obj:`dict`:
@@ -196,10 +192,9 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         :devportal:`configuration: move <was-v2-config-move>`
 
         Args:
-            config_id:
+            config_id (UUID):
                 The UUID of the scan configuration you want to update.
-
-            folder_name:
+            folder_name (str):
                 The name of the folder to set for the scan configuration.
 
         Returns:
@@ -217,7 +212,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
                 'folder_name': folder_name
             }
         ))
-        return self._patch(str(config_id), json=payload)
+        return self._patch(f'{config_id}', json=payload)
 
     def search(self,
                *,
@@ -241,11 +236,9 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     - ``['field1', 'field2']``
-
             filter (tuple, Dict):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
-
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
                     ...            ('test', 'oper', '2')
@@ -275,7 +268,6 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
                     ...         }
                     ...     ]
                     ... }
-
             sort list(tuple, Dict):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
@@ -283,20 +275,16 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
                     - ``[("field_name_1", "asc"),
                              ("field_name_2", "desc")]``
                     - ``[{'property': 'last_observed', 'order': 'desc'}]``
-
             limit (int):
                 Number of objects to be returned in each request.
                 Default is 1000.
-
             next (str):
                 The pagination token to use when requesting the next page of
                 results.  This token is presented in the previous response.
-
             return_resp (bool):
                 If set to true, will override the default behavior to return
                 an iterable and will instead return the results for the
                 specific page of data.
-
             return_csv (bool):
                 If set to true, It wil return the CSV Iterable. Returns all
                 data in text/csv format on each next call with row headers
@@ -329,49 +317,37 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         :devportal:`configuration: updsert <was-v2-config-upsert>`
 
         Args:
-            config_id:
+            config_id (UUID):
                 If updating an existing scan configuration, the UUID of the
                 scan configuration you want to update. If creating a new scan
                 configuration, a new UUID generated with a tool like uuidgen.
-
-            name:
+            name (str):
                 The name of the scan configuration.
-
-            owner_id:
+            owner_id (UUID):
                 The UUID of the owner of the scan configuration.
-
-            settings:
-                The scan configuration settings.
-
-            targets:
+            template_id (str):
+                The UUID of the Tenable-provided configuration template.
+            targets (List[str]):
                 A List of distinct absolute URLs that were targeted in
                 the scan.
-
-            template_id:
-                The UUID of the Tenable-provided configuration template.
-
+            settings (Dict):
+                The scan configuration settings.
             description (str):
                 A description of the scan configuration.
-
             folder_id (str):
                 The UUID of the folder to assign for the scan configuration.
-
             user_template_id (str):
                 The UUID of the user-defined configuration template from which
                 this configuration was derived.
-
             scanner_id (int):
                 The ID of the scanner (if the type is set to managed_webapp),
                 or scanner group (if the type is pool or local) that performs
                 the scan.
-
             schedule (Dict):
                 The schedule when the scan configuration will be run.
-
             notifications (Dict):
                 Contact information used to send scan notifications upon scan
                 completion.
-
             permissions (List):
                 The permissions for the scan configuration.
 
@@ -408,4 +384,4 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
 
         payload = self._schema.dump(self._schema.load(payload))
 
-        return self._put(str(config_id), json=payload)
+        return self._put(f'{config_id}', json=payload)

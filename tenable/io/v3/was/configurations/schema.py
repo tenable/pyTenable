@@ -40,22 +40,23 @@ class SettingsSchema(Schema):
     class Meta:
         unknown = INCLUDE
 
+    assessment = fields.Dict()
+    audit = fields.Dict()
+    browser = fields.Dict()
+    chrome_script = fields.Dict()
+    credentials = fields.Dict(keys=fields.String(validate=v.Equal('credential_ids')),  # noqa: E501
+                              values=fields.List(fields.UUID()))
+    debug_mode = fields.Boolean()
     description = fields.String()
+    http = fields.Dict()
+    input_force = fields.Boolean()
+    plugin = fields.Dict()
+    scope = fields.Dict()
     timeout = fields.String(validate=v.Regexp(
                                     regex=compile(r'^\d{2}:[0-5]\d:[0-5]\d$'),
                                     error='Invalid scan duration format'
                                 )
                             )
-    debug_mode = fields.Boolean()
-    input_force = fields.Boolean()
-    credentials = fields.Dict(keys=fields.String(validate=v.Equal('credential_ids')),  # noqa: E501
-                              values=fields.List(fields.UUID()))
-
-    scope = fields.Dict()
-    plugin = fields.Dict()
-    browser = fields.Dict()
-    http = fields.Dict()
-    assessment = fields.Dict()
 
     @post_dump(pass_original=True)
     def keep_unknowns(self, output, orig, **kw):
@@ -69,16 +70,17 @@ class ConfigurationSchema(Schema):
     '''
     Base Schema for Configurations API
     '''
-    targets = fields.List(fields.Url())
-    owner_id = fields.UUID()
-    template_id = fields.UUID()
-    settings = fields.Nested(SettingsSchema)
-    schedule = fields.Nested(ScheduleSchema)
+    description = fields.String()
+    folder_id = fields.UUID()
+    folder_name = fields.String()
+    name = fields.String()
     notifications = fields.Dict(keys=fields.String(validate=v.Equal('emails')),
                                 values=fields.List(fields.Email()))
+    owner_id = fields.UUID()
     permissions = fields.List(fields.Nested(PermissionConfigurationSchema))
-    folder_name = fields.String()
-    folder_id = fields.UUID()
-    user_template_id = fields.UUID()
     scanner_id = fields.UUID()
-    name = fields.String()
+    schedule = fields.Nested(ScheduleSchema)
+    settings = fields.Nested(SettingsSchema)
+    targets = fields.List(fields.Url())
+    template_id = fields.UUID()
+    user_template_id = fields.UUID()

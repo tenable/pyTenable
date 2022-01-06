@@ -8,14 +8,19 @@ from tenable.base.platform import APIPlatform
 
 from .about import AboutAPI
 from .api_keys import APIKeyAPI
+from .attack_types.api import AttackTypesAPI
 from .category.api import CategoryAPI
 from .checker.api import CheckerAPI
 from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
 from .infrastructure.api import InfrastructureAPI
+from .ldap_configuration.api import LDAPConfigurationAPI
+from .lockout_policy.api import LockoutPolicyAPI
 from .preference.api import PreferenceAPI
 from .profiles.api import ProfilesAPI
 from .roles.api import RolesAPI
+from .saml_configuration.api import SAMLConfigurationAPI
+from .score.api import ScoreAPI
 from .users.api import UsersAPI
 from .widget.api import WidgetsAPI
 
@@ -61,6 +66,14 @@ class TenableAD(APIPlatform):
         return APIKeyAPI(self)
 
     @property
+    def attack_types(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Attack Types APIs <attack_types>`.
+        '''
+        return AttackTypesAPI(self)
+
+    @property
     def category(self):
         '''
         The interface object for the
@@ -99,6 +112,22 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Infrastructure APIs <infrastructure>`.
         '''
         return InfrastructureAPI(self)
+
+    @property
+    def ldap_configuration(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad LDAP Configuration APIs <ldap_configuration>`.
+        '''
+        return LDAPConfigurationAPI(self)
+
+    @property
+    def lockout_policy(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Lockout Policy APIs <lockout_policy>`.
+        '''
+        return LockoutPolicyAPI(self)
       
     @property
     def preference(self):
@@ -123,6 +152,22 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Roles APIs <roles>`.
         '''
         return RolesAPI(self)
+
+    @property
+    def saml_configuration(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad SAML configuration APIs <saml_configuration>`.
+        '''
+        return SAMLConfigurationAPI(self)
+
+    @property
+    def score(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Score APIs <score>`.
+        '''
+        return ScoreAPI(self)
 
     @property
     def users(self):

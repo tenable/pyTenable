@@ -48,4 +48,4 @@ class CategoryAPI(APIEndpoint):
 
             >>> tad.category.details(category_id='5')
         '''
-        return self._schema.load(self._get(category_id))
+        return self._schema.load(self._get(f'{category_id}'))
