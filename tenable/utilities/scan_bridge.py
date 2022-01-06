@@ -47,7 +47,7 @@ class ScanBridge(object):
         Example:
             >>> from tenable.utilities.scan_bridge import ScanBridge
             ... from tenable.io import TenableIO
-            ... from tenable.scimport TenableSC
+            ... from tenable.sc import TenableSC
             ... tsc = TenableSC(username, password, url)
             ... tio = TenableIO(access_key, secret_key, url)
             ... sb = ScanBridge(tsc, tio)
