@@ -26,7 +26,8 @@ class ScanMove(ExploreBaseEndpoint):
     def _get_scan_history(self, scan_id, limit):
         scan_history = []
         count = 0
-        for scan_instance in self.source_tsc.v3.scans.history(scan_id):
+        # for scan_instance in self.source_tsc.v3.scans.history(scan_id):
+        for scan_instance in self.source_tsc.scans.history(scan_id):
 
             if count == limit:
                 break
@@ -40,27 +41,28 @@ class ScanMove(ExploreBaseEndpoint):
     def move(self, limit):
         # get all scans from source instance
 
-        scan_filter = {
+        scan_filter = {  # noqa: F841
             'and': [
                 {'property': 'status', 'operator': 'eq', 'value': 'completed'},
                 {'property': 'type', 'operator': 'eq', 'value': 'remote'}
             ]
         }
-        for mv_scan in self.source_tsc.v3.scans.search(scan_filter):
-            if not (
-                    mv_scan.status == 'completed' and mv_scan.type == 'remote'
-            ):
-                continue
-        scan_history = self._get_scan_history(mv_scan.id, limit)
+        # for mv_scan in self.source_tsc.v3.scans.search(scan_filter):
+        for mv_scan in self.source_tsc.scans.list():
+            scan_history = self._get_scan_history(mv_scan['id'], limit)
 
-        for scan in scan_history:
-            print("Exporting Scan ID:{}, with history_id: {} now\n".format(
-                mv_scan, scan
-            ))
+            for scan in scan_history:
+                print("Exporting Scan ID:{}, with history_id: {} now\n".format(
+                    mv_scan, scan
+                ))
 
-            scan_report = self.source_tsc.v3.vm.scans.export(scan)
-            imported_scan = self.target_tsc.v3.vm.scans.import_scan(
-                scan_report
-            )
+                # scan_report = self.source_tsc.v3.vm.scans.export(scan)
+                scan_report = self.source_tsc.scans.export(scan)
+                # imported_scan = self.target_tsc.v3.vm.scans.import_scan(
+                imported_scan = self.target_tsc.scans.import_scan(
+                    scan_report
+                )
 
-            print("Scan imported: {}".format(imported_scan.get('id')))
+                print("Scan imported: {}".format(
+                    imported_scan.get('scan').get('id')
+                ))
