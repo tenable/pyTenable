@@ -2,10 +2,10 @@
 Scan Bridge
 ===========
 
-The following class allows to send TenableIO scan imformation
+The following class allows to send TenableIO scan information
 to a TenableSC repository.
 
-Usage: ``from tenable.utilities.scan_bridge import ScanBridge``:
+Usage: ``from tenable.utilities import ScanBridge``:
 
 .. rst-class:: hide-signature
 .. autoclass:: ScanBridge
@@ -19,7 +19,8 @@ from tenable.sc import TenableSC
 
 class ScanBridge(object):
     '''
-    ScanBridge Class
+    The ScanBridge Class can be used as a bridge to send the Tenable.IO scans
+    data to a Tenable.SC instance at given repo_id using the bridge function.
     '''
     def __init__(self, tsc: TenableSC, tio: TenableIO):
         '''
@@ -45,17 +46,20 @@ class ScanBridge(object):
                 The repo_id of Tenable SC instance where scan details
                 will be imported.
         Example:
-            >>> from tenable.utilities.scan_bridge import ScanBridge
+            >>> from tenable.utilities import ScanBridge
             ... from tenable.io import TenableIO
             ... from tenable.sc import TenableSC
             ... tsc = TenableSC(username, password, url)
             ... tio = TenableIO(access_key, secret_key, url)
             ... sb = ScanBridge(tsc, tio)
-            ... sb.move(48,7)
+            ... sb.bridge(48,7)
         '''
-        with open(f'{scan_id}.nessus', 'wb') as nessus:
-            self.tio.scans.export(scan_id, fobj=nessus)
-            # self.tio.v3.vm.scans.export(scan_id, fobj=nessus)
-        with open(f'{scan_id}.nessus') as file:
-            self.tsc.scan_instances.import_scan(file, repo_id)
-        os.remove(f'{scan_id}.nessus')
+        try:
+            with open(f'{scan_id}.nessus', 'wb') as nessus:
+                self.tio.scans.export(scan_id, fobj=nessus)
+                # self.tio.v3.vm.scans.export(scan_id, fobj=nessus)
+            with open(f'{scan_id}.nessus') as file:
+                self.tsc.scan_instances.import_scan(file, repo_id)
+        finally:
+            if os.path.exists(f'{scan_id}.nessus'):
+                os.remove(f'{scan_id}.nessus')
