@@ -88,7 +88,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def editor(self):
         '''
         The interface object for the
-        :doc:`Folders API <folders>`
+        :doc:`Tenable.IO v3 API <editor>`
         '''
         return EditorAPI(self._api)
 
