@@ -17,9 +17,10 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     agent_config
-    credentials
     agent_groups
     agents
+    credentials
+    editor
     files
     folders
     networks
@@ -84,6 +85,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         return CredentialsAPI(self._api)
 
     @property
+    def editor(self):
+        '''
+        The interface object for the
+        :doc:`Folders API <folders>`
+        '''
+        return EditorAPI(self._api)
+
+    @property
     def files(self):
         '''
         The interface object for the
@@ -98,14 +107,6 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Tenable.io v3 Folders APIs <folders>`
         '''
         return FoldersAPI(self._api)
-
-    @property
-    def editor(self):
-        '''
-        The interface object for the
-        :doc:`Folders API <folders>`
-        '''
-        return EditorAPI(self._api)
 
     @property
     def networks(self):
