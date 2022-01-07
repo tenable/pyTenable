@@ -76,6 +76,7 @@ class CamelCaseSchema(Schema):
 
 class BoolInt(fields.Boolean):
     '''Schema to return an integer value for given boolean value'''
+
     def _serialize(self, value, attr, obj, **kwargs) -> int:
         return int(value) if value else 0
 
