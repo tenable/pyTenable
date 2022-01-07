@@ -21,16 +21,24 @@ class ScanBridge(object):
     '''
     The ScanBridge Class can be used as a bridge to send the Tenable.IO scans
     data to a Tenable.SC instance at given repo_id using the bridge function.
+
+    Args:
+        tsc (TenableSC object):
+            A TenableSC class object at which scans are to be migrated.
+        tio (TenableIO object):
+            The TenableIO class object where scans details is present.
+
+    Example:
+        >>> from tenable.utilities import ScanBridge
+        ... from tenable.io import TenableIO
+        ... from tenable.sc import TenableSC
+        ... tsc = TenableSC(username, password, url)
+        ... tio = TenableIO(access_key, secret_key, url)
+        ... sb = ScanBridge(tsc, tio)
     '''
     def __init__(self, tsc: TenableSC, tio: TenableIO):
         '''
         Init method for ScanBridge class.
-
-        Args:
-            tsc (TenableSC object):
-                A TenableSC class object at which scans are to be migrated.
-            tio (TenableIO object):
-                The TenableIO class object where scans details is present.
         '''
         self.tio = tio
         self.tsc = tsc
@@ -45,13 +53,9 @@ class ScanBridge(object):
             repo_id (int):
                 The repo_id of Tenable SC instance where scan details
                 will be imported.
+
         Example:
-            >>> from tenable.utilities import ScanBridge
-            ... from tenable.io import TenableIO
-            ... from tenable.sc import TenableSC
-            ... tsc = TenableSC(username, password, url)
-            ... tio = TenableIO(access_key, secret_key, url)
-            ... sb = ScanBridge(tsc, tio)
+            >>> sb = ScanBridge(tsc, tio)
             ... sb.bridge(48,7)
         '''
         try:
