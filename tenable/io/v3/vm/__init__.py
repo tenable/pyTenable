@@ -41,6 +41,7 @@ from tenable.io.v3.vm.plugins.api import PluginsAPI
 from tenable.io.v3.vm.scanner_groups.api import ScannerGroupsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
 from tenable.io.v3.vm.server.api import ServerAPI
+from tenable.io.v3.vm.vulnerability.api import VulnerabilityAPI
 
 
 class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
@@ -145,3 +146,11 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Tenable.io v3 Server APIs <server>`
         '''
         return ServerAPI(self._api)
+
+    @property
+    def vulnerabilities(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 VM Vulnerability APIs <vulnerability>`
+        '''
+        return VulnerabilityAPI(self._api)

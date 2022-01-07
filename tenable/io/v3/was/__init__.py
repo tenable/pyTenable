@@ -26,6 +26,7 @@ from tenable.io.v3.was.attachments.api import AttachmentsAPI
 from tenable.io.v3.was.folders.api import FoldersAPI
 from tenable.io.v3.was.plugins.api import PluginsAPI
 from tenable.io.v3.was.scans.api import ScansAPI
+from tenable.io.v3.was.vulnerability.api import VulnerabilityAPI
 
 
 class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
@@ -65,3 +66,11 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Scans API <scans>`
         '''
         return ScansAPI(self._api)
+
+    @property
+    def vulnerabilities(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 WAS Vulnerability APIs <vulnerability>`
+        '''
+        return VulnerabilityAPI(self._api)
