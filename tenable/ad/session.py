@@ -16,6 +16,7 @@ from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
 from .infrastructure.api import InfrastructureAPI
 from .ldap_configuration.api import LDAPConfigurationAPI
+from .license.api import LicenseAPI
 from .lockout_policy.api import LockoutPolicyAPI
 from .preference.api import PreferenceAPI
 from .profiles.api import ProfilesAPI
@@ -131,6 +132,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad LDAP Configuration APIs <ldap_configuration>`.
         '''
         return LDAPConfigurationAPI(self)
+
+    @property
+    def license(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad License APIs <license>`.
+        '''
+        return LicenseAPI(self)
 
     @property
     def lockout_policy(self):
