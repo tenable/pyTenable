@@ -1,5 +1,5 @@
 from typing import Optional, List
-from marshmallow import Schema
+from marshmallow import Schema, fields, ValidationError
 
 
 def camelcase(s):
@@ -65,3 +65,9 @@ class CamelCaseSchema(Schema):
                 field_obj.data_key or field_name)
         else:
             field_obj.data_key = camelcase(field_obj.data_key or field_name)
+
+
+class BoolInt(fields.Boolean):
+    '''Schema to return an integer value for given boolean value'''
+    def _serialize(self, value, attr, obj, **kwargs) -> int:
+        return int(value) if value else 0
