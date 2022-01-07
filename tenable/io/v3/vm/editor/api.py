@@ -16,7 +16,10 @@ from typing import Dict, List, Optional
 from uuid import UUID
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.utils import dict_clean, dict_merge, policy_settings
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
+from tenable.utils import (UnexpectedValueError, dict_clean, dict_merge,
+                           policy_settings)
 
 
 class EditorAPI(ExploreBaseEndpoint):
@@ -57,16 +60,18 @@ class EditorAPI(ExploreBaseEndpoint):
         Examples:
             >>> with open('audit_001.txt', 'wb') as report:
             ...     tio.v3.vm.editor.audits(
+            ...         fobj=report,
             ...         etype='scan',
             ...         object_id=23,
-            ...         file_id=12
-            ...         report
+            ...         file_id=12,
             ...     )
         '''
-        if etype not in {'scan', 'policy'}:
-            raise AttributeError(
-                f'Invalid value of type. Expected scan/policy. Found {etype}'
-            )
+        etype_choices = {'scan', 'policy'}
+        if etype not in etype_choices:
+            raise UnexpectedValueError((
+                f'etype has value of {etype}.  Expected one of '
+                ','.join([str(i) for i in etype_choices])
+            ))
 
         if not fobj:
             fobj = BytesIO()
@@ -204,10 +209,13 @@ class EditorAPI(ExploreBaseEndpoint):
             ... )
             >>> pprint(configuration_details)
         '''
-        if etype not in {'scan', 'policy'}:
-            raise AttributeError(
-                f'Invalid value of type. Expected scan/policy. Found {etype}'
-            )
+        etype_choices = {'scan', 'policy'}
+        if etype not in etype_choices:
+            raise UnexpectedValueError((
+                f'etype has value of {etype}.  Expected one of '
+                ','.join([str(i) for i in etype_choices])
+            ))
+
         return self._get(f'{etype}/{id}')
 
     def parse_audits(self, data: List) -> Dict:
@@ -343,7 +351,7 @@ class EditorAPI(ExploreBaseEndpoint):
             f'policy/{policy_id}/families/{family_id}/plugins/{plugin_id}'
         )['plugindescription']
 
-    def search_templates(self, **kwargs) -> List:
+    def search_templates(self, etype: str, **kwargs) -> List:
         '''
         Lists Tenable-provided scan templates. Tenable provides a number of
         scan templates to facilitate the creation of scans and scan policies.
@@ -352,18 +360,96 @@ class EditorAPI(ExploreBaseEndpoint):
 
         :devportal:`editor: search templates <editor-list-templates>`
 
+        Args:
+            etype (str):
+                The type of templates to retrieve (scan, policy, or
+                remediation).
+            fields (list):
+                The list of field names to return from the Tenable API.
+
+                Example:
+                    - ``['field1', 'field2']``
+            filter (tuple, Dict):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                                   ('test', 'oper', '2')
+                            ),
+                    'and', ('test', 'oper', 3)
+                   )
+                    >>> {'or': [
+                    {'and': [
+                        {'value': '1', 'operator': 'oper', 'property': '1'},
+                        {'value': '2', 'operator': 'oper', 'property': '2'}
+                        ]
+                    }],
+                    'and': [
+                        {'value': '3', 'operator': 'oper', 'property': 3}
+                        ]
+                    }
+
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the :py:meth:`tio.v3.vm.filters.asset_filters()`
+                endpoint to get more details.
+            sort list(tuple, Dict):
+                A list of dictionaries describing how to sort the data
+                that is to be returned.
+
+                Examples:
+                    - ``[('field_name_1', 'asc'),
+                             ('field_name_2', 'desc')]``
+                    - ``[{'property': 'last_observed', 'order': 'desc'}]``
+            limit (int):
+                Number of objects to be returned in each request.
+                Default is 1000.
+            next (str):
+                The pagination token to use when requesting the next page of
+                results.  This token is presented in the previous response.
+            return_resp (bool):
+                If set to true, will override the default behavior to return
+                an iterable and will instead return the results for the
+                specific page of data.
+            return_csv (bool):
+                If set to true, It wil return the CSV Iterable. Returns all
+                data in text/csv format on each next call with row headers
+                on each page.
+
         Returns:
-            :obj:`list`:
-                List of templates
+            Returns:
+                Iterable:
+                    The iterable that handles the pagination and potentially
+                    async requests for the job.
+                requests.Response:
+                    If ``return_json`` was set to ``True``, then a response
+                    object is instead returned instead of an iterable.
 
         Examples:
-            >>> templates = tio.v3.vm.editor.search_templates()
-            >>> for templatae in templates:
-            ...     pprint(template)
+            >>> tio.v3.vm.editor.search(
+            ...     etype='scan',
+            ...     filter=('unsupported', 'eq', True),
+            ...     fields=['title', 'id', 'desc'],
+            ...     limit=2,
+            ...     sort=[('container_name', 'asc')]
+            ... )
         '''
-        raise NotImplementedError(
-            'This method will be updated once ExploreSearchIterator is '
-            'implemented for v3'
+        etype_choices = {'scan', 'policy', 'remediation'}
+        if etype not in etype_choices:
+            raise UnexpectedValueError((
+                f'etype has value of {etype}.  Expected one of '
+                ','.join([str(i) for i in etype_choices])
+            ))
+        iclass = SearchIterator
+        if kwargs.get('return_csv', False):
+            iclass = CSVChunkIterator
+        return super().search(
+            resource='templates',
+            iterator_cls=iclass,
+            is_sort_with_prop=False,
+            api_path=f'{self._path}/{etype}/templates/search',
+            **kwargs
         )
 
     def template_details(self, etype: str, id: UUID) -> List:
@@ -387,9 +473,10 @@ class EditorAPI(ExploreBaseEndpoint):
             >>> template = tio.v3.vm.editor.template_details(,
             >>> pprint(template)
         '''
-        if etype not in {'scan', 'policy', 'remediation'}:
-            raise AttributeError(
-                f'Invalid value of type. Expected scan/policy/remediation.'
-                f'Found {etype}'
-            )
+        etype_choices = {'scan', 'policy', 'remediation'}
+        if etype not in etype_choices:
+            raise UnexpectedValueError((
+                f'etype has value of {etype}.  Expected one of '
+                ','.join([str(i) for i in etype_choices])
+            ))
         return self._get(f'{etype}/templates/{id}')
