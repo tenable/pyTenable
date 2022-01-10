@@ -28,7 +28,7 @@ class AuditLogAPI(ExploreBaseEndpoint):
     _conv_json = True
 
     def search(self,
-               **kw
+               **kwargs
                ) -> Union[AuditLogSearchIterator,
                           AuditLogCSVIterator,
                           Response
@@ -102,11 +102,11 @@ class AuditLogAPI(ExploreBaseEndpoint):
             ...    limit=2, sort=[('received': 'desc)])
         '''
         iclass = AuditLogSearchIterator
-        if kw.get('return_csv', False):
+        if kwargs.get('return_csv', False):
             iclass = AuditLogCSVIterator
         return super().search(iterator_cls=iclass,
                               is_sort_with_prop=False,
                               api_path=f'{self._path}/search',
                               resource='events',
-                              **kw
+                              **kwargs
                               )

@@ -92,7 +92,7 @@ class ExploreBaseEndpoint(APIEndpoint):
                 endpoint to get more details.
             limit (int):
                 How many objects should be returned in each request.
-                 Default is 200.
+                 Default is 1000.
             next (str):
                 The pagination token to use when requesting the next page of
                 results.  This token is presented in the previous response.

@@ -79,7 +79,7 @@ def test_search(api):
     )
 
     iterator = api.v3.vm.audit_log.search(
-        fields=fields, filter=filter, sort=sort
+        fields=fields, filter=filter, sort=sort, limit=200
     )
     assert isinstance(iterator, AuditLogSearchIterator)
 
@@ -94,6 +94,6 @@ def test_search(api):
     assert isinstance(iterator, AuditLogCSVIterator)
 
     resp = api.v3.vm.audit_log.search(
-        fields=fields, filter=filter, sort=sort, return_resp=True
+        fields=fields, filter=filter, sort=sort, return_resp=True, limit=200
     )
     assert isinstance(resp, Response)
