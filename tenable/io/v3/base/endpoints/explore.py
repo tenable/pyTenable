@@ -16,7 +16,7 @@ from tenable.io.v3.base.schema.explore.search import SearchSchema
 class ExploreBaseEndpoint(APIEndpoint):
     _conv_json = False
 
-    def details(self, obj_id: Union[str, UUID]) -> dict:
+    def _details(self, obj_id: Union[str, UUID]) -> dict:
         '''
         Gets the details for the specified id.
 
@@ -34,16 +34,16 @@ class ExploreBaseEndpoint(APIEndpoint):
         '''
         return self._get(obj_id, conv_json=self._conv_json)
 
-    def search(self,
-               *,
-               resource: str,
-               api_path: str,
-               is_sort_with_prop: bool = True,
-               return_resp: bool = False,
-               iterator_cls: ExploreIterator = SearchIterator,
-               schema_cls: SearchSchema = SearchSchema,
-               **kwargs
-               ) -> Union[Response, ExploreIterator]:
+    def _search(self,
+                *,
+                resource: str,
+                api_path: str,
+                is_sort_with_prop: bool = True,
+                return_resp: bool = False,
+                iterator_cls: ExploreIterator = SearchIterator,
+                schema_cls: SearchSchema = SearchSchema,
+                **kwargs
+                ) -> Union[Response, ExploreIterator]:
         '''
         Initiate a search
 
@@ -139,7 +139,7 @@ class ExploreBaseEndpoint(APIEndpoint):
             _payload=payload
         )
 
-    def search_results(self, search_id: str, wait_for_results: bool = True):
+    def _search_results(self, search_id: str, wait_for_results: bool = True):
         '''
         '''
         resp = self._get(f'search/{search_id}')
@@ -148,5 +148,5 @@ class ExploreBaseEndpoint(APIEndpoint):
             search_id = resp.headers.get('request-result-id', search_id)
         if wait_for_results:
             time.sleep(retry_after)
-            return self.search_results(search_id, wait_for_results=True)
+            return self._search_results(search_id, wait_for_results=True)
         return resp
