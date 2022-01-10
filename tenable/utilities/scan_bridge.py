@@ -20,7 +20,7 @@ from tenable.sc import TenableSC
 class ScanBridge(object):
     '''
     The ScanBridge Class can be used as a bridge to send the Tenable.IO scans
-    data to a Tenable.SC instance at given repo_id using the bridge function.
+    data to the given Tenable.SC repo_id using the bridge function.
 
     Args:
         tsc (TenableSC object):
@@ -45,7 +45,8 @@ class ScanBridge(object):
 
     def bridge(self, scan_id: int, repo_id: int) -> None:
         '''
-        This methods sends the TenableIO scan details to a TenableSC repo ID
+        This method sends the TenableIO scan details to the provided TenableSC repo
+
 
         Args:
             scan_id (int):
