@@ -1,14 +1,11 @@
 '''
 Test cases the Agent Exclusions APIs schemas
 '''
-import re
 from datetime import datetime, timedelta
 
 import responses
 
 from tenable.io.v3.vm.agent_exclusions.schema import AgentExclusionSchema
-
-TIMEZONE_URL: str = 'https://cloud.tenable.com'
 
 
 @responses.activate
@@ -23,10 +20,11 @@ def test_agent_exlusion_schema(api):
     e_time: str = (
             datetime.utcnow() + timedelta(hours=1)
     ).strftime('%Y-%m-%dT%H:%M:%SZ')
-    timezone: str = 'Etc/UTC'
     freq: str = 'WEEKLY'
     interval: int = 1
     byweekday: list = ['MO', 'WE', 'FR']
+
+    # Let's create input sample payload for schema
     payload = {
         'name': name,
         'description': description,
@@ -34,7 +32,6 @@ def test_agent_exlusion_schema(api):
             'enabled': enabled,
             'starttime': s_time,
             'endtime': e_time,
-            'timezone': timezone,
             'rrules': {
                 'freq': freq,
                 'interval': interval,
@@ -42,6 +39,8 @@ def test_agent_exlusion_schema(api):
             }
         }
     }
+
+    # Let's create output sample payload for schema
     test_resp = {
         'name': name,
         'description': description,
@@ -49,7 +48,6 @@ def test_agent_exlusion_schema(api):
             'enabled': enabled,
             'starttime': s_time,
             'endtime': e_time,
-            'timezone': timezone,
             'rrules': {
                 'freq': freq,
                 'interval': interval,
@@ -57,31 +55,6 @@ def test_agent_exlusion_schema(api):
             }
         }
     }
-    responses.add(
-        responses.GET,
-        re.compile(f'{TIMEZONE_URL}/scans/timezones'),
-        json={
-            "timezones": [
-                {
-                    "name": "Africa/Abidjan",
-                    "value": "Africa/Abidjan"
-                },
-                {
-                    "name": "Africa/Accra",
-                    "value": "Africa/Accra"
-                },
-                {
-                    "name": "Africa/Addis_Ababa",
-                    "value": "Africa/Addis_Ababa"
-                },
-                {
-                    "name": "Etc/UTC",
-                    "value": "Etc/UTC"
-                }
-            ]
-        }
-    )
-    schema = AgentExclusionSchema(
-        context={'valid_timezone': api._tz}
-    )
+
+    schema = AgentExclusionSchema()
     assert test_resp == schema.dump(schema.load(payload))

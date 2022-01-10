@@ -12,10 +12,9 @@ Methods available on ``tio.v3.vm.agent_exclusions``:
     :members:
 '''
 from datetime import datetime
-from typing import Dict
+from typing import Dict, Optional
 from uuid import UUID
 
-from marshmallow import EXCLUDE
 from restfly.utils import dict_clean, dict_merge
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
@@ -32,14 +31,13 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
     def create(self,
                name: str,
                start_time: str,
-               end_time: str = None,
-               timezone: str = 'Etc/UTC',
-               description: str = None,
-               frequency: str = 'ONETIME',
-               interval: int = 1,
-               weekdays: list = None,
-               day_of_month: int = None,
-               enabled: bool = True,
+               end_time: Optional[str] = None,
+               description: Optional[str] = None,
+               frequency: Optional[str] = 'ONETIME',
+               interval: Optional[int] = 1,
+               weekdays: Optional[list] = None,
+               day_of_month: Optional[int] = None,
+               enabled: Optional[bool] = True,
                ) -> Dict:
         '''
         Creates a new agent exclusion.
@@ -50,11 +48,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             name (str): The name of the exclusion to create.
             start_time (datetime): When the exclusion should start.
             end_time (datetime): When the exclusion should end.
-            timezone (str):
-                The timezone to use for the exclusion.  The default if none is
-                specified is to use UTC.  For the list of usable timezones,
-                please refer to:
-                https://cloud.tenable.com/api#/resources/scans/timezones
             description (str, optional):
                 Some further detail about the exclusion.
             frequency (str, optional):
@@ -85,7 +78,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
             ...     name = 'Example One-Time Agent Exclusion',
             ...     frequency = 'ONETIME',
-            ...     timezone = 'Etc/UTC',
             ...     start_time=(
             ...         datetime.utcnow()
             ...     ).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -98,7 +90,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
             ...     name = 'Example Daily Agent Exclusion',
             ...     frequency='DAILY',
-            ...     timezone = 'Etc/UTC',
             ...     start_time=(
             ...         datetime.utcnow()
             ...     ).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -111,7 +102,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
             ...     name = 'Example Weekly Exclusion',
             ...     frequency='WEEKLY',
-            ...     timezone = 'Etc/UTC',
             ...     weekdays=['mo', 'we', 'fr'],
             ...     start_time=(
             ...         datetime.utcnow()
@@ -125,7 +115,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
             ...     name = 'Example Monthly Agent Exclusion',
             ...     frequency='MONTHLY',
-            ...     timezone = 'Etc/UTC',
             ...     day_of_month=1,
             ...     start_time=(
             ...         datetime.utcnow()
@@ -139,7 +128,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
             ...     name = 'Example Yearly Agent Exclusion',
             ...     frequency='YEARLY',
-            ...     timezone = 'Etc/UTC',
             ...     start_time=(
             ...         datetime.utcnow()
             ...     ).strftime('%Y-%m-%dT%H:%M:%SZ'),
@@ -154,7 +142,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
                 'enabled': enabled,
                 'starttime': start_time,
                 'endtime': end_time,
-                'timezone': timezone,
                 'rrules': {}
             }
         }
@@ -194,9 +181,7 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
         dict_merge(payload['schedule']['rrules'], rrules)
 
         # validate payload using marshmallow schema
-        schema = AgentExclusionSchema(
-            context={'valid_timezone': self._api._tz}
-        )
+        schema = AgentExclusionSchema()
         payload = schema.dump(schema.load(payload))
 
         return self._post(f'exclusions', json=payload)
@@ -241,16 +226,15 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
 
     def edit(self,
              exclusion_id: UUID,
-             name: str = None,
-             start_time: str = None,
-             end_time: str = None,
-             timezone: str = None,
-             description: str = None,
-             frequency: str = None,
-             interval: int = None,
-             weekdays: list = None,
-             day_of_month: int = None,
-             enabled: bool = None,
+             name: Optional[str] = None,
+             start_time: Optional[str] = None,
+             end_time: Optional[str] = None,
+             description: Optional[str] = None,
+             frequency: Optional[str] = None,
+             interval: Optional[int] = None,
+             weekdays: Optional[list] = None,
+             day_of_month: Optional[int] = None,
+             enabled: Optional[bool] = None,
              ) -> Dict:
         '''
         Edit an existing agent exclusion.
@@ -262,13 +246,10 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
         then be pushed back to the API to modify the exclusion.
 
         Args:
-            exclusion_id (int): The id of the exclusion object in Tenable.io
+            exclusion_id (UUID): The id of the exclusion object in Tenable.io
             name (str, optional): The name of the exclusion to create.
             start_time (datetime, optional): When the exclusion should start.
             end_time (datetime, optional): When the exclusion should end.
-            timezone (str, optional):
-                The timezone to use for the exclusion.  The default if none is
-                specified is to use UTC.
             description (str, optional):
                 Some further detail about the exclusion.
             frequency (str, optional):
@@ -298,16 +279,15 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
 
         # Lets start constructing the payload to be sent to the API...
         payload = self.details(exclusion_id=exclusion_id)
-        
+
         unwanted_keys = [
-            'id', 
-            'creation_date', 
+            'id',
+            'creation_date',
             'last_modification_date',
             'core_updates_blocked'
         ]
         for key in unwanted_keys:
             payload.pop(key, None)
-        
 
         field_dict: dict = {
             'name': name,
@@ -316,7 +296,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
                 'enabled': enabled,
                 'starttime': start_time,
                 'endtime': end_time,
-                'timezone': timezone,
                 'rrules': {
                     'freq': frequency,
                     'interval': interval
@@ -354,8 +333,8 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
                     ]
                 else:
                     rrules['byweekday'] = payload['schedule']['rrules'].get(
-                        'byweekday', ''
-                    ).split(',') or ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']
+                        'byweekday', 'SU,MO,TU,WE,TH,FR,SA'
+                    ).split(',')
                 # In the same vein as the frequency check, we're accepting
                 # case-insensitive input, comparing it to our known list of
                 # acceptable responses, then joining them all together into a
@@ -376,9 +355,7 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
 
         # validate payload using marshmallow
         # let's remove addtional keys from payload
-        schema = AgentExclusionSchema(
-            context={'valid_timezone': self._api._tz}
-        )
+        schema = AgentExclusionSchema()
         payload = schema.dump(schema.load(payload))
 
         return self._put(f'exclusions/{exclusion_id}', json=payload)

@@ -3,13 +3,12 @@ Agent Exclusion API Endpoint Schemas
 '''
 from datetime import datetime, timedelta
 
-from marshmallow import Schema, fields, post_dump, validate, pre_load
-from marshmallow.exceptions import ValidationError
+from marshmallow import Schema, fields, post_dump, pre_load, validate
 
 
 class RulesSchema(Schema):
     '''
-    Schema for rrules field for ScheduleSchema class 
+    Schema for rrules field for ScheduleSchema class
     '''
     frequency = fields.Str(
         data_key='freq',
@@ -39,7 +38,7 @@ class RulesSchema(Schema):
 
 class ScheduleSchema(Schema):
     '''
-    Schema for schedule field for AgentExclusionSchema class 
+    Schema for schedule field for AgentExclusionSchema class
     '''
     enabled = fields.Boolean(default=True)
     starttime = fields.DateTime(
@@ -50,7 +49,6 @@ class ScheduleSchema(Schema):
         format='%Y-%m-%dT%H:%M:%SZ',
         required=True
     )
-    timezone = fields.Str(default='Etc/UTC')
     rrules = fields.Nested(RulesSchema, required=True)
 
     @pre_load
@@ -63,9 +61,6 @@ class ScheduleSchema(Schema):
             data['endtime'] = (
                 datetime.utcnow() + timedelta(hours=1)
             ).strftime('%Y-%m-%dT%H:%M:%SZ')
-        
-        if data['timezone'] not in self.context['valid_timezone']:
-            raise ValidationError('Invalid Timezone Field.')
 
         return data
 
