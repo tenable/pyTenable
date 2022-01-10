@@ -9,11 +9,9 @@ class AuditLogSearchIterator(SearchIterator):
     '''
     Audit Log search iterator
     '''
-    pass
 
 
 class AuditLogCSVIterator(CSVChunkIterator):
     '''
     Audit Log csv iterator
     '''
-    pass

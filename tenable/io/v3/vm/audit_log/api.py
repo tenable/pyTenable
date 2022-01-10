@@ -104,9 +104,9 @@ class AuditLogAPI(ExploreBaseEndpoint):
         iclass = AuditLogSearchIterator
         if kwargs.get('return_csv', False):
             iclass = AuditLogCSVIterator
-        return super().search(iterator_cls=iclass,
-                              is_sort_with_prop=False,
-                              api_path=f'{self._path}/search',
-                              resource='events',
-                              **kwargs
-                              )
+        return super()._search(iterator_cls=iclass,
+                               is_sort_with_prop=False,
+                               api_path=f'{self._path}/search',
+                               resource='events',
+                               **kwargs
+                               )
