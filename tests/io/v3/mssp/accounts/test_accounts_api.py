@@ -41,7 +41,10 @@ def test_search(api):
     Test mssp accounts search method
     '''
     mock_resp = {
-        'accounts': accounts_us_east
+        'accounts': accounts_us_east,
+        'pagination': {
+            'total': len(accounts_us_east)
+        }
     }
     responses.add(
         responses.POST,
