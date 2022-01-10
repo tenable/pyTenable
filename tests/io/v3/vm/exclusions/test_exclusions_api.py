@@ -4,12 +4,15 @@ Test cases for Exlusion API
 import os
 from datetime import datetime, timedelta
 
-import pytest
 import responses
+from requests import Response
 from responses import matchers
 
-BASE_URL = 'https://cloud.tenable.com/api/v3/exclusions'
-FILE_BASE_URL = 'https://cloud.tenable.com/api/v3/file'
+from tenable.io.v3.vm.exclusions.iterator import (ExclusionCSVIterator,
+                                                  ExclusionSearchIterator)
+
+BASE_URL: str = 'https://cloud.tenable.com/api/v3/exclusions'
+FILE_BASE_URL: str = 'https://cloud.tenable.com/api/v3/file'
 
 
 @responses.activate
@@ -17,8 +20,8 @@ def test_create(api):
     '''
     Test case for create exlusion API endpoint
     '''
-    name: str = "Weekly Exclusion"
-    members: list = ["127.0.0.1"]
+    name: str = 'Weekly Exclusion'
+    members: list = ['127.0.0.1']
     start_time: str = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
     end_time: str = (
             datetime.utcnow() + timedelta(hours=1)
@@ -30,46 +33,46 @@ def test_create(api):
     description: str = 'Example for weekly exlusion'
     enabled: bool = True
 
-    # Let's create response for create exlusion endpoint
+    # Let's create response for create endpoint
     test_response: dict = {
-        "schedule": {
-            "endtime": end_time,
-            "enabled": enabled,
-            "rrules": {
-                "freq": frequency,
-                "interval": interval,
-                "byweekday": ','.join(weekdays)
+        'schedule': {
+            'endtime': end_time,
+            'enabled': enabled,
+            'rrules': {
+                'freq': frequency,
+                'interval': interval,
+                'byweekday': ','.join(weekdays)
             },
-            "starttime": start_time
+            'starttime': start_time
         },
-        "network_id": network_id,
-        "last_modification_date": 1641743194,
-        "creation_date": 1641743194,
-        "members": ','.join(members),
-        "description": description,
-        "name": name,
-        "id": 14
+        'network_id': network_id,
+        'last_modification_date': 1641743194,
+        'creation_date': 1641743194,
+        'members': ','.join(members),
+        'description': description,
+        'name': name,
+        'id': 14
     }
 
-    # Let's create payload for create exclusion endpoint
+    # Let's create payload for create endpoint
     payload: dict = {
-        "members": ','.join(members),
-        "schedule": {
-            "starttime": start_time,
-            "rrules": {
-                "freq": frequency,
-                "byweekday": ','.join(weekdays),
-                "interval": interval
+        'members': ','.join(members),
+        'schedule': {
+            'starttime': start_time,
+            'rrules': {
+                'freq': frequency,
+                'byweekday': ','.join(weekdays),
+                'interval': interval
             },
-            "enabled": enabled,
-            "endtime": end_time
+            'enabled': enabled,
+            'endtime': end_time
         },
-        "description": description,
-        "network_id": network_id,
-        "name": name
+        'description': description,
+        'network_id': network_id,
+        'name': name
     }
 
-    # let's mock response for create endpoint
+    # let's register mock response for create endpoint
     responses.add(
         responses.POST,
         f'{BASE_URL}',
@@ -102,7 +105,7 @@ def test_delete(api):
     '''
     exclusion_id: int = 10
 
-    # Let's mock the response for delete endpoint
+    # Let's register mock response for delete endpoint
     responses.add(
         responses.DELETE,
         f'{BASE_URL}/{exclusion_id}'
@@ -120,27 +123,29 @@ def test_details(api):
     '''
     exclusion_id: int = 1
 
+    # Let's create sample response for details endpoint
     test_response: dict = {
-        "schedule": {
-            "endtime": "2022-01-09T16:44:32Z",
-            "enabled": True,
-            "rrules": {
-                "freq": "WEEKLY",
-                "interval": 2,
-                "byweekday": "MO,WE,FR"
+        'schedule': {
+            'endtime': '2022-01-09T16:44:32Z',
+            'enabled': True,
+            'rrules': {
+                'freq': 'WEEKLY',
+                'interval': 2,
+                'byweekday': 'MO,WE,FR'
             },
-            "timezone": "Etc/UTC",
-            "starttime": "2022-01-09T15:44:32Z"
+            'timezone': 'Etc/UTC',
+            'starttime': '2022-01-09T15:44:32Z'
         },
-        "network_id": "00000000-0000-0000-0000-000000000000",
-        "last_modification_date": 1641744295,
-        "creation_date": 1641744295,
-        "members": "127.0.0.1",
-        "description": "Example for weekly exlusion",
-        "name": "Weekly Exclusion",
-        "id": exclusion_id
+        'network_id': '00000000-0000-0000-0000-000000000000',
+        'last_modification_date': 1641744295,
+        'creation_date': 1641744295,
+        'members': '127.0.0.1',
+        'description': 'Example for weekly exlusion',
+        'name': 'Weekly Exclusion',
+        'id': exclusion_id
     }
 
+    # Let's register the mock response for details endpoint
     responses.add(
         responses.GET,
         f'{BASE_URL}/{exclusion_id}',
@@ -161,72 +166,72 @@ def test_edit(api):
     exclusion_id: int = 1
     new_name: str = 'New Name'
 
-    # Let's create test response for details exlcusion endpoint
+    # Let's create response for details endpoint
     details_res: dict = {
-        "schedule": {
-            "endtime": "2022-01-07T13:11:39Z",
-            "enabled": True,
-            "rrules": {
-                "freq": "DAILY",
-                "interval": 1,
-                "byweekday": "MO"
+        'schedule': {
+            'endtime': '2022-01-07T13:11:39Z',
+            'enabled': True,
+            'rrules': {
+                'freq': 'DAILY',
+                'interval': 1,
+                'byweekday': 'MO'
             },
-            "starttime": "2022-01-07T12:11:39Z"
+            'starttime': '2022-01-07T12:11:39Z'
         },
-        "network_id": "00000000-0000-0000-0000-000000000000",
-        "last_modification_date": 1641751739,
-        "creation_date": 1641747976,
-        "members": "127.0.0.1",
-        "description": "",
-        "name": "Example 2",
-        "id": 16
+        'network_id': '00000000-0000-0000-0000-000000000000',
+        'last_modification_date': 1641751739,
+        'creation_date': 1641747976,
+        'members': '127.0.0.1',
+        'description': '',
+        'name': 'Example 2',
+        'id': 16
     }
 
-    # Let's create reasponse for edit exclusion endpoint
+    # Let's create reasponse for edit endpoint
     test_response: dict = {
-        "schedule": {
-            "endtime": "2022-01-07T13:11:39Z",
-            "enabled": True,
-            "rrules": {
-                "freq": "DAILY",
-                "interval": 1
+        'schedule': {
+            'endtime': '2022-01-07T13:11:39Z',
+            'enabled': True,
+            'rrules': {
+                'freq': 'DAILY',
+                'interval': 1
             },
-            "starttime": "2022-01-07T12:11:39Z"
+            'starttime': '2022-01-07T12:11:39Z'
         },
-        "network_id": "00000000-0000-0000-0000-000000000000",
-        "last_modification_date": 1641752036,
-        "creation_date": 1641747976,
-        "members": "127.0.0.1",
-        "description": "",
-        "name": new_name,
-        "id": exclusion_id
+        'network_id': '00000000-0000-0000-0000-000000000000',
+        'last_modification_date': 1641752036,
+        'creation_date': 1641747976,
+        'members': '127.0.0.1',
+        'description': '',
+        'name': new_name,
+        'id': exclusion_id
     }
 
-    # Let's create payload for mock response
+    # Let's create payload for edit endpoint
     payload: dict = {
-        "name": new_name,
-        "description": "",
-        "network_id": "00000000-0000-0000-0000-000000000000",
-        "members": "127.0.0.1",
-        "schedule": {
-            "rrules": {
-                "freq": "DAILY",
-                "interval": 1
+        'name': new_name,
+        'description': '',
+        'network_id': '00000000-0000-0000-0000-000000000000',
+        'members': '127.0.0.1',
+        'schedule': {
+            'rrules': {
+                'freq': 'DAILY',
+                'interval': 1
             },
-            "enabled": True,
-            "endtime": "2022-01-07T13:11:39Z",
-            "starttime": "2022-01-07T12:11:39Z"
+            'enabled': True,
+            'endtime': '2022-01-07T13:11:39Z',
+            'starttime': '2022-01-07T12:11:39Z'
         }
     }
 
-    # Let's mock the response for details endpoint
+    # Let's register mock response for details endpoint
     responses.add(
         responses.GET,
         f'{BASE_URL}/{exclusion_id}',
         json=details_res
     )
 
-    # Let's mock the response for edit endpoint
+    # Let's register mock response for edit endpoint
     responses.add(
         responses.PUT,
         f'{BASE_URL}/{exclusion_id}',
@@ -291,5 +296,84 @@ def test_search(api):
     '''
     Test case for search exlusion API endpoint
     '''
-    with pytest.raises(NotImplementedError):
-        api.v3.vm.exclusions.search()
+    test_response: dict = {
+        'exclusions': [
+            {
+                'created_at': 1594133012,
+                'description': 'This. is testing the micro frontend',
+                'id': 6,
+                'name': 'Micro Frontend Exclusion 1',
+                'targets': '10.10.20.20',
+                'type': 'ENABLED',
+                'updated_at': 1608215518
+            },
+            {
+                'created_at': 1594133012,
+                'description': 'This. istesting the micro frontend',
+                'id': 7,
+                'name': 'Micro Frontend Exclusion 2',
+                'targets': '10.10.20.20',
+                'type': 'ENABLED',
+                'updated_at': 1608215518
+            }
+        ],
+        'pagination': {'total': 1, 'next': 'nextToken'}
+    }
+
+    fields: list = [
+        'id',
+        'name',
+        'description',
+        'targets',
+        'type',
+        'updated_at',
+        'created_at'
+    ]
+
+    filter = {
+        'and': [
+            {
+                'property': 'id',
+                'operator': 'eq',
+                'value': [6, 7]
+            }
+        ]
+    }
+
+    sort = [('id', 'asc')]
+
+    # Let's create sample payload for search exclusion endpoint
+    payload = {
+        'fields': fields,
+        'filter': filter,
+        'limit': 200,
+        'sort': [{'order': 'asc', 'property': 'id'}],
+    }
+
+    # Let's register the mock response for search endpoint
+    responses.add(
+        responses.POST,
+        f'{BASE_URL}/search',
+        json=test_response,
+        match=[matchers.json_params_matcher(payload)],
+    )
+
+    iterator = api.v3.vm.exclusions.search(
+        fields=fields, filter=filter, sort=sort, limit=200
+    )
+    assert isinstance(iterator, ExclusionSearchIterator)
+
+    exclusions_list = []
+    for item in iterator:
+        exclusions_list.append(item)
+    assert len(exclusions_list) == test_response['pagination']['total']
+
+    iterator = api.v3.vm.exclusions.search(
+        fields=fields, filter=filter, sort=sort, return_csv=True
+    )
+    assert isinstance(iterator, ExclusionCSVIterator)
+
+    resp = api.v3.vm.exclusions.search(
+        fields=fields, filter=filter, sort=sort, return_resp=True, limit=200
+    )
+    assert isinstance(resp, Response)
