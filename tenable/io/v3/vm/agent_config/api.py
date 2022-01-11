@@ -11,27 +11,31 @@ Methods available on ``tio.v3.vm.agent_config``:
 .. autoclass:: AgentConfigAPI
     :members:
 '''
-from typing import Dict
+from typing import Dict, Optional
+
+from restfly.utils import dict_clean
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.vm.agent_config.schema import AgentConfigSchema
 
 
 class AgentConfigAPI(ExploreBaseEndpoint):
     '''
     This will contain all methods related to agent config
     '''
-    _path: str = 'api/v3/agents'
+    _path: str = 'api/v3/agents/config'
     _conv_json: bool = True
+    _schema = AgentConfigSchema()
 
-    def edit(self, agent_id: int, auto_unlink: int,
-             software_update: bool) -> Dict:
+    def edit(self,
+             auto_unlink: Optional[int] = None,
+             software_update: Optional[bool] = None) -> Dict:
         '''
         Edits the agent configuration.
 
         :devportal:`agent-config: edit <agent-config-details>`
 
         Args:
-            agent_id (int): The Agent ID.
             software_update (bool, optional):
                 If True, software updates are enabled for agents
                 (exclusions may override this).  If false, software
@@ -43,7 +47,7 @@ class AgentConfigAPI(ExploreBaseEndpoint):
                 values are between 1 and 365.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Dictionary of the applied settings is returned if successfully
                 applied.
 
@@ -61,31 +65,33 @@ class AgentConfigAPI(ExploreBaseEndpoint):
             >>> tio.v3.vm.agent_config.edit(software_update=True)
         '''
         # Lets build the dictionary that we will present to the API...
-        payload = {'auto_unlink': {}}
-        if software_update in [True, False]:
-            payload['software_update'] = software_update
-        if auto_unlink and 0 < auto_unlink < 366:
-            payload['auto_unlink']['enabled'] = True
-            payload['auto_unlink']['expiration'] = auto_unlink
-        elif auto_unlink in [False, 0]:
-            payload['auto_unlink']['enabled'] = False
-        return self._put(f'{agent_id}/config', json=payload)
+        payload = {
+            'software_update': software_update,
+            'auto_unlink': {
+                'expiration': auto_unlink
+            }
+        }
 
-    def details(self, agent_id: int) -> Dict:
+        # Let's remove None value from payload
+        payload = dict_clean(payload)
+
+        # Let's validate schema
+        payload = self._schema.dump(self._schema.load(payload))
+
+        return self._put(json=payload)
+
+    def details(self) -> Dict:
         '''
         Returns the current agent configuration.
 
         :devportal:`agent-config: details <agent-config-edit>`
 
-        Args:
-            agent_id (int): The Agent ID.
-
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Dictionary of the current settings.
 
         Examples:
             >>> details = tio.v3.vm.agent_config.details()
             >>> pprint(details)
         '''
-        return self._get(f'{agent_id}/config')
+        return self._get()
