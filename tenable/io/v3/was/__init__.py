@@ -39,7 +39,7 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     def attachments(self):
         '''
         The interface object for the
-        :doc:`Attachments API <attachments>`
+        :doc:`Tenable.IO v3 Attachments API <attachments>`
         '''
         return AttachmentsAPI(self._api)
 
@@ -47,7 +47,7 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     def folders(self):
         '''
         The interface object for the
-        :doc:`Folders API <folders>`
+        :doc:`Tenable.IO v3 Folders API <folders>`
         '''
         return FoldersAPI(self._api)
 
@@ -55,7 +55,7 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     def plugins(self):
         '''
         The interface object for the
-        :doc:`Plugins API <plugins>`
+        :doc:`Tenable.IO v3 Plugins API <plugins>`
         '''
         return PluginsAPI(self._api)
 
@@ -63,7 +63,7 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     def scans(self):
         '''
         The interface object for the
-        :doc:`Scans API <scans>`
+        :doc:`Tenable.IO v3 Scans API <scans>`
         '''
         return ScansAPI(self._api)
 

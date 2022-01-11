@@ -127,7 +127,7 @@ RESPONSE_2 = {
 
 
 def test_search(api):
-    search_iterator = ExploreBaseEndpoint(api).search(
+    search_iterator = ExploreBaseEndpoint(api)._search(
         resource='assets', api_path='api/v3/assets/search', **REQUESTDATA
     )
     assert isinstance(search_iterator, SearchIterator)
@@ -138,7 +138,7 @@ def test_search_response(api):
     responses.add(
         responses.POST, url=f'{SEARCH_BASE_URL}', json=RESPONSE_2, status=200
     )
-    response = ExploreBaseEndpoint(api).search(
+    response = ExploreBaseEndpoint(api)._search(
         resource='assets',
         api_path='api/v3/assets/search',
         is_sort_with_prop=False,

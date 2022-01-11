@@ -58,7 +58,7 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.was.scans.details('91843ecb-ecb8-48a3-b623-d4682c2594')
         '''
-        return super().details(f'scans/{id}')
+        return super()._details(f'scans/{id}')
 
     def download(self,
                  id: UUID,
