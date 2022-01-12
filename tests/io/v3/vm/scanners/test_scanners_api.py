@@ -8,7 +8,7 @@ import pytest
 import responses
 from responses import matchers
 
-from tenable.io.v3.vm.scanners.schema import ScannerEditSchema
+from tenable.io.v3.vm.scanners.schema import ScannerSchema
 
 SCANNER_BASE_URL = r'https://cloud.tenable.com/api/v3/scanners'
 BASE_URL = r'https://cloud.tenable.com'
@@ -157,7 +157,7 @@ def test_scanners_edit(api):
     '''
     Test the edit function
     '''
-    schema = ScannerEditSchema()
+    schema = ScannerSchema()
     kwargs = {'force_plugin_update': True, 'force_ui_update': False}
     payload = schema.dump(schema.load(kwargs))
     responses.add(

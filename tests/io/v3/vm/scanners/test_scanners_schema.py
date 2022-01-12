@@ -1,7 +1,7 @@
 '''
 Testing the Scanner schemas
 '''
-from tenable.io.v3.vm.scanners.schema import ScannerEditSchema
+from tenable.io.v3.vm.scanners.schema import ScannerSchema
 
 
 def test_scanner_edit_schema():
@@ -21,5 +21,5 @@ def test_scanner_edit_schema():
         'registration_code': 'random_code',
         'aws_update_interval': 60,
     }
-    schema = ScannerEditSchema()
+    schema = ScannerSchema()
     assert test_resp == schema.dump(schema.load(payload))
