@@ -107,12 +107,12 @@ class AssetsAPI(ExploreBaseEndpoint):
         iclass = AssetSearchIterator
         if kw.get('return_csv', False):
             iclass = AssetCSVIterator
-        return super().search(resource='assets',
-                              iterator_cls=iclass,
-                              is_sort_with_prop=False,
-                              api_path=f'{self._path}/search',
-                              **kw
-                              )
+        return super()._search(resource='assets',
+                               iterator_cls=iclass,
+                               is_sort_with_prop=False,
+                               api_path=f'{self._path}/search',
+                               **kw
+                               )
 
     def delete(self, uuid: UUID) -> None:
         '''
