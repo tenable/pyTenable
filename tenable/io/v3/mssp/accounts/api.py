@@ -34,26 +34,36 @@ class AccountsAPI(ExploreBaseEndpoint):
             fields (list, optional):
                 The list of field names to return from the Tenable API.
                 Example:
-                    - ``['field1', 'field2']``
+                    >>> ['field1', 'field2']
             filter (tuple, Dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
-                                   ('test', 'oper', '2')
-                            ),
-                    'and', ('test', 'oper', 3)
-                   )
-                    >>> {'or': [
-                    {'and': [
-                        {'value': '1', 'operator': 'oper', 'property': '1'},
-                        {'value': '2', 'operator': 'oper', 'property': '2'}
-                        ]
-                    }],
-                    'and': [
-                        {'value': '3', 'operator': 'oper', 'property': 3}
-                        ]
-                    }
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
                 the :py:meth:`tio.v3.mssp.filters.accounts()`
@@ -62,8 +72,8 @@ class AccountsAPI(ExploreBaseEndpoint):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
                 Examples:
-                    - ``[('field_name_1', 'asc'),
-                             ('field_name_2', 'desc')]``
+                    >>> [('field_name_1', 'asc'),
+                    ...      ('field_name_2', 'desc')]
             limit (int, optional):
                 Number of objects to be returned in each request.
                 Default and max_limit is 200.
@@ -79,7 +89,7 @@ class AccountsAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
         Returns:
-            Iterable:
+            iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
                 If ``return_json`` was set to ``True``, then a response
@@ -87,7 +97,7 @@ class AccountsAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.mssp.accounts.search(filter=('container_name', 'eq',
             ...     'Example'), fields=['id', 'container_name', 'region'],
-            ...     limit=2, sort=[('container_name': 'desc')])
+            ...     limit=2, sort=[('container_name', 'desc')])
         '''
         iclass = SearchIterator
         if kwargs.get('return_csv', False):

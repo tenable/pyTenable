@@ -16,7 +16,9 @@ import datetime
 import os
 import sys
 
-import tenable
+sys.path.insert(0, os.path.abspath('..'))
+
+import tenable  # noqa: E402
 
 autodoc_mock_imports = [
     'lxml',
@@ -29,11 +31,10 @@ autodoc_mock_imports = [
     'arrow',
 ]
 
-sys.path.insert(0, os.path.abspath('..'))
-
 
 def setup(app):
     app.add_css_file('custom.css')
+
 
 # -- Project information -----------------------------------------------------
 
@@ -47,7 +48,6 @@ author = u'Tenable, Inc.'
 version = tenable.__version__
 # The full version, including alpha/beta/rc tags
 release = version
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -124,7 +124,6 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'pyTenabledoc'
 
-
 # -- Options for LaTeX output ------------------------------------------------
 
 latex_elements = {
@@ -153,7 +152,6 @@ latex_documents = [
      u'Steven McGrath', 'manual'),
 ]
 
-
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
@@ -162,7 +160,6 @@ man_pages = [
     (master_doc, 'pytenable', u'pyTenable Documentation',
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output ----------------------------------------------
 
@@ -174,7 +171,6 @@ texinfo_documents = [
      author, 'pyTenable', 'One line description of project.',
      'Miscellaneous'),
 ]
-
 
 # -- Extension configuration -------------------------------------------------
 
