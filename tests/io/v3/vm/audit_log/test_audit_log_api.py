@@ -2,8 +2,8 @@ import responses
 from requests import Response
 from responses import matchers
 
-from tenable.io.v3.vm.audit_log.iterator import (AuditLogCSVIterator,
-                                                 AuditLogSearchIterator)
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 
 AUDIT_LOG_BASE_URL = 'https://cloud.tenable.com/api/v3/audit-log/events/search'
 
@@ -81,7 +81,7 @@ def test_search(api):
     iterator = api.v3.vm.audit_log.search(
         fields=fields, filter=filter, sort=sort, limit=200
     )
-    assert isinstance(iterator, AuditLogSearchIterator)
+    assert isinstance(iterator, SearchIterator)
 
     event_list = []
     for event in iterator:
@@ -91,7 +91,7 @@ def test_search(api):
     iterator = api.v3.vm.audit_log.search(
         fields=fields, filter=filter, sort=sort, return_csv=True
     )
-    assert isinstance(iterator, AuditLogCSVIterator)
+    assert isinstance(iterator, CSVChunkIterator)
 
     resp = api.v3.vm.audit_log.search(
         fields=fields, filter=filter, sort=sort, return_resp=True, limit=200
