@@ -12,7 +12,9 @@ Methods available on ``tio.v3.mssp.accounts``:
 .. autoclass:: AccountsAPI
     :members:
 '''
-from typing import List
+from typing import Union
+
+from requests import Response
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
@@ -23,7 +25,9 @@ class AccountsAPI(ExploreBaseEndpoint):
     _path = 'api/v3/mssp/accounts'
     _conv_json = True
 
-    def search(self, **kwargs) -> List:
+    def search(self, **kwargs) -> Union[CSVChunkIterator,
+                                        Response,
+                                        SearchIterator]:
         '''
         Search and retrieve the accounts based on supported conditions.
         Args:
