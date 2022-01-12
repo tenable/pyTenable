@@ -326,3 +326,61 @@ PLUGIN_DETAILS = {
         'pluginid': PLUGIN_ID
     }
 }
+
+TEMPLATE = {
+    'unsupported': False,
+    'cloud_only': False,
+    'desc': 'A full system scan suitable for any host.',
+    'order': None,
+    'subscription_only': False,
+    'is_was': None,
+    'title': 'Basic Network Scan',
+    'is_agent': None,
+    'id': 'aa17696a-f0ad-458a-a103-973c8f63752a7bd788d6be818b65',
+    'manager_only': False,
+    'name': 'basic'
+}
+
+TEMPLATE_SEARCH_FIELDS = [
+    'unsupported',
+    'cloud_only',
+    'desc',
+    'order',
+    'subscription_only',
+    'is_was',
+    'title',
+    'is_agent',
+    'id',
+    'manager_only',
+    'name'
+]
+
+TEMPALTE_SEARCH_FILTER = {
+    'and': [
+        {
+            'property': 'unsupported',
+            'operator': 'eq',
+            'value': False,
+        },
+        {'property': 'cloud_only', 'operator': 'eq', 'value': False}
+    ]
+}
+
+TEMPALTE_SEARCH_SORT = [('title', 'desc')]
+
+RESP_EXPECTED = {
+    'settings': {
+        'name': 'KitchenSinkScan',
+        'acls': [
+            {
+                'permissions': 0,
+                'owner': None,
+                'display_name': None,
+                'name': None,
+                'id': None,
+                'type': 'default'
+            }
+        ],
+    },
+    'id': '04a0d852-0dc2-4e62-874d-a81e33b4a9f24e51e1f403febe40'
+}

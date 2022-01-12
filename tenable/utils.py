@@ -1,4 +1,3 @@
-from restfly.errors import UnexpectedValueError  # noqa: F401
 from restfly.utils import dict_clean, dict_merge, url_validator  # noqa: F401
 
 
