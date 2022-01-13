@@ -1,8 +1,11 @@
 '''
 Test Templates
 '''
-import pytest
+import requests
 import responses
+
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 
 WAS_TEMPLATES_BASE_URL = 'https://cloud.tenable.com/api/v3/was/templates'
 TEMPLATE_ID = '74ce1a64-acf1-4eca-955e-5668302585ba'
@@ -171,7 +174,58 @@ def test_details(api):
 @responses.activate
 def test_search(api):
     '''
-    Test was folders search method
+    Test was templates search method
     '''
-    with pytest.raises(NotImplementedError):
-        api.v3.was.templates.search()
+    response = {
+        'items': [TEMPLATE],
+        'pagination': {
+            'total': 1
+        }
+    }
+
+    fields = ['template_id', 'name', 'description', 'plugin_state',
+              'scanner_types', 'settings', 'defaults', 'plugins']
+
+    filters = {'operator': 'eq', 'property': 'plugin_state', 'value': 'locked'}
+
+    sort = [('name', 'asc')]
+
+    api_payload = {
+        'fields': fields,
+        'filter': filters,
+        'limit': 2,
+        'sort': [{'name': 'asc'}],
+
+    }
+
+    responses.add(
+        responses.POST,
+        f'{WAS_TEMPLATES_BASE_URL}/search',
+        json=response,
+        match=[responses.matchers.json_params_matcher(api_payload)]
+    )
+
+    resp = api.v3.was.templates.search(fields=fields,
+                                       filter=filters,
+                                       sort=sort,
+                                       limit=2)
+    assert isinstance(resp, SearchIterator)
+
+    for account in resp:
+        assert account == TEMPLATE
+
+    resp = api.v3.was.templates.search(fields=fields,
+                                       filter=filters,
+                                       sort=sort,
+                                       limit=2,
+                                       return_csv=True
+                                       )
+    assert isinstance(resp, CSVChunkIterator)
+
+    resp = api.v3.was.templates.search(fields=fields,
+                                       filter=filters,
+                                       sort=sort,
+                                       limit=2,
+                                       return_resp=True
+                                       )
+    assert isinstance(resp, requests.Response)

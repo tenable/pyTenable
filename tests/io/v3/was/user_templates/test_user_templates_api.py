@@ -1,8 +1,11 @@
 '''
 Test User Templates API
 '''
-import pytest
+import requests
 import responses
+
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 
 WAS_USER_TEMPLATES_URL = 'https://cloud.tenable.com/api/v3/was/user-templates'
 USER_TEMPLATE_ID = '8e84d689-8ef6-4edf-b23d-a9d88f5aabda'
@@ -132,10 +135,64 @@ def test_details(api):
 @responses.activate
 def test_search(api):
     '''
-    Test was folders search method
+    Test was templates search method
     '''
-    with pytest.raises(NotImplementedError):
-        api.v3.was.user_templates.search()
+    response = {
+        'items': [USER_TEMPLATE],
+        'pagination': {
+            'total': 1
+        }
+    }
+
+    fields = ['template_id', 'settings', 'description',
+              'additional_properties', 'updated_at', 'created_at',
+              'default_permissions', 'user_permissions', 'user_template_id',
+              'is_shared', 'container_id', 'permissions', 'owner_id',
+              'description', 'results_visibility', 'template_name', 'name']
+
+    filters = {'operator': 'eq', 'property': 'is_shared', 'value': True}
+
+    sort = [('name', 'asc')]
+
+    api_payload = {
+        'fields': fields,
+        'filter': filters,
+        'limit': 2,
+        'sort': [{'name': 'asc'}],
+
+    }
+
+    responses.add(
+        responses.POST,
+        f'{WAS_USER_TEMPLATES_URL}/search',
+        json=response,
+        match=[responses.matchers.json_params_matcher(api_payload)]
+    )
+
+    resp = api.v3.was.user_templates.search(fields=fields,
+                                            filter=filters,
+                                            sort=sort,
+                                            limit=2)
+    assert isinstance(resp, SearchIterator)
+
+    for account in resp:
+        assert account == USER_TEMPLATE
+
+    resp = api.v3.was.user_templates.search(fields=fields,
+                                            filter=filters,
+                                            sort=sort,
+                                            limit=2,
+                                            return_csv=True
+                                            )
+    assert isinstance(resp, CSVChunkIterator)
+
+    resp = api.v3.was.user_templates.search(fields=fields,
+                                            filter=filters,
+                                            sort=sort,
+                                            limit=2,
+                                            return_resp=True
+                                            )
+    assert isinstance(resp, requests.Response)
 
 
 @responses.activate
