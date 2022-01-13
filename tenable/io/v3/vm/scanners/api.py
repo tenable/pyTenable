@@ -87,7 +87,7 @@ class ScannersAPI(ExploreBaseEndpoint):
         #     )
         # return scanners
 
-        return NotImplementedError(
+        raise NotImplementedError(
             'This method will be updated once Policies and Editor APIs\
                 are implemented in v3'
         )
@@ -346,7 +346,7 @@ class ScannersAPI(ExploreBaseEndpoint):
             iclass = CSVChunkIterator
         return super()._search(iterator_cls=iclass,
                                is_sort_with_prop=False,
-                               api_path=f'api/v3/{self._path}/search',
+                               api_path=f'{self._path}/search',
                                resource='scanners',
                                **kwargs
                                )
@@ -428,4 +428,4 @@ class ScannersAPI(ExploreBaseEndpoint):
             ...     {'type': 'default, 'permissions': 16},
             ...     {'type': 'user', 'id': 2, 'permissions': 16})
         '''
-        self._api.permissions.change('scanner', id, *acls)
+        self._api.v3.vm.permissions.change('scanner', id, *acls)

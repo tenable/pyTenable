@@ -14,12 +14,18 @@ def test_scanner_edit_schema():
         'finish_update': True,
         'registration_code': 'random_code',
         'aws_update_interval': 60,
+        'action': 'pause',
+        'link': 2
+
     }
     test_resp = {
         'force_plugin_update': 1,
         'finish_update': 1,
         'registration_code': 'random_code',
         'aws_update_interval': 60,
+        'action': 'pause',
+        'link': 2
+
     }
     schema = ScannerSchema()
     assert test_resp == schema.dump(schema.load(payload))
