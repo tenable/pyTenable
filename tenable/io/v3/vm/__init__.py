@@ -40,6 +40,7 @@ from tenable.io.v3.vm.permissions.api import PermissionsAPI
 from tenable.io.v3.vm.plugins.api import PluginsAPI
 from tenable.io.v3.vm.scanner_groups.api import ScannerGroupsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
+from tenable.io.v3.vm.server.api import ServerAPI
 
 
 class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
@@ -53,7 +54,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def agent_config(self):
         '''
         The interface object for the
-        :doc:`Agent Config APIs <agent_config>`.
+        :doc:`Tenable.io v3 Agent Config APIs <agent_config>`.
         '''
         return AgentConfigAPI(self._api)
 
@@ -61,7 +62,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def agent_groups(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Agent Groups APIs <agent_groups>`.
+        :doc:`Tenable.io v3 Agent Groups APIs <agent_groups>`.
         '''
         return AgentGroupsAPI(self._api)
 
@@ -69,7 +70,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def agents(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Agents APIs <agents>`.
+        :doc:`Tenable.io v3 Agents APIs <agents>`.
         '''
         return AgentsAPI(self._api)
 
@@ -77,7 +78,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def credentials(self):
         '''
         The interface object for the
-        :doc:`Credentials APIs <credentials>`.
+        :doc:`Tenable.io v3 Credentials APIs <credentials>`.
         '''
         return CredentialsAPI(self._api)
 
@@ -85,7 +86,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def files(self):
         '''
         The interface object for the
-        :doc:`Files API <files>`
+        :doc:`Tenable.io v3 Files APIs <files>`
         '''
         return FileAPI(self._api)
 
@@ -93,7 +94,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def folders(self):
         '''
         The interface object for the
-        :doc:`Folders API <folders>`
+        :doc:`Tenable.io v3 Folders APIs <folders>`
         '''
         return FoldersAPI(self._api)
 
@@ -101,7 +102,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def networks(self):
         '''
         The interface object for the
-        :doc:`Networks API <networks>`
+        :doc:`Tenable.io v3 Networks APIs <networks>`
         '''
         return NetworksAPI(self._api)
 
@@ -109,7 +110,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def permissions(self):
         '''
         The interface object for the
-        :doc:`Permissions API <permissions>`
+        :doc:`Tenable.io v3 Permissions APIs <permissions>`
         '''
         return PermissionsAPI(self._api)
 
@@ -117,7 +118,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def plugins(self):
         '''
         The interface object for the
-        :doc:`Plugins API <plugins>`
+        :doc:`Tenable.io v3 Plugins APIs <plugins>`
         '''
         return PluginsAPI(self._api)
 
@@ -125,7 +126,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def scanners(self):
         '''
         The interface object for the
-        :doc:`Scanners API <scanners>`
+        :doc:`Tenable.io v3 Scanners APIs <scanners>`
         '''
         return ScannersAPI(self._api)
 
@@ -133,6 +134,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def scanner_groups(self):
         '''
         The interface object for the
-        :doc:`Scanner Groups API <scanner_groups>`
+        :doc:`Tenable.io v3 Scanner Groups APIs <scanner_groups>`
         '''
         return ScannerGroupsAPI(self._api)
+
+    @property
+    def server(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Server APIs <server>`
+        '''
+        return ServerAPI(self._api)

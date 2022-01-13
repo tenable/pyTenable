@@ -132,7 +132,7 @@ class FilterSchema(Schema):
             raise ValidationError(errors)
         return resp
 
-    def filter_tuple_expansion(self, data):  # noqa: PLR0201
+    def filter_tuple_expansion(self, data) -> Dict:  # noqa: PLR0201
         '''
         Handles expanding a tuple definition of a filter into the dictionary
         equivalent.
