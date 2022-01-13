@@ -14,6 +14,8 @@ Methods available on ``tio.v3.vm.remediation_scans``:
 '''
 
 
+from typing import Dict
+
 from requests import Response
 
 from tenable.errors import UnexpectedValueError
@@ -77,7 +79,7 @@ class RemediationScansAPI(ExploreBaseEndpoint):
             `this doc <https://developer.tenable.com/reference#io-scans-remediation-list>`_  # noqa: E501
             on the developer portal.
 
-            '''
+        '''
         # params = dict()
         # pages = None
         # if limit>0 and limit < 200:
@@ -96,11 +98,11 @@ class RemediationScansAPI(ExploreBaseEndpoint):
         #                                   _resource='scans')
         raise NotImplementedError('This method is under development')
 
-    def create_remediation_scan(self, **kwargs: dict) -> dict:
+    def create_remediation_scan(self, **kwargs: dict) -> Dict:
         '''
         Create a new remediation scan.
 
-        :devportal:`scans: create_remediation_scan<io-scans-remediation-create>`  # noqa: E501
+        :devportal:`scans: create_remediation_scan <io-scans-remediation-create>` # noqa: E501
 
         Args:
             id (str, optional):
@@ -172,7 +174,7 @@ class RemediationScansAPI(ExploreBaseEndpoint):
             Create remediation scan:
 
         >>> scan = tio.v3.vm.remediation_scans.create_remediation_scan(
-        ...     uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
+        ...     id='76d67790-2969-411e-a9d0-667f05e8d49e',
         ...     name='Create Remediation Scan',
         ...     description='Remediation scan created',
         ...     scanner_id='10167769',
@@ -197,7 +199,7 @@ class RemediationScansAPI(ExploreBaseEndpoint):
         # Run the API call and return the result to the caller.
         return self._post('remediation', json=scan)['scan']
 
-    def _create_scan_document(self, kwargs: dict) -> dict:
+    def _create_scan_document(self, kwargs: dict) -> Dict:
         '''
         Takes the key-word arguments and will provide a scan settings document
         based on the values inputted.
@@ -218,6 +220,7 @@ class RemediationScansAPI(ExploreBaseEndpoint):
         # templates and set the policy UUID to match the template name given.
         templates = dict()
         if 'template' in kwargs:
+            # todo migrate it to v3
             templates = self._api.policies.templates()
             templates_choices = list(templates.keys())
             context_data['templates_choices'] = templates_choices
@@ -249,7 +252,7 @@ class RemediationScansAPI(ExploreBaseEndpoint):
         kwargs = schema.dump(schema.load(kwargs))
 
         if 'template' in kwargs:
-            scan['uuid'] = templates[kwargs['template']]
+            scan['id'] = templates[kwargs['template']]
             del kwargs['template']
 
         self._update_sub_doc_data(kwargs, scan)
@@ -269,12 +272,13 @@ class RemediationScansAPI(ExploreBaseEndpoint):
         # the editor config, and then use the policy id and scan policy
         # template uuid.
         for item in policies:
+            # todo update it with v3
             if kwargs['policy'] in [item['name'],
                                     item['id']] and not match:
                 policy_tmpl = self._api.editor.details(
                     'scan/policy', item['id']
                 )
-                scan['uuid'] = policy_tmpl['uuid']
+                scan['id'] = policy_tmpl['uuid']
                 scan['settings']['policy_id'] = item['id']
                 match = True
 

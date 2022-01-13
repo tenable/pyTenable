@@ -10,6 +10,9 @@ BASE_URL = r'https://cloud.tenable.com'
 
 @responses.activate
 def test_create_rem_scans(api):
+    '''
+    Test for create function
+    '''
     id = 'template-54910541-1016-191c-f92d-fe58f5455d40bbac8a568ec40c26'
     create_resp_data = {
         'scan': {

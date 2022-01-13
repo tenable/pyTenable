@@ -7,6 +7,9 @@ from tenable.io.v3.vm.remediation_scans.schema import \
 
 
 def test_scan_document_create():
+    '''
+    Test schema for create document
+    '''
     data = {
         'name': 'test',
         'template': 'advanced',

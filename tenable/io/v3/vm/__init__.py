@@ -127,7 +127,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def remediation_scans(self):
         '''
         The interface object for the
-        :doc:`Remediation Scans API <remediation_scans>`
+        :doc:`Tenable.io v3 Remediation Scans APIs <remediation_scans>`
         '''
         return RemediationScansAPI(self._api)
 
