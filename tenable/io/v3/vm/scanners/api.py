@@ -27,7 +27,6 @@ from tenable.io.v3.vm.scanners.schema import ScannerSchema
 class ScannersAPI(ExploreBaseEndpoint):
 
     _path = 'api/v3/scanners'
-    # _path = 'scanners'
     _conv_json = True
     _schema = ScannerSchema()
 
