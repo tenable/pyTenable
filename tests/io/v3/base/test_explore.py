@@ -127,7 +127,7 @@ RESPONSE_2 = {
 
 
 def test_search(api):
-    search_iterator = ExploreBaseEndpoint(api).search(
+    search_iterator = ExploreBaseEndpoint(api)._search(
         resource='assets', api_path='api/v3/assets/search', **REQUESTDATA
     )
     assert isinstance(search_iterator, SearchIterator)
@@ -138,7 +138,7 @@ def test_search_response(api):
     responses.add(
         responses.POST, url=f'{SEARCH_BASE_URL}', json=RESPONSE_2, status=200
     )
-    response = ExploreBaseEndpoint(api).search(
+    response = ExploreBaseEndpoint(api)._search(
         resource='assets',
         api_path='api/v3/assets/search',
         is_sort_with_prop=False,
@@ -147,130 +147,3 @@ def test_search_response(api):
     )
     assert isinstance(response, Response)
     assert RESPONSE_2 == response.json()
-
-
-def test_parse_filter():
-    '''
-    Test case for parse filter method
-    '''
-    # Sampel filter value
-    f_input: list = [
-        ('name 1', 'operator 1', ['value 1', 'value 2']),
-        ('name 1', 'operator 2', 'value 3,value 4')
-    ]
-
-    # filter response if rtype is sjson
-    sjson_filter_response: dict = {
-        'filter.0.filter': 'name 1',
-        'filter.0.quality': 'operator 1',
-        'filter.0.value': 'value 1,value 2',
-        'filter.1.filter': 'name 1',
-        'filter.1.quality': 'operator 2',
-        'filter.1.value': 'value 3,value 4'
-    }
-
-    # filter response if rtype is json
-    json_filter_response: dict = {
-        'filters': [
-            {
-                'filter': 'name 1',
-                'quality': 'operator 1',
-                'value': 'value 1,value 2'
-            },
-            {
-                'filter': 'name 1',
-                'quality': 'operator 2',
-                'value': 'value 3,value 4'
-            }
-        ]
-    }
-
-    # filter response if rtype is colon
-    colon_filter_response: dict = {
-        'f': [
-            'name 1:operator 1:value 1,value 2',
-            'name 1:operator 2:value 3,value 4'
-        ]
-    }
-
-    # filter response if rtype is accessgroup
-    accessgroup_filter_response: dict = {
-        'rules': [
-            {
-                'operator': 'operator 1',
-                'terms': [
-                    'value 1',
-                    'value 2'
-                ],
-                'type': 'name 1'
-            },
-            {
-                'operator': 'operator 2',
-                'terms': [
-                    'value 3',
-                    'value 4'
-                ],
-                'type': 'name 1'
-            }
-        ]
-    }
-
-    # filter response if rtype is assets
-    assets_filter_response: dict = {
-        'asset': [
-            {
-                'field': 'name 1',
-                'operator': 'operator 1',
-                'value': 'value 1,value 2'
-            },
-            {
-                'field': 'name 1',
-                'operator': 'operator 2',
-                'value': 'value 3,value 4'
-            }
-        ]
-    }
-
-    # sample filter to validate data
-    filter_set: dict = {
-        'name 1': {
-            'operators': [
-                'operator 1',
-                'operator 2'
-            ],
-            'choices': None,
-            'pattern': '.*'
-        }
-    }
-
-    sjson_filter_result = ExploreBaseEndpoint._parse_filters(
-        finput=f_input,
-        filterset=filter_set,
-        rtype='sjson'
-    )
-    json_filter_result = ExploreBaseEndpoint._parse_filters(
-        finput=f_input,
-        filterset=filter_set,
-        rtype='json'
-    )
-    colon_filter_result = ExploreBaseEndpoint._parse_filters(
-        finput=f_input,
-        filterset=filter_set,
-        rtype='colon'
-    )
-    accessgroup_filter_result = ExploreBaseEndpoint._parse_filters(
-        finput=f_input,
-        filterset=filter_set,
-        rtype='accessgroup'
-    )
-    assets_filter_result = ExploreBaseEndpoint._parse_filters(
-        finput=f_input,
-        filterset=filter_set,
-        rtype='assets'
-    )
-
-    assert sjson_filter_result == sjson_filter_response
-    assert json_filter_result == json_filter_response
-    assert colon_filter_result == colon_filter_response
-    assert accessgroup_filter_result == accessgroup_filter_response
-    assert assets_filter_result == assets_filter_response

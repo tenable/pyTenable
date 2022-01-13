@@ -4,8 +4,7 @@ Test case for filter schema
 import pytest
 from marshmallow.exceptions import ValidationError
 
-from tenable.io.v3.base.schema.explore.filters import (FilterSchema,
-                                                       ParseFilterSchema)
+from tenable.io.v3.base.schema.explore.filters import FilterSchema
 
 search_data = dict(
     fields=['bios_name', 'name'],
@@ -127,32 +126,3 @@ def test_filter_tuple_with_condition_dict():
     }
     schema = FilterSchema()
     assert test_resp == schema.dump(schema.load(data))
-
-
-def test_parse_filter_schema():
-    '''
-    Test case for parse filter schema
-    '''
-    payload = {
-        'filter_name': 'test_filter_name',
-        'filter_operator': 'test_filter-operator',
-        'filter_value': ['test value']
-    }
-
-    # sample filter to validate data
-    filter_set: dict = {
-        'test_filter_name': {
-            'operators': [
-                'test_filter-operator',
-                'neq'
-            ],
-            'choices': None,
-            'pattern': '.*'
-        }
-    }
-    schema = ParseFilterSchema(
-        context={
-            'filter_set': filter_set
-        }
-    )
-    assert payload == schema.dump(schema.load(payload))

@@ -1,67 +1,52 @@
 '''
 Base Explore Filter Schema
 '''
-import re
 from typing import Dict, Tuple, Union
 
-from marshmallow import (Schema, ValidationError, fields, pre_load,
-                         validates_schema)
+from marshmallow import Schema, ValidationError, fields
+from marshmallow.decorators import pre_load, validates_schema
 
-from tenable.errors import UnexpectedValueError
+from tenable.io.base.schemas.filters.base import BaseFilterSchema
 
 
-class ParseFilterSchema(Schema):
+class ParseFilterSchema(BaseFilterSchema):
     '''
-    Schema for parse filter method
+    Validate filter Schema class
     '''
-    filter_name = fields.Str(required=True)
-    filter_operator = fields.Str(required=True)
-    filter_value = fields.List(
-        fields.Str(),
-        data_key='filter_value',
-        required=True
-    )
+    field = fields.Str(required=True)
+    operator = fields.Str(required=True)
+    value = fields.List(fields.Str(), required=True)
+    _filters = None
 
-    @pre_load
-    def check_filter_value(self, data, **kwargs):
-        if isinstance(data['filter_value'], str):
-            data['filter_value'] = data['filter_value'].split(',')
-        elif not isinstance(data['filter_value'], list):
-            raise ValidationError('filter_value is not a valid type.')
-        return data
+    @classmethod
+    def populate_filters(cls, tio, path):
+        '''
+        Pre-populates the asset filter definitions into the RuleSchema class.
+        '''
+        super().populate_filters(tio, path)
 
     @validates_schema
-    def validate(self, data, **kwargs):
+    def filter_validation(self, data, **kwargs):
+        '''
+        Handles validation of the filter provided against the asset filter
+        definitions.
+        '''
+        self.validate_filter(data.get('field'),
+                             data.get('operator'),
+                             data.get('value'))
 
-        # validate filter name with filter set
-        f_name = data['filter_name']
-        if f_name not in self.context['filter_set']:
-            raise UnexpectedValueError(f'{f_name} is not a filterable option')
-
-        # validate filter operator with filter operators
-        f_opr = data['filter_operator']
-        oper = self.context['filter_set'].get(f_name, dict()).get('operators')
-        if f_opr not in oper:
-            raise ValidationError(f' {f_opr} is not valid filter operator')
-
-        # validate filter value with filter choices and pattern
-        f_value = data['filter_value']
-        for value in f_value:
-            choices = self.context['filter_set'].get(
-                f_name, dict()
-            ).get('choices')
-            if choices is not None and value not in choices:
-                raise ValidationError(f'{value} is not valid filter value')
-
-            pattern = self.context['filter_set'].get(
-                f_name, dict()
-            ).get('pattern')
-            if pattern is not None and isinstance(value, str):
-                if len(re.findall(pattern, str(value))) <= 0:
-                    raise UnexpectedValueError(
-                        f'{f_name} has value of {value}. '
-                        f'Does not match pattern {pattern}'
-                    )
+    @pre_load(pass_many=False)
+    def tuple_expansion(self, data, **kwargs):
+        '''
+        Handles expanding a tuple definition into the dictionary equivalent.
+        '''
+        if isinstance(data, tuple):
+            return {
+                'field': data[0],
+                'operator': data[1],
+                'value': data[2]
+            }
+        return data
 
 
 class FilterSchema(Schema):

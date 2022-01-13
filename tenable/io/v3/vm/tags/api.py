@@ -13,66 +13,35 @@ Methods available on ``tio.v3.vm.tags``:
 '''
 import json
 import re
-from typing import Dict, List, Union
+from typing import Dict, List, Optional, Union
 from uuid import UUID
 
-from restfly.utils import dict_clean, dict_merge
+from requests import Response
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 from tenable.io.v3.vm.tags.schema import (AssetTagSchema, TagCategorySchema,
-                                          TagValueSchema)
+                                          TagsFilterSchema, TagValueSchema)
+from tenable.utils import dict_clean, dict_merge
 
 
 class TagsAPI(ExploreBaseEndpoint):
     '''
     This will contain all methods related to tags
     '''
-    _path = 'tags'
+    _path = 'api/v3/tags'
     _conv_json = True
-
-    def _tag_value_constructor(self,
-                               filters: list,
-                               filterdefs: dict,
-                               filter_type: str
-                               ) -> Dict:
-        '''
-        A simple constructor to handle constructing the filter
-        parameters for the create and edit tag value.
-        '''
-        # validate filter_type with marshmallow schema
-        schema = TagValueSchema(only=['filter_type'])
-        filter_type = schema.dump(schema.load(dict_clean({
-            'filter_type': filter_type
-        })))['filter_type']
-
-        # created default dictionary for payload filters key
-        payload_filters = dict({
-            'asset': dict({
-                filter_type: list()
-            })
-        })
-
-        if len(filters) > 0:
-            # run the filters through the filter parser
-            # and update payload_filters
-            parsed_filters = self._parse_filters(
-                filters,
-                filterdefs,
-                rtype='assets'
-            )['asset']
-            payload_filters['asset'][filter_type] = parsed_filters
-
-        return payload_filters
 
     def create(self,
                category: Union[str, UUID],
                value: str,
-               description: str = None,
-               category_description: str = None,
-               filters: List = None,
-               filter_type: str = None,
-               all_users_permissions: List = None,
-               current_domain_permissions: List = None,
+               description: Optional[str] = None,
+               category_description: Optional[str] = None,
+               filters: Optional[List] = None,
+               filter_type: Optional[str] = None,
+               all_users_permissions: Optional[List] = None,
+               current_domain_permissions: Optional[List] = None,
                ) -> Dict:
         '''
         Create a tag category/value pair
@@ -170,8 +139,8 @@ class TagsAPI(ExploreBaseEndpoint):
         # pass into category_name
 
         uuid_pattern = re.compile(
-            r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}'
-            r'-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
+            r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-'
+            r'[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
         )
 
         category_uuid = category_name = None
@@ -179,6 +148,11 @@ class TagsAPI(ExploreBaseEndpoint):
             category_uuid = category
         else:
             category_name = category
+
+        if filters is not None:
+            TagsFilterSchema.populate_filters(
+                self._api, path='tags/assets/filters'
+            )
 
         payload: dict = {
             'category_uuid': category_uuid,
@@ -196,16 +170,9 @@ class TagsAPI(ExploreBaseEndpoint):
                 'current_domain_permissions':
                     current_domain_permissions or [],
             },
-            'filters': None
+            'filter_type': filter_type,
+            'filters': filters
         }
-
-        # if filters are defined, run the filters through the filter parser...
-        if filters and isinstance(filters, list):
-            payload['filters'] = self._tag_value_constructor(
-                filters,
-                self._api.filters.asset_tag_filters(),
-                filter_type
-            )
 
         # Let's validate the payload using marshmallow schema
         payload = dict_clean(payload)
@@ -214,7 +181,9 @@ class TagsAPI(ExploreBaseEndpoint):
 
         return self._post('values', json=payload)
 
-    def create_category(self, name: str, description: str = None) -> Dict:
+    def create_category(self,
+                        name: str,
+                        description: Optional[str] = None) -> Dict:
         '''
         Creates a new category
 
@@ -276,9 +245,11 @@ class TagsAPI(ExploreBaseEndpoint):
             payload: dict = {
                 'values': [value_id for value_id in value_ids]
             }
+
             # Let's validate the payload using marshmallow schema
             schema = TagValueSchema(only=['value_id'])
             payload = schema.dump(schema.load(payload))
+
             self._post('values/delete-requests', json=payload)
 
     def delete_category(self, category_id: UUID) -> None:
@@ -295,7 +266,9 @@ class TagsAPI(ExploreBaseEndpoint):
             :obj:`None`
 
         Examples:
-            >>> tio.v3.vm.tags..delete('00000000-0000-0000-0000-000000000000')
+            >>> tio.v3.vm.tags.delete_category(
+            ...     '00000000-0000-0000-0000-000000000000'
+            ... )
         '''
         self._delete(f'categories/{category_id}')
 
@@ -341,12 +314,12 @@ class TagsAPI(ExploreBaseEndpoint):
 
     def edit(self,
              value_id: UUID,
-             value: str = None,
-             description: str = None,
-             filters: List = None,
-             filter_type: str = None,
-             all_users_permissions: List = None,
-             current_domain_permissions: List = None
+             value: Optional[str] = None,
+             description: Optional[str] = None,
+             filters: Optional[List] = None,
+             filter_type: Optional[str] = None,
+             all_users_permissions: Optional[List] = None,
+             current_domain_permissions: Optional[List] = None
              ) -> Dict:
         '''
         Updates Tag category/value pair information.
@@ -449,21 +422,29 @@ class TagsAPI(ExploreBaseEndpoint):
         # if filters are defined, run the filters through the filter parser...
         # or else apply the filters that are available in current payload
         if filters is not None:
-            payload['filters'] = self._tag_value_constructor(
-                filters,
-                self._api.filters.asset_tag_filters(),
-                filter_type
-            )
+            payload['filters'] = filters
+            payload['filter_type'] = filter_type
         elif 'filters' in current and current['filters']:
             # current value in filters are in form of string.
             # we have to first convert it into dict() form before applying
             current['filters']['asset'] = json.loads(
                 current['filters']['asset']
             )
-            payload['filters'] = current['filters']
+            filter_type = dict(current['filters']['asset']).keys()[0]
+            payload['filters'] = current['filters']['asset'].get(filter_type)
+            payload['filter_type'] = filter_type
+
+        # Let's check if the filters are None or not then fetch
+        # all the available filterset for asset tags filters
+        if payload.get('filters', None):
+            TagsFilterSchema.populate_filters(
+                self._api, path='tags/assets/filters'
+            )
+
+        # Let's clean the payload before validating with schema
+        payload = dict_clean(payload)
 
         # validate payload using marshmallow schema
-        payload = dict_clean(payload)
         schema = TagValueSchema()
         payload = schema.dump(schema.load(payload))
 
@@ -472,7 +453,7 @@ class TagsAPI(ExploreBaseEndpoint):
     def edit_category(self,
                       category_id: UUID,
                       name: str,
-                      description: str = None
+                      description: Optional[str] = None
                       ) -> Dict:
         '''
         Updates Tag category information.
@@ -595,8 +576,171 @@ class TagsAPI(ExploreBaseEndpoint):
 
         return self._post('assets/assignments', json=payload)['job_id']
 
-    def search(self):
-        raise NotImplementedError('This method will be updated letter.')
+    def search(self,
+               **kwargs) -> Union[SearchIterator, CSVChunkIterator, Response]:
+        '''
+        Search and retrieve the tag values based on supported
+        conditions.
+        Args:
+            fields (list, optional):
+                The list of field names to return from the Tenable API.
+                Example:
+                    >>> ['field1', 'field2']
+            filter (tuple, Dict, optional):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the :py:meth:`tio.v3.vm.filters.audit_log_filters()`
+                endpoint to get more details.
+            sort (list[tuple], optional):
+                A list of dictionaries describing how to sort the data
+                that is to be returned.
+                Examples:
+                    >>> [('field_name_1', 'asc'), ('field_name_2', 'desc')]
+            limit (int, optional):
+                Number of objects to be returned in each request.
+                Default and max_limit is 200.
+            next (str, optional):
+                The pagination token to use when requesting the next page of
+                results. This token is presented in the previous response.
+            return_resp (bool, optional):
+                If set to true, will override the default behavior to return
+                an iterable and will instead return the results for the
+                specific page of data.
+            return_csv (bool, optional):
+                If set to true, it will return the CSV response or
+                iterable (based on return_resp flag). Iterator returns all
+                rows in text/csv format for each call with row headers.
+        Returns:
+            iterable:
+                The iterable that handles the pagination for the job.
+            requests.Response:
+                If ``return_json`` was set to ``True``, then a response
+                object is instead returned instead of an iterable.
+        Examples:
+            >>> tio.v3.vm.tags.search(
+            ... filter=('id', 'eq', '00089a45-44a5-4620-bf9f-75ebedc6cc6c'),
+            ... fields=['id'], limit=2)
+        '''
+        iclass = SearchIterator
+        if kwargs.get('return_csv', False):
+            iclass = CSVChunkIterator
+        return super()._search(iterator_cls=iclass,
+                               is_sort_with_prop=True,
+                               api_path=f'{self._path}/values/search',
+                               resource='values',
+                               **kwargs
+                               )
 
-    def search_categories(self):
-        raise NotImplementedError('This method will be updated letter.')
+    def search_categories(self,
+                          **kwargs
+                          ) -> Union[SearchIterator,
+                                     CSVChunkIterator,
+                                     Response]:
+        '''
+        Search and retrieve the tag categories based on supported
+        conditions.
+        Args:
+            fields (list, optional):
+                The list of field names to return from the Tenable API.
+                Example:
+                    >>> ['field1', 'field2']
+            filter (tuple, Dict, optional):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the :py:meth:`tio.v3.vm.filters.audit_log_filters()`
+                endpoint to get more details.
+            sort (list[tuple], optional):
+                A list of dictionaries describing how to sort the data
+                that is to be returned.
+                Examples:
+                    >>> [('field_name_1', 'asc'), ('field_name_2', 'desc')]
+            limit (int, optional):
+                Number of objects to be returned in each request.
+                Default and max_limit is 200.
+            next (str, optional):
+                The pagination token to use when requesting the next page of
+                results. This token is presented in the previous response.
+            return_resp (bool, optional):
+                If set to true, will override the default behavior to return
+                an iterable and will instead return the results for the
+                specific page of data.
+            return_csv (bool, optional):
+                If set to true, it will return the CSV response or
+                iterable (based on return_resp flag). Iterator returns all
+                rows in text/csv format for each call with row headers.
+        Returns:
+            iterable:
+                The iterable that handles the pagination for the job.
+            requests.Response:
+                If ``return_json`` was set to ``True``, then a response
+                object is instead returned instead of an iterable.
+        Examples:
+            >>> tio.v3.vm.tags.search_categories(
+            ... filter=('id', 'eq', '00089a45-44a5-4620-bf9f-75ebedc6cc6c'),
+            ... fields=['id'], limit=2)
+        '''
+        iclass = SearchIterator
+        if kwargs.get('return_csv', False):
+            iclass = CSVChunkIterator
+        return super()._search(iterator_cls=iclass,
+                               is_sort_with_prop=True,
+                               api_path=f'{self._path}/categories/search',
+                               resource='categories',
+                               **kwargs
+                               )

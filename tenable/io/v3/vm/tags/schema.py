@@ -1,15 +1,18 @@
 '''
 Tags API Endpoint Schemas
 '''
-from marshmallow import Schema, fields, pre_load, validate, validates_schema
+from marshmallow import Schema, fields, validate
+from marshmallow.decorators import post_dump, pre_load, validates_schema
 from marshmallow.exceptions import ValidationError
+
+from tenable.io.v3.base.schema.explore.filters import ParseFilterSchema
 
 
 class TagCategorySchema(Schema):
     '''
     Schema for tags category methods
     '''
-    name = fields.Str()
+    name = fields.Str(required=True)
     description = fields.Str()
 
     @validates_schema
@@ -83,7 +86,7 @@ class AccessControlSchema(Schema):
     all_users_permissions = fields.List(
         fields.Str(
             validate=validate.OneOf(
-                ['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS']
+                ['ALL', 'CAN_USE', 'CAN_EDIT', 'CAN_SET_PERMISSIONS']
             )
         ),
         default=[]
@@ -102,6 +105,13 @@ class AccessControlSchema(Schema):
     version = fields.Int(data_key='version')
 
 
+class TagsFilterSchema(ParseFilterSchema):
+    '''
+    Validate filters using ParseFilterSchema
+    '''
+    _filters = None
+
+
 class TagValueSchema(Schema):
     '''
     Schema for tags values related methods
@@ -113,8 +123,23 @@ class TagValueSchema(Schema):
     value = fields.Str(required=True)
     description = fields.Str()
     access_control = fields.Nested(AccessControlSchema, required=True)
-    filters = fields.Dict()
     filter_type = fields.Str(
         default='and',
         validate=validate.OneOf(['and', 'or'])
     )
+    filters = fields.List(fields.Nested(TagsFilterSchema))
+
+    @post_dump
+    def post_serialization(self, data, **kwargs):
+        '''
+        Convert the filter dictonary to asset filter definition
+        '''
+        if 'filters' in list(data.keys()):
+            resp: dict = {
+                'asset': {
+                    data['filter_type']: data['filters']
+                }
+            }
+            data['filters'] = resp
+        data.pop('filter_type', '')
+        return data

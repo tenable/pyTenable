@@ -2,7 +2,7 @@
 Base Explore Endpoint Class
 '''
 import time
-from typing import Dict, List, Union
+from typing import Union
 from uuid import UUID
 
 from requests import Response
@@ -10,109 +10,13 @@ from requests import Response
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (ExploreIterator,
                                                            SearchIterator)
-from tenable.io.v3.base.schema.explore.filters import ParseFilterSchema
 from tenable.io.v3.base.schema.explore.search import SearchSchema
 
 
 class ExploreBaseEndpoint(APIEndpoint):
     _conv_json = False
 
-    @staticmethod
-    def _parse_filters(finput: List,
-                       filterset: Dict = None,
-                       rtype: str = 'sjson') -> Dict:
-        '''
-        A centralized method to parse and munge the filter tuples into the
-        anticipates response.
-
-        Args:
-            finput (list): The list of filter tuples
-            filterset (dict): The response of the allowed filters
-            rtype (str, optional):
-                The filter format.  Allowed types are 'json', 'sjson',
-                'accessgroup', and 'colon'.  JSON is just a simple JSON list of
-                dictionaries. SJSON format is effectively serialized JSON into
-                the query params. COLON format denotes a colon-delimited
-                format.
-
-        Returns:
-            dict:
-                The query parameters in the anticipated dictionary format to
-                feed to requests.
-        '''
-        resp = dict()
-
-        for f in finput:
-            # First we need to validate the inputs are correct. We will do that
-            # by comparing the filter to the filterset data we have and compare
-            # the operators and values to make sure that the input is expected.
-            schema = ParseFilterSchema(
-                context={
-                    'filter_set': filterset
-                }
-            )
-            data = schema.dump(schema.load({
-                'filter_name': f[0],
-                'filter_operator': f[1],
-                'filter_value': f[2]
-            }))
-
-            fname = data['filter_name']
-            foper = data['filter_operator']
-            fval = data['filter_value']
-
-            if rtype not in ['accessgroup']:
-                fval = ','.join(fval)
-
-            if rtype == 'sjson':
-                # For the serialized JSON format, we will need to generate the
-                # expanded input for each filter
-                i = finput.index(f)
-                resp['filter.{}.filter'.format(i)] = fname
-                resp['filter.{}.quality'.format(i)] = foper
-                resp['filter.{}.value'.format(i)] = fval
-            elif rtype == 'json':
-                # for standard JSON formats, we will simply build a 'filters'
-                # list and store the information there.
-                if 'filters' not in resp:
-                    resp['filters'] = list()
-                resp['filters'].append({
-                    'filter': fname,
-                    'quality': foper,
-                    'value': fval
-                })
-            elif rtype == 'colon':
-                # for the colon-delimited format, we simply need to generate
-                # the filter as NAME:OPER:VAL and dump it all into a field
-                # named f.
-                if 'f' not in resp:
-                    resp['f'] = list()
-                resp['f'].append('{}:{}:{}'.format(fname, foper, fval))
-            elif rtype == 'accessgroup':
-                # For the access group format, we will instead use the format
-                # of "terms", "type", and "operator".  Further all terms must
-                # be a list of strings.
-                if 'rules' not in resp:
-                    resp['rules'] = list()
-                resp['rules'].append({
-                    'operator': foper,
-                    'terms': fval,
-                    'type': fname
-                })
-            elif rtype == 'assets':
-                # For the asset format, we will instead use the format of
-                # "field", "operator", and "value". Further all terms must be a
-                # list of strings.
-                if 'asset' not in resp:
-                    resp['asset'] = list()
-                resp['asset'].append({
-                    'field': fname,
-                    'operator': foper,
-                    'value': fval
-                })
-        return resp
-
-    def details(self, obj_id: Union[str, UUID]) -> dict:
+    def _details(self, obj_id: Union[str, UUID]) -> dict:
         '''
         Gets the details for the specified id.
 
@@ -130,16 +34,16 @@ class ExploreBaseEndpoint(APIEndpoint):
         '''
         return self._get(obj_id, conv_json=self._conv_json)
 
-    def search(self,
-               *,
-               resource: str,
-               api_path: str,
-               is_sort_with_prop: bool = True,
-               return_resp: bool = False,
-               iterator_cls: ExploreIterator = SearchIterator,
-               schema_cls: SearchSchema = SearchSchema,
-               **kwargs
-               ) -> Union[Response, ExploreIterator]:
+    def _search(self,
+                *,
+                resource: str,
+                api_path: str,
+                is_sort_with_prop: bool = True,
+                return_resp: bool = False,
+                iterator_cls: ExploreIterator = SearchIterator,
+                schema_cls: SearchSchema = SearchSchema,
+                **kwargs
+                ) -> Union[Response, ExploreIterator]:
         '''
         Initiate a search
 
@@ -235,7 +139,7 @@ class ExploreBaseEndpoint(APIEndpoint):
             _payload=payload
         )
 
-    def search_results(self, search_id: str, wait_for_results: bool = True):
+    def _search_results(self, search_id: str, wait_for_results: bool = True):
         '''
         '''
         resp = self._get(f'search/{search_id}')
@@ -244,5 +148,5 @@ class ExploreBaseEndpoint(APIEndpoint):
             search_id = resp.headers.get('request-result-id', search_id)
         if wait_for_results:
             time.sleep(retry_after)
-            return self.search_results(search_id, wait_for_results=True)
+            return self._search_results(search_id, wait_for_results=True)
         return resp

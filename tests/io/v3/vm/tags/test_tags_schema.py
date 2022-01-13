@@ -1,12 +1,17 @@
 '''
-Testing the Tags schemas
+Test cases for the tags API schemas
 '''
-from tenable.io.v3.vm.tags import schema as s
+import responses
+
+from tenable.io.v3.vm.tags.schema import (AssetTagSchema, TagCategorySchema,
+                                          TagValueSchema)
+
+ASSET_TAG_FILTER_ENDPOINT = 'https://cloud.tenable.com/api/v3/definitions'
 
 
 def test_tag_category_schema():
     '''
-    Test for tag category schema
+    Test case for tag category schema
     '''
     name: str = 'New York'
     description: str = 'Tag category for new york'
@@ -14,17 +19,13 @@ def test_tag_category_schema():
         'name': name,
         'description': description
     }
-    test_resp = {
-        'name': name,
-        'description': description
-    }
-    schema = s.TagCategorySchema()
-    assert test_resp == schema.dump(schema.load(payload))
+    schema = TagCategorySchema()
+    assert payload == schema.dump(schema.load(payload))
 
 
 def test_asset_tag_schema():
     '''
-    Test for create category schema
+    Test case for asset tag schema
     '''
     payload = {
         'action': 'add',
@@ -37,83 +38,86 @@ def test_asset_tag_schema():
             'f7aa9e26-6e0f-11ec-90d6-0242ac120003'
         ]
     }
-    schema = s.AssetTagSchema()
+    schema = AssetTagSchema()
     assert payload == schema.dump(schema.load(payload))
 
 
-def test_tag_value_schema_with_only_values():
-    '''
-        Test for tag value schema for only values ids
-        '''
-    payload = {
-        'values': [
-            'bd55c970-6e10-11ec-90d6-0242ac120003',
-            'bd55cd1c-6e10-11ec-90d6-0242ac120003',
-            'bd55b656-6e10-11ec-90d6-0242ac120003'
-        ]
-    }
-    schema = s.TagValueSchema(only=['value_id'])
-    assert payload == schema.dump(schema.load(payload))
-
-
-def test_tag_value_schema_with_only_filtertype():
-    '''
-    Test for tag value schema for only filter type
-    '''
-    payload = {
-        'filter_type': 'and'
-    }
-    schema = s.TagValueSchema(only=['filter_type'])
-    assert payload == schema.dump(schema.load(payload))
-
-
+@responses.activate
 def test_tag_value_schema():
     '''
-    Test for tag value schema
+    Test case for tag value schema
     '''
-    payload = {
-        'category_name': 'Location',
-        'access_control': {
-            'current_user_permissions': [
-                'ALL',
-                'CAN_EDIT',
-                'CAN_SET_PERMISSIONS'
-            ],
-            'all_users_permissions': [
+    category_name: str = 'Category_1'
+    category_description: str = 'Description for category'
+    value: str = 'Value_1'
+    description: str = 'Description for Value'
+    current_user_permissions: list = ['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS']
+    all_users_permissions: list = ['CAN_EDIT']
+    current_domain_permissions: list = [
+        {
+            'id': 'c2f2d080-ac2b-4278-914b-29f148682ee1',
+            'name': 'user@company.com',
+            'type': 'USER',
+            'permissions': [
                 'CAN_EDIT'
-            ],
-            'current_domain_permissions': [
-                {
-                    'permissions': [
-                        'CAN_EDIT'
-                    ],
-                    'type': 'USER',
-                    'id': 'c2f2d080-ac2b-4278-914b-29f148682ee1',
-                    'name': 'user@company.com'
-                },
-                {
-                    'permissions': [
-                        'CAN_EDIT'
-                    ],
-                    'type': 'USER',
-                    'id': 'c2f2d080-ac2b-4278-914b-29f148682ee1',
-                    'name': 'user@company.com'
-                }
             ]
+        }
+    ]
+    filter_type: str = 'or'
+    filters: list = [('field_1', 'oper_1', ['value_1'])]
+
+    input_payload: dict = {
+        'category_name': category_name,
+        'category_description': category_description,
+        'value': value,
+        'description': description,
+        'access_control': {
+            'current_user_permissions': current_user_permissions,
+            'all_users_permissions': all_users_permissions,
+            'current_domain_permissions':
+                current_domain_permissions,
         },
+        'filter_type': filter_type,
+        'filters': filters
+    }
+
+    output_payload: dict = {
+        'category_name': category_name,
+        'category_description': category_description,
+        'value': value,
+        'description': description,
         'filters': {
             'asset': {
-                'and': [
+                filter_type: [
                     {
-                        'field': 'tag.sample category 1',
-                        'operator': 'set-has',
-                        'value': 'dfgsgf'
+                        'operator': 'oper_1',
+                        'field': 'field_1',
+                        'value': [
+                            'value_1'
+                        ]
                     }
                 ]
             }
         },
-        'filter_type': 'and',
-        'value': 'Washington 34'
+        'access_control': {
+            'current_user_permissions': current_user_permissions,
+            'current_domain_permissions': current_domain_permissions,
+            'all_users_permissions': all_users_permissions
+        },
     }
-    schema = s.TagValueSchema()
-    assert payload == schema.dump(schema.load(payload))
+
+    # Let's register the response for asset tag filter endpoint
+    responses.add(
+        responses.GET,
+        f'{ASSET_TAG_FILTER_ENDPOINT}/tags/assets/filters',
+        json={
+            'field_1': {
+                'operators': ['oper_1', 'oper_2'],
+                'choices': None,
+                'pattern': '.*'
+            }
+        }
+    )
+
+    schema = TagValueSchema()
+    assert output_payload == schema.dump(schema.load(input_payload))
