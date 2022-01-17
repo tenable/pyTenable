@@ -27,7 +27,7 @@ def test_create(api):
             },
             'date_created': '2021-07-22T14:31:15.616Z',
             'id': '5b08b44c-5682-4d8c-b574-a660052c9895',
-            'container_uuid': '330dbe3b-263e-411f-b73f-bc1abbd187f3',
+            'container_id': '330dbe3b-263e-411f-b73f-bc1abbd187f3',
             'expired': False,
             'incremental_mode': False,
             'params': {
@@ -51,7 +51,7 @@ def test_create(api):
                 ],
                 'service': 'aws_keyless'
             },
-            'network_uuid': '00000000-0000-0000-0000-000000000000'
+            'network_id': '00000000-0000-0000-0000-000000000000'
         }
     }
 
@@ -151,7 +151,7 @@ def test_details(api):
             'date_created': '2021-07-22T14:31:15.616Z',
             'date_modified': '2021-07-22T14:31:27.098Z',
             'id': 'b3397cb2-6650-432b-ae1c-fc64ec7ef6ba',
-            'container_uuid': '7930d8cc-27c0-43cc-abdb-b846e2b13414',
+            'container_id': '7930d8cc-27c0-43cc-abdb-b846e2b13414',
             'expired': False,
             'incremental_mode': True,
             'last_sync_time': '2021-07-22T14:31:27.098Z',
@@ -177,7 +177,7 @@ def test_details(api):
                 ],
                 'service': 'aws_keyless'
             },
-            'network_uuid': '00000000-0000-0000-0000-000000000000',
+            'network_id': '00000000-0000-0000-0000-000000000000',
             'last_seen_updated': '2021-07-22T14:31:39.801Z'
         }
     }
@@ -214,7 +214,7 @@ def test_download_template(api):
             'keyRotationMethod': 'default',
             'resourceGroupLocation': 'eastus',
             'resourceGroupName':
-                '[concat("Tenable-FA-Connector-",variables("connectorUuid"))]',
+                '[concat("Tenable-FA-Connector-",variables("connectorid"))]',
             'tenableFACollectionRoleDefinitionResourceName':
                 '[guid("Tenable-FA-Custom-Role-Def",'
                 ' subscription().id, variables("connectorId"))]',
@@ -346,7 +346,7 @@ def test_import_data(api):
                 ],
                 'service': 'aws'
             },
-            'network_uuid': '89578c5d-931a-4bae-bcd6-421cacfad3b8'
+            'network_id': '89578c5d-931a-4bae-bcd6-421cacfad3b8'
         }
     }
 
@@ -384,7 +384,7 @@ def test_edit(api):
             'date_created': '2021-07-22T14:31:15.616Z',
             'date_modified': '2021-07-22T14:31:27.098Z',
             'id': 'b3397cb2-6650-432b-ae1c-fc64ec7ef6ba',
-            'container_uuid': '7930d8cc-27c0-43cc-abdb-b846e2b13414',
+            'container_id': '7930d8cc-27c0-43cc-abdb-b846e2b13414',
             'expired': False,
             'incremental_mode': True,
             'last_sync_time': '2021-07-22T14:31:27.098Z',
@@ -410,7 +410,7 @@ def test_edit(api):
                 ],
                 'service': 'aws_keyless'
             },
-            'network_uuid': '00000000-0000-0000-0000-000000000000',
+            'network_id': '00000000-0000-0000-0000-000000000000',
             'last_seen_updated': '2021-07-22T14:31:39.801Z'
         }
     }
@@ -458,7 +458,7 @@ def test_edit(api):
                 ],
                 'service': 'aws_keyless'
             },
-            'network_uuid': '00000000-0000-0000-0000-000000000000',
+            'network_id': '00000000-0000-0000-0000-000000000000',
             'last_seen_updated': '2021-07-22T14:31:39.801Z'
         }
     }

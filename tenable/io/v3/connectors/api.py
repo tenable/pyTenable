@@ -81,7 +81,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         payload = {
                 'name': name,
                 'type': con_type,
-                'network_uuid': network_id,
+                'network_id': network_id,
                 'schedule': schedule,
                 'params': params
         }

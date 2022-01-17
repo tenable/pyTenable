@@ -57,6 +57,7 @@ def test_schedule():
 
     with pytest.raises(ValidationError):
         payload['test'] = 'test'
+        schema.load(payload)
 
 
 def test_region():
