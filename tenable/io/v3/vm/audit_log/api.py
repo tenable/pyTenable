@@ -99,7 +99,7 @@ class AuditLogAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
         Returns:
-            iterable:
+            Iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
                 If ``return_json`` was set to ``True``, then a response
