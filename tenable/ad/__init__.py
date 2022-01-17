@@ -25,6 +25,7 @@ This package covers the Tenable.ad interface.
     lockout_policy
     preference
     profiles
+    reason
     roles
     saml_configuration
     score
