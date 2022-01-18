@@ -218,6 +218,8 @@ class ExportsAPI(APIEndpoint):
                 Assets updated after this timestamp will be returned.
             has_plugin_results (bool, optional):
                 Should assets only be returned if they have plugin results?
+            is_deleted (bool, optional):
+                Should we return only assets that have been deleted?
             is_licensed (bool, optional):
                 Should we return only assets that are licensed?
             is_terminated (bool, optional):
