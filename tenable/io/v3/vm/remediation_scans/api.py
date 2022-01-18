@@ -14,89 +14,109 @@ Methods available on ``tio.v3.vm.remediation_scans``:
 '''
 
 
-from typing import Dict
+from typing import Dict, Union
 
 from requests import Response
 
 from tenable.errors import UnexpectedValueError
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 from tenable.io.v3.vm.remediation_scans.schema import \
     RemScansDocumentCreateSchema
 from tenable.utils import dict_merge
-
-
-class RemediationScansIteratorV2:
-    '''
-    The Remediation scans iterator provides a scalable way to work through
-    scan history result sets of any size. The iterator will walk through
-    each page of data, returning one record at a time.  If it reaches the
-    end of a page of records, then it will request the next page of
-    information and then continue to return records from the next page
-    (and the next, and the next) until the counter reaches the total number
-    of records that the API has reported.
-
-    Attributes:
-        count (int): The current number of records that have been returned
-        page (list):
-            The current page of data being walked through.  pages will be
-            cycled through as the iterator requests more information from the
-            API.
-        page_count (int): The number of record returned from the current page.
-        total (int):
-            The total number of records that exist for the current request.
-    '''
-    pass
 
 
 class RemediationScansAPI(ExploreBaseEndpoint):
     _path = 'api/v3/scans'
     _conv_json = True
 
-    # todo => this will be replaced with search endpoint.
-    def search(self, **kwargs: dict) -> Response:
+    def search(self,
+               **kw
+               ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
-        Retrieve the list of Remediation scans.
+        Retrieves the remediation scans.
 
-        :devportal:`scans: list_remediation_scan <io-scans-remediation-list>`
-
-        Args:
-            limit (int, optional): This value needs to be between 0 and 200
-            offset (int, optional): This value needs to be > 0
-            sort (str, optional):
-                scan_creation_date:desc/scan_creation_date:asc
-                Returns the remediation scan list with the ascending
-                or descending order with offset and limit
-
+         Args:
+            fields (list, optional):
+                The list of field names to return from the Tenable API.
+                Example:
+                    >>> ['field1', 'field2']
+            filter (tuple, Dict, optional):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                endpoint to get more details.
+            sort (list[tuple], optional):
+                sort is a list of tuples in the form of
+                ('FIELD', 'ORDER').
+                It describes how to sort the data
+                that is to be returned.
+                Examples:
+                    >>> [('field_name_1', 'asc'),
+                    ...      ('field_name_2', 'desc')]
+            limit (int, optional):
+                Number of objects to be returned in each request.
+                Default and max_limit is 200.
+            next (str, optional):
+                The pagination token to use when requesting the next page of
+                results. This token is presented in the previous response.
+            return_resp (bool, optional):
+                If set to true, will override the default behavior to return
+                an iterable and will instead return the results for the
+                specific page of data.
+            return_csv (bool, optional):
+                If set to true, it will return the CSV response or
+                iterable (based on return_resp flag). Iterator returns all
+                rows in text/csv format for each call with row headers.
         Returns:
-            :obj:`RemediationScansIteratorV2`:
-                An iterator that handles the page management of the requested
-                records.
+            Iterable:
+                The iterable that handles the pagination for the job.
+            requests.Response:
+                If ``return_json`` was set to ``True``, then a response
+                object is instead returned instead of an iterable.
 
         Examples:
-
-            For further information on credentials, what settings to use, etc,
-            refer to
-            `this doc <https://developer.tenable.com/reference#io-scans-remediation-list>`_  # noqa: E501
-            on the developer portal.
-
+            >>> tio.v3.vm.remediation_scans.search(filter=('netbios_name',
+            ...   'eq',
+            ...  'SCCM'), fields=['name', 'netbios_name', 'last_login'],
+            ...    limit=2, sort=[('last_observed', 'asc')])
         '''
-        # params = dict()
-        # pages = None
-        # if limit>0 and limit < 200:
-        #     params['limit'] = self._check('limit', limit, int)
-        # if offset >= 0:
-        #     params['offset'] = self._check('offset', offset, int)
-        # if 'scan_creation_date:asc' or 'scan_creation_date:desc' in sortval:
-        #     params['sort'] = self._check('sort', sortval, str)
-        #
-        # return RemediationScansIteratorV2(self._api,
-        #                                   _limit=limit,
-        #                                   _offset=offset,
-        #                                   _pages_total=pages,
-        #                                   _query=params,
-        #                                   _path='scans/remediation',
-        #                                   _resource='scans')
-        raise NotImplementedError('This method is under development')
+        iclass = SearchIterator
+        if kw.get('return_csv', False):
+            iclass = CSVChunkIterator
+        return super()._search(resource='scans',
+                               iterator_cls=iclass,
+                               api_path=f'{self._path}/search',
+                               **kw
+                               )
 
     def create_remediation_scan(self, **kwargs: dict) -> Dict:
         '''
@@ -185,8 +205,7 @@ class RemediationScansAPI(ExploreBaseEndpoint):
             For further information on credentials, what settings to use, etc,
             refer to
             `this doc
-            <https://developer.tenable.com/reference#io-scans-remediation
-            -create>`_
+            <https://developer.tenable.com/reference#io-scans-remediation-create>`_  # noqa E501
             on the developer portal.
 
         '''

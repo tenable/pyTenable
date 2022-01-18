@@ -3,15 +3,95 @@ Test for remediation scans endpoint
 '''
 
 import responses
+from requests import Response
+from responses import matchers
+
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 
 REM_SCANS_BASE_URL = r'https://cloud.tenable.com/api/v3/scans'
 BASE_URL = r'https://cloud.tenable.com'
 
 
 @responses.activate
-def test_create_rem_scans(api):
+def test_remediation_scan_search(api):
     '''
-    Test for create function
+    Test the search method
+    '''
+    fields = [
+        'name',
+        'type',
+        'id'
+    ]
+    sort = [('creation_date', 'desc')]
+
+    payload = {
+        'fields': fields,
+        'limit': 200,
+        'sort': [{'creation_date': 'desc'}]
+    }
+
+    api_response = {
+        'scans': [
+            {
+                'type': 'ps',
+                'id': '19270891-9d39-4087-ab1c-887fdf4f31d6',
+                'permissions': 128,
+                'enabled': False,
+                'control': True,
+                'read': False,
+                'last_modification_date': '2026-01-06T00:51:37.436Z',
+                'creation_date': '2026-01-06T00:51:37.436Z',
+                'status': 'completed',
+                'shared': False,
+                'user_permissions': 128,
+                'schedule_id':
+                    'template-0aaf949f-dd1c-a1b6-8de9-7cb934568618f7d3e3bb22b45950', # noqa E501
+                'wizard_id':
+                    '731a8e52-3ea6-a291-ec0a-d2ff0619c19d7bd788d6be818b65',
+                'scan_creation_date': '2026-01-06T00:51:37.436Z',
+                'owner': 'user1@example.com',
+                'policy_id': '12760891-9d39-4087-ab1c-887fdf4f31d6',
+                'name': 'Remediation Scan',
+            }
+        ],
+        'pagination': {
+            'total': 1,
+            'next': 'nextToken'
+        }
+    }
+    responses.add(
+        responses.POST,
+        f'{REM_SCANS_BASE_URL}/search',
+        match=[matchers.json_params_matcher(payload)],
+        json=api_response
+    )
+
+    iterator = api.v3.vm.remediation_scans.search(
+        fields=fields, limit=200, sort=sort
+    )
+    assert isinstance(iterator, SearchIterator)
+
+    event_list = []
+    for event in iterator:
+        event_list.append(event)
+    assert len(event_list) == api_response['pagination']['total']
+
+    iterator = api.v3.vm.remediation_scans.search(
+        fields=fields, return_csv=True, sort=sort, limit=200
+    )
+    assert isinstance(iterator, CSVChunkIterator)
+
+    resp = api.v3.vm.remediation_scans.search(
+        fields=fields, return_resp=True, limit=200, sort=sort
+    )
+    assert isinstance(resp, Response)
+
+
+@responses.activate
+def test_create_remediation_scans(api):
+    '''
+    Test for create method
     '''
     id = 'template-54910541-1016-191c-f92d-fe58f5455d40bbac8a568ec40c26'
     create_resp_data = {
@@ -20,7 +100,7 @@ def test_create_rem_scans(api):
             'container_id': '7a818eb1-8351-4795-99b0-9610c8954cb4',
             'owner_id': '68f1b7a3-caf0-4ef6-87a5-2d31338ead34',
             'id':
-                'template-54910541-1016-191c-f92d-fe58f5455d40bbac8a568ec40c26',   # noqa: E501
+                'template-54910541-1016-191c-f92d-fe58f5455d40bbac8a568ec40c26',  # noqa: E501
             'name': 'remediationMultiple',
             'description': 'string',
             'policy_id': 602,
@@ -117,6 +197,9 @@ def test_create_rem_scans(api):
         scanner_id='10167769',
         scan_time_window=10,
         targets=['127.0.0.1:3000'],
-        template='advanced'
+        template='advanced',
+        credentials={},
+        compliance={},
+        enabled_plugins=[110, 120, 130]
     )
     assert resp['id'] == id
