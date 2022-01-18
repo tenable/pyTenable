@@ -34,6 +34,7 @@ class AssetExportSchema(Schema):
 
     # Boolean flags
     has_plugin_results = fields.Bool()
+    is_deleted = fields.Bool()
     is_licensed = fields.Bool()
     is_terminated = fields.Bool()
     servicenow_sysid = fields.Bool()
