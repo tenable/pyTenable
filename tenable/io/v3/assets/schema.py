@@ -20,6 +20,11 @@ class AssetSchema(Schema):
     '''
     Asset API Schema
     '''
+    fqdn = fields.List(fields.Str())
+    ipv4 = fields.List(fields.Str())
+    netbios_name = fields.Str()
+    mac_address = fields.List(fields.Str())
+
     class Meta:
         unknown = INCLUDE
 
