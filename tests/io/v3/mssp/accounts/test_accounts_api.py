@@ -1,3 +1,6 @@
+'''
+Test Accounts API
+'''
 import requests
 import responses
 

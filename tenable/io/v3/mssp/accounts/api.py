@@ -4,7 +4,7 @@ Accounts
 
 The following methods allow for interaction into the Tenable.io
 :devportal:`Managed Security Service Provider v3 accounts
-<io-mssp-accounts>` API.
+<io-mssp-accounts>` API endpoints.
 
 Methods available on ``tio.v3.mssp.accounts``:
 
@@ -22,6 +22,9 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
 
 
 class AccountsAPI(ExploreBaseEndpoint):
+    '''
+    This class contains methods related to Accounts API
+    '''
     _path = 'api/v3/mssp/accounts'
     _conv_json = True
 
@@ -89,7 +92,7 @@ class AccountsAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
         Returns:
-            iterable:
+            Iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
                 If ``return_json`` was set to ``True``, then a response
