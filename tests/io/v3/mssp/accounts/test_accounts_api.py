@@ -6,16 +6,22 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
 
 MSSP_ACCOUNTS_URL = 'https://cloud.tenable.com/api/v3/mssp/accounts'
 
-accounts_us_east = [
-    {
-        'id': '2fd20a81-5dbf-4749-9173-62ba398c0641',
-        'container_name': 'MSSP Example 1',
-        'region': 'US East',
-        'licensed_assets': 0,
-        'licensed_assets_limit': 1024,
-        'licensed_apps': [],
-        'logo_uuid': '46cf08ec-8d67-4232-848e-b229faa86e7a'
-    }
+accounts_us_east = [{
+    'id': '2fd20a81-5dbf-4749-9173-62ba398c0641',
+    'container_name': 'MSSP Example 1',
+    'lms_customer_id': ' ',
+    'custom_name': ' ',
+    'sso_username': ' ',
+    'region': 'US EAST',
+    'site_id': 'test',
+    'licensed_assets': 20,
+    'licensed_assets_limit': 1000,
+    'licensed_apps': [
+        'was',
+        'app'
+    ],
+    'notes': ' '
+}
 ]
 
 
