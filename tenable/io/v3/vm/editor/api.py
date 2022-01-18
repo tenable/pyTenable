@@ -3,7 +3,10 @@ Editor
 ======
 
 The following methods allow for interaction into the Tenable.io
-:devportal:`Editor <editor>` API endpoint.
+:devportal:`Editor <editor>` API endpoints. While these endpoints are
+pythonized for completeness within pyTenable, the Editor API endpoints should
+generally be avoided unless absolutely necessary.  These endpoints are used to
+drive the Tenable.io UI, and not designed to be used programmatically.
 
 Methods available on ``tio.v3.vm.editor``:
 
@@ -20,7 +23,9 @@ from requests import Response
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
-from tenable.io.v3.vm.editor.schema import EditorSchema, EditorTemplateSchema
+from tenable.io.v3.base.schema.explore.search import SortType
+from tenable.io.v3.vm.editor.schema import (EditorAuditSchema, EditorSchema,
+                                            EditorTemplateSchema)
 from tenable.utils import dict_clean, dict_merge, policy_settings
 
 
@@ -31,7 +36,6 @@ class EditorAPI(ExploreBaseEndpoint):
 
     _path = 'api/v3/editor'
     _conv_json = True
-    _editor_schema = EditorSchema()
     _editor_template_schema = EditorTemplateSchema()
 
     def _parse_audits(self, data: List) -> Dict:
@@ -103,6 +107,43 @@ class EditorAPI(ExploreBaseEndpoint):
                         resp[dtype['name']][item['name']].append(settings)
         return resp
 
+    def _parse_plugins(self,
+                       etype: str,
+                       families: List,
+                       id: int,
+                       callfmt='editor/{etype}/{id}/families/{fam}'
+                       ):
+        '''
+        Walks through the plugin settings and will return the the configured
+        settings for a given scan/policy
+        '''
+        resp = dict()
+
+        for family in families:
+            if families[family]['status'] != 'mixed':
+                # if the plugin family is wholly enabled or disabled, then
+                # all we need to set is the status.
+                resp[family] = {'status': families[family]['status']}
+            else:
+                # if the plugin family is set to mixed, we will need to get
+                # the currently enabled status of every plugin within the
+                # mixed families.  To do so, we will need to query the
+                # scan editor for each mixed family, getting the plugin
+                # listing w/ status an interpreting that into a simple
+                # dictionary of plugin_id:status.
+                plugins = dict()
+                plugs = self._get(callfmt.format(
+                    etype=etype, id=id, fam=families[family]['id'])
+                )['plugins']
+                for plugin in plugs:
+                    plugins[plugin['id']] = plugin['status']
+                resp[family] = {
+                    'mixedDefault': 'enabled',
+                    'status': 'mixed',
+                    'individual': plugins,
+                }
+        return resp
+
     def audits(self,
                etype: str,
                object_id: int,
@@ -139,8 +180,8 @@ class EditorAPI(ExploreBaseEndpoint):
             ...         file_id=12,
             ...     )
         '''
-        etype = self._editor_schema.dump(
-            self._editor_schema.load({'etype': etype}))
+        schema = EditorAuditSchema()
+        etype = schema.dump(schema.load({'etype': etype}))
         etype = etype['etype']
 
         if not fobj:
@@ -279,47 +320,10 @@ class EditorAPI(ExploreBaseEndpoint):
             ... )
             >>> pprint(configuration_details)
         '''
-        etype = self._editor_schema.dump(
-            self._editor_schema.load({'etype': etype}))
+        editor_schema = EditorSchema()
+        etype = editor_schema.dump(editor_schema.load({'etype': etype}))
         etype = etype['etype']
         return self._get(f'{etype}/{id}')
-
-    def _parse_plugins(self,
-                       etype: str,
-                       families: List,
-                       id: int,
-                       callfmt='editor/{etype}/{id}/families/{fam}'
-                       ):
-        '''
-        Walks through the plugin settings and will return the the configured
-        settings for a given scan/policy
-        '''
-        resp = dict()
-
-        for family in families:
-            if families[family]['status'] != 'mixed':
-                # if the plugin family is wholly enabled or disabled, then
-                # all we need to set is the status.
-                resp[family] = {'status': families[family]['status']}
-            else:
-                # if the plugin family is set to mixed, we will need to get
-                # the currently enabled status of every plugin within the
-                # mixed families.  To do so, we will need to query the
-                # scan editor for each mixed family, getting the plugin
-                # listing w/ status an interpreting that into a simple
-                # dictionary of plugin_id:status.
-                plugins = dict()
-                plugs = self._get(callfmt.format(
-                    etype=etype, id=id, fam=families[family]['id'])
-                )['plugins']
-                for plugin in plugs:
-                    plugins[plugin['id']] = plugin['status']
-                resp[family] = {
-                    'mixedDefault': 'enabled',
-                    'status': 'mixed',
-                    'individual': plugins,
-                }
-        return resp
 
     def plugin_description(self,
                            policy_id: int,
@@ -437,7 +441,7 @@ class EditorAPI(ExploreBaseEndpoint):
             ... )
         '''
         etype = self._editor_template_schema.dump(
-            self._editor_schema.load({'etype': etype}))
+            self._editor_template_schema.load({'etype': etype}))
         etype = etype['etype']
 
         iclass = SearchIterator
@@ -446,7 +450,7 @@ class EditorAPI(ExploreBaseEndpoint):
         return super()._search(
             resource='templates',
             iterator_cls=iclass,
-            is_sort_with_prop=False,
+            sort_type=SortType.default,
             api_path=f'{self._path}/{etype}/templates/search',
             **kwargs
         )
@@ -473,7 +477,7 @@ class EditorAPI(ExploreBaseEndpoint):
             >>> pprint(template)
         '''
         etype = self._editor_template_schema.dump(
-            self._editor_schema.load({'etype': etype}))
+            self._editor_template_schema.load({'etype': etype}))
         etype = etype['etype']
 
         return self._get(f'{etype}/templates/{id}')

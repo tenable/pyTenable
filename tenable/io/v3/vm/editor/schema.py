@@ -7,6 +7,16 @@ class EditorSchema(Schema):
     '''
     etype = fields.Str(
         required=True,
+        validate=validate.OneOf(['scan', 'policy', 'scan/policy'])
+    )
+
+
+class EditorAuditSchema(Schema):
+    '''
+    Schema for audit file
+    '''
+    etype = fields.Str(
+        required=True,
         validate=validate.OneOf(['scan', 'policy'])
     )
 
