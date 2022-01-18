@@ -81,7 +81,7 @@ class InfrastructureAPI(APIEndpoint):
 
             >>> tad.infrastructure.details(infrastructure_id='1')
         '''
-        return self._schema.load(self._get(infrastructure_id))
+        return self._schema.load(self._get(f'{infrastructure_id}'))
 
     def update(self, infrastructure_id: str, **kwargs) -> Dict:
         '''
