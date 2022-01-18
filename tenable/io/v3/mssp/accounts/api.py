@@ -19,6 +19,7 @@ from requests import Response
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
+from tenable.io.v3.base.schema.explore.search import SortType
 
 
 class AccountsAPI(ExploreBaseEndpoint):
@@ -107,7 +108,7 @@ class AccountsAPI(ExploreBaseEndpoint):
             iclass = CSVChunkIterator
         return super()._search(resource='accounts',
                                iterator_cls=iclass,
-                               is_sort_with_prop=False,
+                               sort_type=SortType.property_based,
                                api_path=f'{self._path}/search',
                                **kwargs
                                )

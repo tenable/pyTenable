@@ -51,8 +51,7 @@ def test_search(api):
         'fields': fields,
         'filter': filters,
         'limit': 2,
-        'sort': [{'container_name': 'asc'}],
-
+        'sort': [{'property': 'container_name', 'order': 'asc'}],
     }
 
     responses.add(
