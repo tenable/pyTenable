@@ -32,6 +32,6 @@ class ManagedSecurityServiceProvider(ExploreBaseEndpoint):  # noqa: PLR0904
     def accounts(self):
         '''
         The interface object for the
-        :doc:`Tenable.IO v3 Accounts APIs <accounts>`
+        :doc:`Tenable.io v3 Accounts APIs <accounts>`
         '''
         return AccountsAPI(self._api)
