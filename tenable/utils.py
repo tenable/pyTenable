@@ -7,19 +7,26 @@ def policy_settings(item):
     policy settings in the editor format.
     '''
     resp = dict()
-    if 'id' in item and ('default' in item
-                         or ('type' in item and item['type'] in [
-                            'file',
-                            'checkbox',
-                            'entry',
-                            'textarea',
-                            'medium-fixed-entry',
-                            'password'])):
+    if 'id' in item and (
+        'default' in item
+        or (
+            'type' in item
+            and item['type']
+            in [
+                'file',
+                'checkbox',
+                'entry',
+                'textarea',
+                'medium-fixed-entry',
+                'password',
+            ]
+        )
+    ):
         # if we find both an 'id' and a 'default' attribute, or if we find
         # a 'type' attribute matching one of the known attribute types, then
         # we will parse out the data and append it to the response dictionary
-        if not 'default' in item:  # noqa: E713
-            item['default'] = ""
+        if 'default' not in item:
+            item['default'] = ''
         resp[item['id']] = item['default']
 
     for key in item.keys():

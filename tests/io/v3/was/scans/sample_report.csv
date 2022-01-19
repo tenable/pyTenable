@@ -1,0 +1,344 @@
+Plugin ID,CVE,CVSS,CVSSv3,Risk,Host,Protocol,Port,Name,Synopsis,Description,Solution,See Also,Plugin Output
+98138,,,,info,target1.pubtarg.tenablesecurity.com,http,,Screenshot,Screenshot,"Screenshot of the target web page, see attached image. This screenshot should show you the target page we are launching the scan against. If the image is not of the intended target page, please check the provided url in the scan configuration.",,,"WAS Scanner has taken a screenshot of the page at url 'http://target1.pubtarg.tenablesecurity.com' with dimensions 1600x1200.
+
+Please see the attachment for the screenshot image."
+98050,,,,info,target1.pubtarg.tenablesecurity.com,http,,Interesting response,Interesting response,"The scanner identified some responses with a status code other than the usual 200 (OK), 301 (Moved Permanently), 302 (Found) and 404 (Not Found) codes. These codes can provide useful insights into the behavior of the web application and identify any unexpected responses to be addressed.",,"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+
+https://en.wikipedia.org/wiki/List_of_HTTP_status_codes",
+98050,,,,info,target1.pubtarg.tenablesecurity.com,http,,Interesting response,Interesting response,"The scanner identified some responses with a status code other than the usual 200 (OK), 301 (Moved Permanently), 302 (Found) and 404 (Not Found) codes. These codes can provide useful insights into the behavior of the web application and identify any unexpected responses to be addressed.",,"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+
+https://en.wikipedia.org/wiki/List_of_HTTP_status_codes",
+98136,,,,info,target1.pubtarg.tenablesecurity.com,http,,Target Information,Target Information,Publishes the target information of the starting url as evaluated by the scan.,,,FQDN 'target1.pubtarg.tenablesecurity.com' resolves as 18.236.123.145
+98060,,2.6,3.1,low,target1.pubtarg.tenablesecurity.com,http,,Missing 'X-Frame-Options' Header,Missing 'X-Frame-Options' Header,"Clickjacking (User Interface redress attack, UI redress attack, UI redressing) is a malicious technique of tricking a Web user into clicking on something different from what the user perceives they are clicking on, thus potentially revealing confidential information or taking control of their computer while clicking on seemingly innocuous web pages.
+
+The server didn't return an `X-Frame-Options` header which means that this website could be at risk of a clickjacking attack.
+
+The `X-Frame-Options` HTTP response header can be used to indicate whether or not a browser should be allowed to render a page inside a frame or iframe. Sites can use this to avoid clickjacking attacks, by ensuring that their content is not embedded into other sites.",Configure your web server to include an `X-Frame-Options` header.,"https://developer.mozilla.org/en-US/docs/Web/HTTP/X-Frame-Options
+
+http://tools.ietf.org/html/rfc7034
+
+https://www.owasp.org/index.php/Clickjacking",Page http://target1.pubtarg.tenablesecurity.com/ has no X-Frame-Option header defined
+98009,,,,info,target1.pubtarg.tenablesecurity.com,http,,Web Application Sitemap,Web Application Sitemap,"Publishes the sitemap of the web application as seen by the scan.
+
+The list of all URLs that have been detected during the scan are available as an attachment. For each URL in the sitemap, the following information is provided:
+
+- The first time the URL is detected - The logic used to detect the URL. This information may be found by: crawling rendering the page by a specific plugin - The parent URL requested to detect the URL - If the URL has been requested at least once, information about the response - Whether or not the URL has been queued for audit - If the URL has not been queued for audit, the reason why the URL does not need an audit - Whether or not the URL has been effectively audited - If the URL has not been effectively audited, the reason that the scanner was unable to audit the URL
+
+
+Reasons for not adding a URL to the audit queue are as follows:
+
+- not_in_domain: The domain of the URL does not match main target URL - scope_configuration: The URL does not match scope include list scan settings - directory_depth: The number of directories in the URL path exceeds the scan configuration setting - exclude_file_extension: The URL file extension matched one entry of the file extension blacklist setting - exclude_path_patterns: The URL matched one entry of the URL exclusion blacklist setting - redundant_path: The number of URLs to be audited with the same path and query string parameters has been reached - request_redirect_limit: The number of HTTP redirects allowed per scan configuration setting has been reached - queue_full: The number of URLs to audit has been reached
+
+
+If a scan fails to audit a URL that has been queued for audit, reasons for the failure are as follows:
+
+- timeout: The request timed out when trying to retrieve URL contents - filesize_exceeded: URL response exceeded file size limit defined in the scan configuration - scan_timelimit_reached: The URL couldn’t be audited before the scan time limit - user_abort: The user stopped the scan before the URL could be audited",,,"The scan has discovered 11 distinct URLs, 1 of which are in the target scope.
+
+From this 1 URL, 5 have been effectively crawled.
+
+Response times ranged between 0.080912s and 0.16517499999999996s.
+
+Here is the distribution of URL types for this web application:
+- 1 as ""text/html""
+- 1 as ""image/gif""
+- 1 as ""image/png""
+- 2 as ""text/css""
+
+You can access the complete list of URLs with the information collected by the scan as an attachment to this plugin."
+112551,,2.6,3.1,low,target1.pubtarg.tenablesecurity.com,http,,Missing Content Security Policy,Missing Content Security Policy,"Content Security Policy (CSP) is a web security standard that helps to mitigate attacks like cross-site scripting (XSS), clickjacking or mixed content issues. CSP provides mechanisms to websites to restrict content that browsers will be allowed to load.
+
+No CSP header has been detected on this host. This URL is flagged as a specific example.",Configure Content Security Policy on your website by adding 'Content-Security-Policy' HTTP header or meta tag http-equiv='Content-Security-Policy'.,"https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+
+https://csp-evaluator.withgoogle.com/
+
+https://content-security-policy.com/
+
+https://developers.google.com/web/fundamentals/security/csp/
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy",http://target1.pubtarg.tenablesecurity.com/
+98618,,2.6,3.1,low,target1.pubtarg.tenablesecurity.com,http,,HTTP Header Information Disclosure,HTTP Header Information Disclosure,"The HTTP headers sent by the remote web server disclose information that can aid an attacker, such as the server version and technologies used by the web server.",Modify the HTTP headers of the web server to not disclose detailed information about the underlying web server.,"https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers
+
+http://projects.webappsec.org/w/page/13246925/Fingerprinting","The following header information disclosures have been detected on http://target1.pubtarg.tenablesecurity.com/:
+
+- Server: Apache/2.4.6 (CentOS)
+"
+112351,,5.0,5.3,medium,target1.pubtarg.tenablesecurity.com,http,,Apache Default Index Page,Apache Default Index Page,"The remote web server uses the default Apache index page. This page may contain some sensitive data like the server root and installation paths.
+
+This could potentially leak useful information about the server installation to a remote, unauthenticated attacker.",Remove the default index page.,https://www.owasp.org/index.php/SCG_WS_Apache,http://target1.pubtarg.tenablesecurity.com/
+98000,,,,info,target1.pubtarg.tenablesecurity.com,http,,Scan Information,Scan Information,Provides scan information and statistics of plugins run.,,,"
+Engine Version      0.41.0-110
+Scan ID             cade336b-29fb-4188-b42a-04d8f95d7de6
+
+Start Time          2020-01-02 21:53:59 +0000
+Duration            00:00:25
+
+Requests            350
+Requests/s          32.8402
+Mean Response Time  0.0931s
+
+Bandwidth Usage
+- Data to Target    118 KB
+- Data from Target  143 KB
+
+Network TimeOuts    0
+Browser TimeOuts    0
+Protocols           HTTP/HTTPs
+
+Authentication
+- None
+
+Plugins Included:
+- 98000 ""Scan Information""
+- 98003 ""OS Detection""
+- 98009 ""Web Application Sitemap""
+- 98019 ""Network Timeout Encountered""
+- 98024 ""HTTP Server Authentication Detected""
+- 98025 ""HTTP Server Authentication Succeeded""
+- 98026 ""HTTP Server Authentication Failed""
+- 98033 ""Login Form Detected""
+- 98034 ""Login Form Authentication Failed""
+- 98035 ""Login Form Authentication Succeeded""
+- 98043 ""Scan logged-out intermittently""
+- 98044 ""Scan aborted after being logged out""
+- 98047 ""Allowed HTTP Methods""
+- 98048 ""HTTP TRACE Allowed""
+- 98050 ""Interesting response""
+- 98054 ""Unvalidated Redirection""
+- 98056 ""Missing HTTP Strict Transport Security Policy""
+- 98057 ""Insecure 'Access-Control-Allow-Origin' header""
+- 98059 ""Technologies Detected""
+- 98060 ""Missing 'X-Frame-Options' Header""
+- 98062 ""Cookie set for parent domain""
+- 98063 ""Cookie Without HttpOnly Flag Detected""
+- 98064 ""Cookie Without Secure Flag Detected""
+- 98065 ""Insecure client-access policy""
+- 98070 ""Common Administration Interfaces Detection""
+- 98071 ""Common Files Detection""
+- 98072 ""Common Directories Detection""
+- 98073 ""Backup directory""
+- 98074 ""Backup file""
+- 98077 ""Private IP address disclosure""
+- 98078 ""E-mail address disclosure""
+- 98079 ""CVS/SVN user disclosure""
+- 98080 ""Form-based File Upload""
+- 98081 ""Password field with auto-complete""
+- 98082 ""Unencrypted password form""
+- 98083 ""CAPTCHA Detection""
+- 98084 ""Directory Listing""
+- 98087 ""WebDAV""
+- 98088 ""Exposed localstart.asp page""
+- 98091 ""Mixed Resource Detection""
+- 98092 ""HTML Object""
+- 98095 ""Misconfiguration in LIMIT directive of .htaccess file""
+- 98096 ""Access restriction bypass via origin spoof""
+- 98097 ""Backdoor Detection""
+- 98098 ""Source code disclosure""
+- 98099 ""Publicly writable directory""
+- 98100 ""Path Traversal""
+- 98101 ""Response Splitting""
+- 98102 ""Session fixation""
+- 98103 ""Unvalidated DOM redirect""
+- 98104 ""Cross-Site Scripting (XSS)""
+- 98105 ""Cross-Site Scripting (XSS) in HTML tag""
+- 98106 ""Cross-Site Scripting (XSS) in script context""
+- 98107 ""Cross-Site Scripting (XSS) in path""
+- 98108 ""Cross-Site Scripting (XSS) in event tag of HTML element""
+- 98109 ""DOM-based Cross-Site Scripting (XSS)""
+- 98110 ""DOM-based Cross-Site Scripting (XSS) in script context""
+- 98112 ""Cross-Site Request Forgery""
+- 98113 ""XML External Entity""
+- 98114 ""XPath Injection""
+- 98115 ""SQL Injection""
+- 98116 ""NoSQL Injection""
+- 98117 ""Blind SQL Injection (differential analysis)""
+- 98118 ""Blind SQL Injection (timing attack)""
+- 98119 ""Blind NoSQL Injection (differential analysis)""
+- 98120 ""Code injection""
+- 98121 ""Code injection (php://input wrapper)""
+- 98122 ""Code injection (timing attack)""
+- 98123 ""Operating System Command Injection""
+- 98124 ""Operating system command injection (timing attack)""
+- 98125 ""Local File Inclusion""
+- 98126 ""Remote File Inclusion""
+- 98127 ""LDAP Injection""
+- 98129 ""Credit card number disclosure""
+- 98136 ""Target Information""
+- 98137 ""Scan aborted after too many timeouts""
+- 98138 ""Screenshot""
+- 98139 ""Cookie Authentication Succeeded""
+- 98140 ""Cookie Authentication Failed""
+- 98141 ""Selenium Authentication Succeeded""
+- 98142 ""Selenium Authentication Failed""
+- 98143 ""Selenium Crawl Succeeded""
+- 98145 ""Selenium Crawl Failed""
+- 98200 ""Drupal Administration Panel Login Form Detected""
+- 98201 ""Drupal User Registration Form Detected""
+- 98202 ""WordPress User Registration Form Detected""
+- 98203 ""WordPress User Enumeration""
+- 98204 ""WordPress Configuration Backup Files Detected""
+- 98205 ""Joomla! User Registration Form Detected""
+- 98206 ""Joomla! Administration Panel Login Form Detected""
+- 98207 ""WordPress Administration Panel Login Form Detected""
+- 98208 ""Joomla! User Enumeration""
+- 98209 ""Drupal User Enumeration""
+- 98210 ""Drupal Configuration Backup Files Detected""
+- 98211 ""Joomla! Configuration Backup Files Detected""
+- 98212 ""WordPress Directory Listing""
+- 98213 ""Drupal Directory Listing""
+- 98214 ""Joomla! Directory Listing""
+- 98215 ""WordPress XML-RPC Interface Detected""
+- 98216 ""Drupal < 7.58 / 8.x < 8.3.9 / 8.4.x < 8.4.6 / 8.5.x < 8.5.1 Remote Code Execution""
+- 98217 ""WordPress 4.7.x < 4.7.2 REST API 'id' Parameter Privilege Escalation""
+- 98218 ""Joomla! 3.7.0 < 3.7.1 fields.php getListQuery() Method SQLi""
+- 98219 ""Drupal RESTWS Module Page Callback RCE""
+- 98220 ""Drupal Database Abstraction API SQLi""
+- 98221 ""Drupal Coder Module Deserialization RCE""
+- 98222 ""Joomla! User-Agent Object Injection RCE""
+- 98223 ""Web Server info.php / phpinfo.php Detection""
+- 98224 ""WordPress Media Attachment Enumeration""
+- 98225 ""Apache mod_status /server-status Information Disclosure""
+- 98226 ""Apache mod_info /server-info Information Disclosure""
+- 98227 ""WordPress Unsupported Version""
+- 98228 ""Drupal Unsupported Version""
+- 98229 ""Joomla! Unsupported Version""
+- 98230 ""PHP Unsupported Version""
+- 98231 ""Apache Unsupported Version""
+- 98232 ""Apache Tomcat Unsupported Version""
+- 98233 ""jQuery File Upload Arbitrary File Upload""
+- 98238 ""Drupal Version End of Life Advanced Notification""
+- 98239 ""PHP Version End of Life Advanced Notification""
+- 98398 ""JK Status Manager Information Disclosure""
+- 98399 ""Drupal 8.5.x < 8.5.8 / 8.6.x < 8.6.2 Open Redirect""
+- 98407 ""WordPress Debug Mode""
+- 98524 ""Apache Tomcat Default Files""
+- 98525 ""Apache Tomcat Manager Detected""
+- 98526 ""Missing Feature Policy""
+- 98527 ""Missing Referrer Policy""
+- 98531 ""Magento 2.1.x < 2.1.17 / 2.2.x < 2.2.8 / 2.3.x < 2.3.1 SQL Injection""
+- 98538 ""Environment Configuration File Detected""
+- 98593 ""PHP error_log File Detected""
+- 98594 ""Web.config File Information Disclosure""
+- 98595 ""Gitignore File Detected""
+- 98611 ""Error Message""
+- 98612 ""Missing 'Expect-CT' Header""
+- 98613 ""Atlassian Confluence < 6.6.12 / 6.7.x < 6.12.3 / 6.13.x < 6.13.3 / 6.14.x < 6.14.2 Template Injection""
+- 98615 ""Basic Authentication Without HTTPS""
+- 98618 ""HTTP Header Information Disclosure""
+- 98623 ""Host Header Injection""
+- 98630 ""Apache .htaccess and .htpasswd Disclosure""
+- 98632 ""WS_FTP.LOG File Detected""
+- 98642 ""Magento Adminstration Panel Login Form Detected""
+- 98644 ""Magento Connect Manager Detected""
+- 98646 "".DS_Store File Detected""
+- 98647 ""Missing Subresource Integrity (SRI)""
+- 98648 ""Missing 'Content-Type' Header""
+- 98649 ""Invalid Subresource Integrity""
+- 98650 ""SVN Repository Detected""
+- 98671 ""CVS Entries Detected""
+- 98680 ""CVS Repository Detected""
+- 98681 ""Sitemap.xml File Detected""
+- 98701 ""JetBrains .idea Directory Detected""
+- 98702 ""Magento RSS Feed Brute Force""
+- 98703 ""Magento API Anonymous Access""
+- 98704 ""Drupal PHPUnit/Mailchimp Code Execution Vulnerability""
+- 98705 ""Robots.txt File Detected""
+- 98715 ""Permissive HTTP Strict Transport Security Policy Detected""
+- 98716 ""Rails Arbitrary File Content Disclosure""
+- 98740 ""Cross-Site Scripting (XSS) in script src""
+- 98764 ""vBulletin 5.x < 5.5.4 Patch Level 1 Remote Code Execution Vulnerability""
+- 98765 ""Magento Cacheleak""
+- 98772 ""XHR Detection""
+- 112350 ""Nginx Default Index Page""
+- 112351 ""Apache Default Index Page""
+- 112352 ""Microsoft ASP.NET Application Tracing trace.axd Information Disclosure""
+- 112353 ""ASP.NET DEBUG Method Enabled""
+- 112360 ""Lighttpd Default Index Page""
+- 112361 ""Lighttpd Status Module Information Disclosure""
+- 112370 ""Apache Struts 2 DevMode Enabled""
+- 112371 ""Apache Struts 2 OGNL Console Detected""
+- 112470 ""Apache Spark < 2.1.3 / 2.2.x < 2.2.2 / 2.3.x < 2.3.1 XSS in UI""
+- 112490 ""Telerik Reporting < 11.0.17.406 Cross-Site Scripting""
+- 112500 ""IIS Default Index Page""
+- 112526 ""Missing 'X-XSS-Protection' Header""
+- 112527 ""Disabled 'X-XSS-Protection' Header""
+- 112528 ""Sitefinity Adminstration Panel Login Form Detected""
+- 112529 ""Missing 'X-Content-Type-Options' Header""
+- 112531 ""Git Repository Detected""
+- 112543 ""HTTPS Not Detected""
+- 112544 ""HTTP to HTTPS Redirect Not Enabled""
+- 112545 ""Oracle WebLogic Server Administration Console Detection""
+- 112547 ""Apache Struts Config Browser Detected""
+- 112550 ""Full Path Disclosure""
+- 112551 ""Missing Content Security Policy""
+- 112552 ""Deprecated Content Security Policy""
+- 112553 ""Missing 'Cache-Control' Header""
+- 112554 ""Permissive Content Security Policy Detected""
+- 112555 ""Report Only Content Security Policy Detected""
+- 112564 ""ThinkPHP 5.0.x < 5.0.23 / 5.1.x < 5.1.31 Remote Code Execution""
+- 112565 ""ThinkPHP 5.0.x < 5.0.24 Remote Code Execution""
+- 115540 ""Cookie Without SameSite Flag Detected"""
+98527,,,,info,target1.pubtarg.tenablesecurity.com,http,,Missing Referrer Policy,Missing Referrer Policy,"Referrer Policy provides mechanisms to websites to restrict referrer information (sent in the referer header) that browsers will be allowed to add.
+
+No Referrer Policy header or metatag configuration has been detected.",Configure Referrer Policy on your website by adding 'Referrer-Policy' HTTP header or meta tag referrer in HTML.,https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy,No Referrer-Policy headers or body meta tags were found on http://target1.pubtarg.tenablesecurity.com/
+98526,,,,info,target1.pubtarg.tenablesecurity.com,http,,Missing Permissions Policy,Missing Permissions Policy,Permissions Policy provides mechanisms to websites to restrict the use of browser features in its own frame and in iframes that it embeds.,Configure Permissions Policy on your website by adding 'Permissions-Policy' HTTP header.,"https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Feature-Policy
+
+https://scotthelme.co.uk/goodbye-feature-policy-and-hello-permissions-policy/",No Feature-Policy headers were found on http://target1.pubtarg.tenablesecurity.com/
+98003,,,,info,target1.pubtarg.tenablesecurity.com,http,,OS Detection,OS Detection,"This is an informational notice that by investigating the response headers from the remote host, it is possible to guess the name of the remote operating system in use. It is also possible sometimes to guess the version of the operating system.",,,Operating system has been guessed as 'Linux Kernel 3.10 on CentOS Linux release 7' from http://target1.pubtarg.tenablesecurity.com response contents.
+112526,,2.6,3.1,info,target1.pubtarg.tenablesecurity.com,http,,Missing 'X-XSS-Protection' Header,Missing 'X-XSS-Protection' Header,"The HTTP 'X-XSS-Protection' response header is a feature of modern browsers that allows websites to control their XSS auditors.
+
+The server is not configured to return a 'X-XSS-Protection' header which means that any pages on this website could be at risk of a Cross-Site Scripting (XSS) attack. This URL is flagged as a specific example.
+
+If legacy browsers support is not needed, it is recommended to use Content-Security-Policy without allowing unsafe-inline scripts instead.",Configure your web server to include an 'X-XSS-Protection' header with a value of '1; mode=block' on all pages.,"https://www.owasp.org/index.php/OWASP_Secure_Headers_Project#xxxsp
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection",
+98050,,,,info,target1.pubtarg.tenablesecurity.com,http,,Interesting response,Interesting response,"The scanner identified some responses with a status code other than the usual 200 (OK), 301 (Moved Permanently), 302 (Found) and 404 (Not Found) codes. These codes can provide useful insights into the behavior of the web application and identify any unexpected responses to be addressed.",,"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+
+https://en.wikipedia.org/wiki/List_of_HTTP_status_codes",
+98612,,2.6,3.1,info,target1.pubtarg.tenablesecurity.com,http,,Missing 'Expect-CT' Header,Missing 'Expect-CT' Header,"The Expect-CT header allows sites to opt in to reporting and or enforcement of Certificate Transparency requirements, which prevents the use of misissued certificates for that site from going unnoticed. This URL is flagged as a specific example.
+
+The Expect-CT will likely become obsolete in June 2021. Since May 2018 new certificates are expected to support SCTs by default. Certificates before March 2018 were allowed to have a lifetime of 39 months, those will all be expired in June 2021.","If your certificate supports SCT (Signed Certificate Timestamp) by default, the Expect-CT header is not required.",https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Expect-CT,The Expect-Ct header was not detected on http://target1.pubtarg.tenablesecurity.com/
+98048,,2.6,3.1,low,target1.pubtarg.tenablesecurity.com,http,,HTTP TRACE Allowed,HTTP TRACE Allowed,"The HTTP TRACE method allows a client to send a request to the server, and have the same request sent back in the server's response. This allows the client to determine if the server is receiving the request as expected. Often this method is used for debugging purposes (e.g. to verify that a request arrives unaltered).
+
+On many default installations the TRACE method is still enabled.
+
+While not vulnerable by itself, it does provide a method for cyber attackers to bypass the HTTPOnly cookie flag, and therefore could allow a XSS attack to successfully access a session token.
+
+The scanner has discovered that the affected page permits the HTTP TRACE method.",The HTTP TRACE method is normally not required within production sites and should therefore be disabled.,"https://www.kb.cert.org/vuls/id/867593
+
+http://www.owasp.org/index.php/Cross_Site_Tracing","An HTTP TRACE request was sent to http://target1.pubtarg.tenablesecurity.com/, which responded with a 200 OK."
+98059,,,,info,target1.pubtarg.tenablesecurity.com,http,,Technologies Detected,Technologies Detected,"This is an informational plugin to inform the user what technologies the framework has detected on the target application, which can then be examined and checked for known vulnerable software versions","Only use components that do not have known vulnerabilities, only use components that when combined to not introduce a security vulnerability, and ensure that a misconfiguration does not cause any vulnerabilities",,"The framework has detected the following technologies in the target application:
+
+- Bootstrap (version unknown)
+- Apache (v2.4.6)"
+98050,,,,info,target1.pubtarg.tenablesecurity.com,http,,Interesting response,Interesting response,"The scanner identified some responses with a status code other than the usual 200 (OK), 301 (Moved Permanently), 302 (Found) and 404 (Not Found) codes. These codes can provide useful insights into the behavior of the web application and identify any unexpected responses to be addressed.",,"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+
+https://en.wikipedia.org/wiki/List_of_HTTP_status_codes",
+98078,,,,info,target1.pubtarg.tenablesecurity.com,http,,E-mail address disclosure,E-mail address disclosure,"Email addresses are typically found on ""Contact us"" pages, however, they can also be found within scripts or code comments of the application. They are used to provide a legitimate means of contacting an organisation.
+
+As one of the initial steps in information gathering, cyber-criminals will spider a website and using automated methods collect as many email addresses as possible, that they may then use in a social engineering attack.
+
+Using the same automated methods, scanner was able to detect one or more email addresses that were stored within the affected page.",E-mail addresses should be presented in such a way that it is hard to process them automatically.,,"Number of Email Addresses Collected: 1
+
+Listed below are each email address and the number of URLs where the email address has been found:
+webmaster@example.com found on 1 URL
+"
+98047,,,,info,target1.pubtarg.tenablesecurity.com,http,,Allowed HTTP Methods,Allowed HTTP Methods,"There are a number of HTTP methods that can be used on a webserver (`OPTIONS`, `HEAD`, `GET`, `POST`, `PUT`, `DELETE` etc.). Each of these methods perform a different function and each have an associated level of risk when their use is permitted on the webserver.
+
+By sending an HTTP OPTIONS request and a direct HTTP request for each method, the scanner discovered the methods that are allowed by the server.",It is recommended that a whitelisting approach be taken to explicitly permit only the HTTP methods required by the application and block all others.,http://httpd.apache.org/docs/2.2/mod/core.html#limitexcept,"http://target1.pubtarg.tenablesecurity.com/ allows requests made using the following HTTP methods (See attachment for more information):
+- POST
+- OPTIONS
+- TRACE
+"
+112529,,2.6,3.1,low,target1.pubtarg.tenablesecurity.com,http,,Missing 'X-Content-Type-Options' Header,Missing 'X-Content-Type-Options' Header,"The HTTP 'X-Content-Type-Options' response header prevents the browser from MIME-sniffing a response away from the declared content-type.
+
+The server did not return a correct 'X-Content-Type-Options' header, which means that this website could be at risk of a Cross-Site Scripting (XSS) attack.",Configure your web server to include an 'X-Content-Type-Options' header with a value of 'nosniff'.,"https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
+
+https://www.owasp.org/index.php/OWASP_Secure_Headers_Project#xcto",
+112543,,7.1,7.4,high,target1.pubtarg.tenablesecurity.com,http,,HTTPS Not Detected,HTTPS Not Detected,HTTPS is a protocol that protects the integrity and confidentiality of data between client and server. HTTPS is highly recommended to protect connections to website regardless of its content.,Enable HTTPS following best practices.,https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet,The Scanner was unable to detect HTTPS on target: http://target1.pubtarg.tenablesecurity.com
+112553,,2.6,3.7,low,target1.pubtarg.tenablesecurity.com,http,,Missing 'Cache-Control' Header,Missing 'Cache-Control' Header,"The HTTP 'Cache-Control' header is used to specify directives for caching mechanisms.
+
+The server did not return or returned an invalid 'Cache-Control' header which means page containing sensitive information (password, credit card, personal data, social security number, etc) could be stored on client side disk and then be exposed to unauthorised persons. This URL is flagged as a specific example.",Configure your web server to include a 'Cache-Control' header with appropriate directives. If page contains sensitive information 'Cache-Control' value should be 'no-store' and 'Pragma' header value should be 'no-cache'.,"https://www.owasp.org/index.php/Testing_for_Browser_cache_weakness_(OTG-AUTHN-006)
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Pragma
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control",http://target1.pubtarg.tenablesecurity.com/ has no Cache Control header defined.

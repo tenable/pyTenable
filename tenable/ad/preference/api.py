@@ -39,9 +39,9 @@ class PreferenceAPI(APIEndpoint):
 
         Args:
             language (optional, str):
-                ???
+                The language of product for the current user.
             preferred_profile_id (optional, int):
-                ???
+                The profile identifier to use after login for the current user.
 
         Return:
             The user's preferences object
