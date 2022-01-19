@@ -118,7 +118,7 @@ class RemediationScansAPI(ExploreBaseEndpoint):
                                **kw
                                )
 
-    def create_remediation_scan(self, **kwargs: dict) -> Dict:
+    def create_remediation_scan(self, **kwargs: Dict) -> Dict:
         '''
         Create a new remediation scan.
 
@@ -218,7 +218,7 @@ class RemediationScansAPI(ExploreBaseEndpoint):
         # Run the API call and return the result to the caller.
         return self._post('remediation', json=scan)['scan']
 
-    def _create_scan_document(self, kwargs: dict) -> Dict:
+    def _create_scan_document(self, kwargs: Dict) -> Dict:
         '''
         Takes the key-word arguments and will provide a scan settings document
         based on the values inputted.
@@ -230,14 +230,14 @@ class RemediationScansAPI(ExploreBaseEndpoint):
                 The resulting scan document based on the kwargs provided.
         '''
         scan = {
-            'settings': dict(),
+            'settings': {},
         }
         # collection of run-time data from different APIs for schema validation
-        context_data = dict()
+        context_data = {}
 
         # If template is specified, then we will pull the listing of available
         # templates and set the policy UUID to match the template name given.
-        templates = dict()
+        templates = {}
         if 'template' in kwargs:
             # todo migrate it to v3
             templates = self._api.policies.templates()
@@ -320,7 +320,7 @@ class RemediationScansAPI(ExploreBaseEndpoint):
         # For credentials, we will simply push the dictionary as-is into the
         # the credentials.add sub-document.
         if 'credentials' in kwargs:
-            scan['credentials'] = {'add': dict()}
+            scan['credentials'] = {'add': {}}
             scan['credentials']['add'] = kwargs['credentials']
             del kwargs['credentials']
 

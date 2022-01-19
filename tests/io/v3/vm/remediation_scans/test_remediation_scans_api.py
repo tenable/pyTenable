@@ -14,7 +14,7 @@ BASE_URL = r'https://cloud.tenable.com'
 
 
 @responses.activate
-def test_remediation_scan_search(api):
+def test_search(api):
     '''
     Test the search method
     '''
@@ -24,11 +24,17 @@ def test_remediation_scan_search(api):
         'id'
     ]
     sort = [('creation_date', 'desc')]
+    filters = ('status', 'eq', 'completed')
 
     payload = {
         'fields': fields,
         'limit': 200,
-        'sort': [{'creation_date': 'desc'}]
+        'sort': [{'creation_date': 'desc'}],
+        'filter': {
+            'property': 'status',
+            'operator': 'eq',
+            'value': 'completed'
+        }
     }
 
     api_response = {
@@ -68,7 +74,7 @@ def test_remediation_scan_search(api):
     )
 
     iterator = api.v3.vm.remediation_scans.search(
-        fields=fields, limit=200, sort=sort
+        fields=fields, limit=200, sort=sort, filter=filters
     )
     assert isinstance(iterator, SearchIterator)
 
@@ -78,21 +84,22 @@ def test_remediation_scan_search(api):
     assert len(event_list) == api_response['pagination']['total']
 
     iterator = api.v3.vm.remediation_scans.search(
-        fields=fields, return_csv=True, sort=sort, limit=200
+        fields=fields, return_csv=True, sort=sort, limit=200, filter=filters
     )
     assert isinstance(iterator, CSVChunkIterator)
 
     resp = api.v3.vm.remediation_scans.search(
-        fields=fields, return_resp=True, limit=200, sort=sort
+        fields=fields, return_resp=True, limit=200, sort=sort, filter=filters
     )
     assert isinstance(resp, Response)
 
 
 @responses.activate
-def test_create_remediation_scans(api):
+def test_create(api):
     '''
     Test for create method
     '''
+    # todo => add more params for high test coverage later
     id = 'template-54910541-1016-191c-f92d-fe58f5455d40bbac8a568ec40c26'
     create_resp_data = {
         'scan': {
