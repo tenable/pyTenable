@@ -237,9 +237,7 @@ class LogosAPI(ExploreBaseEndpoint):
                 If ``return_json`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
         Examples:
-            >>> tio.v3.audit_log.search(filter=('netbios_name', 'eq',
-            ...  'SCCM'), fields=['id', 'action', 'description'],
-            ...    limit=2, sort=[('received': 'desc)])
+            >>> tio.v3.mssp.logos.search(limit=100, fields=['id'])
         '''
         iclass = SearchIterator
         if kwargs.get('return_csv', False):
