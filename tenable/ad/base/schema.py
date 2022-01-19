@@ -1,5 +1,5 @@
 from typing import Optional, List
-from marshmallow import Schema, fields, ValidationError
+from marshmallow import Schema, fields
 
 
 def camelcase(s):
