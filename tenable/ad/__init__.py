@@ -13,6 +13,7 @@ This package covers the Tenable.ad interface.
     :glob:
 
     about
+    ad_object
     api_keys
     attack_types
     category
