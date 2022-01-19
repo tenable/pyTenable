@@ -1,5 +1,5 @@
-from marshmallow import fields, pre_load, validate as v
-from tenable.ad.base.schema import CamelCaseSchema, camelcase
+from marshmallow import fields, validate as v
+from tenable.ad.base.schema import CamelCaseSchema
 
 
 class AllowedGroupSchema(CamelCaseSchema):
@@ -7,13 +7,6 @@ class AllowedGroupSchema(CamelCaseSchema):
     default_profile_id = fields.Int(required=True)
     default_role_ids = fields.List(fields.Int(required=True),
                                    validate=v.Length(min=1))
-
-    @pre_load
-    def keys_to_camel(self, data, **kwargs):
-        resp = {}
-        for key, value in data.items():
-            resp[camelcase(key)] = value
-        return resp
 
 
 class SAMLConfigurationSchema(CamelCaseSchema):
@@ -25,10 +18,3 @@ class SAMLConfigurationSchema(CamelCaseSchema):
     assert_endpoint = fields.Str()
     activate_created_users = fields.Bool()
     allowed_groups = fields.Nested(AllowedGroupSchema, many=True)
-
-    @pre_load
-    def keys_to_camel(self, data, **kwargs):
-        resp = {}
-        for key, value in data.items():
-            resp[camelcase(key)] = value
-        return resp

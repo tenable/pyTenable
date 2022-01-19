@@ -1,5 +1,5 @@
-from marshmallow import fields, pre_load, validate as v
-from tenable.ad.base.schema import CamelCaseSchema, convert_keys_to_camel
+from marshmallow import fields, validate as v
+from tenable.ad.base.schema import CamelCaseSchema, last_word_uppercase
 
 
 class LDAPConfigurationAllowedGroupsSchema(CamelCaseSchema):
@@ -8,12 +8,12 @@ class LDAPConfigurationAllowedGroupsSchema(CamelCaseSchema):
                                    validate=v.Length(min=1))
     default_profile_id = fields.Int(required=True)
 
-    @pre_load
-    def convert(self, data, **kwargs):
-        return convert_keys_to_camel(data)
-
 
 class LDAPConfigurationSchema(CamelCaseSchema):
+    class Meta:
+        case_convertors = {
+            'search_user_dn': last_word_uppercase
+        }
     enabled = fields.Bool()
     url = fields.Str()
     search_user_dn = fields.Str()
@@ -22,7 +22,3 @@ class LDAPConfigurationSchema(CamelCaseSchema):
     user_search_filter = fields.Str()
     allowed_groups = fields.Nested(
         LDAPConfigurationAllowedGroupsSchema, many=True)
-
-    @pre_load
-    def convert(self, data, **kwargs):
-        return convert_keys_to_camel(data, special=['search_user_dn'])
