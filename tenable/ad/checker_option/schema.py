@@ -1,6 +1,5 @@
-from marshmallow import fields, validate, pre_load
-from tenable.ad.base.schema import (CamelCaseSchema, convert_keys_to_camel,
-                                    BoolInt)
+from marshmallow import fields, validate
+from tenable.ad.base.schema import CamelCaseSchema, BoolInt
 
 
 class CheckerOptionSchema(CamelCaseSchema):
@@ -18,7 +17,3 @@ class CheckerOptionSchema(CamelCaseSchema):
     description = fields.Str(allow_none=True)
     translations = fields.List(fields.Str())
     staged = BoolInt()
-
-    @pre_load
-    def keys_to_camel(self, data, **kwargs):
-        return convert_keys_to_camel(data)
