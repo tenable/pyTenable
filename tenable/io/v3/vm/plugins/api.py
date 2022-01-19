@@ -107,7 +107,6 @@ class PluginsAPI(ExploreBaseEndpoint):
         if kwargs.get('return_csv', False):
             iclass = CSVChunkIterator
         return super()._search(iterator_cls=iclass,
-                               is_sort_with_prop=False,
                                api_path=f'{self._path}/families/search',
                                resource='families',
                                **kwargs
@@ -233,7 +232,6 @@ class PluginsAPI(ExploreBaseEndpoint):
         if kwargs.get('return_csv', False):
             iclass = CSVChunkIterator
         return super()._search(iterator_cls=iclass,
-                               is_sort_with_prop=False,
                                api_path=f'{self._path}/search',
                                resource='plugins',
                                **kwargs
