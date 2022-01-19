@@ -18,11 +18,13 @@ Methods available on ``tio.v3.was``:
 
     attachments
     folders
+    plugins
     scans
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.was.attachments.api import AttachmentsAPI
 from tenable.io.v3.was.folders.api import FoldersAPI
+from tenable.io.v3.was.plugins.api import PluginsAPI
 from tenable.io.v3.was.scans.api import ScansAPI
 
 
@@ -36,7 +38,7 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     def attachments(self):
         '''
         The interface object for the
-        :doc:`Attachments API <attachments>`
+        :doc:`Tenable.IO v3 Attachments API <attachments>`
         '''
         return AttachmentsAPI(self._api)
 
@@ -44,14 +46,22 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     def folders(self):
         '''
         The interface object for the
-        :doc:`Folders API <folders>`
+        :doc:`Tenable.IO v3 Folders API <folders>`
         '''
         return FoldersAPI(self._api)
+
+    @property
+    def plugins(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.IO v3 Plugins API <plugins>`
+        '''
+        return PluginsAPI(self._api)
 
     @property
     def scans(self):
         '''
         The interface object for the
-        :doc:`Scans API <scans>`
+        :doc:`Tenable.IO v3 Scans API <scans>`
         '''
         return ScansAPI(self._api)
