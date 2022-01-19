@@ -28,6 +28,7 @@ This package covers the Tenable.ad interface.
     roles
     saml_configuration
     score
+    topology
     users
     widget
 '''
