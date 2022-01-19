@@ -16,6 +16,7 @@ from tenable.io.v3.base.schema.explore.search import SearchSchema, SortType
 
 class ExploreBaseEndpoint(APIEndpoint):
     _conv_json = False
+    _sort_type = SortType
 
     def _details(self, obj_id: Union[str, UUID]) -> dict:
         '''
@@ -39,7 +40,7 @@ class ExploreBaseEndpoint(APIEndpoint):
                 *,
                 resource: str,
                 api_path: str,
-                sort_type: Enum = SortType.default,
+                sort_type: Enum = _sort_type.default,
                 return_resp: bool = False,
                 iterator_cls: ExploreIterator = SearchIterator,
                 schema_cls: SearchSchema = SearchSchema,
