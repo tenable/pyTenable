@@ -27,6 +27,7 @@ Methods available on ``tio.v3.vm``:
     plugins
     scanners
     scanner_groups
+    vulnerabilities
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
@@ -41,7 +42,7 @@ from tenable.io.v3.vm.plugins.api import PluginsAPI
 from tenable.io.v3.vm.scanner_groups.api import ScannerGroupsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
 from tenable.io.v3.vm.server.api import ServerAPI
-from tenable.io.v3.vm.vulnerability.api import VulnerabilityAPI
+from tenable.io.v3.vm.vulnerabilities.api import VulnerabilityAPI
 
 
 class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
@@ -151,6 +152,6 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def vulnerabilities(self):
         '''
         The interface object for the
-        :doc:`Tenable.io v3 VM Vulnerability APIs <vulnerability>`
+        :doc:`Tenable.io v3 VM Vulnerabilities APIs <vulnerabilities>`
         '''
         return VulnerabilityAPI(self._api)

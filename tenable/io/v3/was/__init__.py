@@ -20,13 +20,14 @@ Methods available on ``tio.v3.was``:
     folders
     plugins
     scans
+    vulnerabilities
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.was.attachments.api import AttachmentsAPI
 from tenable.io.v3.was.folders.api import FoldersAPI
 from tenable.io.v3.was.plugins.api import PluginsAPI
 from tenable.io.v3.was.scans.api import ScansAPI
-from tenable.io.v3.was.vulnerability.api import VulnerabilityAPI
+from tenable.io.v3.was.vulnerabilities.api import VulnerabilityAPI
 
 
 class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
@@ -71,6 +72,6 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     def vulnerabilities(self):
         '''
         The interface object for the
-        :doc:`Tenable.io v3 WAS Vulnerability APIs <vulnerability>`
+        :doc:`Tenable.io v3 WAS Vulnerabilities APIs <vulnerabilities>`
         '''
         return VulnerabilityAPI(self._api)

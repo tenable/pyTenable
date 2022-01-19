@@ -20,8 +20,7 @@ from requests import Response
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
-from tenable.io.v3.base.schema.explore.search import SortType
-from tenable.io.v3.vm.vulnerability.schema import VulnerabilitySchema
+from tenable.io.v3.vm.vulnerabilities.schema import VulnerabilitySchema
 from tenable.utils import dict_clean
 
 
@@ -104,13 +103,13 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
                     ...  }]
                     ... }]
 
-            product (str, Optional):
+            product (str, optional):
                 The name of the product from the vendor that is the source of
                 the vulnerability data being imported.
 
                 >>> tenable.io — The vulnerability data source is Tenable.io.
 
-            coverage (str, Optional):
+            coverage (str, optional):
                 A string or range of IDs that each represents a check that
                 the scan used to detect vulnerabilities you are importing.
                 This parameter supports Tenable plugin checks only.
@@ -191,7 +190,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.audit_log_filters()`
+                the :py:meth:`tio.filters.workbench_vuln_filters()`
                 endpoint to get more details.
 
             sort (list[tuple], optional):
@@ -221,7 +220,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
 
         Returns:
 
-            iterable:
+            Iterable:
                 The iterable that handles the pagination for the job.
 
             requests.Response:
@@ -238,7 +237,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
         if kw.get('return_csv', False):
             iclass = CSVChunkIterator
         return super()._search(iterator_cls=iclass,
-                               sort_type=SortType.property_based,
+                               sort_type=self._sort_type.property_based,
                                api_path=f'{self._path}/{api_path}',
                                resource='findings',
                                **kw

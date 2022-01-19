@@ -18,7 +18,6 @@ from requests import Response
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
-from tenable.io.v3.base.schema.explore.search import SortType
 
 
 class VulnerabilityAPI(ExploreBaseEndpoint):
@@ -89,7 +88,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.audit_log_filters()`
+                the :py:meth:`tio.v3.was.filters.vulnerabilities_filters()`
                 endpoint to get more details.
 
             sort (list[tuple], optional):
@@ -119,7 +118,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
 
         Returns:
 
-            iterable:
+            Iterable:
                 The iterable that handles the pagination for the job.
 
             requests.Response:
@@ -134,7 +133,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
         if kw.get('return_csv', False):
             iclass = CSVChunkIterator
         return super()._search(iterator_cls=iclass,
-                               sort_type=SortType.property_based,
+                               sort_type=self._sort_type.property_based,
                                resource='findings',
                                api_path=f'{self._path}/search',
                                **kw
