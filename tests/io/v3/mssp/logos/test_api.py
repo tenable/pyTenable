@@ -4,9 +4,12 @@ Test cases for Logos API
 import os
 import uuid
 
-import pytest
 import responses
+from requests import Response
 from responses import matchers
+
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 
 LOGOS_BASE_URL = r'https://cloud.tenable.com/api/v3/mssp/logos'
 BASE_URL = r'https://cloud.tenable.com'
@@ -35,12 +38,67 @@ def test_add(api):
     assert resp == api_resp['id']
 
 
+@responses.activate
 def test_search(api):
     '''
-    Test case for validating search action of Logos API
+    Test the search functionality of Logos API
     '''
-    with pytest.raises(NotImplementedError):
-        api.v3.mssp.logos.search()
+    fields = [
+        'container_id',
+        'id',
+        'name',
+        'filename'
+    ]
+
+    payload = {
+        'fields': fields,
+        'limit': 200
+    }
+
+    api_response = {
+        "logos": [{
+            "id": "1028c13f-9cb5-40ec-a1a4-a458b21ae2f7",
+            "container_id": "cfdabb09-6aef-481d-b28f-aecb1c38f297",
+            "name": "download27.png",
+            "filename": "download1.png"
+        }, {
+            "id": "0cba902a-bd11-4481-bd28-999c88ffe22f",
+            "container_id": "cfdabb09-6aef-481d-b28f-aecb1c38f297",
+            "name": "profile.png",
+            "filename": "download27.png"
+        }],
+        "pagination": {
+            "total": 2,
+            "next": "nextToken"
+        }
+    }
+
+    responses.add(
+        responses.POST,
+        f'{LOGOS_BASE_URL}/search',
+        match=[matchers.json_params_matcher(payload)],
+        json=api_response
+    )
+
+    iterator = api.v3.mssp.logos.search(
+        fields=fields, limit=200
+    )
+    assert isinstance(iterator, SearchIterator)
+
+    event_list = []
+    for event in iterator:
+        event_list.append(event)
+    assert len(event_list) == api_response['pagination']['total']
+
+    iterator = api.v3.mssp.logos.search(
+        fields=fields, return_csv=True, limit=200
+    )
+    assert isinstance(iterator, CSVChunkIterator)
+
+    resp = api.v3.mssp.logos.search(
+        fields=fields, return_resp=True, limit=200
+    )
+    assert isinstance(resp, Response)
 
 
 @responses.activate
