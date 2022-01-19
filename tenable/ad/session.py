@@ -19,9 +19,11 @@ from .ldap_configuration.api import LDAPConfigurationAPI
 from .lockout_policy.api import LockoutPolicyAPI
 from .preference.api import PreferenceAPI
 from .profiles.api import ProfilesAPI
+from .reason.api import ReasonAPI
 from .roles.api import RolesAPI
 from .saml_configuration.api import SAMLConfigurationAPI
 from .score.api import ScoreAPI
+from .topology.api import TopologyAPI
 from .users.api import UsersAPI
 from .widget.api import WidgetsAPI
 
@@ -155,6 +157,14 @@ class TenableAD(APIPlatform):
         return ProfilesAPI(self)
 
     @property
+    def reason(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Reason APIs <reason>`.
+        '''
+        return ReasonAPI(self)
+
+    @property
     def roles(self):
         '''
         The interface object for the
@@ -177,6 +187,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Score APIs <score>`.
         '''
         return ScoreAPI(self)
+
+    @property
+    def topology(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Topology APIs <topology>`.
+        '''
+        return TopologyAPI(self)
 
     @property
     def users(self):
