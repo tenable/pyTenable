@@ -1,5 +1,5 @@
-from typing import Optional, List
-from marshmallow import Schema, fields
+from typing import Optional, List, Dict
+from marshmallow import Schema, fields, pre_load
 
 
 def camelcase(s):
@@ -15,8 +15,10 @@ def last_word_uppercase(s):
         example_field -> exampleFIELD
     '''
     parts = s.split("_")
-    return parts[0] + "".join(i.title() for i in parts[1:len(parts) - 1]) + \
-           parts[-1].upper()
+    start = parts.pop(0)
+    last = parts.pop(-1).upper()
+    middle = "".join(i.title() for i in parts)
+    return f'{start}{middle}{last}'
 
 
 def convert_keys_to_camel(data: dict,
@@ -58,13 +60,18 @@ class CamelCaseSchema(Schema):
     """
 
     def on_bind_field(self, field_name, field_obj):
-        last_word_uppercase_field_names = ['search_user_dn']
+        fn_mapping = getattr(self.Meta, 'case_convertors', {})
+        convertor = fn_mapping.get(field_name, camelcase)
+        field_obj.data_key = convertor(field_obj.data_key or field_name)
 
-        if field_name in last_word_uppercase_field_names:
-            field_obj.data_key = last_word_uppercase(
-                field_obj.data_key or field_name)
-        else:
-            field_obj.data_key = camelcase(field_obj.data_key or field_name)
+    @pre_load
+    def convert_snake_to_camel(self, data, **kwargs) -> Dict:
+        resp = {}
+        fn_mapping = getattr(self.Meta, 'case_convertors', {})
+        for key, value in data.items():
+            convertor = fn_mapping.get(key, camelcase)
+            resp[convertor(key)] = value
+        return resp
 
 
 class BoolInt(fields.Boolean):
