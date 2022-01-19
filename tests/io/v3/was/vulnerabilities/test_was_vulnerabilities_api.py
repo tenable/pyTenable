@@ -61,12 +61,6 @@ def test_search(api):
         }
     ]
 
-    payload = {
-        'fields': fields,
-        'limit': 200,
-        'sort': sort_payload
-    }
-
     sort = [("last_observed", "desc")]
 
     payload = {
