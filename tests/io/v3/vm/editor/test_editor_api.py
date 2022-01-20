@@ -8,12 +8,14 @@ import responses
 
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
-
-from .objects import (CONFIGURATION_DETAILS, CONFIGURATION_ID, ETYPE,
-                      FAMILY_ID, FILE_ID, OBJECT_ID, PLUGIN_DETAILS, PLUGIN_ID,
-                      POLICY_ID, RESP_EXPECTED, TEMPALTE_SEARCH_FILTER,
-                      TEMPALTE_SEARCH_SORT, TEMPLATE, TEMPLATE_DETAILS,
-                      TEMPLATE_ID, TEMPLATE_SEARCH_FIELDS)
+from tests.io.v3.vm.editor.objects import (CONFIGURATION_DETAILS,
+                                           CONFIGURATION_ID, ETYPE, FAMILY_ID,
+                                           FILE_ID, OBJECT_ID, PLUGIN_DETAILS,
+                                           PLUGIN_ID, POLICY_ID, RESP_EXPECTED,
+                                           TEMPALTE_SEARCH_FILTER,
+                                           TEMPALTE_SEARCH_SORT, TEMPLATE,
+                                           TEMPLATE_DETAILS, TEMPLATE_ID,
+                                           TEMPLATE_SEARCH_FIELDS)
 
 EDITOR_BASE_URL = 'https://cloud.tenable.com/api/v3/editor'
 
