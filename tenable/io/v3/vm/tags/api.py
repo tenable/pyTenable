@@ -28,7 +28,7 @@ from tenable.utils import dict_clean, dict_merge
 
 class TagsAPI(ExploreBaseEndpoint):
     '''
-    This will contain all methods related to tags
+    This class contain all methods related to tags
     '''
     _path = 'api/v3/tags'
     _conv_json = True
