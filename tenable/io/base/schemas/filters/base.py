@@ -1,7 +1,7 @@
-from typing import Optional, Dict, List
-from marshmallow import Schema, ValidationError
-from tenable.io.base.session import TenableIO
 import re
+from typing import Dict, List, Optional
+
+from marshmallow import Schema, ValidationError
 
 
 class BaseFilterSchema(Schema):
@@ -14,7 +14,7 @@ class BaseFilterSchema(Schema):
 
     @classmethod
     def populate_filters(cls,
-                         tio: TenableIO,
+                         tio,
                          path: str,
                          envelope: str = 'filters',
                          force: bool = False,
@@ -22,7 +22,6 @@ class BaseFilterSchema(Schema):
                          ) -> None:
         '''
         Populates the filters to be used for validation of the filter data.
-
         Args:
             tio:
                 The TenableIO object to use to query the filter API
@@ -44,7 +43,7 @@ class BaseFilterSchema(Schema):
             # then call the API using the TenableIO object provided and pull
             # down the filters.
             if not filters:
-                filters = tio.get(path)[envelope]
+                filters = tio.get(path).json()[envelope]
 
             # Reset the _filters dictionary to an empty dict object.
             cls._filters = {}
