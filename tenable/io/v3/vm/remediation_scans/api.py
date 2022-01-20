@@ -104,10 +104,12 @@ class RemediationScansAPI(ExploreBaseEndpoint):
                 object is instead returned instead of an iterable.
 
         Examples:
-            >>> tio.v3.vm.remediation_scans.search(filter=('netbios_name',
-            ...   'eq',
-            ...  'SCCM'), fields=['name', 'netbios_name', 'last_login'],
-            ...    limit=2, sort=[('last_observed', 'asc')])
+            >>> tio.v3.vm.remediation_scans.search(
+            ...     filter=('name','eq','SCCM'),
+            ...     fields=['name', 'field_one', 'field_two'],
+            ...     limit=2,
+            ...     sort=[('last_observed', 'asc')]
+            ... )
         '''
         iclass = SearchIterator
         if kw.get('return_csv', False):
