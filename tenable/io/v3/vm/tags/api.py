@@ -617,7 +617,7 @@ class TagsAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.audit_log_filters()`
+                the :py:meth:`tio.v3.vm.filters.asset_tag_filters()`
                 endpoint to get more details.
             sort (list[tuple], optional):
                 A list of dictionaries describing how to sort the data
@@ -653,7 +653,7 @@ class TagsAPI(ExploreBaseEndpoint):
         if kwargs.get('return_csv', False):
             iclass = CSVChunkIterator
         return super()._search(iterator_cls=iclass,
-                               is_sort_with_prop=True,
+                               sort_type=self._sort_type.property_based,
                                api_path=f'{self._path}/values/search',
                                resource='values',
                                **kwargs
@@ -703,7 +703,7 @@ class TagsAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.audit_log_filters()`
+                the :py:meth:`tio.v3.vm.filters.asset_tag_filters()`
                 endpoint to get more details.
             sort (list[tuple], optional):
                 A list of dictionaries describing how to sort the data
@@ -739,7 +739,7 @@ class TagsAPI(ExploreBaseEndpoint):
         if kwargs.get('return_csv', False):
             iclass = CSVChunkIterator
         return super()._search(iterator_cls=iclass,
-                               is_sort_with_prop=True,
+                               sort_type=self._sort_type.property_based,
                                api_path=f'{self._path}/categories/search',
                                resource='categories',
                                **kwargs

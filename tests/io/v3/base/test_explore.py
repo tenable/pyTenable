@@ -117,9 +117,9 @@ RESPONSE_2 = {
     'pagination': {
         'next':
             'H4sIAAAAAAAAADWOwQrCMBBE/2WO0kBrqtj+SillTTa4UE1JclBK/t2t4GlgZt/'
-            'M7giyFk4Yd7xiOWRLceNUPhjhJdN9Zb9QQYPDphL1FvyWXDJqbZBjUmzaIV4Dyg'
-            '51VpcpucdC4dc9obX+PHhm44O7mv4SOjMMxCZ0tu3I2T7cWii3ylO0zjb/N4T'
-            'zwZ90Xwfm+gXgzWmZsQAAAA',
+        'M7giyFk4Yd7xiOWRLceNUPhjhJdN9Zb9QQYPDphL1FvyWXDJqbZBjUmzaIV4Dyg'
+        '51VpcpucdC4dc9obX+PHhm44O7mv4SOjMMxCZ0tu3I2T7cWii3ylO0zjb/N4T'
+        'zwZ90Xwfm+gXgzWmZsQAAAA',
         'limit': 3,
         'total': 123,
     },
@@ -141,7 +141,6 @@ def test_search_response(api):
     response = ExploreBaseEndpoint(api)._search(
         resource='assets',
         api_path='api/v3/assets/search',
-        is_sort_with_prop=False,
         return_resp=True,
         **REQUESTDATA_2,
     )

@@ -12,25 +12,20 @@ class TagCategorySchema(Schema):
     '''
     Schema for tags category methods
     '''
-    name = fields.Str(required=True)
+    name = fields.Str(
+        validate = validate.Length(1, 127),
+        required=True
+    )
     description = fields.Str()
-
-    @validates_schema
-    def validate_name(self, data, **kwargs):
-        '''
-        Supproting method to validate name string length
-        '''
-        if len(data['name']) >= 127:
-            raise ValidationError('The name must not exceed 127 characters.')
 
 
 class AssetTagSchema(Schema):
     '''
     Schema for asset tags methods
     '''
-    action = fields.Str(data_key='action')
-    assets = fields.List(fields.UUID, data_key='assets')
-    tags = fields.List(fields.UUID, data_key='tags')
+    action = fields.Str()
+    assets = fields.List(fields.UUID)
+    tags = fields.List(fields.UUID)
 
 
 class CurrentDomainPermissionSchema(Schema):
@@ -80,8 +75,7 @@ class AccessControlSchema(Schema):
                 ['ALL', 'CAN_USE', 'CAN_EDIT', 'CAN_SET_PERMISSIONS']
             )
         ),
-        default=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'],
-
+        load_default=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'],
     )
     all_users_permissions = fields.List(
         fields.Str(
@@ -89,11 +83,11 @@ class AccessControlSchema(Schema):
                 ['ALL', 'CAN_USE', 'CAN_EDIT', 'CAN_SET_PERMISSIONS']
             )
         ),
-        default=[]
+        load_default=[]
     )
     current_domain_permissions = fields.List(
         fields.Nested(CurrentDomainPermissionSchema),
-        default=[]
+        load_default=[]
     )
     defined_domain_permissions = fields.List(
         fields.Str(
@@ -102,7 +96,7 @@ class AccessControlSchema(Schema):
             )
         ),
     )
-    version = fields.Int(data_key='version')
+    version = fields.Int()
 
 
 class TagsFilterSchema(ParseFilterSchema):
@@ -117,14 +111,14 @@ class TagValueSchema(Schema):
     Schema for tags values related methods
     '''
     value_id = fields.List(fields.UUID, data_key='values')
-    category_id = fields.UUID(data_key='category_uuid')
+    category_uuid = fields.UUID()
     category_name = fields.Str()
     category_description = fields.Str()
     value = fields.Str(required=True)
     description = fields.Str()
     access_control = fields.Nested(AccessControlSchema, required=True)
     filter_type = fields.Str(
-        default='and',
+        load_default='and',
         validate=validate.OneOf(['and', 'or'])
     )
     filters = fields.List(fields.Nested(TagsFilterSchema))

@@ -46,6 +46,11 @@ class ExploreIterator(APIResultIterator):
         '''
         payload = self._construct_payload()
         headers = self._construct_headers()
+
+        # This is to stop the iteration in case of csv_iterator
+        # for infinite loop.
+        if self.num_pages >= 1 and self._next_token is None:
+            raise StopIteration()
         resp = self._api.post(self._path,
                               json=payload,
                               headers=headers
