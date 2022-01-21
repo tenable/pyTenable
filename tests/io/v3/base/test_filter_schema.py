@@ -2,6 +2,7 @@
 Tests cases for filter schema
 '''
 import pytest
+import responses
 from marshmallow.exceptions import ValidationError
 
 from tenable.io.v3.base.schema.explore.filters import (FilterSchema,
@@ -14,6 +15,8 @@ SEARCH_DATA = dict(
     sort=[('name', 'asc'), ('bios_name', 'desc')],
     next='sdf000dfssdSDFSDFSFE00dfsdffaf'
 )
+
+ASSET_TAG_FILTER_ENDPOINT: str = 'https://cloud.tenable.com'
 
 
 def test_filter_tuple_without_condition():
@@ -155,3 +158,81 @@ def test_parse_filter_schema(api):
     schema = ParseFilterSchema()
 
     assert filters_dict == schema.dump(schema.load(filters_dict))
+
+
+@responses.activate
+def test_parse_filter_schema_with_populate_filter(api):
+    '''
+    Test case for parse filter schema
+    '''
+    # Let's create test response
+    filters_dict: dict = {
+        'field': 'field_1',
+        'operator': 'oper_1',
+        'value': ['value_1', 'value_2']
+    }
+
+    # Let's register the response for filter API endpoint
+    # Let's register the response for asset tag filter endpoint
+    responses.add(
+        responses.GET,
+        f'{ASSET_TAG_FILTER_ENDPOINT}/api/v3/definitions/tags/assets/filters',
+        json={
+            'filters': [
+                {
+                    "name": "field_1",
+                    "operators": [
+                        "oper_1",
+                        "oper_2"
+                    ]
+                }
+            ]
+        }
+    )
+
+    ParseFilterSchema.populate_filters(
+        api, path='api/v3/definitions/tags/assets/filters'
+    )
+
+    schema = ParseFilterSchema()
+
+    assert filters_dict == schema.dump(schema.load(filters_dict))
+
+
+@responses.activate
+def test_parse_filter_schema_with_validation_error(api):
+    '''
+    Test case for parse filter schema
+    '''
+    # Let's create test response
+    filters_dict: dict = {
+        'field': 'field_2',
+        'operator': 'oper_3',
+        'value': ['value_1', 'value_2']
+    }
+
+    # Let's register the response for filter API endpoint
+    # Let's register the response for asset tag filter endpoint
+    responses.add(
+        responses.GET,
+        f'{ASSET_TAG_FILTER_ENDPOINT}/api/v3/definitions/tags/assets/filters',
+        json={
+            'filters': [
+                {
+                    "name": "field_1",
+                    "operators": [
+                        "oper_1",
+                        "oper_2"
+                    ]
+                }
+            ]
+        }
+    )
+
+    ParseFilterSchema.populate_filters(
+        api, path='api/v3/definitions/tags/assets/filters'
+    )
+
+    schema = ParseFilterSchema()
+    with pytest.raises(ValidationError):
+        schema.load(filters_dict)

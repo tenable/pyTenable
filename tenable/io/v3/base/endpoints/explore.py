@@ -18,7 +18,7 @@ class ExploreBaseEndpoint(APIEndpoint):
     _conv_json = False
     _sort_type = SortType
 
-    def _details(self, obj_id: Union[str, UUID]) -> dict:
+    def _details(self, obj_id: Union[str, UUID], **kwargs) -> dict:
         '''
         Gets the details for the specified id.
 
@@ -34,7 +34,12 @@ class ExploreBaseEndpoint(APIEndpoint):
 
             >>> tio.{PATHWAY}.details('00000000-0000-0000-0000-000000000000')
         '''
-        return self._get(obj_id, conv_json=self._conv_json)
+        headers: dict = {}
+        if kwargs.get('return_csv', False):
+            headers = {'Accept': 'text/csv'}
+            self._conv_json = True
+
+        return self._get(obj_id, headers=headers, conv_json=self._conv_json)
 
     def _search(self,
                 *,
