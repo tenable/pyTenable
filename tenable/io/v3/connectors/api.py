@@ -36,8 +36,8 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                name: str,
                con_type: str,
                network_id: Optional[str] = None,
-               schedule: Optional[dict] = None,
-               **params: dict
+               schedule: Optional[Dict] = None,
+               **params: Dict
                ) -> Dict:
         '''
         Create a connector.
@@ -45,19 +45,19 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: create <connectors-create>`
 
         Args:
-            name:
+            name (str):
                 The name of the connector to create.
-            con_type:
+            con_type (str):
                 The type of connector to create.
                 Example:
                     'aws_keyless'
-            schedule:
+            schedule (str, optional):
                 The data import schedule
                 Example:
-                    ('days', 2)
-            network_id:
+                    >>> ('days', 2)
+            network_id (str, optional):
                 The UUID for network
-            **params:
+            **params (Dict):
                 The various parameters that can be passed to the connector
                 creation API.  Examples would be sub_accounts, access_key,
                 etc. For more detailed information, please refer to API
@@ -67,7 +67,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 no need to pass params directly.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The connector resource record.
 
         Example:
@@ -94,7 +94,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
     def list_aws_cloudtrails(self,
                              region: List[Tuple],
                              account_id: Optional[str] = None,
-                             credentials: Optional[dict] = None
+                             credentials: Optional[Dict] = None
                              ) -> Dict:
         '''
         List the AWS cloudtrails.
@@ -102,36 +102,36 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: list_aws_cloudtrails <connectors-list_aws_cloudtrails>` # noqa E501
 
         Args:
-            region:
+            region (List(tuple)):
                 Complete list of aws available
-                name:
+                name (str):
                     The AWS region code, for example, us-east-1.
                      The value of All indicates that the cloudtrail is
                      associated with all AWS available regions.
 
-                friendly_name:
+                friendly_name (str):
                     The AWS region name, for example, US East (N. Virginia).
                     The value of All indicates that the cloudtrail is
                     associated with all AWS available regions.
                 Examples:
-                    [('us-east-1', 'US East (N. Virginia)')]
-            credentials:
+                    >>> [('us-east-1', 'US East (N. Virginia)')]
+            credentials (Dict, optional):
                 The credentials that the Tenable.io connector uses to
                 communicate with the AWS API, including access_key
                 and secret_key.
 
                 Examples:
-                    {
-                    'access_key':
-                    'd08c2a75517ad18da1d1d2e8f9ea70792f658674b352a9a00e7fcc4a74dcff6a',  # noqa E501
-                    'secret_key':
-                    'be13082452f57880261e8170290490026417745b8cde8a7d1e554d16eff690bf'  # noqa E501
-                    }
-            account_id:
+                    >>> {
+                    ... 'access_key':
+                    ... 'd08c2a75517ad18da1d1d2e8f9ea70792f658674b352a9a00e7fcc4a74dcff6a',  # noqa E501
+                    ... 'secret_key':
+                    ... 'be13082452f57880261e8170290490026417745b8cde8a7d1e554d16eff690bf'  # noqa E501
+                    ... }
+            account_id (str, optional):
                 For keyless AWS connectors, the AWS account ID.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The connector resource record.
 
         Example:
@@ -160,7 +160,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: delete <connectors-delete>`
 
         Args:
-            connector_id :
+            connector_id (UUID):
                 The unique identifier for the connectors to delete.
 
         Returns:
@@ -180,11 +180,11 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: details <connectors-details>`
 
         Args:
-            connector_id :
+            connector_id (UUID):
                 The unique identifier for the connectors.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The connectors resource record.
 
         Examples:
@@ -201,11 +201,11 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: template <connectors-template>`
 
         Args:
-            connector_id :
+            connector_id (UUID):
                 The unique identifier for the connectors.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The connectors resource record.
 
         Examples:
@@ -222,11 +222,11 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: import_data <connectors-import_data>`
 
         Args:
-            connector_id :
+            connector_id (UUID):
                 The unique identifier for the connectors.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The connectors resource record.
 
         Examples:
@@ -241,7 +241,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
              name: str,
              schedule: Optional[tuple] = None,
              network_id: Optional[str] = None,
-             **params: dict
+             **params: Dict
              ) -> None:
         '''
         Modifies a connectors.
@@ -250,15 +250,15 @@ class ConnectorsAPI(ExploreBaseEndpoint):
 
 
         Args:
-            connector_id:
+            connector_id (UUID):
                 The UUID for connector
-            name:
+            name (str):
                 The name of the connector to create.
-            schedule:
+            schedule (tuple, optional):
                 The data import schedule
                 Example:
-                    ('days', 2)
-            network_id:
+                    >>> ('days', 2)
+            network_id (str, optional):
                 The unique identifier for networks
             **params:
                 The various parameters that can be passed to the connector
@@ -270,9 +270,8 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 no need to pass params directly.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The connector resource record.
-
 
         Examples:
             >>>  tio.v3.connectors.edit(
@@ -281,7 +280,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         '''
         payload = {
             'name': name,
-            'network_uuid': network_id,
+            'network_id': network_id,
             'params': params,
             'schedule': schedule
 
@@ -294,7 +293,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         payload = dict_merge(
             {
                 'name': connector_info.get('name'),
-                'network_uuid': connector_info.get('network_uuid'),
+                'network_id': connector_info.get('network_id'),
                 'params': connector_info.get('params'),
                 'schedule': connector_info.get('schedule')
             },
@@ -309,81 +308,84 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves the connectors.
-
-        Args:
-            fields (list):
+         Args:
+            fields (list, optional):
                 The list of field names to return from the Tenable API.
-
                 Example:
-                    - ``['field1', 'field2']``
-            filter (tuple, Dict):
+                    >>> ['field1', 'field2']
+            filter (tuple, Dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
-
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
-                                   ('test', 'oper', '2')
-                            ),
-                    'and', ('test', 'oper', 3)
-                   )
-                    >>> {'or': [
-                    {'and': [
-                        {'value': '1', 'operator': 'oper', 'property': '1'},
-                        {'value': '2', 'operator': 'oper', 'property': '2'}
-                        ]
-                    }],
-                    'and': [
-                        {'value': '3', 'operator': 'oper', 'property': 3}
-                        ]
-                    }
-
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.asset_filters()`
                 endpoint to get more details.
-            sort list(tuple, Dict):
-                A list of dictionaries describing how to sort the data
+            sort (list[tuple], optional):
+                sort is a list of tuples in the form of
+                ('FIELD', 'ORDER').
+                It describes how to sort the data
                 that is to be returned.
-
                 Examples:
-                    - ``[('field_name_1', 'asc'),
-                             ('field_name_2', 'desc')]``
-                    - ``[{'property': 'last_observed', 'order': 'desc'}]``
-            limit (int):
+                    >>> [('field_name_1', 'asc'),
+                    ...      ('field_name_2', 'desc')]
+            limit (int, optional):
                 Number of objects to be returned in each request.
-                Default is 1000.
-            next (str):
+                Default limit is 200.
+            next (str, optional):
                 The pagination token to use when requesting the next page of
-                results.  This token is presented in the previous response.
-            return_resp (bool):
+                results. This token is presented in the previous response.
+            return_resp (bool, optional):
                 If set to true, will override the default behavior to return
                 an iterable and will instead return the results for the
                 specific page of data.
-            return_csv (bool):
-                If set to true, It wil return the CSV Iterable. Returns all
-                data in text/csv format on each next call with row headers
-                on each page.
-
+            return_csv (bool, optional):
+                If set to true, it will return the CSV response or
+                iterable (based on return_resp flag). Iterator returns all
+                rows in text/csv format for each call with row headers.
         Returns:
-            Returns:
-                Iterable:
-                    The iterable that handles the pagination and potentially
-                    async requests for the job.
-                requests.Response:
-                    If ``return_json`` was set to ``True``, then a response
-                    object is instead returned instead of an iterable.
-
+            Iterable:
+                The iterable that handles the pagination for the job.
+            requests.Response:
+                If ``return_json`` was set to ``True``, then a response
+                object is instead returned instead of an iterable.
         Examples:
-            >>> tio.v3.connectors.search(filter=('field_name', 'eq',
-            ...  'SCCM'), fields=['name', 'field_one', 'field_two'],
-            ...    limit=2, sort=[('last_observed', 'asc')])
+            >>> tio.v3.connectors.search(
+            ...     filter=('name','eq','test'),
+            ...     fields=['name', 'field_one', 'field_two'],
+            ...     limit=2,
+            ...     sort=[('field', 'asc')]
+            ... )
         '''
         iclass = SearchIterator
         if kw.get('return_csv', False):
             iclass = CSVChunkIterator
         return super()._search(resource='connectors',
                                iterator_cls=iclass,
-                               is_sort_with_prop=False,
                                api_path=f'{self._path}/search',
                                **kw
                                )

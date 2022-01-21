@@ -3,6 +3,11 @@ Tests for connectors endpoint
 '''
 
 import responses
+from requests import Response
+from responses import matchers
+
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 
 CONNECTORS_BASE_URL = r'https://cloud.tenable.com/api/v3/connectors'
 
@@ -480,3 +485,100 @@ def test_edit(api):
                                   import_config=True,
                                   auto_discovery=False)
     assert resp['name'] == 'AWS keyless renamed'
+
+
+@responses.activate
+def test_search(api):
+    '''
+    Test the search method
+    '''
+    fields = [
+        'name',
+        'type',
+        'id'
+    ]
+    sort = [('date_created', 'desc')]
+    filters = ('status', 'eq', 'Scheduled')
+
+    payload = {
+        'fields': fields,
+        'limit': 200,
+        'sort': [{'date_created': 'desc'}],
+        'filter': {
+            'property': 'status',
+            'operator': 'eq',
+            'value': 'Scheduled'
+        }
+    }
+
+    api_response = {
+        'connectors': [
+            {
+                'type': 'aws_keyless',
+                'human_type': 'AWS',
+                'data_type': 'assets',
+                'name': 'AWS FA Connector',
+                'is_fa': True,
+                'status': 'Scheduled',
+                'status_message': 'Import completed successfully',
+                'date_created': '2021-07-22T14:31:15.616Z',
+                'date_modified': '2021-07-22T14:31:27.098Z',
+                'id': '56d31cbe-efab-47d6-8158-749192629954',
+                'container_id': '9164fd5e-5013-4fa2-bfce-557c54f7a7e4',
+                'expired': False,
+                'incremental_mode': True,
+                'last_sync_time': '2021-07-22T14:31:27.098Z',
+                'last_run': '2021-07-22T14:31:39.809Z',
+                'params': {
+                    'sub_accounts': [
+                        {
+                            'account_id': '012345678901',
+                            'trails': [],
+                            'role_arn':
+                                'arn:aws:iam::01:role/tenableio-connector_example',  # noqa E501
+                            'external_id':
+                                '5147401f-d006-4a2b-9ded-a40c156be579',
+                            'incremental_mode': False,
+                        },
+                    ],
+                    'import_config': False,
+                    'auto_discovery': True,
+                    'tags': [],
+                    'service': 'aws_keyless',
+                },
+                'network_id': '00000000-0000-0000-0000-000000000000',
+                'last_seen_updated': '2021-07-22T14:31:39.801Z',
+            }
+        ],
+        'pagination': {
+            'total': 1,
+            'next': 'nextToken'
+        }
+
+    }
+    responses.add(
+        responses.POST,
+        f'{CONNECTORS_BASE_URL}/search',
+        match=[matchers.json_params_matcher(payload)],
+        json=api_response
+    )
+
+    iterator = api.v3.connectors.search(
+        fields=fields, limit=200, sort=sort, filter=filters
+    )
+    assert isinstance(iterator, SearchIterator)
+
+    event_list = []
+    for event in iterator:
+        event_list.append(event)
+    assert len(event_list) == api_response['pagination']['total']
+
+    iterator = api.v3.connectors.search(
+        fields=fields, return_csv=True, sort=sort, limit=200, filter=filters
+    )
+    assert isinstance(iterator, CSVChunkIterator)
+
+    resp = api.v3.connectors.search(
+        fields=fields, return_resp=True, limit=200, sort=sort, filter=filters
+    )
+    assert isinstance(resp, Response)
