@@ -141,7 +141,6 @@ def test_search_response(api):
     response = ExploreBaseEndpoint(api)._search(
         resource='assets',
         api_path='api/v3/assets/search',
-        is_sort_with_prop=False,
         return_resp=True,
         **REQUESTDATA_2,
     )
