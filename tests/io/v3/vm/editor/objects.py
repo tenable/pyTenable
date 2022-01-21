@@ -26,39 +26,89 @@ CONFIGURATION_DETAILS = {
                 ],
                 'name': 'API Gateway',
                 'default_expand': 0
-            },
+            }
+        ]
+    },
+    'compliance': {
+        'data': [
+            {
+                'name': 'Adtran AOS',
+                'settings': {
+                    'compliance': {
+                        'inputs': None,
+                        'title': 'Compliance Auditing',
+                        'groups': [
+                            {
+                                'inputs': None,
+                                'title': 'Adtran AOS',
+                                'name': 'adtran',
+                                'sections': [
+                                    {
+                                        'inputs': [
+                                            {
+                                                'type': 'file',
+                                                'name': 'AOS config file(s)',
+                                                'id': 'adtran_aos_offline'
+                                            }
+                                        ],
+                                        'desc': 'Upload an Adtran AOS le.',
+                                        'title': 'Offline Configuration Audit',
+                                        'name': 'offline'
+                                    }
+                                ]
+                            }
+                        ],
+                        'sections': []
+                    }
+                },
+                'offline_allowed': True,
+                'required_creds': [
+                    'SSH'
+                ],
+                'audits': [
+                    {
+                        'inputs': [
+                            {
+                                'id': 'file',
+                                'name': 'Audit file',
+                                'type': 'file',
+                                'default': True,
+                                'required': True
+                            }
+                        ],
+                        'type': 'custom',
+                        'name': '(Upload a custom Adtran AOS audit file)',
+                        'free': 1,
+                        'unlimited': True
+                    }
+                ]
+            }
         ]
     },
     'is_was': None,
     'user_permissions': 128,
-    'owner': 'john.doe@example.com',
-    'title': 'Basic Network Scan',
     'is_agent': None,
+    'owner': 'john.doe@example.com',
+    'title': 'Advanced Network Scan',
     'id': CONFIGURATION_ID,
-    'filter_attributes': [
-        {
-            'operators': [
-                'eq',
-                'neq'
-            ],
-            'control': {
-                'type': 'dropdown',
-                'list': [
-                    'true',
-                    'false'
-                ]
-            },
-            'name': 'asset_inventory',
-            'readable_name': 'Asset Inventory'
+    'plugins': {
+        'families': {
+            'SMTP problems': {
+                'count': 150,
+                'id': 12,
+                'status': 'enabled'
+            }
         }
-    ],
+    },
     'settings': {
         'basic': {
             'inputs': [
                 {
-                    'type': 'textarea',
-                    'name': 'Description',
-                    'id': 'description'
+                    'type': 'entry',
+                    'name': 'Name',
+                    'id': 'name',
+                    'default': 'TestRunningScan',
+                    'required': True
                 }
             ],
             'title': 'Basic',
@@ -67,15 +117,6 @@ CONFIGURATION_DETAILS = {
                     'title': 'Permissions',
                     'name': 'permissions',
                     'acls': [
-                        {
-                            'permissions': 0,
-                            'owner': None,
-                            'display_name': None,
-                            'name': None,
-                            'uuid': None,
-                            'id': None,
-                            'type': 'default'
-                        },
                         {
                             'permissions': 128,
                             'owner': 1,
@@ -89,155 +130,9 @@ CONFIGURATION_DETAILS = {
                 }
             ],
             'sections': []
-        },
-        'assessment': {
-            'inputs': None,
-            'modes': {
-                'id': 'assessment_mode',
-                'name': 'mode',
-                'type': 'ui_radio',
-                'default': 'Default',
-                'options': [
-                    {
-                        'desc': '<ul><li>Choose your owli></ul>',
-                        'name': 'Custom'
-                    }
-                ]
-            },
-            'title': 'Assessment',
-            'groups': [
-                {
-                    'inputs': None,
-                    'title': 'General',
-                    'name': 'general',
-                    'sections': [
-                        {
-                            'inputs': [
-                                {
-                                    'type': 'checkbox',
-                                    'id': 'thorough_tests',
-                                    'default': 'no'
-                                }
-                            ],
-                            'title': 'Accuracy',
-                            'name': 'accuracy'
-                        }
-                    ]
-                }
-            ],
-            'sections': []
-        },
-        'advanced': {
-            'inputs': None,
-            'modes': {
-                'id': 'advanced_mode',
-                'name': 'mode',
-                'type': 'ui_radio',
-                'default': 'Default',
-                'options': [
-                    {
-                        'desc': '<ul><li>Choose your own advanced.</li></ul>',
-                        'name': 'Custom'
-                    }
-                ]
-            },
-            'title': 'Advanced',
-            'groups': [],
-            'sections': [
-                {
-                    'inputs': [
-                        {
-                            'type': 'checkbox',
-                            'id': 'safe_checks',
-                            'label': 'Enable safe checks',
-                            'default': 'yes'
-                        }
-                    ],
-                    'title': 'General Settings',
-                    'name': 'advanced'
-                }
-            ]
-        },
-        'discovery': {
-            'inputs': None,
-            'modes': {
-                'id': 'discovery_mode',
-                'name': 'mode',
-                'type': 'ui_radio',
-                'default': 'Port scan (common ports)',
-                'options': [
-                    {
-                        'desc': '<ul><li>Choose your own discovery.</li></ul>',
-                        'name': 'Custom'
-                    }
-                ]
-            },
-            'title': 'Discovery',
-            'groups': [
-                {
-                    'inputs': [
-                        {
-                            'type': 'ui_checkbox',
-                            'name': 'Ping the remote host',
-                            'id': 'ping_the_remote_host',
-                            'default': 'yes',
-                            'options': [
-                                {
-                                    'inputs': None,
-                                    'name': 'no'
-                                }
-                            ]
-                        }
-                    ],
-                    'title': 'Host Discovery',
-                    'name': 'host_discovery',
-                    'sections': [
-                        {
-                            'inputs': [
-                                {
-                                    'type': 'checkbox',
-                                    'id': 'scan_network_printers',
-                                    'label': 'Scan Network Printers',
-                                    'default': 'no'
-                                }
-                            ],
-                            'title': 'Fragile Devices',
-                            'name': 'fragile_devices'
-                        }
-                    ]
-                }
-            ],
-            'sections': []
-        },
-        'report': {
-            'inputs': None,
-            'modes': {
-                'default': 'Custom',
-                '0': {
-                    'id': 'default',
-                    'name': 'Default',
-                    'default': True
-                }
-            },
-            'title': 'Report',
-            'groups': [],
-            'sections': [
-                {
-                    'inputs': [
-                        {
-                            'type': 'checkbox',
-                            'id': 'silent_dependencies',
-                            'label': 'Hide results from plugins initiated',
-                            'default': 'yes'
-                        }
-                    ],
-                    'title': 'Processing',
-                    'name': 'report_processing'
-                }
-            ]
         }
     },
-    'name': 'basic'
+    'name': 'advanced'
 }
 
 TEMPLATE_ID = 'd883b87b-a09d-4eea-89ae-317d2777ec4d08c3a05ec2812bcf'
@@ -349,31 +244,6 @@ TEMPLATE_DETAILS = {
                             ],
                             'title': 'Fragile Devices',
                             'name': 'fragile_devices'
-                        }
-                    ]
-                },
-                {
-                    'inputs': None,
-                    'title': 'Port Scanning',
-                    'name': 'network_discovery',
-                    'sections': [
-                        {
-                            'inputs': [
-                                {
-                                    'type': 'checkbox',
-                                    'id': 'unscanned_closed',
-                                    'label': 'Consider unscanned ports as cl',
-                                    'default': 'no'
-                                },
-                                {
-                                    'type': 'medium-entry',
-                                    'id': 'portscan_range',
-                                    'label': 'Port scan range:',
-                                    'default': 'default'
-                                }
-                            ],
-                            'title': 'Ports',
-                            'name': 'ports'
                         }
                     ]
                 }
@@ -547,21 +417,22 @@ TEMPALTE_SEARCH_FILTER = {
 TEMPALTE_SEARCH_SORT = [('title', 'desc')]
 
 RESP_EXPECTED = {
+    'compliance': {
+        'current': {
+            'custom': [], 'feed': {}
+        }
+    },
     'credentials': {
         'current': {}
     },
     'id': CONFIGURATION_ID,
+    'plugins': {
+        'SMTP problems': {
+            'status': 'enabled'
+        }
+    },
     'settings': {
         'acls': [
-            {
-                'display_name': None,
-                'id': None,
-                'name': None,
-                'owner': None,
-                'permissions': 0,
-                'type': 'default',
-                'uuid': None
-            },
             {
                 'display_name': 'john.doe@example.com',
                 'id': 2236708,
@@ -572,12 +443,8 @@ RESP_EXPECTED = {
                 'uuid': 'e9f23194-adb7-4c02-8632-615c694c787e'
             }
         ],
-        'description': '',
-        'owner_id': 2236708,
-        'ping_the_remote_host': 'yes',
-        'safe_checks': 'yes',
-        'scan_network_printers': 'no',
-        'silent_dependencies': 'yes',
-        'thorough_tests': 'no'
+        'adtran_aos_offline': '',
+        'name': 'TestRunningScan',
+        'owner_id': 2236708
     }
 }
