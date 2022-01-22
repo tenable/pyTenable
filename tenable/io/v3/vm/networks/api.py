@@ -44,7 +44,9 @@ class NetworksAPI(ExploreBaseEndpoint):
 
         Args:
             name (str): The name of the new network.
+
             description (str, optional): Description of the network.
+
             assets_ttl_days (int, optional):
                 The number of days to wait before assets age out.
                 Assets will be permanently deleted if they are not seen on
@@ -98,7 +100,7 @@ class NetworksAPI(ExploreBaseEndpoint):
                     '00000000-0000-0000-0000-000000000000'
                 )
         '''
-        return self._get(f'{network_id}')
+        return super()._details(f'{network_id}')
 
     def edit(self,
              network_id: UUID,
