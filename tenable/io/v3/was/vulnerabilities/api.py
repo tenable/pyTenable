@@ -40,7 +40,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.was.vulnerabilities.get_details(id)
         '''
-        return self._get(f'{id}')
+        return super()._details(f'{id}')
 
     def search(self,
                **kw
