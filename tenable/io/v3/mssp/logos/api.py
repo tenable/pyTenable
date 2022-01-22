@@ -249,7 +249,7 @@ class LogosAPI(ExploreBaseEndpoint):
                                **kwargs
                                )
 
-    def update(self, logo_id: UUID, **kw) -> str:
+    def update(self, logo_id: UUID, **kwargs) -> str:
         '''
         Updates a logo in the Tenable.io MSSP Portal.
         This update overwrites the existing logo.
@@ -274,9 +274,9 @@ class LogosAPI(ExploreBaseEndpoint):
             ...     logo=fobj)
         '''
         logo_dict = {}
-        if kw.get('name'):
-            logo_dict['name'] = kw['name']
-        if kw.get('logo'):
-            logo_dict['logo'] = kw['logo']
+        if kwargs.get('name'):
+            logo_dict['name'] = kwargs['name']
+        if kwargs.get('logo'):
+            logo_dict['logo'] = kwargs['logo']
         payload = {'files': logo_dict}
         return self._patch(f'{logo_id}', **payload)['id']
