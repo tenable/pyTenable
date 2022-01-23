@@ -187,6 +187,7 @@ class AssetsAPI(ExploreBaseEndpoint):
             ...     ['00000000-0000-0000-0000-000000000000'])
         '''
 
+        # todo we can use the tags endpoint methods directly
         schema = AssignTagsAssetSchema()
         payload = schema.dump(
             schema.load({'action': action, 'assets': assets, 'tags': tags})
@@ -195,7 +196,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
     def tags(self, uuid: UUID) -> Dict:
         '''
-        Retrieves the details about a specific asset.
+        Retrieves the details about a specific asset's tags.
 
         :devportal:`tags: asset-tags <tags-list-asset-tags>`
 
@@ -211,6 +212,8 @@ class AssetsAPI(ExploreBaseEndpoint):
             >>> asset = tio.v3.assets.tags(
             ...     '00000000-0000-0000-0000-000000000000')
         '''
+        # todo we can use the tags endpoint methods directly
+
         return self._get(f'tags/assets/{uuid}/assignments')
 
     def asset_import(self, source: str, *assets: Dict) -> str:
@@ -266,7 +269,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         schema = ImportAssetSchema()
         payload = schema.dump(schema.load({'assets': assets,
                                            'source': source}))
-        return self._post('import', json=payload)['asset_import_job_uuid']
+        return self._post('import', json=payload)['asset_import_job_id']
 
     def list_import_jobs(self) -> List:
         '''
