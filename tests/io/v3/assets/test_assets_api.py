@@ -333,12 +333,46 @@ def test_move_assets(api):
     assert data == resp_data['response']['data']['asset_count']
 
 
+@responses.activate
 def test_update_acr(api):
-    # todo will be implemented after verifying response data
-    with pytest.raises(NotImplementedError):
-        api.v3.assets.update_acr([{}])
+    asset = [{
+                    'fqdn': ['example_one.py.test'],
+                    'ipv4': ['192.168.1.1'],
+                    'netbios_name': 'example_one',
+                    'mac_address': ['00:00:00:00:00:00'],
+                    'id': '116af8c3-969d-4621-9f9f-364eeb58e3a7'
+                }]
+    acr_score = 10
+    note = 'test'
+    reason = ['Business Critical', 'In Scope For Compliance']
+    payload = {
+        'asset':
+            [
+                {'mac_address': ['00:00:00:00:00:00'],
+                 'netbios_name': 'example_one',
+                 'id': '116af8c3-969d-4621-9f9f-364eeb58e3a7',
+                 'ipv4': ['192.168.1.1'],
+                 'fqdn': ['example_one.py.test']}
+            ],
+        'note': 'test',
+        'acr_score': 10,
+        'reason': ['Business Critical', 'In Scope For Compliance']
+    }
+    responses.add(
+        responses.PATCH,
+        url=f'{ASSET_BASE_URL}',
+        match=[matchers.json_params_matcher([payload])],
+        status=202
+    )
+
+    resp = api.v3.assets.update_acr(acr_score=acr_score,
+                                    assets=asset,
+                                    reason=reason,
+                                    note=note)
+    assert None is resp
 
 
+@responses.activate
 def test_bulk_delete(api):
     # todo will be implemented after parse_filter integration
     with pytest.raises(NotImplementedError):

@@ -401,7 +401,7 @@ class AssetsAPI(ExploreBaseEndpoint):
                    assets: List[Dict],
                    note: Optional[str] = None,
                    reason: Optional[List[str]] = None,
-                   ):
+                   ) -> None:
         '''
         Update acr information into Tenable.io from an external source.
 
@@ -431,10 +431,8 @@ class AssetsAPI(ExploreBaseEndpoint):
                     Key drivers does not match
                     Other
 
-        # todo need to verify the response data from API Team
         Returns:
-            str:
-                The job UUID.
+            None:
 
         Examples:
 
@@ -445,7 +443,7 @@ class AssetsAPI(ExploreBaseEndpoint):
             ...        'ipv4': ['192.168.1.1'],
             ...        'netbios_name': 'example_one',
             ...        'mac_address': ['00:00:00:00:00:00']
-            ...         'id': '00000000-0000-0000-0000-000000000000'
+            ...        'id': '00000000-0000-0000-0000-000000000000'
             ...    }],
             ...    'test',
             ...    ["Business Critical", "In Scope For Compliance"],
@@ -460,7 +458,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         schema = AssetUpdateACRSchema()
         payload = schema.dump(schema.load(payload))
-        return self._patch(json=[payload])
+        self._patch(json=[payload])
 
     def search_host(self,
                     **kw
