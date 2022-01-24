@@ -9,7 +9,7 @@ from tenable.io.v3.vm.exclusions.schema import ExclusionSchema
 
 
 @responses.activate
-def test_exlusion_schema(api):
+def test_exclusion_schema(api):
     '''
     Test case for Exclusion Schema
     '''

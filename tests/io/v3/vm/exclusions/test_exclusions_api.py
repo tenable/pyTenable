@@ -1,5 +1,5 @@
 '''
-Test cases for Exlusion API
+Test cases for exclusion API
 '''
 import os
 from datetime import datetime, timedelta
@@ -8,8 +8,8 @@ import responses
 from requests import Response
 from responses import matchers
 
-from tenable.io.v3.vm.exclusions.iterator import (ExclusionCSVIterator,
-                                                  ExclusionSearchIterator)
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 
 BASE_URL: str = 'https://cloud.tenable.com/api/v3/exclusions'
 FILE_BASE_URL: str = 'https://cloud.tenable.com/api/v3/file'
@@ -18,7 +18,7 @@ FILE_BASE_URL: str = 'https://cloud.tenable.com/api/v3/file'
 @responses.activate
 def test_create(api):
     '''
-    Test case for create exlusion API endpoint
+    Test case for create exclusion API endpoint
     '''
     name: str = 'Weekly Exclusion'
     members: list = ['127.0.0.1']
@@ -30,7 +30,7 @@ def test_create(api):
     interval: int = 2
     weekdays: list = ['MO', 'WE', 'FR']
     network_id: str = '00000000-0000-0000-0000-000000000000'
-    description: str = 'Example for weekly exlusion'
+    description: str = 'Example for weekly exclusion'
     enabled: bool = True
 
     # Let's create response for create endpoint
@@ -46,8 +46,8 @@ def test_create(api):
             'starttime': start_time
         },
         'network_id': network_id,
-        'last_modification_date': 1641743194,
-        'creation_date': 1641743194,
+        'last_modification_date': '2022-01-24T08:46:34Z',
+        'creation_date': '2022-01-24T08:46:34Z',
         'members': ','.join(members),
         'description': description,
         'name': name,
@@ -137,10 +137,10 @@ def test_details(api):
             'starttime': '2022-01-09T15:44:32Z'
         },
         'network_id': '00000000-0000-0000-0000-000000000000',
-        'last_modification_date': 1641744295,
-        'creation_date': 1641744295,
+        'last_modification_date': '2022-01-24T08:46:34Z',
+        'creation_date': '2022-01-24T08:46:34Z',
         'members': '127.0.0.1',
-        'description': 'Example for weekly exlusion',
+        'description': 'Example for weekly exclusion',
         'name': 'Weekly Exclusion',
         'id': exclusion_id
     }
@@ -179,8 +179,8 @@ def test_edit(api):
             'starttime': '2022-01-07T12:11:39Z'
         },
         'network_id': '00000000-0000-0000-0000-000000000000',
-        'last_modification_date': 1641751739,
-        'creation_date': 1641747976,
+        'last_modification_date': '2022-01-24T08:46:34Z',
+        'creation_date': '2022-01-24T08:46:34Z',
         'members': '127.0.0.1',
         'description': '',
         'name': 'Example 2',
@@ -199,8 +199,8 @@ def test_edit(api):
             'starttime': '2022-01-07T12:11:39Z'
         },
         'network_id': '00000000-0000-0000-0000-000000000000',
-        'last_modification_date': 1641752036,
-        'creation_date': 1641747976,
+        'last_modification_date': '2022-01-24T08:46:34Z',
+        'creation_date': '2022-01-24T08:46:34Z',
         'members': '127.0.0.1',
         'description': '',
         'name': new_name,
@@ -258,11 +258,11 @@ def test_exclusions_import(api):
     filepath = os.path.join(
         os.path.dirname(
             os.path.abspath(__file__)
-        ), 'import_exlusion_test_file.csv'
+        ), 'import_exclusion_test_file.csv'
     )
 
     # Let's create response for upload files endpoint
-    uplaod_file_res: str = 'import_exlusion_test_file.csv'
+    uplaod_file_res: str = 'import_exclusion_test_file.csv'
 
     # Let's create payload for import exclusion endpoint
     payload: dict = {
@@ -294,27 +294,27 @@ def test_exclusions_import(api):
 @responses.activate
 def test_search(api):
     '''
-    Test case for search exlusion API endpoint
+    Test case for search exclusion API endpoint
     '''
     test_response: dict = {
         'exclusions': [
             {
-                'created_at': 1594133012,
+                'created_at': '2022-01-24T08:46:34Z',
                 'description': 'This. is testing the micro frontend',
                 'id': 6,
                 'name': 'Micro Frontend Exclusion 1',
                 'targets': '10.10.20.20',
                 'type': 'ENABLED',
-                'updated_at': 1608215518
+                'updated_at': '2022-01-24T08:46:34Z'
             },
             {
-                'created_at': 1594133012,
+                'created_at': '2022-01-24T08:46:34Z',
                 'description': 'This. istesting the micro frontend',
                 'id': 7,
                 'name': 'Micro Frontend Exclusion 2',
                 'targets': '10.10.20.20',
                 'type': 'ENABLED',
-                'updated_at': 1608215518
+                'updated_at': '2022-01-24T08:46:34Z'
             }
         ],
         'pagination': {'total': 1, 'next': 'nextToken'}
@@ -361,7 +361,7 @@ def test_search(api):
     iterator = api.v3.vm.exclusions.search(
         fields=fields, filter=filter, sort=sort, limit=200
     )
-    assert isinstance(iterator, ExclusionSearchIterator)
+    assert isinstance(iterator, SearchIterator)
 
     exclusions_list = []
     for item in iterator:
@@ -371,7 +371,7 @@ def test_search(api):
     iterator = api.v3.vm.exclusions.search(
         fields=fields, filter=filter, sort=sort, return_csv=True
     )
-    assert isinstance(iterator, ExclusionCSVIterator)
+    assert isinstance(iterator, CSVChunkIterator)
 
     resp = api.v3.vm.exclusions.search(
         fields=fields, filter=filter, sort=sort, return_resp=True, limit=200

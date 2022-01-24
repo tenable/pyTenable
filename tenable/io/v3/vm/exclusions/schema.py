@@ -27,7 +27,7 @@ class RulesSchema(Schema):
 
     @pre_load
     def pre_serialization(self, data, **kwargs):
-        if 'byweekday' in list(data.keys()):
+        if 'byweekday' in data:
             for idx, val in enumerate(data['byweekday']):
                 if isinstance(val, str):
                     data['byweekday'][idx] = val.upper()
@@ -39,7 +39,7 @@ class RulesSchema(Schema):
 
     @post_dump
     def post_serialization(self, data, **kwargs):
-        if 'byweekday' in list(data.keys()):
+        if 'byweekday' in data:
             if data['byweekday']:
                 data['byweekday'] = ','.join(data['byweekday'])
 

@@ -20,8 +20,8 @@ from uuid import UUID
 from requests import Response
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.exclusions.iterator import (ExclusionCSVIterator,
-                                                  ExclusionSearchIterator)
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 from tenable.io.v3.vm.exclusions.schema import ExclusionSchema
 
 
@@ -56,8 +56,8 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             members (list):
                 The exclusions members.  Each member should be a string with
                 either a FQDN, IP Address, IP Range, or CIDR.
-            start_time (datetime): When the exclusion should start.
-            end_time (datetime): When the exclusion should end.
+            start_time (str): When the exclusion should start.
+            end_time (str): When the exclusion should end.
             description (str, optional):
                 Some further detail about the exclusion.
             frequency (str, optional):
@@ -94,8 +94,13 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             >>> exclusion = tio.v3.vm.exclusions.create(
             ...     'Example One-Time Exclusion',
             ...     ['127.0.0.1'],
-            ...     start_time=datetime.utcnow(),
-            ...     end_time=datetime.utcnow() + timedelta(hours=1))
+            ...     start_time=datetime.utcnow().strftime(
+            ...         '%Y-%m-%dT%H:%M:%SZ'
+            ...     ),
+            ...     end_time=(
+            ...         datetime.utcnow() + timedelta(hours=1)
+            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ... )
 
             Creating a daily exclusion:
 
@@ -103,8 +108,13 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             ...     'Example Daily Exclusion',
             ...     ['127.0.0.1'],
             ...     frequency='daily',
-            ...     start_time=datetime.utcnow(),
-            ...     end_time=datetime.utcnow() + timedelta(hours=1))
+            ...     start_time=datetime.utcnow().strftime(
+            ...         '%Y-%m-%dT%H:%M:%SZ'
+            ...     ),
+            ...     end_time=(
+            ...         datetime.utcnow() + timedelta(hours=1)
+            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ... )
 
             Creating a weekly exclusion:
 
@@ -113,8 +123,13 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             ...     ['127.0.0.1'],
             ...     frequency='weekly',
             ...     weekdays=['mo', 'we', 'fr'],
-            ...     start_time=datetime.utcnow(),
-            ...     end_time=datetime.utcnow() + timedelta(hours=1))
+            ...     start_time=datetime.utcnow().strftime(
+            ...         '%Y-%m-%dT%H:%M:%SZ'
+            ...     ),
+            ...     end_time=(
+            ...         datetime.utcnow() + timedelta(hours=1)
+            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ... )
 
             Creating a monthly esxclusion:
 
@@ -123,8 +138,13 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             ...     ['127.0.0.1'],
             ...     frequency='monthly',
             ...     day_of_month=1,
-            ...     start_time=datetime.utcnow(),
-            ...     end_time=datetime.utcnow() + timedelta(hours=1))
+            ...     start_time=datetime.utcnow().strftime(
+            ...         '%Y-%m-%dT%H:%M:%SZ'
+            ...     ),
+            ...     end_time=(
+            ...         datetime.utcnow() + timedelta(hours=1)
+            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ... )
 
             Creating a yearly exclusion:
 
@@ -132,11 +152,16 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             ...     'Example Yearly Exclusion',
             ...     ['127.0.0.1'],
             ...     frequency='yearly',
-            ...     start_time=datetime.utcnow(),
-            ...     end_time=datetime.utcnow() + timedelta(hours=1))
+            ...     start_time=datetime.utcnow().strftime(
+            ...         '%Y-%m-%dT%H:%M:%SZ'
+            ...     ),
+            ...     end_time=(
+            ...         datetime.utcnow() + timedelta(hours=1)
+            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ... )
         '''
 
-        # construct payload schedule based on enable
+        # construct schedule payload based on enable
         if enabled is True:
             if isinstance(frequency, str):
                 frequency = frequency.upper()
@@ -246,8 +271,8 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             members (list, optional):
                 The exclusions members.  Each member should be a string with
                 either a FQDN, IP Address, IP Range, or CIDR.
-            start_time (datetime, optional): When the exclusion should start.
-            end_time (datetime, optional): When the exclusion should end.
+            start_time (str, optional): When the exclusion should start.
+            end_time (str, optional): When the exclusion should end.
             description (str, optional):
                 Some further detail about the exclusion.
             frequency (str, optional):
@@ -363,8 +388,8 @@ class ExclusionsAPI(ExploreBaseEndpoint):
 
     def search(self,
                **kwargs
-               ) -> Union[ExclusionSearchIterator,
-                          ExclusionCSVIterator,
+               ) -> Union[SearchIterator,
+                          CSVChunkIterator,
                           Response
                           ]:
         '''
@@ -373,34 +398,46 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             fields (list, optional):
                 The list of field names to return from the Tenable API.
                 Example:
-                    - ``['field1', 'field2']``
+                    >>> ['field1', 'field2']
             filter (tuple, Dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
-                                   ('test', 'oper', '2')
-                            ),
-                        'and', ('test', 'oper', 3))
-                    >>> {'or': [
-                    {'and': [
-                        {'value': '1', 'operator': 'oper', 'property': '1'},
-                        {'value': '2', 'operator': 'oper', 'property': '2'}
-                        ]
-                    }],
-                    'and': [
-                        {'value': '3', 'operator': 'oper', 'property': 3}
-                        ]
-                    }
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.audit_log_filters()`
+                the :py:meth:`tio.v3.vm.filters.exclusion_filters()`
                 endpoint to get more details.
             sort (list[tuple], optional):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
                 Examples:
-                    - ``[('field_name_1', 'asc'), ('field_name_2', 'desc')]``
+                    >>> [('field_name_1', 'asc'),
+                    ...      ('field_name_2', 'desc')]
             limit (int, optional):
                 Number of objects to be returned in each request.
                 Default and max_limit is 200.
@@ -429,14 +466,14 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             ...     limit=10
             ... )
         '''
-        iclass = ExclusionSearchIterator
+        iclass = SearchIterator
 
         if kwargs.get('return_csv', False):
-            iclass = ExclusionCSVIterator
+            iclass = CSVChunkIterator
 
         return super()._search(
             iterator_cls=iclass,
-            is_sort_with_prop=True,
+            sort_type=self._sort_type.property_based,
             api_path=f'{self._path}/search',
             resource='exclusions',
             **kwargs
