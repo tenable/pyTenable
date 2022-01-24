@@ -21,6 +21,7 @@ This package covers the Tenable Identity Exposure interface.
     checker_option
     dashboard
     directories
+    event
     infrastructure
     ldap_configuration
     lockout_policy
