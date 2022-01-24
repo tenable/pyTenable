@@ -14,43 +14,23 @@ Methods available on ``tio.v3.vm.scans``:
 import time
 from datetime import datetime
 from io import BytesIO
-from typing import BinaryIO, Callable, Optional
+from typing import BinaryIO, Callable, Dict, Optional, Union
 from uuid import UUID
 
+from requests import Response
 from restfly.utils import dict_clean
 
 from tenable.constants import IOConstants
 from tenable.errors import UnexpectedValueError
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 from tenable.io.v3.vm.scans.schema import (ScanCheckAutoTargetSchema,
                                            ScanConfigureScheduleSchema,
                                            ScanConvertCredSchema,
                                            ScanDocumentCreateSchema,
                                            ScanExportSchema, ScanSchema)
 from tenable.utils import dict_merge
-
-
-class ScanHistoryIterator:
-    '''
-    The agents iterator provides a scalable way to work through scan history
-    result sets of any size.  The iterator will walk through each page of data,
-    returning one record at a time.  If it reaches the end of a page of
-    records, then it will request the next page of information and then continue
-    to return records from the next page (and the next, and the next) until the
-    counter reaches the total number of records that the API has reported.
-
-    Attributes:
-        count (int): The current number of records that have been returned
-        page (list):
-            The current page of data being walked through.  pages will be
-            cycled through as the iterator requests more information from the
-            API.
-        page_count (int): The number of record returned from the current page.
-        total (int):
-            The total number of records that exist for the current request.
-    '''
-
-    pass
 
 
 class ScansAPI(ExploreBaseEndpoint):
@@ -77,7 +57,7 @@ class ScansAPI(ExploreBaseEndpoint):
             if running:
                 time.sleep(sleeper)
 
-    def _update_policy(self, kwargs: dict, scan: dict) -> None:
+    def _update_policy(self, kwargs: Dict, scan: Dict) -> None:
         policies = self._api.policies.list()
         match = False
 
@@ -92,7 +72,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 policy_tmpl = self._api.editor.details(
                     'scan/policy', item['id']
                 )
-                scan['uuid'] = policy_tmpl['uuid']
+                scan['id'] = policy_tmpl['uuid']
                 scan['settings']['policy_id'] = item['id']
                 match = True
 
@@ -100,7 +80,7 @@ class ScansAPI(ExploreBaseEndpoint):
         if not match:
             raise UnexpectedValueError('policy setting is invalid.')
 
-    def _update_sub_doc_data(self, kwargs: dict, scan: dict) -> None:
+    def _update_sub_doc_data(self, kwargs: Dict, scan: Dict) -> None:
         if 'scanner' in kwargs:
             scan['settings']['scanner_id'] = kwargs['scanner']
             del kwargs['scanner']
@@ -120,7 +100,7 @@ class ScansAPI(ExploreBaseEndpoint):
         # For credentials, we will simply push the dictionary as-is into the
         # the credentials.add sub-document.
         if 'credentials' in kwargs:
-            scan['credentials'] = {'add': dict()}
+            scan['credentials'] = {'add': {}}
             scan['credentials']['add'] = kwargs['credentials']
             del kwargs['credentials']
 
@@ -134,17 +114,17 @@ class ScansAPI(ExploreBaseEndpoint):
             scan['plugins'] = kwargs['plugins']
             del kwargs['plugins']
 
-    def _create_scan_document(self, kwargs: dict) -> dict:
+    def _create_scan_document(self, kwargs: Dict) -> Dict:
         '''
         Takes the key-word arguments and will provide a scan settings document
         based on the values inputted.
 
         Args:
-            kwargs (dict):
+            kwargs (Dict):
                 The keyword dict passed from the user
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The resulting scan document based on the kwargs provided.
         '''
         scan = {
@@ -188,7 +168,7 @@ class ScansAPI(ExploreBaseEndpoint):
         kwargs = schema.dump(schema.load(kwargs))
 
         if 'template' in kwargs:
-            scan['uuid'] = templates[kwargs['template']]
+            scan['id'] = templates[kwargs['template']]
             del kwargs['template']
 
         self._update_sub_doc_data(kwargs, scan)
@@ -221,19 +201,18 @@ class ScansAPI(ExploreBaseEndpoint):
         scan['settings'] = dict_merge(scan['settings'], kwargs)
         return scan
 
-    def _get_schedule_details(self, details: dict) -> dict:
+    def _get_schedule_details(self, details: Dict) -> Dict:
         '''
         Existing schedule contains combined string of frequency, interval and
         BYDAY or BYMONTHDAY in rrules. we will Split existing schedule details
-         to
-        distributed schedule dictionary
+        to distributed schedule dictionary
 
         Args:
-            details (dict):
+            details (Dict):
                 Dictionary of existing schedule
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 Distributed dictionary of the keys required for scan schedule.
         '''
         schedule = {}
@@ -271,7 +250,7 @@ class ScansAPI(ExploreBaseEndpoint):
                              day_of_month: Optional[int] = None,
                              starttime: Optional[datetime] = None,
                              timezone: Optional[str] = None,
-                             ) -> dict:
+                             ) -> Dict:
         '''
         Create dictionary of keys required for scan schedule
 
@@ -301,7 +280,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 please refer to :devportal:`scans-timezones`
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 Dictionary of the keys required for scan schedule.
 
         '''
@@ -391,7 +370,7 @@ class ScansAPI(ExploreBaseEndpoint):
                                 day_of_month: Optional[int] = None,
                                 starttime: Optional[datetime] = None,
                                 timezone: Optional[str] = None,
-                                ) -> dict:
+                                ) -> Dict:
         '''
         Create dictionary of keys required for scan schedule
 
@@ -421,7 +400,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 please refer to :devportal:`scans-timezones`
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 Dictionary of the keys required for scan schedule.
 
         '''
@@ -594,7 +573,7 @@ class ScansAPI(ExploreBaseEndpoint):
         # Return the file object to the caller.
         return fobj
 
-    def configure(self, scan_id: UUID, **kw: dict) -> dict:
+    def configure(self, scan_id: UUID, **kw: Dict) -> Dict:
         '''
         Overwrite the parameters specified on top of the existing scan record.
 
@@ -613,15 +592,15 @@ class ScansAPI(ExploreBaseEndpoint):
             targets (list, optional):
                 If defined, then a list of targets can be specified and will
                 be formatted to an appropriate text_target attribute.
-            credentials (dict, optional):
+            credentials (Dict, optional):
                 A list of credentials to use.
-            compliance (dict, optional):
+            compliance (Dict, optional):
                 A list of compliance audiots to use.
             scanner (str, optional):
                 Define the scanner or scanner group uuid or name.
-            schedule_scan (dict, optional):
+            schedule_scan (Dict, optional):
                 Define updated schedule for scan
-            **kw (dict, optional):
+            **kw (Dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc. For
                 more detailed info, please refer to the API documentation
@@ -630,7 +609,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 settings document.  There is no need to pass settings directly.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The scan resource record.
 
         Examples:
@@ -654,17 +633,17 @@ class ScansAPI(ExploreBaseEndpoint):
         # Performing the actual call to the API with the updated scan record.
         return self._put(f'{scan_id}', json=scan)
 
-    def upsert_aws_credentials(self, scan: dict) -> dict:
+    def upsert_aws_credentials(self, scan: Dict) -> Dict:
         '''
         Checks the credential dict of scan dict to derive operation add or edit
         This function assumes there are no edit credentials in the
         credentials dict.
         If there is any edit credentials,it would override the same.
         Args:
-            scan (dict):
+            scan (Dict):
                 scan object to update edit credential if it matches criteria
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The scan with updated credentials.
         '''
         if 'credentials' in scan:
@@ -685,8 +664,8 @@ class ScansAPI(ExploreBaseEndpoint):
             if (
                     'add' in scan['credentials']
                     and 'Cloud Services' in scan['credentials']['add']
-                    and 'Amazon AWS' in scan['credentials']['add'][
-                'Cloud Services']
+                    and 'Amazon AWS' in
+                    scan['credentials']['add']['Cloud Services']
             ):
                 aws_new_credential = scan['credentials']['add'][
                     'Cloud Services'
@@ -714,7 +693,7 @@ class ScansAPI(ExploreBaseEndpoint):
              scan_id: UUID,
              folder_id: Optional[UUID] = None,
              name: Optional[str] = None
-             ) -> dict:
+             ) -> Dict:
         '''
         Duplicates a scan and returns the details of the copy.
 
@@ -728,7 +707,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 name (str, optional): The name for the copied scan.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The scan resource record for the copied scan.
 
         Examples:
@@ -744,7 +723,7 @@ class ScansAPI(ExploreBaseEndpoint):
         # make the call and return the resulting JSON document to the caller.
         return self._post(f'{scan_id}/copy', json=payload)
 
-    def create(self, **kw: dict) -> dict:
+    def create(self, **kw: Dict) -> Dict:
         '''
         Create a new scan.
 
@@ -763,15 +742,15 @@ class ScansAPI(ExploreBaseEndpoint):
             targets (list, optional):
                 If defined, then a list of targets can be specified and will
                 be formatted to an appropriate text_target attribute.
-            credentials (dict, optional):
+            credentials (Dict, optional):
                 A list of credentials to use.
-            compliance (dict, optional):
+            compliance (Dict, optional):
                 A list of compliance audits to use.
             scanner (str, optional):
                 Define the scanner or scanner group uuid or name.
-            schedule_scan (dict, optional):
+            schedule_scan (Dict, optional):
                 Define schedule for scan
-            **kw (dict, optional):
+            **kw (Dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc. For
                 more detailed info, please refer to the API documentation
@@ -780,7 +759,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 settings document.  There is no need to pass settings directly.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The scan resource record of the newly created scan.
 
         Examples:
@@ -934,10 +913,10 @@ class ScansAPI(ExploreBaseEndpoint):
         '''
         self._delete(f'{scan_id}/history/{history_id}')
 
-    def details(self, scan_id: UUID) -> dict:
+    def details(self, scan_id: UUID) -> Dict:
         '''
         Calls the editor API and parses the scan config details to return a
-        document that closely matches what the API expects to be POSTed or PUTed
+        document that closely matches what API expects to be POSTed or PUTed
         via the create and configure methods.  The compliance audits and
         credentials are populated into the 'current' sub-document for the
         relevant resources.
@@ -958,7 +937,7 @@ class ScansAPI(ExploreBaseEndpoint):
             scan_id (uuid): The unique identifier for the scan.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The scan configuration resource.
 
         Examples:
@@ -970,7 +949,7 @@ class ScansAPI(ExploreBaseEndpoint):
     def results(self,
                 scan_id: UUID,
                 history_id: Optional[UUID] = None
-                ) -> dict:
+                ) -> Dict:
         '''
         Return the scan results from either the latest scan or a specific scan
         instance in the history.
@@ -984,7 +963,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The unique identifier for the instance of the scan.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The scan result dictionary.
 
         Examples:
@@ -1007,7 +986,7 @@ class ScansAPI(ExploreBaseEndpoint):
                scan_id: UUID,
                *filters: Optional[tuple],
                stream_hook: Optional[Callable] = None,
-               **kw: dict
+               **kw: Dict
                ) -> BinaryIO:
         '''
         Export the scan report.
@@ -1084,7 +1063,8 @@ class ScansAPI(ExploreBaseEndpoint):
             >>> with open('example.nessus', 'wb') as reportobj:
             ...      tio.v3.vm.scans.export(1, history_id=1, fobj=reportobj)
         '''
-
+        # todo => integrate the parse filter and wait for download method in
+        #  v3 structure
         # initiate the payload and parameters dictionaries.  We are also
         # checking to see if the filters were passed as a keyword argument
         # instead of as an argument list.  As this seems to be a common
@@ -1099,8 +1079,8 @@ class ScansAPI(ExploreBaseEndpoint):
             fobj = kw.pop('fobj')
         else:
             fobj = BytesIO()
-        params = dict()
-        dl_params = dict()
+        params = {}
+        dl_params = {}
         schema = ScanExportSchema()
         kw = schema.dump(schema.load(kw))
         if 'history_id' in kw:
@@ -1169,7 +1149,7 @@ class ScansAPI(ExploreBaseEndpoint):
                      scan_id: UUID,
                      host_id: UUID,
                      history_id: Optional[UUID] = None,
-                     ) -> dict:
+                     ) -> Dict:
         '''
         Retrieve the host details from a specific scan.
 
@@ -1184,7 +1164,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The unique identifier for the instance of the scan.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The information related to the host requested.
 
         Examples:
@@ -1202,7 +1182,7 @@ class ScansAPI(ExploreBaseEndpoint):
                     folder_id: Optional[UUID] = None,
                     password: Optional[str] = None,
                     aggregate: Optional[bool] = False
-                    ) -> dict:
+                    ) -> Dict:
         '''
         Import a scan report into Tenable.io.
 
@@ -1214,14 +1194,14 @@ class ScansAPI(ExploreBaseEndpoint):
             folder_id (int, optional):
                 The unique identifier for the folder to place the scan into.
             password (str, optional):
-                The password needed to decrypt the file.  This is only necessary
+                The password needed to decrypt the file. This is only necessary
                 for NessusDB files uploaded.
             aggregate (bool, optional):
                 should the Nessus report be aggregated into the aggregate
                 results?  The default is True.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The scan resource record for the imported scan.
 
         Examples:
@@ -1294,46 +1274,92 @@ class ScansAPI(ExploreBaseEndpoint):
             f'{scan_id}/launch', json=payload
         )['scan_id']
 
-    # todo => this wil be replaced with search endpoint
-    def list(self,
-             folder_id: Optional[UUID] = None,
-             last_modified: Optional[datetime] = None
-             ) -> list:
+    def search(self,
+               **kw
+               ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
-        Retrieve the list of configured scans.
-
-        :devportal:`scans: list <scans-list>`
-
-        Args:
-            folder_id (int, optional): Only return scans within this folder.
-            last_modified (datetime, optional):
-                Only return scans that have been modified since the time
-                specified.
-
+        Retrieves the scans.
+         Args:
+            fields (list, optional):
+                The list of field names to return from the Tenable API.
+                Example:
+                    >>> ['field1', 'field2']
+            filter (tuple, Dict, optional):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                endpoint to get more details.
+            sort (list[tuple], optional):
+                sort is a list of tuples in the form of
+                ('FIELD', 'ORDER').
+                It describes how to sort the data
+                that is to be returned.
+                Examples:
+                    >>> [('field_name_1', 'asc'),
+                    ...      ('field_name_2', 'desc')]
+            limit (int, optional):
+                Number of objects to be returned in each request.
+                Default and max_limit is 200.
+            next (str, optional):
+                The pagination token to use when requesting the next page of
+                results. This token is presented in the previous response.
+            return_resp (bool, optional):
+                If set to true, will override the default behavior to return
+                an iterable and will instead return the results for the
+                specific page of data.
+            return_csv (bool, optional):
+                If set to true, it will return the CSV response or
+                iterable (based on return_resp flag). Iterator returns all
+                rows in text/csv format for each call with row headers.
         Returns:
-            :obj:`list`:
-                A list containing the list of scan resource records.
-
+            Iterable:
+                The iterable that handles the pagination for the job.
+            requests.Response:
+                If ``return_json`` was set to ``True``, then a response
+                object is instead returned instead of an iterable.
         Examples:
-            >>> for scan in  tio.v3.vm.scans.list():
-            ...     pprint(scan)
+            >>> tio.v3.vm.remediation_scans.search(
+            ...     filter=('name','eq','SCCM'),
+            ...     fields=['name', 'field_one', 'field_two'],
+            ...     limit=2,
+            ...     sort=[('last_observed', 'asc')]
+            ... )
         '''
-        params = dict()
-        if folder_id:
-            params['folder_id'] = self._check('folder_id', folder_id, int)
-        # todo - check the behaviour for date-time conversion
-        if last_modified:
-            # for the last_modified datetime attribute, we will want to convert
-            # that into a timestamp integer before passing it to the API.
-            params['last_modification_date'] = int(
-                time.mktime(
-                    self._check(
-                        'last_modified', last_modified, datetime
-                    ).timetuple()
-                )
-            )
-
-        return self._get(params=params)['scans']
+        iclass = SearchIterator
+        if kw.get('return_csv', False):
+            iclass = CSVChunkIterator
+        return super()._search(resource='scans',
+                               iterator_cls=iclass,
+                               api_path=f'{self._path}/search',
+                               **kw
+                               )
 
     def pause(self, scan_id: UUID, block: Optional[bool] = False) -> None:
         '''
@@ -1408,7 +1434,7 @@ class ScansAPI(ExploreBaseEndpoint):
         '''
         self._post(f'{scan_id}/resume')
 
-    def schedule(self, scan_id: UUID, enabled: bool) -> dict:
+    def schedule(self, scan_id: UUID, enabled: bool) -> Dict:
         '''
         Enables or disables the scan schedule.
 
@@ -1421,7 +1447,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 Enables or Disables the scan scheduling.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The schedule resource record for the scan.
 
         Examples:
@@ -1504,7 +1530,7 @@ class ScansAPI(ExploreBaseEndpoint):
         resp = self._get('timezones')['timezones']
         return [i['value'] for i in resp]
 
-    def info(self, scan_id: UUID, history_id: UUID) -> dict:
+    def info(self, scan_id: UUID, history_id: UUID) -> Dict:
         '''
         Retrieves information about the status of the specified instance
         of the scan.
@@ -1518,7 +1544,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The unique identifier for the scan instance.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 The metadata about the scan instance specified.
 
         Examples:
@@ -1534,7 +1560,7 @@ class ScansAPI(ExploreBaseEndpoint):
                            network_id: Optional[UUID] = None,
                            tags: Optional[list] = None,
                            targets: Optional[list] = None,
-                           ) -> dict:
+                           ) -> Dict:
         '''
         Evaluates a list of targets and/or tags against
         the scan route configuration of scanner groups.
@@ -1555,7 +1581,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 A list of valid targets.
 
         Returns:
-            :obj:`dict`:
+            :obj:`Dict`:
                 Return the list of missed targets (if any), and
                 the list of matched scanner groups (if any).
 
@@ -1583,15 +1609,15 @@ class ScansAPI(ExploreBaseEndpoint):
         )
 
     def convert_credentials(self,
-             cred_id: UUID,
-             scan_id: UUID,
-             cred_name: Optional[str] = None,
-             cred_type: Optional[str] = None,
-             permissions: Optional[list] = None,
-             ad_hoc: Optional[bool] = None,
-             category: Optional[str] = None,
-             **settings: Optional[dict]
-             ) -> str:
+                            cred_id: UUID,
+                            scan_id: UUID,
+                            cred_name: Optional[str] = None,
+                            cred_type: Optional[str] = None,
+                            permissions: Optional[list] = None,
+                            ad_hoc: Optional[bool] = None,
+                            category: Optional[str] = None,
+                            **settings: Optional[dict]
+                            ) -> str:
         '''
         Convert the Credentials.
 
@@ -1629,7 +1655,7 @@ class ScansAPI(ExploreBaseEndpoint):
                     - ``('user', 'use', user_id)``
                     - ``('group', 'edit', group_id)``
 
-            **settings (dict, optional):
+            **settings (Dict, optional):
                 Additional keywords passed will be added to the settings dict
                 within the API call.  As this dataset can be highly variable,
                 it will not be validated and simply passed as-is.

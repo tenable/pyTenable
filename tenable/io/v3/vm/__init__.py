@@ -128,7 +128,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
     def scans(self):
         '''
         The interface object for the
-        :doc:`Scans API <scans>`
+        :doc:`Tenable.io v3 Scans APIs <scans>`
         '''
         return ScansAPI(self._api)
 

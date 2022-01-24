@@ -13,6 +13,9 @@ from tenable.io.v3.vm.scans.schema import (ScanCheckAutoTargetSchema,
 
 
 def test_scan_schema():
+    '''
+    Test the common scan schema
+    '''
     data = {
         'key': 'test',
         'name': 'test_name',
@@ -33,6 +36,9 @@ def test_scan_schema():
 
 
 def test_check_auto_targets():
+    '''
+    Test the check auto targets schema
+    '''
     data = {
         'network_id': '00000000-0000-0000-0000-000000000000',
         'tags': ['00000000-0000-0000-0000-000000000000',
@@ -52,6 +58,9 @@ def test_check_auto_targets():
 
 
 def test_scan_document_create():
+    '''
+    Test the create scan document schema
+    '''
     data = {
         'name': 'test',
         'template': 'basic',
@@ -85,6 +94,9 @@ def test_scan_document_create():
 
 @responses.activate
 def test_configure_schedule(api):
+    '''
+    Test the configure schedule schema
+    '''
     data = {
         'frequency': 'ONETIME',
         'interval': None,
@@ -127,6 +139,9 @@ def test_configure_schedule(api):
 
 
 def test_export():
+    '''
+    Test the export schema
+    '''
     data = {
         'history_id': 'fasfsdf9as8d7f98s7df8as79df8',
         'scan_type': 'web-app',
@@ -149,6 +164,9 @@ def test_export():
 
 
 def test_credentials_edit_schema():
+    '''
+    Test the edit credentials schema
+    '''
     permission_data = [
         ('group', 64, '00000000-0000-0000-0000-000000000000'),
         ('group', 'use', '00000000-0000-0000-0000-000000000000'),

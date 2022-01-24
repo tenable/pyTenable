@@ -31,6 +31,9 @@ class ScanSchema(Schema):
 
 
 class ScanCheckAutoTargetSchema(Schema):
+    '''
+    Schema for check auto targets method
+    '''
     network_id = fields.UUID(
         dump_default='00000000-0000-0000-0000-000000000000'
     )
@@ -47,6 +50,9 @@ class ScanCheckAutoTargetSchema(Schema):
 
 
 class ScanDocumentCreateSchema(Schema):
+    '''
+    Schema for create scan document method
+    '''
     name = fields.Str()
     template = fields.Str()
     scanner = fields.Str()
@@ -79,6 +85,9 @@ class ScanDocumentCreateSchema(Schema):
 
 
 class ScanConfigureScheduleSchema(Schema):
+    '''
+    Schema for configure schedule method
+    '''
     schedule_const = IOConstants.ScanScheduleConst
     frequency = fields.Str(validate=v.OneOf(schedule_const.frequency_choice))
     interval = fields.Int()
@@ -171,6 +180,9 @@ class ScanConfigureScheduleSchema(Schema):
 
 
 class ScanExportSchema(Schema):
+    '''
+    Schema for export method
+    '''
     history_id = fields.Str()
     scan_type = fields.Str(validate=v.OneOf(['web-app']))
     password = fields.Str()
@@ -205,7 +217,6 @@ class ScanExportSchema(Schema):
 class ScanConvertCredPermission(Schema):
     '''
     Schema for credentials permissions in scans
-    Args:
     '''
 
     type = fields.Str(validate=v.OneOf(['user', 'group']))
@@ -255,7 +266,6 @@ class ScanConvertCredPermission(Schema):
 class ScanConvertCredSchema(Schema):
     '''
     Schema for convert_credentials function in scans
-    Args:
     '''
 
     name = fields.Str()
