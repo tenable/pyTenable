@@ -14,6 +14,7 @@ from .checker.api import CheckerAPI
 from .checker_option.api import CheckerOptionAPI
 from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
+from .event.api import EventAPI
 from .infrastructure.api import InfrastructureAPI
 from .ldap_configuration.api import LDAPConfigurationAPI
 from .lockout_policy.api import LockoutPolicyAPI
@@ -115,6 +116,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Directories APIs <directories>`.
         '''
         return DirectoriesAPI(self)
+
+    @property
+    def event(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Event APIs <event>`.
+        '''
+        return EventAPI(self)
 
     @property
     def infrastructure(self):

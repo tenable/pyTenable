@@ -20,6 +20,7 @@ This package covers the Tenable.ad interface.
     checker_option
     dashboard
     directories
+    event
     infrastructure
     ldap_configuration
     lockout_policy
