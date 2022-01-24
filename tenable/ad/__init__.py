@@ -17,6 +17,7 @@ This package covers the Tenable.ad interface.
     attack_types
     category
     checker
+    checker_option
     dashboard
     directories
     infrastructure

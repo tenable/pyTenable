@@ -11,10 +11,15 @@ Methods available on ``tio.v3.was.configurations``:
 .. autoclass:: ConfigurationsAPI
     :members:
 '''
-from typing import Dict, List, Optional
+from typing import Dict, List, Union
 from uuid import UUID
 
+from requests import Response
+
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
+from tenable.io.v3.base.schema.explore.search import SortType
 from tenable.io.v3.was.configurations.schema import ConfigurationSchema
 
 
@@ -145,7 +150,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
             ... )
         '''
 
-        return super().details(config_id)
+        return super()._details(config_id)
 
     def get_processing_status(self,
                               config_id: UUID,
@@ -215,15 +220,10 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         return self._patch(f'{config_id}', json=payload)
 
     def search(self,
-               *,
-               fields: Optional[List[str]] = None,
-               sort: Optional[List[Dict]] = None,
-               filter: Optional[Dict] = None, limit: int = 1000,
-               next: Optional[str] = None, return_resp: bool = False,
-               iterator_cls=None,
-               schema_cls=None,
                **kwargs
-               ) -> Dict:
+               ) -> Union[CSVChunkIterator,
+                          SearchIterator,
+                          Response]:
         '''
         Returns a list of web application scan configurations.
         If a scan has been run using the configuration, the list also
@@ -299,7 +299,17 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.was.configurations.search()
         '''
-        raise NotImplementedError("Search is yet to be implemented")
+        iclass = SearchIterator
+        if kwargs.get('return_csv', False):
+            iclass = CSVChunkIterator
+
+        # TODO: Need to implement another iterator for WAS APIs
+        return super()._search(iterator_cls=iclass,
+                               api_path=f'{self._path}/search',
+                               resource='items',
+                               sort_type=SortType.name_based,
+                               **kwargs
+                               )
 
     def upsert(self,
                config_id: UUID,
