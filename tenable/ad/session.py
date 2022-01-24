@@ -7,6 +7,7 @@ import os
 from tenable.base.platform import APIPlatform
 
 from .about import AboutAPI
+from .alert.api import AlertsAPI
 from .api_keys import APIKeyAPI
 from .attack_types.api import AttackTypesAPI
 from .category.api import CategoryAPI
@@ -59,6 +60,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad About APIs <about>`.
         '''
         return AboutAPI(self)
+
+    @property
+    def alerts(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Alerts APIs <alert>`.
+        '''
+        return AlertsAPI(self)
 
     @property
     def api_keys(self):
