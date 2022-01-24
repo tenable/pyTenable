@@ -13,6 +13,7 @@ This package covers the Tenable Identity Exposure interface.
     :glob:
 
     about
+    alert
     api_keys
     attack_types
     category
