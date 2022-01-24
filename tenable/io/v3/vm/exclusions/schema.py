@@ -62,14 +62,14 @@ class ExclusionSchema(Schema):
     Schema for Exclusion API
     '''
     name = fields.Str(required=True)
-    description = fields.Str(default='')
+    description = fields.Str(dump_default='')
     members = fields.List(fields.Str(), required=True)
     schedule = fields.Nested(
         ScheduleSchema,
         required=True
     )
     network_id = fields.UUID(
-        default='00000000-0000-0000-0000-000000000000'
+        dump_default='00000000-0000-0000-0000-000000000000'
     )
 
     @post_dump

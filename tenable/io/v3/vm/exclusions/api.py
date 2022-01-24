@@ -343,7 +343,7 @@ class ExclusionsAPI(ExploreBaseEndpoint):
                         'byweekday', 'SU,MO,TU,WE,TH,FR,SA'
                     ).split(',')
 
-            if frequency == 'MONTHLY':
+            if rrules['freq'] == 'MONTHLY':
                 if day_of_month is not None:
                     rrules['bymonthday'] = day_of_month
                 else:

@@ -4,6 +4,7 @@ Test cases for exclusion API
 import os
 from datetime import datetime, timedelta
 
+import pytest
 import responses
 from requests import Response
 from responses import matchers
@@ -97,6 +98,13 @@ def test_create(api):
     assert name == res['name']
     assert members == res['members'].split(',')
 
+    with pytest.raises(TypeError):
+        api.v3.vm.exclusions.create(
+            name=name,
+            members=members,
+            enabled="False"
+        )
+
 
 @responses.activate
 def test_delete(api):
@@ -165,18 +173,22 @@ def test_edit(api):
     '''
     exclusion_id: int = 1
     new_name: str = 'New Name'
+    frequency: str = 'WEEKLY'
+    interval: int = 2
+    weekdays: list = ['MO', 'WE', 'FR']
+    enabled: bool = True
+    start_time: str = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+    end_time: str = (
+            datetime.utcnow() + timedelta(hours=1)
+    ).strftime('%Y-%m-%dT%H:%M:%SZ')
 
     # Let's create response for details endpoint
     details_res: dict = {
         'schedule': {
-            'endtime': '2022-01-07T13:11:39Z',
-            'enabled': True,
-            'rrules': {
-                'freq': 'DAILY',
-                'interval': 1,
-                'byweekday': 'MO'
-            },
-            'starttime': '2022-01-07T12:11:39Z'
+            'endtime': None,
+            'enabled': False,
+            'rrules': None,
+            'starttime': None
         },
         'network_id': '00000000-0000-0000-0000-000000000000',
         'last_modification_date': '2022-01-24T08:46:34Z',
@@ -190,13 +202,14 @@ def test_edit(api):
     # Let's create reasponse for edit endpoint
     test_response: dict = {
         'schedule': {
-            'endtime': '2022-01-07T13:11:39Z',
-            'enabled': True,
+            'endtime': end_time,
+            'enabled': enabled,
             'rrules': {
-                'freq': 'DAILY',
-                'interval': 1
+                'freq': frequency,
+                'byweekday': ','.join(weekdays),
+                'interval': interval
             },
-            'starttime': '2022-01-07T12:11:39Z'
+            'starttime': start_time
         },
         'network_id': '00000000-0000-0000-0000-000000000000',
         'last_modification_date': '2022-01-24T08:46:34Z',
@@ -215,12 +228,13 @@ def test_edit(api):
         'members': '127.0.0.1',
         'schedule': {
             'rrules': {
-                'freq': 'DAILY',
-                'interval': 1
+                'freq': frequency,
+                'byweekday': ','.join(weekdays),
+                'interval': interval
             },
             'enabled': True,
-            'endtime': '2022-01-07T13:11:39Z',
-            'starttime': '2022-01-07T12:11:39Z'
+            'endtime': end_time,
+            'starttime': start_time
         }
     }
 
@@ -241,7 +255,13 @@ def test_edit(api):
 
     res = api.v3.vm.exclusions.edit(
         exclusion_id=exclusion_id,
-        name=new_name
+        name=new_name,
+        interval=interval,
+        frequency=frequency,
+        weekdays=weekdays,
+        start_time=start_time,
+        enabled=enabled,
+        end_time=end_time
     )
 
     assert res['id'] == exclusion_id
