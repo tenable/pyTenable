@@ -23,6 +23,7 @@ Methods available on ``tio.v3``:
 '''
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.assets.api import AssetsAPI
+from tenable.io.v3.definitions.api import DefinitionsAPI
 from tenable.io.v3.groups.api import GroupsAPI
 from tenable.io.v3.users.api import UsersAPI
 from tenable.io.v3.vm import VulnerabilityManagement
@@ -42,6 +43,10 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
         :doc:`Tenable.io.v3.assets Assets APIs <assets>`.
         """
         return AssetsAPI(self._api)
+
+    @property
+    def definitions(self):
+        return DefinitionsAPI(self._api)
 
     @property
     def groups(self):
