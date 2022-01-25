@@ -74,7 +74,7 @@ class DashboardAPI(APIEndpoint):
 
             >>> tad.dashboard.details(dashboard_id='1')
         '''
-        return self._schema.load(self._get(dashboard_id))
+        return self._schema.load(self._get(f'{dashboard_id}'))
 
     def update(self, dashboard_id: str, **kwargs):
         '''

@@ -7,18 +7,9 @@ These methods can be accessed at ``TenableAD.widgets``.
 
 .. rst-class:: hide-signature
 .. autoclass:: WidgetsAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: update
-    .. automethod:: list
-    .. automethod:: widget_options_details
-    .. automethod:: define_widget_options
+    :members:
 '''
-
 from typing import List, Dict
-
 from tenable.ad.widget.schema import WidgetSchema, WidgetOptionSchema
 from tenable.base.endpoint import APIEndpoint
 
@@ -29,17 +20,16 @@ class WidgetsAPI(APIEndpoint):
 
     def list(self, dashboard_id: int) -> List[Dict]:
         '''
-        Retrieve all widgets
+        Retrieves all the widgets.
 
         Args:
             dashboard_id (int):
                 The dashboard instance identifier.
         Returns:
             list:
-                The list of widget objects
+                The list of widget objects.
 
         Examples:
-
             >>> tad.widgets.list(dashboard_id=13)
         '''
         return self._get(f"{dashboard_id}/widgets")
@@ -52,7 +42,7 @@ class WidgetsAPI(APIEndpoint):
                height: int,
                title: str) -> List[Dict]:
         '''
-        Create a new widget
+        Creates a new widget.
 
         Args:
             dashboard_id (int):
@@ -73,7 +63,6 @@ class WidgetsAPI(APIEndpoint):
                 The created widget object.
 
         Examples:
-
             >>> tad.widgets.create(
             ...     dashboard_id=1,
             ...     pos_x=1,
@@ -90,7 +79,6 @@ class WidgetsAPI(APIEndpoint):
             'height': height,
             'title': title
         }))
-
         return self._schema.load(self._post(f'{dashboard_id}/widgets',
                                             json=payload))
 
@@ -108,10 +96,9 @@ class WidgetsAPI(APIEndpoint):
 
         Returns:
             dict:
-                the widget object.
+                The widget object.
 
         Examples:
-
             >>> tad.widget.details(dashboard_id=1, widget_id=1)
         '''
         return self._schema.load(self._get(f"{dashboard_id}"
@@ -122,7 +109,7 @@ class WidgetsAPI(APIEndpoint):
                widget_id: int,
                **kwargs) -> Dict:
         '''
-        update an existing widget
+        Updates an existing widget.
 
         Args:
             dashboard_id (int):
@@ -145,7 +132,6 @@ class WidgetsAPI(APIEndpoint):
                 The updated widget object.
 
         Examples:
-
             >>> tad.widgets.update(
             ...     dashboard_id=1,
             ...     widget_id=1,
@@ -165,7 +151,7 @@ class WidgetsAPI(APIEndpoint):
                dashboard_id: int,
                widget_id: int) -> None:
         '''
-        delete an existing widget
+        Deletes an existing widget.
 
         Args:
             dashboard_id (int):
@@ -177,7 +163,6 @@ class WidgetsAPI(APIEndpoint):
             None:
 
         Examples:
-
             >>> tad.widgets.delete(
             ...     dashboard_id=1,
             ...     widget_id=1
@@ -189,7 +174,7 @@ class WidgetsAPI(APIEndpoint):
                                dashboard_id: int,
                                widget_id: int) -> Dict:
         '''
-        get widget options
+        Gets the details of widget options.
 
         Args:
             dashboard_id (int):
@@ -202,7 +187,6 @@ class WidgetsAPI(APIEndpoint):
                 The widget option object.
 
         Examples:
-
             >>> tad.widgets.widget_options_details(
             ...     widget_id=1,
             ...     dashboard_id=1
@@ -219,7 +203,7 @@ class WidgetsAPI(APIEndpoint):
                               series: List[Dict]
                               ) -> None:
         '''
-        Define a widget option
+        Defines the widget option.
 
         Args:
             dashboard_id (int):
@@ -235,10 +219,9 @@ class WidgetsAPI(APIEndpoint):
                 list of dicts within the API call.
 
         Returns:
-            None
+            None:
 
         Examples:
-
             >>> tad.widgets.define_widget_options(
             ...     dashboard_id=1,
             ...     widget_id=1,

@@ -15,12 +15,14 @@ Methods available on ``tio.v3``:
     :hidden:
     :glob:
 
+    assets
     groups
     users
     vm/index
     was/index
 '''
 from tenable.base.endpoint import APIEndpoint
+from tenable.io.v3.assets.api import AssetsAPI
 from tenable.io.v3.groups.api import GroupsAPI
 from tenable.io.v3.users.api import UsersAPI
 from tenable.io.v3.vm import VulnerabilityManagement
@@ -32,6 +34,14 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     This will contain property for all resources/app under io
     i.e Container Security, Web Application Security.
     '''
+
+    @property
+    def assets(self):
+        """
+        The interface object for the Assets APIs
+        :doc:`Tenable.io.v3.assets Assets APIs <assets>`.
+        """
+        return AssetsAPI(self._api)
 
     @property
     def groups(self):

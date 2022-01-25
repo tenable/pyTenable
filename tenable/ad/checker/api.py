@@ -48,4 +48,4 @@ class CheckerAPI(APIEndpoint):
 
             >>> tad.checker.details(checker_id='1')
         '''
-        return self._schema.load(self._get(checker_id))
+        return self._schema.load(self._get(f'{checker_id}'))

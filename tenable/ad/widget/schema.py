@@ -1,5 +1,4 @@
 from marshmallow import fields, validate as v
-
 from tenable.ad.base.schema import CamelCaseSchema
 
 
