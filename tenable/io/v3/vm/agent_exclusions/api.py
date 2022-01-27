@@ -12,26 +12,30 @@ Methods available on ``tio.v3.vm.agent_exclusions``:
     :members:
 '''
 from datetime import datetime
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 from uuid import UUID
 
-from restfly.utils import dict_clean, dict_merge
+from requests import Response
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 from tenable.io.v3.vm.agent_exclusions.schema import AgentExclusionSchema
+from tenable.utils import dict_clean, dict_merge
 
 
 class AgentExclusionsAPI(ExploreBaseEndpoint):
     '''
     This class contains methods related to Agent Exclusions APIs
     '''
-    _path: str = 'api/v3/agents'
+    _path: str = 'api/v3/agents/exclusions'
     _conv_json: bool = True
 
     def create(self,
                name: str,
                start_time: str,
                end_time: Optional[str] = None,
+               timezone: Optional[str] = 'Etc/UTC',
                description: Optional[str] = None,
                frequency: Optional[str] = 'ONETIME',
                interval: Optional[int] = 1,
@@ -46,8 +50,13 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
 
         Args:
             name (str): The name of the exclusion to create.
-            start_time (datetime): When the exclusion should start.
-            end_time (datetime): When the exclusion should end.
+            start_time (str): When the exclusion should start.
+            end_time (str): When the exclusion should end.
+            timezone (str, optional):
+                The timezone to use for the exclusion.  The default if none is
+                specified is to use UTC.  For the list of usable timezones,
+                please refer to:
+                https://cloud.tenable.com/api#/resources/scans/timezones
             description (str, optional):
                 Some further detail about the exclusion.
             frequency (str, optional):
@@ -78,24 +87,16 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
             ...     name = 'Example One-Time Agent Exclusion',
             ...     frequency = 'ONETIME',
-            ...     start_time=(
-            ...         datetime.utcnow()
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ'),
-            ...     end_time=(
-            ...         datetime.utcnow() + timedelta(hours=1)
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ...     start_time=datetime.utcnow(),
+            ...     end_time=datetime.utcnow() + timedelta(hours=1))
 
             Creating a daily exclusion:
 
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
             ...     name = 'Example Daily Agent Exclusion',
             ...     frequency='DAILY',
-            ...     start_time=(
-            ...         datetime.utcnow()
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ'),
-            ...     end_time=(
-            ...         datetime.utcnow() + timedelta(hours=1)
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ...     start_time=datetime.utcnow(),
+            ...     end_time=datetime.utcnow() + timedelta(hours=1))
 
             Creating a weekly exclusion:
 
@@ -103,12 +104,8 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             ...     name = 'Example Weekly Exclusion',
             ...     frequency='WEEKLY',
             ...     weekdays=['mo', 'we', 'fr'],
-            ...     start_time=(
-            ...         datetime.utcnow()
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ'),
-            ...     end_time=(
-            ...         datetime.utcnow() + timedelta(hours=1)
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ...     start_time=datetime.utcnow(),
+            ...     end_time=datetime.utcnow() + timedelta(hours=1))
 
             Creating a monthly exclusion:
 
@@ -116,25 +113,18 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             ...     name = 'Example Monthly Agent Exclusion',
             ...     frequency='MONTHLY',
             ...     day_of_month=1,
-            ...     start_time=(
-            ...         datetime.utcnow()
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ'),
-            ...     end_time=(
-            ...         datetime.utcnow() + timedelta(hours=1)
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ...     start_time=datetime.utcnow(),
+            ...     end_time=datetime.utcnow() + timedelta(hours=1))
 
             Creating a yearly exclusion:
 
             >>> exclusion = tio.v3.vm.agent_exclusions.create(
             ...     name = 'Example Yearly Agent Exclusion',
             ...     frequency='YEARLY',
-            ...     start_time=(
-            ...         datetime.utcnow()
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ'),
-            ...     end_time=(
-            ...         datetime.utcnow() + timedelta(hours=1)
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ...     start_time=datetime.utcnow(),
+            ...     end_time=datetime.utcnow() + timedelta(hours=1))
         '''
+        # Let's create the payload
         payload: dict = {
             'name': name,
             'description': description,
@@ -142,49 +132,22 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
                 'enabled': enabled,
                 'starttime': start_time,
                 'endtime': end_time,
-                'rrules': {}
+                'timezone': timezone,
+                'rrules': {
+                    'freq': frequency,
+                    'interval': interval,
+                    'byweekday': weekdays,
+                    'bymonthday': day_of_month
+                }
             }
         }
-
-        # Starting with the innermost part of the payload, lets construct the
-        # rrules dictionary.
-        rrules: dict = {
-            'freq': frequency.upper(),
-            'interval': interval,
-        }
-
-        # if the frequency is a weekly one, then we will need to
-        # specify the days of the week that the exclusion is run on.
-        if rrules['freq'] == 'WEEKLY':
-            # In the same vein as the frequency check, we're accepting
-            # case-insensitive input, comparing it to our known list of
-            # acceptable responses, then joining them all together into a
-            # comma-separated string.
-            if weekdays is not None:
-                rrules['byweekday'] = [
-                    item.upper() for item in weekdays
-                ]
-            else:
-                rrules['byweekday'] = [
-                    'SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'
-                ]
-
-        # if the frequency is monthly, then we will need to specify
-        # the day of the month that the rule will run on.
-        if rrules['freq'] == 'MONTHLY':
-            if day_of_month is not None:
-                rrules['bymonthday'] = day_of_month
-            else:
-                rrules['bymonthday'] = datetime.today().day
-
-        # Let's Add rrules dict to payload dict
-        dict_merge(payload['schedule']['rrules'], rrules)
-
+        payload = dict_clean(payload)
         # validate payload using marshmallow schema
-        schema = AgentExclusionSchema()
+        schema = AgentExclusionSchema(
+            context={'timezones': self._api._tz}
+        )
         payload = schema.dump(schema.load(payload))
-
-        return self._post(f'exclusions', json=payload)
+        return self._post(json=payload)
 
     def delete(self, exclusion_id: UUID) -> None:
         '''
@@ -203,7 +166,7 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             ...     exclusion_id = '00000000-0000-0000-0000-000000000000'
             ... )
         '''
-        self._delete(f'exclusions/{exclusion_id}')
+        self._delete(f'{exclusion_id}')
 
     def details(self, exclusion_id: UUID) -> Dict:
         '''
@@ -222,13 +185,14 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             ...     exclusion_id = '00000000-0000-0000-0000-000000000000'
             ... )
         '''
-        return self._get(f'exclusions/{exclusion_id}')
+        return super()._details(exclusion_id)
 
     def edit(self,
              exclusion_id: UUID,
              name: Optional[str] = None,
              start_time: Optional[str] = None,
              end_time: Optional[str] = None,
+             timezone: Optional[str] = None,
              description: Optional[str] = None,
              frequency: Optional[str] = None,
              interval: Optional[int] = None,
@@ -250,6 +214,9 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             name (str, optional): The name of the exclusion to create.
             start_time (datetime, optional): When the exclusion should start.
             end_time (datetime, optional): When the exclusion should end.
+            timezone (str, optional):
+                The timezone to use for the exclusion.  The default if none is
+                specified is to use UTC.
             description (str, optional):
                 Some further detail about the exclusion.
             frequency (str, optional):
@@ -294,12 +261,6 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             'description': description,
             'schedule': {
                 'enabled': enabled,
-                'starttime': start_time,
-                'endtime': end_time,
-                'rrules': {
-                    'freq': frequency,
-                    'interval': interval
-                }
             }
         }
 
@@ -308,59 +269,119 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
         dict_merge(payload, field_dict)
 
         if payload['schedule']['enabled']:
-            rrules = {
-                'freq': payload['schedule']['rrules']['freq'],
-                'interval': payload['schedule']['rrules']['interval'],
-                'byweekday': None,
-                'bymonthday': None,
+            schedule_dict: dict = {
+                'starttime': start_time,
+                'endtime': end_time,
+                'timezone': timezone,
+                'rrules': {
+                    'freq': frequency,
+                    'interval': interval,
+                    'byweekday': weekdays,
+                    'bymonthday': day_of_month
+                }
             }
+            schedule_dict = dict_clean(schedule_dict)
+            dict_merge(payload['schedule'], schedule_dict)
 
-            rrules['freq'] = rrules['freq'].upper()
-
-            # frequency default value is designed for weekly and
-            # monthly based on below conditions
-            # - if schedule rrules is not None and not defined in edit params,
-            #   and byweekday/bymonthday key already exist, assign old values
-            # - if schedule rrules is not None and not defined in edit params
-            #   and byweekday/bymonthday key not already exist,
-            #   assign default values
-            # - if schedule rrules is not None and defined in edit params,
-            # assign new values
-            if rrules['freq'] == 'WEEKLY':
-                if weekdays is not None:
-                    rrules['byweekday'] = [
-                        item.upper() for item in weekdays
-                    ]
-                else:
-                    rrules['byweekday'] = payload['schedule']['rrules'].get(
-                        'byweekday', 'SU,MO,TU,WE,TH,FR,SA'
-                    ).split(',')
-                # In the same vein as the frequency check, we're accepting
-                # case-insensitive input, comparing it to our known list of
-                # acceptable responses, then joining them all together into a
-                # comma-separated string.
-            elif rrules['freq'] == 'MONTHLY':
-                if day_of_month is not None:
-                    rrules['bymonthday'] = day_of_month
-                else:
-                    rrules['bymonthday'] = payload['schedule']['rrules'].get(
-                        'bymonthday', datetime.today().day
-                    )
-
-            # Let's Merge rrules dict to payload
-            dict_merge(payload['schedule']['rrules'], rrules)
-
-        # Let's clean the payload
-        payload = dict_clean(payload)
+        payload['schedule']['starttime'] = datetime.fromisoformat(
+            payload['schedule']['starttime']
+        ).strftime('%Y-%m-%d %H:%M:%S')
+        payload['schedule']['endtime'] = datetime.fromisoformat(
+            payload['schedule']['endtime']
+        ).strftime('%Y-%m-%d %H:%M:%S')
 
         # validate payload using marshmallow
-        # let's remove addtional keys from payload
-        schema = AgentExclusionSchema()
+        schema = AgentExclusionSchema(
+            context={'timezones': self._api._tz}
+        )
         payload = schema.dump(schema.load(payload))
+        return self._put(f'{exclusion_id}', json=payload)
 
-        return self._put(f'exclusions/{exclusion_id}', json=payload)
+    def search(self,
+               **kwargs) -> Union[SearchIterator, CSVChunkIterator, Response]:
+        '''
+        Search agent exclusions based on supported conditions.
+        Args:
+            fields (list, optional):
+                The list of field names to return from the Tenable API.
+                Example:
+                    >>> ['field1', 'field2']
+            filter (tuple, Dict, optional):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the :py:meth:`tio.v3.vm.filters.agent_exclusion_filters()`
+                endpoint to get more details.
+            sort (list[tuple], optional):
+                A list of dictionaries describing how to sort the data
+                that is to be returned.
+                Examples:
+                    >>> [('field_name_1', 'asc'),
+                    ...      ('field_name_2', 'desc')]
+            limit (int, optional):
+                Number of objects to be returned in each request.
+                Default and max_limit is 200.
+            next (str, optional):
+                The pagination token to use when requesting the next page of
+                results. This token is presented in the previous response.
+            return_resp (bool, optional):
+                If set to true, will override the default behavior to return
+                an iterable and will instead return the results for the
+                specific page of data.
+            return_csv (bool, optional):
+                If set to true, it will return the CSV response or
+                iterable (based on return_resp flag). Iterator returns all
+                rows in text/csv format for each call with row headers.
+        Returns:
+            Iterable:
+                The iterable that handles the pagination for the job.
+            requests.Response:
+                If ``return_json`` was set to ``True``, then a response
+                object is instead returned instead of an iterable.
+        Examples:
+            >>> tio.v3.vm.agent_exclusions.search(
+            ...     fields=['id', 'name'],
+            ...     filter=('id', 'eq', [1,2]),
+            ...     sort=[('id', 'asc')],
+            ...     limit=10
+            ... )
+        '''
+        iclass = SearchIterator
 
-    def search(self):
-        raise NotImplementedError(
-            'This method will be implemented later.'
+        if kwargs.get('return_csv', False):
+            iclass = CSVChunkIterator
+
+        return super()._search(
+            iterator_cls=iclass,
+            sort_type=self._sort_type.default,
+            api_path=f'{self._path}/search',
+            resource='exclusions',
+            **kwargs
         )
