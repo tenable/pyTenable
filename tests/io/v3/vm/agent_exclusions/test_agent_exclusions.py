@@ -4,10 +4,14 @@ Test Cases For Agent Exclusions APIs
 import re
 from datetime import datetime, timedelta
 
-import pytest
 import responses
+from requests import Response
 
-BASE_URL: str = 'https://cloud.tenable.com/api/v3/agents'
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
+
+BASE_URL: str = 'https://cloud.tenable.com/api/v3/agents/exclusions'
+TIMEZONE_URL: str = 'https://cloud.tenable.com/scans/timezones'
 
 
 @responses.activate
@@ -21,29 +25,29 @@ def test_create(api):
     frequency: str = 'WEEKLY'
     interval: int = 1
     weekdays: list = ['MO', 'WE', 'FR']
-    start_time: str = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+    start_time: str = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
     end_time: str = (
             datetime.utcnow() + timedelta(hours=1)
-    ).strftime('%Y-%m-%dT%H:%M:%SZ')
+    ).strftime('%Y-%m-%d %H:%M:%S')
+    timezone: str = 'Etc/UTC'
 
     # Let's create test response for create agent exlusion endpoint
     test_response = {
-        'id': 'c941af88-c514-4fdc-9657-ec72bd242ef7',
-        'name': name,
         'description': description,
-        'creation_date': datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
-        'last_modification_date':
-            datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+        'name': name,
+        'id': '534d4121-b55f-465c-bf79-0ff34d0b9a88',
+        'creation_date': '2020-04-21T10:51:47+00:00',
+        'last_modification_date': '2020-04-21T10:51:47+00:00',
         'core_updates_blocked': True,
         'schedule': {
-            'starttime': start_time,
-            'endtime': end_time,
-            'enabled': enable,
+            'starttime': '2020-04-21T20:30:00+07:00',
+            'endtime': '2020-04-21T21:00:00+07:00',
+            'enabled': True,
             'rrules': {
-                'freq': frequency,
-                'interval': interval,
-                'byweekday': ','.join(weekdays)
-            }
+                'freq': 'ONETIME',
+                'interval': '1'
+            },
+            'timezone': timezone
         }
     }
 
@@ -55,6 +59,7 @@ def test_create(api):
             'enabled': enable,
             'starttime': start_time,
             'endtime': end_time,
+            'timezone': timezone,
             'rrules': {
                 'freq': frequency,
                 'interval': interval,
@@ -63,10 +68,28 @@ def test_create(api):
         }
     }
 
+    # Let's register the response for timezone API
+    responses.add(
+        responses.GET,
+        TIMEZONE_URL,
+        json={
+            'timezones': [
+                {
+                    'name': 'Africa/Addis_Ababa',
+                    'value': 'Africa/Addis_Ababa'
+                },
+                {
+                    'name': 'Etc/UTC',
+                    'value': 'Etc/UTC'
+                }
+            ]
+        }
+    )
+
     # Let's mock the response for create agent exclusion API endpoint
     responses.add(
         responses.POST,
-        re.compile(f'{BASE_URL}/exclusions'),
+        re.compile(f'{BASE_URL}'),
         match=[responses.matchers.json_params_matcher(payload)],
         json=test_response
     )
@@ -96,7 +119,7 @@ def test_delete(api):
     # Let's mock the Response for delete agent exlusion API endpoint
     responses.add(
         responses.DELETE,
-        re.compile(f'{BASE_URL}/exclusions/{exclusion_id}'),
+        re.compile(f'{BASE_URL}/{exclusion_id}'),
     )
 
     res = api.v3.vm.agent_exclusions.delete(
@@ -115,28 +138,28 @@ def test_details(api):
 
     # Let's create sample response for agent exclusion details endpoint
     test_response = {
-        'id': exclusion_id,
-        'name': 'Example Weekly Exclusion',
         'description': '',
-        'creation_date': '2021-12-24T09:57:28Z',
-        'last_modification_date': '2021-12-24T09:57:28Z',
+        'name': 'sample-blackout-window-test',
+        'id': exclusion_id,
+        'creation_date': '2020-04-21T10:51:47-04:00',
+        'last_modification_date': '2020-04-21T10:51:47-04:00',
         'core_updates_blocked': True,
         'schedule': {
-            'starttime': '2021-12-24T09:57:28Z',
-            'endtime': '2021-12-24T10:57:28Z',
+            'starttime': '2020-04-21T20:30:00+07:00',
+            'endtime': '2020-04-21T21:00:00+07:00',
             'enabled': True,
             'rrules': {
-                'freq': 'WEEKLY',
-                'interval': '1',
-                'byweekday': 'MO,WE,FR'
-            }
+                'freq': 'ONETIME',
+                'interval': '1'
+            },
+            'timezone': 'Indian/Christmas'
         }
     }
 
     # Let's mock the response for agent exlusion details endpoint
     responses.add(
         responses.GET,
-        re.compile(f'{BASE_URL}/exclusions/{exclusion_id}'),
+        re.compile(f'{BASE_URL}/{exclusion_id}'),
         json=test_response
     )
     res = api.v3.vm.agent_exclusions.details(
@@ -152,64 +175,82 @@ def test_edit(api):
     Test case for agent_exclusion edit method
     '''
     exclusion_id: str = 'c941af88-c514-4fdc-9657-ec72bd242ef7'
-    new_name: str = 'Test Edit Method 1'
+    new_name: str = 'Test Edit Method'
 
     # Let's create sample response for agent exclusion edit endpoint
     test_response = {
-        'id': 'c941af88-c514-4fdc-9657-ec72bd242ef7',
         'name': new_name,
-        'description': '',
-        'creation_date': '2021-12-24T09:57:28Z',
-        'last_modification_date': '2021-12-24T09:57:28Z',
+        'id': exclusion_id,
+        'creation_date': '2022-01-20T06:17:21-05:00',
+        'last_modification_date': '2022-01-22T11:48:36-05:00',
         'core_updates_blocked': True,
         'schedule': {
-            'starttime': '2021-12-24T09:57:28Z',
-            'endtime': '2021-12-24T10:57:28Z',
             'enabled': True,
+            'starttime': '2021-10-11T00:00:00-07:00',
+            'endtime': '2021-12-12T00:00:00-07:00',
             'rrules': {
-                'freq': 'WEEKLY',
-                'interval': '1',
-                'byweekday': 'MO,WE,FR'
-            }
+                'freq': 'MONTHLY',
+                'interval': 1,
+                'bymonthday': '5'
+            },
+            'timezone': 'US/Arizona'
         }
     }
 
     # Let's create sample payload for agent exclusion edit endpoint
     payload = {
-        'name': new_name,
-        'description': '',
+        'name': 'Test Edit Method',
         'schedule': {
+            'endtime': '2021-12-12 00:00:00',
+            'starttime': '2021-10-11 00:00:00',
             'enabled': True,
-            'starttime': '2021-12-24T09:57:28Z',
-            'endtime': '2021-12-24T10:57:28Z',
+            'timezone': 'US/Arizona',
             'rrules': {
-                'freq': 'WEEKLY',
-                'interval': 1,
-                'byweekday': 'MO,WE,FR'
+                'freq': 'MONTHLY',
+                'bymonthday': 5,
+                'interval': 1
             }
         }
     }
 
-    # Let's mock the response for agent exclusion details endpoint
+    # Let's register the response for timezone API
     responses.add(
         responses.GET,
-        re.compile(f'{BASE_URL}/exclusions/{exclusion_id}'),
+        TIMEZONE_URL,
         json={
-            'id': 'c941af88-c514-4fdc-9657-ec72bd242ef7',
-            'name': 'Example Weekly Exclusion',
-            'description': '',
-            'creation_date': '2021-12-24T09:57:28Z',
-            'last_modification_date': '2021-12-24T09:57:28Z',
+            'timezones': [
+                {
+                    'name': 'US/Arizona',
+                    'value': 'US/Arizona'
+                },
+                {
+                    'name': 'Etc/UTC',
+                    'value': 'Etc/UTC'
+                }
+            ]
+        }
+    )
+
+    # Let's register the response for details endpoint
+    responses.add(
+        responses.GET,
+        re.compile(f'{BASE_URL}/{exclusion_id}'),
+        json={
+            'name': 'Old Exclusion Name',
+            'id': exclusion_id,
+            'creation_date': '2022-01-20T06:17:21-05:00',
+            'last_modification_date': '2022-01-22T11:48:36-05:00',
             'core_updates_blocked': True,
             'schedule': {
-                'starttime': '2021-12-24T09:57:28Z',
-                'endtime': '2021-12-24T10:57:28Z',
                 'enabled': True,
+                'starttime': '2021-10-11T00:00:00-07:00',
+                'endtime': '2021-12-12T00:00:00-07:00',
                 'rrules': {
-                    'freq': 'WEEKLY',
-                    'interval': '1',
-                    'byweekday': 'MO,WE,FR'
-                }
+                    'freq': 'MONTHLY',
+                    'interval': 1,
+                    'bymonthday': '5'
+                },
+                'timezone': 'US/Arizona'
             }
         }
     )
@@ -217,7 +258,7 @@ def test_edit(api):
     # Let's mock the response for agent exclusion edit endpoint
     responses.add(
         responses.PUT,
-        re.compile(f'{BASE_URL}/exclusions/{exclusion_id}'),
+        re.compile(f'{BASE_URL}/{exclusion_id}'),
         match=[responses.matchers.json_params_matcher(payload)],
         json=test_response
     )
@@ -236,5 +277,88 @@ def test_search(api):
     '''
     Test case for agent_exclusion search method
     '''
-    with pytest.raises(NotImplementedError):
-        api.v3.vm.agent_exclusions.search()
+    test_response: dict = {
+        'exclusions': [
+            {
+                'schedule': {
+                    'rrules': {
+                        'freq': 'ONETIME',
+                        'interval': '1'
+                    },
+                    'timezone': 'Indian/Christmas',
+                    'endtime': '2020-05-11T23:00:00+07:00',
+                    'starttime': '2020-05-11T20:30:00+07:00',
+                    'enabled': True
+                },
+                'core_updates_blocked': True,
+                'last_modification_date': '2020-05-11T11:35:14-04:00',
+                'name': 'sample2222222-blackout-window',
+                'description': '',
+                'id': '6d6847dd-5478-45a0-bf30-1d53f4a5a926',
+                'creation_date': '2020-05-11T11:35:14-04:00'
+            }
+        ],
+        'pagination': {
+            'next': 'nextToken',
+            'total': 1
+        }
+    }
+
+    fields: list = [
+        'description',
+        'name',
+        'uuid',
+        'creation_date',
+        'last_modification_date',
+        'id',
+        'core_updates_blocked',
+        'schedule'
+    ]
+
+    filter = {
+        'and': [
+            {
+                'property': 'id',
+                'operator': 'eq',
+                'value': [6, 7]
+            }
+        ]
+    }
+
+    sort = [('creation_date', 'asc')]
+
+    # Let's create sample payload for search exclusion endpoint
+    payload = {
+        'fields': fields,
+        'filter': filter,
+        'limit': 200,
+        'sort': [{'creation_date': 'asc'}],
+    }
+
+    # Let's register the mock response for search endpoint
+    responses.add(
+        responses.POST,
+        f'{BASE_URL}/search',
+        json=test_response,
+        match=[responses.matchers.json_params_matcher(payload)],
+    )
+
+    iterator = api.v3.vm.agent_exclusions.search(
+        fields=fields, filter=filter, sort=sort, limit=200
+    )
+    assert isinstance(iterator, SearchIterator)
+
+    exclusions_list = []
+    for item in iterator:
+        exclusions_list.append(item)
+    assert len(exclusions_list) == test_response['pagination']['total']
+
+    iterator = api.v3.vm.agent_exclusions.search(
+        fields=fields, filter=filter, sort=sort, return_csv=True
+    )
+    assert isinstance(iterator, CSVChunkIterator)
+
+    resp = api.v3.vm.agent_exclusions.search(
+        fields=fields, filter=filter, sort=sort, return_resp=True, limit=200
+    )
+    assert isinstance(resp, Response)
