@@ -194,7 +194,7 @@ def test_search(api):
         'fields': fields,
         'filter': filters,
         'limit': 2,
-        'sort': [{'name': 'asc'}],
+        'sort': [{'name': 'name', 'order': 'asc'}],
 
     }
 

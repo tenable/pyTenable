@@ -3,7 +3,8 @@ Templates
 =========
 
 The following methods allow for interaction into the Tenable.io
-:devportal:`Web Application Scanning v3 templates <was-v2-templates>` API.
+:devportal:`Web Application Scanning v3 templates
+<was-v2-templates>` API endpoints.
 
 Methods available on ``tio.v3.was.templates``:
 
@@ -50,11 +51,11 @@ class TemplatesAPI(ExploreBaseEndpoint):
         '''
         return super()._details(template_id)
 
-    def search(self, **kwargs) -> Union[SearchIterator,
-                                        CSVChunkIterator,
-                                        Response]:
+    def search(self, **kwargs) -> Union[CSVChunkIterator,
+                                        Response,
+                                        SearchIterator]:
         '''
-        Search and retrieve the templates based on supported conditions.
+        Search and retrieve the teamplates based on supported conditions.
         Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
@@ -91,12 +92,10 @@ class TemplatesAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.was.filters.templates_filters()`
+                the :py:meth:`tio.v3.was.folders.filters()`
                 endpoint to get more details.
             sort (list[tuple], optional):
-                sort is a list of tuples in the form of
-                ('FIELD', 'ORDER').
-                It describes how to sort the data
+                A list of dictionaries describing how to sort the data
                 that is to be returned.
                 Examples:
                     >>> [('field_name_1', 'asc'),
@@ -116,22 +115,22 @@ class TemplatesAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
         Returns:
-            iterable:
+            Iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
                 If ``return_json`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
         Examples:
-            >>> tio.v3.was.templates.search(filter=('netbios_name', 'eq',
-            ...  'SCCM'), fields=['id', 'action', 'description'],
-            ...    limit=2, sort=[('received': 'desc)])
+            >>> tio.v3.mssp.accounts.search(filter=('type', 'eq',
+            ...     'private'), fields=['unread_count', 'name', 'id'],
+            ...     limit=2, sort=[('name', 'desc')])
         '''
         iclass = SearchIterator
         if kwargs.get('return_csv', False):
             iclass = CSVChunkIterator
-        return super()._search(iterator_cls=iclass,
-                               is_sort_with_prop=False,
+        return super()._search(resource='items',
+                               iterator_cls=iclass,
+                               sort_type=self._sort_type.name_based,
                                api_path=f'{self._path}/search',
-                               resource='items',
                                **kwargs
                                )

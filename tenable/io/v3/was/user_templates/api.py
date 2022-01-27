@@ -76,12 +76,11 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
         '''
         return super()._details(user_template_id)
 
-    def search(self, **kwargs) -> Union[SearchIterator,
-                                        CSVChunkIterator,
-                                        Response]:
+    def search(self, **kwargs) -> Union[CSVChunkIterator,
+                                        Response,
+                                        SearchIterator]:
         '''
         Search and retrieve the user templates based on supported conditions.
-
         Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
@@ -121,9 +120,7 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
                 the :py:meth:`tio.v3.was.filters.user_templates_filters()`
                 endpoint to get more details.
             sort (list[tuple], optional):
-                sort is a list of tuples in the form of
-                ('FIELD', 'ORDER').
-                It describes how to sort the data
+                A list of dictionaries describing how to sort the data
                 that is to be returned.
                 Examples:
                     >>> [('field_name_1', 'asc'),
@@ -143,7 +140,7 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
         Returns:
-            iterable:
+            Iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
                 If ``return_json`` was set to ``True``, then a response
@@ -156,10 +153,10 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
         iclass = SearchIterator
         if kwargs.get('return_csv', False):
             iclass = CSVChunkIterator
-        return super()._search(iterator_cls=iclass,
-                               is_sort_with_prop=False,
+        return super()._search(resource='items',
+                               iterator_cls=iclass,
+                               sort_type=self._sort_type.default,
                                api_path=f'{self._path}/search',
-                               resource='items',
                                **kwargs
                                )
 
