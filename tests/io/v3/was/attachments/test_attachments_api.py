@@ -24,7 +24,6 @@ TXT_ATTACHMENT_ID = '49484c93-baa5-4952-8043-9afad238cb7b'
 
 @pytest.fixture
 def image_contents():
-
     '''
     Fixture to read the contents of image file.
     '''
@@ -37,7 +36,6 @@ def image_contents():
 
 @pytest.fixture
 def text_contents():
-
     '''
     Fixture to read the contents of text file.
     '''
@@ -50,7 +48,6 @@ def text_contents():
 
 @responses.activate
 def test_download_img_attachment(image_contents, api):
-
     '''
     Test image attachment without File Object
     '''
@@ -67,7 +64,6 @@ def test_download_img_attachment(image_contents, api):
 
 @responses.activate
 def test_download_img_file_attachment(image_contents, api):
-
     '''
     Test image attachment with File Object
     '''
@@ -93,7 +89,6 @@ def test_download_img_file_attachment(image_contents, api):
 
 @responses.activate
 def test_download_txt_attachment(text_contents, api):
-
     '''
     Test text attachment without File Object
     '''
@@ -110,7 +105,6 @@ def test_download_txt_attachment(text_contents, api):
 
 @responses.activate
 def test_download_txt_file_attachment(text_contents, api):
-
     '''
     Test text attachment with File Object
     '''
