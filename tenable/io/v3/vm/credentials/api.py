@@ -69,7 +69,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> group_id = '00000000-0000-0000-0000-000000000000'
-            >>> tio.v3.vm.credentials.create('SSH Account', 'SSH',
+            ... tio.v3.vm.credentials.create('SSH Account', 'SSH',
             ...     permissions=[('group', 'use', group_id)],
             ...     username='user1',
             ...     password='sekretsquirrel',
@@ -136,7 +136,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> cred_id = '00000000-0000-0000-0000-000000000000'
-            >>> tio.v3.vm.credentials.edit(cred_id,
+            ... tio.v3.vm.credentials.edit(cred_id,
             ...     password='sekretsquirrel',
             ...     escalation_password='sudopassword')
         '''
@@ -176,7 +176,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> cred_id = '00000000-0000-0000-0000-000000000000'
-            >>> cred = tio.v3.vm.credentials.details(cred_id)
+            ... cred = tio.v3.vm.credentials.details(cred_id)
         '''
         return self._get(id)
 
@@ -195,7 +195,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> cred_id = '00000000-0000-0000-0000-000000000000'
-            >>> cred = tio.v3.vm.credentials.delete(cred_id)
+            ... cred = tio.v3.vm.credentials.delete(cred_id)
         '''
         return self._delete(id)['deleted']
 
