@@ -5,6 +5,11 @@ Testing for credentials API
 import os
 
 import responses
+from requests import Response
+from responses import matchers
+
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 
 CREDENTIALS_BASE_URL = r'https://cloud.tenable.com/api/v3/credentials'
 TYPES_RESPONSE = {
@@ -74,7 +79,7 @@ DETAILS_RESPONSE = {
     'ad_hoc': False,
     'user_permissions': 64,
     'settings': {
-        'domain': "",
+        'domain': '',
         'username': 'user@example.com',
         'auth_method': 'Password',
     },
@@ -211,3 +216,75 @@ def test_upload(api):
         resp = api.v3.vm.credentials.upload(fobj)
 
     assert resp == 'credentials_test.txt'
+
+
+@responses.activate
+def test_search(api):
+    '''
+    Test the credentials search method
+    '''
+    api_res = {
+        'credentials': [
+            {
+                'type': 'Windows',
+                'id': '00c4e6d3-fb62-4a35-9a46-248e6e3463c5',
+                'description': 'abc',
+                'created_by': 'sz@dev.com',
+                'created_at': '2022-01-25T12:24:41.214Z',
+                'name': 'abc',
+                'last_used_by': 'Unused',
+                'category': 'Host'
+            },
+            {
+                'type': 'Windows',
+                'id': '02cd4c5c-09f8-4141-9fde-b71be612523c',
+                'description': 'csscssc',
+                'created_by': 'sz@dev.com',
+                'created_at': '2022-01-25T09:02:09.974Z',
+                'name': 'sscdccs',
+                'last_used_by': 'Unused',
+                'category': 'Host'
+            }
+        ],
+        'pagination': {
+            'total': 2,
+            'next': 'nextToksn='
+        }
+    }
+
+    fields = ['type', 'id', 'name', 'description',
+              'created_by', 'created_at', 'category']
+    sort = [('name', 'desc')]
+    api_payload = {
+        'fields': fields,
+        'limit': 200,
+        'sort': [{'name': 'desc'}],
+    }
+
+    # Register expected response
+    responses.add(
+        responses.POST,
+        f'{CREDENTIALS_BASE_URL}/search',
+        json=api_res,
+        match=[matchers.json_params_matcher(api_payload)],
+    )
+
+    iterator = api.v3.vm.credentials.search(
+        fields=fields, sort=sort, limit=200
+    )
+    assert isinstance(iterator, SearchIterator)
+
+    event_list = []
+    for event in iterator:
+        event_list.append(event)
+    assert len(event_list) == api_res['pagination']['total']
+
+    iterator = api.v3.vm.credentials.search(
+        fields=fields, sort=sort, return_csv=True, limit=200
+    )
+    assert isinstance(iterator, CSVChunkIterator)
+
+    resp = api.v3.vm.credentials.search(
+        fields=fields, sort=sort, return_resp=True, limit=200
+    )
+    assert isinstance(resp, Response)
