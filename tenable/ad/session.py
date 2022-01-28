@@ -23,6 +23,7 @@ from .reason.api import ReasonAPI
 from .roles.api import RolesAPI
 from .saml_configuration.api import SAMLConfigurationAPI
 from .score.api import ScoreAPI
+from .syslog.api import SyslogAPI
 from .topology.api import TopologyAPI
 from .users.api import UsersAPI
 from .widget.api import WidgetsAPI
@@ -187,6 +188,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Score APIs <score>`.
         '''
         return ScoreAPI(self)
+
+    @property
+    def syslog(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Syslog APIs <syslog>`.
+        '''
+        return SyslogAPI(self)
 
     @property
     def topology(self):
