@@ -3,14 +3,21 @@ remote host to enumerate the open ports.</description><synopsis>Remote open port
 remote host to enumerate the open ports.</description><synopsis>Remote open ports can be enumerated via WMI.</synopsis><see_also>https://en.wikipedia.org/wiki/Netstat</see_also><risk_factor>None</risk_factor><script_version>$Revision: 1.122 $</script_version><plugin_output>Port 49670/tcp was found to be open</plugin_output></ReportItem><ReportItem severity="0" port="5355" pluginFamily="Windows" pluginName="Microsoft Windows Remote Listeners Enumeration (WMI)" pluginID="34252" protocol="udp" svc_name="llmnr"><plugin_modification_date>2018/08/22</plugin_modification_date><plugin_publication_date>2008/09/23</plugin_publication_date><plugin_type>local</plugin_type><solution>n/a</solution><description>This script uses WMI to list the processes running on the remote host
 and listening on TCP / UDP ports.</description><synopsis>It is possible to obtain the names of processes listening on the
 remote UDP and TCP ports.</synopsis><risk_factor>None</risk_factor><script_version>$Revision: 1.107 $</script_version><plugin_output>
-The Win32 process 'svchost.exe' is listening on this port (pid 1000).
+ Medium Strength Ciphers (> 64-bit and < 112-bit key, or 3DES)
 
-This process 'svchost.exe' (pid 1000) is hosting the following Windows services :
-CryptSvc (@%SystemRoot%\system32\cryptsvc.dll,-1001)
-Dnscache (@%SystemRoot%\System32\dnsapi.dll,-101)
-LanmanWorkstation (@%systemroot%\system32\wkssvc.dll,-100)
-NlaSvc (@%SystemRoot%\System32\nlasvc.dll,-1)
+  Name             Code       KEX      Auth   Encryption       MAC
+  ----------------------    ----------    ---      ----   --------------------- ---
+  DES-CBC3-SHA         0x00, 0x0A    RSA      RSA   3DES-CBC(168)     SHA1
 
+The fields above are :
+
+ {Tenable ciphername}
+ {Cipher ID code}
+ Kex={key exchange}
+ Auth={authentication}
+ Encrypt={symmetric encryption method}
+ MAC={message authentication code}
+ {export flag}
 </plugin_output></ReportItem><ReportItem severity="0" port="0" pluginFamily="Windows" pluginName="WMI QuickFixEngineering (QFE) Enumeration" pluginID="52001" protocol="tcp" svc_name="general"><plugin_modification_date>2018/08/22</plugin_modification_date><plugin_publication_date>2011/02/16</plugin_publication_date><plugin_type>local</plugin_type><solution>n/a</solution><description>By connecting to the remote host with the supplied credentials, this
 plugin enumerates quick-fix engineering updates installed on the
 remote host via WMI.</description><synopsis>The remote Windows host has quick-fix engineering updates installed.</synopsis><see_also>http://www.nessus.org/u?e822e93a</see_also><risk_factor>None</risk_factor><script_version>$Revision: 1.92 $</script_version><plugin_output>
