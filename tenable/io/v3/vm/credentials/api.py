@@ -178,7 +178,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
             >>> cred_id = '00000000-0000-0000-0000-000000000000'
             ... cred = tio.v3.vm.credentials.details(cred_id)
         '''
-        return self._get(id)
+        return super()._details(f'{id}')
 
     def delete(self, id: UUID) -> bool:
         '''
