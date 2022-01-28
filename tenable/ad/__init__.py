@@ -19,6 +19,7 @@ This package covers the Tenable.ad interface.
     checker
     checker_option
     dashboard
+    deviance
     directories
     infrastructure
     ldap_configuration

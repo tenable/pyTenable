@@ -13,6 +13,7 @@ from .category.api import CategoryAPI
 from .checker.api import CheckerAPI
 from .checker_option.api import CheckerOptionAPI
 from .dashboard.api import DashboardAPI
+from .deviance.api import DevianceAPI
 from .directories.api import DirectoriesAPI
 from .infrastructure.api import InfrastructureAPI
 from .ldap_configuration.api import LDAPConfigurationAPI
@@ -107,6 +108,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable.ad Dashboard APIs <dashboard>`.
         '''
         return DashboardAPI(self)
+
+    @property
+    def deviance(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Deviance APIs <deviance>`.
+        '''
+        return DevianceAPI(self)
 
     @property
     def directories(self):
