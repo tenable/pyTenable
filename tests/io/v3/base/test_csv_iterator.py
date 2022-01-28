@@ -106,6 +106,9 @@ CSV_HEADERS_WITHOUT_NEXT_TOKEN = {
 
 @responses.activate
 def test_csv_iterator(api):
+    '''
+    Test for csv iterator
+    '''
     responses.add(
         method=responses.POST,
         url=USERS_BASE_URL,

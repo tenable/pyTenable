@@ -1,5 +1,5 @@
 '''
-Testing the CSV iterators
+Testing the Search iterators
 '''
 
 import pytest
@@ -114,6 +114,9 @@ PAGINATION_WITHOUT_NEXT_TOKEN = {'limit': 3, 'total': 3}
 
 @responses.activate
 def test_search_iterator(api):
+    '''
+    Test for search iterator
+    '''
     responses.add(
         method=responses.POST,
         url=USERS_BASE_URL,
