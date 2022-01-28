@@ -29,6 +29,7 @@ This package covers the Tenable Identity Exposure interface.
     roles
     saml_configuration
     score
+    syslog
     topology
     users
     widget
