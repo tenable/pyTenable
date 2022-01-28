@@ -6,9 +6,21 @@ from tenable.io.v3.was.definitions.api import WASDefinitionsAPI
 
 class DefinitionsAPI(ExploreBaseEndpoint):
 
+    def assets(self):
+        raise NotImplementedError('Definitions not available.'
+                                  'It will be available in future')
+
+    def groups(self):
+        raise NotImplementedError('Definitions not available.'
+                                  'It will be available in future')
+
     @property
     def mssp(self):
         return MSSPDefinitionsAPI(self._api)
+
+    def users(self):
+        raise NotImplementedError('Definitions not available.'
+                                  'It will be available in future')
 
     @property
     def vm(self):
