@@ -4,6 +4,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [1.4.3]
+### Added
+
+- Initial support for Tenable.ad #487 #484 #468 #466
+
+### Fixed
+
+- Fixed PR pipeline issue #490
+- typing-extension requirement fixed #489
+- Added required init files #491
+- deprecated use of "default" in marshmallow schemas #493
+
+[1.4.3]: https://github.com/tenable/pyTenable/compare/1.4.2...1.4.3
+
+## [1.4.2]
+### Added
+
+- TenableSC version checking refactored to handle an APIError on the response
+  when unauthenticated. (breaking issue for 5.20.0) #475
+- GraphQL support for TenableOT #461
+- hard_delete param #465
+
+### Changed
+
+- Updated Github Actions to add style checking and security checking
+- Refactored the API Docsite to be easier to navigate, read, and link. #460 #464
+- Rebased low-level connection logic to use RESTfly instead. (v2 work) #457
+- Refactored Container Security Package to be within the IO package and
+  recoded to properly follow the API docs.  #459 #474
+- Refactored Exports API code to follow v2 standard #463
+
+### Fixed
+
+- OrgID should be optional for repositories #444
+
+[1.4.2]: https://github.com/tenable/pyTenable/compare/1.3.3...1.4.2
+
+## [1.4.1]: yanked - broken build
+## [1.4.0]: yanked - broken build
+
 ## [1.3.3]
 ### Added
 
@@ -11,16 +52,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added pylint to JenkinsFile #378
 - code owners file is added #366
 - Added export compliance API in IO package #358
-- Added for the session object,in logout ,session close in tenable.sc  
+- Added for the session object,in logout ,session close in tenable.sc
   and Added 'UnknownError' and 'RetryError' (PR #386,PR #363 closed)
   added that changes in PR #387
 
 ### Changed
 
 - Deprecation warning for io session API #391
-- For attribute plugin_version in plugin_detail #389 
+- For attribute plugin_version in plugin_detail #389
 - Reverse of Appsdir dependencies PR #382
-- Requirements patch 1.3.2 for library appdir #379 
+- Requirements patch 1.3.2 for library appdir #379
 
 ### Fixed
 
@@ -34,13 +75,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed github issue 304 tags.create() function #357
 - Fixed github issue 298 io_exception_handling #354
 - Fixed the documentation issue in exclusions #352
-- Fixed the import os problem of PR 299 #351 
+- Fixed the import os problem of PR 299 #351
 - Fixed invalid creation date in row num  #341
 
 
 [1.3.3]: https://github.com/tenable/pyTenable/compare/1.3.1...1.3.3
 
-[1.3.2] : yanked
+## [1.3.2] : yanked - broken build
 
 ## [1.3.1]
 ### Added
@@ -80,7 +121,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - added sort arg in tio.scans.history, fixed sort in tio.tags #283
 - added network_id arg to tio.exclusions create/edit #284
 - support bulk delete in tio.tags.delete #295
-- 
+-
 ### Fixed
 - many errors and warnings across the code base #320, #317, #314, #313, #281
 - tio.agent_config.edit now returns payload #287

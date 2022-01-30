@@ -6,6 +6,7 @@
    api/sc/index
    api/ot/index
    api/dl/index
+   api/ad/index
    api/nessus/index
    api/reports/index
    api/base/index

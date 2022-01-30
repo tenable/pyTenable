@@ -55,6 +55,7 @@ from .agents import AgentsAPI
 from .assets import AssetsAPI
 from .audit_log import AuditLogAPI
 from .credentials import CredentialsAPI
+from .cs.api import ContainerSecurity
 from .editor import EditorAPI
 from .exclusions import ExclusionsAPI
 from .exports.api import ExportsAPI
@@ -182,6 +183,14 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         if not self._tzcache:
             self._tzcache = self.scans.timezones()
         return self._tzcache
+
+    @property
+    def cs(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io Container Security APIs <cs/index>`.
+        '''
+        return ContainerSecurity(self)
 
     @property
     def access_groups(self):
