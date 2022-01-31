@@ -212,8 +212,7 @@ class NetworksAPI(ExploreBaseEndpoint):
         given network.  This will include scanners and scanner groups that
         are currently assigned to the default network.
 
-        :devportal:`networks: list-assignable-scanners
-            <networks-list-assignable-scanners>`
+        :devportal:`networks: list-assignable-scanners <networks-list-assignable-scanners>`  # noqa E501
 
         Args:
             id (UUID): The UUID of the network.
@@ -235,8 +234,9 @@ class NetworksAPI(ExploreBaseEndpoint):
                **kw
                ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
-        Search and retrieve the VM Vulnerabilities based on supported
+        Search and retrieve the Network Objects based on supported
         conditions.
+
         Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
@@ -245,6 +245,7 @@ class NetworksAPI(ExploreBaseEndpoint):
             filter (tuple, Dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
+
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
                     ...                 ('test', 'oper', '2')
@@ -271,16 +272,19 @@ class NetworksAPI(ExploreBaseEndpoint):
                     ...      'property': 3
                     ...  }]
                     ... }
+
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.network_filters()`
+                the :py:meth:`tio.v3.definitions.vm.networks()`
                 endpoint to get more details.
             sort (list[tuple], optional):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
+
                 Examples:
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
+
             limit (int, optional):
                 Number of objects to be returned in each request.
                 Default and max_limit is 200.
@@ -295,12 +299,15 @@ class NetworksAPI(ExploreBaseEndpoint):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
+
         Returns:
             Iterable:
                 The iterable that handles the pagination for the job.
+
             requests.Response:
                 If ``return_json`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
+
         Examples:
             >>> tio.v3.vm.networks.search(
             ... filter=('id', 'eq', '00089a45-44a5-4620-bf9f-75ebedc6cc6c'),
@@ -321,8 +328,7 @@ class NetworksAPI(ExploreBaseEndpoint):
         get the total number of assets in the network along with the number
         of assets that have not been seen for the specified number of days.
 
-        :devportal:`networks: network_asset_count
-        <networks-asset-count-details>`
+        :devportal:`networks: network_asset_count <networks-asset-count-details>`  # noqa E501
 
         Args:
             network_id (UUID): The UUID of the network.
