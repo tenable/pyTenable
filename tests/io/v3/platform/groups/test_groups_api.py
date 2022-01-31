@@ -55,7 +55,7 @@ def test_add_user(api):
         },
     )
 
-    resp = api.v3.groups.add_user(GROUP_ID, USER_ID)
+    resp = api.v3.platform.groups.add_user(GROUP_ID, USER_ID)
     user_ids = [user['id'] for user in resp]
 
     assert USER_ID in user_ids
@@ -73,7 +73,7 @@ def test_create(api):
             'name': group_name,
         },
     )
-    resp = api.v3.groups.create(group_name)
+    resp = api.v3.platform.groups.create(group_name)
     assert resp['name'] == group_name
     assert resp['id'] == GROUP_ID
 
@@ -81,7 +81,7 @@ def test_create(api):
 @responses.activate
 def test_delete(api):
     responses.add(responses.DELETE, f'{GROUPS_BASE_URL}/{GROUP_ID}')
-    assert None is api.v3.groups.delete(GROUP_ID)
+    assert None is api.v3.platform.groups.delete(GROUP_ID)
 
 
 @responses.activate
@@ -90,7 +90,7 @@ def test_delete_user(api):
         responses.DELETE,
         f'{GROUPS_BASE_URL}/{GROUP_ID}/users/{USER_ID}'
     )
-    assert None is api.v3.groups.delete_user(GROUP_ID, USER_ID)
+    assert None is api.v3.platform.groups.delete_user(GROUP_ID, USER_ID)
 
 
 @responses.activate
@@ -105,7 +105,7 @@ def test_edit(api):
         json={'id': GROUP_ID, 'name': updated_group_name, 'user_count': 0},
     )
 
-    resp = api.v3.groups.edit(GROUP_ID, updated_group_name)
+    resp = api.v3.platform.groups.edit(GROUP_ID, updated_group_name)
     assert resp['id'] == GROUP_ID
     assert resp['name'] == updated_group_name
 
@@ -148,7 +148,7 @@ def test_list_users(api):
         },
     )
 
-    resp = api.v3.groups.list_users(GROUP_ID)
+    resp = api.v3.platform.groups.list_users(GROUP_ID)
     assert resp[0]['id'] == USER_ID
     assert resp[0]['enabled']
     assert resp[0]['name'] == 'test.user@tenable.com'
@@ -201,7 +201,7 @@ def test_search(api):
         json=response,
         match=[responses.matchers.json_params_matcher(api_payload)]
     )
-    resp = api.v3.groups.search(
+    resp = api.v3.platform.groups.search(
         fields=fields,
         filter=filters,
         sort=[('name', 'desc')],
@@ -212,7 +212,7 @@ def test_search(api):
     for ind, group in enumerate(resp):
         assert group == response['groups'][ind]
 
-    resp = api.v3.groups.search(
+    resp = api.v3.platform.groups.search(
         fields=fields,
         filter=filters,
         sort=[('name', 'desc')],
@@ -221,7 +221,7 @@ def test_search(api):
     )
     assert isinstance(resp, CSVChunkIterator)
 
-    resp = api.v3.groups.search(
+    resp = api.v3.platform.groups.search(
         fields=fields,
         filter=filters,
         sort=[('name', 'desc')],

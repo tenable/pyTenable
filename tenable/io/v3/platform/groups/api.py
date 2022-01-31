@@ -5,7 +5,7 @@ Groups
 The following methods allow for interaction into the Tenable.io
 :devportal:`groups <groups>` API.
 
-Methods available on ``tio.v3.groups``:
+Methods available on ``tio.v3.platform.groups``:
 
 .. rst-class:: hide-signature
 .. autoclass:: GroupsAPI
@@ -47,7 +47,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                 specified group.
 
         Examples:
-            >>> tio.v3.groups.add_user(
+            >>> tio.v3.platform.groups.add_user(
                     '00000000-0000-0000-0000-000000000000',
                     '00000000-0000-0000-0000-000000000000'
                 )
@@ -70,7 +70,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                 The group resource record of the newly minted group.
 
         Examples:
-            >>> group = tio.v3.groups.create('Group Name')
+            >>> group = tio.v3.platform.groups.create('Group Name')
         '''
         return self._post(json={'name': name})
 
@@ -88,7 +88,9 @@ class GroupsAPI(ExploreBaseEndpoint):
                 The group was successfully deleted.
 
         Examples:
-            >>> tio.v3.groups.delete('00000000-0000-0000-0000-000000000000')
+            >>> tio.v3.platform.groups.delete(
+            ...     '00000000-0000-0000-0000-000000000000'
+            ... )
         '''
         self._delete(group_id)
 
@@ -110,7 +112,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                 The user was successfully removed from the group.
 
         Examples:
-            >>> tio.v3.groups.delete_user(
+            >>> tio.v3.platform.groups.delete_user(
                     '00000000-0000-0000-0000-000000000000',
                     '00000000-0000-0000-0000-000000000000'
                 )
@@ -134,8 +136,10 @@ class GroupsAPI(ExploreBaseEndpoint):
                 The group resource record.
 
         Examples:
-            >>> tio.v3.groups.edit('00000000-0000-0000-0000-000000000000',
-            ...                    'Updated name')
+            >>> tio.v3.platform.groups.edit(
+            ...     '00000000-0000-0000-0000-000000000000',
+            ...     'Updated name'
+            ... )
         '''
         return self._put(group_id, json={'name': name})
 
@@ -155,7 +159,7 @@ class GroupsAPI(ExploreBaseEndpoint):
 
         Example:
             >>> group_id = '00000000-0000-0000-0000-000000000000'
-            >>> for user in tio.v3.groups.list_users(group_id):
+            >>> for user in tio.v3.platform.groups.list_users(group_id):
             ...     pprint(user)
         '''
         return self._get(f'{group_id}/users')['users']
@@ -166,7 +170,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                           SearchIterator,
                           Response]:
         '''
-        Lists the user groups based on the provided fields and filter.
+        Search and retrieve the user groups based on supported conditions.
 
         :devportal:`groups: search <groups-list>`
 
@@ -207,6 +211,10 @@ class GroupsAPI(ExploreBaseEndpoint):
                     ...         }
                     ...     ]
                     ... }
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the :py:meth:`tio.v3.platform.definitions.groups()`
+                endpoint to get more details.
             sort list(tuple, Dict):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
@@ -216,7 +224,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                     - [{'property': 'last_observed', 'order': 'desc'}]
             limit (int):
                 Number of objects to be returned in each request.
-                Default is 1000.
+                Default is 200.
             next (str):
                 The pagination token to use when requesting the next page of
                 results.  This token is presented in the previous response.
@@ -236,7 +244,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                 If ``return_json`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
         Examples:
-            >>> for group in tio.v3.groups.search():
+            >>> for group in tio.v3.platform.groups.search():
             ...     pprint(group)
         '''
         iclass = SearchIterator

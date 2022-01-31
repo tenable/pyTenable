@@ -15,15 +15,13 @@ Methods available on ``tio.v3``:
     :hidden:
     :glob:
 
-    assets
-    groups
-    users
+    platform/index
     vm/index
     was/index
 '''
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.assets.api import AssetsAPI
-from tenable.io.v3.groups.api import GroupsAPI
+from tenable.io.v3.platform import Platform
 from tenable.io.v3.users.api import UsersAPI
 from tenable.io.v3.vm import VulnerabilityManagement
 from tenable.io.v3.was import WebApplicationScanning
@@ -44,12 +42,12 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
         return AssetsAPI(self._api)
 
     @property
-    def groups(self):
+    def platform(self):
         '''
-        The interface object for the Groups APIs
-        :doc:`tenable.io v3 groups APIs <groups>`.
+        The interface object for the
+        :doc:`Platform <platform/index>`
         '''
-        return GroupsAPI(self._api)
+        return Platform(self._api)
 
     @property
     def users(self):
