@@ -1,5 +1,5 @@
 '''
-test plugins
+Test cases agent groups API
 '''
 import re
 from uuid import UUID
@@ -17,7 +17,7 @@ AGENT_FILTER_URL = 'https://cloud.tenable.com/api/v3/definitions/scans/agents'
 @responses.activate
 def test_add_agent_with_single_agent_id(api):
     '''
-    Test case for add_agent method with sigle agent id
+    Test case for agent groups add_agent method with sigle agent id
     '''
     group_id: UUID = '2b2db604-5d92-11ec-bf63-0242ac130002'
     agent_id: UUID = '3f8eed68-5d95-11ec-bf63-0242ac130002'
@@ -32,7 +32,7 @@ def test_add_agent_with_single_agent_id(api):
 @responses.activate
 def test_add_agent_with_multiple_agent_id(api):
     '''
-    Test case for add_agent method with multiple agent id
+    Test case for agent groups add_agent method with multiple agent id
     '''
     group_id: UUID = '2b2db604-5d92-11ec-bf63-0242ac130002'
     payload = {
@@ -70,7 +70,7 @@ def test_add_agent_with_multiple_agent_id(api):
 @responses.activate
 def test_configure(api):
     '''
-    Test case for configure method
+    Test case for agent groups configure method
     '''
     group_id: UUID = 'e069b272-ed76-487a-8cf9-1c32836698b7'
     name: str = 'test name 2'
@@ -103,7 +103,7 @@ def test_configure(api):
 @responses.activate
 def test_create(api):
     '''
-    Test case for create method
+    Test case for agent groups create method
     '''
     name: str = 'Agent Group 1'
     test_response: dict = {
@@ -134,7 +134,7 @@ def test_create(api):
 @responses.activate
 def test_delete(api):
     '''
-    Test case for delete method
+    Test case for agent groups delete method
     '''
     group_id: UUID = 'e069b272-ed76-487a-8cf9-1c32836698b7'
     responses.add(
@@ -149,7 +149,7 @@ def test_delete(api):
 @responses.activate
 def test_delete_agent_with_single_agent_id(api):
     '''
-    Test case for delete_agent method
+    Test case for agent groups delete_agent method
     '''
     group_id: UUID = '2b2db604-5d92-11ec-bf63-0242ac130002'
     agent_id: UUID = '3f8eed68-5d95-11ec-bf63-0242ac130002'
@@ -164,7 +164,7 @@ def test_delete_agent_with_single_agent_id(api):
 @responses.activate
 def test_delete_agent_with_multiple_agent_id(api):
     '''
-    Test case for delete_agent method
+    Test case for agent groups delete_agent method
     '''
     group_id: UUID = 'fs252fdg-4b7c-4d2b-99a1-dvsdsv4242vf'
     payload = {
@@ -202,7 +202,7 @@ def test_delete_agent_with_multiple_agent_id(api):
 @responses.activate
 def test_task_status(api):
     '''
-    Test case for task_status method
+    Test case for agent groups task_status method
     '''
     group_id: UUID = 'fs252fdg-4b7c-4d2b-99a1-dvsdsv4242vf'
     task_id: UUID = '02683e5e-4b7c-4d2b-99a1-cde1ea0940d9'
@@ -229,7 +229,7 @@ def test_task_status(api):
 @responses.activate
 def test_details(api):
     '''
-    Test case for details method
+    Test case for agent groups details method
     '''
     group_id: UUID = 'ea81c0e9-a041-45d6-a654-80570d6bee97'
     filters: tuple = ('platform', 'match', ['window'])
@@ -336,7 +336,7 @@ def test_details(api):
 @responses.activate
 def test_search(api):
     '''
-    Test case for search method
+    Test case for agent groups search method
     '''
     test_response: dict = {
         'agent_groups': [
@@ -420,7 +420,7 @@ def test_search(api):
 @responses.activate
 def test_send_instruction_to_agents_in_group(api):
     '''
-    Test case for Agents send_instruction_to_agents_in_group method
+    Test case for agent groups send_instruction_to_agents_in_group method
     '''
     group_id: UUID = 'ea81c0e9-a041-45d6-a654-80570d6bee97'
     all_agents: bool = True

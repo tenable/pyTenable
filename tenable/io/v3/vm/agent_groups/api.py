@@ -403,8 +403,6 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
                                             **kwargs) -> Dict:
         '''
         Create instructions for agents in an agent group to perform.
-        Instructions include restarting or changing local product
-        settings.
 
         :devportal:`bulk-operations: send-instructions-to-agent
         <io-agent-bulk-operations-directive>`
@@ -449,7 +447,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         Examples:
             Sending instruction to multiple agents:
 
-            >>> tio.v3.vm.agents.send_instruction_to_agents_in_group(
+            >>> tio.v3.vm.agent_groups.send_instruction_to_agents_in_group(
             ...     '00000000-0000-0000-0000-000000000000',
             ...     '334b962a-ac03-4336-9ebb-a06b169576e0',
             ...     directive_type = 'restart')
