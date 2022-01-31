@@ -1,6 +1,7 @@
 '''
 Testing the WAS Vulnerabilities endpoints actions
 '''
+import pytest
 import responses
 from requests import Response
 from responses import matchers
@@ -18,27 +19,29 @@ def test_get_details(api):
     Test the get_details method for WAS Vulnerabilities
     '''
     id = '00089a45-44a7-4620-bf9f-75ebedc6cc6c'
-    response = {
-        'findings': [{
-            'finding_id': id,
-            'asset_name': 'www.google.com',
-            'severity': 0,
-            'state': 'ACTIVE',
-            'last_observed': '2022-01-05T22:47:45.227Z'
-        }],
-        'pagination': {
-            'total': 1,
-            'next': 'nextToken'
-        }
-    }
-    responses.add(
-        responses.GET,
-        f'{VUL_BASE_URL}/webapp/{id}',
-        json=response
-    )
+    # response = {
+    #     'findings': [{
+    #         'finding_id': id,
+    #         'asset_name': 'www.google.com',
+    #         'severity': 0,
+    #         'state': 'ACTIVE',
+    #         'last_observed': '2022-01-05T22:47:45.227Z'
+    #     }],
+    #     'pagination': {
+    #         'total': 1,
+    #         'next': 'nextToken'
+    #     }
+    # }
+    # responses.add(
+    #     responses.GET,
+    #     f'{VUL_BASE_URL}/webapp/{id}',
+    #     json=response
+    # )
 
-    resp = api.v3.was.vulnerabilities.get_details(id)
-    assert resp == response
+    # resp = api.v3.was.vulnerabilities.get_details(id)
+    # assert resp == response
+    with pytest.raises(NotImplementedError):
+        api.v3.was.vulnerabilities.get_details(id)
 
 
 @responses.activate

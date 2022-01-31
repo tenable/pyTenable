@@ -40,7 +40,10 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.was.vulnerabilities.get_details(id)
         '''
-        return super()._details(f'{id}')
+        # return super()._details(f'{id}')
+        raise NotImplementedError('This method will be implemented later \
+                                  once respective endpoint is \
+                                  migrated to v3')
 
     def search(self,
                **kw
