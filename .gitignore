@@ -11,6 +11,7 @@ docs/source/tenable*.rst
 /test_certs
 .python-version
 /build
+/dist
 /tests/sc/cassettes/sc_login.yaml-backup
 /tests/sc/cassettes/sc_logout.yaml-backup
 /tests/sc/cassettes/scan_policy.yml-backup

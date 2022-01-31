@@ -37,7 +37,7 @@ setup(
         'Programming Language :: Python :: 3.9',
     ],
     keywords='tenable tenable_io securitycenter containersecurity',
-    packages=find_packages(exclude=['docs', 'tests']),
+    packages=find_packages(exclude=['docs', 'tests', 'tests.*']),
     install_requires=[
         'requests>=2.26',
         'python-dateutil>=2.6',
