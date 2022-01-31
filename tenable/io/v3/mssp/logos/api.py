@@ -172,11 +172,14 @@ class LogosAPI(ExploreBaseEndpoint):
                           ]:
         '''
         Search and retrieve the audit logs based on supported conditions.
+
         Args:
+
             fields (list, optional):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
+
             filter (tuple, Dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
@@ -186,6 +189,7 @@ class LogosAPI(ExploreBaseEndpoint):
                     ...             ),
                     ...     'and', ('test', 'oper', 3)
                     ... )
+
                     >>> {
                     ...  'or': [{
                     ...      'and': [{
@@ -208,6 +212,7 @@ class LogosAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time.
+
             sort (list[tuple], optional):
                 sort is a list of tuples in the form of
                 ('FIELD', 'ORDER').
@@ -216,26 +221,34 @@ class LogosAPI(ExploreBaseEndpoint):
                 Examples:
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
+
             limit (int, optional):
                 Number of objects to be returned in each request.
                 Default and max_limit is 200.
+
             next (str, optional):
                 The pagination token to use when requesting the next page of
                 results. This token is presented in the previous response.
+
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
                 an iterable and will instead return the results for the
                 specific page of data.
+
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
+
         Returns:
+
             Iterable:
                 The iterable that handles the pagination for the job.
+
             requests.Response:
                 If ``return_json`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
+
         Examples:
             >>> tio.v3.mssp.logos.search(limit=100, fields=['id'])
         '''
