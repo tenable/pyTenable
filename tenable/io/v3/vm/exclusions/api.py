@@ -23,21 +23,22 @@ from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
 from tenable.io.v3.vm.exclusions.schema import ExclusionSchema
+from tenable.utils import dict_clean, dict_merge
 
 
 class ExclusionsAPI(ExploreBaseEndpoint):
     '''
-    This will contain all methods related to exclusions
+    This class contain all methods related to exclusions
     '''
     _path: str = 'api/v3/exclusions'
     _conv_json: bool = True
-    _schema = ExclusionSchema()
 
     def create(self,
                name: str,
                members: List,
                start_time: Optional[str] = None,
                end_time: Optional[str] = None,
+               timezone: Optional[str] = None,
                description: Optional[str] = None,
                frequency: Optional[str] = None,
                interval: Optional[int] = None,
@@ -58,6 +59,10 @@ class ExclusionsAPI(ExploreBaseEndpoint):
                 either a FQDN, IP Address, IP Range, or CIDR.
             start_time (str): When the exclusion should start.
             end_time (str): When the exclusion should end.
+            timezone (str, optional):
+                The timezone to use for the exclusion.  The default if none is
+                specified is to use UTC.  For the list of usable timezones,
+                please refer to :devportal:`scans-timezones`
             description (str, optional):
                 Some further detail about the exclusion.
             frequency (str, optional):
@@ -95,11 +100,11 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             ...     'Example One-Time Exclusion',
             ...     ['127.0.0.1'],
             ...     start_time=datetime.utcnow().strftime(
-            ...         '%Y-%m-%dT%H:%M:%SZ'
+            ...         '%Y-%m-%d %H:%M:%S'
             ...     ),
             ...     end_time=(
             ...         datetime.utcnow() + timedelta(hours=1)
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ...     ).strftime('%Y-%m-%d %H:%M:%S')
             ... )
 
             Creating a daily exclusion:
@@ -109,11 +114,11 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             ...     ['127.0.0.1'],
             ...     frequency='daily',
             ...     start_time=datetime.utcnow().strftime(
-            ...         '%Y-%m-%dT%H:%M:%SZ'
+            ...         '%Y-%m-%d %H:%M:%S'
             ...     ),
             ...     end_time=(
             ...         datetime.utcnow() + timedelta(hours=1)
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ...     ).strftime('%Y-%m-%d %H:%M:%S')
             ... )
 
             Creating a weekly exclusion:
@@ -124,11 +129,11 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             ...     frequency='weekly',
             ...     weekdays=['mo', 'we', 'fr'],
             ...     start_time=datetime.utcnow().strftime(
-            ...         '%Y-%m-%dT%H:%M:%SZ'
+            ...         '%Y-%m-%d %H:%M:%S'
             ...     ),
             ...     end_time=(
             ...         datetime.utcnow() + timedelta(hours=1)
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ...     ).strftime('%Y-%m-%d %H:%M:%S')
             ... )
 
             Creating a monthly esxclusion:
@@ -139,11 +144,11 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             ...     frequency='monthly',
             ...     day_of_month=1,
             ...     start_time=datetime.utcnow().strftime(
-            ...         '%Y-%m-%dT%H:%M:%SZ'
+            ...         '%Y-%m-%d %H:%M:%S'
             ...     ),
             ...     end_time=(
             ...         datetime.utcnow() + timedelta(hours=1)
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ...     ).strftime('%Y-%m-%d %H:%M:%S')
             ... )
 
             Creating a yearly exclusion:
@@ -153,38 +158,29 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             ...     ['127.0.0.1'],
             ...     frequency='yearly',
             ...     start_time=datetime.utcnow().strftime(
-            ...         '%Y-%m-%dT%H:%M:%SZ'
+            ...         '%Y-%m-%d %H:%M:%S'
             ...     ),
             ...     end_time=(
             ...         datetime.utcnow() + timedelta(hours=1)
-            ...     ).strftime('%Y-%m-%dT%H:%M:%SZ')
+            ...     ).strftime('%Y-%m-%d %H:%M:%S')
             ... )
         '''
 
         # construct schedule payload based on enable
         if enabled is True:
-            if isinstance(frequency, str):
-                frequency = frequency.upper()
-
-            rrules = {
-                'freq': frequency or 'ONETIME',
-                'interval': interval or 1
-            }
-
-            if rrules['freq'] == 'WEEKLY':
-                rrules['byweekday'] = weekdays or [
-                    'SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'
-                ]
-
-            if rrules['freq'] == 'MONTHLY':
-                rrules['bymonthday'] = day_of_month or datetime.today().day
-
             schedule: dict = {
                 'enabled': True,
                 'starttime': start_time,
                 'endtime': end_time,
-                'rrules': rrules
+                'timezone': timezone or 'Etc/UTC',
+                'rrules': {
+                    'freq': frequency or 'ONETIME',
+                    'interval': interval or 1,
+                    'byweekday': weekdays,
+                    'bymonthday': day_of_month
+                }
             }
+
         elif enabled is False:
             schedule = {'enabled': False}
         else:
@@ -194,13 +190,17 @@ class ExclusionsAPI(ExploreBaseEndpoint):
         payload = {
             'name': name,
             'members': members,
-            'description': description or '',
-            'network_id': network_id or '00000000-0000-0000-0000-000000000000',
+            'description': description,
+            'network_id': network_id,
             'schedule': schedule
         }
+        payload = dict_clean(payload)
 
         # Let's validate the payload using Mershmallow schema
-        payload = self._schema.dump(self._schema.load(payload))
+        schema = ExclusionSchema(
+            context={'timezones': self._api._tz}
+        )
+        payload = schema.dump(schema.load(payload))
 
         # And now to make the call and return the data.
         return self._post(json=payload)
@@ -240,7 +240,7 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             >>> exclusion = tio.v3.vm.exclusions.details(1)
             >>> pprint(exclusion)
         '''
-        return self._get(f'{exclusion_id}')
+        return super()._details(str(exclusion_id))
 
     def edit(self,
              exclusion_id: int,
@@ -248,6 +248,7 @@ class ExclusionsAPI(ExploreBaseEndpoint):
              members: Optional[List] = None,
              start_time: Optional[str] = None,
              end_time: Optional[str] = None,
+             timezone: Optional[str] = None,
              description: Optional[str] = None,
              frequency: Optional[str] = None,
              interval: Optional[int] = None,
@@ -273,6 +274,10 @@ class ExclusionsAPI(ExploreBaseEndpoint):
                 either a FQDN, IP Address, IP Range, or CIDR.
             start_time (str, optional): When the exclusion should start.
             end_time (str, optional): When the exclusion should end.
+            timezone (str, optional):
+                The timezone to use for the exclusion.  The default if none is
+                specified is to use UTC.  For the list of usable timezones,
+                please refer to :devportal:`scans-timezones`
             description (str, optional):
                 Some further detail about the exclusion.
             frequency (str, optional):
@@ -322,45 +327,30 @@ class ExclusionsAPI(ExploreBaseEndpoint):
         }
 
         if payload['schedule']['enabled']:
-            if isinstance(frequency, str):
-                frequency = frequency.upper()
-
-            # interval needs to be handled in schedule enabled excusion
-            rrules = {
-                'freq': frequency or res_dict['schedule']['rrules'].get(
-                    'freq', ''
-                ) or 'ONETIME',
-                'interval': interval or res_dict['schedule']['rrules'].get(
-                    'interval', ''
-                ) or 1
+            rrules: dict = res_dict['schedule']['rrules']
+            schedule: dict = {
+                'starttime': start_time or res_dict['schedule']['starttime'],
+                'endtime': end_time or res_dict['schedule']['endtime'],
+                'timezone': timezone or res_dict['schedule'].get(
+                    'timezone', 'Etc/UTC'
+                ),
+                'rrules': {
+                    'freq': frequency or rrules.get('freq', 'ONETIME'),
+                    'interval': interval or rrules.get('interval', 1),
+                    'byweekday': weekdays or rrules.get(
+                        'byweekday', 'SU,MO,TU,WE,TH,FR,SA').split(','),
+                    'bymonthday': day_of_month or rrules.get(
+                        'bymonthday', datetime.today().day)
+                }
             }
+            # let's merge new schedule dict to payload
+            dict_merge(payload['schedule'], schedule)
 
-            if rrules['freq'] == 'WEEKLY':
-                if weekdays is not None:
-                    rrules['byweekday'] = weekdays
-                else:
-                    rrules['byweekday'] = res_dict['schedule']['rrules'].get(
-                        'byweekday', 'SU,MO,TU,WE,TH,FR,SA'
-                    ).split(',')
-
-            if rrules['freq'] == 'MONTHLY':
-                if day_of_month is not None:
-                    rrules['bymonthday'] = day_of_month
-                else:
-                    rrules['bymonthday'] = payload['schedule']['rrules'].get(
-                        'bymonthday', datetime.today().day
-                    )
-
-            payload['schedule']['rrules'] = rrules
-
-            payload['schedule']['starttime'] = \
-                start_time or res_dict['schedule']['starttime']
-
-            payload['schedule']['endtime'] = \
-                end_time or res_dict['schedule']['endtime']
-
-        # Let's validate the payload using marshmallow schema
-        payload = self._schema.dump(self._schema.load(payload))
+        # Let's validate the payload using Mershmallow schema
+        schema = ExclusionSchema(
+            context={'timezones': self._api._tz}
+        )
+        payload = schema.dump(schema.load(payload))
 
         return self._put(f'{exclusion_id}', json=payload)
 
@@ -387,11 +377,7 @@ class ExclusionsAPI(ExploreBaseEndpoint):
         self._post('import', json={'file': fid})
 
     def search(self,
-               **kwargs
-               ) -> Union[SearchIterator,
-                          CSVChunkIterator,
-                          Response
-                          ]:
+               **kwargs) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Search exclusions based on supported conditions.
         Args:
@@ -430,7 +416,7 @@ class ExclusionsAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.exclusion_filters()`
+                the :py:meth:`tio.v3.definitions.vm.exclusions()`
                 endpoint to get more details.
             sort (list[tuple], optional):
                 A list of dictionaries describing how to sort the data

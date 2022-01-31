@@ -14,6 +14,7 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
 
 BASE_URL: str = 'https://cloud.tenable.com/api/v3/exclusions'
 FILE_BASE_URL: str = 'https://cloud.tenable.com/api/v3/file'
+TIMEZONE_URL: str = 'https://cloud.tenable.com/scans/timezones'
 
 
 @responses.activate
@@ -21,58 +22,72 @@ def test_create(api):
     '''
     Test case for create exclusion API endpoint
     '''
-    name: str = 'Weekly Exclusion'
+    name: str = 'Exclusion Test Example'
     members: list = ['127.0.0.1']
-    start_time: str = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-    end_time: str = (
-            datetime.utcnow() + timedelta(hours=1)
-    ).strftime('%Y-%m-%dT%H:%M:%SZ')
-    frequency: str = 'WEEKLY'
-    interval: int = 2
-    weekdays: list = ['MO', 'WE', 'FR']
-    network_id: str = '00000000-0000-0000-0000-000000000000'
-    description: str = 'Example for weekly exclusion'
+    start_time: datetime = datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')
+    end_time: datetime = (
+        datetime.utcnow() + timedelta(hours=1)
+    ).strftime('%Y-%m-%d %H:%M:%S')
     enabled: bool = True
-
+    freq: str = 'MONTHLY'
+    bymonthday: int = datetime.today().day
+    interval: int = 1
+    timezone: str = 'Etc/UTC'
     # Let's create response for create endpoint
     test_response: dict = {
         'schedule': {
             'endtime': end_time,
             'enabled': enabled,
             'rrules': {
-                'freq': frequency,
+                'freq': freq,
                 'interval': interval,
-                'byweekday': ','.join(weekdays)
+                'bymonthday': bymonthday
             },
+            'timezone': timezone,
             'starttime': start_time
         },
-        'network_id': network_id,
+        'network_id': '00000000-0000-0000-0000-000000000000',
         'last_modification_date': '2022-01-24T08:46:34Z',
         'creation_date': '2022-01-24T08:46:34Z',
         'members': ','.join(members),
-        'description': description,
+        'description': None,
         'name': name,
-        'id': 14
+        'id': 21
     }
-
     # Let's create payload for create endpoint
     payload: dict = {
         'members': ','.join(members),
+        'name': name,
+        'network_id': '00000000-0000-0000-0000-000000000000',
         'schedule': {
+            'enabled': enabled,
             'starttime': start_time,
             'rrules': {
-                'freq': frequency,
-                'byweekday': ','.join(weekdays),
+                'freq': freq,
+                'bymonthday': bymonthday,
                 'interval': interval
             },
-            'enabled': enabled,
+            'timezone': timezone,
             'endtime': end_time
-        },
-        'description': description,
-        'network_id': network_id,
-        'name': name
+        }
     }
-
+    # Let's register the response for timezone API
+    responses.add(
+        responses.GET,
+        TIMEZONE_URL,
+        json={
+            'timezones': [
+                {
+                    'name': 'Africa/Addis_Ababa',
+                    'value': 'Africa/Addis_Ababa'
+                },
+                {
+                    'name': 'Etc/UTC',
+                    'value': 'Etc/UTC'
+                }
+            ]
+        }
+    )
     # let's register mock response for create endpoint
     responses.add(
         responses.POST,
@@ -86,12 +101,9 @@ def test_create(api):
         members=members,
         start_time=start_time,
         end_time=end_time,
-        description=description,
-        frequency=frequency,
-        interval=interval,
-        weekdays=weekdays,
-        enabled=enabled,
-        network_id=network_id
+        frequency=freq,
+        day_of_month=bymonthday,
+        enabled=True
     )
 
     assert isinstance(res, dict)
@@ -134,7 +146,7 @@ def test_details(api):
     # Let's create sample response for details endpoint
     test_response: dict = {
         'schedule': {
-            'endtime': '2022-01-09T16:44:32Z',
+            'endtime': '2022-01-09 16:44:32',
             'enabled': True,
             'rrules': {
                 'freq': 'WEEKLY',
@@ -142,7 +154,7 @@ def test_details(api):
                 'byweekday': 'MO,WE,FR'
             },
             'timezone': 'Etc/UTC',
-            'starttime': '2022-01-09T15:44:32Z'
+            'starttime': '2022-01-09 15:44:32'
         },
         'network_id': '00000000-0000-0000-0000-000000000000',
         'last_modification_date': '2022-01-24T08:46:34Z',
@@ -172,77 +184,90 @@ def test_edit(api):
     Test case for edit exclusion API endpoint
     '''
     exclusion_id: int = 1
-    new_name: str = 'New Name'
-    frequency: str = 'WEEKLY'
-    interval: int = 2
-    weekdays: list = ['MO', 'WE', 'FR']
-    enabled: bool = True
-    start_time: str = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
-    end_time: str = (
-            datetime.utcnow() + timedelta(hours=1)
-    ).strftime('%Y-%m-%dT%H:%M:%SZ')
-
-    # Let's create response for details endpoint
-    details_res: dict = {
-        'schedule': {
-            'endtime': None,
-            'enabled': False,
-            'rrules': None,
-            'starttime': None
-        },
-        'network_id': '00000000-0000-0000-0000-000000000000',
-        'last_modification_date': '2022-01-24T08:46:34Z',
-        'creation_date': '2022-01-24T08:46:34Z',
-        'members': '127.0.0.1',
-        'description': '',
-        'name': 'Example 2',
-        'id': 16
-    }
+    new_name: str = 'Test Edit method'
 
     # Let's create reasponse for edit endpoint
     test_response: dict = {
-        'schedule': {
-            'endtime': end_time,
-            'enabled': enabled,
-            'rrules': {
-                'freq': frequency,
-                'byweekday': ','.join(weekdays),
-                'interval': interval
+        "schedule": {
+            "endtime": "2022-01-07 13:11:39",
+            "enabled": True,
+            "rrules": {
+                "freq": "WEEKLY",
+                "interval": 1,
+                "byweekday": "MO"
             },
-            'starttime': start_time
+            "timezone": "Etc/UTC",
+            "starttime": "2022-01-07 12:11:39"
         },
-        'network_id': '00000000-0000-0000-0000-000000000000',
-        'last_modification_date': '2022-01-24T08:46:34Z',
-        'creation_date': '2022-01-24T08:46:34Z',
-        'members': '127.0.0.1',
-        'description': '',
-        'name': new_name,
-        'id': exclusion_id
+        "network_id": "00000000-0000-0000-0000-000000000000",
+        "last_modification_date": "2022-01-07 12:11:39",
+        "creation_date": "2022-01-07 12:11:39",
+        "members": "127.0.0.1",
+        "description": "Example for weekly exlusion",
+        "name": new_name,
+        "id": exclusion_id
     }
 
     # Let's create payload for edit endpoint
     payload: dict = {
-        'name': new_name,
-        'description': '',
-        'network_id': '00000000-0000-0000-0000-000000000000',
-        'members': '127.0.0.1',
-        'schedule': {
-            'rrules': {
-                'freq': frequency,
-                'byweekday': ','.join(weekdays),
-                'interval': interval
+        "schedule": {
+            "timezone": "Etc/UTC",
+            "starttime": "2022-01-07 12:11:39",
+            "enabled": True,
+            "rrules": {
+                "freq": "WEEKLY",
+                "interval": 1,
+                "byweekday": "MO"
             },
-            'enabled': True,
-            'endtime': end_time,
-            'starttime': start_time
-        }
+            "endtime": "2022-01-07 13:11:39"
+        },
+        "description": "Example for weekly exlusion",
+        "network_id": "00000000-0000-0000-0000-000000000000",
+        "members": "127.0.0.1",
+        "name": new_name
     }
 
+    # Let's register the response for timezone API
+    responses.add(
+        responses.GET,
+        TIMEZONE_URL,
+        json={
+            'timezones': [
+                {
+                    'name': 'US/Arizona',
+                    'value': 'US/Arizona'
+                },
+                {
+                    'name': 'Etc/UTC',
+                    'value': 'Etc/UTC'
+                }
+            ]
+        }
+    )
     # Let's register mock response for details endpoint
     responses.add(
         responses.GET,
         f'{BASE_URL}/{exclusion_id}',
-        json=details_res
+        json={
+            "schedule": {
+                "endtime": "2022-01-07 13:11:39",
+                "enabled": True,
+                "rrules": {
+                    "freq": "WEEKLY",
+                    "interval": 1,
+                    "byweekday": "MO"
+                },
+                "timezone": "Etc/UTC",
+                "starttime": "2022-01-07 12:11:39"
+            },
+            "network_id": "00000000-0000-0000-0000-000000000000",
+            "last_modification_date": '2022-01-07T12:11:39Z',
+            "creation_date": '2022-01-07T12:11:39Z',
+            "members": "127.0.0.1",
+            "description": "Example for weekly exlusion",
+            "name": "Weekly Exclusion Example",
+            "id": exclusion_id
+        }
     )
 
     # Let's register mock response for edit endpoint
@@ -255,13 +280,7 @@ def test_edit(api):
 
     res = api.v3.vm.exclusions.edit(
         exclusion_id=exclusion_id,
-        name=new_name,
-        interval=interval,
-        frequency=frequency,
-        weekdays=weekdays,
-        start_time=start_time,
-        enabled=enabled,
-        end_time=end_time
+        name=new_name
     )
 
     assert res['id'] == exclusion_id
