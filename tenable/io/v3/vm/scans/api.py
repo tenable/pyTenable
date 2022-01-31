@@ -969,11 +969,14 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             Retrieve the latest results:
 
-            >>> results =  tio.v3.vm.scans.results(1)
+            >>> results =  tio.v3.vm.scans.results(
+            ...  '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e')
 
             Retrieve a specific instance of the result set:
 
-            >>> results =  tio.v3.vm.scans.results(1, 1)
+            >>> results =  tio.v3.vm.scans.results(
+            ...  '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e',
+            ...  'asdcfb11-6c12-405b-b7ba-bbc705cd2a6e')
         '''
         params = dict_clean(dict(
             history_id=history_id
@@ -1168,7 +1171,9 @@ class ScansAPI(ExploreBaseEndpoint):
                 The information related to the host requested.
 
         Examples:
-            >>> host =  tio.v3.vm.scans.host_details(1, 1)
+            >>> host =  tio.v3.vm.scans.host_details(
+            ...  '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e',
+            ...  'adscfb11-6c12-405b-b7ba-bbc705cd2a6e')
         '''
         params = dict_clean(dict(
             history_id=history_id
@@ -1260,11 +1265,13 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             Launch the scan with the configured targets:
 
-            >>>  tio.v3.vm.scans.launch(1)
+            >>>  tio.v3.vm.scans.launch(
+            ...  '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e')
 
             Launch the scan with some custom targets:
 
-            >>>  tio.v3.vm.scans.launch(1, targets=['127.0.0.1'])
+            >>>  tio.v3.vm.scans.launch(
+            ...  '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e', targets=['127.0.0.1'])
         '''
         payload = dict_clean(dict(
             alt_targets=targets
@@ -1378,7 +1385,8 @@ class ScansAPI(ExploreBaseEndpoint):
                 The scan was successfully requested to be paused.
 
         Examples:
-            >>>  tio.v3.vm.scans.pause(1)
+            >>>  tio.v3.vm.scans.pause(
+            ...  '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e')
         '''
         self._post(f'{scan_id}/pause', json={})
         if block:
@@ -1405,7 +1413,8 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             Set a scan to unread:
 
-            >>>  tio.v3.vm.scans.set_read_status(1, False)
+            >>>  tio.v3.vm.scans.set_read_status(
+            ...  '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e', False)
         '''
         payload = self._schema.dump(self._schema.load(dict(
             read_status=read_status
@@ -1430,7 +1439,8 @@ class ScansAPI(ExploreBaseEndpoint):
                 The scan was successfully requested to resume.
 
         Examples:
-            >>>  tio.v3.vm.scans.resume(1)
+            >>>  tio.v3.vm.scans.resume(
+            ...  '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e')
         '''
         self._post(f'{scan_id}/resume')
 
@@ -1484,11 +1494,13 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             Stop the scan asynchronously:
 
-            >>>  tio.v3.vm.scans.stop(1)
+            >>>  tio.v3.vm.scans.stop(
+            ...  '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e')
 
             Stop the scan and wait for the scan to stop:
 
-            >>>  tio.v3.vm.scans.stop(1, True)
+            >>>  tio.v3.vm.scans.stop(
+            ...  '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e', True)
         '''
         self._post(f'{scan_id}/stop')
         if block:
@@ -1508,7 +1520,8 @@ class ScansAPI(ExploreBaseEndpoint):
                 The current status of the last instance.
 
         Examples:
-            >>>  tio.v3.vm.scans.status(1)
+            >>>  tio.v3.vm.scans.status(
+            ...  '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e')
             u'completed'
         '''
         return self._get(f'{scan_id}/latest-status')['status']
