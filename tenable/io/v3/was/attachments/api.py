@@ -19,7 +19,6 @@ from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 
 class AttachmentsAPI(ExploreBaseEndpoint):
-
     '''
     This class contains methods related to Attachments API
     '''
@@ -36,9 +35,9 @@ class AttachmentsAPI(ExploreBaseEndpoint):
         :devportal:`attachments: download <was-v2-attachments-download>`
 
         Args:
-            attachment_id:
+            attachment_id (UUID):
                 The unique identifier for attachment.
-            fobj:
+            fobj (BinaryIO, optional):
                 A file-like object to write the contents of the attachment to.
                 If none is provided a BytesIO object will be returned with the
                 attachment.
