@@ -7,18 +7,11 @@ These methods can be accessed at ``TenableAD.directories``.
 
 .. rst-class:: hide-signature
 .. autoclass:: DirectoriesAPI
-
-    .. automethod:: create
-    .. automethod:: delete
-    .. automethod:: details
-    .. automethod:: update
-    .. automethod:: list
+    :members:
 '''
 from typing import List, Dict
-
 from marshmallow import INCLUDE
 from restfly.utils import dict_clean
-
 from tenable.base.endpoint import APIEndpoint
 from .schema import DirectorySchema
 
@@ -28,7 +21,7 @@ class DirectoriesAPI(APIEndpoint):
 
     def list(self) -> List[Dict]:
         '''
-        Retrieve all directory instances
+        Retrieves all directory instances.
 
         Returns:
             list:
@@ -49,7 +42,7 @@ class DirectoriesAPI(APIEndpoint):
                **kwargs
                ) -> List[Dict]:
         '''
-        Create a new directory instance
+        Creates a new directory instance.
 
         Args:
             infrastructure_id (int):
@@ -61,7 +54,7 @@ class DirectoriesAPI(APIEndpoint):
             dns (str):
                 The DNS domain that this directory is tied to.
             directory_type (optional, str):
-                ???
+                The directory's type.
             ldap_port (optional, str):
                 The port number associated to the LDAP service on the
                 directory server.
@@ -77,7 +70,6 @@ class DirectoriesAPI(APIEndpoint):
                 The created directory instance.
 
         Examples:
-
             >>> tad.directories.create(
             ...     infrastructure_id=1,
             ...     name='ExampleServer',
@@ -113,11 +105,10 @@ class DirectoriesAPI(APIEndpoint):
                 the directory object.
 
         Examples:
-
-            >>> tad.directories.details(1)
+            >>> tad.directories.details(directory_id='1')
         '''
         schema = DirectorySchema(unknown=INCLUDE)
-        return schema.load(self._get(directory_id))
+        return schema.load(self._get(f'{directory_id}'))
 
     def update(self,
                infrastructure_id: int,
@@ -138,7 +129,7 @@ class DirectoriesAPI(APIEndpoint):
             ip (optional, str):
                 The IP Address of the directory server.
             directory_type (optional, str):
-                ???
+                The directory's type.
             dns (optional, str):
                 The DNS domain that this directory is tied to.
             ldap_port (optional, int):
@@ -156,16 +147,18 @@ class DirectoriesAPI(APIEndpoint):
                 The updated directory object.
 
         Examples:
-
-            >>> tad.directories.update(infrastructure_id=2,
+            >>> tad.directories.update(
+            ...     infrastructure_id=2,
             ...     directory_id=9,
-            ...     name='updated_new_name')
+            ...     name='updated_new_name'
+            ...     )
 
-            >>> tad.directories.update(infrastructure_id=2,
+            >>> tad.directories.update(
+            ...     infrastructure_id=2,
             ...     directory_id=9,
             ...     name='updated_new_name',
-            ...     ldap_port=390)
-
+            ...     ldap_port=390
+            ...     )
         '''
         schema = DirectorySchema(unknown=INCLUDE)
         payload = schema.dump(schema.load(kwargs))
@@ -188,9 +181,10 @@ class DirectoriesAPI(APIEndpoint):
             None:
 
         Examples:
-
-            >>> tad.directories.delete(infrastructure_id=2,
-            ...     directory_id='12')
+            >>> tad.directories.delete(
+            ...     infrastructure_id=2,
+            ...     directory_id='12'
+            ...     )
 
         '''
         self._api.delete((f'infrastructures/{infrastructure_id}'
