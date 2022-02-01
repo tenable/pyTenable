@@ -163,8 +163,8 @@ class FoldersAPI(ExploreBaseEndpoint):
                 If ``return_json`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
         Examples:
-            >>> for folder in tio.v3.vm.folders.list():
-            ...     pprint(folder)
+            >>> for folder in tio.v3.vm.folders.search():
+            ...     print(folder)
         '''
         iclass = SearchIterator
         if kwargs.get('return_csv', False):
