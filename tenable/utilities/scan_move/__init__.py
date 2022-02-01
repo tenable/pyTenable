@@ -11,23 +11,23 @@ Methods available on ``tio.utilities.scan_move``:
 .. autoclass:: ScanMove
     :members:
 '''
-from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io import TenableIO
 
 
-class ScanMove(ExploreBaseEndpoint):
+class ScanMove:
     '''
     This will contain all methods related to Users
     '''
 
-    def __init__(self, source_tsc, target_tsc):
-        self.source_tsc = source_tsc
-        self.target_tsc = target_tsc
+    def __init__(self, source_tio: TenableIO, target_tio: TenableIO):
+        self.source_tio = source_tio
+        self.target_tio = target_tio
 
     def _get_scan_history(self, scan_id, limit):
         scan_history = []
         count = 0
-        # for scan_instance in self.source_tsc.v3.scans.history(scan_id):
-        for scan_instance in self.source_tsc.scans.history(scan_id):
+
+        for scan_instance in self.source_tio.v3.vm.scans.history(scan_id):
 
             if count == limit:
                 break
@@ -41,14 +41,16 @@ class ScanMove(ExploreBaseEndpoint):
     def move(self, limit):
         # get all scans from source instance
 
-        scan_filter = {  # noqa: F841
+        scan_filter = {
             'and': [
                 {'property': 'status', 'operator': 'eq', 'value': 'completed'},
                 {'property': 'type', 'operator': 'eq', 'value': 'remote'}
             ]
         }
-        # for mv_scan in self.source_tsc.v3.scans.search(scan_filter):
-        for mv_scan in self.source_tsc.scans.list():
+
+        for mv_scan in self.source_tio.v3.vm.scans.search(
+            filter=scan_filter
+        ):
             scan_history = self._get_scan_history(mv_scan['id'], limit)
 
             for scan in scan_history:
@@ -56,10 +58,8 @@ class ScanMove(ExploreBaseEndpoint):
                     mv_scan, scan
                 ))
 
-                # scan_report = self.source_tsc.v3.vm.scans.export(scan)
-                scan_report = self.source_tsc.scans.export(scan)
-                # imported_scan = self.target_tsc.v3.vm.scans.import_scan(
-                imported_scan = self.target_tsc.scans.import_scan(
+                scan_report = self.source_tio.v3.scans.export(scan)
+                imported_scan = self.target_tio.v3.scans.import_scan(
                     scan_report
                 )
 
