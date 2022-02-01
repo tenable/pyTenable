@@ -226,7 +226,7 @@ class AgentsAPI(ExploreBaseEndpoint):
                 If ``return_json`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
         Examples:
-            >>> tio.v3.vm.tags.search(
+            >>> tio.v3.vm.agents.search(
             ... filter=('id', 'eq', '00089a45-44a5-4620-bf9f-75ebedc6cc6c'),
             ... fields=['id'], limit=2)
         '''
@@ -235,7 +235,7 @@ class AgentsAPI(ExploreBaseEndpoint):
             iclass = CSVChunkIterator
         return super()._search(
             iterator_cls=iclass,
-            is_sort_with_prop=False,
+            sort_type=self._sort_type.default,
             api_path=f'{self._path}/search',
             resource='agents',
             **kwargs
