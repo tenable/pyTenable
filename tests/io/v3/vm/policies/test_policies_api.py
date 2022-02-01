@@ -1,18 +1,20 @@
 '''
-Testing the Groups endpoints
+Test cases for Policies API endpoint
 '''
 import os
 
 import pytest
 import responses
+from requests import Response
 from responses import matchers
+
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 
 FILE_BASE_URL = 'https://cloud.tenable.com/api/v3/file'
 FILE_PATH = os.path.join(
-        os.path.dirname(
-            os.path.abspath(__file__)
-            ), 'policies_test.nessus'
-        )
+    os.path.dirname(os.path.abspath(__file__)), 'policies_test.nessus'
+)
 POLICIES_BASE_URL = r'https://cloud.tenable.com/api/v3/policies'
 POLICY_ID = 25
 POLICY_DETAILS = {
@@ -114,18 +116,20 @@ POLICY_DETAILS = {
     'uuid': '731a8e52-3ea6-a291-ec0a-d2ff0619c19d7bd788aaaaaaaaa',
 }
 POLICY_IMPORT = {
-    'private': 0,
+    'private': 'integer',
+    'id': '43',
     'no_target': 'false',
-    'template_uuid': '731a8e52-3ea6-a291-ec0a-d2ff0619c19d7bd788d6be818b65',
-    'description': '\n',
-    'name': 'Updated Policy Name_01',
-    'owner': 'abc@example.com',
-    'shared': 0,
+    'template_uuid': 'd684f1a6-bcf1-4a24-9bac-4a3b9bab086bd24bd260ef5f9e66',
+    'description': 'An example policy.',
+    'name': 'Test Policy 1',
+    'owner': {
+        'name': 'api@api.demo',
+        'id': 3
+    },
+    'shared': 1,
     'user_permissions': 128,
-    'last_modification_date': 1639367126,
-    'creation_date': 1639367126,
-    'owner_id': 2236708,
-    'id': 30
+    'last_modification_date': '2021-12-14T11:49:05Z',
+    'creation_date': '2021-12-14T11:49:05Z'
 }
 
 
@@ -139,9 +143,7 @@ def test_configure(api):
         f'{POLICIES_BASE_URL}/{POLICY_ID}',
         match=[matchers.json_params_matcher(POLICY_DETAILS)]
         )
-
-    resp = api.v3.policies.configure(POLICY_ID, POLICY_DETAILS)
-
+    resp = api.v3.vm.policies.configure(POLICY_ID, POLICY_DETAILS)
     assert resp is None
 
 
@@ -158,9 +160,7 @@ def test_copy(api):
             'id': 27
         }
     )
-
-    resp = api.v3.policies.copy(POLICY_ID)
-
+    resp = api.v3.vm.policies.copy(POLICY_ID)
     assert resp['id'] == 27
 
 
@@ -178,8 +178,7 @@ def test_create(api):
             'policy_id': 29
         }
     )
-
-    resp = api.v3.policies.create(POLICY_DETAILS)
+    resp = api.v3.vm.policies.create(POLICY_DETAILS)
     assert resp['policy_id'] == 29
 
 
@@ -192,8 +191,7 @@ def test_delete(api):
         responses.DELETE,
         f'{POLICIES_BASE_URL}/{POLICY_ID}'
     )
-
-    resp = api.v3.policies.delete(POLICY_ID)
+    resp = api.v3.vm.policies.delete(POLICY_ID)
     assert resp is None
 
 
@@ -207,8 +205,7 @@ def test_details(api):
         f'{POLICIES_BASE_URL}/{POLICY_ID}',
         json=POLICY_DETAILS
     )
-
-    resp = api.v3.policies.details(POLICY_ID)
+    resp = api.v3.vm.policies.details(POLICY_ID)
     assert resp == POLICY_DETAILS
 
 
@@ -229,9 +226,8 @@ def test_policy_import(api):
         f'{POLICIES_BASE_URL}/import',
         json=POLICY_IMPORT
     )
-
     with open(FILE_PATH) as fobj:
-        resp = api.v3.policies.policy_import(fobj)
+        resp = api.v3.vm.policies.policy_import(fobj)
         assert resp == POLICY_IMPORT
 
 
@@ -242,48 +238,137 @@ def test_policy_export(api):
     '''
     with open(FILE_PATH, 'rb') as fobj:
         file_contents = fobj.read()
-
     responses.add(
         responses.GET,
         f'{POLICIES_BASE_URL}/{POLICY_ID}/export',
         body=file_contents
     )
-
     output_file_name = 'export_output_file.txt'
     with open(output_file_name, 'wb') as output_file_obj:
-        api.v3.policies.policy_export(
+        api.v3.vm.policies.policy_export(
             POLICY_ID,
             output_file_obj
         )
-
     with open(output_file_name, 'rb') as output_file_obj:
         assert output_file_obj.read() == file_contents
-
     # Validate the method when fileObj is not passed
-    assert file_contents == (api.v3.policies.policy_export(POLICY_ID)).read()
-
+    res = (api.v3.vm.policies.policy_export(POLICY_ID)).read()
+    assert file_contents == res
     os.remove(output_file_name)
 
 
+@responses.activate
 def test_search(api):
     '''
     Test the search method
     '''
-    with pytest.raises(NotImplementedError):
-        api.v3.policies.templates()
+    test_response: dict = {
+        'policies': [
+            {
+                'no_target': 'false',
+                'template_id':
+                    'd684f1a6-bcf1-4a24-9bac-4a3b9bab086bd24bd260ef5f9e66',
+                'description': 'An example policy.',
+                'name': 'Test Policy 1',
+                'owner': {
+                    'name': 'api@api.demo',
+                    'id': 3
+                },
+                'visibility': 'shared',
+                'shared': 1,
+                'user_permissions': 128,
+                'last_modification_date': '2021-12-14T11:49:05Z',
+                'creation_date': '2021-12-14T11:49:05Z',
+                'id': 43
+            }
+        ],
+        'pagination': {
+            'next': 'nextToken',
+            'total': 1
+        }
+    }
+
+    fields: list = [
+        'id'
+        'no_target',
+        'template_id',
+        'description',
+        'name',
+        'owner',
+        'visibility',
+        'shared',
+        'user_permissions'
+        'last_modification_date'
+        'creation_date'
+    ]
+
+    filter = {
+        'and': [
+            {
+                'property': 'id',
+                'operator': 'eq',
+                'value': 43
+            },
+            {
+                'property': 'name',
+                'operator': 'eq',
+                'value': 'Test Policy 1'
+            }
+        ]
+    }
+
+    sort = [('id', 'asc')]
+
+    # Let's create sample payload for search exclusion endpoint
+    payload = {
+        'fields': fields,
+        'filter': filter,
+        'limit': 200,
+        'sort': [{'id': 'asc'}],
+    }
+
+    # Let's register the mock response for search endpoint
+    responses.add(
+        responses.POST,
+        f'{POLICIES_BASE_URL}/search',
+        json=test_response,
+        match=[responses.matchers.json_params_matcher(payload)],
+    )
+
+    iterator = api.v3.vm.policies.search(
+        fields=fields, filter=filter, sort=sort, limit=200
+    )
+    assert isinstance(iterator, SearchIterator)
+
+    exclusions_list = []
+    for item in iterator:
+        exclusions_list.append(item)
+    assert len(exclusions_list) == test_response['pagination']['total']
+
+    iterator = api.v3.vm.policies.search(
+        fields=fields, filter=filter, sort=sort, return_csv=True
+    )
+    assert isinstance(iterator, CSVChunkIterator)
+
+    resp = api.v3.vm.policies.search(
+        fields=fields, filter=filter, sort=sort, return_resp=True, limit=200
+    )
+    assert isinstance(resp, Response)
 
 
+@responses.activate
 def test_templates(api):
     '''
     Test the templates method
     '''
     with pytest.raises(NotImplementedError):
-        api.v3.policies.templates()
+        api.v3.vm.policies.templates()
 
 
+@responses.activate
 def test_templates_details(api):
     '''
     Test the template details method
     '''
     with pytest.raises(NotImplementedError):
-        api.v3.policies.template_details('basic')
+        api.v3.vm.policies.template_details('basic')

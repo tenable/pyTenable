@@ -1,7 +1,10 @@
+'''
+Test case for Policies Schema
+'''
 import pytest
 from marshmallow.exceptions import ValidationError
 
-from tenable.io.v3.policies.schema import PolicySchema
+from tenable.io.v3.vm.policies.schema import PolicySchema
 
 
 @pytest.fixture

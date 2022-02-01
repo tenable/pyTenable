@@ -1,3 +1,6 @@
+'''
+Policies API endpoint schema
+'''
 from marshmallow import Schema, fields
 
 

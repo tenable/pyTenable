@@ -17,7 +17,6 @@ Methods available on ``tio.v3``:
 
     assets
     groups
-    policies
     users
     vm/index
     was/index
@@ -25,13 +24,12 @@ Methods available on ``tio.v3``:
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.assets.api import AssetsAPI
 from tenable.io.v3.groups.api import GroupsAPI
-from tenable.io.v3.policies.api import PoliciesAPI
 from tenable.io.v3.users.api import UsersAPI
 from tenable.io.v3.vm import VulnerabilityManagement
 from tenable.io.v3.was import WebApplicationScanning
 
 
-class Version3API(APIEndpoint):  # noqa: PLR0904
+class Version3API(APIEndpoint):
     '''
     This will contain property for all resources/app under io
     i.e Container Security, Web Application Security.
@@ -52,14 +50,6 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
         :doc:`tenable.io v3 Groups APIs <groups>`.
         '''
         return GroupsAPI(self._api)
-
-    @property
-    def policies(self):
-        '''
-        The interface object for the
-        :doc:`Tenable.io v3 Policies APIs <policies>`.
-        '''
-        return PoliciesAPI(self._api)
 
     @property
     def users(self):
