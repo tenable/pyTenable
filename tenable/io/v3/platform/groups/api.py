@@ -48,9 +48,9 @@ class GroupsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> tio.v3.platform.groups.add_user(
-                    '00000000-0000-0000-0000-000000000000',
-                    '00000000-0000-0000-0000-000000000000'
-                )
+            ...     '00000000-0000-0000-0000-000000000000',
+            ...     '00000000-0000-0000-0000-000000000000'
+            ... )
         '''
         self._post(f'{group_id}/users/{user_id}')
         return self.list_users(group_id)
@@ -113,9 +113,9 @@ class GroupsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> tio.v3.platform.groups.delete_user(
-                    '00000000-0000-0000-0000-000000000000',
-                    '00000000-0000-0000-0000-000000000000'
-                )
+            ...     '00000000-0000-0000-0000-000000000000',
+            ...     '00000000-0000-0000-0000-000000000000'
+            ... )
         '''
         self._delete(f'{group_id}/users/{user_id}')
 
