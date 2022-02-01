@@ -295,7 +295,7 @@ class PoliciesAPI(ExploreBaseEndpoint):
         individual one.
         '''
         # policies = dict()
-        # for item in self._api.editor.template_list('policy'):
+        # for item in self._api.v3.editor.search_template('policy'):
         #     policies[item['name']] = item['uuid']
         # return policies
         raise NotImplementedError(
@@ -327,10 +327,14 @@ class PoliciesAPI(ExploreBaseEndpoint):
         '''
         # # Get the policy template UUID
         # tmpl = self.templates()
-        # tmpl_uuid = tmpl[self._check('name', name, str, choices=tmpl.keys())]
+
+        # if name not in tmpl.keys():
+        #     raise ValueError(f'{name} not present in tamplates')
+
+        # tmpl_uuid = tmpl[name]
 
         # # Get the editor object
-        # editor = self._api.editor.template_details('policy', tmpl_uuid)
+        # editor = self._api.v3.editor.template_details('policy', tmpl_uuid)
 
         # # define the initial skeleton of the scan object
         # scan = {
@@ -348,7 +352,7 @@ class PoliciesAPI(ExploreBaseEndpoint):
         #     # if the credentials sub-document exists, then lets walk down the
         #     # credentials dataset
         #     scan['credentials'] = {
-        #         'current': self._api.editor.parse_creds(
+        #         'current': self._api.v3.editor.parse_creds(
         #             editor['credentials']['data'])
         #     }
 
@@ -365,7 +369,7 @@ class PoliciesAPI(ExploreBaseEndpoint):
         #     # if the audits sub-document exists, then lets walk down the
         #     # audits dataset.
         #     scan['compliance'] = {
-        #         'current': self._api.editor.parse_audits(
+        #         'current': self._api.v3.editor.parse_audits(
         #             editor['compliance']['data'])
         #     }
 
@@ -380,7 +384,7 @@ class PoliciesAPI(ExploreBaseEndpoint):
         # if 'plugins' in editor:
         #     # if the plugins sub-document exists, then lets walk down the
         #     # plugins dataset.
-        #     scan['plugins'] = self._api.editor.parse_plugins(
+        #     scan['plugins'] = self._api.v3.editor.parse_plugins(
         #         'policy', editor['plugins']['families'], tmpl_uuid)
 
         # # return the scan document to the caller.
