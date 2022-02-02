@@ -186,13 +186,7 @@ def test_search(api):
     api_payload = {
         'fields': fields,
         'filter': filters,
-        'limit': 2,
-        'sort': [
-            {
-                'name': 'name',
-                'order': 'desc'
-            }
-        ],
+        'limit': 2
     }
 
     responses.add(
@@ -204,7 +198,6 @@ def test_search(api):
     resp = api.v3.platform.groups.search(
         fields=fields,
         filter=filters,
-        sort=[('name', 'desc')],
         limit=2
     )
     assert isinstance(resp, SearchIterator)
@@ -215,7 +208,6 @@ def test_search(api):
     resp = api.v3.platform.groups.search(
         fields=fields,
         filter=filters,
-        sort=[('name', 'desc')],
         limit=2,
         return_csv=True
     )
@@ -224,7 +216,6 @@ def test_search(api):
     resp = api.v3.platform.groups.search(
         fields=fields,
         filter=filters,
-        sort=[('name', 'desc')],
         limit=2,
         return_resp=True
     )

@@ -215,13 +215,6 @@ class GroupsAPI(ExploreBaseEndpoint):
                 time, it's highly recommended that you look at the output of
                 the :py:meth:`tio.v3.platform.definitions.groups()`
                 endpoint to get more details.
-            sort list(tuple, Dict):
-                A list of dictionaries describing how to sort the data
-                that is to be returned.
-                Examples:
-                    - [("field_name_1", "asc"),
-                             ("field_name_2", "desc")]
-                    - [{'property': 'last_observed', 'order': 'desc'}]
             limit (int):
                 Number of objects to be returned in each request.
                 Default is 200.
@@ -245,14 +238,13 @@ class GroupsAPI(ExploreBaseEndpoint):
                 object is instead returned instead of an iterable.
         Examples:
             >>> for group in tio.v3.platform.groups.search():
-            ...     pprint(group)
+            ...     print(group)
         '''
         iclass = SearchIterator
         if kwargs.get('return_csv', False):
             iclass = CSVChunkIterator
         return super()._search(resource='groups',
                                iterator_cls=iclass,
-                               sort_type=self._sort_type.name_based,
                                api_path=f'{self._path}/search',
                                **kwargs
                                )
