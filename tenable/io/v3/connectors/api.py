@@ -71,11 +71,11 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 The connector resource record.
 
         Example:
-            >>> resp = tio.v3.connectors.create(
-        ... name='test', con_type='aws_keyless',
-        ... network_id='00000000-0000-0000-0000-000000000000',
-        ... schedule=('days', 2), sub_accounts=[{}]
-        ... )
+        >>> resp = tio.v3.connectors.create(
+        ...     name='test', con_type='aws_keyless',
+        ...     network_id='00000000-0000-0000-0000-000000000000',
+        ...     schedule=('days', 2), sub_accounts=[{}]
+        ...     )
         '''
 
         payload = {
