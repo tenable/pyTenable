@@ -1352,7 +1352,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 If ``return_json`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
         Examples:
-            >>> tio.v3.vm.remediation_scans.search(
+            >>> tio.v3.vm.scans.search(
             ...     filter=('name','eq','SCCM'),
             ...     fields=['name', 'field_one', 'field_two'],
             ...     limit=2,
