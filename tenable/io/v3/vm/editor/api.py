@@ -402,7 +402,7 @@ class EditorAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.editor.filters()`
+                the :py:meth:`tio.v3.definitions.vm.editor()`
                 endpoint to get more details.
             sort (list[tuple], optional):
                 A list of dictionaries describing how to sort the data
