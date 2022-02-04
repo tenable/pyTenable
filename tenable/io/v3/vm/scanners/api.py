@@ -276,6 +276,7 @@ class ScannersAPI(ExploreBaseEndpoint):
             filter (tuple, Dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
+
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
                     ...                 ('test', 'oper', '2')
@@ -302,6 +303,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                     ...      'property': 3
                     ...  }]
                     ... }
+
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
                 the :py:meth:`tio.v3.definitions.vm.scanners()`
@@ -311,9 +313,11 @@ class ScannersAPI(ExploreBaseEndpoint):
                 ('FIELD', 'ORDER').
                 It describes how to sort the data
                 that is to be returned.
+
                 Examples:
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
+
             limit (int, optional):
                 Number of objects to be returned in each request.
                 Default and max_limit is 200.
@@ -328,12 +332,15 @@ class ScannersAPI(ExploreBaseEndpoint):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
+
         Returns:
             iterable:
                 The iterable that handles the pagination for the job.
+
             requests.Response:
                 If ``return_json`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
+
         Examples:
             >>> tio.v3.vm.scanners.search( sort=[('received': 'desc)]
             ... fields=['id', 'name', 'users'], limit=2)
@@ -342,7 +349,7 @@ class ScannersAPI(ExploreBaseEndpoint):
         if kwargs.get('return_csv', False):
             iclass = CSVChunkIterator
         return super()._search(iterator_cls=iclass,
-                               is_sort_with_prop=False,
+                               sort_type=self._sort_type.default,
                                api_path=f'{self._path}/search',
                                resource='scanners',
                                **kwargs

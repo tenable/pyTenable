@@ -120,7 +120,7 @@ def test_scanners_linking_key(api):
             'property': 'id',
             'value': '00000000-0000-0000-0000-00000000000000000000000000001'
         },
-        'limit': 1000
+        'limit': 200
     }
 
     api_response = {
