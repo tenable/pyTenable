@@ -4,8 +4,11 @@ Tests cases  for search schema
 import pytest
 from marshmallow.exceptions import ValidationError
 
-from tenable.io.v3.base.schema.explore.search import (SearchSchema, SortSchema,
-                                                      SortType)
+from tenable.io.v3.base.schema.explore.filters import FilterSchema
+from tenable.io.v3.base.schema.explore.search import (SearchSchema,
+                                                      SearchWASSchema,
+                                                      SortSchema, SortType)
+
 
 SEARCH_DATA = dict(
     fields=['bios_name', 'name'],
@@ -14,6 +17,16 @@ SEARCH_DATA = dict(
     sort=[('name', 'asc'), ('bios_name', 'desc')],
     next='sdf000dfssdSDFSDFSFE00dfsdffaf'
 )
+
+SEARCH_DATA_WAS = dict(
+    fields=['bios_name', 'name'],
+    filter=('bios_name', 'eq', 'SCCM'),
+    limit=10,
+    offset=0,
+    num_pages=1,
+    sort=[('name', 'asc'), ('bios_name', 'desc')],
+)
+
 SORT_DATA_SCHEMA = dict(property='bios_name', order='asc')
 
 
@@ -40,6 +53,30 @@ def test_search_schema():
         schema.load(SEARCH_DATA)
 
 
+def test_search_schema_was():
+    '''
+    Test the search schema with default values for was api
+    '''
+    test_resp = {
+        'limit': 10,
+        'fields': ['bios_name', 'name'],
+        'offset': 0,
+        'num_pages': 1,
+        'filter': {'value': 'SCCM', 'property': 'bios_name', 'operator': 'eq'},
+        'sort': [
+            {'order': 'asc', 'property': 'name'},
+            {'order': 'desc', 'property': 'bios_name'},
+        ]
+    }
+
+    schema = SearchWASSchema(context={'sort_type': SortType.property_based})
+    assert test_resp == schema.dump(schema.load(SEARCH_DATA_WAS))
+
+    with pytest.raises(ValidationError):
+        SEARCH_DATA['dummy_key'] = 'dummy_value'
+        schema.load(SEARCH_DATA)
+
+
 def test_search_schema_invalid_limit():
     '''
     Test the search schema with invalid limit value
@@ -53,6 +90,24 @@ def test_search_schema_invalid_limit():
     }
 
     schema = SearchSchema(context={'sort_type': SortType.property_based})
+
+    with pytest.raises(ValidationError):
+        schema.load(search_schema)
+
+
+def test_search_schema_invalid_limit_was():
+    '''
+    Test the search schema with invalid limit value for was api
+    '''
+    search_schema = {
+        'limit': 'abc',
+        'fields': ['bios_name', 'name'],
+        'offset': 0,
+        'filter': {'value': 'SCCM', 'property': 'bios_name', 'operator': 'eq'},
+        'sort': [('name', 'asc'), ('bios_name', 'desc')],
+    }
+
+    schema = SearchWASSchema(context={'sort_type': SortType.property_based})
 
     with pytest.raises(ValidationError):
         schema.load(search_schema)
