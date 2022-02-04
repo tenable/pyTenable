@@ -11,7 +11,7 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
 
 BASE_URL: str = 'https://cloud.tenable.com/api/v3/agents/exclusions'
-TIMEZONE_URL: str = 'https://cloud.tenable.com/scans/timezones'
+TIMEZONE_URL: str = 'https://cloud.tenable.com/api/v3/scans/timezones'
 
 
 @responses.activate

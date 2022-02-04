@@ -8,7 +8,7 @@ import responses
 
 from tenable.io.v3.vm.agent_exclusions.schema import AgentExclusionSchema
 
-TIMEZONE_URL: str = 'https://cloud.tenable.com/scans/timezones'
+TIMEZONE_URL: str = 'https://cloud.tenable.com/api/v3/scans/timezones'
 
 
 @responses.activate
@@ -79,7 +79,7 @@ def test_agent_exlusion_schema_with_weekly_freq(api):
     }
 
     schema = AgentExclusionSchema(
-        context={'timezones': api._tz}
+        context={'timezones': api.v3.vm.scans.timezones()}
     )
     assert test_resp == schema.dump(schema.load(payload))
 
@@ -152,7 +152,7 @@ def test_agent_exlusion_schema_with_monthly_freq(api):
     }
 
     schema = AgentExclusionSchema(
-        context={'timezones': api._tz}
+        context={'timezones': api.v3.vm.scans.timezones()}
     )
     assert test_resp == schema.dump(schema.load(payload))
 
@@ -224,7 +224,7 @@ def test_agent_exlusion_schema_with_daily_freq(api):
     }
 
     schema = AgentExclusionSchema(
-        context={'timezones': api._tz}
+        context={'timezones': api.v3.vm.scans.timezones()}
     )
     assert test_resp == schema.dump(schema.load(payload))
 
@@ -270,7 +270,7 @@ def test_agent_exlusion_schema_with_invalid_timezone(api):
     }
 
     schema = AgentExclusionSchema(
-        context={'timezones': api._tz}
+        context={'timezones': api.v3.vm.scans.timezones()}
     )
 
     with pytest.raises(ValueError):

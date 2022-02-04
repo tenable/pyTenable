@@ -144,7 +144,7 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
         payload = dict_clean(payload)
         # validate payload using marshmallow schema
         schema = AgentExclusionSchema(
-            context={'timezones': self._api._tz}
+            context={'timezones': self._api.v3.vm.scans.timezones()}
         )
         payload = schema.dump(schema.load(payload))
         return self._post(json=payload)
@@ -292,7 +292,7 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
 
         # validate payload using marshmallow
         schema = AgentExclusionSchema(
-            context={'timezones': self._api._tz}
+            context={'timezones': self._api.v3.vm.scans.timezones()}
         )
         payload = schema.dump(schema.load(payload))
         return self._put(f'{exclusion_id}', json=payload)
