@@ -1322,7 +1322,8 @@ class ScansAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                endpoint to get more details.
+                the :py:meth: `tio.v3.definitions.vm.scans()` endpoint
+                to get more details.
             sort (list[tuple], optional):
                 sort is a list of tuples in the form of
                 ('FIELD', 'ORDER').
