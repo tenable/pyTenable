@@ -69,7 +69,7 @@ class AccountsAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.mssp.filters.accounts()`
+                the :py:meth:`tio.v3.definitions.mssp.accounts()`
                 endpoint to get more details.
             sort (list[tuple], optional):
                 A list of dictionaries describing how to sort the data
