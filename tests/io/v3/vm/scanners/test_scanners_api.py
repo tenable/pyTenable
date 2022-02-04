@@ -58,17 +58,17 @@ SCANNERS_LIST = [
         'supports_webapp': True,
     },
     {
-        'creation_date': 1635431655,
+        'creation_date': '2021-01-06T00:51:37.436Z',
         'group': True,
         'key': 'a02hc58d8gfcf1dh44568eh95he9hd5eb3904db5955a7ge10g0h1e793e2100ba',  # noqa: E501
         'last_connect': None,
-        'last_modification_date': 1635431655,
+        'last_modification_date': '2022-01-06T00:51:37.436Z',
         'license': {
             'agents': 512,
             'ips': 10000,
             'scanners': 2,
             'users': 30,
-            'expiration_date': 1769403600,
+            'expiration_date': '2025-01-06T00:51:37.436Z',
             'evaluation': False,
             'scanners_used': 0,
             'agents_used': 0,
@@ -114,10 +114,34 @@ def test_scanners_linking_key(api):
     '''
     Test the linking_key function
     '''
+    payload = {
+        'filter': {
+            'operator': 'eq',
+            'property': 'id',
+            'value': '00000000-0000-0000-0000-00000000000000000000000000001'
+        },
+        'limit': 1000
+    }
+
+    api_response = {
+        'scanners': [SCANNERS_LIST[0]],
+        'pagination': {
+            'total': 1,
+            'next': 'nextToken'
+        }
+    }
+
     responses.add(
         responses.GET,
         f'{SCANNER_BASE_URL}',
         json={'scanners': SCANNERS_LIST},
+    )
+
+    responses.add(
+        responses.POST,
+        f'{SCANNER_BASE_URL}/search',
+        match=[matchers.json_params_matcher(payload)],
+        json=api_response
     )
     linking_key = api.v3.vm.scanners.linking_key()
 

@@ -41,12 +41,10 @@ class ScannersAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.vm.scanners.linking_key()
         '''
-        scanners = self.list()
+        id = '00000000-0000-0000-0000-00000000000000000000000000001'
+        scanners = self.search(filter=('id', 'eq', id))
         for scanner in scanners:
-            if (
-                scanner['id']
-                == '00000000-0000-0000-0000-00000000000000000000000000001'
-            ):
+            if scanner['id'] == id:
                 return scanner['key']
 
     def allowed_scanners(self) -> List:
@@ -166,7 +164,7 @@ class ScannersAPI(ExploreBaseEndpoint):
             >>> scanner = tio.v3.vm.scanners.details(1)
             ... pprint(scanner)
         '''
-        return self._get(f'{id}')
+        return super()._details(f'{id}')
 
     def edit(self, id: UUID, **kwargs) -> None:
         '''
@@ -306,7 +304,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.audit_log_filters()`
+                the :py:meth:`tio.v3.definitions.vm.scanners()`
                 endpoint to get more details.
             sort (list[tuple], optional):
                 sort is a list of tuples in the form of
