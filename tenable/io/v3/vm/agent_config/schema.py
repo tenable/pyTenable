@@ -12,7 +12,7 @@ class AutoLinkSchema(Schema):
     expiration = fields.Int()
 
     @pre_load
-    def pre_searilization(self, data, **kwarg):
+    def pre_serialization(self, data, **kwarg):
         if 0 < data['expiration'] < 366:
             data['enabled'] = True
         elif data['expiration'] in [False, 0]:

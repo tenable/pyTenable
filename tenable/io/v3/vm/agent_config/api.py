@@ -27,6 +27,22 @@ class AgentConfigAPI(ExploreBaseEndpoint):
     _conv_json: bool = True
     _schema = AgentConfigSchema()
 
+    def details(self) -> Dict:
+        '''
+        Returns the current agent configuration.
+
+        :devportal:`agent-config: details <agent-config-edit>`
+
+        Returns:
+            :obj:`dict`:
+                Dictionary of the current settings.
+
+        Examples:
+            >>> details = tio.v3.vm.agent_config.details()
+            >>> pprint(details)
+        '''
+        return self._get()
+
     def edit(self,
              auto_unlink: Optional[int] = None,
              software_update: Optional[bool] = None) -> Dict:
@@ -36,15 +52,15 @@ class AgentConfigAPI(ExploreBaseEndpoint):
         :devportal:`agent-config: edit <agent-config-details>`
 
         Args:
-            software_update (bool, optional):
-                If True, software updates are enabled for agents
-                (exclusions may override this).  If false, software
-                updates for all agents are disabled.
             auto_unlink (int, optional):
                 If true, agent auto-unlinking is enabled, allowing agents to
                 automatically unlink themselves after a given period of time.
                 If the value is 0 or false, auto-unlinking is disabled.  True
                 values are between 1 and 365.
+            software_update (bool, optional):
+                If True, software updates are enabled for agents
+                (exclusions may override this).  If false, software
+                updates for all agents are disabled.
 
         Returns:
             :obj:`dict`:
@@ -79,19 +95,3 @@ class AgentConfigAPI(ExploreBaseEndpoint):
         payload = self._schema.dump(self._schema.load(payload))
 
         return self._put(json=payload)
-
-    def details(self) -> Dict:
-        '''
-        Returns the current agent configuration.
-
-        :devportal:`agent-config: details <agent-config-edit>`
-
-        Returns:
-            :obj:`dict`:
-                Dictionary of the current settings.
-
-        Examples:
-            >>> details = tio.v3.vm.agent_config.details()
-            >>> pprint(details)
-        '''
-        return self._get()

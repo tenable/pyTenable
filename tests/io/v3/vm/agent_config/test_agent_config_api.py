@@ -1,5 +1,5 @@
 '''
-Test cases for Agent
+Test cases for Agent Config
 '''
 
 import responses
