@@ -11,7 +11,6 @@ Methods available on ``tio.v3.vm.agent_exclusions``:
 .. autoclass:: AgentExclusionsAPI
     :members:
 '''
-from datetime import datetime
 from typing import Dict, Optional, Union
 from uuid import UUID
 
@@ -283,12 +282,13 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
             schedule_dict = dict_clean(schedule_dict)
             dict_merge(payload['schedule'], schedule_dict)
 
-        payload['schedule']['starttime'] = datetime.fromisoformat(
-            payload['schedule']['starttime']
-        ).strftime('%Y-%m-%d %H:%M:%S')
-        payload['schedule']['endtime'] = datetime.fromisoformat(
-            payload['schedule']['endtime']
-        ).strftime('%Y-%m-%d %H:%M:%S')
+        payload['schedule']['starttime'] = (
+            payload['schedule']['starttime'].replace('T', ' ')
+        ).replace(payload['schedule']['starttime'][-6:], '')
+
+        payload['schedule']['endtime'] = (
+            payload['schedule']['endtime'].replace('T', ' ')
+        ).replace(payload['schedule']['endtime'][-6:], '')
 
         # validate payload using marshmallow
         schema = AgentExclusionSchema(
