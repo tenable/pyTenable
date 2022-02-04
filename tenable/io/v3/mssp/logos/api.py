@@ -183,6 +183,7 @@ class LogosAPI(ExploreBaseEndpoint):
             filter (tuple, Dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
+
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
                     ...                 ('test', 'oper', '2')
@@ -210,14 +211,18 @@ class LogosAPI(ExploreBaseEndpoint):
                     ...      'property': 3
                     ...  }]
                     ... }
+
                 As the filters may change and sortable fields may change over
-                time.
+                time, it's highly recommended that you look at the output of
+                the :py:meth:`tio.v3.definitions.mssp.logos()` endpoint to
+                get more details.
 
             sort (list[tuple], optional):
                 sort is a list of tuples in the form of
                 ('FIELD', 'ORDER').
                 It describes how to sort the data
                 that is to be returned.
+
                 Examples:
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
