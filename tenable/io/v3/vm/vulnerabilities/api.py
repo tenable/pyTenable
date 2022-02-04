@@ -161,6 +161,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
             filter (tuple, Dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
+
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
                     ...                 ('test', 'oper', '2')
@@ -188,14 +189,16 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
                     ...      'property': 3
                     ...  }]
                     ... }
+
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.filters.workbench_vuln_filters()`
+                the :py:meth:`tio.v3.definitions.vm.vulnerabilities()`
                 endpoint to get more details.
 
             sort (list[tuple], optional):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
+
                 Examples:
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
