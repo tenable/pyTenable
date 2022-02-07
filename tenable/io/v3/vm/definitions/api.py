@@ -3,23 +3,21 @@ from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 class VMDefinitionsAPI(ExploreBaseEndpoint):
 
-    def agent_groups(self):
-        raise NotImplementedError('Definitions not available.'
-                                  'It will be available in future')
-
     def agent_exclusions(self):
-        raise NotImplementedError('Definitions not available.'
-                                  'It will be available in future')
+        return self._get('api/v3/definitions/agent-exclusions')
+
+    def agent_groups(self):
+        return self._get('api/v3/definitions/agent-groups')
 
     def agents(self):
         raise NotImplementedError('Definitions not available.'
                                   'It will be available in future')
 
-    def audit_logs(self):
+    def assets(self):
         raise NotImplementedError('Definitions not available.'
                                   'It will be available in future')
 
-    def connectors(self):
+    def audit_logs(self):
         raise NotImplementedError('Definitions not available.'
                                   'It will be available in future')
 
@@ -36,28 +34,27 @@ class VMDefinitionsAPI(ExploreBaseEndpoint):
                                   'It will be available in future')
 
     def folders(self):
-        raise NotImplementedError('Definitions not available.'
-                                  'It will be available in future')
+        return self._get('api/v3/definitions/folders')
+
+    def groups(self):
+        return self._get('api/v3/definitions/groups')
 
     def networks(self):
         raise NotImplementedError('Definitions not available.'
                                   'It will be available in future')
 
-    def plugins(self):
-        raise NotImplementedError('Definitions not available.'
-                                  'It will be available in future')
-
     def plugin_families(self):
-        raise NotImplementedError('Definitions not available.'
-                                  'It will be available in future')
+        return self._get('api/v3/definitions/plugin_families')
+
+    def plugins(self):
+        return self._get('api/v3/definitions/plugins')
 
     def policies(self):
         raise NotImplementedError('Definitions not available.'
                                   'It will be available in future')
 
     def remediation_scans(self):
-        raise NotImplementedError('Definitions not available.'
-                                  'It will be available in future')
+        return self._get('api/v3/definitions/groups')
 
     def scanner_groups(self):
         raise NotImplementedError('Definitions not available.'

@@ -6,9 +6,8 @@ from tenable.io.v3.was.definitions.api import WASDefinitionsAPI
 
 class DefinitionsAPI(ExploreBaseEndpoint):
 
-    def assets(self):
-        raise NotImplementedError('Definitions not available.'
-                                  'It will be available in future')
+    def connectors(self):
+        return self._get('api/v3/definitions/connector')
 
     def groups(self):
         raise NotImplementedError('Definitions not available.'
