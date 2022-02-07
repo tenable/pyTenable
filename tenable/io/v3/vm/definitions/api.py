@@ -36,9 +36,6 @@ class VMDefinitionsAPI(ExploreBaseEndpoint):
     def folders(self):
         return self._get('api/v3/definitions/folders')
 
-    def groups(self):
-        return self._get('api/v3/definitions/groups')
-
     def networks(self):
         raise NotImplementedError('Definitions not available.'
                                   'It will be available in future')
