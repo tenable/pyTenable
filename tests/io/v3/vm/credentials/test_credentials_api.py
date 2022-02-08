@@ -274,10 +274,10 @@ def test_search(api):
     )
     assert isinstance(iterator, SearchIterator)
 
-    event_list = []
-    for event in iterator:
-        event_list.append(event)
-    assert len(event_list) == api_res['pagination']['total']
+    credential_list = []
+    for credential in iterator:
+        credential_list.append(credential)
+    assert len(credential_list) == api_res['pagination']['total']
 
     iterator = api.v3.vm.credentials.search(
         fields=fields, sort=sort, return_csv=True, limit=200
