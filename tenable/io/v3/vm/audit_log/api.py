@@ -73,7 +73,7 @@ class AuditLogAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.audit_log_filters()`
+                the :py:meth:`tio.v3.definitions.vm.audit_logs()`
                 endpoint to get more details.
             sort (list[tuple], optional):
                 sort is a list of tuples in the form of
@@ -114,7 +114,7 @@ class AuditLogAPI(ExploreBaseEndpoint):
         if kwargs.get('return_csv', False):
             iclass = CSVChunkIterator
         return super()._search(iterator_cls=iclass,
-                               is_sort_with_prop=False,
+                               sort_type=self._sort_type.default,
                                api_path=f'{self._path}/search',
                                resource='events',
                                **kwargs
