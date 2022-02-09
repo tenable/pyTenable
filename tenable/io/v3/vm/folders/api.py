@@ -138,8 +138,8 @@ class FoldersAPI(ExploreBaseEndpoint):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
                 Examples:
-                    - [("field_name_1", "asc"),
-                             ("field_name_2", "desc")]
+                    - [('field_name_1', 'asc'),
+                             ('field_name_2', 'desc')]
                     - [{'property': 'last_observed', 'order': 'desc'}]
             limit (int):
                 Number of objects to be returned in each request.
