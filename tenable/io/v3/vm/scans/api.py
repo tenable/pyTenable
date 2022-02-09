@@ -375,7 +375,7 @@ class ScansAPI(ExploreBaseEndpoint):
         Create dictionary of keys required for scan schedule
 
         Args:
-            scan_id (int): The id of the Scan object in Tenable.io
+            scan_id (uuid): The id of the Scan object in Tenable.io
             enabled (bool, optional): To enable/disable scan schedule
             frequency (str, optional):
                 The frequency of the rule. The string input will be up-cased.
@@ -549,7 +549,10 @@ class ScansAPI(ExploreBaseEndpoint):
             >>> with open('example.file', 'wb') as fobj:
             ...     tio.v3.vm.scans.attachment(
             ...     'aa57ae93-45e5-4316-8e16-501ebce4ecb7',
-            ...     'aa57ae93-45e5-4316-8e16-501ebce4ecb7', 'abc', fobj)
+            ...     'aa57ae93-45e5-4316-8e16-501ebce4ecb7',
+            ...     'abc',
+            ...     fobj
+            ...     )
         '''
         if not fobj:
             # if no file-like object is specified, then assign a BytesIO object
@@ -585,7 +588,7 @@ class ScansAPI(ExploreBaseEndpoint):
             template (str, optional):
                 The scan policy template to use.  If no template is specified
                 then the default of `basic` will be used.
-            policy (int, optional):
+            policy (uuid, optional):
                 The id or title of the scan policy to use (if not using one of
                 the pre-defined templates).  Specifying a a policy id will
                 override the the template parameter.
@@ -613,13 +616,16 @@ class ScansAPI(ExploreBaseEndpoint):
                 The scan resource record.
 
         Examples:
-            >>>  tio.v3.vm.scans.configure(1, name='New Scan Name')
+            >>>  tio.v3.vm.scans.configure(
+            ...   '59042c90-5379-43a2-8cf4-87d97f7cb68f', name='New Scan Name')
 
             # configure a schedule for existing scan
 
             >>> configure_schedule = api.scans.configure_scan_schedule(
-            ... 1, interval=2)
-            >>>  tio.v3.vm.scans.configure(1, schedule_scan=configure_schedule)
+            ... '59042c90-5379-43a2-8cf4-87d97f7cb68f', interval=2)
+            >>>  tio.v3.vm.scans.configure(
+            ...  '59042c90-5379-43a2-8cf4-87d97f7cb68f',
+            ...     schedule_scan=configure_schedule)
         '''
 
         # We will get the current scan record, generate the new parameters in
@@ -700,18 +706,20 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: copy <scans-copy>`
 
         Args:
-            scan_id (int):
+            scan_id (uuid):
                 The unique identifier for the scan.
-            folder_id (int, optional):
+            folder_id (uuid, optional):
                 The unique identifier for the folder.
-                name (str, optional): The name for the copied scan.
+            name (str, optional):
+                The name for the copied scan.
 
         Returns:
             :obj:`Dict`:
                 The scan resource record for the copied scan.
 
         Examples:
-            >>> new_scan =  tio.v3.vm.scans.copy(1, 'New Scan Name')
+            >>> new_scan =  tio.v3.vm.scans.copy(
+            ...  '59042c90-5379-43a2-8cf4-87d97f7cb68f', 'New Scan Name')
         '''
 
         payload = dict_clean(dict(
@@ -827,7 +835,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The scan was successfully deleted.
 
         Examples:
-            >>>  tio.v3.vm.scans.delete(1)
+            >>>  tio.v3.vm.scans.delete('59042c90-5379-43a2-8cf4-87d97f7cb68f')
         '''
         self._delete(f'{scan_id}')
 
@@ -845,12 +853,14 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: history <scans-history>`
 
         Args:
-            scan_id (int or uuid):
+            scan_id (uuid):
                 The unique identifier for the scan.
             limit (int, optional):
                 The number of records to retrieve.  Default is 50
             offset (int, optional):
                 The starting record to retrieve.  Default is 0.
+            pages (int, optional):
+                The number of pages to retrieve. Default None
             sort (tuple, optional):
                 A tuple of tuples identifying the the field and sort order of
                 the field.
@@ -861,7 +871,8 @@ class ScansAPI(ExploreBaseEndpoint):
                 records.
 
         Examples:
-            >>> for history in  tio.v3.vm.scans.history(1):
+            >>> for history in  tio.v3.vm.scans.history(
+            ...     '59042c90-5379-43a2-8cf4-87d97f7cb68f'):
             ...     pprint(history)
         '''
         # query = dict()
@@ -909,7 +920,9 @@ class ScansAPI(ExploreBaseEndpoint):
                 Scan history successfully deleted.
 
         Examples:
-            >>>  tio.v3.vm.scans.delete_history(1, 1)
+            >>>  tio.v3.vm.scans.delete_history(
+            ...     '59042c90-5379-43a2-8cf4-87d97f7cb68f',
+            ...     '34567c90-5379-43a2-8cf4-87d97f7cb68f')
         '''
         self._delete(f'{scan_id}/history/{history_id}')
 
@@ -941,7 +954,8 @@ class ScansAPI(ExploreBaseEndpoint):
                 The scan configuration resource.
 
         Examples:
-            >>> scan =  tio.v3.vm.scans.details(1)
+            >>> scan =  tio.v3.vm.scans.details(
+            ...     '59042c90-5379-43a2-8cf4-87d97f7cb68f')
             >>> pprint(scan)
         '''
         return self._api.editor.details('scan', scan_id)
@@ -957,7 +971,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: details <scans-details>`
 
         Args:
-            scan_id (int or uuid):
+            scan_id (uuid):
                 The unique identifier for the scan.
             history_id (UUID, optional):
                 The unique identifier for the instance of the scan.
@@ -997,7 +1011,8 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: export <scans-export-request>`
 
         Args:
-            scan_id (int or uuid): The unique identifier of the scan.
+            scan_id (uuid):
+                The unique identifier of the scan.
             *filters (tuple, optional):
                 A list of tuples detailing the filters that wish to be applied
                 the response data.  Each tuple is constructed as
@@ -1018,10 +1033,8 @@ class ScansAPI(ExploreBaseEndpoint):
                           fobj: BytesIO,
                           chunk_size: int) -> BytesIO:
 
-            history_id (int, optional):
+            history_id (uuid, optional):
                 The unique identifier for the instance of the scan.
-            history_uuid (uuid, optional):
-                The UUID for the instance of the scan.
             format (str, optional):
                 What format would you like the resulting data to be in.  The
                 default would be nessus output. Available options are `nessus`,
@@ -1601,11 +1614,12 @@ class ScansAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> scan_routes_info =  tio.v3.vm.scans.check_auto_targets(
-            ... 10, 5, targets=['127.0.0.1'])
+            ... '59042c90-5379-43a2-8cf4-87d97f7cb68f',
+            ... '65042c90-5379-43a2-8cf4-87d97f7cb68f', targets=['127.0.0.1'])
         '''
         query = {
-            "limit": limit,
-            "matched_resource_limit": matched_resource_limit,
+            'limit': limit,
+            'matched_resource_limit': matched_resource_limit,
         }
 
         query = self._schema.dump(self._schema.load(query))
