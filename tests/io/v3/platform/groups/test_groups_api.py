@@ -165,6 +165,8 @@ def test_search(api):
                 'id': '00000000-0000-0000-0000-000000000000',
                 'name': 'All Users',
                 'user_count': 2,
+                'permissions': 'null',
+                'container_id': 'cfdabb09-6aef-481d-b28f-aecb1c38f297'
             }
         ]
     }
