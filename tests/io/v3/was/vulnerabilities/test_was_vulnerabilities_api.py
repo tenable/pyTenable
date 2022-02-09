@@ -106,10 +106,10 @@ def test_search(api):
     )
     assert isinstance(iterator, SearchIterator)
 
-    event_list = []
-    for event in iterator:
-        event_list.append(event)
-    assert len(event_list) == api_response['pagination']['total']
+    findings_list = []
+    for findings in iterator:
+        findings_list.append(findings)
+    assert len(findings_list) == api_response['pagination']['total']
 
     iterator = api.v3.was.vulnerabilities.search(
         fields=fields, return_csv=True, sort=sort, limit=200
