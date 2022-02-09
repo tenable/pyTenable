@@ -286,7 +286,7 @@ class LogosAPI(ExploreBaseEndpoint):
 
         Example:
             >>> fobj = open('/opt/test_image.png', 'rb')
-            ...     update_resp = tio.v3.mssp.logos.update(
+            >>> update_resp = tio.v3.mssp.logos.update(
             ...     '0cba902a-bd11-4481-bd28-999c88ffe22f',
             ...     name='update_name.png',
             ...     logo=fobj)
