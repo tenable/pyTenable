@@ -319,10 +319,10 @@ def test_scanners_search(api):
     )
     assert isinstance(iterator, SearchIterator)
 
-    event_list = []
-    for event in iterator:
-        event_list.append(event)
-    assert len(event_list) == api_response['pagination']['total']
+    scanners_list = []
+    for scanners in iterator:
+        scanners_list.append(scanners)
+    assert len(scanners_list) == api_response['pagination']['total']
 
     iterator = api.v3.vm.scanners.search(
         fields=fields, return_csv=True, sort=sort, limit=200

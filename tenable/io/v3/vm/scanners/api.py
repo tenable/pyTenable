@@ -25,6 +25,9 @@ from tenable.io.v3.vm.scanners.schema import ScannerSchema
 
 
 class ScannersAPI(ExploreBaseEndpoint):
+    '''
+    This class contains all the methods related to Scanners Endpoint.
+    '''
 
     _path = 'api/v3/scanners'
     _conv_json = True
@@ -162,7 +165,7 @@ class ScannersAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> scanner = tio.v3.vm.scanners.details(1)
-            ... pprint(scanner)
+            >>> pprint(scanner)
         '''
         return super()._details(f'{id}')
 
