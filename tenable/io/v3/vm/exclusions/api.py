@@ -60,21 +60,21 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             start_time (str): When the exclusion should start.
             end_time (str): When the exclusion should end.
             timezone (str, optional):
-                The timezone to use for the exclusion.  The default if none is
-                specified is to use UTC.  For the list of usable timezones,
+                The timezone to use for the exclusion. The default, if none is
+                specified, is to use UTC.  For the list of usable timezones,
                 please refer to :devportal:`scans-timezones`
             description (str, optional):
                 Some further detail about the exclusion.
             frequency (str, optional):
-                The frequency of the rule.The string inputted will be up-cased
+                The frequency of the rule. The string inputted will be up-cased
                 Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``,
                 ``MONTHLY``, ``YEARLY``.
                 Default value is ``ONETIME``.
             interval (int, optional):
-                The interval of the rule.  The default interval is 1
+                The interval of the rule. The default interval is 1
             weekdays (list, optional):
                 List of 2-character representations of the days of the week to
-                repeat the frequency rule on.  Valid values are:
+                repeat the frequency rule on. Valid values are:
                 *SU, MO, TU, WE, TH, FR, SA*
                 Default values: ``['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']``
             day_of_month (int, optional):

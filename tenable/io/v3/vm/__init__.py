@@ -17,9 +17,9 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     agent_config
-    credentials
     agent_groups
     agents
+    credentials
     exclusions
     files
     folders
@@ -45,7 +45,7 @@ from tenable.io.v3.vm.scanners.api import ScannersAPI
 from tenable.io.v3.vm.server.api import ServerAPI
 
 
-class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
+class VulnerabilityManagement(ExploreBaseEndpoint):
     '''
     This class will contain property for all resources
     under Vulnerability Management
