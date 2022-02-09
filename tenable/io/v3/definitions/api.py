@@ -6,12 +6,13 @@ from tenable.io.v3.was.definitions.api import WASDefinitionsAPI
 
 class DefinitionsAPI(ExploreBaseEndpoint):
 
+    _conv_json = True
+
     def connectors(self):
-        return self._get('api/v3/definitions/connector')
+        return self._get('api/v3/definitions/connectors')
 
     def groups(self):
-        raise NotImplementedError('Definitions not available.'
-                                  'It will be available in future')
+        return self._get('api/v3/definitions/groups')
 
     @property
     def mssp(self):

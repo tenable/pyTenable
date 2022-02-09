@@ -1,29 +1,55 @@
 import pytest
 import responses
 
+from tests.io.v3.definitions.objects import (MSSP_DEFINITIONS,
+                                             PLATFORM_DEFINITIONS,
+                                             VM_DEFINITIONS)
+
+BASE_URL = 'https://cloud.tenable.com/api/v3/definitions'
+
 
 @responses.activate
 def test_connectors(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.connectors()
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/connectors',
+        json=PLATFORM_DEFINITIONS['CONNECTORS']
+    )
+    res = api.v3.definitions.connectors()
+    assert res == PLATFORM_DEFINITIONS['CONNECTORS']
 
 
 @responses.activate
 def test_groups(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.groups()
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/groups',
+        json=PLATFORM_DEFINITIONS['GROUPS']
+    )
+    res = api.v3.definitions.groups()
+    assert res == PLATFORM_DEFINITIONS['GROUPS']
 
 
 @responses.activate
 def test_mssp_accounts(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.mssp.accounts()
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/mssp/accounts',
+        json=MSSP_DEFINITIONS['ACCOUNTS']
+    )
+    res = api.v3.definitions.mssp.accounts()
+    assert res == MSSP_DEFINITIONS['ACCOUNTS']
 
 
 @responses.activate
 def test_mssp_logos(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.mssp.logos()
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/mssp/logos',
+        json=MSSP_DEFINITIONS['LOGOS']
+    )
+    res = api.v3.definitions.mssp.logos()
+    assert res == MSSP_DEFINITIONS['LOGOS']
 
 
 @responses.activate
@@ -34,20 +60,35 @@ def test_users(api):
 
 @responses.activate
 def test_vm_agent_exclusions(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.vm.agent_exclusions()
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/agent-exclusions',
+        json=VM_DEFINITIONS['AGENT_EXCLUSIONS']
+    )
+    res = api.v3.definitions.vm.agent_exclusions()
+    assert res == VM_DEFINITIONS['AGENT_EXCLUSIONS']
 
 
 @responses.activate
 def test_vm_agent_groups(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.vm.agent_groups()
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/agent-groups',
+        json=VM_DEFINITIONS['AGENT_GROUPS']
+    )
+    res = api.v3.definitions.vm.agent_groups()
+    assert res == VM_DEFINITIONS['AGENT_GROUPS']
 
 
 @responses.activate
 def test_vm_agents(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.vm.agents()
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/agents',
+        json=VM_DEFINITIONS['AGENTS']
+    )
+    res = api.v3.definitions.vm.agents()
+    assert res == VM_DEFINITIONS['AGENTS']
 
 
 @responses.activate
@@ -64,8 +105,13 @@ def test_vm_audit_logs(api):
 
 @responses.activate
 def test_vm_credentials(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.vm.credentials()
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/credentials',
+        json=VM_DEFINITIONS['CREDENTIALS']
+    )
+    res = api.v3.definitions.vm.credentials()
+    assert res == VM_DEFINITIONS['CREDENTIALS']
 
 
 @responses.activate
@@ -100,8 +146,13 @@ def test_vm_plugin_families(api):
 
 @responses.activate
 def test_vm_plugins(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.vm.plugins()
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/plugins',
+        json=VM_DEFINITIONS['PLUGINS']
+    )
+    res = api.v3.definitions.vm.plugins()
+    assert res == VM_DEFINITIONS['PLUGINS']
 
 
 @responses.activate
@@ -117,9 +168,14 @@ def test_vm_remediation_scans(api):
 
 
 @responses.activate
-def test_vm_sccanner_groups(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.vm.scanner_groups()
+def test_vm_scanner_groups(api):
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/scanner-groups',
+        json=VM_DEFINITIONS['SCANNER_GROUPS']
+    )
+    res = api.v3.definitions.vm.scanner_groups()
+    assert res == VM_DEFINITIONS['SCANNER_GROUPS']
 
 
 @responses.activate
@@ -130,8 +186,13 @@ def test_vm_scanners(api):
 
 @responses.activate
 def test_vm_scans(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.vm.scans()
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/scans',
+        json=VM_DEFINITIONS['SCANS']
+    )
+    res = api.v3.definitions.vm.scans()
+    assert res == VM_DEFINITIONS['SCANS']
 
 
 @responses.activate
@@ -142,8 +203,13 @@ def test_vm_tag_categories(api):
 
 @responses.activate
 def test_vm_tags(api):
-    with pytest.raises(NotImplementedError):
-        api.v3.definitions.vm.tags()
+    responses.add(
+        responses.GET,
+        f'{BASE_URL}/tags/assets/',
+        json=VM_DEFINITIONS['TAGS']
+    )
+    res = api.v3.definitions.vm.tags()
+    assert res == VM_DEFINITIONS['TAGS']
 
 
 @responses.activate

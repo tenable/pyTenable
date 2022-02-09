@@ -3,6 +3,8 @@ from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 class WASDefinitionsAPI(ExploreBaseEndpoint):
 
+    _conv_json = True
+
     def configurations(self):
         raise NotImplementedError('Definitions not available.'
                                   'It will be available in future')
