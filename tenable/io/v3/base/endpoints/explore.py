@@ -167,7 +167,6 @@ class ExploreBaseEndpoint(APIEndpoint):
                     *,
                     resource: str,
                     api_path: str,
-                    api_version: int = 1,
                     sort_type: Enum = _sort_type.default,
                     return_resp: bool = False,
                     iterator_cls: ExploreIteratorWas = SearchIteratorWAS,
@@ -182,8 +181,6 @@ class ExploreBaseEndpoint(APIEndpoint):
                 The json key to fetch the data from response
             api_path (str):
                 API path for search endpoint
-            api_version (int):
-                API version for search endpoint
             sort_type (enum):
                 Select format of sort expected by API. All the
                 supported formats are present in SortType Enumeration Class.
@@ -232,12 +229,6 @@ class ExploreBaseEndpoint(APIEndpoint):
                 Number of objects to be returned in each request.
                 Default and maximum limit is 200.
             offset (int, optional):
-                The pagination offset to use when requesting the next page of
-                results.
-            size (int, optional):
-                Number of objects to be returned in each request.
-                Default and maximum limit is 200.
-            page (int, optional):
                 The pagination offset to use when requesting the next page of
                 results.
             num_pages (int, optional):
