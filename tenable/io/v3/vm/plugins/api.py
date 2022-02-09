@@ -38,7 +38,7 @@ class PluginsAPI(ExploreBaseEndpoint):
                 The plugin family unique identifier.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Returns a dictionary stating the id, name, and plugins that are
                 housed within the plugin family.
 
@@ -57,7 +57,7 @@ class PluginsAPI(ExploreBaseEndpoint):
             plugin_id (int): The plugin id for the requested plugin.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 A dictionary stating the id, name, family, and any other
                 relevant attributes associated to the plugin.
 
