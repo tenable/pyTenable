@@ -27,6 +27,9 @@ from tenable.utils import dict_merge
 
 
 class RemediationScansAPI(ExploreBaseEndpoint):
+    '''
+    This will contains all the methods for remediation scans
+    '''
     _path = 'api/v3/scans'
     _conv_json = True
 
