@@ -324,9 +324,9 @@ def test_update_status(api):
     '''
     responses.add(
         responses.PATCH,
-        f'{WAS_SCANS_BASE_URL}/scans/{SAMPLE_CONFIG_ID}'
+        f'{WAS_SCANS_BASE_URL}/scans/{SAMPLE_SCAN_ID}'
     )
-    result = api.v3.was.scans.update_status(SAMPLE_CONFIG_ID, 'stop')
+    result = api.v3.was.scans.update_status(SAMPLE_SCAN_ID, 'stop')
     assert result is None
 
 
