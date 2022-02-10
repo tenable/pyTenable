@@ -245,7 +245,6 @@ def test_search(api):
 def test_search_was(api):
     search_iterator = ExploreBaseEndpoint(api)._search_was(
         resource='assets',
-        api_version=1,
         api_path='api/v3/assets/search',
         **REQUESTDATA
     )
@@ -277,7 +276,6 @@ def test_search_response_was(api):
     )
     response = ExploreBaseEndpoint(api)._search_was(
         resource='assets',
-        api_version=1,
         api_path='api/v3/assets/search',
         return_resp=True,
         **REQUESTDATA
