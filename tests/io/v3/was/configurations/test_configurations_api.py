@@ -275,7 +275,7 @@ def test_search(api):
     }
 
     api_response = {
-        'data': [
+        'items': [
             {
                 'config_id': '001c5298-78e0-3c61-8911-7681a2385076',
                 'owner_id': '5e1eab62-5176-4fa6-b92f-63a4239f1c6c',

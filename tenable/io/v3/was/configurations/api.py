@@ -318,7 +318,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
 
         return super()._search_was(iterator_cls=iclass,
                                    api_path=f'{self._path}/search',
-                                   resource='data',
+                                   resource='items',
                                    sort_type=SortType.default,
                                    **kwargs
                                    )
