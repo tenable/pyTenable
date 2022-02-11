@@ -10,6 +10,8 @@ class PaginationIterator(APIIterator):
     envelope: str = None
 
     def _get_page(self):
+        if len(self.page) < self.limit and self.num_pages > 0:
+            raise StopIteration()
         query = copy(self.query)
         query['limit'] = self.limit
         query['offset'] = self.offset

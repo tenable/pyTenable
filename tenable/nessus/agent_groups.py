@@ -56,7 +56,7 @@ class AgentGroupsAPI(APIEndpoint):
 
             >>> nessus.agent_groups.configure(group_id, 'Example name')
         '''
-        self._put(group_id, json={'name': name})
+        self._put(f'{group_id}', json={'name': name})
 
     def create(self, name: str) -> Dict:
         '''
@@ -82,7 +82,7 @@ class AgentGroupsAPI(APIEndpoint):
 
             >>> nessus.agent_groups.delete_group(group_id)
         '''
-        self._delete(group_id)
+        self._delete(f'{group_id}')
 
     def delete_groups(self, group_ids: List[int]) -> None:
         '''
@@ -136,7 +136,7 @@ class AgentGroupsAPI(APIEndpoint):
 
             >>> group = nessus.agent_groups.details(group_id)
         '''
-        return self._get(group_id)
+        return self._get(f'{group_id}')
 
     def list(self) -> List[Dict]:
         '''

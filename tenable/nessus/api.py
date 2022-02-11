@@ -36,6 +36,8 @@ This package covers the Nessus interface.
 from tenable.base.platform import APIPlatform
 from .agent_groups import AgentGroupsAPI
 from .agents import AgentsAPI
+from .files import FilesAPI
+from .folders import FoldersAPI
 from .plugins import PluginsAPI
 
 
@@ -73,6 +75,20 @@ class Nessus(APIPlatform):
         The interface object for the :doc:`Nessus Agents APIs <agents>`.
         '''
         return AgentsAPI(self)
+    
+    @property
+    def files(self):
+        '''
+        The interface object for the :doc:`Nessus File APIs <files>`.
+        '''
+        return FilesAPI(self)
+    
+    @property
+    def folders(self):
+        '''
+        The interface object for the :doc:`Nessus Folders APIs <folders>`.
+        '''
+        return FoldersAPI(self)
 
     @property
     def plugins(self):

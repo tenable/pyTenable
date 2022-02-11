@@ -41,22 +41,27 @@ class ListSchema(Schema):
     '''
     limit = fields.Int()
     offset = fields.Int()
-    sort_by = fields.Str()
-    sort_order = LowerCase(fields.Str(validate=v.OneOf(['asc', 'desc'])))
-    search_type = LowerCase(fields.Str(validate=v.OneOf(['and', 'or'])))
-    filters = fields.List(fields.Nested(FilterSchema))
+    sort_by = fields.Str(load_default=None)
+    sort_order = LowerCase(fields.Str(validate=v.OneOf(['asc', 'desc'])),
+                           load_default=None
+                           )
+    search_type = LowerCase(fields.Str(validate=v.OneOf(['and', 'or'])),
+                            load_default=None
+                            )
+    filters = fields.List(fields.Nested(FilterSchema), allow_none=True)
 
     @post_dump
     def reformat_filters(self, data, **kwargs) -> Dict:  # noqa PLW0613 PLR0201
         '''
         Reformats the response to match what the API expects to see
         '''
-        filters = data.pop('filters')
+        filters = data.pop('filters', None)
         if data.get('search_type'):
             data['filter.search_type'] = data.pop('search_type')
-        for f in filters:  # noqa PLC0103
-            idx = filters.index(f)
-            data[f'filter.{idx}.filter'] = f['filter']
-            data[f'filter.{idx}.quality'] = f['quality']
-            data[f'filter.{idx}.value'] = f['value']
+        if filters:
+            for f in filters:  # noqa PLC0103
+                idx = filters.index(f)
+                data[f'filter.{idx}.filter'] = f['filter']
+                data[f'filter.{idx}.quality'] = f['quality']
+                data[f'filter.{idx}.value'] = f['value']
         return data

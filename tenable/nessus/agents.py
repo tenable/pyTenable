@@ -29,7 +29,7 @@ class AgentsAPI(APIEndpoint):
 
             >>> nessus.agents.delete(agent_id)
         '''
-        self._delete(agent_id)
+        self._delete(f'{agent_id}')
 
     def delete_many(self, agent_ids: List[int]) -> None:
         '''
@@ -81,7 +81,7 @@ class AgentsAPI(APIEndpoint):
 
             >>> agent = nessus.agents.details(agent_id)
         '''
-        return self._get(agent_id)['agents'][0]
+        return self._get(f'{agent_id}')['agents'][0]
 
     def list(self,
              limit: int = 1000,
@@ -135,7 +135,7 @@ class AgentsAPI(APIEndpoint):
             'filters': filters
         }))
         if return_json:
-            return self._get(params=query)
+            return self._get(params=query)['agents']
         return PaginationIterator(self._api,
                                   limit=limit,
                                   offset=offset,
