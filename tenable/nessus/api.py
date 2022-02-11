@@ -38,6 +38,7 @@ from .agent_groups import AgentGroupsAPI
 from .agents import AgentsAPI
 from .files import FilesAPI
 from .folders import FoldersAPI
+from .groups import GroupsAPI
 from .plugins import PluginsAPI
 
 
@@ -89,6 +90,13 @@ class Nessus(APIPlatform):
         The interface object for the :doc:`Nessus Folders APIs <folders>`.
         '''
         return FoldersAPI(self)
+    
+    @property
+    def groups(self):
+        '''
+        The interface object for the :doc:`Nessus Groups APIs <groups>`.
+        '''
+        return GroupsAPI(self)
 
     @property
     def plugins(self):
