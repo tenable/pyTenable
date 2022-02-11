@@ -390,7 +390,7 @@ class ScansAPI(ExploreBaseEndpoint):
 
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth: `tio.v3.definitions.was.scans()`
+                the :py:meth: `tio.v3.definitions.was.scan_vulnerabilities()`
                 endpoint
                 to get more details.
             limit (int, optional):
