@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 from pathlib import Path
 
 import responses
@@ -381,16 +380,16 @@ def test_search_vulnerabilities(api):
             'uri': 'http://192.0.2.119',
             'is_page': False,
             'details': {
-                'input_name': NULL,
-                'input_type': NULL,
+                'input_name': None,
+                'input_type': None,
                 'output': 'The scan has discovered 23 distinct URLs',
-                'proof': NULL,
-                'payload': NULL,
-                'selector': NULL,
-                'selector_url': NULL,
-                'signature': NULL,
-                'request': NULL,
-                'response': NULL
+                'proof': None,
+                'payload': None,
+                'selector': None,
+                'selector_url': None,
+                'signature': None,
+                'request': None,
+                'response': None
             },
             'attachments': [{
                 'attachment_id': 'b13a9fb5-cb0d-47d8-a6c1-063fbe6f8250',
@@ -409,16 +408,16 @@ def test_search_vulnerabilities(api):
                 'uri': 'http://192.0.2.119',
                 'is_page': False,
                 'details': {
-                    'input_name': NULL,
-                    'input_type': NULL,
+                    'input_name': None,
+                    'input_type': None,
                     'output': '\nEngine Version 0.41.0',
-                    'proof': NULL,
-                    'payload': NULL,
-                    'selector': NULL,
-                    'selector_url': NULL,
-                    'signature': NULL,
-                    'request': NULL,
-                    'response': NULL
+                    'proof': None,
+                    'payload': None,
+                    'selector': None,
+                    'selector_url': None,
+                    'signature': None,
+                    'request': None,
+                    'response': None
                 },
                 'attachments': []
         }
