@@ -39,6 +39,8 @@ from .agents import AgentsAPI
 from .files import FilesAPI
 from .folders import FoldersAPI
 from .groups import GroupsAPI
+from .mail import MailAPI
+from .permissions import PermissionsAPI
 from .plugins import PluginsAPI
 
 
@@ -97,6 +99,21 @@ class Nessus(APIPlatform):
         The interface object for the :doc:`Nessus Groups APIs <groups>`.
         '''
         return GroupsAPI(self)
+    
+    @property
+    def mail(self):
+        '''
+        The interface object for the :doc:`Nessus Mail APIs <mail>`.
+        '''
+        return MailAPI(self)
+    
+    @property
+    def permissions(self):
+        '''
+        The interface object for the 
+        :doc:`Nessus Permissions APIs <permissions>`.
+        '''
+        return PermissionsAPI(self)
 
     @property
     def plugins(self):

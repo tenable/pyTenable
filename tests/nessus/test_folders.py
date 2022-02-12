@@ -19,7 +19,7 @@ def test_folders_create(nessus):
                   json=FOLDER
                   )
     resp = nessus.folders.create('Example Folder')
-    assert resp == FOLDER
+    assert resp == FOLDER['id']
 
 
 @responses.activate
