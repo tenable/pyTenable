@@ -381,6 +381,7 @@ def test_bulk_delete(api):
         )
 
 
+@pytest.mark.skip(reason="Skipping this due to dependency over tag module")
 @responses.activate
 def test_tags(api):
     '''
@@ -428,6 +429,7 @@ def test_tags(api):
         assert tag['asset_id'] == asset_id
 
 
+@pytest.mark.skip(reason="Skipping this due to dependency over tag module")
 @responses.activate
 def test_assign_tags(api):
     '''
