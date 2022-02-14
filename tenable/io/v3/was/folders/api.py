@@ -85,13 +85,6 @@ class FoldersAPI(ExploreBaseEndpoint):
         Retrieves the folders data
 
         Args:
-            resource (str):
-                The json key to fetch the data from response
-            api_path (str):
-                API path for search endpoint
-            sort_type (enum):
-                Select format of sort expected by API. All the
-                supported formats are present in SortType Enumeration Class.
             fields (list, optional):
                 The list of field names to return from the Tenable API.
                 Example:
@@ -155,12 +148,6 @@ class FoldersAPI(ExploreBaseEndpoint):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
-            iterator_cls:
-                If specified, will override the default iterator class that
-                will be used for instantiating the iterator.
-            schema_cls:
-                If specified, will override the default Search schema class
-                that will be used for validation.
 
         Returns:
             Iterable:
