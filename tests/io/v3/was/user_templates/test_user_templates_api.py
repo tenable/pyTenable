@@ -4,8 +4,8 @@ Test User Templates API
 import requests
 import responses
 
-from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
-                                                           SearchIterator)
+from tenable.io.v3.base.iterators.was_iterator import (CSVChunkIterator,
+                                                       SearchIterator)
 
 WAS_USER_TEMPLATES_URL = 'https://cloud.tenable.com/api/v3/was/user-templates'
 USER_TEMPLATE_ID = '8e84d689-8ef6-4edf-b23d-a9d88f5aabda'
@@ -156,10 +156,7 @@ def test_search(api):
 
     api_payload = {
         'fields': fields,
-        'filter': filters,
-        'limit': 2,
-        'sort': [{'name': 'asc'}],
-
+        'filter': filters
     }
 
     responses.add(

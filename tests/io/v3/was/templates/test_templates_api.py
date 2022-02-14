@@ -4,8 +4,8 @@ Test Templates
 import requests
 import responses
 
-from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
-                                                           SearchIterator)
+from tenable.io.v3.base.iterators.was_iterator import (CSVChunkIterator,
+                                                       SearchIterator)
 
 WAS_TEMPLATES_BASE_URL = 'https://cloud.tenable.com/api/v3/was/templates'
 TEMPLATE_ID = '74ce1a64-acf1-4eca-955e-5668302585ba'
@@ -192,10 +192,7 @@ def test_search(api):
 
     api_payload = {
         'fields': fields,
-        'filter': filters,
-        'limit': 2,
-        'sort': [{'name': 'name', 'order': 'asc'}],
-
+        'filter': filters
     }
 
     responses.add(
