@@ -31,7 +31,7 @@ class AgentConfigAPI(ExploreBaseEndpoint):
         '''
         Returns the current agent configuration.
 
-        :devportal:`agent-config: details <agent-config-edit>`
+        :devportal:`agent-config: details <agent-config-details>`
 
         Returns:
             :obj:`dict`:
@@ -49,7 +49,7 @@ class AgentConfigAPI(ExploreBaseEndpoint):
         '''
         Edits the agent configuration.
 
-        :devportal:`agent-config: edit <agent-config-details>`
+        :devportal:`agent-config: edit <agent-config-edit>`
 
         Args:
             auto_unlink (int, optional):

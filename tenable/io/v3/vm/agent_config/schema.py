@@ -1,7 +1,7 @@
 '''
 Agent Config API Endpoint Schema
 '''
-from marshmallow import Schema, fields, pre_load
+from marshmallow import Schema, fields, pre_load, validate
 
 
 class AutoLinkSchema(Schema):
@@ -9,7 +9,9 @@ class AutoLinkSchema(Schema):
     Supporting schema for AgentConfigSchema
     '''
     enabled = fields.Bool()
-    expiration = fields.Int()
+    expiration = fields.Int(
+        validate=validate.OneOf([False] + list(range(1, 366)))
+    )
 
     @pre_load
     def pre_serialization(self, data, **kwarg):
