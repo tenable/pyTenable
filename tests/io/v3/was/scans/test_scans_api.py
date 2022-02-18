@@ -156,11 +156,7 @@ def test_notes(api):
 
     iterator = api.v3.was.scans.notes(SAMPLE_SCAN_ID, limit=200)
     assert isinstance(iterator, SearchIterator)
-
-    event_list = []
-    for event in iterator:
-        event_list.append(event)
-    assert len(event_list) == api_response['pagination']['total']
+    assert len(list(iterator)) == api_response['pagination']['total']
 
     iterator = api.v3.was.scans.notes(SAMPLE_SCAN_ID,
                                       return_csv=True, limit=200
@@ -293,11 +289,7 @@ def test_search(api):
                                        sort=sort,
                                        filter=filters)
     assert isinstance(iterator, SearchIterator)
-
-    event_list = []
-    for event in iterator:
-        event_list.append(event)
-    assert len(event_list) == api_response['pagination']['total']
+    assert len(list(iterator)) == api_response['pagination']['total']
 
     iterator = api.v3.was.scans.search(SAMPLE_CONFIG_ID,
                                        fields=fields,
@@ -438,11 +430,7 @@ def test_search_vulnerabilities(api):
                                                        filter=filters
                                                        )
     assert isinstance(iterator, SearchIterator)
-
-    event_list = []
-    for event in iterator:
-        event_list.append(event)
-    assert len(event_list) == api_response['pagination']['total']
+    assert len(list(iterator)) == api_response['pagination']['total']
 
     iterator = api.v3.was.scans.search_vulnerabilities(SAMPLE_SCAN_ID,
                                                        fields=fields,
