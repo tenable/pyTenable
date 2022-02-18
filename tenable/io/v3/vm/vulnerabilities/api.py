@@ -213,8 +213,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
 
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object as is to the user.
 
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
@@ -227,7 +226,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
                 The iterable that handles the pagination for the job.
 
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
+                If ``return_resp`` was set to ``True``, then a response
                 object is instead returned instead of an iterable.
 
         Examples:
