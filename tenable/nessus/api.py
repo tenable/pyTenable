@@ -41,7 +41,11 @@ from .folders import FoldersAPI
 from .groups import GroupsAPI
 from .mail import MailAPI
 from .permissions import PermissionsAPI
+from .plugin_rules import PluginRulesAPI
+from .proxy import ProxyAPI
 from .plugins import PluginsAPI
+from .scanners import ScannersAPI
+from .server import ServerAPI
 
 
 class Nessus(APIPlatform):
@@ -114,6 +118,14 @@ class Nessus(APIPlatform):
         :doc:`Nessus Permissions APIs <permissions>`.
         '''
         return PermissionsAPI(self)
+    
+    @property
+    def plugin_rules(self):
+        '''
+        The interface object for the 
+        :doc:`Nessus Plugin Rules APIs <plugin_rules>`.
+        '''
+        return PluginRulesAPI(self)
 
     @property
     def plugins(self):
@@ -121,3 +133,24 @@ class Nessus(APIPlatform):
         The interface object for the :doc:`Nessus Plugins APIs <plugins>`.
         '''
         return PluginsAPI(self)
+    
+    @property
+    def proxy(self):
+        '''
+        The interface object for the :doc:`Nessus Proxy APIs <proxy>`.
+        '''
+        return ProxyAPI(self)
+    
+    @property
+    def scanners(self):
+        '''
+        The interface object for the :doc:`Nessus Scanners APIs <scanners>`.
+        '''
+        return ScannersAPI(self)
+    
+    @property
+    def server(self):
+        '''
+        The interface object for the :doc:`Nessus Server APIs <server>`.
+        '''
+        return ServerAPI(self)
