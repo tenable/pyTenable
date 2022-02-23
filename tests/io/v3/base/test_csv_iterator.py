@@ -39,10 +39,6 @@ CSV_TEXT_2 = (
 )
 
 CSV_TEXT_3 = (
-    'created,display_ipv4_address,first_observed,id,'
-    'ipv4_addresses,ipv6_addresses,is_deleted,is_licensed,'
-    'is_public,last_observed,name,network.id,network.name,'
-    'observation_sources,sources,types,updated\n'
     '2021-11-24T13:43:56.709Z,192.12.13.7,2021-11-24T13:43:56.442Z,'
     '"0142df77-dbc4-4706-8456-b756c06ee8a2",192.12.13.7,,'
     'false,false,true,2021-11-24T13:43:56.442Z,192.12.13.7,'
@@ -131,11 +127,6 @@ def test_csv_iterator(api):
         body=CSV_TEXT_3,
         headers=CSV_HEADERS_WITHOUT_NEXT_TOKEN
     )
-    csv_iterator_1 = CSVChunkIterator(
-        api=api,
-        _path='api/v3/assets/search',
-        _payload={'limit': 1}
-    )
-    assert next(csv_iterator_1) == CSV_TEXT_3_RESP
+    assert next(csv_iterator) == CSV_TEXT_3_RESP
     with pytest.raises(StopIteration):
-        next(csv_iterator_1)
+        next(csv_iterator)
