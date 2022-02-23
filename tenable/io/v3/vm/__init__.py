@@ -29,7 +29,7 @@ Methods available on ``tio.v3.vm``:
     scanner_groups
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
+from tenable.io.v3.vm.agent_config.api import AgentsConfigAPI
 from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
 from tenable.io.v3.vm.credentials.api import CredentialsAPI
@@ -56,7 +56,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         The interface object for the
         :doc:`Tenable.io v3 Agent Config APIs <agent_config>`.
         '''
-        return AgentConfigAPI(self._api)
+        return AgentsConfigAPI(self._api)
 
     @property
     def agent_groups(self):

@@ -1,14 +1,14 @@
 '''
 Test cases for Agnet Config Schema
 '''
-from tenable.io.v3.vm.agent_config.schema import AgentConfigSchema
+from tenable.io.v3.vm.agent_config.schema import AgentsConfigSchema
 
 
 def test_agent_config_schema():
     '''
     Test case for agent config schema
     '''
-    schema = AgentConfigSchema()
+    schema = AgentsConfigSchema()
 
     # Schema validation if expiration is greater then one
     input_payload: dict = {

@@ -24,7 +24,7 @@ class AutoLinkSchema(Schema):
         return data
 
 
-class AgentConfigSchema(Schema):
+class AgentsConfigSchema(Schema):
     '''
     Schema for Agent Config API
     '''
