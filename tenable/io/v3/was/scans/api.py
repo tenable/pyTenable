@@ -176,13 +176,15 @@ class ScansAPI(ExploreBaseEndpoint):
         '''
         Returns a list of notes for the specified scan.
 
+        :devportal:`was scans: scans notes list <was-v2-scans-notes-list>`
+
         Args:
 
             scan_id (UUID):
                 The UUID of the config that was used for the scan.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                a requests.Response Object as is to the user.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -194,8 +196,8 @@ class ScansAPI(ExploreBaseEndpoint):
                 The iterable that handles the pagination for the job.
 
             requests.Response:
-                If ``return_resp`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
 
         Examples:
             >>> tio.v3.was.scans.notes(scan_id=scan_id)
@@ -216,6 +218,8 @@ class ScansAPI(ExploreBaseEndpoint):
                **kwargs) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves the Scans data
+
+        :devportal:`was scans: scans search <was-v2-scans-search>`
 
         Args:
 
@@ -271,8 +275,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
                 the :py:meth: `tio.v3.definitions.was.scans()`
-                endpoint
-                to get more details.
+                endpoint to get more details.
             limit (int, optional):
                 Number of objects to be returned in each request.
                 Default and maximum limit is 200.
@@ -284,7 +287,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 iterator.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                a requests.Response Object as is to the user.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -302,8 +305,8 @@ class ScansAPI(ExploreBaseEndpoint):
                 The iterable that handles the pagination for the job.
 
             requests.Response:
-                If ``return_resp`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
 
         Examples:
             >>> tio.v3.was.scans.search(config_id=config_id,
@@ -333,6 +336,8 @@ class ScansAPI(ExploreBaseEndpoint):
                                    Response]:
         '''
         Retrieves the list of vulnerabilities for the specified scan.
+
+        :devportal:`was scans:scan vulns <was-v2-scans-details-vulns-search>`
 
         Args:
 
@@ -402,7 +407,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 iterator.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                a requests.Response Object as is to the user.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -414,8 +419,8 @@ class ScansAPI(ExploreBaseEndpoint):
                 The iterable that handles the pagination for the job.
 
             requests.Response:
-                If ``return_resp`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
 
         Examples:
             >>> tio.v3.was.scans.search_vulnerabilities(scan_id=scan_id,
