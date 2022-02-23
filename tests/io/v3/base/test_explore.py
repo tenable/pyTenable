@@ -128,7 +128,7 @@ RESPONSE_2 = {
 
 def test_search(api):
     '''
-    Test for search method
+    Test for search method iterator
     '''
     search_iterator = ExploreBaseEndpoint(api)._search(
         resource='assets', api_path='api/v3/assets/search', **REQUESTDATA

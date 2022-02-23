@@ -109,7 +109,7 @@ ASSET_DATA = [
     },
 ]
 PAGINATION = {'next': 'H4sIAAAAAAAAADWOSwrDMAxE7zL', 'limit': 3, 'total': 111}
-PAGINATION_WITHOUT_NEXT_TOKEN = {'limit': 3, 'total': 3}
+PAGINATION_WITHOUT_NEXT_TOKEN = {'limit': 3, 'total': 6}
 
 
 @responses.activate
@@ -130,6 +130,8 @@ def test_search_iterator(api):
         _payload={}
     )
     assert ASSET_DATA.__contains__(next(search_iterator))
+    assert ASSET_DATA.__contains__(next(search_iterator))
+    assert ASSET_DATA.__contains__(next(search_iterator))
     responses.reset()
     responses.add(
         method=responses.POST,
@@ -139,14 +141,8 @@ def test_search_iterator(api):
             'pagination': PAGINATION_WITHOUT_NEXT_TOKEN
         },
     )
-    search_iterator_1 = SearchIterator(
-        api=api,
-        _resource='assets',
-        _path='api/v3/assets/search',
-        _payload={'limit': 3}
-    )
-    assert ASSET_DATA.__contains__(next(search_iterator_1))
-    assert ASSET_DATA.__contains__(next(search_iterator_1))
-    assert ASSET_DATA.__contains__(next(search_iterator_1))
+    assert ASSET_DATA.__contains__(next(search_iterator))
+    assert ASSET_DATA.__contains__(next(search_iterator))
+    assert ASSET_DATA.__contains__(next(search_iterator))
     with pytest.raises(StopIteration):
-        next(search_iterator_1)
+        next(search_iterator)
