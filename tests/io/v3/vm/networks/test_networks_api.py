@@ -253,11 +253,7 @@ def test_search(api):
         fields=fields, limit=200
     )
     assert isinstance(iterator, SearchIterator)
-
-    networks_list = []
-    for networks in iterator:
-        networks_list.append(networks)
-    assert len(networks_list) == api_response['pagination']['total']
+    assert len(list(iterator)) == api_response['pagination']['total']
 
     iterator = api.v3.vm.networks.search(
         fields=fields, return_csv=True, limit=200
