@@ -94,13 +94,17 @@ class FoldersAPI(ExploreBaseEndpoint):
         :devportal:`folders: search <folders-search>`
 
         Args:
+            
             fields (list, optional):
                 The list of field names to return from the Tenable API.
+                
                 Example:
-                    - ['field1', 'field2']
+                    >>> ['field1', 'field2']
+            
             filter (tuple, Dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
+            
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
                     ...            ('test', 'oper', '2')
@@ -130,38 +134,44 @@ class FoldersAPI(ExploreBaseEndpoint):
                     ...         }
                     ...     ]
                     ... }
+                
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
                 the :py:meth:`tio.v3.vm.definitions.folders()`
                 endpoint to get more details.
+            
             sort list(tuple, Dict):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
+            
                 Examples:
-                    - [('field_name_1', 'asc'),
-                             ('field_name_2', 'desc')]
-                    - [{'property': 'last_observed', 'order': 'desc'}]
+                    >>> [('field_name_1', 'asc'),
+                    ...     ('field_name_2', 'desc')]
+                    >>> [{'property': 'last_observed', 'order': 'desc'}]
+            
             limit (int):
                 Number of objects to be returned in each request.
                 Default is 200.
             next (str):
                 The pagination token to use when requesting the next page of
                 results.  This token is presented in the previous response.
-            return_resp (bool):
+            return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool):
                 If set to true, It wil return the CSV Iterable. Returns all
                 data in text/csv format on each next call with row headers
                 on each page.
+        
         Returns:
+
             Iterable:
-                The iterable that handles the pagination and potentially
-                async requests for the job.
+                The iterable that handles the pagination for the job.
+
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
+
         Examples:
             >>> for folder in tio.v3.vm.folders.search():
             ...     print(folder)
