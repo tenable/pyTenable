@@ -102,11 +102,7 @@ def test_search(api):
         fields=fields, limit=200, sort=sort, filter=filters
     )
     assert isinstance(iterator, SearchIterator)
-
-    event_list = []
-    for event in iterator:
-        event_list.append(event)
-    assert len(event_list) == api_response['pagination']['total']
+    assert len(list(iterator)) == api_response['pagination']['total']
 
     iterator = api.v3.was.folders.search(
         fields=fields, return_csv=True, sort=sort, limit=200, filter=filters

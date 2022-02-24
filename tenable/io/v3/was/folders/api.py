@@ -85,21 +85,27 @@ class FoldersAPI(ExploreBaseEndpoint):
         Retrieves the folders data
 
         Args:
+
             fields (list, optional):
                 The list of field names to return from the Tenable API.
+
                 Example:
                     >>> ['field1', 'field2']
+
             sort (list[tuple], optional):
                 sort is a list of tuples in the form of
-                ('FIELD', 'ORDER').
+                `('FIELD', 'ORDER')`.
                 It describes how to sort the data
                 that is to be returned.
+
                 Examples:
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
+
             filter (tuple, Dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
+
                 Examples:
                     >>> ('or', ('and', ('test', 'oper', '1'),
                     ...                 ('test', 'oper', '2')
@@ -126,11 +132,11 @@ class FoldersAPI(ExploreBaseEndpoint):
                     ...      'property': 3
                     ...  }]
                     ... }
+
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
                 the :py:meth: `tio.v3.definitions.was.folders()`
-                endpoint
-                to get more details.
+                endpoint to get more details.
             limit (int, optional):
                 Number of objects to be returned in each request.
                 Default and maximum limit is 200.
@@ -142,19 +148,20 @@ class FoldersAPI(ExploreBaseEndpoint):
                 iterator.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
 
         Returns:
+
             Iterable:
                 The iterable that handles the pagination for the job.
+
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
 
         Examples:
             >>> tio.v3.was.folders.search(
