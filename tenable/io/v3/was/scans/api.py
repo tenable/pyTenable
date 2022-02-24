@@ -292,12 +292,6 @@ class ScansAPI(ExploreBaseEndpoint):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
-            iterator_cls:
-                If specified, will override the default iterator class that
-                will be used for instantiating the iterator.
-            schema_cls:
-                If specified, will override the default Search schema class
-                that will be used for validation.
 
         Returns:
 
