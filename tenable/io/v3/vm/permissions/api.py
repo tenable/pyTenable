@@ -44,7 +44,7 @@ class PermissionsAPI(ExploreBaseEndpoint):
                 `permissions documentation`_ for more details.
 
                 i.e {'type': 'user', 'id': 2236706, 'permissions': 64}
-                type:
+                type (str):
                     The type of permission (default, user, group).
                 id (int):
                     The unique ID of the user or group.
