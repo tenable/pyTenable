@@ -9,8 +9,8 @@ from responses import matchers
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
 
-ASSET_BASE_URL = r'https://cloud.tenable.com/api/v3/assets'
 BASE_URL = 'https://cloud.tenable.com/api/v3'
+ASSET_BASE_URL = f'{BASE_URL}/assets'
 
 
 @responses.activate
@@ -55,7 +55,7 @@ def test_search(api):
                 'mac_address': ['00:00:00:00:00:00'],
             }
         ],
-        'pagination': {'total': 1, 'next': 'nextToken'},
+        'pagination': {'total': 1},
     }
     responses.add(
         responses.POST,
@@ -160,7 +160,7 @@ def test_search_host(api):
                 'updated': '2022-01-07T10:53:33.391Z',
             }
         ],
-        'pagination': {'total': 1, 'next': 'nextToken'},
+        'pagination': {'total': 1},
     }
     responses.add(
         responses.POST,
@@ -324,7 +324,7 @@ def test_import_job_details(api):
 @responses.activate
 def test_move_assets(api):
     source = 'b9584671-68e6-426b-a67c-6373778b8a0a'
-    destination = 'b7584671-68e6-426b-a67c-6373778b8a0a'
+    destination = 'b7765671-68e6-426b-a67c-6373778b8a0a'
     target = ['127.0.0.1']
     resp_data = {'response': {'data': {'asset_count': 512}}}
     responses.add(responses.PATCH, url=f'{ASSET_BASE_URL}', json=resp_data)
