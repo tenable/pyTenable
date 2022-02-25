@@ -402,10 +402,7 @@ def test_search(api):
     )
     assert isinstance(iterator, SearchIterator)
 
-    exclusions_list = []
-    for item in iterator:
-        exclusions_list.append(item)
-    assert len(exclusions_list) == test_response['pagination']['total']
+    assert len(list(iterator)) == test_response['pagination']['total']
 
     iterator = api.v3.vm.exclusions.search(
         fields=fields, filter=filter, sort=sort, return_csv=True
