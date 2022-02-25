@@ -165,8 +165,10 @@ class AgentsAPI(ExploreBaseEndpoint):
         Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
+
                 Example:
                     >>> ['field1', 'field2']
+
             filter (tuple, Dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
@@ -204,7 +206,8 @@ class AgentsAPI(ExploreBaseEndpoint):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
                 Examples:
-                    >>> [('field_name_1', 'asc'), ('field_name_2', 'desc')]
+                    >>> [('field_name_1', 'asc'),
+                    ...      ('field_name_2', 'desc')]
             limit (int, optional):
                 Number of objects to be returned in each request.
                 Default and max_limit is 200.
@@ -213,18 +216,18 @@ class AgentsAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
         Returns:
-            iterable:
+            Iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
+
         Examples:
             >>> tio.v3.vm.agents.search(
             ... filter=('id', 'eq', '00089a45-44a5-4620-bf9f-75ebedc6cc6c'),

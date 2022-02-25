@@ -405,10 +405,7 @@ def test_search(api):
     )
     assert isinstance(iterator, SearchIterator)
 
-    values_list: list = []
-    for item in iterator:
-        values_list.append(item)
-    assert len(values_list) == test_response['pagination']['total']
+    assert len(list(iterator)) == test_response['pagination']['total']
 
     iterator = api.v3.vm.agents.search(
         fields=fields,

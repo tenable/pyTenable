@@ -4,7 +4,7 @@ Testing the Agents schemas
 from tenable.io.v3.vm.agents.schema import AgentSchema
 
 
-def test_agent_schema():
+def test_agents_schema():
     '''
     Test the agents schema with name
     '''
