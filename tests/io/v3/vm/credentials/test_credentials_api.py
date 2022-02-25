@@ -273,11 +273,7 @@ def test_search(api):
         fields=fields, sort=sort, limit=200
     )
     assert isinstance(iterator, SearchIterator)
-
-    credential_list = []
-    for credential in iterator:
-        credential_list.append(credential)
-    assert len(credential_list) == api_res['pagination']['total']
+    assert len(list(iterator)) == api_res['pagination']['total']
 
     iterator = api.v3.vm.credentials.search(
         fields=fields, sort=sort, return_csv=True, limit=200
