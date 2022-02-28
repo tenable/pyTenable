@@ -1,12 +1,28 @@
 '''
 Test cases for the tags API schemas
 '''
+import pytest
 import responses
+from marshmallow import ValidationError
 
-from tenable.io.v3.vm.tags.schema import (AssetTagSchema, TagCategorySchema,
+from tenable.io.v3.vm.tags.schema import (AccessControlSchema, AssetTagSchema,
+                                          CurrentDomainPermissionSchema,
+                                          TagCategorySchema, TagsFilterSchema,
                                           TagValueSchema)
+from tests.io.v3.vm.tags.objects import (NEGATIVE_ACCESS_CONTROL_SCHEMA,
+                                         NEGATIVE_ASSET_TAG_SCHEMA,
+                                         NEGATIVE_CURRENT_DOMAIN_PERMISSION,
+                                         NEGATIVE_TAG_VALUE_SCHEMA,
+                                         NEGATIVE_TAGS_CATEGORY_SCHEMA,
+                                         NEGATIVE_TAGS_FILTER_SCHEMA)
 
 ASSET_TAG_FILTER_ENDPOINT = 'https://cloud.tenable.com/api/v3/definitions'
+tag_category_schema = TagCategorySchema()
+asset_tag_schema = AssetTagSchema()
+current_domain_permission_schema = CurrentDomainPermissionSchema()
+access_control_schema = AccessControlSchema()
+tag_value_schema = TagValueSchema()
+tags_filter_schema = TagsFilterSchema()
 
 
 def test_tag_category_schema():
@@ -19,8 +35,9 @@ def test_tag_category_schema():
         'name': name,
         'description': description
     }
-    schema = TagCategorySchema()
-    assert payload == schema.dump(schema.load(payload))
+    assert payload == tag_category_schema.dump(
+        tag_category_schema.load(payload)
+    )
 
 
 def test_asset_tag_schema():
@@ -38,8 +55,7 @@ def test_asset_tag_schema():
             'f7aa9e26-6e0f-11ec-90d6-0242ac120003'
         ]
     }
-    schema = AssetTagSchema()
-    assert payload == schema.dump(schema.load(payload))
+    assert payload == asset_tag_schema.dump(asset_tag_schema.load(payload))
 
 
 @responses.activate
@@ -119,5 +135,44 @@ def test_tag_value_schema():
         }
     )
 
-    schema = TagValueSchema()
-    assert output_payload == schema.dump(schema.load(input_payload))
+    assert output_payload == tag_value_schema.dump(
+        tag_value_schema.load(input_payload)
+    )
+
+# Negative test cases
+
+
+@pytest.mark.parametrize("test_input", NEGATIVE_TAGS_CATEGORY_SCHEMA)
+def test_tags_category_negative(test_input):
+    with pytest.raises(ValidationError):
+        tag_category_schema.load(test_input)
+
+
+@pytest.mark.parametrize("test_input", NEGATIVE_ASSET_TAG_SCHEMA)
+def test_asset_tag_negative(test_input):
+    with pytest.raises(ValidationError):
+        asset_tag_schema.load(test_input)
+
+
+@pytest.mark.parametrize("test_input", NEGATIVE_CURRENT_DOMAIN_PERMISSION)
+def test_current_domain_permission_negative(test_input):
+    with pytest.raises(ValidationError):
+        current_domain_permission_schema.load(test_input)
+
+
+@pytest.mark.parametrize("test_input", NEGATIVE_ACCESS_CONTROL_SCHEMA)
+def test_access_control_negative(test_input):
+    with pytest.raises(ValidationError):
+        access_control_schema.load(test_input)
+
+
+@pytest.mark.parametrize("test_input", NEGATIVE_TAGS_FILTER_SCHEMA)
+def test_tags_filter_negative(test_input):
+    with pytest.raises(ValidationError):
+        tags_filter_schema.load(test_input)
+
+
+@pytest.mark.parametrize("test_input", NEGATIVE_TAG_VALUE_SCHEMA)
+def test_tag_value_negative(test_input):
+    with pytest.raises(ValidationError):
+        tag_value_schema.load(test_input)

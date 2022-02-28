@@ -2,7 +2,7 @@
 Tags API Endpoint Schemas
 '''
 from marshmallow import Schema, fields, validate
-from marshmallow.decorators import post_dump, pre_load, validates_schema
+from marshmallow.decorators import post_dump, pre_load
 from marshmallow.exceptions import ValidationError
 
 from tenable.io.v3.base.schema.explore.filters import ParseFilterSchema
@@ -13,7 +13,7 @@ class TagCategorySchema(Schema):
     Schema for tags category methods
     '''
     name = fields.Str(
-        validate = validate.Length(1, 127),
+        validate=validate.Length(1, 127),
         required=True
     )
     description = fields.Str()
@@ -126,7 +126,7 @@ class TagValueSchema(Schema):
     @post_dump
     def post_serialization(self, data, **kwargs):
         '''
-        Convert the filter dictonary to asset filter definition
+        Convert the filter dictionary to asset filter definition
         '''
         if 'filters' in list(data.keys()):
             resp: dict = {
