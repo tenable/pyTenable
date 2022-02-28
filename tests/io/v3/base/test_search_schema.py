@@ -7,6 +7,9 @@ from marshmallow.exceptions import ValidationError
 from tenable.io.v3.base.schema.explore.filters import FilterSchema
 from tenable.io.v3.base.schema.explore.search import (SearchSchema, SortSchema,
                                                       SortType)
+from tests.io.v3.base.search_objects import (NEGATIVE_FILTER_SCHEMA,
+                                             NEGATIVE_SEARCH_SCHEMA,
+                                             NEGATIVE_SORT_SCHEMA)
 
 SEARCH_DATA = dict(
     fields=['bios_name', 'name'],
@@ -36,27 +39,15 @@ def test_search_schema():
     schema = SearchSchema(context={'sort_type': SortType.property_based})
     assert test_resp == schema.dump(schema.load(SEARCH_DATA))
 
-    with pytest.raises(ValidationError):
-        SEARCH_DATA['dummy_key'] = 'dummy_value'
-        schema.load(SEARCH_DATA)
 
-
-def test_search_schema_invalid_limit():
+@pytest.mark.parametrize("test_input", NEGATIVE_SEARCH_SCHEMA)
+def test_search_negative(test_input):
     '''
-    Test the search schema with invalid limit value
+    Test negative cases for search schema
     '''
-    search_schema = {
-        'limit': 'abc',
-        'fields': ['bios_name', 'name'],
-        'next': 'sdf000dfssdSDFSDFSFE00dfsdffaf',
-        'filter': {'value': 'SCCM', 'property': 'bios_name', 'operator': 'eq'},
-        'sort': [('name', 'asc'), ('bios_name', 'desc')],
-    }
-
     schema = SearchSchema(context={'sort_type': SortType.property_based})
-
     with pytest.raises(ValidationError):
-        schema.load(search_schema)
+        schema.load(test_input)
 
 
 def test_sort_schema():
@@ -99,6 +90,26 @@ def test_sort_schema_name_based():
     assert test_resp == data
 
 
+@pytest.mark.parametrize("test_input", NEGATIVE_SORT_SCHEMA)
+def test_sort_negative(test_input):
+    '''
+    Test negative cases for sort schema
+    '''
+    schema = SortSchema(context={'sort_type': SortType.property_based})
+    with pytest.raises(ValidationError):
+        schema.load(test_input)
+
+
+@pytest.mark.parametrize("test_input", NEGATIVE_FILTER_SCHEMA)
+def test_filter_negative(test_input):
+    '''
+    Test negative cases for sort schema
+    '''
+    schema = FilterSchema()
+    with pytest.raises(ValidationError):
+        schema.load(test_input)
+
+
 def test_filter_tuple_without_condition():
     '''
     Test Filter with tuple
@@ -109,10 +120,6 @@ def test_filter_tuple_without_condition():
     data = schema.dump(schema.load(tup_data))
 
     assert test_resp == data
-
-    with pytest.raises(ValidationError):
-        SEARCH_DATA['dummy_key'] = 'dummy_value'
-        schema.load(SEARCH_DATA)
 
 
 def test_filter_dict():
@@ -152,46 +159,6 @@ def test_filter_tuple_with_condition():
     data = schema.dump(schema.load(tup_data))
 
     assert test_resp == data
-
-    with pytest.raises(ValidationError):
-        data = 'something'
-        schema.load(data)
-
-    with pytest.raises(ValidationError):
-        data = (
-            'greater',
-            ('and', ('test', 'eq', '1'), ('test', 'eq', '2')),
-            'invalid',
-            ('test', 'eq', 3),
-        )
-        schema.load(data)
-
-    with pytest.raises(ValidationError):
-        data = (
-            'and',
-            ('and', ('test', 'eq', '1'), ('test', 'eq', '1')),
-            'and',
-            ('test', 'eq', '1'),
-        )
-        schema.load(data)
-
-    with pytest.raises(ValidationError):
-        data = (
-            'None',
-            ('and', ('test', 'eq', '1'), ('test', 'eq', '1')),
-            'and',
-            ('test', 'eq', '1'),
-        )
-        schema.load(data)
-
-    with pytest.raises(ValidationError):
-        data = (
-            'and',
-            ('and', ('test', 'eq', None), ('test', 'eq', '1')),
-            'or',
-            ('test', 'eq', '1'),
-        )
-        schema.load(data)
 
 
 def test_filter_dict_with_condition_dict():
