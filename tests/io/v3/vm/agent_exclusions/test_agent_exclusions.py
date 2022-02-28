@@ -29,7 +29,7 @@ def test_create(api):
     end_time: str = (
             datetime.utcnow() + timedelta(hours=1)
     ).strftime('%Y-%m-%d %H:%M:%S')
-    timezone: str = 'Etc/UTC'
+    timezone: str = 'UTC'
 
     # Let's create test response for create agent exlusion endpoint
     test_response = {
@@ -79,8 +79,8 @@ def test_create(api):
                     'value': 'Africa/Addis_Ababa'
                 },
                 {
-                    'name': 'Etc/UTC',
-                    'value': 'Etc/UTC'
+                    'name': 'UTC',
+                    'value': 'UTC'
                 }
             ]
         }
@@ -224,8 +224,8 @@ def test_edit(api):
                     'value': 'US/Arizona'
                 },
                 {
-                    'name': 'Etc/UTC',
-                    'value': 'Etc/UTC'
+                    'name': 'UTC',
+                    'value': 'UTC'
                 }
             ]
         }
@@ -347,11 +347,7 @@ def test_search(api):
         fields=fields, filter=filter, sort=sort, limit=200
     )
     assert isinstance(iterator, SearchIterator)
-
-    exclusions_list = []
-    for item in iterator:
-        exclusions_list.append(item)
-    assert len(exclusions_list) == test_response['pagination']['total']
+    assert len(list(iterator)) == test_response['pagination']['total']
 
     iterator = api.v3.vm.agent_exclusions.search(
         fields=fields, filter=filter, sort=sort, return_csv=True
