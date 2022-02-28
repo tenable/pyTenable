@@ -1,20 +1,33 @@
 '''
 Test cases for AgentGroups schemas
 '''
-from tenable.io.v3.vm.agent_groups.schema import AgentGroupSchema
+import pytest
+from marshmallow import ValidationError
+
+from tenable.io.v3.vm.agent_groups.schema import (AgentGroupFilterSchema,
+                                                  AgentGroupSchema,
+                                                  CriteriaSchema,
+                                                  DirectiveSchema)
+from tests.io.v3.vm.agent_groups.objects import (
+    NEGATIVE_AGENT_GROUP_FILTER_SCHEMA, NEGATIVE_AGENT_GROUP_SCHEMA,
+    NEGATIVE_CRITERIA_SCHEMA, NEGATIVE_DIRECTIVE_SCHEMA)
+
+criteria_schema = CriteriaSchema()
+directive_schema = DirectiveSchema()
+agent_group_filter_schema = AgentGroupFilterSchema()
+agent_group_schema = AgentGroupSchema()
 
 
 def test_agent_groups_schema():
     '''
     Test the agent_groups schema with name
     '''
-    schema = AgentGroupSchema()
 
     # Test for schema validation for create/configure agent method
     payload = {
         'name': 'Sample Agent Groups'
     }
-    assert payload == schema.dump(schema.load(payload))
+    assert payload == agent_group_schema.dump(agent_group_schema.load(payload))
 
     # Test for schema validation for add/delete_agents method
     payload = {
@@ -23,7 +36,7 @@ def test_agent_groups_schema():
             '57b74e58-5d95-11ec-bf63-0242ac130002'
         ]
     }
-    assert payload == schema.dump(schema.load(payload))
+    assert payload == agent_group_schema.dump(agent_group_schema.load(payload))
 
     # Test for schema validation for details method
     payload = {
@@ -50,7 +63,7 @@ def test_agent_groups_schema():
         'filter_type': 'and',
         'wildcard_fields': ['name']
     }
-    assert res == schema.dump(schema.load(payload))
+    assert res == agent_group_schema.dump(agent_group_schema.load(payload))
 
     # Test for schema validation for send_instruction_to_agents_in_group method
     payload = {
@@ -65,4 +78,28 @@ def test_agent_groups_schema():
         'not_items': ['334b962a-ac03-4336-9ebb-a06b321576e0'],
         'directive': {'type': 'restart'}
     }
-    assert payload == schema.dump(schema.load(payload))
+    assert payload == agent_group_schema.dump(agent_group_schema.load(payload))
+
+
+@pytest.mark.parametrize("test_input", NEGATIVE_CRITERIA_SCHEMA)
+def test_criteria_schema_negative(test_input):
+    with pytest.raises(ValidationError):
+        criteria_schema.load(test_input)
+
+
+@pytest.mark.parametrize("test_input", NEGATIVE_DIRECTIVE_SCHEMA)
+def test_directive_schema_negative(test_input):
+    with pytest.raises(ValidationError):
+        directive_schema.load(test_input)
+
+
+@pytest.mark.parametrize("test_input", NEGATIVE_AGENT_GROUP_FILTER_SCHEMA)
+def test_agent_group_filter_schema_negative(test_input):
+    with pytest.raises(ValidationError):
+        agent_group_filter_schema.load(test_input)
+
+
+@pytest.mark.parametrize("test_input", NEGATIVE_AGENT_GROUP_SCHEMA)
+def test_agent_group_schema_negative(test_input):
+    with pytest.raises(ValidationError):
+        agent_group_schema.load(test_input)
