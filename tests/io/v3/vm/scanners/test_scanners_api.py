@@ -318,11 +318,7 @@ def test_scanners_search(api):
         fields=fields, limit=200, sort=sort
     )
     assert isinstance(iterator, SearchIterator)
-
-    scanners_list = []
-    for scanners in iterator:
-        scanners_list.append(scanners)
-    assert len(scanners_list) == api_response['pagination']['total']
+    assert len(list(iterator)) == api_response['pagination']['total']
 
     iterator = api.v3.vm.scanners.search(
         fields=fields, return_csv=True, sort=sort, limit=200
@@ -333,21 +329,6 @@ def test_scanners_search(api):
         fields=fields, return_resp=True, limit=200, sort=sort
     )
     assert isinstance(resp, Response)
-
-
-@responses.activate
-def test_scanners_list(api):
-    '''
-    Test the list function
-    '''
-    responses.add(
-        responses.GET,
-        f'{SCANNER_BASE_URL}',
-        json={'scanners': SCANNERS_LIST}
-    )
-    resp = api.v3.vm.scanners.list()
-    assert isinstance(resp, list)
-    assert resp == SCANNERS_LIST
 
 
 @responses.activate
