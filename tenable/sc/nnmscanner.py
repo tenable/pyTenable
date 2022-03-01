@@ -81,7 +81,7 @@ class NNMAPI(SCEndpoint):
 
     def create(self, name, address, **kw):
         '''
-        Creates a NNM.
+        Creates a NNM in SC.
 
         :sc-api:`NNM: create <Passive-Passive-Scanner.html#passivescanner_POST>`
 
@@ -160,8 +160,8 @@ class NNMAPI(SCEndpoint):
                 ``True``.
             name (str, optional): The name of the NNM.
             port (int, optional):
-                What is the port that the Nessus service is running on.  If left
-                unspecified, then the default is ``8834``.
+                What is the port that the NNM service is running on.  If left
+                unspecified, then the default is ``8835``.
             proxy (bool, optional):
                 Is this scanner behind a proxy?  If left unspecified then the
                 default is ``False``.
