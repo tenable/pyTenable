@@ -46,6 +46,7 @@ from .proxy import ProxyAPI
 from .plugins import PluginsAPI
 from .scanners import ScannersAPI
 from .server import ServerAPI
+from .users import UsersAPI
 
 
 class Nessus(APIPlatform):
@@ -154,3 +155,10 @@ class Nessus(APIPlatform):
         The interface object for the :doc:`Nessus Server APIs <server>`.
         '''
         return ServerAPI(self)
+    
+    @property
+    def users(self):
+        '''
+        The unterface object for the :doc:`Nessus users APIs <users>`.
+        '''
+        return UsersAPI(self)
