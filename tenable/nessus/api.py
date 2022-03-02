@@ -46,6 +46,7 @@ from .proxy import ProxyAPI
 from .plugins import PluginsAPI
 from .scanners import ScannersAPI
 from .server import ServerAPI
+from .software_update import SoftwareUpdateAPI
 from .tokens import TokensAPI
 from .users import UsersAPI
 
@@ -156,6 +157,14 @@ class Nessus(APIPlatform):
         The interface object for the :doc:`Nessus Server APIs <server>`.
         '''
         return ServerAPI(self)
+    
+    @property
+    def software_update(self):
+        '''
+        The interface object for the 
+        :doc:`Nessus Software Update APIs <software_update>`.
+        '''
+        return SoftwareUpdateAPI(self)
     
     @property
     def tokens(self):
