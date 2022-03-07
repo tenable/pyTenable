@@ -42,7 +42,7 @@ setup(
         'requests>=2.26',
         'python-dateutil>=2.6',
         'semver>=2.8.1',
-        'restfly>=1.4.4',
+        'restfly>=1.4.5',
         'marshmallow>=3.6',
         'python-box>=4.0',
         'defusedxml>=0.5.0',
