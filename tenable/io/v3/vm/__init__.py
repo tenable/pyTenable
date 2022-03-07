@@ -21,16 +21,19 @@ Methods available on ``tio.v3.vm``:
     agents
     credentials
     exclusions
+    agent_exclusions
     files
     folders
     networks
     permissions
     plugins
+    scans
     scanners
     scanner_groups
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
+from tenable.io.v3.vm.agent_exclusions.api import AgentExclusionsAPI
 from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
 from tenable.io.v3.vm.credentials.api import CredentialsAPI
@@ -42,6 +45,7 @@ from tenable.io.v3.vm.permissions.api import PermissionsAPI
 from tenable.io.v3.vm.plugins.api import PluginsAPI
 from tenable.io.v3.vm.scanner_groups.api import ScannerGroupsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
+from tenable.io.v3.vm.scans.api import ScansAPI
 from tenable.io.v3.vm.server.api import ServerAPI
 
 
@@ -59,6 +63,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):
         :doc:`Tenable.io v3 Agent Config APIs <agent_config>`.
         '''
         return AgentConfigAPI(self._api)
+
+    @property
+    def agent_exclusions(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Agent Exclusions APIs <agent_exclusions>`.
+        '''
+        return AgentExclusionsAPI(self._api)
 
     @property
     def agent_groups(self):
@@ -131,6 +143,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):
         :doc:`Tenable.io v3 Plugins APIs <plugins>`
         '''
         return PluginsAPI(self._api)
+
+    @property
+    def scans(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Scans APIs <scans>`
+        '''
+        return ScansAPI(self._api)
 
     @property
     def scanners(self):
