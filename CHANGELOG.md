@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## [1.4.4]
+### Added
+
+- Initial support for additional Tenable.ad APIs
+
 ### Changed
 
 - Upgraded restfly to 1.4.5
