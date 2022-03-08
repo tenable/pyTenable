@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Issue with Content-Type errors around case sensitivity
+- Issue with Content-Type errors around case sensitivity #520
 
 [1.4.4]: https://github.com/tenable/pyTenable/compare/1.4.3...1.4.4
 
