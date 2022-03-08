@@ -17,10 +17,11 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     agent_config
-    agent_exclusions
     agent_groups
     agents
     credentials
+    exclusions
+    agent_exclusions
     files
     folders
     networks
@@ -36,6 +37,7 @@ from tenable.io.v3.vm.agent_exclusions.api import AgentExclusionsAPI
 from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
 from tenable.io.v3.vm.credentials.api import CredentialsAPI
+from tenable.io.v3.vm.exclusions.api import ExclusionsAPI
 from tenable.io.v3.vm.files.api import FileAPI
 from tenable.io.v3.vm.folders.api import FoldersAPI
 from tenable.io.v3.vm.networks.api import NetworksAPI
@@ -93,6 +95,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):
         :doc:`Tenable.io v3 Credentials APIs <credentials>`.
         '''
         return CredentialsAPI(self._api)
+
+    @property
+    def exclusions(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Exclusions APIs <exclusions>`.
+        '''
+        return ExclusionsAPI(self._api)
 
     @property
     def files(self):
