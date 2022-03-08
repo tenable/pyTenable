@@ -17,22 +17,27 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     agent_config
-    credentials
     agent_groups
     agents
+    credentials
+    exclusions
+    agent_exclusions
     files
     folders
     networks
     permissions
     plugins
+    scans
     scanners
     scanner_groups
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.vm.agent_exclusions.api import AgentExclusionsAPI
 from tenable.io.v3.vm.agent_config.api import AgentsConfigAPI
 from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
 from tenable.io.v3.vm.credentials.api import CredentialsAPI
+from tenable.io.v3.vm.exclusions.api import ExclusionsAPI
 from tenable.io.v3.vm.files.api import FileAPI
 from tenable.io.v3.vm.folders.api import FoldersAPI
 from tenable.io.v3.vm.networks.api import NetworksAPI
@@ -40,10 +45,11 @@ from tenable.io.v3.vm.permissions.api import PermissionsAPI
 from tenable.io.v3.vm.plugins.api import PluginsAPI
 from tenable.io.v3.vm.scanner_groups.api import ScannerGroupsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
+from tenable.io.v3.vm.scans.api import ScansAPI
 from tenable.io.v3.vm.server.api import ServerAPI
 
 
-class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
+class VulnerabilityManagement(ExploreBaseEndpoint):
     '''
     This class will contain property for all resources
     under Vulnerability Management
@@ -57,6 +63,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Tenable.io v3 Agent Config APIs <agent_config>`.
         '''
         return AgentsConfigAPI(self._api)
+
+    @property
+    def agent_exclusions(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Agent Exclusions APIs <agent_exclusions>`.
+        '''
+        return AgentExclusionsAPI(self._api)
 
     @property
     def agent_groups(self):
@@ -81,6 +95,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Tenable.io v3 Credentials APIs <credentials>`.
         '''
         return CredentialsAPI(self._api)
+
+    @property
+    def exclusions(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Exclusions APIs <exclusions>`.
+        '''
+        return ExclusionsAPI(self._api)
 
     @property
     def files(self):
@@ -121,6 +143,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Tenable.io v3 Plugins APIs <plugins>`
         '''
         return PluginsAPI(self._api)
+
+    @property
+    def scans(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Scans APIs <scans>`
+        '''
+        return ScansAPI(self._api)
 
     @property
     def scanners(self):
