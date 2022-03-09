@@ -1,8 +1,7 @@
 '''
-Testing the Search iterators
+Testing the CSV iterators
 '''
 
-import pytest
 import responses
 
 from tenable.io.v3.base.iterators.explore_iterator import SearchIterator
@@ -109,14 +108,10 @@ ASSET_DATA = [
     },
 ]
 PAGINATION = {'next': 'H4sIAAAAAAAAADWOSwrDMAxE7zL', 'limit': 3, 'total': 111}
-PAGINATION_WITHOUT_NEXT_TOKEN = {'limit': 3, 'total': 6}
 
 
 @responses.activate
 def test_search_iterator(api):
-    '''
-    Test for search iterator
-    '''
     responses.add(
         method=responses.POST,
         url=USERS_BASE_URL,
@@ -124,25 +119,7 @@ def test_search_iterator(api):
     )
 
     search_iterator = SearchIterator(
-        api=api,
-        _resource='assets',
-        _path='api/v3/assets/search',
-        _payload={}
+        api=api, _resource='assets', _path='api/v3/assets/search', _payload={}
     )
+
     assert ASSET_DATA.__contains__(next(search_iterator))
-    assert ASSET_DATA.__contains__(next(search_iterator))
-    assert ASSET_DATA.__contains__(next(search_iterator))
-    responses.reset()
-    responses.add(
-        method=responses.POST,
-        url=USERS_BASE_URL,
-        json={
-            'assets': ASSET_DATA,
-            'pagination': PAGINATION_WITHOUT_NEXT_TOKEN
-        },
-    )
-    assert ASSET_DATA.__contains__(next(search_iterator))
-    assert ASSET_DATA.__contains__(next(search_iterator))
-    assert ASSET_DATA.__contains__(next(search_iterator))
-    with pytest.raises(StopIteration):
-        next(search_iterator)
