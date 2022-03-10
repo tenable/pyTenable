@@ -1,8 +1,4 @@
 '''
-Managed Security Service Provider
-=================================
-
-The following API's are available for interaction under Managed Security
 Service Provider
 
 Methods available on ``tio.v3.mssp``:
@@ -17,9 +13,11 @@ Methods available on ``tio.v3.mssp``:
     :glob:
 
     accounts
+    logos
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.mssp.accounts.api import AccountsAPI
+from tenable.io.v3.mssp.logos.api import LogosAPI
 
 
 class ManagedSecurityServiceProvider(ExploreBaseEndpoint):  # noqa: PLR0904
@@ -35,3 +33,11 @@ class ManagedSecurityServiceProvider(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Tenable.io v3 Accounts APIs <accounts>`
         '''
         return AccountsAPI(self._api)
+
+    @property
+    def logos(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Logos APIs <logos>`
+        '''
+        return LogosAPI(self._api)
