@@ -208,7 +208,7 @@ class NetworksAPI(ExploreBaseEndpoint):
         are currently assigned to the default network.
 
         :devportal:`networks: list-assignable-scanners
-            <networks-list-assignable-scanners>`
+        <networks-list-assignable-scanners>`
 
         Args:
             id (UUID): The UUID of the network.

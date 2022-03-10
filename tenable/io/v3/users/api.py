@@ -270,8 +270,8 @@ class UsersAPI(ExploreBaseEndpoint):
         '''
         Send the verification code for two-factor authorization.
 
-        :devportal:`users:
-            two-factor-enable-verify <users-two-factor-enable-verify>`
+        :devportal:`users: two-factor-enable-verify
+        <users-two-factor-enable-verify>`
 
         Args:
             user_id (int): The user id

@@ -49,7 +49,7 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     def groups(self):
         '''
         The interface object for the Groups APIs
-        :doc:`tenable.io v3 groups APIs <groups>`.
+        :doc:`Tenable.io v3 Groups APIs <groups>`.
         '''
         return GroupsAPI(self._api)
 
@@ -66,7 +66,7 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     def users(self):
         '''
         The interface object for the
-        :doc:`Tenable.io v3 users APIs <users>`.
+        :doc:`Tenable.io v3 Users APIs <users>`.
         '''
         return UsersAPI(self._api)
 
@@ -74,7 +74,7 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     def vm(self):
         '''
         The interface object for the
-        :doc:`Vulnerability Management <vm/index>`
+        :doc:`Tenable.io v3 Vulnerability Management <vm/index>`
         '''
         return VulnerabilityManagement(self._api)
 
@@ -82,6 +82,6 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     def was(self):
         '''
         The interface object for the
-         :doc:`Web Application Scanning <was/index>`
+         :doc:`Tenable.io v3 Web Application Scanning <was/index>`
         '''
         return WebApplicationScanning(self._api)
