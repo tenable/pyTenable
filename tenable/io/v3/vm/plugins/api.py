@@ -126,8 +126,7 @@ class PluginsAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -136,8 +135,8 @@ class PluginsAPI(ExploreBaseEndpoint):
             iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
         Examples:
             >>> tio.v3.vm.plugins.search(filter=('exploited_by_malware', 'eq',
             ...  False), fields=['id', 'name', 'description'],
@@ -211,8 +210,7 @@ class PluginsAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -221,8 +219,8 @@ class PluginsAPI(ExploreBaseEndpoint):
             iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
         Examples:
             >>> tio.v3.vm.plugins.search_families(filter=('name', 'eq',
             ...  'Amazon'), fields=['id', 'name', 'count'],
