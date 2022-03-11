@@ -19,7 +19,7 @@ from requests import Response
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
-from tenable.io.v3.connectors.schema import (ConnectorCreate,
+from tenable.io.v3.connectors.schema import (ConnectorCreateOrEditSchema,
                                              ConnectorListTrails)
 from tenable.utils import dict_clean, dict_merge
 
@@ -86,7 +86,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 'params': params
         }
         payload = dict_clean(payload)
-        schema = ConnectorCreate()
+        schema = ConnectorCreateOrEditSchema()
         payload = schema.dump(schema.load(payload))
         payload = {'connector': payload}
         return self._post(json=payload)['connector']
@@ -155,17 +155,17 @@ class ConnectorsAPI(ExploreBaseEndpoint):
 
     def delete(self, connector_id: UUID) -> None:
         '''
-        Deletes a connectors.
+        Deletes a connector.
 
         :devportal:`connectors: delete <connectors-delete>`
 
         Args:
             connector_id (UUID):
-                The unique identifier for the connectors to delete.
+                The unique identifier for the connector to delete.
 
         Returns:
             :obj:`None`:
-                The connectors has been successfully deleted.
+                The connector has been successfully deleted.
 
         Examples:
             >>>  tio.v3.connectors.delete(
@@ -286,7 +286,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
 
         }
         payload = dict_clean(payload)
-        schema = ConnectorCreate()
+        schema = ConnectorCreateOrEditSchema()
         payload = schema.dump(schema.load(payload))
 
         connector_info = self.details(connector_id)
@@ -363,8 +363,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -373,8 +372,8 @@ class ConnectorsAPI(ExploreBaseEndpoint):
             Iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
         Examples:
             >>> tio.v3.connectors.search(
             ...     filter=('name','eq','test'),

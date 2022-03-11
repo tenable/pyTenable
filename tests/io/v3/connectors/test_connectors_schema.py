@@ -1,7 +1,7 @@
 import pytest
 from marshmallow import ValidationError
 
-from tenable.io.v3.connectors.schema import (ConnectorCreate,
+from tenable.io.v3.connectors.schema import (ConnectorCreateOrEditSchema,
                                              ConnectorListTrails,
                                              ConnectorRegion,
                                              ConnectorSchedule)
@@ -34,7 +34,7 @@ def test_create():
         }
     }
 
-    schema = ConnectorCreate()
+    schema = ConnectorCreateOrEditSchema()
     payload = schema.dump(schema.load(raw_data))
 
     assert payload == resp_data

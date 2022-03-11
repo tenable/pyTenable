@@ -18,7 +18,7 @@ class ConnectorSchedule(Schema):
             raise ValidationError('Invalid Schedule definition')
 
 
-class ConnectorCreate(Schema):
+class ConnectorCreateOrEditSchema(Schema):
     name = fields.Str()
     type = fields.Str()
     network_id = fields.UUID()
