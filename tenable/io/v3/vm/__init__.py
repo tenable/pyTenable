@@ -36,6 +36,7 @@ from tenable.io.v3.vm.agent_exclusions.api import AgentExclusionsAPI
 from tenable.io.v3.vm.agent_config.api import AgentsConfigAPI
 from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
+from tenable.io.v3.vm.audit_log.api import AuditLogAPI
 from tenable.io.v3.vm.credentials.api import CredentialsAPI
 from tenable.io.v3.vm.exclusions.api import ExclusionsAPI
 from tenable.io.v3.vm.files.api import FileAPI
@@ -87,6 +88,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):
         :doc:`Tenable.io v3 Agents APIs <agents>`.
         '''
         return AgentsAPI(self._api)
+
+    @property
+    def audit_log(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Audit Log APIs <audit_log>`.
+        '''
+        return AuditLogAPI(self._api)
 
     @property
     def credentials(self):
