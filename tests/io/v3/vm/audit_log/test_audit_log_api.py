@@ -83,10 +83,7 @@ def test_search(api):
     )
     assert isinstance(iterator, SearchIterator)
 
-    event_list = []
-    for event in iterator:
-        event_list.append(event)
-    assert len(event_list) == api_res['pagination']['total']
+    assert len(list(iterator)) == api_res['pagination']['total']
 
     iterator = api.v3.vm.audit_log.search(
         fields=fields, filter=filter, sort=sort, return_csv=True
