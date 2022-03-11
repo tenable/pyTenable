@@ -16,6 +16,7 @@ Methods available on ``tio.v3``:
     :glob:
 
     assets
+    connectors
     groups
     mssp/index
     users
@@ -24,6 +25,7 @@ Methods available on ``tio.v3``:
 '''
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.assets.api import AssetsAPI
+from tenable.io.v3.connectors.api import ConnectorsAPI
 from tenable.io.v3.groups.api import GroupsAPI
 from tenable.io.v3.mssp import ManagedSecurityServiceProvider
 from tenable.io.v3.users.api import UsersAPI
@@ -44,6 +46,14 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
         :doc:`Tenable.io.v3.assets Assets APIs <assets>`.
         """
         return AssetsAPI(self._api)
+
+    @property
+    def connectors(self):
+        '''
+        The interface object for the connectors APIs
+        :doc:`tenable.io v3 connectors APIs <connectors>
+        '''
+        return ConnectorsAPI(self._api)
 
     @property
     def groups(self):
