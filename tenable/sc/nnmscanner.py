@@ -100,14 +100,18 @@ class NNMAPI(SCEndpoint):
                 Is this NNM behind a proxy?  If left unspecified then the
                 default is ``False``.
             repository_ids (list, optional):
-                Lists repository ID. 
+                Lists repository ID.
+            username (str)
+                Define username of NNM user.
+            password (str)
+                Define password of NNM user.
 
         Returns:
             :obj:`dict`:
                 The newly created NNM.
 
         Examples:
-            >>> nnm = sc.nnm.create('Example NNM', '192.168.0.1')
+            >>> nnm = sc.nnm.create('Example NNM', '192.168.0.1', username='admin', password='C0mp13xP@ss)
         '''
         payload = {
             'port': 8835,
@@ -117,7 +121,7 @@ class NNMAPI(SCEndpoint):
             'address': address,
         }
         payload = self._constructor(**dict_merge(payload, kw))
-        return self._api.post('nnm', json=payload).json()['response']
+        return self._api.post('passivescanner', json=payload).json()['response']
 
     def details(self, id, fields=None):
         '''
@@ -222,12 +226,11 @@ class NNMAPI(SCEndpoint):
                 for f in fields])
 
         return self._api.get('passivescanner', params=params).json()['response']
-
-
+        '''
         Returns:
             :obj:`list`:
                 The list of scans that match the search criteria.
-
+        '''
     def update_status(self):
         '''
         Starts an on-demand NNM status update.
