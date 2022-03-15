@@ -75,6 +75,17 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: snyk test --org=pytenable
+
+  static_analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: snyk/actions/setup@master
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Setup environment
+        run: pip install -r requirements.txt
       - name: Snyk static code check
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
