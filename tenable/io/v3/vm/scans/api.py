@@ -1695,10 +1695,7 @@ class ScansAPI(ExploreBaseEndpoint):
         Examples:
             >>> cred_id = '00000000-0000-0000-0000-000000000000'
             >>> scan_id = '00000000-0000-0000-0000-000000000000'
-            >>> tio.v3.vm.remediation_scans.convert_credentials(cred_id,
-            ...     scan_id,
-            ...     password='sekretsquirrel',
-            ...     escalation_password='sudopassword')
+            >>> tio.v3.vm.scans.credentials(cred_id)
         '''
         current = self._api.credentials.details(cred_id)
 
