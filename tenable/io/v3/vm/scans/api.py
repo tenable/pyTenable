@@ -37,7 +37,6 @@ class ScansAPI(ExploreBaseEndpoint):
     '''
     This will contain all methods related to scans
     '''
-
     schedule_const = IOConstants.ScanScheduleConst
     case_const = IOConstants.CaseConst
     _path = 'api/v3/scans'
@@ -1540,10 +1539,10 @@ class ScansAPI(ExploreBaseEndpoint):
         '''
         return self._get(f'{scan_id}/latest-status')['status']
 
+
     def timezones(self) -> list:
         '''
         Retrieves the list of timezones.
-
         :devportal:`scans: timezones <scans-timezones>`
 
         Returns:
@@ -1556,6 +1555,7 @@ class ScansAPI(ExploreBaseEndpoint):
         '''
         resp = self._get('timezones')['timezones']
         return [i['value'] for i in resp]
+
 
     def info(self, scan_id: UUID, history_id: UUID) -> Dict:
         '''
@@ -1721,3 +1721,4 @@ class ScansAPI(ExploreBaseEndpoint):
         payload = schema.dump(schema.load(payload))
         return self._post(f'{scan_id}/credentials/{cred_id}/upgrade',
                           json=payload)['id']
+
