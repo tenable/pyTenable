@@ -236,6 +236,9 @@ RESPONSE_WAS_API = {
 
 
 def test_search(api):
+    '''
+    Test for search method iterator
+    '''
     search_iterator = ExploreBaseEndpoint(api)._search(
         resource='assets', api_path='api/v3/assets/search', **REQUESTDATA
     )
@@ -253,6 +256,9 @@ def test_search_was(api):
 
 @responses.activate
 def test_search_response(api):
+    '''
+    Test for search method response
+    '''
     responses.add(
         responses.POST, url=f'{SEARCH_BASE_URL}', json=RESPONSE_2, status=200
     )
