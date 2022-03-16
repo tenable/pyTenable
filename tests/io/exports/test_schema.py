@@ -65,7 +65,7 @@ def vuln_export():
         'indexed_at': 1635798607,
         'last_fixed': 1635798607,
         'since': 1635798607,
-        'plugin_family': 'Family Name',
+        'plugin_family': ['Family Name'],
         'plugin_id': [19506, 21745, 66334],
         'severity': ['CRITICAL', 'High', 'medium', 'LoW', 'InfO'],
         'state': ['OPENED', 'reopened', 'Fixed'],
@@ -84,6 +84,7 @@ def vuln_export():
             ('test3', 'val4')
         ],
         'network_id': 'f634d639-cc33-4149-a683-5ad6b8f29d9c',
+        'cidr_range': '192.0.2.0/24',
         'include_unlicensed': True,
     }
 
@@ -157,7 +158,7 @@ def test_vulnerabilityschema(vuln_export):
             'indexed_at': 1635798607,
             'last_fixed': 1635798607,
             'since': 1635798607,
-            'plugin_family': 'Family Name',
+            'plugin_family': ['Family Name'],
             'plugin_id': [19506, 21745, 66334],
             'severity': ['critical', 'high', 'medium', 'low', 'info'],
             'state': ['opened', 'reopened', 'fixed'],
@@ -170,6 +171,7 @@ def test_vulnerabilityschema(vuln_export):
                 'lte': 0.4
             },
             'network_id': 'f634d639-cc33-4149-a683-5ad6b8f29d9c',
+            'cidr_range': '192.0.2.0/24',
             'tag.test1': ['val1'],
             'tag.test2': ['val2'],
             'tag.test3': ['val3', 'val4']
