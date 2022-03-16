@@ -332,7 +332,7 @@ class UsersAPI(ExploreBaseEndpoint):
                **kw
                ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
-        Retrieves the users data.
+        Search a list of users.
          Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
