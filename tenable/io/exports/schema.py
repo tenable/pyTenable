@@ -76,7 +76,7 @@ class VulnExportSchema(Schema):
     since = fields.Int()
 
     # Plugin fields
-    plugin_family = fields.Str()
+    plugin_family = fields.List(fields.Str())
     plugin_id = fields.List(fields.Int())
     plugin_type = fields.Str()
 
@@ -88,6 +88,7 @@ class VulnExportSchema(Schema):
     # Asset fields
     tags = fields.List(fields.Tuple((fields.Str(), fields.Str())))
     network_id = fields.UUID()
+    cidr_range = fields.Str()
     include_unlicensed = fields.Bool()
 
     # Chunking fields
