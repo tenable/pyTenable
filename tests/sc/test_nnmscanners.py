@@ -14,7 +14,7 @@ def nnm(request, admin, vcr):
     test fixture for nnm
     '''
     with vcr.use_cassette('test_nnm_create_success'):
-        nnm = admin.nnm.create('Example', '127.0.0.1',
+        nnm = admin.nnm.create('Example', 'securitycenter.home.cugnet.net/',
                                         username='admin',
                                         password='password')
 
@@ -118,8 +118,8 @@ def test_nnm_constructor_success(security_center):
         description='Described',
         username='admin',
         password='password',
-        address='127.0.0.1',
-        port=8443,
+        address='securitycenter.home.cugnet.net/',
+        port=443,
         proxy=False,
         verify=False,
         enabled=True,
@@ -130,8 +130,8 @@ def test_nnm_constructor_success(security_center):
         'authType': 'password',
         'username': 'admin',
         'password': 'password',
-        'ip': '127.0.0.1',
-        'port': 8443,
+        'ip': 'securitycenter.home.cugnet.net/',
+        'port': 443,
         'useProxy': 'false',
         'verifyHost': 'false',
         'enabled': 'true',
@@ -212,11 +212,11 @@ def test_nnm_edit_success(admin, nnm):
     '''
     test nnm edit for success
     '''
-    nnm = admin.nnm.edit(int(nnm['id']), name='Updated nnm Name')
+    nnm = admin.nnm.edit(int(nnm['id']), name='Updated NNM Name')
     assert isinstance(nnm, dict)
     check(nnm, 'id', str)
     check(nnm, 'name', str)
-    assert nnm['name'] == 'Updated nnm Name'
+    assert nnm['name'] == 'Updated NNM Name'
     check(nnm, 'description', str)
     check(nnm, 'ip', str)
     check(nnm, 'port', str)

@@ -94,8 +94,8 @@ class NNMAPI(SCEndpoint):
                 Is this NNM enabled?  If left unspecified, the default is
                 ``True``.
             port (int, optional):
-                What is the port that the Nessus service is running on.  If left
-                unspecified, then the default is ``8834``.
+                What is the port that the NNM service is running on.  If left
+                unspecified, then the default is ``8835``.
             proxy (bool, optional):
                 Is this NNM behind a proxy?  If left unspecified then the
                 default is ``False``.
@@ -111,7 +111,7 @@ class NNMAPI(SCEndpoint):
                 The newly created NNM.
 
         Examples:
-            >>> nnm = sc.nnm.create('Example NNM', '192.168.0.1', username='admin', password='C0mp13xP@ss)
+            >>> nnm = sc.nnm.create('Example NNM', '192.168.0.1', username='admin', password='userpasswordhere')
         '''
         payload = {
             'port': 8835,
