@@ -36,6 +36,26 @@ CSV_TEXT_2 = (
     'test_v3,host,2021-11-24T13:43:56.709Z\n'
 )
 
+CSV_TEXT_3 = (
+    '2021-11-24T13:43:56.709Z,192.12.13.7,2021-11-24T13:43:56.442Z,'
+    '"0142df77-dbc4-4706-8456-b756c06ee8a2",192.12.13.7,,false,'
+    'false,true,2021-11-24T13:43:56.442Z,192.12.13.7,'
+    '"00000000-0000-0000-0000-000000000000",Default,'
+    '"test_v3;2021-11-24T13:43:56.442Z;2021-11-24T13:43:56.442Z",'
+    'test_v3,host,2021-11-24T13:43:56.709Z\n'
+)
+CSV_TEXT_3_RESP = (
+    'created,display_ipv4_address,first_observed,id,'
+    'ipv4_addresses,ipv6_addresses,is_deleted,is_licensed,'
+    'is_public,last_observed,name,network.id,network.name,'
+    'observation_sources,sources,types,updated\n'
+    '2021-11-24T13:43:56.709Z,192.12.13.7,2021-11-24T13:43:56.442Z,'
+    '"0142df77-dbc4-4706-8456-b756c06ee8a2",192.12.13.7,,false,'
+    'false,true,2021-11-24T13:43:56.442Z,192.12.13.7,'
+    '"00000000-0000-0000-0000-000000000000",Default,'
+    '"test_v3;2021-11-24T13:43:56.442Z;2021-11-24T13:43:56.442Z",'
+    'test_v3,host,2021-11-24T13:43:56.709Z\n'
+)
 CSV_HEADERS = {
     'Date': 'Wed, 08 Dec 2021 04:42:28 GMT',
     'Content-Type': 'text/csv;charset=UTF-8',
@@ -44,7 +64,7 @@ CSV_HEADERS = {
     'Set-Cookie': 'nginx-cloud-site-id=qa-develop; path=/; '
     'HttpOnly; SameSite=Strict; Secure',
     'X-Request-Uuid': '4d43db5bac4decd79fc198e06a8113bd',
-    'total': '2',
+    'total': '3',
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'DENY',
     'X-Xss-Protection': '1; mode=block',
@@ -87,5 +107,13 @@ def test_csv_iterator(api):
                                     )
     assert next(csv_iterator) == CSV_TEXT
     assert next(csv_iterator) == CSV_TEXT_2
+    responses.reset()
+    responses.add(
+        method=responses.POST,
+        url=BASE_URL,
+        body=CSV_TEXT_3,
+        headers=CSV_HEADERS
+    )
+    assert next(csv_iterator) == CSV_TEXT_3_RESP
     with pytest.raises(StopIteration):
         next(csv_iterator)

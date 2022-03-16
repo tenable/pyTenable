@@ -370,7 +370,7 @@ def test_tio_iterator(api):
 
 
 @responses.activate
-def test_tio_iterator_api_2(api):
+def test_tio_iterator_api_version_2(api):
     '''
     Test for tio iterator api version 2
     '''

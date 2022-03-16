@@ -10,7 +10,7 @@ from tenable.io.v3.base.iterators.was_iterator import \
     SearchIterator as SearchIteratorWas
 
 SEARCH_BASE_URL = r'https://cloud.tenable.com/api/v3/assets/search'
-DETAILS_BASE_URL: str = f'https://cloud.tenable.com/api/v3/assets'
+DETAILS_BASE_URL: str = 'https://cloud.tenable.com/api/v3/assets'
 
 REQUESTDATA = dict(
     fields=['test1', 'test2'],

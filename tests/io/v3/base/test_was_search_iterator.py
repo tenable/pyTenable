@@ -135,7 +135,15 @@ ASSET_DATA = {
             'agent_name': [],
             'aws_ec2_name': [],
             'mac_address': []
-        },
+        }
+    ],
+    'pagination': {
+        'total': 4
+    }
+}
+
+ASSET_DATA_2 = {
+    'assets': [
         {
             'id': '47351ecd-cbae-4576-9740-ff1b4eb88177',
             'has_agent': False,
@@ -178,7 +186,7 @@ def test_was_iterator(api):
     Test for was search iterator
     '''
 
-    limit = 5
+    limit = 3
     offset = 0
     query = {
         'limit': limit,
@@ -205,7 +213,14 @@ def test_was_iterator(api):
     assert ASSET_DATA['assets'].__contains__(next(tio_iterator))
     assert ASSET_DATA['assets'].__contains__(next(tio_iterator))
     assert ASSET_DATA['assets'].__contains__(next(tio_iterator))
-    assert ASSET_DATA['assets'].__contains__(next(tio_iterator))
+    responses.reset()
+    responses.add(
+        method=responses.POST,
+        url=BASE_URL,
+        json=ASSET_DATA_2,
+    )
+
+    assert ASSET_DATA_2['assets'].__contains__(next(tio_iterator))
 
     with pytest.raises(StopIteration):
         next(tio_iterator)

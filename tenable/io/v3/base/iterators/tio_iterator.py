@@ -1,5 +1,5 @@
 '''
-The following methods in classes allow for page iteration
+This method defines class, that allows iterating over multiple pages of data
 and centralized data processing utility
 '''
 

@@ -1,5 +1,5 @@
 '''
-The following methods in classes allow for page iteration
+This method defines class, that allows iterating over multiple pages of data
 and centralized data processing utility
 '''
 
@@ -18,8 +18,6 @@ class ExploreIteratorWas(APIResultIterator):
     '''
     _path = None
     _resource = None
-    _size = 100
-    _page_num = 0
     _offset = 0
     _limit = None
     _query = None
