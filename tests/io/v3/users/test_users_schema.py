@@ -4,7 +4,8 @@ Testing the users schemas
 import pytest
 from marshmallow.exceptions import ValidationError
 
-from tenable.io.v3.users.schema import UserEditSchema, UsersCreateSchema
+from tenable.io.v3.users.schema import (UserEditSchema, UsersCommonSchema,
+                                        UsersCreateSchema)
 
 
 @pytest.fixture
@@ -73,3 +74,30 @@ def test_users_edit_schema(users_edit):
     with pytest.raises(ValidationError):
         users_edit['new_val'] = 'something'
         schema.load(users_edit)
+
+
+def test_users_common_schema():
+    '''
+    Test the users common schema
+    '''
+    payload = dict(
+        email_enabled=True,
+        sms_enabled=True,
+        sms_phone='3458394544',
+        password='password',
+        current_password='curr_pass'
+    )
+    test_resp = {
+        'email_enabled': True,
+        'sms_enabled': True,
+        'sms_phone': '3458394544',
+        'password': 'password',
+        'current_password': 'curr_pass'
+    }
+
+    schema = UsersCommonSchema()
+    assert test_resp == schema.dump(schema.load(payload))
+
+    with pytest.raises(ValidationError):
+        payload['new_val'] = 'something'
+        schema.load(payload)
