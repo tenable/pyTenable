@@ -3,9 +3,12 @@ Testing the Networks endpoints
 '''
 import uuid
 
-import pytest
 import responses
+from requests import Response
 from responses import matchers
+
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 
 NETWORK_BASE_URL = r'https://cloud.tenable.com/api/v3/networks'
 BASE_URL = r'https://cloud.tenable.com'
@@ -207,12 +210,60 @@ def test_list_scanners(api):
     assert resp == api_resp['scanners']
 
 
+@responses.activate
 def test_search(api):
     '''
     Test case for validating search action of Networks API
     '''
-    with pytest.raises(NotImplementedError):
-        api.v3.vm.networks.search()
+    fields = ['id', 'name', 'description', 'created_by', 'created_at']
+
+    payload = {
+        'fields': fields,
+        'limit': 200,
+    }
+
+    api_response = {
+        'networks': [{
+            'description': 'Description Demo Network1',
+            'id': '00000000-0000-0000-0000-000000000001',
+            'created_by': 'User_Name',
+            'created_at': '2020-05-16T07:46:53.789Z',
+            'name': 'Demo Network 1'
+        }, {
+            'description': 'Description Demo Network2',
+            'id': '00089a45-44a5-4620-bf9f-75ebedc6cc6c',
+            'created_by': 'User_Name',
+            'created_at': '2020-05-16T07:46:53.789Z',
+            'name': 'Demo Network 2'
+        }],
+        'pagination': {
+            'total': 2,
+            'next': 'nextToken'
+        }
+    }
+
+    responses.add(
+        responses.POST,
+        f'{NETWORK_BASE_URL}/search',
+        match=[matchers.json_params_matcher(payload)],
+        json=api_response
+    )
+
+    iterator = api.v3.vm.networks.search(
+        fields=fields, limit=200
+    )
+    assert isinstance(iterator, SearchIterator)
+    assert len(list(iterator)) == api_response['pagination']['total']
+
+    iterator = api.v3.vm.networks.search(
+        fields=fields, return_csv=True, limit=200
+    )
+    assert isinstance(iterator, CSVChunkIterator)
+
+    resp = api.v3.vm.networks.search(
+        fields=fields, return_resp=True, limit=200
+    )
+    assert isinstance(resp, Response)
 
 
 @responses.activate
