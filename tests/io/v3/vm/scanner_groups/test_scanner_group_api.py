@@ -4,7 +4,11 @@ Testing the Scanner groups endpoints
 import re
 
 import responses
+from requests import Response
 from responses import matchers
+
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
 
 SCANNER_GROUPS_BASE_URL = r'https://cloud.tenable.com/api/v3/scanner-groups'
 GROUP_ID = 'b5db63f1-551d-4789-aefa-9629c93ddc45'
@@ -14,23 +18,29 @@ SCANNER_GROUP_DETAILS = {
     'last_modification_date': '2019-12-31T20:50:23.635Z',
     'owner': 'system',
     'owner_id': '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e',
-    'default_permissions': 16, 'user_permissions': 128,
-    'shared': 1, 'scan_count': 0,
+    'default_permissions': 16,
+    'user_permissions': 128,
+    'shared': 1,
+    'scan_count': 0,
     'id': 'b5db63f1-551d-4789-aefa-9629c93ddc45',
-    'type': 'load_balancing', 'name': 'test2',
-    'network_name': 'Default', 'supports_webapp': False,
+    'type': 'load_balancing',
+    'name': 'test2',
+    'network_name': 'Default',
+    'supports_webapp': False,
     'scanner_id': 'b5db63f1-551d-4789-aefa-9629c93ddc45',
-    'owner_name': 'system'
+    'owner_name': 'system',
 }
 SCANNER_CREATE_RESP = {
     'creation_date': '2019-12-31T20:50:23.635Z',
     'last_modification_date': '2019-12-31T20:50:23.635Z',
     'owner': 'system',
     'owner_id': '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e',
-    'default_permissions': 16, 'scan_count': 0,
+    'default_permissions': 16,
+    'scan_count': 0,
     'id': '6100e486-5df2-4849-9d1f-5b20c99abc97',
-    'type': 'load_balancing', 'name': 'test1',
-    'owner_name': 'system'
+    'type': 'load_balancing',
+    'name': 'test1',
+    'owner_name': 'system',
 }
 LIST_SCANNER_RESP = [
     {
@@ -52,19 +62,13 @@ LIST_SCANNER_RESP = [
         'status': 'on',
         'timestamp': '2019-12-31T20:50:23.635Z',
         'type': 'local',
-        'id': 'b5db63f1-551d-4789-aefa-9629c93ddc45'
+        'id': 'b5db63f1-551d-4789-aefa-9629c93ddc45',
     }
 ]
 SCANNER_LIST_ROUTE_RESP = [
-    {
-        'route': 'example.com'
-    },
-    {
-        'route': '10.1.2.3'
-    },
-    {
-        'route': '2001:db8::/64'
-    }
+    {'route': 'example.com'},
+    {'route': '10.1.2.3'},
+    {'route': '2001:db8::/64'},
 ]
 
 
@@ -72,8 +76,9 @@ SCANNER_LIST_ROUTE_RESP = [
 def test_add_scanner(api):
     responses.add(
         responses.POST,
-        re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}/scanners/'
-                   f'{SCANNER_ID}'),
+        re.compile(
+            f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}/scanners/{SCANNER_ID}'
+        ),
     )
     assert None is api.v3.vm.scanner_groups.add_scanner(GROUP_ID, SCANNER_ID)
 
@@ -81,8 +86,7 @@ def test_add_scanner(api):
 @responses.activate
 def test_delete(api):
     responses.add(
-        responses.DELETE,
-        re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}')
+        responses.DELETE, re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}')
     )
     assert None is api.v3.vm.scanner_groups.delete(GROUP_ID)
 
@@ -94,7 +98,7 @@ def test_create(api):
     responses.add(
         responses.POST,
         re.compile(f'{SCANNER_GROUPS_BASE_URL}'),
-        json=SCANNER_CREATE_RESP
+        json=SCANNER_CREATE_RESP,
     )
 
     data = api.v3.vm.scanner_groups.create(name, group_type=group_type)
@@ -106,8 +110,9 @@ def test_create(api):
 def test_delete_scanner(api):
     responses.add(
         responses.DELETE,
-        re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}/scanners/'
-                   f'{SCANNER_ID}'),
+        re.compile(
+            f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}/scanners/' f'{SCANNER_ID}'
+        ),
     )
     assert None is api.v3.vm.scanner_groups.delete_scanner(
         GROUP_ID, SCANNER_ID
@@ -120,7 +125,7 @@ def test_details(api):
     responses.add(
         responses.GET,
         re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}'),
-        json=SCANNER_GROUP_DETAILS
+        json=SCANNER_GROUP_DETAILS,
     )
 
     data = api.v3.vm.scanner_groups.details(GROUP_ID)
@@ -147,9 +152,7 @@ def test_list_scanners(api):
     responses.add(
         responses.GET,
         re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}/scanners'),
-        json={
-            'scanners': LIST_SCANNER_RESP
-        }
+        json={'scanners': LIST_SCANNER_RESP},
     )
 
     data = api.v3.vm.scanner_groups.list_scanners(GROUP_ID)
@@ -162,7 +165,7 @@ def test_list_routes(api):
     responses.add(
         responses.GET,
         re.compile(f'{SCANNER_GROUPS_BASE_URL}/{GROUP_ID}/routes'),
-        json=SCANNER_LIST_ROUTE_RESP
+        json=SCANNER_LIST_ROUTE_RESP,
     )
 
     data = api.v3.vm.scanner_groups.list_routes(GROUP_ID)
@@ -181,3 +184,70 @@ def test_edit_routes(api):
 
     data = api.v3.vm.scanner_groups.edit_routes(GROUP_ID, routes)
     assert None is data
+
+
+@responses.activate
+def test_search(api):
+    '''
+    Test the search method
+    '''
+    fields = ['name', 'type', 'id']
+    sort = [('creation_date', 'desc')]
+    filters = ('network_name', 'eq', 'Default')
+
+    payload = {
+        'fields': fields,
+        'limit': 200,
+        'sort': [{'creation_date': 'desc'}],
+        'filter': {
+            'property': 'network_name',
+            'operator': 'eq',
+            'value': 'Default',
+        },
+    }
+
+    api_response = {
+        'scanner_groups': [
+            {
+                'default_permissions': 16,
+                'shared': 1,
+                'user_permissions': 16,
+                'scanner_count': 0,
+                'owner_id': '3bfcfb11-6c12-405b-b7ba-bbc705cd2a6e',
+                'network_name': 'Default',
+                'distributed': False,
+                'creation_date': '2022-01-07T09:17:40.081-05:00',
+                'type': 'load_balancing',
+                'scanner_id': '6317d0a1-c7b7-40f6-830f-a7089bb77233',
+                'network_id': '00000000-0000-0000-0000-000000000000',
+                'supports_webapp': False,
+                'name': 'testing103',
+                'last_modification_date': '2022-01-07T09:23:06.096-05:00',
+                'id': '6317d0a1-c7b7-40f6-830f-a7089bb77233',
+            }
+        ],
+        'pagination': {'total': 1, 'next': 'nextToken'},
+    }
+    responses.add(
+        responses.POST,
+        f'{SCANNER_GROUPS_BASE_URL}/search',
+        match=[matchers.json_params_matcher(payload)],
+        json=api_response,
+    )
+
+    iterator = api.v3.vm.scanner_groups.search(
+        fields=fields, limit=200, sort=sort, filter=filters
+    )
+    assert isinstance(iterator, SearchIterator)
+
+    assert len(list(iterator)) == api_response['pagination']['total']
+
+    iterator = api.v3.vm.scanner_groups.search(
+        fields=fields, return_csv=True, sort=sort, limit=200, filter=filters
+    )
+    assert isinstance(iterator, CSVChunkIterator)
+
+    resp = api.v3.vm.scanner_groups.search(
+        fields=fields, return_resp=True, limit=200, sort=sort, filter=filters
+    )
+    assert isinstance(resp, Response)
