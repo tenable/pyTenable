@@ -57,6 +57,18 @@ class SearchSchema(Schema):
     '''
     fields_ = fields.List(fields.Str(), allow_none=True, data_key='fields')
     filter = fields.Nested(FilterSchema, allow_none=True)
-    limit = fields.Int(default=200)
+    limit = fields.Int(dump_default=200)
     next = fields.Str(allow_none=True)
+    sort = fields.List(fields.Nested(SortSchema), allow_none=True)
+
+
+class SearchWASSchema(Schema):
+    '''
+    Schema supporting the search request for was API
+    '''
+    fields_ = fields.List(fields.Str(), allow_none=True, data_key='fields')
+    filter = fields.Nested(FilterSchema, allow_none=True)
+    limit = fields.Int(dump_default=200)
+    offset = fields.Int(dump_default=0)
+    num_pages = fields.Int()
     sort = fields.List(fields.Nested(SortSchema), allow_none=True)
