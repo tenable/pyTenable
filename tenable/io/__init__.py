@@ -43,9 +43,12 @@ Tenable.io
     v3/index
     workbenches
 '''
-from typing import Dict, List, Optional
+from typing import Dict, Optional
+
 from requests import Response
+
 from tenable.base.platform import APIPlatform
+
 from .access_groups import AccessGroupsAPI
 from .access_groups_v2 import AccessGroupsV2API
 from .agent_config import AgentConfigAPI
@@ -67,10 +70,10 @@ from .networks import NetworksAPI
 from .permissions import PermissionsAPI
 from .plugins import PluginsAPI
 from .policies import PoliciesAPI
+from .remediation_scans import RemediationScansAPI
 from .scanner_groups import ScannerGroupsAPI
 from .scanners import ScannersAPI
 from .scans import ScansAPI
-from .remediation_scans import RemediationScansAPI
 from .server import ServerAPI
 from .session import SessionAPI
 from .tags import TagsAPI
@@ -80,7 +83,7 @@ from .v3 import Version3API
 from .workbenches import WorkbenchesAPI
 
 
-class TenableIO(APIPlatform):  # noqa: PLR0904
+class TenableIO(APIPlatform):
     '''
     The Tenable.io object is the primary interaction point for users to
     interface with Tenable.io via the pyTenable library.  All of the API
@@ -425,7 +428,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         return UsersAPI(self)
 
     @property
-    def v3(self):
+    def v3(self):  # noqa
         '''
         The interface object for the
         :doc:`Tenable.io v3 APIs <v3/index>`.

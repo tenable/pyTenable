@@ -20,6 +20,7 @@ Methods available on ``tio.v3.was``:
     folders
     plugins
     scans
+    vulnerabilities
     templates
     user_templates
 '''
@@ -28,6 +29,7 @@ from tenable.io.v3.was.attachments.api import AttachmentsAPI
 from tenable.io.v3.was.folders.api import FoldersAPI
 from tenable.io.v3.was.plugins.api import PluginsAPI
 from tenable.io.v3.was.scans.api import ScansAPI
+from tenable.io.v3.was.vulnerabilities.api import VulnerabilityAPI
 from tenable.io.v3.was.templates.api import TemplatesAPI
 from tenable.io.v3.was.user_templates.api import UserTemplatesAPI
 
@@ -69,6 +71,14 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Tenable.IO v3 Scans APIs <scans>`
         '''
         return ScansAPI(self._api)
+
+    @property
+    def vulnerabilities(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 WAS Vulnerabilities APIs <vulnerabilities>`
+        '''
+        return VulnerabilityAPI(self._api)
 
     @property
     def templates(self):
