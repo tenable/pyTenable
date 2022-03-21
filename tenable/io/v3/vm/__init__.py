@@ -20,6 +20,7 @@ Methods available on ``tio.v3.vm``:
     agent_groups
     agents
     credentials
+    editor
     exclusions
     agent_exclusions
     files
@@ -39,6 +40,7 @@ from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
 from tenable.io.v3.vm.audit_log.api import AuditLogAPI
 from tenable.io.v3.vm.credentials.api import CredentialsAPI
+from tenable.io.v3.vm.editor.api import EditorAPI
 from tenable.io.v3.vm.exclusions.api import ExclusionsAPI
 from tenable.io.v3.vm.files.api import FileAPI
 from tenable.io.v3.vm.folders.api import FoldersAPI
@@ -106,6 +108,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):
         :doc:`Tenable.io v3 Credentials APIs <credentials>`.
         '''
         return CredentialsAPI(self._api)
+
+    @property
+    def editor(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Editor APIs <editor>`
+        '''
+        return EditorAPI(self._api)
 
     @property
     def exclusions(self):
