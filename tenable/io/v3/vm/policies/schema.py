@@ -8,6 +8,6 @@ class PolicySchema(Schema):
     '''
     Base schema for validating Policies API
     '''
-    uuid = fields.Str()
+    uuid = fields.UUID()
     settings = fields.Dict()
     credentials = fields.Dict()

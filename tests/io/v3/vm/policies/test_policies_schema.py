@@ -18,7 +18,7 @@ def policies_schema():
             'enable_plugin_list': 'no',
             'enumerate_all_ciphers': 'yes'
         },
-        'uuid': '731a8e52-3ea6-a291-ec0a-d2ff0619c19d7bd788aaaaaaaaa',
+        'uuid': '123e4567-e89b-12d3-a456-556642440000',
         'credentials': {
             'current': {}
         }
