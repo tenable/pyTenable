@@ -2,7 +2,7 @@
 Policies
 ========
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction with Tenable.io
 :devportal:`policies <policies>` API.
 
 Methods available on ``tio.v3.vm.policies``:
@@ -145,7 +145,7 @@ class PoliciesAPI(ExploreBaseEndpoint):
         :devportal:`policies: import <policies-import>`
 
         Args:
-            fobj (FileObject):
+            fobj (BinaryIO):
                 The file object of the scan policy you wish to import.
 
         Returns:
@@ -170,13 +170,13 @@ class PoliciesAPI(ExploreBaseEndpoint):
 
         Args:
             id (int): The unique identifier of the policy to export.
-            fobj (FileObject, optional):
+            fobj (BytesIO, BinaryIO, optional):
                 A file-like object to write the contents of the policy to.  If
                 none is provided a BytesIO object will be returned with the
                 policy.
 
         Returns:
-            :obj:`FileObject`:
+            :obj:`BytesIO, BinaryIO`:
                 A file-like object containing the contents of the policy
                 in XML format.
 
@@ -257,8 +257,7 @@ class PoliciesAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests. Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -267,8 +266,8 @@ class PoliciesAPI(ExploreBaseEndpoint):
             iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
         Examples:
             >>> tio.v3.vm.policies.search(
             ...     filter=filters,
