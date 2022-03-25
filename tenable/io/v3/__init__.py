@@ -16,14 +16,18 @@ Methods available on ``tio.v3``:
     :glob:
 
     assets
+    connectors
     groups
+    mssp/index
     users
     vm/index
     was/index
 '''
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.assets.api import AssetsAPI
+from tenable.io.v3.connectors.api import ConnectorsAPI
 from tenable.io.v3.groups.api import GroupsAPI
+from tenable.io.v3.mssp import ManagedSecurityServiceProvider
 from tenable.io.v3.users.api import UsersAPI
 from tenable.io.v3.vm import VulnerabilityManagement
 from tenable.io.v3.was import WebApplicationScanning
@@ -44,12 +48,29 @@ class Version3API(APIEndpoint):
         return AssetsAPI(self._api)
 
     @property
+    def connectors(self):
+        '''
+        The interface object for the connectors APIs
+        :doc:`tenable.io v3 connectors APIs <connectors>
+        '''
+        return ConnectorsAPI(self._api)
+
+    @property
     def groups(self):
         '''
         The interface object for the Groups APIs
-        :doc:`tenable.io v3 Groups APIs <groups>`.
+        :doc:`Tenable.io v3 Groups APIs <groups>`.
         '''
         return GroupsAPI(self._api)
+
+    @property
+    def mssp(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Managed Security Service Provider APIs
+        <mssp/index>`.
+        '''
+        return ManagedSecurityServiceProvider(self._api)
 
     @property
     def users(self):
@@ -63,7 +84,7 @@ class Version3API(APIEndpoint):
     def vm(self):
         '''
         The interface object for the
-        :doc:`Vulnerability Management <vm/index>`
+        :doc:`Tenable.io v3 Vulnerability Management <vm/index>`
         '''
         return VulnerabilityManagement(self._api)
 
@@ -71,6 +92,6 @@ class Version3API(APIEndpoint):
     def was(self):
         '''
         The interface object for the
-         :doc:`Web Application Scanning <was/index>`
+         :doc:`Tenable.io v3 Web Application Scanning <was/index>`
         '''
         return WebApplicationScanning(self._api)
