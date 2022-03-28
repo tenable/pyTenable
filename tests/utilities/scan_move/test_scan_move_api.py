@@ -1,4 +1,5 @@
 import responses
+import os
 
 from tenable.io import TenableIO
 from tenable.utilities.scan_move import ScanMove
@@ -6,7 +7,10 @@ from tenable.utilities.scan_move import ScanMove
 from .objects import (EXPORT_RESP_DATA, FILE_ID, FILE_UPLOAD_RESP_DATA,
                       HISTORY_ID_1, HISTORY_ID_2, IMPORT_RESP_DATA, SCAN,
                       SCAN_FILTERS_RESP_DATA, SCAN_HISTORIES, SCAN_ID)
+dir_name = os.path.dirname(os.path.abspath(__file__))
 
+TXT_ATTACHMENT_FILE = 'scan_history.txt'
+TXT_ATTACHMENT_FILE_PATH = os.path.join(dir_name, TXT_ATTACHMENT_FILE)
 SCAN_BASE_URL = 'https://cloud.tenable.com/scans'
 BASE_URL = 'https://cloud.tenable.com'
 
@@ -51,13 +55,13 @@ def test_scan_move():
         json={'status': 'ready'}
     )
 
-    with open('scan_history.txt', 'rb') as history:
+    with open(TXT_ATTACHMENT_FILE_PATH, 'rb') as history:
         text_contents = history.read()
 
     responses.add(
-        responses.GET,
-        url=f'{SCAN_BASE_URL}/{HISTORY_ID_1}/export/{FILE_ID}/download',
-        body=text_contents
+            responses.GET,
+            url=f'{SCAN_BASE_URL}/{HISTORY_ID_1}/export/{FILE_ID}/download',
+            body=text_contents
     )
 
     responses.add(
