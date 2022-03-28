@@ -23,7 +23,8 @@ class ScanMove:
         self.source_tio = source_tio
         self.target_tio = target_tio
 
-    def _get_scan_history(self, scan_id, limit):
+    def _get_scan_history(self, scan_id: str, limit: int):
+        # get scan history using scan id
         scan_history = []
         count = 0
 
