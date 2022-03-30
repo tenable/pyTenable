@@ -1,5 +1,6 @@
 import responses
 import os
+import pytest as pytest
 
 from tenable.io import TenableIO
 from tenable.utilities.scan_move import ScanMove
@@ -13,8 +14,10 @@ TXT_ATTACHMENT_FILE = 'scan_history.txt'
 TXT_ATTACHMENT_FILE_PATH = os.path.join(dir_name, TXT_ATTACHMENT_FILE)
 SCAN_BASE_URL = 'https://cloud.tenable.com/scans'
 BASE_URL = 'https://cloud.tenable.com'
+V3_SCAN_BASE_URL = r'https://cloud.tenable.com/api/v3/scans'
 
 
+@pytest.mark.xfail(raises=NotImplementedError)
 @responses.activate
 def test_scan_move():
     source_tio = TenableIO()
@@ -87,5 +90,9 @@ def test_scan_move():
         url=f'{BASE_URL}/file/upload',
         json=FILE_UPLOAD_RESP_DATA
     )
-
+    responses.add(
+        responses.POST,
+        url=f'{V3_SCAN_BASE_URL}/search',
+        json=IMPORT_RESP_DATA
+    )
     scan_move.move(1)
