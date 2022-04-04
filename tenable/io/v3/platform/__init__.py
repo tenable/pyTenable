@@ -4,7 +4,7 @@ Platform
 
 The following API's are available for interaction under Platform
 
-Methods available on ``tio.v3.was``:
+Methods available on ``tio.v3.platform``:
 
 
 .. rst-class:: hide-signature

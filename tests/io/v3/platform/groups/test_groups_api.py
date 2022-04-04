@@ -9,7 +9,7 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
 
 BASE_URL = 'https://cloud.tenable.com'
 GROUPS_BASE_URL = f'{BASE_URL}/api/v3/groups'
-GROUP_ID = 'b27778c1-af10-4218-a1a4-c2c36b236e05'
+GROUP_ID = '95ecc380-afe9-11e4-9b6c-751b66dd541e'
 USER_ID = 'e9f23194-adb7-4c02-8632-615c694c787e'
 
 

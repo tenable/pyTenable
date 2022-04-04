@@ -19,7 +19,7 @@ from requests import Response
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
-
+from tenable.io.v3.platform.groups.schema import PlatformGroupSchema
 
 class GroupsAPI(ExploreBaseEndpoint):
     '''
@@ -52,6 +52,8 @@ class GroupsAPI(ExploreBaseEndpoint):
             ...     '00000000-0000-0000-0000-000000000000'
             ... )
         '''
+        schema = PlatformGroupSchema()
+        schema.dump(schema.load({"group_id": group_id, "user_id": user_id}))
         self._post(f'{group_id}/users/{user_id}')
         return self.list_users(group_id)
 
@@ -72,6 +74,8 @@ class GroupsAPI(ExploreBaseEndpoint):
         Examples:
             >>> group = tio.v3.platform.groups.create('Group Name')
         '''
+        schema = PlatformGroupSchema()
+        schema.dump(schema.load({'name': name}))
         return self._post(json={'name': name})
 
     def delete(self, group_id: UUID) -> None:
@@ -92,6 +96,8 @@ class GroupsAPI(ExploreBaseEndpoint):
             ...     '00000000-0000-0000-0000-000000000000'
             ... )
         '''
+        schema = PlatformGroupSchema()
+        schema.dump(schema.load({'group_id': group_id}))
         self._delete(group_id)
 
     def delete_user(self, group_id: UUID, user_id: UUID) -> None:
@@ -117,6 +123,8 @@ class GroupsAPI(ExploreBaseEndpoint):
             ...     '00000000-0000-0000-0000-000000000000'
             ... )
         '''
+        schema = PlatformGroupSchema()
+        schema.dump(schema.load({"group_id": group_id, "user_id": user_id}))
         self._delete(f'{group_id}/users/{user_id}')
 
     def edit(self, group_id: UUID, name: str) -> Dict:
@@ -141,6 +149,8 @@ class GroupsAPI(ExploreBaseEndpoint):
             ...     'Updated name'
             ... )
         '''
+        schema = PlatformGroupSchema()
+        schema.dump(schema.load({"group_id": group_id, "name": name}))
         return self._put(group_id, json={'name': name})
 
     def list_users(self, group_id: UUID) -> List:
@@ -220,11 +230,9 @@ class GroupsAPI(ExploreBaseEndpoint):
                 Default is 200.
             next (str):
                 The pagination token to use when requesting the next page of
-                results.  This token is presented in the previous response.
-            return_resp (bool):
-                If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                results.  This token is obtained from the previous response.
+            return_resp (bool):If set to true, will override the default behavior to return
+                a requests. Response Object to the user.
             return_csv (bool):
                 If set to true, It wil return the CSV Iterable. Returns all
                 data in text/csv format on each next call with row headers
@@ -234,8 +242,8 @@ class GroupsAPI(ExploreBaseEndpoint):
                 The iterable that handles the pagination and potentially
                 async requests for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
         Examples:
             >>> for group in tio.v3.platform.groups.search():
             ...     print(group)
