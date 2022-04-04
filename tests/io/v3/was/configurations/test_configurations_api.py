@@ -296,25 +296,22 @@ def test_search(api):
         json=api_response
     )
 
-    iterator = api.v3.was.configurations.search(
+    configurations_search_iterator1 = api.v3.was.configurations.search(
         fields=fields, limit=200, sort=sort, filter=filters
     )
-    assert isinstance(iterator, SearchIterator)
+    assert isinstance(configurations_search_iterator1, SearchIterator)
 
-    configurations_list = []
-    for configuration in iterator:
-        configurations_list.append(configuration)
-    assert len(configurations_list) == api_response['pagination']['total']
+    assert len(list(configurations_search_iterator1)) == api_response['pagination']['total']
 
-    iterator = api.v3.was.configurations.search(
+    configurations_search_iterator2 = api.v3.was.configurations.search(
         fields=fields, return_csv=True, sort=sort, limit=200, filter=filters
     )
-    assert isinstance(iterator, CSVChunkIterator)
+    assert isinstance(configurations_search_iterator2, CSVChunkIterator)
 
-    resp = api.v3.was.configurations.search(
+    configurations_search_iterator3 = api.v3.was.configurations.search(
         fields=fields, return_resp=True, limit=200, sort=sort, filter=filters
     )
-    assert isinstance(resp, Response)
+    assert isinstance(configurations_search_iterator3, Response)
 
 
 @responses.activate

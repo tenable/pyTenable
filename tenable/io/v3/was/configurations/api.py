@@ -2,7 +2,7 @@
 Configurations
 ==============
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction with Tenable.io
 :devportal:`configurations <was-v2-configurations>` API.
 
 Methods available on ``tio.v3.was.configurations``:
@@ -63,7 +63,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
                 The UUID of the folder to assign for the scan configuration.
             user_template_id (str):
                 The UUID of the user-defined configuration template from which
-                this configuration was derived.
+                this configuration is derived.
             scanner_id (int):
                 The ID of the scanner (if the type is set to managed_webapp),
                 or scanner group (if the type is pool or local) that performs
@@ -229,7 +229,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
 
         Args:
             fields (list, optional):
-                The list of field names to return from the Tenable API.
+                The list of field names returned from the Tenable API.
 
                 Examples:
                     >>> ['field1', 'field2']
@@ -288,8 +288,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
                 iterator.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -299,8 +298,8 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
             Iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
 
         Examples:
 
@@ -360,7 +359,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
                 The UUID of the folder to assign for the scan configuration.
             user_template_id (str):
                 The UUID of the user-defined configuration template from which
-                this configuration was derived.
+                this configuration is derived.
             scanner_id (int):
                 The ID of the scanner (if the type is set to managed_webapp),
                 or scanner group (if the type is pool or local) that performs

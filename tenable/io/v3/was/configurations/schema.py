@@ -81,6 +81,6 @@ class ConfigurationSchema(Schema):
     scanner_id = fields.UUID()
     schedule = fields.Nested(ScheduleSchema)
     settings = fields.Nested(SettingsSchema)
-    targets = fields.List(fields.Url())
+    targets = fields.List(fields.String())
     template_id = fields.UUID()
     user_template_id = fields.UUID()
