@@ -1,0 +1,50 @@
+HTTP/1.1 200 OK
+Date: Wed, 30 Oct 2019 18:13:43 GMT
+Server: Apache/2.4.7 (Ubuntu)
+X-Powered-By: PHP/5.5.9-1ubuntu4.29
+Expires: Thu, 19 Nov 1981 08:52:00 GMT
+Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+Pragma: no-cache
+Vary: Accept-Encoding
+Content-Encoding: gzip
+Content-Length: 804
+Connection: close
+Content-Type: text/html
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+	<head>
+	<link type="text/css" rel="stylesheet" href="/css/style.css" />
+		<title>XPath Injection Test</title>
+
+	</head>
+	<body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" bgcolor="#000000">
+		<table cellspacing="0" cellpadding="0" border="4" align="center" width="810">
+			<tr>
+				<td align="center" style="height:50px"><h1><font color="#FFFFFF">Web Scanner Test Site</font></h1><td>
+			</tr>
+
+						<tr>
+							<td align="right" style="height:50px;"><a class="button" href="/login.php"><font >Login</font></a></h1></td>
+						</tr>
+
+			<tr>
+				<td bgcolor="#FFFFFF" style="padding:15px; vertical-align:top">
+					<table cellspacing="0" cellpadding="0" border="4" align="center" width="80%">
+<h3>Summary</h3>Belgian Waffles - $5.95 - <a href="search_by_name.php?index=Waffles&action=addtocart&id=1000" >Add to Cart</a><br/>Strawberry Belgian Waffles - $7.95 - <a href="search_by_name.php?index=Waffles&action=addtocart&id=1001" >Add to Cart</a><br/>Berry-Berry Belgian Waffles - $8.95 - <a href="search_by_name.php?index=Waffles&action=addtocart&id=1002" >Add to Cart</a><br/>French Toast - $4.50 - <a href="search_by_name.php?index=Breakfast&action=addtocart&id=1003" >Add to Cart</a><br/>Homestyle Breakfast - $6.95 - <a href="search_by_name.php?index=Breakfast&action=addtocart&id=1004" >Add to Cart</a><br/>Toasts - $6.95 - <a href="search_by_name.php?index=Breakfast&action=addtocart&id=1005" >Add to Cart</a><br/>Soup - $6.95 - <a href="search_by_name.php?index=Lunch&action=addtocart&id=1006" >Add to Cart</a><br/>Berry-Berry Belgian Maffins - $8.95 - <a href="search_by_name.php?index=Maffins&action=addtocart&id=1007" >Add to Cart</a><br/><br/><hr /><br/>
+
+						<tr style="height:20%; vertical-align:top">
+							<td align="center"><font color="grey" size="-2">The form based credentials are testuser/testpass, and the HTTP Basic credentials are btestuser/btestpass.</font>
+						</tr>
+
+						<tr style="height:10%; vertical-align:top">
+							<td align="center"><a href="/privacy.php"><font color="#FFFFFF">Privacy Policy</font></a></td>
+						</tr>
+
+					</table>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
