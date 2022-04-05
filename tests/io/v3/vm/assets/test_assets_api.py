@@ -69,10 +69,7 @@ def test_search(api):
     )
     assert isinstance(iterator, SearchIterator)
 
-    event_list = []
-    for event in iterator:
-        event_list.append(event)
-    assert len(event_list) == api_response['pagination']['total']
+    assert len(list(iterator)) == api_response['pagination']['total']
 
     iterator = api.v3.assets.search(
         fields=fields, return_csv=True, sort=sort, limit=200, filter=filters
@@ -174,10 +171,7 @@ def test_search_host(api):
     )
     assert isinstance(iterator, SearchIterator)
 
-    event_list = []
-    for event in iterator:
-        event_list.append(event)
-    assert len(event_list) == api_response['pagination']['total']
+    assert len(list(iterator)) == api_response['pagination']['total']
 
     iterator = api.v3.assets.search_host(
         fields=fields, return_csv=True, sort=sort, limit=200, filter=filters

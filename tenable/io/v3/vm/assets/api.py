@@ -17,9 +17,9 @@ from uuid import UUID
 from requests import Response
 from typing_extensions import Literal
 
-from tenable.io.v3.assets.schema import (AssetUpdateACRSchema,
-                                         AssignTagsAssetSchema,
-                                         ImportAssetSchema, MoveAssetSchema)
+from tenable.io.v3.vm.assets.schema import (AssetUpdateACRSchema,
+                                            AssignTagsAssetSchema,
+                                            ImportAssetSchema, MoveAssetSchema)
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
@@ -409,7 +409,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         Overwrites the Tenable-provided Asset Criticality Rating (ACR) for
          the specified assets.
-        contain at least one of the following attributes: ``fqdn``, ``ipv4``,
+        Each asset in assets contain at least one of the following attributes: ``fqdn``, ``ipv4``,
         ``netbios_name``, ``mac_address``.  Each record may also contain
         additional properties.
 
@@ -520,8 +520,7 @@ class AssetsAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -530,8 +529,8 @@ class AssetsAPI(ExploreBaseEndpoint):
             Iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
 
         Examples:
             >>> tio.v3.assets.search_host(filter=('netbios_name', 'eq',
