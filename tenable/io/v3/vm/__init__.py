@@ -20,13 +20,20 @@ Methods available on ``tio.v3.vm``:
     agent_groups
     agents
     credentials
+    editor
+    exclusions
+    agent_exclusions
     files
     folders
     networks
     permissions
     plugins
+    policies
+    remediation_scans
+    scans
     scanners
     scanner_groups
+    vulnerabilities
     tags
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
