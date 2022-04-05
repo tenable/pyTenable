@@ -17,17 +17,17 @@ Methods available on ``tio.v3``:
 
     assets
     connectors
-    groups
     mssp/index
     users
+    platform/index
     vm/index
     was/index
 '''
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.assets.api import AssetsAPI
 from tenable.io.v3.connectors.api import ConnectorsAPI
-from tenable.io.v3.groups.api import GroupsAPI
 from tenable.io.v3.mssp import ManagedSecurityServiceProvider
+from tenable.io.v3.platform import Platform
 from tenable.io.v3.users.api import UsersAPI
 from tenable.io.v3.vm import VulnerabilityManagement
 from tenable.io.v3.was import WebApplicationScanning
@@ -56,12 +56,12 @@ class Version3API(APIEndpoint):
         return ConnectorsAPI(self._api)
 
     @property
-    def groups(self):
+    def platform(self):
         '''
-        The interface object for the Groups APIs
-        :doc:`Tenable.io v3 Groups APIs <groups>`.
+        The interface object for the
+        :doc:`Platform <platform/index>`
         '''
-        return GroupsAPI(self._api)
+        return Platform(self._api)
 
     @property
     def mssp(self):
