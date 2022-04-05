@@ -330,12 +330,12 @@ def test_move_assets(api):
 @responses.activate
 def test_update_acr(api):
     asset = [{
-                    'fqdn': ['example_one.py.test'],
-                    'ipv4': ['192.168.1.1'],
-                    'netbios_name': 'example_one',
-                    'mac_address': ['00:00:00:00:00:00'],
-                    'id': '116af8c3-969d-4621-9f9f-364eeb58e3a7'
-                }]
+        'fqdn': ['example_one.py.test'],
+        'ipv4': ['192.168.1.1'],
+        'netbios_name': 'example_one',
+        'mac_address': ['00:00:00:00:00:00'],
+        'id': '116af8c3-969d-4621-9f9f-364eeb58e3a7'
+    }]
     acr_score = 10
     note = 'test'
     reason = ['Business Critical', 'In Scope For Compliance']

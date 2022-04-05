@@ -5,8 +5,8 @@ import pytest
 from marshmallow import ValidationError
 
 from tenable.io.v3.vm.assets.schema import (AssetUpdateACRSchema,
-                                     AssignTagsAssetSchema,
-                                     ImportAssetSchema, MoveAssetSchema)
+                                            AssignTagsAssetSchema,
+                                            ImportAssetSchema, MoveAssetSchema)
 from tests.io.v3.vm.assets.objects import (NEGATIVE_ASSIGN_TAGS_SCHEMA,
                                            NEGATIVE_IMPORT_ASSET_SCHEMA,
                                            NEGATIVE_MOVE_ASSET_SCHEMA,
