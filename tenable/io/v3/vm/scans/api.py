@@ -17,6 +17,7 @@ from io import BytesIO
 from typing import BinaryIO, Callable, Dict, Optional, Union
 from uuid import UUID
 
+import pytest
 from requests import Response
 from restfly.utils import dict_clean
 
@@ -839,6 +840,7 @@ class ScansAPI(ExploreBaseEndpoint):
         self._delete(f'{scan_id}')
 
     # todo - get back to this once iterator is ready
+    @pytest.mark.xfail(raises=NotImplementedError)
     def history(self,
                 scan_id,
                 limit=None,
@@ -900,7 +902,7 @@ class ScansAPI(ExploreBaseEndpoint):
         #     _path='scans/{}/history'.format(scan_id),
         #     _resource='history',
         # )
-        return NotImplementedError('This endpoint is not developed')
+        raise NotImplementedError('This endpoint is not developed')
 
     def delete_history(self, scan_id: UUID, history_id: UUID) -> None:
         '''
