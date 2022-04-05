@@ -37,18 +37,26 @@ Methods available on ``tio.v3.vm``:
     tags
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.agent_config.api import AgentConfigAPI
+from tenable.io.v3.vm.agent_exclusions.api import AgentExclusionsAPI
+from tenable.io.v3.vm.agent_config.api import AgentsConfigAPI
 from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
+from tenable.io.v3.vm.audit_log.api import AuditLogAPI
 from tenable.io.v3.vm.credentials.api import CredentialsAPI
+from tenable.io.v3.vm.editor.api import EditorAPI
+from tenable.io.v3.vm.exclusions.api import ExclusionsAPI
 from tenable.io.v3.vm.files.api import FileAPI
 from tenable.io.v3.vm.folders.api import FoldersAPI
 from tenable.io.v3.vm.networks.api import NetworksAPI
 from tenable.io.v3.vm.permissions.api import PermissionsAPI
 from tenable.io.v3.vm.plugins.api import PluginsAPI
+from tenable.io.v3.vm.policies.api import PoliciesAPI
+from tenable.io.v3.vm.remediation_scans.api import RemediationScansAPI
 from tenable.io.v3.vm.scanner_groups.api import ScannerGroupsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
+from tenable.io.v3.vm.scans.api import ScansAPI
 from tenable.io.v3.vm.server.api import ServerAPI
+from tenable.io.v3.vm.vulnerabilities.api import VulnerabilityAPI
 from tenable.io.v3.vm.tags.api import TagsAPI
 
 
@@ -154,6 +162,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Tenable.io v3 Server APIs <server>`
         '''
         return ServerAPI(self._api)
+
+    @property
+    def vulnerabilities(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 VM Vulnerabilities APIs <vulnerabilities>`
+        '''
+        return VulnerabilityAPI(self._api)
 
     @property
     def tags(self):
