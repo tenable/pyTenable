@@ -118,7 +118,7 @@ def test_create_category(api):
     Test case for tags create_category method
     '''
     name: str = 'Location'
-    description: str = 'category for particuler location'
+    description: str = 'category for particular location'
 
     # Let's create sample payload for api endpoint
     payload: dict = {
@@ -138,7 +138,7 @@ def test_create_category(api):
         'reserved': False
     }
 
-    # Let's register the the response for create tag category endpoint
+    # Let's register the response for create tag category endpoint
     responses.add(
         responses.POST,
         re.compile(f'{BASE_URL}/categories'),
@@ -157,9 +157,9 @@ def test_create_category(api):
 
 
 @responses.activate
-def test_delete_singluer_tag_value(api):
+def test_delete_singular_tag_value(api):
     '''
-    Test case for tags delete method for sigluer tag value
+    Test case for tags delete method for singular tag value
     '''
     value_id: str = '00000000-0000-0000-0000-000000000000'
 
@@ -450,7 +450,7 @@ def test_edit(api):
         'saved_search': False
     }
 
-    # Let's register the mock response for tags value deatils endpoint
+    # Let's register the mock response for tags value details endpoint
     responses.add(
         responses.GET,
         re.compile(f'{BASE_URL}/values/{value_id}'),
@@ -672,7 +672,7 @@ def test_search(api):
                 'category_description': ''
             }
         ],
-        'pagination': {'total': 2, 'next': 'nextToken'}
+        'pagination': {'total': 2}
     }
 
     fields: list = [
@@ -718,28 +718,24 @@ def test_search(api):
         match=[responses.matchers.json_params_matcher(payload)],
     )
 
-    iterator = api.v3.vm.tags.search(
+    tags_search_iterator1 = api.v3.vm.tags.search(
         fields=fields,
         filter=filter,
         sort=sort,
         limit=200
     )
-    assert isinstance(iterator, SearchIterator)
+    assert isinstance(tags_search_iterator1, SearchIterator)
+    assert len(list(tags_search_iterator1)) == test_response['pagination']['total']
 
-    values_list = []
-    for item in iterator:
-        values_list.append(item)
-    assert len(values_list) == test_response['pagination']['total']
-
-    iterator = api.v3.vm.tags.search(
+    tags_search_iterator2 = api.v3.vm.tags.search(
         fields=fields, filter=filter, sort=sort, return_csv=True
     )
-    assert isinstance(iterator, CSVChunkIterator)
+    assert isinstance(tags_search_iterator2, CSVChunkIterator)
 
-    resp = api.v3.vm.tags.search(
+    tags_search_iterator3 = api.v3.vm.tags.search(
         fields=fields, filter=filter, sort=sort, return_resp=True, limit=200
     )
-    assert isinstance(resp, Response)
+    assert isinstance(tags_search_iterator3, Response)
 
 
 @responses.activate
@@ -762,7 +758,6 @@ def test_search_categories(api):
         ],
         'pagination': {
             'total': 1,
-            'next': 'nextToken'
         }
     }
 
@@ -806,25 +801,21 @@ def test_search_categories(api):
         match=[responses.matchers.json_params_matcher(payload)],
     )
 
-    iterator = api.v3.vm.tags.search_categories(
+    search_categories_iterator1 = api.v3.vm.tags.search_categories(
         fields=fields,
         filter=filter,
         sort=sort,
         limit=200
     )
-    assert isinstance(iterator, SearchIterator)
+    assert isinstance(search_categories_iterator1, SearchIterator)
+    assert len(list(search_categories_iterator1)) == test_response['pagination']['total']
 
-    categories_list = []
-    for item in iterator:
-        categories_list.append(item)
-    assert len(categories_list) == test_response['pagination']['total']
-
-    iterator = api.v3.vm.tags.search_categories(
+    search_categories_iterator2 = api.v3.vm.tags.search_categories(
         fields=fields, filter=filter, sort=sort, return_csv=True
     )
-    assert isinstance(iterator, CSVChunkIterator)
+    assert isinstance(search_categories_iterator2, CSVChunkIterator)
 
-    resp = api.v3.vm.tags.search_categories(
+    search_categories_iterator3 = api.v3.vm.tags.search_categories(
         fields=fields, filter=filter, sort=sort, return_resp=True, limit=200
     )
-    assert isinstance(resp, Response)
+    assert isinstance(search_categories_iterator3, Response)

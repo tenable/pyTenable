@@ -67,7 +67,7 @@ class FilterSchema(Schema):
         presented.
         '''
         if (  # noqa: PLR1705
-            isinstance(data, dict) and ('and' in data or 'or' in data)
+                isinstance(data, dict) and ('and' in data or 'or' in data)
         ) or (isinstance(data, tuple) and data[0] in ['and', 'or']):
             # We need to check to see if the data dictionary
             # is a group of filters. To do so we will check to see
@@ -83,12 +83,12 @@ class FilterSchema(Schema):
             # and transformation
             return self.filter_group_transform(data)
         elif (
-            isinstance(data, dict)
-            and (
-                'property' in data  # noqa: PLR0916
-                and 'operator' in data
-                and 'value' in data
-            )
+                isinstance(data, dict)
+                and (
+                        'property' in data  # noqa: PLR0916
+                        and 'operator' in data
+                        and 'value' in data
+                )
         ) or (isinstance(data, tuple) and len(data) == 3):
             return self.filter_tuple_expansion(data)
         else:
@@ -142,9 +142,9 @@ class FilterSchema(Schema):
             # create the list within the response to store this logical
             # grouping.
             if (
-                isinstance(element, str)
-                and element in ['and', 'or']
-                and not resp.get(element)
+                    isinstance(element, str)
+                    and element in ['and', 'or']
+                    and not resp.get(element)
             ):
                 resp[element] = []
                 oper = element
@@ -152,9 +152,9 @@ class FilterSchema(Schema):
             # before, we should assume that this is a malformed tuple and log
             # the error into the errors dict.
             elif (
-                isinstance(element, str)
-                and element in ['and', 'or']
-                and resp.get(element)
+                    isinstance(element, str)
+                    and element in ['and', 'or']
+                    and resp.get(element)
             ):
                 errors[element] = [
                     (

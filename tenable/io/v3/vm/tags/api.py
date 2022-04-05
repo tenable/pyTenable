@@ -12,10 +12,10 @@ Methods available on ``tio.v3.vm.tags``:
     :members:
 '''
 import json
-import re
 from typing import Dict, List, Optional, Union
 from uuid import UUID
 
+from marshmallow import ValidationError, fields, Schema
 from requests import Response
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
@@ -24,6 +24,11 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
 from tenable.io.v3.vm.tags.schema import (AssetTagSchema, TagCategorySchema,
                                           TagsFilterSchema, TagValueSchema)
 from tenable.utils import dict_clean, dict_merge
+
+
+class UUIDInput(Schema):
+    ''' Schema for UUID input '''
+    uuid = fields.UUID()
 
 
 class TagsAPI(ExploreBaseEndpoint):
@@ -62,32 +67,32 @@ class TagsAPI(ExploreBaseEndpoint):
             filters (list, optional):
                 Filters are list of tuples in the form of
                 ('FIELD', 'OPERATOR', 'VALUE').
-                Multiple filters can be used and will filter down the data
-                for automatically applying the tag to asset.
+                Multiple filters can be used and will filter down the data.
+                filters will automatically apply the tag to assets.
 
                 Examples:
                     - ``('distro', 'match', ['win', 'linux'])``
                     - ``('name', 'nmatch', 'home')``
 
                 Note that multiple values can be passed in list of string
-                format
+                format.
             filter_type (str, optional):
                 The filter_type operator determines how the filters are
-                combined together. ``and`` will inform the API that all of the
+                combined. ``and`` will inform the API that all the
                 filter conditions must be met whereas ``or`` would mean that
-                if any of the conditions are met. Default is ``and``:
+                if any of the conditions are met. Default is ``and``
             all_users_permissions (list, optional):
                 List of the minimum set of permissions all users have on
                 the current tag.
                 Possible values are ALL, CAN_EDIT, and CAN_SET_PERMISSIONS.
             current_domain_permissions (list, optional):
-                List of user and group-specific permissions for the current tag
+                List of user and group-specific permissions for the current tag.
                 current_domain_permissions are list of tuples in the form of
-                ('ID', 'NAME', 'TYPE', 'PERMISSIONS')
-                the TYPE can be either `USER` or `GROUP` and
+                ('ID', 'NAME', 'TYPE', 'PERMISSIONS').
+                The TYPE can be either `USER` or `GROUP` and
                 the PERMISSIONS can be
                 `ALL`, `CAN_EDIT` or `CAN_SET_PERMISSIONS`
-                any one or all in list
+                anyone or all in list.
 
                 Examples:
                     - ``(uuid , 'user@company.com', 'USER', ['CAN_EDIT'])``
@@ -133,20 +138,16 @@ class TagsAPI(ExploreBaseEndpoint):
             ... )
         '''
 
-        # First lets see if the category is a UUID or a general string.  If its
+        # First lets see if the category is a UUID or a general string.  If it is
         # a UUID, then we will pass the value of category into the
         # category_uuid parameter, if not (but is still a string), then we will
         # pass into category_name
 
-        uuid_pattern = re.compile(
-            r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-'
-            r'[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
-        )
-
         category_uuid = category_name = None
-        if uuid_pattern.search(category):
+        try:
+            UUIDInput().load({'uuid': category})
             category_uuid = category
-        else:
+        except ValidationError:
             category_name = category
 
         if filters is not None:
@@ -214,15 +215,15 @@ class TagsAPI(ExploreBaseEndpoint):
 
         return self._post('categories', json=payload)
 
-    def delete(self, *value_ids: UUID) -> None:
+    def delete(self, *value_ids: list[UUID]) -> None:
         '''
         Deletes tag value(s).
 
         :devportal:`tag: delete tag value <tags-delete-tag-value>`
 
         Args:
-            *value_ids (str):
-                The unique identifier for the tag value to be deleted.
+            *value_ids (list):
+                List of the unique identifier(s) for the tag value(s) to be deleted.
 
         Returns:
             :obj:`None`
@@ -280,7 +281,7 @@ class TagsAPI(ExploreBaseEndpoint):
 
         Args:
             value_id (str):
-                The unique identifier for the c/v pair
+                The unique identifier for the category/value pair
 
         Returns:
             :obj:`dict`:
@@ -328,7 +329,7 @@ class TagsAPI(ExploreBaseEndpoint):
 
         Args:
             value_id (str):
-                The unique identifier for the c/v pair to be edited.
+                The unique identifier for the category/value pair to be edited.
             value (str, optional):
                 The new name for the category value.
             description (str, optional):
@@ -336,8 +337,8 @@ class TagsAPI(ExploreBaseEndpoint):
             filters (list, optional):
                 Filters are list of tuples in the form of
                 ('FIELD', 'OPERATOR', 'VALUE').
-                Multiple filters can be used and will filter down the data
-                for automatically applying the tag to asset.
+                Multiple filters can be used and will filter down the data.
+                filters will automatically apply the tag to asset.
 
                 Examples::
                     - ``('distro', 'match', ['win', 'linux'])``
@@ -347,20 +348,20 @@ class TagsAPI(ExploreBaseEndpoint):
                      multiple values can be passed in list of string format
             filter_type (str, optional):
                 The filter_type operator determines how the filters are
-                combined together.  ``and`` will inform the API that all of
-                the filter conditions must be met whereas ``or`` would mean
+                combined.  ``and`` will inform the API that all the
+                filter conditions must be met whereas ``or`` would mean
                 that if any of the conditions are met. Default is ``and``
             all_users_permissions (list, optional):
                 List of the minimum set of permissions all users have on the
                 current tag.
                 Possible values are ALL, CAN_EDIT, and CAN_SET_PERMISSIONS.
             current_domain_permissions (list, optional):
-                List of user and group-specific permissions for the current tag
+                List of user and group-specific permissions for the current tag.
                 current_domain_permissions are list of tuples in the form of
-                ('ID', 'NAME', 'TYPE', 'PERMISSIONS')
-                the TYPE can be either `USER` or `GROUP` and the
+                ('ID', 'NAME', 'TYPE', 'PERMISSIONS').
+                The TYPE can be either `USER` or `GROUP` and the
                 PERMISSIONS can be `ALL`, `CAN_EDIT` or `CAN_SET_PERMISSIONS`
-                any one or all in list
+                anyone or all in list.
 
                 Examples::
                     - ``(uuid, 'user@company.com', 'USER', ['CAN_EDIT'])``
@@ -416,11 +417,11 @@ class TagsAPI(ExploreBaseEndpoint):
 
         # version value must be incremented each time the
         # permissions are updated
-        if payload['access_control'] != access_control:
-            payload['access_control']['version'] = current_version + 1
+        # if payload['access_control'] != access_control:
+        #     payload['access_control']['version'] = current_version + 1
 
         # if filters are defined, run the filters through the filter parser...
-        # or else apply the filters that are available in current payload
+        # else apply the filters that are available in current payload
         if filters is not None:
             payload['filters'] = filters
             payload['filter_type'] = filter_type
@@ -632,8 +633,7 @@ class TagsAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -642,8 +642,8 @@ class TagsAPI(ExploreBaseEndpoint):
             iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
         Examples:
             >>> tio.v3.vm.tags.search(
             ... filter=('id', 'eq', '00089a45-44a5-4620-bf9f-75ebedc6cc6c'),
@@ -718,8 +718,7 @@ class TagsAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -728,8 +727,8 @@ class TagsAPI(ExploreBaseEndpoint):
             iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
         Examples:
             >>> tio.v3.vm.tags.search_categories(
             ... filter=('id', 'eq', '00089a45-44a5-4620-bf9f-75ebedc6cc6c'),

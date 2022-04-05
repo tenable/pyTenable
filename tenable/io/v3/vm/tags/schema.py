@@ -23,7 +23,7 @@ class AssetTagSchema(Schema):
     '''
     Schema for asset tags methods
     '''
-    action = fields.Str()
+    action = fields.Str(validate=validate.OneOf(['add', 'remove']))
     assets = fields.List(fields.UUID)
     tags = fields.List(fields.UUID)
 
