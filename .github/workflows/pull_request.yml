@@ -24,7 +24,7 @@ jobs:
                       pytest-vcr        \
                       pytest-datafiles  \
                       pytest-cov        \
-                      responses
+                      responses!=0.19.0
           pip install -r requirements.txt
       - name: Run the unit test suite.
         run: |

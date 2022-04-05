@@ -10,6 +10,7 @@
    api/nessus/index
    api/reports/index
    api/base/index
+   api/utilities/index
    common
    errors
    testing

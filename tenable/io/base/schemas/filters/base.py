@@ -22,10 +22,9 @@ class BaseFilterSchema(Schema):
                          ) -> None:
         '''
         Populates the filters to be used for validation of the filter data.
-
         Args:
             tio:
-                The TenableIO object to use to query the filter API
+                The TenableIO object used to query the filter API
             path:
                 The URL path to query to get the filter validation set.
             envelope:

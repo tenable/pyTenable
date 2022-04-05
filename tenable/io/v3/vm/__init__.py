@@ -60,7 +60,7 @@ from tenable.io.v3.vm.vulnerabilities.api import VulnerabilityAPI
 from tenable.io.v3.vm.tags.api import TagsAPI
 
 
-class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
+class VulnerabilityManagement(ExploreBaseEndpoint):
     '''
     This class will contain property for all resources
     under Vulnerability Management
@@ -73,7 +73,15 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         The interface object for the
         :doc:`Tenable.io v3 Agent Config APIs <agent_config>`.
         '''
-        return AgentConfigAPI(self._api)
+        return AgentsConfigAPI(self._api)
+
+    @property
+    def agent_exclusions(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Agent Exclusions APIs <agent_exclusions>`.
+        '''
+        return AgentExclusionsAPI(self._api)
 
     @property
     def agent_groups(self):
@@ -92,12 +100,36 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         return AgentsAPI(self._api)
 
     @property
+    def audit_log(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Audit Log APIs <audit_log>`.
+        '''
+        return AuditLogAPI(self._api)
+
+    @property
     def credentials(self):
         '''
         The interface object for the
         :doc:`Tenable.io v3 Credentials APIs <credentials>`.
         '''
         return CredentialsAPI(self._api)
+
+    @property
+    def editor(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Editor APIs <editor>`
+        '''
+        return EditorAPI(self._api)
+
+    @property
+    def exclusions(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Exclusions APIs <exclusions>`.
+        '''
+        return ExclusionsAPI(self._api)
 
     @property
     def files(self):
@@ -138,6 +170,30 @@ class VulnerabilityManagement(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Tenable.io v3 Plugins APIs <plugins>`
         '''
         return PluginsAPI(self._api)
+
+    @property
+    def policies(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Policies APIs <policies>`.
+        '''
+        return PoliciesAPI(self._api)
+
+    @property
+    def remediation_scans(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Remediation Scans APIs <remediation_scans>`
+        '''
+        return RemediationScansAPI(self._api)
+    
+    @property
+    def scans(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Scans APIs <scans>`
+        '''
+        return ScansAPI(self._api)
 
     @property
     def scanners(self):
