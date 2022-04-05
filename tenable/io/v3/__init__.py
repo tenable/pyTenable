@@ -16,20 +16,25 @@ Methods available on ``tio.v3``:
     :glob:
 
     assets
-    groups
+    connectors
+    mssp/index
     users
+    platform/index
     vm/index
     was/index
 '''
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.vm.assets.api import AssetsAPI
 from tenable.io.v3.groups.api import GroupsAPI
+from tenable.io.v3.connectors.api import ConnectorsAPI
+from tenable.io.v3.mssp import ManagedSecurityServiceProvider
+from tenable.io.v3.platform import Platform
 from tenable.io.v3.users.api import UsersAPI
 from tenable.io.v3.vm import VulnerabilityManagement
 from tenable.io.v3.was import WebApplicationScanning
 
 
-class Version3API(APIEndpoint):  # noqa: PLR0904
+class Version3API(APIEndpoint):
     '''
     This will contain property for all resources/app under io
     i.e Container Security, Web Application Security.
@@ -44,18 +49,35 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
         return AssetsAPI(self._api)
 
     @property
-    def groups(self):
+    def connectors(self):
         '''
-        The interface object for the Groups APIs
-        :doc:`tenable.io v3 groups APIs <groups>`.
+        The interface object for the connectors APIs
+        :doc:`tenable.io v3 connectors APIs <connectors>
         '''
-        return GroupsAPI(self._api)
+        return ConnectorsAPI(self._api)
+
+    @property
+    def platform(self):
+        '''
+        The interface object for the
+        :doc:`Platform <platform/index>`
+        '''
+        return Platform(self._api)
+
+    @property
+    def mssp(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Managed Security Service Provider APIs
+        <mssp/index>`.
+        '''
+        return ManagedSecurityServiceProvider(self._api)
 
     @property
     def users(self):
         '''
         The interface object for the
-        :doc:`Tenable.io v3 users APIs <users>`.
+        :doc:`Tenable.io v3 Users APIs <users>`.
         '''
         return UsersAPI(self._api)
 
@@ -63,7 +85,7 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     def vm(self):
         '''
         The interface object for the
-        :doc:`Vulnerability Management <vm/index>`
+        :doc:`Tenable.io v3 Vulnerability Management <vm/index>`
         '''
         return VulnerabilityManagement(self._api)
 
@@ -71,6 +93,6 @@ class Version3API(APIEndpoint):  # noqa: PLR0904
     def was(self):
         '''
         The interface object for the
-         :doc:`Web Application Scanning <was/index>`
+         :doc:`Tenable.io v3 Web Application Scanning <was/index>`
         '''
         return WebApplicationScanning(self._api)
