@@ -362,7 +362,17 @@ the python logging package.  An easy example is detailed here:</p>
 </ul>
 </li>
 <li class="toctree-l7"><a class="reference internal" href="tenable.io.v3.base.schema.md">tenable.io.v3.base.schema package</a><ul>
-<li class="toctree-l8"><a class="reference internal" href="tenable.io.v3.base.schema.md#subpackages">Subpackages</a></li>
+<li class="toctree-l8"><a class="reference internal" href="tenable.io.v3.base.schema.md#subpackages">Subpackages</a><ul>
+<li class="toctree-l9"><a class="reference internal" href="tenable.io.v3.base.schema.explore.md">tenable.io.v3.base.schema.explore package</a><ul>
+<li class="toctree-l10"><a class="reference internal" href="tenable.io.v3.base.schema.explore.md#submodules">Submodules</a></li>
+<li class="toctree-l10"><a class="reference internal" href="tenable.io.v3.base.schema.explore.md#module-tenable.io.v3.base.schema.explore.analysis">tenable.io.v3.base.schema.explore.analysis module</a></li>
+<li class="toctree-l10"><a class="reference internal" href="tenable.io.v3.base.schema.explore.md#module-tenable.io.v3.base.schema.explore.exports">tenable.io.v3.base.schema.explore.exports module</a></li>
+<li class="toctree-l10"><a class="reference internal" href="tenable.io.v3.base.schema.explore.md#module-tenable.io.v3.base.schema.explore.filters">tenable.io.v3.base.schema.explore.filters module</a></li>
+<li class="toctree-l10"><a class="reference internal" href="tenable.io.v3.base.schema.explore.md#module-tenable.io.v3.base.schema.explore.search">tenable.io.v3.base.schema.explore.search module</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -820,124 +830,52 @@ initiated.</p>
 <dt class="sig sig-object py" id="tenable.errors.FileDownloadError">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FileDownloadError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#FileDownloadError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tenable.errors.FileDownloadError" title="Permalink to this definition">¶</a></dt>
 <dd><p>FileDownloadError is thrown when a file fails to download.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tenable.errors.FileDownloadError.msg">
-<span class="sig-name descname"><span class="pre">msg</span></span><a class="headerlink" href="#tenable.errors.FileDownloadError.msg" title="Permalink to this definition">¶</a></dt>
-<dd><p>The error message</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The error message</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The Filename or file id that was requested.</p></li>
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The resource that the file was requested from (e.g. “scans”)</p></li>
+<li><p><strong>resource_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The identifier for the resource that was requested.</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tenable.errors.FileDownloadError.filename">
-<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#tenable.errors.FileDownloadError.filename" title="Permalink to this definition">¶</a></dt>
-<dd><p>The Filename or file id that was requested.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tenable.errors.FileDownloadError.resource">
-<span class="sig-name descname"><span class="pre">resource</span></span><a class="headerlink" href="#tenable.errors.FileDownloadError.resource" title="Permalink to this definition">¶</a></dt>
-<dd><p>The resource that the file was requested from (e.g. “scans”)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tenable.errors.FileDownloadError.resource_id">
-<span class="sig-name descname"><span class="pre">resource_id</span></span><a class="headerlink" href="#tenable.errors.FileDownloadError.resource_id" title="Permalink to this definition">¶</a></dt>
-<dd><p>The identifier for the resource that was requested.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="tenable.errors.ImpersonationError">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ImpersonationError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#ImpersonationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tenable.errors.ImpersonationError" title="Permalink to this definition">¶</a></dt>
 <dd><p>An ImpersonationError exists when there is an issue with user
 impersonation.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tenable.errors.ImpersonationError.code">
-<span class="sig-name descname"><span class="pre">code</span></span><a class="headerlink" href="#tenable.errors.ImpersonationError.code" title="Permalink to this definition">¶</a></dt>
-<dd><p>The HTTP response code from the offending response.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tenable.errors.ImpersonationError.response">
-<span class="sig-name descname"><span class="pre">response</span></span><a class="headerlink" href="#tenable.errors.ImpersonationError.response" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the Response object that had caused the Exception to fire.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.26.0)">requests.Response</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tenable.errors.ImpersonationError.uuid">
-<span class="sig-name descname"><span class="pre">uuid</span></span><a class="headerlink" href="#tenable.errors.ImpersonationError.uuid" title="Permalink to this definition">¶</a></dt>
-<dd><p>The Request UUID of the request.  This can be used for the purpose
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The HTTP response code from the offending response.</p></li>
+<li><p><strong>response</strong> (<a class="reference external" href="https://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.26.0)"><em>requests.Response</em></a>) – This is the Response object that had caused the Exception to fire.</p></li>
+<li><p><strong>uuid</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The Request UUID of the request.  This can be used for the purpose
 of tracking the request and the response through the Tenable.io
 infrastructure.  In the case of Non-Tenable.io products, is simply
-an empty string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+an empty string.</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="tenable.errors.PasswordComplexityError">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PasswordComplexityError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#PasswordComplexityError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tenable.errors.PasswordComplexityError" title="Permalink to this definition">¶</a></dt>
 <dd><p>PasswordComplexityError is thrown when attempting to change a password and
 the password complexity is insufficient.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tenable.errors.PasswordComplexityError.code">
-<span class="sig-name descname"><span class="pre">code</span></span><a class="headerlink" href="#tenable.errors.PasswordComplexityError.code" title="Permalink to this definition">¶</a></dt>
-<dd><p>The HTTP response code from the offending response.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tenable.errors.PasswordComplexityError.response">
-<span class="sig-name descname"><span class="pre">response</span></span><a class="headerlink" href="#tenable.errors.PasswordComplexityError.response" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the Response object that had caused the Exception to fire.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.26.0)">requests.Response</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="tenable.errors.PasswordComplexityError.uuid">
-<span class="sig-name descname"><span class="pre">uuid</span></span><a class="headerlink" href="#tenable.errors.PasswordComplexityError.uuid" title="Permalink to this definition">¶</a></dt>
-<dd><p>The Request UUID of the request.  This can be used for the purpose
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The HTTP response code from the offending response.</p></li>
+<li><p><strong>response</strong> (<a class="reference external" href="https://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.26.0)"><em>requests.Response</em></a>) – This is the Response object that had caused the Exception to fire.</p></li>
+<li><p><strong>uuid</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The Request UUID of the request.  This can be used for the purpose
 of tracking the request and the response through the Tenable.io
 infrastructure.  In the case of Non-Tenable.io products, is simply
-an empty string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+an empty string.</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
 </dd></dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="tenable.errors.TioExportsError">
@@ -962,138 +900,66 @@ initiated.</p>
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FileDownloadError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">resource_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#FileDownloadError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://restfly.readthedocs.io/en/latest/api/errors.html#restfly.errors.RestflyException" title="(in RESTfly v1.4.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">restfly.errors.RestflyException</span></code></a></p>
 <p>FileDownloadError is thrown when a file fails to download.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id2">
-<span class="sig-name descname"><span class="pre">msg</span></span><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
-<dd><p>The error message</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>msg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The error message</p></li>
+<li><p><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The Filename or file id that was requested.</p></li>
+<li><p><strong>resource</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The resource that the file was requested from (e.g. “scans”)</p></li>
+<li><p><strong>resource_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The identifier for the resource that was requested.</p></li>
+</ul>
 </dd>
 </dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id3">
-<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
-<dd><p>The Filename or file id that was requested.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">resource</span></span><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
-<dd><p>The resource that the file was requested from (e.g. “scans”)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id5">
-<span class="sig-name descname"><span class="pre">resource_id</span></span><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
-<dd><p>The identifier for the resource that was requested.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
 </dd></dl>
 <dl class="py exception">
-<dt class="sig sig-object py" id="id6">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ImpersonationError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#ImpersonationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id2">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ImpersonationError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#ImpersonationError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://restfly.readthedocs.io/en/latest/api/errors.html#restfly.errors.APIError" title="(in RESTfly v1.4.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">restfly.errors.APIError</span></code></a></p>
 <p>An ImpersonationError exists when there is an issue with user
 impersonation.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id7">
-<span class="sig-name descname"><span class="pre">code</span></span><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
-<dd><p>The HTTP response code from the offending response.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id8">
-<span class="sig-name descname"><span class="pre">response</span></span><a class="headerlink" href="#id8" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the Response object that had caused the Exception to fire.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.26.0)">requests.Response</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id9">
-<span class="sig-name descname"><span class="pre">uuid</span></span><a class="headerlink" href="#id9" title="Permalink to this definition">¶</a></dt>
-<dd><p>The Request UUID of the request.  This can be used for the purpose
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The HTTP response code from the offending response.</p></li>
+<li><p><strong>response</strong> (<a class="reference external" href="https://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.26.0)"><em>requests.Response</em></a>) – This is the Response object that had caused the Exception to fire.</p></li>
+<li><p><strong>uuid</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The Request UUID of the request.  This can be used for the purpose
 of tracking the request and the response through the Tenable.io
 infrastructure.  In the case of Non-Tenable.io products, is simply
-an empty string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+an empty string.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
-</dd></dl>
 <dl class="py exception">
-<dt class="sig sig-object py" id="id10">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PasswordComplexityError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#PasswordComplexityError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id10" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id3">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PasswordComplexityError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#PasswordComplexityError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id3" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://restfly.readthedocs.io/en/latest/api/errors.html#restfly.errors.APIError" title="(in RESTfly v1.4.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">restfly.errors.APIError</span></code></a></p>
 <p>PasswordComplexityError is thrown when attempting to change a password and
 the password complexity is insufficient.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id11">
-<span class="sig-name descname"><span class="pre">code</span></span><a class="headerlink" href="#id11" title="Permalink to this definition">¶</a></dt>
-<dd><p>The HTTP response code from the offending response.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id12">
-<span class="sig-name descname"><span class="pre">response</span></span><a class="headerlink" href="#id12" title="Permalink to this definition">¶</a></dt>
-<dd><p>This is the Response object that had caused the Exception to fire.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.26.0)">requests.Response</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="id13">
-<span class="sig-name descname"><span class="pre">uuid</span></span><a class="headerlink" href="#id13" title="Permalink to this definition">¶</a></dt>
-<dd><p>The Request UUID of the request.  This can be used for the purpose
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>code</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The HTTP response code from the offending response.</p></li>
+<li><p><strong>response</strong> (<a class="reference external" href="https://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.26.0)"><em>requests.Response</em></a>) – This is the Response object that had caused the Exception to fire.</p></li>
+<li><p><strong>uuid</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – The Request UUID of the request.  This can be used for the purpose
 of tracking the request and the response through the Tenable.io
 infrastructure.  In the case of Non-Tenable.io products, is simply
-an empty string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+an empty string.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
-</dd></dl>
 <dl class="py exception">
-<dt class="sig sig-object py" id="id14">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TioExportsError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#TioExportsError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id14" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id4">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TioExportsError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#TioExportsError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://restfly.readthedocs.io/en/latest/api/errors.html#restfly.errors.RestflyException" title="(in RESTfly v1.4.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">restfly.errors.RestflyException</span></code></a></p>
 <p>When the exports APIs throw an error when processing an export, pyTenable
 will throw this error in turn to relay that context to the user.</p>
 </dd></dl>
 <dl class="py exception">
-<dt class="sig sig-object py" id="id15">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TioExportsTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#TioExportsTimeout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id15" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#id14" title="tenable.errors.TioExportsError"><code class="xref py py-class docutils literal notranslate"><span class="pre">tenable.errors.TioExportsError</span></code></a></p>
+<dt class="sig sig-object py" id="id5">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TioExportsTimeout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">export</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">uuid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.10)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/errors.md#TioExportsTimeout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#id4" title="tenable.errors.TioExportsError"><code class="xref py py-class docutils literal notranslate"><span class="pre">tenable.errors.TioExportsError</span></code></a></p>
 <p>When an export has been cancelled due to timeout, this error is thrown.</p>
 </dd></dl>
 </section>

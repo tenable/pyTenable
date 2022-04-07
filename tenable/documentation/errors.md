@@ -41,7 +41,7 @@
 <div class="viewcode-block" id="FileDownloadError"><a class="viewcode-back" href="../../README.md#tenable.errors.FileDownloadError">[docs]</a><span class="k">class</span> <span class="nc">FileDownloadError</span><span class="p">(</span><span class="n">RestflyException</span><span class="p">):</span>  <span class="c1"># noqa:  F405</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    FileDownloadError is thrown when a file fails to download.</span>
-<span class="sd">    Attributes:</span>
+<span class="sd">    Parameters:</span>
 <span class="sd">        msg (str):</span>
 <span class="sd">            The error message</span>
 <span class="sd">        filename (str):</span>
@@ -82,7 +82,7 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    An ImpersonationError exists when there is an issue with user</span>
 <span class="sd">    impersonation.</span>
-<span class="sd">    Attributes:</span>
+<span class="sd">    Parameters:</span>
 <span class="sd">        code (int):</span>
 <span class="sd">            The HTTP response code from the offending response.</span>
 <span class="sd">        response (requests.Response):</span>
@@ -97,7 +97,7 @@
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    PasswordComplexityError is thrown when attempting to change a password and</span>
 <span class="sd">    the password complexity is insufficient.</span>
-<span class="sd">    Attributes:</span>
+<span class="sd">    Parameters:</span>
 <span class="sd">        code (int):</span>
 <span class="sd">            The HTTP response code from the offending response.</span>
 <span class="sd">        response (requests.Response):</span>

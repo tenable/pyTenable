@@ -10,7 +10,7 @@ Subpackages
 -----------
 
 .. toctree::
-   :maxdepth: 8
+   :maxdepth: 12
 
    tenable.io.v3.base.endpoints
    tenable.io.v3.base.iterators

@@ -16,48 +16,70 @@
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.md" accesskey="U">Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">tenable.ad.session</a></li> 
+        <li class="nav-item nav-item-this"><a href="">tenable.ot.session</a></li> 
       </ul>
     </div>  
     <div class="document">
       <div class="documentwrapper">
           <div class="body" role="main">
-  <h1>Source code for tenable.ad.session</h1><div class="highlight"><pre>
+  <h1>Source code for tenable.ot.session</h1><div class="highlight"><pre>
 <span></span><span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">Tenable.ad session</span>
+<span class="sd">Tenable.ot</span>
+<span class="sd">==========</span>
+<span class="sd">This package covers the Tenable.ot interface.</span>
+<span class="sd">.. autoclass:: TenableOT</span>
+<span class="sd">    :members:</span>
+<span class="sd">.. toctree::</span>
+<span class="sd">    :hidden:</span>
+<span class="sd">    :glob:</span>
+<span class="sd">    assets</span>
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">tenable.base.platform</span> <span class="kn">import</span> <span class="n">APIPlatform</span>
-<span class="kn">from</span> <span class="nn">.about</span> <span class="kn">import</span> <span class="n">AboutAPI</span>
-<span class="kn">from</span> <span class="nn">.api_keys</span> <span class="kn">import</span> <span class="n">APIKeyAPI</span>
-<span class="kn">from</span> <span class="nn">.attack_types.api</span> <span class="kn">import</span> <span class="n">AttackTypesAPI</span>
-<span class="kn">from</span> <span class="nn">.category.api</span> <span class="kn">import</span> <span class="n">CategoryAPI</span>
-<span class="kn">from</span> <span class="nn">.checker.api</span> <span class="kn">import</span> <span class="n">CheckerAPI</span>
-<span class="kn">from</span> <span class="nn">.checker_option.api</span> <span class="kn">import</span> <span class="n">CheckerOptionAPI</span>
-<span class="kn">from</span> <span class="nn">.dashboard.api</span> <span class="kn">import</span> <span class="n">DashboardAPI</span>
-<span class="kn">from</span> <span class="nn">.directories.api</span> <span class="kn">import</span> <span class="n">DirectoriesAPI</span>
-<span class="kn">from</span> <span class="nn">.infrastructure.api</span> <span class="kn">import</span> <span class="n">InfrastructureAPI</span>
-<span class="kn">from</span> <span class="nn">.ldap_configuration.api</span> <span class="kn">import</span> <span class="n">LDAPConfigurationAPI</span>
-<span class="kn">from</span> <span class="nn">.lockout_policy.api</span> <span class="kn">import</span> <span class="n">LockoutPolicyAPI</span>
-<span class="kn">from</span> <span class="nn">.preference.api</span> <span class="kn">import</span> <span class="n">PreferenceAPI</span>
-<span class="kn">from</span> <span class="nn">.profiles.api</span> <span class="kn">import</span> <span class="n">ProfilesAPI</span>
-<span class="kn">from</span> <span class="nn">.roles.api</span> <span class="kn">import</span> <span class="n">RolesAPI</span>
-<span class="kn">from</span> <span class="nn">.saml_configuration.api</span> <span class="kn">import</span> <span class="n">SAMLConfigurationAPI</span>
-<span class="kn">from</span> <span class="nn">.score.api</span> <span class="kn">import</span> <span class="n">ScoreAPI</span>
-<span class="kn">from</span> <span class="nn">.users.api</span> <span class="kn">import</span> <span class="n">UsersAPI</span>
-<span class="kn">from</span> <span class="nn">.widget.api</span> <span class="kn">import</span> <span class="n">WidgetsAPI</span>
-<div class="viewcode-block" id="TenableAD"><a class="viewcode-back" href="../../../tenable.ad.md#tenable.ad.TenableAD">[docs]</a><span class="k">class</span> <span class="nc">TenableAD</span><span class="p">(</span><span class="n">APIPlatform</span><span class="p">):</span>
-    <span class="n">_env_base</span> <span class="o">=</span> <span class="s1">&#39;TAD&#39;</span>
-    <span class="n">_base_path</span> <span class="o">=</span> <span class="s1">&#39;api&#39;</span>
+<span class="kn">from</span> <span class="nn">tenable.ot.assets</span> <span class="kn">import</span> <span class="n">AssetsAPI</span>
+<div class="viewcode-block" id="TenableOT"><a class="viewcode-back" href="../../../tenable.ot.md#tenable.ot.session.TenableOT">[docs]</a><span class="k">class</span> <span class="nc">TenableOT</span><span class="p">(</span><span class="n">APIPlatform</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    The Tenable.ot object is the primary interaction point for users to</span>
+<span class="sd">    interface with Tenable.io via the pyTenable library.  All of the API</span>
+<span class="sd">    endpoint classes that have been written will be grafted onto this class.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        api_key (str, optional):</span>
+<span class="sd">            The user&#39;s API key for Tenable.ot.  If an api key isn&#39;t specified,</span>
+<span class="sd">            then the library will attempt to read the environment variable</span>
+<span class="sd">            ``TOT_API_KEY`` to acquire the key.</span>
+<span class="sd">        url (str, optional):</span>
+<span class="sd">            The base URL used to connect to the Tenable.ot application.  If a</span>
+<span class="sd">            url isn&#39;t specified, then the library will attempt to read the</span>
+<span class="sd">            environment variable ``TOT_URL`` to acquire the URL.</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            arguments passed to :class:`tenable.base.platform.APIPlatform` for</span>
+<span class="sd">            connection management.</span>
+<span class="sd">    Examples:</span>
+<span class="sd">        Basic Example:</span>
+<span class="sd">        &gt;&gt;&gt; from tenable.ot import TenableOT</span>
+<span class="sd">        &gt;&gt;&gt; ot = TenableOT(secret_key=&#39;SECRET_KEY&#39;,</span>
+<span class="sd">        ..                 url=&#39;https://ot.example.com&#39;)</span>
+<span class="sd">        Example with proper identification:</span>
+<span class="sd">        &gt;&gt;&gt; ot = TenableOT(secret_key=&#39;SECRET_KEY&#39;,</span>
+<span class="sd">        ...                url=&#39;https://ot.example.com&#39;,</span>
+<span class="sd">        ...                vendor=&#39;Company Name&#39;,</span>
+<span class="sd">        ...                product=&#39;My Awesome Widget&#39;,</span>
+<span class="sd">        ...                build=&#39;1.0.0&#39;)</span>
+<span class="sd">        Example with proper identification leveraging environment variables for</span>
+<span class="sd">        the connection parameters:</span>
+<span class="sd">        &gt;&gt;&gt; ot = TenableOT(vendor=&#39;Company&#39;, product=&#39;Widget&#39;, build=&#39;1.0.0&#39;)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">_env_base</span> <span class="o">=</span> <span class="s1">&#39;TOT&#39;</span>
+    <span class="n">_ssl_verify</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">_conv_json</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">def</span> <span class="nf">_session_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Session Auth isn</span><span class="se">\&#39;</span><span class="s1">t supported with the Tenable.ad APIs&#39;</span>
+    <span class="k">def</span> <span class="nf">_session_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># noqa: PLW0221,PLW0613</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Session Auth isn</span><span class="se">\&#39;</span><span class="s1">t supported with the Tenable.ot APIs&#39;</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">_key_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_key_auth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">api_key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># noqa: PLW0221,PLW0613</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-            <span class="s1">&#39;X-API-Key&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">api_key</span><span class="si">}</span><span class="s1">&#39;</span>
+            <span class="s1">&#39;X-APIKeys&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;key=</span><span class="si">{</span><span class="n">api_key</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_auth_mech</span> <span class="o">=</span> <span class="s1">&#39;keys&#39;</span>
     <span class="k">def</span> <span class="nf">_authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -67,132 +89,39 @@
                                   <span class="p">)</span>
         <span class="p">})</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_authenticate</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="viewcode-block" id="TenableOT.graphql"><a class="viewcode-back" href="../../../tenable.ot.md#tenable.ot.session.TenableOT.graphql">[docs]</a>    <span class="k">def</span> <span class="nf">graphql</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        GraphQL Endpoint</span>
+<span class="sd">        This singular method exposes the GraphQL API to the library.  As all</span>
+<span class="sd">        keyword arguments are passed directly to the JSON body, it allows for a</span>
+<span class="sd">        freeform interface into the GraphQL API.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            **kwargs (dict, optional):</span>
+<span class="sd">                The key/values that should be passed to the body of the GraphQL</span>
+<span class="sd">                request.</span>
+<span class="sd">        Example:</span>
+<span class="sd">            &gt;&gt;&gt; ot.graphql(</span>
+<span class="sd">            ...     variables={&#39;asset&#39;: &#39;b64 id string&#39;},</span>
+<span class="sd">            ...     query=\&#39;\&#39;\&#39;</span>
+<span class="sd">            ...         query getAssetDetails($asset: ID!) {</span>
+<span class="sd">            ...             asset(id: $asset) {</span>
+<span class="sd">            ...                 id</span>
+<span class="sd">            ...                 type</span>
+<span class="sd">            ...                 name</span>
+<span class="sd">            ...                 criticality</span>
+<span class="sd">            ...                 location</span>
+<span class="sd">            ...             }</span>
+<span class="sd">            ...         }</span>
+<span class="sd">            ... \&#39;\&#39;\&#39;)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;graphql&#39;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span></div>
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">about</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">assets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad About APIs &lt;about&gt;`.</span>
+<span class="sd">        :doc:`Tenable.ot Assets APIs &lt;assets&gt;`.</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">AboutAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">api_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad API-Keys APIs &lt;api_keys&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">APIKeyAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">attack_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Attack Types APIs &lt;attack_types&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">AttackTypesAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">category</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Category APIs &lt;category&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">CategoryAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">checker</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Checker APIs &lt;checker&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">CheckerAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">checker_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Checker option APIs &lt;checker_option&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">CheckerOptionAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">dashboard</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Dashboard APIs &lt;dashboard&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">DashboardAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">directories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Directories APIs &lt;directories&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">DirectoriesAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">infrastructure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Infrastructure APIs &lt;infrastructure&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">InfrastructureAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ldap_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad LDAP Configuration APIs &lt;ldap_configuration&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">LDAPConfigurationAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">lockout_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Lockout Policy APIs &lt;lockout_policy&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">LockoutPolicyAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">preference</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Preference APIs &lt;preference&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">PreferenceAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">profiles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Profiles APIs &lt;profiles&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">ProfilesAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">roles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Roles APIs &lt;roles&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">RolesAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">saml_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad SAML configuration APIs &lt;saml_configuration&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">SAMLConfigurationAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Score APIs &lt;score&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">ScoreAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">users</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Users APIs &lt;users&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">UsersAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">        The interface object for the</span>
-<span class="sd">        :doc:`Tenable.ad Widget APIs &lt;widget&gt;`.</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="k">return</span> <span class="n">WidgetsAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">AssetsAPI</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 </pre></div>
             <div class="clearer"></div>
           </div>
@@ -210,7 +139,7 @@
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../../README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../../index.md" >Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">tenable.ad.session</a></li> 
+        <li class="nav-item nav-item-this"><a href="">tenable.ot.session</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
