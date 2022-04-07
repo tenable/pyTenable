@@ -2,6 +2,6 @@ tenable
 =======
 
 .. toctree::
-   :maxdepth: 12
+   :maxdepth: 8
 
    tenable

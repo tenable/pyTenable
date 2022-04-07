@@ -10,7 +10,7 @@ Subpackages
 -----------
 
 .. toctree::
-   :maxdepth: 12
+   :maxdepth: 8
 
    tenable.ot.graphql
 

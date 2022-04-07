@@ -10,6 +10,6 @@ Subpackages
 -----------
 
 .. toctree::
-   :maxdepth: 12
+   :maxdepth: 8
 
    tenable.io.v3.platform.groups

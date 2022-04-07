@@ -372,18 +372,48 @@ the total number of records that the API has reported.</p>
 <p>Note that this Iterator is used as a base model for all of the iterators,
 and while the mechanics of each iterator may vary, they should all behave
 to the user in a similar manner.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tenable.base.v1.APIResultsIterator.count">
+<span class="sig-name descname"><span class="pre">count</span></span><a class="headerlink" href="#tenable.base.v1.APIResultsIterator.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current number of records that have been returned</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The current number of records that have been returned</p></li>
-<li><p><strong>page</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – The current page of data being walked through.  pages will be
-cycled through as the iterator requests more information from the
-API.</p></li>
-<li><p><strong>page_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The number of record returned from the current page.</p></li>
-<li><p><strong>total</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The total number of records that exist for the current request.</p></li>
-</ul>
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tenable.base.v1.APIResultsIterator.page">
+<span class="sig-name descname"><span class="pre">page</span></span><a class="headerlink" href="#tenable.base.v1.APIResultsIterator.page" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current page of data being walked through.  pages will be
+cycled through as the iterator requests more information from the
+API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tenable.base.v1.APIResultsIterator.page_count">
+<span class="sig-name descname"><span class="pre">page_count</span></span><a class="headerlink" href="#tenable.base.v1.APIResultsIterator.page_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of record returned from the current page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tenable.base.v1.APIResultsIterator.total">
+<span class="sig-name descname"><span class="pre">total</span></span><a class="headerlink" href="#tenable.base.v1.APIResultsIterator.total" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total number of records that exist for the current request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="tenable.base.v1.APIResultsIterator.next">
 <span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/base/v1.md#APIResultsIterator.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tenable.base.v1.APIResultsIterator.next" title="Permalink to this definition">¶</a></dt>
@@ -403,21 +433,51 @@ the total number of records that the API has reported.</p>
 <p>Note that this Iterator is used as a base model for all of the iterators,
 and while the mechanics of each iterator may vary, they should all behave
 to the user in a similar manner.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">count</span></span><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current number of records that have been returned</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The current number of records that have been returned</p></li>
-<li><p><strong>page</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)"><em>list</em></a>) – The current page of data being walked through.  pages will be
-cycled through as the iterator requests more information from the
-API.</p></li>
-<li><p><strong>page_count</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The number of record returned from the current page.</p></li>
-<li><p><strong>total</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)"><em>int</em></a>) – The total number of records that exist for the current request.</p></li>
-</ul>
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">page</span></span><a class="headerlink" href="#id5" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current page of data being walked through.  pages will be
+cycled through as the iterator requests more information from the
+API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.10)">list</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">page_count</span></span><a class="headerlink" href="#id6" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of record returned from the current page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">total</span></span><a class="headerlink" href="#id7" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total number of records that exist for the current request.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="id4">
-<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/base/v1.md#APIResultsIterator.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id4" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">next</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tenable/base/v1.md#APIResultsIterator.next"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id8" title="Permalink to this definition">¶</a></dt>
 <dd><p>Ask for the next record</p>
 </dd></dl>
 </dd></dl>

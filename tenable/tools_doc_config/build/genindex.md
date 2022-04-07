@@ -179,6 +179,12 @@
 </li>
       <li><a href="tenable.sc.md#id66">clear() (FileAPI method)</a>, <a href="tenable.sc.md#tenable.sc.files.FileAPI.clear">[1]</a>
 </li>
+      <li><a href="README.md#id7">code (ImpersonationError attribute)</a>, <a href="README.md#tenable.errors.ImpersonationError.code">[1]</a>
+
+      <ul>
+        <li><a href="README.md#id11">(PasswordComplexityError attribute)</a>, <a href="README.md#tenable.errors.PasswordComplexityError.code">[1]</a>
+</li>
+      </ul></li>
       <li><a href="tenable.ad.profiles.md#id1">commit() (ProfilesAPI method)</a>, <a href="tenable.ad.profiles.md#tenable.ad.profiles.api.ProfilesAPI.commit">[1]</a>
 </li>
       <li><a href="tenable.sc.md#id21">console() (AnalysisAPI method)</a>, <a href="tenable.sc.md#tenable.sc.analysis.AnalysisAPI.console">[1]</a>
@@ -202,6 +208,8 @@
       <li><a href="tenable.ad.profiles.md#id2">copy_profile() (ProfilesAPI method)</a>, <a href="tenable.ad.profiles.md#tenable.ad.profiles.api.ProfilesAPI.copy_profile">[1]</a>
 </li>
       <li><a href="tenable.ad.roles.md#id1">copy_role() (RolesAPI method)</a>, <a href="tenable.ad.roles.md#tenable.ad.roles.api.RolesAPI.copy_role">[1]</a>
+</li>
+      <li><a href="tenable.base.md#id4">count (APIResultsIterator attribute)</a>, <a href="tenable.base.md#tenable.base.v1.APIResultsIterator.count">[1]</a>
 </li>
       <li><a href="tenable.sc.md#id9">create() (AcceptRiskAPI method)</a>, <a href="tenable.sc.md#tenable.sc.accept_risks.AcceptRiskAPI.create">[1]</a>
 
@@ -485,10 +493,10 @@
 </li>
       <li><a href="tenable.sc.md#id91">family_plugins() (PluginAPI method)</a>, <a href="tenable.sc.md#tenable.sc.plugins.PluginAPI.family_plugins">[1]</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tenable.sc.md#id61">FeedAPI (class in tenable.sc.feeds)</a>, <a href="tenable.sc.md#tenable.sc.feeds.FeedAPI">[1]</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tenable.sc.md#id65">FileAPI (class in tenable.sc.files)</a>, <a href="tenable.sc.md#tenable.sc.files.FileAPI">[1]</a>
 </li>
       <li><a href="README.md#id1">FileDownloadError</a>
@@ -497,6 +505,8 @@
         <li><a href="README.md#tenable.errors.FileDownloadError">(class in tenable.errors)</a>
 </li>
       </ul></li>
+      <li><a href="README.md#id3">filename (FileDownloadError attribute)</a>, <a href="README.md#tenable.errors.FileDownloadError.filename">[1]</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -549,7 +559,7 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="README.md#id2">ImpersonationError</a>
+      <li><a href="README.md#id6">ImpersonationError</a>
 
       <ul>
         <li><a href="README.md#tenable.errors.ImpersonationError">(class in tenable.errors)</a>
@@ -1276,6 +1286,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tenable.utilities.scan_move.md#tenable.utilities.scan_move.ScanMove.move">move() (ScanMove method)</a>
 </li>
+      <li><a href="README.md#id2">msg (FileDownloadError attribute)</a>, <a href="README.md#tenable.errors.FileDownloadError.msg">[1]</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -1286,7 +1298,7 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="tenable.base.md#id4">next() (APIResultsIterator method)</a>, <a href="tenable.base.md#tenable.base.v1.APIResultsIterator.next">[1]</a>
+      <li><a href="tenable.base.md#id8">next() (APIResultsIterator method)</a>, <a href="tenable.base.md#tenable.base.v1.APIResultsIterator.next">[1]</a>
 
       <ul>
         <li><a href="tenable.reports.md#tenable.reports.nessusv2.NessusReportv2.next">(NessusReportv2 method)</a>
@@ -1314,7 +1326,11 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="README.md#id3">PasswordComplexityError</a>
+      <li><a href="tenable.base.md#id5">page (APIResultsIterator attribute)</a>, <a href="tenable.base.md#tenable.base.v1.APIResultsIterator.page">[1]</a>
+</li>
+      <li><a href="tenable.base.md#id6">page_count (APIResultsIterator attribute)</a>, <a href="tenable.base.md#tenable.base.v1.APIResultsIterator.page_count">[1]</a>
+</li>
+      <li><a href="README.md#id10">PasswordComplexityError</a>
 
       <ul>
         <li><a href="README.md#tenable.errors.PasswordComplexityError">(class in tenable.errors)</a>
@@ -1328,10 +1344,10 @@
 </li>
       <li><a href="tenable.sc.md#id87">PluginAPI (class in tenable.sc.plugins)</a>, <a href="tenable.sc.md#tenable.sc.plugins.PluginAPI">[1]</a>
 </li>
-      <li><a href="tenable.sc.md#tenable.sc.plugins.PluginResultsIterator">PluginResultsIterator (class in tenable.sc.plugins)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="tenable.sc.md#tenable.sc.plugins.PluginResultsIterator">PluginResultsIterator (class in tenable.sc.plugins)</a>
+</li>
       <li><a href="README.md#tenable.utils.policy_settings">policy_settings() (in module tenable.utils)</a>
 </li>
       <li><a href="tenable.base.md#tenable.base.platform.APIPlatform.post">post() (APIPlatform method)</a>
@@ -1386,14 +1402,24 @@
 </li>
       <li><a href="tenable.sc.md#id135">remote_sync() (RepositoryAPI method)</a>, <a href="tenable.sc.md#tenable.sc.repositories.RepositoryAPI.remote_sync">[1]</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tenable.ad.roles.md#id7">replace_role_permissions() (RolesAPI method)</a>, <a href="tenable.ad.roles.md#tenable.ad.roles.api.RolesAPI.replace_role_permissions">[1]</a>
 </li>
       <li><a href="tenable.sc.md#id120">RepositoryAPI (class in tenable.sc.repositories)</a>, <a href="tenable.sc.md#tenable.sc.repositories.RepositoryAPI">[1]</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="README.md#id4">resource (FileDownloadError attribute)</a>, <a href="README.md#tenable.errors.FileDownloadError.resource">[1]</a>
+</li>
+      <li><a href="README.md#id5">resource_id (FileDownloadError attribute)</a>, <a href="README.md#tenable.errors.FileDownloadError.resource_id">[1]</a>
+</li>
       <li><a href="tenable.ad.checker.md#tenable.ad.checker.schema.ResourcesSchema">ResourcesSchema (class in tenable.ad.checker.schema)</a>
 </li>
+      <li><a href="README.md#id8">response (ImpersonationError attribute)</a>, <a href="README.md#tenable.errors.ImpersonationError.response">[1]</a>
+
+      <ul>
+        <li><a href="README.md#id12">(PasswordComplexityError attribute)</a>, <a href="README.md#tenable.errors.PasswordComplexityError.response">[1]</a>
+</li>
+      </ul></li>
       <li><a href="tenable.sc.md#id152">resume() (ScanResultAPI method)</a>, <a href="tenable.sc.md#tenable.sc.scan_instances.ScanResultAPI.resume">[1]</a>
 </li>
       <li><a href="tenable.ad.users.md#id8">retrieve_password() (UsersAPI method)</a>, <a href="tenable.ad.users.md#tenable.ad.users.api.UsersAPI.retrieve_password">[1]</a>
@@ -3391,13 +3417,13 @@
 </li>
       <li><a href="tenable.sc.md#id0">TenableSC (class in tenable.sc)</a>, <a href="tenable.sc.md#tenable.sc.TenableSC">[1]</a>
 </li>
-      <li><a href="README.md#id4">TioExportsError</a>
+      <li><a href="README.md#id14">TioExportsError</a>
 
       <ul>
         <li><a href="README.md#tenable.errors.TioExportsError">(class in tenable.errors)</a>
 </li>
       </ul></li>
-      <li><a href="README.md#id5">TioExportsTimeout</a>
+      <li><a href="README.md#id15">TioExportsTimeout</a>
 
       <ul>
         <li><a href="README.md#tenable.errors.TioExportsTimeout">(class in tenable.errors)</a>
@@ -3419,6 +3445,8 @@
         <li><a href="tenable.ot.graphql.md#tenable.ot.graphql.assets.SegmentSchema.to_object">(SegmentSchema method)</a>
 </li>
       </ul></li>
+      <li><a href="tenable.base.md#id7">total (APIResultsIterator attribute)</a>, <a href="tenable.base.md#tenable.base.v1.APIResultsIterator.total">[1]</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -3477,6 +3505,12 @@
 </li>
       <li><a href="tenable.ad.users.md#tenable.ad.users.schema.UserSchema">UserSchema (class in tenable.ad.users.schema)</a>
 </li>
+      <li><a href="README.md#id9">uuid (ImpersonationError attribute)</a>, <a href="README.md#tenable.errors.ImpersonationError.uuid">[1]</a>
+
+      <ul>
+        <li><a href="README.md#id13">(PasswordComplexityError attribute)</a>, <a href="README.md#tenable.errors.PasswordComplexityError.uuid">[1]</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
