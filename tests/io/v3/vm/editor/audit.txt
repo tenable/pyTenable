@@ -1,0 +1,28 @@
+#
+# (C) 2013-2017 Tenable, Inc.
+#
+# This script is released under the Tenable Subscription License and
+# may not be used from within scripts released under another license
+# without authorization from Tenable Network Security, Inc.
+#
+# See the following licenses for details:
+#
+# http://static.tenable.com/prod_docs/Nessus_6_SLA_and_Subscription_Agreement.pdf
+#
+# @PROFESSIONALFEED@
+# $Revision: 1.0 $
+# $Date: 2018/01/02 $
+#
+# Description:
+#
+# This document consists of a list of general Red Hat Linux best practices as suggested by the IT-Grundschutz BSI-Standard 100-2.
+# Tenable has made a best effort to map the settings specified in the standard to a proprietary
+# .audit format that will be used by the Unix compliance module to perform the audit.
+#
+# See Also :
+# https://www.bsi.bund.de/cae/servlet/contentblob/471430/publicationFile/28223/standard_100-2_e_pdf.pdf
+# https://www.bsi.bund.de/SharedDocs/Downloads/EN/BSI/Grundschutz/download/it-grundschutz-kataloge_2005_pdf_en_zip.zip?__blob=publicationFile
+#
+#<ui_metadata>
+#<display_name>BSI-100-2 Red Hat Linux 2005</display_name>
+#<spec> [the rest of the audit spec file]...
