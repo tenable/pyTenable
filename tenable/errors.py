@@ -76,7 +76,7 @@ class ImpersonationError(APIError):  # noqa:  F405
     Attributes:
         code (int):
             The HTTP response code from the offending response.
-        response (request.Response):
+        response (requests.Response):
             This is the Response object that had caused the Exception to fire.
         uuid (str):
             The Request UUID of the request.  This can be used for the purpose
@@ -94,7 +94,7 @@ class PasswordComplexityError(APIError):  # noqa:  F405
     Attributes:
         code (int):
             The HTTP response code from the offending response.
-        response (request.Response):
+        response (requests.Response):
             This is the Response object that had caused the Exception to fire.
         uuid (str):
             The Request UUID of the request.  This can be used for the purpose
