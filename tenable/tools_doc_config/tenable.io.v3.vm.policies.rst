@@ -1,7 +1,7 @@
-tenable.io.v3.vm.networks package
+tenable.io.v3.vm.policies package
 =================================
 
-.. automodule:: tenable.io.v3.vm.networks
+.. automodule:: tenable.io.v3.vm.policies
    :members:
    :undoc-members:
    :show-inheritance:
@@ -9,18 +9,18 @@ tenable.io.v3.vm.networks package
 Submodules
 ----------
 
-tenable.io.v3.vm.networks.api module
+tenable.io.v3.vm.policies.api module
 ------------------------------------
 
-.. automodule:: tenable.io.v3.vm.networks.api
+.. automodule:: tenable.io.v3.vm.policies.api
    :members:
    :undoc-members:
    :show-inheritance:
 
-tenable.io.v3.vm.networks.schema module
+tenable.io.v3.vm.policies.schema module
 ---------------------------------------
 
-.. automodule:: tenable.io.v3.vm.networks.schema
+.. automodule:: tenable.io.v3.vm.policies.schema
    :members:
    :undoc-members:
    :show-inheritance:

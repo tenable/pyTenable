@@ -16,3 +16,11 @@ tenable.io.v3.vm.agent\_config.api module
    :members:
    :undoc-members:
    :show-inheritance:
+
+tenable.io.v3.vm.agent\_config.schema module
+--------------------------------------------
+
+.. automodule:: tenable.io.v3.vm.agent_config.schema
+   :members:
+   :undoc-members:
+   :show-inheritance:
