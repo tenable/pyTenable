@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="genindex.md" />
     <link rel="search" title="Search" href="search.md" />
     <link rel="next" title="tenable.io.v3.vm.agents package" href="tenable.io.v3.vm.agents.md" />
-    <link rel="prev" title="tenable.io.v3.vm.agent_exclusions package" href="tenable.io.v3.vm.agent_exclusions.md" /> 
+    <link rel="prev" title="tenable.io.v3.vm.agent_config package" href="tenable.io.v3.vm.agent_config.md" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -34,7 +34,7 @@
           <a href="tenable.io.v3.vm.agents.md" title="tenable.io.v3.vm.agents package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.agent_exclusions.md" title="tenable.io.v3.vm.agent_exclusions package"
+          <a href="tenable.io.v3.vm.agent_config.md" title="tenable.io.v3.vm.agent_config package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>
@@ -80,7 +80,7 @@
           <a href="tenable.io.v3.vm.agents.md" title="tenable.io.v3.vm.agents package"
              >next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.agent_exclusions.md" title="tenable.io.v3.vm.agent_exclusions package"
+          <a href="tenable.io.v3.vm.agent_config.md" title="tenable.io.v3.vm.agent_config package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>

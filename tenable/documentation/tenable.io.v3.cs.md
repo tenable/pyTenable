@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
     <link rel="index" title="Index" href="genindex.md" />
-    <link rel="next" title="tenable.io.v3.mssp package" href="tenable.io.v3.mssp.md" />
-    <link rel="prev" title="tenable.io.v3.connectors package" href="tenable.io.v3.connectors.md" /> 
+    <link rel="next" title="tenable.io.v3.groups package" href="tenable.io.v3.groups.md" />
+    <link rel="prev" title="tenable.io.v3.base.schema.explore package" href="tenable.io.v3.base.schema.explore.md" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -17,10 +17,10 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.mssp.md" title="tenable.io.v3.mssp package"
+          <a href="tenable.io.v3.groups.md" title="tenable.io.v3.groups package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.connectors.md" title="tenable.io.v3.connectors package"
+          <a href="tenable.io.v3.base.schema.explore.md" title="tenable.io.v3.base.schema.explore package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>
@@ -49,10 +49,10 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.mssp.md" title="tenable.io.v3.mssp package"
+          <a href="tenable.io.v3.groups.md" title="tenable.io.v3.groups package"
              >next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.connectors.md" title="tenable.io.v3.connectors package"
+          <a href="tenable.io.v3.base.schema.explore.md" title="tenable.io.v3.base.schema.explore package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>

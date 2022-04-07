@@ -659,16 +659,6 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.tio_iterator"><code class="xref">tenable.io.v3.base.iterators.tio_iterator</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.was_iterator"><code class="xref">tenable.io.v3.base.iterators.was_iterator</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
        <a href="tenable.io.v3.base.schema.md#module-tenable.io.v3.base.schema"><code class="xref">tenable.io.v3.base.schema</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -699,72 +689,17 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.connectors.md#module-tenable.io.v3.connectors"><code class="xref">tenable.io.v3.connectors</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.connectors.md#module-tenable.io.v3.connectors.api"><code class="xref">tenable.io.v3.connectors.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.connectors.md#module-tenable.io.v3.connectors.schema"><code class="xref">tenable.io.v3.connectors.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
        <a href="tenable.io.v3.cs.md#module-tenable.io.v3.cs"><code class="xref">tenable.io.v3.cs</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.mssp.md#module-tenable.io.v3.mssp"><code class="xref">tenable.io.v3.mssp</code></a></td><td>
+       <a href="tenable.io.v3.groups.md#module-tenable.io.v3.groups"><code class="xref">tenable.io.v3.groups</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.mssp.accounts.md#module-tenable.io.v3.mssp.accounts"><code class="xref">tenable.io.v3.mssp.accounts</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.mssp.accounts.md#module-tenable.io.v3.mssp.accounts.api"><code class="xref">tenable.io.v3.mssp.accounts.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.mssp.logos.md#module-tenable.io.v3.mssp.logos"><code class="xref">tenable.io.v3.mssp.logos</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.mssp.logos.md#module-tenable.io.v3.mssp.logos.api"><code class="xref">tenable.io.v3.mssp.logos.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.mssp.logos.md#module-tenable.io.v3.mssp.logos.schema"><code class="xref">tenable.io.v3.mssp.logos.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.platform.md#module-tenable.io.v3.platform"><code class="xref">tenable.io.v3.platform</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.platform.groups.md#module-tenable.io.v3.platform.groups"><code class="xref">tenable.io.v3.platform.groups</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.platform.groups.md#module-tenable.io.v3.platform.groups.api"><code class="xref">tenable.io.v3.platform.groups.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.platform.groups.md#module-tenable.io.v3.platform.groups.schema"><code class="xref">tenable.io.v3.platform.groups.schema</code></a></td><td>
+       <a href="tenable.io.v3.groups.md#module-tenable.io.v3.groups.api"><code class="xref">tenable.io.v3.groups.api</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -799,26 +734,6 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.agent_config.md#module-tenable.io.v3.vm.agent_config.schema"><code class="xref">tenable.io.v3.vm.agent_config.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.agent_exclusions.md#module-tenable.io.v3.vm.agent_exclusions"><code class="xref">tenable.io.v3.vm.agent_exclusions</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.agent_exclusions.md#module-tenable.io.v3.vm.agent_exclusions.api"><code class="xref">tenable.io.v3.vm.agent_exclusions.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.agent_exclusions.md#module-tenable.io.v3.vm.agent_exclusions.schema"><code class="xref">tenable.io.v3.vm.agent_exclusions.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
        <a href="tenable.io.v3.vm.agent_groups.md#module-tenable.io.v3.vm.agent_groups"><code class="xref">tenable.io.v3.vm.agent_groups</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -839,22 +754,17 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents.agents_iterator"><code class="xref">tenable.io.v3.vm.agents.agents_iterator</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents.api"><code class="xref">tenable.io.v3.vm.agents.api</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents.schema"><code class="xref">tenable.io.v3.vm.agents.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.audit_log.md#module-tenable.io.v3.vm.audit_log"><code class="xref">tenable.io.v3.vm.audit_log</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.audit_log.md#module-tenable.io.v3.vm.audit_log.api"><code class="xref">tenable.io.v3.vm.audit_log.api</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -870,36 +780,6 @@
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="tenable.io.v3.vm.credentials.md#module-tenable.io.v3.vm.credentials.schema"><code class="xref">tenable.io.v3.vm.credentials.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.editor.md#module-tenable.io.v3.vm.editor"><code class="xref">tenable.io.v3.vm.editor</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.editor.md#module-tenable.io.v3.vm.editor.api"><code class="xref">tenable.io.v3.vm.editor.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.editor.md#module-tenable.io.v3.vm.editor.schema"><code class="xref">tenable.io.v3.vm.editor.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.exclusions.md#module-tenable.io.v3.vm.exclusions"><code class="xref">tenable.io.v3.vm.exclusions</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.exclusions.md#module-tenable.io.v3.vm.exclusions.api"><code class="xref">tenable.io.v3.vm.exclusions.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.exclusions.md#module-tenable.io.v3.vm.exclusions.schema"><code class="xref">tenable.io.v3.vm.exclusions.schema</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -939,6 +819,11 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="tenable.io.v3.vm.networks.md#module-tenable.io.v3.vm.networks.iterator"><code class="xref">tenable.io.v3.vm.networks.iterator</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="tenable.io.v3.vm.networks.md#module-tenable.io.v3.vm.networks.schema"><code class="xref">tenable.io.v3.vm.networks.schema</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
@@ -969,32 +854,7 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.policies.md#module-tenable.io.v3.vm.policies"><code class="xref">tenable.io.v3.vm.policies</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.policies.md#module-tenable.io.v3.vm.policies.api"><code class="xref">tenable.io.v3.vm.policies.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.policies.md#module-tenable.io.v3.vm.policies.schema"><code class="xref">tenable.io.v3.vm.policies.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.remediation_scans.md#module-tenable.io.v3.vm.remediation_scans"><code class="xref">tenable.io.v3.vm.remediation_scans</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.remediation_scans.md#module-tenable.io.v3.vm.remediation_scans.api"><code class="xref">tenable.io.v3.vm.remediation_scans.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.remediation_scans.md#module-tenable.io.v3.vm.remediation_scans.schema"><code class="xref">tenable.io.v3.vm.remediation_scans.schema</code></a></td><td>
+       <a href="tenable.io.v3.vm.plugins.md#module-tenable.io.v3.vm.plugins.iterator"><code class="xref">tenable.io.v3.vm.plugins.iterator</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -1029,62 +889,12 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans"><code class="xref">tenable.io.v3.vm.scans</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.api"><code class="xref">tenable.io.v3.vm.scans.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.iterator"><code class="xref">tenable.io.v3.vm.scans.iterator</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.schema"><code class="xref">tenable.io.v3.vm.scans.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
        <a href="tenable.io.v3.vm.server.md#module-tenable.io.v3.vm.server"><code class="xref">tenable.io.v3.vm.server</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="tenable.io.v3.vm.server.md#module-tenable.io.v3.vm.server.api"><code class="xref">tenable.io.v3.vm.server.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.tags.md#module-tenable.io.v3.vm.tags"><code class="xref">tenable.io.v3.vm.tags</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.tags.md#module-tenable.io.v3.vm.tags.api"><code class="xref">tenable.io.v3.vm.tags.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.tags.md#module-tenable.io.v3.vm.tags.schema"><code class="xref">tenable.io.v3.vm.tags.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.vulnerabilities.md#module-tenable.io.v3.vm.vulnerabilities"><code class="xref">tenable.io.v3.vm.vulnerabilities</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.vulnerabilities.md#module-tenable.io.v3.vm.vulnerabilities.api"><code class="xref">tenable.io.v3.vm.vulnerabilities.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.vm.vulnerabilities.md#module-tenable.io.v3.vm.vulnerabilities.schema"><code class="xref">tenable.io.v3.vm.vulnerabilities.schema</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -1100,26 +910,6 @@
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="tenable.io.v3.was.attachments.md#module-tenable.io.v3.was.attachments.api"><code class="xref">tenable.io.v3.was.attachments.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations"><code class="xref">tenable.io.v3.was.configurations</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.api"><code class="xref">tenable.io.v3.was.configurations.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.iterator"><code class="xref">tenable.io.v3.was.configurations.iterator</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.schema"><code class="xref">tenable.io.v3.was.configurations.schema</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -1154,42 +944,12 @@
      <tr class="cg-1">
        <td></td>
        <td>&#160;&#160;&#160;
+       <a href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.iterator"><code class="xref">tenable.io.v3.was.scans.iterator</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&#160;&#160;&#160;
        <a href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.schema"><code class="xref">tenable.io.v3.was.scans.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.was.templates.md#module-tenable.io.v3.was.templates"><code class="xref">tenable.io.v3.was.templates</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.was.templates.md#module-tenable.io.v3.was.templates.api"><code class="xref">tenable.io.v3.was.templates.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates"><code class="xref">tenable.io.v3.was.user_templates</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates.api"><code class="xref">tenable.io.v3.was.user_templates.api</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates.schema"><code class="xref">tenable.io.v3.was.user_templates.schema</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.was.vulnerabilities.md#module-tenable.io.v3.was.vulnerabilities"><code class="xref">tenable.io.v3.was.vulnerabilities</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.io.v3.was.vulnerabilities.md#module-tenable.io.v3.was.vulnerabilities.api"><code class="xref">tenable.io.v3.was.vulnerabilities.api</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
@@ -1375,21 +1135,6 @@
        <td></td>
        <td>&#160;&#160;&#160;
        <a href="tenable.sc.md#module-tenable.sc.users"><code class="xref">tenable.sc.users</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.utilities.md#module-tenable.utilities"><code class="xref">tenable.utilities</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.utilities.md#module-tenable.utilities.scan_bridge"><code class="xref">tenable.utilities.scan_bridge</code></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&#160;&#160;&#160;
-       <a href="tenable.utilities.scan_move.md#module-tenable.utilities.scan_move"><code class="xref">tenable.utilities.scan_move</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>

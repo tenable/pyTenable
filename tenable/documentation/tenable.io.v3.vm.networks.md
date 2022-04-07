@@ -40,6 +40,9 @@
 <section id="module-tenable.io.v3.vm.networks.api">
 <span id="tenable-io-v3-vm-networks-api-module"></span><h2>tenable.io.v3.vm.networks.api module<a class="headerlink" href="#module-tenable.io.v3.vm.networks.api" title="Permalink to this headline">¶</a></h2>
 </section>
+<section id="module-tenable.io.v3.vm.networks.iterator">
+<span id="tenable-io-v3-vm-networks-iterator-module"></span><h2>tenable.io.v3.vm.networks.iterator module<a class="headerlink" href="#module-tenable.io.v3.vm.networks.iterator" title="Permalink to this headline">¶</a></h2>
+</section>
 <section id="module-tenable.io.v3.vm.networks.schema">
 <span id="tenable-io-v3-vm-networks-schema-module"></span><h2>tenable.io.v3.vm.networks.schema module<a class="headerlink" href="#module-tenable.io.v3.vm.networks.schema" title="Permalink to this headline">¶</a></h2>
 </section>

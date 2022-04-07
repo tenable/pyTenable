@@ -40,7 +40,6 @@
   <h1>Source code for tenable.constants</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
-
 <div class="viewcode-block" id="IOConstants"><a class="viewcode-back" href="../../README.md#tenable.constants.IOConstants">[docs]</a><span class="k">class</span> <span class="nc">IOConstants</span><span class="p">:</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This class contains all the constants related to IO package</span>

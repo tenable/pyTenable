@@ -10,14 +10,12 @@ Subpackages
 -----------
 
 .. toctree::
-   :maxdepth: 20
+   :maxdepth: 8
 
    tenable.io.v3.assets
    tenable.io.v3.base
-   tenable.io.v3.connectors
    tenable.io.v3.cs
-   tenable.io.v3.mssp
-   tenable.io.v3.platform
+   tenable.io.v3.groups
    tenable.io.v3.users
    tenable.io.v3.vm
    tenable.io.v3.was

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
     <link rel="index" title="Index" href="genindex.md" />
     <link rel="next" title="tenable.io.v3.was.attachments package" href="tenable.io.v3.was.attachments.md" />
-    <link rel="prev" title="tenable.io.v3.vm.vulnerabilities package" href="tenable.io.v3.vm.vulnerabilities.md" /> 
+    <link rel="prev" title="tenable.io.v3.vm.server package" href="tenable.io.v3.vm.server.md" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -20,7 +20,7 @@
           <a href="tenable.io.v3.was.attachments.md" title="tenable.io.v3.was.attachments package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.vulnerabilities.md" title="tenable.io.v3.vm.vulnerabilities package"
+          <a href="tenable.io.v3.vm.server.md" title="tenable.io.v3.vm.server package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>
@@ -42,13 +42,6 @@
 <li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.attachments.md#module-tenable.io.v3.was.attachments.api">tenable.io.v3.was.attachments.api module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tenable.io.v3.was.configurations.md">tenable.io.v3.was.configurations package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.configurations.md#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.api">tenable.io.v3.was.configurations.api module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.iterator">tenable.io.v3.was.configurations.iterator module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.schema">tenable.io.v3.was.configurations.schema module</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="tenable.io.v3.was.folders.md">tenable.io.v3.was.folders package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.folders.md#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.folders.md#module-tenable.io.v3.was.folders.api">tenable.io.v3.was.folders.api module</a></li>
@@ -62,23 +55,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tenable.io.v3.was.scans.md">tenable.io.v3.was.scans package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.scans.md#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.api">tenable.io.v3.was.scans.api module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.iterator">tenable.io.v3.was.scans.iterator module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.schema">tenable.io.v3.was.scans.schema module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tenable.io.v3.was.templates.md">tenable.io.v3.was.templates package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.templates.md#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.templates.md#module-tenable.io.v3.was.templates.api">tenable.io.v3.was.templates.api module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tenable.io.v3.was.user_templates.md">tenable.io.v3.was.user_templates package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.user_templates.md#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates.api">tenable.io.v3.was.user_templates.api module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates.schema">tenable.io.v3.was.user_templates.schema module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="tenable.io.v3.was.vulnerabilities.md">tenable.io.v3.was.vulnerabilities package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.vulnerabilities.md#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.was.vulnerabilities.md#module-tenable.io.v3.was.vulnerabilities.api">tenable.io.v3.was.vulnerabilities.api module</a></li>
 </ul>
 </li>
 </ul>
@@ -103,7 +81,7 @@
           <a href="tenable.io.v3.was.attachments.md" title="tenable.io.v3.was.attachments package"
              >next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.vulnerabilities.md" title="tenable.io.v3.vm.vulnerabilities package"
+          <a href="tenable.io.v3.vm.server.md" title="tenable.io.v3.vm.server package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>

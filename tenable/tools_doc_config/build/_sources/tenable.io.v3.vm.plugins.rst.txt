@@ -16,3 +16,11 @@ tenable.io.v3.vm.plugins.api module
    :members:
    :undoc-members:
    :show-inheritance:
+
+tenable.io.v3.vm.plugins.iterator module
+----------------------------------------
+
+.. automodule:: tenable.io.v3.vm.plugins.iterator
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -151,8 +151,6 @@
 </li>
       <li><a href="tenable.ad.base.md#tenable.ad.base.schema.BoolInt">BoolInt (class in tenable.ad.base.schema)</a>
 </li>
-      <li><a href="tenable.utilities.md#id1">bridge() (ScanBridge method)</a>, <a href="tenable.utilities.md#tenable.utilities.scan_bridge.ScanBridge.bridge">[1]</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -989,10 +987,6 @@
 </li>
         <li><a href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.iterator">tenable.io.v3.base.iterators.iterator</a>
 </li>
-        <li><a href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.tio_iterator">tenable.io.v3.base.iterators.tio_iterator</a>
-</li>
-        <li><a href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.was_iterator">tenable.io.v3.base.iterators.was_iterator</a>
-</li>
         <li><a href="tenable.io.v3.base.schema.md#module-tenable.io.v3.base.schema">tenable.io.v3.base.schema</a>
 </li>
         <li><a href="tenable.io.v3.base.schema.explore.md#module-tenable.io.v3.base.schema.explore">tenable.io.v3.base.schema.explore</a>
@@ -1005,33 +999,11 @@
 </li>
         <li><a href="tenable.io.v3.base.schema.explore.md#module-tenable.io.v3.base.schema.explore.search">tenable.io.v3.base.schema.explore.search</a>
 </li>
-        <li><a href="tenable.io.v3.connectors.md#module-tenable.io.v3.connectors">tenable.io.v3.connectors</a>
-</li>
-        <li><a href="tenable.io.v3.connectors.md#module-tenable.io.v3.connectors.api">tenable.io.v3.connectors.api</a>
-</li>
-        <li><a href="tenable.io.v3.connectors.md#module-tenable.io.v3.connectors.schema">tenable.io.v3.connectors.schema</a>
-</li>
         <li><a href="tenable.io.v3.cs.md#module-tenable.io.v3.cs">tenable.io.v3.cs</a>
 </li>
-        <li><a href="tenable.io.v3.mssp.md#module-tenable.io.v3.mssp">tenable.io.v3.mssp</a>
+        <li><a href="tenable.io.v3.groups.md#module-tenable.io.v3.groups">tenable.io.v3.groups</a>
 </li>
-        <li><a href="tenable.io.v3.mssp.accounts.md#module-tenable.io.v3.mssp.accounts">tenable.io.v3.mssp.accounts</a>
-</li>
-        <li><a href="tenable.io.v3.mssp.accounts.md#module-tenable.io.v3.mssp.accounts.api">tenable.io.v3.mssp.accounts.api</a>
-</li>
-        <li><a href="tenable.io.v3.mssp.logos.md#module-tenable.io.v3.mssp.logos">tenable.io.v3.mssp.logos</a>
-</li>
-        <li><a href="tenable.io.v3.mssp.logos.md#module-tenable.io.v3.mssp.logos.api">tenable.io.v3.mssp.logos.api</a>
-</li>
-        <li><a href="tenable.io.v3.mssp.logos.md#module-tenable.io.v3.mssp.logos.schema">tenable.io.v3.mssp.logos.schema</a>
-</li>
-        <li><a href="tenable.io.v3.platform.md#module-tenable.io.v3.platform">tenable.io.v3.platform</a>
-</li>
-        <li><a href="tenable.io.v3.platform.groups.md#module-tenable.io.v3.platform.groups">tenable.io.v3.platform.groups</a>
-</li>
-        <li><a href="tenable.io.v3.platform.groups.md#module-tenable.io.v3.platform.groups.api">tenable.io.v3.platform.groups.api</a>
-</li>
-        <li><a href="tenable.io.v3.platform.groups.md#module-tenable.io.v3.platform.groups.schema">tenable.io.v3.platform.groups.schema</a>
+        <li><a href="tenable.io.v3.groups.md#module-tenable.io.v3.groups.api">tenable.io.v3.groups.api</a>
 </li>
         <li><a href="tenable.io.v3.users.md#module-tenable.io.v3.users">tenable.io.v3.users</a>
 </li>
@@ -1045,14 +1017,6 @@
 </li>
         <li><a href="tenable.io.v3.vm.agent_config.md#module-tenable.io.v3.vm.agent_config.api">tenable.io.v3.vm.agent_config.api</a>
 </li>
-        <li><a href="tenable.io.v3.vm.agent_config.md#module-tenable.io.v3.vm.agent_config.schema">tenable.io.v3.vm.agent_config.schema</a>
-</li>
-        <li><a href="tenable.io.v3.vm.agent_exclusions.md#module-tenable.io.v3.vm.agent_exclusions">tenable.io.v3.vm.agent_exclusions</a>
-</li>
-        <li><a href="tenable.io.v3.vm.agent_exclusions.md#module-tenable.io.v3.vm.agent_exclusions.api">tenable.io.v3.vm.agent_exclusions.api</a>
-</li>
-        <li><a href="tenable.io.v3.vm.agent_exclusions.md#module-tenable.io.v3.vm.agent_exclusions.schema">tenable.io.v3.vm.agent_exclusions.schema</a>
-</li>
         <li><a href="tenable.io.v3.vm.agent_groups.md#module-tenable.io.v3.vm.agent_groups">tenable.io.v3.vm.agent_groups</a>
 </li>
         <li><a href="tenable.io.v3.vm.agent_groups.md#module-tenable.io.v3.vm.agent_groups.api">tenable.io.v3.vm.agent_groups.api</a>
@@ -1061,31 +1025,17 @@
 </li>
         <li><a href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents">tenable.io.v3.vm.agents</a>
 </li>
+        <li><a href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents.agents_iterator">tenable.io.v3.vm.agents.agents_iterator</a>
+</li>
         <li><a href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents.api">tenable.io.v3.vm.agents.api</a>
 </li>
         <li><a href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents.schema">tenable.io.v3.vm.agents.schema</a>
-</li>
-        <li><a href="tenable.io.v3.vm.audit_log.md#module-tenable.io.v3.vm.audit_log">tenable.io.v3.vm.audit_log</a>
-</li>
-        <li><a href="tenable.io.v3.vm.audit_log.md#module-tenable.io.v3.vm.audit_log.api">tenable.io.v3.vm.audit_log.api</a>
 </li>
         <li><a href="tenable.io.v3.vm.credentials.md#module-tenable.io.v3.vm.credentials">tenable.io.v3.vm.credentials</a>
 </li>
         <li><a href="tenable.io.v3.vm.credentials.md#module-tenable.io.v3.vm.credentials.api">tenable.io.v3.vm.credentials.api</a>
 </li>
         <li><a href="tenable.io.v3.vm.credentials.md#module-tenable.io.v3.vm.credentials.schema">tenable.io.v3.vm.credentials.schema</a>
-</li>
-        <li><a href="tenable.io.v3.vm.editor.md#module-tenable.io.v3.vm.editor">tenable.io.v3.vm.editor</a>
-</li>
-        <li><a href="tenable.io.v3.vm.editor.md#module-tenable.io.v3.vm.editor.api">tenable.io.v3.vm.editor.api</a>
-</li>
-        <li><a href="tenable.io.v3.vm.editor.md#module-tenable.io.v3.vm.editor.schema">tenable.io.v3.vm.editor.schema</a>
-</li>
-        <li><a href="tenable.io.v3.vm.exclusions.md#module-tenable.io.v3.vm.exclusions">tenable.io.v3.vm.exclusions</a>
-</li>
-        <li><a href="tenable.io.v3.vm.exclusions.md#module-tenable.io.v3.vm.exclusions.api">tenable.io.v3.vm.exclusions.api</a>
-</li>
-        <li><a href="tenable.io.v3.vm.exclusions.md#module-tenable.io.v3.vm.exclusions.schema">tenable.io.v3.vm.exclusions.schema</a>
 </li>
         <li><a href="tenable.io.v3.vm.files.md#module-tenable.io.v3.vm.files">tenable.io.v3.vm.files</a>
 </li>
@@ -1101,6 +1051,8 @@
 </li>
         <li><a href="tenable.io.v3.vm.networks.md#module-tenable.io.v3.vm.networks.api">tenable.io.v3.vm.networks.api</a>
 </li>
+        <li><a href="tenable.io.v3.vm.networks.md#module-tenable.io.v3.vm.networks.iterator">tenable.io.v3.vm.networks.iterator</a>
+</li>
         <li><a href="tenable.io.v3.vm.networks.md#module-tenable.io.v3.vm.networks.schema">tenable.io.v3.vm.networks.schema</a>
 </li>
         <li><a href="tenable.io.v3.vm.permissions.md#module-tenable.io.v3.vm.permissions">tenable.io.v3.vm.permissions</a>
@@ -1113,17 +1065,7 @@
 </li>
         <li><a href="tenable.io.v3.vm.plugins.md#module-tenable.io.v3.vm.plugins.api">tenable.io.v3.vm.plugins.api</a>
 </li>
-        <li><a href="tenable.io.v3.vm.policies.md#module-tenable.io.v3.vm.policies">tenable.io.v3.vm.policies</a>
-</li>
-        <li><a href="tenable.io.v3.vm.policies.md#module-tenable.io.v3.vm.policies.api">tenable.io.v3.vm.policies.api</a>
-</li>
-        <li><a href="tenable.io.v3.vm.policies.md#module-tenable.io.v3.vm.policies.schema">tenable.io.v3.vm.policies.schema</a>
-</li>
-        <li><a href="tenable.io.v3.vm.remediation_scans.md#module-tenable.io.v3.vm.remediation_scans">tenable.io.v3.vm.remediation_scans</a>
-</li>
-        <li><a href="tenable.io.v3.vm.remediation_scans.md#module-tenable.io.v3.vm.remediation_scans.api">tenable.io.v3.vm.remediation_scans.api</a>
-</li>
-        <li><a href="tenable.io.v3.vm.remediation_scans.md#module-tenable.io.v3.vm.remediation_scans.schema">tenable.io.v3.vm.remediation_scans.schema</a>
+        <li><a href="tenable.io.v3.vm.plugins.md#module-tenable.io.v3.vm.plugins.iterator">tenable.io.v3.vm.plugins.iterator</a>
 </li>
         <li><a href="tenable.io.v3.vm.scanner_groups.md#module-tenable.io.v3.vm.scanner_groups">tenable.io.v3.vm.scanner_groups</a>
 </li>
@@ -1137,43 +1079,15 @@
 </li>
         <li><a href="tenable.io.v3.vm.scanners.md#module-tenable.io.v3.vm.scanners.schema">tenable.io.v3.vm.scanners.schema</a>
 </li>
-        <li><a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans">tenable.io.v3.vm.scans</a>
-</li>
-        <li><a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.api">tenable.io.v3.vm.scans.api</a>
-</li>
-        <li><a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.iterator">tenable.io.v3.vm.scans.iterator</a>
-</li>
-        <li><a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.schema">tenable.io.v3.vm.scans.schema</a>
-</li>
         <li><a href="tenable.io.v3.vm.server.md#module-tenable.io.v3.vm.server">tenable.io.v3.vm.server</a>
 </li>
         <li><a href="tenable.io.v3.vm.server.md#module-tenable.io.v3.vm.server.api">tenable.io.v3.vm.server.api</a>
-</li>
-        <li><a href="tenable.io.v3.vm.tags.md#module-tenable.io.v3.vm.tags">tenable.io.v3.vm.tags</a>
-</li>
-        <li><a href="tenable.io.v3.vm.tags.md#module-tenable.io.v3.vm.tags.api">tenable.io.v3.vm.tags.api</a>
-</li>
-        <li><a href="tenable.io.v3.vm.tags.md#module-tenable.io.v3.vm.tags.schema">tenable.io.v3.vm.tags.schema</a>
-</li>
-        <li><a href="tenable.io.v3.vm.vulnerabilities.md#module-tenable.io.v3.vm.vulnerabilities">tenable.io.v3.vm.vulnerabilities</a>
-</li>
-        <li><a href="tenable.io.v3.vm.vulnerabilities.md#module-tenable.io.v3.vm.vulnerabilities.api">tenable.io.v3.vm.vulnerabilities.api</a>
-</li>
-        <li><a href="tenable.io.v3.vm.vulnerabilities.md#module-tenable.io.v3.vm.vulnerabilities.schema">tenable.io.v3.vm.vulnerabilities.schema</a>
 </li>
         <li><a href="tenable.io.v3.was.md#module-tenable.io.v3.was">tenable.io.v3.was</a>
 </li>
         <li><a href="tenable.io.v3.was.attachments.md#module-tenable.io.v3.was.attachments">tenable.io.v3.was.attachments</a>
 </li>
         <li><a href="tenable.io.v3.was.attachments.md#module-tenable.io.v3.was.attachments.api">tenable.io.v3.was.attachments.api</a>
-</li>
-        <li><a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations">tenable.io.v3.was.configurations</a>
-</li>
-        <li><a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.api">tenable.io.v3.was.configurations.api</a>
-</li>
-        <li><a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.iterator">tenable.io.v3.was.configurations.iterator</a>
-</li>
-        <li><a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.schema">tenable.io.v3.was.configurations.schema</a>
 </li>
         <li><a href="tenable.io.v3.was.folders.md#module-tenable.io.v3.was.folders">tenable.io.v3.was.folders</a>
 </li>
@@ -1187,21 +1101,9 @@
 </li>
         <li><a href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.api">tenable.io.v3.was.scans.api</a>
 </li>
+        <li><a href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.iterator">tenable.io.v3.was.scans.iterator</a>
+</li>
         <li><a href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.schema">tenable.io.v3.was.scans.schema</a>
-</li>
-        <li><a href="tenable.io.v3.was.templates.md#module-tenable.io.v3.was.templates">tenable.io.v3.was.templates</a>
-</li>
-        <li><a href="tenable.io.v3.was.templates.md#module-tenable.io.v3.was.templates.api">tenable.io.v3.was.templates.api</a>
-</li>
-        <li><a href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates">tenable.io.v3.was.user_templates</a>
-</li>
-        <li><a href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates.api">tenable.io.v3.was.user_templates.api</a>
-</li>
-        <li><a href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates.schema">tenable.io.v3.was.user_templates.schema</a>
-</li>
-        <li><a href="tenable.io.v3.was.vulnerabilities.md#module-tenable.io.v3.was.vulnerabilities">tenable.io.v3.was.vulnerabilities</a>
-</li>
-        <li><a href="tenable.io.v3.was.vulnerabilities.md#module-tenable.io.v3.was.vulnerabilities.api">tenable.io.v3.was.vulnerabilities.api</a>
 </li>
         <li><a href="tenable.io.md#module-tenable.io.workbenches">tenable.io.workbenches</a>
 </li>
@@ -1277,12 +1179,6 @@
 </li>
         <li><a href="tenable.sc.md#module-tenable.sc.users">tenable.sc.users</a>
 </li>
-        <li><a href="tenable.utilities.md#module-tenable.utilities">tenable.utilities</a>
-</li>
-        <li><a href="tenable.utilities.md#module-tenable.utilities.scan_bridge">tenable.utilities.scan_bridge</a>
-</li>
-        <li><a href="tenable.utilities.scan_move.md#module-tenable.utilities.scan_move">tenable.utilities.scan_move</a>
-</li>
         <li><a href="README.md#module-tenable.utils">tenable.utils</a>
 </li>
         <li><a href="README.md#module-tenable.version">tenable.version</a>
@@ -1290,8 +1186,6 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="tenable.utilities.scan_move.md#tenable.utilities.scan_move.ScanMove.move">move() (ScanMove method)</a>
-</li>
       <li><a href="README.md#id2">msg (FileDownloadError attribute)</a>, <a href="README.md#tenable.errors.FileDownloadError.msg">[1]</a>
 </li>
   </ul></td>
@@ -1456,10 +1350,6 @@
 </li>
       <li><a href="tenable.sc.md#id168">ScanAPI (class in tenable.sc.scans)</a>, <a href="tenable.sc.md#tenable.sc.scans.ScanAPI">[1]</a>
 </li>
-      <li><a href="tenable.utilities.md#id0">ScanBridge (class in tenable.utilities.scan_bridge)</a>, <a href="tenable.utilities.md#tenable.utilities.scan_bridge.ScanBridge">[1]</a>
-</li>
-      <li><a href="tenable.utilities.scan_move.md#id0">ScanMove (class in tenable.utilities.scan_move)</a>, <a href="tenable.utilities.scan_move.md#tenable.utilities.scan_move.ScanMove">[1]</a>
-</li>
       <li><a href="tenable.sc.md#id160">ScannerAPI (class in tenable.sc.scanners)</a>, <a href="tenable.sc.md#tenable.sc.scanners.ScannerAPI">[1]</a>
 </li>
       <li><a href="tenable.sc.md#id93">ScanPolicyAPI (class in tenable.sc.policies)</a>, <a href="tenable.sc.md#tenable.sc.policies.ScanPolicyAPI">[1]</a>
@@ -1476,10 +1366,10 @@
 </li>
       <li><a href="tenable.ad.score.md#tenable.ad.score.schema.ScoreSchema">ScoreSchema (class in tenable.ad.score.schema)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tenable.sc.md#tenable.sc.base.SCResultsIterator">SCResultsIterator (class in tenable.sc.base)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="tenable.ot.graphql.md#tenable.ot.graphql.assets.Segment">Segment (class in tenable.ot.graphql.assets)</a>
 </li>
       <li><a href="tenable.ot.graphql.md#tenable.ot.graphql.assets.SegmentSchema">SegmentSchema (class in tenable.ot.graphql.assets)</a>
@@ -2319,6 +2209,8 @@
         <li><a href="tenable.io.v3.md#module-tenable.io.v3">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     tenable.io.v3.assets
 
@@ -2390,20 +2282,6 @@
 </li>
       </ul></li>
       <li>
-    tenable.io.v3.base.iterators.tio_iterator
-
-      <ul>
-        <li><a href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.tio_iterator">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.base.iterators.was_iterator
-
-      <ul>
-        <li><a href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.was_iterator">module</a>
-</li>
-      </ul></li>
-      <li>
     tenable.io.v3.base.schema
 
       <ul>
@@ -2446,27 +2324,6 @@
 </li>
       </ul></li>
       <li>
-    tenable.io.v3.connectors
-
-      <ul>
-        <li><a href="tenable.io.v3.connectors.md#module-tenable.io.v3.connectors">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.connectors.api
-
-      <ul>
-        <li><a href="tenable.io.v3.connectors.md#module-tenable.io.v3.connectors.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.connectors.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.connectors.md#module-tenable.io.v3.connectors.schema">module</a>
-</li>
-      </ul></li>
-      <li>
     tenable.io.v3.cs
 
       <ul>
@@ -2474,75 +2331,17 @@
 </li>
       </ul></li>
       <li>
-    tenable.io.v3.mssp
+    tenable.io.v3.groups
 
       <ul>
-        <li><a href="tenable.io.v3.mssp.md#module-tenable.io.v3.mssp">module</a>
+        <li><a href="tenable.io.v3.groups.md#module-tenable.io.v3.groups">module</a>
 </li>
       </ul></li>
       <li>
-    tenable.io.v3.mssp.accounts
+    tenable.io.v3.groups.api
 
       <ul>
-        <li><a href="tenable.io.v3.mssp.accounts.md#module-tenable.io.v3.mssp.accounts">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.mssp.accounts.api
-
-      <ul>
-        <li><a href="tenable.io.v3.mssp.accounts.md#module-tenable.io.v3.mssp.accounts.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.mssp.logos
-
-      <ul>
-        <li><a href="tenable.io.v3.mssp.logos.md#module-tenable.io.v3.mssp.logos">module</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    tenable.io.v3.mssp.logos.api
-
-      <ul>
-        <li><a href="tenable.io.v3.mssp.logos.md#module-tenable.io.v3.mssp.logos.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.mssp.logos.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.mssp.logos.md#module-tenable.io.v3.mssp.logos.schema">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.platform
-
-      <ul>
-        <li><a href="tenable.io.v3.platform.md#module-tenable.io.v3.platform">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.platform.groups
-
-      <ul>
-        <li><a href="tenable.io.v3.platform.groups.md#module-tenable.io.v3.platform.groups">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.platform.groups.api
-
-      <ul>
-        <li><a href="tenable.io.v3.platform.groups.md#module-tenable.io.v3.platform.groups.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.platform.groups.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.platform.groups.md#module-tenable.io.v3.platform.groups.schema">module</a>
+        <li><a href="tenable.io.v3.groups.md#module-tenable.io.v3.groups.api">module</a>
 </li>
       </ul></li>
       <li>
@@ -2588,34 +2387,6 @@
 </li>
       </ul></li>
       <li>
-    tenable.io.v3.vm.agent_config.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.agent_config.md#module-tenable.io.v3.vm.agent_config.schema">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.agent_exclusions
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.agent_exclusions.md#module-tenable.io.v3.vm.agent_exclusions">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.agent_exclusions.api
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.agent_exclusions.md#module-tenable.io.v3.vm.agent_exclusions.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.agent_exclusions.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.agent_exclusions.md#module-tenable.io.v3.vm.agent_exclusions.schema">module</a>
-</li>
-      </ul></li>
-      <li>
     tenable.io.v3.vm.agent_groups
 
       <ul>
@@ -2644,6 +2415,13 @@
 </li>
       </ul></li>
       <li>
+    tenable.io.v3.vm.agents.agents_iterator
+
+      <ul>
+        <li><a href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents.agents_iterator">module</a>
+</li>
+      </ul></li>
+      <li>
     tenable.io.v3.vm.agents.api
 
       <ul>
@@ -2655,20 +2433,6 @@
 
       <ul>
         <li><a href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents.schema">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.audit_log
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.audit_log.md#module-tenable.io.v3.vm.audit_log">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.audit_log.api
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.audit_log.md#module-tenable.io.v3.vm.audit_log.api">module</a>
 </li>
       </ul></li>
       <li>
@@ -2690,48 +2454,6 @@
 
       <ul>
         <li><a href="tenable.io.v3.vm.credentials.md#module-tenable.io.v3.vm.credentials.schema">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.editor
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.editor.md#module-tenable.io.v3.vm.editor">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.editor.api
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.editor.md#module-tenable.io.v3.vm.editor.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.editor.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.editor.md#module-tenable.io.v3.vm.editor.schema">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.exclusions
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.exclusions.md#module-tenable.io.v3.vm.exclusions">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.exclusions.api
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.exclusions.md#module-tenable.io.v3.vm.exclusions.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.exclusions.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.exclusions.md#module-tenable.io.v3.vm.exclusions.schema">module</a>
 </li>
       </ul></li>
       <li>
@@ -2784,6 +2506,13 @@
 </li>
       </ul></li>
       <li>
+    tenable.io.v3.vm.networks.iterator
+
+      <ul>
+        <li><a href="tenable.io.v3.vm.networks.md#module-tenable.io.v3.vm.networks.iterator">module</a>
+</li>
+      </ul></li>
+      <li>
     tenable.io.v3.vm.networks.schema
 
       <ul>
@@ -2826,45 +2555,10 @@
 </li>
       </ul></li>
       <li>
-    tenable.io.v3.vm.policies
+    tenable.io.v3.vm.plugins.iterator
 
       <ul>
-        <li><a href="tenable.io.v3.vm.policies.md#module-tenable.io.v3.vm.policies">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.policies.api
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.policies.md#module-tenable.io.v3.vm.policies.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.policies.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.policies.md#module-tenable.io.v3.vm.policies.schema">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.remediation_scans
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.remediation_scans.md#module-tenable.io.v3.vm.remediation_scans">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.remediation_scans.api
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.remediation_scans.md#module-tenable.io.v3.vm.remediation_scans.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.remediation_scans.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.remediation_scans.md#module-tenable.io.v3.vm.remediation_scans.schema">module</a>
+        <li><a href="tenable.io.v3.vm.plugins.md#module-tenable.io.v3.vm.plugins.iterator">module</a>
 </li>
       </ul></li>
       <li>
@@ -2910,34 +2604,6 @@
 </li>
       </ul></li>
       <li>
-    tenable.io.v3.vm.scans
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.scans.api
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.scans.iterator
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.iterator">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.scans.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.schema">module</a>
-</li>
-      </ul></li>
-      <li>
     tenable.io.v3.vm.server
 
       <ul>
@@ -2949,48 +2615,6 @@
 
       <ul>
         <li><a href="tenable.io.v3.vm.server.md#module-tenable.io.v3.vm.server.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.tags
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.tags.md#module-tenable.io.v3.vm.tags">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.tags.api
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.tags.md#module-tenable.io.v3.vm.tags.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.tags.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.tags.md#module-tenable.io.v3.vm.tags.schema">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.vulnerabilities
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.vulnerabilities.md#module-tenable.io.v3.vm.vulnerabilities">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.vulnerabilities.api
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.vulnerabilities.md#module-tenable.io.v3.vm.vulnerabilities.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.vm.vulnerabilities.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.vm.vulnerabilities.md#module-tenable.io.v3.vm.vulnerabilities.schema">module</a>
 </li>
       </ul></li>
       <li>
@@ -3012,34 +2636,6 @@
 
       <ul>
         <li><a href="tenable.io.v3.was.attachments.md#module-tenable.io.v3.was.attachments.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.was.configurations
-
-      <ul>
-        <li><a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.was.configurations.api
-
-      <ul>
-        <li><a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.was.configurations.iterator
-
-      <ul>
-        <li><a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.iterator">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.was.configurations.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.schema">module</a>
 </li>
       </ul></li>
       <li>
@@ -3085,59 +2681,17 @@
 </li>
       </ul></li>
       <li>
+    tenable.io.v3.was.scans.iterator
+
+      <ul>
+        <li><a href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.iterator">module</a>
+</li>
+      </ul></li>
+      <li>
     tenable.io.v3.was.scans.schema
 
       <ul>
         <li><a href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.schema">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.was.templates
-
-      <ul>
-        <li><a href="tenable.io.v3.was.templates.md#module-tenable.io.v3.was.templates">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.was.templates.api
-
-      <ul>
-        <li><a href="tenable.io.v3.was.templates.md#module-tenable.io.v3.was.templates.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.was.user_templates
-
-      <ul>
-        <li><a href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.was.user_templates.api
-
-      <ul>
-        <li><a href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates.api">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.was.user_templates.schema
-
-      <ul>
-        <li><a href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates.schema">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.was.vulnerabilities
-
-      <ul>
-        <li><a href="tenable.io.v3.was.vulnerabilities.md#module-tenable.io.v3.was.vulnerabilities">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.io.v3.was.vulnerabilities.api
-
-      <ul>
-        <li><a href="tenable.io.v3.was.vulnerabilities.md#module-tenable.io.v3.was.vulnerabilities.api">module</a>
 </li>
       </ul></li>
       <li>
@@ -3397,27 +2951,6 @@
 
       <ul>
         <li><a href="tenable.sc.md#module-tenable.sc.users">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.utilities
-
-      <ul>
-        <li><a href="tenable.utilities.md#module-tenable.utilities">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.utilities.scan_bridge
-
-      <ul>
-        <li><a href="tenable.utilities.md#module-tenable.utilities.scan_bridge">module</a>
-</li>
-      </ul></li>
-      <li>
-    tenable.utilities.scan_move
-
-      <ul>
-        <li><a href="tenable.utilities.scan_move.md#module-tenable.utilities.scan_move">module</a>
 </li>
       </ul></li>
       <li>

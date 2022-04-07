@@ -24,19 +24,3 @@ tenable.io.v3.base.iterators.iterator module
    :members:
    :undoc-members:
    :show-inheritance:
-
-tenable.io.v3.base.iterators.tio\_iterator module
--------------------------------------------------
-
-.. automodule:: tenable.io.v3.base.iterators.tio_iterator
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-tenable.io.v3.base.iterators.was\_iterator module
--------------------------------------------------
-
-.. automodule:: tenable.io.v3.base.iterators.was_iterator
-   :members:
-   :undoc-members:
-   :show-inheritance:

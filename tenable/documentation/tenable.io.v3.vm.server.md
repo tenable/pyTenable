@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
     <link rel="index" title="Index" href="genindex.md" />
-    <link rel="next" title="tenable.io.v3.vm.tags package" href="tenable.io.v3.vm.tags.md" />
-    <link rel="prev" title="tenable.io.v3.vm.scans package" href="tenable.io.v3.vm.scans.md" /> 
+    <link rel="next" title="tenable.io.v3.was package" href="tenable.io.v3.was.md" />
+    <link rel="prev" title="tenable.io.v3.vm.scanners package" href="tenable.io.v3.vm.scanners.md" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -17,10 +17,10 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.tags.md" title="tenable.io.v3.vm.tags package"
+          <a href="tenable.io.v3.was.md" title="tenable.io.v3.was package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.scans.md" title="tenable.io.v3.vm.scans package"
+          <a href="tenable.io.v3.vm.scanners.md" title="tenable.io.v3.vm.scanners package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>
@@ -56,10 +56,10 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.tags.md" title="tenable.io.v3.vm.tags package"
+          <a href="tenable.io.v3.was.md" title="tenable.io.v3.was package"
              >next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.scans.md" title="tenable.io.v3.vm.scans package"
+          <a href="tenable.io.v3.vm.scanners.md" title="tenable.io.v3.vm.scanners package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>

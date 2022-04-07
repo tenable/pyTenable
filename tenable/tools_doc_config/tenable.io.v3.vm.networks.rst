@@ -17,6 +17,14 @@ tenable.io.v3.vm.networks.api module
    :undoc-members:
    :show-inheritance:
 
+tenable.io.v3.vm.networks.iterator module
+-----------------------------------------
+
+.. automodule:: tenable.io.v3.vm.networks.iterator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tenable.io.v3.vm.networks.schema module
 ---------------------------------------
 

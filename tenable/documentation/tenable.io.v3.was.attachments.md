@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
     <link rel="index" title="Index" href="genindex.md" />
-    <link rel="next" title="tenable.io.v3.was.configurations package" href="tenable.io.v3.was.configurations.md" />
+    <link rel="next" title="tenable.io.v3.was.folders package" href="tenable.io.v3.was.folders.md" />
     <link rel="prev" title="tenable.io.v3.was package" href="tenable.io.v3.was.md" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -17,7 +17,7 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.was.configurations.md" title="tenable.io.v3.was.configurations package"
+          <a href="tenable.io.v3.was.folders.md" title="tenable.io.v3.was.folders package"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="tenable.io.v3.was.md" title="tenable.io.v3.was package"
@@ -56,7 +56,7 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.was.configurations.md" title="tenable.io.v3.was.configurations package"
+          <a href="tenable.io.v3.was.folders.md" title="tenable.io.v3.was.folders package"
              >next</a> |</li>
         <li class="right" >
           <a href="tenable.io.v3.was.md" title="tenable.io.v3.was package"

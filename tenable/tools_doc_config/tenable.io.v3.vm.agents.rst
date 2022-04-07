@@ -9,6 +9,14 @@ tenable.io.v3.vm.agents package
 Submodules
 ----------
 
+tenable.io.v3.vm.agents.agents\_iterator module
+-----------------------------------------------
+
+.. automodule:: tenable.io.v3.vm.agents.agents_iterator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tenable.io.v3.vm.agents.api module
 ----------------------------------
 

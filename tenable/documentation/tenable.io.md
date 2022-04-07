@@ -90,8 +90,6 @@
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.base.iterators.md#submodules">Submodules</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.explore_iterator">tenable.io.v3.base.iterators.explore_iterator module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.iterator">tenable.io.v3.base.iterators.iterator module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.tio_iterator">tenable.io.v3.base.iterators.tio_iterator module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.was_iterator">tenable.io.v3.base.iterators.was_iterator module</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.base.schema.md">tenable.io.v3.base.schema package</a><ul>
@@ -112,40 +110,10 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="tenable.io.v3.connectors.md">tenable.io.v3.connectors package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tenable.io.v3.connectors.md#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tenable.io.v3.connectors.md#module-tenable.io.v3.connectors.api">tenable.io.v3.connectors.api module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="tenable.io.v3.connectors.md#module-tenable.io.v3.connectors.schema">tenable.io.v3.connectors.schema module</a></li>
-</ul>
-</li>
 <li class="toctree-l3"><a class="reference internal" href="tenable.io.v3.cs.md">tenable.io.v3.cs package</a></li>
-<li class="toctree-l3"><a class="reference internal" href="tenable.io.v3.mssp.md">tenable.io.v3.mssp package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tenable.io.v3.mssp.md#subpackages">Subpackages</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.mssp.accounts.md">tenable.io.v3.mssp.accounts package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.mssp.accounts.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.mssp.accounts.md#module-tenable.io.v3.mssp.accounts.api">tenable.io.v3.mssp.accounts.api module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.mssp.logos.md">tenable.io.v3.mssp.logos package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.mssp.logos.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.mssp.logos.md#module-tenable.io.v3.mssp.logos.api">tenable.io.v3.mssp.logos.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.mssp.logos.md#module-tenable.io.v3.mssp.logos.schema">tenable.io.v3.mssp.logos.schema module</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="tenable.io.v3.platform.md">tenable.io.v3.platform package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="tenable.io.v3.platform.md#subpackages">Subpackages</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.platform.groups.md">tenable.io.v3.platform.groups package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.platform.groups.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.platform.groups.md#module-tenable.io.v3.platform.groups.api">tenable.io.v3.platform.groups.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.platform.groups.md#module-tenable.io.v3.platform.groups.schema">tenable.io.v3.platform.groups.schema module</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="tenable.io.v3.groups.md">tenable.io.v3.groups package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tenable.io.v3.groups.md#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tenable.io.v3.groups.md#module-tenable.io.v3.groups.api">tenable.io.v3.groups.api module</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="tenable.io.v3.users.md">tenable.io.v3.users package</a><ul>
@@ -159,13 +127,6 @@
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.agent_config.md">tenable.io.v3.vm.agent_config package</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.agent_config.md#submodules">Submodules</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.agent_config.md#module-tenable.io.v3.vm.agent_config.api">tenable.io.v3.vm.agent_config.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.agent_config.md#module-tenable.io.v3.vm.agent_config.schema">tenable.io.v3.vm.agent_config.schema module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.agent_exclusions.md">tenable.io.v3.vm.agent_exclusions package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.agent_exclusions.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.agent_exclusions.md#module-tenable.io.v3.vm.agent_exclusions.api">tenable.io.v3.vm.agent_exclusions.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.agent_exclusions.md#module-tenable.io.v3.vm.agent_exclusions.schema">tenable.io.v3.vm.agent_exclusions.schema module</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.agent_groups.md">tenable.io.v3.vm.agent_groups package</a><ul>
@@ -176,31 +137,15 @@
 </li>
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.agents.md">tenable.io.v3.vm.agents package</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.agents.md#submodules">Submodules</a></li>
+<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents.agents_iterator">tenable.io.v3.vm.agents.agents_iterator module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents.api">tenable.io.v3.vm.agents.api module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.agents.md#module-tenable.io.v3.vm.agents.schema">tenable.io.v3.vm.agents.schema module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.audit_log.md">tenable.io.v3.vm.audit_log package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.audit_log.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.audit_log.md#module-tenable.io.v3.vm.audit_log.api">tenable.io.v3.vm.audit_log.api module</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.credentials.md">tenable.io.v3.vm.credentials package</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.credentials.md#submodules">Submodules</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.credentials.md#module-tenable.io.v3.vm.credentials.api">tenable.io.v3.vm.credentials.api module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.credentials.md#module-tenable.io.v3.vm.credentials.schema">tenable.io.v3.vm.credentials.schema module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.editor.md">tenable.io.v3.vm.editor package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.editor.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.editor.md#module-tenable.io.v3.vm.editor.api">tenable.io.v3.vm.editor.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.editor.md#module-tenable.io.v3.vm.editor.schema">tenable.io.v3.vm.editor.schema module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.exclusions.md">tenable.io.v3.vm.exclusions package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.exclusions.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.exclusions.md#module-tenable.io.v3.vm.exclusions.api">tenable.io.v3.vm.exclusions.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.exclusions.md#module-tenable.io.v3.vm.exclusions.schema">tenable.io.v3.vm.exclusions.schema module</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.files.md">tenable.io.v3.vm.files package</a><ul>
@@ -217,6 +162,7 @@
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.networks.md">tenable.io.v3.vm.networks package</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.networks.md#submodules">Submodules</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.networks.md#module-tenable.io.v3.vm.networks.api">tenable.io.v3.vm.networks.api module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.networks.md#module-tenable.io.v3.vm.networks.iterator">tenable.io.v3.vm.networks.iterator module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.networks.md#module-tenable.io.v3.vm.networks.schema">tenable.io.v3.vm.networks.schema module</a></li>
 </ul>
 </li>
@@ -229,18 +175,7 @@
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.plugins.md">tenable.io.v3.vm.plugins package</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.plugins.md#submodules">Submodules</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.plugins.md#module-tenable.io.v3.vm.plugins.api">tenable.io.v3.vm.plugins.api module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.policies.md">tenable.io.v3.vm.policies package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.policies.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.policies.md#module-tenable.io.v3.vm.policies.api">tenable.io.v3.vm.policies.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.policies.md#module-tenable.io.v3.vm.policies.schema">tenable.io.v3.vm.policies.schema module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.remediation_scans.md">tenable.io.v3.vm.remediation_scans package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.remediation_scans.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.remediation_scans.md#module-tenable.io.v3.vm.remediation_scans.api">tenable.io.v3.vm.remediation_scans.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.remediation_scans.md#module-tenable.io.v3.vm.remediation_scans.schema">tenable.io.v3.vm.remediation_scans.schema module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.plugins.md#module-tenable.io.v3.vm.plugins.iterator">tenable.io.v3.vm.plugins.iterator module</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.scanner_groups.md">tenable.io.v3.vm.scanner_groups package</a><ul>
@@ -255,28 +190,9 @@
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.scanners.md#module-tenable.io.v3.vm.scanners.schema">tenable.io.v3.vm.scanners.schema module</a></li>
 </ul>
 </li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.scans.md">tenable.io.v3.vm.scans package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.scans.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.api">tenable.io.v3.vm.scans.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.iterator">tenable.io.v3.vm.scans.iterator module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.scans.md#module-tenable.io.v3.vm.scans.schema">tenable.io.v3.vm.scans.schema module</a></li>
-</ul>
-</li>
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.server.md">tenable.io.v3.vm.server package</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.server.md#submodules">Submodules</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.server.md#module-tenable.io.v3.vm.server.api">tenable.io.v3.vm.server.api module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.tags.md">tenable.io.v3.vm.tags package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.tags.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.tags.md#module-tenable.io.v3.vm.tags.api">tenable.io.v3.vm.tags.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.tags.md#module-tenable.io.v3.vm.tags.schema">tenable.io.v3.vm.tags.schema module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.vm.vulnerabilities.md">tenable.io.v3.vm.vulnerabilities package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.vulnerabilities.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.vulnerabilities.md#module-tenable.io.v3.vm.vulnerabilities.api">tenable.io.v3.vm.vulnerabilities.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.vm.vulnerabilities.md#module-tenable.io.v3.vm.vulnerabilities.schema">tenable.io.v3.vm.vulnerabilities.schema module</a></li>
 </ul>
 </li>
 </ul>
@@ -288,13 +204,6 @@
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.was.attachments.md">tenable.io.v3.was.attachments package</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.attachments.md#submodules">Submodules</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.attachments.md#module-tenable.io.v3.was.attachments.api">tenable.io.v3.was.attachments.api module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.was.configurations.md">tenable.io.v3.was.configurations package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.configurations.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.api">tenable.io.v3.was.configurations.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.iterator">tenable.io.v3.was.configurations.iterator module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.configurations.md#module-tenable.io.v3.was.configurations.schema">tenable.io.v3.was.configurations.schema module</a></li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.was.folders.md">tenable.io.v3.was.folders package</a><ul>
@@ -310,23 +219,8 @@
 <li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.was.scans.md">tenable.io.v3.was.scans package</a><ul>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.scans.md#submodules">Submodules</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.api">tenable.io.v3.was.scans.api module</a></li>
+<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.iterator">tenable.io.v3.was.scans.iterator module</a></li>
 <li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.scans.md#module-tenable.io.v3.was.scans.schema">tenable.io.v3.was.scans.schema module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.was.templates.md">tenable.io.v3.was.templates package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.templates.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.templates.md#module-tenable.io.v3.was.templates.api">tenable.io.v3.was.templates.api module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.was.user_templates.md">tenable.io.v3.was.user_templates package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.user_templates.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates.api">tenable.io.v3.was.user_templates.api module</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.user_templates.md#module-tenable.io.v3.was.user_templates.schema">tenable.io.v3.was.user_templates.schema module</a></li>
-</ul>
-</li>
-<li class="toctree-l5"><a class="reference internal" href="tenable.io.v3.was.vulnerabilities.md">tenable.io.v3.was.vulnerabilities package</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.vulnerabilities.md#submodules">Submodules</a></li>
-<li class="toctree-l6"><a class="reference internal" href="tenable.io.v3.was.vulnerabilities.md#module-tenable.io.v3.was.vulnerabilities.api">tenable.io.v3.was.vulnerabilities.api module</a></li>
 </ul>
 </li>
 </ul>

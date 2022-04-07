@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
     <link rel="index" title="Index" href="genindex.md" />
     <link rel="next" title="tenable.ot package" href="tenable.ot.md" />
-    <link rel="prev" title="tenable.io.v3.was.vulnerabilities package" href="tenable.io.v3.was.vulnerabilities.md" /> 
+    <link rel="prev" title="tenable.io.v3.was.scans package" href="tenable.io.v3.was.scans.md" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -20,7 +20,7 @@
           <a href="tenable.ot.md" title="tenable.ot package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.was.vulnerabilities.md" title="tenable.io.v3.was.vulnerabilities package"
+          <a href="tenable.io.v3.was.scans.md" title="tenable.io.v3.was.scans package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tenable.nessus package</a></li> 
@@ -51,7 +51,7 @@
           <a href="tenable.ot.md" title="tenable.ot package"
              >next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.was.vulnerabilities.md" title="tenable.io.v3.was.vulnerabilities package"
+          <a href="tenable.io.v3.was.scans.md" title="tenable.io.v3.was.scans package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">tenable.nessus package</a></li> 

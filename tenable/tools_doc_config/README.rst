@@ -10,7 +10,7 @@ Subpackages
 -----------
 
 .. toctree::
-   :maxdepth: 20
+   :maxdepth: 8
 
    tenable.ad
    tenable.base
@@ -20,7 +20,6 @@ Subpackages
    tenable.ot
    tenable.reports
    tenable.sc
-   tenable.utilities
 
 Submodules
 ----------

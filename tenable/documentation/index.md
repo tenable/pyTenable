@@ -98,9 +98,7 @@
 <li><a href="tenable/sc/status.md">tenable.sc.status</a></li>
 <li><a href="tenable/sc/system.md">tenable.sc.system</a></li>
 <li><a href="tenable/sc/users.md">tenable.sc.users</a></li>
-</ul><li><a href="tenable/utilities/scan_bridge.md">tenable.utilities.scan_bridge</a></li>
-<li><a href="tenable/utilities/scan_move.md">tenable.utilities.scan_move</a></li>
-<li><a href="tenable/utils.md">tenable.utils</a></li>
+</ul><li><a href="tenable/utils.md">tenable.utils</a></li>
 </ul>
             <div class="clearer"></div>
           </div>

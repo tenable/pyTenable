@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
     <link rel="index" title="Index" href="genindex.md" />
-    <link rel="next" title="tenable.io.v3.vm.files package" href="tenable.io.v3.vm.files.md" />
-    <link rel="prev" title="tenable.io.v3.vm.editor package" href="tenable.io.v3.vm.editor.md" /> 
+    <link rel="next" title="tenable.io.v3.users package" href="tenable.io.v3.users.md" />
+    <link rel="prev" title="tenable.io.v3.cs package" href="tenable.io.v3.cs.md" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -17,31 +17,27 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.files.md" title="tenable.io.v3.vm.files package"
+          <a href="tenable.io.v3.users.md" title="tenable.io.v3.users package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.editor.md" title="tenable.io.v3.vm.editor package"
+          <a href="tenable.io.v3.cs.md" title="tenable.io.v3.cs package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="tenable.io.v3.md" >tenable.io.v3 package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="tenable.io.v3.vm.md" accesskey="U">tenable.io.v3.vm package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">tenable.io.v3.vm.exclusions package</a></li> 
+          <li class="nav-item nav-item-2"><a href="tenable.io.v3.md" accesskey="U">tenable.io.v3 package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">tenable.io.v3.groups package</a></li> 
       </ul>
     </div>  
     <div class="document">
       <div class="documentwrapper">
           <div class="body" role="main">
-  <section id="module-tenable.io.v3.vm.exclusions">
-<span id="tenable-io-v3-vm-exclusions-package"></span><h1>tenable.io.v3.vm.exclusions package<a class="headerlink" href="#module-tenable.io.v3.vm.exclusions" title="Permalink to this headline">¶</a></h1>
+  <section id="module-tenable.io.v3.groups">
+<span id="tenable-io-v3-groups-package"></span><h1>tenable.io.v3.groups package<a class="headerlink" href="#module-tenable.io.v3.groups" title="Permalink to this headline">¶</a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </section>
-<section id="module-tenable.io.v3.vm.exclusions.api">
-<span id="tenable-io-v3-vm-exclusions-api-module"></span><h2>tenable.io.v3.vm.exclusions.api module<a class="headerlink" href="#module-tenable.io.v3.vm.exclusions.api" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="module-tenable.io.v3.vm.exclusions.schema">
-<span id="tenable-io-v3-vm-exclusions-schema-module"></span><h2>tenable.io.v3.vm.exclusions.schema module<a class="headerlink" href="#module-tenable.io.v3.vm.exclusions.schema" title="Permalink to this headline">¶</a></h2>
+<section id="module-tenable.io.v3.groups.api">
+<span id="tenable-io-v3-groups-api-module"></span><h2>tenable.io.v3.groups.api module<a class="headerlink" href="#module-tenable.io.v3.groups.api" title="Permalink to this headline">¶</a></h2>
 </section>
 </section>
             <div class="clearer"></div>
@@ -59,16 +55,15 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.files.md" title="tenable.io.v3.vm.files package"
+          <a href="tenable.io.v3.users.md" title="tenable.io.v3.users package"
              >next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.editor.md" title="tenable.io.v3.vm.editor package"
+          <a href="tenable.io.v3.cs.md" title="tenable.io.v3.cs package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>
           <li class="nav-item nav-item-2"><a href="tenable.io.v3.md" >tenable.io.v3 package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="tenable.io.v3.vm.md" >tenable.io.v3.vm package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">tenable.io.v3.vm.exclusions package</a></li> 
+        <li class="nav-item nav-item-this"><a href="">tenable.io.v3.groups package</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

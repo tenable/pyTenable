@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="genindex.md" />
     <link rel="search" title="Search" href="search.md" />
     <link rel="next" title="tenable.io.v3.vm.folders package" href="tenable.io.v3.vm.folders.md" />
-    <link rel="prev" title="tenable.io.v3.vm.exclusions package" href="tenable.io.v3.vm.exclusions.md" /> 
+    <link rel="prev" title="tenable.io.v3.vm.credentials package" href="tenable.io.v3.vm.credentials.md" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -34,7 +34,7 @@
           <a href="tenable.io.v3.vm.folders.md" title="tenable.io.v3.vm.folders package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.exclusions.md" title="tenable.io.v3.vm.exclusions package"
+          <a href="tenable.io.v3.vm.credentials.md" title="tenable.io.v3.vm.credentials package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>
@@ -77,7 +77,7 @@
           <a href="tenable.io.v3.vm.folders.md" title="tenable.io.v3.vm.folders package"
              >next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.exclusions.md" title="tenable.io.v3.vm.exclusions package"
+          <a href="tenable.io.v3.vm.credentials.md" title="tenable.io.v3.vm.credentials package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>

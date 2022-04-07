@@ -18,8 +18,8 @@
     
     <link rel="index" title="Index" href="genindex.md" />
     <link rel="search" title="Search" href="search.md" />
-    <link rel="next" title="tenable.io.v3.vm.editor package" href="tenable.io.v3.vm.editor.md" />
-    <link rel="prev" title="tenable.io.v3.vm.audit_log package" href="tenable.io.v3.vm.audit_log.md" /> 
+    <link rel="next" title="tenable.io.v3.vm.files package" href="tenable.io.v3.vm.files.md" />
+    <link rel="prev" title="tenable.io.v3.vm.agents package" href="tenable.io.v3.vm.agents.md" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -31,10 +31,10 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.editor.md" title="tenable.io.v3.vm.editor package"
+          <a href="tenable.io.v3.vm.files.md" title="tenable.io.v3.vm.files package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.audit_log.md" title="tenable.io.v3.vm.audit_log package"
+          <a href="tenable.io.v3.vm.agents.md" title="tenable.io.v3.vm.agents package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>
@@ -77,10 +77,10 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.editor.md" title="tenable.io.v3.vm.editor package"
+          <a href="tenable.io.v3.vm.files.md" title="tenable.io.v3.vm.files package"
              >next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.audit_log.md" title="tenable.io.v3.vm.audit_log package"
+          <a href="tenable.io.v3.vm.agents.md" title="tenable.io.v3.vm.agents package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>

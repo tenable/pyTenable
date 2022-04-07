@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
     <link rel="index" title="Index" href="genindex.md" />
-    <link rel="next" title="tenable.io.v3.vm.scans package" href="tenable.io.v3.vm.scans.md" />
+    <link rel="next" title="tenable.io.v3.vm.server package" href="tenable.io.v3.vm.server.md" />
     <link rel="prev" title="tenable.io.v3.vm.scanner_groups package" href="tenable.io.v3.vm.scanner_groups.md" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -17,7 +17,7 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.scans.md" title="tenable.io.v3.vm.scans package"
+          <a href="tenable.io.v3.vm.server.md" title="tenable.io.v3.vm.server package"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="tenable.io.v3.vm.scanner_groups.md" title="tenable.io.v3.vm.scanner_groups package"
@@ -59,7 +59,7 @@
           <a href="py-modindex.md" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.scans.md" title="tenable.io.v3.vm.scans package"
+          <a href="tenable.io.v3.vm.server.md" title="tenable.io.v3.vm.server package"
              >next</a> |</li>
         <li class="right" >
           <a href="tenable.io.v3.vm.scanner_groups.md" title="tenable.io.v3.vm.scanner_groups package"

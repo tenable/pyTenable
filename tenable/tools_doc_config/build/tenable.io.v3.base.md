@@ -62,8 +62,6 @@
 <li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.base.iterators.md#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.explore_iterator">tenable.io.v3.base.iterators.explore_iterator module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.iterator">tenable.io.v3.base.iterators.iterator module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.tio_iterator">tenable.io.v3.base.iterators.tio_iterator module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tenable.io.v3.base.iterators.md#module-tenable.io.v3.base.iterators.was_iterator">tenable.io.v3.base.iterators.was_iterator module</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tenable.io.v3.base.schema.md">tenable.io.v3.base.schema package</a><ul>

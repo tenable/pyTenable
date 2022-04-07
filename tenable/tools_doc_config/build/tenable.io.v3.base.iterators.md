@@ -59,12 +59,6 @@
 <section id="module-tenable.io.v3.base.iterators.iterator">
 <span id="tenable-io-v3-base-iterators-iterator-module"></span><h2>tenable.io.v3.base.iterators.iterator module<a class="headerlink" href="#module-tenable.io.v3.base.iterators.iterator" title="Permalink to this headline">¶</a></h2>
 </section>
-<section id="module-tenable.io.v3.base.iterators.tio_iterator">
-<span id="tenable-io-v3-base-iterators-tio-iterator-module"></span><h2>tenable.io.v3.base.iterators.tio_iterator module<a class="headerlink" href="#module-tenable.io.v3.base.iterators.tio_iterator" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="module-tenable.io.v3.base.iterators.was_iterator">
-<span id="tenable-io-v3-base-iterators-was-iterator-module"></span><h2>tenable.io.v3.base.iterators.was_iterator module<a class="headerlink" href="#module-tenable.io.v3.base.iterators.was_iterator" title="Permalink to this headline">¶</a></h2>
-</section>
 </section>
 
 

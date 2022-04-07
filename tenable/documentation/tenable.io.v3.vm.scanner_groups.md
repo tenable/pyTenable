@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
     <link rel="index" title="Index" href="genindex.md" />
     <link rel="next" title="tenable.io.v3.vm.scanners package" href="tenable.io.v3.vm.scanners.md" />
-    <link rel="prev" title="tenable.io.v3.vm.remediation_scans package" href="tenable.io.v3.vm.remediation_scans.md" /> 
+    <link rel="prev" title="tenable.io.v3.vm.plugins package" href="tenable.io.v3.vm.plugins.md" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -20,7 +20,7 @@
           <a href="tenable.io.v3.vm.scanners.md" title="tenable.io.v3.vm.scanners package"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.remediation_scans.md" title="tenable.io.v3.vm.remediation_scans package"
+          <a href="tenable.io.v3.vm.plugins.md" title="tenable.io.v3.vm.plugins package"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>
@@ -62,7 +62,7 @@
           <a href="tenable.io.v3.vm.scanners.md" title="tenable.io.v3.vm.scanners package"
              >next</a> |</li>
         <li class="right" >
-          <a href="tenable.io.v3.vm.remediation_scans.md" title="tenable.io.v3.vm.remediation_scans package"
+          <a href="tenable.io.v3.vm.plugins.md" title="tenable.io.v3.vm.plugins package"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="README.md">pyTenable  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="tenable.io.md" >tenable.io package</a> &#187;</li>

@@ -10,6 +10,6 @@ Subpackages
 -----------
 
 .. toctree::
-   :maxdepth: 20
+   :maxdepth: 8
 
    tenable.io.v3.base.schema.explore
