@@ -34,6 +34,7 @@ Methods available on ``tio.v3.vm``:
     scanners
     scanner_groups
     vulnerabilities
+    tags
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.vm.agent_exclusions.api import AgentExclusionsAPI
@@ -56,6 +57,7 @@ from tenable.io.v3.vm.scanners.api import ScannersAPI
 from tenable.io.v3.vm.scans.api import ScansAPI
 from tenable.io.v3.vm.server.api import ServerAPI
 from tenable.io.v3.vm.vulnerabilities.api import VulnerabilityAPI
+from tenable.io.v3.vm.tags.api import TagsAPI
 
 
 class VulnerabilityManagement(ExploreBaseEndpoint):
@@ -224,3 +226,11 @@ class VulnerabilityManagement(ExploreBaseEndpoint):
         :doc:`Tenable.io v3 VM Vulnerabilities APIs <vulnerabilities>`
         '''
         return VulnerabilityAPI(self._api)
+
+    @property
+    def tags(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Tags APIs <tags>`.
+        '''
+        return TagsAPI(self._api)

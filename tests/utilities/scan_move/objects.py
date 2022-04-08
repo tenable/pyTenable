@@ -111,7 +111,7 @@ FILE_UPLOAD_RESP_DATA = {
 }
 
 IMPORT_RESP_DATA = {
-    'scan': {
+    'scans': [{
         'timezone': None,
         'last_modification_date': '2019-12-31T20:50:23.635Z',
         'status': 'imported',
@@ -126,5 +126,5 @@ IMPORT_RESP_DATA = {
         'read': False,
         'name': 'KitchenSinkScan',
         'shared': False
-    }
+    }]
 }
