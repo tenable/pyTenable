@@ -101,7 +101,7 @@ class FoldersAPI(ExploreBaseEndpoint):
                 Example:
                     >>> ['field1', 'field2']
             
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
             
@@ -140,7 +140,7 @@ class FoldersAPI(ExploreBaseEndpoint):
                 the :py:meth:`tio.v3.vm.definitions.folders()`
                 endpoint to get more details.
             
-            sort list(tuple, Dict):
+            sort list(tuple, dict):
                 A list of dictionaries describing how to sort the data
                 that is to be returned.
             

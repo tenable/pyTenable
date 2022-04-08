@@ -25,7 +25,7 @@ Methods available on ``tio.v3``:
 '''
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.vm.assets.api import AssetsAPI
-from tenable.io.v3.groups.api import GroupsAPI
+from tenable.io.v3.platform.groups.api import GroupsAPI
 from tenable.io.v3.connectors.api import ConnectorsAPI
 from tenable.io.v3.mssp import ManagedSecurityServiceProvider
 from tenable.io.v3.platform import Platform

@@ -54,7 +54,7 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
     def configurations(self):
         '''
         The interface object for the
-        :doc:`Tenable.io v3 Configurations APIs <was-v2-configurations>`
+        :doc:`Tenable.io v3 Configurations APIs <configurations>`
         '''
         return ConfigurationsAPI(self._api)
 
