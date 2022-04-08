@@ -57,7 +57,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                     >>> ('days', 2)
             network_id (str, optional):
                 The UUID for network
-            **params (Dict):
+            **params (dict):
                 The various parameters that can be passed to the connector
                 creation API.  Examples would be sub_accounts, access_key,
                 etc. For more detailed information, please refer to API
@@ -102,7 +102,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: list_aws_cloudtrails <connectors-list_aws_cloudtrails>` # noqa E501
 
         Args:
-            region (List(tuple)):
+            region (list(tuple)):
                 Complete list of aws available
                 name (str):
                     The AWS region code, for example, us-east-1.
@@ -115,7 +115,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                     associated with all AWS available regions.
                 Examples:
                     >>> [('us-east-1', 'US East (N. Virginia)')]
-            credentials (Dict, optional):
+            credentials (dict, optional):
                 The credentials that the Tenable.io connector uses to
                 communicate with the AWS API, including access_key
                 and secret_key.

@@ -29,9 +29,9 @@ class ExploreBaseEndpoint(APIEndpoint):
         Gets the details for the specified id.
 
         Args:
-            obj_id (str, UUID):
+            obj_id (str, uuid.UUID):
                 The unique identifier for the records to be retrieved.
-            **kwargs (Dict):
+            **kwargs (dict):
                 return_csv (bool):
                     Provide this boolean to get the response in form of
                     text or csv.

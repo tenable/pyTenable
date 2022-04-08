@@ -172,7 +172,7 @@ class AssetsAPI(ExploreBaseEndpoint):
             action (str):
                 Specifies whether to add or remove tags.
                  Valid values: add, remove.
-            assets (List):
+            assets (list):
                 An array of asset UUIDs.
             tags:
                 An array of tag value UUIDs.
@@ -293,8 +293,9 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         :devportal:`assets: import-job-info <assets-import-job-info>`
 
-        uuid (uuid.UUID):
-            The UUID (unique identifier) for the job.
+        Args:
+            uuid (uuid.UUID):
+                The UUID (unique identifier) for the job.
 
         Returns:
             Dict:
@@ -416,12 +417,12 @@ class AssetsAPI(ExploreBaseEndpoint):
         Args:
             acr_score (int):
                 acr_score assigned to asset. must be in range 1 to 10.
-            assets (List(Dict)):
+            assets (list(dict)):
                 One or more asset definition dictionaries
             note (str):
                 Any notes you want to add to clarify the
                 circumstances behind the update.
-            reason (List(str)):
+            reason (list(str)):
                 The reasons you are updating the ACR for the assets.
                 Supported values include:
                     Business Critical

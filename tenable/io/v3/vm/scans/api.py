@@ -120,7 +120,7 @@ class ScansAPI(ExploreBaseEndpoint):
         based on the values inputted.
 
         Args:
-            kwargs (Dict):
+            kwargs (dict):
                 The keyword dict passed from the user
 
         Returns:
@@ -208,7 +208,7 @@ class ScansAPI(ExploreBaseEndpoint):
         to distributed schedule dictionary
 
         Args:
-            details (Dict):
+            details (dict):
                 Dictionary of existing schedule
 
         Returns:
@@ -595,15 +595,15 @@ class ScansAPI(ExploreBaseEndpoint):
             targets (list, optional):
                 If defined, then a list of targets can be specified and will
                 be formatted to an appropriate text_target attribute.
-            credentials (Dict, optional):
+            credentials (dict, optional):
                 A list of credentials to use.
-            compliance (Dict, optional):
+            compliance (dict, optional):
                 A list of compliance audiots to use.
             scanner (str, optional):
                 Define the scanner or scanner group uuid or name.
-            schedule_scan (Dict, optional):
+            schedule_scan (dict, optional):
                 Define updated schedule for scan
-            **kw (Dict, optional):
+            **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc. For
                 more detailed info, please refer to the API documentation
@@ -646,7 +646,7 @@ class ScansAPI(ExploreBaseEndpoint):
         credentials dict.
         If there is any edit credentials,it would override the same.
         Args:
-            scan (Dict):
+            scan (dict):
                 scan object to update edit credential if it matches criteria
         Returns:
             :obj:`Dict`:
@@ -750,15 +750,15 @@ class ScansAPI(ExploreBaseEndpoint):
             targets (list, optional):
                 If defined, then a list of targets can be specified and will
                 be formatted to an appropriate text_target attribute.
-            credentials (Dict, optional):
+            credentials (dict, optional):
                 A list of credentials to use.
-            compliance (Dict, optional):
+            compliance (dict, optional):
                 A list of compliance audits to use.
             scanner (str, optional):
                 Define the scanner or scanner group uuid or name.
-            schedule_scan (Dict, optional):
+            schedule_scan (dict, optional):
                 Define schedule for scan
-            **kw (Dict, optional):
+            **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc. For
                 more detailed info, please refer to the API documentation
@@ -1685,7 +1685,7 @@ class ScansAPI(ExploreBaseEndpoint):
                     - ``('user', 'use', user_id)``
                     - ``('group', 'edit', group_id)``
 
-            **settings (Dict, optional):
+            **settings (dict, optional):
                 Additional keywords passed will be added to the settings dict
                 within the API call.  As this dataset can be highly variable,
                 it will not be validated and simply passed as-is.

@@ -55,7 +55,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
             targets (list[str]):
                 A List of distinct absolute URLs that were targeted in the
                 scan.
-            settings (Dict):
+            settings (dict):
                 The scan configuration settings.
             description (str):
                 A description of the scan configuration.
@@ -348,10 +348,10 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
                 The UUID of the owner of the scan configuration.
             template_id (str):
                 The UUID of the Tenable-provided configuration template.
-            targets (List[str]):
+            targets (list[str]):
                 A List of distinct absolute URLs that were targeted in
                 the scan.
-            settings (Dict):
+            settings (dict):
                 The scan configuration settings.
             description (str):
                 A description of the scan configuration.
@@ -364,12 +364,12 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
                 The ID of the scanner (if the type is set to managed_webapp),
                 or scanner group (if the type is pool or local) that performs
                 the scan.
-            schedule (Dict):
+            schedule (dict):
                 The schedule when the scan configuration will be run.
-            notifications (Dict):
+            notifications (dict):
                 Contact information used to send scan notifications upon scan
                 completion.
-            permissions (List):
+            permissions (list):
                 The permissions for the scan configuration.
 
         Returns:

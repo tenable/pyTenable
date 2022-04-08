@@ -61,7 +61,7 @@ class LogosAPI(ExploreBaseEndpoint):
         Args:
             logo_id (uuid.UUID):
                 The UUID of the logo
-            account_ids (List):
+            account_ids (list):
                 list of accoint_ids to assign logos to.
 
         Returns:
