@@ -44,7 +44,7 @@ class Version3API(APIEndpoint):
     def assets(self):
         """
         The interface object for the Assets APIs
-        :doc:`Tenable.io.v3.assets Assets APIs <assets>`.
+        :doc:`Tenable io v3 assets APIs <assets>`.
         """
         return AssetsAPI(self._api)
 
@@ -52,7 +52,7 @@ class Version3API(APIEndpoint):
     def connectors(self):
         '''
         The interface object for the connectors APIs
-        :doc:`tenable.io v3 connectors APIs <connectors>
+        :doc:`tenable.io v3 connectors APIs <connectors>`.
         '''
         return ConnectorsAPI(self._api)
 
