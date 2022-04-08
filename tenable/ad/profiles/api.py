@@ -131,7 +131,7 @@ class ProfilesAPI(APIEndpoint):
     def copy_profile(self,
                      from_id: str,
                      name: str,
-                     directories: list[int]
+                     directories: List[int]
                      ) -> Dict:
         '''
         Creates a new profile from another profile
