@@ -1,6 +1,6 @@
 '''
 Lockout Policy
-=============
+==============
 
 Methods described in this section relate to the lockout policy API.
 These methods can be accessed at ``TenableAD.lockout_policy``.
