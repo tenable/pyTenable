@@ -8,7 +8,7 @@ The following methods allow for interaction into the Tenable.io
 Methods available on `` tio.v3.connectors``:
 
 .. rst-class:: hide-signature
-.. autoclass:: Connectors
+.. autoclass:: ConnectorsAPI
     :members:
 '''
 from typing import Dict, List, Optional, Tuple, Union
@@ -79,11 +79,11 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         '''
 
         payload = {
-                'name': name,
-                'type': con_type,
-                'network_id': network_id,
-                'schedule': schedule,
-                'params': params
+            'name': name,
+            'type': con_type,
+            'network_id': network_id,
+            'schedule': schedule,
+            'params': params
         }
         payload = dict_clean(payload)
         schema = ConnectorCreateOrEditSchema()
