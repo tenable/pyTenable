@@ -1,5 +1,5 @@
 '''
-V3 API Endpoints Schemas
+Users Endpoints Schema
 '''
 from marshmallow import Schema, fields
 
@@ -9,12 +9,12 @@ class UsersCreateSchema(Schema):
     Validate Create Users API Schema
     '''
 
-    username = fields.Str(required=True)
-    password = fields.Str(required=True)
+    username = fields.Str()
+    password = fields.Str()
     name = fields.Str()
     email = fields.Str()
-    permissions = fields.Int(required=True)
-    type = fields.Str(default='local')
+    permissions = fields.Int()
+    type = fields.Str(dump_default='local')
 
 
 class UserEditSchema(Schema):
@@ -26,3 +26,14 @@ class UserEditSchema(Schema):
     name = fields.Str()
     email = fields.Email()
     enabled = fields.Boolean()
+
+
+class UsersCommonSchema(Schema):
+    '''
+    Schema for common variables in users
+    '''
+    email_enabled = fields.Boolean()
+    sms_enabled = fields.Boolean()
+    sms_phone = fields.Str()
+    password = fields.Str()
+    current_password = fields.Str()
