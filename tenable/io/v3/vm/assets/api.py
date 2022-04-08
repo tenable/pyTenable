@@ -145,7 +145,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         :devportal:`assets: asset-info <assets-asset-info>`
 
         Args:
-            uuid (UUID):
+            uuid (uuid.UUID):
                 The UUID (unique identifier) for the asset.
 
         Returns:
@@ -201,7 +201,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         :devportal:`tags: asset-tags <tags-list-asset-tags>`
 
         Args:
-            uuid (UUID):
+            uuid (uuid.UUID):
                 The UUID (unique identifier) for the asset.
 
         Returns:
@@ -293,7 +293,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         :devportal:`assets: import-job-info <assets-import-job-info>`
 
-        uuid (UUID):
+        uuid (uuid.UUID):
             The UUID (unique identifier) for the job.
 
         Returns:
@@ -317,11 +317,11 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         :devportal:`assets: move-assets <assets-bulk-move>`
 
-        source (UUID):
+        source (uuid.UUID):
             The UUID of the network currently associated with the assets.
-        destination (UUID):
+        destination (uuid.UUID):
             The UUID of the network to associate with the specified assets.
-        targets (List(str)):
+        targets (list[str]):
             The IPv4 addresses of the assets to move.
 
         Returns:

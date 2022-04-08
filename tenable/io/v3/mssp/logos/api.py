@@ -59,7 +59,7 @@ class LogosAPI(ExploreBaseEndpoint):
         MSSP Portal.
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
             account_ids (List):
                 list of accoint_ids to assign logos to.
@@ -88,7 +88,7 @@ class LogosAPI(ExploreBaseEndpoint):
         Downloads the logo in either base64 or png format.
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
             fobj (FileObject, optional):
                 A file-like object to write the contents of the logo to.
@@ -118,7 +118,7 @@ class LogosAPI(ExploreBaseEndpoint):
         Returns details for the specified logo in the Tenable.io MSSP Portal.
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
         Returns:
             :obj:`dict`:
@@ -135,7 +135,7 @@ class LogosAPI(ExploreBaseEndpoint):
         Deletes Logo for the gived logo_id
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
         Returns:
             None
@@ -151,7 +151,7 @@ class LogosAPI(ExploreBaseEndpoint):
         Downloads the logo in either base64 or png format.
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
         Returns:
             :obj:`str`:
@@ -273,7 +273,7 @@ class LogosAPI(ExploreBaseEndpoint):
         This update overwrites the existing logo.
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
             fobj (FileObject):
                 A file-like object of the logo.

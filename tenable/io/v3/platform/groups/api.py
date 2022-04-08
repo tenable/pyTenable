@@ -36,9 +36,9 @@ class GroupsAPI(ExploreBaseEndpoint):
         :devportal:`groups: add-user <groups-add-user>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier of the group to add the user to.
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier of the user to add.
 
         Returns:
@@ -85,7 +85,7 @@ class GroupsAPI(ExploreBaseEndpoint):
         :devportal:`groups: delete <groups-delete>`
 
         Args:
-            group_id (UUID): The unique identifier for the group to be deleted.
+            group_id (uuid.UUID): The unique identifier for the group to be deleted.
 
         Returns:
             None:
@@ -107,9 +107,9 @@ class GroupsAPI(ExploreBaseEndpoint):
         :devportal:`groups: delete-user <groups-delete-user>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier for the group to be modified.
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user to be removed
                 from the group.
 
@@ -134,7 +134,7 @@ class GroupsAPI(ExploreBaseEndpoint):
         :devportal:`groups: edit <groups/edit>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier for the group to be modified.
             name (str):
                 The new name for the group.
@@ -160,7 +160,7 @@ class GroupsAPI(ExploreBaseEndpoint):
         :devportal:`groups: list-users <groups-list-users>`
 
         Args:
-            group_id (UUID): The unique identifier of the group requested.
+            group_id (uuid.UUID): The unique identifier of the group requested.
 
         Returns:
             List:

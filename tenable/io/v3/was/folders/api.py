@@ -45,7 +45,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         :devportal:`was folders: delete <was-v2-folders-delete>`
 
         Args:
-            id (UUID): The unique identifier for the folder.
+            id (uuid.UUID): The unique identifier for the folder.
 
         Returns:
             :obj:`None`
@@ -62,7 +62,7 @@ class FoldersAPI(ExploreBaseEndpoint):
         :devportal:`was folders: edit <was-v2-folders-update>`
 
         Args:
-            id (UUID): The unique identifier for the folder.
+            id (uuid.UUID): The unique identifier for the folder.
             name (str): The new name for the folder.
 
         Returns:

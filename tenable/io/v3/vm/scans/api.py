@@ -530,9 +530,9 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: attachments <scans-attachments>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
-            attachment_id (UUID):
+            attachment_id (uuid.UUID):
                 The unique identifier for the attachment
             key (str):
                 The attachment access token.
@@ -583,7 +583,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: configure <scans-configure>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
             template (str, optional):
                 The scan policy template to use.  If no template is specified
@@ -972,9 +972,9 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: details <scans-details>`
 
         Args:
-            scan_id (uuid):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
-            history_id (UUID, optional):
+            history_id (uuid.UUID, optional):
                 The unique identifier for the instance of the scan.
 
         Returns:
@@ -1173,11 +1173,11 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: host-details <scans-host-details>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
-            host_id (UUID):
+            host_id (uuid.UUID):
                 The unique identifier for the host within the scan.
-            history_id (UUID, optional):
+            history_id (uuid.UUID, optional):
                 The unique identifier for the instance of the scan.
 
         Returns:
@@ -1466,7 +1466,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: schedule <scans-schedule>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
             enabled (bool):
                 Enables or Disables the scan scheduling.
@@ -1497,7 +1497,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: stop <scans-stop>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
             block (bool, optional):
                 Block until the scan is actually stopped.  Default is False.
@@ -1567,9 +1567,9 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scan: get-scan-history <scans-history-by-scan-id>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
-            history_id (UUID):
+            history_id (uuid.UUID):
                 The unique identifier for the scan instance.
 
         Returns:
@@ -1654,9 +1654,9 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`credentials: create <credentials-create>`
 
         Args:
-            cred_id (UUID):
+            cred_id (uuid.UUID):
                 Credentials uuid
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 Scan uuid
             ad_hoc (bool, optional):
                 Determines whether the credential is managed (``False``) or an

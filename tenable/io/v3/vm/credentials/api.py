@@ -101,7 +101,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
         :devportal:`credentials: details <credentials-details>`
 
         Args:
-            id (UUID): The UUID of the credential to retrieve.
+            id (uuid.UUID): The UUID of the credential to retrieve.
 
         Returns:
             :obj:`Dict`:
@@ -120,7 +120,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
         :devportal:`credentials: delete <credentials-delete>`
 
         Args:
-            id (UUID): The UUID of the credential to retrieve.
+            id (uuid.UUID): The UUID of the credential to retrieve.
 
         Returns:
             :obj:`bool`:
@@ -146,7 +146,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
         :devportal:`credentials: create <credentials-create>`
 
         Args:
-            cred_id (UUID):
+            cred_id (uuid.UUID):
                 Credentials uuid
             ad_hoc (bool, optional):
                 Determines whether the credential is managed (``False``) or an

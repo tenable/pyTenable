@@ -44,7 +44,7 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
             endpoint.
 
         Args:
-            user_template_id (UUID): The UUID of the user-defined template.
+            user_template_id (uuid.UUID): The UUID of the user-defined template.
 
         Returns:
             :obj:`None`
@@ -64,7 +64,7 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
         <was-v2-user-templates-details>`
 
         Args:
-            user_template_id (UUID): The UUID of the user-defined template.
+            user_template_id (uuid.UUID): The UUID of the user-defined template.
 
         Returns:
             :obj:`dict`: The resource record of the user-defined template.
@@ -180,9 +180,9 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
         <was-v2-user-templates-update>`
 
         Args:
-            user_template_id (UUID): The UUID of the user-defined template.
+            user_template_id (uuid.UUID): The UUID of the user-defined template.
             name (str, optional): The name of the user-defined template.
-            owner_id (UUID, optional):
+            owner_id (uuid.UUID, optional):
                 The UUID of the owner of the user-defined template.
             default_permissions (str, optional):
                 The scan permissions level, as described in Permissions.

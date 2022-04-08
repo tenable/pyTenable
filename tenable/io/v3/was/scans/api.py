@@ -37,7 +37,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: delete scan <was-v2-scans-delete>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to delete.
+            id (uuid.UUID): The UUID of the scan for which you want to delete.
 
         Returns:
             :obj:`None`
@@ -54,7 +54,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: get scan details <was-v2-scans-details>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to view details.
+            id (uuid.UUID): The UUID of the scan for which you want to view details.
 
         Returns:
             obj:`dict`: The record object of the scan.
@@ -76,7 +76,7 @@ class ScansAPI(ExploreBaseEndpoint):
         <was-v2-scans-download-export>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to view a
+            id (uuid.UUID): The UUID of the scan for which you want to view a
                 report.
             content_type (str, optional):
                 The format you want the report returned in. You can request
@@ -128,7 +128,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: export scan results <was-v2-scans-export>`
 
         Args:
-            id (UUID):
+            id (uuid.UUID):
                 The UUID of the scan for which you want to generate a report.
             content_type (str, optional):
                 The format you want the report returned in.
@@ -158,7 +158,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: launch scan <was-v2-scans-launch>`
 
         Args:
-            config_id (UUID):
+            config_id (uuid.UUID):
             The UUID of the scan configuration to use to launch a scan.
 
         Returns:
@@ -180,7 +180,7 @@ class ScansAPI(ExploreBaseEndpoint):
 
         Args:
 
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The UUID of the config that was used for the scan.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
@@ -223,7 +223,7 @@ class ScansAPI(ExploreBaseEndpoint):
 
         Args:
 
-            config_id (UUID):
+            config_id (uuid.UUID):
                 The UUID of the config that was used for the scan.
             fields (list, optional):
                 The list of field names to return from the Tenable API.
@@ -335,7 +335,7 @@ class ScansAPI(ExploreBaseEndpoint):
 
         Args:
 
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The UUID of the scan for which you want to view
                 vulnerabilities.
             fields (list, optional):
@@ -444,7 +444,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: update scan status <was-v2-scans-status-update>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to update
+            id (uuid.UUID): The UUID of the scan for which you want to update
                 status.
             requested_action (str): The action to apply to the scan.
                 The only supported action is stop.

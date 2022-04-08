@@ -299,7 +299,7 @@ class TagsAPI(ExploreBaseEndpoint):
         :devportal:`tag: tag category details <tags-tag-category-details>`
 
         Args:
-            category_id (UUID):
+            category_id (uuid.UUID):
                 The unique identifier for the category
 
         Returns:
@@ -462,7 +462,7 @@ class TagsAPI(ExploreBaseEndpoint):
         :devportal:`tag: edit tag category <tags-edit-tag-category>`
 
         Args:
-            category_id (UUID):
+            category_id (uuid.UUID):
                 The unique identifier for the category to be edited.
             name (str):
                 The new name for the category.

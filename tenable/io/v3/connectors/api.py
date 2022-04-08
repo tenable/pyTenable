@@ -160,7 +160,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: delete <connectors-delete>`
 
         Args:
-            connector_id (UUID):
+            connector_id (uuid.UUID):
                 The unique identifier for the connector to delete.
 
         Returns:
@@ -180,7 +180,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: details <connectors-details>`
 
         Args:
-            connector_id (UUID):
+            connector_id (uuid.UUID):
                 The unique identifier for the connectors.
 
         Returns:
@@ -201,7 +201,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: template <connectors-template>`
 
         Args:
-            connector_id (UUID):
+            connector_id (uuid.UUID):
                 The unique identifier for the connectors.
 
         Returns:
@@ -222,7 +222,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: import_data <connectors-import_data>`
 
         Args:
-            connector_id (UUID):
+            connector_id (uuid.UUID):
                 The unique identifier for the connectors.
 
         Returns:
@@ -250,7 +250,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
 
 
         Args:
-            connector_id (UUID):
+            connector_id (uuid.UUID):
                 The UUID for connector
             name (str):
                 The name of the connector to create.

@@ -38,9 +38,9 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: add-scanner <scanner-groups-add-scanner>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier of the scanner group.
-            scanner_id (UUID):
+            scanner_id (uuid.UUID):
                 The unique identifier of the scanner.
 
         Returns:
@@ -90,7 +90,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: delete <scanner-groups-delete>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier for the scanner group to delete.
 
         Returns:
@@ -110,9 +110,9 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: delete-scanner<scanner-groups-delete-scanner>`  # noqa E501
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier of the scanner group.
-            scanner_id (UUID):
+            scanner_id (uuid.UUID):
                 The unique identifier of the scanner to remove from the
                 requested scanner group.
 
@@ -134,7 +134,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: details <scanner-groups-details>`
 
         Args:
-            group_id (UUID): The unique identifier for the scanner group.
+            group_id (uuid.UUID): The unique identifier for the scanner group.
 
         Returns:
             :obj:`Dict`:
@@ -154,7 +154,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: edit <scanner-groups-edit>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier for the scanner group.
             name (str):
                 The new name for the scanner group.
@@ -265,7 +265,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: list-scanners<scanner-groups-list-scanners>`  # noqa E501
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier of the scanner group.
 
         Returns:
@@ -289,7 +289,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: list-routes <scanner-groups-list-routes>`
 
         Args:
-            group_id (UUID): The unique identifier of the scanner group
+            group_id (uuid.UUID): The unique identifier of the scanner group
 
         Returns:
             :obj:`list`:
@@ -311,7 +311,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: edit-routes <scanner-groups-edit-routes>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier of the scanner group
             routes (list):
                 The list of routes for scanner group

@@ -38,7 +38,7 @@ class TemplatesAPI(ExploreBaseEndpoint):
         <was-v2-templates-details>`
 
         Args:
-            template_id (UUID):
+            template_id (uuid.UUID):
                 The UUID of the Tenable-provided template resource.
 
         Returns:

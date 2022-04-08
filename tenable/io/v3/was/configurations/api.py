@@ -115,7 +115,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         :devportal:`configuration: delete <was-v2-config-delete>`
 
         Args:
-            config_id (UUID):
+            config_id (uuid.UUID):
                 The unique identifier for the scan configuration.
 
         Returns:
@@ -136,7 +136,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         :devportal:`configuration: details <was-v2-config-details>`
 
         Args:
-            config_id (UUID):
+            config_id (uuid.UUID):
                 The UUID of the scan configuration that you want to
                 retrieve details for.
 
@@ -163,13 +163,13 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         :devportal:`configuration: processing status <was-v2-config-status>`
 
         Args:
-            config_id (UUID):
+            config_id (uuid.UUID):
                 The UUID of the scan configuration.
                 NOTE: The config_id can be retrieved from the URI provided in
                 the Location header of the 202 Accepted response from the POST
                 /was/v2/configs or PUT /was/v2/configs/{config_id} request
                 used to create or update the scan configuration.
-            tracking_id (UUID):
+            tracking_id (uuid.UUID):
                 The tracking UUID for the request you want to retrieve
                 the status for.
                 NOTE: The tracking_id can be retrieved from the URI provided in
@@ -197,7 +197,7 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         :devportal:`configuration: move <was-v2-config-move>`
 
         Args:
-            config_id (UUID):
+            config_id (uuid.UUID):
                 The UUID of the scan configuration you want to update.
             folder_name (str):
                 The name of the folder to set for the scan configuration.
@@ -338,13 +338,13 @@ class ConfigurationsAPI(ExploreBaseEndpoint):
         :devportal:`configuration: updsert <was-v2-config-upsert>`
 
         Args:
-            config_id (UUID):
+            config_id (uuid.UUID):
                 If updating an existing scan configuration, the UUID of the
                 scan configuration you want to update. If creating a new scan
                 configuration, a new UUID generated with a tool like uuidgen.
             name (str):
                 The name of the scan configuration.
-            owner_id (UUID):
+            owner_id (uuid.UUID):
                 The UUID of the owner of the scan configuration.
             template_id (str):
                 The UUID of the Tenable-provided configuration template.

@@ -102,7 +102,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: delete <users-delete>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
             The unique identifier of the user.
 
         Returns:
@@ -121,7 +121,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: details <users-details>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
 
         Returns:
@@ -147,7 +147,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: edit <users-edit>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
             permissions (int, optional):
                 The permissions role for the user.  The permissions integer
@@ -202,7 +202,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: enabled <users-enabled>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
             enabled (bool):
             Is the user enabled?
@@ -236,7 +236,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: two-factor <users-two-factor>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
             email (bool):
                 Whether two-factor should be additionally sent as an email.
@@ -279,7 +279,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: two-factor-enable <users-two-factor-enable>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The user id
             phone (str):
                 The phone number to use for two-factor auth.
@@ -310,7 +310,7 @@ class UsersAPI(ExploreBaseEndpoint):
         <users-two-factor-enable-verify>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The user id
             code (str):
                 The verification code that was sent to the device.
@@ -427,7 +427,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: password <users-password>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
             old_password (str):
                 The current password.
@@ -456,7 +456,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: keys <user-keys>`
 
         Args:
-            user_id (UUID): The unique identifier for the user.
+            user_id (uuid.UUID): The unique identifier for the user.
 
         Returns:
             :obj:`Dict`:
@@ -475,7 +475,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: list-auths <users-list-auths>`
 
         Args:
-            user_id (UUID): The unique identifier for the user.
+            user_id (uuid.UUID): The unique identifier for the user.
 
         Returns:
             :obj:`Dict`:
@@ -499,7 +499,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: edit-auths <users-update-auths>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
             api_permitted (bool):
                 Indicates whether API access is authorized for the user.

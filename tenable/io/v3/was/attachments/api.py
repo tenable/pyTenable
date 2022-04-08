@@ -35,7 +35,7 @@ class AttachmentsAPI(ExploreBaseEndpoint):
         :devportal:`attachments: download <was-v2-attachments-download>`
 
         Args:
-            attachment_id (UUID):
+            attachment_id (uuid.UUID):
                 The unique identifier for attachment.
             fobj (BinaryIO, optional):
                 A file-like object to write the contents of the attachment to.
