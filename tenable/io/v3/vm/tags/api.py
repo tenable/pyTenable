@@ -222,7 +222,7 @@ class TagsAPI(ExploreBaseEndpoint):
         :devportal:`tag: delete tag value <tags-delete-tag-value>`
 
         Args:
-            *value_ids (list):
+            *value_ids (list[str]):
                 List of the unique identifier(s) for the tag value(s) to be deleted.
 
         Returns:
