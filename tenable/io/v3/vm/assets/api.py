@@ -17,10 +17,13 @@ from uuid import UUID
 from requests import Response
 from typing_extensions import Literal
 
-from tenable.io.v3.assets.iterator import AssetCSVIterator, AssetSearchIterator
-from tenable.io.v3.assets.schema import (AssignTagsAssetSchema,
-                                         ImportAssetSchema, MoveAssetSchema)
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
+from tenable.io.v3.vm.assets.schema import (AssetUpdateACRSchema,
+                                            AssignTagsAssetSchema,
+                                            ImportAssetSchema, MoveAssetSchema)
+from tenable.utils import dict_clean
 
 
 class AssetsAPI(ExploreBaseEndpoint):
@@ -32,7 +35,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
     def search(self,
                **kw
-               ) -> Union[AssetSearchIterator, AssetCSVIterator, Response]:
+               ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves the assets.
 
@@ -72,7 +75,7 @@ class AssetsAPI(ExploreBaseEndpoint):
                     ... }
                 As the filters may change and sortable fields may change over
                 time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.asset_filters()`
+                the :py:meth:`tio.v3.vm.definitions.assets()`
                 endpoint to get more details.
             sort (list[tuple], optional):
                 sort is a list of tuples in the form of
@@ -108,9 +111,9 @@ class AssetsAPI(ExploreBaseEndpoint):
             ...  'SCCM'), fields=['name', 'netbios_name', 'last_login'],
             ...    limit=2, sort=[('last_observed', 'asc')])
         '''
-        iclass = AssetSearchIterator
+        iclass = SearchIterator
         if kw.get('return_csv', False):
-            iclass = AssetCSVIterator
+            iclass = CSVChunkIterator
         return super()._search(resource='assets',
                                iterator_cls=iclass,
                                api_path=f'{self._path}/search',
@@ -153,7 +156,7 @@ class AssetsAPI(ExploreBaseEndpoint):
             >>> asset = tio.v3.assets.details(
             ...     '00000000-0000-0000-0000-000000000000')
         '''
-        return self._get(f'{uuid}')
+        return super()._details(uuid)
 
     def assign_tags(self,
                     action: Literal['add', 'remove'],
@@ -184,17 +187,16 @@ class AssetsAPI(ExploreBaseEndpoint):
             ...     ['00000000-0000-0000-0000-000000000000'])
         '''
 
+        # todo we can use the tags endpoint methods directly
         schema = AssignTagsAssetSchema()
         payload = schema.dump(
             schema.load({'action': action, 'assets': assets, 'tags': tags})
         )
-        print(payload)
-        # return self._api.post('tags/assets/assignments', json=payload).json()
-        raise NotImplementedError('Not implemented yet as it depends on tags')
+        return self._post('tags/assets/assignments', json=payload)
 
     def tags(self, uuid: UUID) -> Dict:
         '''
-        Retrieves the details about a specific asset.
+        Retrieves the details about a specific asset's tags.
 
         :devportal:`tags: asset-tags <tags-list-asset-tags>`
 
@@ -210,7 +212,9 @@ class AssetsAPI(ExploreBaseEndpoint):
             >>> asset = tio.v3.assets.tags(
             ...     '00000000-0000-0000-0000-000000000000')
         '''
-        raise NotImplementedError('Not implemented yet as it depends on tags')
+        # todo we can use the tags endpoint methods directly
+
+        return self._get(f'tags/assets/{uuid}/assignments')
 
     def asset_import(self, source: str, *assets: Dict) -> str:
         '''
@@ -265,7 +269,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         schema = ImportAssetSchema()
         payload = schema.dump(schema.load({'assets': assets,
                                            'source': source}))
-        return self._post('import', json=payload)['asset_import_job_uuid']
+        return self._post('import', json=payload)['asset_import_job_id']
 
     def list_import_jobs(self) -> List:
         '''
@@ -326,7 +330,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> asset = tio.v3.assets.move_assets(
-            '00000000-0000-0000-0000-000000000000',
+            ...         '00000000-0000-0000-0000-000000000000',
             ...         '10000000-0000-0000-0000-000000000001', ['127.0.0.1'])
             >>> pprint(asset)
         '''
@@ -392,8 +396,152 @@ class AssetsAPI(ExploreBaseEndpoint):
             'Not implemented yet as it depends on search functionality'
         )
 
-    def update_acr(self, *assets: Union[Dict, List[Dict]]):
-        raise NotImplementedError('API has not been implemented yet')
+    def update_acr(self,
+                   acr_score: int,
+                   assets: List[Dict],
+                   note: Optional[str] = None,
+                   reason: Optional[List[str]] = None,
+                   ) -> None:
+        '''
+        Update acr information into Tenable.io from an external source.
 
-    def search_host(self, filter: Dict):
-        raise NotImplementedError('search API has not been implemented yet')
+        :devportal:`assets: update_acr <assets-update_acr>`
+
+        Overwrites the Tenable-provided Asset Criticality Rating (ACR) for
+         the specified assets.
+        Each asset in assets contain at least one of the following attributes: ``fqdn``, ``ipv4``,
+        ``netbios_name``, ``mac_address``.  Each record may also contain
+        additional properties.
+
+        Args:
+            acr_score (int):
+                acr_score assigned to asset. must be in range 1 to 10.
+            assets (List(Dict)):
+                One or more asset definition dictionaries
+            note (str):
+                Any notes you want to add to clarify the
+                circumstances behind the update.
+            reason (List(str)):
+                The reasons you are updating the ACR for the assets.
+                Supported values include:
+                    Business Critical
+                    In Scope For Compliance
+                    Existing Mitigation Control
+                    Dev only
+                    Key drivers does not match
+                    Other
+
+        Returns:
+            None:
+
+        Examples:
+
+            >>> tio.v3.assets.update_acr(
+            ...    10,
+            ...    [{
+            ...        'fqdn': ['example_one.py.test'],
+            ...        'ipv4': ['192.168.1.1'],
+            ...        'netbios_name': 'example_one',
+            ...        'mac_address': ['00:00:00:00:00:00']
+            ...        'id': '00000000-0000-0000-0000-000000000000'
+            ...    }],
+            ...    'test',
+            ...    ["Business Critical", "In Scope For Compliance"],
+            ... )
+        '''
+        payload = dict_clean(dict(
+            asset=assets,
+            acr_score=acr_score,
+            reason=reason,
+            note=note
+        ))
+
+        schema = AssetUpdateACRSchema()
+        payload = schema.dump(schema.load(payload))
+        self._patch(json=[payload])
+
+    def search_host(self,
+                    **kw
+                    ) -> Union[SearchIterator, CSVChunkIterator, Response]:
+        '''
+        Retrieves the assets host.
+
+         Args:
+            fields (list, optional):
+                The list of field names to return from the Tenable API.
+                Example:
+                    >>> ['field1', 'field2']
+            filter (tuple, Dict, optional):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the :py:meth:`tio.v3.vm.filters.asset_filters()`
+                endpoint to get more details.
+            sort (list[tuple], optional):
+                sort is a list of tuples in the form of
+                ('FIELD', 'ORDER').
+                It describes how to sort the data
+                that is to be returned.
+                Examples:
+                    >>> [('field_name_1', 'asc'),
+                    ...      ('field_name_2', 'desc')]
+            limit (int, optional):
+                Number of objects to be returned in each request.
+                Default and max_limit is 200.
+            next (str, optional):
+                The pagination token to use when requesting the next page of
+                results. This token is presented in the previous response.
+            return_resp (bool, optional):
+                If set to true, will override the default behavior to return
+                a requests.Response Object to the user.
+            return_csv (bool, optional):
+                If set to true, it will return the CSV response or
+                iterable (based on return_resp flag). Iterator returns all
+                rows in text/csv format for each call with row headers.
+        Returns:
+            Iterable:
+                The iterable that handles the pagination for the job.
+            requests.Response:
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
+
+        Examples:
+            >>> tio.v3.assets.search_host(filter=('netbios_name', 'eq',
+            ...  'SCCM'), fields=['name', 'netbios_name', 'last_login'],
+            ...    limit=2, sort=[('last_observed', 'asc')])
+        '''
+        iclass = SearchIterator
+        if kw.get('return_csv', False):
+            iclass = CSVChunkIterator
+        return super()._search(resource='assets',
+                               iterator_cls=iclass,
+                               api_path=f'{self._path}/host/search',
+                               **kw
+                               )
