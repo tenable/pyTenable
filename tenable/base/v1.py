@@ -30,7 +30,7 @@ class APIResultsIterator:
     and while the mechanics of each iterator may vary, they should all behave
     to the user in a similar manner.
 
-    Parameters:
+    Attributes:
         count (int): The current number of records that have been returned
         page (list):
             The current page of data being walked through.  pages will be

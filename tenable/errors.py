@@ -22,7 +22,7 @@ class FileDownloadError(RestflyException):  # noqa:  F405
     '''
     FileDownloadError is thrown when a file fails to download.
 
-    Parameters:
+    Attributes:
         msg (str):
             The error message
         filename (str):
@@ -73,7 +73,7 @@ class ImpersonationError(APIError):  # noqa:  F405
     An ImpersonationError exists when there is an issue with user
     impersonation.
 
-    Parameters:
+    Attributes:
         code (int):
             The HTTP response code from the offending response.
         response (requests.Response):
@@ -91,7 +91,7 @@ class PasswordComplexityError(APIError):  # noqa:  F405
     PasswordComplexityError is thrown when attempting to change a password and
     the password complexity is insufficient.
 
-    Parameters:
+    Attributes:
         code (int):
             The HTTP response code from the offending response.
         response (requests.Response):

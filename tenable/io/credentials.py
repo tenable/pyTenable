@@ -23,7 +23,7 @@ class CredentialsIterator(TIOIterator):
     return records from the next page (and the next, and the next) until the
     counter reaches the total number of records that the API has reported.
 
-    Parameters:
+    Attributes:
         count (int): The current number of records that have been returned
         page (list):
             The current page of data being walked through.  pages will be

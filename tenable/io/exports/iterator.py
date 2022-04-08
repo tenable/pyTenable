@@ -21,7 +21,7 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
     The export iterator can be used to handle the downloading and processing
     of the data chunks from an export request.
 
-    Parameters:
+    Attributes:
         boxify (bool):
             Should the items returned be converted to a Box object?
         chunks (list[int]):

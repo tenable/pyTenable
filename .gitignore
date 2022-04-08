@@ -20,5 +20,3 @@ __pycache__
 /*.nessus
 /pyTenable.egg-info
 Jenkinsfile
-.idea
-tests/example.nessus
