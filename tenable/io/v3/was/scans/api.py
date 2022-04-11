@@ -57,7 +57,8 @@ class ScansAPI(ExploreBaseEndpoint):
             id (uuid.UUID): The UUID of the scan for which you want to view details.
 
         Returns:
-            obj:`dict`: The record object of the scan.
+            :obj:`dict`:
+                The record object of the scan.
 
         Examples:
             >>> tio.v3.was.scans.details('91843ecb-ecb8-48a3-b623-d4682c2594')
@@ -89,7 +90,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 report.
 
         Returns:
-            :obj:`Response`
+            :obj:`requests.Response`:
                 The Response object based for the requested attachment.
 
         Examples:
@@ -138,7 +139,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 text/csv, text/html, text/xml
 
         Returns:
-            obj:`None`
+            :obj:`None`
 
         Examples:
             >>> tio.v3.was.scans.export('91843ecb-ecb8-48a3-b623-d4682c2594')
@@ -162,7 +163,8 @@ class ScansAPI(ExploreBaseEndpoint):
             The UUID of the scan configuration to use to launch a scan.
 
         Returns:
-            obj:`UUID`: UUID of the scan initiated.
+            :obj:`uuid.UUID`:
+                UUID of the scan initiated.
 
         Examples:
             >>> folder = tio.v3.was.folders.create('New Folder Name')
@@ -190,12 +192,12 @@ class ScansAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.\
 
-        Returns:
+        :Returns:
 
-            Iterable:
+            - Iterable:
                 The iterable that handles the pagination for the job.
 
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 
@@ -241,7 +243,7 @@ class ScansAPI(ExploreBaseEndpoint):
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
 
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
 
@@ -293,12 +295,12 @@ class ScansAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
 
-        Returns:
+        :Returns:
 
-            Iterable:
+            - Iterable:
                 The iterable that handles the pagination for the job.
 
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 
@@ -354,7 +356,7 @@ class ScansAPI(ExploreBaseEndpoint):
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
 
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
 
@@ -407,12 +409,12 @@ class ScansAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
 
-        Returns:
+        :Returns:
 
-            Iterable:
+            - Iterable:
                 The iterable that handles the pagination for the job.
 
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 
@@ -450,7 +452,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The only supported action is stop.
 
         Returns:
-            obj:`None`
+            :obj:`None`
 
         Examples:
             >>> tio.v3.was.scans.update_status(

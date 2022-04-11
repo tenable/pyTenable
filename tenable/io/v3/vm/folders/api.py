@@ -74,8 +74,7 @@ class FoldersAPI(ExploreBaseEndpoint):
             name (str): The new name for the folder.
 
         Returns:
-            :obj:`None`:
-                The folder was successfully renamed.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.folders.edit(1, 'Updated Folder Name')
@@ -163,12 +162,12 @@ class FoldersAPI(ExploreBaseEndpoint):
                 data in text/csv format on each next call with row headers
                 on each page.
         
-        Returns:
+        :Returns:
 
-            Iterable:
+            - Iterable:
                 The iterable that handles the pagination for the job.
 
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 

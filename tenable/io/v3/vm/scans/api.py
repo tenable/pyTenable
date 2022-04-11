@@ -124,7 +124,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The keyword dict passed from the user
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The resulting scan document based on the kwargs provided.
         '''
         scan = {
@@ -212,7 +212,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 Dictionary of existing schedule
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Distributed dictionary of the keys required for scan schedule.
         '''
         schedule = {}
@@ -280,7 +280,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 please refer to :devportal:`scans-timezones`
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Dictionary of the keys required for scan schedule.
 
         '''
@@ -400,7 +400,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 please refer to :devportal:`scans-timezones`
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Dictionary of the keys required for scan schedule.
 
         '''
@@ -612,7 +612,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 settings document.  There is no need to pass settings directly.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan resource record.
 
         Examples:
@@ -649,7 +649,7 @@ class ScansAPI(ExploreBaseEndpoint):
             scan (dict):
                 scan object to update edit credential if it matches criteria
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan with updated credentials.
         '''
         if 'credentials' in scan:
@@ -714,7 +714,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The name for the copied scan.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan resource record for the copied scan.
 
         Examples:
@@ -767,7 +767,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 settings document.  There is no need to pass settings directly.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan resource record of the newly created scan.
 
         Examples:
@@ -951,7 +951,7 @@ class ScansAPI(ExploreBaseEndpoint):
             scan_id (uuid): The unique identifier for the scan.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan configuration resource.
 
         Examples:
@@ -978,7 +978,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The unique identifier for the instance of the scan.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan result dictionary.
 
         Examples:
@@ -1181,7 +1181,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The unique identifier for the instance of the scan.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The information related to the host requested.
 
         Examples:
@@ -1220,7 +1220,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 results?  The default is True.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan resource record for the imported scan.
 
         Examples:
@@ -1305,7 +1305,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -1354,8 +1354,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -1364,8 +1363,8 @@ class ScansAPI(ExploreBaseEndpoint):
             Iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
         Examples:
             >>> tio.v3.vm.scans.search(
             ...     filter=('name','eq','SCCM'),
@@ -1472,7 +1471,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 Enables or Disables the scan scheduling.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The schedule resource record for the scan.
 
         Examples:
@@ -1573,7 +1572,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The unique identifier for the scan instance.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The metadata about the scan instance specified.
 
         Examples:
@@ -1610,7 +1609,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 A list of valid targets.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Return the list of missed targets (if any), and
                 the list of matched scanner groups (if any).
 

@@ -158,7 +158,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
                 Example:
                     >>> ['field1', 'field2']
 
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
 
@@ -226,8 +226,8 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
                 The iterable that handles the pagination for the job.
 
             requests.Response:
-                If ``return_resp`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
 
         Examples:
             >>> tio.v3.vm.vulnerabilities.search(

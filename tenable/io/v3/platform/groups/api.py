@@ -42,7 +42,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                 The unique identifier of the user to add.
 
         Returns:
-            List:
+            :obj:`list`:
                 List of user resource records based on membership to the
                 specified group.
 
@@ -68,7 +68,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                 The name of the group that will be created.
 
         Returns:
-            Dict:
+            :obj:`dict`:
                 The group resource record of the newly minted group.
 
         Examples:
@@ -88,8 +88,7 @@ class GroupsAPI(ExploreBaseEndpoint):
             group_id (uuid.UUID): The unique identifier for the group to be deleted.
 
         Returns:
-            None:
-                The group was successfully deleted.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.platform.groups.delete(
@@ -114,8 +113,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                 from the group.
 
         Returns:
-            None:
-                The user was successfully removed from the group.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.platform.groups.delete_user(
@@ -140,7 +138,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                 The new name for the group.
 
         Returns:
-            Dict:
+            :obj:`dict`:
                 The group resource record.
 
         Examples:
@@ -163,7 +161,7 @@ class GroupsAPI(ExploreBaseEndpoint):
             group_id (uuid.UUID): The unique identifier of the group requested.
 
         Returns:
-            List:
+            :obj:`list`:
                 List of user resource records based on membership to the
                 specified group.
 
@@ -189,7 +187,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     - ['field1', 'field2']
-            filter (tuple, Dict):
+            filter (tuple, dict):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:

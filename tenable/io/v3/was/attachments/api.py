@@ -43,7 +43,7 @@ class AttachmentsAPI(ExploreBaseEndpoint):
                 attachment.
 
         Returns:
-            :obj:`Response`
+            :obj:`requests.Response`:
                 The Response object based for the requested attachment.
 
         Examples:

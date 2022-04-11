@@ -67,7 +67,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 no need to pass params directly.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connector resource record.
 
         Example:
@@ -131,7 +131,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 For keyless AWS connectors, the AWS account ID.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connector resource record.
 
         Example:
@@ -184,7 +184,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 The unique identifier for the connectors.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connectors resource record.
 
         Examples:
@@ -205,7 +205,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 The unique identifier for the connectors.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connectors resource record.
 
         Examples:
@@ -226,7 +226,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 The unique identifier for the connectors.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connectors resource record.
 
         Examples:
@@ -270,7 +270,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 no need to pass params directly.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connector resource record.
 
         Examples:
@@ -308,12 +308,13 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves the connectors.
-         Args:
+
+        Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:

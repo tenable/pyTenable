@@ -37,7 +37,7 @@ class ExploreBaseEndpoint(APIEndpoint):
                     text or csv.
 
         Returns:
-            Dict:
+            :obj:`dict`:
                 The requested object
 
         Example:
@@ -84,7 +84,7 @@ class ExploreBaseEndpoint(APIEndpoint):
                 Examples:
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -121,8 +121,7 @@ class ExploreBaseEndpoint(APIEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -134,12 +133,12 @@ class ExploreBaseEndpoint(APIEndpoint):
                 If specified, will override the default Search schema class
                 that will be used for validation.
 
-        Returns:
-            Iterable:
+        :Returns:
+            - Iterable:
                 The iterable that handles the pagination for the job.
-            requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+            - requests.Response:
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
 
         '''
         schema = schema_cls(
@@ -196,7 +195,7 @@ class ExploreBaseEndpoint(APIEndpoint):
                 Examples:
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -248,10 +247,10 @@ class ExploreBaseEndpoint(APIEndpoint):
                 If specified, will override the default Search schema class
                 that will be used for validation.
 
-        Returns:
-            Iterable:
+        :Returns:
+            - Iterable:
                 The iterable that handles the pagination for the job.
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 

@@ -31,7 +31,8 @@ class FoldersAPI(ExploreBaseEndpoint):
             name (str): The name of the new folder.
 
         Returns:
-            :obj:`dict`: The resource record of the newly created folder.
+            :obj:`dict`:
+                The resource record of the newly created folder.
 
         Examples:
             >>> folder = tio.v3.was.folders.create('New Folder Name')
@@ -66,7 +67,8 @@ class FoldersAPI(ExploreBaseEndpoint):
             name (str): The new name for the folder.
 
         Returns:
-            :obj:`dict`: The resource record of the updated folder.
+            :obj:`dict`:
+                The resource record of the updated folder.
 
         Examples:
             >>> tio.v3.was.folders.edit('91843ecb-ecb8-48a3-b623-d4682c2594',

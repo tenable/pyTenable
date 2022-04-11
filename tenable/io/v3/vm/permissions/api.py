@@ -52,8 +52,7 @@ class PermissionsAPI(ExploreBaseEndpoint):
                     The permission value to grant access as described in
                     `permissions documentation`_.
         Returns:
-            :obj:`None`:
-                The object permissions were successfully changed.
+            :obj:`None`
 
         .. _permissions documentation:
             https://developer.tenable.com/docs/permissions
