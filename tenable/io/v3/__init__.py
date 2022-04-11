@@ -29,6 +29,7 @@ from tenable.io.v3.groups.api import GroupsAPI
 from tenable.io.v3.connectors.api import ConnectorsAPI
 from tenable.io.v3.mssp import ManagedSecurityServiceProvider
 from tenable.io.v3.platform import Platform
+from tenable.io.v3.definitions.api import DefinitionsAPI
 from tenable.io.v3.users.api import UsersAPI
 from tenable.io.v3.vm import VulnerabilityManagement
 from tenable.io.v3.was import WebApplicationScanning
@@ -47,6 +48,14 @@ class Version3API(APIEndpoint):
         :doc:`Tenable.io.v3.assets Assets APIs <assets>`.
         """
         return AssetsAPI(self._api)
+
+    @property
+    def definitions(self):
+        """
+        The interface object for the Definitions APIs
+        :doc:`Tenable.io.v3.definitions APIs <definitions>`.
+        """
+        return DefinitionsAPI(self._api)
 
     @property
     def connectors(self):
