@@ -215,7 +215,7 @@ class TagsAPI(ExploreBaseEndpoint):
 
         return self._post('categories', json=payload)
 
-    def delete(self, *value_ids: list[str]) -> None:
+    def delete(self, *value_ids: list) -> None:
         '''
         Deletes tag value(s).
 
