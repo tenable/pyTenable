@@ -65,7 +65,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
                 >>> ('75c6c4c3-1626-4b57-9095-71b58ff8999e:'
                 ...     'e9b89d18-87cc-4fd5-8e6f-27a1d24fa2ac0')
 
-            assets (List):
+            assets (list):
                 An array of asset objects with vulnerabilities information.
                 A valid asset record requires at least one valid
                 network_interface object.
@@ -158,7 +158,7 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
                 Example:
                     >>> ['field1', 'field2']
 
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
 
@@ -226,8 +226,8 @@ class VulnerabilityAPI(ExploreBaseEndpoint):
                 The iterable that handles the pagination for the job.
 
             requests.Response:
-                If ``return_resp`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
 
         Examples:
             >>> tio.v3.vm.vulnerabilities.search(

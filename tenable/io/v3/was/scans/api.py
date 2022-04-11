@@ -37,7 +37,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: delete scan <was-v2-scans-delete>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to delete.
+            id (uuid.UUID): The UUID of the scan for which you want to delete.
 
         Returns:
             :obj:`None`
@@ -54,10 +54,11 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: get scan details <was-v2-scans-details>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to view details.
+            id (uuid.UUID): The UUID of the scan for which you want to view details.
 
         Returns:
-            obj:`dict`: The record object of the scan.
+            :obj:`dict`:
+                The record object of the scan.
 
         Examples:
             >>> tio.v3.was.scans.details('91843ecb-ecb8-48a3-b623-d4682c2594')
@@ -76,7 +77,7 @@ class ScansAPI(ExploreBaseEndpoint):
         <was-v2-scans-download-export>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to view a
+            id (uuid.UUID): The UUID of the scan for which you want to view a
                 report.
             content_type (str, optional):
                 The format you want the report returned in. You can request
@@ -89,7 +90,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 report.
 
         Returns:
-            :obj:`Response`
+            :obj:`requests.Response`:
                 The Response object based for the requested attachment.
 
         Examples:
@@ -128,7 +129,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: export scan results <was-v2-scans-export>`
 
         Args:
-            id (UUID):
+            id (uuid.UUID):
                 The UUID of the scan for which you want to generate a report.
             content_type (str, optional):
                 The format you want the report returned in.
@@ -138,7 +139,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 text/csv, text/html, text/xml
 
         Returns:
-            obj:`None`
+            :obj:`None`
 
         Examples:
             >>> tio.v3.was.scans.export('91843ecb-ecb8-48a3-b623-d4682c2594')
@@ -158,11 +159,12 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: launch scan <was-v2-scans-launch>`
 
         Args:
-            config_id (UUID):
+            config_id (uuid.UUID):
             The UUID of the scan configuration to use to launch a scan.
 
         Returns:
-            obj:`UUID`: UUID of the scan initiated.
+            :obj:`uuid.UUID`:
+                UUID of the scan initiated.
 
         Examples:
             >>> folder = tio.v3.was.folders.create('New Folder Name')
@@ -180,7 +182,7 @@ class ScansAPI(ExploreBaseEndpoint):
 
         Args:
 
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The UUID of the config that was used for the scan.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
@@ -190,12 +192,12 @@ class ScansAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.\
 
-        Returns:
+        :Returns:
 
-            Iterable:
+            - Iterable:
                 The iterable that handles the pagination for the job.
 
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 
@@ -223,7 +225,7 @@ class ScansAPI(ExploreBaseEndpoint):
 
         Args:
 
-            config_id (UUID):
+            config_id (uuid.UUID):
                 The UUID of the config that was used for the scan.
             fields (list, optional):
                 The list of field names to return from the Tenable API.
@@ -241,7 +243,7 @@ class ScansAPI(ExploreBaseEndpoint):
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
 
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
 
@@ -293,12 +295,12 @@ class ScansAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
 
-        Returns:
+        :Returns:
 
-            Iterable:
+            - Iterable:
                 The iterable that handles the pagination for the job.
 
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 
@@ -335,7 +337,7 @@ class ScansAPI(ExploreBaseEndpoint):
 
         Args:
 
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The UUID of the scan for which you want to view
                 vulnerabilities.
             fields (list, optional):
@@ -354,7 +356,7 @@ class ScansAPI(ExploreBaseEndpoint):
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
 
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
 
@@ -407,12 +409,12 @@ class ScansAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
 
-        Returns:
+        :Returns:
 
-            Iterable:
+            - Iterable:
                 The iterable that handles the pagination for the job.
 
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 
@@ -444,13 +446,13 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: update scan status <was-v2-scans-status-update>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to update
+            id (uuid.UUID): The UUID of the scan for which you want to update
                 status.
             requested_action (str): The action to apply to the scan.
                 The only supported action is stop.
 
         Returns:
-            obj:`None`
+            :obj:`None`
 
         Examples:
             >>> tio.v3.was.scans.update_status(

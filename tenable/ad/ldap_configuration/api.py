@@ -1,6 +1,6 @@
 '''
 LDAP Configuration
-=============
+==================
 
 Methods described in this section relate to the ldap configuration API.
 These methods can be accessed at ``TenableAD.ldap_configuration``.
@@ -51,13 +51,13 @@ class LDAPConfigurationAPI(APIEndpoint):
             user_search_filter (optional, str):
                 Used to change on what attribute the LDAP query is made to
                 authenticate the user.
-            allowed_groups (optional, List[Dict]):
+            allowed_groups (optional, list[dict]):
                 The LDAP group a member need to be a member of so he can
                 authenticate. The below listed params are expected in
                 allowed groups dict.
             name (required, str):
                 The name of group.
-            default_role_ids (required, List[int]):
+            default_role_ids (required, list[int]):
                 The list default role identifiers.
             default_profile_id (required, int):
                 The default profile identifier.

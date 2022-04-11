@@ -39,8 +39,8 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         :devportal:`agent-groups: add-agent <agent-groups-add-agent>`
 
         Args:
-            group_id (UUID): The unique identifier of the group
-            agent_ids (UUID): The unique identifier of the agent
+            group_id (uuid.UUID): The unique identifier of the group
+            agent_ids (uuid.UUID): The unique identifier of the agent
 
         Returns:
             :obj:`dict` or :obj:`None`:
@@ -85,7 +85,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         :devportal:`agent-groups: configure <agent-groups-configure>`
 
         Args:
-            group_id (UUID): The unique identifier of the group
+            group_id (uuid.UUID): The unique identifier of the group
             name (str): The new name for the agent group
 
         Returns:
@@ -128,7 +128,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         :devportal:`agent-groups: delete <agent-groups-delete>`
 
         Args:
-            group_id (UUID): The unique identifier of the agent group
+            group_id (uuid.UUID): The unique identifier of the agent group
 
         Returns:
             :obj:`None`
@@ -150,9 +150,9 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         :devportal:`agent-groups: delete-agent <agent-groups-delete-agent>`
 
         Args:
-            group_id (UUID): The unique identifier of the agent group to
+            group_id (uuid.UUID): The unique identifier of the agent group to
                              remove the agent from
-            *agent_ids (UUID): The unique identifier of the agent to be removed
+            *agent_ids (uuid.UUID): The unique identifier of the agent to be removed
 
         Returns:
             :obj:`dict` or :obj:`None`:
@@ -197,7 +197,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         :devportal:`agent-groups: details <agent-groups-details>`
 
         Args:
-            group_id (UUID): The unique identifier of the agent group.
+            group_id (uuid.UUID): The unique identifier of the agent group.
             *filters (tuple, optional):
                 Filters are tuples in the form of
                 ('NAME', 'OPERATOR', 'VALUE').
@@ -289,7 +289,7 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -341,10 +341,10 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
-        Returns:
-            Iterable:
+        :Returns:
+            - Iterable:
                 The iterable that handles the pagination for the job.
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
         Examples:
@@ -376,8 +376,8 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         <bulk-task-agent-group-status>`
 
         Args:
-            group_id (UUID): The unique identifier of the group
-            task_id (UUID): The unique identifier of the task
+            group_id (uuid.UUID): The unique identifier of the group
+            task_id (uuid.UUID): The unique identifier of the task
 
         Returns:
             :obj:`dict`:
@@ -407,9 +407,9 @@ class AgentGroupsAPI(ExploreBaseEndpoint):
         <io-agent-bulk-operations-directive>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier of the agent_group
-            *agent_ids (UUID):
+            *agent_ids (uuid.UUID):
                 The unique identifier of the agent
             directive_type (str):
                 The type of instruction to perform.

@@ -8,7 +8,7 @@ The following methods allow for interaction into the Tenable.io
 Methods available on `` tio.v3.connectors``:
 
 .. rst-class:: hide-signature
-.. autoclass:: Connectors
+.. autoclass:: ConnectorsAPI
     :members:
 '''
 from typing import Dict, List, Optional, Tuple, Union
@@ -57,7 +57,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                     >>> ('days', 2)
             network_id (str, optional):
                 The UUID for network
-            **params (Dict):
+            **params (dict):
                 The various parameters that can be passed to the connector
                 creation API.  Examples would be sub_accounts, access_key,
                 etc. For more detailed information, please refer to API
@@ -67,7 +67,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 no need to pass params directly.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connector resource record.
 
         Example:
@@ -79,11 +79,11 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         '''
 
         payload = {
-                'name': name,
-                'type': con_type,
-                'network_id': network_id,
-                'schedule': schedule,
-                'params': params
+            'name': name,
+            'type': con_type,
+            'network_id': network_id,
+            'schedule': schedule,
+            'params': params
         }
         payload = dict_clean(payload)
         schema = ConnectorCreateOrEditSchema()
@@ -102,7 +102,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: list_aws_cloudtrails <connectors-list_aws_cloudtrails>` # noqa E501
 
         Args:
-            region (List(tuple)):
+            region (list(tuple)):
                 Complete list of aws available
                 name (str):
                     The AWS region code, for example, us-east-1.
@@ -115,7 +115,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                     associated with all AWS available regions.
                 Examples:
                     >>> [('us-east-1', 'US East (N. Virginia)')]
-            credentials (Dict, optional):
+            credentials (dict, optional):
                 The credentials that the Tenable.io connector uses to
                 communicate with the AWS API, including access_key
                 and secret_key.
@@ -131,7 +131,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 For keyless AWS connectors, the AWS account ID.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connector resource record.
 
         Example:
@@ -160,7 +160,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: delete <connectors-delete>`
 
         Args:
-            connector_id (UUID):
+            connector_id (uuid.UUID):
                 The unique identifier for the connector to delete.
 
         Returns:
@@ -180,11 +180,11 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: details <connectors-details>`
 
         Args:
-            connector_id (UUID):
+            connector_id (uuid.UUID):
                 The unique identifier for the connectors.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connectors resource record.
 
         Examples:
@@ -201,11 +201,11 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: template <connectors-template>`
 
         Args:
-            connector_id (UUID):
+            connector_id (uuid.UUID):
                 The unique identifier for the connectors.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connectors resource record.
 
         Examples:
@@ -222,11 +222,11 @@ class ConnectorsAPI(ExploreBaseEndpoint):
         :devportal:`connectors: import_data <connectors-import_data>`
 
         Args:
-            connector_id (UUID):
+            connector_id (uuid.UUID):
                 The unique identifier for the connectors.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connectors resource record.
 
         Examples:
@@ -250,7 +250,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
 
 
         Args:
-            connector_id (UUID):
+            connector_id (uuid.UUID):
                 The UUID for connector
             name (str):
                 The name of the connector to create.
@@ -270,7 +270,7 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                 no need to pass params directly.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The connector resource record.
 
         Examples:
@@ -308,12 +308,13 @@ class ConnectorsAPI(ExploreBaseEndpoint):
                ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves the connectors.
-         Args:
+
+        Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:

@@ -209,7 +209,7 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
         then be pushed back to the API to modify the exclusion.
 
         Args:
-            exclusion_id (UUID): The id of the exclusion object in Tenable.io
+            exclusion_id (uuid.UUID): The id of the exclusion object in Tenable.io
             name (str, optional): The name of the exclusion to create.
             start_time (datetime, optional): When the exclusion should start.
             end_time (datetime, optional): When the exclusion should end.
@@ -306,7 +306,7 @@ class AgentExclusionsAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:

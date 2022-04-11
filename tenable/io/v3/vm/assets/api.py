@@ -39,12 +39,12 @@ class AssetsAPI(ExploreBaseEndpoint):
         '''
         Retrieves the assets.
 
-         Args:
+        Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -93,18 +93,17 @@ class AssetsAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
-        Returns:
-            Iterable:
+        :Returns:
+            - Iterable:
                 The iterable that handles the pagination for the job.
-            requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+            - requests.Response:
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
 
         Examples:
             >>> tio.v3.assets.search(filter=('netbios_name', 'eq',
@@ -145,11 +144,11 @@ class AssetsAPI(ExploreBaseEndpoint):
         :devportal:`assets: asset-info <assets-asset-info>`
 
         Args:
-            uuid (UUID):
+            uuid (uuid.UUID):
                 The UUID (unique identifier) for the asset.
 
         Returns:
-            Dict:
+            dict:
                 Asset resource definition.
 
         Examples:
@@ -172,13 +171,13 @@ class AssetsAPI(ExploreBaseEndpoint):
             action (str):
                 Specifies whether to add or remove tags.
                  Valid values: add, remove.
-            assets (List):
+            assets (list):
                 An array of asset UUIDs.
             tags:
                 An array of tag value UUIDs.
 
         Returns:
-            Obj:Dict:
+            dict:
                 The job Resource record.
 
         Examples:
@@ -201,11 +200,11 @@ class AssetsAPI(ExploreBaseEndpoint):
         :devportal:`tags: asset-tags <tags-list-asset-tags>`
 
         Args:
-            uuid (UUID):
+            uuid (uuid.UUID):
                 The UUID (unique identifier) for the asset.
 
         Returns:
-            Dict:
+            :obj:`dict`:
                 Asset resource definition.
 
         Examples:
@@ -235,7 +234,7 @@ class AssetsAPI(ExploreBaseEndpoint):
                 An identifier to be used to upload the assets.
 
         Returns:
-            str:
+            :obj:`str`:
                 The job UUID.
 
         Examples:
@@ -278,7 +277,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         :devportal:`assets: list-import-jobs <assets-list-import-jobs>`
 
         Returns:
-            List:
+            list:
                 List of job records.
 
         Examples:
@@ -293,11 +292,12 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         :devportal:`assets: import-job-info <assets-import-job-info>`
 
-        uuid (UUID):
-            The UUID (unique identifier) for the job.
+        Args:
+            uuid (uuid.UUID):
+                The UUID (unique identifier) for the job.
 
         Returns:
-            Dict:
+            dict:
                 The job Resource record.
 
         Examples:
@@ -317,12 +317,13 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         :devportal:`assets: move-assets <assets-bulk-move>`
 
-        source (UUID):
-            The UUID of the network currently associated with the assets.
-        destination (UUID):
-            The UUID of the network to associate with the specified assets.
-        targets (List(str)):
-            The IPv4 addresses of the assets to move.
+        Args:
+            source (uuid.UUID):
+                The UUID of the network currently associated with the assets.
+            destination (uuid.UUID):
+                The UUID of the network to associate with the specified assets.
+            targets (list[str]):
+                The IPv4 addresses of the assets to move.
 
         Returns:
             int:
@@ -367,7 +368,7 @@ class AssetsAPI(ExploreBaseEndpoint):
                 assume filter_type is ``AND``.
 
         Returns:
-            Dict:
+            dict:
                 Returns the number of deleted assets.
 
         Examples:
@@ -416,12 +417,12 @@ class AssetsAPI(ExploreBaseEndpoint):
         Args:
             acr_score (int):
                 acr_score assigned to asset. must be in range 1 to 10.
-            assets (List(Dict)):
+            assets (list(dict)):
                 One or more asset definition dictionaries
             note (str):
                 Any notes you want to add to clarify the
                 circumstances behind the update.
-            reason (List(str)):
+            reason (list(str)):
                 The reasons you are updating the ACR for the assets.
                 Supported values include:
                     Business Critical
@@ -466,12 +467,12 @@ class AssetsAPI(ExploreBaseEndpoint):
         '''
         Retrieves the assets host.
 
-         Args:
+        Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:

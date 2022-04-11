@@ -222,7 +222,7 @@ class TagsAPI(ExploreBaseEndpoint):
         :devportal:`tag: delete tag value <tags-delete-tag-value>`
 
         Args:
-            *value_ids (list):
+            *value_ids (list[str]):
                 List of the unique identifier(s) for the tag value(s) to be deleted.
 
         Returns:
@@ -299,7 +299,7 @@ class TagsAPI(ExploreBaseEndpoint):
         :devportal:`tag: tag category details <tags-tag-category-details>`
 
         Args:
-            category_id (UUID):
+            category_id (uuid.UUID):
                 The unique identifier for the category
 
         Returns:
@@ -462,7 +462,7 @@ class TagsAPI(ExploreBaseEndpoint):
         :devportal:`tag: edit tag category <tags-edit-tag-category>`
 
         Args:
-            category_id (UUID):
+            category_id (uuid.UUID):
                 The unique identifier for the category to be edited.
             name (str):
                 The new name for the category.
@@ -587,7 +587,7 @@ class TagsAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -672,7 +672,7 @@ class TagsAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:

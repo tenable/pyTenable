@@ -83,7 +83,7 @@ class ExclusionsAPI(ExploreBaseEndpoint):
             enabled (bool, optional):
                 If enabled is true, the exclusion schedule is active.
                 If enabled is false, the exclusion is "Always Active"
-                    The default value is ``True``
+                The default value is ``True``
             network_id (uuid, optional):
                 The ID of the network object associated with scanners
                 where Tenable.io applies the exclusion.
@@ -387,7 +387,7 @@ class ExclusionsAPI(ExploreBaseEndpoint):
                 Example:
                     >>> ['field1', 'field2']
 
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:

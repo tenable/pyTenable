@@ -67,7 +67,7 @@ class UsersAPI(ExploreBaseEndpoint):
                 The account type for the user. The default is `local`.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The resource record of the new user.
 
         Examples:
@@ -102,12 +102,11 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: delete <users-delete>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
             The unique identifier of the user.
 
         Returns:
-            :obj:`None`:
-                The user was successfully deleted.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.users.delete('60f73e4f-8983-41c2-a13c-39074cbb6229')
@@ -121,11 +120,11 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: details <users-details>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The resource record for the user.
 
         Examples:
@@ -147,7 +146,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: edit <users-edit>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
             permissions (int, optional):
                 The permissions role for the user.  The permissions integer
@@ -164,7 +163,7 @@ class UsersAPI(ExploreBaseEndpoint):
                 Is the user account enabled?
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The modified user resource record.
 
         Examples:
@@ -202,13 +201,13 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: enabled <users-enabled>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
             enabled (bool):
             Is the user enabled?
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The modified user resource record.
 
         Examples:
@@ -236,7 +235,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: two-factor <users-two-factor>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
             email (bool):
                 Whether two-factor should be additionally sent as an email.
@@ -247,8 +246,7 @@ class UsersAPI(ExploreBaseEndpoint):
                 Required when sms is set to `True`.
 
         Returns:
-            :obj:`None`:
-                Setting changes were successfully updated.
+            :obj:`None`
 
         Examples:
             Enable email authorization for a user:
@@ -279,7 +277,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: two-factor-enable <users-two-factor-enable>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The user id
             phone (str):
                 The phone number to use for two-factor auth.
@@ -287,8 +285,7 @@ class UsersAPI(ExploreBaseEndpoint):
                 The user password.
 
         Returns:
-            :obj:`None`:
-                One-time activation code sent to the provided phone number.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.users.enable_two_factor(
@@ -310,14 +307,13 @@ class UsersAPI(ExploreBaseEndpoint):
         <users-two-factor-enable-verify>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The user id
             code (str):
                 The verification code that was sent to the device.
 
         Returns:
-            :obj:`None`:
-                The verification code was valid and two-factor is enabled.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.users.verify_two_factor(
@@ -338,7 +334,7 @@ class UsersAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -387,8 +383,7 @@ class UsersAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -427,7 +422,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: password <users-password>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
             old_password (str):
                 The current password.
@@ -456,10 +451,10 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: keys <user-keys>`
 
         Args:
-            user_id (UUID): The unique identifier for the user.
+            user_id (uuid.UUID): The unique identifier for the user.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 A dictionary containing the new API Key-pair.
 
         Examples:
@@ -475,10 +470,10 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: list-auths <users-list-auths>`
 
         Args:
-            user_id (UUID): The unique identifier for the user.
+            user_id (uuid.UUID): The unique identifier for the user.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Returns authorizations for the user.
 
         Examples:
@@ -499,7 +494,7 @@ class UsersAPI(ExploreBaseEndpoint):
         :devportal:`users: edit-auths <users-update-auths>`
 
         Args:
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user.
             api_permitted (bool):
                 Indicates whether API access is authorized for the user.
