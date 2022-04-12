@@ -9,40 +9,42 @@ These methods can be accessed at ``Nessus.tokens``.
 .. autoclass:: TokensAPI
     :members:
 '''
+import time
 from io import BytesIO
 from typing import List, Dict, Optional, Callable
 from typing_extensions import Literal
 from requests import Response
 from restfly.utils import dict_clean
+from tenable.errors import FileDownloadError
 from tenable.base.endpoint import APIEndpoint
 
 
 class TokensAPI(APIEndpoint):
     _path = 'tokens'
-    
+
     def status(self, token: str) -> Dict:
         '''
         Retrieves the status of the specified token
-        
+
         Args:
             token (str): The token to check the status of
-        
+
         Returns:
             Dict:
                 The status response
-        
+
         Example:
-            
+
             >>> nessus.tokens.status('1234567890')
         '''
         return self._get(f'{token}/status')
-    
-    def download(self, 
-                 token: str, 
+
+    def download(self,
+                 token: str,
                  fobj: Optional[BytesIO] = None,
                  chunk_size: int = 1024,
-                 stream_hook: Optional[Callable[[Response, 
-                                                 BytesIO, 
+                 stream_hook: Optional[Callable[[Response,
+                                                 BytesIO,
                                                  int
                                                  ], BytesIO
                                                  ]] = None,
@@ -50,10 +52,10 @@ class TokensAPI(APIEndpoint):
                  ) -> BytesIO:
         '''
         Downloads the specified token download
-        
+
         Args:
             token (str): The token to download
-            fobj (BytesIO, optional): 
+            fobj (BytesIO, optional):
                 The file object to write to. If unspecified, an in-memory
                 object will be created and returned
             chunk_size (int, optional):
@@ -65,13 +67,13 @@ class TokensAPI(APIEndpoint):
             hook_kwargs (Dict, optional):
                 Any additional keyword arguments that should be passed on to
                 the stream hook.
-        
+
         Returns:
             BytesIO:
                 The file object
-        
+
         Example:
-            
+
             >>> with open('file.ext', 'wb') as fobj:
             ...     nessus.tokens.download('1234567890', fobj=fobj)
         '''
@@ -82,4 +84,26 @@ class TokensAPI(APIEndpoint):
                                          stream_hook=stream_hook,
                                          hook_kwargs=hook_kwargs
                                          )
-        
+
+    def _fetch(self, token: str, **kwargs) -> BytesIO:
+        '''
+        Waits for the download to become available and then downloads
+
+        Args:
+            token (str): The token to download.
+            **kwargs (dict): keyword args to pass on to the download method.
+
+        Returns:
+            BytesIO:
+                The downloaded file object.
+
+        Example:
+
+            >>> fobj = nessus.tokens._fetch('1234567890')
+        '''
+        status = self.status(token)
+        while status['status'] != 'ready':
+            if status['error']:
+                raise FileDownloadError('token', token, f'token:{token}')
+            time.sleep(0.5)
+        return self.download(token, **kwargs)
