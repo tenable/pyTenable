@@ -3,6 +3,7 @@ Base schemas for pagination
 '''
 from typing import Dict
 from marshmallow import Schema, fields, post_dump, pre_load, validate as v
+from restfly.utils import dict_clean
 from tenable.base.schema.fields import LowerCase
 
 
@@ -35,16 +36,10 @@ class FilterSchema(Schema):
         return data
 
 
-class ListSchema(Schema):
+class FilterListSchema(Schema):
     '''
-    Base List schema
+    List of filters schema
     '''
-    limit = fields.Int()
-    offset = fields.Int()
-    sort_by = fields.Str(load_default=None)
-    sort_order = LowerCase(fields.Str(validate=v.OneOf(['asc', 'desc'])),
-                           load_default=None
-                           )
     search_type = LowerCase(fields.Str(validate=v.OneOf(['and', 'or'])),
                             load_default=None
                             )
@@ -64,4 +59,16 @@ class ListSchema(Schema):
                 data[f'filter.{idx}.filter'] = f['filter']
                 data[f'filter.{idx}.quality'] = f['quality']
                 data[f'filter.{idx}.value'] = f['value']
-        return data
+        return dict_clean(data)
+
+
+class ListSchema(FilterListSchema):
+    '''
+    Base List schema
+    '''
+    limit = fields.Int()
+    offset = fields.Int()
+    sort_by = fields.Str(load_default=None)
+    sort_order = LowerCase(fields.Str(validate=v.OneOf(['asc', 'desc'])),
+                           load_default=None
+                           )
