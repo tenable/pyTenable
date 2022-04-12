@@ -103,7 +103,7 @@ def test_sort_negative(test_input):
 @pytest.mark.parametrize("test_input", NEGATIVE_FILTER_SCHEMA)
 def test_filter_negative(test_input):
     '''
-    Test negative cases for sort schema
+    Test negative cases for filter schema
     '''
     schema = FilterSchema()
     with pytest.raises(ValidationError):
