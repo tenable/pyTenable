@@ -22,7 +22,7 @@ from tenable.io.v3.base.iterators.was_iterator import (CSVChunkIterator,
 
 class PluginsAPI(ExploreBaseEndpoint):
     '''
-    This will contains all methods for WAS plugins
+    This will contain all methods for WAS plugins
     '''
     _path = 'api/v3/was/plugins'
     _conv_json = True
@@ -71,7 +71,7 @@ class PluginsAPI(ExploreBaseEndpoint):
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
 
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
 
