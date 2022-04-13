@@ -36,16 +36,21 @@ This package covers the Nessus interface.
 from tenable.base.platform import APIPlatform
 from .agent_groups import AgentGroupsAPI
 from .agents import AgentsAPI
+from .editor import EditorAPI
 from .files import FilesAPI
 from .folders import FoldersAPI
 from .groups import GroupsAPI
 from .mail import MailAPI
 from .permissions import PermissionsAPI
 from .plugin_rules import PluginRulesAPI
+from .policies import PoliciesAPI
 from .proxy import ProxyAPI
 from .plugins import PluginsAPI
 from .scanners import ScannersAPI
+from .scans import ScansAPI
 from .server import ServerAPI
+from .session import SessionAPI
+from .settings import SettingsAPI
 from .software_update import SoftwareUpdateAPI
 from .tokens import TokensAPI
 from .users import UsersAPI
@@ -85,47 +90,54 @@ class Nessus(APIPlatform):
         The interface object for the :doc:`Nessus Agents APIs <agents>`.
         '''
         return AgentsAPI(self)
-    
+
+    @property
+    def editor(self):
+        '''
+        The interface object for the :doc:`Nessus Editor APIs <editor>`.
+        '''
+        return EditorAPI(self)
+
     @property
     def files(self):
         '''
         The interface object for the :doc:`Nessus File APIs <files>`.
         '''
         return FilesAPI(self)
-    
+
     @property
     def folders(self):
         '''
         The interface object for the :doc:`Nessus Folders APIs <folders>`.
         '''
         return FoldersAPI(self)
-    
+
     @property
     def groups(self):
         '''
         The interface object for the :doc:`Nessus Groups APIs <groups>`.
         '''
         return GroupsAPI(self)
-    
+
     @property
     def mail(self):
         '''
         The interface object for the :doc:`Nessus Mail APIs <mail>`.
         '''
         return MailAPI(self)
-    
+
     @property
     def permissions(self):
         '''
-        The interface object for the 
+        The interface object for the
         :doc:`Nessus Permissions APIs <permissions>`.
         '''
         return PermissionsAPI(self)
-    
+
     @property
     def plugin_rules(self):
         '''
-        The interface object for the 
+        The interface object for the
         :doc:`Nessus Plugin Rules APIs <plugin_rules>`.
         '''
         return PluginRulesAPI(self)
@@ -136,43 +148,71 @@ class Nessus(APIPlatform):
         The interface object for the :doc:`Nessus Plugins APIs <plugins>`.
         '''
         return PluginsAPI(self)
-    
+
+    @property
+    def policies(self):
+        '''
+        The interface object for the :doc:`Nessus Policies APIs <policies>`.
+        '''
+        return PoliciesAPI(self)
+
     @property
     def proxy(self):
         '''
         The interface object for the :doc:`Nessus Proxy APIs <proxy>`.
         '''
         return ProxyAPI(self)
-    
+
     @property
     def scanners(self):
         '''
         The interface object for the :doc:`Nessus Scanners APIs <scanners>`.
         '''
         return ScannersAPI(self)
-    
+
+    @property
+    def scans(self):
+        '''
+        The interface object for the :doc:`Nessus Scans APIs <scans>`.
+        '''
+        return ScansAPI(self)
+
     @property
     def server(self):
         '''
         The interface object for the :doc:`Nessus Server APIs <server>`.
         '''
         return ServerAPI(self)
-    
+
+    @property
+    def session(self):
+        '''
+        The interface object for the :doc:`Nessus Session APIs <session>`.
+        '''
+        return SessionAPI(self)
+
+    @property
+    def settings(self):
+        '''
+        The interface object for the :doc:`Nessus Settings APIs <settings>`.
+        '''
+        return SettingsAPI(self)
+
     @property
     def software_update(self):
         '''
-        The interface object for the 
+        The interface object for the
         :doc:`Nessus Software Update APIs <software_update>`.
         '''
         return SoftwareUpdateAPI(self)
-    
+
     @property
     def tokens(self):
         '''
         The interface object for the :doc:`Nessus Tokens APIs <tokens>`.
         '''
         return TokensAPI(self)
-    
+
     @property
     def users(self):
         '''
