@@ -103,7 +103,8 @@ class TokensAPI(APIEndpoint):
         '''
         status = self.status(token)
         while status['status'] != 'ready':
-            if status['error']:
+            if status['status'] == 'error':
                 raise FileDownloadError('token', token, f'token:{token}')
             time.sleep(0.5)
+            status = self.status(token)
         return self.download(token, **kwargs)
