@@ -22,7 +22,9 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
 from tenable.io.v3.vm.assets.schema import (AssetUpdateACRSchema,
                                             AssignTagsAssetSchema,
-                                            ImportAssetSchema, MoveAssetSchema)
+                                            ImportAssetSchema,
+                                            MoveAssetSchema,
+                                            BulkDeleteSchema)
 from tenable.utils import dict_clean
 
 
@@ -349,7 +351,6 @@ class AssetsAPI(ExploreBaseEndpoint):
 
     def bulk_delete(self,
                     *filters: Tuple[str],
-                    hard_delete=None,
                     filter_type: Optional[str] = None
                     ) -> Dict:
         '''
@@ -367,8 +368,6 @@ class AssetsAPI(ExploreBaseEndpoint):
                 filters have to match (``AND``) or any of the filters have to
                 match (``OR``).  If not specified, the default behavior is to
                 assume filter_type is ``AND``.
-            hard_delete (bool, optional):
-                Should the assets be completely removed with all related data?
         Returns:
             dict:
                 Returns the number of deleted assets.
@@ -386,9 +385,10 @@ class AssetsAPI(ExploreBaseEndpoint):
         parsed = self._parse_filters(
             filters, self.workbench_asset_filters(), rtype='assets')['asset']
 
-        if hard_delete:
-            payload['hard_delete'] = self._check('hard_delete', hard_delete, bool)
         payload['query'] = {filter_type: parsed}
+
+        schema = BulkDeleteSchema()
+        payload = schema.dump(schema.load(payload))
 
         return self._api.post('api/v3/assets/delete', json=payload).json()
 

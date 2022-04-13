@@ -384,17 +384,21 @@ def test_bulk_delete(api):
     }
 
     resp_data = {
-            "data": {
-                "asset_count": 1
-            }
+        "data": {
+            "asset_count": 1
         }
+    }
     resp_filter_data = {
-            "filter": {"or": [
-                 {"property": "types", "operator": "eq", "value": "XYZ"}
-            ]},
-            "limit": 200,
-            "next": "null",
-            "sort": [{"readable_name": "asc"}]
+        "hard_delete": "true",
+        "query": {
+            "and": [
+                {
+                    "or": [
+                        {"field": "types", "operator": "eq", "value": "XYZ"}
+                    ]
+                }
+            ]
+        }
     }
 
     responses.add(

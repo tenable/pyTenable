@@ -89,3 +89,11 @@ class MoveAssetSchema(Schema):
         '''
         data['targets'] = ','.join(data.get('targets', []))
         return data
+
+
+class BulkDeleteSchema(Schema):
+    '''
+    Bulk Delete Asset API Schema
+    '''
+    hard_delete = fields.Str()
+    query = fields.Dict()
