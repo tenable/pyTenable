@@ -368,11 +368,57 @@ def test_update_acr(api):
 
 @responses.activate
 def test_bulk_delete(api):
-    # todo will be implemented after parse_filter integration
-    with pytest.raises(NotImplementedError):
-        api.v3.assets.bulk_delete(
-            ('host.hostname', 'match', 'asset.com'), filter_type='or'
-        )
+    job_id = 'b9584671-68e6-426b-a67c-6373778b8a0a'
+    import_job_resp_data = {
+        'job_id': 'b9584671-68e6-426b-a67c-6373778b8a0a',
+        'container_id': 'cfdabb09-6aef-481d-b28f-aecb1c38f297',
+        'source': 'my_source',
+        'batches': 1,
+        'uploaded_assets': 1,
+        'failed_assets': 0,
+        'start_time': '2021-11-24T13:43:56.709Z',
+        'last_update_time': '2021-11-24T13:43:56.709Z',
+        'end_time': '2021-11-24T13:43:56.709Z',
+        'status': 'COMPLETE',
+        'status_message': '',
+    }
+
+    resp_data = {
+            "data": {
+                "asset_count": 1
+            }
+        }
+    resp_filter_data = {
+            "filter": {"or": [
+                 {"property": "types", "operator": "eq", "value": "XYZ"}
+            ]},
+            "limit": 200,
+            "next": "null",
+            "sort": [{"readable_name": "asc"}]
+    }
+
+    responses.add(
+        responses.GET,
+        url=f'{ASSET_BASE_URL}/import/jobs/{job_id}',
+        json=import_job_resp_data,
+    )
+
+    responses.add(
+        responses.POST, url=f'{ASSET_BASE_URL}/delete', json=resp_data
+    )
+
+    responses.add(
+        responses.GET, url=f'{ASSET_BASE_URL}/filters/workbenches/assets', json=resp_filter_data
+    )
+
+    import_job_response = api.v3.assets.import_job_details(job_id)
+
+    bulk_delete_response = api.v3.assets.bulk_delete(
+        ('types', 'eq', 'XYZ'), filter_type='or'
+    )
+    assert isinstance(resp_data, dict)
+    assert bulk_delete_response == resp_data
+    assert import_job_response["uploaded_assets"] == bulk_delete_response["data"]["asset_count"]
 
 
 @pytest.mark.skip(reason="Skipping this due to dependency over tag module")

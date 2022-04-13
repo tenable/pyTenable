@@ -24,6 +24,100 @@ class ExploreBaseEndpoint(APIEndpoint):
     _conv_json = False
     _sort_type = SortType
 
+    def _parse_filters(self, finput, filterset=None, rtype='sjson'):
+        '''
+        A centralized method to parse and munge the filter tuples into the
+        anticipates response.
+
+        Args:
+            finput (list): The list of filter tuples
+            filterset (dict): The response of the allowed filters
+            rtype (str, optional):
+                The filter format.  Allowed types are 'json', 'sjson',
+                'accessgroup', and 'colon'.  JSON is just a simple JSON list of
+                dictionaries. SJSON format is effectively serialized JSON into
+                the query params. COLON format denotes a colon-delimited format.
+
+        Returns:
+            dict:
+                The query parameters in the anticipated dictionary format to
+                feed to requests.
+        '''
+        resp = dict()
+
+        for f in finput:
+            # First we need to validate the inputs are correct.  We will do that
+            # by comparing the filter to the filterset data we have and compare
+            # the operators and values to make sure that the input is expected.
+            fname = self._check('filter_name', f[0], str)
+            # if f[0] not in filterset:
+            #     raise UnexpectedValueError(
+            #         '{} is not a filterable option'.format(f[0]))
+
+            foper = self._check('filter_operator', f[1], str,
+                                choices=filterset.get(f[0], dict()).get('operators'))
+
+            if isinstance(f[2], str):
+                rval = f[2].split(',')
+            elif isinstance(f[2], list):
+                rval = f[2]
+            else:
+                raise TypeError('filter_value is not a valid type.')
+
+            fval = self._check('filter_value', rval, list,
+                               choices=filterset.get(f[0], dict()).get('choices'),
+                               pattern=filterset.get(f[0], dict()).get('pattern'))
+            if rtype not in ['accessgroup']:
+                fval = ','.join(fval)
+
+            if rtype == 'sjson':
+                # For the serialized JSON format, we will need to generate the
+                # expanded input for each filter
+                i = finput.index(f)
+                resp['filter.{}.filter'.format(i)] = fname
+                resp['filter.{}.quality'.format(i)] = foper
+                resp['filter.{}.value'.format(i)] = fval
+            elif rtype == 'json':
+                # for standard JSON formats, we will simply build a 'filters'
+                # list and store the information there.
+                if 'filters' not in resp:
+                    resp['filters'] = list()
+                resp['filters'].append({
+                    'filter': fname,
+                    'quality': foper,
+                    'value': fval
+                })
+            elif rtype == 'colon':
+                # for the colon-delimited format, we simply need to generate the
+                # filter as NAME:OPER:VAL and dump it all into a field named f.
+                if 'f' not in resp:
+                    resp['f'] = list()
+                resp['f'].append('{}:{}:{}'.format(fname, foper, fval))
+            elif rtype == 'accessgroup':
+                # For the access group format, we will instead use the format of
+                # "terms", "type", and "operator".  Further all terms must be a
+                # list of strings.
+                if 'rules' not in resp:
+                    resp['rules'] = list()
+                resp['rules'].append({
+                    'operator': foper,
+                    'terms': fval,
+                    'type': fname
+                })
+            elif rtype == 'assets':
+                # For the asset format, we will instead use the format of
+                # "field", "operator", and "value".  Further all terms must be a
+                # list of strings.
+                if 'asset' not in resp:
+                    resp['asset'] = list()
+                resp['asset'].append({
+                    'field': fname,
+                    'operator': foper,
+                    'value': fval
+                })
+
+        return resp
+
     def _details(self, obj_id: Union[str, UUID], **kwargs) -> Dict:
         '''
         Gets the details for the specified id.
