@@ -1,11 +1,10 @@
 '''
-test agent config
+Test cases for Agent Config
 '''
-import re
 
 import responses
 
-BASE_URL = 'https://cloud.tenable.com/api/v3/agents'
+BASE_URL = 'https://cloud.tenable.com/api/v3/agents/config'
 
 
 @responses.activate
@@ -13,17 +12,24 @@ def test_agent_config_details(api):
     '''
     Test agent_config details endpoint
     '''
+    # Let's create mock response for details endpoint
     test_response = {
-        'auto_unlink': {'enabled': True, 'expiration': 20},
-        'software_update': False
+        'software_update': False,
+        'auto_unlink': {
+            'enabled': True,
+            'expiration': 20
+        }
     }
-    agent_id: int = 1
+
+    # Let's register the response for details endpoint
     responses.add(
         responses.GET,
-        re.compile(f'{BASE_URL}/{agent_id}/config'),
+        BASE_URL,
         json=test_response
     )
-    res = api.v3.vm.agent_config.details(agent_id=agent_id)
+
+    res = api.v3.vm.agent_config.details()
+
     assert isinstance(res, dict)
 
 
@@ -32,24 +38,38 @@ def test_agent_config_edit(api):
     '''
     Test agent_config edit endpoint
     '''
-    test_response = {
-        'auto_unlink': {'enabled': True, 'expiration': 20},
-        'software_update': False
+    auto_link: int = 1
+    software_update: bool = True
+
+    # Let's create sample response for edit endpoint
+    test_response: dict = {
+        'software_update': software_update,
+        'auto_unlink': {
+            'enabled': True,
+            'expiration': auto_link
+        }
     }
-    agent_id: int = 20
-    payload = {
-        'software_update': False,
-        'auto_unlink': {'enabled': True, 'expiration': 20}
+
+    # Let's create sample payload for edit endpoint
+    payload: dict = {
+        'software_update': software_update,
+        'auto_unlink': {
+            'enabled': True,
+            'expiration': auto_link
+        }
     }
+
+    # Let's register the response for edit endpoint
     responses.add(
         responses.PUT,
-        re.compile(f'{BASE_URL}/{agent_id}/config'),
+        BASE_URL,
         match=[responses.matchers.json_params_matcher(payload)],
         json=test_response
     )
+
     res = api.v3.vm.agent_config.edit(
-        auto_unlink=20,
-        software_update=False,
-        agent_id=agent_id
+        auto_unlink=auto_link,
+        software_update=software_update
     )
+
     assert isinstance(res, dict)
