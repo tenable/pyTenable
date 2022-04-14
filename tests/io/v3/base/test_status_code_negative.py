@@ -1,5 +1,5 @@
 '''
-Test cases for API negative status codes
+Test cases for Tenable.io API negative status codes
 '''
 import pytest
 import responses
