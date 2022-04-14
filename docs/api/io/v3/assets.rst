@@ -1,1 +1,1 @@
-.. automodule:: tenable.io.v3.assets.api
+.. automodule:: tenable.io.v3.vm.assets.api

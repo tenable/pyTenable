@@ -84,9 +84,9 @@ class AssetsAPI(TIOEndpoint):
         Args:
             action (str):
                 Specifies whether to add or remove tags. Valid values: add, remove.
-            assets (List[str]):
+            assets (list[str]):
                 An array of asset UUIDs.
-            tags (List[str]):
+            tags (list[str]):
                 An array of tag value UUIDs.
 
         Returns:

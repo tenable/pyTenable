@@ -12,6 +12,14 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import datetime
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath('..'))
+
+import tenable  # noqa: E402
+
 autodoc_mock_imports = [
     'lxml',
     'dateutil',
@@ -23,15 +31,13 @@ autodoc_mock_imports = [
     'arrow',
 ]
 
-import os, sys, datetime
-sys.path.insert(0, os.path.abspath('..'))
-
-import tenable
 
 def setup(app):
     app.add_css_file('custom.css')
 
+
 # -- Project information -----------------------------------------------------
+
 
 project = u'pyTenable'
 year = datetime.datetime.now().year
@@ -42,7 +48,6 @@ author = u'Tenable, Inc.'
 version = tenable.__version__
 # The full version, including alpha/beta/rc tags
 release = version
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -64,7 +69,7 @@ extensions = [
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-#templates_path = ['_templates']
+# templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -119,7 +124,6 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'pyTenabledoc'
 
-
 # -- Options for LaTeX output ------------------------------------------------
 
 latex_elements = {
@@ -148,7 +152,6 @@ latex_documents = [
      u'Steven McGrath', 'manual'),
 ]
 
-
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
@@ -157,7 +160,6 @@ man_pages = [
     (master_doc, 'pytenable', u'pyTenable Documentation',
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output ----------------------------------------------
 
@@ -169,7 +171,6 @@ texinfo_documents = [
      author, 'pyTenable', 'One line description of project.',
      'Miscellaneous'),
 ]
-
 
 # -- Extension configuration -------------------------------------------------
 
@@ -184,7 +185,7 @@ intersphinx_mapping = {
 }
 
 extlinks = {
-    'devportal': ('https://developer.tenable.com/reference#%s', 'devportal'),
+    'devportal': ('https://developer.tenable.com/reference/%s', 'devportal'),
     'sc-api': ('https://docs.tenable.com/sccv/api/%s', 'sc-api'),
     'requests': ('https://requests.readthedocs.io/en/master/%s', 'requests'),
 }

@@ -181,14 +181,14 @@ class RolesAPI(APIEndpoint):
         Args:
             role_id (str):
                 The role instance identifier.
-            permissions (List[Dict]) :
+            permissions (list[dict]) :
                 The list of permissions dictionaries.
                 Below are the values expected in dictionaries
             entity_name (str):
                 The name of entity.
             action (str):
                 The code of action to perform.
-            entity_ids (List[int]):
+            entity_ids (list[int]):
                 The list of entity identifiers.
             dynamic_id (optional, str):
                 The dynamicId to use associated with the action.

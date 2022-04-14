@@ -49,7 +49,7 @@ class SAMLConfigurationAPI(APIEndpoint):
                 Whether the created users through SAML authentication should be
                 activated. If false, created users will be disabled until an
                 admin comes and activate them.
-            allowed_groups (optional, List[Dict]):
+            allowed_groups (optional, list[dict]):
                 The group names from the identity provider whose members are
                 allowed to use Tenable.ad. The below listed params are
                 expected in allowed_groups dict.

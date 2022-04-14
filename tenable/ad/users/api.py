@@ -57,7 +57,7 @@ class UsersAPI(APIEndpoint):
                 The biography of user.
             active (optional, bool):
                 is the user active?
-            picture (optional, List[int]):
+            picture (optional, list[int]):
                 The list of picture numbers
 
         Return:
@@ -141,7 +141,7 @@ class UsersAPI(APIEndpoint):
                 The biography of user.
             active (optional, bool):
                 is the user active?
-            picture (optional, List[int]):
+            picture (optional, list[int]):
                 The list of picture numbers
 
         Returns:
@@ -260,7 +260,7 @@ class UsersAPI(APIEndpoint):
         Args:
             user_id (str):
                 The user instance identifier.
-            roles (List[int]):
+            roles (list[int]):
                 The list of user role identifiers.
 
         Returns:

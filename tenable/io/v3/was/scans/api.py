@@ -12,16 +12,20 @@ Methods available on ``tio.v3.was.scans``:
     :members:
 '''
 from io import BytesIO
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 from uuid import UUID
 
+from requests import Response
+
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
+from tenable.io.v3.base.iterators.was_iterator import (CSVChunkIterator,
+                                                       SearchIterator)
 from tenable.io.v3.was.scans.schema import ScanReportSchema, ScanStatusSchema
 
 
 class ScansAPI(ExploreBaseEndpoint):
     '''
-    This class contains methods related to Networks API
+    This class contains methods related to Scans API
     '''
     _path = 'api/v3/was'
     _conv_json = True
@@ -33,7 +37,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: delete scan <was-v2-scans-delete>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to delete.
+            id (uuid.UUID): The UUID of the scan for which you want to delete.
 
         Returns:
             :obj:`None`
@@ -50,10 +54,11 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: get scan details <was-v2-scans-details>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to view details.
+            id (uuid.UUID): The UUID of the scan for which you want to view details.
 
         Returns:
-            obj:`dict`: The record object of the scan.
+            :obj:`dict`:
+                The record object of the scan.
 
         Examples:
             >>> tio.v3.was.scans.details('91843ecb-ecb8-48a3-b623-d4682c2594')
@@ -72,7 +77,7 @@ class ScansAPI(ExploreBaseEndpoint):
         <was-v2-scans-download-export>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to view a
+            id (uuid.UUID): The UUID of the scan for which you want to view a
                 report.
             content_type (str, optional):
                 The format you want the report returned in. You can request
@@ -85,7 +90,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 report.
 
         Returns:
-            :obj:`Response`
+            :obj:`requests.Response`:
                 The Response object based for the requested attachment.
 
         Examples:
@@ -124,7 +129,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: export scan results <was-v2-scans-export>`
 
         Args:
-            id (UUID):
+            id (uuid.UUID):
                 The UUID of the scan for which you want to generate a report.
             content_type (str, optional):
                 The format you want the report returned in.
@@ -134,7 +139,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 text/csv, text/html, text/xml
 
         Returns:
-            obj:`None`
+            :obj:`None`
 
         Examples:
             >>> tio.v3.was.scans.export('91843ecb-ecb8-48a3-b623-d4682c2594')
@@ -154,51 +159,283 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: launch scan <was-v2-scans-launch>`
 
         Args:
-            config_id (UUID):
+            config_id (uuid.UUID):
             The UUID of the scan configuration to use to launch a scan.
 
         Returns:
-            obj:`UUID`: UUID of the scan initiated.
+            :obj:`uuid.UUID`:
+                UUID of the scan initiated.
 
         Examples:
             >>> folder = tio.v3.was.folders.create('New Folder Name')
         '''
         return self._post(f'configs/{config_id}/scans').get('id')
 
-    # TODO: Requires search iterator
     def notes(self,
-              id: UUID,
-              limit: int = 10,
-              offset: int = 0,
-              sort: str = None
-              ) -> None:
+              scan_id: UUID,
+              **kwargs
+              ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
-        Not Implemented
-        '''
-        raise NotImplementedError(
-            'This method will be updated once ExploreSearchIterator is \
-                implemented for v3'
-        )
+        Returns a list of notes for the specified scan.
 
-    # TODO: Requires search iterator
-    def search(self, config_id: UUID, **kwargs) -> None:
-        '''
-        Not Implemented
-        '''
-        raise NotImplementedError(
-            'This method will be updated once ExploreSearchIterator is \
-                implemented for v3'
-        )
+        :devportal:`was scans: scans notes list <was-v2-scans-notes-list>`
 
-    # TODO: Requires search iterator
-    def search_vulnerabilities(self, id: UUID, **kwargs) -> None:
+        Args:
+
+            scan_id (uuid.UUID):
+                The UUID of the config that was used for the scan.
+            return_resp (bool, optional):
+                If set to true, will override the default behavior to return
+                a requests.Response Object to the user.
+            return_csv (bool, optional):
+                If set to true, it will return the CSV response or
+                iterable (based on return_resp flag). Iterator returns all
+                rows in text/csv format for each call with row headers.\
+
+        :Returns:
+
+            - Iterable:
+                The iterable that handles the pagination for the job.
+
+            - requests.Response:
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
+
+        Examples:
+            >>> tio.v3.was.scans.notes(scan_id=scan_id)
+
         '''
-        Not Implemented
+        api_path = f'{self._path}/scans/{scan_id}/notes'
+        iclass = SearchIterator
+        if kwargs.get('return_csv', False):
+            iclass = CSVChunkIterator
+        return super()._search_was(resource='items',
+                                   iterator_cls=iclass,
+                                   api_path=api_path,
+                                   sort_type=self._sort_type.name_based,
+                                   **kwargs
+                                   )
+
+    def search(self, config_id: UUID,
+               **kwargs) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
-        raise NotImplementedError(
-            'This method will be updated once ExploreSearchIterator is \
-                implemented for v3'
-        )
+        Retrieves the Scans data
+
+        :devportal:`was scans: scans search <was-v2-scans-search>`
+
+        Args:
+
+            config_id (uuid.UUID):
+                The UUID of the config that was used for the scan.
+            fields (list, optional):
+                The list of field names to return from the Tenable API.
+
+                Example:
+                    >>> ['field1', 'field2']
+
+            sort (list[tuple], optional):
+                sort is a list of tuples in the form of
+                ('FIELD', 'ORDER').
+                It describes how to sort the data
+                that is to be returned.
+
+                Examples:
+                    >>> [('field_name_1', 'asc'),
+                    ...      ('field_name_2', 'desc')]
+
+            filter (tuple, dict, optional):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
+
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the :py:meth: `tio.v3.definitions.was.scans()`
+                endpoint to get more details.
+            limit (int, optional):
+                Number of objects to be returned in each request.
+                Default and maximum limit is 200.
+            offset (int, optional):
+                The pagination offset to use when requesting the next page of
+                results.
+            num_pages (int, optional):
+                The total number of pages to request before stopping the
+                iterator.
+            return_resp (bool, optional):
+                If set to true, will override the default behavior to return
+                a requests.Response Object to the user.
+            return_csv (bool, optional):
+                If set to true, it will return the CSV response or
+                iterable (based on return_resp flag). Iterator returns all
+                rows in text/csv format for each call with row headers.
+
+        :Returns:
+
+            - Iterable:
+                The iterable that handles the pagination for the job.
+
+            - requests.Response:
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
+
+        Examples:
+            >>> tio.v3.was.scans.search(config_id=config_id,
+            ...     filter=('name','eq','value'),
+            ...     fields=['name', 'field_one', 'field_two'],
+            ...     limit=2,
+            ...     sort=[('name', 'asc')]
+            ... )
+        '''
+        api_path = f'{self._path}/configs/{config_id}/scans/search'
+        iclass = SearchIterator
+        if kwargs.get('return_csv', False):
+            iclass = CSVChunkIterator
+        return super()._search_was(resource='items',
+                                   iterator_cls=iclass,
+                                   api_path=api_path,
+                                   sort_type=self._sort_type.name_based,
+                                   **kwargs
+                                   )
+
+    def search_vulnerabilities(self,
+                               scan_id: UUID,
+                               **kwargs
+                               ) -> Union[
+                                   SearchIterator,
+                                   CSVChunkIterator,
+                                   Response]:
+        '''
+        Retrieves the list of vulnerabilities for the specified scan.
+
+        :devportal:`was scans:scan vulns <was-v2-scans-details-vulns-search>`
+
+        Args:
+
+            scan_id (uuid.UUID):
+                The UUID of the scan for which you want to view
+                vulnerabilities.
+            fields (list, optional):
+                The list of field names to return from the Tenable API.
+
+                Example:
+                    >>> ['field1', 'field2']
+
+            sort (list[tuple], optional):
+                sort is a list of tuples in the form of
+                ('FIELD', 'ORDER').
+                It describes how to sort the data
+                that is to be returned.
+
+                Examples:
+                    >>> [('field_name_1', 'asc'),
+                    ...      ('field_name_2', 'desc')]
+
+            filter (tuple, dict, optional):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
+
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the :py:meth: `tio.v3.definitions.was.scan_vulnerabilities()`
+                endpoint
+                to get more details.
+            limit (int, optional):
+                Number of objects to be returned in each request.
+                Default and maximum limit is 200.
+            offset (int, optional):
+                The pagination offset to use when requesting the next page of
+                results.
+            num_pages (int, optional):
+                The total number of pages to request before stopping the
+                iterator.
+            return_resp (bool, optional):
+                If set to true, will override the default behavior to return
+                a requests.Response Object to the user.
+            return_csv (bool, optional):
+                If set to true, it will return the CSV response or
+                iterable (based on return_resp flag). Iterator returns all
+                rows in text/csv format for each call with row headers.
+
+        :Returns:
+
+            - Iterable:
+                The iterable that handles the pagination for the job.
+
+            - requests.Response:
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
+
+        Examples:
+            >>> tio.v3.was.scans.search_vulnerabilities(scan_id=scan_id,
+            ...     filter=('name','eq','value'),
+            ...     fields=['name', 'field_one', 'field_two'],
+            ...     limit=2,
+            ...     sort=[('name', 'asc')]
+            ... )
+        '''
+        api_path = f'{self._path}/scans/{scan_id}/vulnerabilities/search'
+        iclass = SearchIterator
+        if kwargs.get('return_csv', False):
+            iclass = CSVChunkIterator
+        return super()._search_was(resource='items',
+                                   iterator_cls=iclass,
+                                   api_path=api_path,
+                                   sort_type=self._sort_type.name_based,
+                                   **kwargs
+                                   )
 
     def update_status(self, id: UUID, requested_action: str) -> None:
         '''
@@ -209,13 +446,13 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`was scans: update scan status <was-v2-scans-status-update>`
 
         Args:
-            id (UUID): The UUID of the scan for which you want to update
+            id (uuid.UUID): The UUID of the scan for which you want to update
                 status.
             requested_action (str): The action to apply to the scan.
                 The only supported action is stop.
 
         Returns:
-            obj:`None`
+            :obj:`None`
 
         Examples:
             >>> tio.v3.was.scans.update_status(

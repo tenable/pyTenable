@@ -3,7 +3,50 @@ Base Explore Filter Schema
 '''
 from typing import Dict, Tuple, Union
 
-from marshmallow import Schema, ValidationError, fields, pre_load
+from marshmallow import Schema, ValidationError, fields
+from marshmallow.decorators import pre_load, validates_schema
+
+from tenable.io.base.schemas.filters.base import BaseFilterSchema
+
+
+class ParseFilterSchema(BaseFilterSchema):
+    '''
+    Validate filter Schema class
+    '''
+    field = fields.Str(required=True)
+    operator = fields.Str(required=True)
+    value = fields.List(fields.Str(), required=True)
+    _filters = None
+
+    @classmethod
+    def populate_filters(cls, tio, path):
+        '''
+        Pre-populates the asset filter definitions into the RuleSchema class.
+        '''
+        super().populate_filters(tio, path)
+
+    @validates_schema
+    def filter_validation(self, data, **kwargs):
+        '''
+        Handles validation of the filter provided against the asset filter
+        definitions.
+        '''
+        self.validate_filter(data.get('field'),
+                             data.get('operator'),
+                             data.get('value'))
+
+    @pre_load(pass_many=False)
+    def tuple_expansion(self, data, **kwargs):
+        '''
+        Handles expanding a tuple definition into the dictionary equivalent.
+        '''
+        if isinstance(data, tuple):
+            return {
+                'field': data[0],
+                'operator': data[1],
+                'value': data[2]
+            }
+        return data
 
 
 class FilterSchema(Schema):
@@ -24,7 +67,7 @@ class FilterSchema(Schema):
         presented.
         '''
         if (  # noqa: PLR1705
-            isinstance(data, dict) and ('and' in data or 'or' in data)
+                isinstance(data, dict) and ('and' in data or 'or' in data)
         ) or (isinstance(data, tuple) and data[0] in ['and', 'or']):
             # We need to check to see if the data dictionary
             # is a group of filters. To do so we will check to see
@@ -40,12 +83,12 @@ class FilterSchema(Schema):
             # and transformation
             return self.filter_group_transform(data)
         elif (
-            isinstance(data, dict)
-            and (
-                'property' in data  # noqa: PLR0916
-                and 'operator' in data
-                and 'value' in data
-            )
+                isinstance(data, dict)
+                and (
+                        'property' in data  # noqa: PLR0916
+                        and 'operator' in data
+                        and 'value' in data
+                )
         ) or (isinstance(data, tuple) and len(data) == 3):
             return self.filter_tuple_expansion(data)
         else:
@@ -99,9 +142,9 @@ class FilterSchema(Schema):
             # create the list within the response to store this logical
             # grouping.
             if (
-                isinstance(element, str)
-                and element in ['and', 'or']
-                and not resp.get(element)
+                    isinstance(element, str)
+                    and element in ['and', 'or']
+                    and not resp.get(element)
             ):
                 resp[element] = []
                 oper = element
@@ -109,9 +152,9 @@ class FilterSchema(Schema):
             # before, we should assume that this is a malformed tuple and log
             # the error into the errors dict.
             elif (
-                isinstance(element, str)
-                and element in ['and', 'or']
-                and resp.get(element)
+                    isinstance(element, str)
+                    and element in ['and', 'or']
+                    and resp.get(element)
             ):
                 errors[element] = [
                     (

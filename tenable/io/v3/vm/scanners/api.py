@@ -12,19 +12,26 @@ Methods available on ``tio.v3.vm.scanners``:
     :members:
 '''
 
-from typing import Dict, List
+from typing import Dict, List, Union
 from uuid import UUID
 
+from requests import Response
 from typing_extensions import Literal
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.scanners.schema import ScannerEditSchema
+from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
+                                                           SearchIterator)
+from tenable.io.v3.vm.scanners.schema import ScannerSchema
 
 
 class ScannersAPI(ExploreBaseEndpoint):
+    '''
+    This class contains all the methods related to Scanners Endpoint.
+    '''
 
     _path = 'api/v3/scanners'
     _conv_json = True
+    _schema = ScannerSchema()
 
     def linking_key(self) -> str:
         '''
@@ -35,14 +42,12 @@ class ScannersAPI(ExploreBaseEndpoint):
                 The linking key
 
         Examples:
-            >>> print(tio.v3.vm.scanners.linking_key())
+            >>> tio.v3.vm.scanners.linking_key()
         '''
-        scanners = self.list()
+        id = '00000000-0000-0000-0000-00000000000000000000000000001'
+        scanners = self.search(filter=('id', 'eq', id))
         for scanner in scanners:
-            if (
-                scanner['id']
-                == '00000000-0000-0000-0000-00000000000000000000000000001'
-            ):
+            if scanner['id'] == id:
                 return scanner['key']
 
     def allowed_scanners(self) -> List:
@@ -82,7 +87,7 @@ class ScannersAPI(ExploreBaseEndpoint):
         #     )
         # return scanners
 
-        return NotImplementedError(
+        raise NotImplementedError(
             'This method will be updated once Policies and Editor APIs\
                 are implemented in v3'
         )
@@ -104,25 +109,25 @@ class ScannersAPI(ExploreBaseEndpoint):
             scan_uuid (uuid):
                 The unique identifier for the scan.
             action (str):
-                The action to take upon the scan.  Valid actions are `stop`,
+                The action to take upon the scan. Valid actions are `stop`,
                 `pause`, and `resume`.
 
         Returns:
-            :obj:`None`:
-                The action was sent to the scan successfully.
+            :obj:`None`
 
         Examples:
             Stop a scan running on the scanner:
 
             >>> tio.v3.vm.scanners.control_scan(
-                1, '00000000-0000-0000-0000-000000000000',
-                'stop'
-                )
+            ... 1, '00000000-0000-0000-0000-000000000000',
+            ... 'stop'
+            ... )
         '''
+        payload = self._schema.dump(self._schema.load({'action': action}))
         self._post(
             f'{scanner_id}/scans/{scan_uuid}/control',
-            json={
-                'action': action})
+            json=payload
+            )
 
     def delete(self, id: UUID) -> None:
         '''
@@ -135,8 +140,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 The unique identifier for the scanner to delete.
 
         Returns:
-            :obj:`None`:
-                The scanner was successfully deleted.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.scanners.delete(1)
@@ -161,7 +165,7 @@ class ScannersAPI(ExploreBaseEndpoint):
             >>> scanner = tio.v3.vm.scanners.details(1)
             >>> pprint(scanner)
         '''
-        return self._get(f'{id}')
+        return super()._details(f'{id}')
 
     def edit(self, id: UUID, **kwargs) -> None:
         '''
@@ -186,8 +190,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 how often to check into Tenable.io.
 
         Returns:
-            :obj:`None`:
-                The operation was requested successfully.
+            :obj:`None`
 
         Examples:
             Force a plugin update on a scanner:
@@ -195,8 +198,7 @@ class ScannersAPI(ExploreBaseEndpoint):
             >>> tio.v3.vm.scanners.edit(1, force_plugin_update=True)
         '''
         payload = dict()
-        schema = ScannerEditSchema()
-        payload = schema.dump(schema.load(kwargs))
+        payload = self._schema.dump(self._schema.load(kwargs))
         self._api.put(f'settings/{id}', json=payload)
 
     def get_aws_targets(self, id: UUID) -> List:
@@ -255,40 +257,106 @@ class ScannersAPI(ExploreBaseEndpoint):
         '''
         return self._get(f'{id}/scans')['scans']
 
-    def search(self) -> List:
+    def search(self,
+               **kwargs
+               ) -> Union[CSVChunkIterator,
+                          SearchIterator,
+                          Response
+                          ]:
         '''
-        Search endpoint introduced in v3.
+        Search and retrieve the scanners based on supported conditions.
 
         :devportal:`scanners: search <scanners-search>`
 
-        Returns:
-            :obj:`list`:
-                Iterator Class object
-                TODO Implementation of base iterator class
-                ExploreSearchIterator needs to be updated at v3/base/iterator
+        Args:
+            
+            fields (list, optional):
+                The list of field names to return from the Tenable API.
+            
+                Example:
+                    >>> ['field1', 'field2']
+            
+            filter (tuple, dict, optional):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+
+                Examples:
+                    >>> ('or', ('and', ('test', 'oper', '1'),
+                    ...                 ('test', 'oper', '2')
+                    ...             ),
+                    ...     'and', ('test', 'oper', 3)
+                    ... )
+                    >>> {
+                    ...  'or': [{
+                    ...      'and': [{
+                    ...              'value': '1',
+                    ...              'operator': 'oper',
+                    ...              'property': '1'
+                    ...          },
+                    ...          {
+                    ...              'value': '2',
+                    ...              'operator': 'oper',
+                    ...              'property': '2'
+                    ...          }
+                    ...      ]
+                    ...  }],
+                    ...  'and': [{
+                    ...      'value': '3',
+                    ...      'operator': 'oper',
+                    ...      'property': 3
+                    ...  }]
+                    ... }
+
+                As the filters may change and sortable fields may change over
+                time, it's highly recommended that you look at the output of
+                the :py:meth:`tio.v3.definitions.vm.scanners()`
+                endpoint to get more details.
+            sort (list[tuple], optional):
+                sort is a list of tuples in the form of
+                ('FIELD', 'ORDER').
+                It describes how to sort the data
+                that is to be returned.
+
+                Examples:
+                    >>> [('field_name_1', 'asc'),
+                    ...      ('field_name_2', 'desc')]
+
+            limit (int, optional):
+                Number of objects to be returned in each request.
+                Default and max_limit is 200.
+            next (str, optional):
+                The pagination token to use when requesting the next page of
+                results. This token is presented in the previous response.
+            return_resp (bool, optional):
+                If set to true, will override the default behavior to return
+                a requests.Response Object to the user.
+            return_csv (bool, optional):
+                If set to true, it will return the CSV response or
+                iterable (based on return_resp flag). Iterator returns all
+                rows in text/csv format for each call with row headers.
+
+        :Returns:
+
+            - Iterable:
+                The iterable that handles the pagination for the job.
+
+            - requests.Response:
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
+
         Examples:
-            TODO
+            >>> tio.v3.vm.scanners.search( sort=[('received': 'desc)]
+            ... fields=['id', 'name', 'users'], limit=2)
         '''
-        raise NotImplementedError(
-            'This method will be updated once ExploreSearchIterator is \
-                implemented for v3'
-        )
-
-    def list(self) -> List:
-        '''
-        Retrieves the list of scanners.
-
-        :devportal:`scanners: list <scanners-list>`
-
-        Returns:
-            :obj:`list`:
-                List of scanner resource records.
-
-        Examples:
-            >>> for scanner in tio.scanners.list():
-            ...     pprint(scanner)
-        '''
-        return self._get()['scanners']
+        iclass = SearchIterator
+        if kwargs.get('return_csv', False):
+            iclass = CSVChunkIterator
+        return super()._search(iterator_cls=iclass,
+                               sort_type=self._sort_type.default,
+                               api_path=f'{self._path}/search',
+                               resource='scanners',
+                               **kwargs
+                               )
 
     def toggle_link_state(self, id: UUID, linked: bool) -> None:
         '''
@@ -304,17 +372,17 @@ class ScannersAPI(ExploreBaseEndpoint):
                 the link, whereas setting to `True` will enable the link.
 
         Returns:
-            :obj:`None`:
-                The status change was successful.
+            :obj:`None`
 
         Examples:
             to deactivate a linked scanner:
 
             >>> tio.v3.vm.scanners.toggle_link_state(1, False)
         '''
+        payload = self._schema.dump(self._schema.load({'link': int(linked)}))
         self._put(
             f'{id}/link',
-            json={'link': int(linked)},
+            json=payload,
         )
 
     def get_permissions(self, id: UUID) -> Dict:
@@ -331,12 +399,7 @@ class ScannersAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.vm.scanners.get_permissions(1)
         '''
-        # return self._api.permissions.list('scanner', self._check('id', id,
-        # int))
-        raise NotImplementedError(
-            'This method will be updated once Permissions API is \
-                migrated to v3'
-        )
+        return self._api.v3.vm.permissions.list('scanner', id)
 
     def edit_permissions(self, id: UUID, *acls) -> None:
         '''
@@ -347,19 +410,11 @@ class ScannersAPI(ExploreBaseEndpoint):
             *acls (dict): The permissions record(s) for the scanner.
 
         Returns:
-            :obj:`None`:
-                The permissions have been updated successfully.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.scanners.edit_permissions(1,
             ...     {'type': 'default, 'permissions': 16},
             ...     {'type': 'user', 'id': 2, 'permissions': 16})
         '''
-        # self._api.permissions.change('scanner',
-        #   self._check('id', id, int),
-        #   *acls
-        # )
-        raise NotImplementedError(
-            'This method will be updated once Permissions API is migrated \
-                to v3'
-        )
+        self._api.v3.vm.permissions.change('scanner', id, *acls)
