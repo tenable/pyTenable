@@ -69,10 +69,6 @@ def test_search_schema_was():
     schema = SearchWASSchema(context={'sort_type': SortType.property_based})
     assert test_resp == schema.dump(schema.load(SEARCH_DATA_WAS))
 
-    with pytest.raises(ValidationError):
-        SEARCH_DATA['dummy_key'] = 'dummy_value'
-    schema.load(SEARCH_DATA)
-
 
 def test_search_schema_invalid_limit():
     '''
