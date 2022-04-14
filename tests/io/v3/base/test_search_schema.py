@@ -1,5 +1,5 @@
 '''
-Test cases  for search schema
+Test cases for search schema
 '''
 import pytest
 from marshmallow.exceptions import ValidationError

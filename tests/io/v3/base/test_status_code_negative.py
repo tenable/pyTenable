@@ -1,16 +1,28 @@
+'''
+Test cases for API negative status codes
+'''
 import pytest
 import responses
 from restfly.errors import (BadRequestError, ForbiddenError, NotFoundError,
                             ServerError, TooManyRequestsError,
-                            UnauthorizedError)
+                            UnauthorizedError, InvalidMethodError, NotAcceptableError, RequestConflictError,
+                            PayloadTooLargeError, UnsupportedMediaTypeError, ServiceUnavailableError,
+                            MethodNotImplementedError)
 
 error_codes = [
     (400, BadRequestError),
     (401, UnauthorizedError),
     (403, ForbiddenError),
     (404, NotFoundError),
+    (405, InvalidMethodError),
+    (406, NotAcceptableError),
+    (409, RequestConflictError),
+    (413, PayloadTooLargeError),
+    (415, UnsupportedMediaTypeError),
     (429, TooManyRequestsError),
-    (500, ServerError)
+    (500, ServerError),
+    (501, MethodNotImplementedError),
+    (503, ServiceUnavailableError)
 ]
 BASE_URL = 'https://cloud.tenable.com/api/v3/was'
 SAMPLE_ID = 'cade336b-29fb-4188-b42a-04d8f95d7de6'
@@ -21,7 +33,7 @@ TEST_IDS = [code[0] for code in error_codes]
 @pytest.mark.parametrize('error_codes', error_codes, ids=TEST_IDS)
 def test_status_code_get(api, error_codes):
     '''
-    Negative status code Scenario for GET request
+    Negative status code scenario for GET request
     '''
     responses.add(
         responses.GET,
@@ -37,7 +49,7 @@ def test_status_code_get(api, error_codes):
 @pytest.mark.parametrize('error_codes', error_codes, ids=TEST_IDS)
 def test_status_code_post(api, error_codes):
     '''
-    Negative status code Scenario for POST request
+    Negative status code scenario for POST request
     '''
     responses.add(
         responses.POST,
@@ -53,7 +65,7 @@ def test_status_code_post(api, error_codes):
 @pytest.mark.parametrize('error_codes', error_codes, ids=TEST_IDS)
 def test_status_code_put(api, error_codes):
     '''
-    Negative status code Scenario for PUT request
+    Negative status code scenario for PUT request
     '''
     responses.add(
         responses.PUT,
@@ -69,7 +81,7 @@ def test_status_code_put(api, error_codes):
 @pytest.mark.parametrize('error_codes', error_codes, ids=TEST_IDS)
 def test_status_code_delete(api, error_codes):
     '''
-    Negative status code Scenario for DELETE request
+    Negative status code scenario for DELETE request
     '''
     responses.add(
         responses.DELETE,
@@ -85,7 +97,7 @@ def test_status_code_delete(api, error_codes):
 @pytest.mark.parametrize('error_codes', error_codes, ids=TEST_IDS)
 def test_status_code_patch(api, error_codes):
     '''
-    Negative status code Scenario for PATCH request
+    Negative status code scenario for PATCH request
     '''
     responses.add(
         responses.PATCH,
