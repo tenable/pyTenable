@@ -1,5 +1,9 @@
-import pytest
 import responses
+from requests import Response
+from responses import matchers
+
+from tenable.io.v3.base.iterators.was_iterator import (CSVChunkIterator,
+                                                       SearchIterator)
 
 WAS_PLUGINS_BASE_URL = 'https://cloud.tenable.com/api/v3/was/plugins'
 ID = 1
@@ -59,7 +63,57 @@ def test_details(api):
 @responses.activate
 def test_search(api):
     '''
-    Test was plugins search method
+    Test the search method
     '''
-    with pytest.raises(NotImplementedError):
-        api.v3.was.plugins.search()
+    fields = [
+        'name',
+        'type',
+        'id'
+    ]
+    sort = [('family', 'desc')]
+    filters = ('name', 'eq', 'Scan Information')
+
+    payload = {
+        'fields': fields,
+        'filter': {
+            'property': 'name',
+            'operator': 'eq',
+            'value': 'Scan Information'
+        }
+    }
+
+    api_response = {
+        'plugins': [
+            {
+                'plugin_id': 98000,
+                'name': 'Scan Information',
+                'family': 'General',
+                'policy': []
+            }
+        ],
+        'pagination': {
+            'total': 1
+        }
+    }
+    responses.add(
+        responses.POST,
+        f'{WAS_PLUGINS_BASE_URL}/search',
+        match=[matchers.json_params_matcher(payload)],
+        json=api_response
+    )
+
+    iterator = api.v3.was.plugins.search(
+        fields=fields, limit=200, sort=sort, filter=filters
+    )
+    assert isinstance(iterator, SearchIterator)
+    assert len(list(iterator)) == api_response['pagination']['total']
+
+    iterator = api.v3.was.plugins.search(
+        fields=fields, return_csv=True, sort=sort, limit=200, filter=filters
+    )
+    assert isinstance(iterator, CSVChunkIterator)
+
+    resp = api.v3.was.plugins.search(
+        fields=fields, return_resp=True, limit=200, sort=sort, filter=filters
+    )
+    assert isinstance(resp, Response)
