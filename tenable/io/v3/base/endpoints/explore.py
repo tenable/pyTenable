@@ -27,8 +27,7 @@ class ExploreBaseEndpoint(APIEndpoint):
     def _parse_filters(self, finput, filterset=None, rtype='sjson'):
         '''
         A centralized method to parse and munge the filter tuples into the
-        anticipates response.
-
+        anticipated response.
         Args:
             finput (list): The list of filter tuples
             filterset (dict): The response of the allowed filters
@@ -50,9 +49,6 @@ class ExploreBaseEndpoint(APIEndpoint):
             # by comparing the filter to the filterset data we have and compare
             # the operators and values to make sure that the input is expected.
             fname = self._check('filter_name', f[0], str)
-            # if f[0] not in filterset:
-            #     raise UnexpectedValueError(
-            #         '{} is not a filterable option'.format(f[0]))
 
             foper = self._check('filter_operator', f[1], str,
                                 choices=filterset.get(f[0], dict()).get('operators'))

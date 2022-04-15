@@ -542,7 +542,7 @@ class AssetsAPI(ExploreBaseEndpoint):
                                **kw
                                )
 
-    def workbench_asset_filters(self, normalize=True):
+    def workbench_asset_filters(self):
         '''
         Returns the asset workbench filters.
 
@@ -550,7 +550,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         Returns:
             :obj:`dict`:
-                Filter resource dictionary
+                Filtered resource dictionary
 
         Examples:
             >>> filters = tio.filters.workbench_asset_filters()
