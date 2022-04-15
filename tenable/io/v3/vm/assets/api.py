@@ -22,7 +22,9 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
 from tenable.io.v3.vm.assets.schema import (AssetUpdateACRSchema,
                                             AssignTagsAssetSchema,
-                                            ImportAssetSchema, MoveAssetSchema)
+                                            ImportAssetSchema,
+                                            MoveAssetSchema,
+                                            BulkDeleteSchema)
 from tenable.utils import dict_clean
 
 
@@ -366,7 +368,6 @@ class AssetsAPI(ExploreBaseEndpoint):
                 filters have to match (``AND``) or any of the filters have to
                 match (``OR``).  If not specified, the default behavior is to
                 assume filter_type is ``AND``.
-
         Returns:
             dict:
                 Returns the number of deleted assets.
@@ -376,26 +377,20 @@ class AssetsAPI(ExploreBaseEndpoint):
             ...     ('host.hostname', 'match', 'asset.com'), filter_type='or')
             >>> pprint(asset)
         '''
-        # payload = {}
+        payload = dict()
 
-        # # run the rules through the filter parser...
-        # filter_type = self._check('filter_type', filter_type, str,
-        #     choices=['and', 'or'], default='and', case='lower')
-        # parsed = self._parse_filters(
-        #     filters, self._filters.workbench_asset_filters(),
-        #     rtype='assets')['asset']
+        # run the rules through the filter parser...
+        filter_type = self._check('filter_type', filter_type, str,
+                                  choices=['and', 'or'], default='and', case='lower')
+        parsed = self._parse_filters(
+            filters, self.workbench_asset_filters(), rtype='assets')['asset']
 
-        # payload['query'] = {filter_type: parsed}
+        payload['query'] = {filter_type: parsed}
 
-        # return self._post('api/v2/assets/bulk-jobs/delete', json=payload)
+        schema = BulkDeleteSchema()
+        payload = schema.dump(schema.load(payload))
 
-        # schema = SomeSchema()
-        # payload = schema.dump(schema.load(filter))
-        # return self._delete(json=filter)
-
-        raise NotImplementedError(
-            'Not implemented yet as it depends on search functionality'
-        )
+        return self._api.post('api/v3/assets/delete', json=payload).json()
 
     def update_acr(self,
                    acr_score: int,
@@ -546,3 +541,18 @@ class AssetsAPI(ExploreBaseEndpoint):
                                api_path=f'{self._path}/host/search',
                                **kw
                                )
+
+    def workbench_asset_filters(self):
+        '''
+        Returns the asset workbench filters.
+
+        :devportal:`workbenches: assets-filters <filters-assets-filter>`
+
+        Returns:
+            :obj:`dict`:
+                Filtered resource dictionary
+
+        Examples:
+            >>> filters = tio.filters.workbench_asset_filters()
+        '''
+        return self._get(f'filters/workbenches/assets')

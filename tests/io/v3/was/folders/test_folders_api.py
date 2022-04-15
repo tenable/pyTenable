@@ -1,5 +1,9 @@
-import pytest
 import responses
+from requests import Response
+from responses import matchers
+
+from tenable.io.v3.base.iterators.was_iterator import (CSVChunkIterator,
+                                                       SearchIterator)
 
 WAS_FOLDERS_BASE_URL = 'https://cloud.tenable.com/api/v3/was/folders'
 SAMPLE_FOLDER_ID = '178fe279-4e37-49ee-a5dc-8a447dd7043a'
@@ -57,7 +61,55 @@ def test_edit(api):
 @responses.activate
 def test_search(api):
     '''
-    Test was folders search method
+    Test the search method
     '''
-    with pytest.raises(NotImplementedError):
-        api.v3.was.folders.search()
+    fields = [
+        'name',
+        'type',
+        'id'
+    ]
+    sort = [('name', 'desc')]
+    filters = ('name', 'eq', 'Western Region')
+
+    payload = {
+        'fields': fields,
+        'filter': {
+            'property': 'name',
+            'operator': 'eq',
+            'value': 'Western Region'
+        }
+    }
+
+    api_response = {
+        'folders': [
+            {
+                'folder_id': 'd6280b0f-8cc2-4cbb-bf94-375079e94fef',
+                'name': 'Western Region'
+            }
+        ],
+        'pagination': {
+            'total': 1
+        }
+    }
+    responses.add(
+        responses.POST,
+        f'{WAS_FOLDERS_BASE_URL}/search',
+        match=[matchers.json_params_matcher(payload)],
+        json=api_response
+    )
+
+    iterator = api.v3.was.folders.search(
+        fields=fields, limit=200, sort=sort, filter=filters
+    )
+    assert isinstance(iterator, SearchIterator)
+    assert len(list(iterator)) == api_response['pagination']['total']
+
+    iterator = api.v3.was.folders.search(
+        fields=fields, return_csv=True, sort=sort, limit=200, filter=filters
+    )
+    assert isinstance(iterator, CSVChunkIterator)
+
+    resp = api.v3.was.folders.search(
+        fields=fields, return_resp=True, limit=200, sort=sort, filter=filters
+    )
+    assert isinstance(resp, Response)
