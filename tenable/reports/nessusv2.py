@@ -54,9 +54,8 @@ class NessusReportv2(object):
 
         elif name in ['cvss_base_score', 'cvss_temporal_score']:
             # CVSS scores are floats, so lets return them as such.
-            if value is None:  # Issue #551
-                return 0
-            return float(value)
+            if value:
+                return float(value)
 
         elif name in ['first_found', 'last_found', 'plugin_modification_date',
                       'plugin_publication_date', 'HOST_END', 'HOST_START']:
