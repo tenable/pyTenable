@@ -11,8 +11,8 @@ Tenable.io
     :glob:
 
     cs/index
-    access_groups_v2
     access_groups
+    access_groups_v2
     agent_config
     agent_exclusions
     agent_groups
@@ -48,7 +48,6 @@ from typing import Dict, Optional
 from requests import Response
 
 from tenable.base.platform import APIPlatform
-
 from .access_groups import AccessGroupsAPI
 from .access_groups_v2 import AccessGroupsV2API
 from .agent_config import AgentConfigAPI
