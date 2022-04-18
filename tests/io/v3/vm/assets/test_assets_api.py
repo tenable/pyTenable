@@ -64,19 +64,19 @@ def test_search(api):
         json=api_response,
     )
 
-    iterator = api.v3.assets.search(
+    iterator = api.v3.vm.assets.search(
         fields=fields, limit=200, sort=sort, filter=filters
     )
     assert isinstance(iterator, SearchIterator)
 
     assert len(list(iterator)) == api_response['pagination']['total']
 
-    iterator = api.v3.assets.search(
+    iterator = api.v3.vm.assets.search(
         fields=fields, return_csv=True, sort=sort, limit=200, filter=filters
     )
     assert isinstance(iterator, CSVChunkIterator)
 
-    resp = api.v3.assets.search(
+    resp = api.v3.vm.assets.search(
         fields=fields, return_resp=True, limit=200, sort=sort, filter=filters
     )
     assert isinstance(resp, Response)
@@ -166,19 +166,19 @@ def test_search_host(api):
         json=api_response,
     )
 
-    iterator = api.v3.assets.search_host(
+    iterator = api.v3.vm.assets.search_host(
         fields=fields, limit=200, sort=sort, filter=filters
     )
     assert isinstance(iterator, SearchIterator)
 
     assert len(list(iterator)) == api_response['pagination']['total']
 
-    iterator = api.v3.assets.search_host(
+    iterator = api.v3.vm.assets.search_host(
         fields=fields, return_csv=True, sort=sort, limit=200, filter=filters
     )
     assert isinstance(iterator, CSVChunkIterator)
 
-    resp = api.v3.assets.search_host(
+    resp = api.v3.vm.assets.search_host(
         fields=fields, return_resp=True, limit=200, sort=sort, filter=filters
     )
     assert isinstance(resp, Response)
@@ -190,7 +190,7 @@ def test_delete(api):
     responses.add(
         responses.DELETE, url=f'{ASSET_BASE_URL}/{asset_id}', json=None
     )
-    data = api.v3.assets.delete(asset_id)
+    data = api.v3.vm.assets.delete(asset_id)
     assert data.status_code == 200
 
 
@@ -227,7 +227,7 @@ def test_details(api):
     responses.add(
         responses.GET, url=f'{ASSET_BASE_URL}/{asset_id}', json=details_resp
     )
-    data = api.v3.assets.details(asset_id)
+    data = api.v3.vm.assets.details(asset_id)
     assert data == details_resp
 
 
@@ -245,7 +245,7 @@ def test_asset_import(api):
         responses.POST, url=f'{ASSET_BASE_URL}/import', json=resp_data
     )
 
-    data = api.v3.assets.asset_import(source, assets)
+    data = api.v3.vm.assets.asset_import(source, assets)
     assert data == resp_data['asset_import_job_id']
 
 
@@ -285,7 +285,7 @@ def test_list_import_jobs(api):
         responses.GET, url=f'{ASSET_BASE_URL}/import/jobs', json=resp_data
     )
 
-    data = api.v3.assets.list_import_jobs()
+    data = api.v3.vm.assets.list_import_jobs()
     assert data == resp_data['asset_import_jobs']
 
 
@@ -311,7 +311,7 @@ def test_import_job_details(api):
         json=resp_data,
     )
 
-    data = api.v3.assets.import_job_details(job_id)
+    data = api.v3.vm.assets.import_job_details(job_id)
     assert data == resp_data
 
 
@@ -323,7 +323,7 @@ def test_move_assets(api):
     resp_data = {'response': {'data': {'asset_count': 512}}}
     responses.add(responses.PATCH, url=f'{ASSET_BASE_URL}', json=resp_data)
 
-    data = api.v3.assets.move_assets(source, destination, target)
+    data = api.v3.vm.assets.move_assets(source, destination, target)
     assert data == resp_data['response']['data']['asset_count']
 
 
@@ -359,7 +359,7 @@ def test_update_acr(api):
         status=202
     )
 
-    resp = api.v3.assets.update_acr(acr_score=acr_score,
+    resp = api.v3.vm.assets.update_acr(acr_score=acr_score,
                                     assets=asset,
                                     reason=reason,
                                     note=note)
@@ -415,9 +415,9 @@ def test_bulk_delete(api):
         responses.GET, url=f'{ASSET_BASE_URL}/filters/workbenches/assets', json=resp_filter_data
     )
 
-    import_job_response = api.v3.assets.import_job_details(job_id)
+    import_job_response = api.v3.vm.assets.import_job_details(job_id)
 
-    bulk_delete_response = api.v3.assets.bulk_delete(
+    bulk_delete_response = api.v3.vm.assets.bulk_delete(
         ('types', 'eq', 'XYZ'), filter_type='or'
     )
     assert isinstance(resp_data, dict)
@@ -466,7 +466,7 @@ def test_tags(api):
         json=test_response,
     )
 
-    res = api.v3.assets.tags(asset_id=asset_id)
+    res = api.v3.vm.assets.tags(asset_id=asset_id)
 
     assert isinstance(res, dict)
     for tag in res['tags']:
@@ -498,7 +498,7 @@ def test_assign_tags(api):
         json=test_response,
     )
 
-    res = api.v3.assets.assign_tags(assets=asset_ids, tags=tag_ids)
+    res = api.v3.vm.assets.assign_tags(assets=asset_ids, tags=tag_ids)
 
     assert isinstance(res, str)
     assert test_response['job_id'] == res
