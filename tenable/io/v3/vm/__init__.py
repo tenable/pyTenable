@@ -17,12 +17,15 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     agent_config
+    agent_exclusions
     agent_groups
     agents
+    assets
+    audit_log
     credentials
+    definitions
     editor
     exclusions
-    agent_exclusions
     files
     folders
     networks
@@ -30,17 +33,19 @@ Methods available on ``tio.v3.vm``:
     plugins
     policies
     remediation_scans
-    scans
-    scanners
     scanner_groups
-    vulnerabilities
+    scanners
+    scans
+    server
     tags
+    vulnerabilities
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
-from tenable.io.v3.vm.agent_exclusions.api import AgentExclusionsAPI
 from tenable.io.v3.vm.agent_config.api import AgentsConfigAPI
+from tenable.io.v3.vm.agent_exclusions.api import AgentExclusionsAPI
 from tenable.io.v3.vm.agent_groups.api import AgentGroupsAPI
 from tenable.io.v3.vm.agents.api import AgentsAPI
+from tenable.io.v3.vm.assets.api import AssetsAPI
 from tenable.io.v3.vm.audit_log.api import AuditLogAPI
 from tenable.io.v3.vm.credentials.api import CredentialsAPI
 from tenable.io.v3.vm.editor.api import EditorAPI
@@ -56,8 +61,8 @@ from tenable.io.v3.vm.scanner_groups.api import ScannerGroupsAPI
 from tenable.io.v3.vm.scanners.api import ScannersAPI
 from tenable.io.v3.vm.scans.api import ScansAPI
 from tenable.io.v3.vm.server.api import ServerAPI
-from tenable.io.v3.vm.vulnerabilities.api import VulnerabilityAPI
 from tenable.io.v3.vm.tags.api import TagsAPI
+from tenable.io.v3.vm.vulnerabilities.api import VulnerabilityAPI
 
 
 class VulnerabilityManagement(ExploreBaseEndpoint):
@@ -98,6 +103,14 @@ class VulnerabilityManagement(ExploreBaseEndpoint):
         :doc:`Tenable.io v3 Agents APIs <agents>`.
         '''
         return AgentsAPI(self._api)
+
+    @property
+    def assets(self):
+        """
+        The interface object for the Assets APIs
+        :doc:`Tenable.io v3 assets APIs <assets>`.
+        """
+        return AssetsAPI(self._api)
 
     @property
     def audit_log(self):
@@ -186,7 +199,7 @@ class VulnerabilityManagement(ExploreBaseEndpoint):
         :doc:`Tenable.io v3 Remediation Scans APIs <remediation_scans>`
         '''
         return RemediationScansAPI(self._api)
-    
+
     @property
     def scans(self):
         '''

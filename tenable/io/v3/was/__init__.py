@@ -18,12 +18,13 @@ Methods available on ``tio.v3.was``:
 
     attachments
     configurations
+    definitions
     folders
     plugins
     scans
-    vulnerabilities
     templates
     user_templates
+    vulnerabilities
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.was.attachments.api import AttachmentsAPI

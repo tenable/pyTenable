@@ -10,3 +10,4 @@ Utilities available on ``tenable.utilities``:
     :glob:
 
     scan_bridge
+    scan_move

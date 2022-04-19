@@ -13,6 +13,7 @@ Methods available on ``tio.v3.mssp``:
     :glob:
 
     accounts
+    definitions
     logos
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
