@@ -36,7 +36,7 @@ class PermissionsAPI(ExploreBaseEndpoint):
         Args:
             otype (str):
                 The type of object to change.
-            id (UUID):
+            id (uuid.UUID):
                 The unique identifier of the object.
             *acls (dict):
                 ACL dictionaries inform Tenable.io how to handle permissions of
@@ -52,8 +52,7 @@ class PermissionsAPI(ExploreBaseEndpoint):
                     The permission value to grant access as described in
                     `permissions documentation`_.
         Returns:
-            :obj:`None`:
-                The object permissions were successfully changed.
+            :obj:`None`
 
         .. _permissions documentation:
             https://developer.tenable.com/docs/permissions
@@ -73,7 +72,7 @@ class PermissionsAPI(ExploreBaseEndpoint):
         Args:
             otype (str):
                 The type of object to change.
-            id (UUID):
+            id (uuid.UUID):
                 The unique identifier of the object.
 
         Returns:

@@ -39,7 +39,7 @@ class AgentsAPI(ExploreBaseEndpoint):
         :devportal:`agents: get <agents-get>`
 
         Args:
-            agent_id (UUID): The unique identifier of the agent.
+            agent_id (uuid.UUID): The unique identifier of the agent.
 
         Returns:
             :obj:`dict`:
@@ -169,7 +169,7 @@ class AgentsAPI(ExploreBaseEndpoint):
                 Example:
                     >>> ['field1', 'field2']
 
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -221,10 +221,10 @@ class AgentsAPI(ExploreBaseEndpoint):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
-        Returns:
-            Iterable:
+        :Returns:
+            - Iterable:
                 The iterable that handles the pagination for the job.
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 
@@ -252,7 +252,7 @@ class AgentsAPI(ExploreBaseEndpoint):
         <bulk-task-agent-status>`
 
         Args:
-            task_id (UUID): The unique identifier of the agent.
+            task_id (uuid.UUID): The unique identifier of the agent.
 
         Returns:
             :obj:`dict`:
@@ -276,7 +276,7 @@ class AgentsAPI(ExploreBaseEndpoint):
         :devportal:`agents: delete <agents-delete>`
 
         Args:
-            *agent_ids (UUID): The unique identifier of the agent to delete
+            *agent_ids (uuid.UUID): The unique identifier of the agent to delete
 
         Returns:
             :obj:`dict` or :obj:`None`:
@@ -317,7 +317,7 @@ class AgentsAPI(ExploreBaseEndpoint):
         <io-agent-bulk-operations-add-to-network>`
 
         Args:
-            *agent_ids (UUID): The unique identifier of the agent to add
+            *agent_ids (uuid.UUID): The unique identifier of the agent to add
             all_agents (bool, optional):
                 Indicates whether or not to match against all agents.
             wildcard (str, optional):
@@ -375,7 +375,7 @@ class AgentsAPI(ExploreBaseEndpoint):
         <io-agent-bulk-operations-remove-from-network>`
 
         Args:
-            *agent_ids (UUID): The unique identifier of the agent to remove
+            *agent_ids (uuid.UUID): The unique identifier of the agent to remove
             all_agents (bool, optional):
                 Indicates whether or not to match against all agents.
             wildcard (str, optional):
@@ -438,7 +438,7 @@ class AgentsAPI(ExploreBaseEndpoint):
         <io-agent-bulk-operations-directive>`
 
         Args:
-            *agent_ids (UUID):
+            *agent_ids (uuid.UUID):
                 The unique identifier of the agent to remove
             directive_type (str):
                 The type of instruction to perform.

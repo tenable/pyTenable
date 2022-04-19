@@ -156,8 +156,8 @@ class TagsAPI(TIOEndpoint):
                 A description for the Category/Value pair.
             filters (list, optional):
                 Filters are list of tuples in the form of ('FIELD', 'OPERATOR', 'VALUE').
-                Multiple filters can be used and will filter down the data
-                for automatically applying the tag to asset.
+                Multiple filters can be used and will filter down the data.
+                filters will automatically apply the tag to assets.
 
                 Examples:
                     - ``('distro', 'match', ['win', 'linux'])``
@@ -392,8 +392,8 @@ class TagsAPI(TIOEndpoint):
                 New description for the category value.
             filters (list, optional):
                 Filters are list of tuples in the form of ('FIELD', 'OPERATOR', 'VALUE').
-                Multiple filters can be used and will filter down the data
-                for automatically applying the tag to asset.
+                Multiple filters can be used and will filter down the data.
+                filters will automatically apply the tag to assets.
 
                 Examples::
                     - ``('distro', 'match', ['win', 'linux'])``

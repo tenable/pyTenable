@@ -41,7 +41,7 @@ class ProfilesAPI(APIEndpoint):
         Args:
             name (str):
                 The name of new profile.
-            directories (List[int]):
+            directories (list[int]):
                 The list of directory identifiers.
 
         Return:
@@ -96,7 +96,7 @@ class ProfilesAPI(APIEndpoint):
                 The name of profile.
             deleted (optional, bool):
                 is the profile deleted?
-            directories (optional, List[int]):
+            directories (optional, list[int]):
                 The list of directory ids.
 
         Returns:
@@ -141,7 +141,7 @@ class ProfilesAPI(APIEndpoint):
                 The profile instance identifier user wants to copy.
             name (str):
                 The name of new profile.
-            directories (List[int]):
+            directories (list[int]):
                 The list of directory ids.
 
         Returns:

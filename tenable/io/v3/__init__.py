@@ -15,22 +15,23 @@ Methods available on ``tio.v3``:
     :hidden:
     :glob:
 
-    assets
     connectors
+    definitions
     mssp/index
-    users
     platform/index
+    users
     vm/index
     was/index
 '''
 from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.assets.api import AssetsAPI
 from tenable.io.v3.connectors.api import ConnectorsAPI
+from tenable.io.v3.definitions.api import DefinitionsAPI
 from tenable.io.v3.mssp import ManagedSecurityServiceProvider
 from tenable.io.v3.platform import Platform
-from tenable.io.v3.definitions.api import DefinitionsAPI
+from tenable.io.v3.platform.groups.api import GroupsAPI
 from tenable.io.v3.users.api import UsersAPI
 from tenable.io.v3.vm import VulnerabilityManagement
+from tenable.io.v3.vm.assets.api import AssetsAPI
 from tenable.io.v3.was import WebApplicationScanning
 
 
@@ -41,18 +42,10 @@ class Version3API(APIEndpoint):
     '''
 
     @property
-    def assets(self):
-        """
-        The interface object for the Assets APIs
-        :doc:`Tenable.io.v3.assets Assets APIs <assets>`.
-        """
-        return AssetsAPI(self._api)
-
-    @property
     def definitions(self):
         """
         The interface object for the Definitions APIs
-        :doc:`Tenable.io.v3.definitions APIs <definitions>`.
+        :doc:`Tenable.io v3 definitions APIs <definitions>`.
         """
         return DefinitionsAPI(self._api)
 
@@ -60,7 +53,7 @@ class Version3API(APIEndpoint):
     def connectors(self):
         '''
         The interface object for the connectors APIs
-        :doc:`tenable.io v3 connectors APIs <connectors>
+        :doc:`Tenable.io v3 connectors APIs <connectors>`.
         '''
         return ConnectorsAPI(self._api)
 

@@ -38,7 +38,7 @@ class AccountsAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -85,16 +85,15 @@ class AccountsAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
-        Returns:
-            Iterable:
+        :Returns:
+            - Iterable:
                 The iterable that handles the pagination for the job.
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
         Examples:

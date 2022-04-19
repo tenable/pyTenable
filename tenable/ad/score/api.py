@@ -28,11 +28,11 @@ class ScoreAPI(APIEndpoint):
             Option-1:
                 profile_id (str):
                     The profile instance identifier.
-                directory_ids (optional, List(int)):
+                directory_ids (optional, list(int)):
                     The list of directory_ids.
-                checker_ids (optional, List(int)):
+                checker_ids (optional, list(int)):
                     The list of checker_ids.
-                reason_ids (optional, List(int)):
+                reason_ids (optional, list(int)):
                     The list of reason_ids.
 
             Option-2:

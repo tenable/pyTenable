@@ -77,7 +77,7 @@ class NetworksAPI(ExploreBaseEndpoint):
         :devportal:`networks: delete <networks-delete>`
 
         Args:
-            network_id (UUID): The UUID of the network to remove.
+            network_id (uuid.UUID): The UUID of the network to remove.
 
         Examples:
             >>> tio.v3.vm.networks.delete(
@@ -93,7 +93,7 @@ class NetworksAPI(ExploreBaseEndpoint):
         :devportal:`networks: details <networks-details>`
 
         Args:
-            network_id (UUID): The UUID of the network.
+            network_id (uuid.UUID): The UUID of the network.
 
         Examples:
             >>> nw = tio.v3.vm.networks.details(
@@ -114,7 +114,7 @@ class NetworksAPI(ExploreBaseEndpoint):
         :devportal:`networks: update <networks-update>`
 
         Args:
-            network_id (UUID): The UUID of the network resource to update.
+            network_id (uuid.UUID): The UUID of the network resource to update.
             name (str): The new name of the network resource.
             description (str, optional):
                 The new description of the network resource.
@@ -157,8 +157,8 @@ class NetworksAPI(ExploreBaseEndpoint):
         <networks-assign-scanner-bulk>`
 
         Args:
-            network_id (UUID): The UUID of the network.
-            *scanner_uuids (UUID): Scanner UUID(s) to assign to the network.
+            network_id (uuid.UUID): The UUID of the network.
+            *scanner_uuids (uuid.UUID): Scanner UUID(s) to assign to the network.
 
         Examples:
             Assign a single scanner:
@@ -193,7 +193,7 @@ class NetworksAPI(ExploreBaseEndpoint):
         :devportal:`networks: list-scanners <networks-list-scanners>`
 
         Args:
-            network_id (UUID): The UUID of the network.
+            network_id (uuid.UUID): The UUID of the network.
 
         Returns:
             :obj:`list`:
@@ -215,7 +215,7 @@ class NetworksAPI(ExploreBaseEndpoint):
         :devportal:`networks: list-assignable-scanners <networks-list-assignable-scanners>`  # noqa E501
 
         Args:
-            id (UUID): The UUID of the network.
+            id (uuid.UUID): The UUID of the network.
 
         Returns:
             :obj:`list`:
@@ -245,7 +245,7 @@ class NetworksAPI(ExploreBaseEndpoint):
                 Example:
                     >>> ['field1', 'field2']
             
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
 
@@ -302,12 +302,12 @@ class NetworksAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
 
-        Returns:
+        :Returns:
 
-            Iterable:
+            - Iterable:
                 The iterable that handles the pagination for the job.
 
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 
@@ -334,7 +334,7 @@ class NetworksAPI(ExploreBaseEndpoint):
         :devportal:`networks: network_asset_count <networks-asset-count-details>`  # noqa E501
 
         Args:
-            network_id (UUID): The UUID of the network.
+            network_id (uuid.UUID): The UUID of the network.
             num_days (int): count of assets that have not been seen for the
             specified number of days
 

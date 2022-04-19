@@ -1,3 +1,16 @@
+'''
+VM Definitions
+==============
+
+The following methods allow for interaction into the Tenable.io
+:devportal:`definitions <definitions>` API endpoints.
+
+Methods available on ``tio.v3.vm.definitions``:
+
+.. rst-class:: hide-signature
+.. autoclass:: VMDefinitionsAPI
+    :members:
+'''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 
 

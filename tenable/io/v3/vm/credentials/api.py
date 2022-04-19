@@ -101,10 +101,10 @@ class CredentialsAPI(ExploreBaseEndpoint):
         :devportal:`credentials: details <credentials-details>`
 
         Args:
-            id (UUID): The UUID of the credential to retrieve.
+            id (uuid.UUID): The UUID of the credential to retrieve.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The resource record for the credential.
 
         Examples:
@@ -120,7 +120,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
         :devportal:`credentials: delete <credentials-delete>`
 
         Args:
-            id (UUID): The UUID of the credential to retrieve.
+            id (uuid.UUID): The UUID of the credential to retrieve.
 
         Returns:
             :obj:`bool`:
@@ -146,7 +146,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
         :devportal:`credentials: create <credentials-create>`
 
         Args:
-            cred_id (UUID):
+            cred_id (uuid.UUID):
                 Credentials uuid
             ad_hoc (bool, optional):
                 Determines whether the credential is managed (``False``) or an
@@ -220,7 +220,7 @@ class CredentialsAPI(ExploreBaseEndpoint):
                 Example:
                     >>> ['field1', 'field2']
             
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
 
@@ -280,12 +280,12 @@ class CredentialsAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
 
-        Returns:
+        :Returns:
 
-            Iterable:
+            - Iterable:
                 The iterable that handles the pagination for the job.
 
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 

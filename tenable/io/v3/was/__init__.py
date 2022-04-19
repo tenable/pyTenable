@@ -17,15 +17,18 @@ Methods available on ``tio.v3.was``:
     :glob:
 
     attachments
+    configurations
+    definitions
     folders
     plugins
     scans
-    vulnerabilities
     templates
     user_templates
+    vulnerabilities
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.was.attachments.api import AttachmentsAPI
+from tenable.io.v3.was.configurations.api import ConfigurationsAPI
 from tenable.io.v3.was.folders.api import FoldersAPI
 from tenable.io.v3.was.plugins.api import PluginsAPI
 from tenable.io.v3.was.scans.api import ScansAPI
@@ -47,6 +50,14 @@ class WebApplicationScanning(ExploreBaseEndpoint):  # noqa: PLR0904
         :doc:`Tenable.IO v3 Attachments APIs <attachments>`
         '''
         return AttachmentsAPI(self._api)
+
+    @property
+    def configurations(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 Configurations APIs <configurations>`
+        '''
+        return ConfigurationsAPI(self._api)
 
     @property
     def folders(self):

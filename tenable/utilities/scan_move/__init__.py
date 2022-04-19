@@ -49,22 +49,21 @@ class ScanMove:
             ]
         }
 
-        # TODO Search has not implemented yet
-        # for mv_scan in self.source_tio.v3.vm.scans.search(
-        #     filter=scan_filter
-        # ):
-        #     scan_history = self._get_scan_history(mv_scan['id'], limit)
-        #
-        #     for scan in scan_history:
-        #         print("Exporting Scan ID:{}, with history_id: {} now\n".format(
-        #             mv_scan, scan
-        #         ))
-        #
-        #         scan_report = self.source_tio.v3.scans.export(scan)
-        #         imported_scan = self.target_tio.v3.scans.import_scan(
-        #             scan_report
-        #         )
-        #
-        #         print("Scan imported: {}".format(
-        #             imported_scan.get('scan').get('id')
-        #         ))
+        for mv_scan in self.source_tio.v3.vm.scans.search(
+            filter=scan_filter
+        ):
+            scan_history = self._get_scan_history(mv_scan['id'], limit)
+
+            for scan in scan_history:
+                print("Exporting Scan ID:{}, with history_id: {} now\n".format(
+                    mv_scan, scan
+                ))
+
+                scan_report = self.source_tio.v3.scans.export(scan)
+                imported_scan = self.target_tio.v3.scans.import_scan(
+                    scan_report
+                )
+
+                print("Scan imported: {}".format(
+                    imported_scan.get('scan').get('id')
+                ))

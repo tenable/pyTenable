@@ -59,13 +59,13 @@ class LogosAPI(ExploreBaseEndpoint):
         MSSP Portal.
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
-            account_ids (List):
+            account_ids (list):
                 list of accoint_ids to assign logos to.
 
         Returns:
-            None
+            :obj:`None`
 
         Example:
             >>> tio.v3.mssp.logos.assign_logos(
@@ -88,7 +88,7 @@ class LogosAPI(ExploreBaseEndpoint):
         Downloads the logo in either base64 or png format.
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
             fobj (FileObject, optional):
                 A file-like object to write the contents of the logo to.
@@ -118,7 +118,7 @@ class LogosAPI(ExploreBaseEndpoint):
         Returns details for the specified logo in the Tenable.io MSSP Portal.
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
         Returns:
             :obj:`dict`:
@@ -135,10 +135,10 @@ class LogosAPI(ExploreBaseEndpoint):
         Deletes Logo for the gived logo_id
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
         Returns:
-            None
+            :obj:`None`
 
         Example:
             >>> tio.v3.mssp.logos.delete(
@@ -151,7 +151,7 @@ class LogosAPI(ExploreBaseEndpoint):
         Downloads the logo in either base64 or png format.
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
         Returns:
             :obj:`str`:
@@ -180,7 +180,7 @@ class LogosAPI(ExploreBaseEndpoint):
                 Example:
                     >>> ['field1', 'field2']
 
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
 
@@ -237,8 +237,7 @@ class LogosAPI(ExploreBaseEndpoint):
 
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
 
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
@@ -273,7 +272,7 @@ class LogosAPI(ExploreBaseEndpoint):
         This update overwrites the existing logo.
 
         Args:
-            logo_id (UUID):
+            logo_id (uuid.UUID):
                 The UUID of the logo
             fobj (FileObject):
                 A file-like object of the logo.

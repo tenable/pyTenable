@@ -38,14 +38,13 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: add-scanner <scanner-groups-add-scanner>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier of the scanner group.
-            scanner_id (UUID):
+            scanner_id (uuid.UUID):
                 The unique identifier of the scanner.
 
         Returns:
-            :obj:`None`:
-                Scanner successfully added to the scanner group.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.scanner_groups.add_scanner(
@@ -70,7 +69,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
                 supported type is "load_balancing"
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scanner group resource record for the created group.
 
         Example:
@@ -90,12 +89,11 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: delete <scanner-groups-delete>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier for the scanner group to delete.
 
         Returns:
-            :obj:`None`:
-                The scanner group has been successfully deleted.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.scanner_groups.delete(
@@ -110,15 +108,14 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: delete-scanner<scanner-groups-delete-scanner>`  # noqa E501
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier of the scanner group.
-            scanner_id (UUID):
+            scanner_id (uuid.UUID):
                 The unique identifier of the scanner to remove from the
                 requested scanner group.
 
         Returns:
-            :obj:`None`:
-                The scanner was successfully removed from the scanner group.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.scanner_groups.delete_scanner(
@@ -134,10 +131,10 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: details <scanner-groups-details>`
 
         Args:
-            group_id (UUID): The unique identifier for the scanner group.
+            group_id (uuid.UUID): The unique identifier for the scanner group.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scanner group resource record.
 
         Examples:
@@ -154,14 +151,13 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: edit <scanner-groups-edit>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier for the scanner group.
             name (str):
                 The new name for the scanner group.
 
         Returns:
-            :obj:`None`:
-                The scanner group has been successfully updated.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.scanner_groups.edit(
@@ -180,7 +176,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -229,16 +225,15 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
-        Returns:
-            Iterable:
+        :Returns:
+            - Iterable:
                 The iterable that handles the pagination for the job.
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
         Examples:
@@ -265,7 +260,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: list-scanners<scanner-groups-list-scanners>`  # noqa E501
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier of the scanner group.
 
         Returns:
@@ -289,7 +284,7 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: list-routes <scanner-groups-list-routes>`
 
         Args:
-            group_id (UUID): The unique identifier of the scanner group
+            group_id (uuid.UUID): The unique identifier of the scanner group
 
         Returns:
             :obj:`list`:
@@ -311,14 +306,13 @@ class ScannerGroupsAPI(ExploreBaseEndpoint):
         :devportal:`scanner-groups: edit-routes <scanner-groups-edit-routes>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier of the scanner group
             routes (list):
                 The list of routes for scanner group
 
         Returns:
-            :obj:`None`:
-                The scanner group routes has been successfully updated
+            :obj:`None`
 
          Examples:
             >>> tio.v3.vm.scanner_groups.edit_routes(

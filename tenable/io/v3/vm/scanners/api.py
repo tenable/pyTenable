@@ -113,8 +113,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 `pause`, and `resume`.
 
         Returns:
-            :obj:`None`:
-                The action was sent to the scan successfully.
+            :obj:`None`
 
         Examples:
             Stop a scan running on the scanner:
@@ -141,8 +140,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 The unique identifier for the scanner to delete.
 
         Returns:
-            :obj:`None`:
-                The scanner was successfully deleted.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.scanners.delete(1)
@@ -192,8 +190,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 how often to check into Tenable.io.
 
         Returns:
-            :obj:`None`:
-                The operation was requested successfully.
+            :obj:`None`
 
         Examples:
             Force a plugin update on a scanner:
@@ -279,7 +276,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 Example:
                     >>> ['field1', 'field2']
             
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
 
@@ -338,12 +335,12 @@ class ScannersAPI(ExploreBaseEndpoint):
                 iterable (based on return_resp flag). Iterator returns all
                 rows in text/csv format for each call with row headers.
 
-        Returns:
+        :Returns:
 
-            Iterable:
+            - Iterable:
                 The iterable that handles the pagination for the job.
 
-            requests.Response:
+            - requests.Response:
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
 
@@ -375,8 +372,7 @@ class ScannersAPI(ExploreBaseEndpoint):
                 the link, whereas setting to `True` will enable the link.
 
         Returns:
-            :obj:`None`:
-                The status change was successful.
+            :obj:`None`
 
         Examples:
             to deactivate a linked scanner:
@@ -414,8 +410,7 @@ class ScannersAPI(ExploreBaseEndpoint):
             *acls (dict): The permissions record(s) for the scanner.
 
         Returns:
-            :obj:`None`:
-                The permissions have been updated successfully.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.vm.scanners.edit_permissions(1,

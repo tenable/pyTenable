@@ -17,6 +17,7 @@ from io import BytesIO
 from typing import BinaryIO, Callable, Dict, Optional, Union
 from uuid import UUID
 
+import pytest
 from requests import Response
 from restfly.utils import dict_clean
 
@@ -119,11 +120,11 @@ class ScansAPI(ExploreBaseEndpoint):
         based on the values inputted.
 
         Args:
-            kwargs (Dict):
+            kwargs (dict):
                 The keyword dict passed from the user
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The resulting scan document based on the kwargs provided.
         '''
         scan = {
@@ -207,11 +208,11 @@ class ScansAPI(ExploreBaseEndpoint):
         to distributed schedule dictionary
 
         Args:
-            details (Dict):
+            details (dict):
                 Dictionary of existing schedule
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Distributed dictionary of the keys required for scan schedule.
         '''
         schedule = {}
@@ -279,7 +280,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 please refer to :devportal:`scans-timezones`
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Dictionary of the keys required for scan schedule.
 
         '''
@@ -399,7 +400,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 please refer to :devportal:`scans-timezones`
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Dictionary of the keys required for scan schedule.
 
         '''
@@ -529,9 +530,9 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: attachments <scans-attachments>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
-            attachment_id (UUID):
+            attachment_id (uuid.UUID):
                 The unique identifier for the attachment
             key (str):
                 The attachment access token.
@@ -582,7 +583,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: configure <scans-configure>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
             template (str, optional):
                 The scan policy template to use.  If no template is specified
@@ -594,15 +595,15 @@ class ScansAPI(ExploreBaseEndpoint):
             targets (list, optional):
                 If defined, then a list of targets can be specified and will
                 be formatted to an appropriate text_target attribute.
-            credentials (Dict, optional):
+            credentials (dict, optional):
                 A list of credentials to use.
-            compliance (Dict, optional):
+            compliance (dict, optional):
                 A list of compliance audiots to use.
             scanner (str, optional):
                 Define the scanner or scanner group uuid or name.
-            schedule_scan (Dict, optional):
+            schedule_scan (dict, optional):
                 Define updated schedule for scan
-            **kw (Dict, optional):
+            **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc. For
                 more detailed info, please refer to the API documentation
@@ -611,7 +612,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 settings document.  There is no need to pass settings directly.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan resource record.
 
         Examples:
@@ -645,10 +646,10 @@ class ScansAPI(ExploreBaseEndpoint):
         credentials dict.
         If there is any edit credentials,it would override the same.
         Args:
-            scan (Dict):
+            scan (dict):
                 scan object to update edit credential if it matches criteria
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan with updated credentials.
         '''
         if 'credentials' in scan:
@@ -713,7 +714,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The name for the copied scan.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan resource record for the copied scan.
 
         Examples:
@@ -749,15 +750,15 @@ class ScansAPI(ExploreBaseEndpoint):
             targets (list, optional):
                 If defined, then a list of targets can be specified and will
                 be formatted to an appropriate text_target attribute.
-            credentials (Dict, optional):
+            credentials (dict, optional):
                 A list of credentials to use.
-            compliance (Dict, optional):
+            compliance (dict, optional):
                 A list of compliance audits to use.
             scanner (str, optional):
                 Define the scanner or scanner group uuid or name.
-            schedule_scan (Dict, optional):
+            schedule_scan (dict, optional):
                 Define schedule for scan
-            **kw (Dict, optional):
+            **kw (dict, optional):
                 The various parameters that can be passed to the scan creation
                 API.  Examples would be `name`, `email`, `scanner_id`, etc. For
                 more detailed info, please refer to the API documentation
@@ -766,7 +767,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 settings document.  There is no need to pass settings directly.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan resource record of the newly created scan.
 
         Examples:
@@ -839,6 +840,7 @@ class ScansAPI(ExploreBaseEndpoint):
         self._delete(f'{scan_id}')
 
     # todo - get back to this once iterator is ready
+    @pytest.mark.xfail(raises=NotImplementedError)
     def history(self,
                 scan_id,
                 limit=None,
@@ -900,7 +902,7 @@ class ScansAPI(ExploreBaseEndpoint):
         #     _path='scans/{}/history'.format(scan_id),
         #     _resource='history',
         # )
-        return NotImplementedError('This endpoint is not developed')
+        raise NotImplementedError('This endpoint is not developed')
 
     def delete_history(self, scan_id: UUID, history_id: UUID) -> None:
         '''
@@ -949,7 +951,7 @@ class ScansAPI(ExploreBaseEndpoint):
             scan_id (uuid): The unique identifier for the scan.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan configuration resource.
 
         Examples:
@@ -970,13 +972,13 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: details <scans-details>`
 
         Args:
-            scan_id (uuid):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
-            history_id (UUID, optional):
+            history_id (uuid.UUID, optional):
                 The unique identifier for the instance of the scan.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan result dictionary.
 
         Examples:
@@ -1171,15 +1173,15 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: host-details <scans-host-details>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
-            host_id (UUID):
+            host_id (uuid.UUID):
                 The unique identifier for the host within the scan.
-            history_id (UUID, optional):
+            history_id (uuid.UUID, optional):
                 The unique identifier for the instance of the scan.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The information related to the host requested.
 
         Examples:
@@ -1218,7 +1220,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 results?  The default is True.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The scan resource record for the imported scan.
 
         Examples:
@@ -1303,7 +1305,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     >>> ['field1', 'field2']
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -1352,8 +1354,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 results. This token is presented in the previous response.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -1362,8 +1363,8 @@ class ScansAPI(ExploreBaseEndpoint):
             Iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
         Examples:
             >>> tio.v3.vm.scans.search(
             ...     filter=('name','eq','SCCM'),
@@ -1464,13 +1465,13 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: schedule <scans-schedule>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
             enabled (bool):
                 Enables or Disables the scan scheduling.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The schedule resource record for the scan.
 
         Examples:
@@ -1495,7 +1496,7 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scans: stop <scans-stop>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
             block (bool, optional):
                 Block until the scan is actually stopped.  Default is False.
@@ -1565,13 +1566,13 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`scan: get-scan-history <scans-history-by-scan-id>`
 
         Args:
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 The unique identifier for the scan.
-            history_id (UUID):
+            history_id (uuid.UUID):
                 The unique identifier for the scan instance.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 The metadata about the scan instance specified.
 
         Examples:
@@ -1608,7 +1609,7 @@ class ScansAPI(ExploreBaseEndpoint):
                 A list of valid targets.
 
         Returns:
-            :obj:`Dict`:
+            :obj:`dict`:
                 Return the list of missed targets (if any), and
                 the list of matched scanner groups (if any).
 
@@ -1652,9 +1653,9 @@ class ScansAPI(ExploreBaseEndpoint):
         :devportal:`credentials: create <credentials-create>`
 
         Args:
-            cred_id (UUID):
+            cred_id (uuid.UUID):
                 Credentials uuid
-            scan_id (UUID):
+            scan_id (uuid.UUID):
                 Scan uuid
             ad_hoc (bool, optional):
                 Determines whether the credential is managed (``False``) or an
@@ -1683,7 +1684,7 @@ class ScansAPI(ExploreBaseEndpoint):
                     - ``('user', 'use', user_id)``
                     - ``('group', 'edit', group_id)``
 
-            **settings (Dict, optional):
+            **settings (dict, optional):
                 Additional keywords passed will be added to the settings dict
                 within the API call.  As this dataset can be highly variable,
                 it will not be validated and simply passed as-is.

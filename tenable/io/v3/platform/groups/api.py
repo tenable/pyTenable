@@ -36,13 +36,13 @@ class GroupsAPI(ExploreBaseEndpoint):
         :devportal:`groups: add-user <groups-add-user>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier of the group to add the user to.
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier of the user to add.
 
         Returns:
-            List:
+            :obj:`list`:
                 List of user resource records based on membership to the
                 specified group.
 
@@ -68,7 +68,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                 The name of the group that will be created.
 
         Returns:
-            Dict:
+            :obj:`dict`:
                 The group resource record of the newly minted group.
 
         Examples:
@@ -85,11 +85,10 @@ class GroupsAPI(ExploreBaseEndpoint):
         :devportal:`groups: delete <groups-delete>`
 
         Args:
-            group_id (UUID): The unique identifier for the group to be deleted.
+            group_id (uuid.UUID): The unique identifier for the group to be deleted.
 
         Returns:
-            None:
-                The group was successfully deleted.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.platform.groups.delete(
@@ -107,15 +106,14 @@ class GroupsAPI(ExploreBaseEndpoint):
         :devportal:`groups: delete-user <groups-delete-user>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier for the group to be modified.
-            user_id (UUID):
+            user_id (uuid.UUID):
                 The unique identifier for the user to be removed
                 from the group.
 
         Returns:
-            None:
-                The user was successfully removed from the group.
+            :obj:`None`
 
         Examples:
             >>> tio.v3.platform.groups.delete_user(
@@ -134,13 +132,13 @@ class GroupsAPI(ExploreBaseEndpoint):
         :devportal:`groups: edit <groups/edit>`
 
         Args:
-            group_id (UUID):
+            group_id (uuid.UUID):
                 The unique identifier for the group to be modified.
             name (str):
                 The new name for the group.
 
         Returns:
-            Dict:
+            :obj:`dict`:
                 The group resource record.
 
         Examples:
@@ -160,10 +158,10 @@ class GroupsAPI(ExploreBaseEndpoint):
         :devportal:`groups: list-users <groups-list-users>`
 
         Args:
-            group_id (UUID): The unique identifier of the group requested.
+            group_id (uuid.UUID): The unique identifier of the group requested.
 
         Returns:
-            List:
+            :obj:`list`:
                 List of user resource records based on membership to the
                 specified group.
 
@@ -189,7 +187,7 @@ class GroupsAPI(ExploreBaseEndpoint):
                 The list of field names to return from the Tenable API.
                 Example:
                     - ['field1', 'field2']
-            filter (tuple, Dict):
+            filter (tuple, dict):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:

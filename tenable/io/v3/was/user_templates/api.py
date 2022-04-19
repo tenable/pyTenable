@@ -44,7 +44,7 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
             endpoint.
 
         Args:
-            user_template_id (UUID): The UUID of the user-defined template.
+            user_template_id (uuid.UUID): The UUID of the user-defined template.
 
         Returns:
             :obj:`None`
@@ -64,7 +64,7 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
         <was-v2-user-templates-details>`
 
         Args:
-            user_template_id (UUID): The UUID of the user-defined template.
+            user_template_id (uuid.UUID): The UUID of the user-defined template.
 
         Returns:
             :obj:`dict`: The resource record of the user-defined template.
@@ -95,7 +95,7 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
                 Examples:
                     >>> [('field_name_1', 'asc'),
                     ...      ('field_name_2', 'desc')]
-            filter (tuple, Dict, optional):
+            filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.
                 Examples:
@@ -139,8 +139,7 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
                 iterator.
             return_resp (bool, optional):
                 If set to true, will override the default behavior to return
-                an iterable and will instead return the results for the
-                specific page of data.
+                a requests.Response Object to the user.
             return_csv (bool, optional):
                 If set to true, it will return the CSV response or
                 iterable (based on return_resp flag). Iterator returns all
@@ -150,8 +149,8 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
             Iterable:
                 The iterable that handles the pagination for the job.
             requests.Response:
-                If ``return_json`` was set to ``True``, then a response
-                object is instead returned instead of an iterable.
+                If ``return_resp`` is set to ``True``, then a response
+                object is returned instead of an iterable.
 
         Examples:
             >>> tio.v3.was.user_templates.search(filter=('netbios_name', 'eq',
@@ -180,9 +179,9 @@ class UserTemplatesAPI(ExploreBaseEndpoint):
         <was-v2-user-templates-update>`
 
         Args:
-            user_template_id (UUID): The UUID of the user-defined template.
+            user_template_id (uuid.UUID): The UUID of the user-defined template.
             name (str, optional): The name of the user-defined template.
-            owner_id (UUID, optional):
+            owner_id (uuid.UUID, optional):
                 The UUID of the owner of the user-defined template.
             default_permissions (str, optional):
                 The scan permissions level, as described in Permissions.
