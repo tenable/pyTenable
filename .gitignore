@@ -20,3 +20,4 @@ __pycache__
 /*.nessus
 /pyTenable.egg-info
 Jenkinsfile
+/ex_*.py

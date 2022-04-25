@@ -201,7 +201,7 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
                      func: Any,
                      kwargs: Optional[Dict] = None,
                      num_threads: int = 2,
-                     ):
+                     ) -> List:
         '''
         Initiate a multi-threaded export using the provided function and
         keyword arguments.  The following field names are reserved and must be
@@ -258,6 +258,7 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
 
         # initiate the thread pool and get the show on the road.
         with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            jobs = []
             # we will want to make sure to stay in this loop until the job is
             # finished and all of the chunks have been processed.
             while not (len(self._get_chunks()) < 1
@@ -282,5 +283,6 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
                          'has been downloaded and the data has been handed '
                          'off to the specified function'
                          ))
-                    executor.submit(func, **kwargs)
+                    jobs.append(executor.submit(func, **kwargs))
                     self.processed.append(chunk_id)
+        return jobs
