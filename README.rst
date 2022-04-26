@@ -11,6 +11,8 @@ Welcome to pyTenable's documentation!
    :target: https://github.com/tenable/pytenable
 .. image:: https://img.shields.io/github/license/tenable/pyTenable.svg
    :target: https://github.com/tenable/pytenable
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=tenable_pyTenable&metric=alert_status
+   :target: https://sonarcloud.io/project/overview?id=tenable_pyTenable
 
 pyTenable is intended to be a pythonic interface into the Tenable application
 APIs.  Further by providing a common interface and a common structure between
