@@ -1,8 +1,10 @@
-name: Master Branch Rules
+name: Testing Pipeline
 
 on:
   push:
     branches: [master]
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   unit_tests:
@@ -30,7 +32,13 @@ jobs:
           pytest tests                \
             --vcr-record=none         \
             --cov-report term-missing \
+            --cov-report xml          \
             --cov=tenable tests
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   style:
     runs-on: ubuntu-latest

@@ -14,7 +14,7 @@ jobs:
           python-version: 3.8
       - name: Build Package
         run: |
-          python setup.py sdist
+          python setup.py sdist bdist_wheel
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.4.1
         with:
