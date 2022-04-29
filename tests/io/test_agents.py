@@ -194,3 +194,30 @@ def test_agents_list_fields(api):
         check(agent, 'status', str)
         check(agent, 'uuid', 'uuid')
     assert count == agents.total
+
+
+@pytest.mark.vcr()
+def test_agents_unlink_agent_id_typeerror(api):
+    '''
+    test to raise the exception when type of agent_id is not as defined
+    '''
+    with pytest.raises(TypeError):
+        api.agents.unlink('nope')
+
+
+@pytest.mark.vcr()
+def test_agents_unlink_scanner_id_and_multiple_agent_id_typeerror(api):
+    '''
+    test to raise the exception when type of agent_id and scanner_id is not as defined
+    '''
+    with pytest.raises(TypeError):
+        api.agents.unlink('nope', 'nope', scanner_id="00")
+
+
+@pytest.mark.vcr()
+def test_agents_task_status_scanner_id_typeerror(api):
+    '''
+    test to raise the exception when type of scanner_id is not as defined
+    '''
+    with pytest.raises(TypeError):
+        api.agents.task_status(scanner_id='nope')
