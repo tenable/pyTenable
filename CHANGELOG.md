@@ -5,6 +5,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [1.4.6]
+### Added
+
+- Initial support for Nessus #556
+- Wheels published to PyPi #536
+- Python 3.10 support #540
+
+### Fixed
+
+- Corrected broken security step in pipeline #563
+- Export param regression with plugin family #555
+- NessusReportv2 doesnt handle Nonetype in cvss scoring #552
+
+[1.4.6]: https://github.com/tenable/pyTenable/compare/1.4.4...1.4.6
+
 ## [1.4.4]
 ### Added
 
