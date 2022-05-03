@@ -31,7 +31,7 @@ def test_platform_groups_schema_for_all_fields():
 
 def test_groups_schema_parameters_type_error(api):
     '''
-    Test to raise exception when values of name, group_id, user_id, doesn't match expected type.
+    Test to raise exception when values of name, group_id, user_id, don't match expected type.
     '''
     payload = {
         'name': 2,
