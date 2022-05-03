@@ -35,6 +35,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
     ],
     keywords='tenable tenable_io securitycenter containersecurity',
     packages=find_packages(exclude=['docs', 'tests']),
