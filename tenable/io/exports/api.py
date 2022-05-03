@@ -350,8 +350,8 @@ class ExportsAPI(APIEndpoint):
                 Findings last observed in any state after this timestamp will
                 be returned.  Cannot be used with ``last_found``,
                 ``first_found``, or ``last_fixed``.
-            plugin_family (str, optional):
-                Only return findings from the specified plugin family.
+            plugin_family (list[str], optional):
+                Only return findings from the specified plugin families.
             plugin_id (list[int], optional):
                 Only return findings from the specified plugin ids.
             plugin_type (str, optional):
@@ -395,6 +395,9 @@ class ExportsAPI(APIEndpoint):
             network_id (str, optional):
                 Only findings within the specified network UUID will be
                 returned.
+            cidr_range (str, optional):
+                Restrict the export to only vulns assigned to assets within the
+                CIDR range specified.
             tags (list[tuple[str, str]], optional):
                 A list of tag pairs to filter the results on.  The tag pairs
                 should be presented as ``('CATEGORY', 'VALUE')``.
@@ -403,7 +406,7 @@ class ExportsAPI(APIEndpoint):
                 the results?
             num_assets (int, optional):
                 As findings are grouped by asset, how many assets's findings
-                should exist within each data chunk?  If left unspecifed the
+                should exist within each data chunk?  If left unspecified the
                 default is ``500``.
             uuid (str, optional):
                 A predefined export UUID to use for generating an
