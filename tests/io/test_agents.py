@@ -2,6 +2,7 @@
 test agents
 '''
 import pytest
+
 from tenable.errors import UnexpectedValueError
 from ..checker import check
 
@@ -201,17 +202,25 @@ def test_agents_unlink_agent_id_typeerror(api):
     '''
     test to raise the exception when type of agent_id is not as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError) as type_error:
         api.agents.unlink('nope')
+    assert len(type_error.value.args) == 1, "Test-case should raise only one validation error."
+
+    assert type_error.value.args[0] == "agent_id is of type str.  Expected int", \
+        "Invalid type validation error for agent_id parameter is not raised by test-case."
 
 
 @pytest.mark.vcr()
-def test_agents_unlink_scanner_id_and_multiple_agent_id_typeerror(api):
+def test_agents_unlink_multiple_agent_id_typeerror(api):
     '''
-    test to raise the exception when type of agent_id and scanner_id is not as defined
+    test to raise the exception when types of multiple agent_ids are not as defined
     '''
-    with pytest.raises(TypeError):
-        api.agents.unlink('nope', 'nope', scanner_id="00")
+    with pytest.raises(TypeError) as type_error:
+        api.agents.unlink('nope', 'test')
+    assert len(type_error.value.args) == 1, "Test-case should raise only one validation error."
+
+    assert type_error.value.args[0] == "agent_ids is of type str.  Expected int", \
+        "Invalid type validation error for agent_ids parameter is not raised by test-case."
 
 
 @pytest.mark.vcr()
@@ -219,5 +228,9 @@ def test_agents_task_status_scanner_id_typeerror(api):
     '''
     test to raise the exception when type of scanner_id is not as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError) as type_error:
         api.agents.task_status(scanner_id='nope')
+    assert len(type_error.value.args) == 1, "Test-case should raise only one validation error."
+
+    assert type_error.value.args[0] == "task_status() missing 1 required positional argument: \'task_uuid\'", \
+        "Missing value of required scanner_id parameter error is not raised by test-case."
