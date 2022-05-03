@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - TNS_SESSIONID=SESSIONID
+      TNS_SESSIONID:
+      - cd4d086a6fee6fce62aa510acf845657
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.3
+        (Restfly/1.4.5; Python/3.8.2; Darwin/x86_64)
+      X-SecurityCenter:
+      - '0000000000'
+    method: GET
+    uri: https://127.0.0.1/rest/passivescanner
+  response:
+    body:
+      string: '{"type":"regular","response":[],"error_code":0,"error_msg":"","warnings":[],"timestamp":1647273653}
+
+        '
+    headers:
+      Cache-Control:
+      - no-cache, no-store
+      Connection:
+      - Keep-Alive
+      Content-Length:
+      - '100'
+      Content-Security-Policy:
+      - 'default-src ''self''; script-src ''self'' pendo-io-static.storage.googleapis.com
+        app.pendo.io cdn.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        data.pendo.io cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com
+        *.cloudfront.net; connect-src ''self'' app.pendo.io data.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        cdn.metarouter.io e.metarouter.io api.amplitude.com cdn.amplitude.com *.cloudfront.net;
+        img-src ''self'' data: cdn.pendo.io app.pendo.io pendo-static-6165929460760576.storage.googleapis.com
+        data.pendo.io; style-src ''self'' app.pendo.io cdn.pendo.io pendo-static-6165929460760576.storage.googleapis.com;
+        frame-ancestors ''self'' app.pendo.io; form-action ''self''; block-all-mixed-content;
+        Upgrade-Insecure-Requests; object-src ''none'''
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 14 Mar 2022 16:00:53 GMT
+      Expect-CT:
+      - max-age=31536000
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Keep-Alive:
+      - timeout=15, max=100
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - x-apikey
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
