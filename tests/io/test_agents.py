@@ -232,5 +232,5 @@ def test_agents_task_status_scanner_id_typeerror(api):
         api.agents.task_status(scanner_id='nope')
     assert len(type_error.value.args) == 1, "Test-case should raise only one validation error."
 
-    assert type_error.value.args[0] == "task_status() missing 1 required positional argument: \'task_uuid\'", \
+    assert "task_status() missing 1 required positional argument: 'task_uuid'" in type_error.value.args[0], \
         "Missing value of required scanner_id parameter error is not raised by test-case."
