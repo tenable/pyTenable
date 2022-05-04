@@ -216,7 +216,7 @@ def test_agents_unlink_multiple_agent_id_typeerror(api):
     test to raise the exception when types of multiple agent_ids are not as defined
     '''
     with pytest.raises(TypeError) as type_error:
-        api.agents.unlink('nope', 'test')
+        api.agents.unlink('nope', 'test', scanner_id=11)
     assert len(type_error.value.args) == 1, "Test-case should raise only one validation error."
 
     assert type_error.value.args[0] == "agent_ids is of type str.  Expected int", \
@@ -234,3 +234,16 @@ def test_agents_task_status_scanner_id_typeerror(api):
 
     assert "task_status() missing 1 required positional argument: 'task_uuid'" in type_error.value.args[0], \
         "Missing value of required scanner_id parameter error is not raised by test-case."
+
+
+@pytest.mark.vcr()
+def test_agents_task_status_scanner_id_task_uuid_typeerror(api):
+    '''
+    test to raise the exception when type of task_uuid is not as defined
+    '''
+    with pytest.raises(TypeError) as type_error:
+        api.agents.task_status(task_uuid=11, scanner_id=11)
+    assert len(type_error.value.args) == 1, "Test-case should raise only one validation error."
+
+    assert "task_uuid is of type int.  Expected str" in type_error.value.args[0], \
+        "Missing value of required scanner_id & task_uuid parameter error is not raised by test-case."
