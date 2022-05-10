@@ -1,0 +1,88 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.6
+        (Restfly/1.4.6; Python/3.10.1; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/plugins/plugin?last_updated=2019-01-01&size=4&page=1
+  response:
+    body:
+      string: !!binary |
+        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
+        0IAuv9loHLRu/wbM2gCWWxUAAA==
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 10 May 2022 13:23:39 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - origin,accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-d5jw8-ap-southeast-1-prod
+      X-Request-Uuid:
+      - 336e4659dc387aafb4bef012c4b508a4
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
