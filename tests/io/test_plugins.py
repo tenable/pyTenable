@@ -111,3 +111,22 @@ def test_plugins_list_success(api):
 def test_plugin_iterator_populate_family_cache(api):
     '''test for _populate_family_cache in PluginIterator'''
     getattr(PluginIterator(api), '_populate_family_cache')()
+
+
+@pytest.mark.vcr()
+def test_plugin_next_family_cache_(api):
+    '''test for next in PluginIterator'''
+    plugins = api.plugins.list(
+        last_updated=date(2019, 1, 1),
+        num_pages=2,
+        size=10)
+    plugins.populate_maptable = True
+    for plugin in plugins:
+        check(plugin, 'attributes', dict)
+        check(plugin['attributes'], 'description', str)
+        check(plugin['attributes'], 'plugin_publication_date', str)
+        check(plugin['attributes'], 'plugin_modification_date', str)
+        check(plugin['attributes'], 'synopsis', str)
+        check(plugin['attributes'], 'risk_factor', str)
+        check(plugin, 'id', int)
+        check(plugin, 'name', str)
