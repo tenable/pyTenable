@@ -1,7 +1,6 @@
 '''
 test Remediation scans
 '''
-from pprint import pprint
 import pytest
 from tenable.errors import UnexpectedValueError, NotFoundError
 from tests.checker import check, single
@@ -72,10 +71,11 @@ def test_remedyscan_create_scan_document_template_unexpected_value_error(api):
 @pytest.mark.vcr()
 def test_remedyscan_create_scan_document_template_pass(api):
 	'''
-	test to create scan document basic template
+	test to create scan document basic template, credentials and compliance
 	'''
 	templates = api.policies.templates()
-	resp = getattr(api.remediationscans, '_create_scan_document')({'template': 'basic'})
+	resp = getattr(api.remediationscans, '_create_scan_document')(
+		{'template': 'basic', 'credentials': {'name': "Test"}, 'compliance': {"name": "Policy Compliance"}})
 	assert isinstance(resp, dict)
 	check(resp, 'uuid', 'scanner-uuid')
 	assert resp['uuid'] == templates['basic']
