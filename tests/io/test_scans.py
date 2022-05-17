@@ -2059,3 +2059,39 @@ def test_scan_create_scan_document_credentials_pass(api):
     for credential in credentials:
         getattr(api.scans, '_create_scan_document')(
             {'credentials': credential})
+
+
+@pytest.mark.vcr()
+def test_block_while_running(api):
+    '''
+    test _block_while_running with expected type.
+    '''
+    api.scans._block_while_running(scan_id=583, sleeper=5)
+
+
+@pytest.mark.vcr()
+def test_results_notfounderror(api):
+    '''
+    test to raise exception when scan not found.
+    '''
+    with pytest.raises(NotFoundError):
+        api.scans.results(scan_id=583, history_id=12, history_uuid="123e4567-e89b-12d3-a456-426614174000")
+
+
+@pytest.mark.vcr()
+def test_history_unexpectedvalueerror(api):
+    '''
+    test to raise exception when pass unexpected value.
+    '''
+    with pytest.raises(UnexpectedValueError):
+        api.scans.history(scan_id=11, limit=10, offset="1", pages=3, sort=('name', 'desc'))
+
+
+@pytest.mark.vcr()
+def test_scan_create_scan_document_credentials_compliance_plugins(api):
+    '''
+    test to create scan document with credentials, compliance and plugins
+    '''
+    getattr(api.scans, '_create_scan_document')({'credentials': {'Host': {'Windows': [{'domain': '','username': 'test','password': 'test','auth_method': 'Password'}]}},
+                                                 'compliance': {'test': 'testvalue'},
+                                                 'plugins': {12122: 13, 12050: 13}})
