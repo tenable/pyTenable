@@ -3,7 +3,9 @@ test editor
 '''
 import uuid
 import pytest
-from tenable.errors import UnexpectedValueError
+from vcr.errors import CannotOverwriteExistingCassetteException
+
+from tenable.errors import UnexpectedValueError, UnauthorizedError
 
 
 ###
@@ -170,3 +172,27 @@ def test_editor_details(api):
     for each_scan_id in scan_ids_list:
         api.scans.delete(each_scan_id)
 
+
+@pytest.mark.vcr()
+def test_editor_parse_plugins_id_keyerror(api):
+    '''test to raise the exception when type of etype is not as defined'''
+    families = {
+        'family': {
+            'status': 'mixed'
+        }
+    }
+    with pytest.raises(KeyError):
+        api.editor.parse_plugins('policy', families, 'uuid')
+
+
+@pytest.mark.vcr()
+def test_editor_parse_plugins_etype_unauthorizederror(api):
+    '''test to raise the exception when value of family is not as defined'''
+    families = {
+        'family': {
+            'id': 1,
+            'status': 'mixed'
+        },
+    }
+    with pytest.raises(UnauthorizedError):
+        api.editor.parse_plugins('nope', families, 28)
