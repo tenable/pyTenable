@@ -208,7 +208,8 @@ def test_access_group_edit_success(api, agroup):
     '''
     test to edit access group
     '''
-    group = api.access_groups.edit(agroup['id'], name=str(uuid.uuid4()))
+    group = api.access_groups.edit(agroup['id'], name=str(uuid.uuid4()), principals=[
+        ('group', '32a0c314-442b-4aed-bbf5-ba9cf5cafbf4')], rules=[('operating_system', 'eq', ['Windows NT'])])
     assert isinstance(group, dict)
     check(group, 'created_at', 'datetime')
     check(group, 'updated_at', 'datetime')
