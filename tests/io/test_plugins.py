@@ -114,7 +114,7 @@ def test_plugin_iterator_populate_family_cache(api):
 
 
 @pytest.mark.vcr()
-def test_populate_family_cache_with_maptable(api):
+def test_plugins_populate_family_cache_with_maptable(api):
     '''test next method in PluginIterator'''
     plugins = api.plugins.list(
         last_updated=date(2019, 1, 1),
