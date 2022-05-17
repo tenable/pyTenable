@@ -237,7 +237,7 @@ def test_agents_task_status_scanner_id_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_agents_task_status_scanner_id_task_uuid_typeerror(api):
+def test_agents_task_status_task_uuid_typeerror(api):
     '''
     test to raise the exception when type of task_uuid is not as defined
     '''
@@ -246,4 +246,4 @@ def test_agents_task_status_scanner_id_task_uuid_typeerror(api):
     assert len(type_error.value.args) == 1, "Test-case should raise only one validation error."
 
     assert "task_uuid is of type int.  Expected str" in type_error.value.args[0], \
-        "Missing value of required scanner_id & task_uuid parameter error is not raised by test-case."
+        "Missing value of required task_uuid parameter error is not raised by test-case."
