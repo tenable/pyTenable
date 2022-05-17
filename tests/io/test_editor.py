@@ -3,9 +3,7 @@ test editor
 '''
 import uuid
 import pytest
-from vcr.errors import CannotOverwriteExistingCassetteException
-
-from tenable.errors import UnexpectedValueError, UnauthorizedError
+from tenable.errors import UnexpectedValueError, NotFoundError
 
 
 ###
@@ -175,24 +173,27 @@ def test_editor_details(api):
 
 @pytest.mark.vcr()
 def test_editor_parse_plugins_id_keyerror(api):
-    '''test to raise the exception when type of etype is not as defined'''
+    '''test to raise the exception when family id not found'''
     families = {
         'family': {
             'status': 'mixed'
         }
     }
-    with pytest.raises(KeyError):
+    with pytest.raises(KeyError) as key_error:
         api.editor.parse_plugins('policy', families, 'uuid')
+    assert "id" in key_error.value.args[0], "Validation is not raised in case of family id is not provided."
 
 
 @pytest.mark.vcr()
-def test_editor_parse_plugins_etype_unauthorizederror(api):
-    '''test to raise the exception when value of family is not as defined'''
+def test_editor_parse_plugins_notfounderror(api):
+    '''test to raise the exception when found unknown policy id'''
     families = {
         'family': {
             'id': 1,
             'status': 'mixed'
         },
     }
-    with pytest.raises(UnauthorizedError):
-        api.editor.parse_plugins('nope', families, 28)
+    with pytest.raises(NotFoundError) as not_found_error:
+        api.editor.parse_plugins('policy', families, 28)
+    assert "Unknown policy ID: 28" in not_found_error.value.msg, \
+        "Validation is not raised in case of invalid policy id is provided."
