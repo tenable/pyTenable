@@ -173,7 +173,7 @@ class AgentGroupsAPI(TIOEndpoint):
                     self._check('group_id', group_id, int)),
                 json={'items': [self._check('agent_ids', i, int) for i in agent_ids]}).json()
 
-    def details(self, group_id, scanner_id=1, *filters, **kw):
+    def details(self, group_id, *filters, **kw):
         '''
         Retrieve the details about the specified agent group.
 

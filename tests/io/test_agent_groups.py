@@ -302,10 +302,26 @@ def test_agentgroups_details_group_id_typeerror(api):
         api.agent_groups.details('nope')
 
 
-# @pytest.mark.vcr()
-# def test_agentgroups_details_scanner_id_typeerror(api):
-#    with pytest.raises(TypeError):
-#        api.agent_groups.details(1, scanner_id='nope')
+@pytest.mark.vcr()
+def test_agentgroups_details_scanner_id_typeerror(api):
+    '''
+    test to raise the exception when type of scanner_id is not as defined
+    '''
+    with pytest.raises(TypeError) as type_error:
+        api.agent_groups.details(1, scanner_id='nope')
+    assert type_error.value.args[0] == "scanner_id is of type str.  Expected int", \
+        "Invalid type validation error for scanner_id parameter is not raised by test-case."
+
+@pytest.mark.vcr()
+def test_agentgroups_details_agentgroup_notfounderror(api):
+    '''
+    test to raise the exception when agentgroup not found
+    '''
+    with pytest.raises(NotFoundError) as not_found_error:
+        api.agent_groups.details(1, sort=(('name', 'asc'), ('description', 'desc')))
+    assert "AgentGroup not found" in not_found_error.value.msg, \
+        "Invalid type validation error for group_id parameter is not raised by test-case."
+
 
 @pytest.mark.vcr()
 def test_agentgroups_details_nonexistant_group(api):
@@ -424,7 +440,7 @@ def test_agentgroups_details_of_an_agent_group_fields(api, agentgroup):
                                      filter_type='or',
                                      limit=45,
                                      offset=5,
-                                     scanner_id=22,
+                                     scanner_id=1,
                                      # sort=(('owner_id', 'asc'), ('shared', 'asc')),
                                      wildcard='match',
                                      wildcard_fields=['name']
