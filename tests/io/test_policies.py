@@ -250,3 +250,12 @@ def test_policies_template_details_new_success(api):
     templates = api.policies.templates()
     for keys in templates.keys():
         api.policies.template_details(keys)
+
+
+@pytest.mark.vcr()
+def test_policies_template_details_credentials_types_settings_success(api):
+    '''
+    test to get template details with editor>credentials>data>types>settings data
+    '''
+
+    api.policies.template_details('asv')
