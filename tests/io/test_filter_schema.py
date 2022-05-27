@@ -53,10 +53,11 @@ def test_validate_filter_validation_error(api):
         base_filter_schema.populate_filters(api, path='', filters=[filters_dict], force=True)
         base_filter_schema.validate_filter(name=filters_dict['name'], operator=filters_dict['operator'],
                                            value=filters_dict['value'])
-    assert '"value1" must be one of [\'value2\', \'value3\', \'value4\']' in validation_error.value.messages['value'][0], \
-        "Missing value of required value parameter error is not raised by test-case"
+    assert '"value1" must be one of [\'value2\', \'value3\', \'value4\']' in \
+           validation_error.value.messages['value'][0], \
+        "Invalid choice validation error not raised for 'value' parameter"
     assert '"value1" does not match pattern test' in validation_error.value.messages['value'][1], \
-        "Value not found error is not raised by test-case."
+        "'Value' is not matched the regex pattern error is not raised by test-case."
 
 
 @responses.activate
@@ -82,4 +83,4 @@ def test_validate_filter_name_validation_error(api):
         base_filter_schema.validate_filter(name=filters_dict['field'], operator=filters_dict['operator'],
                                            value=filters_dict['value'])
     assert '"field1" is not a valid filter' in validation_error.value.messages['name'], \
-        "Invalid type validation error for operator and value parameter is not raised by test-case."
+        "Invalid type validation error for name parameter is not raised by test-case."
