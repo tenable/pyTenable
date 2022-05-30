@@ -2,7 +2,9 @@
 test editor
 '''
 import uuid
+
 import pytest
+
 from tenable.base.endpoint import APIEndpoint
 from tenable.errors import UnexpectedValueError, NotFoundError
 
@@ -173,7 +175,7 @@ def test_editor_details(api):
 
 
 @pytest.mark.vcr()
-def test_editor_parse_plugins_id_keyerror(api):
+def test_editor_parse_plugins_family_id_keyerror(api):
     '''test to raise the exception when family id not found'''
     families = {
         'family': {
@@ -211,6 +213,6 @@ def test_editor_parse_plugins_response(api):
     endpoint_obj = APIEndpoint(api)
 
     api.editor.parse_plugins(
-            endpoint_obj._check(name='etype', obj='policy', expected_type=str, choices=['scan', 'policy']),
-            endpoint_obj._check(name='families', obj=families, expected_type=dict),
-            endpoint_obj._check(name='plugin_id', obj=112, expected_type=int))
+        endpoint_obj._check(name='etype', obj='policy', expected_type=str, choices=['scan', 'policy']),
+        endpoint_obj._check(name='families', obj=families, expected_type=dict),
+        endpoint_obj._check(name='plugin_id', obj=112, expected_type=int))
