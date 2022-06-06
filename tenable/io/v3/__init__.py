@@ -2,8 +2,8 @@
 Version3 API
 ============
 
-The following sub-package allows for interaction with the Tenable.io
-Version3API APIs.
+The following sub-package allows for interaction with the Tenable.io -
+Version3API
 
 Methods available on ``tio.v3``:
 
