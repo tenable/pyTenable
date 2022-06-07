@@ -18,36 +18,6 @@ class ParseFilterSchema(BaseFilterSchema):
     value = fields.List(fields.Str(), required=True)
     _filters = None
 
-    @classmethod
-    def populate_filters(cls, tio, path):
-        '''
-        Pre-populates the asset filter definitions into the RuleSchema class.
-        '''
-        super().populate_filters(tio, path)
-
-    @validates_schema
-    def filter_validation(self, data, **kwargs):
-        '''
-        Handles validation of the filter provided against the asset filter
-        definitions.
-        '''
-        self.validate_filter(data.get('field'),
-                             data.get('operator'),
-                             data.get('value'))
-
-    @pre_load(pass_many=False)
-    def tuple_expansion(self, data, **kwargs):
-        '''
-        Handles expanding a tuple definition into the dictionary equivalent.
-        '''
-        if isinstance(data, tuple):
-            return {
-                'field': data[0],
-                'operator': data[1],
-                'value': data[2]
-            }
-        return data
-
 
 class FilterSchema(Schema):
     '''
