@@ -15,7 +15,7 @@ Methods available on ``tio.v3``:
     :hidden:
     :glob:
 
-    was/index
+    explore/index
 '''
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.explore import Explore
@@ -30,6 +30,6 @@ class Version3API(APIEndpoint):
     def explore(self):
         '''
         The interface object for the
-         :doc:`Tenable.io v3 Web Application Scanning <was/index>`
+         :doc:`Tenable.io v3 explore <explore/index>`
         '''
         return Explore(self._api)

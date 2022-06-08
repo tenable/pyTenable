@@ -40,6 +40,7 @@ Tenable.io
     tags
     target_groups
     users
+    v3/index
     workbenches
 '''
 from typing import Dict, Optional

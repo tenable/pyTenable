@@ -2,7 +2,7 @@
 Editor
 ======
 
-Methods described in this section relate to the the editor API.
+Methods described in this section relate to the editor API.
 These methods can be accessed at ``Nessus.editor``.
 
 .. rst-class:: hide-signature

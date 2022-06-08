@@ -2,7 +2,7 @@
 Settings
 ========
 
-Methods described in this section relate to the the Settings API.
+Methods described in this section relate to the Settings API.
 These methods can be accessed at ``Nessus.settings``.
 
 .. rst-class:: hide-signature

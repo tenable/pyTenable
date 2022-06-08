@@ -1,15 +1,14 @@
 '''
-Vulnerability Management
-========================
+Explore
+=======
 
-The following API's are available for interaction under
-Vulnerability Management platform.
+The following API's are available for interaction under Explore platform.
 
-Methods available on ``tio.v3.vm``:
+Methods available on ``tio.v3.explore``:
 
 
 .. rst-class:: hide-signature
-.. autoclass:: VulnerabilityManagement
+.. autoclass:: Explore
     :members:
 
 .. toctree::
@@ -17,6 +16,7 @@ Methods available on ``tio.v3.vm``:
     :glob:
 
     assets
+    findings
 
 '''
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
@@ -26,16 +26,14 @@ from tenable.io.v3.explore.findings.api import FindingsAPI
 
 class Explore(ExploreBaseEndpoint):
     '''
-    This class will contain property for all resources
-    under Vulnerability Management
-    i.e assets, agents, scanners etc.
+    This class will contain property for all resources under Explore  i.e. assets, findings etc.
     '''
 
     @property
     def assets(self):
         """
         The interface object for the Assets APIs
-        :doc:`Tenable.io v3 assets APIs <assets>`.
+        :doc:`Tenable.io v3 explore assets APIs <assets>`.
         """
         return AssetsAPI(self._api)
 
@@ -43,6 +41,6 @@ class Explore(ExploreBaseEndpoint):
     def findings(self):
         '''
         The interface object for the
-        :doc:`Tenable.io v3 WAS Vulnerabilities APIs <vulnerabilities>`
+        :doc:`Tenable.io v3 explore findings APIs <findings>`
         '''
         return FindingsAPI(self._api)

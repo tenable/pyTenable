@@ -3,9 +3,9 @@ Assets
 ======
 
 The following methods allow for interaction into the Tenable.io
-:devportal:`assets <assets>` API endpoints.
+:devportal:`assets <io-v3-uw-assets-search>` API endpoints.
 
-Methods available on ``tio.v3.assets``:
+Methods available on ``tio.v3.explore.assets``:
 
 .. rst-class:: hide-signature
 .. autoclass:: AssetsAPI
@@ -114,8 +114,8 @@ class AssetsAPI(ExploreBaseEndpoint):
                                )
 
     def search_host(self,
-                      **kw
-                      ) -> Union[SearchIterator, CSVChunkIterator, Response]:
+                    **kw
+                    ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves the assets webapp.
 
@@ -200,8 +200,8 @@ class AssetsAPI(ExploreBaseEndpoint):
                                )
 
     def search_cloud_resource(self,
-                      **kw
-                      ) -> Union[SearchIterator, CSVChunkIterator, Response]:
+                              **kw
+                              ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves the assets webapp.
 
@@ -286,8 +286,8 @@ class AssetsAPI(ExploreBaseEndpoint):
                                )
 
     def search_all(self,
-                      **kw
-                      ) -> Union[SearchIterator, CSVChunkIterator, Response]:
+                   **kw
+                   ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves the assets webapp.
 

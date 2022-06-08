@@ -1,19 +1,20 @@
 '''
-Vulnerability
-=============
+Findings
+========
 
 The following methods allow for interaction into the Tenable.io
-:devportal:`vulnerabilities <was-v2-vulnerabilities>` API.
+:devportal:`findings <io-v3-uw-assets-search>` API.
 
-Methods available on ``tio.v3.was.vulnerabilities``:
+Methods available on ``tio.v3.explore.findings``:
 
 .. rst-class:: hide-signature
-.. autoclass:: VulnerabilityAPI
+.. autoclass:: FindingsAPI
     :members:
 '''
 from typing import Dict, Union
 
 from requests import Response
+
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
                                                            SearchIterator)
@@ -21,7 +22,7 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
 
 class FindingsAPI(ExploreBaseEndpoint):
     '''
-    API class containing all the methods related to WAS Vulnerability.
+    API class containing all the methods related to Findings.
     '''
     _path = 'api/v3/findings/vulnerabilities'
     _conv_json = True
@@ -45,11 +46,10 @@ class FindingsAPI(ExploreBaseEndpoint):
                                   migrated to v3')
 
     def search_host(self,
-               **kw
-               ) -> Union[SearchIterator, CSVChunkIterator, Response]:
+                    **kw
+                    ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
-        Search and retrieve the WAS Vulnerabilities based on supported
-        conditions.
+        Search and retrieve the WAS Vulnerabilities based on supported conditions.
 
         Args:
 
@@ -144,11 +144,10 @@ class FindingsAPI(ExploreBaseEndpoint):
                                )
 
     def search_cloud_resource(self,
-               **kw
-               ) -> Union[SearchIterator, CSVChunkIterator, Response]:
+                              **kw
+                              ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
-        Search and retrieve the WAS Vulnerabilities based on supported
-        conditions.
+        Search and retrieve the WAS Vulnerabilities based on supported conditions.
 
         Args:
 
@@ -243,11 +242,10 @@ class FindingsAPI(ExploreBaseEndpoint):
                                )
 
     def search_host_audit(self,
-               **kw
-               ) -> Union[SearchIterator, CSVChunkIterator, Response]:
+                          **kw
+                          ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
-        Search and retrieve the WAS Vulnerabilities based on supported
-        conditions.
+        Search and retrieve the WAS Vulnerabilities based on supported conditions.
 
         Args:
 
@@ -342,11 +340,10 @@ class FindingsAPI(ExploreBaseEndpoint):
                                )
 
     def search_webapp(self,
-               **kw
-               ) -> Union[SearchIterator, CSVChunkIterator, Response]:
+                      **kw
+                      ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
-        Search and retrieve the WAS Vulnerabilities based on supported
-        conditions.
+        Search and retrieve the WAS Vulnerabilities based on supported conditions.
 
         Args:
 

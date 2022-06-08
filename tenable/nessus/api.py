@@ -19,7 +19,6 @@ This package covers the Nessus interface.
     folders
     groups
     mail
-    migration
     permissions
     plugin_rules
     plugins
