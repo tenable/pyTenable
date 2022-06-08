@@ -18,8 +18,7 @@ Methods available on ``tio.v3``:
     was/index
 '''
 from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.was import WebApplicationScanning
-from tenable.io.v3.vm import VulnerabilityManagement
+from tenable.io.v3.explore import Explore
 
 
 class Version3API(APIEndpoint):
@@ -28,17 +27,9 @@ class Version3API(APIEndpoint):
     '''
 
     @property
-    def was(self):
+    def explore(self):
         '''
         The interface object for the
          :doc:`Tenable.io v3 Web Application Scanning <was/index>`
         '''
-        return WebApplicationScanning(self._api)
-
-    @property
-    def vm(self):
-        '''
-        The interface object for the
-        :doc:`Tenable.io v3 Vulnerability Management <vm/index>`
-        '''
-        return VulnerabilityManagement(self._api)
+        return Explore(self._api)
