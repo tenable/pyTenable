@@ -22,7 +22,7 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
 
 class AssetsAPI(ExploreBaseEndpoint):
     '''
-    This will contain methods related to Findings -> Assets API endpoints
+    This will contain methods related to Explore -> Assets API endpoints.
     '''
     _path = 'api/v3/assets'
     _conv_json = True

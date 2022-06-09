@@ -2,8 +2,7 @@
 Version3 API
 ============
 
-The following sub-package allows for interaction with the Tenable.io -
-Version3API
+The following sub-package allows for interaction with the Tenable.io - Version3API
 
 Methods available on ``tio.v3``:
 
@@ -23,7 +22,7 @@ from tenable.io.v3.explore import Explore
 
 class Version3API(APIEndpoint):
     '''
-    This will contain property for all resources/app under io- Web Application Security.
+    This will contain property for all resources/app under tenable.io - V3.
     '''
 
     @property
