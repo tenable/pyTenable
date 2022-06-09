@@ -2,7 +2,7 @@
 Session
 =======
 
-Methods described in this section relate to the the session API.
+Methods described in this section relate to the session API.
 These methods can be accessed at ``Nessus.session``.
 
 .. rst-class:: hide-signature

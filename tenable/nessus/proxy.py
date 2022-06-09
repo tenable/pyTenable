@@ -2,7 +2,7 @@
 Proxy
 =====
 
-Methods described in this section relate to the the proxy API.
+Methods described in this section relate to the proxy API.
 These methods can be accessed at ``Nessus.proxy``.
 
 .. rst-class:: hide-signature

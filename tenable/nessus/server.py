@@ -2,7 +2,7 @@
 Server
 ======
 
-Methods described in this section relate to the the server API.
+Methods described in this section relate to the server API.
 These methods can be accessed at ``Nessus.server``.
 
 .. rst-class:: hide-signature

@@ -40,10 +40,13 @@ Tenable.io
     tags
     target_groups
     users
+    v3/index
     workbenches
 '''
-from typing import Dict, List, Optional
+from typing import Dict, Optional
+
 from requests import Response
+
 from tenable.base.platform import APIPlatform
 from .access_groups import AccessGroupsAPI
 from .access_groups_v2 import AccessGroupsV2API
@@ -66,15 +69,16 @@ from .networks import NetworksAPI
 from .permissions import PermissionsAPI
 from .plugins import PluginsAPI
 from .policies import PoliciesAPI
+from .remediation_scans import RemediationScansAPI
 from .scanner_groups import ScannerGroupsAPI
 from .scanners import ScannersAPI
 from .scans import ScansAPI
-from .remediation_scans import RemediationScansAPI
 from .server import ServerAPI
 from .session import SessionAPI
 from .tags import TagsAPI
 from .target_groups import TargetGroupsAPI
 from .users import UsersAPI
+from .v3 import Version3API
 from .workbenches import WorkbenchesAPI
 
 
@@ -429,3 +433,11 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         :doc:`Tenable.io Workbenches APIs <workbenches>`.
         '''
         return WorkbenchesAPI(self)
+
+    @property
+    def v3(self):  # noqa
+        '''
+        The interface object for the
+        :doc:`Tenable.io v3 APIs <v3/index>`.
+        '''
+        return Version3API(self)
