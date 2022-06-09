@@ -1,6 +1,5 @@
 from typing import Optional, Dict, List
 from marshmallow import Schema, ValidationError
-from tenable.io.base.session import TenableIO
 import re
 
 
@@ -14,7 +13,7 @@ class BaseFilterSchema(Schema):
 
     @classmethod
     def populate_filters(cls,
-                         tio: TenableIO,
+                         tio,
                          path: str,
                          envelope: str = 'filters',
                          force: bool = False,
