@@ -7,16 +7,16 @@ from marshmallow import Schema, ValidationError, fields
 from marshmallow.decorators import pre_load
 
 
-class FilterSchema(Schema):
+class FilterSchemaV3(Schema):
     '''
-    Schema supporting both the Filter and FilterGroups
+    Schema supporting both the Filter and FilterGroups for V3 endpoints
     '''
 
     property = fields.Str()
     operator = fields.Str()
     value = fields.Raw()
-    and_ = fields.List(fields.Nested('FilterSchema'), data_key='and')
-    or_ = fields.List(fields.Nested('FilterSchema'), data_key='or')
+    and_ = fields.List(fields.Nested('FilterSchemaV3'), data_key='and')
+    or_ = fields.List(fields.Nested('FilterSchemaV3'), data_key='or')
 
     @pre_load(pass_many=False)
     def validate_and_transform(self, data, **kwargs):  # noqa: PLW0613
