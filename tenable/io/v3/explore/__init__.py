@@ -36,11 +36,3 @@ class Explore(ExploreBaseEndpoint):
         :doc:`Tenable.io v3 explore assets APIs <assets>`.
         """
         return AssetsAPI(self._api)
-
-    @property
-    def findings(self):
-        '''
-        The interface object for the
-        :doc:`Tenable.io v3 explore findings APIs <findings>`
-        '''
-        return FindingsAPI(self._api)
