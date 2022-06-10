@@ -41,6 +41,6 @@ class Explore(ExploreBaseEndpoint):
     def findings(self):
         """
         The interface object for the Findings APIs
-        :doc:`Tenable.io v3 explore findings APIs <assets>`.
+        :doc:`Tenable.io v3 explore findings APIs <findings>`.
         """
         return FindingsAPI(self._api)
