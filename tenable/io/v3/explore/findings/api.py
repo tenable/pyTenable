@@ -1,9 +1,9 @@
 '''
-Findings
-========
+Findings V3 Endpoints
+=====================
 
 The following methods allow for interaction into the Tenable.io
-:devportal:`findings <io-v3-uw-assets-search>` API.
+:devportal:`findings <io-v3-uw-vulnerabilities-search>` API.
 
 Methods available on ``tio.v3.explore.findings``:
 

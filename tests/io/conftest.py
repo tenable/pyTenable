@@ -25,8 +25,8 @@ def api():
     '''api keys fixture'''
     setup_logging_to_file()
     return TenableIO(
-        os.getenv('TIO_TEST_ADMIN_ACCESS', 'TIO_ACCESS_KEY'),
-        os.getenv('TIO_TEST_ADMIN_SECRET', 'TIO_SECRET_KEY'),
+        os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
+        os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',
         product='pytenable-automated-testing')
 
@@ -35,8 +35,8 @@ def api():
 def stdapi():
     '''std api keys fixture'''
     return TenableIO(
-        os.getenv('TIO_TEST_STD_ACCESS', 'TIO_ACCESS_KEY'),
-        os.getenv('TIO_TEST_STD_SECRET', 'TIO_SECRET_KEY'),
+        os.getenv('TIO_TEST_STD_ACCESS', 'ffffffffffffffffffffffffffffffff'),
+        os.getenv('TIO_TEST_STD_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',
         product='pytenable-automated-testing')
 

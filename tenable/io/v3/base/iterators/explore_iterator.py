@@ -1,5 +1,5 @@
 '''
-Iterator for search Endpoint
+Iterator for search V3 Endpoints
 '''
 from copy import copy
 from typing import Dict
@@ -11,7 +11,7 @@ from tenable.io.v3.base.iterators.iterator import APIResultIterator
 
 class ExploreIterator(APIResultIterator):
     '''
-    Base Iterator for explore
+    Base Iterator for explore V3 endpoints
     '''
     _path: str = None
     _next_token: str = None
@@ -61,7 +61,7 @@ class ExploreIterator(APIResultIterator):
 
 class SearchIterator(ExploreIterator):
     '''
-    Search Iterator for explore
+    Search Iterator for explore V3 endpoints
     '''
 
     def _process_response(self, response: Response) -> None:
@@ -77,7 +77,7 @@ class SearchIterator(ExploreIterator):
 
 class CSVChunkIterator(ExploreIterator):
     '''
-    CSV Iterator for explore
+    CSV Iterator for explore V3 endpoints
     '''
     _headers = {'Accept': 'text/csv'}
     row_headers: str = None
