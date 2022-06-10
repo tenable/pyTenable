@@ -4,8 +4,8 @@ Tests for search and filter schema
 import pytest
 from marshmallow.exceptions import ValidationError
 
-from tenable.io.v3.base.schema.explore.filters import FilterSchema
-from tenable.io.v3.base.schema.explore.search import (SearchSchema, SortSchema,
+from tenable.io.v3.base.schema.explore.filters import FilterSchemaV3
+from tenable.io.v3.base.schema.explore.search import (SearchSchemaV3, SortSchemaV3,
                                                       SortType)
 from tests.io.search_objects_v3 import NEGATIVE_SEARCH_SCHEMA, NEGATIVE_SORT_SCHEMA, NEGATIVE_FILTER_SCHEMA
 
@@ -44,7 +44,7 @@ def test_search_schema():
         ]
     }
 
-    schema = SearchSchema(context={'sort_type': SortType.property_based})
+    schema = SearchSchemaV3(context={'sort_type': SortType.property_based})
     assert test_resp == schema.dump(schema.load(SEARCH_DATA))
 
 
@@ -60,7 +60,7 @@ def test_search_schema_invalid_limit():
         'sort': [('name', 'asc'), ('bios_name', 'desc')],
     }
 
-    schema = SearchSchema(context={'sort_type': SortType.property_based})
+    schema = SearchSchemaV3(context={'sort_type': SortType.property_based})
 
     with pytest.raises(ValidationError):
         schema.load(search_schema)
@@ -71,7 +71,7 @@ def test_search_negative(test_input):
     '''
     Test negative cases for search schema
     '''
-    schema = SearchSchema(context={'sort_type': SortType.property_based})
+    schema = SearchSchemaV3(context={'sort_type': SortType.property_based})
     with pytest.raises(ValidationError):
         schema.load(test_input)
 
@@ -81,7 +81,7 @@ def test_sort_schema():
     Test Sort Schema with no sort type
     '''
     test_resp = {'bios_name': 'asc'}
-    schema = SortSchema()
+    schema = SortSchemaV3()
     data = schema.dump(schema.load(SORT_DATA_SCHEMA))
     assert test_resp == data
 
@@ -91,7 +91,7 @@ def test_sort_schema_default():
     Test Sort Schema with default sort type
     '''
     test_resp = {'bios_name': 'asc'}
-    schema = SortSchema(context={'sort_type': SortType.default})
+    schema = SortSchemaV3(context={'sort_type': SortType.default})
     data = schema.dump(schema.load(SORT_DATA_SCHEMA))
     assert test_resp == data
 
@@ -101,7 +101,7 @@ def test_sort_schema_property_based():
     Test Sort Schema with property_based sort type
     '''
     test_resp = {'property': 'bios_name', 'order': 'asc'}
-    schema = SortSchema(context={'sort_type': SortType.property_based})
+    schema = SortSchemaV3(context={'sort_type': SortType.property_based})
     data = schema.dump(schema.load(SORT_DATA_SCHEMA))
     assert test_resp == data
 
@@ -111,7 +111,7 @@ def test_sort_schema_name_based():
     Test Sort Schema with name_based sort type
     '''
     test_resp = {'name': 'bios_name', 'order': 'asc'}
-    schema = SortSchema(context={'sort_type': SortType.name_based})
+    schema = SortSchemaV3(context={'sort_type': SortType.name_based})
     data = schema.dump(schema.load(SORT_DATA_SCHEMA))
     assert test_resp == data
 
@@ -121,7 +121,7 @@ def test_sort_negative(test_input):
     '''
     Test negative cases for sort schema
     '''
-    schema = SortSchema(context={'sort_type': SortType.property_based})
+    schema = SortSchemaV3(context={'sort_type': SortType.property_based})
     with pytest.raises(ValidationError):
         schema.load(test_input)
 
@@ -131,7 +131,7 @@ def test_filter_negative(test_input):
     '''
     Test negative cases for filter schema
     '''
-    schema = FilterSchema()
+    schema = FilterSchemaV3()
     with pytest.raises(ValidationError):
         schema.load(test_input)
 
@@ -142,7 +142,7 @@ def test_filter_tuple_without_condition():
     '''
     tup_data = ('bios_name', 'eq', 'SCCM')
     test_resp = {'property': 'bios_name', 'operator': 'eq', 'value': 'SCCM'}
-    schema = FilterSchema()
+    schema = FilterSchemaV3()
     data = schema.dump(schema.load(tup_data))
 
     assert test_resp == data
@@ -154,7 +154,7 @@ def test_filter_dict():
     '''
     tup_data = {'property': 'filter', 'operator': 'oper', 'value': 'value'}
     test_resp = {'operator': 'oper', 'value': 'value', 'property': 'filter'}
-    schema = FilterSchema()
+    schema = FilterSchemaV3()
     data = schema.dump(schema.load(tup_data))
 
     assert test_resp == data
@@ -181,7 +181,7 @@ def test_filter_tuple_with_condition():
         ],
         'and': [{'operator': 'eq', 'value': 3, 'property': 'test'}],
     }
-    schema = FilterSchema()
+    schema = FilterSchemaV3()
     data = schema.dump(schema.load(tup_data))
 
     assert test_resp == data
@@ -213,5 +213,5 @@ def test_filter_dict_with_condition_dict():
             }
         ],
     }
-    schema = FilterSchema()
+    schema = FilterSchemaV3()
     assert test_resp == schema.dump(schema.load(data))

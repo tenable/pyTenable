@@ -6,7 +6,7 @@ from enum import Enum
 from marshmallow import Schema, fields, post_dump, pre_load
 from marshmallow import validate as v
 
-from tenable.io.v3.base.schema.explore.filters import FilterSchema
+from tenable.io.v3.base.schema.explore.filters import FilterSchemaV3
 
 
 class SortType(Enum):
@@ -18,7 +18,7 @@ class SortType(Enum):
     name_based = 'Sort format: {"name": FIELD, "order": ORDER}'
 
 
-class SortSchema(Schema):
+class SortSchemaV3(Schema):
     '''
     Schema for the sorting sub-object
     '''
@@ -51,12 +51,12 @@ class SortSchema(Schema):
             return data
 
 
-class SearchSchema(Schema):
+class SearchSchemaV3(Schema):
     '''
     Schema supporting the search request
     '''
     fields_ = fields.List(fields.Str(), allow_none=True, data_key='fields')
-    filter = fields.Nested(FilterSchema, allow_none=True)
+    filter = fields.Nested(FilterSchemaV3, allow_none=True)
     limit = fields.Int(dump_default=200)
     next = fields.Str(allow_none=True)
-    sort = fields.List(fields.Nested(SortSchema), allow_none=True)
+    sort = fields.List(fields.Nested(SortSchemaV3), allow_none=True)

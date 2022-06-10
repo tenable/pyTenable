@@ -4,7 +4,7 @@ Tests cases for filter schema
 import pytest
 from marshmallow.exceptions import ValidationError
 
-from tenable.io.v3.base.schema.explore.filters import FilterSchema
+from tenable.io.v3.base.schema.explore.filters import FilterSchemaV3
 
 SEARCH_DATA = dict(
     fields=['bios_name', 'name'],
@@ -23,7 +23,7 @@ def test_filter_tuple_without_condition():
     '''
     tup_data = ('bios_name', 'eq', 'SCCM')
     test_resp = {'property': 'bios_name', 'operator': 'eq', 'value': 'SCCM'}
-    schema = FilterSchema()
+    schema = FilterSchemaV3()
     data = schema.dump(schema.load(tup_data))
 
     assert test_resp == data
@@ -39,7 +39,7 @@ def test_filter_dict():
     '''
     tup_data = {'property': 'filter', 'operator': 'oper', 'value': 'value'}
     test_resp = {'operator': 'oper', 'value': 'value', 'property': 'filter'}
-    schema = FilterSchema()
+    schema = FilterSchemaV3()
     data = schema.dump(schema.load(tup_data))
 
     assert test_resp == data
@@ -66,7 +66,7 @@ def test_filter_tuple_with_condition():
         ],
         'and': [{'operator': 'eq', 'value': 3, 'property': 'test'}],
     }
-    schema = FilterSchema()
+    schema = FilterSchemaV3()
     data = schema.dump(schema.load(tup_data))
 
     assert test_resp == data
@@ -138,5 +138,5 @@ def test_filter_dict_with_condition_dict():
             }
         ],
     }
-    schema = FilterSchema()
+    schema = FilterSchemaV3()
     assert test_resp == schema.dump(schema.load(data))

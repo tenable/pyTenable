@@ -34,10 +34,6 @@ class AssetsAPI(ExploreBaseEndpoint):
         Retrieves the WAS assets.
 
         Args:
-            fields (list, optional):
-                The list of field names to return from the Tenable API.
-                Example:
-                    >>> ['field1', 'field2']
             filter (tuple, dict, optional):
                 A nestable filter object detailing how to filter the results
                 down to the desired subset.

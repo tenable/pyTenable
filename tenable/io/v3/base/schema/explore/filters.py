@@ -7,9 +7,9 @@ from marshmallow import Schema, ValidationError, fields
 from marshmallow.decorators import pre_load
 
 
-class FilterSchema(Schema):
+class FilterSchemaV3(Schema):
     '''
-    Schema supporting both the Filter and FilterGroups
+    Schema supporting both the Filter and FilterGroups for V3 endpoints
     '''
 
     property = fields.Str()

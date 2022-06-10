@@ -1,0 +1,61 @@
+interactions:
+- request:
+    body: '{"fields": ["test1", "test2"], "limit": 10, "sort": [{"name": "asc"}, {"bios_name":
+      "desc"}], "filter": {"or": [{"and": [{"property": "test", "operator": "oper",
+      "value": "1"}, {"property": "test", "operator": "oper", "value": "2"}]}], "and":
+      [{"property": "test", "operator": "oper", "value": 3}]}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '299'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.6
+        (Restfly/1.4.6; Python/3.10.4; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: POST
+    uri: https://cloud.tenable.com/api/v3/assets/search
+  response:
+    body:
+      string: This scanner, agent, or API key token does not appear to be related
+        to any active containers on any sites and has been blacklisted.
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '131'
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Thu, 09 Jun 2022 11:17:49 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-orlc5-ap-southeast-1-prod
+      X-Path-Handler:
+      - blacklisted
+      X-Request-Uuid:
+      - 55d6ffed87adaa4a67e05f08555ad0ee
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 401
+      message: Unauthorized
+version: 1
