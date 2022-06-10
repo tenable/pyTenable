@@ -191,7 +191,7 @@ RESPONSE_2 = {'assets':
 @pytest.mark.vcr()
 def test_search_v3(api):
     '''
-    Test for search SearchIteratormethod iterator
+    Test for search SearchIterator method iterator
     '''
     search_iterator = ExploreBaseEndpoint(api)._search(
         resource='assets',
