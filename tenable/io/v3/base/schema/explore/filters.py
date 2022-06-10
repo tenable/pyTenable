@@ -1,5 +1,5 @@
 '''
-Base Explore Filter Schema
+Base explore filter schema for V3 endpoints
 '''
 from typing import Dict, Tuple, Union
 
@@ -21,8 +21,7 @@ class FilterSchemaV3(Schema):
     @pre_load(pass_many=False)
     def validate_and_transform(self, data, **kwargs):  # noqa: PLW0613
         '''
-        Handles schema validation and data transform based on the data
-        presented.
+        Handles schema validation and data transform based on the data presented.
         '''
         if (  # noqa: PLR1705
                 isinstance(data, dict) and ('and' in data or 'or' in data)

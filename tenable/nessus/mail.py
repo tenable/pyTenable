@@ -2,7 +2,7 @@
 Mail
 ====
 
-Methods described in this section relate to the mail API.
+Methods described in this section relate to the the mail API.
 These methods can be accessed at ``Nessus.mail``.
 
 .. rst-class:: hide-signature

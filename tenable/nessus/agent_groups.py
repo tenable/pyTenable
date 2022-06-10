@@ -2,7 +2,7 @@
 Agent Groups
 ============
 
-Methods described in this section relate to the agent groups API.
+Methods described in this section relate to the the agent groups API.
 These methods can be accessed at ``Nessus.agent_groups``.
 
 .. rst-class:: hide-signature

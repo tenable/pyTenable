@@ -1,6 +1,6 @@
 '''
-Assets
-======
+Assets V3 endpoints
+===================
 
 The following methods allow for interaction into the Tenable.io
 :devportal:`assets <io-v3-uw-assets-search>` API endpoints.
@@ -22,7 +22,7 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
 
 class AssetsAPI(ExploreBaseEndpoint):
     '''
-    This will contain methods related to Explore -> Assets API endpoints.
+    This will contain methods related to Explore -> Assets V3 API endpoints.
     '''
     _path = 'api/v3/assets'
     _conv_json = True
@@ -97,8 +97,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> tio.v3.assets.search_webapp(filter=('netbios_name', 'eq',
-            ...  'SCCM'), fields=['name', 'netbios_name', 'last_login'],
-            ...    limit=2, sort=[('last_observed', 'asc')])
+            ...  'SCCM'), limit=2, sort=[('last_observed', 'asc')])
         '''
         iclass = SearchIterator
         if kw.get('return_csv', False):

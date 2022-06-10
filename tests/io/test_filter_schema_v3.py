@@ -1,5 +1,5 @@
 '''
-Tests cases for filter schema
+Tests cases for filter schema for V3 endpoints
 '''
 import pytest
 from marshmallow.exceptions import ValidationError

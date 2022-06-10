@@ -1,5 +1,5 @@
 '''
-Base Explore Endpoint Class
+Base explore class for V3 endpoints
 '''
 from enum import Enum
 from typing import Union

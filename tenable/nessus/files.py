@@ -2,7 +2,7 @@
 Files
 =====
 
-Methods described in this section relate to the files API.
+Methods described in this section relate to the the files API.
 These methods can be accessed at ``Nessus.files``.
 
 .. rst-class:: hide-signature

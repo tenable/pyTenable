@@ -3,7 +3,8 @@ Findings
 ========
 
 The following methods allow for interaction into the Tenable.io
-:devportal:`findings <v3-vulnerabilities>` API.
+
+:devportal:`findings <io-v3-uw-vulnerabilities-search>` API.
 
 Methods available on ``tio.v3.explore.findings``:
 

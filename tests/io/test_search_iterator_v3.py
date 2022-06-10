@@ -1,5 +1,5 @@
 '''
-Testing the Search iterators
+Testing the Search iterators for V3 endpoints
 '''
 
 import pytest
