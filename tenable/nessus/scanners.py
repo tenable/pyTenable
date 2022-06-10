@@ -2,7 +2,7 @@
 Scanners
 ========
 
-Methods described in this section relate to the scanners API.
+Methods described in this section relate to the the scanners API.
 These methods can be accessed at ``Nessus.scanners``.
 
 .. rst-class:: hide-signature

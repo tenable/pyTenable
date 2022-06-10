@@ -1,6 +1,6 @@
 '''
 LDAP Configuration
-==================
+=============
 
 Methods described in this section relate to the ldap configuration API.
 These methods can be accessed at ``TenableAD.ldap_configuration``.

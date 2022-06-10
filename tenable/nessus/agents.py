@@ -2,7 +2,7 @@
 Agents
 ======
 
-Methods described in this section relate to the agents API.
+Methods described in this section relate to the the agents API.
 These methods can be accessed at ``Nessus.agents``.
 
 .. rst-class:: hide-signature
