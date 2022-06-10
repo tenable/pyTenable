@@ -1,5 +1,5 @@
 '''
-Version 3 Classes
+Version 3 classes
 =================
 This class is a iterator for version 3 API call
 

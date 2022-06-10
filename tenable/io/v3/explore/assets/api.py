@@ -1,5 +1,5 @@
 '''
-Assets V3 Endpoints
+Assets V3 endpoints
 ===================
 
 The following methods allow for interaction into the Tenable.io

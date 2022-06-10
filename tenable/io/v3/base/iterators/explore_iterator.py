@@ -1,5 +1,5 @@
 '''
-Iterator for search V3 Endpoints
+Iterator for search V3 endpoints
 '''
 from copy import copy
 from typing import Dict

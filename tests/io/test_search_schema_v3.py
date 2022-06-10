@@ -1,5 +1,5 @@
 '''
-Tests for search and filter schema
+Tests for search and filter schema for V3 endpoints
 '''
 import pytest
 from marshmallow.exceptions import ValidationError

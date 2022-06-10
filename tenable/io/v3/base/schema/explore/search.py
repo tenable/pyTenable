@@ -1,5 +1,5 @@
 '''
-Base Explore Search Schema for V3 endpoints
+Base explore search schema for V3 endpoints
 '''
 from enum import Enum
 

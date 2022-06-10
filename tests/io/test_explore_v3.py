@@ -1,8 +1,6 @@
 '''
-Testing the search endpoint
+Testing the search for V3 endpoints
 '''
-from pprint import pprint
-
 import pytest
 from requests import Response
 
@@ -198,7 +196,6 @@ def test_search_v3(api):
         api_path='api/v3/assets/host/search',
         **REQUESTDATA
     )
-    print('search_iterator:', search_iterator)
     assert isinstance(search_iterator, SearchIterator)
 
 

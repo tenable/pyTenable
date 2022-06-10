@@ -1,5 +1,5 @@
 '''
-Findings V3 Endpoints
+Findings V3 endpoints
 =====================
 
 The following methods allow for interaction into the Tenable.io

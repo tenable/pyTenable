@@ -1,5 +1,5 @@
 '''
-Base Explore Filter Schema for V3 endpoints
+Base explore filter schema for V3 endpoints
 '''
 from typing import Dict, Tuple, Union
 
