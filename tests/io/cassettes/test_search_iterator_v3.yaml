@@ -1,7 +1,9 @@
 interactions:
 - request:
-    body: '{"filter": {"and": [{"property": "name", "operator": "eq", "value": ["dc1"]},
-      {"property": "types", "operator": "eq", "value": ["host", "webapp", "cloud_resource"]}]}}'
+    body: '{"limit": 1, "filter": {"and": [{"operator": "eq", "property": "tags",
+      "value": ["6167eae5-808a-415a-8400-f3208e5382c5"]}, {"operator": "eq", "property":
+      "types", "value": "webapp"}, {"operator": "neq", "property": "types", "value":
+      "host"}]}}'
     headers:
       Accept:
       - '*/*'
@@ -10,12 +12,77 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '167'
+      - '243'
       Content-Type:
       - application/json
       User-Agent:
       - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.6
-        (Restfly/1.4.6; Python/3.10.1; Windows/AMD64)
+        (Restfly/1.4.6; Python/3.10.4; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: POST
+    uri: https://cloud.tenable.com/api/v3/assets/search
+  response:
+    body:
+      string: '{"assets":[{"types":["webapp"],"is_deleted":false,"sources":["WAS"],"ssl_tls_enabled":false,"created":"2022-01-25T15:19:17.224Z","name":"target9.pubtarg.bananas.com","is_licensed":false,"id":"0f19a1a4-d1df-4f8a-a2ec-9cd5f4f3f3c5","updated":"2022-01-25T15:21:29.692Z","tags":[{"id":"6167eae5-808a-415a-8400-f3208e5382c5","category":"ABCD","value":"tag111","type":"static"}]}],"pagination":{"next":"H4sIAAAAAAAAAJWQ0WrDMAxF/0WPIx52YndufqWEosbyashq13a7hZB/n1LYw8YY7FFC9+hyFvBhqpShXwAvDvrDAinHRLnO0EPF1wINbDPWyFdAV57vON2Ib2Gndi+EZISVFoVWBoXVUgrftdKS6Ww7GhjW5hv0eqM8P9c50R9seKcTpgRb9hLr1u/fiHMsFdbfCS4UPE3kjlh/ED5CqYVjXBtKzPXhJLAawDLCOvCWMI/nI/qHuANIr/aoUAunnBfaswpsaRT70Rmvfee7zUIDU3gLjFPNV5HA9Tn/xA34wbB+AnCuexmOAQAA","limit":1,"total":2}}'
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '736'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Jun 2022 10:21:35 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Continuation-Token:
+      - H4sIAAAAAAAAAJWQ0WrDMAxF/0WPIx52YndufqWEosbyashq13a7hZB/n1LYw8YY7FFC9+hyFvBhqpShXwAvDvrDAinHRLnO0EPF1wINbDPWyFdAV57vON2Ib2Gndi+EZISVFoVWBoXVUgrftdKS6Ww7GhjW5hv0eqM8P9c50R9seKcTpgRb9hLr1u/fiHMsFdbfCS4UPE3kjlh/ED5CqYVjXBtKzPXhJLAawDLCOvCWMI/nI/qHuANIr/aoUAunnBfaswpsaRT70Rmvfee7zUIDU3gLjFPNV5HA9Tn/xA34wbB+AnCuexmOAQAA
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-dkrsa-ap-southeast-1-prod
+      X-Request-Uuid:
+      - 52d9f523594ca8fd8ee8f734a6dc658c
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"limit": 1, "filter": {"and": [{"operator": "eq", "property": "tags",
+      "value": ["6167eae5-808a-415a-8400-f3208e5382c5"]}, {"operator": "eq", "property":
+      "types", "value": "webapp"}, {"operator": "neq", "property": "types", "value":
+      "host"}]}, "next": "H4sIAAAAAAAAAJWQ0WrDMAxF/0WPIx52YndufqWEosbyashq13a7hZB/n1LYw8YY7FFC9+hyFvBhqpShXwAvDvrDAinHRLnO0EPF1wINbDPWyFdAV57vON2Ib2Gndi+EZISVFoVWBoXVUgrftdKS6Ww7GhjW5hv0eqM8P9c50R9seKcTpgRb9hLr1u/fiHMsFdbfCS4UPE3kjlh/ED5CqYVjXBtKzPXhJLAawDLCOvCWMI/nI/qHuANIr/aoUAunnBfaswpsaRT70Rmvfee7zUIDU3gLjFPNV5HA9Tn/xA34wbB+AnCuexmOAQAA"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '571'
+      Content-Type:
+      - application/json
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.6
+        (Restfly/1.4.6; Python/3.10.4; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: POST
@@ -23,20 +90,20 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6VUTY/UOBD9K5HPk6zznc4NMWgvu4DoQSstGkUVu9JrkY6D7fRsa9T/nbK7Az0j
-        QCByiCKnqt6rV6/8yMBadJa1Hx6Zmg9VB1IapDN/dH/DJnS90rabYI+sZbcvU3bDrF6MCBHs9avt
-        9v2227588ZpR+AjWdaMSOFmUnRUwdU6FzIxnWczLOCvv0qzNeFuUCef8XypHuMUTXJbWWZJVSdEk
-        KfdlwR8/Miu0oVp1WVKS7WaDUgmHkrXOLHjDhJ4GJXESFFTyhJ8C/wdtPvpsRXGMX574G6/1IUpr
-        uzjAMjpGhaSy8wjH7posRTxhesMGZUgA3Vs0B8/rR22DMFdNVUQfRrGM4IJy66E06oDmPKADjMtZ
-        oB1OaGDsAo7xEl0YSzyQ+p07zkisr1PkZNdw341B4bQ5freCgBl6NSp3fFZHTQ7NBONVyvkIXYf/
-        z9ouxPx0fwojkjhiGNAAo8WLP35OnjCupimLrJciriHHuOh5GjeIedzUgm/qrEIUJcX6dgO5/7R1
-        npgwCO47CHWSF5VHOPMAp/TUfbX04y8N8Rcauoh1vTGn+6DSujCrj4dPNKwwM5EmDswOXeJwgn5E
-        i2IxNJRE6L1v1MHusrweXdZFXpZYxD2mJFeV9jHIWsZ9U2RyqAue596lgrTZ0fAp4y5Uj/40epkt
-        /QpzpvMXd39Fb9+9ub2I62sfqQElghvOYIKnKDKIi6bO4mLgm7jJmyYuyrwZihwgbapnYGhdegWS
-        pt8oT03pmczt1LTr7NE63Act/lbCaKsHF/2jJqkfbLQN1o0yzpvoXRbdggPSkawY/pCm0VsQH6PU
-        67Sur5c2cP+hsF/jn1Oh3N8gQldnqNJdmr6scTwvhhYHvesn62Ac/RVACA/gb4EPTMzY/gHtfkVu
-        lbJtnZTs7J956clCX5ZsXWThAZdZPtmEKuabu3TT5k2bZ0lTbbw1/dp0V2l+CDPs1BSWw99So9or
-        x9qUc5qYJor0fTp9BlUiYJE/BgAA
+        H4sIAAAAAAAAA3WTXXObOhCG/4qH2xNAEuLDviN2fRrHJrFjh5pOhxEgDK74GCQMOJP/XhGfzGkv
+        ymgGIXbf3X129aYQzqngyuz7myKGmo47paMRqWvlx53Cq7aJb4e++zKeMMJFyPKYlpwmIY9JGYq8
+        oMpMQQAhFUAVmXtozqA9M4FmIBQod0rcUCJocjOCKgQqcvbQmGF7hoHmADga5fUFhyRJGipT+giJ
+        sYYw1OBUvuEYPKsKWpMTlXEbKjPIKhG2DZO6mRA1n+l6zKo20QQtScSoFleF3hGuX5BOhCBxVtBS
+        cN3EaQKo46i2Ydsqtk1Tdeg0Uu1oinFq2TChU5mQIKcbmHzM3IKWTQmVpsAhKoYmUR0MgJoaCDjU
+        NBwUm2OpstBT1QzSw72fL+TJhbB25CPlIISjruQsv7kgIo+Vd1lXkvOakSH8HYG0+LP+OyXNGwm/
+        ijhtLn+laU3xSPNTsqppI+OUp5APXNBCeq3zsu0nj7QpKZsYGgSTqpzMJZmnl8ntX0MZJZxObCnE
+        OQsF4+ENqYyaEsbpf4PwZy5/a39JihuA5kQF1Oo2GrefXeI0bptcDGO3xjEYxRwCsUMsqNqpmcoO
+        GUB1SAxUGsVyRYlFcCJt2zr5f65+i46QXNrUsoIPvHJk8lJCqEpl9qaUtBfS4yvmD+7ns/K3wG8W
+        G7df6sB/fuhNdBzi4gJX88OuNz1/B0kjoq2T669DyY/+ZnNfWjuwB5Zx/+oUbsWsZeQO3TmJjwez
+        D9iLT+aLU+EEjyIr16t/jdMjdtJ/7sHD1FruzgfxsGNZffAzdlhmItjPYZfUQ7JH2L0CXz94tIE7
+        n9nrjdik0XP+06VxMG07xoRxMXB2vbo+Mjp2HhbZxltZnT5fxNvBCo5W5z2RaLDnu847LoIuia5r
+        tBzM/tkKjOVX/piD/kBWMOOXZCnWx2S52h6fzx7uPCv7gj38zegW2Wt6/PkFtqkz7y/d6Ztpu+45
+        9q7zJ3fruhI9y4tcYoRynCtB5BVE7++/AONhr15OBAAA
     headers:
       Cache-Control:
       - no-store
@@ -47,7 +114,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 10 Jun 2022 09:37:07 GMT
+      - Fri, 10 Jun 2022 10:21:36 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -63,12 +130,14 @@ interactions:
       - origin,accept-encoding
       X-Content-Type-Options:
       - nosniff
+      X-Continuation-Token:
+      - H4sIAAAAAAAAAJWQ0WrDMAxF/0WPIx52Yycmv1JCURx5NWR1artbQ8i/VynsYWMMBn6R0T063BV8mAol6FbAywjdcYU5xZlSWaCDgm8ZKthnLJG3gK48f+B0I96FRjUtIRlhpUWhlUFhtZTC1wdpydT24Az0W/UNer1RWl7LMtMfbPikAecZ9uwllt3v34hzzAW23wljyDhMNJ6w/CDcQy6ZY6wNOaby7CRwNYDZwdbzL2Fy5xP6Z3FHsKi0xUaJ1hsvdFtLYdFJQYPjN4wN6hE4N4X3wDhVfYkE1uf8CxvwgX57AAjcNzCOAQAA
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
       - nginx-router-dkrsa-ap-southeast-1-prod
       X-Request-Uuid:
-      - a73b09b09a4ad07827c6e922a42e21b1
+      - 294189963a241fe038b925765bffaa12
       X-Xss-Protection:
       - 1; mode=block
     status:
