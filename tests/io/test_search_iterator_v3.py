@@ -113,7 +113,7 @@ PAGINATION_WITHOUT_NEXT_TOKEN = {'limit': 3, 'total': 6}
 
 
 @pytest.mark.vcr()
-def test_search_iterator(api):
+def test_search_iterator_v3(api):
     '''
     Test for search iterator
     '''

@@ -15,8 +15,8 @@ class FilterSchemaV3(Schema):
     property = fields.Str()
     operator = fields.Str()
     value = fields.Raw()
-    and_ = fields.List(fields.Nested('FilterSchema'), data_key='and')
-    or_ = fields.List(fields.Nested('FilterSchema'), data_key='or')
+    and_ = fields.List(fields.Nested('FilterSchemaV3'), data_key='and')
+    or_ = fields.List(fields.Nested('FilterSchemaV3'), data_key='or')
 
     @pre_load(pass_many=False)
     def validate_and_transform(self, data, **kwargs):  # noqa: PLW0613

@@ -14,7 +14,7 @@ def vcr_config():
     '''vcr config fixture'''
     return {
         'filter_headers': [
-            ('X-APIKeys', 'accessKey=5ddadf56a807aaa042821bc137c7020d7426369d6fa37ce109a20b0b07c0ace2;secretKey=e5758f3dc4907ba76325efbdf1e94cdd5edcde105ff4251caa70e0e9219ec795'),
+            ('X-APIKeys', 'accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY'),
             ('x-request-uuid', 'ffffffffffffffffffffffffffffffff'),
         ],
     }
