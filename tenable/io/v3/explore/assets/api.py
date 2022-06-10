@@ -97,8 +97,7 @@ class AssetsAPI(ExploreBaseEndpoint):
 
         Examples:
             >>> tio.v3.assets.search_webapp(filter=('netbios_name', 'eq',
-            ...  'SCCM'), fields=['name', 'netbios_name', 'last_login'],
-            ...    limit=2, sort=[('last_observed', 'asc')])
+            ...  'SCCM'), limit=2, sort=[('last_observed', 'asc')])
         '''
         iclass = SearchIterator
         if kw.get('return_csv', False):
