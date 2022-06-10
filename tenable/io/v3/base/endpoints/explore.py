@@ -10,7 +10,7 @@ from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (ExploreIterator,
                                                            SearchIterator)
 
-from tenable.io.v3.base.schema.explore.search import (SearchSchema,
+from tenable.io.v3.base.schema.explore.search import (SearchSchemaV3,
                                                       SortType)
 
 
@@ -25,7 +25,7 @@ class ExploreBaseEndpoint(APIEndpoint):
                 sort_type: Enum = _sort_type.default,
                 return_resp: bool = False,
                 iterator_cls: ExploreIterator = SearchIterator,
-                schema_cls: SearchSchema = SearchSchema,
+                schema_cls: SearchSchemaV3 = SearchSchemaV3,
                 **kwargs
                 ) -> Union[Response, ExploreIterator]:
         '''
