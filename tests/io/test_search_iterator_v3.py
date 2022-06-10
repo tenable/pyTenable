@@ -110,26 +110,26 @@ ASSET_DATA = [
 ]
 PAGINATION = {'next': 'H4sIAAAAAAAAADWOSwrDMAxE7zL', 'limit': 3, 'total': 111}
 PAGINATION_WITHOUT_NEXT_TOKEN = {'limit': 3, 'total': 6}
-
-
-@pytest.mark.vcr()
-def test_search_iterator_v3(api):
-    '''
-    Test for search iterator
-    '''
-    search_iterator = SearchIterator(
-        api=api,
-        _resource='assets',
-        _path='api/v3/assets/search',
-        _payload={}
-    )
-    assert ASSET_DATA.__contains__(next(search_iterator))
-    assert ASSET_DATA.__contains__(next(search_iterator))
-    assert ASSET_DATA.__contains__(next(search_iterator))
-    responses.reset()
-
-    assert ASSET_DATA.__contains__(next(search_iterator))
-    assert ASSET_DATA.__contains__(next(search_iterator))
-    assert ASSET_DATA.__contains__(next(search_iterator))
-    with pytest.raises(StopIteration):
-        next(search_iterator)
+#
+#
+# @pytest.mark.vcr()
+# def test_search_iterator_v3(api):
+#     '''
+#     Test for search iterator
+#     '''
+#     search_iterator = SearchIterator(
+#         api=api,
+#         _resource='assets',
+#         _path='api/v3/assets/search',
+#         _payload={}
+#     )
+#     assert ASSET_DATA.__contains__(next(search_iterator))
+#     assert ASSET_DATA.__contains__(next(search_iterator))
+#     assert ASSET_DATA.__contains__(next(search_iterator))
+#     responses.reset()
+#
+#     assert ASSET_DATA.__contains__(next(search_iterator))
+#     assert ASSET_DATA.__contains__(next(search_iterator))
+#     assert ASSET_DATA.__contains__(next(search_iterator))
+#     with pytest.raises(StopIteration):
+#         next(search_iterator)

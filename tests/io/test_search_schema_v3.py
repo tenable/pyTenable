@@ -29,6 +29,7 @@ SEARCH_DATA_WAS = dict(
 SORT_DATA_SCHEMA = dict(property='bios_name', order='asc')
 
 
+@pytest.mark.vcr()
 def test_search_schema():
     '''
     Test the search schema with default values
@@ -48,6 +49,7 @@ def test_search_schema():
     assert test_resp == schema.dump(schema.load(SEARCH_DATA))
 
 
+@pytest.mark.vcr()
 def test_search_schema_invalid_limit():
     '''
     Test the search schema with invalid limit value
@@ -66,6 +68,7 @@ def test_search_schema_invalid_limit():
         schema.load(search_schema)
 
 
+@pytest.mark.vcr()
 @pytest.mark.parametrize("test_input", NEGATIVE_SEARCH_SCHEMA)
 def test_search_negative(test_input):
     '''
@@ -76,6 +79,7 @@ def test_search_negative(test_input):
         schema.load(test_input)
 
 
+@pytest.mark.vcr()
 def test_sort_schema():
     '''
     Test Sort Schema with no sort type
@@ -86,6 +90,7 @@ def test_sort_schema():
     assert test_resp == data
 
 
+@pytest.mark.vcr()
 def test_sort_schema_default():
     '''
     Test Sort Schema with default sort type
@@ -96,6 +101,7 @@ def test_sort_schema_default():
     assert test_resp == data
 
 
+@pytest.mark.vcr()
 def test_sort_schema_property_based():
     '''
     Test Sort Schema with property_based sort type
@@ -106,6 +112,7 @@ def test_sort_schema_property_based():
     assert test_resp == data
 
 
+@pytest.mark.vcr()
 def test_sort_schema_name_based():
     '''
     Test Sort Schema with name_based sort type
@@ -116,6 +123,7 @@ def test_sort_schema_name_based():
     assert test_resp == data
 
 
+@pytest.mark.vcr()
 @pytest.mark.parametrize("test_input", NEGATIVE_SORT_SCHEMA)
 def test_sort_negative(test_input):
     '''
@@ -126,6 +134,7 @@ def test_sort_negative(test_input):
         schema.load(test_input)
 
 
+@pytest.mark.vcr()
 @pytest.mark.parametrize("test_input", NEGATIVE_FILTER_SCHEMA)
 def test_filter_negative(test_input):
     '''
@@ -136,6 +145,7 @@ def test_filter_negative(test_input):
         schema.load(test_input)
 
 
+@pytest.mark.vcr()
 def test_filter_tuple_without_condition():
     '''
     Test Filter with tuple
@@ -148,6 +158,7 @@ def test_filter_tuple_without_condition():
     assert test_resp == data
 
 
+@pytest.mark.vcr()
 def test_filter_dict():
     '''
     Test Filter with dict
@@ -160,6 +171,7 @@ def test_filter_dict():
     assert test_resp == data
 
 
+@pytest.mark.vcr()
 def test_filter_tuple_with_condition():
     '''
     Test Filter with tuple and condition
@@ -187,6 +199,7 @@ def test_filter_tuple_with_condition():
     assert test_resp == data
 
 
+@pytest.mark.vcr()
 def test_filter_dict_with_condition_dict():
     '''
     Test Filter with dict and condition
