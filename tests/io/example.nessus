@@ -1,0 +1,3000 @@
+<?xml version="1.0" ?>
+<NessusClientData_v2>
+<Report name="workbenchexport" xmlns:cm="http://www.nessus.org/cm">
+<ReportHost name="swat">
+<HostProperties>
+<tag name="host-fqdn">swat.lab.tenablesecurity.com</tag>
+<tag name="operating-system">[&quot;Linux Kernel 3.10.0-1127.18.2.el7.x86_64 on CentOS Linux release 7.8.2003 (Core)&quot;]</tag>
+<tag name="system-type">general-purpose</tag>
+<tag name="host-uuid">9a89c820-ef78-45a5-9573-76326189555e</tag>
+<tag name="host-ip">172.26.103.174</tag>
+<tag name="LastAuthenticatedResults">1623326538</tag>
+<tag name="local-checks-proto">local</tag>
+<tag name="bios-uuid">4226bb8e-2d8b-0c10-1228-f8455983db0b</tag></HostProperties>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="3" svc_name="n/a" pluginID="141634" pluginName="CentOS 7 : curl (CESA-2020:3916)" port="0">
+<plugin_output>
+Remote package installed : curl-7.29.0-57.el7
+Should be                : curl-7.29.0-59.el7
+
+Remote package installed : libcurl-7.29.0-57.el7
+Should be                : libcurl-7.29.0-59.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>7.5</cvss_base_score>
+<cvss_temporal_score>5.5</cvss_temporal_score>
+<cvss3_base_score>9.8</cvss3_base_score>
+<cvss3_temporal_score>8.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected curl, libcurl and / or libcurl-devel packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/09/16</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:3916 advisory.
+
+  - curl: heap buffer overflow in function tftp_receive_packet() (CVE-2019-5482)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2019-5482</cve>
+<xref>RHSA:2020:3916</xref>
+<xref>CWE:122</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/122.html&quot;,&quot;http://www.nessus.org/u?e2add91e&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>6.7</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="143050" pluginName="CentOS 7 : bind (CESA-2020:5011)" port="0">
+<plugin_output>
+Remote package installed : bind-export-libs-9.11.4-16.P2.el7_8.6
+Should be                : bind-export-libs-9.11.4-26.P2.el7_9.2
+
+Remote package installed : bind-libs-9.11.4-16.P2.el7_8.6
+Should be                : bind-libs-9.11.4-26.P2.el7_9.2
+
+Remote package installed : bind-libs-lite-9.11.4-16.P2.el7_8.6
+Should be                : bind-libs-lite-9.11.4-26.P2.el7_9.2
+
+Remote package installed : bind-license-9.11.4-16.P2.el7_8.6
+Should be                : bind-license-9.11.4-26.P2.el7_9.2
+
+Remote package installed : bind-utils-9.11.4-16.P2.el7_8.6
+Should be                : bind-utils-9.11.4-26.P2.el7_9.2
+
+</plugin_output>
+<cvss_base_score>4.0</cvss_base_score>
+<cvss_temporal_score>3.0</cvss_temporal_score>
+<cvss3_base_score>4.3</cvss3_base_score>
+<cvss3_temporal_score>3.8</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/11/18</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/11/18</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/08/20</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:S/C:N/I:P/A:N</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:5011 advisory.
+
+  - bind: truncated TSIG response can lead to an assertion failure (CVE-2020-8622)
+
+  - bind: remotely triggerable assertion failure in pk11.c (CVE-2020-8623)
+
+  - bind: incorrect enforcement of update-policy rules of type subdomain (CVE-2020-8624)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2020-8622</cve>
+<cve>CVE-2020-8623</cve>
+<cve>CVE-2020-8624</cve>
+<xref>RHSA:2020:5011</xref>
+<xref>CWE:400</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/400.html&quot;,&quot;http://www.nessus.org/u?66bca8ef&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>4.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="141608" pluginName="CentOS 7 : libtiff (CESA-2020:3902)" port="0">
+<plugin_output>
+Remote package installed : libtiff-4.0.3-32.el7
+Should be                : libtiff-4.0.3-35.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>6.8</cvss_base_score>
+<cvss_temporal_score>5.0</cvss_temporal_score>
+<cvss3_base_score>8.8</cvss3_base_score>
+<cvss3_temporal_score>7.7</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/08/14</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:3902 advisory.
+
+  - libtiff: integer overflow in _TIFFCheckMalloc and _TIFFCheckRealloc in tif_aux.c (CVE-2019-14973)
+
+  - libtiff: integer overflow leading to heap-based buffer overflow in tif_getimage.c (CVE-2019-17546)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2019-17546</cve>
+<cve>CVE-2019-14973</cve>
+<xref>CWE:190</xref>
+<xref>RHSA:2020:3902</xref>
+<xref>CWE:122</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/122.html&quot;,&quot;https://cwe.mitre.org/data/definitions/190.html&quot;,&quot;http://www.nessus.org/u?f23dc431&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>5.9</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="143046" pluginName="CentOS 7 : python (CESA-2020:5009)" port="0">
+<plugin_output>
+Remote package installed : python-2.7.5-88.el7
+Should be                : python-2.7.5-90.el7
+
+Remote package installed : python-libs-2.7.5-88.el7
+Should be                : python-libs-2.7.5-90.el7
+
+</plugin_output>
+<cvss_base_score>5.0</cvss_base_score>
+<cvss_temporal_score>3.7</cvss_temporal_score>
+<cvss3_base_score>7.5</cvss3_base_score>
+<cvss3_temporal_score>6.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/11/18</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/11/18</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/07/13</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:N/C:N/I:N/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:5009 advisory.
+
+  - python: infinite loop in the tarfile module via crafted TAR archive (CVE-2019-20907)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2019-20907</cve>
+<xref>CWE:20</xref>
+<xref>RHSA:2020:5009</xref>
+<xref>CWE:835</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/20.html&quot;,&quot;https://cwe.mitre.org/data/definitions/835.html&quot;,&quot;http://www.nessus.org/u?80c3597e&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>4.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="3" svc_name="n/a" pluginID="145519" pluginName="CentOS 7 : sudo (CESA-2021:0221)" port="0">
+<plugin_output>
+Remote package installed : sudo-1.8.23-9.el7
+Should be                : sudo-1.8.23-10.el7_9.1
+
+</plugin_output>
+<cvss_base_score>7.2</cvss_base_score>
+<cvss_temporal_score>6.3</cvss_temporal_score>
+<cvss3_base_score>7.8</cvss3_base_score>
+<cvss3_temporal_score>7.5</cvss3_temporal_score>
+<exploit_available>true</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>true</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>true</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<metasploit_name>Sudo Heap-Based Buffer Overflow</metasploit_name>
+<patch_publication_date>2021/01/27</patch_publication_date>
+<plugin_modification_date>2021/03/12</plugin_modification_date>
+<plugin_publication_date>2021/01/28</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected sudo and / or sudo-devel packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2021/01/25</vuln_publication_date>
+<cvss3_temporal_vector>E:H/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:H/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:L/Au:N/C:C/I:C/A:C</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2021:0221 advisory.
+
+  - sudo: Heap buffer overflow in argument parsing (CVE-2021-3156)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2021-3156</cve>
+<xref>CWE:122</xref>
+<xref>IAVA:2021-A-0053</xref>
+<xref>RHSA:2021:0221</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/122.html&quot;,&quot;http://www.nessus.org/u?4f678dbc&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>9.8</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="141599" pluginName="CentOS 7 : NetworkManager (CESA-2020:4003)" port="0">
+<plugin_output>
+Remote package installed : NetworkManager-1.18.4-3.el7
+Should be                : NetworkManager-1.18.8-1.el7
+
+Remote package installed : NetworkManager-libnm-1.18.4-3.el7
+Should be                : NetworkManager-libnm-1.18.8-1.el7
+
+Remote package installed : NetworkManager-team-1.18.4-3.el7
+Should be                : NetworkManager-team-1.18.8-1.el7
+
+Remote package installed : NetworkManager-tui-1.18.4-3.el7
+Should be                : NetworkManager-tui-1.18.8-1.el7
+
+Remote package installed : NetworkManager-wifi-1.18.4-3.el7
+Should be                : NetworkManager-wifi-1.18.8-1.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>4.0</cvss_base_score>
+<cvss_temporal_score>3.0</cvss_temporal_score>
+<cvss3_base_score>4.3</cvss3_base_score>
+<cvss3_temporal_score>3.8</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/06/08</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:S/C:P/I:N/A:N</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:4003 advisory.
+
+  - NetworkManager: user configuration not honoured leaving the connection unauthenticated via insecure     defaults (CVE-2020-10754)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2020-10754</cve>
+<xref>RHSA:2020:4003</xref>
+<xref>CWE:287</xref>
+<xref>CWE:306</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/287.html&quot;,&quot;https://cwe.mitre.org/data/definitions/306.html&quot;,&quot;http://www.nessus.org/u?cef1b4a3&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>1.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="141611" pluginName="CentOS 7 : cups (CESA-2020:3864)" port="0">
+<plugin_output>
+Remote package installed : cups-libs-1.6.3-43.el7
+Should be                : cups-libs-1.6.3-51.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>6.5</cvss_base_score>
+<cvss_temporal_score>4.8</cvss_temporal_score>
+<cvss3_base_score>8.8</cvss3_base_score>
+<cvss3_temporal_score>7.7</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2018/02/16</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:S/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:3864 advisory.
+
+  - cups: DNS rebinding attacks via incorrect whitelist (CVE-2017-18190)
+
+  - cups: stack-buffer-overflow in libcups&apos;s asn1_get_type function (CVE-2019-8675)
+
+  - cups: stack-buffer-overflow in libcups&apos;s asn1_get_packed function (CVE-2019-8696)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2019-8696</cve>
+<cve>CVE-2017-18190</cve>
+<cve>CVE-2019-8675</cve>
+<xref>CWE:121</xref>
+<xref>RHSA:2020:3864</xref>
+<xref>CWE:284</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/121.html&quot;,&quot;https://cwe.mitre.org/data/definitions/284.html&quot;,&quot;http://www.nessus.org/u?c6ed9a6c&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>5.9</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="142601" pluginName="CentOS 7 : java-1.8.0-openjdk (CESA-2020:4350)" port="0">
+<plugin_output>
+Remote package installed : java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8
+Should be                : java-1.8.0-openjdk-1.8.0.272.b10-1.el7_9
+
+Remote package installed : java-1.8.0-openjdk-headless-1.8.0.252.b09-2.el7_8
+Should be                : java-1.8.0-openjdk-headless-1.8.0.272.b10-1.el7_9
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>5.8</cvss_base_score>
+<cvss_temporal_score>4.3</cvss_temporal_score>
+<cvss3_base_score>4.2</cvss3_base_score>
+<cvss3_temporal_score>3.7</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/11/06</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/11/06</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/10/21</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:N</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:P/I:P/A:N</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:4350 advisory.
+
+  - OpenJDK: High memory usage during deserialization of Proxy class with many interfaces (Serialization,     8236862) (CVE-2020-14779)
+
+  - OpenJDK: Credentials sent over unencrypted LDAP connection (JNDI, 8237990) (CVE-2020-14781)
+
+  - OpenJDK: Certificate blacklist bypass via alternate certificate encodings (Libraries, 8237995)     (CVE-2020-14782)
+
+  - OpenJDK: Integer overflow leading to out-of-bounds access (Hotspot, 8241114) (CVE-2020-14792)
+
+  - OpenJDK: Missing permission check in path to URI conversion (Libraries, 8242680) (CVE-2020-14796)
+
+  - OpenJDK: Incomplete check for invalid characters in URI to path conversion (Libraries, 8242685)     (CVE-2020-14797)
+
+  - OpenJDK: Race condition in NIO Buffer boundary checks (Libraries, 8244136) (CVE-2020-14803)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2020-14797</cve>
+<cve>CVE-2020-14782</cve>
+<cve>CVE-2020-14796</cve>
+<cve>CVE-2020-14781</cve>
+<cve>CVE-2020-14792</cve>
+<cve>CVE-2020-14779</cve>
+<cve>CVE-2020-14803</cve>
+<xref>RHSA:2020:4350</xref>
+<xref>CWE:190</xref>
+<xref>CWE:367</xref>
+<xref>CWE:20</xref>
+<xref>CWE:770</xref>
+<xref>CWE:295</xref>
+<xref>CWE:319</xref>
+<see_also>[&quot;http://www.nessus.org/u?ca8fb4a6&quot;,&quot;https://cwe.mitre.org/data/definitions/20.html&quot;,&quot;https://cwe.mitre.org/data/definitions/190.html&quot;,&quot;https://cwe.mitre.org/data/definitions/295.html&quot;,&quot;https://cwe.mitre.org/data/definitions/319.html&quot;,&quot;https://cwe.mitre.org/data/definitions/367.html&quot;,&quot;https://cwe.mitre.org/data/definitions/770.html&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>3.3</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="3" svc_name="n/a" pluginID="143049" pluginName="CentOS 7 : kernel (CESA-2020:5023)" port="0">
+<plugin_output>
+Remote package installed : kernel-3.10.0-1127.18.2.el7
+Should be                : kernel-3.10.0-1160.6.1.el7
+
+Remote package installed : kernel-tools-3.10.0-1127.18.2.el7
+Should be                : kernel-tools-3.10.0-1160.6.1.el7
+
+Remote package installed : kernel-tools-libs-3.10.0-1127.18.2.el7
+Should be                : kernel-tools-libs-3.10.0-1160.6.1.el7
+
+Remote package installed : python-perf-3.10.0-1127.18.2.el7
+Should be                : python-perf-3.10.0-1160.6.1.el7
+
+</plugin_output>
+<cvss_base_score>7.2</cvss_base_score>
+<cvss_temporal_score>5.3</cvss_temporal_score>
+<cvss3_base_score>6.6</cvss3_base_score>
+<cvss3_temporal_score>5.8</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/11/18</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/11/18</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/06/03</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:P/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:L/Au:N/C:C/I:C/A:C</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:5023 advisory.
+
+  - kernel: net-sysfs: *_queue_add_kobject refcount issue (CVE-2019-20811)
+
+  - kernel: kernel: buffer over write in vgacon_scroll (CVE-2020-14331)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2019-20811</cve>
+<cve>CVE-2020-14331</cve>
+<xref>CWE:787</xref>
+<xref>RHSA:2020:5023</xref>
+<xref>CWE:460</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/787.html&quot;,&quot;https://cwe.mitre.org/data/definitions/460.html&quot;,&quot;http://www.nessus.org/u?e1e27c33&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>6.7</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="143286" pluginName="CentOS 7 : python (CESA-2020:3911)" port="0">
+<plugin_output>
+Remote package installed : python-2.7.5-88.el7
+Should be                : python-2.7.5-89.el7
+
+Remote package installed : python-libs-2.7.5-88.el7
+Should be                : python-libs-2.7.5-89.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>4.3</cvss_base_score>
+<cvss_temporal_score>3.2</cvss_temporal_score>
+<cvss3_base_score>6.1</cvss3_base_score>
+<cvss3_temporal_score>5.3</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/12/01</plugin_modification_date>
+<plugin_publication_date>2020/11/30</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/09/28</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:N/I:P/A:N</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:3911 advisory.
+
+  - python: XSS vulnerability in the documentation XML-RPC server in server_title field (CVE-2019-16935)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2019-16935</cve>
+<xref>CWE:79</xref>
+<xref>RHSA:2020:3911</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/79.html&quot;,&quot;http://www.nessus.org/u?067a612b&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>3.0</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="146958" pluginName="CentOS 7 : bind (CESA-2021:0671)" port="0">
+<plugin_output>
+Remote package installed : bind-export-libs-9.11.4-16.P2.el7_8.6
+Should be                : bind-export-libs-9.11.4-26.P2.el7_9.4
+
+Remote package installed : bind-libs-9.11.4-16.P2.el7_8.6
+Should be                : bind-libs-9.11.4-26.P2.el7_9.4
+
+Remote package installed : bind-libs-lite-9.11.4-16.P2.el7_8.6
+Should be                : bind-libs-lite-9.11.4-26.P2.el7_9.4
+
+Remote package installed : bind-license-9.11.4-16.P2.el7_8.6
+Should be                : bind-license-9.11.4-26.P2.el7_9.4
+
+Remote package installed : bind-utils-9.11.4-16.P2.el7_8.6
+Should be                : bind-utils-9.11.4-26.P2.el7_9.4
+
+</plugin_output>
+<cvss_base_score>6.8</cvss_base_score>
+<cvss_temporal_score>5.0</cvss_temporal_score>
+<cvss3_base_score>8.1</cvss3_base_score>
+<cvss3_temporal_score>7.1</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2021/03/02</patch_publication_date>
+<plugin_modification_date>2021/03/04</plugin_modification_date>
+<plugin_publication_date>2021/03/03</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2021/02/17</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2021:0671 advisory.
+
+  - bind: Buffer overflow in the SPNEGO implementation affecting GSSAPI security policy negotiation     (CVE-2020-8625)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2020-8625</cve>
+<xref>RHSA:2021:0671</xref>
+<xref>CWE:119</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/119.html&quot;,&quot;http://www.nessus.org/u?63eeb125&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>6.7</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="147884" pluginName="CentOS 7 : wpa_supplicant (CESA-2021:0808)" port="0">
+<plugin_output>
+Remote package installed : wpa_supplicant-2.6-12.el7
+Should be                : wpa_supplicant-2.6-12.el7_9.2
+
+</plugin_output>
+<cvss_base_score>5.4</cvss_base_score>
+<cvss_temporal_score>4.0</cvss_temporal_score>
+<cvss3_base_score>7.5</cvss3_base_score>
+<cvss3_temporal_score>6.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2021/03/18</patch_publication_date>
+<plugin_modification_date>2021/03/19</plugin_modification_date>
+<plugin_publication_date>2021/03/18</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected wpa_supplicant package.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2021/02/26</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:A/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:A/AC:M/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has a package installed that is affected by a vulnerability as referenced in the CESA-2021:0808 advisory.
+
+  - wpa_supplicant: Use-after-free in P2P provision discovery processing (CVE-2021-27803)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2021-27803</cve>
+<xref>RHSA:2021:0808</xref>
+<xref>CWE:416</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/416.html&quot;,&quot;http://www.nessus.org/u?b18784a9&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>5.9</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="1" svc_name="n/a" pluginID="141607" pluginName="CentOS 7 : dbus (CESA-2020:4032)" port="0">
+<plugin_output>
+Remote package installed : dbus-1.10.24-14.el7_8
+Should be                : dbus-1.10.24-15.el7
+
+Remote package installed : dbus-libs-1.10.24-14.el7_8
+Should be                : dbus-libs-1.10.24-15.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>3.6</cvss_base_score>
+<cvss_temporal_score>2.7</cvss_temporal_score>
+<cvss3_base_score>7.1</cvss3_base_score>
+<cvss3_temporal_score>6.2</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/06/11</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:L/Au:N/C:P/I:P/A:N</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:4032 advisory.
+
+  - dbus: DBusServer DBUS_COOKIE_SHA1 authentication bypass (CVE-2019-12749)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2019-12749</cve>
+<bid>108751</bid>
+<xref>RHSA:2020:4032</xref>
+<xref>CWE:287</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/287.html&quot;,&quot;http://www.nessus.org/u?f6bb05bc&quot;]</see_also>
+<risk_factor>Low</risk_factor>
+<vulnerability_priority_rating>5.2</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="1" svc_name="n/a" pluginID="143113" pluginName="CentOS 7 : microcode_ctl (CESA-2020:5083)" port="0">
+<plugin_output>
+Remote package installed : microcode_ctl-2.1-61.10.el7_8
+Should be                : microcode_ctl-2.1-73.2.el7_9
+
+</plugin_output>
+<cvss_base_score>2.1</cvss_base_score>
+<cvss_temporal_score>1.6</cvss_temporal_score>
+<cvss3_base_score>5.5</cvss3_base_score>
+<cvss3_temporal_score>4.8</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/11/19</patch_publication_date>
+<plugin_modification_date>2020/12/01</plugin_modification_date>
+<plugin_publication_date>2020/11/19</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected microcode_ctl package.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/11/11</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:L/Au:N/C:P/I:N/A:N</cvss_vector>
+<description>The remote CentOS Linux 7 host has a package installed that is affected by multiple vulnerabilities as referenced in the CESA-2020:5083 advisory.
+
+  - hw: Information disclosure issue in Intel SGX via RAPL interface (CVE-2020-8695)
+
+  - hw: Vector Register Leakage-Active (CVE-2020-8696)
+
+  - hw: Fast forward store predictor (CVE-2020-8698)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2020-8695</cve>
+<cve>CVE-2020-8696</cve>
+<cve>CVE-2020-8698</cve>
+<xref>CWE:212</xref>
+<xref>CWE:200</xref>
+<xref>RHSA:2020:5083</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/200.html&quot;,&quot;https://cwe.mitre.org/data/definitions/212.html&quot;,&quot;http://www.nessus.org/u?fc207766&quot;]</see_also>
+<risk_factor>Low</risk_factor>
+<vulnerability_priority_rating>5.1</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="141610" pluginName="CentOS 7 : mariadb (CESA-2020:4026)" port="0">
+<plugin_output>
+Remote package installed : mariadb-libs-5.5.65-1.el7
+Should be                : mariadb-libs-5.5.68-1.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>4.3</cvss_base_score>
+<cvss_temporal_score>3.2</cvss_temporal_score>
+<cvss3_base_score>5.9</cvss3_base_score>
+<cvss3_temporal_score>5.2</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/10/15</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:N/I:N/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:4026 advisory.
+
+  - mysql: Server: Optimizer unspecified vulnerability (CPU Oct 2019) (CVE-2019-2974)
+
+  - mysql: C API unspecified vulnerability (CPU Jan 2020) (CVE-2020-2574)
+
+  - mysql: C API unspecified vulnerability (CPU Apr 2020) (CVE-2020-2752)
+
+  - mysql: Server: DML unspecified vulnerability (CPU Apr 2020) (CVE-2020-2780)
+
+  - mysql: Server: Stored Procedure unspecified vulnerability (CPU Apr 2020) (CVE-2020-2812)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2020-2812</cve>
+<cve>CVE-2019-2974</cve>
+<cve>CVE-2020-2752</cve>
+<cve>CVE-2020-2574</cve>
+<cve>CVE-2020-2780</cve>
+<xref>CWE:400</xref>
+<xref>RHSA:2020:4026</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/400.html&quot;,&quot;http://www.nessus.org/u?a6173a2a&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>3.6</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="141623" pluginName="CentOS 7 : cpio (CESA-2020:3908)" port="0">
+<plugin_output>
+Remote package installed : cpio-2.11-27.el7
+Should be                : cpio-2.11-28.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>6.9</cvss_base_score>
+<cvss_temporal_score>5.1</cvss_temporal_score>
+<cvss3_base_score>7.3</cvss3_base_score>
+<cvss3_temporal_score>6.4</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected cpio package.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/01/07</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:M/Au:N/C:C/I:C/A:C</cvss_vector>
+<description>The remote CentOS Linux 7 host has a package installed that is affected by a vulnerability as referenced in the CESA-2020:3908 advisory.
+
+  - cpio: improper input validation when writing tar header fields leads to unexpect tar generation     (CVE-2019-14866)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2019-14866</cve>
+<xref>RHSA:2020:3908</xref>
+<xref>CWE:20</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/20.html&quot;,&quot;http://www.nessus.org/u?8d75df3a&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>5.9</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="142609" pluginName="CentOS 7 : libcroco (CESA-2020:4072)" port="0">
+<plugin_output>
+Remote package installed : libcroco-0.6.12-4.el7
+Should be                : libcroco-0.6.12-6.el7_9
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>5.8</cvss_base_score>
+<cvss_temporal_score>4.3</cvss_temporal_score>
+<cvss3_base_score>7.1</cvss3_base_score>
+<cvss3_temporal_score>6.2</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/11/06</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/11/06</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected libcroco and / or libcroco-devel packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/05/12</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:L/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:N/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:4072 advisory.
+
+  - libcroco: Stack overflow in function cr_parser_parse_any_core in cr-parser.c (CVE-2020-12825)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2020-12825</cve>
+<xref>CWE:674</xref>
+<xref>CWE:121</xref>
+<xref>RHSA:2020:4072</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/121.html&quot;,&quot;https://cwe.mitre.org/data/definitions/674.html&quot;,&quot;http://www.nessus.org/u?01211c44&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>4.2</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="141590" pluginName="CentOS 7 : libxml2 (CESA-2020:3996)" port="0">
+<plugin_output>
+Remote package installed : libxml2-2.9.1-6.el7.4
+Should be                : libxml2-2.9.1-6.el7.5
+
+Remote package installed : libxml2-python-2.9.1-6.el7.4
+Should be                : libxml2-python-2.9.1-6.el7.5
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>5.0</cvss_base_score>
+<cvss_temporal_score>3.7</cvss_temporal_score>
+<cvss3_base_score>7.5</cvss3_base_score>
+<cvss3_temporal_score>6.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/12/24</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:N/C:N/I:N/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:3996 advisory.
+
+  - libxml2: memory leak in xmlParseBalancedChunkMemoryRecover in parser.c (CVE-2019-19956)
+
+  - libxml2: memory leak in xmlSchemaPreRun in xmlschemas.c (CVE-2019-20388)
+
+  - libxml2: infinite loop in xmlStringLenDecodeEntities in some end-of-file situations (CVE-2020-7595)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2019-19956</cve>
+<cve>CVE-2019-20388</cve>
+<cve>CVE-2020-7595</cve>
+<xref>CWE:401</xref>
+<xref>CWE:772</xref>
+<xref>RHSA:2020:3996</xref>
+<xref>CWE:835</xref>
+<see_also>[&quot;http://www.nessus.org/u?0e45e7ae&quot;,&quot;https://cwe.mitre.org/data/definitions/401.html&quot;,&quot;https://cwe.mitre.org/data/definitions/772.html&quot;,&quot;https://cwe.mitre.org/data/definitions/835.html&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>4.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="3" svc_name="n/a" pluginID="141596" pluginName="CentOS 7 : glib2 and ibus (CESA-2020:3978)" port="0">
+<plugin_output>
+Remote package installed : glib2-2.56.1-5.el7
+Should be                : glib2-2.56.1-7.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>7.5</cvss_base_score>
+<cvss_temporal_score>5.5</cvss_temporal_score>
+<cvss3_base_score>9.8</cvss3_base_score>
+<cvss3_temporal_score>8.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/05/29</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:3978 advisory.
+
+  - glib2: file_copy_fallback in gio/gfile.c in GNOME GLib does not properly restrict file permissions while a     copy operation is in progress (CVE-2019-12450)
+
+  - ibus: missing authorization allows local attacker to access the input bus of another user (CVE-2019-14822)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2019-12450</cve>
+<cve>CVE-2019-14822</cve>
+<xref>CWE:862</xref>
+<xref>CWE:552</xref>
+<xref>RHSA:2020:3978</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/862.html&quot;,&quot;https://cwe.mitre.org/data/definitions/552.html&quot;,&quot;http://www.nessus.org/u?7d20f20b&quot;,&quot;http://www.nessus.org/u?4e6a86b2&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>5.9</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="142598" pluginName="CentOS 7 : freetype (CESA-2020:4907)" port="0">
+<plugin_output>
+Remote package installed : freetype-2.8-14.el7
+Should be                : freetype-2.8-14.el7_9.1
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>4.3</cvss_base_score>
+<cvss_temporal_score>3.7</cvss_temporal_score>
+<cvss3_base_score>6.5</cvss3_base_score>
+<cvss3_temporal_score>6.2</cvss3_temporal_score>
+<exploit_available>true</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>true</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/11/06</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/11/06</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected freetype, freetype-demos and / or freetype-devel packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/10/20</vuln_publication_date>
+<cvss3_temporal_vector>E:H/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H</cvss3_vector>
+<cvss_temporal_vector>E:H/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:N/I:N/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:4907 advisory.
+
+  - freetype: Heap-based buffer overflow due to integer truncation in Load_SBit_Png (CVE-2020-15999)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2020-15999</cve>
+<xref>CWE:190</xref>
+<xref>CWE:122</xref>
+<xref>RHSA:2020:4907</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/122.html&quot;,&quot;https://cwe.mitre.org/data/definitions/190.html&quot;,&quot;http://www.nessus.org/u?b8ccc74c&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>7.3</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="143057" pluginName="CentOS 7 : curl (CESA-2020:5002)" port="0">
+<plugin_output>
+Remote package installed : curl-7.29.0-57.el7
+Should be                : curl-7.29.0-59.el7_9.1
+
+Remote package installed : libcurl-7.29.0-57.el7
+Should be                : libcurl-7.29.0-59.el7_9.1
+
+</plugin_output>
+<cvss_base_score>4.6</cvss_base_score>
+<cvss_temporal_score>3.4</cvss_temporal_score>
+<cvss3_base_score>7.1</cvss3_base_score>
+<cvss3_temporal_score>6.2</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/11/18</patch_publication_date>
+<plugin_modification_date>2020/12/15</plugin_modification_date>
+<plugin_publication_date>2020/11/18</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected curl, libcurl and / or libcurl-devel packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/06/24</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:L/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:L/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:5002 advisory.
+
+  - curl: Incorrect argument check can allow remote servers to overwrite local files (CVE-2020-8177)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2020-8177</cve>
+<xref>RHSA:2020:5002</xref>
+<see_also>[&quot;http://www.nessus.org/u?143f17d2&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>5.2</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="3" svc_name="n/a" pluginID="146100" pluginName="CentOS 7 : perl (CESA-2021:0343)" port="0">
+<plugin_output>
+Remote package installed : perl-5.16.3-295.el7
+Should be                : perl-5.16.3-299.el7_9
+
+Remote package installed : perl-libs-5.16.3-295.el7
+Should be                : perl-libs-5.16.3-299.el7_9
+
+Remote package installed : perl-macros-5.16.3-295.el7
+Should be                : perl-macros-5.16.3-299.el7_9
+
+Remote package installed : perl-Pod-Escapes-1.04-295.el7
+Should be                : perl-Pod-Escapes-1.04-299.el7_9
+
+</plugin_output>
+<cvss_base_score>7.5</cvss_base_score>
+<cvss_temporal_score>5.5</cvss_temporal_score>
+<cvss3_base_score>8.6</cvss3_base_score>
+<cvss3_temporal_score>7.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2021/02/04</patch_publication_date>
+<plugin_modification_date>2021/02/05</plugin_modification_date>
+<plugin_publication_date>2021/02/03</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/06/05</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2021:0343 advisory.
+
+  - perl: heap-based buffer overflow in regular expression compiler leads to DoS (CVE-2020-10543)
+
+  - perl: corruption of intermediate language state of compiled regular expression due to integer overflow     leads to DoS (CVE-2020-10878)
+
+  - perl: corruption of intermediate language state of compiled regular expression due to recursive     S_study_chunk() calls leads to DoS (CVE-2020-12723)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2020-10543</cve>
+<cve>CVE-2020-12723</cve>
+<cve>CVE-2020-10878</cve>
+<xref>CWE:190</xref>
+<xref>CWE:787</xref>
+<xref>CWE:122</xref>
+<xref>CWE:20</xref>
+<xref>CWE:185</xref>
+<xref>RHSA:2021:0343</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/20.html&quot;,&quot;https://cwe.mitre.org/data/definitions/122.html&quot;,&quot;https://cwe.mitre.org/data/definitions/190.html&quot;,&quot;https://cwe.mitre.org/data/definitions/787.html&quot;,&quot;https://cwe.mitre.org/data/definitions/185.html&quot;,&quot;http://www.nessus.org/u?69f683c0&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>5.5</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="3" svc_name="n/a" pluginID="141614" pluginName="CentOS 7 : libpng (CESA-2020:3901)" port="0">
+<plugin_output>
+Remote package installed : libpng-1.5.13-7.el7_2
+Should be                : libpng-1.5.13-8.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>7.5</cvss_base_score>
+<cvss_temporal_score>5.5</cvss_temporal_score>
+<cvss3_base_score>9.8</cvss3_base_score>
+<cvss3_temporal_score>8.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected libpng, libpng-devel and / or libpng-static packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/07/10</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:3901 advisory.
+
+  - libpng: does not check length of chunks against user limit (CVE-2017-12652)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2017-12652</cve>
+<bid>109269</bid>
+<xref>CWE:20</xref>
+<xref>RHSA:2020:3901</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/20.html&quot;,&quot;http://www.nessus.org/u?a5e1372a&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>5.9</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="1" svc_name="n/a" pluginID="149206" pluginName="CentOS 7 : java-1.8.0-openjdk (CESA-2021:1298)" port="0">
+<plugin_output>
+Remote package installed : java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8
+Should be                : java-1.8.0-openjdk-1.8.0.292.b10-1.el7_9
+
+Remote package installed : java-1.8.0-openjdk-headless-1.8.0.252.b09-2.el7_8
+Should be                : java-1.8.0-openjdk-headless-1.8.0.292.b10-1.el7_9
+
+</plugin_output>
+<cvss_base_score>2.6</cvss_base_score>
+<cvss_temporal_score>1.9</cvss_temporal_score>
+<cvss3_base_score>5.3</cvss3_base_score>
+<cvss3_temporal_score>4.6</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2021/04/29</patch_publication_date>
+<plugin_modification_date>2021/05/05</plugin_modification_date>
+<plugin_publication_date>2021/04/30</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2021/04/20</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:H/PR:N/UI:R/S:U/C:N/I:H/A:N</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:H/Au:N/C:N/I:P/A:N</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2021:1298 advisory.
+
+  - OpenJDK: Incomplete enforcement of JAR signing disabled algorithms (Libraries, 8249906) (CVE-2021-2163)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2021-2163</cve>
+<xref>CWE:327</xref>
+<xref>RHSA:2021:1298</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/327.html&quot;,&quot;http://www.nessus.org/u?b2232b5f&quot;]</see_also>
+<risk_factor>Low</risk_factor>
+<vulnerability_priority_rating>4.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="4" svc_name="n/a" pluginID="142600" pluginName="CentOS 7 : nss and nspr (CESA-2020:4076)" port="0">
+<plugin_output>
+Remote package installed : nspr-4.21.0-1.el7
+Should be                : nspr-4.25.0-2.el7_9
+
+Remote package installed : nss-3.44.0-7.el7_7
+Should be                : nss-3.53.1-3.el7_9
+
+Remote package installed : nss-softokn-3.44.0-8.el7_7
+Should be                : nss-softokn-3.53.1-6.el7_9
+
+Remote package installed : nss-softokn-freebl-3.44.0-8.el7_7
+Should be                : nss-softokn-freebl-3.53.1-6.el7_9
+
+Remote package installed : nss-sysinit-3.44.0-7.el7_7
+Should be                : nss-sysinit-3.53.1-3.el7_9
+
+Remote package installed : nss-tools-3.44.0-7.el7_7
+Should be                : nss-tools-3.53.1-3.el7_9
+
+Remote package installed : nss-util-3.44.0-4.el7_7
+Should be                : nss-util-3.53.1-1.el7_9
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>10.0</cvss_base_score>
+<cvss_temporal_score>7.4</cvss_temporal_score>
+<cvss3_base_score>9.8</cvss3_base_score>
+<cvss3_temporal_score>8.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/11/06</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/11/06</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/07/09</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:N/C:C/I:C/A:C</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:4076 advisory.
+
+  - nss: Out-of-bounds read when importing curve25519 private key (CVE-2019-11719)
+
+  - nss: PKCS#1 v1.5 signatures can be used for TLS 1.3 (CVE-2019-11727)
+
+  - nss: Use-after-free in sftk_FreeSession due to improper refcounting (CVE-2019-11756)
+
+  - nss: Check length of inputs for cryptographic primitives (CVE-2019-17006)
+
+  - nss: TLS 1.3 HelloRetryRequest downgrade request sets client into invalid state (CVE-2019-17023)
+
+  - nss: P-384 and P-521 implementation uses a side-channel vulnerable modular inversion function     (CVE-2020-12400)
+
+  - nss: ECDSA timing attack mitigation bypass (CVE-2020-12401)
+
+  - nss: Side channel vulnerabilities during RSA key generation (CVE-2020-12402)
+
+  - nss: CHACHA20-POLY1305 decryption with undersized tag leads to out-of-bounds read (CVE-2020-12403)
+
+  - nss: Side channel attack on ECDSA signature generation (CVE-2020-6829)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2019-17006</cve>
+<cve>CVE-2020-6829</cve>
+<cve>CVE-2019-11719</cve>
+<cve>CVE-2019-11727</cve>
+<cve>CVE-2020-12402</cve>
+<cve>CVE-2020-12401</cve>
+<cve>CVE-2020-12400</cve>
+<cve>CVE-2019-17023</cve>
+<cve>CVE-2020-12403</cve>
+<cve>CVE-2019-11756</cve>
+<bid>109085</bid>
+<bid>109086</bid>
+<xref>CWE:327</xref>
+<xref>RHSA:2020:4076</xref>
+<xref>CWE:125</xref>
+<xref>CWE:122</xref>
+<xref>CWE:416</xref>
+<see_also>[&quot;http://www.nessus.org/u?5c6405af&quot;,&quot;http://www.nessus.org/u?1352d2d8&quot;,&quot;http://www.nessus.org/u?68abfba7&quot;,&quot;http://www.nessus.org/u?e4a2823e&quot;,&quot;https://cwe.mitre.org/data/definitions/122.html&quot;,&quot;https://cwe.mitre.org/data/definitions/125.html&quot;,&quot;https://cwe.mitre.org/data/definitions/327.html&quot;,&quot;https://cwe.mitre.org/data/definitions/416.html&quot;]</see_also>
+<risk_factor>Critical</risk_factor>
+<vulnerability_priority_rating>6.0</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="1" svc_name="n/a" pluginID="141588" pluginName="CentOS 7 : systemd (CESA-2020:4007)" port="0">
+<plugin_output>
+Remote package installed : systemd-219-73.el7_8.8
+Should be                : systemd-219-78.el7
+
+Remote package installed : systemd-libs-219-73.el7_8.8
+Should be                : systemd-libs-219-78.el7
+
+Remote package installed : systemd-python-219-73.el7_8.8
+Should be                : systemd-python-219-78.el7
+
+Remote package installed : systemd-sysv-219-73.el7_8.8
+Should be                : systemd-sysv-219-78.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>2.1</cvss_base_score>
+<cvss_temporal_score>1.6</cvss_temporal_score>
+<cvss3_base_score>2.4</cvss3_base_score>
+<cvss3_temporal_score>2.1</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/01/21</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:P/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:L/Au:N/C:N/I:N/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:4007 advisory.
+
+  - systemd: memory leak in button_open() in login/logind-button.c when udev events are received     (CVE-2019-20386)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2019-20386</cve>
+<xref>CWE:400</xref>
+<xref>RHSA:2020:4007</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/400.html&quot;,&quot;http://www.nessus.org/u?9db51b2f&quot;]</see_also>
+<risk_factor>Low</risk_factor>
+<vulnerability_priority_rating>2.2</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="3" svc_name="n/a" pluginID="141619" pluginName="CentOS 7 : kernel (CESA-2020:4060)" port="0">
+<plugin_output>
+Remote package installed : kernel-3.10.0-1127.18.2.el7
+Should be                : kernel-3.10.0-1160.el7
+
+Remote package installed : kernel-tools-3.10.0-1127.18.2.el7
+Should be                : kernel-tools-3.10.0-1160.el7
+
+Remote package installed : kernel-tools-libs-3.10.0-1127.18.2.el7
+Should be                : kernel-tools-libs-3.10.0-1160.el7
+
+Remote package installed : python-perf-3.10.0-1127.18.2.el7
+Should be                : python-perf-3.10.0-1160.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>9.3</cvss_base_score>
+<cvss_temporal_score>6.9</cvss_temporal_score>
+<cvss3_base_score>8.1</cvss3_base_score>
+<cvss3_temporal_score>7.1</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/05/07</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:C/I:C/A:C</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:4060 advisory.
+
+  - kernel: out of bounds write in function i2c_smbus_xfer_emulated in drivers/i2c/i2c-core-smbus.c     (CVE-2017-18551)
+
+  - kernel: race condition in smp_task_timedout() and smp_task_done() in drivers/scsi/libsas/sas_expander.c     leads to use-after-free (CVE-2018-20836)
+
+  - kernel: null pointer dereference in dlpar_parse_cc_property in arch/powerrc/platforms/pseries/dlpar.c     causing denial of service (CVE-2019-12614)
+
+  - kernel: null pointer dereference in drivers/media/usb/zr364xx/zr364xx.c driver (CVE-2019-15217)
+
+  - kernel: Memory leak in drivers/scsi/libsas/sas_expander.c (CVE-2019-15807)
+
+  - kernel: use-after-free in drivers/bluetooth/hci_ldisc.c (CVE-2019-15917)
+
+  - kernel: null-pointer dereference in drivers/net/fjes/fjes_main.c (CVE-2019-16231)
+
+  - kernel: null pointer dereference in drivers/scsi/qla2xxx/qla_os.c (CVE-2019-16233)
+
+  - kernel: Memory leak in sit_init_net() in net/ipv6/sit.c (CVE-2019-16994)
+
+  - kernel: unprivileged users able to create RAW sockets in AF_IEEE802154 network protocol (CVE-2019-17053)
+
+  - kernel: unprivileged users able to create RAW sockets in AF_ISDN network protocol (CVE-2019-17055)
+
+  - kernel: memory leak in ccp_run_sha_cmd() function in drivers/crypto/ccp/ccp-ops.c (CVE-2019-18808)
+
+  - kernel: Denial Of Service in the __ipmi_bmc_register() function in drivers/char/ipmi/ipmi_msghandler.c     (CVE-2019-19046)
+
+  - kernel: memory leak in the nl80211_get_ftm_responder_stats() function in net/wireless/nl80211.c allows DoS     (CVE-2019-19055)
+
+  - kernel: A memory leak in the alloc_sgtable() function in drivers/net/wireless/intel/iwlwifi/fw/dbg.c     allows for a DoS (CVE-2019-19058)
+
+  - kernel: Multiple memory leaks in the iwl_pcie_ctxt_info_gen3_init() function in     drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c allows for a DoS (CVE-2019-19059)
+
+  - kernel: memory leak in the crypto_report() function in crypto/crypto_user_base.c allows for DoS     (CVE-2019-19062)
+
+  - kernel: Two memory leaks in the rtl_usb_probe() function in drivers/net/wireless/realtek/rtlwifi/usb.c     allow for a DoS (CVE-2019-19063)
+
+  - Kernel: kvm: OOB memory write via kvm_dev_ioctl_get_cpuid (CVE-2019-19332)
+
+  - kernel: mounting a crafted ext4 filesystem image, performing some operations, and unmounting can lead to a     use-after-free in ext4_put_super in fs/ext4/super.c (CVE-2019-19447)
+
+  - kernel: use-after-free caused by a malicious USB device in the drivers/usb/misc/adutux.c driver     (CVE-2019-19523)
+
+  - kernel: a malicious USB device in the drivers/input/ff-memless.c leads to use-after-free (CVE-2019-19524)
+
+  - kernel: use-after-free caused by a malicious USB device in the drivers/usb/class/cdc-acm.c driver     (CVE-2019-19530)
+
+  - kernel: information leak bug caused by a malicious USB device in the     drivers/net/can/usb/peak_usb/pcan_usb_core.c driver (CVE-2019-19534)
+
+  - kernel: race condition caused by a malicious USB device in the USB character device driver layer     (CVE-2019-19537)
+
+  - kernel: use-after-free in __ext4_expand_extra_isize and ext4_xattr_set_entry related to fs/ext4/inode.c     and fs/ext4/super.c (CVE-2019-19767)
+
+  - kernel: use-after-free in sound/core/timer.c (CVE-2019-19807)
+
+  - kernel: Null pointer dereference in drop_sysctl_table() in fs/proc/proc_sysctl.c (CVE-2019-20054)
+
+  - kernel: memory leak in mwifiex_tm_cmd in drivers/net/wireless/marvell/mwifiex/cfg80211.c (CVE-2019-20095)
+
+  - kernel: out-of-bounds write via crafted keycode table (CVE-2019-20636)
+
+  - kernel: out of bounds write in i2c driver leads to local escalation of privilege (CVE-2019-9454)
+
+  - kernel: use after free due to race condition in the video driver leads to local privilege escalation     (CVE-2019-9458)
+
+  - kernel: use-after-free in cdev_put() when a PTP device is removed while it&apos;s chardev is open     (CVE-2020-10690)
+
+  - kernel: uninitialized kernel data leak in userspace coredumps (CVE-2020-10732)
+
+  - kernel: NFS client crash due to index buffer overflow during Direct IO write causing kernel panic     (CVE-2020-10742)
+
+  - kernel: SELinux netlink permission check bypass (CVE-2020-10751)
+
+  - kernel: vhost-net: stack overflow in get_raw_socket while checking sk_family field (CVE-2020-10942)
+
+  - kernel: out-of-bounds write in mpol_parse_str function in mm/mempolicy.c (CVE-2020-11565)
+
+  - kernel: sg_write function lacks an sg_remove_request call in a certain failure case (CVE-2020-12770)
+
+  - kernel: possible to send arbitrary signals to a privileged (suidroot) parent process (CVE-2020-12826)
+
+  - kernel: memory corruption in Voice over IP nf_conntrack_h323 module (CVE-2020-14305)
+
+  - kernel: some ipv6 protocols not encrypted over ipsec tunnel (CVE-2020-1749)
+
+  - Kernel: kvm: nVMX: L2 guest may trick the L0 hypervisor to access sensitive L1 resources (CVE-2020-2732)
+
+  - kernel: out-of-bounds read in in vc_do_resize function in drivers/tty/vt/vt.c (CVE-2020-8647)
+
+  - kernel: invalid read location in vgacon_invert_region function in drivers/video/console/vgacon.c     (CVE-2020-8649)
+
+  - kernel: out-of-bounds read in set_fdc in drivers/block/floppy.c (CVE-2020-9383)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2019-19537</cve>
+<cve>CVE-2019-19059</cve>
+<cve>CVE-2019-19534</cve>
+<cve>CVE-2020-8647</cve>
+<cve>CVE-2019-18808</cve>
+<cve>CVE-2020-8649</cve>
+<cve>CVE-2019-15917</cve>
+<cve>CVE-2020-10732</cve>
+<cve>CVE-2019-15217</cve>
+<cve>CVE-2020-1749</cve>
+<cve>CVE-2020-14305</cve>
+<cve>CVE-2018-20836</cve>
+<cve>CVE-2019-16231</cve>
+<cve>CVE-2019-19046</cve>
+<cve>CVE-2019-19063</cve>
+<cve>CVE-2019-19062</cve>
+<cve>CVE-2019-20636</cve>
+<cve>CVE-2019-19767</cve>
+<cve>CVE-2019-9454</cve>
+<cve>CVE-2017-18551</cve>
+<cve>CVE-2019-16233</cve>
+<cve>CVE-2019-19447</cve>
+<cve>CVE-2019-19524</cve>
+<cve>CVE-2019-16994</cve>
+<cve>CVE-2019-19523</cve>
+<cve>CVE-2020-10942</cve>
+<cve>CVE-2019-20054</cve>
+<cve>CVE-2020-10742</cve>
+<cve>CVE-2019-15807</cve>
+<cve>CVE-2019-20095</cve>
+<cve>CVE-2019-12614</cve>
+<cve>CVE-2019-19807</cve>
+<cve>CVE-2020-12826</cve>
+<cve>CVE-2019-9458</cve>
+<cve>CVE-2020-10690</cve>
+<cve>CVE-2020-12770</cve>
+<cve>CVE-2020-10751</cve>
+<cve>CVE-2020-11565</cve>
+<cve>CVE-2020-2732</cve>
+<cve>CVE-2019-17053</cve>
+<cve>CVE-2019-19055</cve>
+<cve>CVE-2019-17055</cve>
+<cve>CVE-2019-19058</cve>
+<cve>CVE-2019-19332</cve>
+<cve>CVE-2019-19530</cve>
+<cve>CVE-2020-9383</cve>
+<bid>108196</bid>
+<bid>108550</bid>
+<xref>CWE:319</xref>
+<xref>RHSA:2020:4060</xref>
+<xref>CWE:119</xref>
+<xref>CWE:416</xref>
+<xref>CWE:349</xref>
+<xref>CWE:401</xref>
+<xref>CWE:787</xref>
+<xref>CWE:476</xref>
+<xref>CWE:125</xref>
+<xref>CWE:400</xref>
+<xref>CWE:200</xref>
+<xref>CWE:772</xref>
+<xref>CWE:362</xref>
+<xref>CWE:20</xref>
+<xref>CWE:121</xref>
+<xref>CWE:94</xref>
+<xref>CWE:250</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/121.html&quot;,&quot;https://cwe.mitre.org/data/definitions/200.html&quot;,&quot;https://cwe.mitre.org/data/definitions/125.html&quot;,&quot;https://cwe.mitre.org/data/definitions/416.html&quot;,&quot;https://cwe.mitre.org/data/definitions/20.html&quot;,&quot;https://cwe.mitre.org/data/definitions/119.html&quot;,&quot;https://cwe.mitre.org/data/definitions/400.html&quot;,&quot;https://cwe.mitre.org/data/definitions/476.html&quot;,&quot;https://cwe.mitre.org/data/definitions/772.html&quot;,&quot;https://cwe.mitre.org/data/definitions/401.html&quot;,&quot;https://cwe.mitre.org/data/definitions/787.html&quot;,&quot;https://cwe.mitre.org/data/definitions/250.html&quot;,&quot;https://cwe.mitre.org/data/definitions/362.html&quot;,&quot;https://cwe.mitre.org/data/definitions/94.html&quot;,&quot;https://cwe.mitre.org/data/definitions/319.html&quot;,&quot;https://cwe.mitre.org/data/definitions/349.html&quot;,&quot;http://www.nessus.org/u?c5e7544c&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>8.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="141609" pluginName="CentOS 7 : e2fsprogs (CESA-2020:4011)" port="0">
+<plugin_output>
+Remote package installed : e2fsprogs-1.42.9-17.el7
+Should be                : e2fsprogs-1.42.9-19.el7
+
+Remote package installed : e2fsprogs-libs-1.42.9-17.el7
+Should be                : e2fsprogs-libs-1.42.9-19.el7
+
+Remote package installed : libcom_err-1.42.9-17.el7
+Should be                : libcom_err-1.42.9-19.el7
+
+Remote package installed : libss-1.42.9-17.el7
+Should be                : libss-1.42.9-19.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>4.6</cvss_base_score>
+<cvss_temporal_score>3.4</cvss_temporal_score>
+<cvss3_base_score>6.7</cvss3_base_score>
+<cvss3_temporal_score>5.8</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/09/24</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:L/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:L/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:4011 advisory.
+
+  - e2fsprogs: Crafted ext4 partition leads to out-of-bounds write (CVE-2019-5094)
+
+  - e2fsprogs: Out-of-bounds write in e2fsck/rehash.c (CVE-2019-5188)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2019-5094</cve>
+<cve>CVE-2019-5188</cve>
+<xref>CWE:787</xref>
+<xref>RHSA:2020:4011</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/787.html&quot;,&quot;http://www.nessus.org/u?5f4b2243&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>6.7</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="141613" pluginName="CentOS 7 : libmspack (CESA-2020:3848)" port="0">
+<plugin_output>
+Remote package installed : libmspack-0.5-0.7.alpha.el7
+Should be                : libmspack-0.5-0.8.alpha.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>4.3</cvss_base_score>
+<cvss_temporal_score>3.2</cvss_temporal_score>
+<cvss3_base_score>5.5</cvss3_base_score>
+<cvss3_temporal_score>4.8</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected libmspack and / or libmspack-devel packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/07/15</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:P/I:N/A:N</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:3848 advisory.
+
+  - libmspack: buffer overflow in function chmd_read_headers() (CVE-2019-1010305)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2019-1010305</cve>
+<xref>RHSA:2020:3848</xref>
+<xref>CWE:120</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/120.html&quot;,&quot;http://www.nessus.org/u?e969fa59&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>3.6</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="143284" pluginName="CentOS 7 : hunspell (CESA-2020:3971)" port="0">
+<plugin_output>
+Remote package installed : hunspell-1.3.2-15.el7
+Should be                : hunspell-1.3.2-16.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>4.3</cvss_base_score>
+<cvss_temporal_score>3.2</cvss_temporal_score>
+<cvss3_base_score>6.5</cvss3_base_score>
+<cvss3_temporal_score>5.7</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/12/01</plugin_modification_date>
+<plugin_publication_date>2020/11/30</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected hunspell and / or hunspell-devel packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/09/23</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:N/I:N/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:3971 advisory.
+
+  - hunspell: out-of-bounds read in SuggestMgr::leftcommonsubstring in suggestmgr.cxx (CVE-2019-16707)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2019-16707</cve>
+<xref>CWE:125</xref>
+<xref>RHSA:2020:3971</xref>
+<xref>CWE:119</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/125.html&quot;,&quot;https://cwe.mitre.org/data/definitions/119.html&quot;,&quot;http://www.nessus.org/u?2fce07cc&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>3.6</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="Web Servers" severity="3" svc_name="n/a" pluginID="150280" pluginName="Apache 2.4.x &lt; 2.4.47 Multiple Vulnerabilities" port="0">
+<plugin_output>
+  Path              : /opt/sc/support/bin/httpd
+  Installed version : 2.4.46
+  Fixed version     : 2.4.47
+</plugin_output>
+<cvss_base_score>7.5</cvss_base_score>
+<cvss_temporal_score>5.5</cvss_temporal_score>
+<cvss3_base_score>9.8</cvss3_base_score>
+<cvss3_temporal_score>8.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2021/06/01</patch_publication_date>
+<plugin_modification_date>2021/06/07</plugin_modification_date>
+<plugin_publication_date>2021/06/04</plugin_publication_date>
+<plugin_type>combined</plugin_type>
+<solution>Upgrade to Apache version 2.4.47 or later.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2021/06/01</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The version of Apache httpd installed on the remote host is prior to 2.4.47. It is, therefore, affected by multiple vulnerabilities as referenced in the 2.4.47 changelog:
+
+  - Unexpected &lt;Location&gt; section matching with &apos;MergeSlashes OFF&apos; (CVE-2021-30641)
+
+  - mod_auth_digest: possible stack overflow by one nul byte while validating the Digest nonce. (CVE-2020-35452)
+
+  - mod_session: Fix possible crash due to NULL pointer dereference, which could be used to cause a Denial of Service     with a malicious backend server and SessionHeader. (CVE-2021-26691)
+
+  - mod_session: Fix possible crash due to NULL pointer dereference, which could be used to cause a Denial of Service.
+    (CVE-2021-26690)
+
+  - mod_proxy_http: Fix possible crash due to NULL pointer dereference, which could be used to cause a Denial of     Service. (CVE-2020-13950)
+
+  - Windows: Prevent local users from stopping the httpd process (CVE-2020-13938)
+
+  - mod_proxy_wstunnel, mod_proxy_http: Handle Upgradable protocols end-to-end negotiation. (CVE-2019-17567)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote web server is affected by multiple vulnerabilities.</synopsis>
+<cve>CVE-2020-13950</cve>
+<cve>CVE-2020-35452</cve>
+<cve>CVE-2019-17567</cve>
+<cve>CVE-2021-26691</cve>
+<cve>CVE-2021-26690</cve>
+<cve>CVE-2020-13938</cve>
+<cve>CVE-2021-30641</cve>
+<xref>IAVA:2021-A-0259</xref>
+<see_also>[&quot;https://downloads.apache.org/httpd/CHANGES_2.4&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>7.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="149205" pluginName="CentOS 7 : bind (CESA-2021:1469)" port="0">
+<plugin_output>
+Remote package installed : bind-export-libs-9.11.4-16.P2.el7_8.6
+Should be                : bind-export-libs-9.11.4-26.P2.el7_9.5
+
+Remote package installed : bind-libs-9.11.4-16.P2.el7_8.6
+Should be                : bind-libs-9.11.4-26.P2.el7_9.5
+
+Remote package installed : bind-libs-lite-9.11.4-16.P2.el7_8.6
+Should be                : bind-libs-lite-9.11.4-26.P2.el7_9.5
+
+Remote package installed : bind-license-9.11.4-16.P2.el7_8.6
+Should be                : bind-license-9.11.4-26.P2.el7_9.5
+
+Remote package installed : bind-utils-9.11.4-16.P2.el7_8.6
+Should be                : bind-utils-9.11.4-26.P2.el7_9.5
+
+</plugin_output>
+<cvss_base_score>5.0</cvss_base_score>
+<cvss_temporal_score>3.7</cvss_temporal_score>
+<cvss3_base_score>7.5</cvss3_base_score>
+<cvss3_temporal_score>6.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2021/04/29</patch_publication_date>
+<plugin_modification_date>2021/05/10</plugin_modification_date>
+<plugin_publication_date>2021/04/30</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2021/04/29</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:N/C:N/I:N/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2021:1469 advisory.
+
+  - bind: An assertion check can fail while answering queries for DNAME records that require the DNAME to be     processed to resolve itself (CVE-2021-25215)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2021-25215</cve>
+<xref>IAVA:2021-A-0206</xref>
+<xref>RHSA:2021:1469</xref>
+<xref>CWE:617</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/617.html&quot;,&quot;http://www.nessus.org/u?689b0169&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>4.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="1" svc_name="n/a" pluginID="141625" pluginName="CentOS 7 : glibc (CESA-2020:3861)" port="0">
+<plugin_output>
+Remote package installed : glibc-2.17-307.el7.1
+Should be                : glibc-2.17-317.el7
+
+Remote package installed : glibc-common-2.17-307.el7.1
+Should be                : glibc-common-2.17-317.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>2.1</cvss_base_score>
+<cvss_temporal_score>1.6</cvss_temporal_score>
+<cvss3_base_score>3.3</cvss3_base_score>
+<cvss3_temporal_score>2.9</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/11/19</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:L/AC:L/PR:L/UI:N/S:U/C:L/I:N/A:N</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:L/Au:N/C:P/I:N/A:N</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:3861 advisory.
+
+  - glibc: LD_PREFER_MAP_32BIT_EXEC not ignored in setuid binaries (CVE-2019-19126)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2019-19126</cve>
+<xref>CWE:20</xref>
+<xref>RHSA:2020:3861</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/20.html&quot;,&quot;http://www.nessus.org/u?a3ca8c1b&quot;]</see_also>
+<risk_factor>Low</risk_factor>
+<vulnerability_priority_rating>1.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="141584" pluginName="CentOS 7 : httpd (CESA-2020:3958)" port="0">
+<plugin_output>
+Remote package installed : httpd-2.4.6-93.el7.centos
+Should be                : httpd-2.4.6-95.el7.centos
+
+Remote package installed : httpd-manual-2.4.6-93.el7.centos
+Should be                : httpd-manual-2.4.6-95.el7.centos
+
+Remote package installed : httpd-tools-2.4.6-93.el7.centos
+Should be                : httpd-tools-2.4.6-95.el7.centos
+
+Remote package installed : mod_ssl-2.4.6-93.el7.centos
+Should be                : mod_ssl-2.4.6-95.el7.centos
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>6.8</cvss_base_score>
+<cvss_temporal_score>5.3</cvss_temporal_score>
+<cvss3_base_score>8.1</cvss3_base_score>
+<cvss3_temporal_score>7.3</cvss3_temporal_score>
+<exploit_available>true</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2018/03/21</vuln_publication_date>
+<cvss3_temporal_vector>E:P/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:POC/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:3958 advisory.
+
+  - httpd:  bypass with a trailing newline in the file name (CVE-2017-15715)
+
+  - httpd: Improper handling of headers in mod_session can allow a remote user to modify session data for CGI     applications (CVE-2018-1283)
+
+  - httpd: Out of bounds read in mod_cache_socache can allow a remote attacker to cause DoS (CVE-2018-1303)
+
+  - httpd: mod_rewrite potential open redirect (CVE-2019-10098)
+
+  - httpd: mod_rewrite configurations vulnerable to open redirect (CVE-2020-1927)
+
+  - httpd: mod_proxy_ftp use of uninitialized value (CVE-2020-1934)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2020-1934</cve>
+<cve>CVE-2018-1283</cve>
+<cve>CVE-2019-10098</cve>
+<cve>CVE-2017-15715</cve>
+<cve>CVE-2018-1303</cve>
+<cve>CVE-2020-1927</cve>
+<bid>103520</bid>
+<bid>103522</bid>
+<bid>103525</bid>
+<xref>CWE:601</xref>
+<xref>RHSA:2020:3958</xref>
+<xref>CWE:456</xref>
+<xref>CWE:787</xref>
+<xref>CWE:125</xref>
+<xref>CWE:20</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/125.html&quot;,&quot;https://cwe.mitre.org/data/definitions/20.html&quot;,&quot;https://cwe.mitre.org/data/definitions/601.html&quot;,&quot;https://cwe.mitre.org/data/definitions/456.html&quot;,&quot;https://cwe.mitre.org/data/definitions/787.html&quot;,&quot;http://www.nessus.org/u?65c97a70&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>6.7</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="3" svc_name="n/a" pluginID="141594" pluginName="CentOS 7 : expat (CESA-2020:3952)" port="0">
+<plugin_output>
+Remote package installed : expat-2.1.0-11.el7
+Should be                : expat-2.1.0-12.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>7.8</cvss_base_score>
+<cvss_temporal_score>5.8</cvss_temporal_score>
+<cvss3_base_score>7.5</cvss3_base_score>
+<cvss3_temporal_score>6.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/06</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected expat, expat-devel and / or expat-static packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/06/24</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:N/C:N/I:N/A:C</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:3952 advisory.
+
+  - expat: large number of colons in input makes parser consume high amount of resources, leading to DoS     (CVE-2018-20843)
+
+  - expat: heap-based buffer over-read via crafted XML input (CVE-2019-15903)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2018-20843</cve>
+<cve>CVE-2019-15903</cve>
+<xref>CWE:125</xref>
+<xref>CWE:400</xref>
+<xref>CWE:122</xref>
+<xref>RHSA:2020:3952</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/125.html&quot;,&quot;https://cwe.mitre.org/data/definitions/122.html&quot;,&quot;https://cwe.mitre.org/data/definitions/400.html&quot;,&quot;http://www.nessus.org/u?b3f4ea56&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>4.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="141605" pluginName="CentOS 7 : libssh2 (CESA-2020:3915)" port="0">
+<plugin_output>
+Remote package installed : libssh2-1.8.0-3.el7
+Should be                : libssh2-1.8.0-4.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>5.8</cvss_base_score>
+<cvss_temporal_score>4.3</cvss_temporal_score>
+<cvss3_base_score>8.1</cvss3_base_score>
+<cvss3_temporal_score>7.1</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected libssh2, libssh2-devel and / or libssh2-docs packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/10/21</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:P/I:N/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:3915 advisory.
+
+  - libssh2: integer overflow in SSH_MSG_DISCONNECT logic in packet.c (CVE-2019-17498)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2019-17498</cve>
+<xref>CWE:190</xref>
+<xref>RHSA:2020:3915</xref>
+<xref>CWE:400</xref>
+<xref>CWE:200</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/200.html&quot;,&quot;https://cwe.mitre.org/data/definitions/190.html&quot;,&quot;https://cwe.mitre.org/data/definitions/400.html&quot;,&quot;http://www.nessus.org/u?4c9fe3cb&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>6.0</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="3" svc_name="n/a" pluginID="146097" pluginName="CentOS 7 : glibc (CESA-2021:0348)" port="0">
+<plugin_output>
+Remote package installed : glibc-2.17-307.el7.1
+Should be                : glibc-2.17-322.el7_9
+
+Remote package installed : glibc-common-2.17-307.el7.1
+Should be                : glibc-common-2.17-322.el7_9
+
+</plugin_output>
+<cvss_base_score>7.1</cvss_base_score>
+<cvss_temporal_score>5.3</cvss_temporal_score>
+<cvss3_base_score>5.9</cvss3_base_score>
+<cvss3_temporal_score>5.2</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2021/02/04</patch_publication_date>
+<plugin_modification_date>2021/02/05</plugin_modification_date>
+<plugin_publication_date>2021/02/03</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/03/04</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:N/I:N/A:C</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2021:0348 advisory.
+
+  - glibc: buffer over-read in iconv when processing invalid multi-byte input sequences in the EUC-KR encoding     (CVE-2019-25013)
+
+  - glibc: stack corruption from crafted input in cosl, sinl, sincosl, and tanl functions (CVE-2020-10029)
+
+  - glibc: stack-based buffer overflow if the input to any of the printf family of functions is an 80-bit long     double with a non-canonical bit pattern (CVE-2020-29573)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2019-25013</cve>
+<cve>CVE-2020-10029</cve>
+<cve>CVE-2020-29573</cve>
+<xref>CWE:121</xref>
+<xref>RHSA:2021:0348</xref>
+<xref>CWE:119</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/121.html&quot;,&quot;https://cwe.mitre.org/data/definitions/119.html&quot;,&quot;http://www.nessus.org/u?e1118f5e&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>4.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="148425" pluginName="CentOS 7 : kernel (CESA-2021:1071)" port="0">
+<plugin_output>
+Remote package installed : kernel-3.10.0-1127.18.2.el7
+Should be                : kernel-3.10.0-1160.24.1.el7
+
+Remote package installed : kernel-tools-3.10.0-1127.18.2.el7
+Should be                : kernel-tools-3.10.0-1160.24.1.el7
+
+Remote package installed : kernel-tools-libs-3.10.0-1127.18.2.el7
+Should be                : kernel-tools-libs-3.10.0-1160.24.1.el7
+
+Remote package installed : python-perf-3.10.0-1127.18.2.el7
+Should be                : python-perf-3.10.0-1160.24.1.el7
+
+</plugin_output>
+<cvss_base_score>4.6</cvss_base_score>
+<cvss_temporal_score>3.4</cvss_temporal_score>
+<cvss3_base_score>7.8</cvss3_base_score>
+<cvss3_temporal_score>6.8</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2021/04/10</patch_publication_date>
+<plugin_modification_date>2021/04/10</plugin_modification_date>
+<plugin_publication_date>2021/04/10</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2021/03/07</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:L/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2021:1071 advisory.
+
+  - kernel: iscsi: unrestricted access to sessions and handles (CVE-2021-27363)
+
+  - kernel: out-of-bounds read in libiscsi module (CVE-2021-27364)
+
+  - kernel: heap buffer overflow in the iSCSI subsystem (CVE-2021-27365)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2021-27363</cve>
+<cve>CVE-2021-27364</cve>
+<cve>CVE-2021-27365</cve>
+<xref>CWE:125</xref>
+<xref>RHSA:2021:1071</xref>
+<xref>CWE:122</xref>
+<xref>CWE:200</xref>
+<xref>CWE:250</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/200.html&quot;,&quot;https://cwe.mitre.org/data/definitions/125.html&quot;,&quot;https://cwe.mitre.org/data/definitions/122.html&quot;,&quot;https://cwe.mitre.org/data/definitions/250.html&quot;,&quot;http://www.nessus.org/u?a94c4338&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>9.0</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="139422" pluginName="CentOS 7 : java-1.8.0-openjdk (CESA-2020:2968)" port="0">
+<plugin_output>
+Remote package installed : java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8
+Should be                : java-1.8.0-openjdk-1.8.0.262.b10-0.el7_8
+
+Remote package installed : java-1.8.0-openjdk-headless-1.8.0.252.b09-2.el7_8
+Should be                : java-1.8.0-openjdk-headless-1.8.0.262.b10-0.el7_8
+
+</plugin_output>
+<cvss_base_score>5.8</cvss_base_score>
+<cvss_temporal_score>4.3</cvss_temporal_score>
+<cvss3_base_score>4.8</cvss3_base_score>
+<cvss3_temporal_score>4.2</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/08/07</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/08/07</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/07/14</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:P/I:P/A:N</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:2968 advisory.
+
+  - OpenJDK: Incorrect handling of access control context in ForkJoinPool (Libraries, 8237117)     (CVE-2020-14556)
+
+  - OpenJDK: HostnameChecker does not ensure X.509 certificate names are in normalized form (JSSE, 8237592)     (CVE-2020-14577)
+
+  - OpenJDK: Unexpected exception raised by DerInputStream (Libraries, 8237731) (CVE-2020-14578)
+
+  - OpenJDK: Unexpected exception raised by DerValue.equals() (Libraries, 8237736) (CVE-2020-14579)
+
+  - OpenJDK: Bypass of boundary checks in nio.Buffer via concurrent access (Libraries, 8238920)     (CVE-2020-14583)
+
+  - OpenJDK: Incomplete bounds checks in Affine Transformations (2D, 8240119) (CVE-2020-14593)
+
+  - OpenJDK: XML validation manipulation due to incomplete application of the use-grammar-pool-only feature     (JAXP, 8242136) (CVE-2020-14621)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2020-14577</cve>
+<cve>CVE-2020-14621</cve>
+<cve>CVE-2020-14556</cve>
+<cve>CVE-2020-14578</cve>
+<cve>CVE-2020-14579</cve>
+<cve>CVE-2020-14593</cve>
+<cve>CVE-2020-14583</cve>
+<xref>RHSA:2020:2968</xref>
+<xref>CWE:248</xref>
+<xref>CWE:20</xref>
+<xref>CWE:119</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/20.html&quot;,&quot;https://cwe.mitre.org/data/definitions/119.html&quot;,&quot;https://cwe.mitre.org/data/definitions/248.html&quot;,&quot;http://www.nessus.org/u?b46b694b&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>6.5</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="3" svc_name="n/a" pluginID="144549" pluginName="CentOS 7 : kernel (CESA-2020:5437)" port="0">
+<plugin_output>
+Remote package installed : kernel-3.10.0-1127.18.2.el7
+Should be                : kernel-3.10.0-1160.11.1.el7
+
+Remote package installed : kernel-tools-3.10.0-1127.18.2.el7
+Should be                : kernel-tools-3.10.0-1160.11.1.el7
+
+Remote package installed : kernel-tools-libs-3.10.0-1127.18.2.el7
+Should be                : kernel-tools-libs-3.10.0-1160.11.1.el7
+
+Remote package installed : python-perf-3.10.0-1127.18.2.el7
+Should be                : python-perf-3.10.0-1160.11.1.el7
+
+</plugin_output>
+<cvss_base_score>7.5</cvss_base_score>
+<cvss_temporal_score>5.5</cvss_temporal_score>
+<cvss3_base_score>7.2</cvss3_base_score>
+<cvss3_temporal_score>6.3</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/12/21</patch_publication_date>
+<plugin_modification_date>2020/12/23</plugin_modification_date>
+<plugin_publication_date>2020/12/22</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/01/16</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:H/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:S/C:P/I:P/A:C</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2020:5437 advisory.
+
+  - kernel: The flow_dissector feature allows device tracking (CVE-2019-18282)
+
+  - kernel: Buffer over-read in crypto_authenc_extractkeys() when a payload longer than 4 bytes is not     aligned. (CVE-2020-10769)
+
+  - kernel: buffer uses out of index in ext3/4 filesystem (CVE-2020-14314)
+
+  - kernel: metadata validator in XFS may cause an inode with a valid, user-creatable extended attribute to be     flagged as corrupt (CVE-2020-14385)
+
+  - kernel: umask not applied on filesystem without ACL support (CVE-2020-24394)
+
+  - kernel: TOCTOU mismatch in the NFS client code (CVE-2020-25212)
+
+  - kernel: improper input validation in ppp_cp_parse_cr function leads to memory corruption and read overflow     (CVE-2020-25643)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2020-14314</cve>
+<cve>CVE-2020-25212</cve>
+<cve>CVE-2020-25643</cve>
+<cve>CVE-2020-14385</cve>
+<cve>CVE-2019-18282</cve>
+<cve>CVE-2020-24394</cve>
+<cve>CVE-2020-10769</cve>
+<xref>CWE:732</xref>
+<xref>CWE:125</xref>
+<xref>CWE:367</xref>
+<xref>CWE:200</xref>
+<xref>CWE:131</xref>
+<xref>CWE:20</xref>
+<xref>RHSA:2020:5437</xref>
+<xref>CWE:119</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/200.html&quot;,&quot;https://cwe.mitre.org/data/definitions/125.html&quot;,&quot;https://cwe.mitre.org/data/definitions/20.html&quot;,&quot;https://cwe.mitre.org/data/definitions/119.html&quot;,&quot;https://cwe.mitre.org/data/definitions/732.html&quot;,&quot;https://cwe.mitre.org/data/definitions/131.html&quot;,&quot;https://cwe.mitre.org/data/definitions/367.html&quot;,&quot;http://www.nessus.org/u?8e2f5434&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>6.7</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="144971" pluginName="CentOS 7 : openssl (CESA-2020:5566)" port="0">
+<plugin_output>
+Remote package installed : openssl-1.0.2k-19.el7
+Should be                : openssl-1.0.2k-21.el7_9
+
+Remote package installed : openssl-libs-1.0.2k-19.el7
+Should be                : openssl-libs-1.0.2k-21.el7_9
+
+</plugin_output>
+<cvss_base_score>4.3</cvss_base_score>
+<cvss_temporal_score>3.2</cvss_temporal_score>
+<cvss3_base_score>5.9</cvss3_base_score>
+<cvss3_temporal_score>5.2</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/12/18</patch_publication_date>
+<plugin_modification_date>2021/01/15</plugin_modification_date>
+<plugin_publication_date>2021/01/14</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/12/08</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:M/Au:N/C:N/I:N/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:5566 advisory.
+
+  - openssl: EDIPARTYNAME NULL pointer de-reference (CVE-2020-1971)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2020-1971</cve>
+<xref>CWE:476</xref>
+<xref>RHSA:2020:5566</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/476.html&quot;,&quot;http://www.nessus.org/u?0681d034&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>6.7</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="146099" pluginName="CentOS 7 : linux-firmware (CESA-2021:0339)" port="0">
+<plugin_output>
+Remote package installed : iwl100-firmware-39.31.5.1-76.el7
+Should be                : iwl100-firmware-39.31.5.1-80.el7_9
+
+Remote package installed : iwl1000-firmware-39.31.5.1-76.el7
+Should be                : iwl1000-firmware-39.31.5.1-80.el7_9
+
+Remote package installed : iwl105-firmware-18.168.6.1-76.el7
+Should be                : iwl105-firmware-18.168.6.1-80.el7_9
+
+Remote package installed : iwl135-firmware-18.168.6.1-76.el7
+Should be                : iwl135-firmware-18.168.6.1-80.el7_9
+
+Remote package installed : iwl2000-firmware-18.168.6.1-76.el7
+Should be                : iwl2000-firmware-18.168.6.1-80.el7_9
+
+Remote package installed : iwl2030-firmware-18.168.6.1-76.el7
+Should be                : iwl2030-firmware-18.168.6.1-80.el7_9
+
+Remote package installed : iwl3160-firmware-25.30.13.0-76.el7
+Should be                : iwl3160-firmware-25.30.13.0-80.el7_9
+
+Remote package installed : iwl3945-firmware-15.32.2.9-76.el7
+Should be                : iwl3945-firmware-15.32.2.9-80.el7_9
+
+Remote package installed : iwl4965-firmware-228.61.2.24-76.el7
+Should be                : iwl4965-firmware-228.61.2.24-80.el7_9
+
+Remote package installed : iwl5000-firmware-8.83.5.1_1-76.el7
+Should be                : iwl5000-firmware-8.83.5.1_1-80.el7_9
+
+Remote package installed : iwl5150-firmware-8.24.2.2-76.el7
+Should be                : iwl5150-firmware-8.24.2.2-80.el7_9
+
+Remote package installed : iwl6000-firmware-9.221.4.1-76.el7
+Should be                : iwl6000-firmware-9.221.4.1-80.el7_9
+
+Remote package installed : iwl6000g2a-firmware-18.168.6.1-76.el7
+Should be                : iwl6000g2a-firmware-18.168.6.1-80.el7_9
+
+Remote package installed : iwl6000g2b-firmware-18.168.6.1-76.el7
+Should be                : iwl6000g2b-firmware-18.168.6.1-80.el7_9
+
+Remote package installed : iwl6050-firmware-41.28.5.1-76.el7
+Should be                : iwl6050-firmware-41.28.5.1-80.el7_9
+
+Remote package installed : iwl7260-firmware-25.30.13.0-76.el7
+Should be                : iwl7260-firmware-25.30.13.0-80.el7_9
+
+</plugin_output>
+<cvss_base_score>5.8</cvss_base_score>
+<cvss_temporal_score>4.3</cvss_temporal_score>
+<cvss3_base_score>8.8</cvss3_base_score>
+<cvss3_temporal_score>7.7</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2021/02/04</patch_publication_date>
+<plugin_modification_date>2021/02/05</plugin_modification_date>
+<plugin_publication_date>2021/02/03</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/11/12</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:A/AC:L/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2021:0339 advisory.
+
+  - hardware: buffer overflow in bluetooth firmware (CVE-2020-12321)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2020-12321</cve>
+<xref>RHSA:2021:0339</xref>
+<xref>CWE:120</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/120.html&quot;,&quot;http://www.nessus.org/u?a4abe4b8&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>5.9</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="142603" pluginName="CentOS 7 : libX11 (CESA-2020:4908)" port="0">
+<plugin_output>
+Remote package installed : libX11-1.6.7-2.el7
+Should be                : libX11-1.6.7-3.el7_9
+
+Remote package installed : libX11-common-1.6.7-2.el7
+Should be                : libX11-common-1.6.7-3.el7_9
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>4.6</cvss_base_score>
+<cvss_temporal_score>3.4</cvss_temporal_score>
+<cvss3_base_score>7.8</cvss3_base_score>
+<cvss3_temporal_score>6.8</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/11/06</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/11/06</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected libX11, libX11-common and / or libX11-devel packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/09/11</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:L/Au:N/C:P/I:P/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:4908 advisory.
+
+  - libX11: integer overflow leads to double free in locale handling (CVE-2020-14363)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2020-14363</cve>
+<xref>CWE:190</xref>
+<xref>RHSA:2020:4908</xref>
+<xref>CWE:416</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/416.html&quot;,&quot;https://cwe.mitre.org/data/definitions/190.html&quot;,&quot;http://www.nessus.org/u?dcdafe94&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>5.9</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="3" svc_name="n/a" pluginID="147885" pluginName="CentOS 7 : kernel (CESA-2021:0856)" port="0">
+<plugin_output>
+Remote package installed : kernel-3.10.0-1127.18.2.el7
+Should be                : kernel-3.10.0-1160.21.1.el7
+
+Remote package installed : kernel-tools-3.10.0-1127.18.2.el7
+Should be                : kernel-tools-3.10.0-1160.21.1.el7
+
+Remote package installed : kernel-tools-libs-3.10.0-1127.18.2.el7
+Should be                : kernel-tools-libs-3.10.0-1160.21.1.el7
+
+Remote package installed : python-perf-3.10.0-1127.18.2.el7
+Should be                : python-perf-3.10.0-1160.21.1.el7
+
+</plugin_output>
+<cvss_base_score>7.2</cvss_base_score>
+<cvss_temporal_score>5.6</cvss_temporal_score>
+<cvss3_base_score>7.8</cvss3_base_score>
+<cvss3_temporal_score>7.0</cvss3_temporal_score>
+<exploit_available>true</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2021/03/18</patch_publication_date>
+<plugin_modification_date>2021/03/19</plugin_modification_date>
+<plugin_publication_date>2021/03/18</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2019/12/03</vuln_publication_date>
+<cvss3_temporal_vector>E:P/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H</cvss3_vector>
+<cvss_temporal_vector>E:POC/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:L/AC:L/Au:N/C:C/I:C/A:C</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by multiple vulnerabilities as referenced in the CESA-2021:0856 advisory.
+
+  - kernel: malicious USB devices can lead to multiple out-of-bounds write (CVE-2019-19532)
+
+  - kernel: out-of-bounds reads in pinctrl subsystem. (CVE-2020-0427)
+
+  - kernel: performance counters race condition use-after-free (CVE-2020-14351)
+
+  - kernel: Local buffer overflow in ctnetlink_parse_tuple_filter in net/netfilter/nf_conntrack_netlink.c     (CVE-2020-25211)
+
+  - kernel: Geneve/IPsec traffic may be unencrypted between two Geneve endpoints (CVE-2020-25645)
+
+  - kernel: use-after-free in read in vt_do_kdgkb_ioctl (CVE-2020-25656)
+
+  - kernel: ICMP rate limiting can be used for DNS poisoning attack (CVE-2020-25705)
+
+  - kernel: SCSI target (LIO) write to any block on ILO backstore (CVE-2020-28374)
+
+  - kernel: locking issue in drivers/tty/tty_jobctrl.c can lead to an use-after-free (CVE-2020-29661)
+
+  - kernel: use-after-free in i915_ppgtt_close in drivers/gpu/drm/i915/i915_gem_gtt.c (CVE-2020-7053)
+
+  - kernel: increase slab leak leads to DoS (CVE-2021-20265)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing one or more security updates.</synopsis>
+<cve>CVE-2021-20265</cve>
+<cve>CVE-2020-25211</cve>
+<cve>CVE-2020-7053</cve>
+<cve>CVE-2020-0427</cve>
+<cve>CVE-2019-19532</cve>
+<cve>CVE-2020-25645</cve>
+<cve>CVE-2020-25656</cve>
+<cve>CVE-2020-25705</cve>
+<cve>CVE-2020-28374</cve>
+<cve>CVE-2020-29661</cve>
+<cve>CVE-2020-14351</cve>
+<xref>CWE:667</xref>
+<xref>CWE:400</xref>
+<xref>RHSA:2021:0856</xref>
+<xref>CWE:200</xref>
+<xref>CWE:20</xref>
+<xref>CWE:330</xref>
+<xref>CWE:319</xref>
+<xref>CWE:119</xref>
+<xref>CWE:416</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/200.html&quot;,&quot;https://cwe.mitre.org/data/definitions/416.html&quot;,&quot;https://cwe.mitre.org/data/definitions/20.html&quot;,&quot;https://cwe.mitre.org/data/definitions/119.html&quot;,&quot;https://cwe.mitre.org/data/definitions/400.html&quot;,&quot;https://cwe.mitre.org/data/definitions/319.html&quot;,&quot;https://cwe.mitre.org/data/definitions/330.html&quot;,&quot;https://cwe.mitre.org/data/definitions/667.html&quot;,&quot;http://www.nessus.org/u?7bf93600&quot;]</see_also>
+<risk_factor>High</risk_factor>
+<vulnerability_priority_rating>6.7</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem>
+<ReportItem protocol="TCP" pluginFamily="CentOS Local Security Checks" severity="2" svc_name="n/a" pluginID="141636" pluginName="CentOS 7 : openldap (CESA-2020:4041)" port="0">
+<plugin_output>
+Remote package installed : openldap-2.4.44-21.el7_6
+Should be                : openldap-2.4.44-22.el7
+
+
+NOTE: The security advisory associated with this vulnerability has a
+fixed package version that may only be available in the continuous
+release (CR) repository for CentOS, until it is present in the next
+point release of CentOS.
+
+If an equal or higher package level does not exist in the baseline
+repository for your major version of CentOS, then updates from the CR
+repository will need to be applied in order to address the
+vulnerability.
+</plugin_output>
+<cvss_base_score>5.0</cvss_base_score>
+<cvss_temporal_score>3.7</cvss_temporal_score>
+<cvss3_base_score>7.5</cvss3_base_score>
+<cvss3_temporal_score>6.5</cvss3_temporal_score>
+<exploit_available>false</exploit_available>
+<exploited_by_nessus>false</exploited_by_nessus>
+<exploit_framework_canvas>false</exploit_framework_canvas>
+<exploit_framework_core>false</exploit_framework_core>
+<exploit_framework_exploithub>false</exploit_framework_exploithub>
+<exploit_framework_metasploit>false</exploit_framework_metasploit>
+<exploit_framework_d2_elliot>false</exploit_framework_d2_elliot>
+<exploited_by_malware>false</exploited_by_malware>
+<in_the_news>false</in_the_news>
+<malware>false</malware>
+<patch_publication_date>2020/10/20</patch_publication_date>
+<plugin_modification_date>2020/11/30</plugin_modification_date>
+<plugin_publication_date>2020/10/20</plugin_publication_date>
+<plugin_type>local</plugin_type>
+<solution>Update the affected packages.</solution>
+<unsupported_by_vendor>false</unsupported_by_vendor>
+<vuln_publication_date>2020/04/28</vuln_publication_date>
+<cvss3_temporal_vector>E:U/RL:O/RC:C</cvss3_temporal_vector>
+<cvss3_vector>AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H</cvss3_vector>
+<cvss_temporal_vector>E:U/RL:OF/RC:C</cvss_temporal_vector>
+<cvss_vector>AV:N/AC:L/Au:N/C:N/I:N/A:P</cvss_vector>
+<description>The remote CentOS Linux 7 host has packages installed that are affected by a vulnerability as referenced in the CESA-2020:4041 advisory.
+
+  - openldap: denial of service via nested boolean expressions in LDAP search filters (CVE-2020-12243)
+
+Note that Nessus has not tested for this issue but has instead relied only on the application&apos;s self-reported version number.</description>
+<synopsis>The remote CentOS Linux host is missing a security update.</synopsis>
+<cve>CVE-2020-12243</cve>
+<xref>RHSA:2020:4041</xref>
+<xref>CWE:400</xref>
+<see_also>[&quot;https://cwe.mitre.org/data/definitions/400.html&quot;,&quot;http://www.nessus.org/u?979570fb&quot;]</see_also>
+<risk_factor>Medium</risk_factor>
+<vulnerability_priority_rating>4.4</vulnerability_priority_rating>
+<last_found>2021-06-10T12:09:19.241Z</last_found>
+<first_found>2021-06-10T12:09:19.241Z</first_found>
+<vulnerability_state>New</vulnerability_state></ReportItem></ReportHost></Report></NessusClientData_v2>
