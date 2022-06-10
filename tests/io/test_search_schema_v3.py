@@ -17,15 +17,6 @@ SEARCH_DATA = dict(
     next='sdf000dfssdSDFSDFSFE00dfsdffaf'
 )
 
-SEARCH_DATA_WAS = dict(
-    fields=['bios_name', 'name'],
-    filter=('bios_name', 'eq', 'SCCM'),
-    limit=10,
-    offset=0,
-    num_pages=1,
-    sort=[('name', 'asc'), ('bios_name', 'desc')],
-)
-
 SORT_DATA_SCHEMA = dict(property='bios_name', order='asc')
 
 

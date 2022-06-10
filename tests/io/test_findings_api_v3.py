@@ -6,9 +6,6 @@ from requests import Response
 
 from tenable.io.v3.base.iterators.explore_iterator import CSVChunkIterator, SearchIterator
 
-VUL_BASE_URL = r'https://cloud.tenable.com/api/v3/findings/vulnerabilities'
-BASE_URL = r'https://cloud.tenable.com'
-
 
 @pytest.mark.vcr()
 def test_findings_v3_search_was(api):
