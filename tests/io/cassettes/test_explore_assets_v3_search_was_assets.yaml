@@ -1,0 +1,130 @@
+interactions:
+- request:
+    body: '{"sort": [{"created": "desc"}], "filter": {"and": [{"value": "2022-04-19T18:30:00.000Z",
+      "operator": "lt", "property": "last_observed"}, {"value": ["6167eae5-808a-415a-8400-f3208e5382c5"],
+      "operator": "eq", "property": "tags"}]}, "limit": 200}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '243'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.6
+        (Restfly/1.4.6; Python/3.10.4; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: POST
+    uri: https://cloud.tenable.com/api/v3/assets/webapp/search
+  response:
+    body:
+      string: '{"assets":[{"types":["webapp"],"sources":["WAS"],"last_licensed_scan_time":"2022-01-25T15:17:50.322Z","created":"2021-10-28T13:47:40.801Z","is_licensed":false,"ipv4_addresses":["44.241.194.21"],"homepage_screenshot_url":"https://cloud.tenable.com/was/v2/attachments/54fd0e88-7377-4755-8e9b-7b944f671de9","tags":[{"id":"6167eae5-808a-415a-8400-f3208e5382c5","category":"ABCD","value":"tag111","type":"static"}],"display_ipv4_address":"44.241.194.21","first_observed":"2021-10-28T13:47:40.694Z","display_operating_system":"Linux
+        Kernel 3.10 on CentOS Linux release 7","is_deleted":false,"ssl_tls_enabled":false,"last_observed":"2022-01-25T15:17:50.322Z","name":"target1.pubtarg.tenablesecurity.com","id":"8a148a61-7f5f-4730-8ac0-ebcebcbd6a4d","updated":"2022-01-25T15:22:22.966Z"}],"pagination":{"limit":200,"total":1}}'
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '817'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 10 Jun 2022 06:50:21 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-d5jw8-ap-southeast-1-prod
+      X-Request-Uuid:
+      - 715ff2764f768277165b2aa48d163d9e
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"sort": [{"created": "desc"}], "filter": {"and": [{"value": "2022-04-19T18:30:00.000Z",
+      "operator": "lt", "property": "last_observed"}, {"value": ["6167eae5-808a-415a-8400-f3208e5382c5"],
+      "operator": "eq", "property": "tags"}]}, "limit": 200}'
+    headers:
+      Accept:
+      - text/csv
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '243'
+      Content-Type:
+      - application/json
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.6
+        (Restfly/1.4.6; Python/3.10.4; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: POST
+    uri: https://cloud.tenable.com/api/v3/assets/webapp/search
+  response:
+    body:
+      string: 'created,display_ipv4_address,display_operating_system,first_observed,homepage_screenshot_url,id,ipv4_addresses,is_deleted,is_licensed,last_licensed_scan_time,last_observed,name,sources,ssl_tls_enabled,tags,types,updated
+
+        2021-10-28T13:47:40.801Z,44.241.194.21,"Linux Kernel 3.10 on CentOS Linux
+        release 7",2021-10-28T13:47:40.694Z,"https://cloud.tenable.com/was/v2/attachments/54fd0e88-7377-4755-8e9b-7b944f671de9","8a148a61-7f5f-4730-8ac0-ebcebcbd6a4d",44.241.194.21,false,false,2022-01-25T15:17:50.322Z,2022-01-25T15:17:50.322Z,"target1.pubtarg.tenablesecurity.com",WAS,false,tag111,webapp,2022-01-25T15:22:22.966Z
+
+        '
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '616'
+      Content-Type:
+      - text/csv;charset=UTF-8
+      Date:
+      - Fri, 10 Jun 2022 06:50:22 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-d5jw8-ap-southeast-1-prod
+      X-Request-Uuid:
+      - ce17dab4c6c03113184b2092aaa2248b
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
