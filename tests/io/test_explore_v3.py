@@ -27,7 +27,6 @@ REQUESTDATA_2 = dict(
     sort=[('name', 'asc')],
 )
 
-
 RESPONSE_2 = {'assets':
                   [{'created': '2022-01-24T22:28:15.083Z',
                     'display_ipv4_address': '172.26.100.153',
