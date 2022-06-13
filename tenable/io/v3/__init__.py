@@ -22,7 +22,7 @@ from tenable.io.v3.explore import Explore
 
 class Version3API(APIEndpoint):
     '''
-    This will contain property for all resources/app under tenable.io - V3.
+    This will contain property for all resources/app under Tenable.io - V3.
     '''
 
     @property

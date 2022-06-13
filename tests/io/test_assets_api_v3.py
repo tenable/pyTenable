@@ -6,9 +6,6 @@ from requests import Response
 
 from tenable.io.v3.base.iterators.explore_iterator import CSVChunkIterator, SearchIterator
 
-BASE_URL = 'https://cloud.tenable.com/api/v3'
-ASSET_BASE_URL = f'{BASE_URL}/assets'
-
 
 @pytest.mark.vcr()
 def test_explore_assets_v3_search_was_assets(api):

@@ -14,8 +14,6 @@ SEARCH_DATA = dict(
     next='sdf000dfssdSDFSDFSFE00dfsdffaf'
 )
 
-ASSET_TAG_FILTER_ENDPOINT: str = 'https://cloud.tenable.com'
-
 
 @pytest.mark.vcr()
 def test_filter_tuple_without_condition_v3():
