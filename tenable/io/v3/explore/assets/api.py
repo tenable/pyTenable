@@ -60,10 +60,6 @@ class AssetsAPI(ExploreBaseEndpoint):
                     ...      'property': 3
                     ...  }]
                     ... }
-                As the filters may change and sortable fields may change over
-                time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.asset_filters()`
-                endpoint to get more details.
             sort (list[tuple], optional):
                 sort is a list of tuples in the form of
                 ('FIELD', 'ORDER').
@@ -138,10 +134,6 @@ class AssetsAPI(ExploreBaseEndpoint):
                     ...      'property': 3
                     ...  }]
                     ... }
-                As the filters may change and sortable fields may change over
-                time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.asset_filters()`
-                endpoint to get more details.
             sort (list[tuple], optional):
                 sort is a list of tuples in the form of
                 ('FIELD', 'ORDER').
@@ -171,7 +163,7 @@ class AssetsAPI(ExploreBaseEndpoint):
                 object is returned instead of an iterable.
 
         Examples:
-            >>> tio.v3.assets.search_webapp(filter=('netbios_name', 'eq', 'SCCM'),
+            >>> tio.v3.assets.search_host(filter=('netbios_name', 'eq', 'SCCM'),
             ...  limit=2, sort=[('last_observed', 'asc')])
         '''
         iclass = SearchIterator
@@ -216,10 +208,6 @@ class AssetsAPI(ExploreBaseEndpoint):
                     ...      'property': 3
                     ...  }]
                     ... }
-                As the filters may change and sortable fields may change over
-                time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.asset_filters()`
-                endpoint to get more details.
             sort (list[tuple], optional):
                 sort is a list of tuples in the form of
                 ('FIELD', 'ORDER').
@@ -249,7 +237,7 @@ class AssetsAPI(ExploreBaseEndpoint):
                 object is returned instead of an iterable.
 
         Examples:
-            >>> tio.v3.assets.search_webapp(filter=('netbios_name', 'eq', 'SCCM'),
+            >>> tio.v3.assets.search_cloud_resource(filter=('netbios_name', 'eq', 'SCCM'),
             ...  limit=2, sort=[('last_observed', 'asc')])
         '''
         iclass = SearchIterator
@@ -294,10 +282,6 @@ class AssetsAPI(ExploreBaseEndpoint):
                     ...      'property': 3
                     ...  }]
                     ... }
-                As the filters may change and sortable fields may change over
-                time, it's highly recommended that you look at the output of
-                the :py:meth:`tio.v3.vm.filters.asset_filters()`
-                endpoint to get more details.
             sort (list[tuple], optional):
                 sort is a list of tuples in the form of
                 ('FIELD', 'ORDER').
@@ -327,7 +311,7 @@ class AssetsAPI(ExploreBaseEndpoint):
                 object is returned instead of an iterable.
 
         Examples:
-            >>> tio.v3.assets.search_webapp(filter=('netbios_name', 'eq', 'SCCM'),
+            >>> tio.v3.assets.search_all(filter=('netbios_name', 'eq', 'SCCM'),
             ...  limit=2, sort=[('last_observed', 'asc')])
         '''
         iclass = SearchIterator

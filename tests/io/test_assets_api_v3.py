@@ -117,8 +117,11 @@ def test_explore_assets_v3_search_all_assets(api):
     '''
     operating_system_list = ['linux*']
     source_list = ['AWS']
+    asset_type_request_list = ['host', 'webapp', 'cloud_resource']
+    asset_type_response_list = ['host', 'webapp', 'cloud']
     sort = [('last_observed', 'desc')]
-    filters = ('and', ('operating_systems', 'wc', operating_system_list), ('sources', 'eq', source_list))
+    filters = ('and', ('operating_systems', 'wc', operating_system_list), ('sources', 'eq', source_list),
+               ('types', 'eq', asset_type_request_list))
 
     assets_iterator = api.v3.explore.assets.search_all(limit=50, sort=sort, filter=filters)
     assert isinstance(assets_iterator, SearchIterator), \
@@ -132,6 +135,10 @@ def test_explore_assets_v3_search_all_assets(api):
         for asset_source in asset_data['sources']:
             assert asset_source in source_list, \
                 "All Assets are not filtered as per 'sources' filter criteria."
+
+        for asset_type in asset_data['types']:
+            assert asset_type in asset_type_response_list, \
+                "All Assets are not filtered as per 'types' filter criteria."
 
     assets_csv_iterator = api.v3.explore.assets.search_all(sort=sort, limit=50, filter=filters,
                                                            return_csv=True)
