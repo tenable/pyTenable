@@ -10,7 +10,7 @@ from tenable.io.v3.base.iterators.explore_iterator import CSVChunkIterator, Sear
 @pytest.mark.vcr()
 def test_findings_v3_search_was(api):
     '''
-    Test the search endpoint of web applications findings
+    Test the search endpoint of web applications - findings
     '''
 
     fields = ['finding_id', 'severity', 'state', 'last_observed']
@@ -44,34 +44,35 @@ def test_findings_v3_search_was(api):
 
 
 @pytest.mark.vcr()
-def test_findings_v3_search_cloud(api):
+def test_findings_v3_search_cloud_resource(api):
     '''
-    Test the search endpoint of Cloud - findings
+    Test the search endpoint of cloud resource - findings
+
     '''
 
     fields = ['finding_id', 'last_found_time', 'risk_factor_num', 'asset.name', 'state']
     sort = [("state", "desc")]
     filter = ('and', ('risk_factor_num', 'eq', 3), ('state', 'eq', ['ACTIVE']))
 
-    iterator = api.v3.explore.findings.search_cloud(
+    iterator = api.v3.explore.findings.search_cloud_resource(
         fields=fields, filter=filter, sort=sort, limit=200,
     )
     assert isinstance(iterator, SearchIterator), \
         "Iterator is not returned in response of Explore -> Cloud Findings"
 
-    iterator = api.v3.explore.findings.search_cloud(
+    iterator = api.v3.explore.findings.search_cloud_resource(
         fields=fields, filter=filter, return_csv=True, sort=sort, limit=200,
     )
     assert isinstance(iterator, CSVChunkIterator), "CSV chunk iterator is not returned in response of " \
                                                    "Explore -> Cloud Findings with return_csv flag enabled"
 
-    resp = api.v3.explore.findings.search_cloud(
+    resp = api.v3.explore.findings.search_cloud_resource(
         fields=fields, filter=filter, return_resp=True, return_csv=True, sort=sort, limit=200
     )
     assert isinstance(resp, Response), "Response object (CSV format) is not returned in response of " \
                                        "Explore -> Cloud Findings with return_resp & return_csv flag enabled"
 
-    resp = api.v3.explore.findings.search_cloud(
+    resp = api.v3.explore.findings.search_cloud_resource(
         fields=fields, filter=filter, return_resp=True, sort=sort, limit=200
     )
     assert isinstance(resp, Response), "Response is not returned in response of " \
@@ -81,7 +82,7 @@ def test_findings_v3_search_cloud(api):
 @pytest.mark.vcr()
 def test_findings_v3_search_host_audit(api):
     '''
-    Test the search functionality of Host Audit Vulnerability API
+    Test the search endpoint of host audit - findings
     '''
     fields = ["asset_id", "asset_name", "audit_name", "compliance_result", "plugin_id", 'state', 'last_observed']
     sort = [("state", "desc")]
@@ -116,7 +117,7 @@ def test_findings_v3_search_host_audit(api):
 @pytest.mark.vcr()
 def test_findings_v3_search_host(api):
     '''
-    Test the search functionality of Host Vulnerability API
+    Test the search endpoint of host - findings
     '''
     fields = ['asset.name', 'asset.display_ipv4_address', 'severity', 'definition.family', 'last_seen']
     sort = [("severity", "desc")]

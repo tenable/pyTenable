@@ -105,7 +105,7 @@ class FindingsAPI(ExploreBaseEndpoint):
                                **kw
                                )
 
-    def search_cloud(self,
+    def search_cloud_resource(self,
                      **kw
                      ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
@@ -170,7 +170,7 @@ class FindingsAPI(ExploreBaseEndpoint):
                 If ``return_resp`` is set to ``True``, then a response
                 object is returned instead of an iterable.
         Examples:
-            >>> tio.v3.explore.findings.search_cloud(
+            >>> tio.v3.explore.findings.search_cloud_resource(
             ... fields=['risk_factor_num','last_found_time'], limit=2)
         '''
         iclass = SearchIterator
@@ -265,7 +265,7 @@ class FindingsAPI(ExploreBaseEndpoint):
                     **kw
                     ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
-        Search and retrieve the Host Resource Vulnerabilities based on supported conditions.
+        Search and retrieve the Host Vulnerabilities based on supported conditions.
         Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.

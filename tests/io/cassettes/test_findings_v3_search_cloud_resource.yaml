@@ -1,9 +1,9 @@
 interactions:
 - request:
-    body: '{"fields": ["finding_id", "last_found_time", "risk_factor_num", "asset.name",
-      "state"], "limit": 200, "filter": {"and": [{"operator": "eq", "property": "risk_factor_num",
-      "value": 3}, {"operator": "eq", "property": "state", "value": ["ACTIVE"]}]},
-      "sort": [{"order": "desc", "property": "state"}]}'
+    body: '{"sort": [{"property": "state", "order": "desc"}], "fields": ["finding_id",
+      "last_found_time", "risk_factor_num", "asset.name", "state"], "filter": {"and":
+      [{"property": "risk_factor_num", "value": 3, "operator": "eq"}, {"property":
+      "state", "value": ["ACTIVE"], "operator": "eq"}]}, "limit": 200}'
     headers:
       Accept:
       - text/csv
@@ -137,7 +137,7 @@ interactions:
       Content-Type:
       - text/csv;charset=UTF-8
       Date:
-      - Mon, 13 Jun 2022 13:12:39 GMT
+      - Tue, 14 Jun 2022 10:28:53 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -156,19 +156,19 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-orlc5-ap-southeast-1-prod
+      - nginx-router-d5jw8-ap-southeast-1-prod
       X-Request-Uuid:
-      - ca8c1bea0259501821e25337ca000417
+      - a8ab6fd082813b7fb8e10062ba17c8ba
       X-Xss-Protection:
       - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: '{"fields": ["finding_id", "last_found_time", "risk_factor_num", "asset.name",
-      "state"], "limit": 200, "filter": {"and": [{"operator": "eq", "property": "risk_factor_num",
-      "value": 3}, {"operator": "eq", "property": "state", "value": ["ACTIVE"]}]},
-      "sort": [{"order": "desc", "property": "state"}]}'
+    body: '{"sort": [{"property": "state", "order": "desc"}], "fields": ["finding_id",
+      "last_found_time", "risk_factor_num", "asset.name", "state"], "filter": {"and":
+      [{"property": "risk_factor_num", "value": 3, "operator": "eq"}, {"property":
+      "state", "value": ["ACTIVE"], "operator": "eq"}]}, "limit": 200}'
     headers:
       Accept:
       - '*/*'
@@ -319,7 +319,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 13 Jun 2022 13:12:40 GMT
+      - Tue, 14 Jun 2022 10:28:54 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -338,9 +338,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-orlc5-ap-southeast-1-prod
+      - nginx-router-d5jw8-ap-southeast-1-prod
       X-Request-Uuid:
-      - b7b5cd48bd8cc82d1d13a4878d9d3549
+      - bdb9785d8010e9f10c28abcb747f6084
       X-Xss-Protection:
       - 1; mode=block
     status:
