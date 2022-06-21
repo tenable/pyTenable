@@ -160,7 +160,7 @@ class TagsAPI(TIOEndpoint):
                 for automatically applying the tag to asset.
 
                 Examples:
-                    - ``('distro', 'match', ['win', 'linux'])``
+                    - ``('operating_system', 'match', ['Linux'])``
                     - ``('name', 'nmatch', 'home')``
 
                 Note that multiple values can be passed in list of string format
@@ -200,7 +200,7 @@ class TagsAPI(TIOEndpoint):
             and apply to assets dynamically:
 
             >>> tio.tags.create('Location', 'San Francisco',
-            ...     filters=[('distro', 'match', ['win', 'linux'])])
+            ...     filters=[('operating_system', 'match', ['Linux'])])
 
             Creating a new Tag value in the existing Location Category
             and set permissions for users:
@@ -396,7 +396,7 @@ class TagsAPI(TIOEndpoint):
                 for automatically applying the tag to asset.
 
                 Examples::
-                    - ``('distro', 'match', ['win', 'linux'])``
+                    - ``('operating_system', 'match', ['Linux'])``
                     - ``('name', 'nmatch', 'home')``
 
                 Note that multiple values can be passed in list of string format
