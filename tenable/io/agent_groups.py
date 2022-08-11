@@ -23,7 +23,7 @@ class AgentGroupsAPI(TIOEndpoint):
 
         Args:
             group_id (int): The id of the group
-            *agent_ids (int): The id of the agent
+            *agent_ids (int): The id or uuid of the agent.  If passing multiple, they must all be either numeric id or uuid.
             scanner_id (int, optional): The id of the scanner
 
         Returns:
@@ -40,6 +40,10 @@ class AgentGroupsAPI(TIOEndpoint):
             Adding multiple agents:
 
             >>> tio.agent_groups.add_agent(1, 1, 2, 3)
+
+            Adding multiple agents by uuid:
+
+            >>> tio.agent_groups.add_agent(1, 'uuid-1', 'uuid-2', 'uuid-3')
         '''
         scanner_id = 1
         if 'scanner_id' in kw:
