@@ -42,12 +42,14 @@ Tenable.io
     users
     v3/index
     workbenches
+    access_control
 '''
 from typing import Dict, Optional
 
 from requests import Response
 
 from tenable.base.platform import APIPlatform
+from .access_control import AccessControlAPI
 from .access_groups import AccessGroupsAPI
 from .access_groups_v2 import AccessGroupsV2API
 from .agent_config import AgentConfigAPI
@@ -441,3 +443,11 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         :doc:`Tenable.io v3 APIs <v3/index>`.
         '''
         return Version3API(self)
+
+    @property
+    def access_control(self):
+        """
+        The interface object for the
+        :doc:`Tenable Platform Access Control APIs <access_control>`
+        """
+        return AccessControlAPI(self)
