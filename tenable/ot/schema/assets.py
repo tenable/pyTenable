@@ -2,8 +2,11 @@ import datetime
 import typing
 import uuid
 from typing import List, Optional
+
 from dataclasses import dataclass
+
 from tenable.ot.schema.base import NodesList
+from tenable.ot.schema.plugins import Plugin, Plugins
 
 
 @dataclass
@@ -92,6 +95,7 @@ class Asset:
     """
     This class holds asset information.
     """
+
     category: str
     criticality: str
     details: dict
@@ -103,6 +107,7 @@ class Asset:
     last_update: str
     macs: NodesList
     name: str
+    plugins: Plugins
     purdue_level: str
     revisions: Revisions
     risk: Risk

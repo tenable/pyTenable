@@ -1,6 +1,7 @@
 from marshmallow import fields
 
 from tenable.ot.graphql.definitions import NodesSchema, SchemaBase
+from tenable.ot.graphql.schema.plugins import PluginsSchema
 from tenable.ot.schema.assets import (
     Risk,
     Backplane,
@@ -172,6 +173,7 @@ class AssetSchema(SchemaBase):
     super_type = fields.String(required=True, data_key="superType")
     type = fields.String(required=True)
     vendor = fields.String(allow_none=True)
+    plugins = fields.Nested(PluginsSchema)
     attack_vector = fields.String(data_key="attackVector")
 
 

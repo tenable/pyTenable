@@ -10,6 +10,7 @@ from tenable.ot.graphql.definitions import (
     GraphqlErrorSchema,
     Location,
 )
+from tenable.ot.schema.base import NodesList
 
 
 def test_ot_interfaces(fixture_ot):
@@ -81,3 +82,14 @@ def test_graphql_error_parsing():
     parsed_err = GraphqlErrorSchema().load(raw_err)
     assert parsed_err == expected_err
     print(expected_err)
+
+
+def test_node_iterator():
+    items = NodesList(
+        nodes=[
+            "a",
+            "b",
+            "c",
+        ]
+    )
+    assert ["a", "b", "c"] == [item for item in items]
