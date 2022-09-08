@@ -1,9 +1,11 @@
 import datetime
 import uuid
-from dataclasses import dataclass
 from typing import List
 
+from dataclasses import dataclass
+
 from tenable.ot.schema.base import NodesList
+from tenable.ot.schema.plugins import Plugin
 
 
 @dataclass
@@ -98,6 +100,7 @@ class Asset:
     name: str
     os: str
     os_details: OSDetails
+    plugins: List[Plugin]
     purdue_level: str
     revisions: Revisions
     risk: Risk

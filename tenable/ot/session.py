@@ -13,12 +13,16 @@ This package covers the Tenable.ot interface.
     :glob:
 
     assets
+    events
+    plugins
 """
 import os
 import warnings
 
 from tenable.base.platform import APIPlatform
 from tenable.ot.assets import AssetsAPI
+from tenable.ot.events import EventsAPI
+from tenable.ot.plugins import PluginsAPI
 
 
 class TenableOT(APIPlatform):
@@ -120,3 +124,19 @@ class TenableOT(APIPlatform):
         :doc:`Tenable.ot Assets APIs <assets>`.
         """
         return AssetsAPI(self)
+
+    @property
+    def events(self):
+        """
+        The interface object for the
+        :doc:`Tenable.ot Events APIs <events>`.
+        """
+        return EventsAPI(self)
+
+    @property
+    def plugins(self):
+        """
+        The interface object for the
+        :doc:`Tenable.ot Plugins APIs <plugins>`.
+        """
+        return PluginsAPI(self)
