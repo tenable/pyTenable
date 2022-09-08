@@ -1,10 +1,11 @@
-'''
+"""
 test base
-'''
+"""
 import responses
+
 from tenable.ot.assets import AssetsAPI
 from tenable.ot.graphql.definitions import (
-    Extensions,
+    Extension,
     GraphqlError,
     GraphqlErrorSchema,
     Location,
@@ -12,35 +13,35 @@ from tenable.ot.graphql.definitions import (
 
 
 def test_ot_interfaces(fixture_ot):
-    '''
+    """
     Testing that the right interfaces are returned.
-    '''
+    """
     assert isinstance(fixture_ot.assets, AssetsAPI)
 
 
 @responses.activate
 def test_graphql_direct_api(fixture_ot):
-    '''
+    """
     Test the graph api method.
-    '''
+    """
     responses.add(
-        method='POST',
-        url='https://localhost/graphql',
+        method="POST",
+        url="https://localhost/graphql",
         json={
-            'data': {
-                'asset': {
-                    'id': 'something',
-                    'type': 'EngType',
-                    'name': 'Eng. Station #40',
-                    'criticality': 'HighCriticality',
-                    'location': None
+            "data": {
+                "asset": {
+                    "id": "something",
+                    "type": "EngType",
+                    "name": "Eng. Station #40",
+                    "criticality": "HighCriticality",
+                    "location": None,
                 }
             }
-        }
+        },
     )
     resp = fixture_ot.graphql(
-        variables={'asset': 'something'},
-        query='''
+        variables={"asset": "something"},
+        query="""
             query getAssetDetails($asset: ID!) {
                 asset(id: $asset) {
                     id
@@ -50,44 +51,33 @@ def test_graphql_direct_api(fixture_ot):
                     location
                 }
             }
-        '''
+        """,
     )
-    assert resp['data']['asset']['id'] == 'something'
-    assert resp['data']['asset']['type'] == 'EngType'
-    assert resp['data']['asset']['name'] == 'Eng. Station #40'
-    assert resp['data']['asset']['criticality'] == 'HighCriticality'
-    assert resp['data']['asset']['location'] is None
+    assert resp["data"]["asset"]["id"] == "something"
+    assert resp["data"]["asset"]["type"] == "EngType"
+    assert resp["data"]["asset"]["name"] == "Eng. Station #40"
+    assert resp["data"]["asset"]["criticality"] == "HighCriticality"
+    assert resp["data"]["asset"]["location"] is None
 
 
 def test_graphql_error_parsing():
-    '''
+    """
     Test GraphQL single error parsing.
-    '''
+    """
     raw_err = {
         "message": "Test error",
-        "locations": [
-            {
-                "line": 4,
-                "column": 7
-            }
-        ],
-        "path": ['asset'],
-        "extensions": {
-            "code": "GRAPHQL_VALIDATION_FAILED"
-        }
+        "locations": [{"line": 4, "column": 7}],
+        "path": ["asset"],
+        "extensions": {"code": "GRAPHQL_VALIDATION_FAILED"},
     }
 
     expected_err = GraphqlError(
         message="Test error",
-        locations=[
-            Location(
-                line=4,
-                column=7
-            )
-        ],
-        path=['asset'],
-        extensions=Extensions(code='GRAPHQL_VALIDATION_FAILED')
+        locations=[Location(line=4, column=7)],
+        path=["asset"],
+        extensions=Extension(code="GRAPHQL_VALIDATION_FAILED"),
     )
 
     parsed_err = GraphqlErrorSchema().load(raw_err)
     assert parsed_err == expected_err
+    print(expected_err)

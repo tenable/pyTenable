@@ -1,1 +1,10 @@
-.. automodule:: tenable.ot.session
+Tenable OT
+==========
+.. toctree::
+    :hidden:
+    :glob:
+
+    graphql
+    schema
+
+.. automodule:: tenable.ot
