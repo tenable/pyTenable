@@ -31,4 +31,4 @@ class AccessControlAPI(TIOEndpoint):
             >>> for permission in tio.access_control.list():
             ...     pprint(permission)
         """
-        return self._api.get("/api/v3/access-control/permissions").json()["permissions"]
+        return self._api.get("api/v3/access-control/permissions").json()["permissions"]
