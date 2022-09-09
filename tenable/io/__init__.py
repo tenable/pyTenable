@@ -49,7 +49,6 @@ from typing import Dict, Optional
 from requests import Response
 
 from tenable.base.platform import APIPlatform
-from .access_control import AccessControlAPI
 from .access_groups import AccessGroupsAPI
 from .access_groups_v2 import AccessGroupsV2API
 from .agent_config import AgentConfigAPI
@@ -81,6 +80,7 @@ from .tags import TagsAPI
 from .target_groups import TargetGroupsAPI
 from .users import UsersAPI
 from .v3 import Version3API
+from .v3.access_control import AccessControlAPI
 from .workbenches import WorkbenchesAPI
 
 
