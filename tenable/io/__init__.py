@@ -42,7 +42,6 @@ Tenable.io
     users
     v3/index
     workbenches
-    access_control
 '''
 from typing import Dict, Optional
 
@@ -80,7 +79,6 @@ from .tags import TagsAPI
 from .target_groups import TargetGroupsAPI
 from .users import UsersAPI
 from .v3 import Version3API
-from .v3.access_control import AccessControlAPI
 from .workbenches import WorkbenchesAPI
 
 
@@ -444,10 +442,3 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         '''
         return Version3API(self)
 
-    @property
-    def access_control(self):
-        """
-        The interface object for the
-        :doc:`Tenable Platform Access Control APIs <access_control>`
-        """
-        return AccessControlAPI(self)
