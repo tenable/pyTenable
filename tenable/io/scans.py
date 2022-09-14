@@ -954,9 +954,10 @@ class ScansAPI(TIOEndpoint):
                 'history_uuid', kw['history_uuid'], 'scanner-uuid')
 
         # Enable exporting of Web Application scans.
+        # web-app2 meant to cover implimentation of was-v2 api specifications.
         if 'scan_type' in kw:
             dl_params['type'] = params['type'] = self._check(
-                'type', kw['scan_type'], str, choices=['web-app'])
+                'type', kw['scan_type'], str, choices=['web-app','web-app2'])
 
         if 'password' in kw:
             payload['password'] = self._check('password', kw['password'], str)
@@ -988,36 +989,74 @@ class ScansAPI(TIOEndpoint):
         else:
             fobj = BytesIO()
 
-        # The first thing that we need to do is make the request and get the
-        # File id for the job.
-        fid = self._api.post('scans/{}/export'.format(scan_id),
-                             params=params, json=payload).json()['file']
-        self._api._log.debug('Initiated scan export {}'.format(fid))
+        # Inserting was v2 API implimentation conditional for exporting/downloading reports
+        if 'web-app2' in kw.values():
+            if kw['format'] in ['csv','html','xml']:
+                requested_file = f"text/{kw['format']}"
+            elif kw['format'] in ['json','pdf']:
+                requested_file = f"application/{kw['format']}"
+            else:
+                self._api._log.info("improper or no format passed in. defaulting to json")
+                requested_file="application/json"
+            headers = {
+                "accept":"application/json",
+                "Content-Type":requested_file
+            }
+            # put request to start generation of the request report
+            # Response: 200-completed; 202-request accepted
+            fid = self._api.put('was/v2/scans/{}/report'.format(scan_id),
+                                headers=headers)#.json()['file']
+            if str(fid).find('20') < 0:
+                self._api._log.error(f"There was an problem requesting report:{requested_file}")
+                return None
 
-        # Next we will wait for the status of the export request to become
-        # ready.
-        _ = self._wait_for_download(
-            'scans/{}/export/{}/status'.format(scan_id, fid),
-            'scans', scan_id, fid, params=dl_params)
+            self._api._log.debug('Initiated scan export {}'.format(requested_file))
+            # This is basically a do while loop in python used to retrieve response object.
+            while True:
+                resp = self._api.get('was/v2/scans/{}/report'.format(scan_id),
+                                    headers=headers, stream=True)#.json()['file']
+                if str(resp).find('200')>=0:
+                    # we got something back, lest store it someplace
+                    for chunk in resp.iter_content(chunk_size=1024):
+                        if chunk:
+                            fobj.write(chunk)
+                    fobj.seek(0)
+                    resp.close()
+                    break
 
-        # Now that the status has reported back as "ready", we can actually
-        # download the file.
-        resp = self._api.get('scans/{}/export/{}/download'.format(
-            scan_id, fid), params=dl_params, stream=True)
-
-        if stream_hook is not None:
-            assert callable(stream_hook)
-            # See issue 305 for an example stream_hook callable
-            # https://github.com/tenable/pyTenable/issues/305
-            stream_hook(resp, fobj, chunk_size=1024)
         else:
-            # Lets stream the file into the file-like object...
-            for chunk in resp.iter_content(chunk_size=1024):
-                if chunk:
-                    fobj.write(chunk)
+                # Normal scan code just nested inside a conditional
 
-        fobj.seek(0)
-        resp.close()
+            # The first thing that we need to do is make the request and get the
+            # File id for the job.
+            fid = self._api.post('scans/{}/export'.format(scan_id),
+                                params=params, json=payload).json()['file']
+            self._api._log.debug('Initiated scan export {}'.format(fid))
+
+            # Next we will wait for the status of the export request to become
+            # ready.
+            _ = self._wait_for_download(
+                'scans/{}/export/{}/status'.format(scan_id, fid),
+                'scans', scan_id, fid, params=dl_params)
+
+            # Now that the status has reported back as "ready", we can actually
+            # download the file.
+            resp = self._api.get('scans/{}/export/{}/download'.format(
+                scan_id, fid), params=dl_params, stream=True)
+
+            if stream_hook is not None:
+                assert callable(stream_hook)
+                # See issue 305 for an example stream_hook callable
+                # https://github.com/tenable/pyTenable/issues/305
+                stream_hook(resp, fobj, chunk_size=1024)
+            else:
+                # Lets stream the file into the file-like object...
+                for chunk in resp.iter_content(chunk_size=1024):
+                    if chunk:
+                        fobj.write(chunk)
+
+            fobj.seek(0)
+            resp.close()
 
         # Lastly lets return the FileObject to the caller.
         return fobj
