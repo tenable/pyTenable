@@ -1,0 +1,184 @@
+interactions:
+- request:
+    body: '{"actions": ["CanView", "CanUse"], "objects": [{"name": "Category,dummy_value",
+      "type": "Tag", "uuid": "0295172e-477e-4b77-89e7-2efa840816e7"}], "subjects":
+      [{"name": "User sub", "type": "User", "uuid": "b83faeec-f790-433f-893c-88c48c82562e"}],
+      "name": "test_HWclL"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '266'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.7
+        (Restfly/1.4.6; Python/3.10.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: POST
+    uri: https://cloud.tenable.com/api/v3/access-control/permissions/
+  response:
+    body:
+      string: '{"permission_uuid":"c77bfc85-69e2-41f1-b515-bde238193278","name":"test_HWclL","subjects":[{"type":"User","uuid":"b83faeec-f790-433f-893c-88c48c82562e","name":"admin_a@sandbox.a.io"}],"actions":["CanView","CanUse"],"objects":[{"type":"Tag","uuid":"0295172e-477e-4b77-89e7-2efa840816e7","name":"Category:dummy_value"}],"created_at":1663130093808,"created_by":"admin_a@sandbox.a.io"}'
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '380'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 14 Sep 2022 04:34:54 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-ktik7-ap-southeast-1-prod
+      X-Request-Uuid:
+      - b7b69f697926edfad899d5d4c4fd002c
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"actions": ["CanView"], "objects": [{"name": "Category,dummy_value", "type":
+      "Tag", "uuid": "c77bfc85-69e2-41f1-b515-bde238193278"}], "subjects": [{"name":
+      "User sub", "type": "User", "uuid": "b83faeec-f790-433f-893c-88c48c82562e"}],
+      "name": "test_sEBNd"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '256'
+      Content-Type:
+      - application/json
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.7
+        (Restfly/1.4.6; Python/3.10.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: PUT
+    uri: https://cloud.tenable.com/api/v3/access-control/permissions/c77bfc85-69e2-41f1-b515-bde238193278
+  response:
+    body:
+      string: ''
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Wed, 14 Sep 2022 04:34:55 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-ktik7-ap-southeast-1-prod
+      X-Request-Uuid:
+      - 0d926cf0e9119ec9155aacb7b89e9cff
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.7
+        (Restfly/1.4.6; Python/3.10.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/api/v3/access-control/permissions/c77bfc85-69e2-41f1-b515-bde238193278
+  response:
+    body:
+      string: '{"permission_uuid":"c77bfc85-69e2-41f1-b515-bde238193278","name":"test_sEBNd","subjects":[{"type":"User","uuid":"b83faeec-f790-433f-893c-88c48c82562e","name":"admin_a@sandbox.a.io"}],"actions":["CanView"],"objects":[{"type":"Tag","uuid":"c77bfc85-69e2-41f1-b515-bde238193278","name":"Category:dummy_value"}],"created_at":1663130093808,"created_by":"admin_a@sandbox.a.io","updated_at":1663130095094,"updated_by":"admin_a@sandbox.a.io"}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '434'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 14 Sep 2022 04:34:56 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-ktik7-ap-southeast-1-prod
+      X-Request-Uuid:
+      - a45ee0314de2a8d05a16576b2ba69ecb
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

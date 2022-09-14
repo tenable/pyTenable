@@ -25,6 +25,7 @@ def api():
         product='pytenable-automated-testing')
 
 
+@pytest.mark.vcr()
 def test_details(api: TenableIO):
     uuid_to_search = "4c931fce-699c-4052-a43c-c953e71dd37b"
     details = api.v3.access_control.details(uuid_to_search)
@@ -32,6 +33,7 @@ def test_details(api: TenableIO):
     assert details["permission_uuid"] == uuid_to_search
 
 
+@pytest.mark.vcr()
 def test_get_user_permission(api: TenableIO):
     user_uuid_to_search = "b83faeec-f790-433f-893c-88c48c82562e"
     user_permission = api.v3.access_control.get_user_permission(user_uuid_to_search)
@@ -39,6 +41,7 @@ def test_get_user_permission(api: TenableIO):
     assert len(user_permission["permissions_available"]) > 0
 
 
+@pytest.mark.vcr()
 def test_get_user_group_permission(api: TenableIO):
     group_uuid_to_search = "00000000-0000-0000-0000-000000000000"
     user_group_permission = api.v3.access_control.get_user_group_permission(group_uuid_to_search)
@@ -46,18 +49,19 @@ def test_get_user_group_permission(api: TenableIO):
     assert len(user_group_permission["permissions_available"]) > 0
 
 
+@pytest.mark.vcr()
 def test_get_current_user_permission(api: TenableIO):
     current_user_permission = api.v3.access_control.get_current_user_permission()
     assert isinstance(current_user_permission, dict)
 
 
+@pytest.mark.vcr()
 def test_create_and_delete(api: TenableIO):
     # Testing creation of permission
     created_permission = _create_permission(api)
     assert isinstance(created_permission, dict)
 
     created_permission_uuid = created_permission["permission_uuid"]
-    print("CREATED: " + created_permission_uuid)
     assert isinstance(created_permission_uuid, str)
 
     # Testing Deletion of the permission
@@ -65,11 +69,11 @@ def test_create_and_delete(api: TenableIO):
     assert deleted_permission["permission_uuid"] == created_permission_uuid
 
 
+@pytest.mark.vcr()
 def test_update(api: TenableIO):
     # Creation permission only to update it later
     created_permission_uuid = _create_permission(api)["permission_uuid"]
     updated_permission = _update_permission(api, created_permission_uuid)
-    print(updated_permission)
     assert updated_permission["status"] == "success"
     assert updated_permission["permission_uuid"] == created_permission_uuid
 
@@ -80,12 +84,13 @@ def test_update(api: TenableIO):
 @pytest.mark.vcr()
 def test_list(api: TenableIO):
     permissions = api.v3.access_control.list()
-    for p in permissions:
-        print(p)
     assert isinstance(permissions, list)
 
 
 def _create_permission(api: TenableIO):
+    """
+    Invokes the creation API for testing.
+    """
     permission = {
         "actions": ["CanView", "CanUse"],
         "objects": [
@@ -109,10 +114,16 @@ def _create_permission(api: TenableIO):
 
 
 def _delete_permission(api: TenableIO, permission_uuid: str):
+    """
+    Invokes the deletion API for testing.
+    """
     return api.v3.access_control.details(permission_uuid)
 
 
 def _update_permission(api: TenableIO, permission_uuid: str):
+    """
+    Invokes the update API for testing.
+    """
     permission_to_update = {
         "actions": ["CanView"],
         "objects": [
@@ -135,4 +146,12 @@ def _update_permission(api: TenableIO, permission_uuid: str):
 
 
 def _random_string(length: int):
+    """
+    Creates a random string of a given length
+    Args:
+        length: Length of the string to be generated
+
+    Returns: str
+
+    """
     return "".join(choices(string.ascii_letters, k=length))
