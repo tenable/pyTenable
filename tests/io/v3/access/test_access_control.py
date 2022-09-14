@@ -2,6 +2,9 @@
 This file contains tests for the Access Control endpoints.
 """
 import os
+import string
+import uuid
+from random import choices
 
 import pytest
 
@@ -23,41 +26,73 @@ def api():
 
 
 def test_details(api: TenableIO):
-    details = api.v3.access_control.details("4c931fce-699c-4052-a43c-c953e71dd37b")
-    print(details)
+    uuid_to_search = "4c931fce-699c-4052-a43c-c953e71dd37b"
+    details = api.v3.access_control.details(uuid_to_search)
     assert isinstance(details, dict)
+    assert details["permission_uuid"] == uuid_to_search
 
 
 def test_get_user_permission(api: TenableIO):
-    user_permission = api.v3.access_control.get_user_permission("b83faeec-f790-433f-893c-88c48c82562e")
-    print(user_permission)
+    user_uuid_to_search = "b83faeec-f790-433f-893c-88c48c82562e"
+    user_permission = api.v3.access_control.get_user_permission(user_uuid_to_search)
     assert isinstance(user_permission, dict)
+    assert len(user_permission["permissions_available"]) > 0
 
 
 def test_get_user_group_permission(api: TenableIO):
-    user_group_permission = api.v3.access_control.get_user_group_permission("00000000-0000-0000-0000-000000000000")
-    print(user_group_permission)
+    group_uuid_to_search = "00000000-0000-0000-0000-000000000000"
+    user_group_permission = api.v3.access_control.get_user_group_permission(group_uuid_to_search)
     assert isinstance(user_group_permission, dict)
+    assert len(user_group_permission["permissions_available"]) > 0
 
 
 def test_get_current_user_permission(api: TenableIO):
     current_user_permission = api.v3.access_control.get_current_user_permission()
-    print(current_user_permission)
     assert isinstance(current_user_permission, dict)
 
 
-def test_delete(api: TenableIO):
-    pass
+def test_create_and_delete(api: TenableIO):
+    # Testing creation of permission
+    created_permission = _create_permission(api)
+    assert isinstance(created_permission, dict)
+
+    created_permission_uuid = created_permission["permission_uuid"]
+    print("CREATED: " + created_permission_uuid)
+    assert isinstance(created_permission_uuid, str)
+
+    # Testing Deletion of the permission
+    deleted_permission = _delete_permission(api, created_permission_uuid)
+    assert deleted_permission["permission_uuid"] == created_permission_uuid
 
 
-def test_create(api: TenableIO):
+def test_update(api: TenableIO):
+    # Creation permission only to update it later
+    created_permission_uuid = _create_permission(api)["permission_uuid"]
+    updated_permission = _update_permission(api, created_permission_uuid)
+    print(updated_permission)
+    assert updated_permission["status"] == "success"
+    assert updated_permission["permission_uuid"] == created_permission_uuid
+
+    # Cleaning up after test
+    _delete_permission(api, created_permission_uuid)
+
+
+@pytest.mark.vcr()
+def test_list(api: TenableIO):
+    permissions = api.v3.access_control.list()
+    for p in permissions:
+        print(p)
+    assert isinstance(permissions, list)
+
+
+def _create_permission(api: TenableIO):
     permission = {
         "actions": ["CanView", "CanUse"],
         "objects": [
             {
-                "name": "Category,dummyvalue",
+                "name": "Category,dummy_value",
                 "type": "Tag",
-                "uuid": "7a8b02a0-3367-11ed-a261-0242ac120099"
+                "uuid": f"{str(uuid.uuid4())}"
             }
         ],
         "subjects": [
@@ -67,21 +102,37 @@ def test_create(api: TenableIO):
                 "uuid": "b83faeec-f790-433f-893c-88c48c82562e"
             }
         ],
-        "name": "dummy name1"
+        "name": f"test_{_random_string(5)}"
     }
     created_permission = api.v3.access_control.create(permission)
-    assert isinstance(created_permission, dict)
-    assert isinstance(created_permission["permission_uuid"], str)
-    print(created_permission)
+    return created_permission
 
 
-def test_update(api: TenableIO):
-    pass
+def _delete_permission(api: TenableIO, permission_uuid: str):
+    return api.v3.access_control.details(permission_uuid)
 
 
-@pytest.mark.vcr()
-def test_list(api: TenableIO):
-    permissions = api.v3.access_control.list()
-    for p in permissions:
-        print(p)
-    assert isinstance(permissions, list)
+def _update_permission(api: TenableIO, permission_uuid: str):
+    permission_to_update = {
+        "actions": ["CanView"],
+        "objects": [
+            {
+                "name": "Category,dummy_value",
+                "type": "Tag",
+                "uuid": permission_uuid
+            }
+        ],
+        "subjects": [
+            {
+                "name": "User sub",
+                "type": "User",
+                "uuid": "b83faeec-f790-433f-893c-88c48c82562e"
+            }
+        ],
+        "name": f"test_{_random_string(5)}"
+    }
+    return api.v3.access_control.update(permission_uuid, permission_to_update)
+
+
+def _random_string(length: int):
+    return "".join(choices(string.ascii_letters, k=length))
