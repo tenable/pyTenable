@@ -813,7 +813,7 @@ class ScansAPI(TIOEndpoint):
         '''
         return self._api.editor.details('scan', scan_id)
 
-    def results(self, scan_id, history_id=None, history_uuid=None):
+    def results(self, scan_id, history_id=None, history_uuid=None, **kw):
         '''
         Return the scan results from either the latest scan or a specific scan
         instance in the history.
@@ -848,6 +848,13 @@ class ScansAPI(TIOEndpoint):
         if history_uuid:
             params['history_uuid'] = self._check(
                 'history_uuid', history_uuid, 'scanner-uuid')
+
+        if 'web-app2' in kw.values():
+            # if 'web-app2' is sent as a value in dict kw pass in
+            # the code flow with shift to return using was v2 specifications
+            # for get scan details: https://developer.tenable.com/reference/was-v2-scans-details
+            return self._api.get('was/v2/scans/{}'.format(
+                scan_id), params=params).json()
 
         return self._api.get('scans/{}'.format(
             scan_id), params=params).json()
