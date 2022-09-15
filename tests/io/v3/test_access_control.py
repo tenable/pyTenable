@@ -34,6 +34,12 @@ def test_details(api: TenableIO):
 
 
 @pytest.mark.vcr()
+def test_details_negative(api: TenableIO):
+    with pytest.raises(TypeError):
+        api.v3.access_control.details(None)
+
+
+@pytest.mark.vcr()
 def test_get_user_permission(api: TenableIO):
     user_uuid_to_search = "b83faeec-f790-433f-893c-88c48c82562e"
     user_permission = api.v3.access_control.get_user_permission(user_uuid_to_search)
@@ -42,11 +48,23 @@ def test_get_user_permission(api: TenableIO):
 
 
 @pytest.mark.vcr()
+def test_get_user_permission_negative(api: TenableIO):
+    with pytest.raises(TypeError):
+        api.v3.access_control.get_user_permission(None)
+
+
+@pytest.mark.vcr()
 def test_get_user_group_permission(api: TenableIO):
     group_uuid_to_search = "00000000-0000-0000-0000-000000000000"
     user_group_permission = api.v3.access_control.get_user_group_permission(group_uuid_to_search)
     assert isinstance(user_group_permission, dict)
     assert len(user_group_permission["permissions_available"]) > 0
+
+
+@pytest.mark.vcr()
+def test_get_user_group_permission_negative(api: TenableIO):
+    with pytest.raises(TypeError):
+        api.v3.access_control.get_user_group_permission(None)
 
 
 @pytest.mark.vcr()
