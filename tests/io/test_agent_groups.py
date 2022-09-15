@@ -44,8 +44,16 @@ def test_agentgroups_add_agent_to_group_agent_id_typeerror(api):
     '''
     test to raise the exception when type of agent_id is not as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(UnexpectedValueError):
         api.agent_groups.add_agent(1, 'nope')
+
+@pytest.mark.vcr()
+def test_agentgroups_add_agent_to_group_mixed_ids_typeerror(api):
+    '''
+    test to raise the exception when type of multiple passed ids don't match each other
+    '''
+    with pytest.raises(TypeError):
+        api.agent_groups.add_agent(1, '64e1cc37-4d6a-4a36-a2d3-aca300735829', 2)
 
 
 @pytest.mark.vcr()
