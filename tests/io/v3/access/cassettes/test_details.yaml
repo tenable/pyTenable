@@ -32,7 +32,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 14 Sep 2022 04:34:47 GMT
+      - Thu, 15 Sep 2022 07:43:41 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -49,9 +49,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-ppvw7-ap-southeast-1-prod
+      - nginx-router-ktik7-ap-southeast-1-prod
       X-Request-Uuid:
-      - 011696a3338603c1be5375ba1fd44a0d
+      - 03b494045c317e00637070ff638ff512
       X-Xss-Protection:
       - 1; mode=block
     status:

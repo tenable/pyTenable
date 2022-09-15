@@ -1,9 +1,9 @@
 interactions:
 - request:
     body: '{"actions": ["CanView", "CanUse"], "objects": [{"name": "Category,dummy_value",
-      "type": "Tag", "uuid": "0295172e-477e-4b77-89e7-2efa840816e7"}], "subjects":
+      "type": "Tag", "uuid": "92373c4a-5114-49ec-9146-0c7673442381"}], "subjects":
       [{"name": "User sub", "type": "User", "uuid": "b83faeec-f790-433f-893c-88c48c82562e"}],
-      "name": "test_HWclL"}'
+      "name": "test_txcmo"}'
     headers:
       Accept:
       - '*/*'
@@ -24,7 +24,7 @@ interactions:
     uri: https://cloud.tenable.com/api/v3/access-control/permissions/
   response:
     body:
-      string: '{"permission_uuid":"c77bfc85-69e2-41f1-b515-bde238193278","name":"test_HWclL","subjects":[{"type":"User","uuid":"b83faeec-f790-433f-893c-88c48c82562e","name":"admin_a@sandbox.a.io"}],"actions":["CanView","CanUse"],"objects":[{"type":"Tag","uuid":"0295172e-477e-4b77-89e7-2efa840816e7","name":"Category:dummy_value"}],"created_at":1663130093808,"created_by":"admin_a@sandbox.a.io"}'
+      string: '{"permission_uuid":"532b7574-8864-425e-98f0-ada00f474642","name":"test_txcmo","subjects":[{"type":"User","uuid":"b83faeec-f790-433f-893c-88c48c82562e","name":"admin_a@sandbox.a.io"}],"actions":["CanView","CanUse"],"objects":[{"type":"Tag","uuid":"92373c4a-5114-49ec-9146-0c7673442381","name":"Category:dummy_value"}],"created_at":1663227828972,"created_by":"admin_a@sandbox.a.io"}'
     headers:
       Cache-Control:
       - no-store
@@ -35,7 +35,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 14 Sep 2022 04:34:54 GMT
+      - Thu, 15 Sep 2022 07:43:49 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -52,9 +52,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-ktik7-ap-southeast-1-prod
+      - nginx-router-ppvw7-ap-southeast-1-prod
       X-Request-Uuid:
-      - b7b69f697926edfad899d5d4c4fd002c
+      - caafa5e9a5e12fb5f7e36f605ccc1da2
       X-Xss-Protection:
       - 1; mode=block
     status:
@@ -62,9 +62,9 @@ interactions:
       message: OK
 - request:
     body: '{"actions": ["CanView"], "objects": [{"name": "Category,dummy_value", "type":
-      "Tag", "uuid": "c77bfc85-69e2-41f1-b515-bde238193278"}], "subjects": [{"name":
+      "Tag", "uuid": "532b7574-8864-425e-98f0-ada00f474642"}], "subjects": [{"name":
       "User sub", "type": "User", "uuid": "b83faeec-f790-433f-893c-88c48c82562e"}],
-      "name": "test_sEBNd"}'
+      "name": "test_xtxCQ"}'
     headers:
       Accept:
       - '*/*'
@@ -84,7 +84,7 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: PUT
-    uri: https://cloud.tenable.com/api/v3/access-control/permissions/c77bfc85-69e2-41f1-b515-bde238193278
+    uri: https://cloud.tenable.com/api/v3/access-control/permissions/532b7574-8864-425e-98f0-ada00f474642
   response:
     body:
       string: ''
@@ -98,7 +98,7 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Wed, 14 Sep 2022 04:34:55 GMT
+      - Thu, 15 Sep 2022 07:43:50 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -115,9 +115,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-ktik7-ap-southeast-1-prod
+      - nginx-router-ppvw7-ap-southeast-1-prod
       X-Request-Uuid:
-      - 0d926cf0e9119ec9155aacb7b89e9cff
+      - 0837140559e4cccd2c87b129efa146c9
       X-Xss-Protection:
       - 1; mode=block
     status:
@@ -140,10 +140,10 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
-    uri: https://cloud.tenable.com/api/v3/access-control/permissions/c77bfc85-69e2-41f1-b515-bde238193278
+    uri: https://cloud.tenable.com/api/v3/access-control/permissions/532b7574-8864-425e-98f0-ada00f474642
   response:
     body:
-      string: '{"permission_uuid":"c77bfc85-69e2-41f1-b515-bde238193278","name":"test_sEBNd","subjects":[{"type":"User","uuid":"b83faeec-f790-433f-893c-88c48c82562e","name":"admin_a@sandbox.a.io"}],"actions":["CanView"],"objects":[{"type":"Tag","uuid":"c77bfc85-69e2-41f1-b515-bde238193278","name":"Category:dummy_value"}],"created_at":1663130093808,"created_by":"admin_a@sandbox.a.io","updated_at":1663130095094,"updated_by":"admin_a@sandbox.a.io"}'
+      string: '{"permission_uuid":"532b7574-8864-425e-98f0-ada00f474642","name":"test_xtxCQ","subjects":[{"type":"User","uuid":"b83faeec-f790-433f-893c-88c48c82562e","name":"admin_a@sandbox.a.io"}],"actions":["CanView"],"objects":[{"type":"Tag","uuid":"532b7574-8864-425e-98f0-ada00f474642","name":"Category:dummy_value"}],"created_at":1663227828972,"created_by":"admin_a@sandbox.a.io","updated_at":1663227829793,"updated_by":"admin_a@sandbox.a.io"}'
     headers:
       Accept-Ranges:
       - bytes
@@ -156,7 +156,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 14 Sep 2022 04:34:56 GMT
+      - Thu, 15 Sep 2022 07:43:51 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -173,9 +173,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-ktik7-ap-southeast-1-prod
+      - nginx-router-ppvw7-ap-southeast-1-prod
       X-Request-Uuid:
-      - a45ee0314de2a8d05a16576b2ba69ecb
+      - ec73a5d491b4b3780d07ffa3ba8fe343
       X-Xss-Protection:
       - 1; mode=block
     status:

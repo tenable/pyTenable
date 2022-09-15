@@ -74,8 +74,7 @@ def test_update(api: TenableIO):
     # Creation permission only to update it later
     created_permission_uuid = _create_permission(api)["permission_uuid"]
     updated_permission = _update_permission(api, created_permission_uuid)
-    assert updated_permission["status"] == "success"
-    assert updated_permission["permission_uuid"] == created_permission_uuid
+    assert updated_permission is None
 
     # Cleaning up after test
     _delete_permission(api, created_permission_uuid)

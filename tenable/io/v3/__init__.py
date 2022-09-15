@@ -15,9 +15,10 @@ Methods available on ``tio.v3``:
     :glob:
 
     explore/index
+    access_control
 """
 from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.access.access_control import AccessControl
+from tenable.io.v3.access_control import AccessControlAPI
 from tenable.io.v3.explore import Explore
 
 
@@ -38,6 +39,6 @@ class Version3API(APIEndpoint):
     def access_control(self):
         """
         The interface object for the
-         :doc:`Tenable.io v3 explore <access control/index>`
+         :doc:`Tenable.io v3 access control <access_control>`
         """
-        return AccessControl(self._api)
+        return AccessControlAPI(self._api)

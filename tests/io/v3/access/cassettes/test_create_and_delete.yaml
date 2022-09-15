@@ -1,9 +1,9 @@
 interactions:
 - request:
     body: '{"actions": ["CanView", "CanUse"], "objects": [{"name": "Category,dummy_value",
-      "type": "Tag", "uuid": "036e9d0d-83dc-4f3a-b9d9-47813264a0cc"}], "subjects":
+      "type": "Tag", "uuid": "503cc4f5-fbf5-4583-87db-9281cc964174"}], "subjects":
       [{"name": "User sub", "type": "User", "uuid": "b83faeec-f790-433f-893c-88c48c82562e"}],
-      "name": "test_wkKWL"}'
+      "name": "test_ObNWG"}'
     headers:
       Accept:
       - '*/*'
@@ -24,7 +24,7 @@ interactions:
     uri: https://cloud.tenable.com/api/v3/access-control/permissions/
   response:
     body:
-      string: '{"permission_uuid":"23a5dbce-6c45-4d89-8d44-347780dce788","name":"test_wkKWL","subjects":[{"type":"User","uuid":"b83faeec-f790-433f-893c-88c48c82562e","name":"admin_a@sandbox.a.io"}],"actions":["CanView","CanUse"],"objects":[{"type":"Tag","uuid":"036e9d0d-83dc-4f3a-b9d9-47813264a0cc","name":"Category:dummy_value"}],"created_at":1663130092007,"created_by":"admin_a@sandbox.a.io"}'
+      string: '{"permission_uuid":"e43faaaf-88f7-468f-bdcd-91ec2da5efdd","name":"test_ObNWG","subjects":[{"type":"User","uuid":"b83faeec-f790-433f-893c-88c48c82562e","name":"admin_a@sandbox.a.io"}],"actions":["CanView","CanUse"],"objects":[{"type":"Tag","uuid":"503cc4f5-fbf5-4583-87db-9281cc964174","name":"Category:dummy_value"}],"created_at":1663227826149,"created_by":"admin_a@sandbox.a.io"}'
     headers:
       Cache-Control:
       - no-store
@@ -35,7 +35,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 14 Sep 2022 04:34:52 GMT
+      - Thu, 15 Sep 2022 07:43:46 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -52,9 +52,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-me0fb-ap-southeast-1-prod
+      - nginx-router-ppvw7-ap-southeast-1-prod
       X-Request-Uuid:
-      - 36ea9e9563fb98d2ee25f609fc76f878
+      - 32ff7be449ad6afb33d6f5f1c7c8cbce
       X-Xss-Protection:
       - 1; mode=block
     status:
@@ -77,10 +77,10 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
-    uri: https://cloud.tenable.com/api/v3/access-control/permissions/23a5dbce-6c45-4d89-8d44-347780dce788
+    uri: https://cloud.tenable.com/api/v3/access-control/permissions/e43faaaf-88f7-468f-bdcd-91ec2da5efdd
   response:
     body:
-      string: '{"permission_uuid":"23a5dbce-6c45-4d89-8d44-347780dce788","name":"test_wkKWL","subjects":[{"type":"User","uuid":"b83faeec-f790-433f-893c-88c48c82562e","name":"admin_a@sandbox.a.io"}],"actions":["CanView","CanUse"],"objects":[{"type":"Tag","uuid":"036e9d0d-83dc-4f3a-b9d9-47813264a0cc","name":"Category:dummy_value"}],"created_at":1663130092007,"created_by":"admin_a@sandbox.a.io"}'
+      string: '{"permission_uuid":"e43faaaf-88f7-468f-bdcd-91ec2da5efdd","name":"test_ObNWG","subjects":[{"type":"User","uuid":"b83faeec-f790-433f-893c-88c48c82562e","name":"admin_a@sandbox.a.io"}],"actions":["CanView","CanUse"],"objects":[{"type":"Tag","uuid":"503cc4f5-fbf5-4583-87db-9281cc964174","name":"Category:dummy_value"}],"created_at":1663227826149,"created_by":"admin_a@sandbox.a.io"}'
     headers:
       Accept-Ranges:
       - bytes
@@ -93,7 +93,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 14 Sep 2022 04:34:53 GMT
+      - Thu, 15 Sep 2022 07:43:47 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -110,9 +110,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-me0fb-ap-southeast-1-prod
+      - nginx-router-ppvw7-ap-southeast-1-prod
       X-Request-Uuid:
-      - b69695e814d53194aefd6c4f619ee4ae
+      - d9b9d5772cb2dcea468b1c55a0daea26
       X-Xss-Protection:
       - 1; mode=block
     status:
