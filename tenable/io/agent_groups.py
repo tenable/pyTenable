@@ -23,7 +23,7 @@ class AgentGroupsAPI(TIOEndpoint):
 
         Args:
             group_id (int): The id of the group
-            *agent_ids (int): The id of the agent
+            *agent_ids (int): The id or uuid of the agent.  If passing multiple, they must all be either numeric id or uuid.
             scanner_id (int, optional): The id of the scanner
 
         Returns:
@@ -40,17 +40,24 @@ class AgentGroupsAPI(TIOEndpoint):
             Adding multiple agents:
 
             >>> tio.agent_groups.add_agent(1, 1, 2, 3)
+
+            Adding multiple agents by uuid:
+
+            >>> tio.agent_groups.add_agent(1, 'uuid-1', 'uuid-2', 'uuid-3')
         '''
         scanner_id = 1
         if 'scanner_id' in kw:
             scanner_id = kw['scanner_id']
+
+        # we can handle either ids or uuids as the list of items.
+        useUuids = len(agent_ids) > 0 and isinstance(agent_ids[0], str)
 
         if len(agent_ids) <= 1:
             # if there is only 1 agent id, we will perform a singular add.
             self._api.put('scanners/{}/agent-groups/{}/agents/{}'.format(
                 self._check('scanner_id', scanner_id, int),
                 self._check('group_id', group_id, int),
-                self._check('agent_id', agent_ids[0], int)
+                self._check('agent_id', agent_ids[0], 'uuid' if useUuids else int)
             ))
         else:
             # If there are many agent_ids, then we will want to perform a bulk
@@ -59,7 +66,7 @@ class AgentGroupsAPI(TIOEndpoint):
                 'scanners/{}/agent-groups/{}/agents/_bulk/add'.format(
                     self._check('scanner_id', scanner_id, int),
                     self._check('group_id', group_id, int)),
-                json={'items': [self._check('agent_id', i, int) for i in agent_ids]}).json()
+                json={'items': [self._check('agent_id', i, 'uuid' if useUuids else int) for i in agent_ids]}).json()
 
     def configure(self, group_id, name, scanner_id=1):
         '''
