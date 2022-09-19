@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.7
+        (Restfly/1.4.6; Python/3.10.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/api/v3/access-control/permissions/4c931fce-699c-4052-a43c-c953e71dd37b
+  response:
+    body:
+      string: '{"permission_uuid":"4c931fce-699c-4052-a43c-c953e71dd37b","name":"AG-tag-retesing:1
+        - Default Permissions","subjects":[{"type":"UserGroup","uuid":"00000000-0000-0000-0000-000000000000","name":"All
+        Users"},{"type":"User","uuid":"ec466b2b-0e76-4ce6-9e54-7db8552655a6","name":"kandarp_test1@tenable.com"},{"type":"UserGroup","uuid":"04c42e1c-e986-4760-a12f-3feb86f6e3c2","name":"Test_7"},{"type":"UserGroup","uuid":"b90d9d12-b61e-4d92-84c3-1aa51ddd4089","name":"123456789"},{"type":"UserGroup","uuid":"77df6fbc-08be-46c0-be81-66420d6bd66e","name":"Test_15"}],"actions":["CanUse","CanEdit"],"objects":[{"type":"Tag","uuid":"55ba39c1-9498-4090-b81a-e17b3a0ccbcb","name":"AG-tag-retesing:1"}],"created_at":1643389648056,"created_by":"SYSTEM","updated_at":1662708497394,"updated_by":"admin_a@sandbox.a.io"}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '799'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 15 Sep 2022 08:04:02 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-ppvw7-ap-southeast-1-prod
+      X-Request-Uuid:
+      - 0666ce3d6ecf301b2a4c2833f501b088
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
