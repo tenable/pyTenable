@@ -1,7 +1,6 @@
 '''
 test Remediation scans
 '''
-from pprint import pprint
 import pytest
 from tenable.errors import UnexpectedValueError, NotFoundError
 from tests.checker import check, single
@@ -75,10 +74,26 @@ def test_remedyscan_create_scan_document_template_pass(api):
 	test to create scan document basic template
 	'''
 	templates = api.policies.templates()
-	resp = getattr(api.remediationscans, '_create_scan_document')({'template': 'basic'})
+	resp = getattr(api.remediationscans, '_create_scan_document')(
+		{'template': 'basic'})
 	assert isinstance(resp, dict)
 	check(resp, 'uuid', 'scanner-uuid')
 	assert resp['uuid'] == templates['basic']
+
+
+@pytest.mark.vcr()
+def test_remedyscan_create_advanced_scan_document_template_pass(api):
+	'''
+	test to create scan document using advanced template, credentials and compliance
+	'''
+	templates = api.policies.templates()
+	resp = getattr(api.remediationscans, '_create_scan_document')(
+		{'template': 'advanced', 'credentials': {'name': "Test"}, 'compliance': {"name": "Policy Compliance"}})
+	assert isinstance(resp, dict), "Response of create scan template for remediation scan is not of type dict."
+	check(resp, 'uuid', 'scanner-uuid')
+	assert resp['uuid'] == templates['advanced'], \
+		"UUID of remediation scan template created in this test-case not matched with UUID of advanced scan template."
+
 
 @pytest.mark.vcr()
 def test_remedyscan_create_scan_document_policies_id_pass(api):
