@@ -77,11 +77,10 @@ def test_feeds_update_success(security_center):
 @pytest.mark.vcr()
 @pytest.mark.datafiles(os.path.join(
     os.path.dirname(os.path.realpath(__file__)),
-    '..', 'test_files', 'sc-plugins-diff.tar.gz'))
-@pytest.mark.skip(reason='no plugin tarball to download')
-def test_feeds_process_success(admin, datafiles):
+    '..', 'test_files', 'SecurityCenterFeed48.tar.gz'))
+def test_feeds_process_success(admin, datafiles, security_center):
     '''
     test feeds 'process' for success
     '''
-    with open(os.path.join(str(datafiles), 'sc-plugins-diff.tar.gz'), 'rb') as plugfeed:
-        admin.feeds.process('active', plugfeed)
+    with open(os.path.join(str(datafiles), 'SecurityCenterFeed48.tar.gz'), 'rb') as plugfeed:
+        security_center.feeds.process('active', plugfeed)
