@@ -1,8 +1,8 @@
-import datetime
-import ipaddress
-import uuid
+from datetime import datetime
+from ipaddress import IPv4Address
+from uuid import UUID
 from dataclasses import dataclass
-from typing import List
+from typing import List, Optional
 
 from tenable.ot.schema.assets import NetworkInterface
 from tenable.ot.schema.base import NodesList, AssetInfoList
@@ -10,12 +10,12 @@ from tenable.ot.schema.base import NodesList, AssetInfoList
 
 @dataclass
 class Group:
-    id: uuid.UUID
-    name: str = None
-    type: str = None
-    archived: bool = None
-    system: bool = None
-    key: str = None
+    id: UUID
+    name: Optional[str] = None
+    type: Optional[str] = None
+    archived: Optional[bool] = None
+    system: Optional[bool] = None
+    key: Optional[str] = None
 
 
 @dataclass
@@ -37,10 +37,10 @@ class EventTypeDetails:
     description: str
     schema: str
     category: str
-    family: str
     can_capture: bool
     actions: List[str]
     exclusion: str
+    family: Optional[str] = None
 
 
 @dataclass
@@ -56,7 +56,7 @@ class Policy:
     This class holds a policy's information.
     """
 
-    id: uuid.UUID
+    id: UUID
     index: int
     title: str
     level: str
@@ -74,13 +74,13 @@ class Policy:
     src_asset_group: List[List[GroupMember]]
     dst_asset_group: List[List[GroupMember]]
     schedule: GroupMember
-    protocol_group: GroupMember
-    port_group: List[GroupMember]
-    tag_group: List[GroupMember]
-    value_group: List[GroupMember]
-    rule_group: List[GroupMember]
     exclusions: NodesList
     aggregated_events_count: EventCount
+    protocol_group: Optional[GroupMember] = None
+    port_group: Optional[List[GroupMember]] = None
+    tag_group: Optional[List[GroupMember]] = None
+    value_group: Optional[List[GroupMember]] = None
+    rule_group: Optional[List[GroupMember]] = None
 
 
 @dataclass
@@ -90,36 +90,39 @@ class Event:
     """
 
     category: str
-    comment: str
     completion: str
     continuous: bool
     dst_assets: AssetInfoList
-    dst_interface: List[NetworkInterface]
-    dst_ip: ipaddress.IPv4Address
-    dst_mac: str
+    dst_ip: IPv4Address
     dst_names: NodesList
     event_type: EventTypeDetails
     has_details: bool
-    hit_id: uuid.UUID
-    id: uuid.UUID
+    hit_id: UUID
+    id: UUID
     log_id: float
     payload_size: int
     policy: Policy
     port: int
     protocol: str
-    protocol_nice_name: str
     protocol_raw: str
     resolved: bool
-    resolved_ts: datetime.datetime
-    resolved_user: str
     severity: str
     src_assets: AssetInfoList
-    src_interface: List[NetworkInterface]
-    src_ip: ipaddress.IPv4Address
-    src_mac: str
+    src_ip: IPv4Address
     src_names: NodesList
-    time: datetime.datetime
+    time: datetime
     type: str
+    comment: Optional[str] = None
+    dst_interface: Optional[List[NetworkInterface]] = None
+    dst_mac: Optional[str] = None
+    protocol_nice_name: Optional[str] = None
+    resolved_ts: Optional[datetime] = None
+    resolved_user: Optional[str] = None
+    src_interface: Optional[List[NetworkInterface]] = None
+    src_mac: Optional[str] = None
+
+
+
 
 
 @dataclass
