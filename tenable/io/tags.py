@@ -51,6 +51,9 @@ class TagsAPI(TIOEndpoint):
         'category_name': {
             'operators': ['eq', 'match'], 'pattern': None, 'choices': None
         },
+        'category_uuid': {
+            'operators': ['eq'], 'pattern': r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12,32}$', 'choices': None
+        },
         'description': {
             'operators': ['eq', 'match'], 'pattern': None, 'choices': None
         },
