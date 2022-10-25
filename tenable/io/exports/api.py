@@ -182,8 +182,6 @@ class ExportsAPI(APIEndpoint):
             >>> export_uuid = tio.exports.initiate_export("vulns", timeout=10)
         """
 
-        schema = None
-
         # Setting the schema for the specified export type.
         if export_type == "vulns":
             schema = VulnExportSchema()
