@@ -1004,12 +1004,17 @@ class ScansAPI(TIOEndpoint):
             }
             # put request to start generation of the request report
             # Response: 200-completed; 202-request accepted
+            # if this is the first time requesting the report, we may need to delay until
+            # for generation to complete. Note: pdf/html exports seem to stick on 202 response.
+            delay_time = 3
             fid = self._api.put('was/v2/scans/{}/report'.format(scan_id),
                                 headers=headers)
             if str(fid).find('20') < 0:
-                self._api._log.error(f"There was an problem requesting report:{requested_file}")
+                self._api._log.error(f"There was an problem requesting report:{requested_file} .. . returning None")
                 return None
-
+            elif str(fid).find('202') > 0:
+                time.sleep(delay_time)
+            
             self._api._log.debug('Initiated scan export {}'.format(requested_file))
             # This is basically a do while loop in python used to retrieve response object.
             while True:
