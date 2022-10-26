@@ -813,7 +813,7 @@ class ScansAPI(TIOEndpoint):
         '''
         return self._api.editor.details('scan', scan_id)
 
-    def results(self, scan_id, history_id=None, history_uuid=None, **kw):
+    def results(self, scan_id, history_id=None, **kw):
         '''
         Return the scan results from either the latest scan or a specific scan
         instance in the history.
@@ -822,10 +822,8 @@ class ScansAPI(TIOEndpoint):
 
         Args:
             scan_id (int or uuid): The unique identifier for the scan.
-            history_id (int, optional):
+            history_id (uuid, optional):
                 The unique identifier for the instance of the scan.
-            history_uuid (uuid, optional):
-                The UUID for the instance of the scan.
             scan_type (str, optional):
                 This parameter is required only when using the API with
                 Web Application Scanning. Available option is 'web-app2'
@@ -843,16 +841,12 @@ class ScansAPI(TIOEndpoint):
 
             Retrieve a specific instance of the result set:
 
-            >>> results = tio.scans.results(1, 1)
+            >>> results = tio.scans.results(1, history_id="123e4567-e89b-12d3-a456-426614174000")
         '''
         params = dict()
 
         if history_id:
-            params['history_id'] = self._check('history_id', history_id, int)
-
-        if history_uuid:
-            params['history_uuid'] = self._check(
-                'history_uuid', history_uuid, 'scanner-uuid')
+            params['history_id'] = self._check('history_id', history_id, "uuid")
 
         if 'web-app2' in kw.values():
             # if 'web-app2' is sent as a value in dict kw pass in
@@ -995,7 +989,7 @@ class ScansAPI(TIOEndpoint):
             fobj = BytesIO()
 
         # Inserting was v2 API implimentation conditional for exporting/downloading reports
-        # the name of the key value is arbitrary, as we simply look for 'web-app2' in any key
+        # the name of the key value is arbitrary, as we simply look for 'web-app2' in any dict value
         if 'web-app2' in kw.values():
             if kw['format'] in ['csv','html','xml']:
                 requested_file = f"text/{kw['format']}"
