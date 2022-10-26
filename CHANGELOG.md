@@ -4,15 +4,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.4.8]
-### Added
-
-- Added support for v2 Web Application Scanning for:
-  - get scan details https://developer.tenable.com/reference/was-v2-scans-details
-  - export scan results https://developer.tenable.com/reference/was-v2-scans-export
-  - download exported scans https://developer.tenable.com/reference/was-v2-scans-download-export
-
-
 ## [1.4.7]
 ### Added
 
