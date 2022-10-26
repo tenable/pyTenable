@@ -293,3 +293,14 @@ class AssetsAPI(TIOEndpoint):
         payload['query'] = {filter_type: parsed}
 
         return self._api.post('api/v2/assets/bulk-jobs/delete', json=payload).json()
+
+    def update_acr(self, assets_uuid_list, choice, value, note):
+        asset_uuids = []
+
+        for asset_uuid in assets_uuid_list:
+            asset_uuids.append({"id": asset_uuid})
+
+        note = note + " - pyTenable"
+        payload = [{"acr_score": int(value), "reason": choice, "asset": asset_uuids, "note": note}]
+
+        return self._api.post('api/v2/assets/bulk-jobs/acr', json=payload).json()
