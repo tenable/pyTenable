@@ -826,6 +826,11 @@ class ScansAPI(TIOEndpoint):
                 The unique identifier for the instance of the scan.
             history_uuid (uuid, optional):
                 The UUID for the instance of the scan.
+            scan_type (str, optional):
+                This parameter is required only when using the API with
+                Web Application Scanning. Available option is 'web-app2'
+                Note: This is not to be confused with 'web-app' option 
+                      from the export function. 
 
         Returns:
             :obj:`dict`:
@@ -990,6 +995,7 @@ class ScansAPI(TIOEndpoint):
             fobj = BytesIO()
 
         # Inserting was v2 API implimentation conditional for exporting/downloading reports
+        # the name of the key value is arbitrary, as we simply look for 'web-app2' in any key
         if 'web-app2' in kw.values():
             if kw['format'] in ['csv','html','xml']:
                 requested_file = f"text/{kw['format']}"
