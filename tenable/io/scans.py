@@ -851,7 +851,7 @@ class ScansAPI(TIOEndpoint):
 
         if 'web-app2' in kw.values():
             # if 'web-app2' is sent as a value in dict kw pass in
-            # the code flow with shift to return using was v2 specifications
+            # the code flow will shift to return using was v2 specifications
             # for get scan details: https://developer.tenable.com/reference/was-v2-scans-details
             return self._api.get('was/v2/scans/{}'.format(
                 scan_id), params=params).json()
@@ -996,7 +996,7 @@ class ScansAPI(TIOEndpoint):
             elif kw['format'] in ['json','pdf']:
                 requested_file = f"application/{kw['format']}"
             else:
-                self._api._log.info("improper or no format passed in. defaulting to json")
+                self._api._log.info("An improper or no format was passed in. Defaulting to json export.")
                 requested_file="application/json"
             headers = {
                 "accept":"application/json",
@@ -1005,7 +1005,7 @@ class ScansAPI(TIOEndpoint):
             # put request to start generation of the request report
             # Response: 200-completed; 202-request accepted
             fid = self._api.put('was/v2/scans/{}/report'.format(scan_id),
-                                headers=headers)#.json()['file']
+                                headers=headers)
             if str(fid).find('20') < 0:
                 self._api._log.error(f"There was an problem requesting report:{requested_file}")
                 return None
@@ -1014,7 +1014,7 @@ class ScansAPI(TIOEndpoint):
             # This is basically a do while loop in python used to retrieve response object.
             while True:
                 resp = self._api.get('was/v2/scans/{}/report'.format(scan_id),
-                                    headers=headers, stream=True)#.json()['file']
+                                    headers=headers, stream=True)
                 if str(resp).find('200')>=0:
                     # we got something back, lest store it someplace
                     for chunk in resp.iter_content(chunk_size=1024):
