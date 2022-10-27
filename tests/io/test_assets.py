@@ -247,7 +247,7 @@ def test_assets_move_assets_success(api, network):
         iterate_count = iterate_count + 1
 
         # break iteration
-        if iterate_count == 5 or (len(asset) == 1 and asset[0] == 'COMPLETE'):
+        if iterate_count == 5 or (len(asset) == 1 and asset[0] == 'COMPLETE') :
             break
 
     # move asset to new network
