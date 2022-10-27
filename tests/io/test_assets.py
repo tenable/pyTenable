@@ -3,10 +3,12 @@ test assets
 '''
 import time
 import uuid
+
 import pytest
+
 from tenable.errors import UnexpectedValueError, ForbiddenError
 from tests.checker import check, single
-from tests.io.test_networks import fixture_network
+
 
 @pytest.mark.vcr()
 def test_assets_list(api):
@@ -32,6 +34,7 @@ def test_assets_list(api):
         check(source, 'last_seen', 'datetime')
         check(source, 'name', str)
 
+
 @pytest.mark.vcr()
 def test_assets_import_assets_typeerror(api):
     '''
@@ -39,6 +42,7 @@ def test_assets_import_assets_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.assets.asset_import('pytest', 1)
+
 
 @pytest.mark.vcr()
 def test_assets_import_source_typeerror(api):
@@ -53,18 +57,20 @@ def test_assets_import_source_typeerror(api):
             'mac_address': []
         })
 
+
 @pytest.mark.vcr()
 def test_assets_import_standard_user_permissionerror(stdapi):
     '''
     test to raise exception when standard user try to import asset.
     '''
     with pytest.raises(ForbiddenError):
-        stdapi.assets.asset_import( 'pytest', {
+        stdapi.assets.asset_import('pytest', {
             'fqdn': ['example.py.test'],
             'ipv4': ['192.168.254.1'],
             'netbios_name': '',
             'mac_address': []
         })
+
 
 @pytest.mark.vcr()
 def test_assets_import(api):
@@ -78,6 +84,7 @@ def test_assets_import(api):
         'mac_address': []
     })
     single(resp, 'uuid')
+
 
 @pytest.mark.vcr()
 def test_assets_import_jobs(api):
@@ -98,6 +105,7 @@ def test_assets_import_jobs(api):
         check(i, 'status', str)
         check(i, 'status_message', str)
         check(i, 'uploaded_assets', int)
+
 
 @pytest.mark.vcr()
 def test_assets_import_job_info(api):
@@ -120,6 +128,7 @@ def test_assets_import_job_info(api):
         check(job, 'uploaded_assets', int)
         assert job['job_id'] == jobs[0]['job_id']
 
+
 @pytest.mark.vcr()
 def test_assets_tags_uuid_typeerror(api):
     '''
@@ -127,6 +136,7 @@ def test_assets_tags_uuid_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.assets.tags(1)
+
 
 @pytest.mark.vcr()
 def test_assets_tags_uuid_unexpectedvalueerror(api):
@@ -136,6 +146,7 @@ def test_assets_tags_uuid_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.assets.tags('somethign else')
 
+
 @pytest.mark.vcr()
 def test_workbenches_asset_delete_asset_uuid_typeerror(api):
     '''
@@ -143,6 +154,7 @@ def test_workbenches_asset_delete_asset_uuid_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.workbenches.asset_delete(1)
+
 
 @pytest.mark.vcr()
 @pytest.mark.skip('We don\'t want to actually delete an asset')
@@ -153,6 +165,7 @@ def test_workbenches_asset_delete_success(api):
     asset = api.workbenches.assets()[0]
     api.workbenches.asset_delete(asset['id'])
 
+
 @pytest.mark.vcr()
 def test_assign_tags(api):
     '''
@@ -160,6 +173,7 @@ def test_assign_tags(api):
     '''
     with pytest.raises(UnexpectedValueError):
         api.assets.assign_tags('foo', [], [])
+
 
 @pytest.mark.vcr()
 def test_assets_move_assets_source_typeerror(api):
@@ -169,6 +183,7 @@ def test_assets_move_assets_source_typeerror(api):
     with pytest.raises(TypeError):
         api.assets.move_assets(1, str(uuid.uuid4()), ["127.0.0.1"])
 
+
 @pytest.mark.vcr()
 def test_assets_move_assets_source_unexpectedvalueerror(api):
     '''
@@ -176,6 +191,7 @@ def test_assets_move_assets_source_unexpectedvalueerror(api):
     '''
     with pytest.raises(UnexpectedValueError):
         api.assets.move_assets('nope', str(uuid.uuid4()), ["127.0.0.1"])
+
 
 @pytest.mark.vcr()
 def test_assets_move_assets_destination_typeerror(api):
@@ -185,6 +201,7 @@ def test_assets_move_assets_destination_typeerror(api):
     with pytest.raises(TypeError):
         api.assets.move_assets(str(uuid.uuid4()), 1, ["127.0.0.1"])
 
+
 @pytest.mark.vcr()
 def test_assets_move_assets_destination_unexpectedvalueerror(api):
     '''
@@ -193,6 +210,7 @@ def test_assets_move_assets_destination_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.assets.move_assets(str(uuid.uuid4()), 'nope', ["127.0.0.1"])
 
+
 @pytest.mark.vcr()
 def test_assets_move_assets_target_typeerror(api):
     '''
@@ -200,6 +218,7 @@ def test_assets_move_assets_target_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.assets.move_assets(str(uuid.uuid4()), str(uuid.uuid4()), 1)
+
 
 @pytest.mark.vcr()
 @pytest.mark.xfail(raises=AssertionError, reason="asset import job not completed")
@@ -228,7 +247,7 @@ def test_assets_move_assets_success(api, network):
         iterate_count = iterate_count + 1
 
         # break iteration
-        if iterate_count == 5 or (len(asset) == 1 and asset[0] == 'COMPLETE') :
+        if iterate_count == 5 or (len(asset) == 1 and asset[0] == 'COMPLETE'):
             break
 
     # move asset to new network
@@ -242,12 +261,14 @@ def test_assets_move_assets_success(api, network):
     check(resp['response']['data'], 'asset_count', int)
     assert resp['response']['data']['asset_count'] == 1
 
+
 def test_assets_bulk_delete_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.assets.bulk_delete(filter_type=1)
+
 
 @pytest.mark.vcr()
 def test_assets_bulk_delete_filter_type_unexpectedvalueerror(api):
@@ -257,6 +278,7 @@ def test_assets_bulk_delete_filter_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.assets.bulk_delete(filter_type='NOT')
 
+
 @pytest.mark.vcr()
 def test_assets_bulk_delete_bad_filter(api):
     '''
@@ -264,6 +286,7 @@ def test_assets_bulk_delete_bad_filter(api):
     '''
     with pytest.raises(UnexpectedValueError):
         api.assets.bulk_delete(('operating_system', 'contains', 'Linux'))
+
 
 @pytest.mark.vcr()
 @pytest.mark.xfail(raises=AssertionError, reason="asset import job not completed")
@@ -396,3 +419,13 @@ def test_assets_details_success_fields(api):
     check(resp, 'gcp_instance_id', list)
     check(resp, 'security_protections', list)
     check(resp, 'exposure_confidence_value', float, allow_none=True)
+
+
+@pytest.mark.vcr()
+def test_update_acr(api):
+    """
+    Test case to check update acr happens.
+    """
+
+    status_code = api.assets.update_acr(['de2e56a2-6a0e-4757-8d00-e9ad635f6231'], ['Other'], 1)
+    assert status_code == 202
