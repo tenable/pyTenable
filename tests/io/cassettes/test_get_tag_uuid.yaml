@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
+        (Restfly/1.4.6; Python/3.9.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/tags/categories/filter-categories
+  response:
+    body:
+      string: '{"categories":[{"uuid":"2225679d-cbde-4e44-a201-dadbd94fd700","name":"test
+        tag","value_count":1,"values":[{"uuid":"de2e56a2-6a0e-4757-8d00-e9ad635f6231","value":"acr"}]},{"uuid":"71b6d9f4-cf29-4ec9-8d83-ba00575e9b67","name":"NO","value_count":1,"values":[{"uuid":"f038fd3a-a844-438f-b7a7-7acc6369f3e9","value":"UPDATE"}]}]}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '323'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 27 Oct 2022 09:34:50 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - nginx-router-16k0p-ap-southeast-1-prod
+      X-Request-Uuid:
+      - 2241ce5386d4e1a63c7047c86c2a4f4f
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
