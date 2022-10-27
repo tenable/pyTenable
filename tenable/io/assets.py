@@ -13,10 +13,12 @@ Methods available on ``tio.assets``:
 '''
 from tenable.io.base import TIOEndpoint
 
+
 class AssetsAPI(TIOEndpoint):
     '''
     This will contain all methods related to Assets
     '''
+
     def list(self):
         '''
         Returns a list of assets.
@@ -284,7 +286,7 @@ class AssetsAPI(TIOEndpoint):
 
         # run the rules through the filter parser...
         filter_type = self._check('filter_type', filter_type, str,
-            choices=['and', 'or'], default='and', case='lower')
+                                  choices=['and', 'or'], default='and', case='lower')
         parsed = self._parse_filters(
             filters, self._api.filters.workbench_asset_filters(), rtype='assets')['asset']
 
@@ -294,13 +296,61 @@ class AssetsAPI(TIOEndpoint):
 
         return self._api.post('api/v2/assets/bulk-jobs/delete', json=payload).json()
 
-    def update_acr(self, assets_uuid_list, choice, value, note):
+    def update_acr(self, assets_uuid_list, reasons=None, acr_score=None, note=None):
+        """
+        Overwrites the Tenable-provided Asset Criticality Rating (ACR) for the specified assets.
+
+        :devportal:`assets: update acr <assets-bulk-update-acr>`
+
+        assets_uuid_list (List[str]):
+            Asset uuid's list to update.
+
+        reasons (List[str]):
+            The reasons you are updating the ACR for the assets. Supported values include.
+                Business Critical
+                In Scope For Compliance
+                Existing Mitigation Control
+                Dev only
+                Key drivers does not match
+                Other
+
+        acr_score (str):
+            The ACR score you want to assign to the asset. The ACR must be an integer from 1 to 10.
+
+        note (str):
+            Any notes you want to add to clarify the circumstances behind the update.
+
+        Returns:
+            :obj:`int`:
+                Returns the status code
+
+        Examples:
+            >>> tio.assets.update_acr(['00000000-0000-0000-0000-000000000000','10000000-0000-0000-0000-000000000001'],
+            ... ['Business Critical','In Scope For Compliance'],
+            ... 7
+            ... 'note details..')
+        """
+
+        # run the rules...
+        for asset_uuid in assets_uuid_list:
+            self._check('assets_uuid_list', asset_uuid, 'uuid')
+
+        for reason in reasons:
+            self._check('reason', reason, str,
+                        choices=['Business Critical', 'In Scope For Compliance',
+                                 'Existing Mitigation Control', 'Dev only',
+                                 'Key drivers does not match', 'Other'])
+
+        acr_score = self._check('acr_score', acr_score, int, pattern='[1-9]|10')
+
         asset_uuids = []
 
         for asset_uuid in assets_uuid_list:
             asset_uuids.append({"id": asset_uuid})
 
-        note = note + " - pyTenable"
-        payload = [{"acr_score": int(value), "reason": choice, "asset": asset_uuids, "note": note}]
+        if note is not None:
+            note = note + " - pyTenable"
 
-        return self._api.post('api/v2/assets/bulk-jobs/acr', json=payload).json()
+        payload = [{"acr_score": int(acr_score), "reason": reasons, "asset": asset_uuids, "note": note}]
+        response = self._api.post('api/v2/assets/bulk-jobs/acr', json=payload)
+        return response.status_code

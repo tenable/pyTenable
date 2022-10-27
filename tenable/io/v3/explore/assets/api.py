@@ -21,25 +21,39 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator, Sea
 
 
 class AssetsAPI(ExploreBaseEndpoint):
-    '''
-    This will contain methods related to Explore -> Assets V3 API endpoints.
-    '''
+    """
+    This will contain methods related to Assets V3 API endpoints.
+    """
     _path = 'api/v3/assets'
     _conv_json = True
 
     def get_asset_uuids(self, **kw):
+        """
+        Args:
+            filter (tuple, dict, optional):
+                A nestable filter object detailing how to filter the results down to the desired subset.
+
+        Returns:
+            :obj:`list`:
+                Returns list of asset UUID's that matches filter criteria
+
+        Examples:
+            >>> tio.v3.assets.get_asset_uuids(filter=
+            ... ('and', ('tags', 'eq', ['de2e56a2-6a0e-4757-8d00-e9ad635f6231']),
+            ...         ('tags', 'neq', ['f038fd3a-a844-438f-b7a7-7acc6369f3e9']))
+            ... )
+        """
         items = []
         try:
             iterator = self.search_all(**kw)
             for item in iterator:
                 items.append(item['id'])
         except ForbiddenError:
-            print('please check kw arg(s) or uuids passed')
+            print('please check keyword arg(s) or uuid(s) passed')
         return items
 
-
     def search_all(self, **kw) -> Union[SearchIterator, CSVChunkIterator, Response]:
-        '''
+        """
         Retrieves all the assets.
 
         Args:
@@ -103,7 +117,7 @@ class AssetsAPI(ExploreBaseEndpoint):
         Examples:
             >>> tio.v3.assets.search_all(filter=('netbios_name', 'eq', 'SCCM'),
             ...  limit=2, sort=[('last_observed', 'asc')])
-        '''
+        """
         iclass = SearchIterator
         if kw.get('return_csv', False):
             iclass = CSVChunkIterator

@@ -703,6 +703,27 @@ class TagsAPI(TIOEndpoint):
         }).json()['job_uuid']
 
     def get_tag_uuid(self, category, value):
+        """
+        Fetch tag UUID for provided tag category and value.
+
+        :devportal:`tags: tag uuid <tags>`
+
+        category (str):
+            The tag category.
+
+        value (str):
+            The tag value.
+
+        Returns:
+            :obj:`string`:
+                Returns the tag UUID if exists or None
+
+        Examples:
+            >>> asset = tio.tags.get_tag_uuid('category_1', 'value_1')
+        """
+        # run the rules...
+        self._check('category', category, str)
+        self._check('value', value, str)
 
         response = self._api.get('tags/categories/filter-categories')
         tag_uuid = None
