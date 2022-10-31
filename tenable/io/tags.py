@@ -733,5 +733,6 @@ class TagsAPI(TIOEndpoint):
                 for val in cat['values']:
                     if val['value'].casefold() == value.casefold():
                         tag_uuid = val['uuid']
-
+                        break
+                break
         return tag_uuid
