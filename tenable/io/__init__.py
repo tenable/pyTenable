@@ -20,6 +20,7 @@ Tenable.io
     assets
     audit_log
     credentials
+    display
     editor
     exclusions
     exports
@@ -58,6 +59,7 @@ from .assets import AssetsAPI
 from .audit_log import AuditLogAPI
 from .credentials import CredentialsAPI
 from .cs.api import ContainerSecurity
+from .display import DisplayAPI
 from .editor import EditorAPI
 from .exclusions import ExclusionsAPI
 from .exports.api import ExportsAPI
@@ -265,6 +267,13 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         :doc:`Tenable.io Credentials APIs <credentials>`.
         '''
         return CredentialsAPI(self)
+
+    @property
+    def display(self):
+        '''
+        The interface object for the Status and Account Info
+        '''
+        return DisplayAPI(self)
 
     @property
     def editor(self):
