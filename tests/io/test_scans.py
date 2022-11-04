@@ -2092,10 +2092,27 @@ def test_scan_results_without_history(api):
 @pytest.mark.vcr()
 def test_scan_results_with_history(api):
     """
-    requests using only Scan ID
+    requests wasv2 using Scan ID and History ID
     """
     scan = api.scans.results(scan_id=419, history_id="3c816df5-7a82-449b-876d-c7ef9baf935c")
     assert len(scan["hosts"]) == 220
+
+
+@pytest.mark.vcr()
+def test_scan_results_wasv2_without_history(api):
+    """
+    requests using only was Scan ID
+    """
+    scan = api.scans.results(scan_id="insert was scan id")
+    assert len(scan["vulnerabilities"]) == "watever value is expected for this test scan"
+
+@pytest.mark.vcr()
+def test_scan_results_wasv2_with_history(api):
+    """
+    requests using was Scan ID and History Id
+    """
+    scan = api.scans.results(scan_id="insert WASv2 scan id", history_id="whatever id represents a WAS scan")
+    assert len(scan["hosts"]) == "whatever value is expected for the number of hosts with test data"
 
 
 @pytest.mark.vcr()
