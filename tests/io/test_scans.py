@@ -2059,3 +2059,60 @@ def test_scan_create_scan_document_credentials_pass(api):
     for credential in credentials:
         getattr(api.scans, '_create_scan_document')(
             {'credentials': credential})
+
+
+@pytest.mark.vcr()
+def test_block_while_running(api):
+    '''
+    test _block_while_running with expected type.
+    '''
+    api.scans._block_while_running(scan_id=583, sleeper=5)
+
+
+@pytest.mark.vcr()
+def test_scan_results_scan_not_found_error(api):
+    """
+    test to raise exception when scan not found.
+    """
+    with pytest.raises(NotFoundError) as not_found_error:
+        api.scans.results(scan_id=583, history_id="123e4567-e89b-12d3-a456-426614174000")
+    assert "Scan not found" in not_found_error.value.msg, \
+        "Invalid type validation error for scan_id parameter is not raised by test-case."
+
+
+@pytest.mark.vcr()
+def test_scan_results_without_history(api):
+    """
+    requests using only Scan ID
+    """
+    scan = api.scans.results(scan_id=419)
+    assert len(scan["vulnerabilities"]) == 223
+
+
+@pytest.mark.vcr()
+def test_scan_results_with_history(api):
+    """
+    requests using only Scan ID
+    """
+    scan = api.scans.results(scan_id=419, history_id="3c816df5-7a82-449b-876d-c7ef9baf935c")
+    assert len(scan["hosts"]) == 220
+
+
+@pytest.mark.vcr()
+def test_scan_history_sort_direction(api):
+    '''
+    test scan history for sort direction.
+    '''
+    api.scans.history(scan_id=11, limit=10, offset="1", pages=3, sort=(('name', 'asc'), ('description', 'desc')))
+
+
+@pytest.mark.vcr()
+def test_scan_create_scan_document_credentials_compliance_plugins(api):
+    '''
+    test to create scan document with credentials, compliance and plugins
+    '''
+    getattr(api.scans, '_create_scan_document')({'credentials': {'Host': {'Windows': [{'domain': '', 'username': 'test',
+                                                                                       'password': 'test',
+                                                                                       'auth_method': 'Password'}]}},
+                                                 'compliance': {'test': 'testvalue'},
+                                                 'plugins': {12122: 13, 12050: 13}})
