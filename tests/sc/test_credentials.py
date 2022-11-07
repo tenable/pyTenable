@@ -5,6 +5,7 @@ import os
 
 import pytest
 
+from contextlib import nullcontext as does_not_raise
 from tenable.errors import APIError, UnexpectedValueError
 from tests.pytenable_log_handler import log_exception
 from ..checker import check, single
@@ -370,20 +371,19 @@ def test_credentials_constructor_passphrase_typeerror(security_center):
         security_center.credentials._constructor(passphrase=1)
 
 
-def test_credentials_constructor_privilege_escalation_typeerror(security_center):
-    '''
-    test credentials constructor for 'privilege escalation' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.credentials._constructor(privilege_escalation=1)
-
-
-def test_credentials_constructor_privilege_escalation_unexpectedvalueerror(security_center):
-    '''
-    test credentials constructor for 'privilege escalation' unexpected value error
-    '''
-    with pytest.raises(UnexpectedValueError):
-        security_center.credentials._constructor(privilege_escalation='something')
+@pytest.mark.parametrize(
+    "data, expectation",
+    [
+        ("Cisco 'enable'", does_not_raise()),
+        (1, pytest.raises(TypeError)),
+        ("something", pytest.raises(UnexpectedValueError)),
+    ],
+)
+def test_credentials_constructor_privilege_escalation(data, expectation, security_center):
+    """test case scenarios when value is valid as well as when TypeError and UnexpectedValueError exceptions are
+    raised. """
+    with expectation:
+        assert (security_center.credentials._constructor(privilege_escalation=data)) is not None
 
 
 def test_credentials_constructor_kdc_ip_typeerror(security_center):
