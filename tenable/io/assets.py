@@ -354,3 +354,4 @@ class AssetsAPI(TIOEndpoint):
         payload = [{"acr_score": int(acr_score), "reason": reasons, "asset": asset_uuids, "note": note}]
         response = self._api.post('api/v2/assets/bulk-jobs/acr', json=payload)
         return response.status_code
+
