@@ -1,29 +1,29 @@
 """
-Assets
-======
+Plugins
+=======
 
-Methods described in this section relate to the assets API.
-These methods can be accessed at ``TenableOT.assets``.
+Methods described in this section relate to the plugins API.
+These methods can be accessed at ``TenableOT.plugins``.
 
 .. rst-class:: hide-signature
-.. autoclass:: AssetsAPI
+.. autoclass:: PluginsAPI
     :members:
 """
 from typing import List, Optional
 
 from tenable.ot.api import OTAPIBase
 from tenable.ot.graphql.iterators import OTGraphIterator
-from tenable.ot.graphql.query import ASSETS_QUERY
-from tenable.ot.graphql.schema.assets import AssetsSchema
+from tenable.ot.graphql.query import PLUGINS_QUERY, PLUGINS_DETAILS_QUERY
+from tenable.ot.graphql.schema.plugins import PluginsSchema
 
 
-class AssetsAPI(OTAPIBase):
-    _path = "assets"
-    query = ASSETS_QUERY
-    schema_class = AssetsSchema
+class PluginsAPI(OTAPIBase):
+    _path = "plugins"
+    schema_class = PluginsSchema
 
     def list(
         self,
+        query: str = PLUGINS_QUERY,
         query_filter: Optional[dict] = None,
         search: Optional[str] = None,
         sort: Optional[List[dict]] = None,
@@ -32,9 +32,11 @@ class AssetsAPI(OTAPIBase):
         **kwargs,
     ) -> OTGraphIterator:
         """
-        Retrieves a list of assets via the GraphQL API.
+        Retrieves a list of plugins via the GraphQL API.
 
         Args:
+            query(str):
+                A GraphQL query .
             query_filter(dict, optional):
                 A document as defined by Tenable.ot online documentation.
             search(str, optional):
@@ -57,14 +59,14 @@ class AssetsAPI(OTAPIBase):
                 An iterator object that will handle pagination of the data.
 
         Example:
-            >>>     for asset in tot.assets.list(limit=500):
-                        print(asset)
+            >>>     for plugin in tot.plugins.list(limit=500):
+                        print(plugin)
         """
         if not sort:
             sort = [{"field": "id", "direction": "DescNullLast"}]
 
         return super().list(
-            query=ASSETS_QUERY,
+            query=query,
             query_filter=query_filter,
             search=search,
             sort=sort,
@@ -73,16 +75,16 @@ class AssetsAPI(OTAPIBase):
             **kwargs,
         )
 
-    def asset(
+    def plugin(
         self,
-        asset_id: int,
+        plugin_id: int,
         **kwargs,
     ) -> OTGraphIterator:
         """
-        Retrieve a specific asset by ID.
+        Retrieve a specific plugin with additionals details by ID.
 
         Args:
-            asset_id (int):
+            plugin_id (int):
 
         Returns:
             :obj:`OTGraphIterator`:
@@ -95,8 +97,8 @@ class AssetsAPI(OTAPIBase):
             query_filter={
                 "field": "id",
                 "op": "Equal",
-                "values": asset_id,
+                "values": plugin_id,
             },
-            query=ASSETS_QUERY,
+            query=PLUGINS_DETAILS_QUERY,
             **kwargs,
         )

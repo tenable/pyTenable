@@ -1,26 +1,25 @@
 """
-Assets
+Events
 ======
 
-Methods described in this section relate to the assets API.
-These methods can be accessed at ``TenableOT.assets``.
+Methods described in this section relate to the events API.
+These methods can be accessed at ``TenableOT.events``.
 
 .. rst-class:: hide-signature
-.. autoclass:: AssetsAPI
+.. autoclass:: EventsAPI
     :members:
 """
 from typing import List, Optional
 
 from tenable.ot.api import OTAPIBase
 from tenable.ot.graphql.iterators import OTGraphIterator
-from tenable.ot.graphql.query import ASSETS_QUERY
-from tenable.ot.graphql.schema.assets import AssetsSchema
+from tenable.ot.graphql.query import EVENTS_QUERY
+from tenable.ot.graphql.schema.events import EventsSchema
 
 
-class AssetsAPI(OTAPIBase):
-    _path = "assets"
-    query = ASSETS_QUERY
-    schema_class = AssetsSchema
+class EventsAPI(OTAPIBase):
+    _path = "events"
+    schema_class = EventsSchema
 
     def list(
         self,
@@ -29,10 +28,10 @@ class AssetsAPI(OTAPIBase):
         sort: Optional[List[dict]] = None,
         start_at: Optional[str] = None,
         limit: Optional[int] = 200,
-        **kwargs,
+        **kwargs
     ) -> OTGraphIterator:
         """
-        Retrieves a list of assets via the GraphQL API.
+        Retrieves a list of events via the GraphQL API.
 
         Args:
             query_filter(dict, optional):
@@ -57,46 +56,18 @@ class AssetsAPI(OTAPIBase):
                 An iterator object that will handle pagination of the data.
 
         Example:
-            >>>     for asset in tot.assets.list(limit=500):
-                        print(asset)
+            >>>     for event in tot.events.list(limit=500):
+                        print(event)
         """
         if not sort:
-            sort = [{"field": "id", "direction": "DescNullLast"}]
+            sort = [{"field": "eventId", "direction": "DescNullLast"}]
 
         return super().list(
-            query=ASSETS_QUERY,
+            query=EVENTS_QUERY,
             query_filter=query_filter,
             search=search,
             sort=sort,
             start_at=start_at,
             limit=limit,
-            **kwargs,
-        )
-
-    def asset(
-        self,
-        asset_id: int,
-        **kwargs,
-    ) -> OTGraphIterator:
-        """
-        Retrieve a specific asset by ID.
-
-        Args:
-            asset_id (int):
-
-        Returns:
-            :obj:`OTGraphIterator`:
-                An iterator object handling data pagination.
-        Example:
-            >>>     tot.plugins.plugin(1)
-
-        """
-        return super().list(
-            query_filter={
-                "field": "id",
-                "op": "Equal",
-                "values": asset_id,
-            },
-            query=ASSETS_QUERY,
-            **kwargs,
+            **kwargs
         )
