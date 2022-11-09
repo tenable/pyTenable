@@ -179,7 +179,7 @@ class ScannersAPI(TIOEndpoint):
             and self._check('aws_update_interval', kwargs['aws_update_interval'], int)):
             payload['aws_update_interval'] = kwargs['aws_update_interval']
 
-        self._api.put('settings/{}'.format(self._check('id', id, int)),
+        self._api.put('scanners/{}'.format(self._check('id', id, int)),
             json=payload)
 
     def get_aws_targets(self, id):
