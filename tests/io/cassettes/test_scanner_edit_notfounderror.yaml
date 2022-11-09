@@ -1,0 +1,57 @@
+interactions:
+- request:
+    body: '{"force_ui_update": 1}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '22'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
+        (Restfly/1.4.7; Python/3.9.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: PUT
+    uri: https://cloud.tenable.com/scanners/1
+  response:
+    body:
+      string: '{"statusCode":404,"error":"Not Found","message":"Scanner with id 1
+        not found."}'
+    headers:
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '79'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 09 Nov 2022 08:59:30 GMT
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-5f64dbb68d-x8cjf
+      X-Request-Uuid:
+      - d3dc66ae7f6e7caf1471ac3ba30175bc
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 404
+      message: Not Found
+version: 1
