@@ -12,7 +12,7 @@ interactions:
       - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
         (Restfly/1.4.7; Python/3.9.6; Darwin/arm64)
       X-APIKeys:
-      - accessKey=f5d1663523f419bb2d9947182a991239742e3ebe7fd4d072d6feacd0d20534c1;secretKey=204e8b61ba3dc259fa3635da4219645ce2a04778d34d64e91ce4652989fb2ee7
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
     uri: https://cloud.tenable.com/scanners
   response:
@@ -110,7 +110,7 @@ interactions:
       - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
         (Restfly/1.4.7; Python/3.9.6; Darwin/arm64)
       X-APIKeys:
-      - accessKey=f5d1663523f419bb2d9947182a991239742e3ebe7fd4d072d6feacd0d20534c1;secretKey=204e8b61ba3dc259fa3635da4219645ce2a04778d34d64e91ce4652989fb2ee7
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: PUT
     uri: https://cloud.tenable.com/scanners/412918
   response:
