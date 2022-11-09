@@ -13,6 +13,9 @@ Methods available on ``tio.scanners``:
 '''
 from .base import TIOEndpoint
 
+SCANNERS_ = 'scanners/{}'
+
+
 class ScannersAPI(TIOEndpoint):
 
     def linking_key(self):
@@ -108,7 +111,7 @@ class ScannersAPI(TIOEndpoint):
         Examples:
             >>> tio.scanners.delete(1)
         '''
-        self._api.delete('scanners/{}'.format(self._check('id', id, int)))
+        self._api.delete(SCANNERS_.format(self._check('id', id, int)))
 
     def details(self, id):
         '''
@@ -128,7 +131,7 @@ class ScannersAPI(TIOEndpoint):
             >>> scanner = tio.scanners.details(1)
             >>> pprint(scanner)
         '''
-        return self._api.get('scanners/{}'.format(
+        return self._api.get(SCANNERS_.format(
             self._check('id', id, int))).json()
 
     def edit(self, id, **kwargs):
@@ -179,8 +182,8 @@ class ScannersAPI(TIOEndpoint):
             and self._check('aws_update_interval', kwargs['aws_update_interval'], int)):
             payload['aws_update_interval'] = kwargs['aws_update_interval']
 
-        self._api.put('scanners/{}'.format(self._check('id', id, int)),
-            json=payload)
+        self._api.put(SCANNERS_.format(self._check('id', id, int)),
+                      json=payload)
 
     def get_aws_targets(self, id):
         '''
