@@ -5,6 +5,8 @@ import re
 from uuid import UUID
 import pytest
 import responses
+
+from tenable.io import TenableIO
 from tenable.io.exports.schema import AssetExportSchema
 from tenable.io.exports.iterator import ExportsIterator
 
@@ -108,3 +110,16 @@ def test_vuln_export(export_request, api):
 def test_compliance_export(export_request, api):
     export = api.exports.compliance()
     assert isinstance(export, ExportsIterator)
+
+
+def test_initiate_export(export_request, api: TenableIO):
+    export_uuid = api.exports.initiate_export("assets", chunk_size=1000)
+    assert export_uuid == "01234567-89ab-cdef-0123-4567890abcde"
+
+    export_uuid = api.exports.initiate_export("vulns")
+    assert export_uuid == "01234567-89ab-cdef-0123-4567890abcde"
+
+    export_uuid = api.exports.initiate_export("compliance")
+    assert export_uuid == "01234567-89ab-cdef-0123-4567890abcde"
+
+

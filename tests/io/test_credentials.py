@@ -452,3 +452,12 @@ def test_credentials_list_fields(api, scan):
         check(creds, 'permission', int)
         check(creds, 'user_permissions', int)
     assert count == credentials.total
+
+
+@pytest.mark.vcr()
+def test_credentials_edit_with_permissions(api, cred):
+    '''test to edit with permissions parameter in the credentials'''
+    creds = api.credentials.edit('f07267e2-2994-4293-900a-8acc9adaacd4', cred_name='updated cred',
+                                 permissions=[{'grantee_uuid': '00000000-0000-0000-0000-000000000000', 'type': 'user',
+                                               'permissions': 64, 'name': 'test_admin@pytenable.io'}])
+    assert isinstance(creds, bool)
