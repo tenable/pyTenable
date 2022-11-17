@@ -47,6 +47,6 @@ setup(
         "defusedxml>=0.5.0",
         "urllib3>=1.26.5",
         "typing-extensions>=4.0.1",
-        'dataclasses>=0.8;python_version=="3.7"',
+        'dataclasses>=0.8;python_version=="3.6"',
     ],
 )
