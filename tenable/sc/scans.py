@@ -335,9 +335,9 @@ class ScanAPI(SCEndpoint):
                 The maximum amount of time that the scan may run in seconds.
                 ``0`` or less for unlimited.
             name (str, optional): The name of the scan.
-            policy (int, optional):
+            policy_id (int, optional):
                 The policy id to use for a policy-based scan.
-            plugin (int, optional):
+            plugin_id (int, optional):
                 The plugin id to use for a plugin-based scan.
             reports (list, optional):
                 What reports should be run upon completion of the scan?  Each
