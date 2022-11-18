@@ -7,8 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.4.9]
 ### Added
 
-- Support for initiating exports and getting the export UUID.
-- Bug Fix for scans.results()
+- Support for initiating exports (and getting the export UUID).
+- Support for Tenable.ot plugins, events, more support for asset details.
+
+### Fixed
+
+- Bug in `tio.scans.results()` fixed to pass `history_id` and `history_uuid`.
+
+### Changed
+
+- Refactored Tenable.ot session client.
+
+### Removed
+
+- Support for Python Version 3.6.
+
 
 [1.4.9]: https://github.com/tenable/pyTenable/compare/1.4.8...1.4.9 
 
