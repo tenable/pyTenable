@@ -813,7 +813,7 @@ class ScansAPI(TIOEndpoint):
         '''
         return self._api.editor.details('scan', scan_id)
 
-    def results(self, scan_id, history_id=None):
+    def results(self, scan_id, history_id=None, history_uuid=None):
         '''
         Return the scan results from either the latest scan or a specific scan
         instance in the history.
@@ -822,8 +822,10 @@ class ScansAPI(TIOEndpoint):
 
         Args:
             scan_id (int or uuid): The unique identifier for the scan.
-            history_id (uuid, optional):
+            history_id (int, optional):
                 The unique identifier for the instance of the scan.
+            history_uuid (uuid, optional)
+                The UUID for the instance of the scan.
 
         Returns:
             :obj:`dict`:
@@ -832,16 +834,24 @@ class ScansAPI(TIOEndpoint):
         Examples:
             Retrieve the latest results:
 
-            >>> results = tio.scans.results(1)
+            >>> results = tio.scans.results(419)
 
-            Retrieve a specific instance of the result set:
+            Retrieve a specific instance of the result set using history_id:
 
-            >>> results = tio.scans.results(1, history_id="123e4567-e89b-12d3-a456-426614174000")
+            >>> results = tio.scans.results(419, history_id=15184619)
+
+            Retrieve a specific instance of the result set using history_uuid:
+
+            >>> results = tio.scans.results(419, history_uuid="123e4567-e89b-12d3-a456-426614174000")
+
         '''
         params = dict()
 
         if history_id:
-            params['history_id'] = self._check('history_id', history_id, "uuid")
+            params['history_id'] = self._check('history_id', history_id, int)
+
+        if history_uuid:
+            params['history_id'] = self._check('history_uuid', history_uuid, "uuid")
 
         return self._api.get('scans/{}'.format(
             scan_id), params=params).json()
