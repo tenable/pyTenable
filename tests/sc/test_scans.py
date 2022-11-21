@@ -372,28 +372,17 @@ def test_scans_constructor_creds_success(security_center):
     assert resp == {'credentials': [{'id': 1}, {'id': 2}]}
 
 
-def test_scans_constructor_both_policy_and_plugin_unexpectedvalueerror(security_center):
-    '''
-    test scans constructor for 'both policy id and plugin id' unexpected value error
-    '''
-    with pytest.raises(UnexpectedValueError):
-        security_center.scans._constructor(plugin_id=1, policy_id=1)
-
-
-def test_scans_constructor_plugin_id_typeerror(security_center):
-    '''
-    test scans constructor for 'plugin id' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.scans._constructor(plugin_id='nope')
-
-
 def test_scans_constructor_plugin_id_success(security_center):
     '''
     test scans constructor for plugin id success
     '''
-    resp = security_center.scans._constructor(plugin_id=19506)
-    assert resp == {'type': 'plugin', 'pluginID': 19506}
+    resp = security_center.scans._constructor(policy_id=19506)
+    assert resp == {
+        'type': 'policy',
+        'policy': {
+            'id': 19506
+        }
+    }
 
 
 def test_scans_constructor_policy_id_typeerror(security_center):
