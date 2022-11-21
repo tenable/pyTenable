@@ -224,17 +224,16 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
 
         Examples:
 
-            A simple example is to simply download the chunks and write them
-            to disk.
+            A simple example to download the chunks and write them to disk.
 
-            >>> def write_chunk(data: List[Dict],
+            >>> def write_chunk(data,
             ...                 export_uuid: str,
             ...                 export_type: str,
             ...                 export_chunk_id: int
             ...                 ):
             ...     fn = f'{export_type}-{export_uuid}-{export_chunk_id}.json'
             ...     with open(fn, 'w') as fobj:
-            ...         json.dump(data, fn)
+            ...         json.dump(data, fobj)
             >>>
             >>> export = tio.exports.vulns()
             >>> export.run_threaded(write_chunk, num_threads=4)
