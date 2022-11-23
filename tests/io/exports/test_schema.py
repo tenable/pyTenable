@@ -83,6 +83,7 @@ def vuln_export():
             ('test3', 'val3'),
             ('test3', 'val4')
         ],
+        'scan_uuid': '6200cec8-e12b-4ed4-b7f6-4e51982306d4',
         'network_id': 'f634d639-cc33-4149-a683-5ad6b8f29d9c',
         'cidr_range': '192.0.2.0/24',
         'include_unlicensed': True,
@@ -170,6 +171,7 @@ def test_vulnerabilityschema(vuln_export):
                 'lt': 0.5,
                 'lte': 0.4
             },
+            'scan_uuid': '6200cec8-e12b-4ed4-b7f6-4e51982306d4',
             'network_id': 'f634d639-cc33-4149-a683-5ad6b8f29d9c',
             'cidr_range': '192.0.2.0/24',
             'tag.test1': ['val1'],
@@ -182,3 +184,14 @@ def test_vulnerabilityschema(vuln_export):
     with pytest.raises(ValidationError):
         vuln_export['new_val'] = 'something'
         schema.load(vuln_export)
+
+    with pytest.raises(ValidationError):
+        del vuln_export['new_val']
+
+        vuln_export['scan_uuid'] = 'something'
+        schema.load(vuln_export)
+
+    del vuln_export['scan_uuid']
+    del test_resp['filters']['scan_uuid']
+
+    assert test_resp == schema.dump(schema.load(vuln_export))
