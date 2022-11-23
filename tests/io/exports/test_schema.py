@@ -184,3 +184,7 @@ def test_vulnerabilityschema(vuln_export):
     with pytest.raises(ValidationError):
         vuln_export['new_val'] = 'something'
         schema.load(vuln_export)
+
+    with pytest.raises(ValidationError):
+        vuln_export['scan_uuid'] = 0
+        schema.load(vuln_export)

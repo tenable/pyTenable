@@ -10,12 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for `scan_uuid` filter for vulnerability exports.
 
 ### Fixed
-- Bug in tenable/io/scanners.py that invoked the /settings/{} endpoint instead of the correct /scanners/{} endpoint.
-- Error in the documentation of the sc.scans.edit() method. The property - policy was renamed to policy_id.
+- Bug in `tenable/io/scanners.py` that invoked the `/settings/{}` endpoint instead of the correct `/scanners/{}` endpoint.
+- Error in the documentation of the `sc.scans.edit()` method. The property - `policy` was renamed to `policy_id`.
 - tests module getting into the pypi package. Now, the module will no longer be part of pypi package.
 
 ### Removed
-- plugin_id param from the sc.scans.create() method as it is no longer supported by Tenable.sc.
+- `plugin_id` param from the `sc.scans.create()` method as it is no longer supported by Tenable.sc.
 - Python 3.6 references from all documentation.
 - `search_host_audit()` method from `io/v3/explore/findings`.
 
