@@ -1,0 +1,1288 @@
+interactions:
+- request:
+    body: '{"num_assets": 500, "filters": {"scan_uuid": "992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c",
+      "since": 1661327570}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '122'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
+        (Restfly/1.4.7; Python/3.10.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: POST
+    uri: https://cloud.tenable.com/vulns/export
+  response:
+    body:
+      string: '{"export_uuid":"8b606c8d-d042-4d27-9aa7-d798e8528710"}'
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '54'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 23 Nov 2022 08:14:05 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-7bfcc7b48d-crdzs
+      X-Request-Uuid:
+      - 0e798331ddf91491c61272ef8fc92b68
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
+        (Restfly/1.4.7; Python/3.10.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/vulns/export/8b606c8d-d042-4d27-9aa7-d798e8528710/status
+  response:
+    body:
+      string: '{"uuid":"8b606c8d-d042-4d27-9aa7-d798e8528710","status":"PROCESSING","chunks_available":[],"chunks_failed":[],"chunks_cancelled":[],"total_chunks":6,"chunks_available_count":4,"empty_chunks_count":4,"finished_chunks":4,"filters":{"state":["OPEN","REOPENED"],"tags":{},"scanuuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c","since":1661327570,"first_found":0,"last_found":0,"last_fixed":0,"first_seen":0,"last_seen":0,"indexed_at":0},"num_assets_per_chunk":500,"created":1669191245469}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '495'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 23 Nov 2022 08:14:06 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-7bfcc7b48d-crdzs
+      X-Request-Uuid:
+      - 7b6fdcd0a308ce09c43b4d61b5d45c35
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
+        (Restfly/1.4.7; Python/3.10.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/vulns/export/8b606c8d-d042-4d27-9aa7-d798e8528710/status
+  response:
+    body:
+      string: '{"uuid":"8b606c8d-d042-4d27-9aa7-d798e8528710","status":"FINISHED","chunks_available":[1,5],"chunks_failed":[],"chunks_cancelled":[],"total_chunks":6,"chunks_available_count":6,"empty_chunks_count":4,"finished_chunks":6,"filters":{"state":["OPEN","REOPENED"],"tags":{},"scanuuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c","since":1661327570,"first_found":0,"last_found":0,"last_fixed":0,"first_seen":0,"last_seen":0,"indexed_at":0},"num_assets_per_chunk":500,"created":1669191245469}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '496'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 23 Nov 2022 08:14:09 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-7bfcc7b48d-crdzs
+      X-Request-Uuid:
+      - 9611428f3e61d3e39519a7648c0ed9b9
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
+        (Restfly/1.4.7; Python/3.10.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/vulns/export/8b606c8d-d042-4d27-9aa7-d798e8528710/chunks/1
+  response:
+    body:
+      string: '[{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"For
+        your information, here is the traceroute from 172.16.31.133 to 44.241.160.134
+        : \n172.16.31.133\n100.64.80.5\n240.1.240.35\n250.254.128.4\n242.0.0.25\n240.0.208.7\n242.2.99.145\n44.241.160.134\n\nHop
+        Count: 7\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Makes
+        a traceroute to the remote host.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":10287,"in_the_news":false,"name":"Traceroute
+        Information","modification_date":"2020-08-20T00:00:00Z","publication_date":"1999-11-27T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"It
+        was possible to obtain traceroute information.","type":"remote","unsupported_by_vendor":false,"version":"1.67"},"port":{"port":0,"protocol":"UDP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.258Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nGive
+        Nessus credentials to perform local checks.\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Security
+        patches may have been ''backported'' to the remote SSH server without changing
+        its version number. \n\nBanner-based checks have been disabled to avoid false
+        positives. \n\nNote that this test is informational only and does not denote
+        any security problem.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":39520,"in_the_news":false,"name":"Backported
+        Security Patch Detection (SSH)","modification_date":"2015-07-07T00:00:00Z","publication_date":"2009-06-25T00:00:00Z","risk_factor":"None","see_also":["https://access.redhat.com/security/updates/backporting/?sc_cid=3093"],"solution":"N/A","synopsis":"Security
+        patches are backported.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.9 $"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.251Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Remote
+        device type : general-purpose\nConfidence level : 95\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Based
+        on the remote operating system, it is possible to determine what the remote
+        system type is (eg: a printer, router, general-purpose computer, etc).","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":54615,"in_the_news":false,"name":"Device
+        Type","modification_date":"2022-09-09T00:00:00Z","publication_date":"2011-05-23T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"It
+        is possible to guess the remote device type.","type":"combined","unsupported_by_vendor":false,"version":"$Revision:
+        1.1 $"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.219Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"The
+        remote SSH daemon supports the following versions of the\nSSH protocol :\n\n  -
+        1.99\n  - 2.0\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        plugin determines the versions of the SSH protocol supported by the remote
+        SSH daemon.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":10881,"in_the_news":false,"name":"SSH
+        Protocol Versions Supported","modification_date":"2021-01-19T00:00:00Z","publication_date":"2002-03-06T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"A
+        SSH server is running on the remote host.","type":"remote","unsupported_by_vendor":false,"version":"1.39"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.246Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nResponse
+        Code : HTTP/1.1 200 OK\n\nProtocol version : HTTP/1.1\nSSL : no\nKeep-Alive
+        : yes\nOptions allowed : (Not implemented)\nHeaders :\n\n  Date: Tue, 31 May
+        2022 08:27:05 GMT\n  Server: Apache/2.4.7 (Ubuntu)\n  Last-Modified: Fri,
+        01 Nov 2019 13:29:43 GMT\n  ETag: \"2cf6-59648f579f31f\"\n  Accept-Ranges:
+        bytes\n  Content-Length: 11510\n  Vary: Accept-Encoding\n  Keep-Alive: timeout=5,
+        max=100\n  Connection: Keep-Alive\n  Content-Type: text/html\n  \nResponse
+        Body :\n\n\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
+        \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n  <!--\n    Modified
+        from the Debian original for Ubuntu\n    Last updated: 2014-03-19\n    See:
+        https://launchpad.net/bugs/1288690\n  -->\n  <head>\n    <meta http-equiv=\"Content-Type\"
+        content=\"text/html; charset=UTF-8\" />\n    <title>Apache2 Ubuntu Default
+        Page: It works</title>\n    <style type=\"text/css\" media=\"screen\">\n  *
+        {\n    margin: 0px 0px 0px 0px;\n    padding: 0px 0px 0px 0px;\n  }\n\n  body,
+        html {\n    padding: 3px 3px 3px 3px;\n\n    background-color: #D8DBE2;\n\n    font-family:
+        Verdana, sans-serif;\n    font-size: 11pt;\n    text-align: center;\n  }\n\n  div.main_page
+        {\n    position: relative;\n    display: table;\n\n    width: 800px;\n\n    margin-bottom:
+        3px;\n    margin-left: auto;\n    margin-right: auto;\n    padding: 0px 0px
+        0px 0px;\n\n    border-width: 2px;\n    border-color: #212738;\n    border-style:
+        solid;\n\n    background-color: #FFFFFF;\n\n    text-align: center;\n  }\n\n  div.page_header
+        {\n    height: 99px;\n    width: 100%;\n\n    background-color: #F5F6F7;\n  }\n\n  div.page_header
+        span {\n    margin: 15px 0px 0px 50px;\n\n    font-size: 180%;\n    font-weight:
+        bold;\n  }\n\n  div.page_header img {\n    margin: 3px 0px 0px 40px;\n\n    border:
+        0px 0px 0px;\n  }\n\n  div.table_of_contents {\n    clear: left;\n\n    min-width:
+        200px;\n\n    margin: 3px 3px 3px 3px;\n\n    background-color: #FFFFFF;\n\n    text-align:
+        left;\n  }\n\n  div.table_of_contents_item {\n    clear: left;\n\n    width:
+        100%;\n\n    margin: 4px 0px 0px 0px;\n\n    background-color: #FFFFFF;\n\n    color:
+        #000000;\n    text-align: left;\n  }\n\n  div.table_of_contents_item a {\n    margin:
+        6px 0px 0px 6px;\n  }\n\n  div.content_section {\n    margin: 3px 3px 3px
+        3px;\n\n    background-color: #FFFFFF;\n\n    text-align: left;\n  }\n\n  div.content_section_text
+        {\n    padding: 4px 8px 4px 8px;\n\n    color: #000000;\n    font-size: 100%;\n  }\n\n  div.content_section_text
+        pre {\n    margin: 8px 0px 8px 0px;\n    padding: 8px 8px 8px 8px;\n\n    border-width:
+        1px;\n    border-style: dotted;\n    border-color: #000000;\n\n    background-color:
+        #F5F6F7;\n\n    font-style: italic;\n  }\n\n  div.content_section_text p {\n    margin-bottom:
+        6px;\n  }\n\n  div.content_section_text ul, div.content_section_text li {\n    padding:
+        4px 8px 4px 16px;\n  }\n\n  div.section_header {\n    padding: 3px 6px 3px
+        6px;\n\n    background-color: #8E9CB2;\n\n    color: #FFFFFF;\n    font-weight:
+        bold;\n    font-size: 112%;\n    text-align: center;\n  }\n\n  div.section_header_red
+        {\n    background-color: #CD214F;\n  }\n\n  div.section_header_grey {\n    background-color:
+        #9F9386;\n  }\n\n  .floating_element {\n    position: relative;\n    float:
+        left;\n  }\n\n  div.table_of_contents_item a,\n  div.content_section_text
+        a {\n    text-decoration: none;\n    font-weight: bold;\n  }\n\n  div.table_of_contents_item
+        a:link,\n  div.table_of_contents_item a:visited,\n  div.table_of_contents_item
+        a:active {\n    color: #000000;\n  }\n\n  div.table_of_contents_item a:hover
+        {\n    background-color: #000000;\n\n    color: #FFFFFF;\n  }\n\n  div.content_section_text
+        a:link,\n  div.content_section_text a:visited,\n   div.content_section_text
+        a:active {\n    background-color: #DCDFE6;\n\n    color: #000000;\n  }\n\n  div.content_section_text
+        a:hover {\n    background-color: #000000;\n\n    color: #DCDFE6;\n  }\n\n  div.validator
+        {\n  }\n    </style>\n  </head>\n  <body>\n    <div class=\"main_page\">\n      <div
+        class=\"page_header floating_element\">\n        <img src=\"/icons/ubuntu-logo.png\"
+        alt=\"Ubuntu Logo\" class=\"floating_element\"/>\n        <span class=\"floating_element\">\n          Apache2
+        Ubuntu Default Page\n        </span>\n      </div>\n<!--      <div class=\"table_of_contents
+        floating_element\">\n        <div class=\"section_header section_header_grey\">\n          TABLE
+        OF CONTENTS\n        </div>\n        <div class=\"table_of_contents_item floating_element\">\n          <a
+        href=\"#about\">About</a>\n        </div>\n        <div class=\"table_of_contents_item
+        floating_element\">\n          <a href=\"#changes\">Changes</a>\n        </div>\n        <div
+        class=\"table_of_contents_item floating_element\">\n          <a href=\"#scope\">Scope</a>\n        </div>\n        <div
+        class=\"table_of_contents_item floating_element\">\n          <a href=\"#files\">Config
+        files</a>\n        </div>\n      </div>\n-->\n      <div class=\"content_section
+        floating_element\">\n\n\n        <div class=\"section_header section_header_red\">\n          <div
+        id=\"about\"></div>\n          It works!\n        </div>\n        <div class=\"content_section_text\">\n          <p>\n                This
+        is the default welcome page used to test the correct \n                operation
+        of the Apache2 server after installation on Ubuntu systems.\n                It
+        is based on the equivalent page on Debian, from which the Ubuntu Apache\n                packaging
+        is derived.\n                If you can read this page, it means that the
+        Apache HTTP server installed at\n                this site is working properly.
+        You should <b>replace this file</b> (located at\n                <tt>/var/www/html/index.html</tt>)
+        before continuing to operate your HTTP server.\n          </p>\n\n\n          <p>\n                If
+        you are a normal user of this web site and don''t know what this page is\n                about,
+        this probably means that the site is currently unavailable due to\n                maintenance.\n                If
+        the problem persists, please contact the site''s administrator.\n          </p>\n\n        </div>\n        <div
+        class=\"section_header\">\n          <div id=\"changes\"></div>\n                Configuration
+        Overview\n        </div>\n        <div class=\"content_section_text\">\n          <p>\n                Ubuntu''s
+        Apache2 default configuration is different from the\n                upstream
+        default configuration, and split into several files optimized for\n                interaction
+        with Ubuntu tools. The configuration system is\n                <b>fully documented
+        in\n                /usr/share/doc/apache2/README.Debian.gz</b>. Refer to
+        this for the full\n                documentation. Documentation for the web
+        server itself can be\n                found by accessing the <a href=\"/manual\">manual</a>
+        if the <tt>apache2-doc</tt>\n                package was installed on this
+        server.\n\n          </p>\n          <p>\n                The configuration
+        layout for an Apache2 web server installation on Ubuntu systems is as follows:\n          </p>\n          <pre>\n/etc/apache2/\n|--
+        apache2.conf\n|       `--  ports.conf\n|-- mods-enabled\n|       |-- *.load\n|       `--
+        *.conf\n|-- conf-enabled\n|       `-- *.conf\n|-- sites-enabled\n|       `--
+        *.conf\n          </pre>\n          <ul>\n                        <li>\n                           <tt>apache2.conf</tt>
+        is the main configuration\n                           file. It puts the pieces
+        together by including all remaining configuration\n                           files
+        when starting up the web server.\n                        </li>\n\n                        <li>\n                           <tt>ports.conf</tt>
+        is always included from the\n                           main configuration
+        file. It is used to determine the listening ports for\n                           incoming
+        connections, and this file can be customized anytime.\n                        </li>\n\n                        <li>\n                           Configuration
+        files in the <tt>mods-enabled/</tt>,\n                           <tt>conf-enabled/</tt>
+        and <tt>sites-enabled/</tt> directories contain\n                           particular
+        configuration snippets which manage modules, global configuration\n                           fragments,
+        or virtual host configurations, respectively.\n                        </li>\n\n                        <li>\n                           They
+        are activated by symlinking available\n                           configuration
+        files from their respective\n                           *-available/ counterparts.
+        These should be managed\n                           by using our helpers\n                           <tt>\n                                <a
+        href=\"http://manpages.debian.org/cgi-bin/man.cgi?query=a2enmod\">a2enmod</a>,\n                                <a
+        href=\"http://manpages.debian.org/cgi-bin/man.cgi?query=a2dismod\">a2dismod</a>,\n                           </tt>\n                           <tt>\n                                <a
+        href=\"http://manpages.debian.org/cgi-bin/man.cgi?query=a2ensite\">a2ensite</a>,\n                                <a
+        href=\"http://manpages.debian.org/cgi-bin/man.cgi?query=a2dissite\">a2dissite</a>,\n                            </tt>\n                                and\n                           <tt>\n                                <a
+        href=\"http://manpages.debian.org/cgi-bin/man.cgi?query=a2enconf\">a2enconf</a>,\n                                <a
+        href=\"http://manpages.debian.org/cgi-bin/man.cgi?query=a2disconf\">a2disconf</a>\n                           </tt>.
+        See their respective man pages for detailed information.\n                        </li>\n\n                        <li>\n                           The
+        binary is called apache2. Due to the use of\n                           environment
+        variables, in the default configuration, apache2 needs to be\n                           started/stopped
+        with <tt>/etc/init.d/apache2</tt> or <tt>apache2ctl</tt>.\n                           <b>Calling
+        <tt>/usr/bin/apache2</tt> directly will not work</b> with the\n                           default
+        configuration.\n                        </li>\n          </ul>\n        </div>\n\n        <div
+        class=\"section_header\">\n            <div id=\"docroot\"></div>\n                Document
+        Roots\n        </div>\n\n        <div class=\"content_section_text\">\n            <p>\n                By
+        default, Ubuntu does not allow access through the web browser to\n                <em>any</em>
+        file apart of those located in <tt>/var/www</tt>,\n                <a href=\"http://httpd.apache.org/docs/2.4/mod/mod_userdir.html\">public_html</a>\n                directories
+        (when enabled) and <tt>/usr/share</tt> (for web\n                applications).
+        If your site is using a web document root\n                located elsewhere
+        (such as in <tt>/srv</tt>) you may need to whitelist your\n                document
+        root directory in <tt>/etc/apache2/apache2.conf</tt>.\n            </p>\n            <p>\n                The
+        default Ubuntu document root is <tt>/var/www/html</tt>. You\n                can
+        make your own virtual hosts under /var/www. This is different\n                to
+        previous releases which provides better security out of the box.\n            </p>\n        </div>\n\n        <div
+        class=\"section_header\">\n          <div id=\"bugs\"></div>\n                Reporting
+        Problems\n        </div>\n        <div class=\"content_section_text\">\n          <p>\n                Please
+        use the <tt>ubuntu-bug</tt> tool to report bugs in the\n                Apache2
+        package with Ubuntu. However, check <a\n                href=\"https://bugs.launchpad.net/ubuntu/+source/apache2\">existing\n                bug
+        reports</a> before reporting a new bug.\n          </p>\n          <p>\n                Please
+        report bugs specific to modules (such as PHP and others)\n                to
+        respective packages, not to the web server itself.\n          </p>\n        </div>\n\n\n\n\n      </div>\n    </div>\n    <div
+        class=\"validator\">\n    <p>\n      <a href=\"http://validator.w3.org/check?uri=referer\"><img
+        src=\"http://www.w3.org/Icons/valid-xhtml10\" alt=\"Valid XHTML 1.0 Transitional\"
+        height=\"31\" width=\"88\" /></a>\n    </p>\n    </div>\n  </body>\n</html>\n\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        test gives some information about the remote HTTP protocol - the version used,
+        whether HTTP Keep-Alive and HTTP pipelining are enabled, etc... \n\nThis test
+        is informational only and does not denote any security problem.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Web
+        Servers","family_id":11,"has_patch":false,"id":24260,"in_the_news":false,"name":"HyperText
+        Transfer Protocol (HTTP) Information","modification_date":"2019-11-22T00:00:00Z","publication_date":"2007-01-30T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"Some
+        information about the remote HTTP configuration can be extracted.","type":"remote","unsupported_by_vendor":false,"version":"1.14"},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.258Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following client-to-server Cipher Block Chaining (CBC) algorithms\nare supported
+        : \n\n  3des-cbc\n  aes128-cbc\n  aes192-cbc\n  aes256-cbc\n  blowfish-cbc\n  cast128-cbc\n  rijndael-cbc@lysator.liu.se\n\nThe
+        following server-to-client Cipher Block Chaining (CBC) algorithms\nare supported
+        : \n\n  3des-cbc\n  aes128-cbc\n  aes192-cbc\n  aes256-cbc\n  blowfish-cbc\n  cast128-cbc\n  rijndael-cbc@lysator.liu.se\n","plugin":{"bid":[32319],"checks_for_default_account":false,"checks_for_malware":false,"cve":["CVE-2008-5161"],"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":2.6,"cvss_temporal_score":1.9,"cvss_temporal_vector":{"exploitability":"Unproven","remediation_level":"Official-fix","report_confidence":"Confirmed","raw":"E:U/RL:OF/RC:C"},"cvss_vector":{"access_complexity":"High","access_vector":"Network","authentication":"None
+        required","availability_impact":"None","confidentiality_impact":"Partial","integrity_impact":"None","raw":"AV:N/AC:H/Au:N/C:P/I:N/A:N"},"description":"The
+        SSH server is configured to support Cipher Block Chaining (CBC) encryption.  This
+        may allow an attacker to recover the plaintext message from the ciphertext.
+        \n\nNote that this plugin only checks for the options of the SSH server and
+        does not check for vulnerable software versions.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploitability_ease":"No
+        known exploits are available","exploited_by_malware":false,"exploited_by_nessus":false,"family":"Misc.","family_id":23,"has_patch":false,"id":70658,"in_the_news":false,"name":"SSH
+        Server CBC Mode Ciphers Enabled","modification_date":"2018-07-30T00:00:00Z","publication_date":"2013-10-28T00:00:00Z","risk_factor":"Low","see_also":[""],"solution":"Contact
+        the vendor or consult product documentation to disable CBC mode cipher encryption,
+        and enable CTR or GCM cipher mode encryption.","synopsis":"The SSH server
+        is configured to use Cipher Block Chaining.","type":"remote","unsupported_by_vendor":false,"version":"1.4","vuln_publication_date":"2008-11-24T00:00:00Z","xrefs":[{"type":"CERT","id":"958563"},{"type":"CWE","id":"200"}],"vpr":{"score":2.5,"drivers":{"age_of_vuln":{"lower_bound":731},"exploit_code_maturity":"UNPROVEN","cvss_impact_score_predicted":true,"cvss3_impact_score":2.5,"threat_intensity_last28":"VERY_LOW","threat_sources_last28":["No
+        recorded events"],"product_coverage":"HIGH"},"updated":"2020-12-30T05:20:01Z"}},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"low","severity_id":1,"severity_default_id":1,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.246Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nRemote
+        operating system : Linux Kernel 3.13 on Ubuntu 14.04 (trusty)\nConfidence
+        level : 95\nMethod : HTTP\n\n \nThe remote host is running Linux Kernel 3.13
+        on Ubuntu 14.04 (trusty)","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Using
+        a combination of remote probes (e.g., TCP/IP, SMB, HTTP, NTP, SNMP, etc.),
+        it is possible to guess the name of the remote operating system in use. It
+        is also possible sometimes to guess the version of the operating system.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":11936,"in_the_news":false,"name":"OS
+        Identification","modification_date":"2022-03-09T00:00:00Z","publication_date":"2003-12-09T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"It
+        is possible to guess the remote operating system.","type":"combined","unsupported_by_vendor":false,"version":"2.61"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.258Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nSSH
+        version : SSH-2.0-OpenSSH_6.6.1p1 Ubuntu-2ubuntu2.13\nSSH supported authentication
+        : publickey,password\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"It
+        is possible to obtain information about the remote SSH server by sending an
+        empty authentication request.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Service
+        detection","family_id":24,"has_patch":false,"id":10267,"in_the_news":false,"name":"SSH
+        Server Type and Version Information","modification_date":"2020-09-22T00:00:00Z","publication_date":"1999-10-12T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"An
+        SSH server is listening on this port.","type":"remote","unsupported_by_vendor":false,"version":"2.30","xrefs":[{"type":"IAVT","id":"0001-T-0933"}]},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.214Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following client-to-server SHA-1 Hash-based Message Authentication Code (HMAC)
+        algorithms are supported : \n\n  hmac-sha1\n  hmac-sha1-96\n  hmac-sha1-96-etm@openssh.com\n  hmac-sha1-etm@openssh.com\n\nThe
+        following server-to-client SHA-1 Hash-based Message Authentication Code (HMAC)
+        algorithms are supported : \n\n  hmac-sha1\n  hmac-sha1-96\n  hmac-sha1-96-etm@openssh.com\n  hmac-sha1-etm@openssh.com\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"The
+        remote SSH server is configured to enable SHA-1 HMAC algorithms.\n\nAlthough
+        NIST has formally deprecated use of SHA-1 for digital signatures, SHA-1 is
+        still considered secure for HMAC as the security of HMAC does not rely on
+        the underlying hash function being resistant to collisions.\n\nNote that this
+        plugin only checks for the options of the remote SSH server.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Misc.","family_id":23,"has_patch":false,"id":153588,"in_the_news":false,"name":"SSH
+        SHA-1 HMAC Algorithms Enabled","modification_date":"2022-04-05T00:00:00Z","publication_date":"2021-09-23T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"The
+        remote SSH server is configured to enable SHA-1 HMAC algorithms.","type":"remote","unsupported_by_vendor":false,"version":"1.2"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.229Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        remote operating system matched the following CPE : \n\n  cpe:/o:canonical:ubuntu_linux:14.04
+        -> Canonical Ubuntu Linux\n\nFollowing application CPE''s matched on the remote
+        system : \n\n  cpe:/a:apache:http_server:2.4.7 -> Apache Software Foundation
+        Apache HTTP Server\n  cpe:/a:apache:http_server:2.4.99 -> Apache Software
+        Foundation Apache HTTP Server\n  cpe:/a:openbsd:openssh:6.6 -> OpenBSD OpenSSH\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"By
+        using information obtained from a Nessus scan, this plugin reports CPE (Common
+        Platform Enumeration) matches for various hardware and software products found
+        on a host. \n\nNote that if an official CPE is not available for the product,
+        this plugin computes the best possible CPE based on the information available
+        from the scan.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":45590,"in_the_news":false,"name":"Common
+        Platform Enumeration (CPE)","modification_date":"2022-10-05T00:00:00Z","publication_date":"2010-04-21T00:00:00Z","risk_factor":"None","see_also":["http://cpe.mitre.org/","https://nvd.nist.gov/products/cpe"],"solution":"N/A","synopsis":"It
+        was possible to enumerate CPE names that matched on the remote system.","type":"combined","unsupported_by_vendor":false,"version":"1.121"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.240Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        Linux distribution detected was : \n - Ubuntu 14.04 (trusty)\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cpe":["cpe:/a:apache:http_server"],"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Nessus
+        was able to extract the banner of the Apache web server and determine which
+        Linux distribution the remote host is running.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Web
+        Servers","family_id":11,"has_patch":false,"id":18261,"in_the_news":false,"name":"Apache
+        Banner Linux Distribution Disclosure","modification_date":"2022-03-21T00:00:00Z","publication_date":"2005-05-15T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"If
+        you do not wish to display this information, edit ''httpd.conf'' and set the
+        directive ''ServerTokens Prod'' and restart Apache.","synopsis":"The name
+        of the Linux distribution running on the remote host was found in the banner
+        of the web server.","type":"remote","unsupported_by_vendor":false,"version":"1.101"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.235Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"The
+        SSH server on the remote host accepts password authentication.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Service
+        detection","family_id":24,"has_patch":false,"id":149334,"in_the_news":false,"name":"SSH
+        Password Authentication Accepted","modification_date":"2021-05-07T00:00:00Z","publication_date":"2021-05-07T00:00:00Z","risk_factor":"None","see_also":["https://tools.ietf.org/html/rfc4252#section-8"],"solution":"N/A","synopsis":"The
+        SSH server on the remote host accepts password authentication.","type":"remote","unsupported_by_vendor":false,"version":"1.1"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.245Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Port
+        22/tcp was found to be open","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        plugin is a SYN ''half-open'' port scanner.  It shall be reasonably quick
+        even against a firewalled target. \n\nNote that SYN scans are less intrusive
+        than TCP (full connect) scans against broken services, but they might cause
+        problems for less robust firewalls and also leave unclosed connections on
+        the remote target, if the network is loaded.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Port
+        scanners","family_id":42,"has_patch":false,"id":11219,"in_the_news":false,"name":"Nessus
+        SYN scanner","modification_date":"2022-08-15T00:00:00Z","publication_date":"2009-02-04T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"Protect
+        your target with an IP filter.","synopsis":"It is possible to determine which
+        TCP ports are open.","type":"remote","unsupported_by_vendor":false,"version":"1.43"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.235Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Information
+        about this scan : \n\nNessus version : 10.2.0\nNessus build : 20075\nPlugin
+        feed version : 202205301753\nScanner edition used : Nessus\nScanner OS : LINUX\nScanner
+        distribution : amzn2-aarch64\nScan type : Normal\nScan name : basic\nScan
+        policy used : Basic Network Scan\nScanner IP : tenable.io Scanner\nPort scanner(s)
+        : nessus_syn_scanner \nPort range : default\nPing RTT : 93.345 ms\nThorough
+        tests : no\nExperimental tests : no\nParanoia level : 1\nReport verbosity
+        : 1\nSafe checks : yes\nOptimize the test : yes\nCredentialed checks : no\nPatch
+        management checks : None\nDisplay superseded patches : yes (supersedence plugin
+        launched)\nCGI scanning : disabled\nWeb application tests : disabled\nMax
+        hosts : 30\nMax checks : 4\nRecv timeout : 5\nBackports : Detected\nAllow
+        post-scan editing: Yes\nScan Start Date : 2022/5/31 9:00 UTC\nScan duration
+        : 485 sec\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        plugin displays, for each tested host, information about the scan itself :\n\n  -
+        The version of the plugin set.\n  - The type of scanner (Nessus or Nessus
+        Home).\n  - The version of the Nessus Engine.\n  - The port scanner(s) used.\n  -
+        The port range scanned.\n  - The ping round trip time \n  - Whether credentialed
+        or third-party patch management     checks are possible.\n  - Whether the
+        display of superseded patches is enabled\n  - The date of the scan.\n  - The
+        duration of the scan.\n  - The number of hosts scanned in parallel.\n  - The
+        number of checks done in parallel.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Settings","family_id":41,"has_patch":false,"id":19506,"in_the_news":false,"name":"Nessus
+        Scan Information","modification_date":"2022-06-09T00:00:00Z","publication_date":"2005-08-26T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"This
+        plugin displays information about the Nessus scan.","type":"summary","unsupported_by_vendor":false,"version":"1.112"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.251Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"SSH
+        was detected on port 22 but no credentials were provided.\nSSH local checks
+        were not enabled.\n\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Nessus
+        was not able to successfully authenticate directly to the remote target on
+        an available authentication protocol. Nessus was able to connect to the remote
+        port and identify that the service running on the port supports an authentication
+        protocol, but Nessus failed to authenticate to the remote service using the
+        provided credentials. There may have been a protocol failure that prevented
+        authentication from being attempted or all of the provided credentials for
+        the authentication protocol may be invalid. See plugin output for error details.\n\nPlease
+        note the following :\n\n- This plugin reports per protocol, so it is possible
+        for   valid credentials to be provided for one protocol and not   another.
+        For example, authentication may succeed via SSH   but fail via SMB, while
+        no credentials were provided for   an available SNMP service.\n\n- Providing
+        valid credentials for all available   authentication protocols may improve
+        scan coverage, but   the value of successful authentication for a given   protocol
+        may vary from target to target depending upon   what data (if any) is gathered
+        from the target via that   protocol. For example, successful authentication
+        via SSH   is more valuable for Linux targets than for Windows   targets, and
+        likewise successful authentication via SMB   is more valuable for Windows
+        targets than for Linux   targets.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Settings","family_id":41,"has_patch":false,"id":110723,"in_the_news":false,"name":"Target
+        Credential Status by Authentication Protocol - No Credentials Provided","modification_date":"2021-11-19T00:00:00Z","publication_date":"2018-06-27T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"Nessus
+        was able to find common ports used for local checks, however, no credentials
+        were provided in the scan policy.","type":"summary","unsupported_by_vendor":false,"version":"1.16","xrefs":[{"type":"IAVB","id":"0001-B-0504"}]},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.258Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"The
+        difference between the local and remote clocks is 2129 seconds.\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cve":["CVE-1999-0524"],"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss3_vector":{"availability_impact":"None","confidentiality_impact":"None","integrity_impact":"None","raw":"AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N"},"cvss_base_score":0.0,"cvss_temporal_score":0.0,"cvss_vector":{"access_complexity":"Low","access_vector":"Local-access","authentication":"None
+        required","availability_impact":"None","confidentiality_impact":"None","integrity_impact":"None","raw":"AV:L/AC:L/Au:N/C:N/I:N/A:N"},"description":"The
+        remote host answers to an ICMP timestamp request.  This allows an attacker
+        to know the date that is set on the targeted machine, which may assist an
+        unauthenticated, remote attacker in defeating time-based authentication protocols.\n\nTimestamps
+        returned from machines running Windows Vista / 7 / 2008 / 2008 R2 are deliberately
+        incorrect, but usually within 1000 seconds of the actual system time.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":10114,"in_the_news":false,"name":"ICMP
+        Timestamp Request Remote Date Disclosure","modification_date":"2019-10-04T00:00:00Z","publication_date":"1999-08-01T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"Filter
+        out the ICMP timestamp requests (13), and the outgoing ICMP timestamp replies
+        (14).","synopsis":"It is possible to determine the exact time set on the remote
+        host.","type":"remote","unsupported_by_vendor":false,"version":"1.48","vuln_publication_date":"1995-01-01T00:00:00Z","xrefs":[{"type":"CWE","id":"200"}],"vpr":{"score":0.0,"drivers":{"age_of_vuln":{"lower_bound":731},"exploit_code_maturity":"UNPROVEN","cvss_impact_score_predicted":false,"cvss3_impact_score":0.0,"threat_intensity_last28":"VERY_LOW","threat_sources_last28":["No
+        recorded events"],"product_coverage":"VERY_HIGH"},"updated":"2021-10-02T05:28:52Z"}},"port":{"port":0,"protocol":"ICMP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.245Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"The
+        remote host implements TCP timestamps, as defined by RFC1323.  A side effect
+        of this feature is that the uptime of the remote host can sometimes be computed.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":25220,"in_the_news":false,"name":"TCP/IP
+        Timestamps Supported","modification_date":"2019-03-06T00:00:00Z","publication_date":"2007-05-16T00:00:00Z","risk_factor":"None","see_also":["http://www.ietf.org/rfc/rfc1323.txt"],"solution":"N/A","synopsis":"The
+        remote service implements TCP timestamps.","type":"remote","unsupported_by_vendor":false,"version":"1.21"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.229Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Based
+        on the response to an OPTIONS request :\n\n  - HTTP methods GET HEAD OPTIONS
+        POST are allowed on : \n\n    /\n\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"By
+        calling the OPTIONS method, it is possible to determine which HTTP methods
+        are allowed on each directory.\n\nThe following HTTP methods are considered
+        insecure:\n  PUT, DELETE, CONNECT, TRACE, HEAD\n\nMany frameworks and languages
+        treat ''HEAD'' as a ''GET'' request, albeit one without any body in the response.
+        If a security constraint was set on ''GET'' requests such that only ''authenticatedUsers''
+        could access GET requests for a particular servlet or resource, it would be
+        bypassed for the ''HEAD'' version. This allowed unauthorized blind submission
+        of any privileged GET request.\n\nAs this list may be incomplete, the plugin
+        also tests - if ''Thorough tests'' are enabled or ''Enable web applications
+        tests'' is set to ''yes'' in the scan policy - various known HTTP methods
+        on each directory and considers them as unsupported if it receives a response
+        code of 400, 403, 405, or 501.\n\nNote that the plugin output is only informational
+        and does not necessarily indicate the presence of any security vulnerabilities.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Web
+        Servers","family_id":11,"has_patch":false,"id":43111,"in_the_news":false,"name":"HTTP
+        Methods Allowed (per directory)","modification_date":"2022-04-11T00:00:00Z","publication_date":"2009-12-10T00:00:00Z","risk_factor":"None","see_also":["http://www.nessus.org/u?d9c03a9a","http://www.nessus.org/u?b019cbdb","https://www.owasp.org/index.php/Test_HTTP_Methods_(OTG-CONFIG-006)"],"solution":"N/A","synopsis":"This
+        plugin determines which HTTP methods are allowed on various CGI directories.","type":"remote","unsupported_by_vendor":false,"version":"1.12"},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.240Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Ubuntu
+        14.04 support ends on 2019-04-30 (end of maintenance) / 2024-04-30 (end of
+        extended security maintenance).","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"According
+        to its version, the remote host uses a Unix or Unix-like operating system
+        that has transitioned to an extended portion in its support life cycle. Continued
+        access to new security updates requires payment of an additional fee and /
+        or configuration changes to the package management tool.  Without that, the
+        host likely will be missing security updates.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":66293,"in_the_news":false,"name":"Unix
+        Operating System on Extended Support","modification_date":"2021-06-09T00:00:00Z","publication_date":"2013-05-02T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"Ensure
+        that the host subscribes to the vendor''s extended support plan and continues
+        to receive security updates.","synopsis":"The remote host is running an operating
+        system that is on extended support.","type":"local","unsupported_by_vendor":false,"version":"1.3","xrefs":[{"type":"IAVA","id":"0001-A-0648"}]},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.262Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following issues were reported :\n\n  - Plugin      : no_local_checks_credentials.nasl\n    Plugin
+        ID   : 110723\n    Plugin Name : Target Credential Status by Authentication
+        Protocol - No Credentials Provided\n    Message     : \nCredentials were not
+        provided for detected SSH service.\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"OS
+        Security Patch Assessment is not available on the remote host.\nThis does
+        not necessarily indicate a problem with the scan.\nCredentials may not have
+        been provided, OS security patch assessment may not be supported for the target,
+        the target may not have been identified, or another issue may have occurred
+        that prevented OS security patch assessment from being available. See plugin
+        output for details.\n\nThis plugin reports non-failure information impacting
+        the availability of OS Security Patch Assessment. Failure information is reported
+        by plugin 21745 : ''OS Security Patch Assessment failed''.  If a target host
+        is not supported for OS Security Patch Assessment, plugin 110695 : ''OS Security
+        Patch Assessment Checks Not Supported'' will report concurrently with this
+        plugin.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Settings","family_id":41,"has_patch":false,"id":117886,"in_the_news":false,"name":"OS
+        Security Patch Assessment Not Available","modification_date":"2021-07-12T00:00:00Z","publication_date":"2018-10-02T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"OS
+        Security Patch Assessment is not available.","type":"summary","unsupported_by_vendor":false,"version":"1.12","xrefs":[{"type":"IAVB","id":"0001-B-0515"}]},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.224Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"An
+        SSH server is running on this port.","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Nessus
+        was able to identify the remote service by its banner or by looking at the
+        error message it sends when it receives an HTTP request.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Service
+        detection","family_id":24,"has_patch":false,"id":22964,"in_the_news":false,"name":"Service
+        Detection","modification_date":"2022-07-26T00:00:00Z","publication_date":"2007-08-19T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"The
+        remote service could be identified.","type":"remote","unsupported_by_vendor":false,"version":"1.189"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.219Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nNessus
+        negotiated the following encryption algorithm with the server : \n\nThe server
+        supports the following options for kex_algorithms : \n\n  curve25519-sha256@libssh.org\n  diffie-hellman-group-exchange-sha1\n  diffie-hellman-group-exchange-sha256\n  diffie-hellman-group1-sha1\n  diffie-hellman-group14-sha1\n  ecdh-sha2-nistp256\n  ecdh-sha2-nistp384\n  ecdh-sha2-nistp521\n\nThe
+        server supports the following options for server_host_key_algorithms : \n\n  ecdsa-sha2-nistp256\n  ssh-dss\n  ssh-rsa\n\nThe
+        server supports the following options for encryption_algorithms_client_to_server
+        : \n\n  3des-cbc\n  aes128-cbc\n  aes128-ctr\n  aes128-gcm@openssh.com\n  aes192-cbc\n  aes192-ctr\n  aes256-cbc\n  aes256-ctr\n  aes256-gcm@openssh.com\n  arcfour\n  arcfour128\n  arcfour256\n  blowfish-cbc\n  cast128-cbc\n  chacha20-poly1305@openssh.com\n  rijndael-cbc@lysator.liu.se\n\nThe
+        server supports the following options for encryption_algorithms_server_to_client
+        : \n\n  3des-cbc\n  aes128-cbc\n  aes128-ctr\n  aes128-gcm@openssh.com\n  aes192-cbc\n  aes192-ctr\n  aes256-cbc\n  aes256-ctr\n  aes256-gcm@openssh.com\n  arcfour\n  arcfour128\n  arcfour256\n  blowfish-cbc\n  cast128-cbc\n  chacha20-poly1305@openssh.com\n  rijndael-cbc@lysator.liu.se\n\nThe
+        server supports the following options for mac_algorithms_client_to_server
+        : \n\n  hmac-md5\n  hmac-md5-96\n  hmac-md5-96-etm@openssh.com\n  hmac-md5-etm@openssh.com\n  hmac-ripemd160\n  hmac-ripemd160-etm@openssh.com\n  hmac-ripemd160@openssh.com\n  hmac-sha1\n  hmac-sha1-96\n  hmac-sha1-96-etm@openssh.com\n  hmac-sha1-etm@openssh.com\n  hmac-sha2-256\n  hmac-sha2-256-etm@openssh.com\n  hmac-sha2-512\n  hmac-sha2-512-etm@openssh.com\n  umac-128-etm@openssh.com\n  umac-128@openssh.com\n  umac-64-etm@openssh.com\n  umac-64@openssh.com\n\nThe
+        server supports the following options for mac_algorithms_server_to_client
+        : \n\n  hmac-md5\n  hmac-md5-96\n  hmac-md5-96-etm@openssh.com\n  hmac-md5-etm@openssh.com\n  hmac-ripemd160\n  hmac-ripemd160-etm@openssh.com\n  hmac-ripemd160@openssh.com\n  hmac-sha1\n  hmac-sha1-96\n  hmac-sha1-96-etm@openssh.com\n  hmac-sha1-etm@openssh.com\n  hmac-sha2-256\n  hmac-sha2-256-etm@openssh.com\n  hmac-sha2-512\n  hmac-sha2-512-etm@openssh.com\n  umac-128-etm@openssh.com\n  umac-128@openssh.com\n  umac-64-etm@openssh.com\n  umac-64@openssh.com\n\nThe
+        server supports the following options for compression_algorithms_client_to_server
+        : \n\n  none\n  zlib@openssh.com\n\nThe server supports the following options
+        for compression_algorithms_server_to_client : \n\n  none\n  zlib@openssh.com\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        script detects which algorithms and languages are supported by the remote
+        service for encrypting communications.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Misc.","family_id":23,"has_patch":false,"id":70657,"in_the_news":false,"name":"SSH
+        Algorithms and Languages Supported","modification_date":"2017-08-28T00:00:00Z","publication_date":"2013-10-28T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"An
+        SSH server is listening on this port.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.6 $"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.245Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\n44.241.160.134
+        resolves as ec2-44-241-160-134.us-west-2.compute.amazonaws.com.\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Nessus
+        was able to resolve the fully qualified domain name (FQDN) of the remote host.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":12053,"in_the_news":false,"name":"Host
+        Fully Qualified Domain Name (FQDN) Resolution","modification_date":"2017-04-14T00:00:00Z","publication_date":"2004-02-11T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"It
+        was possible to resolve the name of the remote host.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.16 $"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.251Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following weak key exchange algorithms are enabled : \n\n  diffie-hellman-group-exchange-sha1\n  diffie-hellman-group1-sha1\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":3.7,"cvss3_temporal_score":0.0,"cvss3_vector":{"availability_impact":"None","confidentiality_impact":"Low","integrity_impact":"None","raw":"AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N"},"cvss_base_score":2.6,"cvss_temporal_score":0.0,"cvss_vector":{"access_complexity":"High","access_vector":"Network","authentication":"None
+        required","availability_impact":"None","confidentiality_impact":"Partial","integrity_impact":"None","raw":"AV:N/AC:H/Au:N/C:P/I:N/A:N"},"description":"The
+        remote SSH server is configured to allow key exchange algorithms which are
+        considered weak.\n\nThis is based on the IETF draft document Key Exchange
+        (KEX) Method Updates and Recommendations for Secure Shell (SSH) draft-ietf-curdle-ssh-kex-sha2-20.
+        Section 4 lists guidance on key exchange algorithms that SHOULD NOT and MUST
+        NOT be enabled. This includes:\n\n  diffie-hellman-group-exchange-sha1\n\n  diffie-hellman-group1-sha1\n\n  gss-gex-sha1-*\n\n  gss-group1-sha1-*\n\n  gss-group14-sha1-*\n\n  rsa1024-sha1\n\nNote
+        that this plugin only checks for the options of the SSH server, and it does
+        not check for vulnerable software versions.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Misc.","family_id":23,"has_patch":false,"id":153953,"in_the_news":false,"name":"SSH
+        Weak Key Exchange Algorithms Enabled","modification_date":"2021-10-13T00:00:00Z","publication_date":"2021-10-13T00:00:00Z","risk_factor":"Low","see_also":["http://www.nessus.org/u?b02d91cd","https://datatracker.ietf.org/doc/html/rfc8732"],"solution":"Contact
+        the vendor or consult product documentation to disable the weak algorithms.","synopsis":"The
+        remote SSH server is configured to allow weak key exchange algorithms.","type":"remote","unsupported_by_vendor":false,"version":"1.2"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"low","severity_id":1,"severity_default_id":1,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.240Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"The
+        remote web server type is :\n\nApache/2.4.7 (Ubuntu)","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        plugin attempts to determine the type and the version of the   remote web
+        server.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Web
+        Servers","family_id":11,"has_patch":false,"id":10107,"in_the_news":false,"name":"HTTP
+        Server Type and Version","modification_date":"2020-10-30T00:00:00Z","publication_date":"2000-01-04T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"A
+        web server is running on the remote host.","type":"remote","unsupported_by_vendor":false,"version":"1.141","xrefs":[{"type":"IAVT","id":"0001-T-0931"}]},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.258Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\n  URL        :
+        http://target3.pubtarg.tenablesecurity.com/\n  Version    : 2.4.99\n  backported
+        : 1\n  os         : ConvertedUbuntu\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cpe":["cpe:/a:apache:http_server"],"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"The
+        remote host is running the Apache HTTP Server, an open source web server.
+        It was possible to read the version number from the banner.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Web
+        Servers","family_id":11,"has_patch":false,"id":48204,"in_the_news":false,"name":"Apache
+        HTTP Server Version","modification_date":"2022-09-08T00:00:00Z","publication_date":"2010-07-30T00:00:00Z","risk_factor":"None","see_also":["https://httpd.apache.org/"],"solution":"N/A","synopsis":"It
+        is possible to obtain the version number of the remote Apache HTTP server.","type":"remote","unsupported_by_vendor":false,"version":"1.14","xrefs":[{"type":"IAVT","id":"0001-T-0530"}]},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.224Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Port
+        80/tcp was found to be open","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        plugin is a SYN ''half-open'' port scanner.  It shall be reasonably quick
+        even against a firewalled target. \n\nNote that SYN scans are less intrusive
+        than TCP (full connect) scans against broken services, but they might cause
+        problems for less robust firewalls and also leave unclosed connections on
+        the remote target, if the network is loaded.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Port
+        scanners","family_id":42,"has_patch":false,"id":11219,"in_the_news":false,"name":"Nessus
+        SYN scanner","modification_date":"2022-08-15T00:00:00Z","publication_date":"2009-02-04T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"Protect
+        your target with an IP filter.","synopsis":"It is possible to determine which
+        TCP ports are open.","type":"remote","unsupported_by_vendor":false,"version":"1.43"},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.251Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following client-to-server Message Authentication Code (MAC) algorithms\nare
+        supported : \n\n  hmac-md5\n  hmac-md5-96\n  hmac-md5-96-etm@openssh.com\n  hmac-md5-etm@openssh.com\n  hmac-sha1-96\n  hmac-sha1-96-etm@openssh.com\n\nThe
+        following server-to-client Message Authentication Code (MAC) algorithms\nare
+        supported : \n\n  hmac-md5\n  hmac-md5-96\n  hmac-md5-96-etm@openssh.com\n  hmac-md5-etm@openssh.com\n  hmac-sha1-96\n  hmac-sha1-96-etm@openssh.com\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":2.6,"cvss_temporal_score":0.0,"cvss_vector":{"access_complexity":"High","access_vector":"Network","authentication":"None
+        required","availability_impact":"None","confidentiality_impact":"Partial","integrity_impact":"None","raw":"AV:N/AC:H/Au:N/C:P/I:N/A:N"},"description":"The
+        remote SSH server is configured to allow either MD5 or 96-bit MAC algorithms,
+        both of which are considered weak.\n\nNote that this plugin only checks for
+        the options of the SSH server, and it does not check for vulnerable software
+        versions.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Misc.","family_id":23,"has_patch":false,"id":71049,"in_the_news":false,"name":"SSH
+        Weak MAC Algorithms Enabled","modification_date":"2016-12-14T00:00:00Z","publication_date":"2013-11-22T00:00:00Z","risk_factor":"Low","see_also":[""],"solution":"Contact
+        the vendor or consult product documentation to disable MD5 and 96-bit MAC
+        algorithms.","synopsis":"The remote SSH server is configured to allow MD5
+        and 96-bit MAC algorithms.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.4 $"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"low","severity_id":1,"severity_default_id":1,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.262Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"A
+        web server is running on this port.","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Nessus
+        was able to identify the remote service by its banner or by looking at the
+        error message it sends when it receives an HTTP request.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Service
+        detection","family_id":24,"has_patch":false,"id":22964,"in_the_news":false,"name":"Service
+        Detection","modification_date":"2022-07-26T00:00:00Z","publication_date":"2007-08-19T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"The
+        remote service could be identified.","type":"remote","unsupported_by_vendor":false,"version":"1.189"},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.262Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nGive
+        Nessus credentials to perform local checks.\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Security
+        patches may have been ''backported'' to the remote HTTP server without changing
+        its version number.\n\nBanner-based checks have been disabled to avoid false
+        positives.\n\nNote that this test is informational only and does not denote
+        any security problem.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":39521,"in_the_news":false,"name":"Backported
+        Security Patch Detection (WWW)","modification_date":"2015-07-07T00:00:00Z","publication_date":"2009-06-25T00:00:00Z","risk_factor":"None","see_also":["https://access.redhat.com/security/updates/backporting/?sc_cid=3093"],"solution":"N/A","synopsis":"Security
+        patches are backported.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.12 $"},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.246Z"},{"asset":{"device_type":"general-purpose","fqdn":"target3.pubtarg.tenablesecurity.com","hostname":"target3.pubtarg.tenablesecurity.com","uuid":"89cc9980-2aab-4ca2-8595-283deff50701","ipv4":"44.241.160.134","last_unauthenticated_results":"2022-05-31T09:08:26Z","operating_system":["Linux
+        Kernel 3.13 on Ubuntu 14.04 (trusty)"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following weak server-to-client encryption algorithms are supported : \n\n  arcfour\n  arcfour128\n  arcfour256\n\nThe
+        following weak client-to-server encryption algorithms are supported : \n\n  arcfour\n  arcfour128\n  arcfour256\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":4.3,"cvss_temporal_score":0.0,"cvss_vector":{"access_complexity":"Medium","access_vector":"Network","authentication":"None
+        required","availability_impact":"None","confidentiality_impact":"Partial","integrity_impact":"None","raw":"AV:N/AC:M/Au:N/C:P/I:N/A:N"},"description":"Nessus
+        has detected that the remote SSH server is configured to use the Arcfour stream
+        cipher or no cipher at all. RFC 4253 advises against using Arcfour due to
+        an issue with weak keys.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Misc.","family_id":23,"has_patch":false,"id":90317,"in_the_news":false,"name":"SSH
+        Weak Algorithms Supported","modification_date":"2016-12-14T00:00:00Z","publication_date":"2016-04-04T00:00:00Z","risk_factor":"Medium","see_also":["https://tools.ietf.org/html/rfc4253#section-6.3"],"solution":"Contact
+        the vendor or consult product documentation to remove the weak ciphers.","synopsis":"The
+        remote SSH server is configured to allow weak encryption algorithms or no
+        algorithm at all.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.3 $"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"medium","severity_id":2,"severity_default_id":2,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.251Z"}]'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment; filename=8b606c8d-d042-4d27-9aa7-d798e8528710-1-vulndoc.json
+      Content-Length:
+      - '87738'
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Wed, 23 Nov 2022 08:14:10 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-7bfcc7b48d-crdzs
+      X-Request-Uuid:
+      - e83f19f924d478f653dd28cb18743a47
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
+        (Restfly/1.4.7; Python/3.10.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/vulns/export/8b606c8d-d042-4d27-9aa7-d798e8528710/chunks/5
+  response:
+    body:
+      string: '[{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Based
+        on the response to an OPTIONS request :\n\n  - HTTP methods GET HEAD OPTIONS
+        POST TRACE are allowed on : \n\n    /\n\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"By
+        calling the OPTIONS method, it is possible to determine which HTTP methods
+        are allowed on each directory.\n\nThe following HTTP methods are considered
+        insecure:\n  PUT, DELETE, CONNECT, TRACE, HEAD\n\nMany frameworks and languages
+        treat ''HEAD'' as a ''GET'' request, albeit one without any body in the response.
+        If a security constraint was set on ''GET'' requests such that only ''authenticatedUsers''
+        could access GET requests for a particular servlet or resource, it would be
+        bypassed for the ''HEAD'' version. This allowed unauthorized blind submission
+        of any privileged GET request.\n\nAs this list may be incomplete, the plugin
+        also tests - if ''Thorough tests'' are enabled or ''Enable web applications
+        tests'' is set to ''yes'' in the scan policy - various known HTTP methods
+        on each directory and considers them as unsupported if it receives a response
+        code of 400, 403, 405, or 501.\n\nNote that the plugin output is only informational
+        and does not necessarily indicate the presence of any security vulnerabilities.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Web
+        Servers","family_id":11,"has_patch":false,"id":43111,"in_the_news":false,"name":"HTTP
+        Methods Allowed (per directory)","modification_date":"2022-04-11T00:00:00Z","publication_date":"2009-12-10T00:00:00Z","risk_factor":"None","see_also":["http://www.nessus.org/u?d9c03a9a","http://www.nessus.org/u?b019cbdb","https://www.owasp.org/index.php/Test_HTTP_Methods_(OTG-CONFIG-006)"],"solution":"N/A","synopsis":"This
+        plugin determines which HTTP methods are allowed on various CGI directories.","type":"remote","unsupported_by_vendor":false,"version":"1.12"},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.208Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nNessus
+        negotiated the following encryption algorithm with the server : \n\nThe server
+        supports the following options for kex_algorithms : \n\n  curve25519-sha256\n  curve25519-sha256@libssh.org\n  diffie-hellman-group-exchange-sha1\n  diffie-hellman-group-exchange-sha256\n  diffie-hellman-group1-sha1\n  diffie-hellman-group14-sha1\n  diffie-hellman-group14-sha256\n  diffie-hellman-group16-sha512\n  diffie-hellman-group18-sha512\n  ecdh-sha2-nistp256\n  ecdh-sha2-nistp384\n  ecdh-sha2-nistp521\n\nThe
+        server supports the following options for server_host_key_algorithms : \n\n  ecdsa-sha2-nistp256\n  rsa-sha2-256\n  rsa-sha2-512\n  ssh-ed25519\n  ssh-rsa\n\nThe
+        server supports the following options for encryption_algorithms_client_to_server
+        : \n\n  3des-cbc\n  aes128-cbc\n  aes128-ctr\n  aes128-gcm@openssh.com\n  aes192-cbc\n  aes192-ctr\n  aes256-cbc\n  aes256-ctr\n  aes256-gcm@openssh.com\n  blowfish-cbc\n  cast128-cbc\n  chacha20-poly1305@openssh.com\n\nThe
+        server supports the following options for encryption_algorithms_server_to_client
+        : \n\n  3des-cbc\n  aes128-cbc\n  aes128-ctr\n  aes128-gcm@openssh.com\n  aes192-cbc\n  aes192-ctr\n  aes256-cbc\n  aes256-ctr\n  aes256-gcm@openssh.com\n  blowfish-cbc\n  cast128-cbc\n  chacha20-poly1305@openssh.com\n\nThe
+        server supports the following options for mac_algorithms_client_to_server
+        : \n\n  hmac-sha1\n  hmac-sha1-etm@openssh.com\n  hmac-sha2-256\n  hmac-sha2-256-etm@openssh.com\n  hmac-sha2-512\n  hmac-sha2-512-etm@openssh.com\n  umac-128-etm@openssh.com\n  umac-128@openssh.com\n  umac-64-etm@openssh.com\n  umac-64@openssh.com\n\nThe
+        server supports the following options for mac_algorithms_server_to_client
+        : \n\n  hmac-sha1\n  hmac-sha1-etm@openssh.com\n  hmac-sha2-256\n  hmac-sha2-256-etm@openssh.com\n  hmac-sha2-512\n  hmac-sha2-512-etm@openssh.com\n  umac-128-etm@openssh.com\n  umac-128@openssh.com\n  umac-64-etm@openssh.com\n  umac-64@openssh.com\n\nThe
+        server supports the following options for compression_algorithms_client_to_server
+        : \n\n  none\n  zlib@openssh.com\n\nThe server supports the following options
+        for compression_algorithms_server_to_client : \n\n  none\n  zlib@openssh.com\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        script detects which algorithms and languages are supported by the remote
+        service for encrypting communications.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Misc.","family_id":23,"has_patch":false,"id":70657,"in_the_news":false,"name":"SSH
+        Algorithms and Languages Supported","modification_date":"2017-08-28T00:00:00Z","publication_date":"2013-10-28T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"An
+        SSH server is listening on this port.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.6 $"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.162Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\n  URL        :
+        http://target4.pubtarg.tenablesecurity.com/\n  Version    : 2.4.6\n  backported
+        : 1\n  os         : ConvertedCentOS\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cpe":["cpe:/a:apache:http_server"],"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"The
+        remote host is running the Apache HTTP Server, an open source web server.
+        It was possible to read the version number from the banner.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Web
+        Servers","family_id":11,"has_patch":false,"id":48204,"in_the_news":false,"name":"Apache
+        HTTP Server Version","modification_date":"2022-09-08T00:00:00Z","publication_date":"2010-07-30T00:00:00Z","risk_factor":"None","see_also":["https://httpd.apache.org/"],"solution":"N/A","synopsis":"It
+        is possible to obtain the version number of the remote Apache HTTP server.","type":"remote","unsupported_by_vendor":false,"version":"1.14","xrefs":[{"type":"IAVT","id":"0001-T-0530"}]},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.170Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"SSH
+        was detected on port 22 but no credentials were provided.\nSSH local checks
+        were not enabled.\n\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Nessus
+        was not able to successfully authenticate directly to the remote target on
+        an available authentication protocol. Nessus was able to connect to the remote
+        port and identify that the service running on the port supports an authentication
+        protocol, but Nessus failed to authenticate to the remote service using the
+        provided credentials. There may have been a protocol failure that prevented
+        authentication from being attempted or all of the provided credentials for
+        the authentication protocol may be invalid. See plugin output for error details.\n\nPlease
+        note the following :\n\n- This plugin reports per protocol, so it is possible
+        for   valid credentials to be provided for one protocol and not   another.
+        For example, authentication may succeed via SSH   but fail via SMB, while
+        no credentials were provided for   an available SNMP service.\n\n- Providing
+        valid credentials for all available   authentication protocols may improve
+        scan coverage, but   the value of successful authentication for a given   protocol
+        may vary from target to target depending upon   what data (if any) is gathered
+        from the target via that   protocol. For example, successful authentication
+        via SSH   is more valuable for Linux targets than for Windows   targets, and
+        likewise successful authentication via SMB   is more valuable for Windows
+        targets than for Linux   targets.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Settings","family_id":41,"has_patch":false,"id":110723,"in_the_news":false,"name":"Target
+        Credential Status by Authentication Protocol - No Credentials Provided","modification_date":"2021-11-19T00:00:00Z","publication_date":"2018-06-27T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"Nessus
+        was able to find common ports used for local checks, however, no credentials
+        were provided in the scan policy.","type":"summary","unsupported_by_vendor":false,"version":"1.16","xrefs":[{"type":"IAVB","id":"0001-B-0504"}]},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.208Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nSSH
+        version : SSH-2.0-OpenSSH_7.4\nSSH supported authentication : publickey,gssapi-keyex,gssapi-with-mic,password\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"It
+        is possible to obtain information about the remote SSH server by sending an
+        empty authentication request.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Service
+        detection","family_id":24,"has_patch":false,"id":10267,"in_the_news":false,"name":"SSH
+        Server Type and Version Information","modification_date":"2020-09-22T00:00:00Z","publication_date":"1999-10-12T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"An
+        SSH server is listening on this port.","type":"remote","unsupported_by_vendor":false,"version":"2.30","xrefs":[{"type":"IAVT","id":"0001-T-0933"}]},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.213Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nGive
+        Nessus credentials to perform local checks.\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Security
+        patches may have been ''backported'' to the remote HTTP server without changing
+        its version number.\n\nBanner-based checks have been disabled to avoid false
+        positives.\n\nNote that this test is informational only and does not denote
+        any security problem.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":39521,"in_the_news":false,"name":"Backported
+        Security Patch Detection (WWW)","modification_date":"2015-07-07T00:00:00Z","publication_date":"2009-06-25T00:00:00Z","risk_factor":"None","see_also":["https://access.redhat.com/security/updates/backporting/?sc_cid=3093"],"solution":"N/A","synopsis":"Security
+        patches are backported.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.12 $"},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.153Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"The
+        RPC portmapper is running on this port. \n\nThe portmapper allows someone
+        to get the port number of each RPC service running on the remote host by sending
+        either multiple lookup requests or a DUMP request.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"RPC","family_id":28,"has_patch":false,"id":53335,"in_the_news":false,"name":"RPC
+        portmapper (TCP)","modification_date":"2011-08-29T00:00:00Z","publication_date":"2011-04-08T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"An
+        ONC RPC portmapper is running on the remote host.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.2 $"},"port":{"port":111,"protocol":"TCP","service":"rpc-portmapper"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.208Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"The
+        remote host implements TCP timestamps, as defined by RFC1323.  A side effect
+        of this feature is that the uptime of the remote host can sometimes be computed.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":25220,"in_the_news":false,"name":"TCP/IP
+        Timestamps Supported","modification_date":"2019-03-06T00:00:00Z","publication_date":"2007-05-16T00:00:00Z","risk_factor":"None","see_also":["http://www.ietf.org/rfc/rfc1323.txt"],"solution":"N/A","synopsis":"The
+        remote service implements TCP timestamps.","type":"remote","unsupported_by_vendor":false,"version":"1.21"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.208Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"The
+        SSH server on the remote host accepts password authentication.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Service
+        detection","family_id":24,"has_patch":false,"id":149334,"in_the_news":false,"name":"SSH
+        Password Authentication Accepted","modification_date":"2021-05-07T00:00:00Z","publication_date":"2021-05-07T00:00:00Z","risk_factor":"None","see_also":["https://tools.ietf.org/html/rfc4252#section-8"],"solution":"N/A","synopsis":"The
+        SSH server on the remote host accepts password authentication.","type":"remote","unsupported_by_vendor":false,"version":"1.1"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.175Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cve":["CVE-1999-0632"],"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss3_vector":{"availability_impact":"None","confidentiality_impact":"None","integrity_impact":"None","raw":"AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N"},"cvss_base_score":0.0,"cvss_temporal_score":0.0,"cvss_vector":{"access_complexity":"Low","access_vector":"Network","authentication":"None
+        required","availability_impact":"None","confidentiality_impact":"None","integrity_impact":"None","raw":"AV:N/AC:L/Au:N/C:N/I:N/A:N"},"description":"The
+        RPC portmapper is running on this port.\n\nThe portmapper allows someone to
+        get the port number of each RPC service running on the remote host by sending
+        either multiple lookup requests or a DUMP request.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"RPC","family_id":28,"has_patch":false,"id":10223,"in_the_news":false,"name":"RPC
+        portmapper Service Detection","modification_date":"2019-10-04T00:00:00Z","publication_date":"1999-08-19T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"An
+        ONC RPC portmapper is running on the remote host.","type":"remote","unsupported_by_vendor":false,"version":"1.37","vpr":{"score":0.8,"drivers":{"age_of_vuln":{"lower_bound":731},"exploit_code_maturity":"UNPROVEN","cvss_impact_score_predicted":false,"cvss3_impact_score":0.0,"threat_intensity_last28":"VERY_LOW","threat_sources_last28":["No
+        recorded events"],"product_coverage":"LOW"},"updated":"2022-08-19T05:01:07Z"}},"port":{"port":111,"protocol":"UDP","service":"rpc-portmapper"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.200Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Port
+        80/tcp was found to be open","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        plugin is a SYN ''half-open'' port scanner.  It shall be reasonably quick
+        even against a firewalled target. \n\nNote that SYN scans are less intrusive
+        than TCP (full connect) scans against broken services, but they might cause
+        problems for less robust firewalls and also leave unclosed connections on
+        the remote target, if the network is loaded.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Port
+        scanners","family_id":42,"has_patch":false,"id":11219,"in_the_news":false,"name":"Nessus
+        SYN scanner","modification_date":"2022-08-15T00:00:00Z","publication_date":"2009-02-04T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"Protect
+        your target with an IP filter.","synopsis":"It is possible to determine which
+        TCP ports are open.","type":"remote","unsupported_by_vendor":false,"version":"1.43"},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.170Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nGive
+        Nessus credentials to perform local checks.\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Security
+        patches may have been ''backported'' to the remote SSH server without changing
+        its version number. \n\nBanner-based checks have been disabled to avoid false
+        positives. \n\nNote that this test is informational only and does not denote
+        any security problem.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":39520,"in_the_news":false,"name":"Backported
+        Security Patch Detection (SSH)","modification_date":"2015-07-07T00:00:00Z","publication_date":"2009-06-25T00:00:00Z","risk_factor":"None","see_also":["https://access.redhat.com/security/updates/backporting/?sc_cid=3093"],"solution":"N/A","synopsis":"Security
+        patches are backported.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.9 $"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.170Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        remote operating system matched the following CPE : \n\n  cpe:/o:centos:centos:7
+        -> CentOS\n\nFollowing application CPE''s matched on the remote system : \n\n  cpe:/a:apache:http_server:2.4.6
+        -> Apache Software Foundation Apache HTTP Server\n  cpe:/a:openbsd:openssh:7.4
+        -> OpenBSD OpenSSH\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"By
+        using information obtained from a Nessus scan, this plugin reports CPE (Common
+        Platform Enumeration) matches for various hardware and software products found
+        on a host. \n\nNote that if an official CPE is not available for the product,
+        this plugin computes the best possible CPE based on the information available
+        from the scan.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":45590,"in_the_news":false,"name":"Common
+        Platform Enumeration (CPE)","modification_date":"2022-10-05T00:00:00Z","publication_date":"2010-04-21T00:00:00Z","risk_factor":"None","see_also":["http://cpe.mitre.org/","https://nvd.nist.gov/products/cpe"],"solution":"N/A","synopsis":"It
+        was possible to enumerate CPE names that matched on the remote system.","type":"combined","unsupported_by_vendor":false,"version":"1.121"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.182Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\n44.235.70.201
+        resolves as ec2-44-235-70-201.us-west-2.compute.amazonaws.com.\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Nessus
+        was able to resolve the fully qualified domain name (FQDN) of the remote host.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":12053,"in_the_news":false,"name":"Host
+        Fully Qualified Domain Name (FQDN) Resolution","modification_date":"2017-04-14T00:00:00Z","publication_date":"2004-02-11T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"It
+        was possible to resolve the name of the remote host.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.16 $"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.162Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"An
+        SSH server is running on this port.","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Nessus
+        was able to identify the remote service by its banner or by looking at the
+        error message it sends when it receives an HTTP request.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Service
+        detection","family_id":24,"has_patch":false,"id":22964,"in_the_news":false,"name":"Service
+        Detection","modification_date":"2022-07-26T00:00:00Z","publication_date":"2007-08-19T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"The
+        remote service could be identified.","type":"remote","unsupported_by_vendor":false,"version":"1.189"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.200Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"The
+        remote clock is synchronized with the local clock.\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cve":["CVE-1999-0524"],"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss3_vector":{"availability_impact":"None","confidentiality_impact":"None","integrity_impact":"None","raw":"AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:N"},"cvss_base_score":0.0,"cvss_temporal_score":0.0,"cvss_vector":{"access_complexity":"Low","access_vector":"Local-access","authentication":"None
+        required","availability_impact":"None","confidentiality_impact":"None","integrity_impact":"None","raw":"AV:L/AC:L/Au:N/C:N/I:N/A:N"},"description":"The
+        remote host answers to an ICMP timestamp request.  This allows an attacker
+        to know the date that is set on the targeted machine, which may assist an
+        unauthenticated, remote attacker in defeating time-based authentication protocols.\n\nTimestamps
+        returned from machines running Windows Vista / 7 / 2008 / 2008 R2 are deliberately
+        incorrect, but usually within 1000 seconds of the actual system time.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":10114,"in_the_news":false,"name":"ICMP
+        Timestamp Request Remote Date Disclosure","modification_date":"2019-10-04T00:00:00Z","publication_date":"1999-08-01T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"Filter
+        out the ICMP timestamp requests (13), and the outgoing ICMP timestamp replies
+        (14).","synopsis":"It is possible to determine the exact time set on the remote
+        host.","type":"remote","unsupported_by_vendor":false,"version":"1.48","vuln_publication_date":"1995-01-01T00:00:00Z","xrefs":[{"type":"CWE","id":"200"}],"vpr":{"score":0.0,"drivers":{"age_of_vuln":{"lower_bound":731},"exploit_code_maturity":"UNPROVEN","cvss_impact_score_predicted":false,"cvss3_impact_score":0.0,"threat_intensity_last28":"VERY_LOW","threat_sources_last28":["No
+        recorded events"],"product_coverage":"VERY_HIGH"},"updated":"2021-10-02T05:28:52Z"}},"port":{"port":0,"protocol":"ICMP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.182Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nTo
+        disable these methods, add the following lines for each virtual\nhost in your
+        configuration file :\n\n    RewriteEngine on\n    RewriteCond %{REQUEST_METHOD}
+        ^(TRACE|TRACK)\n    RewriteRule .* - [F]\n\nAlternatively, note that Apache
+        versions 1.3.34, 2.0.55, and 2.2\nsupport disabling the TRACE method natively
+        via the ''TraceEnable''\ndirective.\n\nNessus sent the following TRACE request
+        : \n\n------------------------------ snip ------------------------------\nTRACE
+        /Nessus134080287.html HTTP/1.1\nConnection: Close\nHost: target4.pubtarg.tenablesecurity.com\nPragma:
+        no-cache\nUser-Agent: Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)\nAccept:
+        image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, image/png, */*\nAccept-Language:
+        en\nAccept-Charset: iso-8859-1,*,utf-8\n\n------------------------------ snip
+        ------------------------------\n\nand received the following response from
+        the remote server :\n\n------------------------------ snip ------------------------------\nHTTP/1.1
+        200 OK\nDate: Tue, 31 May 2022 09:01:51 GMT\nServer: Apache/2.4.6 (CentOS)\nKeep-Alive:
+        timeout=5, max=100\nConnection: Keep-Alive\nTransfer-Encoding: chunked\nContent-Type:
+        message/http\n\n\nTRACE /Nessus134080287.html HTTP/1.1\nConnection: Keep-Alive\nHost:
+        target4.pubtarg.tenablesecurity.com\nPragma: no-cache\nUser-Agent: Mozilla/4.0
+        (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)\nAccept: image/gif, image/x-xbitmap,
+        image/jpeg, image/pjpeg, image/png, */*\nAccept-Language: en\nAccept-Charset:
+        iso-8859-1,*,utf-8\n\n------------------------------ snip ------------------------------\n","plugin":{"bid":[9506,11604,9561,37995,33374],"checks_for_default_account":false,"checks_for_malware":false,"cve":["CVE-2010-0386","CVE-2003-1567","CVE-2004-2320"],"cvss3_base_score":5.3,"cvss3_temporal_score":4.6,"cvss3_temporal_vector":{"remediation_level":"Official-fix","report_confidence":"Confirmed","raw":"E:U/RL:O/RC:C"},"cvss3_vector":{"availability_impact":"None","confidentiality_impact":"Low","integrity_impact":"None","raw":"AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N"},"cvss_base_score":5.0,"cvss_temporal_score":3.7,"cvss_temporal_vector":{"exploitability":"Unproven","remediation_level":"Official-fix","report_confidence":"Confirmed","raw":"E:U/RL:OF/RC:C"},"cvss_vector":{"access_complexity":"Low","access_vector":"Network","authentication":"None
+        required","availability_impact":"None","confidentiality_impact":"Partial","integrity_impact":"None","raw":"AV:N/AC:L/Au:N/C:P/I:N/A:N"},"description":"The
+        remote web server supports the TRACE and/or TRACK methods. TRACE and TRACK
+        are HTTP methods that are used to debug web server connections.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploitability_ease":"No
+        known exploits are available","exploited_by_malware":false,"exploited_by_nessus":false,"family":"Web
+        Servers","family_id":11,"has_patch":false,"id":11213,"in_the_news":false,"name":"HTTP
+        TRACE / TRACK Methods Allowed","modification_date":"2020-06-12T00:00:00Z","publication_date":"2003-01-23T00:00:00Z","risk_factor":"Medium","see_also":["https://www.cgisecurity.com/whitehat-mirror/WH-WhitePaper_XST_ebook.pdf","http://www.apacheweek.com/issues/03-01-24","https://download.oracle.com/sunalerts/1000718.1.html"],"solution":"Disable
+        these HTTP methods. Refer to the plugin output for more information.","synopsis":"Debugging
+        functions are enabled on the remote web server.","type":"remote","unsupported_by_vendor":false,"version":"1.73","vuln_publication_date":"2003-01-20T00:00:00Z","xrefs":[{"type":"CWE","id":"16"},{"type":"CERT","id":"288308"},{"type":"CWE","id":"200"},{"type":"CERT","id":"867593"}],"vpr":{"score":4.0,"drivers":{"age_of_vuln":{"lower_bound":731},"exploit_code_maturity":"UNPROVEN","cvss_impact_score_predicted":true,"cvss3_impact_score":4.0,"threat_intensity_last28":"VERY_LOW","threat_sources_last28":["No
+        recorded events"],"product_coverage":"LOW"},"updated":"2021-04-22T11:32:33Z"}},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"medium","severity_id":2,"severity_default_id":2,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.182Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following client-to-server Cipher Block Chaining (CBC) algorithms\nare supported
+        : \n\n  3des-cbc\n  aes128-cbc\n  aes192-cbc\n  aes256-cbc\n  blowfish-cbc\n  cast128-cbc\n\nThe
+        following server-to-client Cipher Block Chaining (CBC) algorithms\nare supported
+        : \n\n  3des-cbc\n  aes128-cbc\n  aes192-cbc\n  aes256-cbc\n  blowfish-cbc\n  cast128-cbc\n","plugin":{"bid":[32319],"checks_for_default_account":false,"checks_for_malware":false,"cve":["CVE-2008-5161"],"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":2.6,"cvss_temporal_score":1.9,"cvss_temporal_vector":{"exploitability":"Unproven","remediation_level":"Official-fix","report_confidence":"Confirmed","raw":"E:U/RL:OF/RC:C"},"cvss_vector":{"access_complexity":"High","access_vector":"Network","authentication":"None
+        required","availability_impact":"None","confidentiality_impact":"Partial","integrity_impact":"None","raw":"AV:N/AC:H/Au:N/C:P/I:N/A:N"},"description":"The
+        SSH server is configured to support Cipher Block Chaining (CBC) encryption.  This
+        may allow an attacker to recover the plaintext message from the ciphertext.
+        \n\nNote that this plugin only checks for the options of the SSH server and
+        does not check for vulnerable software versions.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploitability_ease":"No
+        known exploits are available","exploited_by_malware":false,"exploited_by_nessus":false,"family":"Misc.","family_id":23,"has_patch":false,"id":70658,"in_the_news":false,"name":"SSH
+        Server CBC Mode Ciphers Enabled","modification_date":"2018-07-30T00:00:00Z","publication_date":"2013-10-28T00:00:00Z","risk_factor":"Low","see_also":[""],"solution":"Contact
+        the vendor or consult product documentation to disable CBC mode cipher encryption,
+        and enable CTR or GCM cipher mode encryption.","synopsis":"The SSH server
+        is configured to use Cipher Block Chaining.","type":"remote","unsupported_by_vendor":false,"version":"1.4","vuln_publication_date":"2008-11-24T00:00:00Z","xrefs":[{"type":"CERT","id":"958563"},{"type":"CWE","id":"200"}],"vpr":{"score":2.5,"drivers":{"age_of_vuln":{"lower_bound":731},"exploit_code_maturity":"UNPROVEN","cvss_impact_score_predicted":true,"cvss3_impact_score":2.5,"threat_intensity_last28":"VERY_LOW","threat_sources_last28":["No
+        recorded events"],"product_coverage":"HIGH"},"updated":"2020-12-30T05:20:01Z"}},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"low","severity_id":1,"severity_default_id":1,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.162Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nResponse
+        Code : HTTP/1.1 403 Forbidden\n\nProtocol version : HTTP/1.1\nSSL : no\nKeep-Alive
+        : yes\nOptions allowed : (Not implemented)\nHeaders :\n\n  Date: Tue, 31 May
+        2022 09:02:19 GMT\n  Server: Apache/2.4.6 (CentOS)\n  Last-Modified: Thu,
+        16 Oct 2014 13:20:58 GMT\n  ETag: \"1321-5058a1e728280\"\n  Accept-Ranges:
+        bytes\n  Content-Length: 4897\n  Keep-Alive: timeout=5, max=100\n  Connection:
+        Keep-Alive\n  Content-Type: text/html; charset=UTF-8\n  \nResponse Body :\n\n<!DOCTYPE
+        html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\"><html><head>\n<meta
+        http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">\n\t\t<title>Apache
+        HTTP Server Test Page powered by CentOS</title>\n\t\t<meta http-equiv=\"Content-Type\"
+        content=\"text/html; charset=UTF-8\">\n\n    <!-- Bootstrap -->\n    <link
+        href=\"/noindex/css/bootstrap.min.css\" rel=\"stylesheet\">\n    <link rel=\"stylesheet\"
+        href=\"noindex/css/open-sans.css\" type=\"text/css\" />\n\n<style type=\"text/css\"><!--\t\t
+        \n\nbody {\n  font-family: \"Open Sans\", Helvetica, sans-serif;\n  font-weight:
+        100;\n  color: #ccc;\n  background: rgba(10, 24, 55, 1);\n  font-size: 16px;\n}\n\nh2,
+        h3, h4 {\n  font-weight: 200;\n}\n\nh2 {\n  font-size: 28px;\n}\n\n.jumbotron
+        {\n  margin-bottom: 0;\n  color: #333;\n  background: rgb(212,212,221); /*
+        Old browsers */\n  background: radial-gradient(ellipse at center top, rgba(255,255,255,1)
+        0%,rgba(174,174,183,1) 100%); /* W3C */\n}\n\n.jumbotron h1 {\n  font-size:
+        128px;\n  font-weight: 700;\n  color: white;\n  text-shadow: 0px 2px 0px #abc,\n               0px
+        4px 10px rgba(0,0,0,0.15),\n               0px 5px 2px rgba(0,0,0,0.1),\n               0px
+        6px 30px rgba(0,0,0,0.1);\n}\n\n.jumbotron p {\n  font-size: 28px;\n  font-weight:
+        100;\n}\n\n.main {\n   background: white;\n   color: #234;\n   border-top:
+        1px solid rgba(0,0,0,0.12);\n   padding-top: 30px;\n   padding-bottom: 40px;\n}\n\n.footer
+        {\n   border-top: 1px solid rgba(255,255,255,0.2);\n   padding-top: 30px;\n}\n\n    --></style>\n</head>\n<body>\n  <div
+        class=\"jumbotron text-center\">\n    <div class=\"container\">\n   \t  <h1>Testing
+        123..</h1>\n  \t\t<p class=\"lead\">This page is used to test the proper operation
+        of the <a href=\"http://apache.org\">Apache HTTP server</a> after it has been
+        installed. If you can read this page it means that this site is working properly.
+        This server is powered by <a href=\"http://centos.org\">CentOS</a>.</p>\n\t\t</div>\n  </div>\n  <div
+        class=\"main\">\n    <div class=\"container\">\n       <div class=\"row\">\n  \t\t\t<div
+        class=\"col-sm-6\">\n    \t\t\t<h2>Just visiting?</h2>\n\t\t\t  \t\t<p class=\"lead\">The
+        website you just visited is either experiencing problems or is undergoing
+        routine maintenance.</p>\n  \t\t\t\t\t<p>If you would like to let the administrators
+        of this website know that you''ve seen this page instead of the page you expected,
+        you should send them e-mail. In general, mail sent to the name \"webmaster\"
+        and directed to the website''s domain should reach the appropriate person.</p>\n  \t\t\t\t\t<p>For
+        example, if you experienced problems while visiting www.example.com, you should
+        send e-mail to \"webmaster@example.com\".</p>\n\t  \t\t\t</div>\n  \t\t\t\t<div
+        class=\"col-sm-6\">\n\t  \t\t\t\t<h2>Are you the Administrator?</h2>\n\t\t  \t\t\t<p>You
+        should add your website content to the directory <tt>/var/www/html/</tt>.</p>\n\t\t  \t\t\t<p>To
+        prevent this page from ever being used, follow the instructions in the file
+        <tt>/etc/httpd/conf.d/welcome.conf</tt>.</p>\n\n\t  \t\t\t\t<h2>Promoting
+        Apache and CentOS</h2>\n\t\t\t  \t\t<p>You are free to use the images below
+        on Apache and CentOS Linux powered HTTP servers.  Thanks for using Apache
+        and CentOS!</p>\n\t\t\t\t  \t<p><a href=\"http://httpd.apache.org/\"><img
+        src=\"images/apache_pb.gif\" alt=\"[ Powered by Apache ]\"></a> <a href=\"http://www.centos.org/\"><img
+        src=\"images/poweredby.png\" alt=\"[ Powered by CentOS Linux ]\" height=\"31\"
+        width=\"88\"></a></p>\n  \t\t\t\t</div>\n\t  \t\t</div>\n\t    </div>\n\t\t</div>\n\t</div>\n\t  <div
+        class=\"footer\">\n      <div class=\"container\">\n        <div class=\"row\">\n          <div
+        class=\"col-sm-6\">          \n            <h2>Important note:</h2>\n            <p
+        class=\"lead\">The CentOS Project has nothing to do with this website or its
+        content,\n            it just provides the software that makes the website
+        run.</p>\n            \n            <p>If you have issues with the content
+        of this site, contact the owner of the domain, not the CentOS project. \n            Unless
+        you intended to visit CentOS.org, the CentOS Project does not have anything
+        to do with this website,\n            the content or the lack of it.</p>\n            <p>For
+        example, if this website is www.example.com, you would find the owner of the
+        example.com domain at the following WHOIS server:</p>\n            <p><a href=\"http://www.internic.net/whois.html\">http://www.internic.net/whois.html</a></p>\n          </div>\n          <div
+        class=\"col-sm-6\">\n            <h2>The CentOS Project</h2>\n            <p>The
+        CentOS Linux distribution is a stable, predictable, manageable and reproduceable
+        platform derived from \n               the sources of Red Hat Enterprise Linux
+        (RHEL).<p>\n            \n            <p>Additionally to being a popular choice
+        for web hosting, CentOS also provides a rich platform for open source communities
+        to build upon. For more information\n               please visit the <a href=\"http://www.centos.org/\">CentOS
+        website</a>.</p>\n          </div>\n        </div>\n\t\t  </div>\n    </div>\n  </div>\n</body></html>\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        test gives some information about the remote HTTP protocol - the version used,
+        whether HTTP Keep-Alive and HTTP pipelining are enabled, etc... \n\nThis test
+        is informational only and does not denote any security problem.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Web
+        Servers","family_id":11,"has_patch":false,"id":24260,"in_the_news":false,"name":"HyperText
+        Transfer Protocol (HTTP) Information","modification_date":"2019-11-22T00:00:00Z","publication_date":"2007-01-30T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"Some
+        information about the remote HTTP configuration can be extracted.","type":"remote","unsupported_by_vendor":false,"version":"1.14"},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.147Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following issues were reported :\n\n  - Plugin      : no_local_checks_credentials.nasl\n    Plugin
+        ID   : 110723\n    Plugin Name : Target Credential Status by Authentication
+        Protocol - No Credentials Provided\n    Message     : \nCredentials were not
+        provided for detected SSH service.\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"OS
+        Security Patch Assessment is not available on the remote host.\nThis does
+        not necessarily indicate a problem with the scan.\nCredentials may not have
+        been provided, OS security patch assessment may not be supported for the target,
+        the target may not have been identified, or another issue may have occurred
+        that prevented OS security patch assessment from being available. See plugin
+        output for details.\n\nThis plugin reports non-failure information impacting
+        the availability of OS Security Patch Assessment. Failure information is reported
+        by plugin 21745 : ''OS Security Patch Assessment failed''.  If a target host
+        is not supported for OS Security Patch Assessment, plugin 110695 : ''OS Security
+        Patch Assessment Checks Not Supported'' will report concurrently with this
+        plugin.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Settings","family_id":41,"has_patch":false,"id":117886,"in_the_news":false,"name":"OS
+        Security Patch Assessment Not Available","modification_date":"2021-07-12T00:00:00Z","publication_date":"2018-10-02T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"OS
+        Security Patch Assessment is not available.","type":"summary","unsupported_by_vendor":false,"version":"1.12","xrefs":[{"type":"IAVB","id":"0001-B-0515"}]},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.169Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"For
+        your information, here is the traceroute from 172.16.31.133 to 44.235.70.201
+        : \n172.16.31.133\n100.64.80.15\n240.1.240.34\n250.254.128.4\n242.0.1.25\n240.0.208.7\n242.2.99.141\n44.235.70.201\n\nHop
+        Count: 7\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Makes
+        a traceroute to the remote host.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":10287,"in_the_news":false,"name":"Traceroute
+        Information","modification_date":"2020-08-20T00:00:00Z","publication_date":"1999-11-27T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"It
+        was possible to obtain traceroute information.","type":"remote","unsupported_by_vendor":false,"version":"1.67"},"port":{"port":0,"protocol":"UDP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.175Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following RPC services are available on UDP port 111 :\n\n - program: 100000
+        (portmapper), version: 4\n - program: 100000 (portmapper), version: 3\n -
+        program: 100000 (portmapper), version: 2\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"By
+        sending a DUMP request to the portmapper, it was possible to enumerate the
+        ONC RPC services running on the remote port.  Using this information, it is
+        possible to connect and bind to each service by sending an RPC request to
+        the remote port.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Service
+        detection","family_id":24,"has_patch":false,"id":11111,"in_the_news":false,"name":"RPC
+        Services Enumeration","modification_date":"2011-05-24T00:00:00Z","publication_date":"2002-08-24T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"An
+        ONC RPC service is running on the remote host.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.27 $"},"port":{"port":111,"protocol":"UDP","service":"rpc-portmapper"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.153Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nRemote
+        operating system : Linux Kernel 3.10 on CentOS Linux release 7\nConfidence
+        level : 95\nMethod : HTTP\n\n \nThe remote host is running Linux Kernel 3.10
+        on CentOS Linux release 7","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Using
+        a combination of remote probes (e.g., TCP/IP, SMB, HTTP, NTP, SNMP, etc.),
+        it is possible to guess the name of the remote operating system in use. It
+        is also possible sometimes to guess the version of the operating system.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":11936,"in_the_news":false,"name":"OS
+        Identification","modification_date":"2022-03-09T00:00:00Z","publication_date":"2003-12-09T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"It
+        is possible to guess the remote operating system.","type":"combined","unsupported_by_vendor":false,"version":"2.61"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.208Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        Linux distribution detected was : \n - CentOS 7\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cpe":["cpe:/a:apache:http_server"],"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Nessus
+        was able to extract the banner of the Apache web server and determine which
+        Linux distribution the remote host is running.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Web
+        Servers","family_id":11,"has_patch":false,"id":18261,"in_the_news":false,"name":"Apache
+        Banner Linux Distribution Disclosure","modification_date":"2022-03-21T00:00:00Z","publication_date":"2005-05-15T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"If
+        you do not wish to display this information, edit ''httpd.conf'' and set the
+        directive ''ServerTokens Prod'' and restart Apache.","synopsis":"The name
+        of the Linux distribution running on the remote host was found in the banner
+        of the web server.","type":"remote","unsupported_by_vendor":false,"version":"1.101"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.213Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Information
+        about this scan : \n\nNessus version : 10.2.0\nNessus build : 20075\nPlugin
+        feed version : 202205301753\nScanner edition used : Nessus\nScanner OS : LINUX\nScanner
+        distribution : amzn2-aarch64\nScan type : Normal\nScan name : basic\nScan
+        policy used : Basic Network Scan\nScanner IP : tenable.io Scanner\nPort scanner(s)
+        : nessus_syn_scanner \nPort range : default\nPing RTT : 92.961 ms\nThorough
+        tests : no\nExperimental tests : no\nParanoia level : 1\nReport verbosity
+        : 1\nSafe checks : yes\nOptimize the test : yes\nCredentialed checks : no\nPatch
+        management checks : None\nDisplay superseded patches : yes (supersedence plugin
+        launched)\nCGI scanning : disabled\nWeb application tests : disabled\nMax
+        hosts : 30\nMax checks : 4\nRecv timeout : 5\nBackports : Detected\nAllow
+        post-scan editing: Yes\nScan Start Date : 2022/5/31 9:00 UTC\nScan duration
+        : 473 sec\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        plugin displays, for each tested host, information about the scan itself :\n\n  -
+        The version of the plugin set.\n  - The type of scanner (Nessus or Nessus
+        Home).\n  - The version of the Nessus Engine.\n  - The port scanner(s) used.\n  -
+        The port range scanned.\n  - The ping round trip time \n  - Whether credentialed
+        or third-party patch management     checks are possible.\n  - Whether the
+        display of superseded patches is enabled\n  - The date of the scan.\n  - The
+        duration of the scan.\n  - The number of hosts scanned in parallel.\n  - The
+        number of checks done in parallel.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Settings","family_id":41,"has_patch":false,"id":19506,"in_the_news":false,"name":"Nessus
+        Scan Information","modification_date":"2022-06-09T00:00:00Z","publication_date":"2005-08-26T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"This
+        plugin displays information about the Nessus scan.","type":"summary","unsupported_by_vendor":false,"version":"1.112"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.169Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following weak key exchange algorithms are enabled : \n\n  diffie-hellman-group-exchange-sha1\n  diffie-hellman-group1-sha1\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":3.7,"cvss3_temporal_score":0.0,"cvss3_vector":{"availability_impact":"None","confidentiality_impact":"Low","integrity_impact":"None","raw":"AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N"},"cvss_base_score":2.6,"cvss_temporal_score":0.0,"cvss_vector":{"access_complexity":"High","access_vector":"Network","authentication":"None
+        required","availability_impact":"None","confidentiality_impact":"Partial","integrity_impact":"None","raw":"AV:N/AC:H/Au:N/C:P/I:N/A:N"},"description":"The
+        remote SSH server is configured to allow key exchange algorithms which are
+        considered weak.\n\nThis is based on the IETF draft document Key Exchange
+        (KEX) Method Updates and Recommendations for Secure Shell (SSH) draft-ietf-curdle-ssh-kex-sha2-20.
+        Section 4 lists guidance on key exchange algorithms that SHOULD NOT and MUST
+        NOT be enabled. This includes:\n\n  diffie-hellman-group-exchange-sha1\n\n  diffie-hellman-group1-sha1\n\n  gss-gex-sha1-*\n\n  gss-group1-sha1-*\n\n  gss-group14-sha1-*\n\n  rsa1024-sha1\n\nNote
+        that this plugin only checks for the options of the SSH server, and it does
+        not check for vulnerable software versions.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Misc.","family_id":23,"has_patch":false,"id":153953,"in_the_news":false,"name":"SSH
+        Weak Key Exchange Algorithms Enabled","modification_date":"2021-10-13T00:00:00Z","publication_date":"2021-10-13T00:00:00Z","risk_factor":"Low","see_also":["http://www.nessus.org/u?b02d91cd","https://datatracker.ietf.org/doc/html/rfc8732"],"solution":"Contact
+        the vendor or consult product documentation to disable the weak algorithms.","synopsis":"The
+        remote SSH server is configured to allow weak key exchange algorithms.","type":"remote","unsupported_by_vendor":false,"version":"1.2"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"low","severity_id":1,"severity_default_id":1,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.170Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"The
+        remote SSH daemon supports the following versions of the\nSSH protocol :\n\n  -
+        1.99\n  - 2.0\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        plugin determines the versions of the SSH protocol supported by the remote
+        SSH daemon.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":10881,"in_the_news":false,"name":"SSH
+        Protocol Versions Supported","modification_date":"2021-01-19T00:00:00Z","publication_date":"2002-03-06T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"A
+        SSH server is running on the remote host.","type":"remote","unsupported_by_vendor":false,"version":"1.39"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.208Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Port
+        22/tcp was found to be open","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        plugin is a SYN ''half-open'' port scanner.  It shall be reasonably quick
+        even against a firewalled target. \n\nNote that SYN scans are less intrusive
+        than TCP (full connect) scans against broken services, but they might cause
+        problems for less robust firewalls and also leave unclosed connections on
+        the remote target, if the network is loaded.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Port
+        scanners","family_id":42,"has_patch":false,"id":11219,"in_the_news":false,"name":"Nessus
+        SYN scanner","modification_date":"2022-08-15T00:00:00Z","publication_date":"2009-02-04T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"Protect
+        your target with an IP filter.","synopsis":"It is possible to determine which
+        TCP ports are open.","type":"remote","unsupported_by_vendor":false,"version":"1.43"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.200Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Port
+        111/tcp was found to be open","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        plugin is a SYN ''half-open'' port scanner.  It shall be reasonably quick
+        even against a firewalled target. \n\nNote that SYN scans are less intrusive
+        than TCP (full connect) scans against broken services, but they might cause
+        problems for less robust firewalls and also leave unclosed connections on
+        the remote target, if the network is loaded.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Port
+        scanners","family_id":42,"has_patch":false,"id":11219,"in_the_news":false,"name":"Nessus
+        SYN scanner","modification_date":"2022-08-15T00:00:00Z","publication_date":"2009-02-04T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"Protect
+        your target with an IP filter.","synopsis":"It is possible to determine which
+        TCP ports are open.","type":"remote","unsupported_by_vendor":false,"version":"1.43"},"port":{"port":111,"protocol":"TCP","service":"rpc-portmapper"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.169Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"Remote
+        device type : general-purpose\nConfidence level : 95\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Based
+        on the remote operating system, it is possible to determine what the remote
+        system type is (eg: a printer, router, general-purpose computer, etc).","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"General","family_id":30,"has_patch":false,"id":54615,"in_the_news":false,"name":"Device
+        Type","modification_date":"2022-09-09T00:00:00Z","publication_date":"2011-05-23T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"It
+        is possible to guess the remote device type.","type":"combined","unsupported_by_vendor":false,"version":"$Revision:
+        1.1 $"},"port":{"port":0,"protocol":"TCP"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.200Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"The
+        remote web server type is :\n\nApache/2.4.6 (CentOS)","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"This
+        plugin attempts to determine the type and the version of the   remote web
+        server.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Web
+        Servers","family_id":11,"has_patch":false,"id":10107,"in_the_news":false,"name":"HTTP
+        Server Type and Version","modification_date":"2020-10-30T00:00:00Z","publication_date":"2000-01-04T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"A
+        web server is running on the remote host.","type":"remote","unsupported_by_vendor":false,"version":"1.141","xrefs":[{"type":"IAVT","id":"0001-T-0931"}]},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.162Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"A
+        web server is running on this port.","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"Nessus
+        was able to identify the remote service by its banner or by looking at the
+        error message it sends when it receives an HTTP request.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Service
+        detection","family_id":24,"has_patch":false,"id":22964,"in_the_news":false,"name":"Service
+        Detection","modification_date":"2022-07-26T00:00:00Z","publication_date":"2007-08-19T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"The
+        remote service could be identified.","type":"remote","unsupported_by_vendor":false,"version":"1.189"},"port":{"port":80,"protocol":"TCP","service":"www"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.162Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following RPC services are available on TCP port 111 :\n\n - program: 100000
+        (portmapper), version: 4\n - program: 100000 (portmapper), version: 3\n -
+        program: 100000 (portmapper), version: 2\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"By
+        sending a DUMP request to the portmapper, it was possible to enumerate the
+        ONC RPC services running on the remote port.  Using this information, it is
+        possible to connect and bind to each service by sending an RPC request to
+        the remote port.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Service
+        detection","family_id":24,"has_patch":false,"id":11111,"in_the_news":false,"name":"RPC
+        Services Enumeration","modification_date":"2011-05-24T00:00:00Z","publication_date":"2002-08-24T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"An
+        ONC RPC service is running on the remote host.","type":"remote","unsupported_by_vendor":false,"version":"$Revision:
+        1.27 $"},"port":{"port":111,"protocol":"TCP","service":"rpc-portmapper"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.170Z"},{"asset":{"device_type":"general-purpose","fqdn":"target4.pubtarg.tenablesecurity.com","hostname":"target4.pubtarg.tenablesecurity.com","uuid":"00beed98-f607-4077-88b3-9ada1862a144","ipv4":"44.235.70.201","last_unauthenticated_results":"2022-05-31T09:08:14Z","operating_system":["Linux
+        Kernel 3.10 on CentOS Linux release 7"],"network_id":"00000000-0000-0000-0000-000000000000","tracked":true},"output":"\nThe
+        following client-to-server SHA-1 Hash-based Message Authentication Code (HMAC)
+        algorithms are supported : \n\n  hmac-sha1\n  hmac-sha1-etm@openssh.com\n\nThe
+        following server-to-client SHA-1 Hash-based Message Authentication Code (HMAC)
+        algorithms are supported : \n\n  hmac-sha1\n  hmac-sha1-etm@openssh.com\n","plugin":{"checks_for_default_account":false,"checks_for_malware":false,"cvss3_base_score":0.0,"cvss3_temporal_score":0.0,"cvss_base_score":0.0,"cvss_temporal_score":0.0,"description":"The
+        remote SSH server is configured to enable SHA-1 HMAC algorithms.\n\nAlthough
+        NIST has formally deprecated use of SHA-1 for digital signatures, SHA-1 is
+        still considered secure for HMAC as the security of HMAC does not rely on
+        the underlying hash function being resistant to collisions.\n\nNote that this
+        plugin only checks for the options of the remote SSH server.","exploit_available":false,"exploit_framework_canvas":false,"exploit_framework_core":false,"exploit_framework_d2_elliot":false,"exploit_framework_exploithub":false,"exploit_framework_metasploit":false,"exploited_by_malware":false,"exploited_by_nessus":false,"family":"Misc.","family_id":23,"has_patch":false,"id":153588,"in_the_news":false,"name":"SSH
+        SHA-1 HMAC Algorithms Enabled","modification_date":"2022-04-05T00:00:00Z","publication_date":"2021-09-23T00:00:00Z","risk_factor":"None","see_also":[""],"solution":"N/A","synopsis":"The
+        remote SSH server is configured to enable SHA-1 HMAC algorithms.","type":"remote","unsupported_by_vendor":false,"version":"1.2"},"port":{"port":22,"protocol":"TCP","service":"ssh"},"scan":{"completed_at":"2022-11-07T10:27:34.212Z","schedule_uuid":"04d0cc9e-5191-4f66-a5d4-6bdde738ab13","started_at":"2022-11-07T10:27:34.212Z","uuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"},"severity":"info","severity_id":0,"severity_default_id":0,"severity_modification_type":"NONE","first_found":"2022-08-02T10:35:16.421Z","last_found":"2022-11-07T10:27:34.212Z","state":"OPEN","indexed":"2022-11-07T10:28:02.162Z"}]'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - attachment; filename=8b606c8d-d042-4d27-9aa7-d798e8528710-5-vulndoc.json
+      Content-Length:
+      - '88612'
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Wed, 23 Nov 2022 08:14:11 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-7bfcc7b48d-crdzs
+      X-Request-Uuid:
+      - c9f0f5f857b9b512eff08f935328687c
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
+        (Restfly/1.4.7; Python/3.10.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/vulns/export/8b606c8d-d042-4d27-9aa7-d798e8528710/status
+  response:
+    body:
+      string: '{"uuid":"8b606c8d-d042-4d27-9aa7-d798e8528710","status":"FINISHED","chunks_available":[1,5],"chunks_failed":[],"chunks_cancelled":[],"total_chunks":6,"chunks_available_count":6,"empty_chunks_count":4,"finished_chunks":6,"filters":{"state":["OPEN","REOPENED"],"tags":{},"scanuuid":"992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c","since":1661327570,"first_found":0,"last_found":0,"last_fixed":0,"first_seen":0,"last_seen":0,"indexed_at":0},"num_assets_per_chunk":500,"created":1669191245469}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '496'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 23 Nov 2022 08:14:12 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-7bfcc7b48d-crdzs
+      X-Request-Uuid:
+      - 073ba05b0f219fc6e15488eddbd16e70
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

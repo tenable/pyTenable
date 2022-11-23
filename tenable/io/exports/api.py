@@ -395,6 +395,8 @@ class ExportsAPI(APIEndpoint):
                 Only return findings from the specified plugin ids.
             plugin_type (str, optional):
                 Only return findings with the specified plugin type.
+            scan_uuid (uuid, optional):
+                Only return findings with the specified scan UUID.
             severity (list[str], optional):
                 Only return findings with the specified severities.
             state (list[str], optional):
