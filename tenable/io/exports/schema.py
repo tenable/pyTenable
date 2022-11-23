@@ -79,6 +79,7 @@ class VulnExportSchema(Schema):
     plugin_family = fields.List(fields.Str())
     plugin_id = fields.List(fields.Int())
     plugin_type = fields.Str()
+    scan_uuid = fields.UUID()
 
     # Vulnerability Findings fields
     severity = fields.List(LowerCase(fields.Str()))

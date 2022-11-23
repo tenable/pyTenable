@@ -282,6 +282,9 @@ class ExportsAPI(APIEndpoint):
                 A predefined export UUID to use for generating an
                 ExportIterator.  Using this parameter will ignore all of the
                 filter arguments.
+            scan_uuid (str, optional):
+                Only findings reported during the run of specified scan UUID will be
+                returned.
             use_iterator (bool, optional):
                 Determines if we should return an iterator, or simply the
                 export job UUID.  The default is to return an iterator.
