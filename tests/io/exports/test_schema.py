@@ -67,6 +67,7 @@ def vuln_export():
         'since': 1635798607,
         'plugin_family': ['Family Name'],
         'plugin_id': [19506, 21745, 66334],
+        'scan_uuid': '992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c',
         'severity': ['CRITICAL', 'High', 'medium', 'LoW', 'InfO'],
         'state': ['OPENED', 'reopened', 'Fixed'],
         'vpr_score': {
@@ -160,6 +161,7 @@ def test_vulnerabilityschema(vuln_export):
             'since': 1635798607,
             'plugin_family': ['Family Name'],
             'plugin_id': [19506, 21745, 66334],
+            'scan_uuid': '992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c',
             'severity': ['critical', 'high', 'medium', 'low', 'info'],
             'state': ['opened', 'reopened', 'fixed'],
             'vpr_score': {
