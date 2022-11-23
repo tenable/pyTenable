@@ -123,3 +123,16 @@ def test_initiate_export(export_request, api: TenableIO):
     assert export_uuid == "01234567-89ab-cdef-0123-4567890abcde"
 
 
+@pytest.mark.vcr()
+def test_vulns_export_with_scan_uuid(api: TenableIO):
+    scan_uuid_to_test = "992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c"
+    vulns = api.exports.vulns(since=1661327570, scan_uuid=scan_uuid_to_test)
+
+    vulns = [v["scan"]["uuid"] for v in vulns]
+
+    # Total results in the response before applying this filter was 221.
+    # After applying the scan_uuid filter, it should return 65 results.
+    assert len(vulns) == 65
+
+    # All the results' scan.uuid field should match scan UUID in the request.
+    assert all(vul == scan_uuid_to_test for vul in vulns)
