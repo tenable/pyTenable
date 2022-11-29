@@ -606,7 +606,7 @@ class WorkbenchesAPI(TIOEndpoint):
         """
         Returns a list of licenced scanned assets.
 
-        :devportal:`workbenches: list-assets <workbenches-list-assets>`
+        :devportal:`workbenches: list-assets <workbenches-assets>`
 
         Returns:
             :obj:`list`:
