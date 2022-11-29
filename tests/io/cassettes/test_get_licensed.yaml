@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.10
         (Restfly/1.4.7; Python/3.9.6; Darwin/arm64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
@@ -30,7 +30,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Thu, 24 Nov 2022 05:00:54 GMT
+      - Tue, 29 Nov 2022 11:53:22 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -47,9 +47,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-ap-northeast-1-prod-7bfcc7b48d-crdzs
+      - service-nginx-router-ap-northeast-1-prod-7bfcc7b48d-fcpvh
       X-Request-Uuid:
-      - 8410e51e91f60e57ac347b1081cded7e
+      - 317cebbee5aa2d9bce71eac64d571a78
       X-XSS-Protection:
       - 1; mode=block
     status:
