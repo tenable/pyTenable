@@ -362,10 +362,8 @@ class AssetsAPI(ExploreBaseEndpoint):
             ...)
         """
         items = []
-        try:
-            iterator = self.search_all(**kw)
-            for item in iterator:
-                items.append(item['id'])
-        except ForbiddenError:
-            print("please check kw arg(s) or UUID's passed")
+
+        iterator = self.search_all(**kw)
+        for item in iterator:
+            items.append(item['id'])
         return items
