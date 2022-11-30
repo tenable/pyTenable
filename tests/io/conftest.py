@@ -14,7 +14,7 @@ def vcr_config():
     '''vcr config fixture'''
     return {
         'filter_headers': [
-            ('X-APIKeys', 'accessKey=12326e7a15c1c8684d598ac0018a211db16eb05b1e913a3c53deb23064168497;secretKey=f854d0a89b4cc7293ae6ef6e7f61d709744f62bf331cc96c1c0c118dc0cc16b5'),
+            ('X-APIKeys', 'accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY'),
             ('x-request-uuid', 'ffffffffffffffffffffffffffffffff'),
         ],
     }
@@ -25,8 +25,8 @@ def api():
     '''api keys fixture'''
     setup_logging_to_file()
     return TenableIO(
-        os.getenv('TIO_TEST_ADMIN_ACCESS', '12326e7a15c1c8684d598ac0018a211db16eb05b1e913a3c53deb23064168497'),
-        os.getenv('TIO_TEST_ADMIN_SECRET', 'f854d0a89b4cc7293ae6ef6e7f61d709744f62bf331cc96c1c0c118dc0cc16b5'),
+        os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
+        os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',
         product='pytenable-automated-testing')
 
@@ -35,8 +35,8 @@ def api():
 def stdapi():
     '''std api keys fixture'''
     return TenableIO(
-        os.getenv('TIO_TEST_STD_ACCESS', '12326e7a15c1c8684d598ac0018a211db16eb05b1e913a3c53deb23064168497'),
-        os.getenv('TIO_TEST_STD_SECRET', 'f854d0a89b4cc7293ae6ef6e7f61d709744f62bf331cc96c1c0c118dc0cc16b5'),
+        os.getenv('TIO_TEST_STD_ACCESS', 'ffffffffffffffffffffffffffffffff'),
+        os.getenv('TIO_TEST_STD_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',
         product='pytenable-automated-testing')
 
