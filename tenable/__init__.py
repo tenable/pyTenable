@@ -23,7 +23,7 @@ different APIs between some of the products.
 
 .. note::
     pyTenable version 1.2 is the first release to drop support for Python
-    versions less than 3.6.  If you are still using any of these deprecated
+    versions less than 3.7.  If you are still using any of these deprecated
     python versions the 1.1 release will still work, however is no longer being
     actively developed or maintained.
 

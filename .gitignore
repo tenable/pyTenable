@@ -21,3 +21,4 @@ __pycache__
 /pyTenable.egg-info
 Jenkinsfile
 /ex_*.py
+.idea

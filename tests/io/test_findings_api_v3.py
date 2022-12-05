@@ -80,41 +80,6 @@ def test_findings_v3_search_cloud_resource(api):
 
 
 @pytest.mark.vcr()
-def test_findings_v3_search_host_audit(api):
-    '''
-    Test the search endpoint of host audit - findings
-    '''
-    fields = ["asset_id", "asset_name", "audit_name", "compliance_result", "plugin_id", 'state', 'last_observed']
-    sort = [("state", "desc")]
-    filter = ('and', ('asset_name', 'eq', ['ubuntu2004serv.target.tenablesecurity.com']),
-              ('compliance_result', 'eq', ['WARNING']), ('state', 'eq', ['NEW']))
-
-    iterator = api.v3.explore.findings.search_host_audit(
-        fields=fields, filter=filter, sort=sort, limit=200,
-    )
-    assert isinstance(iterator, SearchIterator), \
-        "Iterator is not returned in response of Explore -> Host Audit Findings"
-
-    iterator = api.v3.explore.findings.search_host_audit(
-        fields=fields, filter=filter, return_csv=True, sort=sort, limit=200,
-    )
-    assert isinstance(iterator, CSVChunkIterator), "CSV chunk iterator is not returned in response of " \
-                                                   "Explore -> Host Audit Findings with return_csv flag enabled"
-
-    resp = api.v3.explore.findings.search_host_audit(
-        fields=fields, filter=filter, return_resp=True, sort=sort, limit=200
-    )
-    assert isinstance(resp, Response), "Response is not returned in response of " \
-                                       "Explore -> Host Audit Findings with return_resp flag enabled"
-
-    resp = api.v3.explore.findings.search_host_audit(
-        fields=fields, filter=filter, return_resp=True, return_csv=True, sort=sort, limit=200
-    )
-    assert isinstance(resp, Response), "Response object (CSV format) is not returned in response of " \
-                                       "Explore -> Host Audit Findings with return_resp & return_csv flag enabled"
-
-
-@pytest.mark.vcr()
 def test_findings_v3_search_host(api):
     '''
     Test the search endpoint of host - findings

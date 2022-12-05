@@ -2070,15 +2070,41 @@ def test_block_while_running(api):
 
 
 @pytest.mark.vcr()
-def test_scan_results_scan_notfounderror(api):
-    '''
+def test_scan_results_scan_not_found_error(api):
+    """
     test to raise exception when scan not found.
-    '''
+    """
     with pytest.raises(NotFoundError) as not_found_error:
-        api.scans.results(scan_id=583, history_id=12, history_uuid="123e4567-e89b-12d3-a456-426614174000")
+        api.scans.results(scan_id=583, history_uuid="123e4567-e89b-12d3-a456-426614174000")
     assert "Scan not found" in not_found_error.value.msg, \
         "Invalid type validation error for scan_id parameter is not raised by test-case."
 
+
+@pytest.mark.vcr()
+def test_scan_results_without_history(api):
+    """
+    requests using only Scan ID
+    """
+    scan = api.scans.results(scan_id=419)
+    assert len(scan["vulnerabilities"]) == 223
+
+
+@pytest.mark.vcr()
+def test_scan_results_with_history_id(api):
+    """
+    requests using only Scan ID
+    """
+    scan = api.scans.results(scan_id=419, history_id=15184619)
+    assert len(scan["hosts"]) == 221
+
+
+@pytest.mark.vcr()
+def test_scan_results_with_history_uuid(api):
+    """
+    requests using only Scan ID
+    """
+    scan = api.scans.results(scan_id=419, history_uuid="b6e2280a-119f-42c8-9af5-a16ae269fb75")
+    assert len(scan["hosts"]) == 221
 
 @pytest.mark.vcr()
 def test_scan_history_sort_direction(api):

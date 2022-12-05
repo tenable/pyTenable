@@ -298,7 +298,7 @@ class CredentialAPI(SCEndpoint):
             kw['privilegeEscalation'] = self._check('privilege_escalation',
                 kw['privilege_escalation'], str, choices=[
                     'none', 'su', 'sudo', 'su+sudo',
-                    'dzdo', 'pbrun', 'cisco', '.k5login'])
+                    'dzdo', 'pbrun', "Cisco 'enable'", '.k5login'])
             del(kw['privilege_escalation'])
 
         ### KERBEROS AUTHTYPE
@@ -496,7 +496,7 @@ class CredentialAPI(SCEndpoint):
                 The fileobject containing the SSH private key.
             privilege_escalation (str, optional):
                 The type of privilege escalation to perform once authenticated.
-                Valid values are ``.k5login``, ``cisco``, ``dzdo``, ``none``,
+                Valid values are ``.k5login``, ``Cisco 'enable'``, ``dzdo``, ``none``,
                 ``pbrun``, ``su``, ``su+sudo``, ``sudo``.  If left unspecified,
                 the default is ``none``.
             public_key (file, optional):
@@ -796,7 +796,7 @@ class CredentialAPI(SCEndpoint):
                 The fileobject containing the SSH private key.
             privilege_escalation (str, optional):
                 The type of privilege escalation to perform once authenticated.
-                Valid values are ``.k5login``, ``cisco``, ``dzdo``, ``none``,
+                Valid values are ``.k5login``, ``Cisco 'enable'``, ``dzdo``, ``none``,
                 ``pbrun``, ``su``, ``su+sudo``, ``sudo``.  If left unspecified,
                 the default is ``none``.
             public_key (file, optional):
