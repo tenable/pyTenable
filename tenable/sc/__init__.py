@@ -34,8 +34,8 @@ Tenable.sc
     policies
     queries
     recast_risks
-    repositories
     reports_definition
+    repositories
     roles
     scan_instances
     scan_zones
