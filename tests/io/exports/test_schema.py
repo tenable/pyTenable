@@ -17,6 +17,7 @@ def asset_export():
     Example asset export request
     '''
     return {
+        'last_scan_id': 'd27b3f28-9a36-4127-b63a-3da3801121ec',
         'created_at': 1635798607,
         'deleted_at': 1635798607,
         'first_scan_time': 1635798607,
@@ -97,6 +98,7 @@ def test_assetschema(asset_export):
     test_resp = {
         'chunk_size': 1000,
         'filters': {
+            'last_scan_id': 'd27b3f28-9a36-4127-b63a-3da3801121ec',
             'created_at': 1635798607,
             'deleted_at': 1635798607,
             'first_scan_time': 1635798607,
