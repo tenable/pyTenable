@@ -239,6 +239,8 @@ class ExportsAPI(APIEndpoint):
         :devportal:`API Documentation <exports-assets-request-export>`
 
         Args:
+            last_scan_id (str, optional):
+                Scan uuid of the scan to be exported.
             created_at (int, optional):
                 Assets created after this timestamp will be returned.
             deleted_at (int, optional):

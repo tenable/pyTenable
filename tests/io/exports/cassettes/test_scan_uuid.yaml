@@ -1,0 +1,308 @@
+interactions:
+- request:
+    body: '{"chunk_size": 1000, "filters": {"last_scan_id": "d27b3f28-9a36-4127-b63a-3da3801121ec"}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '89'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.10
+        (Restfly/1.4.7; Python/3.10.7; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: POST
+    uri: https://cloud.tenable.com/assets/export
+  response:
+    body:
+      string: '{"export_uuid":"0f0c1fec-7dbe-4237-8a93-3f47cf985b1f"}'
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '54'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Fri, 16 Dec 2022 11:25:22 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-679fbd578f-xdfc2
+      X-Request-Uuid:
+      - 64a8979f6845f12aa62dd4bd86c067c2
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.10
+        (Restfly/1.4.7; Python/3.10.7; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/assets/export/0f0c1fec-7dbe-4237-8a93-3f47cf985b1f/status
+  response:
+    body:
+      string: '{"status":"PROCESSING","chunks_available":[]}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '45'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Fri, 16 Dec 2022 11:25:23 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-679fbd578f-xdfc2
+      X-Request-Uuid:
+      - 1197f9b58405dea169f50496ae622dee
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.10
+        (Restfly/1.4.7; Python/3.10.7; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/assets/export/0f0c1fec-7dbe-4237-8a93-3f47cf985b1f/status
+  response:
+    body:
+      string: '{"status":"FINISHED","chunks_available":[1]}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '44'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Fri, 16 Dec 2022 11:25:26 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-679fbd578f-xdfc2
+      X-Request-Uuid:
+      - 23007f66b65afe64ac9620f39f9c846b
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.10
+        (Restfly/1.4.7; Python/3.10.7; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/assets/export/0f0c1fec-7dbe-4237-8a93-3f47cf985b1f/chunks/1
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA61VXY+bOBT9KxHPhQWTEMLbqtOnVaerzVSVdrSyLvaFeAcMtU3StNr/3muSTGA6
+        O63URigR59x77qed+y+BkkERVFLKfCOWYZ5BFi7LHEIArMI8r3Allmm5kjJ4FezAcqhRu6CooLF4
+        QvpmqJXmBu3QOBsUzgzECIPgUHIg44DFjIVJEjJ2l6RFsinSTcTi/G/SdGhapR9N9dA0M7A8XsCh
+        l08V6cnu4k0RL4t4Fa03iVeU2OBc7oJctSplrOMWUT+b3SpK1rHXauCpmX/uklWxyotlHrF07c3O
+        cgI0d6rFH9H8xvZZ4dEWBrejpisxlj96+k5cahltGiVQ2zn9XeHRdlwAydZlWrE83EBKC5CwdVhm
+        KYSphDSPk4QlKK5eO5RDgydPh23fULiQLFklM/JeZyLEDMswxQ29MqxWmzIRYgmpYCtMywwFK9M8
+        35AkfB4M8n07qp0KOkG0T91gBE6IWvS8N92/KNwT9HOncfqutHWgZ85wsJziXilo1Uv0hPIrz4fh
+        ipSqszNAozt05uHUkvj8CZ/5unyCq4+GcQtusAI6QMEple6g0TxJD/agGihVo9xxVrEnDdaq01Nk
+        34uX6qtNN/Tn4P9jQj8OXzZxx35G2qGkup6JS3OTA81NdPIbtWmEVkCFyLHveD1p8AQ+jWNKWjR7
+        v//dgdujnY6prtQnDtbOUxoFfFC6re7/eRWM1TSNPz1d5Q5gKJv7QPRY/AZFq4TpPF4oZYt1tAq8
+        R79feucgWbOIZREdrCQ+E9lZtfoo9WgjRRI5MDW6yKGGskGLYjA0xUh0rfdqQXCQklbeXnKiLo5b
+        dkkzuHmdeNOuRwNO6dqXSodv5N5eclx8UFp2B7vYUkvQLFgc54u/2OIGHFCD6F4dGWrW4k8QD4tR
+        8iQ0jnJUo/ZQjCbsB9N3Fr3JrrNu0jBrd7yiHND0Rml3Rj8O0BztY7vnqFe4gi3ooQLh6KAb7vr2
+        ytgjcQ4FjZrvwEg/Df6Axws93gn+5UtwPji3b7bb91u+ff37bfCLb/b/KKKD+jqS0yH3faTs52m8
+        v/3j9t0Hn8JeGUdFP65bo4Bu5se/np9ai+8vns8ZhKFruvN7HGSUEX6iQfpL9QKuWUrFfQUD/xAg
+        /wcAAA==
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Fri, 16 Dec 2022 11:25:27 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - origin,accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-679fbd578f-xdfc2
+      X-Request-Uuid:
+      - b1145997354676510d3290969c075b7e
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.10
+        (Restfly/1.4.7; Python/3.10.7; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: GET
+    uri: https://cloud.tenable.com/assets/export/0f0c1fec-7dbe-4237-8a93-3f47cf985b1f/status
+  response:
+    body:
+      string: '{"status":"FINISHED","chunks_available":[1]}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '44'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Fri, 16 Dec 2022 11:25:28 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-679fbd578f-xdfc2
+      X-Request-Uuid:
+      - ee8acadf7ab107e85c0e53501712f836
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
