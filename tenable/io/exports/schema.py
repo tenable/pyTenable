@@ -24,6 +24,7 @@ class AssetExportSchema(Schema):
     Asset Export API Schema
     '''
     # Temporal fields
+    last_scan_id = fields.Str()
     created_at = fields.Int()
     deleted_at = fields.Int()
     first_scan_time = fields.Int()
@@ -84,6 +85,7 @@ class VulnExportSchema(Schema):
     severity = fields.List(LowerCase(fields.Str()))
     state = fields.List(LowerCase(fields.Str()))
     vpr_score = fields.Nested(VPRSchema())
+    scan_uuid = fields.Str()
 
     # Asset fields
     tags = fields.List(fields.Tuple((fields.Str(), fields.Str())))

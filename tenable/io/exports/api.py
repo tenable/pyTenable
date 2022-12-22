@@ -156,6 +156,45 @@ class ExportsAPI(APIEndpoint):
         '''
         return self._api.get(f'{export_type}/export/status', box=True).exports
 
+    def initiate_export(self,
+                        export_type: Literal['vulns', 'assets', 'compliance'],
+                        **kwargs):
+        """
+        Initiate an export job of the specified export type, and return the export UUID.
+
+        This method accepts the key-value arguments supported by the methods assets(), vulns(), and compliance()
+        for the matching export_type. For example, when the export_type is "assets", this function will only support the
+        kwargs supported by the assets() method; if export_type is "vulns", the method will accept only those
+        supported by the vulns() method, and so forth.
+
+        Args:
+            export_type (str):
+                The datatype of export to get the jobs for.
+
+        Examples:
+
+            Initiating an assets export with no extra params.
+
+            >>> export_uuid = tio.exports.initiate_export("assets")
+
+            Initiating a vulns export with the params supported by vulns()
+
+            >>> export_uuid = tio.exports.initiate_export("vulns", timeout=10)
+        """
+
+        # Setting the schema for the specified export type.
+        if export_type == "vulns":
+            schema = VulnExportSchema()
+        elif export_type == "assets":
+            schema = AssetExportSchema()
+        elif export_type == "compliance":
+            schema = ComplianceExportSchema()
+
+        payload = schema.dump(schema.load(kwargs))
+
+        # Initiating the export and returning the returned export UUID.
+        return self._api.post(f'{export_type}/export', json=payload, box=True).export_uuid
+
     def _export(self,
                 export_type: Literal['vulns', 'assets', 'compliance'],
                 schema: Schema,
@@ -200,6 +239,8 @@ class ExportsAPI(APIEndpoint):
         :devportal:`API Documentation <exports-assets-request-export>`
 
         Args:
+            last_scan_id (str, optional):
+                Scan uuid of the scan to be exported.
             created_at (int, optional):
                 Assets created after this timestamp will be returned.
             deleted_at (int, optional):
@@ -356,6 +397,8 @@ class ExportsAPI(APIEndpoint):
                 Only return findings from the specified plugin ids.
             plugin_type (str, optional):
                 Only return findings with the specified plugin type.
+            scan_uuid (uuid, optional):
+                Only return findings with the specified scan UUID.
             severity (list[str], optional):
                 Only return findings with the specified severities.
             state (list[str], optional):

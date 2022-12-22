@@ -163,23 +163,7 @@ class ScanAPI(SCEndpoint):
                 for i in self._check('creds', kw['creds'], list)]
             del(kw['creds'])
 
-        # Lastly, we need to handle the scan types automatically...
-        if 'plugin_id' in kw and 'policy_id' in kw:
-            # if both are specified, something is wrong here and we should throw
-            # an exception.
-            raise UnexpectedValueError(
-                'specify either a plugin_id or a policy_id for a scan, not both.')
-
-        elif 'plugin_id' in kw:
-            # If just the plugin_id is specified, then we are safe to assume
-            # that this is a plugin-based scan.  set the pluginID attribute as
-            # the API would expect and remove the snake cased variant that was
-            # inputted.
-            kw['type'] = 'plugin'
-            kw['pluginID'] = self._check('plugin_id', kw['plugin_id'], int)
-            del(kw['plugin_id'])
-
-        elif 'policy_id' in kw:
+        if 'policy_id' in kw:
             # If just the policy_id is specified, then we are safe to assume
             # that this is a policy-based scan.  set the policy id attribute
             # within the policy document as the API would expect and remove the
@@ -249,8 +233,6 @@ class ScanAPI(SCEndpoint):
                 The default is ``3600`` seconds.
             policy_id (int, optional):
                 The policy id to use for a policy-based scan.
-            plugin_id (int, optional):
-                The plugin id to use for a plugin-based scan.
             reports (list, optional):
                 What reports should be run upon completion of the scan?  Each
                 report dictionary requires an id for the report definition and
@@ -297,8 +279,6 @@ class ScanAPI(SCEndpoint):
         # which of the values is defined.
         if 'policy_id' in kw:
             kw['type'] = 'policy'
-        elif 'plugin_id' in kw:
-            kw['type'] = 'plugin'
 
         scan = self._constructor(**kw)
         return self._api.post('scan', json=scan).json()['response']
@@ -355,9 +335,9 @@ class ScanAPI(SCEndpoint):
                 The maximum amount of time that the scan may run in seconds.
                 ``0`` or less for unlimited.
             name (str, optional): The name of the scan.
-            policy (int, optional):
+            policy_id (int, optional):
                 The policy id to use for a policy-based scan.
-            plugin (int, optional):
+            plugin_id (int, optional):
                 The plugin id to use for a plugin-based scan.
             reports (list, optional):
                 What reports should be run upon completion of the scan?  Each

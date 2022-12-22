@@ -1,8 +1,8 @@
 '''
 As exports are asynchronous, pyTenable by default will return an iterator to
 handle the state tracking, data chunking, and presentation of the data in order
-to reduce the amount of boilerplate code that would otherwise hacve to be
-created.  These iterators support both serial iteration as well as threaded
+to reduce the amount of boilerplate code that would otherwise have to be
+created.  These iterators support both serial iteration and threaded
 handling of data depending on how the data is accessed.
 
 .. autoclass:: ExportsIterator
@@ -225,10 +225,9 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
 
         Examples:
 
-            A simple example is to simply download the chunks and write them
-            to disk.
+            A simple example to download the chunks and write them to disk.
 
-            >>> def write_chunk(data: List[Dict],
+            >>> def write_chunk(data,
             ...                 export_uuid: str,
             ...                 export_type: str,
             ...                 export_chunk_id: int

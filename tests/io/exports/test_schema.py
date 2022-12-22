@@ -17,6 +17,7 @@ def asset_export():
     Example asset export request
     '''
     return {
+        'last_scan_id': 'd27b3f28-9a36-4127-b63a-3da3801121ec',
         'created_at': 1635798607,
         'deleted_at': 1635798607,
         'first_scan_time': 1635798607,
@@ -67,6 +68,7 @@ def vuln_export():
         'since': 1635798607,
         'plugin_family': ['Family Name'],
         'plugin_id': [19506, 21745, 66334],
+        'scan_uuid': '992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c',
         'severity': ['CRITICAL', 'High', 'medium', 'LoW', 'InfO'],
         'state': ['OPENED', 'reopened', 'Fixed'],
         'vpr_score': {
@@ -96,6 +98,7 @@ def test_assetschema(asset_export):
     test_resp = {
         'chunk_size': 1000,
         'filters': {
+            'last_scan_id': 'd27b3f28-9a36-4127-b63a-3da3801121ec',
             'created_at': 1635798607,
             'deleted_at': 1635798607,
             'first_scan_time': 1635798607,
@@ -160,6 +163,7 @@ def test_vulnerabilityschema(vuln_export):
             'since': 1635798607,
             'plugin_family': ['Family Name'],
             'plugin_id': [19506, 21745, 66334],
+            'scan_uuid': '992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c',
             'severity': ['critical', 'high', 'medium', 'low', 'info'],
             'state': ['opened', 'reopened', 'fixed'],
             'vpr_score': {
@@ -181,4 +185,8 @@ def test_vulnerabilityschema(vuln_export):
 
     with pytest.raises(ValidationError):
         vuln_export['new_val'] = 'something'
+        schema.load(vuln_export)
+
+    with pytest.raises(ValidationError):
+        vuln_export['scan_uuid'] = 0
         schema.load(vuln_export)
