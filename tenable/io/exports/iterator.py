@@ -9,6 +9,7 @@ handling of data depending on how the data is accessed.
     :members:
 '''
 import time
+from copy import copy
 from concurrent.futures import ThreadPoolExecutor
 from typing import Optional, List, Dict, Any
 from box import Box
@@ -255,6 +256,22 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
                                        'operations.')
                                   )
 
+        def thread_job(chunk_id: int):
+            kw = copy(kwargs)
+            kw['data'] = self._api.exports.download_chunk(self.type,
+                                                          self.uuid,
+                                                          chunk_id
+                                                          )
+            kw['export_uuid'] = self.uuid
+            kw['export_type'] = self.type
+            kw['export_chunk_id'] = chunk_id
+            self._log.debug(
+                (f'{self.type} export {self.uuid} chunk {chunk_id} '
+                 'has been downloaded and the data has been handed '
+                 'off to the specified function'
+                 ))
+            return func(**kw)
+
         # initiate the thread pool and get the show on the road.
         with ThreadPoolExecutor(max_workers=num_threads) as executor:
             jobs = []
@@ -272,16 +289,6 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
                 num_chunks = range(len(self.chunks))
                 for _ in num_chunks:
                     chunk_id = self.chunks.pop(0)
-                    kwargs['data'] = self._api.exports.download_chunk(
-                        self.type, self.uuid, chunk_id)
-                    kwargs['export_uuid'] = self.uuid
-                    kwargs['export_type'] = self.type
-                    kwargs['export_chunk_id'] = chunk_id
-                    self._log.debug(
-                        (f'{self.type} export {self.uuid} chunk {chunk_id} '
-                         'has been downloaded and the data has been handed '
-                         'off to the specified function'
-                         ))
-                    jobs.append(executor.submit(func, **kwargs))
+                    jobs.append(executor.submit(thread_job, chunk_id))
                     self.processed.append(chunk_id)
         return jobs
