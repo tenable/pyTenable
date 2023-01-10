@@ -66,7 +66,7 @@ from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
 from .queries import QueryAPI
 from .recast_risks import RecastRiskAPI
-from .reports_definition import ReportsDefinitionAPI
+from .report_definitions import ReportDefinitionsAPI
 from .repositories import RepositoryAPI
 from .roles import RoleAPI
 from .scanners import ScannerAPI
