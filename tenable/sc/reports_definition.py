@@ -17,7 +17,7 @@ class ReportDefinitionsAPI(SCEndpoint):
     def launch(self, id):
         '''
         Launches a Report definition.
-        :sc-api:`reports-definition: launch <ReportsDefinition.html#ReportsDefinitionRESTReference-/reportDefinition/{id}/launch>`
+        :sc-api:`report-definitions: launch <ReportsDefinition.html#ReportsDefinitionRESTReference-/reportDefinition/{id}/launch>`
         Args:
             id (int): The report definition identifier to launch.
         Returns:
