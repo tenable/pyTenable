@@ -24,7 +24,7 @@ class ReportDefinitionsAPI(SCEndpoint):
             :obj:`dict`:
                 A report ID resource for the newly launched report definition.
         Examples:
-            >>> running = sc.reports_definition.launch(1)
+            >>> running = sc.report_definitions.launch(1)
             >>> print('The Scan Result ID is {}'.format(
             ...     running['scanResult']['id']))
         '''
