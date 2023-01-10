@@ -438,7 +438,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         The interface object for the
         :doc:`Tenable.sc ReportDefinition APIs <reports_definition>`.
         '''
-        return ReportsDefinitionAPI(self)
+        return ReportDefinitionsAPI(self)
 
     @property
     def repositories(self):
