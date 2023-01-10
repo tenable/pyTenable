@@ -76,7 +76,10 @@ def test_search_iterator_v3_null_pagination(api):
     )
     class TempJson:
         def json(self):
-            return json.loads(json.dumps(NULL_PAGINATION_RESPONSE))
+            return json.loads(json.dumps({'findings': [{'id': 'abcdef'}],
+                                          'pagination': None
+                                          })
+                              )
     search_iterator._resource = "findings"
     search_iterator._process_response(TempJson())
     assert search_iterator.total == None
