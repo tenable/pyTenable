@@ -433,7 +433,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         return RecastRiskAPI(self)
 
     @property
-    def reports_definition(self):
+    def report_definitions(self):
         '''
         The interface object for the
         :doc:`Tenable.sc ReportDefinition APIs <reports_definition>`.
