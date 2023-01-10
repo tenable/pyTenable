@@ -13,7 +13,7 @@ Methods available on ``sc.reports_definition``:
 '''
 from .base import SCEndpoint
 
-class ReportsDefinitionAPI(SCEndpoint):
+class ReportDefinitionsAPI(SCEndpoint):
     def launch(self, id):
         '''
         Launches a Report definition.
