@@ -19,3 +19,25 @@ def fixture_ot():
         product="pytenable-automated-testing",
         build=version,
     )
+
+
+@pytest.fixture(scope='module')
+def vcr_config():
+    """vcr config fixture"""
+    return {
+        'filter_headers': [
+            ('X-APIKeys', 'TOT_X_API_KEYS')
+        ],
+    }
+
+
+@pytest.fixture
+def api():
+    """xapi key fixture"""
+    return TenableOT(
+        url="TOT_URL",
+        api_key="TOT_X_API_KEYS",
+        vendor="pytest",
+        product="pytenable-automated-testing",
+        build=version
+    )
