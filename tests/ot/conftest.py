@@ -35,7 +35,7 @@ def vcr_config():
 def api():
     """xapi key fixture"""
     return TenableOT(
-        url="TOT_URL",
+        url="https://172.26.68.231",
         api_key="TOT_X_API_KEYS",
         vendor="pytest",
         product="pytenable-automated-testing",
