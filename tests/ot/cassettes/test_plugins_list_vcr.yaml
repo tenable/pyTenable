@@ -25,7 +25,7 @@ interactions:
       X-APIKeys:
       - key=TOT_X_API_KEYS
     method: POST
-    uri: TOT_URL
+    uri: https://172.26.68.231/graphql
   response:
     body:
       string: '{"data":{"plugins":{"pageInfo":{"endCursor":"YXJyYXljb25uZWN0aW9uOjE="},"nodes":[{"id":765088,"name":"Siemens
