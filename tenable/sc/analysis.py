@@ -176,6 +176,9 @@ class AnalysisAPI(SCEndpoint):
             pages = self._check('pages', kw['pages'], int)
 
         if payload.get('sourceType') in ['individual']:
+            payload['query']['scanID'] = self._check(
+                'scan_id', kw.get('scan_id'), int
+            )
             payload['query']['view'] = self._check(
                 'view', kw.get('view', 'all'), str,
                 choices=['all', 'new', 'patched'], default='all')
