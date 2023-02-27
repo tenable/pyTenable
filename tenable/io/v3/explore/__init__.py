@@ -26,13 +26,13 @@ from tenable.io.v3.explore.findings.api import FindingsAPI
 
 class Explore(ExploreBaseEndpoint):
     '''
-    This class will contain property for all resources under Explore  i.e. assets, findings etc.
+    Tenable.io V3 Explore APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
     '''
 
     @property
     def assets(self):
         """
-        The interface object for the Assets APIs
+        Tenable.io Assets V3 APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
         :doc:`Tenable.io v3 explore assets APIs <assets>`.
         """
         return AssetsAPI(self._api)
@@ -40,7 +40,7 @@ class Explore(ExploreBaseEndpoint):
     @property
     def findings(self):
         """
-        The interface object for the Findings APIs
+        Tenable.io Findings V3 APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
         :doc:`Tenable.io v3 explore findings APIs <findings>`.
         """
         return FindingsAPI(self._api)

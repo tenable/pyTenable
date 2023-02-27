@@ -17,6 +17,8 @@ Methods available on ``tio.v3``:
     explore/index
     access_control
 """
+import warnings
+
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.access_control import AccessControlAPI
 from tenable.io.v3.explore import Explore
@@ -30,9 +32,12 @@ class Version3API(APIEndpoint):
     @property
     def explore(self):
         """
+        Tenable.io V3 Explore APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
         The interface object for the
          :doc:`Tenable.io v3 explore <explore/index>`
         """
+        warnings.warn("Tenable.io V3 Explore APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.",
+                      DeprecationWarning, 2)
         return Explore(self._api)
 
     @property

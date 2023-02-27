@@ -21,6 +21,8 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator, Sea
 
 class AssetsAPI(ExploreBaseEndpoint):
     '''
+    Tenable.io Assets V3 APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
+
     This will contain methods related to Explore -> Assets V3 API endpoints.
     '''
     _path = 'api/v3/assets'
@@ -28,6 +30,8 @@ class AssetsAPI(ExploreBaseEndpoint):
 
     def search_webapp(self, **kw) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
+        Tenable.io Assets V3 APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
+
         Retrieves the WAS assets.
 
         Args:
@@ -102,6 +106,8 @@ class AssetsAPI(ExploreBaseEndpoint):
 
     def search_host(self, **kw) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
+        Tenable.io Assets V3 APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
+
         Retrieves the host assets.
 
         Args:
@@ -176,6 +182,8 @@ class AssetsAPI(ExploreBaseEndpoint):
 
     def search_cloud_resource(self, **kw) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
+        Tenable.io Assets V3 APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
+
         Retrieves the cloud resource assets.
 
         Args:
@@ -250,6 +258,8 @@ class AssetsAPI(ExploreBaseEndpoint):
 
     def search_all(self, **kw) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
+        Tenable.io Assets V3 APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
+
         Retrieves all the assets.
 
         Args:

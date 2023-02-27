@@ -22,6 +22,8 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
 
 class FindingsAPI(ExploreBaseEndpoint):
     '''
+    Tenable.io Findings V3 APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
+
     API class containing all the methods related to Findings.
     '''
     _path = 'api/v3/findings/vulnerabilities'
@@ -31,6 +33,8 @@ class FindingsAPI(ExploreBaseEndpoint):
                       **kw
                       ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
+        Tenable.io Findings V3 APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
+
         Search and retrieve the WAS Vulnerabilities based on supported conditions.
         Args:
             fields (list, optional):
@@ -109,6 +113,8 @@ class FindingsAPI(ExploreBaseEndpoint):
                      **kw
                      ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
+        Tenable.io Findings V3 APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
+
         Search and retrieve the Cloud Resource Vulnerabilities based on supported conditions.
         Args:
             fields (list, optional):
@@ -187,6 +193,8 @@ class FindingsAPI(ExploreBaseEndpoint):
                     **kw
                     ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
+        Tenable.io Findings V3 APIs are deprecated. We recommend that you use the equivalent V2 APIs instead.
+
         Search and retrieve the Host Vulnerabilities based on supported conditions.
         Args:
             fields (list, optional):
