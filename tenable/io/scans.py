@@ -1097,7 +1097,7 @@ class ScansAPI(TIOEndpoint):
 
         # Upload the file to the Tenable Vulnerability Management and store the resulting filename in
         # the payload.
-        payload['file'] = self._api.files.upload(fobj)
+        payload['file'] = self._api.files.upload(fobj, encrypted=bool(password))
 
         # make the call to Tenable Vulnerability Management to import and then return the result to
         # the caller.
