@@ -5,8 +5,10 @@ import datetime
 import uuid
 from ipaddress import IPv4Address
 
+import pytest
 import responses
 
+from tenable.ot.graphql.iterators import OTGraphIterator
 from tenable.ot.schema.base import AssetInfo, NodesList, AssetInfoList
 from tenable.ot.schema.events import (
     Event,
@@ -318,3 +320,14 @@ def test_list(fixture_ot):
 
     resp = fixture_ot.events.list()
     assert resp.next() == expected
+
+
+@pytest.mark.vcr()
+def test_events_list_vcr(api):
+    """
+    Tests the events Graphql list iterator with cassettes
+    """
+    events = api.events.list(sort=[{"field": "eventId", "direction": "DescNullLast"}], limit=2)
+    assert isinstance(events, OTGraphIterator)
+    event = events.next()
+    assert event is not None

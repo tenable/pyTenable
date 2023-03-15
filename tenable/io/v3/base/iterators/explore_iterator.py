@@ -69,7 +69,9 @@ class SearchIterator(ExploreIterator):
         Process the API Response
         '''
         body = response.json()
-        pagination = body.get('pagination', {})
+        # Pagination value can be null in JSON response, we need to make sure
+        # a dict is returned
+        pagination = body.get('pagination') or {}
         self.page = body[self._resource]
         self.total = pagination.get('total')
         self._next_token = pagination.get('next')

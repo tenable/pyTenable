@@ -1,0 +1,90 @@
+interactions:
+- request:
+    body: '{"query": "\nquery assets(\n  $filter: AssetExpressionsParams\n  $search:
+      String\n  $sort: [AssetSortParams!]!\n  $limit: Int\n  $startAt: String\n) {\n  assets(\n    filter:
+      $filter\n    search: $search\n    sort: $sort\n    first: $limit\n    after:
+      $startAt\n  ) {\n    pageInfo {\n      endCursor\n    }\n    nodes {\n      category\n      criticality\n      customField1\n      customField2\n      customField3\n      customField4\n      customField5\n      customField6\n      customField7\n      customField8\n      customField9\n      customField10\n      description\n      details\n      family\n      firmwareVersion\n      firstSeen\n      hidden\n      id\n      ips
+      {\n        nodes\n      }\n      lastSeen\n      lastUpdate\n      location\n      macs
+      {\n        nodes\n      }\n      model\n      name\n      os\n      osDetails
+      {\n        name\n        architecture\n        hotFixes {\n          nodes {\n            name\n            installDate\n            description\n          }\n        }\n        version\n      }\n      purdueLevel\n      runStatus\n      runStatusTime\n      serial\n      slot\n      superType\n      type\n      vendor\n      risk
+      {\n        unresolvedEvents\n        totalRisk\n      }\n      ips {\n        nodes\n      }\n      macs
+      {\n        nodes\n      }\n      backplane {\n        id\n        name\n        size\n      }\n      segments
+      {\n        nodes {\n          id\n          name\n          type\n          key\n          systemName\n          vlan\n          description\n          assetType\n          subnet\n        }\n      }\n      revisions
+      {\n        nodes {\n          id\n          firstSeen\n          lastSeen\n          ordinal\n          isBase\n        }\n      }\n      plugins
+      {\n        nodes {\n          id\n          name\n          source\n          family\n          severity\n          vprScore\n          comment\n          owner\n          totalAffectedAssets\n        }\n      }\n    }\n  }\n}\n",
+      "variables": "{\"search\": null, \"sort\": [{\"field\": \"id\", \"direction\":
+      \"DescNullLast\"}], \"startAt\": null, \"limit\": 2}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2121'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/1.4.11) pyTenable/1.4.11
+        (Restfly/1.4.7; Python/3.9.6; Darwin/arm64)
+      X-APIKeys:
+      - key=TOT_X_API_KEYS
+    method: POST
+    uri: https://172.26.68.231/graphql
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1642'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 19 Jan 2023 06:37:29 GMT
+      Etag:
+      - W/"1bdd-7mdzqVcB7dI/3zi5+ikxojU/2pw"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+version: 1

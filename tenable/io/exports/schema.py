@@ -24,6 +24,7 @@ class AssetExportSchema(Schema):
     Asset Export API Schema
     '''
     # Temporal fields
+    last_scan_id = fields.Str()
     created_at = fields.Int()
     deleted_at = fields.Int()
     first_scan_time = fields.Int()

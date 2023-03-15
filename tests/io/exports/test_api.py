@@ -136,3 +136,11 @@ def test_vulns_export_with_scan_uuid(api: TenableIO):
 
     # All the results' scan.uuid field should match scan UUID in the request.
     assert all(vul == scan_uuid_to_test for vul in vulns)
+
+
+@pytest.mark.vcr()
+def test_scan_uuid(api: TenableIO):
+    scan_uuid = {"last_scan_id": "d27b3f28-9a36-4127-b63a-3da3801121ec"}
+    data = api.exports.assets(**scan_uuid)
+    my_list = [d for d in data]
+    assert len(my_list) == 1

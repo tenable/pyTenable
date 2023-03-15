@@ -2,6 +2,7 @@
 Testing the search iterators for V3 endpoints
 '''
 import pytest
+import json
 
 from tenable.io.v3.base.iterators.explore_iterator import SearchIterator
 
@@ -20,7 +21,6 @@ ASSET_DATA = [
      'id': '8a148a61-7f5f-4730-8ac0-ebcebcbd6a4d', 'updated': '2022-01-25T15:22:22.966Z'}
 
 ]
-
 
 @pytest.mark.vcr()
 def test_search_iterator_v3(api):
@@ -61,3 +61,22 @@ def test_search_iterator_v3(api):
 
     with pytest.raises(StopIteration):
         next(search_iterator)
+
+
+def test_search_iterator_v3_null_pagination(api):
+    '''
+    Test for null pagination in SearchIterator._process_response
+    '''
+    search_iterator = SearchIterator(
+        api=api
+    )
+    class TempJson:
+        def json(self):
+            return json.loads(json.dumps({'findings': [{'id': 'abcdef'}],
+                                          'pagination': None
+                                          })
+                              )
+    search_iterator._resource = "findings"
+    search_iterator._process_response(TempJson())
+    assert search_iterator.total == None
+    assert search_iterator._next_token == None

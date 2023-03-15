@@ -4,8 +4,10 @@ test assets
 import datetime
 import uuid
 
+import pytest
 import responses
 
+from tenable.ot.graphql.iterators import OTGraphIterator
 from tenable.ot.graphql.schema.assets import Asset, Risk, Segment
 from tenable.ot.graphql.schema.plugins import Plugin
 from tenable.ot.schema.assets import Revisions, Segments, Hotfix, HotFixes, OSDetails
@@ -10274,7 +10276,7 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=65,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix 1100 Detection",
+                         "MicroLogix 1100 Detection",
                     owner=None,
                     source="NNM",
                     severity="Info",
@@ -10288,8 +10290,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=74,
                     name="Ethernet Industrial Protocol "
-                    "(EtherNet/IP) Server Explicit "
-                    "Message Detection",
+                         "(EtherNet/IP) Server Explicit "
+                         "Message Detection",
                     owner=None,
                     source="NNM",
                     severity="Info",
@@ -10303,8 +10305,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=76,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix 1100 L16xxx < 10.000 HTTP "
-                    "Remote DoS",
+                         "MicroLogix 1100 L16xxx < 10.000 HTTP "
+                         "Remote DoS",
                     owner=None,
                     source="NNM",
                     severity="High",
@@ -10825,8 +10827,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720023,
                     name="Rockwell Automation Allen-Bradley "
-                    "Multiple Controllers Multiple "
-                    "Versions Denial of Service",
+                         "Multiple Controllers Multiple "
+                         "Versions Denial of Service",
                     owner=None,
                     source="NNM",
                     severity="High",
@@ -10840,8 +10842,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720025,
                     name="Rockwell Automation/Allen-Bradley "
-                    "Ethernet/IP Products Improper "
-                    "Authentication",
+                         "Ethernet/IP Products Improper "
+                         "Authentication",
                     owner=None,
                     source="NNM",
                     severity="Critical",
@@ -10855,8 +10857,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720026,
                     name="Rockwell Automation/Allen-Bradley "
-                    "Ethernet/IP Products Improper Input "
-                    "Validation",
+                         "Ethernet/IP Products Improper Input "
+                         "Validation",
                     owner=None,
                     source="NNM",
                     severity="High",
@@ -10870,8 +10872,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720027,
                     name="Rockwell Automation/Allen-Bradley "
-                    "Ethernet/IP Products Improper Access "
-                    "Control",
+                         "Ethernet/IP Products Improper Access "
+                         "Control",
                     owner=None,
                     source="NNM",
                     severity="High",
@@ -10885,8 +10887,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720028,
                     name="Rockwell Automation/Allen-Bradley "
-                    "Ethernet/IP Products Authentication "
-                    "Bypass",
+                         "Ethernet/IP Products Authentication "
+                         "Bypass",
                     owner=None,
                     source="NNM",
                     severity="Critical",
@@ -10900,8 +10902,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720030,
                     name="Rockwell Automation/Allen-Bradley "
-                    "Ethernet/IP Products Improper Access "
-                    "Control",
+                         "Ethernet/IP Products Improper Access "
+                         "Control",
                     owner=None,
                     source="NNM",
                     severity="High",
@@ -10915,8 +10917,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720068,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix Multiple Devices SQL "
-                    "Injection",
+                         "MicroLogix Multiple Devices SQL "
+                         "Injection",
                     owner=None,
                     source="NNM",
                     severity="Medium",
@@ -10930,7 +10932,7 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720069,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix Multiple Devices XSS",
+                         "MicroLogix Multiple Devices XSS",
                     owner=None,
                     source="NNM",
                     severity="Medium",
@@ -10944,8 +10946,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720070,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix Multiple Devices Buffer "
-                    "Overflow",
+                         "MicroLogix Multiple Devices Buffer "
+                         "Overflow",
                     owner=None,
                     source="NNM",
                     severity="Critical",
@@ -10959,8 +10961,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720071,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix Multiple Devices "
-                    "Unrestricted Upload",
+                         "MicroLogix Multiple Devices "
+                         "Unrestricted Upload",
                     owner=None,
                     source="NNM",
                     severity="Medium",
@@ -10974,8 +10976,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720072,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix Multiple Devices Denial "
-                    "of Service",
+                         "MicroLogix Multiple Devices Denial "
+                         "of Service",
                     owner=None,
                     source="NNM",
                     severity="High",
@@ -10989,8 +10991,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720076,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix 1100 Multiple Devices "
-                    "Buffer Overflow",
+                         "MicroLogix 1100 Multiple Devices "
+                         "Buffer Overflow",
                     owner=None,
                     source="NNM",
                     severity="Critical",
@@ -11004,9 +11006,9 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720102,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix 1400 Series B FRN < 21.2 "
-                    "Multiple Vulnerabilities "
-                    "(ICSA-18-095-01)",
+                         "MicroLogix 1400 Series B FRN < 21.2 "
+                         "Multiple Vulnerabilities "
+                         "(ICSA-18-095-01)",
                     owner=None,
                     source="NNM",
                     severity="Medium",
@@ -11020,9 +11022,9 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720123,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix Controllers <= 16.00 "
-                    "Improper Restriction of Excessive "
-                    "Authentication Attempts",
+                         "MicroLogix Controllers <= 16.00 "
+                         "Improper Restriction of Excessive "
+                         "Authentication Attempts",
                     owner=None,
                     source="NNM",
                     severity="Medium",
@@ -11036,8 +11038,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720124,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix Controllers <= 16.00 "
-                    "Information Exposure",
+                         "MicroLogix Controllers <= 16.00 "
+                         "Information Exposure",
                     owner=None,
                     source="NNM",
                     severity="Medium",
@@ -11051,8 +11053,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720125,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix Controllers <= 16.00 "
-                    "Predictable Value Range",
+                         "MicroLogix Controllers <= 16.00 "
+                         "Predictable Value Range",
                     owner=None,
                     source="NNM",
                     severity="Critical",
@@ -11066,8 +11068,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720127,
                     name="Rockwell Automation/Allen-Bradley "
-                    "MicroLogix Controllers <= 16.00 Week "
-                    "Password Requirements",
+                         "MicroLogix Controllers <= 16.00 Week "
+                         "Password Requirements",
                     owner=None,
                     source="NNM",
                     severity="Medium",
@@ -11081,8 +11083,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720209,
                     name="Rockwell Automation Micrologix 1100 "
-                    "and 1400 <= 11 Unauthorized "
-                    "Privilege Access or DOS",
+                         "and 1400 <= 11 Unauthorized "
+                         "Privilege Access or DOS",
                     owner=None,
                     source="NNM",
                     severity="Critical",
@@ -11096,8 +11098,8 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720251,
                     name="Rockwell Automation MicroLogix and "
-                    "CompactLogix Multiple Controllers "
-                    "Open Redirect",
+                         "CompactLogix Multiple Controllers "
+                         "Open Redirect",
                     owner=None,
                     source="NNM",
                     severity="Medium",
@@ -11111,9 +11113,9 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720294,
                     name="Rockwell Automation MicroLogix 1100 "
-                    "<= 16.0 and MicroLogix 1400 <= "
-                    "21.003 Improper Authentication "
-                    "(ICSA-18-095-01)",
+                         "<= 16.0 and MicroLogix 1400 <= "
+                         "21.003 Improper Authentication "
+                         "(ICSA-18-095-01)",
                     owner=None,
                     source="NNM",
                     severity="Medium",
@@ -11127,9 +11129,9 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=720295,
                     name="Rockwell Automation MicroLogix 1100 "
-                    "and 1400 <= 16.0 Improper "
-                    "Information Handling "
-                    "(ICSA-17-115-04)",
+                         "and 1400 <= 16.0 Improper "
+                         "Information Handling "
+                         "(ICSA-17-115-04)",
                     owner=None,
                     source="NNM",
                     severity="Critical",
@@ -11143,7 +11145,7 @@ def test_asset(fixture_ot):
                     family="SCADA",
                     id=752975,
                     name="Rockwell Automation MicroLogix1100 "
-                    "1763-L16 Communications Adapter",
+                         "1763-L16 Communications Adapter",
                     owner=None,
                     source="NNM",
                     severity="Info",
@@ -11206,3 +11208,14 @@ def test_asset(fixture_ot):
 
     resp = fixture_ot.assets.asset("fff9f1b9-26db-4bf4-9d87-bd915aaede36")
     assert resp.next() == expected
+
+
+@pytest.mark.vcr()
+def test_assets_list_vcr(api):
+    """
+    Tests the assets Graphql list iterator with cassettes
+    """
+    assets = api.assets.list(limit=2)
+    assert isinstance(assets, OTGraphIterator)
+    asset = assets.next()
+    assert asset is not None
