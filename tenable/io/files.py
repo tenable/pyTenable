@@ -41,10 +41,9 @@ class FileAPI(TIOEndpoint):
         # We will attempt to discover the name of the file stored within the
         # file object.  If none exists however, we will generate a random
         # uuid string to use instead.
-        kw = dict()
-        noEnc = ''
+        params = dict()
         if encrypted:
-            noEnc = '?no_enc='+str(int(encrypted))
-        kw['files'] = {'Filedata': fobj}
+            params['no_enc'] = int(encrypted)
+        kw = {'files': {'Filedata': fobj}}
 
-        return self._api.post('file/upload'+noEnc, **kw).json()['fileuploaded']
+        return self._api.post('file/upload', **kw, params=params).json()['fileuploaded']
