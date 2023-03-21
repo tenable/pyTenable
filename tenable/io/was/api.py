@@ -21,7 +21,7 @@ class WasAPI(TIOEndpoint):
     This class contains methods related to WAS.
     """
 
-    def search_scan_configurations(self, **kwargs):
+    def _search_scan_configurations(self, **kwargs):
         """
         Returns a list of web application scan configurations.
 
@@ -79,6 +79,56 @@ class WasAPI(TIOEndpoint):
 
         return responses
 
+    def _get_target_scan_ids_for_parent(self, parent_scan_id: str) -> dict:
+        """
+        Returns the
+        """
+        # Todo replace the following logic with iterators.
+        offset = 0
+        limit = 200
+
+        responses = []
+        first_response = self._api.post(path=f"https://cloud.tenable.com/was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}").json()
+        responses = [*responses, *first_response["items"]]
+        total_pages = first_response["pagination"]["total"]
+
+        while offset <= total_pages:
+            offset += 1
+            new_response = self._api.post(path=f"https://cloud.tenable.com/was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}").json()
+            responses = [*responses, *new_response["items"]]
+
+        return responses
+
+    def _get_target_scan_ids_for_parents(self, parent_scan_ids: [str]) -> list[dict]:
+        """
+        Returns the
+        """
+        responses = []
+        for p in parent_scan_ids:
+            resp = self._get_target_scan_ids_for_parent(p)
+            print(f"Target Length for {p}: {len(resp)}")
+            responses = [*responses, *resp]
+
+        return responses
+
+
+
+    def export(self):
+        """
+        Export WAS Scan
+        """
+        scan_config = self._search_scan_configurations(and_filter=[
+            ("scans_started_at", "gte", "2023/03/16"),
+            ("scans_status", "contains", ["completed"])
+        ])
+        parent_scans = _collect_parent_scan_ids(scan_config)
+
+        targets = self._get_target_scan_ids_for_parents(parent_scans)
+        target_scan_ids = _collect_target_scan_ids(targets)
+        print(len(targets))
+        print(target_scan_ids)
+
+
 
 def _tuples_to_filters(filter_tuples: list[tuple[str, str, typing.Any]]) -> list:
     """
@@ -96,3 +146,17 @@ def _tuple_to_filter(filter_tuple: tuple[str, str, typing.Any]) -> dict:
         "operator": filter_tuple[1],
         "value": filter_tuple[2]
     }
+
+
+def _collect_parent_scan_ids(scan_configuration: [dict]) -> [str]:
+    """
+    Collects and returns the parent scan IDs from the scan configuration
+    """
+    return [sc["last_scan"]["scan_id"] for sc in scan_configuration if sc]
+
+
+def _collect_target_scan_ids(scan_configuration: [dict]) -> [str]:
+    """
+    Collects and returns the parent scan IDs from the scan configuration
+    """
+    return [sc["scan"]["scan_id"] for sc in scan_configuration if sc]
