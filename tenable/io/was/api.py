@@ -1,6 +1,6 @@
 """
 WAS
-===========
+===
 
 The following methods allow for interaction into the Tenable.io
 :devportal:`WAS <was>` API endpoints.
@@ -14,7 +14,7 @@ Methods available on ``tio.was``:
 import typing
 
 from tenable.io.base import TIOEndpoint
-from tenable.io.was.iterator import WasIterator
+from tenable.io.was.iterator import WasIterator, WasScanConfigurationIterator
 
 
 class WasAPI(TIOEndpoint):
@@ -48,37 +48,15 @@ class WasAPI(TIOEndpoint):
         if "or_filter" in kwargs:
             payload["OR"] = _tuples_to_filters(kwargs["or_filter"])
 
-        # return self._api.post(path="was/v2/configs/search",
-        #                       json=payload).json()
-        # return WasScanConfigurationIterator(self._api,
-        #                                     _limit=self._check('limit', 200, int),
-        #                                     _offset=self._check('offset', 0, int),
-        #                                     # _pages_total=self._check('pages', 3, int),
-        #                                     _query=dict(),
-        #                                     _path='was/v2/configs/search',
-        #                                     _method="POST",
-        #                                     _payload=payload,
-        #                                     # _api_version=1,
-        #                                     _resource='items'
-        #                                     )
-
-        # Todo replace the following logic with iterators.
-        offset = 0
-        limit = 200
-
-        responses = []
-        first_response = self._api.post(path=f"was/v2/configs/search/?limit={limit}&offset={offset}",
-                                        json=payload).json()
-        responses = [*responses, *first_response["items"]]
-        total_pages = first_response["pagination"]["total"]
-
-        while offset <= total_pages:
-            offset += 1
-            new_response = self._api.post(path=f"was/v2/configs/search/?limit={limit}&offset={offset}",
-                                          json=payload).json()
-            responses = [*responses, *new_response["items"]]
-
-        return responses
+        return WasScanConfigurationIterator(self._api,
+                                            _limit=self._check('limit', 200, int),
+                                            _offset=self._check('offset', 0, int),
+                                            _query=dict(),
+                                            _path='was/v2/configs/search',
+                                            _method="POST",
+                                            _payload=payload,
+                                            _resource='items'
+                                            )
 
     def _get_target_scan_ids_for_parent(self, parent_scan_id: str) -> dict:
         """
@@ -89,13 +67,15 @@ class WasAPI(TIOEndpoint):
         limit = 200
 
         responses = []
-        first_response = self._api.post(path=f"https://cloud.tenable.com/was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}").json()
+        first_response = self._api.post(
+            path=f"was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}").json()
         responses = [*responses, *first_response["items"]]
         total_pages = first_response["pagination"]["total"]
 
         while offset <= total_pages:
             offset += 1
-            new_response = self._api.post(path=f"https://cloud.tenable.com/was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}").json()
+            new_response = self._api.post(
+                path=f"was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}").json()
             responses = [*responses, *new_response["items"]]
 
         return responses
@@ -123,7 +103,6 @@ class WasAPI(TIOEndpoint):
             }
         ).json()
 
-
     def export(self):
         """
         Export WAS Scan
@@ -132,6 +111,7 @@ class WasAPI(TIOEndpoint):
             ("scans_started_at", "gte", "2023/03/16"),
             ("scans_status", "contains", ["completed"])
         ])
+
         parent_scans = _collect_parent_scan_ids(scan_config)
 
         targets = self._get_target_scan_ids_for_parents(parent_scans)
@@ -139,20 +119,11 @@ class WasAPI(TIOEndpoint):
         print(len(targets))
         print(target_scan_ids_for_download)
 
-        # a = self._api.get(
-        #     path=f"was/v2/scans/e5cdcab5-60f0-46a5-b8e2-6a3d94048abf/report",
-        #     headers={
-        #         "Content-Type": "application/json"
-        #     }
-        # ).json()
-        # aa = a["findings"]
-        # print(aa)
         return WasIterator(
             api=self._api.was,
             parent_scan_id="",
             target_scan_ids=target_scan_ids_for_download
         )
-
 
 
 def _tuples_to_filters(filter_tuples: list[tuple[str, str, typing.Any]]) -> list:

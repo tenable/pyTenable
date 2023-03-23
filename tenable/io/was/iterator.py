@@ -127,18 +127,62 @@ class WasScanConfigurationIterator(TIOIterator):
         total (int):
             The total number of records that exist for the current request.
     """
-    pass
+    _payload = dict()
 
+    def _get_data(self):
+        """
+        Request the next page of data
+        """
+        query = self._query
+        query['limit'] = self._limit
+        query['offset'] = self._offset
 
-# if __name__ == '__main__':
-#     """
-#     """
-#     was_api = DummyWasApi()
-#     iterator = WasIterator(
-#         api=was_api,
-#         parent_scan_id=was_api.get_parent_scan_id(),
-#         target_scan_ids=was_api.get_target_scan_ids(was_api.get_parent_scan_id())
-#     )
-#
-#     for item in iterator:
-#         print(item)
+        resp = self._api.post(self._path, params=query, json=self._payload).json()
+
+        # Incrementing the offset by one to be used while grabbing the next page.
+        self._offset += 1
+
+        return resp, self._resource
+
+    def _get_page(self):
+        """
+        Get the next page of records
+        """
+        # Stop iteration if there is a page limit and the limit has been reached.
+        if self._pages_total and self._pages_requested >= self._pages_total:
+            raise StopIteration()
+
+        resp, key = self._get_data()
+
+        # `page_count` is the index of the items in each page. Here, we're resetting it to 0 when a new page is fetched.
+        self.page_count = 0
+
+        # `_pages_requested` is the total number of pages requested until now. Updating it.
+        self._pages_requested += 1
+
+        self.page = resp[key]
+
+        # `total` is the total # of pages.
+        self.total = resp['pagination']['total']
+
+    def next(self):
+        """
+        Ask for the next record
+        """
+        # If the current index (`page_count`) is greater than the page size, that means we've reached the end of the
+        # page and need to get the next page.
+        if self.page_count >= len(self.page):
+            self._get_page()
+            if len(self.page) == 0:
+                raise StopIteration()
+
+        item = self.page[self.page_count]
+
+        # `count` is the total # of items in all the pages.
+        self.count += 1
+
+        # updating the current index
+        self.page_count += 1
+
+        # return the item in the current index.
+        return item
