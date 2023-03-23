@@ -14,6 +14,7 @@ Methods available on ``tio.was``:
 import typing
 
 from tenable.io.base import TIOEndpoint
+from tenable.io.was.iterator import WasIterator
 
 
 class WasAPI(TIOEndpoint):
@@ -111,6 +112,16 @@ class WasAPI(TIOEndpoint):
 
         return responses
 
+    def download_scan_report(self, target_scan_id: str):
+        """
+        Downloads the individual scan ID
+        """
+        return self._api.get(
+            path=f"was/v2/scans/{target_scan_id}/report",
+            headers={
+                "Content-Type": "application/json"
+            }
+        ).json()
 
 
     def export(self):
@@ -124,9 +135,23 @@ class WasAPI(TIOEndpoint):
         parent_scans = _collect_parent_scan_ids(scan_config)
 
         targets = self._get_target_scan_ids_for_parents(parent_scans)
-        target_scan_ids = _collect_target_scan_ids(targets)
+        target_scan_ids_for_download = _collect_target_scan_ids(targets)
         print(len(targets))
-        print(target_scan_ids)
+        print(target_scan_ids_for_download)
+
+        # a = self._api.get(
+        #     path=f"was/v2/scans/e5cdcab5-60f0-46a5-b8e2-6a3d94048abf/report",
+        #     headers={
+        #         "Content-Type": "application/json"
+        #     }
+        # ).json()
+        # aa = a["findings"]
+        # print(aa)
+        return WasIterator(
+            api=self._api.was,
+            parent_scan_id="",
+            target_scan_ids=target_scan_ids_for_download
+        )
 
 
 

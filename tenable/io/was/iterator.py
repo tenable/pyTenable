@@ -37,8 +37,7 @@ class WasIterator(APIIterator):
         Get the scan results for the next target scan ID.
         """
         current_target_scan_id = self.target_scan_ids.pop()
-        self.page = self._api.get_scan_result(current_target_scan_id)
-        print(f"Page: {self.page}")
+        self.page = self._api.download_scan_report(current_target_scan_id)["findings"]
 
         # Corner case - if the chunk is empty, request for another page.
         if len(self.page) < 1:
@@ -131,15 +130,15 @@ class WasScanConfigurationIterator(TIOIterator):
     pass
 
 
-if __name__ == '__main__':
-    """
-    """
-    was_api = DummyWasApi()
-    iterator = WasIterator(
-        api=was_api,
-        parent_scan_id=was_api.get_parent_scan_id(),
-        target_scan_ids=was_api.get_target_scan_ids(was_api.get_parent_scan_id())
-    )
-
-    for item in iterator:
-        print(item)
+# if __name__ == '__main__':
+#     """
+#     """
+#     was_api = DummyWasApi()
+#     iterator = WasIterator(
+#         api=was_api,
+#         parent_scan_id=was_api.get_parent_scan_id(),
+#         target_scan_ids=was_api.get_target_scan_ids(was_api.get_parent_scan_id())
+#     )
+#
+#     for item in iterator:
+#         print(item)
