@@ -1,8 +1,6 @@
 import time
 from typing import Any, List, Dict
-
 from restfly import APIIterator
-
 from tenable.io.base import TIOIterator
 
 

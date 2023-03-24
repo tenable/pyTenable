@@ -11,10 +11,10 @@ Methods available on ``tio.was``:
 .. autoclass:: WasAPI
     :members:
 """
-import typing
 
 from tenable.io.base import TIOEndpoint
 from tenable.io.was.iterator import WasIterator, WasScanConfigurationIterator
+from typing import Any, List, Dict, Tuple
 
 
 class WasAPI(TIOEndpoint):
@@ -50,31 +50,40 @@ class WasAPI(TIOEndpoint):
                                             _resource='items'
                                             )
 
-    def _get_target_scan_ids_for_parent(self, parent_scan_id: str) -> dict:
+    def _get_target_scan_ids_for_parent(self, parent_scan_id: str) -> Dict:
         """
         Returns the vulns by target scans of the given parent scan ID.
         """
         # This method does not have an iterator and is not public as the API invoked has not been publicly documented
         # However, the API is in use by the UI.
 
+        # page number - we start with 0, and for every new page, we increment by 1.
         offset = 0
+
+        # Max number of records in each page
         limit = 200
 
-        responses = []
-        first_response = self._api.post(
+        # flattened responses list
+        flattened_list = []
+
+        first_page = self._api.post(
             path=f"was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}").json()
-        responses = [*responses, *first_response["items"]]
-        total_pages = first_response["pagination"]["total"]
+
+        # flatten and add records from first page to the flattened responses
+        flattened_list = [*flattened_list, *first_page["items"]]
+
+        total_pages = first_page["pagination"]["total"]
 
         while offset <= total_pages:
+            # increment page number
             offset += 1
-            new_response = self._api.post(
+            new_page = self._api.post(
                 path=f"was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}").json()
-            responses = [*responses, *new_response["items"]]
+            flattened_list = [*flattened_list, *new_page["items"]]
 
-        return responses
+        return flattened_list
 
-    def _get_target_scan_ids_for_parents(self, parent_scan_ids: [str]) -> list[dict]:
+    def _get_target_scan_ids_for_parents(self, parent_scan_ids: [str]) -> List[Dict]:
         """
         Returns a flattened list of vulns by target scans for the list of parent scan IDs provided.
         """
@@ -85,7 +94,7 @@ class WasAPI(TIOEndpoint):
 
         return responses
 
-    def download_scan_report(self, target_scan_id: str) -> dict:
+    def download_scan_report(self, target_scan_id: str) -> Dict:
         """
         Downloads the individual target scan results.
         """
@@ -131,14 +140,14 @@ class WasAPI(TIOEndpoint):
         )
 
 
-def _tuples_to_filters(filter_tuples: list[tuple[str, str, typing.Any]]) -> list[dict]:
+def _tuples_to_filters(filter_tuples: List[Tuple[str, str, Any]]) -> List[Dict]:
     """
     Accepts a list of tuples with three strings, and returns a filter object list.
     """
     return [_tuple_to_filter(t) for t in filter_tuples]
 
 
-def _tuple_to_filter(filter_tuple: tuple[str, str, typing.Any]) -> dict:
+def _tuple_to_filter(filter_tuple: Tuple[str, str, Any]) -> Dict:
     """
     Accepts a tuple with three strings, and returns a filter object.
     """
