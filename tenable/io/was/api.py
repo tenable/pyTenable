@@ -14,96 +14,13 @@ Methods available on ``tio.was``:
 
 from tenable.io.base import TIOEndpoint
 from tenable.io.was.iterator import WasIterator, WasScanConfigurationIterator
-from typing import Any, List, Dict, Tuple
+from typing import Any, Dict, Tuple
 
 
 class WasAPI(TIOEndpoint):
     """
     This class contains methods related to WAS.
     """
-
-    def _search_scan_configurations(self, **kwargs) -> WasScanConfigurationIterator:
-        """
-        Returns a list of web application scan configurations.
-        """
-        payload = dict()
-
-        if "single_filter" in kwargs and (("and_filter" in kwargs) or ("or_filter" in kwargs)):
-            raise AttributeError("single_filter cannot be passed alongside and_filter or or_filter.")
-
-        if "single_filter" in kwargs:
-            payload = _tuple_to_filter(kwargs["single_filter"])
-
-        if "and_filter" in kwargs:
-            payload["AND"] = _tuples_to_filters(kwargs["and_filter"])
-
-        if "or_filter" in kwargs:
-            payload["OR"] = _tuples_to_filters(kwargs["or_filter"])
-
-        return WasScanConfigurationIterator(self._api,
-                                            _limit=self._check('limit', 200, int),
-                                            _offset=self._check('offset', 0, int),
-                                            _query=dict(),
-                                            _path='was/v2/configs/search',
-                                            _method="POST",
-                                            _payload=payload,
-                                            _resource='items'
-                                            )
-
-    def _get_target_scan_ids_for_parent(self, parent_scan_id: str) -> Dict:
-        """
-        Returns the vulns by target scans of the given parent scan ID.
-        """
-        # This method does not have an iterator and is not public as the API invoked has not been publicly documented
-        # However, the API is in use by the UI.
-
-        # page number - we start with 0, and for every new page, we increment by 1.
-        offset = 0
-
-        # Max number of records in each page
-        limit = 200
-
-        # flattened responses list
-        flattened_list = []
-
-        first_page = self._api.post(
-            path=f"was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}").json()
-
-        # flatten and add records from first page to the flattened responses
-        flattened_list = [*flattened_list, *first_page["items"]]
-
-        total_pages = first_page["pagination"]["total"]
-
-        while offset <= total_pages:
-            # increment page number
-            offset += 1
-            new_page = self._api.post(
-                path=f"was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}").json()
-            flattened_list = [*flattened_list, *new_page["items"]]
-
-        return flattened_list
-
-    def _get_target_scan_ids_for_parents(self, parent_scan_ids: [str]) -> List[Dict]:
-        """
-        Returns a flattened list of vulns by target scans for the list of parent scan IDs provided.
-        """
-        responses = []
-        for p in parent_scan_ids:
-            resp = self._get_target_scan_ids_for_parent(p)
-            responses = [*responses, *resp]
-
-        return responses
-
-    def download_scan_report(self, target_scan_id: str) -> Dict:
-        """
-        Downloads the individual target scan results.
-        """
-        return self._api.get(
-            path=f"was/v2/scans/{target_scan_id}/report",
-            headers={
-                "Content-Type": "application/json"
-            }
-        ).json()
 
     def export(self, **kwargs) -> WasIterator:
         """
@@ -127,7 +44,7 @@ class WasAPI(TIOEndpoint):
 
         # Fetch the target scans info for all the above parent scan IDs, and flatten it.
         # We need to flatten because, each parent ID will have multiple target scans.
-        target_scans = self._get_target_scan_ids_for_parents(parent_scan_ids)
+        target_scans = [scan for pid in parent_scan_ids for scan in self._get_target_scan_ids_for_parent(pid)]
 
         # Iterate through the target scans info and collect the target scan IDs.
         target_scan_ids_for_download = [sc["scan"]["scan_id"] for sc in target_scans if sc]
@@ -139,20 +56,82 @@ class WasAPI(TIOEndpoint):
             target_scan_ids=target_scan_ids_for_download
         )
 
+    def download_scan_report(self, target_scan_id: str) -> Dict:
+        """
+        Downloads the individual target scan results.
+        """
+        return self._api.get(
+            path=f"was/v2/scans/{target_scan_id}/report",
+            headers={
+                "Content-Type": "application/json"
+            }
+        ).json()
 
-def _tuples_to_filters(filter_tuples: List[Tuple[str, str, Any]]) -> List[Dict]:
-    """
-    Accepts a list of tuples with three strings, and returns a filter object list.
-    """
-    return [_tuple_to_filter(t) for t in filter_tuples]
+    def _search_scan_configurations(self, **kwargs) -> WasScanConfigurationIterator:
+        """
+        Returns a list of web application scan configurations.
+        """
+        payload = dict()
+
+        if "single_filter" in kwargs and (("and_filter" in kwargs) or ("or_filter" in kwargs)):
+            raise AttributeError("single_filter cannot be passed alongside and_filter or or_filter.")
+
+        if "single_filter" in kwargs:
+            payload = _tuple_to_filter(kwargs["single_filter"])
+
+        if "and_filter" in kwargs:
+            payload["AND"] = [_tuple_to_filter(t) for t in kwargs["and_filter"]]
+
+        if "or_filter" in kwargs:
+            payload["OR"] = [_tuple_to_filter(t) for t in kwargs["or_filter"]]
+
+        return WasScanConfigurationIterator(self._api,
+                                            _limit=self._check('limit', 200, int),
+                                            _offset=self._check('offset', 0, int),
+                                            _query=dict(),
+                                            _path='was/v2/configs/search',
+                                            _method="POST",
+                                            _payload=payload,
+                                            _resource='items'
+                                            )
+
+    def _get_target_scan_ids_for_parent(self, parent_scan_id: str) -> Dict:
+        """
+        Returns the vulns by target scans of the given parent scan ID.
+        """
+        # This method does not have an iterator and is not public as the API it invokes has not been publicly documented.
+        # However, the API is in use in the Tenable.io UI.
+
+        # page number - we start with 0, and for every new page, we increment by 1.
+        offset = 0
+        # Max number of records in each page
+        limit = 200
+
+        # flattened responses list
+        flattened_list = []
+
+        while True:
+            # Fetch the page
+            response = self._api.post(
+                path=f"was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}"
+            ).json()
+
+            # Collect the items, flatten, and write to the flattened list (extend).
+            items = response["items"]
+            flattened_list.extend(items)
+
+            # Increment the page number by 1
+            offset += 1
+
+            # Exit the loop if the page # becomes >= to the total # of pages.
+            if not items or offset >= response["pagination"]["total"]:
+                break
+
+        return flattened_list
 
 
-def _tuple_to_filter(filter_tuple: Tuple[str, str, Any]) -> Dict:
+def _tuple_to_filter(t: Tuple[str, str, Any]) -> Dict:
     """
     Accepts a tuple with three strings, and returns a filter object.
     """
-    return {
-        "field": filter_tuple[0],
-        "operator": filter_tuple[1],
-        "value": filter_tuple[2]
-    }
+    return {"field": t[0], "operator": t[1], "value": t[2]}

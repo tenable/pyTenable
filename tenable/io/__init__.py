@@ -41,6 +41,7 @@ Tenable.io
     target_groups
     users
     v3/index
+    was
     workbenches
 '''
 from typing import Dict, Optional
