@@ -10,23 +10,15 @@ class WasIterator(APIIterator):
     WAS export.
 
     Attributes:
-        parent_scan_id:
-            The Scan ID of the parent.
         target_scan_ids:
             The target Scan IDs for the specified parent Scan ID.
-        start_time:
-            The timestamp denoting when the iterator was created.
         page (list[dict]):
             The current chunk of data.
     """
-    start_time: str
-    parent_scan_id: str
     target_scan_ids: List[str]
     page: List[Dict]
 
-    def __init__(self, api, parent_scan_id, target_scan_ids, **kwargs):
-        self.start_time = int(time.time())
-        self.parent_scan_id = parent_scan_id
+    def __init__(self, api, target_scan_ids, **kwargs):
         self.target_scan_ids = target_scan_ids
         super().__init__(api, **kwargs)
 

@@ -34,6 +34,23 @@ class WasAPI(TIOEndpoint):
                 field, operator, and value in that order.
             or_filter list: An array of filters where at least one must be satisfied. This is a list of tuples with three elements -
                 field, operator, and value in that order.
+
+        Returns:
+            WasIterator
+
+        Examples:
+
+            Passing AND filter to the API
+
+            >>> was_iterator = tio.was.export(
+            ...     and_filter=[
+            ...         ("scans_started_at", "gte", "2023/03/23"),
+            ...         ("scans_status", "contains", ["completed"])
+            ...     ]
+            ... )
+            ...
+            ...for finding in was_iterator:
+            ...     print(finding)
         """
 
         # Get scan configuration iterator.
@@ -52,7 +69,6 @@ class WasAPI(TIOEndpoint):
         # Return an iterator
         return WasIterator(
             api=self._api.was,
-            parent_scan_id="",
             target_scan_ids=target_scan_ids_for_download
         )
 
