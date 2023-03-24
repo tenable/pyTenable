@@ -66,7 +66,6 @@ class WasAPI(TIOEndpoint):
         # Iterate through the target scans info and collect the target scan IDs.
         target_scan_ids_for_download = [sc["scan"]["scan_id"] for sc in target_scans if sc]
 
-        # Return an iterator
         return WasIterator(
             api=self._api.was,
             target_scan_ids=target_scan_ids_for_download
