@@ -1,4 +1,3 @@
-import time
 from typing import Any, List, Dict
 from restfly import APIIterator
 from tenable.io.base import TIOIterator
@@ -38,64 +37,16 @@ class WasIterator(APIIterator):
         Ask for the next record in the current page.
         """
 
-        # Raise a StopIteration exception if no more pages to download, and in the last page, no more items left to iterate.
-        # if (len(self.target_scan_ids) == 0) and (len(self.page) == 0): raise StopIteration()
-
         # If we've worked through all the items in the current page, get a new page.
         if (len(self.target_scan_ids) > 0) and (len(self.page) == 0):
             self._get_page()
 
-        # Stop iteration when the
+        # Stop iteration when there are no more target IDs to process and the current page
+        # has no more elements to process.
         elif (len(self.target_scan_ids) == 0) and (len(self.page) == 0):
             raise StopIteration()
 
         return self.page.pop()
-
-
-class DummyWasApi:
-    _parent_scan_id = "parent"
-    _target_scan_ids = ["id1", "id2", "id3"]
-    _scan_response = {
-        "id1": [
-            {
-                "first_name": "01 some name",
-                "last name": "01 some last name"
-            }, {
-                "first_name": "02 some name",
-                "last name": "02 some last name"
-            }, {
-                "first_name": "03 some name",
-                "last name": "03 some last name"
-            }
-        ],
-        "id2": [
-            {
-                "first_name": "11 some name",
-                "last name": "11 some last name"
-            }, {
-                "first_name": "12 some name",
-                "last name": "12 some last name"
-            }, {
-                "first_name": "13 some name",
-                "last name": "13 some last name"
-            }
-        ],
-        "id3": [
-            {
-                "first_name": "21 some name",
-                "last name": "21 some last name"
-            }
-        ]
-    }
-
-    def get_parent_scan_id(self, **kwargs):
-        return self._parent_scan_id
-
-    def get_target_scan_ids(self, parent_scan_id):
-        return self._target_scan_ids
-
-    def get_scan_result(self, target_scan_id):
-        return self._scan_response.get(target_scan_id)
 
 
 class WasScanConfigurationIterator(TIOIterator):
