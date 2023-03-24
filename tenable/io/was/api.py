@@ -22,17 +22,9 @@ class WasAPI(TIOEndpoint):
     This class contains methods related to WAS.
     """
 
-    def _search_scan_configurations(self, **kwargs):
+    def _search_scan_configurations(self, **kwargs) -> WasScanConfigurationIterator:
         """
         Returns a list of web application scan configurations.
-
-        Args:
-            single_filter tuple:
-                A single filter to apply to the scan configuration search. This can be
-            and_filter tuple:
-                and filter
-            or_filter list:
-                or filter
         """
         payload = dict()
 
@@ -60,9 +52,11 @@ class WasAPI(TIOEndpoint):
 
     def _get_target_scan_ids_for_parent(self, parent_scan_id: str) -> dict:
         """
-        Returns the
+        Returns the vulns by target scans of the given parent scan ID.
         """
-        # Todo replace the following logic with iterators.
+        # This method does not have an iterator and is not public as the API invoked has not been publicly documented
+        # However, the API is in use by the UI.
+
         offset = 0
         limit = 200
 
@@ -82,19 +76,18 @@ class WasAPI(TIOEndpoint):
 
     def _get_target_scan_ids_for_parents(self, parent_scan_ids: [str]) -> list[dict]:
         """
-        Returns the
+        Returns a flattened list of vulns by target scans for the list of parent scan IDs provided.
         """
         responses = []
         for p in parent_scan_ids:
             resp = self._get_target_scan_ids_for_parent(p)
-            print(f"Target Length for {p}: {len(resp)}")
             responses = [*responses, *resp]
 
         return responses
 
-    def download_scan_report(self, target_scan_id: str):
+    def download_scan_report(self, target_scan_id: str) -> dict:
         """
-        Downloads the individual scan ID
+        Downloads the individual target scan results.
         """
         return self._api.get(
             path=f"was/v2/scans/{target_scan_id}/report",
@@ -103,22 +96,34 @@ class WasAPI(TIOEndpoint):
             }
         ).json()
 
-    def export(self):
+    def export(self, **kwargs) -> WasIterator:
         """
-        Export WAS Scan
+        Export WAS Scan.
+
+        Args:
+            single_filter tuple:
+                A single filter to apply to the scan configuration search. This is a tuple with three elements -
+                field, operator, and value in that order.
+            and_filter tuple: An array of filters that must all be satisfied. This is a list of tuples with three elements -
+                field, operator, and value in that order.
+            or_filter list: An array of filters where at least one must be satisfied. This is a list of tuples with three elements -
+                field, operator, and value in that order.
         """
-        scan_config = self._search_scan_configurations(and_filter=[
-            ("scans_started_at", "gte", "2023/03/16"),
-            ("scans_status", "contains", ["completed"])
-        ])
 
-        parent_scans = _collect_parent_scan_ids(scan_config)
+        # Get scan configuration iterator.
+        scan_config = self._search_scan_configurations(**kwargs)
 
-        targets = self._get_target_scan_ids_for_parents(parent_scans)
-        target_scan_ids_for_download = _collect_target_scan_ids(targets)
-        print(len(targets))
-        print(target_scan_ids_for_download)
+        # Iterate through the scan configs and collect the parent scan IDs.
+        parent_scan_ids = [sc["last_scan"]["scan_id"] for sc in scan_config if sc]
 
+        # Fetch the target scans info for all the above parent scan IDs, and flatten it.
+        # We need to flatten because, each parent ID will have multiple target scans.
+        target_scans = self._get_target_scan_ids_for_parents(parent_scan_ids)
+
+        # Iterate through the target scans info and collect the target scan IDs.
+        target_scan_ids_for_download = [sc["scan"]["scan_id"] for sc in target_scans if sc]
+
+        # Return an iterator
         return WasIterator(
             api=self._api.was,
             parent_scan_id="",
@@ -126,7 +131,7 @@ class WasAPI(TIOEndpoint):
         )
 
 
-def _tuples_to_filters(filter_tuples: list[tuple[str, str, typing.Any]]) -> list:
+def _tuples_to_filters(filter_tuples: list[tuple[str, str, typing.Any]]) -> list[dict]:
     """
     Accepts a list of tuples with three strings, and returns a filter object list.
     """
@@ -142,17 +147,3 @@ def _tuple_to_filter(filter_tuple: tuple[str, str, typing.Any]) -> dict:
         "operator": filter_tuple[1],
         "value": filter_tuple[2]
     }
-
-
-def _collect_parent_scan_ids(scan_configuration: [dict]) -> [str]:
-    """
-    Collects and returns the parent scan IDs from the scan configuration
-    """
-    return [sc["last_scan"]["scan_id"] for sc in scan_configuration if sc]
-
-
-def _collect_target_scan_ids(scan_configuration: [dict]) -> [str]:
-    """
-    Collects and returns the parent scan IDs from the scan configuration
-    """
-    return [sc["scan"]["scan_id"] for sc in scan_configuration if sc]
