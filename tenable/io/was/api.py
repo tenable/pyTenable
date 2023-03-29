@@ -27,12 +27,12 @@ class WasAPI(TIOEndpoint):
         Export WAS Scan.
 
         Args:
-            single_filter tuple:
+            single_filter (tuple):
                 A single filter to apply to the scan configuration search. This is a tuple with three elements -
                 field, operator, and value in that order.
-            and_filter tuple: An array of filters that must all be satisfied. This is a list of tuples with three elements -
+            and_filter (list): An array of filters that must all be satisfied. This is a list of tuples with three elements -
                 field, operator, and value in that order.
-            or_filter list: An array of filters where at least one must be satisfied. This is a list of tuples with three elements -
+            or_filter (list): An array of filters where at least one must be satisfied. This is a list of tuples with three elements -
                 field, operator, and value in that order.
 
         Returns:
