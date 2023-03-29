@@ -44,7 +44,7 @@ class WasAPI(TIOEndpoint):
 
             >>> was_iterator = tio.was.export(
             ...     and_filter=[
-            ...         ("scans_started_at", "gte", "2023/03/23"),
+            ...         ("scans_started_at", "gte", "2023/03/24"),
             ...         ("scans_status", "contains", ["completed"])
             ...     ]
             ... )
@@ -58,13 +58,17 @@ class WasAPI(TIOEndpoint):
 
         # Iterate through the scan configs and collect the parent scan IDs.
         parent_scan_ids = [sc["last_scan"]["scan_id"] for sc in scan_config if sc]
+        self._log.debug(f"We have {len(parent_scan_ids)} parent scan ID(s) to process.")
+
 
         # Fetch the target scans info for all the above parent scan IDs, and flatten it.
         # We need to flatten because, each parent ID will have multiple target scans.
+        self._log.debug(f"Fetching Target scan IDs for {len(parent_scan_ids)} parent scan ID(s)")
         target_scans = [scan for pid in parent_scan_ids for scan in self._get_target_scan_ids_for_parent(pid)]
 
         # Iterate through the target scans info and collect the target scan IDs.
         target_scan_ids_for_download = [sc["scan"]["scan_id"] for sc in target_scans if sc]
+        self._log.debug(f"We have {len(target_scan_ids_for_download)} target scan(s) to process.")
 
         return WasIterator(
             api=self._api.was,
@@ -100,6 +104,7 @@ class WasAPI(TIOEndpoint):
         if "or_filter" in kwargs:
             payload["OR"] = [_tuple_to_filter(t) for t in kwargs["or_filter"]]
 
+        self._log.debug("Fetching the scan configuration information...")
         return WasScanConfigurationIterator(self._api,
                                             _limit=self._check('limit', 200, int),
                                             _offset=self._check('offset', 0, int),
@@ -141,6 +146,8 @@ class WasAPI(TIOEndpoint):
             # Exit the loop if the page # becomes >= to the total # of pages.
             if not items or offset >= response["pagination"]["total"]:
                 break
+
+        self._log.debug(f"Parent ID: {parent_scan_id} has {len(flattened_list)} target ID(s).")
 
         return flattened_list
 

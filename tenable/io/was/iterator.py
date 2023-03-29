@@ -26,7 +26,10 @@ class WasIterator(APIIterator):
         Get the scan results for the next target scan ID.
         """
         current_target_scan_id = self.target_scan_ids.pop()
+        self._log.debug(f"Getting the data for target ID: {current_target_scan_id}")
         self.page = self._api.download_scan_report(current_target_scan_id)["findings"]
+
+        self._log.debug(f"Target ID: {current_target_scan_id} has {len(self.page)} finding(s).")
 
         # Corner case - if the chunk is empty, request for another page.
         if len(self.page) < 1:
@@ -78,6 +81,7 @@ class WasScanConfigurationIterator(TIOIterator):
         query['limit'] = self._limit
         query['offset'] = self._offset
 
+        self._log.debug(f"Getting the config search data for offset {self._offset}")
         resp = self._api.post(self._path, params=query, json=self._payload).json()
 
         # Incrementing the offset by one to be used while grabbing the next page.
