@@ -60,7 +60,6 @@ class WasAPI(TIOEndpoint):
         parent_scan_ids = [sc["last_scan"]["scan_id"] for sc in scan_config if sc]
         self._log.debug(f"We have {len(parent_scan_ids)} parent scan ID(s) to process.")
 
-
         # Fetch the target scans info for all the above parent scan IDs, and flatten it.
         # We need to flatten because, each parent ID will have multiple target scans.
         self._log.debug(f"Fetching Target scan IDs for {len(parent_scan_ids)} parent scan ID(s)")
@@ -75,12 +74,15 @@ class WasAPI(TIOEndpoint):
             target_scan_ids=target_scan_ids_for_download
         )
 
-    def download_scan_report(self, target_scan_id: str) -> Dict:
+    def download_scan_report(self, scan_uuid: str) -> Dict:
         """
         Downloads the individual target scan results.
+
+        Args:
+            scan_uuid (str) UUID of the scan, whose report to download.
         """
         return self._api.get(
-            path=f"was/v2/scans/{target_scan_id}/report",
+            path=f"was/v2/scans/{scan_uuid}/report",
             headers={
                 "Content-Type": "application/json"
             }

@@ -27,7 +27,10 @@ class WasIterator(APIIterator):
         """
         current_target_scan_id = self.target_scan_ids.pop()
         self._log.debug(f"Getting the data for target ID: {current_target_scan_id}")
-        self.page = self._api.download_scan_report(current_target_scan_id)["findings"]
+        # self.page = self._api.download_scan_report(current_target_scan_id)["findings"]
+
+        scan_result = self._api.download_scan_report(current_target_scan_id)
+        self.page = [_enriched_finding_object(scan_result, f) for f in scan_result["findings"]]
 
         self._log.debug(f"Target ID: {current_target_scan_id} has {len(self.page)} finding(s).")
 
@@ -131,3 +134,17 @@ class WasScanConfigurationIterator(TIOIterator):
 
         # return the item in the current index.
         return item
+
+
+def _enriched_finding_object(page: Dict, finding: Dict):
+    """
+    Attaches config and scan info to each finding object.
+    Note: This adjustment is done to enable integration with Splunk.
+    """
+    return {
+        "finding": finding,
+        "config": {
+            "config_id": page["config"]["config_id"]
+        },
+        "scan": page["scan"],
+    }
