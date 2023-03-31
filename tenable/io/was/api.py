@@ -12,8 +12,8 @@ Methods available on ``tio.was``:
     :members:
 """
 
-from tenable.io.base import TIOEndpoint
-from tenable.io.was.iterator import WasIterator, WasScanConfigurationIterator
+from tenable.io.base import TIOEndpoint, TIOIterator
+from tenable.io.was.iterator import WasIterator
 from typing import Any, Dict, Tuple
 
 
@@ -49,7 +49,7 @@ class WasAPI(TIOEndpoint):
             ...     ]
             ... )
             ...
-            ...for finding in was_iterator:
+            ... for finding in was_iterator:
             ...     print(finding)
         """
 
@@ -88,7 +88,7 @@ class WasAPI(TIOEndpoint):
             }
         ).json()
 
-    def _search_scan_configurations(self, **kwargs) -> WasScanConfigurationIterator:
+    def _search_scan_configurations(self, **kwargs) -> TIOIterator:
         """
         Returns a list of web application scan configurations.
         """
@@ -107,15 +107,17 @@ class WasAPI(TIOEndpoint):
             payload["OR"] = [_tuple_to_filter(t) for t in kwargs["or_filter"]]
 
         self._log.debug("Fetching the scan configuration information...")
-        return WasScanConfigurationIterator(self._api,
-                                            _limit=self._check('limit', 200, int),
-                                            _offset=self._check('offset', 0, int),
-                                            _query=dict(),
-                                            _path='was/v2/configs/search',
-                                            _method="POST",
-                                            _payload=payload,
-                                            _resource='items'
-                                            )
+
+        return TIOIterator(
+            self._api,
+            _limit=self._check('limit', 200, int),
+            _offset=self._check('offset', 0, int),
+            _query=dict(),
+            _path='was/v2/configs/search',
+            _method="POST",
+            _payload=payload,
+            _resource='items'
+        )
 
     def _get_target_scan_ids_for_parent(self, parent_scan_id: str) -> Dict:
         """
@@ -124,9 +126,7 @@ class WasAPI(TIOEndpoint):
         # This method does not have an iterator and is not public as the API it invokes has not been publicly documented.
         # However, the API is in use in the Tenable.io UI.
 
-        # page number - we start with 0, and for every new page, we increment by 1.
         offset = 0
-        # Max number of records in each page
         limit = 200
 
         # flattened responses list
@@ -142,11 +142,10 @@ class WasAPI(TIOEndpoint):
             items = response["items"]
             flattened_list.extend(items)
 
-            # Increment the page number by 1
-            offset += 1
+            # Increment the page number by limit
+            offset += limit
 
-            # Exit the loop if the page # becomes >= to the total # of pages.
-            if not items or offset >= response["pagination"]["total"]:
+            if not items:
                 break
 
         self._log.debug(f"Parent ID: {parent_scan_id} has {len(flattened_list)} target ID(s).")
