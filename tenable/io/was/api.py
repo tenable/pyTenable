@@ -58,6 +58,9 @@ class WasAPI(TIOEndpoint):
 
         # Iterate through the scan configs and collect the parent scan IDs.
         parent_scan_ids = [sc["last_scan"]["scan_id"] for sc in scan_config if sc]
+
+        if not parent_scan_ids:
+            parent_scan_ids = []
         self._log.debug(f"We have {len(parent_scan_ids)} parent scan ID(s) to process.")
 
         # Fetch the target scans info for all the above parent scan IDs, and flatten it.
