@@ -62,7 +62,9 @@ def _enriched_finding_object(page: Dict, finding: Dict):
     return {
         "finding": finding,
         "config": {
-            "config_id": page["config"]["config_id"]
+            "config_id": page["config"]["config_id"],
+            "name": page["config"]["name"],
+            "description": page["config"]["description"],
         },
         "scan": page["scan"],
     }
