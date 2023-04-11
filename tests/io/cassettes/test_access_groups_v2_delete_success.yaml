@@ -18,7 +18,7 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: DELETE
-    uri: https://cloud.tenable.com/v2/access-groups/af08457d-0b3b-41b2-9792-9cd46b6d7657
+    uri: https://cloud.tenable.com/v2/access-groups/3029ec7c-6cf6-405a-b928-7213a4733f7e
   response:
     body:
       string: ''
@@ -26,7 +26,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b625a9c38cc0337-AMD
+      - 7b63539b6a4b032e-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -36,7 +36,7 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 11 Apr 2023 09:55:27 GMT
+      - Tue, 11 Apr 2023 12:45:26 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -54,9 +54,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-d9tlt
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-9hwwd
       X-Request-Uuid:
-      - 8257392d05ad8903f7a23449d20e19c7
+      - 97d78453cef257f5efa65d93036548bf
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -81,7 +81,7 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: DELETE
-    uri: https://cloud.tenable.com/v2/access-groups/1ba432c3-4653-45b6-b069-c0388126a260
+    uri: https://cloud.tenable.com/v2/access-groups/b137e36f-5d7b-4299-b76c-feea4413adf8
   response:
     body:
       string: ''
@@ -89,7 +89,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b625aa5c963032a-AMD
+      - 7b6353a288940333-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -99,7 +99,7 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 11 Apr 2023 09:55:28 GMT
+      - Tue, 11 Apr 2023 12:45:27 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -117,9 +117,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-d9tlt
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-4gl9k
       X-Request-Uuid:
-      - 1adf1794b4700f8f6f708baa45695ee5
+      - a85988388ca05a58ddfd721788c09bf8
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -144,7 +144,7 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: DELETE
-    uri: https://cloud.tenable.com/v2/access-groups/18a13b23-9707-4a36-b616-8bc0f800ae99
+    uri: https://cloud.tenable.com/v2/access-groups/dc00522f-d7dc-45e2-9850-8824595a5f54
   response:
     body:
       string: ''
@@ -152,7 +152,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b625abdcef90336-AMD
+      - 7b6353bd4f05032b-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -162,7 +162,7 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 11 Apr 2023 09:55:32 GMT
+      - Tue, 11 Apr 2023 12:45:31 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -180,9 +180,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-jr4vk
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-lkjf7
       X-Request-Uuid:
-      - 9416d7aac8d5973cc8acadbd6281394b
+      - a19937461decf751186d3b6d6f95567a
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -207,7 +207,7 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: DELETE
-    uri: https://cloud.tenable.com/v2/access-groups/a3f87873-4363-4333-9f85-4bc8909e247d
+    uri: https://cloud.tenable.com/v2/access-groups/eecc7860-4c7a-4a98-8f61-24e40a50e4a9
   response:
     body:
       string: ''
@@ -215,7 +215,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b625ace1e92032e-AMD
+      - 7b6354886b730336-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -225,7 +225,7 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 11 Apr 2023 09:55:35 GMT
+      - Tue, 11 Apr 2023 12:46:03 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -243,9 +243,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-qhhgv
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-4gl9k
       X-Request-Uuid:
-      - 7250ed9b16f6548f6b04c2c708c79e5d
+      - c664dff34dd5b6054cfac7f75b2de7d8
       X-XSS-Protection:
       - 1; mode=block
     status:

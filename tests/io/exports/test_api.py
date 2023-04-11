@@ -11,6 +11,7 @@ from tenable.io.exports.iterator import ExportsIterator
 from tenable.io.exports.schema import AssetExportSchema
 
 
+@pytest.mark.vcr()
 def test_status(api):
     export = api.exports.compliance()
     retry_count = 5
@@ -24,6 +25,7 @@ def test_status(api):
     assert isinstance(status, dict)
 
 
+@pytest.mark.vcr()
 def test_cancel(api):
     export = api.exports.vulns()
     api.exports.cancel(export_type='vulns', export_uuid=UUID(export.uuid))
@@ -36,6 +38,7 @@ def test_cancel(api):
     assert status.status == 'CANCELLED'
 
 
+@pytest.mark.vcr()
 def test_download_chunk(api):
     export = api.exports.vulns(num_assets=50)
     retry_count = 10
@@ -50,11 +53,13 @@ def test_download_chunk(api):
     assert isinstance(resp, list)
 
 
+@pytest.mark.vcr()
 def test_jobs(api):
     jobs = api.exports.jobs('vulns')
     assert isinstance(jobs, list)
 
 
+@pytest.mark.vcr()
 def test_base_export(api):
     asset_export = api.exports._export('assets',
                                        AssetExportSchema()
@@ -67,21 +72,25 @@ def test_base_export(api):
     assert isinstance(asset_export, UUID)
 
 
+@pytest.mark.vcr()
 def test_asset_export(api):
     export = api.exports.assets()
     assert isinstance(export, ExportsIterator)
 
 
+@pytest.mark.vcr()
 def test_vuln_export(api):
     export = api.exports.vulns()
     assert isinstance(export, ExportsIterator)
 
 
+@pytest.mark.vcr()
 def test_compliance_export(api):
     export = api.exports.compliance()
     assert isinstance(export, ExportsIterator)
 
 
+@pytest.mark.vcr()
 def test_initiate_export(api: TenableIO):
     def is_valid_uuid(export_uuid):
         try:

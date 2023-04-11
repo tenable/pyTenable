@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: '{"name": "New Name - e8afd06b-7363-441d-b280-9f19c23933d8", "description":
+    body: '{"name": "New Name - 0bc710d5-7890-4b6b-94a7-f59bce34e73e", "description":
       "", "assets_ttl_days": null}'
     headers:
       Accept:
@@ -21,20 +21,20 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: PUT
-    uri: https://cloud.tenable.com/networks/186ce93f-843c-4540-b1d0-ad20a59c90c9
+    uri: https://cloud.tenable.com/networks/af62926c-9031-4f32-a7d4-5d5870db4e3c
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA5WQXWrEMAyErxL8HIH8E8feQ+wVgiPLYNi1S5ywlLJ3Xxe2fw+F9k1IGmbmexP1
-        VnhbjiNHcRLWEzIGCVYTg3GSwTuzwsyzdRZTIjuJUdDGYecukNZJhfM0odRuFNcac8o/D1aqUTQK
-        5d2G6lF2ccJRPA2ls8ReJ3BGE5jJIKwyIoSoMEyePJLvhiVcucc7820493GAgV1IEW2Ppq0GY2SE
-        VTkEn6Qnpb3W0XVh5EZbftlzLV3fF7ktkVM4Lj1GCpfGn22W9fXvBD6a/kv0xLbksjSmWmL7TvAL
-        3y8P9wf7nfq1rQEAAA==
+        H4sIAAAAAAAAA5VRW4rDMAy8SvB3BH7FsnuIXiH4IYMhdZY8KGXZu69Tut3C/mz/hKTRzGg+2Xyt
+        tIz7XhI7MeMiJ+4FGBUJtBUEzuoASGis4TlHM7CexYX8Rg0gjBWSo0DHLfbsMqeSy3MgtESUx2CN
+        vh40cd7rxk68Zw9Cn4100kRwXAnQWUnwmDQMabDIU9CkYiOs/kJN3pmu3bmVHXQ8RBQ8DYDWcdDB
+        BHDaI+TBhUhKEypqwERrXMrHVuba8K1R1jFR9vvUZGQ/rfR0M4bb/z/w4/QtUKKJXt8mlTZoDpH3
+        /lu3HhGMpY4rxbmm9TWN3yj+LtxT+foG5IgDOPkBAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b6269d629ef032f-AMD
+      - 7b630e0fad0c0333-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -44,7 +44,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 10:05:50 GMT
+      - Tue, 11 Apr 2023 11:57:57 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -65,9 +65,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-qhhgv
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-lkjf7
       X-Request-Uuid:
-      - 6d6e998a93b7b48f9364e2ebbaf3a8ba
+      - 1ca4882f08c7791543c995b3c6c909ba
       X-Xss-Protection:
       - 1; mode=block
     status:

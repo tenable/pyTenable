@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: null
+    body: '{"num_assets": 500, "filters": {}}'
     headers:
       Accept:
       - '*/*'
@@ -9,34 +9,36 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '0'
-      Cookie:
-      - nginx-cloud-site-id=us-2b
+      - '34'
+      Content-Type:
+      - application/json
       User-Agent:
       - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
         (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: POST
-    uri: https://cloud.tenable.com/networks/af62926c-9031-4f32-a7d4-5d5870db4e3c/scanners/6ac7b12a-c4a5-4036-b60e-6dba1344366c
+    uri: https://cloud.tenable.com/vulns/export
   response:
     body:
-      string: ''
+      string: !!binary |
+        H4sIAAAAAAAAA6pWSq0oyC8qiS8tzUxRslIySDI0TklNTtFNNTIw0jVJSzHTtUg2NtI1TzMxTrVM
+        SUxKM7NQqgUAAAD//wMA8+hwjzYAAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b630e1958c50332-AMD
+      - 7b6323bc39d20336-AMD
       Cache-Control:
       - no-store
       Connection:
       - keep-alive
-      Content-Length:
-      - '0'
+      Content-Encoding:
+      - gzip
       Content-Type:
-      - application/octet-stream
+      - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 11:57:58 GMT
+      - Tue, 11 Apr 2023 12:12:45 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -45,8 +47,11 @@ interactions:
       - cloudflare
       Set-Cookie:
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
       Vary:
       - origin
       X-Content-Type-Options:
@@ -54,9 +59,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-7d54c5fb89-lkjf7
+      - service-nginx-router-ap-south-1-prod-6769c7d875-t64hw
       X-Request-Uuid:
-      - 6273b1a909033fae37197aeb32c91df4
+      - c514709182ddb5f516bf55fc02a89201
       X-Xss-Protection:
       - 1; mode=block
     status:

@@ -115,7 +115,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b62676b88290337-AMD
+      - 7b630df79af7032e-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -125,7 +125,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 10:04:12 GMT
+      - Tue, 11 Apr 2023 11:57:54 GMT
       Expect-CT:
       - enforce, max-age=86400
       Expires:
@@ -148,19 +148,19 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-ap-south-1-prod-69479dd7b-gj59b
+      - service-nginx-router-ap-south-1-prod-6769c7d875-vmzhc
       X-Request-Uuid:
-      - 53ec31455dd5900c65570e2b499c5894
+      - 51f785912a912de80a00c5caaba03d88
       X-Xss-Protection:
       - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: '{"name": "866970aa-5ef0-4ce4-a7d7-419a63dabcc5", "members": "127.0.0.1",
+    body: '{"name": "145b1ed3-638c-4ce8-8958-5fdd5be9a9bb", "members": "127.0.0.1",
       "description": "", "network_id": "00000000-0000-0000-0000-000000000000", "schedule":
-      {"enabled": true, "starttime": "2023-04-11 10:05:01", "endtime": "2023-04-11
-      11:05:01", "timezone": "Etc/UTC", "rrules": {"freq": "ONETIME", "interval":
+      {"enabled": true, "starttime": "2023-04-11 11:58:43", "endtime": "2023-04-11
+      12:58:43", "timezone": "Etc/UTC", "rrules": {"freq": "ONETIME", "interval":
       1}}}'
     headers:
       Accept:
@@ -185,16 +185,16 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3VQsU7EMAz9FeS5gSSXNr2uqAMDsBxz5SauiGhTSHMgcbp/x0HHgiCWYivP773Y
-        J9jcM/njTNCdgKLPYeEStNQ7IY1Q6kqpTtadVFAxjuNMHrqcjlRBSszbCnFK9Masx4f+cHffc2eI
-        mdI7ztCpcwVF9HONRbjP7ubpcMstW8aU/7CTFzvmRcofa3oZAluCvBxR8q/rB2PZGbc8LKsPU3CY
-        wxoHj5mdVdMqLa2pdQUu0X/QQstIiYcCpe215CiDe9pcCq9FjhF+iPi9prZp9lYiipomKYwjI9B6
-        K4zaY7PzODpXl23w/1utz1+uQA/EbgEAAA==
+        H4sIAAAAAAAAA3WQT0/EIBDFv4qZc9EOpbu0V9ODB/Wynhv+TCOxpUpZTdzsd3cw68UoJEB4834P
+        5gSbeyZ/nAn6E1D0OSx8BFnLRtRKIF6h7FvdqwYq1o2dyUOf05EqSIl9WzFOid7Y9fgwHO7uB64M
+        MVN6NzP0eK6gQD/XWMBDdjdPh1su2bJJ+Y84vMSxL1L+WNPLGDgS6ssQZf+1/GiMnc2Wx2X1YQrO
+        5LDG0ZvMybjTKFHJvarAJfpPWmixlPhTgHJ/XfNEhnraXAqvBccKX0Tz3SZUrUXyjdg12gnlSAvd
+        tVq0k/etpc501pZu8Pu1as5fcIYN/W4BAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b6267709aea0337-AMD
+      - 7b630dfcfd15032e-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -204,7 +204,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 10:04:12 GMT
+      - Tue, 11 Apr 2023 11:57:54 GMT
       Expect-CT:
       - enforce, max-age=86400
       Expires:
@@ -227,9 +227,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-d9tlt
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-lkjf7
       X-Request-Uuid:
-      - b03f52c7b8d31913c9d1e9dce0de6145
+      - 4f4c9b9eef840b442ac8adb882b8978e
       X-Xss-Protection:
       - 1; mode=block
     status:
@@ -252,20 +252,20 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
-    uri: https://cloud.tenable.com/exclusions/822
+    uri: https://cloud.tenable.com/exclusions/843
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3VQsU7EMAz9FeS5gSSXNr2uqAMDsBxz5SauiGhTSHMgcbp/x0HHgiCWYivP773Y
-        J9jcM/njTNCdgKLPYeEStNQ7IY1Q6kqpTtadVFAxjuNMHrqcjlRBSszbCnFK9Masx4f+cHffc2eI
-        mdI7ztCpcwVF9HONRbjP7ubpcMstW8aU/7CTFzvmRcofa3oZAluCvBxR8q/rB2PZGbc8LKsPU3CY
-        wxoHj5mdVdMqLa2pdQUu0X/QQstIiYcCpe215CiDe9pcCq9FjhF+iPi9prZp9lYiipomKYwjI9B6
-        K4zaY7PzODpXl23w/1utz1+uQA/EbgEAAA==
+        H4sIAAAAAAAAA3WQT0/EIBDFv4qZc9EOpbu0V9ODB/Wynhv+TCOxpUpZTdzsd3cw68UoJEB4834P
+        5gSbeyZ/nAn6E1D0OSx8BFnLRtRKIF6h7FvdqwYq1o2dyUOf05EqSIl9WzFOid7Y9fgwHO7uB64M
+        MVN6NzP0eK6gQD/XWMBDdjdPh1su2bJJ+Y84vMSxL1L+WNPLGDgS6ssQZf+1/GiMnc2Wx2X1YQrO
+        5LDG0ZvMybjTKFHJvarAJfpPWmixlPhTgHJ/XfNEhnraXAqvBccKX0Tz3SZUrUXyjdg12gnlSAvd
+        tVq0k/etpc501pZu8Pu1as5fcIYN/W4BAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b6267773a62032e-AMD
+      - 7b630e010bf90337-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -275,7 +275,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 10:04:13 GMT
+      - Tue, 11 Apr 2023 11:57:55 GMT
       Expect-CT:
       - enforce, max-age=86400
       Expires:
@@ -298,20 +298,20 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-jr4vk
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-lkjf7
       X-Request-Uuid:
-      - 2ff19394e950a76f4efe1552428dee93
+      - 5138dda4432a98c72f5654c4f1e370db
       X-Xss-Protection:
       - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: '{"schedule": {"endtime": "2023-04-11 11:05:01", "enabled": true, "rrules":
+    body: '{"schedule": {"endtime": "2023-04-11 12:58:43", "enabled": true, "rrules":
       {"freq": "ONETIME", "interval": 1}, "timezone": "Etc/UTC", "starttime": "2023-04-11
-      10:05:01"}, "network_id": "2064683f-8bcf-4a3a-8344-3bf95b233275", "last_modification_date":
-      1681207452, "creation_date": 1681207452, "members": "127.0.0.1", "description":
-      "", "name": "9eff8ac2-cc70-4b57-b170-56b2a67c5e38", "id": 822}'
+      11:58:43"}, "network_id": "af62926c-9031-4f32-a7d4-5d5870db4e3c", "last_modification_date":
+      1681214274, "creation_date": 1681214274, "members": "127.0.0.1", "description":
+      "", "name": "08ebef59-241a-4b2b-98c8-7e503a913dd7", "id": 843}'
     headers:
       Accept:
       - '*/*'
@@ -331,20 +331,20 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: PUT
-    uri: https://cloud.tenable.com/exclusions/822
+    uri: https://cloud.tenable.com/exclusions/843
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA21QO0/EMAz+KyhzA3k2ua6oAwOwHHOVpI4uok0hzYHE6f47DmI8ebH8+XvYF7KH
-        E8znBchwIZDnmlZsiWBCUqYo53ecD0wPjJMOcecXmMlQyxk6Ugry9kaMBT6R9foyHp+eR9xMuUL5
-        cgsZ+LUjTfRny014rOHh7fiIK3t1pd6wY/92yMtQv7fyPiW0xEi96q2M1PoQqXLSUSuVotLHg/ZC
-        SmE0yi5ur9O6zSmm4Gra8jS7is68t1wwo7TqSChwExIdWWH1UPAowoW5Z1jt8Bn2UNJHk0MEB9n9
-        vekAMVoXBA3BMKq8NtRz7HTvhetN0CBt+wbmt0JcfwFgCsCKbgEAAA==
+        H4sIAAAAAAAAA22QMU/EMAyF/wry3ECcpNe0K+rAACzHXKWJq4toU0hzIHG6/46LGE9eIj+/7zm+
+        wOZPFM4zQXcBSqHEhZ+gpNJCGoF4h6qrbWc0VKy7caYAXclnqiBn9m27ccr0ya7Xl/749NzzZEyF
+        8pebocNrBTv0Z007uC/+4e34yCNbcbnciMP/OPYlKt9rfh8iR4KbDqpVBy9aqVGYSSvhmmBEHWrb
+        yDAa0p6xs9vKsKwhTtG7Etc0BFc4GQ8WFRrV1BX4TDclU8FCy0iZPwWomnvJhQwNtPkcP3YcK9xI
+        7u9M0tJIU90KZdAJM6pRtNZb0VAttWtRh9Ds1+D9rdHXX6X5YSpuAQAA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b626779cbc3032e-AMD
+      - 7b630e037ca30337-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -354,7 +354,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 10:04:14 GMT
+      - Tue, 11 Apr 2023 11:57:55 GMT
       Expect-CT:
       - enforce, max-age=86400
       Expires:
@@ -377,9 +377,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-jr4vk
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-lkjf7
       X-Request-Uuid:
-      - de1e622e4f18dfd9fc97e8463fcb42e6
+      - 8cf77ba379d520065bdc45b3e85ba69b
       X-Xss-Protection:
       - 1; mode=block
     status:
@@ -404,7 +404,7 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: DELETE
-    uri: https://cloud.tenable.com/exclusions/822
+    uri: https://cloud.tenable.com/exclusions/843
   response:
     body:
       string: ''
@@ -412,7 +412,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b62678129d0032f-AMD
+      - 7b630e074e7b032a-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -422,7 +422,7 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 11 Apr 2023 10:04:15 GMT
+      - Tue, 11 Apr 2023 11:57:56 GMT
       Expect-CT:
       - enforce, max-age=86400
       Expires:
@@ -442,9 +442,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-d9tlt
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-mbf6q
       X-Request-Uuid:
-      - ae1c7ff41bbae1b76f3d287aa3084391
+      - 5057ec707a8e2ee623927493281fe7b0
       X-Xss-Protection:
       - 1; mode=block
     status:

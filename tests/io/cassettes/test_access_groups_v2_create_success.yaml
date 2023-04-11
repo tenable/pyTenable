@@ -1,7 +1,7 @@
 interactions:
 - request:
     body: '{"rules": [{"operator": "eq", "terms": ["192.168.0.0/24"], "type": "ipv4"}],
-      "principals": [], "name": "cc58e1a5-14c1-483e-834c-2cac6f1fc49b", "all_users":
+      "principals": [], "name": "53f35273-fd05-46f9-a0fc-acd0b9fdf258", "all_users":
       false, "access_group_type": "MANAGE_ASSETS"}'
     headers:
       Accept:
@@ -24,19 +24,19 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6VSy4rcMBD8laDzyJFsWbZ8ignDsodMQjzJIWExcrs9CPyKLC8sy/572sM4bHJJ
-        IDpIiK6qLnXpmcE0ButG9PW6upYVzCQy1wgpt7luuTJGcaN1xqUBA9i2TZI37MDAow3Y1jYQJxZx
-        woXiUp6FKdK0iHWksvgb4da5/SfctbftRK7SrOWiSRquZBNzkxnaoFW60W2m04w0RzsgoQHSHKVN
-        uVQgucoT5HmigMdgQXeyA2U2p7bva7ssGBZWdLZf8MAe0S9uGlkhD2wJNqxUYp8+f3x/rKr70x2R
-        Ju8ujgDsVJ7vvx43GQBclvrip3Wuw9O8OfhQnsq7Y11W1fFcEcavPZLU92d2A7j5UW1qM3obJk8U
-        /EH3gH7YcEyaOJI6j0Qk3saKPbw8HNjs3QhuJqevlbZXrAv5JvovRH2dmrgtvp1/bHvtN9ZtfmXf
-        v/myS5Ijt2xD2bpefewJN0/719AGBAoruU4AaeASuclVwzPMdK5F14FOqdEe+f8QbxYHF2zvatsO
-        bnwXcLRNjxFMA3V5Ze/v4NlPW3puvNQUBeAYalKZewwUo3j5CZhq2E0HAwAA
+        H4sIAAAAAAAAA6WSzYrbMBSFX6VoHaX6s2xlVVPCMIumpUm7aBmELF8FgWO7sjwwDPPuvQ5xmXbT
+        Qr2wMfrOucf3+Jn4oc8u9pDsPMeW7IiRvNLgC+oq3VJljKJG65Jy442Htm1k1ZAN8Qlchta6jBrB
+        hKRMUc5PXOxUsRPFVjH9Dbl5bP+Ju86WTBjwpafaB00VKxxtjKhoKbh0qpQylICevbsA0oUMshCl
+        pKFlBVU6GOpY8NT5ljUmtEEUFdKu66ybJsgT2QXXTbAhj5CmOPRkxzdkyi7PeEQ+ff74fn883h/u
+        UDSkeI4IkEN9uv+6X2y8h2my5zTMo81P45LgQ32o7/a2Ph73pyMyae4Arb4/kxsQx0e1uI2QXB4S
+        SuAHvmdIl4Uj3Igt19WWbdlbocjDy8OGjCn2Po6Y9LXT8hXzhLlR/ouw162x20WX5x+39ew31W1/
+        dde9+bJaYqI4LUtZpl5zrA03T+uvoY1nwBynWnqgquJATaUaWkKpK81C8LrAQWvl/yO8RbzE7Lpo
+        XXuJ/bsMvWs62PrhglNexfs7PKZhaS/2Z4tVeOizRZexg4w1spefBEz9eAcDAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b625a960dc90332-AMD
+      - 7b635394cc500332-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -46,7 +46,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 09:55:26 GMT
+      - Tue, 11 Apr 2023 12:45:25 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -68,9 +68,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-ap-south-1-prod-69479dd7b-g699b
+      - service-nginx-router-ap-south-1-prod-6769c7d875-t64hw
       X-Request-Uuid:
-      - b54a4773d3841aa422102d7b1b47ee1f
+      - ed5ecda9ab7430b4f6a0a838dc2239f1
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -78,7 +78,7 @@ interactions:
       message: OK
 - request:
     body: '{"rules": [{"operator": "eq", "terms": ["192.168.0.0/24"], "type": "ipv4"}],
-      "principals": [], "name": "56c7d6a6-babf-44e9-8cc6-48f56470e6c8", "all_users":
+      "principals": [], "name": "0d71855c-a755-42c2-9d54-759944905e19", "all_users":
       false, "access_group_type": "MANAGE_ASSETS"}'
     headers:
       Accept:
@@ -101,19 +101,19 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6WSX4vUMBTFv4rkeVKTNk2TPllkWPbBUezog7KENL0dAv1nmi4sy353b4eprL4o
-        2IeUkN859+TePBM3jdH6EYJZV9+SkuiMKwkup1bJlgqtBdVSFpRrpx20bZOphhyIC2AjtMZG1KQs
-        zSgTlPMz02Wel2mRaJ1+Q26d23/irrV5Y0WWuowKmeOSN5I2TGrqWKYUT6VNJUPP0Q6AdC5d0UqL
-        jG06KgRoqpyTVKgul6JgIJ1C2va9scsCcSFlZ/sFDuQRwuKnkZT8QJZo44pH5NPnj++PdX1/ukPR
-        FPzFI0BO1fn+63GzcQ6WxVzCtM4mPs1bgg/Vqbo7mqquj+cambD2gFbfn8kN8POj2NxmCDZOASXw
-        A/cRwrBxhOs04VIlLGFvU0EeXh4OZA5+dH7GpK+dtlusC+ZG+S/CXLvGbh/d/n8s+9lvqlv/qr5/
-        82W3xER+2ZqyVb3m2CfcPO1PQ2rHgFlOZeYA28yBaiUaWkAhlWRd52SOhfaR/4/wFnHw0fbe2Hbw
-        47sIo216SNw0YJVX8f4Oz2HapufHi8FROBijQZe5h4hjZC8/AX4IMuoHAwAA
+        H4sIAAAAAAAAA6WSX4ucMBTFv0rJ88QmmkTjU6UMyz50Wuq0Dy2LxOQ6BPzXGBeWZb97r8NYtn1p
+        oT4okt8593iPz8ROYzR+hNCsq3ekJDrjhQIrqSmUo0JrQbVSOeXaagvOtVnRkgOxAUwE15iImpSl
+        GWWCcn7maSlkmapEZsU35NbZ/RN3nd3yLIdMdVS6vKUi1Zq2ubK0AzBC8My4rkDP0QyANHM5L6S0
+        1ORSIm1Tqp0UNJcYWmgmgWukTd83ZlkgLqTsTL/AgTxCWPw0kpIfyBJNXPGIfPr88f2xru9Pdyia
+        gr94BMipOt9/PW421sKyNJcwrXMTn+YtwYfqVN0dm6quj+cambD2gFbfn8kN8POj2NxmCCZOASXw
+        A98jhGHjCNdpwlWRsIS9TQV5eHk4kDn40foZk7522r5iXTA3yn8RzXVr7HbR7fnHbT/7TXXbX9X3
+        b77slpjIL9tStqnXHHvD7dP+ayhtGTDDqcosUFFwoLoQLc0hV4ViXWeVxEF75f8jvEUcfDS9b4wb
+        /PguwmjaHhI7DTjlVby/w3OYtvb8eGmwCgtjbNBl7iFijezlJ/IZKhAHAwAA
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b625a9f69b90336-AMD
+      - 7b63539eddfb0336-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -123,7 +123,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 09:55:28 GMT
+      - Tue, 11 Apr 2023 12:45:26 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -145,9 +145,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-ap-south-1-prod-69479dd7b-ct8k2
+      - service-nginx-router-ap-south-1-prod-6769c7d875-75cgf
       X-Request-Uuid:
-      - f59a3bade0e1e9ba7440863e0cb4dea5
+      - eb547f616110a16c78f48359631268b4
       X-XSS-Protection:
       - 1; mode=block
     status:
@@ -155,7 +155,84 @@ interactions:
       message: OK
 - request:
     body: '{"rules": [{"operator": "eq", "terms": ["192.168.0.0/24"], "type": "ipv4"}],
-      "principals": [], "name": "bb578d3f-5715-44d1-990a-34ef82cdc9db", "all_users":
+      "principals": [], "name": "f7291875-5655-427d-bdbe-65cbcf68538c", "all_users":
+      false, "access_group_type": "MANAGE_ASSETS"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '200'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: POST
+    uri: https://cloud.tenable.com/v2/access-groups
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6WSzYrbMBSFX6VoHbmSIslSVg0lDLNoWpq0i5bByNJ1EPivsjwwDPPuvQ5xmXbT
+        Qr2wMfrOucf3+Jn4oc8u9pCqeY6B7IjdcqPBK+qMDlRaK6nVuqTceushhHprarIhPoHLECqXUSOY
+        2FImKednLnZS7YQptGXfkJvH8E/cdXbwjCkhGhrK4KlUIKg1ilFjhFRWOdUoiZ696wDpphSWm1JR
+        pZWiUpSB1qEGqpWvfaON2hqPtGvbyk0T5InsGtdOsCGPkKY49GTHN2TKLs94RD59/vj+cDrdH+9Q
+        NKR4iQiQ4/58//Ww2HgP01Rd0jCPVX4alwQf9sf93aHan06H8wmZNLeAVt+fyQ2I4+MSeBghuTwk
+        lMAPfM+QuoUj3IqCa1Owgr0Vkjy8PGzImGLv44hJXzstXzFPmBvlv4jqujV2u+jy/OO2nv2muu1v
+        37ZvvqyWmChOy1KWqdcca8P10/praOsZMMep3nqg0nDAemRNSyi10axpvFY4aK38f4S3iF3Mro2V
+        C13s32XoXd1C4YcOp7yK93d4TMPSXuwvFVbhoc8VuowtZKyRvfwEI8C4IQcDAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b6353a8ffde032f-AMD
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 11 Apr 2023 12:45:29 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-south-1-prod-6769c7d875-t64hw
+      X-Request-Uuid:
+      - b09f85e7660542e398737ccb34e61c47
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"rules": [{"operator": "eq", "terms": ["192.168.0.0/24"], "type": "ipv4"}],
+      "principals": [], "name": "72e7db7f-f19e-43d2-8d54-ee89838fdfbf", "all_users":
       false, "access_group_type": "MANAGE_ASSETS"}'
     headers:
       Accept:
@@ -179,18 +256,18 @@ interactions:
     body:
       string: !!binary |
         H4sIAAAAAAAAA6WSX4ucMBTFv0rJ88QmGmPiU6UMyz50Wuq0Dy2LxOQ6BPzXGBeWZb97r8NYtn1p
-        oT4okt8593iPz8ROYzR+hNCsq3ekJDrjSoLNqVHSUaG1oFrKgnJttQXn2ky15EBsABPBNSaiJmVp
-        RpmgnJ+ZLvO8THVSKPUNuXV2/8RdZ3NleNaily5YQYXJJG0ll1S1lnWKMQNao+doBkC6bfNCuayj
-        ecFzKoTjVGtmaCagU6l1Vrstqen7xiwLxIWUnekXOJBHCIufRlLyA1miiSsekU+fP74/1vX96Q5F
-        U/AXjwA5Vef7r8fNxlpYluYSpnVu4tO8JfhQnaq7Y1PV9fFcIxPWHtDq+zO5AX5+FJvbDMHEKaAE
-        fuB7hDBsHOE6TbhUCUvY21SQh5eHA5mDH62fMelrp+0r1gVzo/wX0Vy3xm4X3Z5/3Paz31S3/VV9
-        /+bLbomJ/LItZZt6zbE33D7tv4bUlgEznMrMAhWKA9VKtLSAQirJus7KHAftlf+P8BZx8NH0vjFu
-        8OO7CKNpe0jsNOCUV/H+Ds9h2trz46XBKiyMsUGXuYeINbKXn68Sq9EHAwAA
+        oT5ENL977sk9eSZ2GqPxI4RmXb0jJdEZVxJsTo2SjgqtBdVSFpRrqy0412aqJQdiA5gIrjERa1KW
+        ZpQJyvmZp6XIyyxNsjT7htw6u3/irr0BrC2UZFTYwlBhtKKqk5ymAgQzOQP8hZqjGQDpIoXCtUVH
+        O66BisylVLlcUAClVaY617Ud0qbvG7MsEBdSdqZf4EAeISx+GknJD2SJJq64RT59/vj+WNf3pzss
+        moK/eATIqTrffz1uMtbCsjSXMK1zE5/mzcGH6lTdHZuqro/nGpmw9oBS35/JDfDzo9jUZggmTmE7
+        4g/8jhCGjSNcpwmXKmEJe5sK8vDycCBz8KP1Mzp9rbSdYl3QN5b/Iprr1Njtodv7j2Xf+63qNr+q
+        79982SXRkV+2oWxdrz72hNun/WpIbRkww6nMLA5ccaBaiZYWUEhMreuszLHRHvn/FN4sDj6a3jfG
+        DX58F2E0bQ+JnQbs8sre3+E5TFt6frw0GIWFMTaoMvcQMUb28hNWbzQsBwMAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b625aad0f520336-AMD
+      - 7b6353c0ab740336-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -200,7 +277,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 09:55:29 GMT
+      - Tue, 11 Apr 2023 12:45:32 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -222,86 +299,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-ap-south-1-prod-69479dd7b-vl587
+      - service-nginx-router-ap-south-1-prod-6769c7d875-7kd9s
       X-Request-Uuid:
-      - 707a894ed9ab6ec7046a2b81b3664775
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"rules": [{"operator": "eq", "terms": ["192.168.0.0/24"], "type": "ipv4"}],
-      "principals": [], "name": "58097c03-9e69-4e3b-97e8-079508413201", "all_users":
-      false, "access_group_type": "MANAGE_ASSETS"}'
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '200'
-      Content-Type:
-      - application/json
-      User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
-        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
-      X-APIKeys:
-      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
-    method: POST
-    uri: https://cloud.tenable.com/v2/access-groups
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA6WST4vbMBDFv0rROUolS9YfnxpKWPbQtNRpDy2LkOVJEDi2K8sLy7LfveMQl20v
-        LdQHGaHfe/M0o2cShj772ENy8xxbUhEruFEQSuqNaqm0VlKrlKbcBhugbRthGrIhIYHP0DqfUVOw
-        QlAmKedHZquyrITYCq2/ITeP7T9x19penIw2WlAp1LIIQe3JlFQ2wVhmoZC6Rc/eXwDp0jCrA0MG
-        lKUSREOtBkOZtiUzkouCcaR91zk/TZAnUp18N8GGPEKa4tCTim/IlH2e8Yh8+vzx/b6u7w93KBpS
-        PEcEyGF3vP+6X2xCgGly5zTMo8tP45Lgw+6wu9u7XV3vjzUyae4Arb4/kxsQx0e5uI2QfB4SSuAH
-        7jOky8IRbostV2bLtuxtIcnDy8OGjCn2IY6Y9LXTcot5wtwo/0W4a9fY7aPL/49lPftNdevfruve
-        fFktMVGclqYsVa851gk3T+vTUDYwYJ5TJQJQaThQa2RDNWhlFDudgiqx0Dry/xHeIl5i9l10vr3E
-        /l2G3jcdbMNwwSqv4v0dHtOwTC/2Z4ejCNBnhy5jBxnHyF5+Ai7AI2kHAwAA
-    headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-RAY:
-      - 7b625ac12c660333-AMD
-      Cache-Control:
-      - no-store
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Tue, 11 Apr 2023 09:55:33 GMT
-      Expect-CT:
-      - enforce, max-age=86400
-      Pragma:
-      - no-cache
-      Server:
-      - cloudflare
-      Set-Cookie:
-      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
-      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubDomains
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - Accept-Encoding
-      - origin
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Gateway-Site-ID:
-      - service-nginx-router-ap-south-1-prod-69479dd7b-gj59b
-      X-Request-Uuid:
-      - c6ff986fa701af5c65103955c7cc46f5
+      - 26db0aa3677984c5b805e6bc2358a8d3
       X-XSS-Protection:
       - 1; mode=block
     status:

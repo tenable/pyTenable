@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: null
+    body: '{"chunk_size": 1000, "filters": {}}'
     headers:
       Accept:
       - '*/*'
@@ -8,6 +8,78 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Content-Length:
+      - '35'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: POST
+    uri: https://cloud.tenable.com/assets/export
+  response:
+    body:
+      string: '{"status":429,"message":"Duplicate export not allowed. Please modify
+        request or wait until existing export is complete (job_uuid=61fb5fc5-038d-4bb4-9670-86b001ce9f31
+        container_uuid=93186ec5-a86d-4994-9667-19c9ceddb38b createdAt=2023-04-11T12:12:03.556Z)"}'
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b6322bbde18032a-AMD
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '255'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 11 Apr 2023 12:12:04 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Retry-After:
+      - '40'
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-south-1-prod-6769c7d875-vmzhc
+      X-Request-Uuid:
+      - 6228be50efd76a0e302fd888a393cac5
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 429
+      message: Too Many Requests
+- request:
+    body: '{"chunk_size": 1000, "filters": {}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '35'
+      Content-Type:
+      - application/json
       Cookie:
       - nginx-cloud-site-id=us-2b
       User-Agent:
@@ -15,22 +87,20 @@ interactions:
         (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
-    method: GET
-    uri: https://cloud.tenable.com/credentials/41bf7fe1-ab87-4799-9960-c1b5b37ed70e
+      X-Tio-Retry-Count:
+      - '1'
+    method: POST
+    uri: https://cloud.tenable.com/assets/export
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA11QwWrDMAz9laHjSEbKMjfNaTAGPe3S4xjGddTEEMfGVtqVkH+fnGYbm256etJ7
-        TxMMyiLU8PqprO/x7iVgAxk0GHUwnowbeMiAVoStC1eoJzANY3sXifF1fenmDOjq+dpKORz2v4zU
-        MEE1snMa6pPqI2YwRgzSY7AmRtaKUIsyg4hEZmi5mxbGKhKcS5JqpE5apM4lH17FeHEhmdZjJGfl
-        NyJ9cNbTzT/2eOYIjJmz6bHFKC+GOh6+OepYjPd/TtVwv1ay/Mfe+wRtUAMhynFcHiF2usBCbXLx
-        qDEvqw3mu6o85lvcikoUp5MWT3z89pklTpL6H3mNaA2p3kjVWDM8Ew7q2OODdhbmj/kLgiZVIKwB
-        AAA=
+        H4sIAAAAAAAAA6pWSq0oyC8qiS8tzUxRslIySbU0NbOwSNVNTUmz1DUxMEnUTTRMTdRNSzYxSLZI
+        SUwxSjNTqgUAAAD//wMAmGkWSDYAAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b637bc11c290330-AMD
+      - 7b6323b8cdf8032a-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -40,7 +110,7 @@ interactions:
       Content-Type:
       - application/json;charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 13:12:50 GMT
+      - Tue, 11 Apr 2023 12:12:44 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -54,76 +124,6 @@ interactions:
       Transfer-Encoding:
       - chunked
       Vary:
-      - Accept-Encoding
-      - origin
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-7d54c5fb89-4gl9k
-      X-Request-Uuid:
-      - 8a087e244b87ec658b96b27292da47df
-      X-Xss-Protection:
-      - 1; mode=block
-    status:
-      code: 200
-      message: OK
-- request:
-    body: '{"name": "updated cred", "description": "", "ad_hoc": false, "permissions":
-      [{"grantee_uuid": "00000000-0000-0000-0000-000000000000", "type": "user", "permissions":
-      64, "name": "test_admin@pytenable.io"}], "settings": {"username": "root", "auth_method":
-      "password", "custom_password_prompt": "", "elevate_privileges_with": "Nothing",
-      "password": "********"}}'
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '358'
-      Content-Type:
-      - application/json
-      Cookie:
-      - nginx-cloud-site-id=us-2b
-      User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
-        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
-      X-APIKeys:
-      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
-    method: PUT
-    uri: https://cloud.tenable.com/credentials/41bf7fe1-ab87-4799-9960-c1b5b37ed70e
-  response:
-    body:
-      string: '{"updated":true}'
-    headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-RAY:
-      - 7b637bc4ad730330-AMD
-      Cache-Control:
-      - no-store
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '16'
-      Content-Type:
-      - application/json;charset=utf-8
-      Date:
-      - Tue, 11 Apr 2023 13:12:51 GMT
-      Expect-CT:
-      - enforce, max-age=86400
-      Pragma:
-      - no-cache
-      Server:
-      - cloudflare
-      Set-Cookie:
-      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubDomains
-      Vary:
       - origin
       X-Content-Type-Options:
       - nosniff
@@ -132,7 +132,7 @@ interactions:
       X-Gateway-Site-ID:
       - service-nginx-router-us-east-1-prod-7d54c5fb89-9hwwd
       X-Request-Uuid:
-      - a28a81ba9897deb7d642d0a2731fdfce
+      - b8ccdd79cd91fbb307bb9e933ed662f2
       X-Xss-Protection:
       - 1; mode=block
     status:

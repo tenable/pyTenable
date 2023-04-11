@@ -117,7 +117,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b62662c8bcf0336-AMD
+      - 7b630de32dc3032f-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -127,7 +127,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 10:03:20 GMT
+      - Tue, 11 Apr 2023 11:57:51 GMT
       Expect-CT:
       - enforce, max-age=86400
       Expires:
@@ -149,19 +149,19 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-jr4vk
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-lkjf7
       X-Request-Uuid:
-      - f73608798f9a4450846160cd04ccfc56
+      - e81f7de0542a01cd1dccc51c10465468
       X-Xss-Protection:
       - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: '{"name": "31e22407-4d11-4528-bb0d-87f24330fbe7", "members": "127.0.0.1",
-      "description": "", "network_id": "0e854e6c-bdf3-448f-bffd-c92afc32e188", "schedule":
-      {"enabled": true, "starttime": "2023-04-11 10:04:10", "endtime": "2023-04-11
-      11:04:10", "timezone": "Etc/UTC", "rrules": {"freq": "YEARLY", "interval": 1}}}'
+    body: '{"name": "8bcbdabb-5a66-4015-a90b-83e65b9ae1a5", "members": "127.0.0.1",
+      "description": "", "network_id": "af62926c-9031-4f32-a7d4-5d5870db4e3c", "schedule":
+      {"enabled": true, "starttime": "2023-04-11 11:58:40", "endtime": "2023-04-11
+      12:58:40", "timezone": "Etc/UTC", "rrules": {"freq": "YEARLY", "interval": 1}}}'
     headers:
       Accept:
       - '*/*'
@@ -185,16 +185,16 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3WQP0/EMAzFvwrK3ICd5K6hG0K3MSEYbqryxxERbQppDiRO991xESPIS+Tn93uO
-        z2INLxRPE4nhLKjElmd+CgVKSzAS8QpxADMgiI515yeKYmj1RJ2olX3rZkyV3tl1PNw9Phx5MJdG
-        9cNNYsBLJzbm11I27qGFm+enex5Zm6vtjzT4TWNfofa51Ncxc6IAsjtD+yB9TFoaY5P0KUUZbpVL
-        QStCaxk7ubWN8xJzysG1vJQxusbJuLeooDeAnQiV/pNmmj1V/pNA1V8DFzI00hpqfttwrHCjuJ8r
-        aSSlDPTSRERpdspK7yFK2ydltIbkqd+uwftbgMs3SUt1/W0BAAA=
+        H4sIAAAAAAAAA3WQu04EMQxFfwWlnkCcSTKPDqHtqBAUW42cxKONmAdksiCx2n/HgyhBbiJf33Md
+        X8QWThTPE4n+ImiJJc38FFrpWiojAW5A97btjRIV6+gniqIv+UyVyJl9224cM72z63i4f3o88mBa
+        CuUPnEQP10rszK912bmHEu5enh94ZCuYyx9p8JvGvoXK55pfh8SJAkenO+2C7FQN0oy1lthEI220
+        baOiN1QHxk64lWFeYxpTwJLWZYhYOBlcCxqMbqASIdN/0kyzp8x/EqCbW8UFDI20hZzedhwr3Fjw
+        50qtDz6i99Kic9IosBI75WVbk7O+QwK0+zV4/9bo6zfJl3gKbQEAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b62662f0d440336-AMD
+      - 7b630decb97a032f-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -204,7 +204,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 10:03:21 GMT
+      - Tue, 11 Apr 2023 11:57:51 GMT
       Expect-CT:
       - enforce, max-age=86400
       Expires:
@@ -227,9 +227,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-d9tlt
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-9hwwd
       X-Request-Uuid:
-      - 9a4db2f6245b3c57a7f2c36e263c3aa5
+      - b2846e5fd3646fe1454c561229ec83c3
       X-Xss-Protection:
       - 1; mode=block
     status:
@@ -252,20 +252,20 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
-    uri: https://cloud.tenable.com/exclusions/800
+    uri: https://cloud.tenable.com/exclusions/842
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3WQP0/EMAzFvwrK3ICd5K6hG0K3MSEYbqryxxERbQppDiRO991xESPIS+Tn93uO
-        z2INLxRPE4nhLKjElmd+CgVKSzAS8QpxADMgiI515yeKYmj1RJ2olX3rZkyV3tl1PNw9Phx5MJdG
-        9cNNYsBLJzbm11I27qGFm+enex5Zm6vtjzT4TWNfofa51Ncxc6IAsjtD+yB9TFoaY5P0KUUZbpVL
-        QStCaxk7ubWN8xJzysG1vJQxusbJuLeooDeAnQiV/pNmmj1V/pNA1V8DFzI00hpqfttwrHCjuJ8r
-        aSSlDPTSRERpdspK7yFK2ydltIbkqd+uwftbgMs3SUt1/W0BAAA=
+        H4sIAAAAAAAAA3WQu04EMQxFfwWlnkCcSTKPDqHtqBAUW42cxKONmAdksiCx2n/HgyhBbiJf33Md
+        X8QWThTPE4n+ImiJJc38FFrpWiojAW5A97btjRIV6+gniqIv+UyVyJl9224cM72z63i4f3o88mBa
+        CuUPnEQP10rszK912bmHEu5enh94ZCuYyx9p8JvGvoXK55pfh8SJAkenO+2C7FQN0oy1lthEI220
+        baOiN1QHxk64lWFeYxpTwJLWZYhYOBlcCxqMbqASIdN/0kyzp8x/EqCbW8UFDI20hZzedhwr3Fjw
+        50qtDz6i99Kic9IosBI75WVbk7O+QwK0+zV4/9bo6zfJl3gKbQEAAA==
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b6266320ef70336-AMD
+      - 7b630df00b17032f-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -275,7 +275,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 10:03:21 GMT
+      - Tue, 11 Apr 2023 11:57:52 GMT
       Expect-CT:
       - enforce, max-age=86400
       Expires:
@@ -298,9 +298,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-d9tlt
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-mbf6q
       X-Request-Uuid:
-      - a6f943f639c1be888fec9b221ee797fa
+      - be17e5a65f824c82428a26ce9ab07905
       X-Xss-Protection:
       - 1; mode=block
     status:
@@ -325,7 +325,7 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: DELETE
-    uri: https://cloud.tenable.com/exclusions/800
+    uri: https://cloud.tenable.com/exclusions/842
   response:
     body:
       string: ''
@@ -333,7 +333,7 @@ interactions:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b62663448670336-AMD
+      - 7b630df3fce6032f-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -343,7 +343,7 @@ interactions:
       Content-Type:
       - application/octet-stream
       Date:
-      - Tue, 11 Apr 2023 10:03:21 GMT
+      - Tue, 11 Apr 2023 11:57:52 GMT
       Expect-CT:
       - enforce, max-age=86400
       Expires:
@@ -363,9 +363,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-fb448f746-f9klz
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-mbf6q
       X-Request-Uuid:
-      - ecc93fd294b36ec69b373a26e290fbce
+      - 39159c7826b1210c1232af00ca20772b
       X-Xss-Protection:
       - 1; mode=block
     status:

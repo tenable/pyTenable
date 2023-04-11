@@ -1,8 +1,6 @@
 interactions:
 - request:
-    body: '{"rules": [{"operator": "eq", "terms": ["192.168.0.0/24"], "type": "ipv4"}],
-      "principals": [], "name": "9e678e3a-8b34-4302-aa53-c07f451797f0", "all_users":
-      false, "access_group_type": "MANAGE_ASSETS"}'
+    body: '{"chunk_size": 1000, "filters": {}}'
     headers:
       Accept:
       - '*/*'
@@ -11,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '200'
+      - '35'
       Content-Type:
       - application/json
       User-Agent:
@@ -20,23 +18,17 @@ interactions:
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: POST
-    uri: https://cloud.tenable.com/v2/access-groups
+    uri: https://cloud.tenable.com/assets/export
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6WSX4ucMBTFv0rJ88QmGmPiU6UMyz50Wuq0Dy1LiPE6BPzXGBeWZb97r8NYtn1p
-        oT4okt8593iPz8RNY7R+hGDW1bekJDrjSoLLqVWypUJrQbWUBeXaaQdt22SqIQfiAtgIrbERNSlL
-        M8oE5fzM01LIkokkF/wbcuvc/hN3nS1cxzorHU2l7agQOqWWu4IqlzWCCRASLHqOdoAtKchCQWap
-        ajJBRcaQtnlGHSs6kfNCFx1D2va9scsCcSFlZ/sFDuQRwuKnkZT8QJZo44pH5NPnj++PdX1/ukPR
-        FPzFI0BO1fn+63GzcQ6WxVzCtM4mPs1bgg/Vqbo7mqquj+cambD2gFbfn8kN8POj2NxmCDZOASXw
-        A98jhGHjCNdpwqVKWMLepoI8vDwcyBz86PyMSV87bV+xLpgb5b8Ic90au110e/5x289+U932V/X9
-        my+7JSbyy7aUbeo1x95w87T/GlI7BsxyKjMHVCgOVCvR0AIKqSTrOidzHLRX/j/CW8TBR9t7Y9vB
-        j+8ijLbpIXHTgFNexfs7PIdpa8+PF4NVOBijQZe5h4g1spefzADnKQcDAAA=
+        H4sIAAAAAAAAA6pWSq0oyC8qiS8tzUxRslIyMTawMElLMdA1TDI30TUxMk7StUgzNNE1NrBMTTYz
+        SjVMNkxVqgUAAAD//wMAeb3jezYAAAA=
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b63548b79880333-AMD
+      - 7b6321b70bee032f-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -44,9 +36,9 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Type:
-      - application/json; charset=utf-8
+      - application/json;charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 12:46:04 GMT
+      - Tue, 11 Apr 2023 12:11:22 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -61,23 +53,22 @@ interactions:
       Transfer-Encoding:
       - chunked
       Vary:
-      - Accept-Encoding
       - origin
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-ap-south-1-prod-6769c7d875-t64hw
+      - service-nginx-router-ap-south-1-prod-6769c7d875-7kd9s
       X-Request-Uuid:
-      - 65874f58dfafadca794c389a1eba274a
-      X-XSS-Protection:
+      - e11adc9ddb2142b5e21af55d57e9441e
+      X-Xss-Protection:
       - 1; mode=block
     status:
       code: 200
       message: OK
 - request:
-    body: null
+    body: '{"chunk_size": 1000, "filters": {}}'
     headers:
       Accept:
       - '*/*'
@@ -85,6 +76,10 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Content-Length:
+      - '35'
+      Content-Type:
+      - application/json
       Cookie:
       - nginx-cloud-site-id=us-2b
       User-Agent:
@@ -92,24 +87,89 @@ interactions:
         (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
-    method: GET
-    uri: https://cloud.tenable.com/v2/access-groups/4cf0fa6c-26af-4492-a1c7-8c3b404e46ea
+    method: POST
+    uri: https://cloud.tenable.com/assets/export
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA6WSX4ucMBTFv0rJ88QmGmPiU6UMyz50Wuq0Dy1LiPE6BPzXGBeWZb97r8NYtn1p
-        oT4okt8593iPz8RNY7R+hGDW1bekJDrjSoLLqVWypUJrQbWUBeXaaQdt22SqIQfiAtgIrbERNSlL
-        M8oE5fzM01LIkokkF/wbcuvc/hN3nS1cxzorHU2l7agQOqWWu4IqlzWCCRASLHqOdoAtKchCQWap
-        ajJBRcaQtnlGHSs6kfNCFx1D2va9scsCcSFlZ/sFDuQRwuKnkZT8QJZo44pH5NPnj++PdX1/ukPR
-        FPzFI0BO1fn+63GzcQ6WxVzCtM4mPs1bgg/Vqbo7mqquj+cambD2gFbfn8kN8POj2NxmCDZOASXw
-        A98jhGHjCNdpwqVKWMLepoI8vDwcyBz86PyMSV87bV+xLpgb5b8Ic90au110e/5x289+U932V/X9
-        my+7JSbyy7aUbeo1x95w87T/GlI7BsxyKjMHVCgOVCvR0AIKqSTrOidzHLRX/j/CW8TBR9t7Y9vB
-        j+8ijLbpIXHTgFNexfs7PIdpa8+PF4NVOBijQZe5h4g1spefzADnKQcDAAA=
+      string: '{"status":429,"message":"Duplicate export not allowed. Please modify
+        request or wait until existing export is complete (job_uuid=43084fd0-1b74-423b-8f14-309ec62e1c1e
+        container_uuid=93186ec5-a86d-4994-9667-19c9ceddb38b createdAt=2023-04-11T12:11:22.734Z)"}'
     headers:
       CF-Cache-Status:
       - DYNAMIC
       CF-RAY:
-      - 7b6354903b5c0333-AMD
+      - 7b6321bbedaa032f-AMD
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '255'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Tue, 11 Apr 2023 12:11:23 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Retry-After:
+      - '40'
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-9hwwd
+      X-Request-Uuid:
+      - b4e17e286631db2e0d39dda19c58f464
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 429
+      message: Too Many Requests
+- request:
+    body: '{"chunk_size": 1000, "filters": {}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '35'
+      Content-Type:
+      - application/json
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+      X-Tio-Retry-Count:
+      - '1'
+    method: POST
+    uri: https://cloud.tenable.com/assets/export
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA6pWSq0oyC8qiS8tzUxRslIyM0xLMk1LNtU1MLZI0TVJSjLRtTQzN9C1MEsyMDBM
+        TrVMMzZUqgUAAAD//wMA0aH4dDYAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b6322b85d13032f-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -117,9 +177,9 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Type:
-      - application/json; charset=utf-8
+      - application/json;charset=utf-8
       Date:
-      - Tue, 11 Apr 2023 12:46:05 GMT
+      - Tue, 11 Apr 2023 12:12:03 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
@@ -133,80 +193,16 @@ interactions:
       Transfer-Encoding:
       - chunked
       Vary:
-      - Accept-Encoding
       - origin
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-7d54c5fb89-mbf6q
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-lkjf7
       X-Request-Uuid:
-      - 7ce8328f81b1053ee44be3976c5d483c
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 200
-      message: OK
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '0'
-      Cookie:
-      - nginx-cloud-site-id=us-2b
-      User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
-        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
-      X-APIKeys:
-      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
-    method: DELETE
-    uri: https://cloud.tenable.com/v2/access-groups/4cf0fa6c-26af-4492-a1c7-8c3b404e46ea
-  response:
-    body:
-      string: ''
-    headers:
-      CF-Cache-Status:
-      - DYNAMIC
-      CF-RAY:
-      - 7b6354964da50333-AMD
-      Cache-Control:
-      - no-store
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '0'
-      Content-Type:
-      - application/octet-stream
-      Date:
-      - Tue, 11 Apr 2023 12:46:07 GMT
-      Expect-CT:
-      - enforce, max-age=86400
-      Pragma:
-      - no-cache
-      Server:
-      - cloudflare
-      Set-Cookie:
-      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
-      Strict-Transport-Security:
-      - max-age=63072000; includeSubDomains
-      Vary:
-      - origin
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - DENY
-      X-Gateway-Site-ID:
-      - service-nginx-router-us-east-1-prod-7d54c5fb89-4gl9k
-      X-Request-Uuid:
-      - 0e5c552570ce76b5564fc067d4c1d496
-      X-XSS-Protection:
+      - 98b599c889a4c3fde64bed64d125824b
+      X-Xss-Protection:
       - 1; mode=block
     status:
       code: 200
