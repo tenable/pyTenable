@@ -203,16 +203,16 @@ def test_editor_parse_plugins_notfounderror(api):
 
 
 @pytest.mark.vcr()
-def test_editor_parse_plugins_response(api):
+def test_editor_parse_plugins_response(api, policy):
     '''test to parse_plugins method'''
     families = {
-        0: {'count': 11459, 'id': 28, 'name': 'AIX Local Security Checks', 'status': 'mixed'},
-        1: {'count': 360, 'id': 30, 'name': 'Alma Linux Local Security Checks', 'status': 'mixed'},
-        2: {'count': 60, 'id': 27, 'name': 'Policy Compliance', 'status': 'mixed'}
+        0: {'count': 11506, 'id': 28, 'name': 'AIX Local Security Checks', 'status': 'mixed'},
+        1: {'count': 720, 'id': 30, 'name': 'Alma Linux Local Security Checks', 'status': 'mixed'},
+        2: {'count': 70, 'id': 27, 'name': 'Policy Compliance', 'status': 'mixed'}
     }
     endpoint_obj = APIEndpoint(api)
 
     api.editor.parse_plugins(
         endpoint_obj._check(name='etype', obj='policy', expected_type=str, choices=['scan', 'policy']),
         endpoint_obj._check(name='families', obj=families, expected_type=dict),
-        endpoint_obj._check(name='plugin_id', obj=112, expected_type=int))
+        endpoint_obj._check(name='policy_id', obj=policy['policy_id'], expected_type=int))

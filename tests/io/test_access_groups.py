@@ -2,10 +2,13 @@
 test access_groups
 '''
 import uuid
+
 import pytest
+
 from tenable.errors import UnexpectedValueError, APIError
 from tests.checker import check
 from tests.pytenable_log_handler import log_exception
+
 
 @pytest.fixture(name='rules')
 def fixture_rules():
@@ -14,12 +17,14 @@ def fixture_rules():
     '''
     return [('ipv4', 'eq', ['192.168.0.0/24'])]
 
+
 @pytest.fixture(name='agroup')
 def fixture_agroup(request, api, rules):
     '''
     Fixture to create access_group
     '''
     group = api.access_groups.create(str(uuid.uuid4()), rules)
+
     def teardown():
         '''
         cleanup function to delete access_group
@@ -41,6 +46,7 @@ def test_access_group_principal_constructor_type_typeerror(api):
     with pytest.raises(TypeError):
         getattr(api.access_groups, '_principal_constructor')([(1, 'something')])
 
+
 def test_access_group_principal_constructor_type_unexpectedvalueerror(api):
     '''
     test to raise exception when type param value does not match the choices.
@@ -48,12 +54,14 @@ def test_access_group_principal_constructor_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         getattr(api.access_groups, '_principal_constructor')([('something', 'something')])
 
+
 def test_access_group_principal_constructor_id_typeerror(api):
     '''
     test to raise exception when type of id param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         getattr(api.access_groups, '_principal_constructor')([('user', 1)])
+
 
 def test_access_group_principal_constructor_dict_type_typeerror(api):
     '''
@@ -116,6 +124,7 @@ def test_access_group_principal_constructor_tuple_pass(api):
         ('user', user)
     ]) == [{'type': 'user', 'principal_id': user}]
 
+
 def test_access_group_principal_constructor_dict_pass(api):
     '''
     test to parse dict type principals
@@ -128,6 +137,7 @@ def test_access_group_principal_constructor_dict_pass(api):
     assert getattr(api.access_groups, '_principal_constructor')([
         {'type': 'user', 'principal_id': user}
     ]) == [{'type': 'user', 'principal_id': user}]
+
 
 @pytest.mark.vcr()
 def test_access_groups_create_name_typeerror(api, rules):
@@ -153,13 +163,17 @@ def test_access_groups_create_success(agroup):
    test to create access group
    '''
     assert isinstance(agroup, dict)
+    check(agroup, 'container_uuid', 'uuid')
     check(agroup, 'created_at', 'datetime')
     check(agroup, 'updated_at', 'datetime')
     check(agroup, 'id', 'uuid')
     check(agroup, 'name', str)
     check(agroup, 'all_assets', bool)
     check(agroup, 'all_users', bool)
+    check(agroup, 'origin', str)
     check(agroup, 'rules', list)
+    check(agroup, 'status', str)
+    check(agroup, 'version', int)
     for rule in agroup['rules']:
         check(rule, 'type', str)
         check(rule, 'operator', str)
@@ -204,19 +218,23 @@ def test_access_group_edit_id_unexpectedvalueerror(api):
 
 
 @pytest.mark.vcr()
-def test_access_group_edit_success(api, agroup):
+def test_access_group_edit_success(api, agroup, group):
     '''
     test to edit access group
     '''
     group = api.access_groups.edit(agroup['id'], name=str(uuid.uuid4()), principals=[
-        ('group', 'c037612b-9c5c-40a7-afbd-0e776915c9cd')], rules=[('operating_system', 'eq', ['Windows NT'])])
+        ('group', group['uuid'])], rules=[('operating_system', 'eq', ['Windows NT'])])
     assert isinstance(group, dict)
+    check(group, 'container_uuid', 'uuid')
     check(group, 'created_at', 'datetime')
     check(group, 'updated_at', 'datetime')
     check(group, 'id', 'uuid')
     check(group, 'name', str)
     check(group, 'all_assets', bool)
     check(group, 'all_users', bool)
+    check(group, 'version', int)
+    check(group, 'status', str)
+    check(group, 'origin', str)
     check(group, 'rules', list)
     for rule in group['rules']:
         check(rule, 'type', str)
@@ -234,6 +252,7 @@ def test_access_group_edit_success(api, agroup):
     check(group, 'updated_by_name', str)
     check(group, 'processing_percent_complete', int)
 
+
 @pytest.mark.vcr()
 def test_access_groups_details_success(api, agroup):
     '''
@@ -241,12 +260,16 @@ def test_access_groups_details_success(api, agroup):
     '''
     group = api.access_groups.details(agroup['id'])
     assert isinstance(group, dict)
+    check(group, 'container_uuid', 'uuid')
     check(group, 'created_at', 'datetime')
     check(group, 'updated_at', 'datetime')
     check(group, 'id', 'uuid')
     check(group, 'name', str)
     check(group, 'all_assets', bool)
     check(group, 'all_users', bool)
+    check(group, 'version', int)
+    check(group, 'status', str)
+    check(group, 'origin', str)
     check(group, 'rules', list)
     for rule in group['rules']:
         check(rule, 'type', str)
@@ -263,6 +286,7 @@ def test_access_groups_details_success(api, agroup):
     check(group, 'created_by_name', str)
     check(group, 'updated_by_name', str)
     check(group, 'processing_percent_complete', int)
+
 
 @pytest.mark.vcr()
 def test_access_groups_list_offset_typeerror(api):
@@ -374,13 +398,16 @@ def test_access_groups_list(api):
     for group in access_groups:
         count += 1
         assert isinstance(group, dict)
+        check(group, 'container_uuid', 'uuid')
         check(group, 'created_at', 'datetime')
         check(group, 'updated_at', 'datetime')
         check(group, 'id', 'uuid')
         check(group, 'name', str)
         check(group, 'all_assets', bool)
         check(group, 'all_users', bool)
-        #check(group, 'created_by_uuid', 'uuid') # Will not return for default group
+        check(group, 'version', int)
+        check(group, 'origin', str)
+        # check(group, 'created_by_uuid', 'uuid') # Will not return for default group
         if 'updated_by_uuid' in group:
             check(group, 'updated_by_uuid', 'uuid')
         check(group, 'created_by_name', str)
@@ -388,6 +415,7 @@ def test_access_groups_list(api):
         check(group, 'processing_percent_complete', int)
         check(group, 'status', str)
     assert count == access_groups.total
+
 
 @pytest.mark.vcr()
 def test_access_groups_list_fields(api):
@@ -403,12 +431,15 @@ def test_access_groups_list_fields(api):
     for group in access_groups:
         count += 1
         assert isinstance(group, dict)
+        check(group, 'container_uuid', 'uuid')
         check(group, 'created_at', 'datetime')
         check(group, 'updated_at', 'datetime')
         check(group, 'id', 'uuid')
         check(group, 'name', str)
         check(group, 'all_assets', bool)
         check(group, 'all_users', bool)
+        check(group, 'version', int)
+        check(group, 'origin', str)
         # check(i, 'created_by_uuid', 'uuid') # Will not return for default group
         check(group, 'updated_by_uuid', 'uuid')
         check(group, 'created_by_name', str)

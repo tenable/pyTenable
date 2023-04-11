@@ -3,10 +3,12 @@ test assets
 '''
 import time
 import uuid
+
 import pytest
+
 from tenable.errors import UnexpectedValueError, ForbiddenError
 from tests.checker import check, single
-from tests.io.test_networks import fixture_network
+
 
 @pytest.mark.vcr()
 def test_assets_list(api):
@@ -16,21 +18,40 @@ def test_assets_list(api):
     assets = api.assets.list()
     assert isinstance(assets, list)
     resp = assets[0]
+    check(resp, 'acr_score', int)
+    check(resp, 'acr_drivers', list, allow_none=True)
+    for acr_driver in resp['acr_drivers']:
+        check(acr_driver, 'driver_name', str)
+        check(acr_driver, 'driver_value', list)
+    check(resp, 'agent_name', list)
     check(resp, 'aws_ec2_name', list)
+    check(resp, 'exposure_confidence_value', int, allow_none=True)
+    check(resp, 'exposure_score', int, allow_none=True)
     check(resp, 'fqdn', list)
     check(resp, 'has_agent', bool)
+    check(resp, 'hostname', list)
     check(resp, 'id', 'uuid')
     check(resp, 'ipv4', list)
     check(resp, 'ipv6', list)
     check(resp, 'last_seen', 'datetime')
+    check(resp, 'last_scan_target', str)
     check(resp, 'mac_address', list)
     check(resp, 'netbios_name', list)
     check(resp, 'operating_system', list)
+    check(resp, 'scan_frequency', list, allow_none=True)
+    if resp['scan_frequency']:
+        for scan_frequency in resp['scan_frequency']:
+            check(scan_frequency, 'interval', int)
+            check(scan_frequency, 'frequency', int)
+            check(scan_frequency, 'licensed', bool)
+    check(resp, 'security_protection_level', int, allow_none=True)
+    check(resp, 'security_protections', list)
     check(resp, 'sources', list)
     for source in resp['sources']:
+        check(source, 'name', str)
         check(source, 'first_seen', 'datetime')
         check(source, 'last_seen', 'datetime')
-        check(source, 'name', str)
+
 
 @pytest.mark.vcr()
 def test_assets_import_assets_typeerror(api):
@@ -39,6 +60,7 @@ def test_assets_import_assets_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.assets.asset_import('pytest', 1)
+
 
 @pytest.mark.vcr()
 def test_assets_import_source_typeerror(api):
@@ -53,18 +75,20 @@ def test_assets_import_source_typeerror(api):
             'mac_address': []
         })
 
+
 @pytest.mark.vcr()
 def test_assets_import_standard_user_permissionerror(stdapi):
     '''
     test to raise exception when standard user try to import asset.
     '''
     with pytest.raises(ForbiddenError):
-        stdapi.assets.asset_import( 'pytest', {
+        stdapi.assets.asset_import('pytest', {
             'fqdn': ['example.py.test'],
             'ipv4': ['192.168.254.1'],
             'netbios_name': '',
             'mac_address': []
         })
+
 
 @pytest.mark.vcr()
 def test_assets_import(api):
@@ -78,6 +102,7 @@ def test_assets_import(api):
         'mac_address': []
     })
     single(resp, 'uuid')
+
 
 @pytest.mark.vcr()
 def test_assets_import_jobs(api):
@@ -96,8 +121,9 @@ def test_assets_import_jobs(api):
         check(i, 'source', str)
         check(i, 'start_time', int)
         check(i, 'status', str)
-        check(i, 'status_message', str)
+        check(i, 'status_message', str, allow_none=True)
         check(i, 'uploaded_assets', int)
+
 
 @pytest.mark.vcr()
 def test_assets_import_job_info(api):
@@ -120,6 +146,7 @@ def test_assets_import_job_info(api):
         check(job, 'uploaded_assets', int)
         assert job['job_id'] == jobs[0]['job_id']
 
+
 @pytest.mark.vcr()
 def test_assets_tags_uuid_typeerror(api):
     '''
@@ -127,6 +154,7 @@ def test_assets_tags_uuid_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.assets.tags(1)
+
 
 @pytest.mark.vcr()
 def test_assets_tags_uuid_unexpectedvalueerror(api):
@@ -136,6 +164,7 @@ def test_assets_tags_uuid_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.assets.tags('somethign else')
 
+
 @pytest.mark.vcr()
 def test_workbenches_asset_delete_asset_uuid_typeerror(api):
     '''
@@ -143,6 +172,7 @@ def test_workbenches_asset_delete_asset_uuid_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.workbenches.asset_delete(1)
+
 
 @pytest.mark.vcr()
 @pytest.mark.skip('We don\'t want to actually delete an asset')
@@ -153,6 +183,7 @@ def test_workbenches_asset_delete_success(api):
     asset = api.workbenches.assets()[0]
     api.workbenches.asset_delete(asset['id'])
 
+
 @pytest.mark.vcr()
 def test_assign_tags(api):
     '''
@@ -160,6 +191,7 @@ def test_assign_tags(api):
     '''
     with pytest.raises(UnexpectedValueError):
         api.assets.assign_tags('foo', [], [])
+
 
 @pytest.mark.vcr()
 def test_assets_move_assets_source_typeerror(api):
@@ -169,6 +201,7 @@ def test_assets_move_assets_source_typeerror(api):
     with pytest.raises(TypeError):
         api.assets.move_assets(1, str(uuid.uuid4()), ["127.0.0.1"])
 
+
 @pytest.mark.vcr()
 def test_assets_move_assets_source_unexpectedvalueerror(api):
     '''
@@ -176,6 +209,7 @@ def test_assets_move_assets_source_unexpectedvalueerror(api):
     '''
     with pytest.raises(UnexpectedValueError):
         api.assets.move_assets('nope', str(uuid.uuid4()), ["127.0.0.1"])
+
 
 @pytest.mark.vcr()
 def test_assets_move_assets_destination_typeerror(api):
@@ -185,6 +219,7 @@ def test_assets_move_assets_destination_typeerror(api):
     with pytest.raises(TypeError):
         api.assets.move_assets(str(uuid.uuid4()), 1, ["127.0.0.1"])
 
+
 @pytest.mark.vcr()
 def test_assets_move_assets_destination_unexpectedvalueerror(api):
     '''
@@ -193,6 +228,7 @@ def test_assets_move_assets_destination_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.assets.move_assets(str(uuid.uuid4()), 'nope', ["127.0.0.1"])
 
+
 @pytest.mark.vcr()
 def test_assets_move_assets_target_typeerror(api):
     '''
@@ -200,6 +236,7 @@ def test_assets_move_assets_target_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.assets.move_assets(str(uuid.uuid4()), str(uuid.uuid4()), 1)
+
 
 @pytest.mark.vcr()
 @pytest.mark.xfail(raises=AssertionError, reason="asset import job not completed")
@@ -228,7 +265,7 @@ def test_assets_move_assets_success(api, network):
         iterate_count = iterate_count + 1
 
         # break iteration
-        if iterate_count == 5 or (len(asset) == 1 and asset[0] == 'COMPLETE') :
+        if iterate_count == 5 or (len(asset) == 1 and asset[0] == 'COMPLETE'):
             break
 
     # move asset to new network
@@ -242,12 +279,14 @@ def test_assets_move_assets_success(api, network):
     check(resp['response']['data'], 'asset_count', int)
     assert resp['response']['data']['asset_count'] == 1
 
+
 def test_assets_bulk_delete_filter_type_typeerror(api):
     '''
     test to raise exception when type of filter_type param does not match the expected type.
     '''
     with pytest.raises(TypeError):
         api.assets.bulk_delete(filter_type=1)
+
 
 @pytest.mark.vcr()
 def test_assets_bulk_delete_filter_type_unexpectedvalueerror(api):
@@ -257,6 +296,7 @@ def test_assets_bulk_delete_filter_type_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.assets.bulk_delete(filter_type='NOT')
 
+
 @pytest.mark.vcr()
 def test_assets_bulk_delete_bad_filter(api):
     '''
@@ -264,6 +304,7 @@ def test_assets_bulk_delete_bad_filter(api):
     '''
     with pytest.raises(UnexpectedValueError):
         api.assets.bulk_delete(('operating_system', 'contains', 'Linux'))
+
 
 @pytest.mark.vcr()
 @pytest.mark.xfail(raises=AssertionError, reason="asset import job not completed")
@@ -342,13 +383,24 @@ def test_assets_details_success_fields(api):
         check(tag, 'tag_uuid', 'uuid')
         check(tag, 'tag_key', str)
         check(tag, 'tag_value', str)
-        check(tag, 'added_by', 'uuid')
+        # check(tag, 'added_by', 'uuid', allow_none=True)  # it is not always returned in response
         check(tag, 'added_at', 'datetime')
 
     check(resp, 'acr_score', int, allow_none=True)
     check(resp, 'exposure_score', int, allow_none=True)
     check(resp, 'acr_drivers', list, allow_none=True)
+    if resp['acr_drivers']:
+        for acr_driver in resp['acr_drivers']:
+            check(acr_driver, 'driver_name', str)
+            check(acr_driver, 'driver_value', list)
+
     check(resp, 'scan_frequency', list, allow_none=True)
+    if resp['scan_frequency']:
+        for scan_frequency in resp['scan_frequency']:
+            check(scan_frequency, 'interval', int)
+            check(scan_frequency, 'frequency', int)
+            check(scan_frequency, 'licensed', bool)
+
     check(resp, 'interfaces', list)
 
     for interface in resp['interfaces']:
@@ -372,8 +424,13 @@ def test_assets_details_success_fields(api):
     check(resp, 'bios_uuid', list)
     check(resp, 'gcp_zone', list)
     check(resp, 'gcp_project_id', list)
-    check(resp, 'azure_resource_id', list)
+    check(resp, 'gcp_instance_id', list)
     check(resp, 'azure_vm_id', list)
+    check(resp, 'azure_resource_id', list)
+    check(resp, 'azure_subscription_id', list)
+    check(resp, 'azure_resource_group', list)
+    check(resp, 'azure_location', list)
+    check(resp, 'azure_type', list)
     check(resp, 'aws_ec2_name', list)
     check(resp, 'aws_ec2_product_code', list)
     check(resp, 'aws_subnet_id', list)
@@ -385,6 +442,7 @@ def test_assets_details_success_fields(api):
     check(resp, 'aws_owner_id', list)
     check(resp, 'aws_ec2_instance_ami_id', list)
     check(resp, 'aws_ec2_instance_id', list)
+    check(resp, 'aws_vpc_id', list)
     check(resp, 'bigfix_asset_id', list)
     check(resp, 'installed_software', list)
     check(resp, 'servicenow_sysid', list)
@@ -393,6 +451,6 @@ def test_assets_details_success_fields(api):
     check(resp, 'mcafee_epo_agent_guid', list)
     check(resp, 'mcafee_epo_guid', list)
     check(resp, 'ssh_fingerprint', list)
-    check(resp, 'gcp_instance_id', list)
     check(resp, 'security_protections', list)
-    check(resp, 'exposure_confidence_value', float, allow_none=True)
+    check(resp, 'security_protection_level', str, allow_none=True)
+    check(resp, 'exposure_confidence_value', int, allow_none=True)

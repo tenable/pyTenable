@@ -2,7 +2,9 @@
 test server
 '''
 import pytest
+
 from tests.checker import check
+
 
 @pytest.mark.vcr()
 def test_server_properties(api):
@@ -23,9 +25,11 @@ def test_server_properties(api):
         check(resp['capabilities'], 'two_factor', dict)
         check(resp['capabilities']['two_factor'], 'smtp', bool)
         check(resp['capabilities']['two_factor'], 'twilio', bool)
+    check(resp, 'container_db_version', str)
     check(resp, 'evaluation', dict)
     check(resp['evaluation'], 'limitEnabled', bool)
     check(resp['evaluation'], 'targets', int)
+    check(resp, 'enterprise', bool)
     if 'expiration' in resp:
         check(resp, 'expiration', int)
     if 'expiration_time' in resp:
@@ -33,15 +37,19 @@ def test_server_properties(api):
     check(resp, 'force_ui_reload', bool)
     if 'idle_timeout' in resp:
         check(resp, 'idle_timeout', str)
+    check(resp, 'limitEnabled', bool)
     if 'license' in resp:
         check(resp, 'license', dict)
         check(resp['license'], 'agents', int)
         check(resp['license'], 'apps', dict)
+        check(resp['license'], 'enterprise_pause', bool)
         check(resp['license'], 'evaluation', bool)
         check(resp['license'], 'expiration_date', int)
+        check(resp['license'], 'hide_classic_ui', bool)
         check(resp['license'], 'ips', int)
         check(resp['license'], 'scanners', int)
         check(resp['license'], 'users', int)
+        check(resp['license'], 'type', str)
     if 'loaded_plugin_set' in resp:
         check(resp, 'loaded_plugin_set', str)
     if 'login_banner' in resp:
@@ -57,6 +65,13 @@ def test_server_properties(api):
         check(resp, 'plugin_set', str)
     if 'update' in resp:
         check(resp, 'update', dict)
+    check(resp, 'server_build', str)
+    check(resp, 'server_version', str)
+    check(resp, 'scanner_boottime', int)
+    check(resp, 'site_id', str)
+    check(resp, 'region', str)
+    check(resp, 'server_uuid', 'scanner-uuid')
+
 
 @pytest.mark.vcr()
 def test_server_status(api):

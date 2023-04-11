@@ -2,158 +2,314 @@ interactions:
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
-      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
     uri: https://cloud.tenable.com/scanners
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
-      cache-control: [no-cache]
-      connection: [keep-alive]
-      content-encoding: [gzip]
-      content-type: [application/json; charset=utf-8]
-      date: ['Thu, 06 Dec 2018 23:20:34 GMT']
-      server: [tenable.io]
-      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
-          path=/; HttpOnly]
-      strict-transport-security: [max-age=63072000; includeSubDomains]
-      transfer-encoding: [chunked]
-      vary: [accept-encoding]
-      x-content-type-options: [nosniff]
-      x-gateway-site-id: [nginx-router-c-prod-us-east-2]
-      x-request-uuid: [2a0e23f55d8f6ed4fa72c7cb83a39f56]
-    status: {code: 200, message: OK}
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b626dfa895f032b-AMD
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 11 Apr 2023 10:08:40 GMT
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - origin,accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-south-1-prod-69479dd7b-ct8k2
+      X-Request-Uuid:
+      - d9faaca752ce7ff75bc8f4648984d803
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
-    body: !!python/unicode '{"type": "load_balancing", "name": "f847b33d-1fb6-4cf5-8c89-4b2645303fbd"}'
+    body: '{"name": "f42263d8-a7e5-495b-aef6-75524c0b9e78", "type": "load_balancing"}'
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['74']
-      Content-Type: [application/json]
-      Cookie: [nginx-cloud-site-id=us-2b]
-      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
-      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '74'
+      Content-Type:
+      - application/json
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: POST
     uri: https://cloud.tenable.com/scanner-groups
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA3VPSW7EIBD8C2e3xNIY7M+gZouQbDwyWKNRlL+HiTzHHLu2rvpm4UzUy1FdpJ7Y
-        KjSiUBaVnthGrbv9iCWX8J/meNZ0uhIHeh9sZe3VetrZh72uN8+CVHpJJACFVoBSLUCeC1isCZjn
-        QQs1PDFlurbuHuncS2vjbRvh88RaoOrCcdXOVj6xO9UIJC2kgZg9ApKw4KP0QElqqbmYjU4jtb8e
-        oznbDorO00Y1lPo18Er7G88WjVcqgsh+BgxZgw12AfRyRq24yj4O9d9OLs1iPttu/7345xeL8z5q
-        UAEAAA==
+        H4sIAAAAAAAAA3WP22rFIBRE/2U/R/AaTX5GtrotQmIO0VAOpf9eU9LHvg4zw1pfEE/CXo7qE3aC
+        VcxOSG6t5BNs2Lrfj1Ryif91js9Kpy8JVinNbISd4DeCFdq7ddrhCfx13S2IwUrrlGZC55lpyoE5
+        ExKzSzDBEUkR+Ngkynht3b/o3EtrA7DdcBO0iNXH46od1sH4vAYVtdBSMWHHl3YxsyWTYFnh7BxS
+        0qjHa3+/hiNsByYfcMMaS/0YecX9zrOWclbJMbRkmF5MYEiD0hojdeRhIetG+/YQRiku/tye/WP8
+        /QNfl1PCVgEAAA==
     headers:
-      cache-control: [no-cache]
-      connection: [keep-alive]
-      content-encoding: [gzip]
-      content-type: [application/json; charset=utf-8]
-      date: ['Thu, 06 Dec 2018 23:20:35 GMT']
-      server: [tenable.io]
-      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
-          path=/; HttpOnly]
-      strict-transport-security: [max-age=63072000; includeSubDomains]
-      transfer-encoding: [chunked]
-      vary: [accept-encoding]
-      x-content-type-options: [nosniff]
-      x-gateway-site-id: [nginx-router-c-prod-us-east-2]
-      x-request-uuid: [0664a79dce921623808487652a24ca00]
-    status: {code: 200, message: OK}
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b626dfd9b20032b-AMD
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 11 Apr 2023 10:08:41 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-us-east-1-prod-fb448f746-jr4vk
+      X-Request-Uuid:
+      - 680428da761976875033a9e7d07dcbfb
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['0']
-      Cookie: [nginx-cloud-site-id=us-2b]
-      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
-      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: POST
-    uri: https://cloud.tenable.com/scanner-groups/102797/scanners/131712
+    uri: https://cloud.tenable.com/scanner-groups/153301/scanners/445432
   response:
-    body: {string: !!python/unicode ''}
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwMAAAAAAAAAAAA=
     headers:
-      cache-control: [no-cache]
-      connection: [keep-alive]
-      date: ['Thu, 06 Dec 2018 23:20:35 GMT']
-      server: [tenable.io]
-      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
-          path=/; HttpOnly]
-      strict-transport-security: [max-age=63072000; includeSubDomains]
-      transfer-encoding: [chunked]
-      x-content-type-options: [nosniff]
-      x-frame-options: [DENY]
-      x-gateway-site-id: [nginx-router-c-prod-us-east-2]
-      x-request-uuid: [cd4af4f6b618c4e4e149b0026e6e5d25]
-      x-xss-protection: [mode=block]
-    status: {code: 200, message: OK}
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b626e00bd95032b-AMD
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Tue, 11 Apr 2023 10:08:41 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-us-east-1-prod-fb448f746-f9klz
+      X-Request-Uuid:
+      - 229afa00a39553b72010dcda5b0d7143
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['0']
-      Cookie: [nginx-cloud-site-id=us-2b]
-      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
-      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Cookie:
+      - nginx-cloud-site-id=us-2b
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: DELETE
-    uri: https://cloud.tenable.com/scanner-groups/102797
+    uri: https://cloud.tenable.com/scanner-groups/153301
   response:
-    body: {string: !!python/unicode ''}
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAwMAAAAAAAAAAAA=
     headers:
-      cache-control: [no-cache]
-      connection: [keep-alive]
-      date: ['Thu, 06 Dec 2018 23:20:35 GMT']
-      server: [tenable.io]
-      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
-          path=/; HttpOnly]
-      strict-transport-security: [max-age=63072000; includeSubDomains]
-      transfer-encoding: [chunked]
-      x-content-type-options: [nosniff]
-      x-frame-options: [DENY]
-      x-gateway-site-id: [nginx-router-c-prod-us-east-2]
-      x-request-uuid: [028a63662b4d7bb5066a600a48fa46ac]
-      x-xss-protection: [mode=block]
-    status: {code: 200, message: OK}
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b626e03afaa032b-AMD
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/octet-stream
+      Date:
+      - Tue, 11 Apr 2023 10:08:42 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-us-east-1-prod-fb448f746-f9klz
+      X-Request-Uuid:
+      - 2fb1b008a95f996ea3e0e076b8f03e6c
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

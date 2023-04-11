@@ -2,8 +2,9 @@
 test agent_config
 '''
 import pytest
-from tests.checker import check
+
 from tenable.errors import UnexpectedValueError, ForbiddenError
+from tests.checker import check
 
 
 @pytest.mark.vcr()
@@ -62,6 +63,7 @@ def test_agentconfig_edit_set_autounlink(api):
     check(resp['auto_unlink'], 'enabled', bool)
     check(resp['auto_unlink'], 'expiration', int)
     check(resp, 'software_update', bool)
+    check(resp, 'hybrid_scanning_enabled', bool)
     assert resp['auto_unlink']['expiration'] == 31
 
 
@@ -76,6 +78,7 @@ def test_agentconfig_edit_disable_autounlink(api):
     check(resp['auto_unlink'], 'enabled', bool)
     check(resp['auto_unlink'], 'expiration', int)
     check(resp, 'software_update', bool)
+    check(resp, 'hybrid_scanning_enabled', bool)
     assert resp['auto_unlink']['enabled'] is False
 
 
@@ -90,6 +93,7 @@ def test_agentconfig_edit_disable_softwareupdate(api):
     check(resp['auto_unlink'], 'enabled', bool)
     check(resp['auto_unlink'], 'expiration', int)
     check(resp, 'software_update', bool)
+    check(resp, 'hybrid_scanning_enabled', bool)
     assert resp['software_update'] is False
 
 
@@ -113,6 +117,7 @@ def test_agentconfig_show_details(api):
     check(resp['auto_unlink'], 'enabled', bool)
     check(resp['auto_unlink'], 'expiration', int)
     check(resp, 'software_update', bool)
+    check(resp, 'hybrid_scanning_enabled', bool)
 
 
 @pytest.mark.vcr()
@@ -135,6 +140,7 @@ def test_agentconfig_show_details_fields(api):
     check(resp['auto_unlink'], 'enabled', bool)
     check(resp['auto_unlink'], 'expiration', int)
     check(resp, 'software_update', bool)
+    check(resp, 'hybrid_scanning_enabled', bool)
 
 
 @pytest.mark.vcr()
@@ -148,3 +154,4 @@ def test_agentconfig_edit_success_fields(api):
     check(resp, 'software_update', bool, allow_none=True)
     check(resp['auto_unlink'], 'enabled', bool)
     check(resp['auto_unlink'], 'expiration', int)
+    check(resp, 'hybrid_scanning_enabled', bool)

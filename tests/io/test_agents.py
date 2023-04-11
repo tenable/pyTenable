@@ -132,6 +132,14 @@ def test_agents_list(api):
         check(agent, 'platform', str)
         check(agent, 'status', str)
         check(agent, 'uuid', 'uuid')
+        check(agent, 'plugin_feed_id', str)
+        check(agent, 'core_build', str)
+        check(agent, 'core_version', str)
+        check(agent, 'last_connect', int)
+        check(agent, 'supports_remote_logs', bool)
+        check(agent, 'network_uuid', 'uuid')
+        check(agent, 'network_name', str)
+        check(agent, 'supports_remote_settings', bool)
     assert count == agents.total
 
 
@@ -167,6 +175,14 @@ def test_agents_details_agent_details(api, agent):
     check(resp, 'platform', str)
     check(resp, 'status', str)
     check(resp, 'uuid', 'uuid')
+    check(resp, 'plugin_feed_id', str)
+    check(resp, 'core_build', str)
+    check(resp, 'core_version', str)
+    check(resp, 'last_connect', int)
+    check(resp, 'supports_remote_logs', bool)
+    check(resp, 'network_uuid', 'uuid')
+    check(resp, 'network_name', str)
+    check(resp, 'supports_remote_settings', bool)
     assert resp['id'] == agent['id']
 
 
@@ -194,6 +210,14 @@ def test_agents_list_fields(api):
         check(agent, 'platform', str)
         check(agent, 'status', str)
         check(agent, 'uuid', 'uuid')
+        check(agent, 'plugin_feed_id', str)
+        check(agent, 'core_build', str)
+        check(agent, 'core_version', str)
+        check(agent, 'last_connect', int)
+        check(agent, 'supports_remote_logs', bool)
+        check(agent, 'network_uuid', 'uuid')
+        check(agent, 'network_name', str)
+        check(agent, 'supports_remote_settings', bool)
     assert count == agents.total
 
 

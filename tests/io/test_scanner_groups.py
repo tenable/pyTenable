@@ -2,10 +2,13 @@
 test scanner_groups
 '''
 import uuid
+
 import pytest
+
 from tenable.errors import BadRequestError, ForbiddenError, \
     NotFoundError, UnexpectedValueError, ServerError
 from tests.checker import check
+
 
 @pytest.mark.vcr()
 def test_add_scanner_to_group_group_id_typeerror(api):
@@ -15,6 +18,7 @@ def test_add_scanner_to_group_group_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scanner_groups.add_scanner('nope', 1)
 
+
 @pytest.mark.vcr()
 def test_add_scanner_to_group_scanner_id_typeerror(api):
     '''
@@ -22,6 +26,7 @@ def test_add_scanner_to_group_scanner_id_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scanner_groups.add_scanner(1, 'nope')
+
 
 @pytest.mark.vcr()
 def test_add_scanner_to_scanner_group_notfounderror(api):
@@ -31,6 +36,7 @@ def test_add_scanner_to_scanner_group_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scanner_groups.add_scanner(1, 1)
 
+
 @pytest.mark.vcr()
 def test_add_scanner_to_scanner_group_permissionerror(stdapi):
     '''
@@ -39,12 +45,14 @@ def test_add_scanner_to_scanner_group_permissionerror(stdapi):
     with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.add_scanner(1, 1)
 
+
 @pytest.mark.vcr()
 def test_add_scanner_to_group(api, scanner, scannergroup):
     '''
     test to add scanner to scanner_group
     '''
     api.scanner_groups.add_scanner(scannergroup['id'], scanner['id'])
+
 
 @pytest.mark.vcr()
 def test_create_scanner_group_name_typeerror(api):
@@ -54,6 +62,7 @@ def test_create_scanner_group_name_typeerror(api):
     with pytest.raises(TypeError):
         api.scanner_groups.create(1)
 
+
 @pytest.mark.vcr()
 def test_create_scanner_group_type_typeerror(api):
     '''
@@ -61,6 +70,7 @@ def test_create_scanner_group_type_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scanner_groups.create(str(uuid.uuid4()), group_type=1)
+
 
 @pytest.mark.vcr()
 def test_create_scanner_group_type_unexpectedvalue(api):
@@ -70,6 +80,7 @@ def test_create_scanner_group_type_unexpectedvalue(api):
     with pytest.raises(UnexpectedValueError):
         api.scanner_groups.create(str(uuid.uuid4()), group_type='normal')
 
+
 @pytest.mark.vcr()
 def test_create_scanner_group_permissionerror(stdapi):
     '''
@@ -78,6 +89,7 @@ def test_create_scanner_group_permissionerror(stdapi):
     with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.create(str(uuid.uuid4()))
 
+
 @pytest.mark.vcr()
 def test_create_scanner_group(scannergroup):
     '''
@@ -85,6 +97,7 @@ def test_create_scanner_group(scannergroup):
     '''
     assert isinstance(scannergroup, dict)
     scanner_group = scannergroup
+    check(scanner_group, 'creation_date', int)
     check(scanner_group, 'default_permissions', int)
     check(scanner_group, 'id', int)
     check(scanner_group, 'last_modification_date', int)
@@ -97,6 +110,7 @@ def test_create_scanner_group(scannergroup):
     check(scanner_group, 'type', str)
     check(scanner_group, 'uuid', 'uuid')
 
+
 @pytest.mark.vcr()
 def test_delete_scanner_group_id_typeerror(api):
     '''
@@ -104,6 +118,7 @@ def test_delete_scanner_group_id_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scanner_groups.delete('nope')
+
 
 @pytest.mark.vcr()
 def test_delete_scanner_group_notfound(api):
@@ -113,6 +128,7 @@ def test_delete_scanner_group_notfound(api):
     with pytest.raises(NotFoundError):
         api.scanner_groups.delete(1)
 
+
 @pytest.mark.vcr()
 def test_delete_scanner_group_permissionserror(stdapi):
     '''
@@ -121,12 +137,14 @@ def test_delete_scanner_group_permissionserror(stdapi):
     with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.delete(1)
 
+
 @pytest.mark.vcr()
 def test_delete_scanner_group(api, scannergroup):
     '''
     test to delete scanner_group
     '''
     api.scanner_groups.delete(scannergroup['id'])
+
 
 @pytest.mark.vcr()
 def test_remove_scanner_from_group_group_id_typeerror(api):
@@ -136,6 +154,7 @@ def test_remove_scanner_from_group_group_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scanner_groups.delete_scanner('nope', 1)
 
+
 @pytest.mark.vcr()
 def test_remove_scanner_from_group_scanner_id_typeerror(api):
     '''
@@ -143,6 +162,7 @@ def test_remove_scanner_from_group_scanner_id_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scanner_groups.delete_scanner(1, 'nope')
+
 
 @pytest.mark.vcr()
 def test_remove_scanner_from_scanner_group_notfounderror(api):
@@ -152,6 +172,7 @@ def test_remove_scanner_from_scanner_group_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scanner_groups.delete_scanner(1, 1)
 
+
 @pytest.mark.vcr()
 def test_remove_scanner_from_scanner_group_permissionserror(stdapi):
     '''
@@ -159,6 +180,7 @@ def test_remove_scanner_from_scanner_group_permissionserror(stdapi):
     '''
     with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.delete_scanner(1, 1)
+
 
 @pytest.mark.vcr()
 def test_remove_scanner_from_scanner_group(api, scanner, scannergroup):
@@ -168,6 +190,7 @@ def test_remove_scanner_from_scanner_group(api, scanner, scannergroup):
     api.scanner_groups.add_scanner(scannergroup['id'], scanner['id'])
     api.scanner_groups.delete_scanner(scannergroup['id'], scanner['id'])
 
+
 @pytest.mark.vcr()
 def test_scannergroup_details_group_id_typeerror(api):
     '''
@@ -175,6 +198,7 @@ def test_scannergroup_details_group_id_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scanner_groups.details('nope')
+
 
 @pytest.mark.vcr()
 @pytest.mark.xfail(raises=ServerError)
@@ -185,6 +209,7 @@ def test_scannergroup_details_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scanner_groups.details(1)
 
+
 @pytest.mark.vcr()
 def test_scannergroup_details_permissionerror(stdapi):
     '''
@@ -192,6 +217,7 @@ def test_scannergroup_details_permissionerror(stdapi):
     '''
     with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.details(1)
+
 
 @pytest.mark.vcr()
 def test_scannergroup_details(api, scannergroup):
@@ -201,6 +227,7 @@ def test_scannergroup_details(api, scannergroup):
     scanner_group = api.scanner_groups.details(scannergroup['id'])
     assert scanner_group['id'] == scannergroup['id']
     scanner_group = scannergroup
+    check(scanner_group, 'creation_date', int)
     check(scanner_group, 'default_permissions', int)
     check(scanner_group, 'id', int)
     check(scanner_group, 'last_modification_date', int)
@@ -213,6 +240,7 @@ def test_scannergroup_details(api, scannergroup):
     check(scanner_group, 'type', str)
     check(scanner_group, 'uuid', 'uuid')
 
+
 @pytest.mark.vcr()
 def test_edit_scanner_group_id_typeerror(api):
     '''
@@ -221,6 +249,7 @@ def test_edit_scanner_group_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scanner_groups.edit('nope', str(uuid.uuid4()))
 
+
 @pytest.mark.vcr()
 def test_edit_scanner_group_name_typeerror(api):
     '''
@@ -228,6 +257,7 @@ def test_edit_scanner_group_name_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.scanner_groups.edit(1, 1)
+
 
 @pytest.mark.vcr()
 @pytest.mark.xfail(raises=ServerError)
@@ -238,6 +268,7 @@ def test_edit_scanner_group_notfounderror(api):
     with pytest.raises(NotFoundError):
         api.scanner_groups.edit(1, str(uuid.uuid4()))
 
+
 @pytest.mark.vcr()
 def test_edit_scanner_group_permissionerror(stdapi):
     '''
@@ -246,6 +277,7 @@ def test_edit_scanner_group_permissionerror(stdapi):
     with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.edit(1, str(uuid.uuid4()))
 
+
 @pytest.mark.vcr()
 def test_edit_scanner_group(api, scannergroup):
     '''
@@ -253,8 +285,9 @@ def test_edit_scanner_group(api, scannergroup):
     '''
     api.scanner_groups.edit(scannergroup['id'], str(uuid.uuid4()))
 
+
 @pytest.mark.vcr()
-def test_list_scanner_groups(api):
+def test_list_scanner_groups(api, scannergroup):
     '''
     test to list scanner group
     '''
@@ -266,6 +299,7 @@ def test_list_scanner_groups(api):
         check(group, 'id', int)
         check(group, 'last_modification_date', int)
         check(group, 'name', str)
+        check(group, 'network_name', str)
         check(group, 'owner', str)
         check(group, 'owner_id', int)
         check(group, 'owner_name', str)
@@ -275,9 +309,11 @@ def test_list_scanner_groups(api):
         check(group, 'scanner_id', int)
         check(group, 'scanner_uuid', 'uuid')
         check(group, 'shared', int)
+        check(group, 'supports_webapp', bool)
         check(group, 'type', str)
         check(group, 'user_permissions', int)
         check(group, 'uuid', 'uuid')
+
 
 @pytest.mark.vcr()
 def test_list_scanner_groups_permissionerror(stdapi):
@@ -287,6 +323,7 @@ def test_list_scanner_groups_permissionerror(stdapi):
     with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.list()
 
+
 @pytest.mark.vcr()
 def test_list_scanners_in_scanner_group_id_typeerror(api):
     '''
@@ -295,6 +332,7 @@ def test_list_scanners_in_scanner_group_id_typeerror(api):
     with pytest.raises(TypeError):
         api.scanner_groups.list_scanners('nope')
 
+
 @pytest.mark.vcr()
 def test_list_scanners_in_scanner_group_permissionerror(stdapi, scannergroup):
     '''
@@ -302,6 +340,7 @@ def test_list_scanners_in_scanner_group_permissionerror(stdapi, scannergroup):
     '''
     with pytest.raises(ForbiddenError):
         stdapi.scanner_groups.list_scanners(scannergroup['id'])
+
 
 @pytest.mark.vcr()
 def test_list_scanners_in_scanner_group(api, scannergroup, scanner):
@@ -312,20 +351,20 @@ def test_list_scanners_in_scanner_group(api, scannergroup, scanner):
     scanners = api.scanner_groups.list_scanners(scannergroup['id'])
     assert isinstance(scanners, list)
     for scanner_detail in scanners:
+        check(scanner_detail, 'creation_date', int)
         check(scanner_detail, 'distro', str, allow_none=True)
         check(scanner_detail, 'engine_version', str)
         check(scanner_detail, 'group', bool)
+        check(scanner_detail, 'hostname', str)
         check(scanner_detail, 'id', int)
+        check(scanner_detail, 'ip_addresses', list)
         check(scanner_detail, 'key', str)
         check(scanner_detail, 'last_connect', int)
         check(scanner_detail, 'last_modification_date', int)
         check(scanner_detail, 'linked', int)
         check(scanner_detail, 'loaded_plugin_set', str)
         check(scanner_detail, 'name', str)
-        check(scanner_detail, 'num_hosts', int)
         check(scanner_detail, 'num_scans', int)
-        check(scanner_detail, 'num_sessions', int)
-        check(scanner_detail, 'num_tcp_sessions', int)
         check(scanner_detail, 'owner', str)
         check(scanner_detail, 'owner_id', int)
         check(scanner_detail, 'owner_name', str)
@@ -340,7 +379,11 @@ def test_list_scanners_in_scanner_group(api, scannergroup, scanner):
         check(scanner_detail, 'ui_build', str)
         check(scanner_detail, 'ui_version', str)
         check(scanner_detail, 'uuid', 'uuid')
+        check(scanner_detail, 'remote_uuid', 'scanner-uuid')
+        check(scanner_detail, 'supports_remote_logs', bool)
+        check(scanner_detail, 'supports_remote_settings', bool)
     api.scanner_groups.delete_scanner(scannergroup['id'], scanner['id'])
+
 
 @pytest.mark.vcr()
 def test_edit_routes_in_scanner_group_invalidinputerror(api, scannergroup):
@@ -350,6 +393,7 @@ def test_edit_routes_in_scanner_group_invalidinputerror(api, scannergroup):
     with pytest.raises(BadRequestError):
         api.scanner_groups.edit_routes(scannergroup['id'], ['127.0.0.256'])
 
+
 @pytest.mark.vcr()
 def test_edit_routes_in_scanner_group_typeerror(api, scannergroup):
     '''
@@ -358,12 +402,14 @@ def test_edit_routes_in_scanner_group_typeerror(api, scannergroup):
     with pytest.raises(TypeError):
         api.scanner_groups.edit_routes(scannergroup['id'], '127.0.0.1')
 
+
 @pytest.mark.vcr()
 def test_edit_routes_in_scanner_group_success(api, scannergroup):
     '''
     test to edit routes in scanner group
     '''
     api.scanner_groups.edit_routes(scannergroup['id'], ['127.0.0.1'])
+
 
 @pytest.mark.vcr()
 def test_list_routes_in_scanner_group_success(api, scannergroup):

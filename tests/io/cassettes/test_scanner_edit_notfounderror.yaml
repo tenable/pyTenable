@@ -13,32 +13,41 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.9
-        (Restfly/1.4.7; Python/3.9.6; Darwin/arm64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: PUT
     uri: https://cloud.tenable.com/scanners/1
   response:
     body:
-      string: '{"statusCode":404,"error":"Not Found","message":"Scanner with id 1
-        not found."}'
+      string: !!binary |
+        H4sIAAAAAAAAA6pWKi5JLCktds5PSVWyMjEw0VFKLSrKL1KyUvLLL1Fwyy/NS1HSUcpNLS5OTE9V
+        slIKTk7My0stUijPLMlQyExRMFTIyy9RSAOp01OqBQAAAP//AwCrs2TITwAAAA==
     headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b626f0ad8b50336-AMD
       Cache-Control:
       - no-cache
       Connection:
       - keep-alive
-      Content-Length:
-      - '79'
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 09 Nov 2022 08:59:30 GMT
+      - Tue, 11 Apr 2023 10:09:23 GMT
+      Server:
+      - cloudflare
       Set-Cookie:
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
       Vary:
       - origin
       X-Content-Type-Options:
@@ -46,9 +55,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - service-nginx-router-ap-northeast-1-prod-5f64dbb68d-x8cjf
+      - service-nginx-router-ap-south-1-prod-69479dd7b-g699b
       X-Request-Uuid:
-      - d3dc66ae7f6e7caf1471ac3ba30175bc
+      - cd56d4aa893b043e77cdabfd80a07ee8
       X-XSS-Protection:
       - 1; mode=block
     status:

@@ -9,8 +9,8 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.8
-        (Restfly/1.4.7; Python/3.10.6; Darwin/arm64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
@@ -19,6 +19,10 @@ interactions:
     body:
       string: '{"error":"Scan not found"}'
     headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b6275222c660337-AMD
       Cache-Control:
       - no-cache
       Connection:
@@ -28,10 +32,12 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 25 Oct 2022 07:10:05 GMT
+      - Tue, 11 Apr 2023 10:13:33 GMT
+      Server:
+      - cloudflare
       Set-Cookie:
-      - nginx-cloud-site-id=mssp-us-1; path=/; HttpOnly; SameSite=Strict; Secure
-      - nginx-cloud-site-id=mssp-us-1; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains
       Vary:
@@ -41,9 +47,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-nxd9y-ap-southeast-1-prod
+      - service-nginx-router-ap-south-1-prod-69479dd7b-ct8k2
       X-Request-Uuid:
-      - 68b03ab6344568df732cf16d5c433d7e
+      - 56d619cd6fc36d71da9fe24d290755e6
       X-XSS-Protection:
       - 1; mode=block
     status:

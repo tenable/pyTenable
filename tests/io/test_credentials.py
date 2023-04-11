@@ -418,15 +418,16 @@ def test_credentials_types_success(api):
 
 
 @pytest.mark.vcr()
-def test_credentials_list_fields(api, scan):
+def test_credentials_list_fields(api, scan, cred):
     """
     test to check the list of credentials and their types
     """
     count = 0
+    credential_details = api.credentials.details(cred)
     credentials = api.credentials.list(filter_type='or',
                                        limit=45,
-                                       offset=2,
-                                       wildcard='match',
+                                       offset=0,
+                                       wildcard=credential_details['name'],
                                        wildcard_fields=['name'],
                                        owner_uuid=scan['owner_uuid']
                                        )
@@ -457,7 +458,7 @@ def test_credentials_list_fields(api, scan):
 @pytest.mark.vcr()
 def test_credentials_edit_with_permissions(api, cred):
     '''test to edit with permissions parameter in the credentials'''
-    creds = api.credentials.edit('f07267e2-2994-4293-900a-8acc9adaacd4', cred_name='updated cred',
+    creds = api.credentials.edit(cred, cred_name='updated cred',
                                  permissions=[{'grantee_uuid': '00000000-0000-0000-0000-000000000000', 'type': 'user',
                                                'permissions': 64, 'name': 'test_admin@pytenable.io'}])
     assert isinstance(creds, bool)

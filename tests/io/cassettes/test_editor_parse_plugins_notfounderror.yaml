@@ -9,8 +9,8 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.6
-        (Restfly/1.4.6; Python/3.10.1; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
@@ -19,6 +19,10 @@ interactions:
     body:
       string: '{"error":"Unknown policy ID: 28."}'
     headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b62659f6c20032f-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -28,13 +32,15 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 17 May 2022 11:57:20 GMT
+      - Tue, 11 Apr 2023 10:02:58 GMT
       Expect-CT:
       - enforce, max-age=86400
       Expires:
       - '0'
       Pragma:
       - no-cache
+      Server:
+      - cloudflare
       Set-Cookie:
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
@@ -47,9 +53,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-hy4nb-ap-southeast-1-prod
+      - service-nginx-router-ap-south-1-prod-69479dd7b-g699b
       X-Request-Uuid:
-      - 5fc0fc4a41d700c384d594f4886b8865
+      - 9e97a75c080d90e629f86dca98de470f
       X-Xss-Protection:
       - 1; mode=block
     status:
