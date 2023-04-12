@@ -24,12 +24,14 @@ class WasIterator(APIIterator):
         """
         Get the scan results for the next target scan ID.
         """
-        current_target_scan_id = self.target_scan_ids.pop()
-        self._log.debug(f"Getting the data for target ID: {current_target_scan_id}")
+        current_target_scan = self.target_scan_ids.pop()
+        current_target_scan_id = current_target_scan["target_scan_id"]
+        current_parent_finalized_at = current_target_scan["parent_finalized_at"]
+        self._log.debug(f"Getting the data for target ID: {current_target_scan_id} with finalized at: {current_parent_finalized_at}")
         # self.page = self._api.download_scan_report(current_target_scan_id)["findings"]
 
         scan_result = self._api.download_scan_report(current_target_scan_id)
-        self.page = [_enriched_finding_object(scan_result, f) for f in scan_result["findings"]]
+        self.page = [_enriched_finding_object(scan_result, f, current_parent_finalized_at) for f in scan_result["findings"]]
 
         self._log.debug(f"Target ID: {current_target_scan_id} has {len(self.page)} finding(s).")
 
@@ -54,13 +56,16 @@ class WasIterator(APIIterator):
         return self.page.pop()
 
 
-def _enriched_finding_object(page: Dict, finding: Dict):
+def _enriched_finding_object(page: Dict, finding: Dict, current_parent_finalized_at: str):
     """
     Attaches config and scan info to each finding object.
     Note: This adjustment is done to enable integration with Splunk.
     """
     return {
         "finding": finding,
+        "parent_scan": {
+          "finalized_at": current_parent_finalized_at
+        },
         "config": {
             "config_id": page["config"]["config_id"],
             "name": page["config"]["name"],
