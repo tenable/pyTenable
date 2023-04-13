@@ -28,7 +28,6 @@ class WasIterator(APIIterator):
         current_target_scan_id = current_target_scan["target_scan_id"]
         current_parent_finalized_at = current_target_scan["parent_finalized_at"]
         self._log.debug(f"Getting the data for target ID: {current_target_scan_id} with finalized at: {current_parent_finalized_at}")
-        # self.page = self._api.download_scan_report(current_target_scan_id)["findings"]
 
         scan_result = self._api.download_scan_report(current_target_scan_id)
         self.page = [_enriched_finding_object(scan_result, f, current_parent_finalized_at) for f in scan_result["findings"]]

@@ -56,11 +56,14 @@ class WasAPI(TIOEndpoint):
         # Get scan configuration iterator.
         scan_config = self._search_scan_configurations(**kwargs)
 
-        # Iterate through the scan configs and collect the parent scan IDs.
+        # Iterate through the scan configs and collect the parent scan IDs and the finalized_at param.
+        # This finalized_at property belonging to the parent will be passed down to its children's findings.
         parent_scan_ids_with_finalized_at = [_parent_id_with_finalized_at(sc) for sc in scan_config if sc]
 
+        # initialize parent_scan_ids_with_finalized_at if it's empty.
         if not parent_scan_ids_with_finalized_at:
             parent_scan_ids_with_finalized_at = []
+
         self._log.debug(f"We have {len(parent_scan_ids_with_finalized_at)} parent scan ID(s) to process.")
 
         # Fetch the target scans info for all the above parent scan IDs, and flatten it.
@@ -94,10 +97,11 @@ class WasAPI(TIOEndpoint):
 
     def _search_scan_configurations(self, **kwargs) -> TIOIterator:
         """
-        Returns a list of web application scan configurations.
+        Returns a list of web application scan configurations based on the provided filter parameters.
         """
         payload = dict()
 
+        # Either single_filter should be passed alone. Or, any or all of these [and_filter, or_filter] can be passed.
         if "single_filter" in kwargs and (("and_filter" in kwargs) or ("or_filter" in kwargs)):
             raise AttributeError("single_filter cannot be passed alongside and_filter or or_filter.")
 
@@ -110,7 +114,7 @@ class WasAPI(TIOEndpoint):
         if "or_filter" in kwargs:
             payload["OR"] = [_tuple_to_filter(t) for t in kwargs["or_filter"]]
 
-        self._log.debug("Fetching the scan configuration information...")
+        self._log.debug(f"Fetching the scan configuration information with filters: {payload} ...")
 
         return TIOIterator(
             self._api,
@@ -136,7 +140,7 @@ class WasAPI(TIOEndpoint):
         offset = 0
         limit = 200
 
-        # flattened responses list
+        # initialize the flattened responses list
         flattened_list = []
 
         while True:
@@ -145,21 +149,20 @@ class WasAPI(TIOEndpoint):
                 path=f"was/v2/scans/{parent_scan_id}/vulnerabilities/by-targets/search?limit={limit}&offset={offset}"
             ).json()
 
-            # Collect the items, flatten, and write to the flattened list (extend).
-
+            # Collect the items; flatten; and write to the flattened list (extend).
             items_in_response = response["items"]
-
             items = [{
-                "items": i,
+                "items": item,
                 "parent_finalized_at": parent_finalized_at
-            } for i in items_in_response]
+            } for item in items_in_response]
 
             flattened_list.extend(items)
 
             # Increment the page number by limit
             offset += limit
 
-            if not items:
+            if not items_in_response:
+                self._log.debug(f"Stopping the iteration as we encountered an empty response from the API.")
                 break
 
         self._log.debug(f"Parent ID: {parent_scan_id} has {len(flattened_list)} target ID(s).")
@@ -169,7 +172,7 @@ class WasAPI(TIOEndpoint):
 
 def _tuple_to_filter(t: Tuple[str, str, Any]) -> Dict:
     """
-    Accepts a tuple with three strings, and returns a filter object.
+    Accepts a tuple with three elements, and returns a filter object.
     """
     return {"field": t[0], "operator": t[1], "value": t[2]}
 
