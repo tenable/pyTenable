@@ -41,6 +41,7 @@ Tenable.io
     target_groups
     users
     v3/index
+    was
     workbenches
 '''
 from typing import Dict, Optional
@@ -79,6 +80,7 @@ from .tags import TagsAPI
 from .target_groups import TargetGroupsAPI
 from .users import UsersAPI
 from .v3 import Version3API
+from .was.api import WasAPI
 from .workbenches import WorkbenchesAPI
 
 
@@ -441,4 +443,12 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         :doc:`Tenable.io v3 APIs <v3/index>`.
         '''
         return Version3API(self)
+
+    @property
+    def was(self):
+        """
+        The interface object for the
+        :doc:`Tenable.io WAS APIs <was>`.
+        """
+        return WasAPI(self)
 
