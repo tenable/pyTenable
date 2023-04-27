@@ -24,7 +24,7 @@ class WasAPI(TIOEndpoint):
 
     def export(self, **kwargs) -> WasIterator:
         """
-        Export WAS Scan.
+        Export Web Application Scan Results based on filters applied.
 
         Args:
             single_filter (tuple):
