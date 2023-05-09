@@ -86,7 +86,8 @@ class WasAPI(TIOEndpoint):
         Downloads the individual target scan results.
 
         Args:
-            scan_uuid (str) UUID of the scan, whose report to download.
+            scan_uuid (str):
+             UUID of the scan whose report to download.
         """
         return self._api.get(
             path=f"was/v2/scans/{scan_uuid}/report",
