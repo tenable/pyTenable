@@ -73,7 +73,7 @@ class RemediationScansAPI(TIOEndpoint):
 
             For further information on credentials, what settings to use, etc,
             refer to
-            `this doc <https://developer.tenable.com/reference#io-scans-remediation-list>`_  # noqa: E501
+            `this doc <https://developer.tenable.com/reference/io-scans-remediation-list>`_  # noqa: E501
             on the developer portal.
 
             '''
@@ -174,7 +174,7 @@ class RemediationScansAPI(TIOEndpoint):
 
             For further information on credentials, what settings to use, etc,
             refer to
-            `this doc <https://developer.tenable.com/reference#io-scans-remediation-create>`_
+            `this doc <https://developer.tenable.com/reference/io-scans-remediation-create>`_
             on the developer portal.
 
         '''
