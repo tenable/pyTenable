@@ -3,7 +3,7 @@ Organizations
 =============
 
 The following methods allow for interaction with the Tenable.sc
-:sc-api:`Organization <Organization.html>` API. These items are typically seen
+:sc-api:`Organization <Organization.htm>` API. These items are typically seen
 under the **Organization** section of Tenable.sc.
 
 Methods available on ``sc.organizations``:
@@ -133,7 +133,7 @@ class OrganizationAPI(SCEndpoint):
         '''
         Create a new organization
 
-        :sc-api:`SC Organization Create <Organization.html#organization_POST>`
+        :sc-api:`SC Organization Create <Organization.htm#organization_POST>`
 
         Args:
             name (str): The name for organization.
@@ -208,7 +208,7 @@ class OrganizationAPI(SCEndpoint):
         '''
         Retrieves a list of organizations.
 
-        :sc-api:`SC organization List <Organization.html#OrganizationRESTReference-/organization>`  # noqa: E501
+        :sc-api:`SC organization List <Organization.htm#OrganizationRESTReference-/organization>`  # noqa: E501
 
         Args:
             fields (list, optional):
@@ -236,7 +236,7 @@ class OrganizationAPI(SCEndpoint):
         '''
         Retrieves the details for the specified organization.
 
-        :sc-api:`SC Organization Details <Organization.html#organization_id_GET>`  # noqa: E501
+        :sc-api:`SC Organization Details <Organization.htm#organization_id_GET>`  # noqa: E501
 
         Args:
             organization_id (int): The numeric id of the organization.
@@ -267,7 +267,7 @@ class OrganizationAPI(SCEndpoint):
         '''
         Updates an existing organization
 
-        :sc-api:`SC Organization Edit <Organization.html#organization_id_PATCH>`  # noqa: E501
+        :sc-api:`SC Organization Edit <Organization.htm#organization_id_PATCH>`  # noqa: E501
 
         Args:
             organization_id: The numeric id of the organization.
@@ -328,7 +328,7 @@ class OrganizationAPI(SCEndpoint):
         '''
         Remove the specified organization from Tenable.sc
 
-        :sc-api:`SC organization Delete <Organization.html#organization_id_DELETE>`  # noqa: E501
+        :sc-api:`SC organization Delete <Organization.htm#organization_id_DELETE>`  # noqa: E501
 
         Args:
             organization_id (int): The numeric id of the organization to delete.
@@ -356,7 +356,7 @@ class OrganizationAPI(SCEndpoint):
         will filter based on the parameters specified.
 
         :sc-api:`organization: accept-risk-rule
-        <Organization.html#OrganizationRESTReference-/organization/{organization_id}/acceptRiskRule>`  # noqa: E501
+        <Organization.htm#OrganizationRESTReference-/organization/{organization_id}/acceptRiskRule>`  # noqa: E501
 
         Args:
             organization_id (int): The organization id.
@@ -393,7 +393,7 @@ class OrganizationAPI(SCEndpoint):
         will filter based on the parameters specified.
 
         :sc-api:`organization: recast-risk-rule
-        <Organization.html#OrganizationRESTReference-/organization/{organization_id}/recastRiskRule>`  # noqa: E501
+        <Organization.htm#OrganizationRESTReference-/organization/{organization_id}/recastRiskRule>`  # noqa: E501
 
         Args:
             organization_id (int): The organization id.
@@ -428,7 +428,7 @@ class OrganizationAPI(SCEndpoint):
         '''
         Retrieves a list of security managers.
 
-        :sc-api:`organization-security-manager: list <Organization-Security-Manager.html#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager>`  # noqa: E501,PLC0301
+        :sc-api:`organization-security-manager: list <Organization-Security-Manager.htm#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager>`  # noqa: E501,PLC0301
 
         Args:
             org_id: (int):
@@ -460,7 +460,7 @@ class OrganizationAPI(SCEndpoint):
         of parameters that are supported for this call, please refer to
         :py:meth:`tio.users.create() <UserAPI.create>` for more details.
 
-        :sc-api:`organization-security-manager: create <Organization-Security-Manager.html#organization_orgID_securityManager_POST>`  # noqa: E501,PLC0301
+        :sc-api:`organization-security-manager: create <Organization-Security-Manager.htm#organization_orgID_securityManager_POST>`  # noqa: E501,PLC0301
 
         Args:
             org_id: (int):
@@ -497,7 +497,7 @@ class OrganizationAPI(SCEndpoint):
         Retrieves the details of a specified security manager within a
         specified organization.
 
-        :sc-api:`organization-security-manager: details <Organization-Security-Manager.html#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager/{id}>`  # noqa: E501,PLC0301
+        :sc-api:`organization-security-manager: details <Organization-Security-Manager.htm#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager/{id}>`  # noqa: E501,PLC0301
 
         Args:
             org_id: (int):
@@ -532,7 +532,7 @@ class OrganizationAPI(SCEndpoint):
         For details on the supported arguments that may be passed, please refer
         to :py:meth:`tio.users.edit() <UserAPI.edit>` for more details.
 
-        :sc-api:`organization-security-manager: edit <Organization-Security-Manager.html#organization_orgID_securityManager_id_PATCH>`  # noqa: E501,PLC0301
+        :sc-api:`organization-security-manager: edit <Organization-Security-Manager.htm#organization_orgID_securityManager_id_PATCH>`  # noqa: E501,PLC0301
 
         Args:
             org_id: (int):
@@ -561,7 +561,7 @@ class OrganizationAPI(SCEndpoint):
         '''
         Removes the user specified.
 
-        :sc-api:`organization-security-manager: delete <Organization-Security-Manager.html#organization_orgID_securityManager_id_DELETE>`  # noqa: E501,PLC0301
+        :sc-api:`organization-security-manager: delete <Organization-Security-Manager.htm#organization_orgID_securityManager_id_DELETE>`  # noqa: E501,PLC0301
 
         Args:
             org_id: (int):

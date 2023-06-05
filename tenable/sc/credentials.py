@@ -3,7 +3,7 @@ Credentials
 ===========
 
 The following methods allow for interaction into the Tenable.sc
-:sc-api:`Scan Credentials <Credential.html>` API.  These
+:sc-api:`Scan Credentials <Credential.htm>` API.  These
 items are typically seen under the **Scan Credentials** section of Tenable.sc.
 
 Methods available on ``sc.credentials``:
@@ -406,7 +406,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Creates a credential.
 
-        :sc-api:`credential: create <Credential.html#credential_POST>`
+        :sc-api:`credential: create <Credential.htm#credential_POST>`
 
         Args:
             name (str): The name for the credential.
@@ -683,7 +683,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Returns the details for a specific credential.
 
-        :sc-api:`credential: details <Credential.html#CredentialRESTReference-/credential/{id}>`
+        :sc-api:`credential: details <Credential.htm#CredentialRESTReference-/credential/{id}>`
 
         Args:
             id (int): The identifier for the credential.
@@ -708,7 +708,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Edits a credential.
 
-        :sc-api:`credential: edit <Credential.html#credential_id_PATCH>`
+        :sc-api:`credential: edit <Credential.htm#credential_id_PATCH>`
 
         Args:
             auth_type (str, optional):
@@ -903,7 +903,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Removes a credential.
 
-        :sc-api:`credential: delete <Credential.html#credential_id_DELETE>`
+        :sc-api:`credential: delete <Credential.htm#credential_id_DELETE>`
 
         Args:
             id (int): The numeric identifier for the credential to remove.
@@ -922,7 +922,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Retrieves the list of credential definitions.
 
-        + :sc-api:`credential: list <Credential.html#CredentialRESTReference-/credential>`
+        + :sc-api:`credential: list <Credential.htm#CredentialRESTReference-/credential>`
 
         Args:
             fields (list, optional):
@@ -947,7 +947,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Retrieves the list of unique tags associated to credentials.
 
-        :sc-api:`credential: tags <Credential.html#CredentialRESTReference-/credential/tag>`
+        :sc-api:`credential: tags <Credential.htm#CredentialRESTReference-/credential/tag>`
 
         Returns:
             :obj:`list`:
@@ -962,7 +962,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Shares the specified credential to another user group.
 
-        :sc-api:`credential: share <Credential.html#CredentialRESTReference-/credential/{id}/share>`
+        :sc-api:`credential: share <Credential.htm#CredentialRESTReference-/credential/{id}/share>`
 
         Args:
             id (int): The numeric id for the credential.

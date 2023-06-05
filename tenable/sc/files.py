@@ -3,7 +3,7 @@ Files
 =====
 
 The following methods allow for interaction into the Tenable.sc
-:sc-api:`File <File.html>` API.
+:sc-api:`File <File.htm>` API.
 
 Methods available on ``sc.files``:
 
@@ -19,7 +19,7 @@ class FileAPI(SCEndpoint):
         Uploads a file into SecurityCenter and returns the file identifier
         to be used for subsequent calls.
 
-        :sc-api:`file: upload <File.html#FileRESTReference-/file/upload>`
+        :sc-api:`file: upload <File.htm#FileRESTReference-/file/upload>`
 
         Args:
             fobj (FileObj): The file object to upload into SecurityCenter.
@@ -36,7 +36,7 @@ class FileAPI(SCEndpoint):
         '''
         Removes the requested file from Tenable.sc.
 
-        :sc-api:`file: clear <File.html#FileRESTReference-/file/clear>`
+        :sc-api:`file: clear <File.htm#FileRESTReference-/file/clear>`
 
         Args:
             filename (str): The file identifier associated to the file.

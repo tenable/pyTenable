@@ -165,9 +165,9 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     the `SC API Best Practices Guide`_.
 
     .. _SC API documentation:
-        https://docs.tenable.com/sccv/api/index.html
+        https://docs.tenable.com/security-center/api/index.htm
     .. _SC API Best Practices Guide:
-        https://docs.tenable.com/sccv/api_best_practices/Content/ScApiBestPractices/AboutScApiBestPrac.htm
+        https://docs.tenable.com/security-center/api_best_practices/Content/AboutScApiBestPrac.htm
     .. _Requests Client-Side Certificates:
         http://docs.python-requests.org/en/master/user/advanced/#client-side-certificates
     .. _requests_pkcs12:

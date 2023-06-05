@@ -3,7 +3,7 @@ Policies
 ========
 
 The following methods allow for interaction into the Tenable.sc
-:sc-api:`Scan Policies <Scan-Policy.html>` API.  These items are typically seen
+:sc-api:`Scan Policies <Scan-Policy.htm>` API.  These items are typically seen
 under the **Scan Policies** section of Tenable.sc.
 
 Methods available on ``sc.policies``:
@@ -83,7 +83,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Retrieved the list of scan policy templates.
 
-        :sc-api:`scan-policy: template-list <Scan-Policy.html#policy_GET>`
+        :sc-api:`scan-policy: template-list <Scan-Policy.htm#policy_GET>`
 
         Args:
             fields (list, optional):
@@ -111,7 +111,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Retrieves the details for a specified policy template.
 
-        :sc-api:`scan-policy: template-details <Scan-Policy-Templates.html#policyTemplate_id_GET>`
+        :sc-api:`scan-policy: template-details <Scan-Policy-Templates.htm#policyTemplate_id_GET>`
 
         Args:
             id (int): The unique identifier for the policy template
@@ -168,7 +168,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Retrieved the list of Scan policies configured.
 
-        :sc-api:`scan-policy: list <Scan-Policy.html#policy_GET>`
+        :sc-api:`scan-policy: list <Scan-Policy.htm#policy_GET>`
 
         Args:
             fields (list, optional):
@@ -196,7 +196,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Retrieves the details for a specified policy.
 
-        :sc-api:`scan-policy: details <Scan-Policy.html#policy_id_GET>`
+        :sc-api:`scan-policy: details <Scan-Policy.htm#policy_id_GET>`
 
         Args:
             id (int): The unique identifier for the policy
@@ -225,7 +225,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Creates a new scan policy
 
-        :sc-api:`scan-policy: create <Scan-Policy.html#policy_POST>`
+        :sc-api:`scan-policy: create <Scan-Policy.htm#policy_POST>`
 
         Args:
             name (str): The Name of the new scan policy
@@ -284,7 +284,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Edits an existing scan policy
 
-        :sc-api:`scan-policy: edit <Scan-Policy.html#policy_id_PATCH>`
+        :sc-api:`scan-policy: edit <Scan-Policy.htm#policy_id_PATCH>`
 
         Args:
             id (int): The unique identifier to the scan policy to edit
@@ -343,7 +343,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Removes a configured scan policy.
 
-        :sc-api:`scan-policy: delete <Scan-Policy.html#policy_id_DELETE>`
+        :sc-api:`scan-policy: delete <Scan-Policy.htm#policy_id_DELETE>`
 
         Args:
             id (int): The unique identifier for the policy to remove.
@@ -362,7 +362,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Clones the specified scan policy
 
-        :sc-api:`scan-policy: copy <Scan-Policy.html#ScanPolicyRESTReference-/policy/{id}/copy>`
+        :sc-api:`scan-policy: copy <Scan-Policy.htm#ScanPolicyRESTReference-/policy/{id}/copy>`
 
         Args:
             id (int): The unique identifier for the source policy to clone.
@@ -386,7 +386,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Export the specified scan policy
 
-        :sc-api:`scan-policy: export <Scan-Policy.html#ScanPolicyRESTReference-/policy/{id}/export>`
+        :sc-api:`scan-policy: export <Scan-Policy.htm#ScanPolicyRESTReference-/policy/{id}/export>`
 
         Args:
             id (int): The unique identifier for the scan policy to export.
@@ -426,7 +426,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Imports a scan policy into Tenable.sc
 
-        :sc-api:`scan-policy: import <Scan-Policy.html#ScanPolicyRESTReference-/policy/import>`
+        :sc-api:`scan-policy: import <Scan-Policy.htm#ScanPolicyRESTReference-/policy/import>`
 
         Args:
             name (str): The name of the imported scan policy.
@@ -454,7 +454,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Shares the policy with other user groups.
 
-        :sc-api:`scan-policy: share <Scan-Policy.html#ScanPolicyRESTReference-/policy/{id}/share>`
+        :sc-api:`scan-policy: share <Scan-Policy.htm#ScanPolicyRESTReference-/policy/{id}/share>`
 
         Args:
             id (int): The unique identifier for the scan policy to share.
@@ -478,7 +478,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Returns the list of unique tags associated to scan policies.
 
-        :sc-api:`scan-policy: tags <Scan-Policy.html#ScanPolicyRESTReference-/policy/tag>`
+        :sc-api:`scan-policy: tags <Scan-Policy.htm#ScanPolicyRESTReference-/policy/tag>`
 
         Returns:
             :obj:`list`:

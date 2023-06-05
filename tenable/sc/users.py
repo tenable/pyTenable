@@ -3,7 +3,7 @@ Users
 =====
 
 The following methods allow for interaction into the Tenable.sc
-:sc-api:`User <User.html>` API.  These items are typically seen under the
+:sc-api:`User <User.htm>` API.  These items are typically seen under the
 **Users** section of Tenable.sc.
 
 Methods available on ``sc.users``:
@@ -139,7 +139,7 @@ class UserAPI(SCEndpoint):
         '''
         Creates a user.
 
-        :sc-api:`user: create <User.html#user_POST>`
+        :sc-api:`user: create <User.htm#user_POST>`
 
         Args:
             username (str):
@@ -235,7 +235,7 @@ class UserAPI(SCEndpoint):
         '''
         Returns the details for a specific user.
 
-        :sc-api:`user: details <User.html#UserRESTReference-/user/{id}>`
+        :sc-api:`user: details <User.htm#UserRESTReference-/user/{id}>`
 
         Args:
             id (int): The identifier for the user.
@@ -260,7 +260,7 @@ class UserAPI(SCEndpoint):
         '''
         Edits a user.
 
-        :sc-api:`user: edit <User.html#user_id_PATCH>`
+        :sc-api:`user: edit <User.htm#user_id_PATCH>`
 
         Args:
             address (str, optional):
@@ -352,7 +352,7 @@ class UserAPI(SCEndpoint):
         '''
         Removes a user.
 
-        :sc-api:`user: delete <User.html#user_id_DELETE>`
+        :sc-api:`user: delete <User.htm#user_id_DELETE>`
 
         Args:
             id (int): The numeric identifier for the user to remove.
@@ -371,7 +371,7 @@ class UserAPI(SCEndpoint):
         '''
         Retrieves the list of user definitions.
 
-        :sc-api:`user: list <User.html#user_GET>`
+        :sc-api:`user: list <User.htm#user_GET>`
 
         Args:
             fields (list, optional):
