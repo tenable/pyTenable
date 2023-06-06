@@ -11,6 +11,7 @@ Methods available on ``tio.v3.explore.findings``:
 .. autoclass:: FindingsAPI
     :members:
 '''
+import warnings
 from typing import Union
 
 from requests import Response
@@ -23,6 +24,10 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator,
 class FindingsAPI(ExploreBaseEndpoint):
     '''
     API class containing all the methods related to Findings.
+
+    Tenable.io Findings V3 APIs are deprecated. Tenable recommends that you use `tio.exports.vulns()`,
+    which is the equivalent V2 API for `search_host()`.
+
     '''
     _path = 'api/v3/findings/vulnerabilities'
     _conv_json = True
@@ -32,6 +37,9 @@ class FindingsAPI(ExploreBaseEndpoint):
                       ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Search and retrieve the WAS Vulnerabilities based on supported conditions.
+
+        Tenable.io Findings V3 APIs are deprecated and must no longer be used.
+
         Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
@@ -95,6 +103,7 @@ class FindingsAPI(ExploreBaseEndpoint):
             >>> tio.v3.explore.findings.search_webapp(
             ... fields=['finding_id'], limit=2)
         '''
+        warnings.warn("Tenable.io Findings V3 APIs are deprecated and must no longer be used.")
         iclass = SearchIterator
         if kw.get('return_csv', False):
             iclass = CSVChunkIterator
@@ -110,6 +119,9 @@ class FindingsAPI(ExploreBaseEndpoint):
                      ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Search and retrieve the Cloud Resource Vulnerabilities based on supported conditions.
+
+        Tenable.io Findings V3 APIs are deprecated and must no longer be used.
+
         Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
@@ -173,6 +185,7 @@ class FindingsAPI(ExploreBaseEndpoint):
             >>> tio.v3.explore.findings.search_cloud_resource(
             ... fields=['risk_factor_num','last_found_time'], limit=2)
         '''
+        warnings.warn("Tenable.io Findings V3 APIs are deprecated and must no longer be used.")
         iclass = SearchIterator
         if kw.get('return_csv', False):
             iclass = CSVChunkIterator
@@ -188,6 +201,9 @@ class FindingsAPI(ExploreBaseEndpoint):
                     ) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Search and retrieve the Host Vulnerabilities based on supported conditions.
+
+        Tenable.io Findings V3 APIs are deprecated. Tenable recommends that you use the `tio.exports.vulns()` method instead.
+
         Args:
             fields (list, optional):
                 The list of field names to return from the Tenable API.
@@ -251,6 +267,7 @@ class FindingsAPI(ExploreBaseEndpoint):
             >>> tio.v3.explore.findings.search_host(
             ... fields=['finding_id'], limit=2)
         '''
+        warnings.warn("Tenable.io Findings V3 APIs are deprecated. Tenable recommends that you use the `tio.exports.vulns()` method instead.")
         iclass = SearchIterator
         if kw.get('return_csv', False):
             iclass = CSVChunkIterator
