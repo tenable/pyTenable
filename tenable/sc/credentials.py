@@ -708,7 +708,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Edits a credential.
 
-        :sc-api:`credential: edit <Credential.htm#credential_id_PATCH>`
+        :sc-api:`credential: edit <Credential.htm#credential_uuid_PATCH>`
 
         Args:
             auth_type (str, optional):
@@ -903,7 +903,7 @@ class CredentialAPI(SCEndpoint):
         '''
         Removes a credential.
 
-        :sc-api:`credential: delete <Credential.htm#credential_id_DELETE>`
+        :sc-api:`credential: delete <Credential.htm#credential_uuid_DELETE>`
 
         Args:
             id (int): The numeric identifier for the credential to remove.

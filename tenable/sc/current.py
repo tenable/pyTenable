@@ -58,7 +58,7 @@ class CurrentSessionAPI(SCEndpoint):
         '''
         Returns the user of the current session.
 
-        :sc-api:`current-user </Current-User.htm>`
+        :sc-api:`current-user <Current-User.htm>`
 
         Args:
             fields (list, optional):

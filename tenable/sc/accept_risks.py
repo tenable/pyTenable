@@ -136,7 +136,7 @@ class AcceptRiskAPI(SCEndpoint):
         '''
         Retrieves the details of an accepted risk rule.
 
-        :sc-api:`accept-riskL details <Accept-Risk-Rule.htm#AcceptRiskRuleRESTReference-/acceptRiskRule/{id}>`
+        :sc-api:`accept-risk details <Accept-Risk-Rule.htm#AcceptRiskRuleRESTReference-/acceptRiskRule/{id}>`
 
         Args:
             id (int): The identifier for the accept risk rule.

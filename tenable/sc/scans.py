@@ -178,7 +178,7 @@ class ScanAPI(SCEndpoint):
         '''
         Retrieves the list of scan definitions.
 
-        :sc-api:scan: list <Scan.htm#scan_GET>`
+        :sc-api:`scan: list <Scan.htm#scan_GET>`
 
         Args:
             fields (list, optional):

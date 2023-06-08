@@ -24,7 +24,7 @@ class SystemAPI(SCEndpoint):
         information within this call already happens upon instantiation, there
         should be little need to call this manually.
 
-        :sc-api:'system: get <System.htm#system_GET>`
+        :sc-api:`system: get <System.htm#system_GET>`
 
         Returns:
             :obj:`dict`:

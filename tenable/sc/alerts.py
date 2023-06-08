@@ -137,7 +137,7 @@ class AlertAPI(SCEndpoint):
         any additional parameters mentioned in the API docs can be passed to the
         document constructor.
 
-        :sc-api:'alert: create <Alert.htm#alert_POST>`
+        :sc-api:`alert: create <Alert.htm#alert_POST>`
 
         Args:
             *filters (tuple):

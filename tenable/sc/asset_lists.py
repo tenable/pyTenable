@@ -464,7 +464,7 @@ class AssetListAPI(SCEndpoint):
         '''
         Edits an asset-list.
 
-        :sc-api:`asset-list: edit <Asset.htm#asset_id_PATCH>`
+        :sc-api:`asset-list: edit <Asset.htm#asset_uuid_PATCH>`
 
         Args:
             id (int):
@@ -566,7 +566,7 @@ class AssetListAPI(SCEndpoint):
         '''
         Removes a asset-list.
 
-        :sc-api:`asset-list: delete <Asset.htm#asset_id_DELETE>`
+        :sc-api:`asset-list: delete <Asset.htm#asset_uuid_DELETE>`
 
         Args:
             id (int): The numeric identifier for the asset-list to remove.

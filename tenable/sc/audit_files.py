@@ -198,7 +198,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Edits a audit file.
 
-        :sc-api:`audit file: edit <AuditFile.htm#auditFile_id_PATCH>`
+        :sc-api:`audit file: edit <AuditFile.htm#auditFile_uuid_PATCH>`
 
         Args:
             audit_file (FileObject, optional):
@@ -268,7 +268,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Removes a audit file.
 
-        :sc-api:`audit file: delete <AuditFile.htm#auditFile_id_DELETE>`
+        :sc-api:`audit file: delete <AuditFile.htm#auditFile_uuid_DELETE>`
 
         Args:
             id (int): The numeric identifier for the audit file to remove.

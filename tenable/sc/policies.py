@@ -284,7 +284,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Edits an existing scan policy
 
-        :sc-api:`scan-policy: edit <Scan-Policy.htm#policy_id_PATCH>`
+        :sc-api:`scan-policy: edit <Scan-Policy.htm#policy_uuid_PATCH>`
 
         Args:
             id (int): The unique identifier to the scan policy to edit
@@ -343,7 +343,7 @@ class ScanPolicyAPI(SCEndpoint):
         '''
         Removes a configured scan policy.
 
-        :sc-api:`scan-policy: delete <Scan-Policy.htm#policy_id_DELETE>`
+        :sc-api:`scan-policy: delete <Scan-Policy.htm#policy_uuid_DELETE>`
 
         Args:
             id (int): The unique identifier for the policy to remove.

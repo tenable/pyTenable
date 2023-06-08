@@ -260,7 +260,7 @@ class UserAPI(SCEndpoint):
         '''
         Edits a user.
 
-        :sc-api:`user: edit <User.htm#user_id_PATCH>`
+        :sc-api:`user: edit <User.htm#user_uuid_PATCH>`
 
         Args:
             address (str, optional):
@@ -352,7 +352,7 @@ class UserAPI(SCEndpoint):
         '''
         Removes a user.
 
-        :sc-api:`user: delete <User.htm#user_id_DELETE>`
+        :sc-api:`user: delete <User.htm#user_uuid_DELETE>`
 
         Args:
             id (int): The numeric identifier for the user to remove.

@@ -221,7 +221,7 @@ class PluginAPI(SCEndpoint):
         '''
         Returns the details for the specified plugin family.
 
-        :sc-api:`plugin-family: details <https://docs.tenable.com/security-center/api/Plugin-Family.htm#PluginFamilyRESTReference-/pluginFamily/{id}>`
+        :sc-api:`plugin-family: details <Plugin-Family.htm#PluginFamilyRESTReference-/pluginFamily/{id}>`
 
         Args:
             plugin_id (int): The plugin family numeric identifier.

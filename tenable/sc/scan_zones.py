@@ -100,7 +100,7 @@ class ScanZoneAPI(SCEndpoint):
         '''
         Edits a scan zone.
 
-        :sc-api:`scan-zone: edit <Scan-Zone.htm#zone_id_PATCH>`
+        :sc-api:`scan-zone: edit <Scan-Zone.htm#zone_uuid_PATCH>`
 
         Args:
             description (str, optional):
@@ -154,7 +154,7 @@ class ScanZoneAPI(SCEndpoint):
         '''
         Removes the specified scan zone.
 
-        :sc-api:`scan-zone: delete <Scan-Zone.htm#zone_id_DELETE>`
+        :sc-api:`scan-zone: delete <Scan-Zone.htm#zone_uuid_DELETE>`
 
         Args:
             id (int): The numeric identifier for the scan-zone to remove.

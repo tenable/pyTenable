@@ -167,7 +167,7 @@ class ScannerAPI(SCEndpoint):
         '''
         Returns the details for a specific scanner.
 
-        :sc-api:`scanner: details <Scanner.htm#scanner_POST>`
+        :sc-api:`scanner: details <Scanner.htm#ScannerRESTReference-/scanner>`
 
         Args:
             id (int): The identifier for the scanner.

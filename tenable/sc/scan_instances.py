@@ -278,7 +278,7 @@ class ScanResultAPI(SCEndpoint):
         Pauses a running scan instance.  Note that this will not impact agent
         scan instances.
 
-        "sc-api:`scan-result: pause <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/pause>`
+        :sc-api:`scan-result: pause <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/pause>`
 
         Args:
             id (int): The unique identifier for the scan instance.
