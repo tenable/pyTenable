@@ -3,7 +3,7 @@ Status
 ======
 
 The following methods allow for interaction into the Tenable.sc
-:sc-api:`Status <Status.html>` API.  These API calls are typically used to
+:sc-api:`Status <Status.htm>` API.  These API calls are typically used to
 understand the current job and license statuses.
 
 Methods available on ``sc.status``:
@@ -19,7 +19,7 @@ class StatusAPI(SCEndpoint):
         '''
         Retrieves license & status information about the Tenable.sc instance.
 
-        :sc-api:`status: status <Status.html#StatusRESTReference-/status>`
+        :sc-api:`status: status <Status.htm#StatusRESTReference-/status>`
 
         Returns:
             :obj:`dict`:

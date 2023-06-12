@@ -3,7 +3,7 @@ Groups
 ======
 
 The following methods allow for interaction into the Tenable.sc
-:sc-api:`Group <Group.html>` API.  These items are typically seen under the
+:sc-api:`Group <Group.htm>` API.  These items are typically seen under the
 **User Groups** section of Tenable.sc.
 
 Methods available on ``sc.groups``:
@@ -52,7 +52,7 @@ class GroupAPI(SCEndpoint):
         '''
         Creates a group.
 
-        :sc-api:`group: create <Group.html#group_POST>`
+        :sc-api:`group: create <Group.htm#group_POST>`
 
         Args:
             name (str): The name of the user group
@@ -93,7 +93,7 @@ class GroupAPI(SCEndpoint):
         '''
         Returns the details for a specific group.
 
-        :sc-api:`group: details <Group.html#GroupRESTReference-/group/{id}>`
+        :sc-api:`group: details <Group.htm#GroupRESTReference-/group/{id}>`
 
         Args:
             id (int): The identifier for the group.
@@ -118,7 +118,7 @@ class GroupAPI(SCEndpoint):
         '''
         Edits a group.
 
-        :sc-api:`group: edit <Group.html#group_id_PATCH>`
+        :sc-api:`group: edit <Group.htm#group_id_PATCH>`
 
         Args:
             asset_lists (list, optional):
@@ -160,7 +160,7 @@ class GroupAPI(SCEndpoint):
         '''
         Removes a group.
 
-        :sc-api:`group: delete <Group.html#group_id_DELETE>`
+        :sc-api:`group: delete <Group.htm#group_id_DELETE>`
 
         Args:
             id (int): The numeric identifier for the group to remove.
@@ -179,7 +179,7 @@ class GroupAPI(SCEndpoint):
         '''
         Retrieves the list of group definitions.
 
-        :sc-api:`group: list <Group.html#group_GET>`
+        :sc-api:`group: list <Group.htm#group_GET>`
 
         Args:
             fields (list, optional):

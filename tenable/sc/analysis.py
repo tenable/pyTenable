@@ -3,7 +3,7 @@ Analysis
 ========
 
 The following methods allow for interaction into the Tenable.sc
-:sc-api:`analysis <Analysis.html>` API.  The analysis area in Tenable.sc is
+:sc-api:`analysis <Analysis.htm>` API.  The analysis area in Tenable.sc is
 highly complex and allows for a wide range of varied inputs and outputs.  This
 single endpoint has been broken down in pyTenable to several methods in order to
 apply some defaults to the expected data-types and options most likely to be
@@ -205,7 +205,7 @@ class AnalysisAPI(SCEndpoint):
         Query's the analysis API for vulnerability data within the cumulative
         repositories.
 
-        :sc-api:`analysis: vuln-type <Analysis.html#AnalysisRESTReference-VulnType>`
+        :sc-api:`analysis: vuln-type <Analysis.htm#AnalysisRESTReference-VulnType>`
 
         Args:
             filters (tuple, optional):
@@ -355,7 +355,7 @@ class AnalysisAPI(SCEndpoint):
         '''
         Queries the analysis API for vulnerability data from a specific scan.
 
-        :sc-api:`analysis: vuln-type <Analysis.html#AnalysisRESTReference-VulnType>`
+        :sc-api:`analysis: vuln-type <Analysis.htm#AnalysisRESTReference-VulnType>`
 
         Args:
             scan_id (int):
@@ -436,7 +436,7 @@ class AnalysisAPI(SCEndpoint):
         '''
         Queries the analysis API for event data from the Log Correlation Engine
 
-        :sc-api:`analysis: event-type <Analysis.html#AnalysisRESTReference-EventType>`
+        :sc-api:`analysis: event-type <Analysis.htm#AnalysisRESTReference-EventType>`
 
         Args:
             filters (tuple, optional):
@@ -536,7 +536,7 @@ class AnalysisAPI(SCEndpoint):
         '''
         Queries the analysis API for log data from the Tenable.sc Console itself.
 
-        :sc-api:`analysis: sclog-type <Analysis.html#AnalysisRESTReference-SCLogType>`
+        :sc-api:`analysis: sclog-type <Analysis.htm#AnalysisRESTReference-SCLogType>`
 
         Args:
             filters (tuple, optional):
@@ -577,7 +577,7 @@ class AnalysisAPI(SCEndpoint):
         Queries the analysis API for mobile data collected from querying one or
         many MDM solutions.
 
-        :sc-api:`analysis: mobile-type <Analysis.html#AnalysisRESTReference-MobileType>`
+        :sc-api:`analysis: mobile-type <Analysis.htm#AnalysisRESTReference-MobileType>`
 
         Args:
             filters (tuple, optional):
