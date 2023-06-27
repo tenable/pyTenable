@@ -2,7 +2,7 @@
 Folders
 =======
 
-Methods described in this section relate to the the folders API.
+Methods described in this section relate to the folders API.
 These methods can be accessed at ``Nessus.folders``.
 
 .. rst-class:: hide-signature
