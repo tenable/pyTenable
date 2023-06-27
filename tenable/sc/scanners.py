@@ -2,9 +2,9 @@
 Scanners
 ========
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Scanner <Scanner.htm>` API.  These items are typically seen under the
-**Scanners** section of Tenable.sc.
+**Scanners** section of Tenable Security Center.
 
 Methods available on ``sc.scanners``:
 

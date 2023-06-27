@@ -2,9 +2,9 @@
 Asset Lists
 ===========
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Assets <Asset.htm>` API.  These items are typically seen
-under the **Assets** section of Tenable.sc.
+under the **Assets** section of Tenable Security Center.
 
 Methods available on ``sc.asset_lists``:
 

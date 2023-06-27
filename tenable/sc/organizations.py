@@ -2,9 +2,9 @@
 Organizations
 =============
 
-The following methods allow for interaction with the Tenable.sc
+The following methods allow for interaction with the Tenable Security Center
 :sc-api:`Organization <Organization.htm>` API. These items are typically seen
-under the **Organization** section of Tenable.sc.
+under the **Organization** section of Tenable Security Center.
 
 Methods available on ``sc.organizations``:
 
@@ -330,7 +330,7 @@ class OrganizationAPI(SCEndpoint):
     def delete(self, organization_id):
         # noqa: E501
         '''
-        Remove the specified organization from Tenable.sc
+        Remove the specified organization from Tenable Security Center
 
         :sc-api:`SC organization Delete <Organization.htm#organization_uuid_DELETE>`
 

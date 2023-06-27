@@ -2,13 +2,13 @@
 Scan Instances
 ==============
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Scan Result <Scan-Result.htm>` API.  While the Tenable.sc API refers
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Scan Result <Scan-Result.htm>` API.  While the Tenable Security Center API refers
 to the model these endpoints interact with as *ScanResult*, were actually
 interacting with an instance of a scan definition stored within the *Scan* API
 endpoints.  These scan instances could be running scans, stopped scans, errored
 scans, or completed scans.  These items are typically seen under the
-**Scan Results** section of Tenable.sc.
+**Scan Results** section of Tenable Security Center.
 
 Methods available on ``sc.scan_instances``:
 
@@ -170,7 +170,7 @@ class ScanResultAPI(SCEndpoint):
 
     def import_scan(self, fobj, repo, **kw):
         '''
-        Imports a nessus file into Tenable.sc.
+        Imports a nessus file into Tenable Security Center.
 
         :sc-api:`scan-result: import <Scan-Result.htm#ScanResultRESTReference-/scanResult/import>`
 
@@ -245,7 +245,7 @@ class ScanResultAPI(SCEndpoint):
             end_time (int, optional):
                 Epoch time to end search (searches against createdTime and defaults to now)
             optimize (bool, optional):
-                Informs Tenable.sc to optimize completed scan results.  If left
+                Informs Tenable Security Center to optimize completed scan results.  If left
                 unspecified, the default is `True`.
 
         Returns:

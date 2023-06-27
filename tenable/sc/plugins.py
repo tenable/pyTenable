@@ -2,9 +2,9 @@
 Plugins
 =======
 
-The following methods allow for interaction with the Tenable.sc
+The following methods allow for interaction with the Tenable Security Center
 :sc-api:`Plugins <Plugin.htm>` API.  These items are typically seen under the
-**Plugins** section of Tenable.sc.
+**Plugins** section of Tenable Security Center.
 
 Methods available on ``sc.plugins``:
 
