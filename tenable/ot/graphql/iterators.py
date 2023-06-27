@@ -1,5 +1,5 @@
 """
-GraphQL Tenable.ot API iterator.
+GraphQL Tenable OT Security API iterator.
 """
 import json
 import typing
@@ -21,7 +21,7 @@ if typing.TYPE_CHECKING:
 
 class OTGraphIterator(APIIterator):
     """
-    Iterator class over Tenable.ot GraphQL connections.
+    Iterator class over Tenable OT Security GraphQL connections.
     """
 
     def __init__(
