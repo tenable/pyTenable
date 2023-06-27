@@ -2,7 +2,7 @@
 Audit Log
 =========
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`audit log <audit-log>` API endpoints.
 
 Methods available on ``io.audit_log``:
@@ -16,7 +16,7 @@ from .base import TIOEndpoint
 class AuditLogAPI(TIOEndpoint):
     def events(self, *filters, **kw):
         '''
-        Retrieve audit logs from Tenable.io.
+        Retrieve audit logs from Tenable Vulnerability Management.
 
         :devportal:`audit-log: events <audit-log-events>`
 

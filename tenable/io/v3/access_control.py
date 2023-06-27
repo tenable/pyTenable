@@ -2,7 +2,7 @@
 Access-Control
 ==============
 
-The following methods allow for interaction into the Tenable.io API endpoints.
+The following methods allow for interaction into the Tenable Vulnerability Management API endpoints.
 
 Methods available on ``tio.v3.access_control``:
 
