@@ -1,5 +1,5 @@
 '''
-TenableAD user schema
+Tenable Identity Exposure user schema
 '''
 from marshmallow import fields
 from tenable.ad.base.schema import CamelCaseSchema
