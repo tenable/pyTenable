@@ -72,7 +72,7 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
         iterator is within the export job and return the status to the caller
         '''
         status = self._api.exports.status(self.type, self.uuid)
-        self._log.debug('%s export %s is currenty %s',
+        self._log.debug('%s export %s is currently %s',
                         self.type,
                         self.uuid,
                         status.status
