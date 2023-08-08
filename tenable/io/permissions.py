@@ -2,7 +2,7 @@
 Permissions
 ===========
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal`permissions <permissions-1>` API endpoints.
 
 Methods available on ``tio.permissions``:
@@ -26,8 +26,8 @@ class PermissionsAPI(TIOEndpoint):
             id (int):
                 The unique identifier of the object.
             *acls (dict):
-                ACL dictionaries inform Tenable.io how to handle permissions of
-                the various objects within Tenable.io.  Please refer to the
+                ACL dictionaries inform Tenable Vulnerability Management how to handle permissions of
+                the various objects within Tenable Vulnerability Management.  Please refer to the
                 `permissions documentation`_ for more details.
 
         Returns:

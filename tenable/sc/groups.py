@@ -2,9 +2,9 @@
 Groups
 ======
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Group <Group.htm>` API.  These items are typically seen under the
-**User Groups** section of Tenable.sc.
+**User Groups** section of Tenable Security Center.
 
 Methods available on ``sc.groups``:
 
@@ -76,7 +76,7 @@ class GroupAPI(SCEndpoint):
                 List of scan policy ids to allow this group to access.
             viewable (list, optional):
                 List of asset list ids to use for the purposes of restricting
-                what members of this group can see within Tenable.sc.
+                what members of this group can see within Tenable Security Center.
 
         Returns:
             :obj:`dict`:
@@ -143,7 +143,7 @@ class GroupAPI(SCEndpoint):
                 List of scan policy ids to allow this group to access.
             viewable (list, optional):
                 List of asset list ids to use for the purposes of restricting
-                what members of this group can see within Tenable.sc.
+                what members of this group can see within Tenable Security Center.
 
         Returns:
             :obj:`dict`:

@@ -2,7 +2,7 @@
 Mail
 ====
 
-Methods described in this section relate to the the mail API.
+Methods described in this section relate to the mail API.
 These methods can be accessed at ``Nessus.mail``.
 
 .. rst-class:: hide-signature
@@ -20,7 +20,7 @@ class MailAPI(APIEndpoint):
     
     def details(self) -> Dict:
         '''
-        Retrieves the Nessus daemon's mail settings
+        Retrieves the Tenable Nessus daemon's mail settings
         
         Returns:
             Dict:
@@ -52,7 +52,7 @@ class MailAPI(APIEndpoint):
                                          ]] = None
              ) -> None:
         '''
-        Updates the Nessus daemon's mail settings
+        Updates the Tenable Nessus daemon's mail settings
         
         Args:
             smtp_host (str, optional): 
@@ -62,7 +62,7 @@ class MailAPI(APIEndpoint):
             smtp_enc (str, optional):
                 The connection encryption for the SMTP server
             smtp_from (str, optional): 
-                Reply email address for email sent by the Nessus daemon
+                Reply email address for email sent by the Tenable Nessus daemon
             smtp_www_host (str, optional):
                 The host to use in email links
             smtp_user (str, optional):

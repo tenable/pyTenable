@@ -38,14 +38,14 @@ class PluginsAPI(OTAPIBase):
             query(str):
                 A GraphQL query .
             query_filter(dict, optional):
-                A document as defined by Tenable.ot online documentation.
+                A document as defined by Tenable OT Security online documentation.
             search(str, optional):
                 A search string to further limit the response.
             sort(List[dict], optional):
                 A list of order documents, each of which must contain both the
                 ``field`` and ``direction`` keys and may also contain the
                 optional ``function`` key. Default sort is by descending id
-                order. Please refer to Tenable.ot online documentation for more
+                order. Please refer to Tenable OT Security online documentation for more
                 information.
             start_at(str, optional):
                 The cursor to start the scan from (the default is an empty

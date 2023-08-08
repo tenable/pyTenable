@@ -2,7 +2,7 @@
 Policies
 ========
 
-Methods described in this section relate to the the files API.
+Methods described in this section relate to the files API.
 These methods can be accessed at ``Nessus.policies``.
 
 .. rst-class:: hide-signature

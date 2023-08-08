@@ -2,7 +2,7 @@
 Status
 ======
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Status <Status.htm>` API.  These API calls are typically used to
 understand the current job and license statuses.
 
@@ -17,7 +17,7 @@ from .base import SCEndpoint
 class StatusAPI(SCEndpoint):
     def status(self):
         '''
-        Retrieves license & status information about the Tenable.sc instance.
+        Retrieves license & status information about the Tenable Security Center instance.
 
         :sc-api:`status: status <Status.htm#StatusRESTReference-/status>`
 

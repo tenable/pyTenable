@@ -2,9 +2,9 @@
 Roles
 =====
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Roles <Role.htm>` API.  These items are typically seen under the
-**User Roles** section of Tenable.sc.
+**User Roles** section of Tenable Security Center.
 
 Methods available on ``sc.roles``:
 
@@ -96,7 +96,7 @@ class RoleAPI(SCEndpoint):
                 groups?  If left unspecified, the default is ``False``.
             can_view_logs (bool, optional):
                 Are members of this role allowed to view the organizational
-                logs from Tenable.sc?  If left unspecified, the default is
+                logs from Tenable Security Center?  If left unspecified, the default is
                 ``False``.
             create_alerts (bool, optional):
                 Are members of this role allowed to create alerts? If left
@@ -204,7 +204,7 @@ class RoleAPI(SCEndpoint):
                 groups?  If left unspecified, the default is ``False``.
             can_view_logs (bool, optional):
                 Are members of this role allowed to view the organizational
-                logs from Tenable.sc?  If left unspecified, the default is
+                logs from Tenable Security Center?  If left unspecified, the default is
                 ``False``.
             create_alerts (bool, optional):
                 Are members of this role allowed to create alerts? If left

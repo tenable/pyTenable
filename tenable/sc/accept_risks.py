@@ -2,7 +2,7 @@
 Accept Risks
 ============
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Accept Risk <Accept-Risk-Rule.htm>` API.
 
 Methods available on ``sc.accept_risks``:
@@ -161,7 +161,7 @@ class AcceptRiskAPI(SCEndpoint):
 
     def delete(self, id):
         '''
-        Removes the accepted risk rule from Tenable.sc
+        Removes the accepted risk rule from Tenable Security Center
 
         :sc-api:`accept-risk: delete <Accept-Risk-Rule.htm#acceptRiskRule_id_DELETE>`
 

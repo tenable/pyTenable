@@ -2,7 +2,7 @@
 Server
 ======
 
-Methods described in this section relate to the the server API.
+Methods described in this section relate to the server API.
 These methods can be accessed at ``Nessus.server``.
 
 .. rst-class:: hide-signature
@@ -20,7 +20,7 @@ class ServerAPI(APIEndpoint):
     
     def properties(self) -> Dict:
         '''
-        Retrieves the Nessus server properties.
+        Retrieves the Tenable Nessus server properties.
         
         Returns:
             Dict:
@@ -53,14 +53,14 @@ class ServerAPI(APIEndpoint):
                 when_idle: Optional[bool] = None
                 ) -> None:
         '''
-        Initiates a restart of this Nessus service
+        Initiates a restart of this Tenable Nessus service
         
         Args:
             reason (str, optional):
                 What is the reason for the restart to occur?
             soft (bool, optional):
                 Should we only restart the web service (soft restart) or
-                restart the whole Nessus service?
+                restart the whole Tenable Nessus service?
             unlink (bool, optional):
                 Should the scanner be unlinked from it's upstream controller
                 before restarting?

@@ -2,9 +2,9 @@
 Policies
 ========
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Scan Policies <Scan-Policy.htm>` API.  These items are typically seen
-under the **Scan Policies** section of Tenable.sc.
+under the **Scan Policies** section of Tenable Security Center.
 
 Methods available on ``sc.policies``:
 
@@ -424,7 +424,7 @@ class ScanPolicyAPI(SCEndpoint):
 
     def import_policy(self, name, fobj, description=None, tags=None):
         '''
-        Imports a scan policy into Tenable.sc
+        Imports a scan policy into Tenable Security Center
 
         :sc-api:`scan-policy: import <Scan-Policy.htm#ScanPolicyRESTReference-/policy/import>`
 

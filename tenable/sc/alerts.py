@@ -2,7 +2,7 @@
 Alerts
 ======
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 `Alert <https://docs.tenable.com/security-center/api/Alert.htm>`_ API.
 
 Methods available on ``sc.alerts``:
@@ -158,7 +158,7 @@ class AlertAPI(SCEndpoint):
                 only execute when the returned data changes?
                 Default is ``False``.
             schedule (dict, optional):
-                This is the schedule dictionary that will inform Tenable.sc how
+                This is the schedule dictionary that will inform Tenable Security Center how
                 often to run the alert.  If left unspecified then we will
                 default to ``{'type': 'never'}``.
             action (list):
@@ -269,7 +269,7 @@ class AlertAPI(SCEndpoint):
                 only execute when the returned data changes?
                 Default is ``False``.
             schedule (dict, optional):
-                This is the schedule dictionary that will inform Tenable.sc how
+                This is the schedule dictionary that will inform Tenable Security Center how
                 often to run the alert.  If left unspecified then we will
                 default to ``{'type': 'never'}``.
             action (list):

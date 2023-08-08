@@ -2,7 +2,7 @@
 Agent Groups
 ============
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`agent groups <agent-groups>` API endpoints.
 
 Methods available on ``tio.agent_groups``:
@@ -203,7 +203,7 @@ class AgentGroupsAPI(TIOEndpoint):
                 endpoint to get more details.
             filter_type (str, optional):
                 The filter_type operator determines how the filters are combined
-                together.  ``and`` will inform the API that all of the filter
+                together.  ``and`` will inform the API that all the filter
                 conditions must be met for an agent to be returned, whereas
                 ``or`` would mean that if any of the conditions are met, the
                 agent record will be returned.
@@ -214,7 +214,7 @@ class AgentGroupsAPI(TIOEndpoint):
             scanner_id (int, optional):
                 The identifier the scanner that the agent communicates to.
             sort (tuple, optional):
-                A tuple of tuples identifying the the field and sort order of
+                A tuple of tuples identifying the field and sort order of
                 the field.
             wildcard (str, optional):
                 A string to pattern match against all available fields returned.

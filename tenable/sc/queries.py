@@ -2,9 +2,9 @@
 Queries
 =======
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Query <Query.htm>` API.  These items are typically seen
-under the **Workflow -> Query** section of Tenable.sc.
+under the **Workflow -> Query** section of Tenable Security Center.
 
 Methods available on ``sc.queries``:
 

@@ -2,7 +2,7 @@
 Permissions
 ===========
 
-Methods described in this section relate to the the permissions API.
+Methods described in this section relate to the permissions API.
 These methods can be accessed at ``Nessus.permissions``.
 
 .. rst-class:: hide-signature

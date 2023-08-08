@@ -2,9 +2,9 @@
 Credentials
 ===========
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Scan Credentials <Credential.htm>` API.  These
-items are typically seen under the **Scan Credentials** section of Tenable.sc.
+items are typically seen under the **Scan Credentials** section of Tenable Security Center.
 
 Methods available on ``sc.credentials``:
 

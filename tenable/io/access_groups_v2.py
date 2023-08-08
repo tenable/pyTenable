@@ -2,7 +2,7 @@
 Access Groups v2
 ================
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`access-groups-v2 <v2-access-groups>` API endpoints.
 
 Methods available on ``tio.access_groups_v2``:
@@ -105,7 +105,7 @@ class AccessGroupsV2API(TIOEndpoint):
 
     def list(self, *filters, **kw):
         '''
-        Get the listing of configured access groups from Tenable.io.
+        Get the listing of configured access groups from Tenable Vulnerability Management.
 
         :devportal:`access-groups-v2: list <v2-access-groups-listt>`
 
@@ -124,7 +124,7 @@ class AccessGroupsV2API(TIOEndpoint):
                 the :py:meth:`tio.filters.access_groups_filters_v2()` endpoint to get more details.
             filter_type (str, optional):
                 The filter_type operator determines how the filters are combined
-                together.  ``and`` will inform the API that all of the filter
+                together.  ``and`` will inform the API that all the filter
                 conditions must be met for an access group to be returned,
                 whereas ``or`` would mean that if any of the conditions are met,
                 the access group record will be returned.
@@ -133,7 +133,7 @@ class AccessGroupsV2API(TIOEndpoint):
             offset (int, optional):
                 The starting record to retrieve.  Default is 0.
             sort (tuple, optional):
-                A tuple of tuples identifying the the field and sort order of
+                A tuple of tuples identifying the field and sort order of
                 the field.
             wildcard (str, optional):
                 A string to pattern match against all available fields returned.
@@ -236,7 +236,7 @@ class AccessGroupsV2API(TIOEndpoint):
 
                     ('operating_system', 'eq', ['Windows NT'])
 
-                Rules will be validate against by the filters before being sent
+                Rules will be validated against by the filters before being sent
                 to the API.  Note that the value field in this context is a list
                 of string values.
             principals (list, optional):
@@ -336,7 +336,7 @@ class AccessGroupsV2API(TIOEndpoint):
 
                     ('operating_system', 'eq', ['Windows NT'])
 
-                Rules will be validate against by the filters before being sent
+                Rules will be validated against by the filters before being sent
                 to the API.  Note that the value field in this context is a list
                 of string values.
             principals (list, optional):

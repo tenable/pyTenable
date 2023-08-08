@@ -2,7 +2,7 @@
 WAS
 ===
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`WAS <was>` API endpoints.
 
 Methods available on ``tio.was``:
@@ -133,7 +133,7 @@ class WasAPI(TIOEndpoint):
         Returns the vulns by target scans of the given parent scan ID.
         """
         # This method does not have an iterator and is not public as the API it invokes has not been publicly documented.
-        # However, the API is in use in the Tenable.io UI.
+        # However, the API is in use in the Tenable Vulnerability Management UI.
 
         parent_scan_id = parent["parent_scan_id"]
         parent_finalized_at = parent["parent_finalized_at"]

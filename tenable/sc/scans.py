@@ -2,12 +2,12 @@
 Scans
 =====
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Scan <Scan.htm>` API.  While the api endpoints obliquely refers to the
-model in which this collection of actions modifies as "Scans", Tenable.sc is
+model in which this collection of actions modifies as "Scans", Tenable Security Center is
 actually referring to the scan *definitions*, which are the un-launched and/or
 scheduled scans typically seen within the **Active Scans** section within
-Tenable.sc.
+Tenable Security Center.
 
 Methods available on ``sc.scans``:
 

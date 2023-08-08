@@ -2,7 +2,7 @@
 Dashboard
 =========
 
-Methods described in this section relate to the the dashboard API.
+Methods described in this section relate to the dashboard API.
 These methods can be accessed at ``TenableAD.dashboard``.
 
 .. rst-class:: hide-signature

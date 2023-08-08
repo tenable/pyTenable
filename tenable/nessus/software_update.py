@@ -2,7 +2,7 @@
 Software Update
 ===============
 
-Methods described in this section relate to the the software update API.
+Methods described in this section relate to the software update API.
 These methods can be accessed at ``Nessus.software_update``.
 
 .. rst-class:: hide-signature
