@@ -59,7 +59,7 @@ from .users import UsersAPI
 class Nessus(APIPlatform):
     '''
     The Nessus object is the primary interaction point for users to
-    interface with Nessus via the pyTenable library.  All of the API
+    interface with Tenable Nessus via the pyTenable library.  All of the API
     endpoint classes that have been written will be grafted onto this class.
     '''
     _env_base = 'NESSUS'
@@ -80,49 +80,49 @@ class Nessus(APIPlatform):
     def agent_groups(self):
         '''
         The interface object for the
-        :doc:`Nessus Agent Groups APIs <agent_groups>`.
+        :doc:`Tenable Nessus Agent Groups APIs <agent_groups>`.
         '''
         return AgentGroupsAPI(self)
 
     @property
     def agents(self):
         '''
-        The interface object for the :doc:`Nessus Agents APIs <agents>`.
+        The interface object for the :doc:`Tenable Nessus Agents APIs <agents>`.
         '''
         return AgentsAPI(self)
 
     @property
     def editor(self):
         '''
-        The interface object for the :doc:`Nessus Editor APIs <editor>`.
+        The interface object for the :doc:`Tenable Nessus Editor APIs <editor>`.
         '''
         return EditorAPI(self)
 
     @property
     def files(self):
         '''
-        The interface object for the :doc:`Nessus File APIs <files>`.
+        The interface object for the :doc:`Tenable Nessus File APIs <files>`.
         '''
         return FilesAPI(self)
 
     @property
     def folders(self):
         '''
-        The interface object for the :doc:`Nessus Folders APIs <folders>`.
+        The interface object for the :doc:`Tenable Nessus Folders APIs <folders>`.
         '''
         return FoldersAPI(self)
 
     @property
     def groups(self):
         '''
-        The interface object for the :doc:`Nessus Groups APIs <groups>`.
+        The interface object for the :doc:`Tenable Nessus Groups APIs <groups>`.
         '''
         return GroupsAPI(self)
 
     @property
     def mail(self):
         '''
-        The interface object for the :doc:`Nessus Mail APIs <mail>`.
+        The interface object for the :doc:`Tenable Nessus Mail APIs <mail>`.
         '''
         return MailAPI(self)
 
@@ -130,7 +130,7 @@ class Nessus(APIPlatform):
     def permissions(self):
         '''
         The interface object for the
-        :doc:`Nessus Permissions APIs <permissions>`.
+        :doc:`Tenable Nessus Permissions APIs <permissions>`.
         '''
         return PermissionsAPI(self)
 
@@ -138,63 +138,63 @@ class Nessus(APIPlatform):
     def plugin_rules(self):
         '''
         The interface object for the
-        :doc:`Nessus Plugin Rules APIs <plugin_rules>`.
+        :doc:`Tenable Nessus Plugin Rules APIs <plugin_rules>`.
         '''
         return PluginRulesAPI(self)
 
     @property
     def plugins(self):
         '''
-        The interface object for the :doc:`Nessus Plugins APIs <plugins>`.
+        The interface object for the :doc:`Tenable Nessus Plugins APIs <plugins>`.
         '''
         return PluginsAPI(self)
 
     @property
     def policies(self):
         '''
-        The interface object for the :doc:`Nessus Policies APIs <policies>`.
+        The interface object for the :doc:`Tenable Nessus Policies APIs <policies>`.
         '''
         return PoliciesAPI(self)
 
     @property
     def proxy(self):
         '''
-        The interface object for the :doc:`Nessus Proxy APIs <proxy>`.
+        The interface object for the :doc:`Tenable Nessus Proxy APIs <proxy>`.
         '''
         return ProxyAPI(self)
 
     @property
     def scanners(self):
         '''
-        The interface object for the :doc:`Nessus Scanners APIs <scanners>`.
+        The interface object for the :doc:`Tenable Nessus Scanners APIs <scanners>`.
         '''
         return ScannersAPI(self)
 
     @property
     def scans(self):
         '''
-        The interface object for the :doc:`Nessus Scans APIs <scans>`.
+        The interface object for the :doc:`Tenable Nessus Scans APIs <scans>`.
         '''
         return ScansAPI(self)
 
     @property
     def server(self):
         '''
-        The interface object for the :doc:`Nessus Server APIs <server>`.
+        The interface object for the :doc:`Tenable Nessus Server APIs <server>`.
         '''
         return ServerAPI(self)
 
     @property
     def session(self):
         '''
-        The interface object for the :doc:`Nessus Session APIs <session>`.
+        The interface object for the :doc:`Tenable Nessus Session APIs <session>`.
         '''
         return SessionAPI(self)
 
     @property
     def settings(self):
         '''
-        The interface object for the :doc:`Nessus Settings APIs <settings>`.
+        The interface object for the :doc:`Tenable Nessus Settings APIs <settings>`.
         '''
         return SettingsAPI(self)
 
@@ -202,20 +202,20 @@ class Nessus(APIPlatform):
     def software_update(self):
         '''
         The interface object for the
-        :doc:`Nessus Software Update APIs <software_update>`.
+        :doc:`Tenable Nessus Software Update APIs <software_update>`.
         '''
         return SoftwareUpdateAPI(self)
 
     @property
     def tokens(self):
         '''
-        The interface object for the :doc:`Nessus Tokens APIs <tokens>`.
+        The interface object for the :doc:`Tenable Nessus Tokens APIs <tokens>`.
         '''
         return TokensAPI(self)
 
     @property
     def users(self):
         '''
-        The unterface object for the :doc:`Nessus Users APIs <users>`.
+        The unterface object for the :doc:`Tenable Nessus Users APIs <users>`.
         '''
         return UsersAPI(self)

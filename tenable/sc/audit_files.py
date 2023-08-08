@@ -2,10 +2,10 @@
 Audit Files
 ===========
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Audit File <AuditFile.htm>` API and the
 :sc-api:`Audit File Template <AuditFile-Template.htm>` API.  These items are
-typically seen under the **Scans: Audit Files** section of Tenable.sc.
+typically seen under the **Scans: Audit Files** section of Tenable Security Center.
 
 Methods available on ``sc.audit_files``:
 
@@ -139,7 +139,7 @@ class AuditFileAPI(SCEndpoint):
                 values should be.  The values are provided within the template
                 definition.
             version (str, optional):
-                When specifying a SCAP datatype, this informs Tenable.sc what
+                When specifying a SCAP datatype, this informs Tenable Security Center what
                 version of SCAP this audit checklist is.  Supported values are
                 ``1.0``, ``1.1``, and ``1.2``.
 
@@ -234,7 +234,7 @@ class AuditFileAPI(SCEndpoint):
                 values should be.  The values are provided within the template
                 definition.
             version (str, optional):
-                When specifying a SCAP datatype, this informs Tenable.sc what
+                When specifying a SCAP datatype, this informs Tenable Security Center what
                 version of SCAP this audit checklist is.  Supported values are
                 ``1.0``, ``1.1``, and ``1.2``.
 

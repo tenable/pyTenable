@@ -2,7 +2,7 @@
 Credentials
 ===========
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`credentials <credentials>` API endpoints.
 
 Methods available on ``tio.credentials``:
@@ -249,7 +249,7 @@ class CredentialsAPI(TIOEndpoint):
 
     def list(self, *filters, **kw):
         '''
-        Get the listing of configured credentials from Tenable.io.
+        Get the listing of configured credentials from Tenable Vulnerability Management.
 
         :devportal:`credentials: list <credentials-list>`
 
@@ -372,7 +372,7 @@ class CredentialsAPI(TIOEndpoint):
 
         Args:
             fobj (FileObject):
-                The file object intended to be uploaded into Tenable.io.
+                The file object intended to be uploaded into Tenable Vulnerability Management.
 
         Returns:
             :obj:`str`:

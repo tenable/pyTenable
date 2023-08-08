@@ -2,7 +2,7 @@
 Files
 =====
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`File <File.htm>` API.
 
 Methods available on ``sc.files``:
@@ -27,14 +27,14 @@ class FileAPI(SCEndpoint):
         Returns:
             :obj:`str`:
                 The filename identifier to use for subsequent calls in
-                Tenable.sc.
+                Tenable Security Center.
         '''
         return self._api.post('file/upload', files={
             'Filedata': fobj}).json()['response']['filename']
 
     def clear(self, filename):
         '''
-        Removes the requested file from Tenable.sc.
+        Removes the requested file from Tenable Security Center.
 
         :sc-api:`file: clear <File.htm#FileRESTReference-/file/clear>`
 

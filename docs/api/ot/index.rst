@@ -1,4 +1,4 @@
-Tenable.ot
+Tenable OT Security
 ==========
 .. toctree::
     :hidden:

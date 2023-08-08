@@ -2,7 +2,7 @@
 Feeds
 =====
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Feed <Feed.htm>` API.
 
 Methods available on ``sc.feeds``:

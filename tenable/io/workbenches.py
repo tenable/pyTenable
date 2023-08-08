@@ -2,7 +2,7 @@
 Workbenches
 ===========
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`workbenches <workbenches>` API endpoints.
 
 .. note::
@@ -48,7 +48,7 @@ class WorkbenchesAPI(TIOEndpoint):
     def assets(self, *filters, **kw):
         '''
         The assets workbench allows for filtering and interactively querying the
-        asset data stored within Tenable.io.  There are a wide variety of
+        asset data stored within Tenable Vulnerability Management.  There are a wide variety of
         filtering options available to find specific pieces of data.
 
         :devportal:`workbenches: assets <workbenches-assets>`
@@ -202,7 +202,7 @@ class WorkbenchesAPI(TIOEndpoint):
     def asset_vuln_info(self, uuid, plugin_id, *filters, **kw):
         '''
         Retrieves the vulnerability information for a specific plugin on a
-        specific asset within Tenable.io.
+        specific asset within Tenable Vulnerability Management.
 
         :devportal:`workbenches: asset-vulnerability-info <workbenches-asset-vulnerability-info>`
 
@@ -246,7 +246,7 @@ class WorkbenchesAPI(TIOEndpoint):
     def asset_vuln_output(self, uuid, plugin_id, *filters, **kw):
         '''
         Retrieves the vulnerability output for a specific vulnerability on a
-        specific asset within Tenable.io.
+        specific asset within Tenable Vulnerability Management.
 
         :devportal:`workbenches: asset-vulnerability-output <workbenches-asset-vulnerability-output>`
 
@@ -476,7 +476,7 @@ class WorkbenchesAPI(TIOEndpoint):
     def vulns(self, *filters, **kw):
         '''
         The vulnerability workbench allows for filtering and interactively
-        querying the vulnerability data stored within Tenable.io.  There are a
+        querying the vulnerability data stored within Tenable Vulnerability Management.  There are a
         wide variety of filtering options available to find specific pieces
         of data.
 

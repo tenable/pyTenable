@@ -2,7 +2,7 @@
 Scanners
 ========
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`scanners <scanners>` API.
 
 Methods available on ``tio.scanners``:
@@ -20,7 +20,7 @@ class ScannersAPI(TIOEndpoint):
 
     def linking_key(self):
         '''
-        The linking key for the Tenable.io instance.
+        The linking key for the Tenable Vulnerability Management instance.
 
         Returns:
             :obj:`str`:
@@ -96,7 +96,7 @@ class ScannersAPI(TIOEndpoint):
 
     def delete(self, id):
         '''
-        Delete a scanner from Tenable.io.
+        Delete a scanner from Tenable Vulnerability Management.
 
         :devportal:`scanners: delete <scanners-delete>`
 
@@ -154,7 +154,7 @@ class ScannersAPI(TIOEndpoint):
                 Sets the registration code for the scanner.
             aws_update_interval (int, optional):
                 For AWS scanners this will inform the scanner how often to check
-                into Tenable.io.
+                into Tenable Vulnerability Management.
 
         Returns:
             :obj:`None`:

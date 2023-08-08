@@ -2,9 +2,9 @@
 Scan Zones
 ==========
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Scan Zone <Scan-Zone.htm>` API.  These items are typically seen under
-the **Scan Zones** section of Tenable.sc.
+the **Scan Zones** section of Tenable Security Center.
 
 Methods available on ``sc.scan_zones``:
 

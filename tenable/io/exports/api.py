@@ -2,7 +2,7 @@
 Exports
 =======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`exports <exports>` API endpoints.
 
 Methods available on ``tio.exports``:
@@ -379,7 +379,7 @@ class ExportsAPI(APIEndpoint):
                 Findings first discovered after this timestamp will be
                 returned.
             indexed_at (int, optional):
-                Findings indexed into Tenable.io after this timestamp will
+                Findings indexed into Tenable Vulnerability Management after this timestamp will
                 be returned.
             last_fixed (int, optional):
                 Findings fixed after this timestamp will be returned.  Note

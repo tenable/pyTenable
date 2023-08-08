@@ -2,9 +2,9 @@
 Users
 =====
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`User <User.htm>` API.  These items are typically seen under the
-**Users** section of Tenable.sc.
+**Users** section of Tenable Security Center.
 
 Methods available on ``sc.users``:
 
@@ -195,7 +195,7 @@ class UserAPI(SCEndpoint):
             org (int, optional):
                 If logged in as an administrator, and creating a security
                 manager account, the organization id must be passed in order to
-                inform Tenable.sc which organization to create the security
+                inform Tenable Security Center which organization to create the security
                 manager within.
             phone (str, optional):
                 A phone number to associate to the user.
@@ -310,7 +310,7 @@ class UserAPI(SCEndpoint):
             org (int, optional):
                 If logged in as an administrator, and creating a security
                 manager account, the organization id must be passed in order to
-                inform Tenable.sc which organization to create the security
+                inform Tenable Security Center which organization to create the security
                 manager within.
             password (str, optional):
                 The user password

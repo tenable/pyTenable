@@ -2,7 +2,7 @@
 Files
 =====
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`file <file>` API endpoints.
 
 Methods available on ``tio.files``:
@@ -19,13 +19,13 @@ class FileAPI(TIOEndpoint):
 
     def upload(self, fobj: BinaryIO, encrypted: bool = False):
         '''
-        Uploads a file into Tenable.io.
+        Uploads a file into Tenable Vulnerability Management.
 
         :devportal:`file: upload <file-upload>`
 
         Args:
             fobj (FileObject):
-                The file object intended to be uploaded into Tenable.io.
+                The file object intended to be uploaded into Tenable Vulnerability Management.
             encrypted (bool, optional):
                 If the file is encrypted, set the flag to True.
 

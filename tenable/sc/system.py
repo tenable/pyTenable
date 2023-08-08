@@ -2,7 +2,7 @@
 System
 ======
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`System <System.htm>` API.  These API calls are typically used to
 understand timezones, system version, etc.
 
@@ -19,7 +19,7 @@ import time
 class SystemAPI(SCEndpoint):
     def details(self):
         '''
-        Retrieves information about the Tenable.sc instance.  This method should
+        Retrieves information about the Tenable Security Center instance.  This method should
         only be called before authentication has occurred.  As most of the
         information within this call already happens upon instantiation, there
         should be little need to call this manually.
@@ -38,7 +38,7 @@ class SystemAPI(SCEndpoint):
     def diagnostics(self, task=None, options=None, fobj=None):
         '''
         Generates and downloads a diagnostic file for the purpose of
-        troubleshooting an ailing Tenable.sc instance.
+        troubleshooting an ailing Tenable Security Center instance.
 
         :sc-api:`system: diagnostics-generate <System.htm#SystemRESTReference-/system/diagnostics/generate>`
 
@@ -115,7 +115,7 @@ class SystemAPI(SCEndpoint):
 
     def current_locale(self):
         '''
-        Retrieves the current system locale that Tenable.sc has been set to.
+        Retrieves the current system locale that Tenable Security Center has been set to.
 
         :sc-api:`system: locale <System.htm#SystemRESTReference-/system/locale>`
 
@@ -130,7 +130,7 @@ class SystemAPI(SCEndpoint):
 
     def list_locales(self):
         '''
-        Retrieves the available system locales that Tenable.sc can be set to.
+        Retrieves the available system locales that Tenable Security Center can be set to.
 
         :sc-api:`system: locales <System.htm#SystemRESTReference-/system/locales>`
 

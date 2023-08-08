@@ -2,7 +2,7 @@
 Filters
 =======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`filters <filters-1>` API endpoints.
 
 Methods available on ``tio.filters``:

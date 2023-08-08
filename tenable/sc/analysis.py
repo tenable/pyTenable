@@ -2,8 +2,8 @@
 Analysis
 ========
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`analysis <Analysis.htm>` API.  The analysis area in Tenable.sc is
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`analysis <Analysis.htm>` API.  The analysis area in Tenable Security Center is
 highly complex and allows for a wide range of varied inputs and outputs.  This
 single endpoint has been broken down in pyTenable to several methods in order to
 apply some defaults to the expected data-types and options most likely to be
@@ -51,7 +51,7 @@ separated values to indicate multiple items.  So for high and critical vulns,
 ``('severity', '=', '3,4')`` would return only what your looking for.
 
 Asset list calculations in filters are a bit more complex, but still shouldn't
-be too difficult.  Tenable.sc leverages nested pairs for the asset calculations
+be too difficult.  Tenable Security Center leverages nested pairs for the asset calculations
 combined with a operator to define how that pair are to be combined.  Each of
 the elements within the pair can further be nested, allowing for some quite
 complex asset list math to happen.
@@ -534,7 +534,7 @@ class AnalysisAPI(SCEndpoint):
 
     def console(self, *filters, **kw):
         '''
-        Queries the analysis API for log data from the Tenable.sc Console itself.
+        Queries the analysis API for log data from the Tenable Security Center Console itself.
 
         :sc-api:`analysis: sclog-type <Analysis.htm#AnalysisRESTReference-SCLogType>`
 

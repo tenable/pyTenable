@@ -2,7 +2,7 @@
 Assets
 ======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`assets <assets>` API endpoints.
 
 Methods available on ``tio.assets``:
@@ -130,7 +130,7 @@ class AssetsAPI(TIOEndpoint):
 
     def asset_import(self, source, *assets):
         '''
-        Imports asset information into Tenable.io from an external source.
+        Imports asset information into Tenable Vulnerability Management from an external source.
 
         :devportal:`assets: import <assets-import>`
 
@@ -264,7 +264,7 @@ class AssetsAPI(TIOEndpoint):
                 value.  Example: ``('host.hostname', 'match', 'asset.com')``.
             filter_type (str, optional):
                 If multiple filters are defined, the filter_type toggles the
-                behavior as to how these filters are used.  Either all of the
+                behavior as to how these filters are used.  Either all the
                 filters have to match (``AND``) or any of the filters have to
                 match (``OR``).  If not specified, the default behavior is to
                 assume filter_type is ``AND``.

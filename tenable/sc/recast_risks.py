@@ -2,7 +2,7 @@
 Recast Risks
 ============
 
-The following methods allow for interaction into the Tenable.sc
+The following methods allow for interaction into the Tenable Security Center
 :sc-api:`Recast Risk <Recast-Risk-Rule.htm>` API.
 
 Methods available on ``sc.recast_risks``:
@@ -165,7 +165,7 @@ class RecastRiskAPI(SCEndpoint):
 
     def delete(self, risk_id):
         '''
-        Removes the recast risk rule from Tenable.sc
+        Removes the recast risk rule from Tenable Security Center
 
         :sc-api:`recast-risk: delete <Recast-Risk-Rule.htm#recastRiskRule_id_DELETE>`
 

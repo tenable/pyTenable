@@ -2,11 +2,11 @@
 Editor
 ======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`editor <editor>` API endpoints.  While these endpoints are
 pythonized for completeness within pyTenable, the Editor API endpoints should
 generally be avoided unless absolutely necessary.  These endpoints are used to
-drive the Tenable.io UI, and not designed to be used programmatically.
+drive the Tenable Vulnerability Management UI, and not designed to be used programmatically.
 
 Methods available on ``io.editor``:
 
@@ -126,7 +126,7 @@ class EditorAPI(TIOEndpoint):
 
     def audits(self, etype, object_id, file_id, fobj=None):
         '''
-        Retrieves an audit file from Tenable.io
+        Retrieves an audit file from Tenable Vulnerability Management
 
         :devportal:`editor: audits <editor-audits>`
 

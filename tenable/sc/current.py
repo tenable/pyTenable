@@ -2,7 +2,7 @@
 Current Session
 ===============
 
-The following methods allow for interaction with the Tenable.sc
+The following methods allow for interaction with the Tenable Security Center
 :sc-api:`CurrentOrganization <Current-Organization.htm>` API and the
 :sc-api:`CurrentUser <>` API.
 

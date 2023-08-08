@@ -2,7 +2,7 @@
 Plugin Rules
 ============
 
-Methods described in this section relate to the the plugin ruless API.
+Methods described in this section relate to the plugin rules API.
 These methods can be accessed at ``Nessus.plugin_rules``.
 
 .. rst-class:: hide-signature

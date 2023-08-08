@@ -2,7 +2,7 @@
 Tags
 ====
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`tagging <tags>` API endpoints.
 
 Methods available on ``tio.tags``:
