@@ -14,6 +14,7 @@ This package covers the Tenable Identity Exposure interface.
 
     about
     api_keys
+    attacks
     attack_types
     category
     checker
