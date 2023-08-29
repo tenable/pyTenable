@@ -44,6 +44,7 @@ Tenable Security Center
     scans
     status
     system
+    tickets
     users
 
 """
@@ -83,6 +84,7 @@ from .scanners import ScannerAPI
 from .scans import ScanAPI
 from .status import StatusAPI
 from .system import SystemAPI
+from .tickets import TicketAPI
 from .users import UserAPI
 
 try:
@@ -624,7 +626,15 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         :doc:`Tenable Security Center System APIs <system>`.
         """
         return SystemAPI(self)
-
+    
+    @property
+    def tickets(self):
+        '''
+        The interface object for the
+        :doc:`Tenable Security Center Ticket APIs <system>`.
+        '''
+        return TicketAPI(self)
+    
     @property
     def users(self):
         """
