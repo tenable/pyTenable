@@ -22,6 +22,7 @@ This package covers the Tenable Identity Exposure interface.
     directories
     infrastructure
     ldap_configuration
+    license
     lockout_policy
     preference
     profiles
