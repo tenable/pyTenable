@@ -1,5 +1,6 @@
 '''tests for reason APIs'''
 import responses
+
 from tests.ad.conftest import RE_BASE
 
 

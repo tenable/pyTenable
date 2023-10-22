@@ -1,9 +1,7 @@
 '''tests for checker option APIs'''
-import pytest
 import responses
-from marshmallow import ValidationError
 
-RE_BASE = 'https://pytenable.tenable.ad/api'
+from tests.ad.conftest import RE_BASE
 
 
 @responses.activate

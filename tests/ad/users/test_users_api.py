@@ -1,6 +1,6 @@
 import responses
 
-RE_BASE = 'https://pytenable.tenable.ad/api'
+from tests.ad.conftest import RE_BASE
 
 
 @responses.activate

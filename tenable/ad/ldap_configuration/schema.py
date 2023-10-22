@@ -22,3 +22,4 @@ class LDAPConfigurationSchema(CamelCaseSchema):
     user_search_filter = fields.Str()
     allowed_groups = fields.Nested(
         LDAPConfigurationAllowedGroupsSchema, many=True)
+    enable_sasl_binding = fields.Bool()

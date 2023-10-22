@@ -33,6 +33,7 @@ def test_ldap_configuration_schema(ldap_configuration_schema):
         'searchUserPassword': None,
         'userSearchBase': 'tenable.ad',
         'userSearchFilter': '.ad',
+        'enable_sasl_binding': True,
         'allowedGroups': [{
             'name': 'groups name',
             'defaultRoleIds': [1, 2],

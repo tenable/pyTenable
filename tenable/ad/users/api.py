@@ -10,7 +10,6 @@ These methods can be accessed at ``TenableAD.users``.
     :members:
 '''
 from typing import List, Dict
-from marshmallow import INCLUDE
 from restfly.utils import dict_merge
 from tenable.base.endpoint import APIEndpoint
 from .schema import UserSchema, UserInfoSchema
@@ -31,7 +30,7 @@ class UsersAPI(APIEndpoint):
         Examples:
             >>> tad.users.list()
         '''
-        return self._schema.load(self._get(), many=True, unknown=INCLUDE)
+        return self._schema.load(self._get(), many=True)
 
     def create(self,
                name: str,
@@ -84,7 +83,7 @@ class UsersAPI(APIEndpoint):
 
         return self._schema.load(
             self._post(json=payload),
-            many=True, unknown=INCLUDE)
+            many=True)
 
     def info(self) -> Dict:
         '''
@@ -98,7 +97,7 @@ class UsersAPI(APIEndpoint):
             >>> tad.users.info()
         '''
         schema = UserInfoSchema()
-        return schema.load(self._get('whoami'), unknown=INCLUDE)
+        return schema.load(self._get('whoami'))
 
     def details(self, user_id: str) -> Dict:
         '''
@@ -115,7 +114,7 @@ class UsersAPI(APIEndpoint):
         Examples:
             >>> tad.users.details('1')
         '''
-        return self._schema.load(self._get(f'{user_id}'), unknown=INCLUDE)
+        return self._schema.load(self._get(f'{user_id}'))
 
     def update(self,
                user_id: str,
@@ -156,8 +155,7 @@ class UsersAPI(APIEndpoint):
         '''
         payload = self._schema.dump(self._schema.load(kwargs))
         return self._schema.load(
-            self._patch(f"{user_id}", json=payload),
-            unknown=INCLUDE)
+            self._patch(f"{user_id}", json=payload))
 
     def delete(self, user_id: str) -> None:
         '''
