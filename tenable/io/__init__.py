@@ -141,7 +141,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     '''
     _env_base = 'TIO'
     _tzcache = None
-    _url = 'https://cloud.tenable.com'
+    _url = 'https://fedcloud.tenable.com'
     _timeout = 120
 
     def __init__(self,
