@@ -63,6 +63,13 @@ class AssetsAPI(OTAPIBase):
         if not sort:
             sort = [{"field": "id", "direction": "DescNullLast"}]
 
+        if not query_filter:
+            query_filter = {
+                "op": "Equal",
+                "field": "hidden",
+                "values": "false"
+            }
+
         return super().list(
             query=ASSETS_QUERY,
             query_filter=query_filter,
