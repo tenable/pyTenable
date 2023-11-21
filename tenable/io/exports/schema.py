@@ -86,6 +86,8 @@ class VulnExportSchema(Schema):
     state = fields.List(LowerCase(fields.Str()))
     vpr_score = fields.Nested(VPRSchema())
     scan_uuid = fields.Str()
+    source = fields.List(fields.Str())
+    severity_modification_type = fields.List(fields.Str())
 
     # Asset fields
     tags = fields.List(fields.Tuple((fields.Str(), fields.Str())))

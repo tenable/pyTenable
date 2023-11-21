@@ -399,6 +399,10 @@ class ExportsAPI(APIEndpoint):
                 Only return findings with the specified plugin type.
             scan_uuid (uuid, optional):
                 Only return findings with the specified scan UUID.
+            source (list[str], optional):
+                Only return vulnerabilities for assets that have the specified scan source.
+            severity_modification_type (list[str], optional):
+                Only return vulnerabilities with the specified severity modification type.
             severity (list[str], optional):
                 Only return findings with the specified severities.
             state (list[str], optional):
