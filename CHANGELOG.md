@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.14]
+
+### Added
+- Support for `source` and `severity_modification_type` filters to Vulnerability Management vulnerability export.
+- Support for filtering out hidden assets from Operational technology asset `list` method by default.
+- Product Rebranding in the SDK documentation.
+
+### Deprecated
+- Support for V3 Vulnerability Management API methods.
+
+[1.4.14]: https://github.com/tenable/pyTenable/compare/1.4.13...1.4.14
+
 ## [1.4.13]
 
 ### Added
