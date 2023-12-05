@@ -13,8 +13,8 @@ Tenable OT API.
 """
 from typing import List, Dict, Optional, Union, Any
 from tenable.base.endpoint import APIEndpoint
-from .iterator import OTExportsIterator, OTFindingsIterator
-from . import queries
+from tenable.ot.exports.iterator import OTExportsIterator, OTFindingsIterator
+from tenable.ot.exports import queries
 
 
 class ExportsAPI(APIEndpoint):

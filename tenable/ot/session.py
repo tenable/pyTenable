@@ -23,7 +23,7 @@ from tenable.base.platform import APIPlatform
 from tenable.ot.assets import AssetsAPI
 from tenable.ot.events import EventsAPI
 from tenable.ot.plugins import PluginsAPI
-from .exports.api import ExportsAPI
+from tenable.ot.exports.api import ExportsAPI
 
 
 class TenableOT(APIPlatform):
