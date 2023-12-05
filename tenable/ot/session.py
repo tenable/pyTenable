@@ -23,27 +23,28 @@ from tenable.base.platform import APIPlatform
 from tenable.ot.assets import AssetsAPI
 from tenable.ot.events import EventsAPI
 from tenable.ot.plugins import PluginsAPI
+from tenable.ot.exports.api import ExportsAPI
 
 
 class TenableOT(APIPlatform):
     """
-    The Tenable OT Security object is the primary interaction point for users to
-    interface with Tenable.OT via the pyTenable library.  All the API
+    The Tenable OT Security object is the primary interaction point for users
+    to interface with Tenable.OT via the pyTenable library.  All the API
     endpoint classes that have been written will be grafted onto this class.
 
     Args:
         api_key (str, optional):
-            The user's API key for Tenable OT Security.  If an api key isn't specified,
-            then the library will attempt to read the environment variable
-            ``TOT_API_KEY`` to acquire the key.
+            The user's API key for Tenable OT Security.  If an api key isn't
+            specified, then the library will attempt to read the environment
+            variable ``TOT_API_KEY`` to acquire the key.
         url (str, optional):
-            The base URL used to connect to the Tenable OT Security application.  If a
-            URL isn't specified, then the library will attempt to read the
+            The base URL used to connect to the Tenable OT Security service.
+            If a URL isn't specified, then the library will attempt to read the
             environment variable ``TOT_URL`` to acquire the URL.
 
         **kwargs:
             arguments passed to :class:`tenable.base.platform.APIPlatform` for
-            connection management.
+            ConnectionAbortedErrorn management.
 
 
     Examples:
@@ -140,3 +141,11 @@ class TenableOT(APIPlatform):
         :doc:`Tenable OT Security Plugins APIs <plugins>`.
         """
         return PluginsAPI(self)
+
+    @property
+    def exports(self):
+        """
+        The interface object for the
+        :doc:`Tenable OT Security Exports <exports>`.
+        """
+        return ExportsAPI(self)
