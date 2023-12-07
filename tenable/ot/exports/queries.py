@@ -58,7 +58,7 @@ query getAssets(
 
 
 PLUGINS = '''
- query getAssets(
+query getAssets(
   $filter: PluginExpressionsParams
   $search: String
   $limit: Int
@@ -72,6 +72,9 @@ PLUGINS = '''
     first: $limit
     after: $startAt
   ) {
+    pageInfo {
+      endCursor
+    }
     nodes {
       id
       name
