@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.4.16]
 
  ### Fixed
-- Pagination bug in the Tenable OT Security Exports Assets list functionality.
+- Pagination bug in the Tenable OT Security Exports - Plugin Query.
 
 [1.4.16]: https://github.com/tenable/pyTenable/compare/1.4.15...1.4.16
 
