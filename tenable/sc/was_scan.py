@@ -322,3 +322,42 @@ class WasScanAPI(SCEndpoint):
             >>> sc.was_scan.delete(scan_id=1)
         """
         return self._api.delete(f"{self.api_route}/{scan_id}").json()
+
+    def copy(self, scan_id: Optional[int] = None, scan_uuid: Optional[str] = None, name: str = None):
+        """
+        Copies the WAS Scan associated with {id} or {uuid}, depending on access and permissions.
+
+        :sc-api:`was-scan: list <Was-Scan.htm#wasScan_uuid_DELETE>`
+
+        Args:
+            name (str):
+                Name of the scan.
+            scan_id (int, optional):
+                ID of the WAS scan to be copied.
+            scan_uuid (str, optional):
+                UUID of the WAS scan to be copied.
+
+        Returns:
+            :obj:`dict`:
+                A Copy response.
+
+        Examples:
+            >>> sc.was_scan.copy(scan_id=1)
+        """
+
+        if (scan_id is not None and scan_uuid is not None) or (scan_id is None and scan_uuid is None):
+            raise ValueError("Exactly one of these [scan_id, scan_uuid] should be found.")
+
+        request = {
+            "name": self._check("name", name, str),
+            "targetUser": {
+
+            }
+        }
+
+        if scan_id:
+            request["targetUser"]["id"] = self._check("scan_id", scan_id, int)
+            return self._api.post(f"{self.api_route}/{scan_id}/copy", json=request).json()['response']
+        else:
+            request["targetUser"]["uuid"] = self._check("scan_uuid", scan_uuid, str)
+            return self._api.post(f"{self.api_route}/{scan_uuid}/copy", json=request).json()['response']
