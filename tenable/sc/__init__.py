@@ -74,6 +74,7 @@ from .scan_zones import ScanZoneAPI
 from .status import StatusAPI
 from .system import SystemAPI
 from .users import UserAPI
+from .was_scan import WasScanAPI
 
 
 class TenableSC(APIPlatform):  # noqa PLR0904
@@ -501,3 +502,11 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         :doc:`Tenable Security Center Users APIs <users>`.
         '''
         return UserAPI(self)
+
+    @property
+    def was_scan(self):
+        """
+        The interface object for the
+        :doc:`Tenable Security Center WAS Scan APIs <was_scan>`.
+        """
+        return WasScanAPI(self)
