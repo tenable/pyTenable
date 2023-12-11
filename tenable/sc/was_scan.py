@@ -49,8 +49,6 @@ class WasScanAPI(SCEndpoint):
 
         if kwargs["name"]:
             request["name"] = self._check("name", kwargs["name"], str)
-        else:
-            raise Exception("You should provide a name to the scan.")
 
         if "type" in kwargs:
             request["type"] = self._check("type", kwargs["type"], str)
@@ -220,3 +218,38 @@ class WasScanAPI(SCEndpoint):
             params["fields"] = ",".join(string_fields)
 
         return self._api.get(self.api_route, params=params).json()['response']
+
+    def details(self, id: Optional[str] = None, uuid: Optional[str] = None, fields: Optional[List[str]] = None) -> dict:
+        """
+        Retrieves the details of the given WAS Scan. Either id or the uuid should be present
+
+        :sc-api:`was-scan: list <Was-Scan.htm#WASScanRESTReference-/wasScan/{id}>`
+
+        Args:
+            id (str, optional):
+                ID of the WAS scan to be fetched.
+            uuid (str, optional):
+                UUID of the WAS scan to be fetched.
+            fields (list, optional):
+                A list of attributes to return for the scan.
+
+        Returns:
+            :obj:`list`:
+                A list of WAS Scans.
+
+        Examples:
+            >>> sc.was_scan.details(1)
+        """
+        if (id is not None and uuid is not None) or (id is None and uuid is None):
+            raise ValueError(
+                "You can only provide id OR UUID, and not both. They cannot both be empty at the same time."
+            )
+
+        params = {}
+        if fields:
+            string_fields = [self._check("fields", f, str) for f in fields]
+            params["fields"] = ",".join(string_fields)
+
+        identifier = id if id else uuid
+
+        return self._api.get(f"{self.api_route}/{identifier}", params=params).json()['response']
