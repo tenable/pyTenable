@@ -364,7 +364,7 @@ class CredentialsAPI(TIOEndpoint):
             _resource='credentials'
         )
 
-    def upload(self, fobj):
+    def upload(self, fobj, file_type: str):
         '''
         Uploads a file for use with a managed credential.
 
@@ -373,10 +373,18 @@ class CredentialsAPI(TIOEndpoint):
         Args:
             fobj (FileObject):
                 The file object intended to be uploaded into Tenable Vulnerability Management.
+            file_type (string):
+                File Type of the credential being uploaded
 
         Returns:
             :obj:`str`:
                 The fileuploaded attribute
+
+        Examples:
+            >>>     with open("hello.pem", "rb") as file:
+            ...            response = tio.credentials.upload(file, "pem")
+            ...
+            ...     print(response)
         '''
 
         # We will attempt to discover the name of the file stored within the
@@ -388,5 +396,5 @@ class CredentialsAPI(TIOEndpoint):
                 'Filedata': fobj
             }
         }
-
-        return self._api.post('credentials/files', **kw).json()['fileuploaded']
+        file_type = self._check("file_type", file_type, str)
+        return self._api.post(f'credentials/files?fileType={file_type}', **kw).json()['fileuploaded']
