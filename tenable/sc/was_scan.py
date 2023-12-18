@@ -355,9 +355,13 @@ class WasScanAPI(SCEndpoint):
             }
         }
 
+        path = None
+
         if scan_id:
             request["targetUser"]["id"] = self._check("scan_id", scan_id, int)
-            return self._api.post(f"{self.api_route}/{scan_id}/copy", json=request).json()['response']
+            path = f"{self.api_route}/{scan_id}/copy"
         else:
             request["targetUser"]["uuid"] = self._check("scan_uuid", scan_uuid, str)
-            return self._api.post(f"{self.api_route}/{scan_uuid}/copy", json=request).json()['response']
+            path = f"{self.api_route}/{scan_uuid}/copy"
+
+        return self._api.post(path, json=request).json()['response']
