@@ -376,7 +376,7 @@ class CredentialsAPI(TIOEndpoint):
             fobj (FileObject):
                 The file object intended to be uploaded into Tenable Vulnerability Management.
             file_type (string):
-                File Type of the credential being uploaded
+                File type of the credential being uploaded.
 
         Returns:
             :obj:`str`:

@@ -379,7 +379,7 @@ def test_credentials_list(api):
 @pytest.mark.vcr()
 def test_credentials_upload_type_error(api):
     '''
-    test to raise error
+    test to raise error when the type param is not set.
     '''
 
     # Create a BytesIO object
