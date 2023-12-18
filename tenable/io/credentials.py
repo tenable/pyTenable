@@ -11,6 +11,8 @@ Methods available on ``tio.credentials``:
 .. autoclass:: CredentialsAPI
     :members:
 '''
+from typing import BinaryIO
+
 from tenable.utils import dict_merge
 from .base import TIOEndpoint, TIOIterator
 
@@ -364,7 +366,7 @@ class CredentialsAPI(TIOEndpoint):
             _resource='credentials'
         )
 
-    def upload(self, fobj, file_type: str):
+    def upload(self, fobj: BinaryIO, file_type: str):
         '''
         Uploads a file for use with a managed credential.
 
