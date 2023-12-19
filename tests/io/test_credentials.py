@@ -388,6 +388,29 @@ def test_credentials_upload_type_error(api):
     with pytest.raises(TypeError):
         api.credentials.upload(file)
 
+@pytest.mark.vcr()
+def test_credentials_upload_should_fail_on_unsupported_type(api):
+    '''
+    test to raise error when the type param is not set.
+    '''
+
+    # Create a BytesIO object
+    file = io.BytesIO(b'\x48\x65\x6C\x6C\x6F\x20\x57\x6F\x72\x6C\x64')
+
+    with pytest.raises(UnexpectedValueError):
+        api.credentials.upload(file, "some_type")
+
+@pytest.mark.vcr()
+def test_credentials_upload_should_succeed(api):
+    '''
+    test to succeed only when all the values are set properly.
+    '''
+
+    # Create a BytesIO object
+    file = io.BytesIO(b'\x48\x65\x6C\x6C\x6F\x20\x57\x6F\x72\x6C\x64')
+    uploaded_file = api.credentials.upload(file, "pem")
+    assert type(uploaded_file) is str
+
 
 @pytest.mark.vcr()
 def test_credentials_permissions_constructor_typeerror(api):

@@ -398,5 +398,5 @@ class CredentialsAPI(TIOEndpoint):
                 'Filedata': fobj
             }
         }
-        file_type = self._check("file_type", file_type, str)
+        file_type = self._check("file_type", file_type, str, choices=["pem", "json", "csv", "x.509", "p12", "ssh", "cookie"])
         return self._api.post(f'credentials/files?fileType={file_type}', **kw).json()['fileuploaded']
