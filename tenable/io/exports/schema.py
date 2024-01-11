@@ -39,6 +39,7 @@ class AssetExportSchema(Schema):
     is_licensed = fields.Bool()
     is_terminated = fields.Bool()
     servicenow_sysid = fields.Bool()
+    include_open_ports = fields.Bool()
 
     # Other params
     chunk_size = fields.Int(dump_default=1000)
@@ -49,7 +50,7 @@ class AssetExportSchema(Schema):
     @post_dump
     def post_serialization(self, data, **kwargs):  # noqa PLR0201 PLW0613
         data = serialize_tags(data)
-        data = envelope(data, 'filters', excludes=['chunk_size'])
+        data = envelope(data, 'filters', excludes=['chunk_size', 'include_open_ports'])
         return data
 
 
