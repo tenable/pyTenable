@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.17]
+
+### Fixed
+- Vulnerability `CVE-2023-38325` by upgrading the test dependency `requests-pkcs12`.
+
+### Added
+- Support for `include_open_ports` property in Vulnerability Management asset export request.
+
+[1.4.17]: https://github.com/tenable/pyTenable/compare/1.4.16...1.4.17
+
 ## [1.4.16]
 
  ### Fixed
