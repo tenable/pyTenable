@@ -39,6 +39,35 @@ def asset_export():
         ]
     }
 
+@pytest.fixture
+def asset_export_with_open_ports_true():
+    """
+    Asset export request with open ports set as true.
+    """
+    return {
+        'chunk_size': 1000,
+        'include_open_ports': True
+    }
+
+@pytest.fixture
+def asset_export_with_open_ports_false():
+    """
+    Asset export request with open ports set as false.
+    """
+    return {
+        'chunk_size': 1000,
+        'include_open_ports': False
+    }
+
+@pytest.fixture
+def asset_export_with_out_open_ports():
+    """
+    Asset export request without open ports.
+    """
+    return {
+        'chunk_size': 1000
+    }
+
 
 @pytest.fixture
 def compliance_export():
@@ -190,3 +219,28 @@ def test_vulnerabilityschema(vuln_export):
     with pytest.raises(ValidationError):
         vuln_export['scan_uuid'] = 0
         schema.load(vuln_export)
+
+def test_asset_export_schema_for_open_ports_true(asset_export_with_open_ports_true):
+    """
+    Ensure Asset Export request is correctly formed with include_open_ports set to true.
+    """
+    schema = AssetExportSchema()
+    schema_dump = schema.dump(schema.load(asset_export_with_open_ports_true))
+    assert schema_dump["include_open_ports"] == True
+
+
+def test_asset_export_schema_for_open_ports_false(asset_export_with_open_ports_false):
+    """
+    Ensure Asset Export request is correctly formed with include_open_ports set to false.
+    """
+    schema = AssetExportSchema()
+    schema_dump = schema.dump(schema.load(asset_export_with_open_ports_false))
+    assert schema_dump["include_open_ports"] == False
+
+def test_asset_export_schema_without_open_ports(asset_export_with_out_open_ports):
+    """
+    Ensure Asset Export request is correctly formed without include_open_ports.
+    """
+    schema = AssetExportSchema()
+    schema_dump = schema.dump(schema.load(asset_export_with_out_open_ports))
+    assert "include_open_ports" not in schema_dump

@@ -269,6 +269,8 @@ class ExportsAPI(APIEndpoint):
                 Should we return assets that have a ServiceNOW sysid?
                 if ``True`` only assets with an id will be returned.
                 if ``False`` only assets without an id will be returned.
+            include_open_ports (bool, optional):
+                Should we include open ports of assets in the exported chunks?
             chunk_size (int, optional):
                 How many asset objects should be returned per chunk of data?
                 The default is ``1000``.
