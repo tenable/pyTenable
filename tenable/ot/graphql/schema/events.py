@@ -2,7 +2,7 @@ from marshmallow import fields
 
 from tenable.ot.graphql.definitions import NodesSchema, SchemaBase
 from tenable.ot.graphql.schema.assets import Asset
-from tenable.ot.schema.assets import NetworkInterface
+from tenable.ot.schema.assets import NetworkInterface, IP, IPList
 from tenable.ot.schema.base import NodesList, AssetInfoList, AssetInfo
 from tenable.ot.schema.events import (
     Event,
@@ -30,6 +30,16 @@ class IDSchema(SchemaBase):
 class IDListSchema(SchemaBase):
     dataclass = IDList
     nodes = fields.Nested(IDSchema, required=True, many=True)
+
+
+class IPSchema(SchemaBase):
+    dataclass = IP
+    ip = fields.IPv4(required=True)
+
+
+class IPListSchema(SchemaBase):
+    dataclass = IPList
+    nodes = fields.Nested(IPSchema, required=True, many=True)
 
 
 class ActionSchema(SchemaBase):
@@ -187,16 +197,23 @@ class PolicySchema(SchemaBase):
     )
 
 
+class DnsListSchema(SchemaBase):
+    dataclass = NodesList
+
+    nodes = fields.List(fields.String(required=True), required=True)
+
+
 class NetworkInterfaceSchema(SchemaBase):
     dataclass = NetworkInterface
+
     id = fields.UUID(required=True)
     last_seen = fields.DateTime(allow_none=True, data_key="lastSeen")
     first_seen = fields.DateTime(allow_none=True, data_key="firstSeen")
     mac = fields.String(allow_none=True)
-
-    ips = fields.IPv4(required=True)
+    ips = fields.Nested(IPListSchema, required=True)
     family = fields.String(required=True)
-    direct_asset = fields.Nested(Asset, allow_none=True, data_key="directAsset")
+    direct_asset = fields.Nested(IDSchema, allow_none=True, data_key="directAsset")
+    dns_names = fields.Nested(DnsListSchema, required=True, data_key="dnsNames")
 
 
 class AssetInfoSchema(SchemaBase):

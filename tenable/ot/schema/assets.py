@@ -1,4 +1,5 @@
 import datetime
+import ipaddress
 import typing
 import uuid
 from typing import List, Optional
@@ -145,15 +146,26 @@ class Assets(NodesList):
 
 
 @dataclass
+class IP:
+    ip: ipaddress.IPv4Address
+
+
+@dataclass
+class IPList:
+    nodes: List[IP]
+
+
+@dataclass
 class NetworkInterface:
     """
     This class holds a network interface's information.
     """
 
-    direct_asset: Asset
-    family: str
-    first_seen: datetime.datetime
     id: uuid.UUID
-    ips: str
     last_seen: datetime.datetime
+    first_seen: datetime.datetime
     mac: str
+    family: str
+    direct_asset: Asset
+    ips: IPList
+    dns_names: NodesList
