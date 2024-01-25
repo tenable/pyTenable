@@ -115,6 +115,18 @@ class ComplianceExportSchema(Schema):
     # Temporal fields
     first_seen = fields.Int()
     last_seen = fields.Int()
+    ipv4_addresses = fields.List(fields.Str())
+    ipv6_addresses = fields.List(fields.Str())
+    plugin_name = fields.List(fields.Str())
+    plugin_id = fields.List(fields.Int())
+    asset_tags = fields.List(fields.Str())
+    audit_name = fields.Str()
+    audit_file_name = fields.Str()
+    compliance_results = fields.List(fields.Str())
+    last_observed = fields.Int()
+    indexed_at = fields.Int()
+    since = fields.Int()
+    state = fields.List(fields.Str())
 
     # Other params
     asset = fields.List(fields.UUID())
