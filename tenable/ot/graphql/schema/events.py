@@ -2,8 +2,8 @@ from marshmallow import fields
 
 from tenable.ot.graphql.definitions import NodesSchema, SchemaBase
 from tenable.ot.graphql.schema.assets import Asset
-from tenable.ot.schema.assets import NetworkInterface, IP, IPList
-from tenable.ot.schema.base import NodesList, AssetInfoList, AssetInfo
+from tenable.ot.schema.assets import NetworkInterface
+from tenable.ot.schema.base import NodesList, AssetInfoList, AssetInfo,IP, IPList
 from tenable.ot.schema.events import (
     Event,
     EventTypeDetails,

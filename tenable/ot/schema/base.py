@@ -1,3 +1,4 @@
+import ipaddress
 import uuid
 from dataclasses import dataclass
 from typing import List
@@ -32,3 +33,13 @@ class AssetInfo:
 @dataclass
 class AssetInfoList(NodesList):
     nodes: List[AssetInfo]
+
+
+@dataclass
+class IP:
+    ip: ipaddress.IPv4Address
+
+
+@dataclass
+class IPList:
+    nodes: List[IP]

@@ -6,7 +6,7 @@ from typing import List, Optional
 
 from dataclasses import dataclass
 
-from tenable.ot.schema.base import NodesList
+from tenable.ot.schema.base import NodesList, IPList
 from tenable.ot.schema.plugins import Plugin, Plugins
 
 
@@ -143,16 +143,6 @@ class Asset:
 @dataclass
 class Assets(NodesList):
     nodes: List[Asset]
-
-
-@dataclass
-class IP:
-    ip: ipaddress.IPv4Address
-
-
-@dataclass
-class IPList:
-    nodes: List[IP]
 
 
 @dataclass
