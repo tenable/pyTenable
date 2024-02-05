@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 from tenable.ot.schema.assets import NetworkInterface
-from tenable.ot.schema.base import NodesList, AssetInfoList
+from tenable.ot.schema.base import NodesList, AssetInfoList, IP
 
 
 @dataclass
@@ -121,7 +121,7 @@ class Event:
     completion: str
     continuous: bool
     dst_assets: AssetInfoList
-    dst_ip: ipaddress.IPv4Address
+    dst_ip: IP
     dst_names: NodesList
     event_type: EventTypeDetails
     has_details: bool
@@ -136,7 +136,7 @@ class Event:
     resolved: bool
     severity: str
     src_assets: AssetInfoList
-    src_ip: ipaddress.IPv4Address
+    src_ip: IP
     src_names: NodesList
     time: datetime.datetime
     type: str
