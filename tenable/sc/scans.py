@@ -24,6 +24,11 @@ class ScanAPI(SCEndpoint):
         '''
         Handles parsing the keywords and returns a scan definition document
         '''
+        if 'inactivity_timeout' in kw:
+            kw['inactivityTimeout'] = str(self._check(
+                'inactivity_timeout', kw['inactivity_timeout'], int, default=3600))
+            del (kw['inactivity_timeout'])
+
         if 'name' in kw:
             # simply verify that the name attribute is a string.
             self._check('name', kw['name'], str)
@@ -260,6 +265,8 @@ class ScanAPI(SCEndpoint):
             vhosts (bool, optional):
                 Should virtual host logic be enabled for the scan?  The default
                 is ``False``.
+            inactivity_timeout (int):
+                Inactivity Timeout in seconds. The value should be between 3600 and 432000.
 
         Returns:
             :obj:`dict`:
