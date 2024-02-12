@@ -6,7 +6,7 @@ from typing import List, Optional
 
 from dataclasses import dataclass
 
-from tenable.ot.schema.base import NodesList, IPList
+from tenable.ot.schema.base import NodesList, IPList, ID
 from tenable.ot.schema.plugins import Plugin, Plugins
 
 
@@ -156,6 +156,6 @@ class NetworkInterface:
     first_seen: datetime.datetime
     mac: str
     family: str
-    direct_asset: Asset
+    direct_asset: ID
     ips: IPList
     dns_names: NodesList

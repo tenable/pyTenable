@@ -43,3 +43,13 @@ class IP:
 @dataclass
 class IPList:
     nodes: List[IP]
+
+
+@dataclass
+class ID:
+    id: uuid.UUID
+
+
+@dataclass
+class IDList:
+    nodes: List[ID]

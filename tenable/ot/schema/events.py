@@ -6,17 +6,11 @@ from dataclasses import dataclass
 from typing import List, Optional
 
 from tenable.ot.schema.assets import NetworkInterface
-from tenable.ot.schema.base import NodesList, AssetInfoList, IP
-
-
-@dataclass
-class ID:
-    id: uuid.UUID
-
-
-@dataclass
-class IDList:
-    nodes: List[ID]
+from tenable.ot.schema.base import (
+    NodesList,
+    AssetInfoList,
+    IDList
+)
 
 
 @dataclass
@@ -121,7 +115,7 @@ class Event:
     completion: str
     continuous: bool
     dst_assets: AssetInfoList
-    dst_ip: IP
+    dst_ip: ipaddress.IPv4Address
     dst_names: NodesList
     event_type: EventTypeDetails
     has_details: bool
@@ -136,17 +130,17 @@ class Event:
     resolved: bool
     severity: str
     src_assets: AssetInfoList
-    src_ip: IP
+    src_ip: ipaddress.IPv4Address
     src_names: NodesList
     time: datetime.datetime
     type: str
     comment: Optional[str] = None
-    dst_interface: Optional[List[NetworkInterface]] = None
+    dst_interface: Optional[NetworkInterface] = None
     dst_mac: Optional[str] = None
     protocol_nice_name: Optional[str] = None
     resolved_ts: Optional[datetime.datetime] = None
     resolved_user: Optional[str] = None
-    src_interface: Optional[List[NetworkInterface]] = None
+    src_interface: Optional[NetworkInterface] = None
     src_mac: Optional[str] = None
 
 
