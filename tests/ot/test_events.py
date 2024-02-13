@@ -7,9 +7,18 @@ from ipaddress import IPv4Address
 
 import pytest
 import responses
+from tenable.ot.schema.assets import NetworkInterface
 
 from tenable.ot.graphql.iterators import OTGraphIterator
-from tenable.ot.schema.base import AssetInfo, NodesList, AssetInfoList
+from tenable.ot.schema.base import (
+    AssetInfo,
+    NodesList,
+    AssetInfoList,
+    IPList,
+    IP,
+    IDList,
+    ID,
+)
 from tenable.ot.schema.events import (
     Event,
     EventTypeDetails,
@@ -17,7 +26,7 @@ from tenable.ot.schema.events import (
     GroupMember,
     Group,
     EventCount,
-    ActionList, IDList,
+    ActionList
 )
 
 
@@ -150,7 +159,26 @@ def test_list(fixture_ot):
                                     }
                                 ]
                             },
-                            "srcInterface": None,
+                            "srcInterface": {
+                                "id": "71d1edd9-bdce-4a59-96f7-7f041baa7680",
+                                "lastSeen": "2024-02-12T12:29:11.75946Z",
+                                "firstSeen": "2024-02-05T16:36:32.946517Z",
+                                "mac": "00:50:56:83:6c:23",
+                                "ips": {
+                                    "nodes": [
+                                        {
+                                            "ip": "10.100.20.17"
+                                        }
+                                    ]
+                                },
+                                "dnsNames": {
+                                    "nodes": []
+                                },
+                                "family": "VMware",
+                                "directAsset": {
+                                    "id": "b1158857-b9fe-41ac-ba50-db17ecfd5746"
+                                }
+                            },
                             "srcNames": {"nodes": ["Eng. Station #100"]},
                             "dstAssets": {
                                 "nodes": [
@@ -160,7 +188,26 @@ def test_list(fixture_ot):
                                     }
                                 ]
                             },
-                            "dstInterface": None,
+                            "dstInterface": {
+                                "id": "56044b78-d307-467d-a5ba-eb1c522b73af",
+                                "lastSeen": "2024-02-12T12:29:09.568506Z",
+                                "firstSeen": "2024-02-05T16:36:32.747096Z",
+                                "mac": "00:09:91:06:4f:9a",
+                                "ips": {
+                                    "nodes": [
+                                        {
+                                            "ip": "10.100.103.20"
+                                        }
+                                    ]
+                                },
+                                "dnsNames": {
+                                    "nodes": []
+                                },
+                                "family": "GE",
+                                "directAsset": {
+                                    "id": "1ab1220a-479e-4ce8-ba2a-e1b2b63d8345"
+                                }
+                            },
                             "dstNames": {"nodes": ["CPU 412-2 PN/DP"]},
                             "hasDetails": False,
                             "payloadSize": 0,
@@ -299,7 +346,30 @@ def test_list(fixture_ot):
                 )
             ]
         ),
-        src_interface=None,
+        src_interface=NetworkInterface(
+            id=uuid.UUID('71d1edd9-bdce-4a59-96f7-7f041baa7680'),
+            last_seen=datetime.datetime(
+                2024, 2, 12, 12, 29, 11, 759460, tzinfo=datetime.timezone.utc
+            ),
+            first_seen=datetime.datetime(
+                2024, 2, 5, 16, 36, 32, 946517, tzinfo=datetime.timezone.utc
+            ),
+            mac='00:50:56:83:6c:23',
+            family='VMware',
+            direct_asset=ID(
+                id=uuid.UUID('b1158857-b9fe-41ac-ba50-db17ecfd5746')
+            ),
+            ips=IPList(
+                nodes=[
+                    IP(
+                        ip=IPv4Address('10.100.20.17')
+                    )
+                ]
+            ),
+            dns_names=NodesList(
+                nodes=[]
+            )
+        ),
         src_names=NodesList(nodes=["Eng. Station #100"]),
         dst_assets=AssetInfoList(
             nodes=[
@@ -309,7 +379,30 @@ def test_list(fixture_ot):
                 )
             ]
         ),
-        dst_interface=None,
+        dst_interface=NetworkInterface(
+            id=uuid.UUID('56044b78-d307-467d-a5ba-eb1c522b73af'),
+            last_seen=datetime.datetime(
+                2024, 2, 12, 12, 29, 9, 568506, tzinfo=datetime.timezone.utc
+            ),
+            first_seen=datetime.datetime(
+                2024, 2, 5, 16, 36, 32, 747096, tzinfo=datetime.timezone.utc
+            ),
+            mac='00:09:91:06:4f:9a',
+            family='GE',
+            direct_asset=ID(
+                id=uuid.UUID('1ab1220a-479e-4ce8-ba2a-e1b2b63d8345')
+            ),
+            ips=IPList(
+                nodes=[
+                    IP(
+                        ip=IPv4Address('10.100.103.20')
+                    )
+                ]
+            ),
+            dns_names=NodesList(
+                nodes=[]
+            )
+        ),
         dst_names=NodesList(nodes=["CPU 412-2 PN/DP"]),
         has_details=False,
         payload_size=0,
