@@ -330,6 +330,19 @@ class AnalysisAPI(SCEndpoint):
         if 'scan_id' in kw:
             payload['sourceType'] = 'individual'
             payload['scanID'] = kw['scan_id']
+        else:
+            # If the request is for a cumulative result, then we will an
+            # implicit filter to exclude WAS findings.
+            incl_filter = True
+            for f in filters:
+                if (
+                    (isinstance(f, tuple) and f[0] == 'wasVuln')
+                    or (isinstance(f, dict) and f['filterName'] == 'wasVuln')
+                ):
+                    incl_filter = False
+            if incl_filter:
+                filters = list(filters)
+                filters.append(('wasVuln', '=', 'excludeWas'))
 
         kw['payload'] = payload
         kw['type'] = 'vuln'
