@@ -150,12 +150,16 @@ class SCEndpoint(APIEndpoint):
             filters = self._check('filters', kw['filters'], list)
             del(kw['filters'])
 
-        if 'query' not in kw and 'tool' in kw and 'type' in kw:
+        if 'query' not in kw:
+            if 'tool' in kw and 'type' in kw:
+                kw['query'] = {
+                    'tool': kw['tool'],
+                    'type': kw['type'],
+                }
             kw['query'] = {
-                'tool': kw['tool'],
-                'type': kw['type'],
-                'filters': list()
+                    'filters': list()
             }
+
             if 'query_id' in kw:
                 # Request the specific query ID provided and fetch only the filters
                 query_response = self._api.get(
@@ -168,8 +172,10 @@ class SCEndpoint(APIEndpoint):
                 kw['query']['filters'] = query_filters
 
             for f in filters:
-                if kw['type'] == 'ticket':
-                    item = {'filterName': f[0], 'value': f[1]}
+                if 'type' in kw:
+                    if kw['type'] == 'ticket':
+                        item = {'filterName': f[0], 'value': f[1]}
+                    del (kw['type'])
                 else:
                     item = {'filterName': f[0], 'operator': f[1]}
 
@@ -214,7 +220,6 @@ class SCEndpoint(APIEndpoint):
                 # specified.
                 if f[1] != None and f[2] != None:
                     kw['query']['filters'].append(item)
-            del(kw['type'])
         return kw
 
     def _schedule_constructor(self, item):
