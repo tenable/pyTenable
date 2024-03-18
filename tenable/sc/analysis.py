@@ -248,7 +248,8 @@ class AnalysisAPI(SCEndpoint):
                 ``sumfamily``, ``sumiavm``, ``sumid``, ``sumip``,
                 ``summsbulletin``, ``sumprotocol``, ``sumremediation``,
                 ``sumseverity``, ``sumuserresponsibility``, ``sumport``,
-                ``trend``, ``vulndetails``, ``vulnipdetail``, ``vulnipsummary``
+                ``trend``, ``vulndetails``, ``vulnipdetail``, ``vulnipsummary``,
+                ``sumwasurl``, ``wasvulndetail``, ``waslistvuln``
 
         Returns:
             :obj:`AnalysisResultsIterator`:
@@ -323,6 +324,9 @@ class AnalysisAPI(SCEndpoint):
                 'vulndetails',
                 'vulnipdetail',
                 'vulnipsummary',
+                'sumwasurl',        # Undocumented in 6.3.x
+                'wasvulndetail',    # Undocumented in 6.3.x
+                'waslistvuln',      # Undocumented in 6.3.x
             ], case='lower')
         else:
             kw['tool'] = 'vulndetails'
