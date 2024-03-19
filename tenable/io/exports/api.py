@@ -365,8 +365,7 @@ class ExportsAPI(APIEndpoint):
                 Same as indexed_at. Restricts compliance findings to those that were updated or indexed into Tenable
                 Vulnerability Management on or after the specified unix timestamp.
             state (list[str], optional):
-                Restricts compliance findings to those associated with the provided list of states, such as Active,
-                Fixed, New and Resurfaced
+                Restricts compliance findings to those associated with the provided list of states, such as open, reopened and fixed.
             num_findings (int):
                 The number of findings to return per chunk of data.  If left
                 unspecified, the default is ``5000``.
