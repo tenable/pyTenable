@@ -273,6 +273,9 @@ class UserAPI(SCEndpoint):
                 Optional city information to associate to the user.
             country (str, optional):
                 Optional country information to associate to the user.
+            currentPassword (str, optional):
+                Optional, requirement when updating password for current user in 
+                addition to password kwarg.
             default_dashboards (bool, optional):
                 Should the default dashboards be created for the user?  If left
                 unspecified, the default is True.
@@ -313,7 +316,8 @@ class UserAPI(SCEndpoint):
                 inform Tenable Security Center which organization to create the security
                 manager within.
             password (str, optional):
-                The user password
+                The user password, currentPassword should be used with this if 
+                updating password for logged in user.
             phone (str, optional):
                 A phone number to associate to the user.
             responsibility (int, optional):
