@@ -1073,10 +1073,18 @@ def test_tags_edit_without_filters(api):
             log_exception(err)
 
 
-
 def tag_exists(api, tag_uuid):
     '''function to check whether the tag value exists or not '''
     if tag_uuid in api.tags.list():
         return True
     else:
         return False
+
+
+@pytest.mark.vcr()
+def test_get_tag_uuid(api):
+    """
+    Test to fetch uuid from tag category and value
+    """
+    tag_uuid = api.tags.get_tag_uuid('test tag', 'acr')
+    assert tag_uuid == "de2e56a2-6a0e-4757-8d00-e9ad635f6231"

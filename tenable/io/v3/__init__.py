@@ -19,7 +19,7 @@ Methods available on ``tio.v3``:
 """
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.v3.access_control import AccessControlAPI
-from tenable.io.v3.explore import Explore
+from tenable.io.v3.explore import Explore, AssetsAPI
 
 
 class Version3API(APIEndpoint):
@@ -42,3 +42,11 @@ class Version3API(APIEndpoint):
          :doc:`Tenable Vulnerability Management v3 access control <access_control>`
         """
         return AccessControlAPI(self._api)
+
+    @property
+    def assets(self):
+        """
+        The interface object for the
+         :doc:`Tenable.io v3 assets <explore/assets>`
+        """
+        return AssetsAPI(self._api)

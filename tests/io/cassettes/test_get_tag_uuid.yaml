@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.10
+        (Restfly/1.4.7; Python/3.9.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=12326e7a15c1c8684d598ac0018a211db16eb05b1e913a3c53deb23064168497;secretKey=f854d0a89b4cc7293ae6ef6e7f61d709744f62bf331cc96c1c0c118dc0cc16b5
+    method: GET
+    uri: https://cloud.tenable.com/tags/categories/filter-categories
+  response:
+    body:
+      string: '{"categories":[{"uuid":"2225679d-cbde-4e44-a201-dadbd94fd700","name":"test
+        tag","value_count":1,"values":[{"uuid":"de2e56a2-6a0e-4757-8d00-e9ad635f6231","value":"acr"}]},{"uuid":"71b6d9f4-cf29-4ec9-8d83-ba00575e9b67","name":"NO","value_count":1,"values":[{"uuid":"f038fd3a-a844-438f-b7a7-7acc6369f3e9","value":"UPDATE"}]}]}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '323'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 29 Nov 2022 14:08:35 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-7bfcc7b48d-4tqbn
+      X-Request-Uuid:
+      - d4d2a9f029a2985b819cb82b17aa1253
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

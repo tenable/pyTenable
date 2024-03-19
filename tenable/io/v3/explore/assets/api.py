@@ -15,6 +15,7 @@ import warnings
 from typing import Union
 
 from requests import Response
+from restfly.errors import ForbiddenError
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator, SearchIterator)
@@ -337,3 +338,32 @@ class AssetsAPI(ExploreBaseEndpoint):
                                iterator_cls=iclass,
                                api_path=f'{self._path}/search',
                                **kw)
+
+    def get_asset_uuids(self, **kw):
+        """
+        Retrieves all the assets UUID's for the matching filter tags.
+
+        Args:
+            filter (tuple, dict, optional):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+                Examples:
+                    >>> ('and', ('tags','eq', ['00000000-0000-0000-0000-000000000000']),
+                    ...         ('tags', 'neq', ['00000000-0000-0000-0000-000000000001'])
+                    ... )
+        Returns:
+            :obj:`list`:
+                List of asset UUID's.
+
+        Examples:
+            >>> tio.v3.assets.get_asset_uuids(filter=('and', ('tags','eq', ['00000000-0000-0000-0000-000000000000']),
+            ... ('tags', 'neq', ['00000000-0000-0000-0000-000000000001'])
+            ... )
+            ...)
+        """
+        items = []
+
+        iterator = self.search_all(**kw)
+        for item in iterator:
+            items.append(item['id'])
+        return items
