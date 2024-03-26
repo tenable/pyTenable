@@ -11,21 +11,25 @@ interactions:
       Cookie:
       - nginx-cloud-site-id=us-2b
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.2.7
-        (pyTenable/1.2.7; Python/3.8.6; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
-    uri: https://cloud.tenable.com/networks/58ac2d96-81aa-472c-a418-74fcc6082049
+    uri: https://cloud.tenable.com/networks/af62926c-9031-4f32-a7d4-5d5870db4e3c
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA5VQ0WrDMAz8laFnG2xPsZ1+RH8hKLYMhtQecUIpY/8+F9aSwR7WN3G6053uE+q1
-        8Drte45wAk0mKq2M1HpWEolZzgqTdAZVmq0dNCYQEFamjbtAW43OuWE0g0EBlxpzyoeFM+5deQEt
-        ULnbhLqXDU5KwI/h4CmYOFrpNZFEZ4Ik1F46TCFY5Y3CsRsWunBnn/n6dr6PAiK3sOaPLdfSFx3I
-        bYqcaF/6/URL42fMab79/7XHCy+JIi/8uw9nR//EX7r1CJ3L1DjUEtux5kPAPwi97q9vbOnoptIB
-        AAA=
+        H4sIAAAAAAAAA5VRQW7EIAz8C+cgQSAG9hH9QuQYI6FmoQqJVlXVv5ettu0eWql78WHs8czYb6Je
+        Cm/zceQoTgICKVaoJRhiab1mGbxdpGMHHlRKBJMYBG2MO3eCBq9H5bQLyrtBnGvMKf/SaITlKkP1
+        KLs4qUHcBDHBGEYgGZTR0iYzSnTRyilO3qm4WDbUBQueudt74v1St2dpnTUhoesOfS+RjURDJCcG
+        DByMQRM6K3KjLb/suZZO7kBuc+SEx9o9JFwbf0eZl9f/x/+K+RAp8sr3NxuNBQdXk5/4Q7tu959z
+        mRtTLbHdv+LnD38MvH8AQupRAvYBAAA=
     headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b630e0b0c120332-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -35,30 +39,30 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 03 Mar 2021 15:46:54 GMT
+      - Tue, 11 Apr 2023 11:57:56 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
       - no-cache
       Server:
-      - tenable.io
+      - cloudflare
       Set-Cookie:
-      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains
       Transfer-Encoding:
       - chunked
       Vary:
-      - accept-encoding
+      - Accept-Encoding
+      - origin
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-85xbm-ap-southeast-1-prod
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-4gl9k
       X-Request-Uuid:
-      - 378e267d9a2471e3a63905d5db0e01d6
+      - 72450a88678d0cc09f74d07a0080a640
       X-Xss-Protection:
       - 1; mode=block
     status:

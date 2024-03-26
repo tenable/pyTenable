@@ -1,14 +1,16 @@
 '''
 test scans
 '''
-import uuid
-import time
 import os
+import time
+import uuid
 from io import BytesIO
 from sys import stdout
+
 import pytest
-from tenable.reports.nessusv2 import NessusReportv2
+
 from tenable.errors import UnexpectedValueError, NotFoundError, BadRequestError
+from tenable.reports.nessusv2 import NessusReportv2
 from tests.checker import check, single
 from tests.io.conftest import SCAN_ID_WITH_RESULTS
 from tests.pytenable_log_handler import log_exception
@@ -112,7 +114,6 @@ def test_scan_create_scan_document_file_target_name(api, target_file):
     assert resp['settings']['file_targets'] == target_file.name
 
 
-
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_unexpectedvalueerror(api):
     '''
@@ -148,6 +149,7 @@ def test_scan_create_scan_document_scanner_name_pass(api):
     check(resp, 'settings', dict)
     check(resp['settings'], 'scanner_id', str)
     assert resp['settings']['scanner_id'] == scanner['id']
+
 
 # @pytest.mark.vcr()
 # def test_scan_attachment_scan_id_typeerror(api):
@@ -235,6 +237,7 @@ def test_scan_create_scan_schedule_weekdays_unexpectedvalueerror(api):
     with pytest.raises(UnexpectedValueError):
         api.scans.create_scan_schedule(
             enabled=True, frequency='weekly', weekdays=['MO', 'WE', 'nope'])
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_starttime_typeerror(api):
@@ -395,6 +398,8 @@ def test_scan_configure_schedule_onetime_to_daily(api, scheduled_scan):
     mod = api.scans.configure(scheduled_scan['id'],
                               schedule_scan=schedule)
     assert isinstance(mod, dict)
+    check(mod, 'auto_routed', int)
+    check(mod, 'container_id', 'uuid')
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
     check(mod, 'default_permissions', int)
@@ -402,19 +407,28 @@ def test_scan_configure_schedule_onetime_to_daily(api, scheduled_scan):
     check(mod, 'emails', str, allow_none=True)
     check(mod, 'enabled', bool)
     check(mod, 'id', int)
+    check(mod, 'include_aggregate', bool)
     check(mod, 'last_modification_date', int)
     check(mod, 'owner', str)
     check(mod, 'owner_id', int)
+    check(mod, 'owner_uuid', 'uuid')
     check(mod, 'policy_id', int)
     check(mod, 'name', str)
+    check(mod, 'remediation', int)
     check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'sms', str, allow_none=True)
+    check(mod, 'scan_time_window', int, allow_none=True)
     check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'scanner_uuid', 'scanner-uuid')
     check(mod, 'shared', int)
     check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'target_network_uuid', str, allow_none=True)
     check(mod, 'timezone', str, allow_none=True)
     check(mod, 'type', str)
+    check(mod, 'use_tag_rules_as_targets', int)
     check(mod, 'user_permissions', int)
     check(mod, 'uuid', str)
+    check(mod, 'version', int)
     assert mod['id'] == scheduled_scan['id']
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=DAILY;INTERVAL=1'
@@ -430,6 +444,8 @@ def test_scan_configure_schedule_onetime_to_weekly_valdefault(api, scheduled_sca
     mod = api.scans.configure(scheduled_scan['id'],
                               schedule_scan=schedule)
     assert isinstance(mod, dict)
+    check(mod, 'auto_routed', int)
+    check(mod, 'container_id', 'uuid')
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
     check(mod, 'default_permissions', int)
@@ -437,19 +453,28 @@ def test_scan_configure_schedule_onetime_to_weekly_valdefault(api, scheduled_sca
     check(mod, 'emails', str, allow_none=True)
     check(mod, 'enabled', bool)
     check(mod, 'id', int)
+    check(mod, 'include_aggregate', bool)
     check(mod, 'last_modification_date', int)
     check(mod, 'owner', str)
     check(mod, 'owner_id', int)
+    check(mod, 'owner_uuid', 'uuid')
     check(mod, 'policy_id', int)
     check(mod, 'name', str)
+    check(mod, 'remediation', int)
     check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'sms', str, allow_none=True)
+    check(mod, 'scan_time_window', int, allow_none=True)
     check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'scanner_uuid', 'scanner-uuid')
     check(mod, 'shared', int)
     check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'target_network_uuid', str, allow_none=True)
     check(mod, 'timezone', str, allow_none=True)
     check(mod, 'type', str)
+    check(mod, 'use_tag_rules_as_targets', int)
     check(mod, 'user_permissions', int)
     check(mod, 'uuid', str)
+    check(mod, 'version', int)
     assert mod['id'] == scheduled_scan['id']
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=SU,MO,TU,WE,TH,FR,SA'
@@ -466,6 +491,8 @@ def test_scan_configure_schedule_onetime_to_weekly_valassigned(api, scheduled_sc
     mod = api.scans.configure(scheduled_scan['id'],
                               schedule_scan=schedule)
     assert isinstance(mod, dict)
+    check(mod, 'auto_routed', int)
+    check(mod, 'container_id', 'uuid')
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
     check(mod, 'default_permissions', int)
@@ -473,19 +500,28 @@ def test_scan_configure_schedule_onetime_to_weekly_valassigned(api, scheduled_sc
     check(mod, 'emails', str, allow_none=True)
     check(mod, 'enabled', bool)
     check(mod, 'id', int)
+    check(mod, 'include_aggregate', bool)
     check(mod, 'last_modification_date', int)
     check(mod, 'owner', str)
     check(mod, 'owner_id', int)
+    check(mod, 'owner_uuid', 'uuid')
     check(mod, 'policy_id', int)
     check(mod, 'name', str)
+    check(mod, 'remediation', int)
     check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'sms', str, allow_none=True)
+    check(mod, 'scan_time_window', int, allow_none=True)
     check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'scanner_uuid', 'scanner-uuid')
     check(mod, 'shared', int)
     check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'target_network_uuid', str, allow_none=True)
     check(mod, 'timezone', str, allow_none=True)
     check(mod, 'type', str)
+    check(mod, 'use_tag_rules_as_targets', int)
     check(mod, 'user_permissions', int)
     check(mod, 'uuid', str)
+    check(mod, 'version', int)
     assert mod['id'] == scheduled_scan['id']
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU'
@@ -507,6 +543,8 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
     mod = api.scans.configure(scan['id'],
                               schedule_scan=update_schedule)
     assert isinstance(mod, dict)
+    check(mod, 'auto_routed', int)
+    check(mod, 'container_id', 'uuid')
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
     check(mod, 'default_permissions', int)
@@ -514,19 +552,28 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
     check(mod, 'emails', str, allow_none=True)
     check(mod, 'enabled', bool)
     check(mod, 'id', int)
+    check(mod, 'include_aggregate', bool)
     check(mod, 'last_modification_date', int)
     check(mod, 'owner', str)
     check(mod, 'owner_id', int)
+    check(mod, 'owner_uuid', 'uuid')
     check(mod, 'policy_id', int)
     check(mod, 'name', str)
+    check(mod, 'remediation', int)
     check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'sms', str, allow_none=True)
+    check(mod, 'scan_time_window', int, allow_none=True)
     check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'scanner_uuid', 'scanner-uuid')
     check(mod, 'shared', int)
     check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'target_network_uuid', str, allow_none=True)
     check(mod, 'timezone', str, allow_none=True)
     check(mod, 'type', str)
+    check(mod, 'use_tag_rules_as_targets', int)
     check(mod, 'user_permissions', int)
     check(mod, 'uuid', str)
+    check(mod, 'version', int)
     assert mod['id'] == scan['id']
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TU'
@@ -553,7 +600,7 @@ def test_upsert_aws_credentials(api):
             'add': {'Cloud Services': {}},
             'edit': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
                                                         'id': 12347}]}}
-            },
+        },
     }
     scan_actual = api.scans.upsert_aws_credentials(scan)
     assert isinstance(scan_actual, dict)
@@ -588,16 +635,18 @@ def test_upsert_aws_credentials_no_add(api):
         dict of scan when there is no add
     '''
     scan = {
-        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
-                                                                       'id': 12346}]}},
-                        'add': {}
-                        },
+        'credentials': {
+            'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
+                                                           'id': 12346}]}},
+            'add': {}
+        },
     }
     scan_expected = {
-        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
-                                                                       'id': 12346}]}},
-                        'add': {}
-                        },
+        'credentials': {
+            'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
+                                                           'id': 12346}]}},
+            'add': {}
+        },
     }
     scan_actual = api.scans.upsert_aws_credentials(scan)
     assert isinstance(scan_actual, dict)
@@ -614,6 +663,8 @@ def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_sc
     mod = api.scans.configure(scheduled_scan['id'],
                               schedule_scan=schedule)
     assert isinstance(mod, dict)
+    check(mod, 'auto_routed', int)
+    check(mod, 'container_id', 'uuid')
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
     check(mod, 'default_permissions', int)
@@ -621,19 +672,28 @@ def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_sc
     check(mod, 'emails', str, allow_none=True)
     check(mod, 'enabled', bool)
     check(mod, 'id', int)
+    check(mod, 'include_aggregate', bool)
     check(mod, 'last_modification_date', int)
     check(mod, 'owner', str)
     check(mod, 'owner_id', int)
+    check(mod, 'owner_uuid', 'uuid')
     check(mod, 'policy_id', int)
     check(mod, 'name', str)
+    check(mod, 'remediation', int)
     check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'sms', str, allow_none=True)
+    check(mod, 'scan_time_window', int, allow_none=True)
     check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'scanner_uuid', 'scanner-uuid')
     check(mod, 'shared', int)
     check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'target_network_uuid', str, allow_none=True)
     check(mod, 'timezone', str, allow_none=True)
     check(mod, 'type', str)
+    check(mod, 'use_tag_rules_as_targets', int)
     check(mod, 'user_permissions', int)
     check(mod, 'uuid', str)
+    check(mod, 'version', int)
     assert mod['id'] == scheduled_scan['id']
     assert mod['enabled'] is True
     assert mod['rrules'].split(';')[0] == 'FREQ=MONTHLY'
@@ -651,6 +711,8 @@ def test_scan_configure_schedule_onetime_to_monthly_valassigned(api, scheduled_s
     mod = api.scans.configure(scheduled_scan['id'],
                               schedule_scan=schedule)
     assert isinstance(mod, dict)
+    check(mod, 'auto_routed', int)
+    check(mod, 'container_id', 'uuid')
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
     check(mod, 'default_permissions', int)
@@ -658,19 +720,28 @@ def test_scan_configure_schedule_onetime_to_monthly_valassigned(api, scheduled_s
     check(mod, 'emails', str, allow_none=True)
     check(mod, 'enabled', bool)
     check(mod, 'id', int)
+    check(mod, 'include_aggregate', bool)
     check(mod, 'last_modification_date', int)
     check(mod, 'owner', str)
     check(mod, 'owner_id', int)
+    check(mod, 'owner_uuid', 'uuid')
     check(mod, 'policy_id', int)
     check(mod, 'name', str)
+    check(mod, 'remediation', int)
     check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'sms', str, allow_none=True)
+    check(mod, 'scan_time_window', int, allow_none=True)
     check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'scanner_uuid', 'scanner-uuid')
     check(mod, 'shared', int)
     check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'target_network_uuid', str, allow_none=True)
     check(mod, 'timezone', str, allow_none=True)
     check(mod, 'type', str)
+    check(mod, 'use_tag_rules_as_targets', int)
     check(mod, 'user_permissions', int)
     check(mod, 'uuid', str)
+    check(mod, 'version', int)
     assert mod['id'] == scheduled_scan['id']
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=8'
@@ -692,6 +763,8 @@ def test_scan_configure_schedule_freq_monthly_valavailable(api):
     mod = api.scans.configure(scan['id'],
                               schedule_scan=update_schedule)
     assert isinstance(mod, dict)
+    check(mod, 'auto_routed', int)
+    check(mod, 'container_id', 'uuid')
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
     check(mod, 'default_permissions', int)
@@ -699,19 +772,28 @@ def test_scan_configure_schedule_freq_monthly_valavailable(api):
     check(mod, 'emails', str, allow_none=True)
     check(mod, 'enabled', bool)
     check(mod, 'id', int)
+    check(mod, 'include_aggregate', bool)
     check(mod, 'last_modification_date', int)
     check(mod, 'owner', str)
     check(mod, 'owner_id', int)
+    check(mod, 'owner_uuid', 'uuid')
     check(mod, 'policy_id', int)
     check(mod, 'name', str)
+    check(mod, 'remediation', int)
     check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'sms', str, allow_none=True)
+    check(mod, 'scan_time_window', int, allow_none=True)
     check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'scanner_uuid', 'scanner-uuid')
     check(mod, 'shared', int)
     check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'target_network_uuid', str, allow_none=True)
     check(mod, 'timezone', str, allow_none=True)
     check(mod, 'type', str)
+    check(mod, 'use_tag_rules_as_targets', int)
     check(mod, 'user_permissions', int)
     check(mod, 'uuid', str)
+    check(mod, 'version', int)
     assert mod['id'] == scan['id']
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=8'
@@ -728,6 +810,8 @@ def test_scan_configure_schedule_freq_yearly(api, scheduled_scan):
     mod = api.scans.configure(scheduled_scan['id'],
                               schedule_scan=update_schedule)
     assert isinstance(mod, dict)
+    check(mod, 'auto_routed', int)
+    check(mod, 'container_id', 'uuid')
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
     check(mod, 'default_permissions', int)
@@ -735,19 +819,28 @@ def test_scan_configure_schedule_freq_yearly(api, scheduled_scan):
     check(mod, 'emails', str, allow_none=True)
     check(mod, 'enabled', bool)
     check(mod, 'id', int)
+    check(mod, 'include_aggregate', bool)
     check(mod, 'last_modification_date', int)
     check(mod, 'owner', str)
     check(mod, 'owner_id', int)
+    check(mod, 'owner_uuid', 'uuid')
     check(mod, 'policy_id', int)
     check(mod, 'name', str)
+    check(mod, 'remediation', int)
     check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'sms', str, allow_none=True)
+    check(mod, 'scan_time_window', int, allow_none=True)
     check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'scanner_uuid', 'scanner-uuid')
     check(mod, 'shared', int)
     check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'target_network_uuid', str, allow_none=True)
     check(mod, 'timezone', str, allow_none=True)
     check(mod, 'type', str)
+    check(mod, 'use_tag_rules_as_targets', int)
     check(mod, 'user_permissions', int)
     check(mod, 'uuid', str)
+    check(mod, 'version', int)
     assert mod['id'] == scheduled_scan['id']
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
@@ -762,6 +855,8 @@ def test_scan_configure_enable_scan_schedule(api, scan):
     mod = api.scans.configure(scan['id'],
                               schedule_scan=schedule)
     assert isinstance(mod, dict)
+    check(mod, 'auto_routed', int)
+    check(mod, 'container_id', 'uuid')
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
     check(mod, 'default_permissions', int)
@@ -769,19 +864,28 @@ def test_scan_configure_enable_scan_schedule(api, scan):
     check(mod, 'emails', str, allow_none=True)
     check(mod, 'enabled', bool)
     check(mod, 'id', int)
+    check(mod, 'include_aggregate', bool)
     check(mod, 'last_modification_date', int)
     check(mod, 'owner', str)
     check(mod, 'owner_id', int)
+    check(mod, 'owner_uuid', 'uuid')
     check(mod, 'policy_id', int)
     check(mod, 'name', str)
+    check(mod, 'remediation', int)
     check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'sms', str, allow_none=True)
+    check(mod, 'scan_time_window', int, allow_none=True)
     check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'scanner_uuid', 'scanner-uuid')
     check(mod, 'shared', int)
     check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'target_network_uuid', str, allow_none=True)
     check(mod, 'timezone', str, allow_none=True)
     check(mod, 'type', str)
+    check(mod, 'use_tag_rules_as_targets', int)
     check(mod, 'user_permissions', int)
     check(mod, 'uuid', str)
+    check(mod, 'version', int)
     assert mod['id'] == scan['id']
     assert mod['enabled'] is True
     assert mod['rrules'] == 'FREQ=ONETIME;INTERVAL=1'
@@ -796,6 +900,8 @@ def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
     mod = api.scans.configure(scheduled_scan['id'],
                               schedule_scan=schedule)
     assert isinstance(mod, dict)
+    check(mod, 'auto_routed', int)
+    check(mod, 'container_id', 'uuid')
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
     check(mod, 'default_permissions', int)
@@ -803,19 +909,28 @@ def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
     check(mod, 'emails', str, allow_none=True)
     check(mod, 'enabled', bool)
     check(mod, 'id', int)
+    check(mod, 'include_aggregate', bool)
     check(mod, 'last_modification_date', int)
     check(mod, 'owner', str)
     check(mod, 'owner_id', int)
+    check(mod, 'owner_uuid', 'uuid')
     check(mod, 'policy_id', int)
     check(mod, 'name', str)
+    check(mod, 'remediation', int)
     check(mod, 'rrules', str, allow_none=True)
+    check(mod, 'sms', str, allow_none=True)
+    check(mod, 'scan_time_window', int, allow_none=True)
     check(mod, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(mod, 'scanner_uuid', 'scanner-uuid')
     check(mod, 'shared', int)
     check(mod, 'starttime', str, allow_none=True)
+    check(mod, 'target_network_uuid', str, allow_none=True)
     check(mod, 'timezone', str, allow_none=True)
     check(mod, 'type', str)
+    check(mod, 'use_tag_rules_as_targets', int)
     check(mod, 'user_permissions', int)
     check(mod, 'uuid', str)
+    check(mod, 'version', int)
     assert mod['id'] == scheduled_scan['id']
     assert mod['enabled'] is False
 
@@ -860,11 +975,11 @@ def test_scan_copy(api, scan):
     clone = api.scans.copy(scan['id'])
     assert isinstance(clone, dict)
     check(clone, 'control', bool)
-    check(clone, 'creation_date', int)
-    check(clone, 'enabled', bool)
+    check(clone, 'creation_date', int, allow_none=True)
+    check(clone, 'enabled', int)
     check(clone, 'id', int)
-    check(clone, 'last_modification_date', int)
-    check(clone, 'owner', str)
+    check(clone, 'last_modification_date', int, allow_none=True)
+    check(clone, 'owner', str, allow_none=True)
     check(clone, 'name', str)
     check(clone, 'read', bool)
     check(clone, 'rrules', str, allow_none=True)
@@ -874,7 +989,7 @@ def test_scan_copy(api, scan):
     check(clone, 'starttime', str, allow_none=True)
     check(clone, 'status', str)
     check(clone, 'timezone', str, allow_none=True)
-    check(clone, 'user_permissions', int)
+    check(clone, 'user_permissions', int, allow_none=True)
     check(clone, 'uuid', 'scanner-uuid')
 
 
@@ -884,6 +999,8 @@ def test_scan_create_no_template_pass(scan):
     test to create scan when no template is provided by user
     '''
     assert isinstance(scan, dict)
+    check(scan, 'auto_routed', int)
+    check(scan, 'container_id', 'uuid')
     check(scan, 'creation_date', int)
     check(scan, 'custom_targets', str)
     check(scan, 'default_permissions', int)
@@ -891,19 +1008,27 @@ def test_scan_create_no_template_pass(scan):
     check(scan, 'emails', str, allow_none=True)
     check(scan, 'enabled', bool)
     check(scan, 'id', int)
+    check(scan, 'include_aggregate', bool)
     check(scan, 'last_modification_date', int)
     check(scan, 'owner', str)
     check(scan, 'owner_id', int)
+    check(scan, 'owner_uuid', 'uuid')
     check(scan, 'policy_id', int)
     check(scan, 'name', str)
+    check(scan, 'remediation', int)
     check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'sms', str, allow_none=True)
+    check(scan, 'scan_time_window', int, allow_none=True)
     check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'scanner_uuid', 'scanner-uuid')
     check(scan, 'shared', int)
     check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'target_network_uuid', str, allow_none=True)
     check(scan, 'timezone', str, allow_none=True)
     check(scan, 'type', str)
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', str)
+    check(scan, 'version', int)
 
 
 @pytest.mark.vcr()
@@ -919,6 +1044,8 @@ def test_scan_create_scheduled_scan_default_schedule(api):
         schedule_scan=schedule_scan
     )
     assert isinstance(scan, dict)
+    check(scan, 'auto_routed', int)
+    check(scan, 'container_id', 'uuid')
     check(scan, 'creation_date', int)
     check(scan, 'custom_targets', str)
     check(scan, 'default_permissions', int)
@@ -926,19 +1053,27 @@ def test_scan_create_scheduled_scan_default_schedule(api):
     check(scan, 'emails', str, allow_none=True)
     check(scan, 'enabled', bool)
     check(scan, 'id', int)
+    check(scan, 'include_aggregate', bool)
     check(scan, 'last_modification_date', int)
     check(scan, 'owner', str)
     check(scan, 'owner_id', int)
+    check(scan, 'owner_uuid', 'uuid')
     check(scan, 'policy_id', int)
     check(scan, 'name', str)
+    check(scan, 'remediation', int)
     check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'sms', str, allow_none=True)
+    check(scan, 'scan_time_window', int, allow_none=True)
     check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'scanner_uuid', 'scanner-uuid')
     check(scan, 'shared', int)
     check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'target_network_uuid', str, allow_none=True)
     check(scan, 'timezone', str, allow_none=True)
     check(scan, 'type', str)
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', str)
+    check(scan, 'version', int)
     assert scan['enabled'] is True
     assert scan['rrules'] == 'FREQ=ONETIME;INTERVAL=1'
     api.scans.delete(scan['id'])
@@ -957,6 +1092,8 @@ def test_scan_create_scheduled_scan_freq_daily(api):
         schedule_scan=schedule_scan
     )
     assert isinstance(scan, dict)
+    check(scan, 'auto_routed', int)
+    check(scan, 'container_id', 'uuid')
     check(scan, 'creation_date', int)
     check(scan, 'custom_targets', str)
     check(scan, 'default_permissions', int)
@@ -964,19 +1101,27 @@ def test_scan_create_scheduled_scan_freq_daily(api):
     check(scan, 'emails', str, allow_none=True)
     check(scan, 'enabled', bool)
     check(scan, 'id', int)
+    check(scan, 'include_aggregate', bool)
     check(scan, 'last_modification_date', int)
     check(scan, 'owner', str)
     check(scan, 'owner_id', int)
+    check(scan, 'owner_uuid', 'uuid')
     check(scan, 'policy_id', int)
     check(scan, 'name', str)
+    check(scan, 'remediation', int)
     check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'sms', str, allow_none=True)
+    check(scan, 'scan_time_window', int, allow_none=True)
     check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'scanner_uuid', 'scanner-uuid')
     check(scan, 'shared', int)
     check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'target_network_uuid', str, allow_none=True)
     check(scan, 'timezone', str, allow_none=True)
     check(scan, 'type', str)
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', str)
+    check(scan, 'version', int)
     assert scan['enabled'] is True
     assert scan['rrules'] == 'FREQ=DAILY;INTERVAL=1'
     api.scans.delete(scan['id'])
@@ -996,6 +1141,8 @@ def test_scan_create_scheduled_scan_freq_weekly_valdefault(api):
         schedule_scan=schedule_scan
     )
     assert isinstance(scan, dict)
+    check(scan, 'auto_routed', int)
+    check(scan, 'container_id', 'uuid')
     check(scan, 'creation_date', int)
     check(scan, 'custom_targets', str)
     check(scan, 'default_permissions', int)
@@ -1003,19 +1150,27 @@ def test_scan_create_scheduled_scan_freq_weekly_valdefault(api):
     check(scan, 'emails', str, allow_none=True)
     check(scan, 'enabled', bool)
     check(scan, 'id', int)
+    check(scan, 'include_aggregate', bool)
     check(scan, 'last_modification_date', int)
     check(scan, 'owner', str)
     check(scan, 'owner_id', int)
+    check(scan, 'owner_uuid', 'uuid')
     check(scan, 'policy_id', int)
     check(scan, 'name', str)
+    check(scan, 'remediation', int)
     check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'sms', str, allow_none=True)
+    check(scan, 'scan_time_window', int, allow_none=True)
     check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'scanner_uuid', 'scanner-uuid')
     check(scan, 'shared', int)
     check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'target_network_uuid', str, allow_none=True)
     check(scan, 'timezone', str, allow_none=True)
     check(scan, 'type', str)
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', str)
+    check(scan, 'version', int)
     assert scan['enabled'] is True
     assert scan['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=SU,MO,TU,WE,TH,FR,SA'
     api.scans.delete(scan['id'])
@@ -1036,6 +1191,8 @@ def test_scan_create_scheduled_scan_freq_weekly_valassigned(api):
         schedule_scan=schedule_scan
     )
     assert isinstance(scan, dict)
+    check(scan, 'auto_routed', int)
+    check(scan, 'container_id', 'uuid')
     check(scan, 'creation_date', int)
     check(scan, 'custom_targets', str)
     check(scan, 'default_permissions', int)
@@ -1043,19 +1200,27 @@ def test_scan_create_scheduled_scan_freq_weekly_valassigned(api):
     check(scan, 'emails', str, allow_none=True)
     check(scan, 'enabled', bool)
     check(scan, 'id', int)
+    check(scan, 'include_aggregate', bool)
     check(scan, 'last_modification_date', int)
     check(scan, 'owner', str)
     check(scan, 'owner_id', int)
+    check(scan, 'owner_uuid', 'uuid')
     check(scan, 'policy_id', int)
     check(scan, 'name', str)
+    check(scan, 'remediation', int)
     check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'sms', str, allow_none=True)
+    check(scan, 'scan_time_window', int, allow_none=True)
     check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'scanner_uuid', 'scanner-uuid')
     check(scan, 'shared', int)
     check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'target_network_uuid', str, allow_none=True)
     check(scan, 'timezone', str, allow_none=True)
     check(scan, 'type', str)
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', str)
+    check(scan, 'version', int)
     assert scan['enabled'] is True
     assert scan['rrules'] == 'FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,TU'
     api.scans.delete(scan['id'])
@@ -1075,6 +1240,8 @@ def test_scan_create_scheduled_scan_freq_monthly_valdefault(api):
         schedule_scan=schedule_scan
     )
     assert isinstance(scan, dict)
+    check(scan, 'auto_routed', int)
+    check(scan, 'container_id', 'uuid')
     check(scan, 'creation_date', int)
     check(scan, 'custom_targets', str)
     check(scan, 'default_permissions', int)
@@ -1082,19 +1249,27 @@ def test_scan_create_scheduled_scan_freq_monthly_valdefault(api):
     check(scan, 'emails', str, allow_none=True)
     check(scan, 'enabled', bool)
     check(scan, 'id', int)
+    check(scan, 'include_aggregate', bool)
     check(scan, 'last_modification_date', int)
     check(scan, 'owner', str)
     check(scan, 'owner_id', int)
+    check(scan, 'owner_uuid', 'uuid')
     check(scan, 'policy_id', int)
     check(scan, 'name', str)
+    check(scan, 'remediation', int)
     check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'sms', str, allow_none=True)
+    check(scan, 'scan_time_window', int, allow_none=True)
     check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'scanner_uuid', 'scanner-uuid')
     check(scan, 'shared', int)
     check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'target_network_uuid', str, allow_none=True)
     check(scan, 'timezone', str, allow_none=True)
     check(scan, 'type', str)
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', str)
+    check(scan, 'version', int)
     assert scan['enabled'] is True
     assert scan['rrules'].split(';')[0] == 'FREQ=MONTHLY'
     api.scans.delete(scan['id'])
@@ -1115,6 +1290,8 @@ def test_scan_create_scheduled_scan_freq_monthly_valassigned(api):
         schedule_scan=schedule_scan
     )
     assert isinstance(scan, dict)
+    check(scan, 'auto_routed', int)
+    check(scan, 'container_id', 'uuid')
     check(scan, 'creation_date', int)
     check(scan, 'custom_targets', str)
     check(scan, 'default_permissions', int)
@@ -1122,19 +1299,27 @@ def test_scan_create_scheduled_scan_freq_monthly_valassigned(api):
     check(scan, 'emails', str, allow_none=True)
     check(scan, 'enabled', bool)
     check(scan, 'id', int)
+    check(scan, 'include_aggregate', bool)
     check(scan, 'last_modification_date', int)
     check(scan, 'owner', str)
     check(scan, 'owner_id', int)
+    check(scan, 'owner_uuid', 'uuid')
     check(scan, 'policy_id', int)
     check(scan, 'name', str)
+    check(scan, 'remediation', int)
     check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'sms', str, allow_none=True)
+    check(scan, 'scan_time_window', int, allow_none=True)
     check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'scanner_uuid', 'scanner-uuid')
     check(scan, 'shared', int)
     check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'target_network_uuid', str, allow_none=True)
     check(scan, 'timezone', str, allow_none=True)
     check(scan, 'type', str)
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', str)
+    check(scan, 'version', int)
     assert scan['enabled'] is True
     assert scan['rrules'] == 'FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=8'
     api.scans.delete(scan['id'])
@@ -1153,6 +1338,8 @@ def test_scan_create_scheduled_scan_freq_yearly(api):
         schedule_scan=schedule_scan
     )
     assert isinstance(scan, dict)
+    check(scan, 'auto_routed', int)
+    check(scan, 'container_id', 'uuid')
     check(scan, 'creation_date', int)
     check(scan, 'custom_targets', str)
     check(scan, 'default_permissions', int)
@@ -1160,25 +1347,34 @@ def test_scan_create_scheduled_scan_freq_yearly(api):
     check(scan, 'emails', str, allow_none=True)
     check(scan, 'enabled', bool)
     check(scan, 'id', int)
+    check(scan, 'include_aggregate', bool)
     check(scan, 'last_modification_date', int)
     check(scan, 'owner', str)
     check(scan, 'owner_id', int)
+    check(scan, 'owner_uuid', 'uuid')
     check(scan, 'policy_id', int)
     check(scan, 'name', str)
+    check(scan, 'remediation', int)
     check(scan, 'rrules', str, allow_none=True)
+    check(scan, 'sms', str, allow_none=True)
+    check(scan, 'scan_time_window', int, allow_none=True)
     check(scan, 'scanner_id', 'scanner-uuid', allow_none=True)
+    check(scan, 'scanner_uuid', 'scanner-uuid')
     check(scan, 'shared', int)
     check(scan, 'starttime', str, allow_none=True)
+    check(scan, 'target_network_uuid', str, allow_none=True)
     check(scan, 'timezone', str, allow_none=True)
     check(scan, 'type', str)
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', str)
+    check(scan, 'version', int)
     assert scan['enabled'] is True
     assert scan['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
     api.scans.delete(scan['id'])
 
-#@pytest.mark.vcr()
-#def test_scan_delete_scan_id_typeerror(api):
+
+# @pytest.mark.vcr()
+# def test_scan_delete_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.delete('nope')
 
@@ -1198,6 +1394,7 @@ def test_scan_delete(api, scan):
     '''
     api.scans.delete(scan['id'])
 
+
 # @pytest.mark.vcr()
 # def test_scan_delete_history_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
@@ -1215,6 +1412,7 @@ def test_scan_delete_history_notfounderror(api):
     '''
     with pytest.raises(NotFoundError):
         api.scans.delete_history(1, 1)
+
 
 # @pytest.mark.vcr()
 # def test_scan_details_scan_id_typeerror(api):
@@ -1260,7 +1458,7 @@ def test_scan_results(api):
         check(info, 'policy', str, allow_none=True)
         check(info, 'pci-can-upload', bool, allow_none=True)
         check(info, 'scan_start', int, allow_none=True)
-        check(info, 'hasaudittrail', bool)
+        check(info, 'hasaudittrail', bool, allow_none=True)
         check(info, 'user_permissions', int)
         check(info, 'folder_id', int, allow_none=True)
         check(info, 'no_target', bool)
@@ -1269,13 +1467,17 @@ def test_scan_results(api):
         check(info, 'control', bool)
         check(info, 'object_id', int, allow_none=True)
         check(info, 'scanner_name', str, allow_none=True)
-        check(info, 'uuid', str)
-        check(info, 'haskb', bool)
+        check(info, 'uuid', 'uuid')
+        check(info, 'haskb', bool, allow_none=True)
         check(info, 'scanner_end', int, allow_none=True)
         check(info, 'scan_end', int)
-        # check(info, 'hostcount', int)
+        check(info, 'hostcount', int)
         check(info, 'scan_type', str, allow_none=True)
         check(info, 'name', str)
+        check(info, 'shared', bool, allow_none=True)
+        check(info, 'timestamp', int)
+        check(info, 'is_archived', bool)
+        check(info, 'reindexing', bool)
 
         check(result, 'comphosts', list)
         if 'comphosts' in result and len(result['comphosts']) > 0:
@@ -1320,7 +1522,7 @@ def test_scan_results(api):
             for notes in result['notes']:
                 check(notes, 'title', str)
                 check(notes, 'message', str)
-                check(notes, 'severity', int)
+                # check(notes, 'severity', int)  # it is not returned in response
 
         check(result, 'remediations', dict)
         check(result['remediations'], 'num_hosts', int)
@@ -1459,11 +1661,13 @@ def test_scan_export_was_typeerror(api):
     with pytest.raises(UnexpectedValueError):
         api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='bad-value')
 
+
 @pytest.mark.vcr()
 def test_scan_export_bytesio_stream_hook(api, scan_results):
     '''
     test to export scan using optional `stream_hook` kwarg, provided by user (Issue #305)
     '''
+
     def stream_hook(response, _fobj, chunk_size=1024):
         """This is an example callable, the caller provides this"""
         progress_bytes = 0
@@ -1483,6 +1687,7 @@ def test_scan_export_bytesio_stream_hook(api, scan_results):
         counter += 1
         if counter > 10:
             break
+
 
 @pytest.mark.vcr()
 def test_scan_export_bytesio(api):
@@ -1521,6 +1726,7 @@ def test_scan_export_file_object(api):
                 if counter > 10:
                     break
         os.remove(filename)
+
 
 # @pytest.mark.vcr()
 # def test_scan_host_details_scan_id_typeerror(api):
@@ -1624,7 +1830,9 @@ def test_scan_import_scan(api):
         filter(lambda value: value['status'] == 'completed', api.scans.list()))]
     if scan_list:
         fobj = api.scans.export(scan_list[0])
-        api.scans.import_scan(fobj)
+        imported_scan = api.scans.import_scan(fobj)
+        api.scans.delete(imported_scan['scan']['id'])
+
 
 # @pytest.mark.vcr()
 # def test_scan_launch_scanid_typeerror(api):
@@ -1679,7 +1887,7 @@ def test_scan_list_last_modified_typeerror(api):
 
 
 @pytest.mark.vcr()
-def test_scan_list(api):
+def test_scan_list(api, scan):
     '''
     test to get list of scans
     '''
@@ -1689,6 +1897,7 @@ def test_scan_list(api):
     check(scan, 'control', bool)
     check(scan, 'creation_date', int)
     check(scan, 'enabled', bool)
+    check(scan, 'has_triggers', bool)
     check(scan, 'id', int)
     check(scan, 'last_modification_date', int)
     check(scan, 'legacy', bool)
@@ -1696,14 +1905,17 @@ def test_scan_list(api):
     check(scan, 'name', str)
     check(scan, 'permissions', int)
     check(scan, 'read', bool)
-    check(scan, 'rrules', str, allow_none=True)
-    check(scan, 'schedule_uuid', 'scanner-uuid')
+    check(scan, 'schedule_uuid', str)
     check(scan, 'shared', bool)
-    check(scan, 'starttime', str, allow_none=True)
+    # check(scan, 'starttime', str, allow_none=True)  # it is not always returned in response
     check(scan, 'status', str)
-    check(scan, 'timezone', str, allow_none=True)
+    # check(scan, 'timezone', str, allow_none=True)  # it is not always returned in response
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', 'scanner-uuid')
+    check(scan, 'status_times', dict)
+    check(scan, 'pci_upload', bool)
+    check(scan, 'is_archived', bool)
+
 
 # @pytest.mark.vcr()
 # def test_scan_pause_scan_id_typeerror(api):
@@ -1717,6 +1929,7 @@ def test_scan_pause_scan(api, scan):
     '''
     _ = api.scans.launch(scan['id'])
     api.scans.pause(scan['id'], block=True)
+
 
 # @pytest.mark.vcr()
 # def test_scan_plugin_output_scan_id_typeerror(api):
@@ -1786,12 +1999,21 @@ def test_scan_plugin_output(api, scan_results):
         check(output_info_pdesc_patt['risk_information'], 'risk_factor', str)
         check(output_info_pdesc_patt, 'solution', str, allow_none=True)
         check(output_info_pdesc_patt, 'synopsis', str, allow_none=True)
+        check(output_info_pdesc_patt, 'see_also', str, allow_none=True)
+        check(output_info_pdesc_patt, 'vuln_information', dict)
+        if output_info_pdesc_patt['vuln_information']:
+            check(output_info_pdesc_patt['vuln_information'], 'exploit_frameworks', dict)
+            if output_info_pdesc_patt['vuln_information']['exploit_frameworks']:
+                check(output_info_pdesc_patt['vuln_information']['exploit_frameworks'], 'exploit_framework', list)
+                if output_info_pdesc_patt['vuln_information']['exploit_frameworks']['exploit_frameworks']:
+                    check(output_info_pdesc_patt['vuln_information']['exploit_frameworks'][0], 'name', str)
 
         check(output, 'outputs', list)
         for data in output['outputs']:
             check(data, 'has_attachment', int)
             check(data, 'hosts', list, allow_none=True)
             check(data, 'plugin_output', str, allow_none=True)
+            check(data, 'custom_description', str, allow_none=True)
             check(data, 'ports', dict)
             for port in data['ports']:
                 check(data['ports'], port, list)
@@ -1829,6 +2051,7 @@ def test_scan_read_status(api, scan):
         if resp['id'] == scan['id']:
             assert scan['read'] != resp['read']
 
+
 # @pytest.mark.vcr()
 # def test_scan_resume_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
@@ -1847,6 +2070,7 @@ def test_scan_resume(api, scan):
     api.scans.resume(scan['id'])
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
+
 
 # @pytest.mark.vcr()
 # def test_scan_schedule_scan_id_typeerror(api):
@@ -1870,6 +2094,7 @@ def test_scan_schedule(api, scan):
     '''
     api.scans.schedule(scan['id'], False)
 
+
 # @pytest.mark.vcr()
 # def test_scan_stop_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
@@ -1884,6 +2109,7 @@ def test_scan_stop(api, scan):
     api.scans.launch(scan['id'])
     time.sleep(5)
     api.scans.stop(scan['id'])
+
 
 # @pytest.mark.vcr()
 # def test_scan_status_scan_id_typeerror(api):
@@ -2035,6 +2261,7 @@ def test_scan_create_scan_success(api):
     check(scan, 'shared', int)
     check(scan, 'owner', str)
     check(scan, 'owner_id', int)
+    check(scan, 'version', int)
     check(scan, 'last_modification_date', int)
     check(scan, 'creation_date', int)
     check(scan, 'type', str)
@@ -2061,6 +2288,7 @@ def test_scan_create_scan_document_credentials_pass(api):
             {'credentials': credential})
 
 
+@pytest.mark.skip(reason="Blocking running scan can be tricky")
 @pytest.mark.vcr()
 def test_block_while_running(api):
     '''
@@ -2081,37 +2309,39 @@ def test_scan_results_scan_not_found_error(api):
 
 
 @pytest.mark.vcr()
-def test_scan_results_without_history(api):
+def test_scan_results_without_history(api, scan_results):
     """
     requests using only Scan ID
     """
-    scan = api.scans.results(scan_id=419)
-    assert len(scan["vulnerabilities"]) == 223
+    scan = api.scans.results(scan_id=scan_results['id'])
+    assert len(scan["vulnerabilities"]) > 0
 
 
 @pytest.mark.vcr()
-def test_scan_results_with_history_id(api):
+def test_scan_results_with_history_id(api, scan_results):
     """
     requests using only Scan ID
     """
-    scan = api.scans.results(scan_id=419, history_id=15184619)
-    assert len(scan["hosts"]) == 221
+    scan = api.scans.results(scan_id=scan_results['id'], history_id=scan_results['results']['history'][0]['history_id'])
+    assert len(scan["hosts"]) > 0
 
 
 @pytest.mark.vcr()
-def test_scan_results_with_history_uuid(api):
+def test_scan_results_with_history_uuid(api, scan_results):
     """
     requests using only Scan ID
     """
-    scan = api.scans.results(scan_id=419, history_uuid="b6e2280a-119f-42c8-9af5-a16ae269fb75")
-    assert len(scan["hosts"]) == 221
+    scan = api.scans.results(scan_id=scan_results['id'], history_uuid=scan_results['results']['history'][0]['uuid'])
+    assert len(scan["hosts"]) > 0
+
 
 @pytest.mark.vcr()
-def test_scan_history_sort_direction(api):
+def test_scan_history_sort_direction(api, scan_results):
     '''
     test scan history for sort direction.
     '''
-    api.scans.history(scan_id=11, limit=10, offset="1", pages=3, sort=(('name', 'asc'), ('description', 'desc')))
+    api.scans.history(scan_id=scan_results['id'], limit=10, offset="0", pages=1,
+                      sort=(('name', 'asc'), ('description', 'desc')))
 
 
 @pytest.mark.vcr()

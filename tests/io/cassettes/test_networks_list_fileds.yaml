@@ -8,19 +8,25 @@ interactions:
       - gzip, deflate
       Connection:
       - keep-alive
+      Cookie:
+      - nginx-cloud-site-id=us-2b
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.0
-        (pyTenable/1.3.0; Python/3.8.6; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
-    uri: https://cloud.tenable.com/networks?ft=or&w=match&wf=name&includeDeleted=True&limit=50&offset=2
+    uri: https://cloud.tenable.com/networks?ft=or&w=match&wf=name&includeDeleted=True&limit=50&offset=0
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAyWKwQqAIBAF/+WdPUTRZX9FPCylIakbutBB/PeETjMD01G8vlLvBrLO4OErFtYo
-        BdShopxAm0GKOSpoXwwkhOanrwZN6hTbUTh70I951NPXmdwODDfGB2s+8SNlAAAA
+        H4sIAAAAAAAAAyTFMQ6DMAxA0bv82QNqxeKrIAarDSgqxFViiSHK3Rl4y+uUFJfXX0OXVfjbnotF
+        9oJ2wsMO9DW/hSOfOdB5EnzbWgp0EprXQJdOsTOhT4LXb6oo1j6MdYwbAAD//wMA40c4i2cAAAA=
     headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b626a28acf9032e-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -30,29 +36,30 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 15 Jun 2021 17:04:59 GMT
+      - Tue, 11 Apr 2023 10:06:04 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
       - no-cache
+      Server:
+      - cloudflare
       Set-Cookie:
-      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains
       Transfer-Encoding:
       - chunked
       Vary:
-      - accept-encoding
+      - origin
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-ssu2q-ap-southeast-1-prod
+      - service-nginx-router-us-east-1-prod-fb448f746-jr4vk
       X-Request-Uuid:
-      - d3979786eb1a640d9198c7aebc559621
-      X-Xss-Protection:
+      - de700da12d9fdba6618e2a2845813d23
+      X-XSS-Protection:
       - 1; mode=block
     status:
       code: 200

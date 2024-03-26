@@ -9,7 +9,8 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - pyTenable/0.3.22 (pyTenable/0.3.22; Python/3.6.7)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
@@ -25,8 +26,12 @@ interactions:
         NIsivbg8u6hrqJLzZBPrQhvYtuuZHD3RtPLs/HBSxRPKUyL6Le/mRYNCV8gP/qPi0ibWUhmX1Y3e
         u7XB+B/X3m389knrKcsP8OhcELwEAAA=
     headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b625a7b4c9b032b-AMD
       Cache-Control:
-      - no-cache
+      - no-store
       Connection:
       - keep-alive
       Content-Encoding:
@@ -34,24 +39,32 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 22 Jul 2019 20:07:05 GMT
+      - Tue, 11 Apr 2023 09:55:22 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
       Server:
-      - tenable.io
+      - cloudflare
       Set-Cookie:
-      - nginx-cloud-site-id=us-2b; path=/; HttpOnly
-      - nginx-cloud-site-id=us-2b; path=/; HttpOnly
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains
       Transfer-Encoding:
       - chunked
       Vary:
-      - accept-encoding
+      - origin,accept-encoding
       X-Content-Type-Options:
       - nosniff
+      X-Frame-Options:
+      - DENY
       X-Gateway-Site-ID:
-      - nginx-router-d-prod-us-east-2
+      - service-nginx-router-ap-south-1-prod-69479dd7b-ct8k2
       X-Request-Uuid:
-      - 44f7ae38b8a88864a2820e149523363a
+      - 06cb0d2f9731f7f0a2c92d3870f23ec9
+      X-XSS-Protection:
+      - 1; mode=block
     status:
       code: 200
       message: OK

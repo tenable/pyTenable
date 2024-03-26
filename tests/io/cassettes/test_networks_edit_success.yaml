@@ -1,6 +1,7 @@
 interactions:
 - request:
-    body: '{"name": "New Name", "description": ""}'
+    body: '{"name": "New Name - 0bc710d5-7890-4b6b-94a7-f59bce34e73e", "description":
+      "", "assets_ttl_days": null}'
     headers:
       Accept:
       - '*/*'
@@ -9,27 +10,31 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '39'
+      - '103'
       Content-Type:
       - application/json
       Cookie:
       - nginx-cloud-site-id=us-2b
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.2.7
-        (pyTenable/1.2.7; Python/3.8.6; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: PUT
-    uri: https://cloud.tenable.com/networks/58ac2d96-81aa-472c-a418-74fcc6082049
+    uri: https://cloud.tenable.com/networks/af62926c-9031-4f32-a7d4-5d5870db4e3c
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA5VQW2rDMBC8StG3BJK6euUQuYJZSysQOFKxbEIpvXuV0piU/jR/y+zMzux8sHat
-        tE77XhI7MYU6SSW1UGqWApBIzBKycBpknq01CjLjLK6EGw2BsgqccyZoo4GzS0sll2PhLbzKYAJn
-        PWK92cS2142dJGc/hsZj1ClY4RWiAKejQFBeOMgxWum1hDAMK15osM90fTnfRs4S9biWt620OhYD
-        KH1KlHFfxv2MS6cj5jS///+1+wtPiRIt9LsPZ4M/8Kdu3UOXOnWKrab+WPNDwD+E77o/vwCnuVq+
-        0gEAAA==
+        H4sIAAAAAAAAA5VRW4rDMAy8SvB3BH7FsnuIXiH4IYMhdZY8KGXZu69Tut3C/mz/hKTRzGg+2Xyt
+        tIz7XhI7MeMiJ+4FGBUJtBUEzuoASGis4TlHM7CexYX8Rg0gjBWSo0DHLfbsMqeSy3MgtESUx2CN
+        vh40cd7rxk68Zw9Cn4100kRwXAnQWUnwmDQMabDIU9CkYiOs/kJN3pmu3bmVHXQ8RBQ8DYDWcdDB
+        BHDaI+TBhUhKEypqwERrXMrHVuba8K1R1jFR9vvUZGQ/rfR0M4bb/z/w4/QtUKKJXt8mlTZoDpH3
+        /lu3HhGMpY4rxbmm9TWN3yj+LtxT+foG5IgDOPkBAAA=
     headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b630e0fad0c0333-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -39,30 +44,30 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 03 Mar 2021 15:47:11 GMT
+      - Tue, 11 Apr 2023 11:57:57 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
       - no-cache
       Server:
-      - tenable.io
+      - cloudflare
       Set-Cookie:
-      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains
       Transfer-Encoding:
       - chunked
       Vary:
-      - accept-encoding
+      - Accept-Encoding
+      - origin
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-wzijw-ap-southeast-1-prod
+      - service-nginx-router-us-east-1-prod-7d54c5fb89-lkjf7
       X-Request-Uuid:
-      - d353f90da495020bfca53ed8999f60fd
+      - 1ca4882f08c7791543c995b3c6c909ba
       X-Xss-Protection:
       - 1; mode=block
     status:

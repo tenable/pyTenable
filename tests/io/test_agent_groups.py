@@ -47,6 +47,7 @@ def test_agentgroups_add_agent_to_group_agent_id_typeerror(api):
     with pytest.raises(UnexpectedValueError):
         api.agent_groups.add_agent(1, 'nope')
 
+
 @pytest.mark.vcr()
 def test_agentgroups_add_agent_to_group_mixed_ids_typeerror(api):
     '''
@@ -105,6 +106,7 @@ def test_agentgroups_add_mult_agents_to_group(api, agentgroup):
     check(task, 'container_uuid', str)
     check(task, 'status', str)
     check(task, 'task_id', str)
+    check(task, 'message', str, allow_none=True)
 
 
 @pytest.mark.vcr()
@@ -193,6 +195,7 @@ def test_agentgroups_create_agent_group(agentgroup):
     check(agentgroup, 'timestamp', int)
     check(agentgroup, 'user_permissions', int)
     check(agentgroup, 'uuid', 'uuid')
+    check(agentgroup, 'agents_count', int)
 
 
 @pytest.mark.vcr()
@@ -301,6 +304,7 @@ def test_agentgroups_delete_mult_agents_from_group(api, agentgroup):
     check(task, 'container_uuid', str)
     check(task, 'status', str)
     check(task, 'task_id', str)
+    check(task, 'message', str, allow_none=True)
 
 
 @pytest.mark.vcr()
@@ -370,6 +374,7 @@ def test_agentgroups_details_of_an_agent_group(api, agentgroup):
     check(group, 'timestamp', int)
     check(group, 'user_permissions', int)
     check(group, 'uuid', 'uuid')
+    check(group, 'agents_count', int)
     assert group['id'] == agentgroup['id']
 
 
@@ -414,13 +419,15 @@ def test_agentgroups_task_status(api, agentgroup):
     assert isinstance(task, dict)
     check(task, 'container_uuid', str)
     check(task, 'last_update_time', int)
-    check(task, 'start_time', int)
+    check(task, 'end_time', int)
     check(task, 'status', str)
     check(task, 'task_id', str)
+    check(task, 'message', str, allow_none=True)
+    check(task, 'total_work_units_completed', int)
 
 
 @pytest.mark.vcr()
-def test_agentgroups_list(api):
+def test_agentgroups_list(api, agentgroup):
     '''
     test to get the agent group list
     '''
@@ -436,10 +443,12 @@ def test_agentgroups_list(api):
         check(agentgroup, 'owner_id', int)
         check(agentgroup, 'owner_name', str)
         check(agentgroup, 'owner_uuid', str)
+        check(agentgroup, 'timestamp', int)
         # check(agentgroup, 'pagination', dict)
         check(agentgroup, 'shared', int)
         check(agentgroup, 'user_permissions', int)
         check(agentgroup, 'uuid', str)
+        check(agentgroup, 'agents_count', int)
 
 
 @pytest.mark.vcr()
@@ -468,4 +477,5 @@ def test_agentgroups_details_of_an_agent_group_fields(api, agentgroup):
     check(group, 'timestamp', int)
     check(group, 'user_permissions', int)
     check(group, 'uuid', 'uuid')
+    check(group, 'agents_count', int)
     assert group['id'] == agentgroup['id']

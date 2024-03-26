@@ -2,33 +2,11 @@
 test networks
 '''
 import uuid
+
 import pytest
-from tenable.errors import UnexpectedValueError, APIError, BadRequestError
+
+from tenable.errors import UnexpectedValueError, BadRequestError
 from tests.checker import check
-from tests.pytenable_log_handler import log_exception
-
-
-@pytest.fixture(name='network')
-def fixture_network(request, api, vcr):
-    '''
-    Fixture to create network
-    '''
-    with vcr.use_cassette('test_networks_create_success'):
-        network = api.networks.create('Network-{}'.format(uuid.uuid4()))
-
-    def teardown():
-        '''
-        cleanup function to delete network
-        '''
-        try:
-            with vcr.use_cassette('test_networks_delete_success'):
-                api.networks.delete(network['uuid'])
-        except APIError as err:
-            log_exception(err)
-            pass
-
-    request.addfinalizer(teardown)
-    return network
 
 
 def test_networks_create_name_typeerror(api):
@@ -207,12 +185,27 @@ def test_networks_list_scanners_success(api):
     for scanner in scanners:
         assert isinstance(scanner, dict)
         check(scanner, 'owner_uuid', 'uuid')
+        check(scanner, 'owner_name', str)
+        check(scanner, 'owner_id', int)
         check(scanner, 'uuid', 'scanner-uuid')
+        check(scanner, 'type', str)
+        check(scanner, 'group', bool)
+        check(scanner, 'creation_date', int)
+        check(scanner, 'last_connect', int, allow_none=True)
+        check(scanner, 'last_modification_date', int)
+        check(scanner, 'timestamp', int)
         check(scanner, 'id', int)
+        check(scanner, 'linked', int)
         check(scanner, 'name', str)
         check(scanner, 'key', str)
+        check(scanner, 'num_scans', int)
+        check(scanner, 'pool', bool)
+        check(scanner, 'scan_count', int)
+        check(scanner, 'source', str)
         check(scanner, 'status', str)
         check(scanner, 'group', bool)
+        check(scanner, 'supports_remote_logs', bool)
+        check(scanner, 'supports_remote_settings', bool)
 
 
 def test_networks_unassigned_scanners_id_typeerror(api):
@@ -241,12 +234,27 @@ def test_networks_unassigned_scanners_success(api, network):
     for scanner in scanners:
         assert isinstance(scanner, dict)
         check(scanner, 'owner_uuid', 'uuid')
+        check(scanner, 'owner_name', str)
+        check(scanner, 'owner_id', int)
         check(scanner, 'uuid', 'scanner-uuid')
+        check(scanner, 'type', str)
+        check(scanner, 'group', bool)
+        check(scanner, 'creation_date', int)
+        check(scanner, 'last_connect', int, allow_none=True)
+        check(scanner, 'last_modification_date', int)
+        check(scanner, 'timestamp', int)
         check(scanner, 'id', int)
+        check(scanner, 'linked', int)
         check(scanner, 'name', str)
         check(scanner, 'key', str)
+        check(scanner, 'num_scans', int)
+        check(scanner, 'pool', bool)
+        check(scanner, 'scan_count', int)
+        check(scanner, 'source', str)
         check(scanner, 'status', str)
         check(scanner, 'group', bool)
+        check(scanner, 'supports_remote_logs', bool)
+        check(scanner, 'supports_remote_settings', bool)
 
 
 def test_networks_assign_scanners_id_typeerror(api):
@@ -416,6 +424,7 @@ def test_networks_list(api):
         check(network, 'scanner_count', int)
         check(network, 'uuid', 'uuid')
         check(network, 'name', str)
+        check(network, 'description', str, allow_none=True)
         check(network, 'is_default', bool)
         check(network, 'created_by', 'uuid')
         check(network, 'modified_by', 'uuid')
@@ -492,30 +501,32 @@ def test_networks_unexpectedvalueerror(api, network):
 
 
 @pytest.mark.vcr()
-def test_networks_list_fileds(api):
+def test_networks_list_fileds(api, network):
     '''
     test to get list of configured networks.
     '''
     count = 0
     networks = api.networks.list(filter_type='or',
                                  include_deleted=True,
-                                 offset=2,
+                                 offset=0,
                                  limit=50,
                                  wildcard='match',
                                  wildcard_fields=['name'])
-    for network in networks:
+    for network_detail in networks:
         assert isinstance(network, dict)
-        check(network, 'owner_uuid', 'uuid')
-        check(network, 'created', int)
-        check(network, 'modified', int)
-        check(network, 'scanner_count', int)
-        check(network, 'uuid', 'uuid')
-        check(network, 'name', str)
-        check(network, 'is_default', bool)
-        check(network, 'created_by', 'uuid')
-        check(network, 'modified_by', 'uuid')
-        check(network, 'created_in_seconds', int)
-        check(network, 'modified_in_seconds', int)
+        check(network_detail, 'owner_uuid', 'uuid')
+        check(network_detail, 'created', int)
+        check(network_detail, 'modified', int)
+        check(network_detail, 'scanner_count', int)
+        check(network_detail, 'uuid', 'uuid')
+        check(network_detail, 'name', str)
+        check(network, 'description', str, allow_none=True)
+        check(network_detail, 'is_default', bool)
+        check(network_detail, 'created_by', 'uuid')
+        check(network_detail, 'modified_by', 'uuid')
+        check(network_detail, 'created_in_seconds', int)
+        check(network_detail, 'modified_in_seconds', int)
+
 
 def test_network_create_assets_ttl_days_typeerror(api):
     with pytest.raises(TypeError):

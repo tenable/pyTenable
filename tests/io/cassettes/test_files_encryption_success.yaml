@@ -1,7 +1,9 @@
 interactions:
 - request:
-    body: "--6938aa5e45c3729ed2c863e3e68332e2\r\nContent-Disposition: form-data; name=\"no_enc\"\r\n\r\n1\r\n--6938aa5e45c3729ed2c863e3e68332e2\r\nContent-Disposition:
-      form-data; name=\"Filedata\"; filename=\"test.txt\"\r\n\r\ntest\r\n--6938aa5e45c3729ed2c863e3e68332e2--\r\n"
+    body: "--a6dca3ab3d0a4d5f953cd23ff35f118a\r\nContent-Disposition: form-data; name=\"\
+      no_enc\"\r\n\r\n1\r\n--a6dca3ab3d0a4d5f953cd23ff35f118a\r\nContent-Disposition:\
+      \ form-data; name=\"Filedata\"; filename=\"test.txt\"\r\n\r\ntest\r\n--a6dca3ab3d0a4d5f953cd23ff35f118a--\r\
+      \n"
     headers:
       Accept:
       - '*/*'
@@ -12,52 +14,55 @@ interactions:
       Content-Length:
       - '240'
       Content-Type:
-      - multipart/form-data; boundary=6938aa5e45c3729ed2c863e3e68332e2
+      - multipart/form-data; boundary=a6dca3ab3d0a4d5f953cd23ff35f118a
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.0
-        (pyTenable/1.3.0; Python/3.8.6; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: POST
     uri: https://cloud.tenable.com/file/upload
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAA6tWSsvMSS0tyMlPTElNUbJSKkktLtErqShRqgUA9gNgPBsAAAA=
+      string: '{"fileuploaded":"test.txt_3"}'
     headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b6268abcf47032a-AMD
       Cache-Control:
       - no-store
       Connection:
       - keep-alive
-      Content-Encoding:
-      - gzip
+      Content-Length:
+      - '29'
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 15 Jun 2021 15:28:52 GMT
+      - Tue, 11 Apr 2023 10:05:03 GMT
       Expect-CT:
       - enforce, max-age=86400
       Expires:
       - '0'
       Pragma:
       - no-cache
+      Server:
+      - cloudflare
       Set-Cookie:
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       Strict-Transport-Security:
       - max-age=63072000; includeSubDomains
-      Transfer-Encoding:
-      - chunked
       Vary:
-      - accept-encoding
+      - origin
       X-Content-Type-Options:
       - nosniff
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-c3gdt-ap-southeast-1-prod
+      - service-nginx-router-ap-south-1-prod-69479dd7b-ct8k2
       X-Request-Uuid:
-      - 7beb620aa9c8912276f87d2c54645074
+      - 2f5144b4c582b04a0b0ea4df14ba054b
       X-Xss-Protection:
       - 1; mode=block
     status:

@@ -1,6 +1,8 @@
-from ..checker import check
 import uuid
+
 import pytest
+
+from ..checker import check
 
 
 @pytest.mark.vcr()
@@ -24,19 +26,33 @@ def test_session_edit(api):
 def test_session_details(api):
     session = api.session.details()
     assert isinstance(session, dict)
+    check(session, 'apps', dict)
+    check(session, 'container_domains', list)
     check(session, 'container_id', int)
     check(session, 'container_uuid', 'uuid')
     check(session, 'container_name', str)
+    check(session, 'container_type', str)
     check(session, 'email', str)
     check(session, 'enabled', bool)
     check(session, 'group_uuids', list)
     check(session, 'groups', list)
     check(session, 'id', int)
+    check(session, 'lastlogin', int, allow_none=True)
     check(session, 'login_fail_count', int)
     check(session, 'login_fail_total', int)
     check(session, 'name', str)
+    check(session, 'permissions', int)
+    check(session, 'preferences', dict)
+    preferences = session['preferences']
+    check(preferences, 'enableExplore', str)
+    check(preferences, 'enableWebAppWorkbench', str)
+    check(preferences, 'tenableGridState', str)
+    check(preferences, 'enableAssetWorkbench', str)
+    check(preferences, 'enableVMWorkbench', str)
+    check(session, 'type', str)
     check(session, 'user_name', str)
     check(session, 'username', str)
+    check(session, 'user_permissions', list)
     check(session, 'uuid', 'uuid')
     check(session, 'uuid_id', str)
     check(session, 'features', dict)

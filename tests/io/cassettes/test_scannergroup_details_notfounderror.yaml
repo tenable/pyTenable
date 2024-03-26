@@ -9,42 +9,54 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
     uri: https://cloud.tenable.com/scanner-groups/1
   response:
     body:
-      string: !!binary |
-        H4sIAAAAAAAAAzXLsQrDMAyE4VcRmkPI0iVbCR26FfoEIj6CIZapZLeE0HevScl2/Hy3sxcp1acc
-        wONlGDqGWTYe+a4FprLSE/aG0e3oHSe4y9I0X5XiifyPjjPlea5mCD09VoiDPhILCaWcoG1ooGIb
-        bbkaGV4V3uIiUXv+/gBAEMQfkgAAAA==
+      string: '{"error":"ScannerGroup not found."}'
     headers:
-      cache-control:
-      - no-cache
-      connection:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b626e419a0b032a-AMD
+      Cache-Control:
+      - no-store
+      Connection:
       - keep-alive
-      content-encoding:
-      - gzip
-      content-type:
+      Content-Length:
+      - '35'
+      Content-Type:
       - application/json; charset=utf-8
-      date:
-      - Thu, 06 Dec 2018 23:20:41 GMT
-      server:
-      - tenable.io
-      strict-transport-security:
+      Date:
+      - Tue, 11 Apr 2023 10:08:51 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
       - max-age=63072000; includeSubDomains
-      transfer-encoding:
-      - chunked
-      vary:
-      - accept-encoding
-      x-content-type-options:
+      Vary:
+      - origin
+      X-Content-Type-Options:
       - nosniff
-      x-gateway-site-id:
-      - nginx-router-c-prod-us-east-2
-      x-request-uuid:
-      - 22486d0ca23f07863a80c76a704a3566
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-south-1-prod-69479dd7b-gj59b
+      X-Request-Uuid:
+      - 0d11cb67bff06b027692a6412be7389d
+      X-XSS-Protection:
+      - 1; mode=block
     status:
-      code: 500
-      message: Internal Server Error
+      code: 404
+      message: Not Found
+version: 1

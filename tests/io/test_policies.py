@@ -2,7 +2,9 @@
 test policies
 '''
 import io
+
 import pytest
+
 from tenable.errors import NotFoundError, UnexpectedValueError
 from ..checker import check
 
@@ -176,6 +178,7 @@ def test_policy_import(api, policy):
     pobj = api.policies.policy_export(policy['policy_id'])
     resp = api.policies.policy_import(pobj)
     assert isinstance(resp, dict)
+    check(resp, 'private', int)
     check(resp, 'creation_date', int)
     check(resp, 'description', str, allow_none=True)
     check(resp, 'id', int)

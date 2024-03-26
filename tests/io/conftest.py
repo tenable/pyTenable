@@ -1,8 +1,12 @@
 '''conftest'''
 import os
+import string
 import uuid
+from random import choices
+
 import pytest
-from tenable.errors import NotFoundError
+
+from tenable.errors import NotFoundError, APIError
 from tenable.io import TenableIO
 from tests.pytenable_log_handler import setup_logging_to_file, log_exception
 
@@ -204,3 +208,93 @@ def target_file(request, api):
 
     request.addfinalizer(teardown)
     return targetFile
+
+
+@pytest.fixture(name='group')
+def fixture_group(request, api):
+    '''
+    Fixture to create group
+    '''
+    group = api.groups.create(str(uuid.uuid4()))
+
+    def teardown():
+        '''
+        cleanup function to delete group
+        '''
+        try:
+            api.groups.delete(group['id'])
+        except NotFoundError as err:
+            log_exception(err)
+            pass
+
+    request.addfinalizer(teardown)
+    return group
+
+
+@pytest.fixture(name='network')
+def fixture_network(request, api, vcr):
+    '''
+    Fixture to create network
+    '''
+    with vcr.use_cassette('test_networks_create_success'):
+        network = api.networks.create('Network-{}'.format(uuid.uuid4()))
+
+    def teardown():
+        '''
+        cleanup function to delete network
+        '''
+        try:
+            with vcr.use_cassette('test_networks_delete_success'):
+                api.networks.delete(network['uuid'])
+        except APIError as err:
+            log_exception(err)
+            pass
+
+    request.addfinalizer(teardown)
+    return network
+
+
+@pytest.fixture
+def permission(request, api, user):
+    '''fixture to create a permission under access control'''
+
+    def random_string(length: int):
+        """
+        Creates a random string of a given length
+        Args:
+            length: Length of the string to be generated
+
+        Returns: str
+
+        """
+        return "".join(choices(string.ascii_letters, k=length))
+
+    permission_payload = {
+        "actions": ["CanView", "CanUse"],
+        "objects": [
+            {
+                "name": "Category,dummy_value",
+                "type": "Tag",
+                "uuid": f"{str(uuid.uuid4())}"
+            }
+        ],
+        "subjects": [
+            {
+                "name": "User sub",
+                "type": "User",
+                "uuid": user['uuid']
+            }
+        ],
+        "name": f"test_{random_string(5)}"
+    }
+    created_permission = api.v3.access_control.create(permission_payload)
+
+    def teardown():
+        '''function to clear policy'''
+        try:
+            api.v3.access_control.details(created_permission['permission_uuid'])
+        except NotFoundError as notfound:
+            log_exception(notfound)
+
+    request.addfinalizer(teardown)
+    return created_permission

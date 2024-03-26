@@ -2,44 +2,77 @@ interactions:
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
-      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
     uri: https://cloud.tenable.com/plugins/plugin/19506
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA5VUTWvcMBD9K4PJIYHNrjeQtPG90F56aAI9dIuZtcZrEVkymtGCCfnvlbxe4gR7
-        oSd/6M3TezNPes1QxOt9EOKs+PP6/lke0QTKiowrtKW2tVtbZJOtJhCLbULUw/NtNVf9k5gDw1Mk
-        gR+RxLco2tk5ms6Eg7blBbKrX3TUHMsL2K4fc7iao+HK607KI/mEXJBlNzhb60wY5C2YcZbmyrzm
-        l7LGSpxfqHxuNMPJICjNncGeVxDbAYRVA7H7Qgoax7KC1OuxTYB7FwSkoZ1NcwAtTKaGYmd3FuAW
-        nhuC0Sm4OgHPuzDJ+h0jfUcJkEgsebge5xIFjG/fXUs3k4pPrCPqm40OaALrnJcz6zXfQGBSn5c9
-        2gONoPPi74aiWA+VJ0VWNJroP6qRRnt126GXHjqU2JsWLR6ojaBkB6BqqHphQB+tOma9N1M9CmUw
-        mjqRzE60qOCH7C0s29Duo6BYm8bAZ71xHFGIR2PITMje0aMeFbPxATsXFEWndC5HLO4zVxg7YGUh
-        W3d5fr/Jv27uHi6cqi7sja4G/2Xq0QIXh7ZF318gSkn6j5DPp/kcumFCswext65jzYuWt1822/yy
-        5dYpXX/0/HeV1dhq059umSJ7IhFtDxw1jH+WLyytsmL7eJ8/vP0Db15RWTYFAAA=
+        H4sIAAAAAAAAA5VVwW7bMAz9FcKnFkgdJ0CDNbehGLBdemmBHZbBUCw6FipLgkS1MIr++6jYQdpB
+        DrZTHPPxkXx8kt8KQeTVPhKGYvvr7fy3fhE6YrEtQiNMrUxrSyOCLhYfIEb0CdEef98XuewHDCEG
+        eGQS+MEkvhekrMnROB0PytQXyFblarXJpYbGK0f1C/qQyPPZT50KMCKBn+6tG7w6dARX99ewrqrb
+        m3W1XoMwMoXtq0EJ+wGe0Ii9xgW335RgPQPga9sqrQQhUIcebVte6Ko5FZrpyyxFNtvqSPPTPFiD
+        uTSvwnPdioasv6TDKDZIFZwWQ1gArwZQNB2wE4gn72ygBajzykDsbaQ08M4kT4CigLqF7c7sDMAN
+        PHUI0wbAtgl4qhKQyjOGBocJkEgMeriaPMINTE/fbY/X5SzrhPpmmBs/wJz1dGK9CtcQA8q/w16Y
+        A06gT0FlDuBt5OWzXg5I9Qhj+GeHacvQeJRoSAnN8nCz1Ckvb5zwNIATxNL1wogD9gxKmQBNh81z
+        AOFT8RAU26j8zJnGmXZwlCQ6HpXLyJERQ7LiaEB5blYm501ipFE+zCGjH7eVD5vY77ksB9N+w0kI
+        3jMX9EJr1Fn0NIlk033C5hwocTT+vHfJx6x3qbO8gkNXJw+GmWQunMtl4c3cCUuHe1l9Wa6zl8d0
+        77i416o5ilcngWe4Qux74YcLRMnf/3H08mfsZPLj/rLXw2CsC2pOpVVWI/3KBWsf5xaTLsBltVlW
+        dxfm661U7T8oZY4T1M5bGRuq+RKIbvYbItGh4ePVDMX770XRil7p4RR8RCI+n4ETpzfznxUli+3q
+        7rbavP8BZO62tdwGAAA=
     headers:
-      accept-ranges: [bytes]
-      cache-control: [no-cache]
-      connection: [keep-alive]
-      content-encoding: [gzip]
-      content-length: ['503']
-      content-type: [application/json; charset=utf-8]
-      date: ['Thu, 06 Dec 2018 23:20:20 GMT']
-      expires: ['0']
-      pragma: ['']
-      server: [tenable.io]
-      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
-          path=/; HttpOnly]
-      strict-transport-security: [max-age=63072000; includeSubDomains]
-      vary: [accept-encoding]
-      x-content-type-options: [nosniff]
-      x-frame-options: [DENY]
-      x-gateway-site-id: [nginx-router-c-prod-us-east-2]
-      x-request-uuid: [50e942c92f44d64a136d6c9c452ba3f6]
-      x-xss-protection: [mode=block]
-    status: {code: 200, message: OK}
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b626a41a9400330-AMD
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 11 Apr 2023 10:06:07 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Expires:
+      - '0'
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - origin,accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-south-1-prod-69479dd7b-vl587
+      X-Request-Uuid:
+      - c40a279982f2529abfbcdc8d80344140
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
 version: 1

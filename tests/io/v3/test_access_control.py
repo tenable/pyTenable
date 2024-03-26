@@ -1,7 +1,6 @@
 """
 This file contains tests for the Access Control endpoints.
 """
-import os
 import string
 import uuid
 from random import choices
@@ -9,28 +8,13 @@ from random import choices
 import pytest
 
 from tenable.io import TenableIO
-from tests.pytenable_log_handler import setup_logging_to_file
-
-
-@pytest.fixture
-def api():
-    """
-    Fixture for setting up API Keys
-    """
-    setup_logging_to_file()
-    return TenableIO(
-        os.getenv('TIO_TEST_ADMIN_ACCESS', ''),
-        os.getenv('TIO_TEST_ADMIN_SECRET', ''),
-        vendor='pytest',
-        product='pytenable-automated-testing')
 
 
 @pytest.mark.vcr()
-def test_details(api: TenableIO):
-    uuid_to_search = "4c931fce-699c-4052-a43c-c953e71dd37b"
-    details = api.v3.access_control.details(uuid_to_search)
+def test_details(api: TenableIO, permission):
+    details = api.v3.access_control.details(permission['permission_uuid'])
     assert isinstance(details, dict)
-    assert details["permission_uuid"] == uuid_to_search
+    assert details["permission_uuid"] == permission['permission_uuid']
 
 
 @pytest.mark.vcr()
@@ -40,9 +24,8 @@ def test_details_negative(api: TenableIO):
 
 
 @pytest.mark.vcr()
-def test_get_user_permission(api: TenableIO):
-    user_uuid_to_search = "b83faeec-f790-433f-893c-88c48c82562e"
-    user_permission = api.v3.access_control.get_user_permission(user_uuid_to_search)
+def test_get_user_permission(api: TenableIO, user, permission):
+    user_permission = api.v3.access_control.get_user_permission(user['uuid'])
     assert isinstance(user_permission, dict)
     assert len(user_permission["permissions_available"]) > 0
 
@@ -74,9 +57,9 @@ def test_get_current_user_permission(api: TenableIO):
 
 
 @pytest.mark.vcr()
-def test_create_and_delete(api: TenableIO):
+def test_create_and_delete(api: TenableIO, user):
     # Testing creation of permission
-    created_permission = _create_permission(api)
+    created_permission = _create_permission(api, user['uuid'])
     assert isinstance(created_permission, dict)
 
     created_permission_uuid = created_permission["permission_uuid"]
@@ -88,10 +71,11 @@ def test_create_and_delete(api: TenableIO):
 
 
 @pytest.mark.vcr()
-def test_update(api: TenableIO):
+def test_update(api: TenableIO, user):
     # Creation permission only to update it later
-    created_permission_uuid = _create_permission(api)["permission_uuid"]
-    updated_permission = _update_permission(api, created_permission_uuid)
+    created_permission = _create_permission(api, user['uuid'])
+    created_permission_uuid = created_permission["permission_uuid"]
+    updated_permission = _update_permission(api, created_permission_uuid, user['uuid'])
     assert updated_permission is None
 
     # Cleaning up after test
@@ -104,7 +88,7 @@ def test_list(api: TenableIO):
     assert isinstance(permissions, list)
 
 
-def _create_permission(api: TenableIO):
+def _create_permission(api: TenableIO, user_uuid: str):
     """
     Invokes the creation API for testing.
     """
@@ -121,7 +105,7 @@ def _create_permission(api: TenableIO):
             {
                 "name": "User sub",
                 "type": "User",
-                "uuid": "b83faeec-f790-433f-893c-88c48c82562e"
+                "uuid": user_uuid
             }
         ],
         "name": f"test_{_random_string(5)}"
@@ -137,7 +121,7 @@ def _delete_permission(api: TenableIO, permission_uuid: str):
     return api.v3.access_control.details(permission_uuid)
 
 
-def _update_permission(api: TenableIO, permission_uuid: str):
+def _update_permission(api: TenableIO, permission_uuid: str, user_uuid: str):
     """
     Invokes the update API for testing.
     """
@@ -154,7 +138,7 @@ def _update_permission(api: TenableIO, permission_uuid: str):
             {
                 "name": "User sub",
                 "type": "User",
-                "uuid": "b83faeec-f790-433f-893c-88c48c82562e"
+                "uuid": user_uuid
             }
         ],
         "name": f"test_{_random_string(5)}"

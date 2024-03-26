@@ -2,7 +2,9 @@
 test plugins
 '''
 from datetime import date
+
 import pytest
+
 from tenable.io.plugins import PluginIterator
 from ..checker import check
 
@@ -98,11 +100,22 @@ def test_plugins_list_success(api):
         size=10)
     for plugin in plugins:
         check(plugin, 'attributes', dict)
+        check(plugin['attributes'], 'intel_type', str)
         check(plugin['attributes'], 'description', str)
         check(plugin['attributes'], 'plugin_publication_date', str)
         check(plugin['attributes'], 'plugin_modification_date', str)
-        check(plugin['attributes'], 'synopsis', str)
+        # check(plugin['attributes'], 'synopsis', str, allow_none=True)  # it is not returned in response
         check(plugin['attributes'], 'risk_factor', str)
+        check(plugin['attributes'], 'compliance', bool)
+        check(plugin['attributes'], 'exploit_available', bool)
+        check(plugin['attributes'], 'always_run', bool)
+        check(plugin['attributes'], 'has_patch', bool)
+        check(plugin['attributes'], 'cve', list)
+        check(plugin['attributes'], 'bid', list)
+        check(plugin['attributes'], 'xref', list)
+        check(plugin['attributes'], 'xrefs', list)
+        check(plugin['attributes'], 'see_also', list)
+        check(plugin['attributes'], 'vpr', dict)
         check(plugin, 'id', int)
         check(plugin, 'name', str)
 
@@ -123,3 +136,22 @@ def test_plugins_populate_family_cache_with_maptable(api):
     plugins._maptable = {'plugins': {12122: 13, 12050: 13}, 'families': {13: 'Netware'}}
     for plugin in plugins:
         check(plugin, 'name', str)
+        check(plugin, 'id', int)
+        check(plugin, 'family_id', int, allow_none=True)
+        check(plugin, 'family_name', str, allow_none=True)
+        check(plugin, 'attributes', dict)
+        check(plugin['attributes'], 'intel_type', str)
+        check(plugin['attributes'], 'description', str)
+        check(plugin['attributes'], 'plugin_publication_date', str)
+        check(plugin['attributes'], 'plugin_modification_date', str)
+        check(plugin['attributes'], 'risk_factor', str)
+        check(plugin['attributes'], 'compliance', bool)
+        check(plugin['attributes'], 'exploit_available', bool)
+        check(plugin['attributes'], 'always_run', bool)
+        check(plugin['attributes'], 'has_patch', bool)
+        check(plugin['attributes'], 'cve', list)
+        check(plugin['attributes'], 'bid', list)
+        check(plugin['attributes'], 'xref', list)
+        check(plugin['attributes'], 'xrefs', list)
+        check(plugin['attributes'], 'see_also', list)
+        check(plugin['attributes'], 'vpr', dict)

@@ -1,35 +1,70 @@
 interactions:
 - request:
-    body: !!python/unicode '{"name": "638eafd2-ce88-45aa-b245-a3edb15a76c0"}'
+    body: '{"name": "2eda1a96-42ab-435a-b325-f2b20846923f"}'
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['48']
-      Content-Type: [application/json]
-      User-Agent: [pyTenable/0.3.4 (pyTenable/0.3.4; Python/2.7.14)]
-      X-APIKeys: [accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '48'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: PUT
     uri: https://cloud.tenable.com/scanner-groups/1
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6tWKi5JLCktds5PSVWyMjEw0VFKLSrKL1KyUvLLL1Fwyy/NS1HSUcpNLS5OTAeq
-        UApOTszLSy1yL8ovLVAozyzJUMhMUTBUyAMqTgMp1lOqBQCm7YXSVAAAAA==
+        H4sIAAAAAAAAAxTKMQqAMAwF0KuEPxdRcOoq6ObiCYqN2sFG0hQH8e7im9+DYsFqGSQyfN/2Dqwq
+        Co9ZjEapOcLh5FLCzvBY1pAz66RSL7qTHZQidZTFaPtzg/cDAAD//wMApu2F0lQAAAA=
     headers:
-      cache-control: [no-cache]
-      connection: [keep-alive]
-      content-encoding: [gzip]
-      content-type: [application/json; charset=utf-8]
-      date: ['Thu, 06 Dec 2018 23:20:44 GMT']
-      server: [tenable.io]
-      set-cookie: [nginx-cloud-site-id=us-2b; path=/; HttpOnly, nginx-cloud-site-id=us-2b;
-          path=/; HttpOnly]
-      strict-transport-security: [max-age=63072000; includeSubDomains]
-      transfer-encoding: [chunked]
-      vary: [accept-encoding]
-      x-content-type-options: [nosniff]
-      x-gateway-site-id: [nginx-router-c-prod-us-east-2]
-      x-request-uuid: [85f0ee996367cde458fe9397ca3b22c9]
-    status: {code: 404, message: Not Found}
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b626e55fe96032a-AMD
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 11 Apr 2023 10:08:55 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-south-1-prod-69479dd7b-gj59b
+      X-Request-Uuid:
+      - 83b2b54ca9d8bbb9d2f3f297cd1ed5ac
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 404
+      message: Not Found
 version: 1

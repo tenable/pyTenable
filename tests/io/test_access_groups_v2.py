@@ -2,11 +2,13 @@
 test access_groups
 '''
 import uuid
+
 import pytest
+
 from tenable.errors import UnexpectedValueError, APIError
 from tests.checker import check
-from tests.io.test_groups import fixture_group
 from tests.pytenable_log_handler import log_exception
+
 
 @pytest.fixture(name='rules')
 def fixture_rules():
@@ -247,6 +249,7 @@ def test_access_groups_v2_create_success(agroup):
     test to create access group
     '''
     assert isinstance(agroup, dict)
+    check(agroup, 'container_uuid', 'uuid')
     check(agroup, 'created_at', 'datetime')
     check(agroup, 'updated_at', 'datetime')
     check(agroup, 'id', 'uuid')
@@ -254,6 +257,7 @@ def test_access_groups_v2_create_success(agroup):
     check(agroup, 'all_assets', bool)
     check(agroup, 'version', int)
     check(agroup, 'status', str)
+    check(agroup, 'origin', str)
     check(agroup, 'access_group_type', str)
     check(agroup, 'rules', list)
     for rule in agroup['rules']:
@@ -320,6 +324,7 @@ def test_access_groups_v2_edit_success(api, agroup):
     '''
     resp = api.access_groups_v2.edit(agroup['id'], name=str(uuid.uuid4()), all_users=False)
     assert isinstance(resp, dict)
+    check(resp, 'container_uuid', 'uuid')
     check(resp, 'created_at', 'datetime')
     check(resp, 'updated_at', 'datetime')
     check(resp, 'id', 'uuid')
@@ -327,6 +332,7 @@ def test_access_groups_v2_edit_success(api, agroup):
     check(resp, 'all_assets', bool)
     check(resp, 'version', int)
     check(resp, 'status', str)
+    check(resp, 'origin', str)
     check(resp, 'access_group_type', str)
     check(resp, 'rules', list)
     for rule in resp['rules']:
@@ -354,6 +360,7 @@ def test_access_groups_v2_details_success(api):
     group = api.access_groups_v2.create(str(uuid.uuid4()), [('ipv4', 'eq', ['192.168.0.0/24'])])
     resp = api.access_groups_v2.details(group['id'])
     assert isinstance(resp, dict)
+    check(resp, 'container_uuid', 'uuid')
     check(resp, 'created_at', 'datetime')
     check(resp, 'updated_at', 'datetime')
     check(resp, 'id', 'uuid')
@@ -361,6 +368,7 @@ def test_access_groups_v2_details_success(api):
     check(resp, 'all_assets', bool)
     check(resp, 'version', int)
     check(resp, 'status', str)
+    check(resp, 'origin', str)
     check(resp, 'access_group_type', str)
     check(resp, 'rules', list)
     for rule in resp['rules']:
@@ -491,6 +499,7 @@ def test_access_groups_v2_list(api):
     for group in access_groups:
         count += 1
         assert isinstance(group, dict)
+        check(group, 'container_uuid', 'uuid')
         check(group, 'created_at', 'datetime')
         check(group, 'updated_at', 'datetime')
         check(group, 'id', 'uuid')
@@ -498,6 +507,7 @@ def test_access_groups_v2_list(api):
         check(group, 'all_assets', bool)
         check(group, 'version', int)
         check(group, 'status', str)
+        check(group, 'origin', str)
         check(group, 'access_group_type', str)
         # check(group, 'created_by_uuid', 'uuid') # Will not return for default group
         # check(group, 'updated_by_uuid', 'uuid') # Will not return for default group
@@ -507,8 +517,6 @@ def test_access_groups_v2_list(api):
     assert count == access_groups.total
 
 
-
-
 @pytest.mark.vcr()
 def test_access_groups_v2_list_fields(api):
     '''
@@ -516,13 +524,14 @@ def test_access_groups_v2_list_fields(api):
     '''
     count = 0
     access_groups = api.access_groups_v2.list(filter_type='or',
-                                           limit=45,
-                                           offset=2,
-                                           wildcard='match',
-                                           wildcard_fields=['name'])
+                                              limit=45,
+                                              offset=2,
+                                              wildcard='match',
+                                              wildcard_fields=['name'])
     for i in access_groups:
         count += 1
         assert isinstance(i, dict)
+        check(i, 'container_uuid', 'uuid')
         check(i, 'created_at', 'datetime')
         check(i, 'updated_at', 'datetime')
         check(i, 'id', 'uuid')
@@ -535,4 +544,5 @@ def test_access_groups_v2_list_fields(api):
         check(i, 'updated_by_name', str)
         check(i, 'processing_percent_complete', int)
         check(i, 'status', str)
+        check(i, 'origin', str)
     assert count == access_groups.total

@@ -3,9 +3,12 @@ test workbenches
 '''
 import uuid
 from io import BytesIO
+
 import pytest
+
 from tenable.errors import UnexpectedValueError, NotFoundError
 from tests.checker import check
+
 
 @pytest.mark.vcr()
 def test_workbench_assets_age_typeerror(api):
@@ -15,6 +18,7 @@ def test_workbench_assets_age_typeerror(api):
     with pytest.raises(TypeError):
         api.workbenches.assets(age='onetwothree')
 
+
 @pytest.mark.vcr()
 def test_workbench_assets_filter_tyype_typeerror(api):
     '''
@@ -22,6 +26,7 @@ def test_workbench_assets_filter_tyype_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.workbenches.assets(filter_type=1)
+
 
 @pytest.mark.vcr()
 def test_workbench_assets_filter_type_unexpectedvalueerror(api):
@@ -41,6 +46,13 @@ def test_workbench_assets(api):
     assert isinstance(assets, list)
     if assets:
         asset = assets[0]
+        check(asset, 'acr_score', int)
+        check(asset, 'acr_score_value', int)
+        check(asset, 'acr_drivers', list)
+        if asset['acr_drivers']:
+            for acr_driver in asset['acr_drivers']:
+                check(acr_driver, 'driver_name', str)
+                check(acr_driver, 'driver_value', list)
         check(asset, 'access_group_id', list)
         check(asset, 'agent_name', list)
         check(asset, 'aws_availability_zone', list)
@@ -55,10 +67,19 @@ def test_workbench_assets(api):
         check(asset, 'aws_region', list)
         check(asset, 'aws_subnet_id', list)
         check(asset, 'aws_vpc_id', list)
+        check(asset, 'azure_location', list)
+        check(asset, 'azure_resource_group', list)
         check(asset, 'azure_resource_id', list)
+        check(asset, 'azure_subscription_id', list)
+        check(asset, 'azure_type', list)
         check(asset, 'azure_vm_id', list)
+        check(asset, 'bigfix_asset_id', list)
         check(asset, 'bios_uuid', list)
         check(asset, 'created_at', 'datetime')
+        check(asset, 'container_uuid', 'uuid')
+        check(asset, 'exposure_score', int)
+        check(asset, 'exposure_score_value', int)
+        check(asset, 'exposure_confidence_value', int, allow_none=True)
         check(asset, 'first_scan_time', 'datetime', allow_none=True)
         check(asset, 'first_seen', 'datetime', allow_none=True)
         check(asset, 'fqdn', list)
@@ -94,6 +115,14 @@ def test_workbench_assets(api):
         check(asset, 'operating_system', list)
         check(asset, 'qualys_asset_id', list)
         check(asset, 'qualys_host_id', list)
+        check(asset, 'scan_frequency', list)
+        if asset['scan_frequency']:
+            for scan_frequency in asset['scan_frequency']:
+                check(scan_frequency, 'interval', int)
+                check(scan_frequency, 'frequency', int)
+                check(scan_frequency, 'licensed', bool)
+        check(asset, 'sec_ctrl_cpe', list)
+        check(asset, 'security_protections', list)
         check(asset, 'servicenow_sysid', list)
         check(asset, 'sources', list)
         for source in asset['sources']:
@@ -105,10 +134,17 @@ def test_workbench_assets(api):
         check(asset, 'system_type', list)
         check(asset, 'tag_id', list)
         check(asset, 'tags', list)
+        if asset['tags']:
+            for tag in asset['tags']:
+                check(tag, 'tag_uuid', 'uuid')
+                check(tag, 'tag_key', str)
+                check(tag, 'tag_value', str)
+                check(tag, 'added_at', str)
         check(asset, 'tenable_uuid', list)
         check(asset, 'terminated_at', 'datetime', allow_none=True)
         check(asset, 'terminated_by', str, allow_none=True)
         check(asset, 'updated_at', 'datetime')
+
 
 @pytest.mark.vcr()
 def test_workbench_assets_filtered(api):
@@ -169,10 +205,12 @@ def test_workbench_asset_activity(api):
                     check(data, 'details', dict)
                     check(data['details'], 'assetId', 'uuid')
                     check(data['details'], 'createdAt', 'datetime')
+                    check(data['details'], 'containerId', 'uuid')
                     check(data['details'], 'firstScanTime', 'datetime')
                     check(data['details'], 'hasAgent', bool)
                     check(data['details'], 'lastLicensedScanTime', 'datetime')
                     check(data['details'], 'lastLicensedScanTimeV2', 'datetime')
+                    check(data['details'], 'lastScanTarget', str)
                     check(data['details'], 'lastScanTime', 'datetime')
                     check(data['details'], 'properties', dict)
                     for keys in data['details']['properties'].keys():
@@ -189,6 +227,7 @@ def test_workbench_asset_activity(api):
                     check(data, 'source', str)
     except NotFoundError:
         print('Activity for the asset uuid is not found')
+
 
 @pytest.mark.vcr()
 def test_workbench_asset_info_uuid_typeerror(api):
@@ -224,6 +263,7 @@ def test_workbench_asset_info(api):
     '''
     assets = api.workbenches.assets()
     api.workbenches.asset_info(assets[0]['id'])
+
 
 @pytest.mark.vcr()
 def test_workbench_asset_vulns_uuid_typeerror(api):
@@ -288,12 +328,15 @@ def test_workbench_asset_vulns(api):
             for counts_by_severity in vulnerability['counts_by_severity']:
                 check(counts_by_severity, 'count', int)
                 check(counts_by_severity, 'value', int)
+            check(vulnerability, 'cvss_base_score', float)
+            check(vulnerability, 'cvss3_base_score', float)
             check(vulnerability, 'plugin_family', str)
             check(vulnerability, 'plugin_id', int)
             check(vulnerability, 'plugin_name', str)
             check(vulnerability, 'recasted_count', int)
             check(vulnerability, 'severity', int)
             check(vulnerability, 'vulnerability_state', str)
+
 
 @pytest.mark.vcr()
 def test_workbench_asset_vulns_filtered(api):
@@ -303,7 +346,7 @@ def test_workbench_asset_vulns_filtered(api):
     assets = api.workbenches.assets()
     if assets:
         vulns = api.workbenches.asset_vulns(assets[0]['id'],
-            ('severity', 'eq', 'Info'))
+                                            ('severity', 'eq', 'Info'))
         assert isinstance(vulns, list)
         if vulns:
             vulnerability = vulns[0]
@@ -313,11 +356,15 @@ def test_workbench_asset_vulns_filtered(api):
             for counts_by_severity in vulnerability['counts_by_severity']:
                 check(counts_by_severity, 'count', int)
                 check(counts_by_severity, 'value', int)
+            check(vulnerability, 'cvss_base_score', float)
+            check(vulnerability, 'cvss3_base_score', float)
             check(vulnerability, 'plugin_family', str)
             check(vulnerability, 'plugin_id', int)
             check(vulnerability, 'plugin_name', str)
+            check(vulnerability, 'recasted_count', int)
             check(vulnerability, 'severity', int)
             check(vulnerability, 'vulnerability_state', str)
+
 
 @pytest.mark.vcr()
 def test_workbench_asset_vuln_info_uuid_typeerror(api):
@@ -396,6 +443,7 @@ def test_workbench_asset_vuln_info(api):
             info = api.workbenches.asset_vuln_info(vuln[0]['id'], plugin_id)
             check(info, 'accepted_count', int)
             check(info, 'count', int)
+            check(info, 'description', str, allow_none=True)
             check(info, 'discovery', dict)
             check(info['discovery'], 'seen_first', 'datetime', allow_none=True)
             check(info['discovery'], 'seen_last', 'datetime', allow_none=True)
@@ -421,8 +469,10 @@ def test_workbench_asset_vuln_info(api):
             check(info['risk_information'], 'risk_factor', str, allow_none=True)
             check(info['risk_information'], 'stig_severity', str, allow_none=True)
             check(info, 'see_also', list)
+            check(info, 'synopsis', str, allow_none=True)
             check(info, 'severity', int)
             check(info, 'vuln_count', int)
+            check(info, 'vulnerability_information', dict)
 
 
 @pytest.mark.vcr()
@@ -516,12 +566,14 @@ def test_workbench_asset_vuln_output(api):
                         check(asset, 'hostname', str)
                         check(asset, 'id', 'uuid')
                         check(asset, 'ipv4', str, allow_none=True)
+                        check(asset, 'ipv6', str, allow_none=True)
                         check(asset, 'last_seen', 'datetime', allow_none=True)
                         check(asset, 'netbios_name', str, allow_none=True)
                         check(asset, 'uuid', 'uuid')
                     check(result, 'port', int)
                     check(result, 'severity', int)
                     check(result, 'transport_protocol', str)
+
 
 @pytest.mark.vcr()
 def test_workbench_vuln_assets(api):
@@ -546,6 +598,7 @@ def test_workbench_vuln_assets(api):
     for key, value in {'agent_name': list, 'last_seen': 'datetime', 'netbios_name': list}.items():
         if key in asset:
             check(asset, key, value)
+
 
 @pytest.mark.vcr()
 def test_workbench_export_asset_uuid_typeerror(api):
@@ -756,15 +809,20 @@ def test_workbench_vulns(api):
     if vulns:
         vulnerability = vulns[0]
         check(vulnerability, 'accepted_count', int)
+        check(vulnerability, 'count', int)
         check(vulnerability, 'counts_by_severity', list)
         for counts_by_severity in vulnerability['counts_by_severity']:
             check(counts_by_severity, 'count', int)
             check(counts_by_severity, 'value', int)
+        check(vulnerability, 'cvss_base_score', float)
+        check(vulnerability, 'cvss3_base_score', float)
         check(vulnerability, 'plugin_family', str)
         check(vulnerability, 'plugin_id', int)
         check(vulnerability, 'plugin_name', str)
         check(vulnerability, 'recasted_count', int)
+        check(vulnerability, 'severity', int)
         check(vulnerability, 'vulnerability_state', str)
+
 
 @pytest.mark.vcr()
 def test_workbench_vuln_info_age_typeerror(api):
@@ -816,6 +874,7 @@ def test_workbench_vuln_info(api):
         check(info, 'discovery', dict)
         check(info['discovery'], 'seen_first', 'datetime', allow_none=True)
         check(info['discovery'], 'seen_last', 'datetime', allow_none=True)
+        check(info, 'description', str, allow_none=True)
         check(info, 'plugin_details', dict)
         check(info['plugin_details'], 'family', str)
         check(info['plugin_details'], 'modification_date', 'datetime', allow_none=True)
@@ -839,7 +898,9 @@ def test_workbench_vuln_info(api):
         check(info['risk_information'], 'stig_severity', str, allow_none=True)
         check(info, 'see_also', list)
         check(info, 'severity', int)
+        check(info, 'synopsis', str, allow_none=True)
         check(info, 'vuln_count', int)
+        check(info, 'vulnerability_information', dict)
 
 
 @pytest.mark.vcr()
@@ -903,12 +964,14 @@ def test_workbench_vuln_outputs(api):
                         check(asset, 'hostname', str)
                         check(asset, 'id', 'uuid')
                         check(asset, 'ipv4', str, allow_none=True)
+                        check(asset, 'ipv6', str, allow_none=True)
                         check(asset, 'last_seen', 'datetime', allow_none=True)
                         check(asset, 'netbios_name', str, allow_none=True)
                         check(asset, 'uuid', 'uuid')
                     check(result, 'port', int)
                     check(result, 'severity', int)
                     check(result, 'transport_protocol', str)
+
 
 @pytest.mark.vcr()
 def test_workbenches_asset_delete_asset_uuid_typeerror(api):
@@ -927,6 +990,7 @@ def test_workbenches_asset_delete_success(api):
     '''
     asset = api.workbenches.assets()[0]
     api.workbenches.asset_delete(asset['id'])
+
 
 @pytest.mark.vcr()
 def test_workbench_assets_fields(api):
@@ -1038,7 +1102,6 @@ def test_workbench_asset_info_success(api):
     api.workbenches.asset_info(asset[0]['id'], all_fields=False)
 
 
-
 @pytest.mark.vcr()
 def test_workbench_assets_fields(api):
     '''
@@ -1051,6 +1114,10 @@ def test_workbench_assets_fields(api):
                                     severity='critical')
     assert isinstance(assets, list)
     asset = assets[0]
+    check(asset, 'access_group_id', list)
+    check(asset, 'acr_drivers', list)
+    check(asset, 'acr_score', int)
+    check(asset, 'acr_score_value', int)
     check(asset, 'agent_name', list)
     check(asset, 'aws_availability_zone', list)
     check(asset, 'aws_ec2_instance_ami_id', list)
@@ -1058,16 +1125,26 @@ def test_workbench_assets_fields(api):
     check(asset, 'aws_ec2_instance_id', list)
     check(asset, 'aws_ec2_instance_state_name', list)
     check(asset, 'aws_ec2_instance_type', list)
+    check(asset, 'aws_ec2_product_code', list)
     check(asset, 'aws_ec2_name', list)
     check(asset, 'aws_ec2_product_code', list)
     check(asset, 'aws_owner_id', list)
     check(asset, 'aws_region', list)
     check(asset, 'aws_subnet_id', list)
     check(asset, 'aws_vpc_id', list)
+    check(asset, 'azure_location', list)
     check(asset, 'azure_resource_id', list)
+    check(asset, 'azure_resource_group', list)
+    check(asset, 'azure_subscription_id', list)
+    check(asset, 'azure_type', list)
     check(asset, 'azure_vm_id', list)
     check(asset, 'bios_uuid', list)
+    check(asset, 'bigfix_asset_id', list)
     check(asset, 'created_at', 'datetime')
+    check(asset, 'container_uuid', 'uuid')
+    check(asset, 'exposure_score', int)
+    check(asset, 'exposure_score_value', int)
+    check(asset, 'exposure_confidence_value', int, allow_none=True)
     check(asset, 'first_scan_time', 'datetime', allow_none=True)
     check(asset, 'first_seen', 'datetime', allow_none=True)
     check(asset, 'fqdn', list)
@@ -1077,20 +1154,40 @@ def test_workbench_assets_fields(api):
     check(asset, 'has_agent', bool)
     check(asset, 'hostname', list)
     check(asset, 'id', 'uuid')
+    check(asset, 'interfaces', list)
+    for interface in asset['interfaces']:
+        check(interface, 'fqdn', list)
+        check(interface, 'ipv4', list)
+        check(interface, 'ipv6', list)
+        check(interface, 'mac_address', list)
+        check(interface, 'name', str)
+    check(asset, 'installed_software', list)
     check(asset, 'ipv4', list)
     check(asset, 'ipv6', list)
     check(asset, 'last_authenticated_scan_date', 'datetime', allow_none=True)
     check(asset, 'last_licensed_scan_date', 'datetime', allow_none=True)
+    check(asset, 'last_scan_id', str, allow_none=True)
     check(asset, 'last_scan_time', 'datetime', allow_none=True)
+    check(asset, 'last_scan_target', str, allow_none=True)
+    check(asset, 'last_schedule_id', str, allow_none=True)
     check(asset, 'last_seen', 'datetime', allow_none=True)
     check(asset, 'mac_address', list)
     check(asset, 'manufacturer_tpm_id', list)
     check(asset, 'mcafee_epo_agent_guid', list)
     check(asset, 'mcafee_epo_guid', list)
     check(asset, 'netbios_name', list)
+    check(asset, 'network_id', list)
     check(asset, 'operating_system', list)
     check(asset, 'qualys_asset_id', list)
     check(asset, 'qualys_host_id', list)
+    check(asset, 'scan_frequency', list)
+    if asset['scan_frequency']:
+        for scan_frequency in asset['scan_frequency']:
+            check(scan_frequency, 'interval', int)
+            check(scan_frequency, 'frequency', int)
+            check(scan_frequency, 'licensed', bool)
+    check(asset, 'sec_ctrl_cpe', list)
+    check(asset, 'security_protections', list)
     check(asset, 'servicenow_sysid', list)
     check(asset, 'sources', list)
     for source in asset['sources']:
@@ -1098,9 +1195,11 @@ def test_workbench_assets_fields(api):
         check(source, 'last_seen', 'datetime')
         check(source, 'name', str)
     check(asset, 'ssh_fingerprint', list)
+    check(asset, 'servicenow_sysid', list)
     check(asset, 'symantec_ep_hardware_key', list)
     check(asset, 'system_type', list)
     check(asset, 'tags', list)
+    check(asset, 'tag_id', list)
     check(asset, 'tenable_uuid', list)
     check(asset, 'terminated_at', 'datetime', allow_none=True)
     check(asset, 'terminated_by', str, allow_none=True)
@@ -1129,7 +1228,10 @@ def test_workbench_vulns_fields(api):
     assert isinstance(vulns, list)
     each_vuln = vulns[0]
     check(each_vuln, 'accepted_count', int)
+    check(each_vuln, 'count', int)
     check(each_vuln, 'counts_by_severity', list)
+    check(each_vuln, 'cvss_base_score', float)
+    check(each_vuln, 'cvss3_base_score', float)
     for data in each_vuln['counts_by_severity']:
         check(data, 'count', int)
         check(data, 'value', int)
@@ -1137,6 +1239,8 @@ def test_workbench_vulns_fields(api):
     check(each_vuln, 'plugin_id', int)
     check(each_vuln, 'plugin_name', str)
     check(each_vuln, 'recasted_count', int)
+    check(each_vuln, 'severity', int)
+    check(each_vuln, 'vpr_score', float)
     check(each_vuln, 'vulnerability_state', str)
 
 

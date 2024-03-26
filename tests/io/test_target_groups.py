@@ -2,11 +2,12 @@
 test target groups
 '''
 import uuid
-import pytest
-from tenable.errors import NotFoundError, UnexpectedValueError
-from ..checker import check
-from tests.pytenable_log_handler import log_exception
 
+import pytest
+
+from tenable.errors import NotFoundError, UnexpectedValueError
+from tests.pytenable_log_handler import log_exception
+from ..checker import check
 
 
 @pytest.fixture
@@ -65,6 +66,7 @@ def test_targetgroups_create(api, targetgroup):
     for data in targetgroup['acls']:
         check(data, 'display_name', str, allow_none=True)
         check(data, 'id', int, allow_none=True)
+        check(data, 'uuid', str, allow_none=True)
         check(data, 'name', str, allow_none=True)
         check(data, 'owner', int, allow_none=True)
         check(data, 'permissions', int)
@@ -120,6 +122,7 @@ def test_targetgroups_details(api, targetgroup):
     for data in group['acls']:
         check(data, 'display_name', str, allow_none=True)
         check(data, 'id', int, allow_none=True)
+        check(data, 'uuid', str, allow_none=True)
         check(data, 'name', str, allow_none=True)
         check(data, 'owner', int, allow_none=True)
         check(data, 'permissions', int)
@@ -176,6 +179,7 @@ def test_targetgroups_edit(api, targetgroup):
     for data in resp['acls']:
         check(data, 'display_name', str, allow_none=True)
         check(data, 'id', int, allow_none=True)
+        check(data, 'uuid', str, allow_none=True)
         check(data, 'name', str, allow_none=True)
         check(data, 'owner', int, allow_none=True)
         check(data, 'permissions', int)
@@ -214,6 +218,7 @@ def test_targetgroups_edit_fields(api, targetgroup):
     for data in resp['acls']:
         check(data, 'display_name', str, allow_none=True)
         check(data, 'id', int, allow_none=True)
+        check(data, 'uuid', str, allow_none=True)
         check(data, 'name', str, allow_none=True)
         check(data, 'owner', int, allow_none=True)
         check(data, 'permissions', int)

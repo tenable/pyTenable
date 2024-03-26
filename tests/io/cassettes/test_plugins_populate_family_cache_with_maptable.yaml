@@ -9,8 +9,8 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.6
-        (Restfly/1.4.6; Python/3.10.1; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: GET
@@ -18,37 +18,41 @@ interactions:
   response:
     body:
       string: !!binary |
-        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
-        oAFdfrNx2Grd/g3NIpdDWxUAAA==
+        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
+        aECXv7sf7DVu/waizpg+WxUAAA==
     headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b626b2e69f90337-AMD
       Cache-Control:
       - no-store
       Connection:
@@ -58,11 +62,13 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 17 May 2022 11:01:44 GMT
+      - Tue, 11 Apr 2023 10:06:45 GMT
       Expect-CT:
       - enforce, max-age=86400
       Pragma:
       - no-cache
+      Server:
+      - cloudflare
       Set-Cookie:
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
@@ -77,9 +83,9 @@ interactions:
       X-Frame-Options:
       - DENY
       X-Gateway-Site-ID:
-      - nginx-router-hy4nb-ap-southeast-1-prod
+      - service-nginx-router-ap-south-1-prod-69479dd7b-ct8k2
       X-Request-Uuid:
-      - e5efa72d6ca693f607dbc2fae928778b
+      - bbc5394abc84f3c126ceecb5b5c7a184
       X-Xss-Protection:
       - 1; mode=block
     status:

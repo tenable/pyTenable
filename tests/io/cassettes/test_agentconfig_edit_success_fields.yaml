@@ -13,8 +13,8 @@ interactions:
       Content-Type:
       - application/json
       User-Agent:
-      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.3.0
-        (pyTenable/1.3.0; Python/3.8.6; Windows/AMD64)
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.6; Python/3.9.0; Windows/AMD64)
       X-APIKeys:
       - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
     method: PUT
@@ -22,9 +22,13 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAAwXBQQrAIAwEwL/s2UOht3xGIkaQShRNaEH8e2c22K1H11b1AW2IcmqSQYXbkgD5
-        Rp1stSvovk7A6sVenhJ9ZDYB2XQ5P+9utAdIAAAA
+        H4sIAAAAAAAAA1TMOw6AIAwA0Lt0ZjFuXKYpUrSRFMInagh3dzNxf3kDqLeEXaPoCXYAK7nIHmyg
+        WNkA31kKNUkKdl2mgZpCu6gw9uyp8QePxxXxWDdSFd3xH80XAAD//wMA56Q7+GkAAAA=
     headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b625b0769060336-AMD
       Cache-Control:
       - no-cache
       Connection:
@@ -34,7 +38,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 16 Jun 2021 08:11:57 GMT
+      - Tue, 11 Apr 2023 09:55:44 GMT
+      Server:
+      - cloudflare
       Set-Cookie:
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
       - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
@@ -43,13 +49,15 @@ interactions:
       Transfer-Encoding:
       - chunked
       Vary:
-      - accept-encoding
+      - origin
       X-Content-Type-Options:
       - nosniff
+      X-Frame-Options:
+      - DENY
       X-Gateway-Site-ID:
-      - nginx-router-j15ji-ap-southeast-1-prod
+      - service-nginx-router-ap-south-1-prod-69479dd7b-vl587
       X-Request-Uuid:
-      - c4e91b5ea68fd62f173d88eb81db21e1
+      - 5bbfb202a858c28d15b257145a857890
       X-XSS-Protection:
       - 1; mode=block
     status:

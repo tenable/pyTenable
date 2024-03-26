@@ -1,31 +1,10 @@
 '''
 test groups
 '''
-import uuid
 import pytest
+
 from tenable.errors import NotFoundError
 from tests.checker import check
-from tests.pytenable_log_handler import log_exception
-
-@pytest.fixture(name='group')
-def fixture_group(request, api):
-    '''
-    Fixture to create group
-    '''
-    group = api.groups.create(str(uuid.uuid4()))
-
-    def teardown():
-        '''
-        cleanup function to delete group
-        '''
-        try:
-            api.groups.delete(group['id'])
-        except NotFoundError as err:
-            log_exception(err)
-            pass
-
-    request.addfinalizer(teardown)
-    return group
 
 
 @pytest.mark.vcr()
@@ -46,6 +25,8 @@ def test_groups_create(group):
     check(group, 'uuid', 'uuid')
     check(group, 'name', str)
     check(group, 'id', int)
+    check(group, 'container_uuid', 'uuid')
+
 
 @pytest.mark.vcr()
 def test_groups_delete_id_typerror(api):
@@ -72,6 +53,7 @@ def test_groups_delete_success(api, group):
     '''
     api.groups.delete(group['id'])
 
+
 @pytest.mark.vcr()
 def test_groups_edit_id_typeerror(api):
     '''
@@ -79,6 +61,7 @@ def test_groups_edit_id_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.groups.edit('nope', 'something')
+
 
 @pytest.mark.vcr()
 def test_groups_edit_name_typeerror(api):
@@ -88,6 +71,7 @@ def test_groups_edit_name_typeerror(api):
     with pytest.raises(TypeError):
         api.groups.edit(1, 1)
 
+
 @pytest.mark.vcr()
 def test_groups_edit_notfounderror(api):
     '''
@@ -95,6 +79,7 @@ def test_groups_edit_notfounderror(api):
     '''
     with pytest.raises(NotFoundError):
         api.groups.edit(1, 'newname')
+
 
 @pytest.mark.vcr()
 def test_groups_edit_success(api, group):
@@ -107,6 +92,8 @@ def test_groups_edit_success(api, group):
     check(edited, 'name', str)
     check(edited, 'user_count', int)
     check(edited, 'id', int)
+    check(edited, 'container_uuid', 'uuid')
+
 
 @pytest.mark.vcr()
 def test_groups_list(api):
@@ -121,6 +108,8 @@ def test_groups_list(api):
         check(group, 'name', str)
         check(group, 'user_count', int)
         check(group, 'uuid', 'uuid')
+        check(group, 'container_uuid', 'uuid')
+
 
 @pytest.mark.vcr()
 def test_groups_list_users_id_typeerror(api):
@@ -130,6 +119,7 @@ def test_groups_list_users_id_typeerror(api):
     with pytest.raises(TypeError):
         api.groups.list_users('nope')
 
+
 @pytest.mark.vcr()
 def test_groups_list_users_notfound(api):
     '''
@@ -137,6 +127,7 @@ def test_groups_list_users_notfound(api):
     '''
     with pytest.raises(NotFoundError):
         api.groups.list_users(1)
+
 
 @pytest.mark.vcr()
 def test_groups_list_users_success(api, group, user):
@@ -158,6 +149,10 @@ def test_groups_list_users_success(api, group, user):
         check(usr, 'user_name', str)
         check(usr, 'username', str)
         check(usr, 'uuid_id', 'uuid')
+        check(usr, 'container_uuid', 'uuid')
+        check(usr, 'preferences', dict)
+        check(usr, 'lockout', int)
+
 
 @pytest.mark.vcr()
 def test_group_add_user_to_group_group_id_typeerror(api):
@@ -192,6 +187,7 @@ def test_groups_add_user_to_group_success(api, group, user):
     test to add user group
     '''
     api.groups.add_user(group['id'], user['id'])
+
 
 @pytest.mark.vcr()
 def test_groups_delete_user_from_group_group_id_tyupeerror(api):
