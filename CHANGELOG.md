@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.22]
+
+### Added
+- Support for New ACR APIs (#654)
+- Added Implicit WAS exclude for Tenable Security Center (#763)
+- Support for `currentPassword` field in SC Users API.
+
+[1.4.21]: https://github.com/tenable/pyTenable/compare/1.4.21...1.4.22
+
 ## [1.4.21]
 
 ### Added
@@ -94,7 +103,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Support for Scan UUID (`last_scan_id`) filter for assets exports.
 
-[1.4.11]: https://github.com/tenable/pyTenable/compare/1.4.10...1.4.11 
+[1.4.11]: https://github.com/tenable/pyTenable/compare/1.4.10...1.4.11
 
 ## [1.4.10]
 
@@ -111,7 +120,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Python 3.6 references from all documentation.
 - `search_host_audit()` method from `io/v3/explore/findings`.
 
-[1.4.10]: https://github.com/tenable/pyTenable/compare/1.4.9...1.4.10 
+[1.4.10]: https://github.com/tenable/pyTenable/compare/1.4.9...1.4.10
 
 ## [1.4.9]
 ### Added
@@ -132,7 +141,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for Python Version 3.6.
 
 
- [1.4.9]: https://github.com/tenable/pyTenable/compare/1.4.8...1.4.9 
+ [1.4.9]: https://github.com/tenable/pyTenable/compare/1.4.8...1.4.9
 
 ## [1.4.8]
 ### Added
@@ -140,7 +149,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for Role Based Access Control endpoints.
 - Support for specifying Agent UUIDs instead of numeric IDs for bulk group addition.
 
-[1.4.8]: https://github.com/tenable/pyTenable/compare/1.4.7...1.4.8 
+[1.4.8]: https://github.com/tenable/pyTenable/compare/1.4.7...1.4.8
 
 ## [1.4.7]
 ### Added
