@@ -21,7 +21,7 @@ def test_files_upload(tsc):
 
 @responses.activate
 def test_files_clear(tsc):
-    responses.post('https://nourl/rest/file/delete',
+    responses.post('https://nourl/rest/file/clear',
                    match=[
                        json_params_matcher({'filename': 'testfile'})
                    ],
