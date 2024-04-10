@@ -13,10 +13,12 @@ Methods available on ``tio.assets``:
 '''
 from tenable.io.base import TIOEndpoint
 
+
 class AssetsAPI(TIOEndpoint):
     '''
     This will contain all methods related to Assets
     '''
+
     def list(self):
         '''
         Returns a list of assets.
@@ -284,7 +286,7 @@ class AssetsAPI(TIOEndpoint):
 
         # run the rules through the filter parser...
         filter_type = self._check('filter_type', filter_type, str,
-            choices=['and', 'or'], default='and', case='lower')
+                                  choices=['and', 'or'], default='and', case='lower')
         parsed = self._parse_filters(
             filters, self._api.filters.workbench_asset_filters(), rtype='assets')['asset']
 
@@ -293,3 +295,36 @@ class AssetsAPI(TIOEndpoint):
         payload['query'] = {filter_type: parsed}
 
         return self._api.post('api/v2/assets/bulk-jobs/delete', json=payload).json()
+
+    def update_acr(self, assets_uuid_list, reason, value, note=""):
+        """
+        Updates ACR for the provided asset UUID's with reason(s).
+
+        Args:
+            assets_uuid_list (list):
+                Asset UUID's which are being updated.
+            reason (list):
+                List of reason(s).
+            value (str):
+                New ACR value for assets, ranging from 1 - 10.
+            note (str):
+                Additional note if any.
+
+        Returns:
+            :obj:`int`:
+                Status code for the request.
+
+        Examples:
+            >>> tio.assets.update_acr(
+            ... ['00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000001'],
+            ... ['Other'], 1, 'some notes')
+        """
+        asset_uuids = []
+
+        for asset_uuid in assets_uuid_list:
+            asset_uuids.append({"id": asset_uuid})
+
+        note = note + " - pyTenable"
+        payload = [{"acr_score": int(value), "reason": reason, "asset": asset_uuids, "note": note}]
+
+        return self._api.post('api/v2/assets/bulk-jobs/acr', json=payload).status_code
