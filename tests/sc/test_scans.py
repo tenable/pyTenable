@@ -145,6 +145,20 @@ def test_scans_constructor_timeout_typeerror(security_center):
     with pytest.raises(TypeError):
         security_center.scans._constructor(timeout=1)
 
+def test_scans_constructor_inactivity_timeout(security_center):
+    """
+    Tests inactivity_timeout is mapped correctly in the constructor.
+    """
+    scan_params = {
+        "inactivity_timeout": 3600,
+        "policy_id": 1000001
+    }
+
+    scan = security_center.scans._constructor(**scan_params)
+
+    assert "inactivity_timeout" not in scan
+    assert scan["inactivityTimeout"] == "3600"
+
 
 def test_scans_constructor_timeout_unexpectedvalueerror(security_center):
     '''

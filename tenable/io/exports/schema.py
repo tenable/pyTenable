@@ -39,6 +39,7 @@ class AssetExportSchema(Schema):
     is_licensed = fields.Bool()
     is_terminated = fields.Bool()
     servicenow_sysid = fields.Bool()
+    include_open_ports = fields.Bool()
 
     # Other params
     chunk_size = fields.Int(dump_default=1000)
@@ -49,7 +50,7 @@ class AssetExportSchema(Schema):
     @post_dump
     def post_serialization(self, data, **kwargs):  # noqa PLR0201 PLW0613
         data = serialize_tags(data)
-        data = envelope(data, 'filters', excludes=['chunk_size'])
+        data = envelope(data, 'filters', excludes=['chunk_size', 'include_open_ports'])
         return data
 
 
@@ -86,6 +87,8 @@ class VulnExportSchema(Schema):
     state = fields.List(LowerCase(fields.Str()))
     vpr_score = fields.Nested(VPRSchema())
     scan_uuid = fields.Str()
+    source = fields.List(fields.Str())
+    severity_modification_type = fields.List(fields.Str())
 
     # Asset fields
     tags = fields.List(fields.Tuple((fields.Str(), fields.Str())))
@@ -112,6 +115,18 @@ class ComplianceExportSchema(Schema):
     # Temporal fields
     first_seen = fields.Int()
     last_seen = fields.Int()
+    ipv4_addresses = fields.List(fields.Str())
+    ipv6_addresses = fields.List(fields.Str())
+    plugin_name = fields.List(fields.Str())
+    plugin_id = fields.List(fields.Int())
+    asset_tags = fields.List(fields.Str())
+    audit_name = fields.Str()
+    audit_file_name = fields.Str()
+    compliance_results = fields.List(fields.Str())
+    last_observed = fields.Int()
+    indexed_at = fields.Int()
+    since = fields.Int()
+    state = fields.List(fields.Str())
 
     # Other params
     asset = fields.List(fields.UUID())

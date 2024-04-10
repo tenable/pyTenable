@@ -40,11 +40,9 @@ class ScanPolicyAPI(SCEndpoint):
             self._check('tags', kw['tags'], str)
 
         if 'preferences' in kw:
-            # Validate that all of the preferences are K:V pairs of strings.
+            # The values of the preferences K:V pairs can now be any data type..
             for key in self._check('preferences', kw['preferences'], dict):
                 self._check('preference:{}'.format(key), key, str)
-                self._check('preference:{}:value'.format(key),
-                    kw['preferences'][key], str)
 
         if 'audit_files' in kw:
             # unflatten the audit_files list into a list of dictionaries.

@@ -216,6 +216,6 @@ class Nessus(APIPlatform):
     @property
     def users(self):
         '''
-        The unterface object for the :doc:`Tenable Nessus Users APIs <users>`.
+        The interface object for the :doc:`Tenable Nessus Users APIs <users>`.
         '''
         return UsersAPI(self)

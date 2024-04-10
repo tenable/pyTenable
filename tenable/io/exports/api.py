@@ -269,6 +269,8 @@ class ExportsAPI(APIEndpoint):
                 Should we return assets that have a ServiceNOW sysid?
                 if ``True`` only assets with an id will be returned.
                 if ``False`` only assets without an id will be returned.
+            include_open_ports (bool, optional):
+                Should we include open ports of assets in the exported chunks?
             chunk_size (int, optional):
                 How many asset objects should be returned per chunk of data?
                 The default is ``1000``.
@@ -337,6 +339,33 @@ class ExportsAPI(APIEndpoint):
             last_seen (int, optional):
                 Returns findings with a last seen time newer than the
                 specified unix timestamp.
+            ipv4_addresses (list[str], optional):
+                Returns Compliance findings found for the provided list of ipv4 addresses.
+            ipv6_addresses (list[str], optional):
+                Returns Compliance findings found for the provided list of ipv6 addresses.
+            plugin_name (list[str], optional):
+                Returns Compliance findings for the specified list of plugin names.
+            plugin_id (list[int], optional):
+                Returns Compliance findings for the specified list of plugin IDs.
+            asset_tags (list[str], optional):
+                Returns Compliance findings for the specified list of asset tags.
+            audit_name (str, optional):
+                Restricts compliance findings to those associated with the specified audit.
+            audit_file_name (str, optional):
+                Restricts compliance findings to those associated with the specified audit file name.
+            compliance_results (list[str], optional):
+                Restricts compliance findings to those associated with the specified list of compliance results,
+                such as PASSED, FAILED, SKIPPED, ERROR, UNKNOWN etc.
+            last_observed (int,optional):
+                Restricts compliance findings to those that were last observed on or after the specified unix timestamp.
+            indexed_at (int, optional):
+                Restricts compliance findings to those that were updated or indexed into Tenable Vulnerability Management
+                 on or after the specified unix timestamp.
+            since (int, optional):
+                Same as indexed_at. Restricts compliance findings to those that were updated or indexed into Tenable
+                Vulnerability Management on or after the specified unix timestamp.
+            state (list[str], optional):
+                Restricts compliance findings to those associated with the provided list of states, such as open, reopened and fixed.
             num_findings (int):
                 The number of findings to return per chunk of data.  If left
                 unspecified, the default is ``5000``.
@@ -399,6 +428,10 @@ class ExportsAPI(APIEndpoint):
                 Only return findings with the specified plugin type.
             scan_uuid (uuid, optional):
                 Only return findings with the specified scan UUID.
+            source (list[str], optional):
+                Only return vulnerabilities for assets that have the specified scan source.
+            severity_modification_type (list[str], optional):
+                Only return vulnerabilities with the specified severity modification type.
             severity (list[str], optional):
                 Only return findings with the specified severities.
             state (list[str], optional):

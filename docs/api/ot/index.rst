@@ -5,6 +5,7 @@ Tenable OT Security
     :glob:
 
     graphql
+    exports
     schema
 
 .. automodule:: tenable.ot

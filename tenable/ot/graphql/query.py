@@ -423,6 +423,21 @@ query events(
     }
     dstInterface{
       id
+      lastSeen
+      firstSeen
+      mac
+      ips {
+        nodes{
+          ip
+        }
+      }
+      dnsNames{
+            nodes
+      }
+      family
+      directAsset {
+        id
+      }
     }
     dstNames{
       nodes

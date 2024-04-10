@@ -248,7 +248,8 @@ class AnalysisAPI(SCEndpoint):
                 ``sumfamily``, ``sumiavm``, ``sumid``, ``sumip``,
                 ``summsbulletin``, ``sumprotocol``, ``sumremediation``,
                 ``sumseverity``, ``sumuserresponsibility``, ``sumport``,
-                ``trend``, ``vulndetails``, ``vulnipdetail``, ``vulnipsummary``
+                ``trend``, ``vulndetails``, ``vulnipdetail``, ``vulnipsummary``,
+                ``sumwasurl``, ``wasvulndetail``, ``waslistvuln``
 
         Returns:
             :obj:`AnalysisResultsIterator`:
@@ -323,6 +324,9 @@ class AnalysisAPI(SCEndpoint):
                 'vulndetails',
                 'vulnipdetail',
                 'vulnipsummary',
+                'sumwasurl',        # Undocumented in 6.3.x
+                'wasvulndetail',    # Undocumented in 6.3.x
+                'waslistvuln',      # Undocumented in 6.3.x
             ], case='lower')
         else:
             kw['tool'] = 'vulndetails'
@@ -330,6 +334,19 @@ class AnalysisAPI(SCEndpoint):
         if 'scan_id' in kw:
             payload['sourceType'] = 'individual'
             payload['scanID'] = kw['scan_id']
+        else:
+            # If the request is for a cumulative result, then we will an
+            # implicit filter to exclude WAS findings.
+            incl_filter = True
+            for f in filters:
+                if (
+                    (isinstance(f, tuple) and f[0] == 'wasVuln')
+                    or (isinstance(f, dict) and f['filterName'] == 'wasVuln')
+                ):
+                    incl_filter = False
+            if incl_filter:
+                filters = list(filters)
+                filters.append(('wasVuln', '=', 'excludeWas'))
 
         kw['payload'] = payload
         kw['type'] = 'vuln'
