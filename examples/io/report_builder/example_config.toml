@@ -1,0 +1,172 @@
+[tenable]
+# The API Access and Secret Keys used to interface to the API
+#access_key = ""
+#secret_key = ""
+
+# The severities to pull from the API
+severity = ["medium", "high", "critical"]
+
+# How far back in time should we pull?  Vulnerabilities that haven't been
+# observed since this number of days will not be included in the reports.
+age = 90
+
+
+# Report Definitions look like the following:
+#
+# [[report]]
+# name = "Report Name"
+# tags = ["tag:value", "tag:value"]
+# match = "any"
+# filename = "filename.csv"
+#
+# name: The name of the report.  This can be a human readable name and is how
+#       the code will reference the report.
+#
+# tags: A list of tag category:value pairs.  Note that these are case sensitive
+#
+# match: How we should match the tags.  unless the value "any" is specified,
+#        the assumption is that all tag values must match.
+#
+# filename: What is the filename for the report.
+
+[[report]]
+name = "Example Report 1"
+tags = ["t:t"]
+match = "any"
+filename = "report-1-filename.csv"
+
+[[report]]
+name = "Example Report 2"
+tags = ["Location:Illinois", "t:t"]
+filename = "report2.csv"
+
+
+# Field definitions:
+#
+# [[field]]
+# name = "Attribute Name"
+# value = "path.to.attribute"
+#
+# name: The name of the attribute within the CSV report.
+# value: The attribute path within the vuln export data.
+
+
+[[field]]
+name = "FQDN"
+value = "asset.fqdn"
+
+[[field]]
+name = "Host"
+value = "asset.hostname"
+
+[[field]]
+name = "NetBIOS Name"
+value = "asset.netbios_name"
+
+[[field]]
+name = "Operating System"
+value = "asset.operating_system"
+
+[[field]]
+name = "IPv4 Address"
+value = "asset.ipv4"
+
+[[field]]
+name = "Asset UUID"
+value = "asset.uuid"
+
+[[field]]
+name = "Plugin ID"
+value = "plugin.id"
+
+[[field]]
+name = "Plugin Name"
+value = "plugin.name"
+
+[[field]]
+name = "CVE"
+value = "plugin.cve"
+
+[[field]]
+name = "CVSSv2 Base Score"
+value = "plugin.cvss_base_score"
+
+[[field]]
+name = "CVSSv2 Temporal Score"
+value = "plugin.cvss_temporal_score"
+
+[[field]]
+name = "CVSSv3 Base Score"
+value = "plugin.cvss3_base_score"
+
+[[field]]
+name = "CVSSv3 Temporal Score"
+value = "plugin.cvss3_temporal_score"
+
+[[field]]
+name = "Exploited by Malware"
+value = "plugin.exploited_by_malware"
+
+[[field]]
+name = "Exploited by Nessus"
+value = "plugin.exploited_by_nessus"
+
+[[field]]
+name = "In the News"
+value = "plugin.in_the_news"
+
+[[field]]
+name = "Original Severity"
+value = "plugin.risk_factor"
+
+[[field]]
+name = "See Also"
+value = "plugin.see_also"
+
+[[field]]
+name = "Solution"
+value = "plugin.solution"
+
+[[field]]
+name = "Synopsis"
+value = "plugin.synopsis"
+
+[[field]]
+name = "Description"
+value = "plugin.description"
+
+[[field]]
+name = "Type"
+value = "plugin.type"
+
+[[field]]
+name = "Vulnerability Published"
+value = "plugin.vuln_publication_date"
+
+[[field]]
+name = "Port"
+value = "port.port"
+
+[[field]]
+name = "Protocol"
+value = "port.protocol"
+
+[[field]]
+name = "Plugin Output"
+value = "output"
+
+[[field]]
+name = "First Seen"
+value = "first_found"
+
+[[field]]
+name = "Last Seen"
+value = "last_found"
+
+[[field]]
+name = "Age"
+value = "age"
+
+# MISSING:
+# Finding ID
+# CWE

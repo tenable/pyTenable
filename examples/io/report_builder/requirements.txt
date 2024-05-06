@@ -1,0 +1,4 @@
+tomlkit>=0.12.4
+pytenable>=1.4.20
+rich>=12.6.0
+typer>=0.7.0
