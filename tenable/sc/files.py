@@ -11,9 +11,13 @@ Methods available on ``sc.files``:
 .. autoclass:: FileAPI
     :members:
 '''
+from requests_toolbelt.multipart.encoder import MultipartEncoder
 from .base import SCEndpoint
 
 class FileAPI(SCEndpoint):
+    _path = 'file'
+    _box = True
+
     def upload(self, fobj):
         '''
         Uploads a file into SecurityCenter and returns the file identifier
@@ -29,8 +33,11 @@ class FileAPI(SCEndpoint):
                 The filename identifier to use for subsequent calls in
                 Tenable Security Center.
         '''
-        return self._api.post('file/upload', files={
-            'Filedata': fobj}).json()['response']['filename']
+        encoder = MultipartEncoder({'Filedata': ('filedata', fobj)})
+        return self._post('upload',
+                          data=encoder,
+                          headers={'Content-Type': encoder.content_type}
+                          ).response.filename
 
     def clear(self, filename):
         '''
@@ -45,6 +52,6 @@ class FileAPI(SCEndpoint):
             :obj:`str`:
                 The file location on disk that was removed.
         '''
-        return self._api.post('file/clear', json={
-            'filename': self._check('filename', filename, str)
-        }).json()['response']['filename']
+        return self._post('clear',
+                          json={'filename': filename}
+                          ).response.filename
