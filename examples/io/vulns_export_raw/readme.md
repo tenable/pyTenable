@@ -1,8 +1,7 @@
-# Vuln Export CSV File Generator
+# Vuln Export RAW Generator
 
-Generates a CSV File from the vulnerability export.  Specific fields can be
-specified from the vulnerability documents using dot notation.
-
+Generates a folder called 'vulns' and saves vulns export chunks to this folder, along with pyTenable DEBUG logs, and zips results. Supports parameters
+such as a Vulns Export UUID, plugin ids. 
 ## Install
 
 ```bash
@@ -14,15 +13,13 @@ pip install -r requirements.txt
 Export all vulnerabilities with default settings:
 
 ```bash
-./csvexport.py example.csv
+./rawexport.py 
 ```
 
-Export only the high and critical vulnerabilities and output the plugin.id, 
-plugin.name, and asset.uuid attributes:
+Exports all plugin 1560001,156001 results since 90 days ago and writes results to the /tmp directory. 
 
 ```bash
-./csvexport.py -f plugin.id -f asset.uuid -f plugin.name \
-    --severity high --severity critical example2.csv
+./rawexport.py /tmp -p 156000,156001 -a 90
 ```
 
 In-tool help:
