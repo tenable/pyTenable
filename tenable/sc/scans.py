@@ -233,9 +233,8 @@ class ScanAPI(SCEndpoint):
             host_tracking (bool, optional):
                 Should DHCP host tracking be enabled?  The default is False.
             max_time (int, optional):
-                The maximum amount of time that the scan may run in seconds.
+                The maximum amount of time that the scan may run in hours.
                 ``0`` or less for unlimited.
-                The default is ``3600`` seconds.
             policy_id (int, optional):
                 The policy id to use for a policy-based scan.
             reports (list, optional):
@@ -339,7 +338,7 @@ class ScanAPI(SCEndpoint):
             host_tracking (bool, optional):
                 Should DHCP host tracking be enabled?
             max_time (int, optional):
-                The maximum amount of time that the scan may run in seconds.
+                The maximum amount of time that the scan may run in hours.
                 ``0`` or less for unlimited.
             name (str, optional): The name of the scan.
             policy_id (int, optional):

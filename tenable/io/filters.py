@@ -231,6 +231,6 @@ class FiltersAPI(TIOEndpoint):
                 Filter resource dictionary
 
         Examples:
-            >>> tio.tags.asset_tag_filters()
+            >>> tio.filters.asset_tag_filters()
         '''
         return self._use_cache('tags', 'tags/assets/filters')
