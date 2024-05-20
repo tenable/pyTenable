@@ -14,14 +14,71 @@ Methods available on ``tio.exports``:
 from uuid import UUID
 from json.decoder import JSONDecodeError
 from typing_extensions import Literal
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Optional
 from marshmallow import Schema
+from restfly.errors import RequestConflictError
 from tenable.base.endpoint import APIEndpoint
 from .schema import AssetExportSchema, VulnExportSchema, ComplianceExportSchema
 from .iterator import ExportsIterator
 
 
 class ExportsAPI(APIEndpoint):
+    def _export(self,
+                export_type: Literal['vulns', 'assets', 'compliance'],
+                schema: Optional[Schema] = None,
+                use_iterator: bool = True,
+                when_done: bool = False,
+                iterator: ExportsIterator = ExportsIterator,
+                timeout: Optional[int] = None,
+                export_uuid: Optional[UUID] = None,
+                adopt_existing: bool = True,
+                **kwargs
+                ) -> Union[ExportsIterator, UUID]:
+        '''
+        Get the list of jobs for for the specified datatype.
+
+        API Documentation for the job listings for
+        :devportal:`assets <exports-assets-request-export>`,
+        :devportal:`compliance <io-exports-compliance-create>`, and
+        :devportal:`vulnerabilities <exports-vulns-request-export>` datatypes.
+        '''
+        schemas = {
+            'vulns': VulnExportSchema,
+            'assets': AssetExportSchema,
+            'compliance': ComplianceExportSchema,
+        }
+        if not schema:
+            schema = schemas[export_type]()
+        payload = schema.dump(schema.load(kwargs))
+
+        if not export_uuid:
+            try:
+                export_uuid = self._api.post(f'{export_type}/export',
+                                             json=payload,
+                                             box=True
+                                             ).export_uuid
+                self._log.debug(
+                    f'{export_type} export job {export_uuid} initiated'
+                )
+            except RequestConflictError as conflict:
+                if not adopt_existing:
+                    raise conflict
+                resp = conflict.response.json()
+                export_uuid = resp['active_job_id']
+                msg = resp['failure_reason']
+                self._log.warning(
+                    f'Adopted {export_type} export job {export_uuid}.  '
+                    f'Original message from platform was "{msg}"'
+                )
+        if use_iterator:
+            return iterator(self._api,
+                            type=export_type,
+                            uuid=export_uuid,
+                            _wait_for_complete=when_done,
+                            timeout=timeout
+                            )
+        return UUID(export_uuid)
+
     def cancel(self,
                export_type: Literal['vulns', 'assets', 'compliance'],
                export_uuid: UUID,
@@ -51,7 +108,7 @@ class ExportsAPI(APIEndpoint):
         '''
         return self._api.post(f'{export_type}/export/{export_uuid}/cancel',
                               box=True
-                              ).get('status')
+                              ).status
 
     def download_chunk(self,
                        export_type: Literal['vulns', 'assets', 'compliance'],
@@ -158,14 +215,18 @@ class ExportsAPI(APIEndpoint):
 
     def initiate_export(self,
                         export_type: Literal['vulns', 'assets', 'compliance'],
-                        **kwargs):
+                        **kwargs
+                        ):
         """
-        Initiate an export job of the specified export type, and return the export UUID.
+        Initiate an export job of the specified export type, and return the
+        export UUID.
 
-        This method accepts the key-value arguments supported by the methods assets(), vulns(), and compliance()
-        for the matching export_type. For example, when the export_type is "assets", this function will only support the
-        kwargs supported by the assets() method; if export_type is "vulns", the method will accept only those
-        supported by the vulns() method, and so forth.
+        This method accepts the key-value arguments supported by the methods
+        assets(), vulns(), and compliance() for the matching export_type. For
+        example, when the export_type is "assets", this function will only
+        support the kwargs supported by the assets() method; if export_type is
+        "vulns", the method will accept only those supported by the vulns()
+        method, and so forth.
 
         Args:
             export_type (str):
@@ -181,56 +242,10 @@ class ExportsAPI(APIEndpoint):
 
             >>> export_uuid = tio.exports.initiate_export("vulns", timeout=10)
         """
-
-        # Setting the schema for the specified export type.
-        if export_type == "vulns":
-            schema = VulnExportSchema()
-        elif export_type == "assets":
-            schema = AssetExportSchema()
-        elif export_type == "compliance":
-            schema = ComplianceExportSchema()
-
-        payload = schema.dump(schema.load(kwargs))
-
-        # Initiating the export and returning the returned export UUID.
-        return self._api.post(f'{export_type}/export', json=payload, box=True).export_uuid
-
-    def _export(self,
-                export_type: Literal['vulns', 'assets', 'compliance'],
-                schema: Schema,
-                **kwargs
-                ) -> Union[ExportsIterator, UUID]:
-        '''
-        Get the list of jobs for for the specified datatype.
-
-        API Documentation for the job listings for
-        :devportal:`assets <exports-assets-request-export>`,
-        :devportal:`compliance <io-exports-compliance-create>`, and
-        :devportal:`vulnerabilities <exports-vulns-request-export>` datatypes.
-        '''
-        export_uuid = kwargs.pop('uuid', None)
-        use_iterator = kwargs.pop('use_iterator', True)
-        when_done = kwargs.pop('when_done', False)
-        Iterator = kwargs.pop('iterator', ExportsIterator)  # noqa: PLC0103
-        timeout = kwargs.pop('timeout', None)
-        payload = schema.dump(schema.load(kwargs))
-
-        if not export_uuid:
-            export_uuid = self._api.post(f'{export_type}/export',
-                                         json=payload,
-                                         box=True
-                                         ).export_uuid
-            self._log.debug(
-                f'{export_type} export job {export_uuid} initiated'
-            )
-        if use_iterator:
-            return Iterator(self._api,
-                            type=export_type,
-                            uuid=export_uuid,
-                            _wait_for_complete=when_done,
-                            timeout=timeout
+        return self._export(export_type=export_type,
+                            use_iterator=False,
+                            **kwargs
                             )
-        return UUID(export_uuid)
 
     def assets(self, **kwargs) -> Union[ExportsIterator, UUID]:
         '''
@@ -302,6 +317,9 @@ class ExportsAPI(APIEndpoint):
             iterator (Iterator, optional):
                 Supports overloading the iterator class to be used to process
                 the datachunks.
+            adopt_existing (bool, optional):
+                Should we automatically adopt an existing Job UUID with we
+                receive a 409 conflict?  Defaults to True.
 
         Examples:
 
@@ -389,6 +407,9 @@ class ExportsAPI(APIEndpoint):
             iterator (Iterator, optional):
                 Supports overloading the iterator class to be used to process
                 the datachunks.
+            adopt_existing (bool, optional):
+                Should we automatically adopt an existing Job UUID with we
+                receive a 409 conflict?  Defaults to True.
 
         Examples:
 
@@ -504,6 +525,9 @@ class ExportsAPI(APIEndpoint):
             iterator (Iterator, optional):
                 Supports overloading the iterator class to be used to process
                 the datachunks.
+            adopt_existing (bool, optional):
+                Should we automatically adopt an existing Job UUID with we
+                receive a 409 conflict?  Defaults to True.
 
         Examples:
 
