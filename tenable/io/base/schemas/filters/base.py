@@ -1,12 +1,11 @@
 from typing import Optional, Dict, List
 from marshmallow import Schema, ValidationError
-from tenable.io.base.session import TenableIO
 import re
 
 
 class BaseFilterSchema(Schema):
     '''
-    Base filter schema for the Tenable.io package.  As different APIs use
+    Base filter schema for the Tenable Vulnerability Management package.  As different APIs use
     different filter formats, we start with this common base schema that has
     the scaffolding needed to interact with the different API endpoints.
     '''
@@ -14,7 +13,7 @@ class BaseFilterSchema(Schema):
 
     @classmethod
     def populate_filters(cls,
-                         tio: TenableIO,
+                         tio,
                          path: str,
                          envelope: str = 'filters',
                          force: bool = False,

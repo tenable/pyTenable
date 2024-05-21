@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: '{"query": "\nquery plugins(\n  $filter: PluginExpressionsParams\n  $search:
+      String\n  $sort: [PluginSortParams!]!\n  $limit: Int\n  $startAt: String\n)
+      {\n  plugins(\n    filter: $filter\n    search: $search\n    sort: $sort\n    first:
+      $limit\n    after: $startAt\n  ) {\n    pageInfo {\n      endCursor\n    }\n    nodes
+      {\n      id\n      name\n      source\n      family\n      severity\n      vprScore\n      comment\n      owner\n      totalAffectedAssets\n      affectedAssets
+      {\n        nodes {\n          id\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "variables": "{\"search\": null, \"sort\": [{\"field\": \"id\", \"direction\":
+      \"DescNullLast\"}], \"startAt\": null, \"limit\": 2}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '705'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/1.4.11) pyTenable/1.4.11
+        (Restfly/1.4.7; Python/3.9.6; Darwin/arm64)
+      X-APIKeys:
+      - key=TOT_X_API_KEYS
+    method: POST
+    uri: https://172.26.68.231/graphql
+  response:
+    body:
+      string: '{"data":{"plugins":{"pageInfo":{"endCursor":"YXJyYXljb25uZWN0aW9uOjE="},"nodes":[{"id":765088,"name":"Siemens
+        SCALANCE XM416-4C Managed Modular IE Switch","source":"NNM","family":"SCADA","severity":"Info","vprScore":null,"comment":null,"owner":null,"totalAffectedAssets":1,"affectedAssets":{"nodes":[{"id":"97840a65-5e56-42eb-ab56-a570e8b6ce34","name":"ScalanceX400_PLC"}]}},{"id":764524,"name":"Automation
+        Message Specification (AMS) UDP Client Detection","source":"NNM","family":"SCADA","severity":"Info","vprScore":null,"comment":null,"owner":null,"totalAffectedAssets":3,"affectedAssets":{"nodes":[{"id":"818e2f5a-ec53-4dab-9c8f-80e75285424c","name":"OT
+        Server #278"},{"id":"9901ea9c-fff2-4431-b846-f0e064be4297","name":"OT Server
+        #325"},{"id":"a3f72325-0181-4a3d-8456-36f4e6ea1080","name":"Eng. Station #281"}]}}]}}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Length:
+      - '822'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 19 Jan 2023 06:37:34 GMT
+      Etag:
+      - W/"336-f952C9erZMKPLGRhooSmyzI/Gz8"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+version: 1

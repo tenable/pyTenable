@@ -2,8 +2,8 @@
 Recast Risks
 ============
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Recast Risk <Recast-Risk-Rule.html>` API.
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Recast Risk <Recast-Risk-Rule.htm>` API.
 
 Methods available on ``sc.recast_risks``:
 
@@ -83,7 +83,7 @@ class RecastRiskAPI(SCEndpoint):
         '''
         Retrieves the list of recasted risk rules.
 
-        :sc-api:`recast-risk: list <Recast-Risk-Rule.html#RecastRiskRuleRESTReference-/recastRiskRule>`
+        :sc-api:`recast-risk: list <Recast-Risk-Rule.htm#RecastRiskRuleRESTReference-/recastRiskRule>`
 
         Args:
             fields (list, optional):
@@ -140,7 +140,7 @@ class RecastRiskAPI(SCEndpoint):
         '''
         Retrieves the details of an recast risk rule.
 
-        :sc-api:`recast-risk: details <Recast-Risk-Rule.html#RecastRiskRuleRESTReference-/recastRiskRule/{id}>`
+        :sc-api:`recast-risk: details <Recast-Risk-Rule.htm#RecastRiskRuleRESTReference-/recastRiskRule/{id}>`
 
         Args:
             risk_id (int): The identifier for the recast risk rule.
@@ -165,9 +165,9 @@ class RecastRiskAPI(SCEndpoint):
 
     def delete(self, risk_id):
         '''
-        Removes the recast risk rule from Tenable.sc
+        Removes the recast risk rule from Tenable Security Center
 
-        :sc-api:`recast-risk: delete <hRecast-Risk-Rule.html#recastRiskRule_id_DELETE>`
+        :sc-api:`recast-risk: delete <Recast-Risk-Rule.htm#recastRiskRule_id_DELETE>`
 
         Args:
             risk_id (int): The identifier for the recast risk rule.
@@ -187,7 +187,7 @@ class RecastRiskAPI(SCEndpoint):
         Applies the recast risk rule for either all repositories, or the
         repository specified.
 
-        :sc-api:`recast-risk: apply <Recast-Risk-Rule.html#RecastRiskRuleRESTReference-/recastRiskRule/apply>`
+        :sc-api:`recast-risk: apply <Recast-Risk-Rule.htm#RecastRiskRuleRESTReference-/recastRiskRule/apply>`
 
         Args:
             risk_id (int): The identifier for the recast risk rule.
@@ -212,7 +212,7 @@ class RecastRiskAPI(SCEndpoint):
         Creates a new recast risk rule.  Either ips, uuids, or asset_list must
         be specified.
 
-        :sc-api:`recast-risk: create <Recast-Risk-Rule.html#recastRiskRule_POST>`
+        :sc-api:`recast-risk: create <Recast-Risk-Rule.htm#recastRiskRule_POST>`
 
         Args:
             plugin_id (int): The plugin to apply the recast risk rule to.

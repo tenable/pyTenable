@@ -2,7 +2,7 @@
 Directory
 =========
 
-Methods described in this section relate to the the directory API.
+Methods described in this section relate to the directory API.
 These methods can be accessed at ``TenableAD.directories``.
 
 .. rst-class:: hide-signature

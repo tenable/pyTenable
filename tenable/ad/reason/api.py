@@ -1,7 +1,7 @@
 '''
 Reason
 ======
-Methods described in this section relate to the the reason API.
+Methods described in this section relate to the reason API.
 These methods can be accessed at ``TenableAD.reason``.
 
 .. rst-class:: hide-signature

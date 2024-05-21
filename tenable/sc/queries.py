@@ -2,9 +2,9 @@
 Queries
 =======
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Query <Query.html>` API.  These items are typically seen
-under the **Workflow -> Query** section of Tenable.sc.
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Query <Query.htm>` API.  These items are typically seen
+under the **Workflow -> Query** section of Tenable Security Center.
 
 Methods available on ``sc.queries``:
 
@@ -82,7 +82,7 @@ class QueryAPI(SCEndpoint):
         '''
         Creates a query.
 
-        :sc-api:`query: create <Query.html#query_POST>`
+        :sc-api:`query: create <Query.htm#query_POST>`
 
         Args:
             name (str):
@@ -139,7 +139,7 @@ class QueryAPI(SCEndpoint):
         '''
         Returns the details for a specific query.
 
-        :sc-api:`query: details <Query.html#QueryRESTReference-/query/{id}>`
+        :sc-api:`query: details <Query.htm#QueryRESTReference-/query/{id}>`
 
         Args:
             id (int): The identifier for the query.
@@ -164,7 +164,7 @@ class QueryAPI(SCEndpoint):
         '''
         Edits a query.
 
-        :sc-api:`query: edit <Query.html#query_id_PATCH>`
+        :sc-api:`query: edit <Query.htm#query_id_PATCH>`
 
         Args:
             *filters (tuple, optional):
@@ -217,7 +217,7 @@ class QueryAPI(SCEndpoint):
         '''
         Removes a query.
 
-        :sc-api:`query: delete <Query.html#query_id_DELETE>`
+        :sc-api:`query: delete <Query.htm#query_id_DELETE>`
 
         Args:
             id (int): The numeric identifier for the query to remove.
@@ -236,7 +236,7 @@ class QueryAPI(SCEndpoint):
         '''
         Retrieves the list of query definitions.
 
-        :sc-api:`query: list <Query.html#QueryRESTReference-/query>`
+        :sc-api:`query: list <Query.htm#QueryRESTReference-/query>`
 
         Args:
             fields (list, optional):
@@ -261,7 +261,7 @@ class QueryAPI(SCEndpoint):
         '''
         Shares the specified query to another user group.
 
-        :sc-api:`query: share <Query.html#QueryRESTReference-/query/{id}/share>`
+        :sc-api:`query: share <Query.htm#QueryRESTReference-/query/{id}/share>`
 
         Args:
             id (int): The numeric id for the query.
@@ -283,7 +283,7 @@ class QueryAPI(SCEndpoint):
         '''
         Retrieves the list of unique tags associated to queries.
 
-        :sc-api:`query: tags <Query.html#QueryRESTReference-/query/tag>`
+        :sc-api:`query: tags <Query.htm#QueryRESTReference-/query/tag>`
 
         Returns:
             :obj:`list`:

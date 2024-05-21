@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: '{"AND": [{"field": "scans_started_at", "operator": "gte", "value": "2100/03/23"},
+      {"field": "scans_status", "operator": "contains", "value": ["completed"]}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '157'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.12
+        (Restfly/1.4.7; Python/3.10.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY
+    method: POST
+    uri: https://cloud.tenable.com/was/v2/configs/search?limit=200&offset=0
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAxzGQQrEIAwF0Lv8tQwyy1yllCHUWALVFJOuxLsX5q3exM2ndg61DpoIC75AOcFq
+        dYl/L20aoG/OCW4jQNtE5yYgHNarnv557sIh5ceBBBtFBghF/MDaV4KGNAdt+3oBAAD//wMAD3nI
+        IXIAAAA=
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 7b084be58c843b68-IAD
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 31 Mar 2023 11:36:47 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Server:
+      - cloudflare
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-us-east-1-prod-86955c7f46-6fnlw
+      X-Request-Uuid:
+      - 613a7ed65e7f80cbf34f707f8c26c20e
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
