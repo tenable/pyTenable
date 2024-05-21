@@ -2,7 +2,7 @@
 Reports
 =======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 Container Security :devportal:`report <cs-v2-reports>` API endpoints.
 
 Methods available on ``tio.cs.reports``:

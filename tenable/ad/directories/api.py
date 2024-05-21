@@ -2,7 +2,7 @@
 Directory
 =========
 
-Methods described in this section relate to the the directory API.
+Methods described in this section relate to the directory API.
 These methods can be accessed at ``TenableAD.directories``.
 
 .. rst-class:: hide-signature
@@ -10,7 +10,6 @@ These methods can be accessed at ``TenableAD.directories``.
     :members:
 '''
 from typing import List, Dict
-from marshmallow import INCLUDE
 from restfly.utils import dict_clean
 from tenable.base.endpoint import APIEndpoint
 from .schema import DirectorySchema
@@ -18,6 +17,7 @@ from .schema import DirectorySchema
 
 class DirectoriesAPI(APIEndpoint):
     _path = 'directories'
+    _schema = DirectorySchema()
 
     def list(self) -> List[Dict]:
         '''
@@ -31,8 +31,7 @@ class DirectoriesAPI(APIEndpoint):
 
             >>> tad.directories.list()
         '''
-        schema = DirectorySchema(unknown=INCLUDE)
-        return schema.load(self._get(), many=True)
+        return self._schema.load(self._get(), many=True)
 
     def create(self,
                infrastructure_id: int,
@@ -78,8 +77,7 @@ class DirectoriesAPI(APIEndpoint):
             ...     dns='company.tld',
             ...     )
         '''
-        schema = DirectorySchema(unknown=INCLUDE)
-        payload = [schema.dump(schema.load(
+        payload = [self._schema.dump(self._schema.load(
             dict_clean({
                 'infrastructureId': infrastructure_id,
                 'name': name,
@@ -91,7 +89,7 @@ class DirectoriesAPI(APIEndpoint):
                 'smbPort': kwargs.get('smb_port')
             })
         ))]
-        return schema.load(self._post(json=payload), many=True)
+        return self._schema.load(self._post(json=payload), many=True)
 
     def details(self, directory_id: str) -> Dict:
         '''
@@ -107,8 +105,7 @@ class DirectoriesAPI(APIEndpoint):
         Examples:
             >>> tad.directories.details(directory_id='1')
         '''
-        schema = DirectorySchema(unknown=INCLUDE)
-        return schema.load(self._get(f'{directory_id}'))
+        return self._schema.load(self._get(f'{directory_id}'))
 
     def update(self,
                infrastructure_id: int,
@@ -160,9 +157,8 @@ class DirectoriesAPI(APIEndpoint):
             ...     ldap_port=390
             ...     )
         '''
-        schema = DirectorySchema(unknown=INCLUDE)
-        payload = schema.dump(schema.load(kwargs))
-        return schema.load(
+        payload = self._schema.dump(self._schema.load(kwargs))
+        return self._schema.load(
             self._api.patch((f'infrastructures/{infrastructure_id}'
                              f'/directories/{directory_id}'),
                             json=payload))
@@ -185,7 +181,6 @@ class DirectoriesAPI(APIEndpoint):
             ...     infrastructure_id=2,
             ...     directory_id='12'
             ...     )
-
         '''
         self._api.delete((f'infrastructures/{infrastructure_id}'
                           f'/directories/{directory_id}'))

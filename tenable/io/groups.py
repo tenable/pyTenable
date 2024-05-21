@@ -2,7 +2,7 @@
 Groups
 ======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`groups <groups>` API.
 
 Methods available on ``tio.groups``:

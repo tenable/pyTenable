@@ -1,5 +1,5 @@
 '''
-TenableAD user schema
+Tenable Identity Exposure user schema
 '''
 from marshmallow import fields
 from tenable.ad.base.schema import CamelCaseSchema
@@ -9,7 +9,7 @@ class UserSchema(CamelCaseSchema):
     id = fields.Int()
     surname = fields.Str(allow_none=True)
     name = fields.Str()
-    email = fields.Email()
+    email = fields.Str()
     password = fields.Str()
     locked_out = fields.Bool()
     department = fields.Str(allow_none=True)
