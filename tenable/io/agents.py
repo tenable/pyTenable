@@ -2,7 +2,7 @@
 Agents
 ======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`agents <agents>` API endpoints.
 
 Methods available on ``tio.agents``:
@@ -38,7 +38,7 @@ class AgentsIterator(TIOIterator):
 class AgentsAPI(TIOEndpoint):
     def list(self, *filters, **kw):
         '''
-        Get the listing of configured agents from Tenable.io.
+        Get the listing of configured agents from Tenable Vulnerability Management.
 
         :devportal:`agents: list <agents-list>`
 
@@ -58,7 +58,7 @@ class AgentsAPI(TIOEndpoint):
                 endpoint to get more details.
             filter_type (str, optional):
                 The filter_type operator determines how the filters are combined
-                together.  ``and`` will inform the API that all of the filter
+                together.  ``and`` will inform the API that all the filter
                 conditions must be met for an agent to be returned, whereas
                 ``or`` would mean that if any of the conditions are met, the
                 agent record will be returned.
@@ -69,7 +69,7 @@ class AgentsAPI(TIOEndpoint):
             scanner_id (int, optional):
                 The identifier the scanner that the agent communicates to.
             sort (tuple, optional):
-                A tuple of tuples identifying the the field and sort order of
+                A tuple of tuples identifying the field and sort order of
                 the field.
             wildcard (str, optional):
                 A string to pattern match against all available fields returned.
@@ -189,7 +189,7 @@ class AgentsAPI(TIOEndpoint):
 
     def unlink(self, *agent_ids, **kw):
         '''
-        Unlink one or multiple agents from the Tenable.io instance.
+        Unlink one or multiple agents from the Tenable Vulnerability Management instance.
 
         :devportal:`agents: delete <agents-delete>`
 

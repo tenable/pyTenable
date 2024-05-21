@@ -2,8 +2,8 @@
 Alerts
 ======
 
-The following methods allow for interaction into the Tenable.sc
-`Alert <https://docs.tenable.com/sccv/api/Alert.html>`_ API.
+The following methods allow for interaction into the Tenable Security Center
+`Alert <https://docs.tenable.com/security-center/api/Alert.htm>`_ API.
 
 Methods available on ``sc.alerts``:
 
@@ -85,7 +85,7 @@ class AlertAPI(SCEndpoint):
         '''
         Retrieves the list of alerts.
 
-        :sc-api:`alert: list <Alert.html#AlertRESTReference-/alert>`
+        :sc-api:`alert: list <Alert.htm#AlertRESTReference-/alert>`
 
         Args:
             fields (list, optional):
@@ -110,7 +110,7 @@ class AlertAPI(SCEndpoint):
         '''
         Returns the details for a specific alert.
 
-        :sc-api:`alert: details <Alert.html#AlertRESTReference-/alert/{id}>`
+        :sc-api:`alert: details <Alert.htm#AlertRESTReference-/alert/{id}>`
 
         Args:
             id (int): The identifier for the alert.
@@ -137,7 +137,7 @@ class AlertAPI(SCEndpoint):
         any additional parameters mentioned in the API docs can be passed to the
         document constructor.
 
-        :sc-api:'alert: create <Alert.html#alert_POST>`
+        :sc-api:`alert: create <Alert.htm#alert_POST>`
 
         Args:
             *filters (tuple):
@@ -158,7 +158,7 @@ class AlertAPI(SCEndpoint):
                 only execute when the returned data changes?
                 Default is ``False``.
             schedule (dict, optional):
-                This is the schedule dictionary that will inform Tenable.sc how
+                This is the schedule dictionary that will inform Tenable Security Center how
                 often to run the alert.  If left unspecified then we will
                 default to ``{'type': 'never'}``.
             action (list):
@@ -247,7 +247,7 @@ class AlertAPI(SCEndpoint):
         Updates an existing alert.  All fields are optional and will overwrite
         the existing value.
 
-        :sc-api:`alert: update <Alert.html#alert_id_PATCH>`
+        :sc-api:`alert: update <Alert.htm#alert_id_PATCH>`
 
         Args:
             if (int): The alert identifier.
@@ -269,7 +269,7 @@ class AlertAPI(SCEndpoint):
                 only execute when the returned data changes?
                 Default is ``False``.
             schedule (dict, optional):
-                This is the schedule dictionary that will inform Tenable.sc how
+                This is the schedule dictionary that will inform Tenable Security Center how
                 often to run the alert.  If left unspecified then we will
                 default to ``{'type': 'never'}``.
             action (list):
@@ -293,7 +293,7 @@ class AlertAPI(SCEndpoint):
         '''
         Deletes the specified alert.
 
-        :sc-api:`alert: delete <Alert.html#alert_id_DELETE>`
+        :sc-api:`alert: delete <Alert.htm#alert_id_DELETE>`
 
         Args:
             id (int): The alert identifier.
@@ -312,7 +312,7 @@ class AlertAPI(SCEndpoint):
         '''
         Executes the specified alert.
 
-        :sc-api:`alert: execute <Alert.html#AlertRESTReference-/alert/{id}/execute>`
+        :sc-api:`alert: execute <Alert.htm#AlertRESTReference-/alert/{id}/execute>`
 
         Args:
             id (int): The alert identifier.

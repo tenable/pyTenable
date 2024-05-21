@@ -85,13 +85,11 @@ def test_policies_constructor_preference_item_name_typeerror(security_center):
         security_center.policies._constructor(preferences={1: 'value'})
 
 
-def test_policies_constructor_preference_item_value_typeerror(security_center):
+def test_policies_constructor_preference_item_value_should_not_typeerror(security_center):
     '''
     test policies constructor for 'item value' type error
     '''
-    with pytest.raises(TypeError):
-        security_center.policies._constructor(preferences={'name': 1})
-
+    security_center.policies._constructor(preferences={'name': 1})
 
 def test_policies_constructor_audit_files_typeerror(security_center):
     '''

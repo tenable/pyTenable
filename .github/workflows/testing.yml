@@ -1,15 +1,17 @@
-name: Master Branch Rules
+name: Testing Pipeline
 
 on:
   push:
     branches: [master]
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   unit_tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -27,10 +29,21 @@ jobs:
           pip install -r requirements.txt
       - name: Run the unit test suite.
         run: |
-          pytest tests                \
-            --vcr-record=none         \
-            --cov-report term-missing \
+          pytest tests                        \
+            --vcr-record=none                 \
+            --cov-report term-missing         \
+            --cov-report xml:cov/coverage.xml \
             --cov=tenable tests
+      - name: Test if the library is installable
+        run: |
+          pip install .
+          cd aux_tests && pytest test_installable.py
+      - name: Save Coverage Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage_report_${{ matrix.python-version }}
+          path: cov
+          retention-days: 1
 
   style:
     runs-on: ubuntu-latest
@@ -60,14 +73,14 @@ jobs:
           --max-complexity=12     \
           --statistics
 
-  security:
+  snyk:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
       - uses: snyk/actions/setup@master
       - uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: "3.10"
       - name: Setup environment
         run: pip install -r requirements.txt
       - name: Snyk Library check
@@ -75,19 +88,18 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: snyk test --org=pytenable
 
-  installable:
+  sonarcloud:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10"]
+    needs: unit_tests
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      - name: Download Coverage Report
+        uses: actions/download-artifact@v2
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: "Install package and test"
-        run: |
-          pip install pytest
-          pip install .
-          cd aux_tests && pytest test_installable.py
+          name: coverage_report_3.8
+          path: cov
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

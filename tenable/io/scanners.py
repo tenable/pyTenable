@@ -2,7 +2,7 @@
 Scanners
 ========
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`scanners <scanners>` API.
 
 Methods available on ``tio.scanners``:
@@ -13,11 +13,14 @@ Methods available on ``tio.scanners``:
 '''
 from .base import TIOEndpoint
 
+SCANNERS_ = 'scanners/{}'
+
+
 class ScannersAPI(TIOEndpoint):
 
     def linking_key(self):
         '''
-        The linking key for the Tenable.io instance.
+        The linking key for the Tenable Vulnerability Management instance.
 
         Returns:
             :obj:`str`:
@@ -93,7 +96,7 @@ class ScannersAPI(TIOEndpoint):
 
     def delete(self, id):
         '''
-        Delete a scanner from Tenable.io.
+        Delete a scanner from Tenable Vulnerability Management.
 
         :devportal:`scanners: delete <scanners-delete>`
 
@@ -108,7 +111,7 @@ class ScannersAPI(TIOEndpoint):
         Examples:
             >>> tio.scanners.delete(1)
         '''
-        self._api.delete('scanners/{}'.format(self._check('id', id, int)))
+        self._api.delete(SCANNERS_.format(self._check('id', id, int)))
 
     def details(self, id):
         '''
@@ -128,7 +131,7 @@ class ScannersAPI(TIOEndpoint):
             >>> scanner = tio.scanners.details(1)
             >>> pprint(scanner)
         '''
-        return self._api.get('scanners/{}'.format(
+        return self._api.get(SCANNERS_.format(
             self._check('id', id, int))).json()
 
     def edit(self, id, **kwargs):
@@ -151,7 +154,7 @@ class ScannersAPI(TIOEndpoint):
                 Sets the registration code for the scanner.
             aws_update_interval (int, optional):
                 For AWS scanners this will inform the scanner how often to check
-                into Tenable.io.
+                into Tenable Vulnerability Management.
 
         Returns:
             :obj:`None`:
@@ -179,8 +182,8 @@ class ScannersAPI(TIOEndpoint):
             and self._check('aws_update_interval', kwargs['aws_update_interval'], int)):
             payload['aws_update_interval'] = kwargs['aws_update_interval']
 
-        self._api.put('settings/{}'.format(self._check('id', id, int)),
-            json=payload)
+        self._api.put(SCANNERS_.format(self._check('id', id, int)),
+                      json=payload)
 
     def get_aws_targets(self, id):
         '''

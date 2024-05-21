@@ -2,7 +2,7 @@
 Agent Groups
 ============
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`agent groups <agent-groups>` API endpoints.
 
 Methods available on ``tio.agent_groups``:
@@ -23,7 +23,7 @@ class AgentGroupsAPI(TIOEndpoint):
 
         Args:
             group_id (int): The id of the group
-            *agent_ids (int): The id of the agent
+            *agent_ids (int): The id or uuid of the agent.  If passing multiple, they must all be either numeric id or uuid.
             scanner_id (int, optional): The id of the scanner
 
         Returns:
@@ -40,17 +40,24 @@ class AgentGroupsAPI(TIOEndpoint):
             Adding multiple agents:
 
             >>> tio.agent_groups.add_agent(1, 1, 2, 3)
+
+            Adding multiple agents by uuid:
+
+            >>> tio.agent_groups.add_agent(1, 'uuid-1', 'uuid-2', 'uuid-3')
         '''
         scanner_id = 1
         if 'scanner_id' in kw:
             scanner_id = kw['scanner_id']
+
+        # we can handle either ids or uuids as the list of items.
+        useUuids = len(agent_ids) > 0 and isinstance(agent_ids[0], str)
 
         if len(agent_ids) <= 1:
             # if there is only 1 agent id, we will perform a singular add.
             self._api.put('scanners/{}/agent-groups/{}/agents/{}'.format(
                 self._check('scanner_id', scanner_id, int),
                 self._check('group_id', group_id, int),
-                self._check('agent_id', agent_ids[0], int)
+                self._check('agent_id', agent_ids[0], 'uuid' if useUuids else int)
             ))
         else:
             # If there are many agent_ids, then we will want to perform a bulk
@@ -59,7 +66,7 @@ class AgentGroupsAPI(TIOEndpoint):
                 'scanners/{}/agent-groups/{}/agents/_bulk/add'.format(
                     self._check('scanner_id', scanner_id, int),
                     self._check('group_id', group_id, int)),
-                json={'items': [self._check('agent_id', i, int) for i in agent_ids]}).json()
+                json={'items': [self._check('agent_id', i, 'uuid' if useUuids else int) for i in agent_ids]}).json()
 
     def configure(self, group_id, name, scanner_id=1):
         '''
@@ -173,7 +180,7 @@ class AgentGroupsAPI(TIOEndpoint):
                     self._check('group_id', group_id, int)),
                 json={'items': [self._check('agent_ids', i, int) for i in agent_ids]}).json()
 
-    def details(self, group_id, scanner_id=1, *filters, **kw):
+    def details(self, group_id, *filters, **kw):
         '''
         Retrieve the details about the specified agent group.
 
@@ -196,7 +203,7 @@ class AgentGroupsAPI(TIOEndpoint):
                 endpoint to get more details.
             filter_type (str, optional):
                 The filter_type operator determines how the filters are combined
-                together.  ``and`` will inform the API that all of the filter
+                together.  ``and`` will inform the API that all the filter
                 conditions must be met for an agent to be returned, whereas
                 ``or`` would mean that if any of the conditions are met, the
                 agent record will be returned.
@@ -207,7 +214,7 @@ class AgentGroupsAPI(TIOEndpoint):
             scanner_id (int, optional):
                 The identifier the scanner that the agent communicates to.
             sort (tuple, optional):
-                A tuple of tuples identifying the the field and sort order of
+                A tuple of tuples identifying the field and sort order of
                 the field.
             wildcard (str, optional):
                 A string to pattern match against all available fields returned.

@@ -2,7 +2,7 @@
 About
 =====
 
-Methods described in this section relate to the the about API.
+Methods described in this section relate to the About API.
 These methods can be accessed at ``TenableAD.about``.
 
 .. rst-class:: hide-signature
@@ -17,7 +17,7 @@ class AboutAPI(APIEndpoint):
 
     def version(self) -> str:
         '''
-        Returns the version of the connected Tenable.ad instance.
+        Returns the version of the connected Tenable Identity Exposure instance.
 
         Examples:
 
