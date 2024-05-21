@@ -79,3 +79,10 @@ class BoolInt(fields.Boolean):
 
     def _serialize(self, value, attr, obj, **kwargs) -> int:
         return int(value) if value else 0
+
+
+class BoolStr(fields.Boolean):
+    '''Schema to return a string value for given boolean value'''
+
+    def _serialize(self, value, attr, obj, **kwargs) -> str:
+        return str(value).lower() if isinstance(value, bool) else None

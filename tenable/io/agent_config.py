@@ -2,7 +2,7 @@
 Agent Config
 ============
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`agent config <agent-config>` API endpoints.
 
 Methods available on ``tio.agent_config``:

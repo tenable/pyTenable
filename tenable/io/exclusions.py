@@ -2,7 +2,7 @@
 Exclusions
 ==========
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`exclusions <exclusions>`
 API endpoints.
 
@@ -63,7 +63,7 @@ class ExclusionsAPI(TIOEndpoint):
                 The default value is ``True``
             network_id (uuid, optional):
                 The ID of the network object associated with scanners
-                where Tenable.io applies the exclusion.
+                where Tenable Vulnerability Management applies the exclusion.
 
         Returns:
             :obj:`dict`:
@@ -230,7 +230,7 @@ class ExclusionsAPI(TIOEndpoint):
         then be pushed back to the API to modify the exclusion.
 
         Args:
-            exclusion_id (int): The id of the exclusion object in Tenable.io
+            exclusion_id (int): The id of the exclusion object in Tenable Vulnerability Management
             scanner_id (int, optional): The scanner id.
             name (str, optional): The name of the exclusion to create.
             description (str, optional):
@@ -255,7 +255,7 @@ class ExclusionsAPI(TIOEndpoint):
                 enable/disable exclusion.
             network_id (uuid, optional):
                 The ID of the network object associated with scanners
-                where Tenable.io applies the exclusion.
+                where Tenable Vulnerability Management applies the exclusion.
 
         Returns:
             :obj:`dict`:
@@ -372,7 +372,7 @@ class ExclusionsAPI(TIOEndpoint):
 
     def exclusions_import(self, fobj):
         '''
-        Import exclusions into Tenable.io.
+        Import exclusions into Tenable Vulnerability Management.
 
         :devportal:`exclusions: import <exclusions-import>`
 
@@ -382,7 +382,7 @@ class ExclusionsAPI(TIOEndpoint):
 
         Returns:
             :obj:`None`:
-                Returned if Tenable.io successfully imports the exclusion file.
+                Returned if Tenable Vulnerability Management successfully imports the exclusion file.
 
         Examples:
             >>> with open('import_example.csv') as exclusion:

@@ -2,9 +2,9 @@
 Plugins
 =======
 
-The following methods allow for interaction with the Tenable.sc
-:sc-api:`Plugins <Plugin.html>` API.  These items are typically seen under the
-**Plugins** section of Tenable.sc.
+The following methods allow for interaction with the Tenable Security Center
+:sc-api:`Plugins <Plugin.htm>` API.  These items are typically seen under the
+**Plugins** section of Tenable Security Center.
 
 Methods available on ``sc.plugins``:
 
@@ -95,7 +95,7 @@ class PluginAPI(SCEndpoint):
         '''
         Retrieves the list of plugins.
 
-        :sc-api:`plugins: list <Plugin.html#PluginRESTReference-/plugin>`
+        :sc-api:`plugins: list <Plugin.htm#PluginRESTReference-/plugin>`
 
         Args:
             fields (list, optional):
@@ -163,7 +163,7 @@ class PluginAPI(SCEndpoint):
         '''
         Returns the details for a specific plugin.
 
-        :sc-api:`plugins: details <Plugin.html#PluginRESTReference-/plugin/{id}>`
+        :sc-api:`plugins: details <Plugin.htm#PluginRESTReference-/plugin/{id}>`
 
         Args:
             plugin_id (int): The identifier for the plugin.
@@ -187,7 +187,7 @@ class PluginAPI(SCEndpoint):
         '''
         Returns the list of plugin families.
 
-        :sc-api:`plugin-families: list <Plugin-Family.html#PluginFamilyRESTReference-/pluginFamily>`
+        :sc-api:`plugin-families: list <Plugin-Family.htm#PluginFamilyRESTReference-/pluginFamily>`
 
         Args:
             fields (list, optional):
@@ -221,7 +221,7 @@ class PluginAPI(SCEndpoint):
         '''
         Returns the details for the specified plugin family.
 
-        :sc-api:`plugin-family: details <https://docs.tenable.com/sccv/api/Plugin-Family.html#PluginFamilyRESTReference-/pluginFamily/{id}>`
+        :sc-api:`plugin-family: details <Plugin-Family.htm#PluginFamilyRESTReference-/pluginFamily/{id}>`
 
         Args:
             plugin_id (int): The plugin family numeric identifier.
@@ -247,7 +247,7 @@ class PluginAPI(SCEndpoint):
         '''
         Retrieves the plugins for the specified family.
 
-        :sc-api:`plugin-family: plugins <Plugin-Family.html#PluginFamilyRESTReference-/pluginFamily/{id}/plugins::GET>`
+        :sc-api:`plugin-family: plugins <Plugin-Family.htm#PluginFamilyRESTReference-/pluginFamily/{id}/plugins::GET>`
 
         Args:
             plugin_id (int): The numeric identifier for the plugin family.

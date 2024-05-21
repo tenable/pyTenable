@@ -2,8 +2,8 @@
 Analysis
 ========
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`analysis <Analysis.html>` API.  The analysis area in Tenable.sc is
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`analysis <Analysis.htm>` API.  The analysis area in Tenable Security Center is
 highly complex and allows for a wide range of varied inputs and outputs.  This
 single endpoint has been broken down in pyTenable to several methods in order to
 apply some defaults to the expected data-types and options most likely to be
@@ -51,7 +51,7 @@ separated values to indicate multiple items.  So for high and critical vulns,
 ``('severity', '=', '3,4')`` would return only what your looking for.
 
 Asset list calculations in filters are a bit more complex, but still shouldn't
-be too difficult.  Tenable.sc leverages nested pairs for the asset calculations
+be too difficult.  Tenable Security Center leverages nested pairs for the asset calculations
 combined with a operator to define how that pair are to be combined.  Each of
 the elements within the pair can further be nested, allowing for some quite
 complex asset list math to happen.
@@ -176,6 +176,9 @@ class AnalysisAPI(SCEndpoint):
             pages = self._check('pages', kw['pages'], int)
 
         if payload.get('sourceType') in ['individual']:
+            payload['query']['scanID'] = self._check(
+                'scan_id', kw.get('scan_id'), int
+            )
             payload['query']['view'] = self._check(
                 'view', kw.get('view', 'all'), str,
                 choices=['all', 'new', 'patched'], default='all')
@@ -202,7 +205,7 @@ class AnalysisAPI(SCEndpoint):
         Query's the analysis API for vulnerability data within the cumulative
         repositories.
 
-        :sc-api:`analysis: vuln-type <Analysis.html#AnalysisRESTReference-VulnType>`
+        :sc-api:`analysis: vuln-type <Analysis.htm#AnalysisRESTReference-VulnType>`
 
         Args:
             filters (tuple, optional):
@@ -245,7 +248,8 @@ class AnalysisAPI(SCEndpoint):
                 ``sumfamily``, ``sumiavm``, ``sumid``, ``sumip``,
                 ``summsbulletin``, ``sumprotocol``, ``sumremediation``,
                 ``sumseverity``, ``sumuserresponsibility``, ``sumport``,
-                ``trend``, ``vulndetails``, ``vulnipdetail``, ``vulnipsummary``
+                ``trend``, ``vulndetails``, ``vulnipdetail``, ``vulnipsummary``,
+                ``sumwasurl``, ``wasvulndetail``, ``waslistvuln``
 
         Returns:
             :obj:`AnalysisResultsIterator`:
@@ -320,6 +324,9 @@ class AnalysisAPI(SCEndpoint):
                 'vulndetails',
                 'vulnipdetail',
                 'vulnipsummary',
+                'sumwasurl',        # Undocumented in 6.3.x
+                'wasvulndetail',    # Undocumented in 6.3.x
+                'waslistvuln',      # Undocumented in 6.3.x
             ], case='lower')
         else:
             kw['tool'] = 'vulndetails'
@@ -327,6 +334,19 @@ class AnalysisAPI(SCEndpoint):
         if 'scan_id' in kw:
             payload['sourceType'] = 'individual'
             payload['scanID'] = kw['scan_id']
+        else:
+            # If the request is for a cumulative result, then we will an
+            # implicit filter to exclude WAS findings.
+            incl_filter = True
+            for f in filters:
+                if (
+                    (isinstance(f, tuple) and f[0] == 'wasVuln')
+                    or (isinstance(f, dict) and f['filterName'] == 'wasVuln')
+                ):
+                    incl_filter = False
+            if incl_filter:
+                filters = list(filters)
+                filters.append(('wasVuln', '=', 'excludeWas'))
 
         kw['payload'] = payload
         kw['type'] = 'vuln'
@@ -352,7 +372,7 @@ class AnalysisAPI(SCEndpoint):
         '''
         Queries the analysis API for vulnerability data from a specific scan.
 
-        :sc-api:`analysis: vuln-type <Analysis.html#AnalysisRESTReference-VulnType>`
+        :sc-api:`analysis: vuln-type <Analysis.htm#AnalysisRESTReference-VulnType>`
 
         Args:
             scan_id (int):
@@ -433,7 +453,7 @@ class AnalysisAPI(SCEndpoint):
         '''
         Queries the analysis API for event data from the Log Correlation Engine
 
-        :sc-api:`analysis: event-type <Analysis.html#AnalysisRESTReference-EventType>`
+        :sc-api:`analysis: event-type <Analysis.htm#AnalysisRESTReference-EventType>`
 
         Args:
             filters (tuple, optional):
@@ -531,9 +551,9 @@ class AnalysisAPI(SCEndpoint):
 
     def console(self, *filters, **kw):
         '''
-        Queries the analysis API for log data from the Tenable.sc Console itself.
+        Queries the analysis API for log data from the Tenable Security Center Console itself.
 
-        :sc-api:`analysis: sclog-type <Analysis.html#AnalysisRESTReference-SCLogType>`
+        :sc-api:`analysis: sclog-type <Analysis.htm#AnalysisRESTReference-SCLogType>`
 
         Args:
             filters (tuple, optional):
@@ -574,7 +594,7 @@ class AnalysisAPI(SCEndpoint):
         Queries the analysis API for mobile data collected from querying one or
         many MDM solutions.
 
-        :sc-api:`analysis: mobile-type <Analysis.html#AnalysisRESTReference-MobileType>`
+        :sc-api:`analysis: mobile-type <Analysis.htm#AnalysisRESTReference-MobileType>`
 
         Args:
             filters (tuple, optional):

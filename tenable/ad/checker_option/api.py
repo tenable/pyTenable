@@ -2,7 +2,7 @@
 Checker Option
 ==============
 
-Methods described in this section relate to the the checker option API.
+Methods described in this section relate to the checker option API.
 These methods can be accessed at ``TenableAD.checker_option``.
 
 .. rst-class:: hide-signature

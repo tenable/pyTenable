@@ -2,13 +2,13 @@
 Scan Instances
 ==============
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Scan Result <Scan-Result.html>` API.  While the Tenable.sc API refers
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Scan Result <Scan-Result.htm>` API.  While the Tenable Security Center API refers
 to the model these endpoints interact with as *ScanResult*, were actually
 interacting with an instance of a scan definition stored within the *Scan* API
 endpoints.  These scan instances could be running scans, stopped scans, errored
 scans, or completed scans.  These items are typically seen under the
-**Scan Results** section of Tenable.sc.
+**Scan Results** section of Tenable Security Center.
 
 Methods available on ``sc.scan_instances``:
 
@@ -25,7 +25,7 @@ class ScanResultAPI(SCEndpoint):
         '''
         Clones the scan instance.
 
-        :sc-api:`scan-result: copy <Scan-Result.html#ScanResultRESTReference-/scanResult/{id}/copy>`
+        :sc-api:`scan-result: copy <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/copy>`
 
         Args:
             id (int): The identifier of the scan instance to clone.
@@ -49,7 +49,7 @@ class ScanResultAPI(SCEndpoint):
         '''
         Removes the scan instance from TenableSC.
 
-        :sc-api:`scan-result: delete <Scan-Result.html#scanResult_id_DELETE>`
+        :sc-api:`scan-result: delete <Scan-Result.htm#scanResult_id_DELETE>`
 
         Args:
             id (int): The identifier of the scan instance to delete.
@@ -68,7 +68,7 @@ class ScanResultAPI(SCEndpoint):
         '''
         Retrieves the details for the specified scan instance.
 
-        :sc-api:`scan-result: details <Scan-Result.html#scanResult_id_GET>`
+        :sc-api:`scan-result: details <Scan-Result.htm#scanResult_id_GET>`
 
         Args:
             id (int): The identifier for the scan instance to be retrieved.
@@ -105,7 +105,7 @@ class ScanResultAPI(SCEndpoint):
         Emails the scan results of the requested scan to the email addresses
         defined.
 
-        :sc-api:`scan-result: email <Scan-Result.html#ScanResultRESTReference-/scanResult/{id}/email>`
+        :sc-api:`scan-result: email <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/email>`
 
         Args:
             id (int): The identifier for the specified scan instance.
@@ -126,7 +126,7 @@ class ScanResultAPI(SCEndpoint):
         '''
         Downloads the results of the scan.
 
-        :sc-api:`scan-result: download <Scan-Result.html#ScanResultRESTReference-/scanResult/{id}/download>`
+        :sc-api:`scan-result: download <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/download>`
 
         Args:
             id (int): The scan instance identifier.
@@ -170,9 +170,9 @@ class ScanResultAPI(SCEndpoint):
 
     def import_scan(self, fobj, repo, **kw):
         '''
-        Imports a nessus file into Tenable.sc.
+        Imports a nessus file into Tenable Security Center.
 
-        :sc-api:`scan-result: import <Scan-Result.html#ScanResultRESTReference-/scanResult/import>`
+        :sc-api:`scan-result: import <Scan-Result.htm#ScanResultRESTReference-/scanResult/import>`
 
         Args:
             fobj (FileObject):
@@ -206,7 +206,7 @@ class ScanResultAPI(SCEndpoint):
         '''
         Re-imports an existing scan into the cumulative repository.
 
-        :sc-api:`scan-result: re-import <Scan-Result.html#ScanResultRESTReference-/scanResult/{id}/import>`
+        :sc-api:`scan-result: re-import <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/import>`
 
         Args:
             id (int):
@@ -235,7 +235,7 @@ class ScanResultAPI(SCEndpoint):
         '''
         Retrieves the list of scan instances.
 
-        :sc-api:`scan-result: list <Scan-Result.html#ScanResultRESTReference-/scanResult>`
+        :sc-api:`scan-result: list <Scan-Result.htm#ScanResultRESTReference-/scanResult>`
 
         Args:
             fields (list, optional):
@@ -245,7 +245,7 @@ class ScanResultAPI(SCEndpoint):
             end_time (int, optional):
                 Epoch time to end search (searches against createdTime and defaults to now)
             optimize (bool, optional):
-                Informs Tenable.sc to optimize completed scan results.  If left
+                Informs Tenable Security Center to optimize completed scan results.  If left
                 unspecified, the default is `True`.
 
         Returns:
@@ -278,7 +278,7 @@ class ScanResultAPI(SCEndpoint):
         Pauses a running scan instance.  Note that this will not impact agent
         scan instances.
 
-        "sc-api:`scan-result: pause <Scan-Result.html#ScanResultRESTReference-/scanResult/{id}/pause>`
+        :sc-api:`scan-result: pause <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/pause>`
 
         Args:
             id (int): The unique identifier for the scan instance.
@@ -298,7 +298,7 @@ class ScanResultAPI(SCEndpoint):
         Resumes a paused scan instance.  Note that this will not impact agent
         scan instances.
 
-        :sc-api:`scan-result: resume <Scan-Result.html#ScanResultRESTReference-/scanResult/{id}/resume>`
+        :sc-api:`scan-result: resume <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/resume>`
 
         Args:
             id (int): The unique identifier for the scan instance.
@@ -318,7 +318,7 @@ class ScanResultAPI(SCEndpoint):
         Stops a running scan instance.  Note that this will not impact agent
         scan instances.
 
-        :sc-api:`scan-result: stop <Scan-Result.html#ScanResultRESTReference-/scanResult/{id}/stop>`
+        :sc-api:`scan-result: stop <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/stop>`
 
         Args:
             id (int): The unique identifier for the scan instance.
