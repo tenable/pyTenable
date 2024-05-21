@@ -2,9 +2,9 @@
 Roles
 =====
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Roles <Role.html>` API.  These items are typically seen under the
-**User Roles** section of Tenable.sc.
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Roles <Role.htm>` API.  These items are typically seen under the
+**User Roles** section of Tenable Security Center.
 
 Methods available on ``sc.roles``:
 
@@ -72,7 +72,7 @@ class RoleAPI(SCEndpoint):
         '''
         Creates a role.
 
-        :sc-api:`role: create <Role.html#role_POST>`
+        :sc-api:`role: create <Role.htm#role_POST>`
 
         Args:
             name (str): The name of the new role to create.
@@ -96,7 +96,7 @@ class RoleAPI(SCEndpoint):
                 groups?  If left unspecified, the default is ``False``.
             can_view_logs (bool, optional):
                 Are members of this role allowed to view the organizational
-                logs from Tenable.sc?  If left unspecified, the default is
+                logs from Tenable Security Center?  If left unspecified, the default is
                 ``False``.
             create_alerts (bool, optional):
                 Are members of this role allowed to create alerts? If left
@@ -154,7 +154,7 @@ class RoleAPI(SCEndpoint):
         '''
         Returns the details for a specific role.
 
-        :sc-api:`role: details <Role.html#role_id_GET>`
+        :sc-api:`role: details <Role.htm#role_id_GET>`
 
         Args:
             id (int): The identifier for the role.
@@ -179,7 +179,7 @@ class RoleAPI(SCEndpoint):
         '''
         Edits a role.
 
-        :sc-api:`role: edit <Role.html#role_id_PATCH>`
+        :sc-api:`role: edit <Role.htm#role_id_PATCH>`
 
         Args:
             id (int): The numeric identifier for the role.
@@ -204,7 +204,7 @@ class RoleAPI(SCEndpoint):
                 groups?  If left unspecified, the default is ``False``.
             can_view_logs (bool, optional):
                 Are members of this role allowed to view the organizational
-                logs from Tenable.sc?  If left unspecified, the default is
+                logs from Tenable Security Center?  If left unspecified, the default is
                 ``False``.
             create_alerts (bool, optional):
                 Are members of this role allowed to create alerts? If left
@@ -261,7 +261,7 @@ class RoleAPI(SCEndpoint):
         '''
         Removes a role.
 
-        :sc-api:`role: delete <Role.html#role_id_DELETE>`
+        :sc-api:`role: delete <Role.htm#role_id_DELETE>`
 
         Args:
             id (int): The numeric identifier for the role to remove.
@@ -281,7 +281,7 @@ class RoleAPI(SCEndpoint):
         '''
         Retrieves the list of role definitions.
 
-        :sc-api:`role: list <Role.html#role_GET>`
+        :sc-api:`role: list <Role.htm#role_GET>`
 
         Args:
             fields (list, optional):

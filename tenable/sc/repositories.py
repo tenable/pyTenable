@@ -2,9 +2,9 @@
 Repositories
 ============
 
-The following methods allow for interaction with the Tenable.sc
-:sc-api:`Repository <Repository.html>` API.  These items are typically seen
-under the **Repositories** section of Tenable.sc.
+The following methods allow for interaction with the Tenable Security Center
+:sc-api:`Repository <Repository.htm>` API.  These items are typically seen
+under the **Repositories** section of Tenable Security Center.
 
 Methods available on ``sc.repositories``:
 
@@ -178,7 +178,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Creates a new repository
 
-        :sc-api:`repository: create <Repository.html#repository_POST>`
+        :sc-api:`repository: create <Repository.htm#repository_POST>`
 
         Args:
             name (str): The name for the respository.
@@ -212,7 +212,7 @@ class RepositoryAPI(SCEndpoint):
                 If left unspecified, it will default to ``{'type': 'never'}``.
             mobile_sched (dict, optional):
                 When using the mobile repository format, this option will inform
-                Tenable.sc how often to perform the MDM synchronization into the
+                Tenable Security Center how often to perform the MDM synchronization into the
                 repository.  If left unspecified, it will default to
                 ``{'type': 'never'}``.
             orgs (list, optional):
@@ -224,15 +224,15 @@ class RepositoryAPI(SCEndpoint):
                 to communicate to the MDM solution.
             remote_ip (str, optional):
                 When the Remote repository type is used, this is the IP
-                address of the Tenable.sc instance that the repository will be
+                address of the Tenable Security Center instance that the repository will be
                 pulled from.
             remote_repo (int, optional):
                 When the Remote repository type is used, this is the numeric ID
                 of the repository on the remote host that will be pulled.
             remote_sched (dict, optional):
                 When the Remote repository type is used, this is the schedule
-                dictionary that will inform Tenable.sc how often to synchronize
-                with the downstream Tenable.sc instance.  If left unspecified
+                dictionary that will inform Tenable Security Center how often to synchronize
+                with the downstream Tenable Security Center instance.  If left unspecified
                 then we will default to ``{'type': 'never'}``.
             repo_type (str, optional):
                 What type of repository is this?  Valid choices are ``Local``,
@@ -289,7 +289,7 @@ class RepositoryAPI(SCEndpoint):
             ...         'password': 'DA_ACCOUNT_PASSWORD'
             ... })
 
-            Creating a new repository to remotely sync the downstream Tenable.sc
+            Creating a new repository to remotely sync the downstream Tenable Security Center
             instance's repository 1 to this host and institute trending for 90
             days:
 
@@ -335,7 +335,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Retrieves the details for the specified repository.
 
-        :sc-api:`repository: details <Repository.html#repository_id_GET>`
+        :sc-api:`repository: details <Repository.htm#repository_id_GET>`
 
         Args:
             repository_id (int): The numeric id of the repository.
@@ -360,9 +360,9 @@ class RepositoryAPI(SCEndpoint):
 
     def delete(self, repository_id):
         '''
-        Remove the specified repository from Tenable.sc
+        Remove the specified repository from Tenable Security Center
 
-        :sc-api:`repository: delete <Repository.html#repository_id_DELETE>`
+        :sc-api:`repository: delete <Repository.htm#repository_uuid_DELETE>`
 
         Args:
             repository_id (int): The numeric id of the repository to delete.
@@ -381,7 +381,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Updates an existing repository
 
-        :sc-api:`repository: edit <Repository.html#repository_id_PATCH>`
+        :sc-api:`repository: edit <Repository.htm#repository_uuid_PATCH>`
 
         Args:
             repository_id (int): The numeric id of the repository to edit.
@@ -403,7 +403,7 @@ class RepositoryAPI(SCEndpoint):
                 is a need to consume the Repository in a raw Nessus XML format.
             mobile_sched (dict, optional):
                 When using the mobile repository format, this option will inform
-                Tenable.sc how often to perform the MDM synchronization into the
+                Tenable Security Center how often to perform the MDM synchronization into the
                 repository.
             orgs (list, optional):
                 A list of Organization IDs used to assign the repository to 1 or
@@ -414,15 +414,15 @@ class RepositoryAPI(SCEndpoint):
                 to communicate to the MDM solution.
             remote_ip (str, optional):
                 When the Remote repository type is used, this is the IP
-                address of the Tenable.sc instance that the repository will be
+                address of the Tenable Security Center instance that the repository will be
                 pulled from.
             remote_repo (int, optional):
                 When the Remote repository type is used, this is the numeric ID
                 of the repository on the remote host that will be pulled.
             remote_sched (dict, optional):
                 When the Remote repository type is used, this is the schedule
-                dictionary that will inform Tenable.sc how often to synchronize
-                with the downstream Tenable.sc instance.
+                dictionary that will inform Tenable Security Center how often to synchronize
+                with the downstream Tenable Security Center instance.
             scanner_id (int, optional):
                 When using the mobile repository format, we must specify the
                 scanner from which to query the MDM source.
@@ -447,7 +447,7 @@ class RepositoryAPI(SCEndpoint):
         Retrieves the accepted risk rules associated with the specified
         repository.
 
-        :sc-api:`repository: accept rules <Repository.html#RepositoryRESTReference-/repository/{id}/acceptRiskRule>`
+        :sc-api:`repository: accept rules <Repository.htm#RepositoryRESTReference-/repository/{id}/acceptRiskRule>`
 
         Args:
             repository_id (int): The numeric id of the repository.
@@ -473,7 +473,7 @@ class RepositoryAPI(SCEndpoint):
         repository.
 
         :sc-api:`repository: recast rules
-        <Repository.html#RepositoryRESTReference-/repository/{repository_id}/recastRiskRule>`
+        <Repository.htm#repository_uuid_recastRiskRule_GET>`
 
         Args:
             repository_id (int): The numeric id of the repository.
@@ -498,7 +498,7 @@ class RepositoryAPI(SCEndpoint):
         Retrieves the asset lists that a UUID, DNS address, or IP exists in.
 
         :sc-api:`repository: asst intersections
-        <Repository.html#RepositoryRESTReference-/repository/{repository_id}/assetIntersections>`
+        <Repository.htm#repository_uuid_assetIntersections_GET>`
 
         Args:
             repository_id (int): The numeric identifier of the repository to query.
@@ -529,7 +529,7 @@ class RepositoryAPI(SCEndpoint):
         '''
         Imports the repository archive for an offline repository.
 
-        :sc-api:`repository: import <Repository.html#RepositoryRESTReference-/repository/{repository_id}/import>`
+        :sc-api:`repository: import <Repository.htm#repository_uuid_import_POST>`
 
         Args:
             repository_id (int): The numeric id associated to the offline repository.
@@ -554,7 +554,7 @@ class RepositoryAPI(SCEndpoint):
         Exports the repository and writes the archive tarball into the file
         object passed.
 
-        :sc-api:`repository: export <Repository.html#RepositoryRESTReference-/repository/{repository_id}/export>`
+        :sc-api:`repository: export <Repository.htm#repository_uuid_export_GET>`
 
         Args:
             repository_id (int): The numeric id associated to the repository.
@@ -582,10 +582,10 @@ class RepositoryAPI(SCEndpoint):
 
     def remote_sync(self, repository_id):
         '''
-        Initiates a remote synchronization with a downstream Tenable.sc
+        Initiates a remote synchronization with a downstream Tenable Security Center
         instance.  This action can only be performed on an offline repository.
 
-        :sc-api:`repository: sync <Repository.html#RepositoryRESTReference-/repository/{repository_id}/sync>`
+        :sc-api:`repository: sync <Repository.htm#repository_uuid_sync_POST>`
 
         Args:
             repository_id (int): The numeric id for the remote repository.
@@ -606,7 +606,7 @@ class RepositoryAPI(SCEndpoint):
         mobile repository specified.
 
         :sc-api:`repository: update mobile data
-        <Repository.html#RepositoryRESTReference-/repository/{repository_id}/updateMobileData>`
+        <Repository.htm#repository_uuid_updateMobileData_POST>`
 
         Args:
             repository_id (int): The numeric id for the mobile repository to run the sync.
@@ -627,9 +627,9 @@ class RepositoryAPI(SCEndpoint):
         associated repository.
 
         :sc-api:`repository: device info
-        <Repository.html#RepositoryRESTReference-/repository/{repository_id}/deviceInfo>`
+        <Repository.htm#repository_uuid_deviceInfo_GET>`
 
-        `repository: ip info <Repository.html#RepositoryRESTReference-/repository/{id}/ipInfo>`
+        :sc-api:`repository: ip info <Repository.htm#RepositoryRESTReference-/repository/{id}/ipInfo>`
 
         Args:
             repository_id (int): The numeric id for the repository to query.
@@ -649,7 +649,7 @@ class RepositoryAPI(SCEndpoint):
             >>> host = sc.repositories.device_info(1, ip_address='192.168.0.1')
         '''
         # We will generally want to query the deviceInfo action, however if we
-        # happen to be on a Tenable.sc instance version that's less than 5.7, we
+        # happen to be on a Tenable Security Center instance version that's less than 5.7, we
         # have to instead query ipInfo.
         method = 'deviceInfo'
         if VersionInfo.parse(self._api.version).match('<5.7.0'):
@@ -674,13 +674,13 @@ class RepositoryAPI(SCEndpoint):
 
     def remote_authorize(self, host, username, password):
         '''
-        Authorized communication to a downstream Tenable.sc instance with the
+        Authorized communication to a downstream Tenable Security Center instance with the
         provided username and password.
 
-        :sc-api:`repository: authorize <Repository.html#RepositoryRESTReference-/repository/authorize>`
+        :sc-api:`repository: authorize <Repository.htm#RepositoryRESTReference-/repository/authorize>`
 
         Args:
-            host (str): The downstream Tenable.sc instance ip address.
+            host (str): The downstream Tenable Security Center instance ip address.
             username (str): The username to authenticate with.
             password (str); The password to authenticate with.
 
@@ -701,16 +701,16 @@ class RepositoryAPI(SCEndpoint):
     def remote_fetch(self, host):
         '''
         Retrieves the list of repositories from the specified downstream
-        Tenable.sc instance.
+        Tenable Security Center instance.
 
-        :sc-api:`repository: fetch remote <Repository.html#RepositoryRESTReference-/repository/fetchRemote>`
+        :sc-api:`repository: fetch remote <Repository.htm#RepositoryRESTReference-/repository/fetchRemote>`
 
         Args:
-            host (str): The downstream Tenable.sc instance ip address.
+            host (str): The downstream Tenable Security Center instance ip address.
 
         Returns:
             :obj:`list`:
-                The list of repositories on the downstream Tenable.sc instance.
+                The list of repositories on the downstream Tenable Security Center instance.
         '''
         return self._api.get('repository/fetchRemote', params={
             'host': self._check('host', host, str)}).json()['response']
