@@ -2,9 +2,9 @@
 Asset Lists
 ===========
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Assets <Asset.html>` API.  These items are typically seen
-under the **Assets** section of Tenable.sc.
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Assets <Asset.htm>` API.  These items are typically seen
+under the **Assets** section of Tenable Security Center.
 
 Methods available on ``sc.asset_lists``:
 
@@ -294,7 +294,7 @@ class AssetListAPI(SCEndpoint):
         '''
         Creates an asset-list.
 
-        :sc-api:`asset-list: create <Asset.html#asset_POST>`
+        :sc-api:`asset-list: create <Asset.htm#asset_POST>`
 
         Args:
             name (str):
@@ -439,7 +439,7 @@ class AssetListAPI(SCEndpoint):
         '''
         Returns the details for a specific asset-list.
 
-        :sc-api:`asset-list: details<Asset.html#AssetRESTReference-/asset/{id}?orgID={org_id}>`
+        :sc-api:`asset-list: details<Asset.htm#AssetRESTReference-/asset/{id}?orgID={org_id}>`
 
         Args:
             id (int): The identifier for the asset-list.
@@ -464,7 +464,7 @@ class AssetListAPI(SCEndpoint):
         '''
         Edits an asset-list.
 
-        :sc-api:`asset-list: edit <Asset.html#asset_id_PATCH>`
+        :sc-api:`asset-list: edit <Asset.htm#asset_uuid_PATCH>`
 
         Args:
             id (int):
@@ -566,7 +566,7 @@ class AssetListAPI(SCEndpoint):
         '''
         Removes a asset-list.
 
-        :sc-api:`asset-list: delete <Asset.html#asset_id_DELETE>`
+        :sc-api:`asset-list: delete <Asset.htm#asset_uuid_DELETE>`
 
         Args:
             id (int): The numeric identifier for the asset-list to remove.
@@ -584,7 +584,7 @@ class AssetListAPI(SCEndpoint):
         '''
         Retrieves the list of asset list definitions.
 
-        :sc-api:`asset-list: list <Asset.html#AssetRESTReference-/asset>`
+        :sc-api:`asset-list: list <Asset.htm#AssetRESTReference-/asset>`
 
         Args:
             fields (list, optional):
@@ -608,7 +608,7 @@ class AssetListAPI(SCEndpoint):
         '''
         Imports an asset list definition from an asset list definition XML file.
 
-        :sc-api:`asset-list: import <Asset.html#asset_import_POST>`
+        :sc-api:`asset-list: import <Asset.htm#asset_import_POST>`
 
         Args:
             name (str): The name of the asset definition to create.
@@ -633,7 +633,7 @@ class AssetListAPI(SCEndpoint):
         Exports an asset list definition and stored the data in the file-like
         object that was passed.
 
-        :sc-api:`asset-list: export <Asset.html#AssetRESTReference-/asset/{id}/export>`
+        :sc-api:`asset-list: export <Asset.htm#AssetRESTReference-/asset/{id}/export>`
 
         Args:
             id (int): The numeric identifier for the asset list to export.
@@ -669,7 +669,7 @@ class AssetListAPI(SCEndpoint):
         Initiates an on-demand recalculation of the asset list.  Note this
         endpoint requires being logged in as an admin user.
 
-        :sc-api:`asset-list: refresh <Asset.html#AssetRESTReference-/asset/{id}/refresh>`
+        :sc-api:`asset-list: refresh <Asset.htm#AssetRESTReference-/asset/{id}/refresh>`
 
         Args:
             id (int): The numeric identifier of the asset list to refresh.
@@ -699,7 +699,7 @@ class AssetListAPI(SCEndpoint):
         '''
         Performs a LDAP test query on the specified LDAP service configured.
 
-        :sc-api:`asset-list: test-ldap-query <Asset.html#AssetRESTReference-/asset/testLDAPQuery>`
+        :sc-api:`asset-list: test-ldap-query <Asset.htm#AssetRESTReference-/asset/testLDAPQuery>`
 
         Args:
             ldap_id (int):
@@ -726,7 +726,7 @@ class AssetListAPI(SCEndpoint):
         '''
         Retrieves the list of unique tags associated to asset lists.
 
-        :sc-api:`asset-lists: tags <Asset.html#AssetRESTReference-/asset/tag>`
+        :sc-api:`asset-lists: tags <Asset.htm#AssetRESTReference-/asset/tag>`
 
         Returns:
             :obj:`list`:
@@ -741,7 +741,7 @@ class AssetListAPI(SCEndpoint):
         '''
         Shares the specified asset list to another user group.
 
-        :sc-api:`asset-lists: share <Asset.html#AssetRESTReference-/asset/{id}/share>`
+        :sc-api:`asset-lists: share <Asset.htm#AssetRESTReference-/asset/{id}/share>`
 
         Args:
             id (int): The numeric id for the credential.

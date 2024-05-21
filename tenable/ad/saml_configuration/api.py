@@ -2,7 +2,7 @@
 SAML Configuration
 ==================
 
-Methods described in this section relate to the the SAML Configuration API.
+Methods described in this section relate to the SAML Configuration API.
 These methods can be accessed at ``TenableAD.saml_configuration``.
 
 .. rst-class:: hide-signature

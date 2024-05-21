@@ -2,12 +2,12 @@
 Scans
 =====
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Scan <Scan.html>` API.  While the api endpoints obliquely refers to the
-model in which this collection of actions modifies as "Scans", Tenable.sc is
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Scan <Scan.htm>` API.  While the api endpoints obliquely refers to the
+model in which this collection of actions modifies as "Scans", Tenable Security Center is
 actually referring to the scan *definitions*, which are the un-launched and/or
 scheduled scans typically seen within the **Active Scans** section within
-Tenable.sc.
+Tenable Security Center.
 
 Methods available on ``sc.scans``:
 
@@ -24,6 +24,11 @@ class ScanAPI(SCEndpoint):
         '''
         Handles parsing the keywords and returns a scan definition document
         '''
+        if 'inactivity_timeout' in kw:
+            kw['inactivityTimeout'] = str(self._check(
+                'inactivity_timeout', kw['inactivity_timeout'], int, default=3600))
+            del (kw['inactivity_timeout'])
+
         if 'name' in kw:
             # simply verify that the name attribute is a string.
             self._check('name', kw['name'], str)
@@ -163,23 +168,7 @@ class ScanAPI(SCEndpoint):
                 for i in self._check('creds', kw['creds'], list)]
             del(kw['creds'])
 
-        # Lastly, we need to handle the scan types automatically...
-        if 'plugin_id' in kw and 'policy_id' in kw:
-            # if both are specified, something is wrong here and we should throw
-            # an exception.
-            raise UnexpectedValueError(
-                'specify either a plugin_id or a policy_id for a scan, not both.')
-
-        elif 'plugin_id' in kw:
-            # If just the plugin_id is specified, then we are safe to assume
-            # that this is a plugin-based scan.  set the pluginID attribute as
-            # the API would expect and remove the snake cased variant that was
-            # inputted.
-            kw['type'] = 'plugin'
-            kw['pluginID'] = self._check('plugin_id', kw['plugin_id'], int)
-            del(kw['plugin_id'])
-
-        elif 'policy_id' in kw:
+        if 'policy_id' in kw:
             # If just the policy_id is specified, then we are safe to assume
             # that this is a policy-based scan.  set the policy id attribute
             # within the policy document as the API would expect and remove the
@@ -194,7 +183,7 @@ class ScanAPI(SCEndpoint):
         '''
         Retrieves the list of scan definitions.
 
-        :sc-api:scan: list <Scan.html#scan_GET>`
+        :sc-api:`scan: list <Scan.htm#scan_GET>`
 
         Args:
             fields (list, optional):
@@ -219,7 +208,7 @@ class ScanAPI(SCEndpoint):
         '''
         Creates a scan definition.
 
-        :sc-api:`scan: create <Scan.html#scan_POST>`
+        :sc-api:`scan: create <Scan.htm#scan_POST>`
 
         Args:
             name (str): The name of the scan.
@@ -249,8 +238,6 @@ class ScanAPI(SCEndpoint):
                 The default is ``3600`` seconds.
             policy_id (int, optional):
                 The policy id to use for a policy-based scan.
-            plugin_id (int, optional):
-                The plugin id to use for a plugin-based scan.
             reports (list, optional):
                 What reports should be run upon completion of the scan?  Each
                 report dictionary requires an id for the report definition and
@@ -278,6 +265,8 @@ class ScanAPI(SCEndpoint):
             vhosts (bool, optional):
                 Should virtual host logic be enabled for the scan?  The default
                 is ``False``.
+            inactivity_timeout (int):
+                Inactivity Timeout in seconds. The value should be between 3600 and 432000.
 
         Returns:
             :obj:`dict`:
@@ -297,8 +286,6 @@ class ScanAPI(SCEndpoint):
         # which of the values is defined.
         if 'policy_id' in kw:
             kw['type'] = 'policy'
-        elif 'plugin_id' in kw:
-            kw['type'] = 'plugin'
 
         scan = self._constructor(**kw)
         return self._api.post('scan', json=scan).json()['response']
@@ -307,7 +294,7 @@ class ScanAPI(SCEndpoint):
         '''
         Returns the details for a specific scan.
 
-        :sc-api:`scan: details <Scan.html#ScanRESTReference-/scan/{id}>`
+        :sc-api:`scan: details <Scan.htm#ScanRESTReference-/scan/{id}>`
 
         Args:
             id (int): The identifier for the scan.
@@ -332,7 +319,7 @@ class ScanAPI(SCEndpoint):
         '''
         Edits an existing scan definition.
 
-        :sc-api:`scan: update <Scan.html#scan_id_PATCH>`
+        :sc-api:`scan: update <Scan.htm#scan_id_PATCH>`
 
         Args:
             id (int): The identifier for the scan.
@@ -355,9 +342,9 @@ class ScanAPI(SCEndpoint):
                 The maximum amount of time that the scan may run in seconds.
                 ``0`` or less for unlimited.
             name (str, optional): The name of the scan.
-            policy (int, optional):
+            policy_id (int, optional):
                 The policy id to use for a policy-based scan.
-            plugin (int, optional):
+            plugin_id (int, optional):
                 The plugin id to use for a plugin-based scan.
             reports (list, optional):
                 What reports should be run upon completion of the scan?  Each
@@ -402,7 +389,7 @@ class ScanAPI(SCEndpoint):
         '''
         Removes the specified scan from SecurityCenter.
 
-        :sc-api:`scan: delete <Scan.html#scan_id_DELETE>`
+        :sc-api:`scan: delete <Scan.htm#scan_id_DELETE>`
 
         Args:
             id (int): The identifier for the scan to delete.
@@ -421,7 +408,7 @@ class ScanAPI(SCEndpoint):
         '''
         Copies an existing scan definition.
 
-        :sc-api:`scan: copy <Scan.html#ScanRESTReference-/scan/{id}/copyScanCopyPOST>`
+        :sc-api:`scan: copy <Scan.htm#ScanRESTReference-/scan/{id}/copyScanCopyPOST>`
 
         Args:
             id (int): The scan definition identifier to copy.
@@ -448,7 +435,7 @@ class ScanAPI(SCEndpoint):
         '''
         Launches a scan definition.
 
-        :sc-api:`scan: launch <Scan.html#ScanRESTReference-/scan/{id}/launch>`
+        :sc-api:`scan: launch <Scan.htm#ScanRESTReference-/scan/{id}/launch>`
 
         Args:
             id (int): The scan definition identifier to launch.

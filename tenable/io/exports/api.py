@@ -2,7 +2,7 @@
 Exports
 =======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`exports <exports>` API endpoints.
 
 Methods available on ``tio.exports``:
@@ -14,14 +14,71 @@ Methods available on ``tio.exports``:
 from uuid import UUID
 from json.decoder import JSONDecodeError
 from typing_extensions import Literal
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Optional
 from marshmallow import Schema
+from restfly.errors import RequestConflictError
 from tenable.base.endpoint import APIEndpoint
 from .schema import AssetExportSchema, VulnExportSchema, ComplianceExportSchema
 from .iterator import ExportsIterator
 
 
 class ExportsAPI(APIEndpoint):
+    def _export(self,
+                export_type: Literal['vulns', 'assets', 'compliance'],
+                schema: Optional[Schema] = None,
+                use_iterator: bool = True,
+                when_done: bool = False,
+                iterator: ExportsIterator = ExportsIterator,
+                timeout: Optional[int] = None,
+                export_uuid: Optional[UUID] = None,
+                adopt_existing: bool = True,
+                **kwargs
+                ) -> Union[ExportsIterator, UUID]:
+        '''
+        Get the list of jobs for for the specified datatype.
+
+        API Documentation for the job listings for
+        :devportal:`assets <exports-assets-request-export>`,
+        :devportal:`compliance <io-exports-compliance-create>`, and
+        :devportal:`vulnerabilities <exports-vulns-request-export>` datatypes.
+        '''
+        schemas = {
+            'vulns': VulnExportSchema,
+            'assets': AssetExportSchema,
+            'compliance': ComplianceExportSchema,
+        }
+        if not schema:
+            schema = schemas[export_type]()
+        payload = schema.dump(schema.load(kwargs))
+
+        if not export_uuid:
+            try:
+                export_uuid = self._api.post(f'{export_type}/export',
+                                             json=payload,
+                                             box=True
+                                             ).export_uuid
+                self._log.debug(
+                    f'{export_type} export job {export_uuid} initiated'
+                )
+            except RequestConflictError as conflict:
+                if not adopt_existing:
+                    raise conflict
+                resp = conflict.response.json()
+                export_uuid = resp['active_job_id']
+                msg = resp['failure_reason']
+                self._log.warning(
+                    f'Adopted {export_type} export job {export_uuid}.  '
+                    f'Original message from platform was "{msg}"'
+                )
+        if use_iterator:
+            return iterator(self._api,
+                            type=export_type,
+                            uuid=export_uuid,
+                            _wait_for_complete=when_done,
+                            timeout=timeout
+                            )
+        return UUID(export_uuid)
+
     def cancel(self,
                export_type: Literal['vulns', 'assets', 'compliance'],
                export_uuid: UUID,
@@ -51,7 +108,7 @@ class ExportsAPI(APIEndpoint):
         '''
         return self._api.post(f'{export_type}/export/{export_uuid}/cancel',
                               box=True
-                              ).get('status')
+                              ).status
 
     def download_chunk(self,
                        export_type: Literal['vulns', 'assets', 'compliance'],
@@ -156,42 +213,39 @@ class ExportsAPI(APIEndpoint):
         '''
         return self._api.get(f'{export_type}/export/status', box=True).exports
 
-    def _export(self,
-                export_type: Literal['vulns', 'assets', 'compliance'],
-                schema: Schema,
-                **kwargs
-                ) -> Union[ExportsIterator, UUID]:
-        '''
-        Get the list of jobs for for the specified datatype.
+    def initiate_export(self,
+                        export_type: Literal['vulns', 'assets', 'compliance'],
+                        **kwargs
+                        ):
+        """
+        Initiate an export job of the specified export type, and return the
+        export UUID.
 
-        API Documentation for the job listings for
-        :devportal:`assets <exports-assets-request-export>`,
-        :devportal:`compliance <io-exports-compliance-create>`, and
-        :devportal:`vulnerabilities <exports-vulns-request-export>` datatypes.
-        '''
-        export_uuid = kwargs.pop('uuid', None)
-        use_iterator = kwargs.pop('use_iterator', True)
-        when_done = kwargs.pop('when_done', False)
-        Iterator = kwargs.pop('iterator', ExportsIterator)  # noqa: PLC0103
-        timeout = kwargs.pop('timeout', None)
-        payload = schema.dump(schema.load(kwargs))
+        This method accepts the key-value arguments supported by the methods
+        assets(), vulns(), and compliance() for the matching export_type. For
+        example, when the export_type is "assets", this function will only
+        support the kwargs supported by the assets() method; if export_type is
+        "vulns", the method will accept only those supported by the vulns()
+        method, and so forth.
 
-        if not export_uuid:
-            export_uuid = self._api.post(f'{export_type}/export',
-                                         json=payload,
-                                         box=True
-                                         ).export_uuid
-            self._log.debug(
-                f'{export_type} export job {export_uuid} initiated'
-            )
-        if use_iterator:
-            return Iterator(self._api,
-                            type=export_type,
-                            uuid=export_uuid,
-                            _wait_for_complete=when_done,
-                            timeout=timeout
+        Args:
+            export_type (str):
+                The datatype of export to get the jobs for.
+
+        Examples:
+
+            Initiating an assets export with no extra params.
+
+            >>> export_uuid = tio.exports.initiate_export("assets")
+
+            Initiating a vulns export with the params supported by vulns()
+
+            >>> export_uuid = tio.exports.initiate_export("vulns", timeout=10)
+        """
+        return self._export(export_type=export_type,
+                            use_iterator=False,
+                            **kwargs
                             )
-        return UUID(export_uuid)
 
     def assets(self, **kwargs) -> Union[ExportsIterator, UUID]:
         '''
@@ -200,6 +254,8 @@ class ExportsAPI(APIEndpoint):
         :devportal:`API Documentation <exports-assets-request-export>`
 
         Args:
+            last_scan_id (str, optional):
+                Scan uuid of the scan to be exported.
             created_at (int, optional):
                 Assets created after this timestamp will be returned.
             deleted_at (int, optional):
@@ -228,6 +284,8 @@ class ExportsAPI(APIEndpoint):
                 Should we return assets that have a ServiceNOW sysid?
                 if ``True`` only assets with an id will be returned.
                 if ``False`` only assets without an id will be returned.
+            include_open_ports (bool, optional):
+                Should we include open ports of assets in the exported chunks?
             chunk_size (int, optional):
                 How many asset objects should be returned per chunk of data?
                 The default is ``1000``.
@@ -259,6 +317,9 @@ class ExportsAPI(APIEndpoint):
             iterator (Iterator, optional):
                 Supports overloading the iterator class to be used to process
                 the datachunks.
+            adopt_existing (bool, optional):
+                Should we automatically adopt an existing Job UUID with we
+                receive a 409 conflict?  Defaults to True.
 
         Examples:
 
@@ -296,6 +357,33 @@ class ExportsAPI(APIEndpoint):
             last_seen (int, optional):
                 Returns findings with a last seen time newer than the
                 specified unix timestamp.
+            ipv4_addresses (list[str], optional):
+                Returns Compliance findings found for the provided list of ipv4 addresses.
+            ipv6_addresses (list[str], optional):
+                Returns Compliance findings found for the provided list of ipv6 addresses.
+            plugin_name (list[str], optional):
+                Returns Compliance findings for the specified list of plugin names.
+            plugin_id (list[int], optional):
+                Returns Compliance findings for the specified list of plugin IDs.
+            asset_tags (list[str], optional):
+                Returns Compliance findings for the specified list of asset tags.
+            audit_name (str, optional):
+                Restricts compliance findings to those associated with the specified audit.
+            audit_file_name (str, optional):
+                Restricts compliance findings to those associated with the specified audit file name.
+            compliance_results (list[str], optional):
+                Restricts compliance findings to those associated with the specified list of compliance results,
+                such as PASSED, FAILED, SKIPPED, ERROR, UNKNOWN etc.
+            last_observed (int,optional):
+                Restricts compliance findings to those that were last observed on or after the specified unix timestamp.
+            indexed_at (int, optional):
+                Restricts compliance findings to those that were updated or indexed into Tenable Vulnerability Management
+                 on or after the specified unix timestamp.
+            since (int, optional):
+                Same as indexed_at. Restricts compliance findings to those that were updated or indexed into Tenable
+                Vulnerability Management on or after the specified unix timestamp.
+            state (list[str], optional):
+                Restricts compliance findings to those associated with the provided list of states, such as open, reopened and fixed.
             num_findings (int):
                 The number of findings to return per chunk of data.  If left
                 unspecified, the default is ``5000``.
@@ -319,6 +407,9 @@ class ExportsAPI(APIEndpoint):
             iterator (Iterator, optional):
                 Supports overloading the iterator class to be used to process
                 the datachunks.
+            adopt_existing (bool, optional):
+                Should we automatically adopt an existing Job UUID with we
+                receive a 409 conflict?  Defaults to True.
 
         Examples:
 
@@ -338,7 +429,7 @@ class ExportsAPI(APIEndpoint):
                 Findings first discovered after this timestamp will be
                 returned.
             indexed_at (int, optional):
-                Findings indexed into Tenable.io after this timestamp will
+                Findings indexed into Tenable Vulnerability Management after this timestamp will
                 be returned.
             last_fixed (int, optional):
                 Findings fixed after this timestamp will be returned.  Note
@@ -350,12 +441,18 @@ class ExportsAPI(APIEndpoint):
                 Findings last observed in any state after this timestamp will
                 be returned.  Cannot be used with ``last_found``,
                 ``first_found``, or ``last_fixed``.
-            plugin_family (str, optional):
-                Only return findings from the specified plugin family.
+            plugin_family (list[str], optional):
+                Only return findings from the specified plugin families.
             plugin_id (list[int], optional):
                 Only return findings from the specified plugin ids.
             plugin_type (str, optional):
                 Only return findings with the specified plugin type.
+            scan_uuid (uuid, optional):
+                Only return findings with the specified scan UUID.
+            source (list[str], optional):
+                Only return vulnerabilities for assets that have the specified scan source.
+            severity_modification_type (list[str], optional):
+                Only return vulnerabilities with the specified severity modification type.
             severity (list[str], optional):
                 Only return findings with the specified severities.
             state (list[str], optional):
@@ -395,6 +492,9 @@ class ExportsAPI(APIEndpoint):
             network_id (str, optional):
                 Only findings within the specified network UUID will be
                 returned.
+            cidr_range (str, optional):
+                Restrict the export to only vulns assigned to assets within the
+                CIDR range specified.
             tags (list[tuple[str, str]], optional):
                 A list of tag pairs to filter the results on.  The tag pairs
                 should be presented as ``('CATEGORY', 'VALUE')``.
@@ -403,7 +503,7 @@ class ExportsAPI(APIEndpoint):
                 the results?
             num_assets (int, optional):
                 As findings are grouped by asset, how many assets's findings
-                should exist within each data chunk?  If left unspecifed the
+                should exist within each data chunk?  If left unspecified the
                 default is ``500``.
             uuid (str, optional):
                 A predefined export UUID to use for generating an
@@ -425,6 +525,9 @@ class ExportsAPI(APIEndpoint):
             iterator (Iterator, optional):
                 Supports overloading the iterator class to be used to process
                 the datachunks.
+            adopt_existing (bool, optional):
+                Should we automatically adopt an existing Job UUID with we
+                receive a 409 conflict?  Defaults to True.
 
         Examples:
 

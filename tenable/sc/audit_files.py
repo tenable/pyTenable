@@ -2,10 +2,10 @@
 Audit Files
 ===========
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Audit File <AuditFile.html>` API and the
-:sc-api:`Audit File Template <AuditFile-Template.html>` API.  These items are
-typically seen under the **Scans: Audit Files** section of Tenable.sc.
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Audit File <AuditFile.htm>` API and the
+:sc-api:`Audit File Template <AuditFile-Template.htm>` API.  These items are
+typically seen under the **Scans: Audit Files** section of Tenable Security Center.
 
 Methods available on ``sc.audit_files``:
 
@@ -103,7 +103,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Creates a audit file.
 
-        :sc-api:`audit file: create <AuditFile.html#auditFile_POST>`
+        :sc-api:`audit file: create <AuditFile.htm#auditFile_POST>`
 
         Args:
             name (str):
@@ -139,7 +139,7 @@ class AuditFileAPI(SCEndpoint):
                 values should be.  The values are provided within the template
                 definition.
             version (str, optional):
-                When specifying a SCAP datatype, this informs Tenable.sc what
+                When specifying a SCAP datatype, this informs Tenable Security Center what
                 version of SCAP this audit checklist is.  Supported values are
                 ``1.0``, ``1.1``, and ``1.2``.
 
@@ -173,7 +173,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Returns the details for a specific audit file.
 
-        :sc-api:`audit file: details <AuditFile.html#AuditFileRESTReference-/auditFile/{id}>`
+        :sc-api:`audit file: details <AuditFile.htm#AuditFileRESTReference-/auditFile/{id}>`
 
         Args:
             id (int): The identifier for the audit file.
@@ -198,7 +198,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Edits a audit file.
 
-        :sc-api:`audit file: edit <AuditFile.html#auditFile_id_PATCH>`
+        :sc-api:`audit file: edit <AuditFile.htm#auditFile_uuid_PATCH>`
 
         Args:
             audit_file (FileObject, optional):
@@ -234,7 +234,7 @@ class AuditFileAPI(SCEndpoint):
                 values should be.  The values are provided within the template
                 definition.
             version (str, optional):
-                When specifying a SCAP datatype, this informs Tenable.sc what
+                When specifying a SCAP datatype, this informs Tenable Security Center what
                 version of SCAP this audit checklist is.  Supported values are
                 ``1.0``, ``1.1``, and ``1.2``.
 
@@ -268,7 +268,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Removes a audit file.
 
-        :sc-api:`audit file: delete <AuditFile.html#auditFile_id_DELETE>`
+        :sc-api:`audit file: delete <AuditFile.htm#auditFile_uuid_DELETE>`
 
         Args:
             id (int): The numeric identifier for the audit file to remove.
@@ -287,7 +287,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Retrieves the list of audit file definitions.
 
-        :sc-api:`audit file: list <AuditFile.html#AuditFileRESTReference-/auditFile>`
+        :sc-api:`audit file: list <AuditFile.htm#AuditFileRESTReference-/auditFile>`
 
         Args:
             fields (list, optional):
@@ -312,7 +312,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Exports an Audit File.
 
-        :sc-api:`audit file: export <AuditFile.html#AuditFileRESTReference-/auditFile/{id}/export>`
+        :sc-api:`audit file: export <AuditFile.htm#AuditFileRESTReference-/auditFile/{id}/export>`
 
         Args:
             id (int): The audit file numeric identifier.
@@ -352,7 +352,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Returns the audit file template categories
 
-        :sc-api:`audit template: categories <AuditFile-Template.html#auditFileTemplate_categories_GET>`
+        :sc-api:`audit template: categories <AuditFile-Template.htm#auditFileTemplate_categories_GET>`
 
         Returns:
             :obj:`list`:
@@ -368,7 +368,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Returns the details for the specified audit file template id.
 
-        :sc-api:`audit template: details <AuditFile-Template.html#auditFileTemplate_id_GET>`
+        :sc-api:`audit template: details <AuditFile-Template.htm#auditFileTemplate_id_GET>`
 
         Args:
             id (int):
@@ -395,7 +395,7 @@ class AuditFileAPI(SCEndpoint):
         '''
         Returns the list of audit file templates.
 
-        :sc-api:`audit templates: list <AuditFile-Template.html#AuditFileTemplateRESTReference-/auditFileTemplate>`
+        :sc-api:`audit templates: list <AuditFile-Template.htm#AuditFileTemplateRESTReference-/auditFileTemplate>`
 
         Args:
             category (int, optional):

@@ -1,3 +1,4 @@
 '''
-Nothing here yet.
+Nessus package
 '''
+from .api import Nessus

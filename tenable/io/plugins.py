@@ -2,7 +2,7 @@
 Plugins
 =======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`plugins <plugins>` API endpoints.
 
 Methods available on ``tio.plugins``:
@@ -153,7 +153,7 @@ class PluginsAPI(TIOEndpoint):
 
     def list(self, page=None, size=None, last_updated=None, num_pages=None):
         '''
-        Get the listing of plugin details from Tenable.io.
+        Get the listing of plugin details from Tenable Vulnerability Management.
 
         :devportal:`plugins: list <io-plugins-list>`
 

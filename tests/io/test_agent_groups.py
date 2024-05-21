@@ -1,12 +1,14 @@
 '''
 test agent groups
 '''
-import uuid
 import time
+import uuid
+
 import pytest
+
 from tenable.errors import NotFoundError, UnexpectedValueError, ForbiddenError
-from ..checker import check
 from tests.pytenable_log_handler import log_exception
+from ..checker import check
 
 
 @pytest.fixture
@@ -42,8 +44,16 @@ def test_agentgroups_add_agent_to_group_agent_id_typeerror(api):
     '''
     test to raise the exception when type of agent_id is not as defined
     '''
-    with pytest.raises(TypeError):
+    with pytest.raises(UnexpectedValueError):
         api.agent_groups.add_agent(1, 'nope')
+
+@pytest.mark.vcr()
+def test_agentgroups_add_agent_to_group_mixed_ids_typeerror(api):
+    '''
+    test to raise the exception when type of multiple passed ids don't match each other
+    '''
+    with pytest.raises(TypeError):
+        api.agent_groups.add_agent(1, '64e1cc37-4d6a-4a36-a2d3-aca300735829', 2)
 
 
 @pytest.mark.vcr()
@@ -302,10 +312,27 @@ def test_agentgroups_details_group_id_typeerror(api):
         api.agent_groups.details('nope')
 
 
-# @pytest.mark.vcr()
-# def test_agentgroups_details_scanner_id_typeerror(api):
-#    with pytest.raises(TypeError):
-#        api.agent_groups.details(1, scanner_id='nope')
+@pytest.mark.vcr()
+def test_agentgroups_details_scanner_id_typeerror(api):
+    '''
+    test to raise the exception when type of scanner_id is not as defined
+    '''
+    with pytest.raises(TypeError) as type_error:
+        api.agent_groups.details(1, scanner_id='nope')
+    assert type_error.value.args[0] == "scanner_id is of type str.  Expected int", \
+        "Invalid type validation error for scanner_id parameter is not raised by test-case."
+
+
+@pytest.mark.vcr()
+def test_agentgroups_details_agentgroup_notfounderror(api):
+    '''
+    test to raise the exception when agentgroup not found
+    '''
+    with pytest.raises(NotFoundError) as not_found_error:
+        api.agent_groups.details(1, sort=(('name', 'asc'), ('description', 'desc')))
+    assert "AgentGroup not found" in not_found_error.value.msg, \
+        "Invalid value validation error for group_id parameter is not raised by test-case."
+
 
 @pytest.mark.vcr()
 def test_agentgroups_details_nonexistant_group(api):
@@ -380,9 +407,9 @@ def test_agentgroups_task_status(api, agentgroup):
     '''
     agents = api.agents.list()
     resp = api.agent_groups.add_agent(agentgroup['id'],
-                                    agents.next()['id'],
-                                    agents.next()['id']
-                                    )
+                                      agents.next()['id'],
+                                      agents.next()['id']
+                                      )
     task = api.agent_groups.task_status(agentgroup['id'], resp['task_id'])
     assert isinstance(task, dict)
     check(task, 'container_uuid', str)
@@ -424,7 +451,7 @@ def test_agentgroups_details_of_an_agent_group_fields(api, agentgroup):
                                      filter_type='or',
                                      limit=45,
                                      offset=5,
-                                     scanner_id=22,
+                                     scanner_id=1,
                                      # sort=(('owner_id', 'asc'), ('shared', 'asc')),
                                      wildcard='match',
                                      wildcard_fields=['name']
