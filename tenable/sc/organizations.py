@@ -2,9 +2,9 @@
 Organizations
 =============
 
-The following methods allow for interaction with the Tenable.sc
-:sc-api:`Organization <Organization.html>` API. These items are typically seen
-under the **Organization** section of Tenable.sc.
+The following methods allow for interaction with the Tenable Security Center
+:sc-api:`Organization <Organization.htm>` API. These items are typically seen
+under the **Organization** section of Tenable Security Center.
 
 Methods available on ``sc.organizations``:
 
@@ -133,7 +133,7 @@ class OrganizationAPI(SCEndpoint):
         '''
         Create a new organization
 
-        :sc-api:`SC Organization Create <Organization.html#organization_POST>`
+        :sc-api:`SC Organization Create <Organization.htm#organization_POST>`
 
         Args:
             name (str): The name for organization.
@@ -205,10 +205,11 @@ class OrganizationAPI(SCEndpoint):
         return self._api.post('organization', json=kwargs).json()['response']
 
     def list(self, fields=None):
+        # noqa: E501
         '''
         Retrieves a list of organizations.
 
-        :sc-api:`SC organization List <Organization.html#OrganizationRESTReference-/organization>`  # noqa: E501
+        :sc-api:`SC organization List <Organization.htm#OrganizationRESTReference-/organization>`
 
         Args:
             fields (list, optional):
@@ -233,10 +234,11 @@ class OrganizationAPI(SCEndpoint):
         return self._api.get('organization', params=params).json()['response']
 
     def details(self, organization_id, fields=None):
+        # noqa: E501
         '''
         Retrieves the details for the specified organization.
-
-        :sc-api:`SC Organization Details <Organization.html#organization_id_GET>`  # noqa: E501
+        
+        :sc-api:`SC Organization Details <Organization.htm#organization_uuid_GET>`
 
         Args:
             organization_id (int): The numeric id of the organization.
@@ -264,10 +266,11 @@ class OrganizationAPI(SCEndpoint):
             params=params).json()['response']
 
     def edit(self, organization_id, **kwargs):
+        # noqa: E501
         '''
         Updates an existing organization
 
-        :sc-api:`SC Organization Edit <Organization.html#organization_id_PATCH>`  # noqa: E501
+        :sc-api:`SC Organization Edit <Organization.htm#organization_uuid_PATCH>`
 
         Args:
             organization_id: The numeric id of the organization.
@@ -325,10 +328,11 @@ class OrganizationAPI(SCEndpoint):
             self._check('organization_id', organization_id, int)), json=kwargs).json()['response']
 
     def delete(self, organization_id):
+        # noqa: E501
         '''
-        Remove the specified organization from Tenable.sc
+        Remove the specified organization from Tenable Security Center
 
-        :sc-api:`SC organization Delete <Organization.html#organization_id_DELETE>`  # noqa: E501
+        :sc-api:`SC organization Delete <Organization.htm#organization_uuid_DELETE>`
 
         Args:
             organization_id (int): The numeric id of the organization to delete.
@@ -351,12 +355,13 @@ class OrganizationAPI(SCEndpoint):
                           plugin=None,
                           port=None
                           ):
+        # noqa: E501
         '''
         Retrieves the accepted risk rules for the organization and optionally
         will filter based on the parameters specified.
 
         :sc-api:`organization: accept-risk-rule
-        <Organization.html#OrganizationRESTReference-/organization/{organization_id}/acceptRiskRule>`  # noqa: E501
+        <Organization.htm#organization_uuid_acceptRiskRule_GET>`
 
         Args:
             organization_id (int): The organization id.
@@ -388,12 +393,13 @@ class OrganizationAPI(SCEndpoint):
             self._check('organization_id', organization_id, int)), params=params).json()['response']
 
     def recast_risk_rules(self, organization_id, repos=None, plugin=None, port=None):
+        # noqa: E501
         '''
         Retrieves the recasted risk rules for the organization and optionally
         will filter based on the parameters specified.
 
         :sc-api:`organization: recast-risk-rule
-        <Organization.html#OrganizationRESTReference-/organization/{organization_id}/recastRiskRule>`  # noqa: E501
+        <Organization.htm#organization_uuid_recastRiskRule_GET>`
 
         Args:
             organization_id (int): The organization id.
@@ -425,10 +431,11 @@ class OrganizationAPI(SCEndpoint):
             self._check('organization_id', organization_id, int)), params=params).json()['response']
 
     def managers_list(self, org_id, fields=None):
+        # noqa: E501,PLC0301
         '''
         Retrieves a list of security managers.
 
-        :sc-api:`organization-security-manager: list <Organization-Security-Manager.html#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager>`  # noqa: E501,PLC0301
+        :sc-api:`organization-security-manager: list <Organization-Security-Manager.htm#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager>`
 
         Args:
             org_id: (int):
@@ -455,12 +462,13 @@ class OrganizationAPI(SCEndpoint):
             self._check('org_id', org_id, int)), params=params).json()['response']
 
     def manager_create(self, org_id, username, password, role, **kwargs):
+        # noqa: E501,PLC0301
         '''
         Creates a new security manager for the given org.  For a complete list
         of parameters that are supported for this call, please refer to
         :py:meth:`tio.users.create() <UserAPI.create>` for more details.
 
-        :sc-api:`organization-security-manager: create <Organization-Security-Manager.html#organization_orgID_securityManager_POST>`  # noqa: E501,PLC0301
+        :sc-api:`organization-security-manager: create <Organization-Security-Manager.htm#organization_orgUUID_securityManager_POST>`
 
         Args:
             org_id: (int):
@@ -493,11 +501,12 @@ class OrganizationAPI(SCEndpoint):
             self._check('org_id', org_id, int)), json=payload).json()['response']
 
     def manager_details(self, org_id, user_id, fields=None):
+        # noqa: E501,PLC0301
         '''
         Retrieves the details of a specified security manager within a
         specified organization.
 
-        :sc-api:`organization-security-manager: details <Organization-Security-Manager.html#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager/{id}>`  # noqa: E501,PLC0301
+        :sc-api:`organization-security-manager: details <Organization-Security-Manager.htm#OrganizationSecurityManagerRESTReference-/organization/{orgID}/securityManager/{id}>`
 
         Args:
             org_id: (int):
@@ -527,12 +536,13 @@ class OrganizationAPI(SCEndpoint):
             params=params).json()['response']
 
     def manager_edit(self, org_id, user_id, **kwargs):
+        # noqa: E501,PLC0301
         '''
         Edits the specified security manager within the specified organization.
         For details on the supported arguments that may be passed, please refer
         to :py:meth:`tio.users.edit() <UserAPI.edit>` for more details.
 
-        :sc-api:`organization-security-manager: edit <Organization-Security-Manager.html#organization_orgID_securityManager_id_PATCH>`  # noqa: E501,PLC0301
+        :sc-api:`organization-security-manager: edit <Organization-Security-Manager.htm#organization_orgUUID_securityManager_uuid_PATCH>`
 
         Args:
             org_id: (int):
@@ -558,10 +568,11 @@ class OrganizationAPI(SCEndpoint):
         ), json=payload).json()['response']
 
     def manager_delete(self, org_id, user_id, migrate_to=None):
+        # noqa: E501,PLC0301
         '''
         Removes the user specified.
 
-        :sc-api:`organization-security-manager: delete <Organization-Security-Manager.html#organization_orgID_securityManager_id_DELETE>`  # noqa: E501,PLC0301
+        :sc-api:`organization-security-manager: delete <Organization-Security-Manager.htm#organization_uuid_DELETE>`
 
         Args:
             org_id: (int):
