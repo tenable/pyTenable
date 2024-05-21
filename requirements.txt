@@ -1,5 +1,5 @@
 dataclasses>=0.8;python_version=="3.6"
-requests>=2.26
+requests>=2.32.0
 python-dateutil>=2.6
 semver>=2.10.0
 restfly>=1.4.5
