@@ -27,6 +27,9 @@ from tenable.io.v3.explore.findings.api import FindingsAPI
 class Explore(ExploreBaseEndpoint):
     '''
     This class will contain property for all resources under Explore  i.e. assets, findings etc.
+
+    Tenable.io V3 Explore APIs are deprecated. Tenable recommends that you use `tio.exports.assets()`,
+    which is the equivalent V2 API for search_host().
     '''
 
     @property

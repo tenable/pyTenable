@@ -1,8 +1,7 @@
 '''tests for infrastructure api'''
-
 import responses
 
-RE_BASE = 'https://pytenable.tenable.ad/api'
+from tests.ad.conftest import RE_BASE
 
 
 @responses.activate
@@ -17,9 +16,11 @@ def test_infrastructure_create(api):
                       'directories': [0, 1, 2]
                   }]
                   )
-    resp = api.infrastructure.create(name='test',
-                                     login='test@gmail.com',
-                                     password='password')
+    resp = api.infrastructure.create(
+        name='test',
+        login='test@gmail.com',
+        password='password'
+    )
     assert isinstance(resp, list)
     assert resp[0]['name'] == 'test'
 
@@ -51,7 +52,8 @@ def test_infrastructure_update(api):
         infrastructure_id='1',
         name='test',
         login='test@gmail.com',
-        password='password')
+        password='password'
+    )
     assert isinstance(resp, dict)
     assert resp['name'] == 'test'
 

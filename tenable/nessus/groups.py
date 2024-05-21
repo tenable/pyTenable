@@ -2,7 +2,7 @@
 Groups
 ======
 
-Methods described in this section relate to the the groups API.
+Methods described in this section relate to the groups API.
 These methods can be accessed at ``Nessus.groups``.
 
 .. rst-class:: hide-signature

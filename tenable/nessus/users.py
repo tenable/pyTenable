@@ -2,7 +2,7 @@
 Users
 =====
 
-Methods described in this section relate to the the users API.
+Methods described in this section relate to the users API.
 These methods can be accessed at ``Nessus.users``.
 
 .. rst-class:: hide-signature

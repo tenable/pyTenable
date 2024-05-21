@@ -1,6 +1,7 @@
 '''
 test credentials
 '''
+import io
 import uuid
 
 import pytest
@@ -376,11 +377,39 @@ def test_credentials_list(api):
 
 
 @pytest.mark.vcr()
-def test_credentials_upload(api):
+def test_credentials_upload_type_error(api):
     '''
-    test to upload the credentials
+    test to raise error when the type param is not set.
     '''
-    api.credentials.upload('ExampleDataGoesHere')
+
+    # Create a BytesIO object
+    file = io.BytesIO(b'\x48\x65\x6C\x6C\x6F\x20\x57\x6F\x72\x6C\x64')
+
+    with pytest.raises(TypeError):
+        api.credentials.upload(file)
+
+@pytest.mark.vcr()
+def test_credentials_upload_should_fail_on_unsupported_type(api):
+    '''
+    test to raise error when the type param is not set.
+    '''
+
+    # Create a BytesIO object
+    file = io.BytesIO(b'\x48\x65\x6C\x6C\x6F\x20\x57\x6F\x72\x6C\x64')
+
+    with pytest.raises(UnexpectedValueError):
+        api.credentials.upload(file, "some_type")
+
+@pytest.mark.vcr()
+def test_credentials_upload_should_succeed(api):
+    '''
+    test to succeed only when all the values are set properly.
+    '''
+
+    # Create a BytesIO object
+    file = io.BytesIO(b'\x48\x65\x6C\x6C\x6F\x20\x57\x6F\x72\x6C\x64')
+    uploaded_file = api.credentials.upload(file, "pem")
+    assert type(uploaded_file) is str
 
 
 @pytest.mark.vcr()
@@ -452,3 +481,12 @@ def test_credentials_list_fields(api, scan):
         check(creds, 'permission', int)
         check(creds, 'user_permissions', int)
     assert count == credentials.total
+
+
+@pytest.mark.vcr()
+def test_credentials_edit_with_permissions(api, cred):
+    '''test to edit with permissions parameter in the credentials'''
+    creds = api.credentials.edit('f07267e2-2994-4293-900a-8acc9adaacd4', cred_name='updated cred',
+                                 permissions=[{'grantee_uuid': '00000000-0000-0000-0000-000000000000', 'type': 'user',
+                                               'permissions': 64, 'name': 'test_admin@pytenable.io'}])
+    assert isinstance(creds, bool)

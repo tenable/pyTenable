@@ -2,7 +2,7 @@
 Settings
 ========
 
-Methods described in this section relate to the the Settings API.
+Methods described in this section relate to the Settings API.
 These methods can be accessed at ``Nessus.settings``.
 
 .. rst-class:: hide-signature
@@ -21,7 +21,7 @@ class SettingsAPI(APIEndpoint):
 
     def modify(self, settings: List[Dict]) -> Dict:
         '''
-        Modifies the advanced settings on the Nessus scanner.  Settings objects
+        Modifies the advanced settings on the Tenable Nessus scanner.  Settings objects
         must contain an action and a name field.  They may also require a value
         field and/or an id field depending on the nature of the change.
 
@@ -74,7 +74,7 @@ class SettingsAPI(APIEndpoint):
 
     def health(self) -> Dict:
         '''
-        Returns the current health statistics fore the Nessus scanner
+        Returns the current health statistics fore the Tenable Nessus scanner
 
         Returns:
             Dict:

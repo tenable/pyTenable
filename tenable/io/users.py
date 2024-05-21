@@ -2,7 +2,7 @@
 Users
 =====
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`users <users>` API endpoints.
 
 Methods available on ``tio.users``:
@@ -70,7 +70,7 @@ class UsersAPI(TIOEndpoint):
 
     def delete(self, user_id):
         '''
-        Removes a user from Tenable.io.
+        Removes a user from Tenable Vulnerability Management.
 
         :devportal:`users: delete <users-delete>`
 
@@ -340,7 +340,7 @@ class UsersAPI(TIOEndpoint):
 
     def list_auths(self, user_id):
         '''
-        list user authorizations for accessing a Tenable.io instance.
+        list user authorizations for accessing a Tenable Vulnerability Management instance.
 
         :devportal:`users: list-auths <users-list-auths>`
 
@@ -359,7 +359,7 @@ class UsersAPI(TIOEndpoint):
 
     def edit_auths(self, user_id, api_permitted=None, password_permitted=None, saml_permitted=None):
         '''
-        update user authorizations for accessing a Tenable.io instance.
+        update user authorizations for accessing a Tenable Vulnerability Management instance.
 
         :devportal:`users: edit-auths <users-update-auths>`
 
@@ -375,7 +375,7 @@ class UsersAPI(TIOEndpoint):
 
         Returns:
             :obj:`None`:
-                Returned if Tenable.io successfully updates the user's authorizations.
+                Returned if Tenable Vulnerability Management successfully updates the user's authorizations.
 
         Examples:
             >>> tio.users.edit_auths(1, True, True, False)

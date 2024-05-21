@@ -2,7 +2,7 @@
 Common Themes
 =============
 
-Tenable.sc CRUD within pyTenable
+Tenable Security Center CRUD within pyTenable
 --------------------------------
 
 pyTenable allows for the ability to leverage both the naturalized inputs as well
@@ -32,7 +32,7 @@ sidestep it and pass the exact dictionary you wish to pass on to the API.
 Schedule Dictionaries
 ---------------------
 
-A dictionary detailing the repeating schedule within Tenable.sc.  This
+A dictionary detailing the repeating schedule within Tenable Security Center.  This
 dictionary consists of 1 or 3 parameters, depending on the type of schedule.
 In all of the definitions except ``ical``, a  single parameter of ``type`` is
 passed with lone of the following values: ``ical``, ``never``, ``rollover``, and

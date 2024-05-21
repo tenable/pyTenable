@@ -2,7 +2,7 @@
 Agent Exclusions
 ================
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`agent exclusions <agent-exclusions>` API endpoints.
 
 Methods available on ``tio.agent_exclusions``:
@@ -170,7 +170,7 @@ class AgentExclusionsAPI(TIOEndpoint):
         :devportal:`agent-exclusions: delete <agent-exclusions-delete>`
 
         Args:
-            exclusion_id (int): The id of the exclusion object in Tenable.io
+            exclusion_id (int): The id of the exclusion object in Tenable Vulnerability Management
             scanner_id (int, optional): The id of the scanner
 
         Returns:
@@ -191,7 +191,7 @@ class AgentExclusionsAPI(TIOEndpoint):
         :devportal:`agent-exclusion: details <agent-exclusions-details>`
 
         Args:
-            exclusion_id (int): The id of the exclusion object in Tenable.io
+            exclusion_id (int): The id of the exclusion object in Tenable Vulnerability Management
             scanner_id (int, optional): The id of the scanner
 
         Returns:
@@ -219,7 +219,7 @@ class AgentExclusionsAPI(TIOEndpoint):
         then be pushed back to the API to modify the exclusion.
 
         Args:
-            exclusion_id (int): The id of the exclusion object in Tenable.io
+            exclusion_id (int): The id of the exclusion object in Tenable Vulnerability Management
             scanner_id (int, optional): The scanner id.
             name (str, optional): The name of the exclusion to create.
             description (str, optional):

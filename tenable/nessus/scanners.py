@@ -2,7 +2,7 @@
 Scanners
 ========
 
-Methods described in this section relate to the the scanners API.
+Methods described in this section relate to the scanners API.
 These methods can be accessed at ``Nessus.scanners``.
 
 .. rst-class:: hide-signature
@@ -104,7 +104,7 @@ class ScannersAPI(APIEndpoint):
                 Sets the registration code for the scanner.
             aws_update_interval (int, optional):
                 Informs the scanner how often to check into the controlling
-                Nessus service.  This is only valid for AWS scanners.
+                Tenable Nessus service.  This is only valid for AWS scanners.
         
         Example:
             

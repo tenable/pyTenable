@@ -2,7 +2,7 @@
 Tokens
 ======
 
-Methods described in this section relate to the the tokens API.
+Methods described in this section relate to the tokens API.
 These methods can be accessed at ``Nessus.tokens``.
 
 .. rst-class:: hide-signature

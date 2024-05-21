@@ -5,7 +5,7 @@ import re
 
 class BaseFilterSchema(Schema):
     '''
-    Base filter schema for the Tenable.io package.  As different APIs use
+    Base filter schema for the Tenable Vulnerability Management package.  As different APIs use
     different filter formats, we start with this common base schema that has
     the scaffolding needed to interact with the different API endpoints.
     '''

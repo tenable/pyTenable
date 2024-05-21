@@ -2,11 +2,21 @@
 import os
 import uuid
 import pytest
+import responses
 from tenable.errors import NotFoundError
 from tenable.io import TenableIO
 from tests.pytenable_log_handler import setup_logging_to_file, log_exception
 
 SCAN_ID_WITH_RESULTS = 6799
+
+
+@pytest.fixture
+@responses.activate
+def tvm():
+    return TenableIO(url='https://nourl',
+                     access_key='ACCESS_KEY',
+                     secret_key='SECRET_KEY'
+                     )
 
 
 @pytest.fixture(scope='module')

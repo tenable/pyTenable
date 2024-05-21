@@ -2,9 +2,9 @@
 Scanners
 ========
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Scanner <Scanner.html>` API.  These items are typically seen under the
-**Scanners** section of Tenable.sc.
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Scanner <Scanner.htm>` API.  These items are typically seen under the
+**Scanners** section of Tenable Security Center.
 
 Methods available on ``sc.scanners``:
 
@@ -114,7 +114,7 @@ class ScannerAPI(SCEndpoint):
         '''
         Creates a scanner.
 
-        :sc-api:`scanner: create <Scanner.html#scanner_POST>`
+        :sc-api:`scanner: create <Scanner.htm#scanner_POST>`
 
         Args:
             address (str): The address of the scanner
@@ -167,7 +167,7 @@ class ScannerAPI(SCEndpoint):
         '''
         Returns the details for a specific scanner.
 
-        :sc-api:`scanner: details <Scanner.html#scanner_POST>`
+        :sc-api:`scanner: details <Scanner.htm#ScannerRESTReference-/scanner>`
 
         Args:
             id (int): The identifier for the scanner.
@@ -192,7 +192,7 @@ class ScannerAPI(SCEndpoint):
         '''
         Edits a scanner.
 
-        :sc-api:`scanner: edit <Scanner.html#scanner_id_PATCH>`
+        :sc-api:`scanner: edit <Scanner.htm#scanner_id_PATCH>`
 
         Args:
             id (int): The numeric identifier for the scanner.
@@ -237,7 +237,7 @@ class ScannerAPI(SCEndpoint):
         '''
         Removes the specified scanner.
 
-        :sc-api:`scanner: delete <Scanner.html#scanner_id_DELETE>`
+        :sc-api:`scanner: delete <Scanner.htm#scanner_id_DELETE>`
 
         Args:
             id (int): The numeric identifier for the scanner to remove.
@@ -256,7 +256,7 @@ class ScannerAPI(SCEndpoint):
         '''
         Retrieves the list of scanner definitions.
 
-        :sc-api:`scanner: list <Scanner.html#scanner_GET>`
+        :sc-api:`scanner: list <Scanner.htm#scanner_GET>`
 
         Args:
             fields (list, optional):
@@ -282,7 +282,7 @@ class ScannerAPI(SCEndpoint):
         Retrieves the list of agent scans that meed the specified search
         criteria.
 
-        :sc-api:`scanner: test-scans-query <Scanner.html#ScannerRESTReference-/scanner/{id}/testScansQuery>`
+        :sc-api:`scanner: test-scans-query <Scanner.htm#ScannerRESTReference-/scanner/{id}/testScansQuery>`
 
         Args:
             id (int): The numeric id of the scanner.
@@ -309,7 +309,7 @@ class ScannerAPI(SCEndpoint):
         '''
         Starts an on-demand scanner status update.
 
-        :sc-api:`scanner: update-status <Scanner.html#ScannerRESTReference-/scanner/updateStatus>`
+        :sc-api:`scanner: update-status <Scanner.htm#ScannerRESTReference-/scanner/updateStatus>`
 
         Returns:
             :obj:`list`:

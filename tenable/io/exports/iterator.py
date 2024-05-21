@@ -1,14 +1,15 @@
 '''
 As exports are asynchronous, pyTenable by default will return an iterator to
 handle the state tracking, data chunking, and presentation of the data in order
-to reduce the amount of boilerplate code that would otherwise hacve to be
-created.  These iterators support both serial iteration as well as threaded
+to reduce the amount of boilerplate code that would otherwise have to be
+created.  These iterators support both serial iteration and threaded
 handling of data depending on how the data is accessed.
 
 .. autoclass:: ExportsIterator
     :members:
 '''
 import time
+from copy import copy
 from concurrent.futures import ThreadPoolExecutor
 from typing import Optional, List, Dict, Any
 from box import Box
@@ -71,7 +72,7 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
         iterator is within the export job and return the status to the caller
         '''
         status = self._api.exports.status(self.type, self.uuid)
-        self._log.debug('%s export %s is currenty %s',
+        self._log.debug('%s export %s is currently %s',
                         self.type,
                         self.uuid,
                         status.status
@@ -224,17 +225,16 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
 
         Examples:
 
-            A simple example is to simply download the chunks and write them
-            to disk.
+            A simple example to download the chunks and write them to disk.
 
-            >>> def write_chunk(data: List[Dict],
+            >>> def write_chunk(data,
             ...                 export_uuid: str,
             ...                 export_type: str,
             ...                 export_chunk_id: int
             ...                 ):
             ...     fn = f'{export_type}-{export_uuid}-{export_chunk_id}.json'
             ...     with open(fn, 'w') as fobj:
-            ...         json.dump(data, fn)
+            ...         json.dump(data, fobj)
             >>>
             >>> export = tio.exports.vulns()
             >>> export.run_threaded(write_chunk, num_threads=4)
@@ -256,6 +256,22 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
                                        'operations.')
                                   )
 
+        def thread_job(chunk_id: int):
+            kw = copy(kwargs)
+            kw['data'] = self._api.exports.download_chunk(self.type,
+                                                          self.uuid,
+                                                          chunk_id
+                                                          )
+            kw['export_uuid'] = self.uuid
+            kw['export_type'] = self.type
+            kw['export_chunk_id'] = chunk_id
+            self._log.debug(
+                (f'{self.type} export {self.uuid} chunk {chunk_id} '
+                 'has been downloaded and the data has been handed '
+                 'off to the specified function'
+                 ))
+            return func(**kw)
+
         # initiate the thread pool and get the show on the road.
         with ThreadPoolExecutor(max_workers=num_threads) as executor:
             jobs = []
@@ -273,16 +289,6 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
                 num_chunks = range(len(self.chunks))
                 for _ in num_chunks:
                     chunk_id = self.chunks.pop(0)
-                    kwargs['data'] = self._api.exports.download_chunk(
-                        self.type, self.uuid, chunk_id)
-                    kwargs['export_uuid'] = self.uuid
-                    kwargs['export_type'] = self.type
-                    kwargs['export_chunk_id'] = chunk_id
-                    self._log.debug(
-                        (f'{self.type} export {self.uuid} chunk {chunk_id} '
-                         'has been downloaded and the data has been handed '
-                         'off to the specified function'
-                         ))
-                    jobs.append(executor.submit(func, **kwargs))
+                    jobs.append(executor.submit(thread_job, chunk_id))
                     self.processed.append(chunk_id)
         return jobs

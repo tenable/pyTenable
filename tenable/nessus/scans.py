@@ -2,7 +2,7 @@
 Scans
 =====
 
-Methods described in this section relate to the the scans API.
+Methods described in this section relate to the scans API.
 These methods can be accessed at ``Nessus.scans``.
 
 .. rst-class:: hide-signature
@@ -267,7 +267,7 @@ class ScansAPI(APIEndpoint):
                     password: Optional[str] = None
                     ) -> Dict:
         '''
-        Import a scan report into the Nessus scanner.  Either a file object or
+        Import a scan report into the Tenable Nessus scanner.  Either a file object or
         a file_id must be specified.
 
         Args:
