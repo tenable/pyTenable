@@ -9,6 +9,7 @@ from tenable.base.platform import APIPlatform
 from .about import AboutAPI
 from .alert.api import AlertsAPI
 from .api_keys import APIKeyAPI
+from .attack_type_options.api import AttackTypeOptionsAPI
 from .application_settings.api import ApplicationSettingsAPI
 from .attack_types.api import AttackTypesAPI
 from .attacks.api import AttacksAPI
@@ -105,6 +106,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable Identity Exposure Attack Types APIs <attack_types>`.
         '''
         return AttackTypesAPI(self)
+
+    @property
+    def attack_type_options(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Attack Type Options APIs <attack_type_options>`.
+        '''
+        return AttackTypeOptionsAPI(self)
 
     @property
     def category(self):
