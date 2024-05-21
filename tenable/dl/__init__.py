@@ -18,7 +18,7 @@ class Downloads(APIPlatform):
 
     Args:
         api_token (str, optional):
-            The user's API access key for Tenable.io  If an access key isn't
+            The user's API access key for Tenable Vulnerability Management  If an access key isn't
             specified, then the library will attempt to read the environment
             variable ``TDL_API_TOKEN`` to acquire the key.
         retries (int, optional):

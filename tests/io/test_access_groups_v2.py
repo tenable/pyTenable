@@ -300,6 +300,20 @@ def test_access_group_v2_edit_id_unexpectedvalueerror(api):
 
 
 @pytest.mark.vcr()
+def test_access_group_v2_edit_rules_success(api, agroup):
+    '''
+    test to edit access group with some rules
+    '''
+    rules = [('hostname', 'starts', ["demoHostname", "demo2"])]
+    principals = [('group', '00000000-0000-0000-0000-000000000000', ['CAN_VIEW', 'CAN_SCAN'])]
+    access_groups = api.access_groups_v2.list()._get_data()[0]['access_groups']
+    group_id = access_groups[1]['id']
+    resp = api.access_groups_v2.edit(group_id, rules=rules, principals=principals, all_users=False)
+    assert isinstance(resp, dict)
+    assert group_id == resp['id']
+
+
+@pytest.mark.vcr()
 def test_access_groups_v2_edit_success(api, agroup):
     '''
     test to edit access group

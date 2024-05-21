@@ -2,7 +2,7 @@
 Infrastructure
 ==============
 
-Methods described in this section relate to the the infrastructure API.
+Methods described in this section relate to the infrastructure API.
 These methods can be accessed at ``TenableAD.infrastructure``.
 
 .. rst-class:: hide-signature

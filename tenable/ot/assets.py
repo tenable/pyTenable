@@ -1,48 +1,49 @@
-'''
+"""
 Assets
 ======
 
-Methods described in this section relate to the the assets API.
+Methods described in this section relate to the assets API.
 These methods can be accessed at ``TenableOT.assets``.
 
 .. rst-class:: hide-signature
 .. autoclass:: AssetsAPI
     :members:
-'''
+"""
 from typing import List, Optional
-from tenable.base.endpoint import APIEndpoint
-from tenable.ot.graphql.assets import (
-    ASSETS_QUERY,
-    ASSETS_QUERY_OBJECT_NAME,
-    AssetsSchema
-)
-from tenable.ot.graphql.definitions import GraphObject
+
+from tenable.ot.api import OTAPIBase
 from tenable.ot.graphql.iterators import OTGraphIterator
+from tenable.ot.graphql.query import ASSETS_QUERY
+from tenable.ot.graphql.schema.assets import AssetsSchema
 
 
-class AssetsAPI(APIEndpoint):
-    _path = 'assets'
+class AssetsAPI(OTAPIBase):
+    _path = "assets"
+    query = ASSETS_QUERY
+    schema_class = AssetsSchema
 
-    def list(self,
-             filter: Optional[dict] = None,
-             search: Optional[str] = None,
-             sort: Optional[List[dict]] = None,
-             start_at: Optional[str] = None,
-             limit: Optional[int] = 200,
-             **kwargs):
-        '''
+    def list(
+        self,
+        query_filter: Optional[dict] = None,
+        search: Optional[str] = None,
+        sort: Optional[List[dict]] = None,
+        start_at: Optional[str] = None,
+        limit: Optional[int] = 200,
+        **kwargs,
+    ) -> OTGraphIterator:
+        """
         Retrieves a list of assets via the GraphQL API.
 
         Args:
-            filter(dict, optional):
-                A document as defined by Tenable.ot online documentation.
+            query_filter(dict, optional):
+                A document as defined by Tenable OT Security online documentation.
             search(str, optional):
                 A search string to further limit the response.
-            sort(list[dict], optional):
+            sort(List[dict], optional):
                 A list of order documents, each of which must contain both the
                 ``field`` and ``direction`` keys and may also contain the
                 optional ``function`` key. Default sort is by descending id
-                order. Please refer to Tenable.ot online documentation for more
+                order. Please refer to Tenable OT Security online documentation for more
                 information.
             start_at(str, optional):
                 The cursor to start the scan from (the default is an empty
@@ -58,24 +59,51 @@ class AssetsAPI(APIEndpoint):
         Example:
             >>>     for asset in tot.assets.list(limit=500):
                         print(asset)
-        '''
+        """
         if not sort:
-            sort = [{'field': 'id', 'direction': 'DescNullLast'}]
+            sort = [{"field": "id", "direction": "DescNullLast"}]
 
-        query_variables = {
-            'search': search,
-            'sort': sort,
-            'startAt': start_at,
-            'limit': limit
-        }
-        if filter:
-            query_variables['filter'] = filter
+        if not query_filter:
+            query_filter = {
+                "op": "Equal",
+                "field": "hidden",
+                "values": "false"
+            }
 
-        graph_obj = GraphObject(
-            object_name=ASSETS_QUERY_OBJECT_NAME,
+        return super().list(
             query=ASSETS_QUERY,
-            resp_schema=AssetsSchema,
-            query_variables=query_variables
+            query_filter=query_filter,
+            search=search,
+            sort=sort,
+            start_at=start_at,
+            limit=limit,
+            **kwargs,
         )
 
-        return OTGraphIterator(self._api, graph_obj, **kwargs)
+    def asset(
+        self,
+        asset_id: int,
+        **kwargs,
+    ) -> OTGraphIterator:
+        """
+        Retrieve a specific asset by ID.
+
+        Args:
+            asset_id (int):
+
+        Returns:
+            :obj:`OTGraphIterator`:
+                An iterator object handling data pagination.
+        Example:
+            >>>     tot.plugins.plugin(1)
+
+        """
+        return super().list(
+            query_filter={
+                "field": "id",
+                "op": "Equal",
+                "values": asset_id,
+            },
+            query=ASSETS_QUERY,
+            **kwargs,
+        )

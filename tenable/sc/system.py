@@ -2,8 +2,8 @@
 System
 ======
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`System <System.html>` API.  These API calls are typically used to
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`System <System.htm>` API.  These API calls are typically used to
 understand timezones, system version, etc.
 
 Methods available on ``sc.system``:
@@ -19,12 +19,12 @@ import time
 class SystemAPI(SCEndpoint):
     def details(self):
         '''
-        Retrieves information about the Tenable.sc instance.  This method should
+        Retrieves information about the Tenable Security Center instance.  This method should
         only be called before authentication has occurred.  As most of the
         information within this call already happens upon instantiation, there
         should be little need to call this manually.
 
-        :sc-api:'system: get <System.html#system_GET>`
+        :sc-api:`system: get <System.htm#system_GET>`
 
         Returns:
             :obj:`dict`:
@@ -38,11 +38,11 @@ class SystemAPI(SCEndpoint):
     def diagnostics(self, task=None, options=None, fobj=None):
         '''
         Generates and downloads a diagnostic file for the purpose of
-        troubleshooting an ailing Tenable.sc instance.
+        troubleshooting an ailing Tenable Security Center instance.
 
-        :sc-api:`system: diagnostics-generate <System.html#SystemRESTReference-/system/diagnostics/generate>`
+        :sc-api:`system: diagnostics-generate <System.htm#SystemRESTReference-/system/diagnostics/generate>`
 
-        :sc-api:`system: diagnostics-download <System.html#SystemRESTReference-/system/diagnostics/download>`
+        :sc-api:`system: diagnostics-download <System.htm#SystemRESTReference-/system/diagnostics/download>`
 
         Args:
             fobj (FileObject, optional):
@@ -115,9 +115,9 @@ class SystemAPI(SCEndpoint):
 
     def current_locale(self):
         '''
-        Retrieves the current system locale that Tenable.sc has been set to.
+        Retrieves the current system locale that Tenable Security Center has been set to.
 
-        :sc-api:`system: locale <System.html#SystemRESTReference-/system/locale>`
+        :sc-api:`system: locale <System.htm#SystemRESTReference-/system/locale>`
 
         Returns:
             :obj:`dict`:
@@ -130,9 +130,9 @@ class SystemAPI(SCEndpoint):
 
     def list_locales(self):
         '''
-        Retrieves the available system locales that Tenable.sc can be set to.
+        Retrieves the available system locales that Tenable Security Center can be set to.
 
-        :sc-api:`system: locales <System.html#SystemRESTReference-/system/locales>`
+        :sc-api:`system: locales <System.htm#SystemRESTReference-/system/locales>`
 
         Returns:
             :obj:`dict`:
@@ -149,7 +149,7 @@ class SystemAPI(SCEndpoint):
         perform this task and will be a global change.  The locale determines
         which pluginset language to use.
 
-        :sc-api:`system: set-locale <System.html#system_locale_PATCH>`
+        :sc-api:`system: set-locale <System.htm#system_locale_PATCH>`
 
         Args:
             locale (str): The plugin locale name
@@ -171,7 +171,7 @@ class SystemAPI(SCEndpoint):
         '''
         Retrieves the current system status
 
-        :sc-api:`system: diagnostics <System.html#SystemRESTReference-/system/diagnostics>`
+        :sc-api:`system: diagnostics <System.htm#SystemRESTReference-/system/diagnostics>`
 
         Returns:
             :obj:`dict`:

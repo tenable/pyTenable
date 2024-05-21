@@ -2,8 +2,8 @@
 Feeds
 =====
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Feed <Feed.html>` API.
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Feed <Feed.htm>` API.
 
 Methods available on ``sc.feeds``:
 
@@ -19,9 +19,9 @@ class FeedAPI(SCEndpoint):
         Returns the status of either a specific feed type (if requested) or all
         of the feed types if nothing is specifically asked.
 
-        :sc-api:`feed <Feed.html>`
+        :sc-api:`feed <Feed.htm>`
 
-        :sc-api:`feed: feed-type <Feed.html#FeedRESTReference-FeedGETType>`
+        :sc-api:`feed: feed-type <Feed.htm#FeedRESTReference-FeedGETType>`
 
         Args:
             feed_type (str, optional):
@@ -58,7 +58,7 @@ class FeedAPI(SCEndpoint):
         no feed type is specified, then it will default to initiating an update
         for all feed types.
 
-        :sc-api:`feed: update <Feed.html#FeedRESTReference-FeedUpdatePOSTType>`
+        :sc-api:`feed: update <Feed.htm#FeedRESTReference-FeedUpdatePOSTType>`
 
         Args:
             feed_type (str, optional);
@@ -77,7 +77,7 @@ class FeedAPI(SCEndpoint):
         Initiates an off-line feed update based on the specified feed_type using
         the file object passed as the update file.
 
-        :sc-api:`feed: process <Feed.html#FeedRESTReference-FeedUpdatePOSTProcess>`
+        :sc-api:`feed: process <Feed.htm#FeedRESTReference-FeedUpdatePOSTProcess>`
 
         Args:
             feed_type (str);

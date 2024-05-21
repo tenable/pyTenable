@@ -2,7 +2,7 @@
 Policies
 ========
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`policies <policies>` API.
 
 Methods available on ``tio.policies``:
@@ -121,7 +121,7 @@ class PoliciesAPI(TIOEndpoint):
         Args:
             id (int): The policy unique identifier.
             policy (dict):
-                The updated policy definition to push into Tenable.io.  As these
+                The updated policy definition to push into Tenable Vulnerability Management.  As these
                 policies can be quite complex, please refer to the documentation
                 in the policies: configure page (linked above).
 
@@ -164,7 +164,7 @@ class PoliciesAPI(TIOEndpoint):
 
         Args:
             policy (dict):
-                The policy definition to push into Tenable.io.  As these
+                The policy definition to push into Tenable Vulnerability Management.  As these
                 policies can be quite complex, please refer to the documentation
                 in the policies: configure page (linked above).
 
@@ -219,7 +219,7 @@ class PoliciesAPI(TIOEndpoint):
 
     def policy_import(self, fobj):
         '''
-        Imports a policy into Tenable.io.
+        Imports a policy into Tenable Vulnerability Management.
 
         :devportal:`policies: import <policies-import>`
 
@@ -240,7 +240,7 @@ class PoliciesAPI(TIOEndpoint):
 
     def policy_export(self, id, fobj=None):
         '''
-        Exports a specified policy from Tenable.io.
+        Exports a specified policy from Tenable Vulnerability Management.
 
         :devportal:`policies: export <policies-export>`
 

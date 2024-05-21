@@ -2,8 +2,8 @@
 Files
 =====
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`File <File.html>` API.
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`File <File.htm>` API.
 
 Methods available on ``sc.files``:
 
@@ -11,15 +11,19 @@ Methods available on ``sc.files``:
 .. autoclass:: FileAPI
     :members:
 '''
+from requests_toolbelt.multipart.encoder import MultipartEncoder
 from .base import SCEndpoint
 
 class FileAPI(SCEndpoint):
+    _path = 'file'
+    _box = True
+
     def upload(self, fobj):
         '''
         Uploads a file into SecurityCenter and returns the file identifier
         to be used for subsequent calls.
 
-        :sc-api:`file: upload <File.html#FileRESTReference-/file/upload>`
+        :sc-api:`file: upload <File.htm#FileRESTReference-/file/upload>`
 
         Args:
             fobj (FileObj): The file object to upload into SecurityCenter.
@@ -27,16 +31,19 @@ class FileAPI(SCEndpoint):
         Returns:
             :obj:`str`:
                 The filename identifier to use for subsequent calls in
-                Tenable.sc.
+                Tenable Security Center.
         '''
-        return self._api.post('file/upload', files={
-            'Filedata': fobj}).json()['response']['filename']
+        encoder = MultipartEncoder({'Filedata': ('filedata', fobj)})
+        return self._post('upload',
+                          data=encoder,
+                          headers={'Content-Type': encoder.content_type}
+                          ).response.filename
 
     def clear(self, filename):
         '''
-        Removes the requested file from Tenable.sc.
+        Removes the requested file from Tenable Security Center.
 
-        :sc-api:`file: clear <File.html#FileRESTReference-/file/clear>`
+        :sc-api:`file: clear <File.htm#FileRESTReference-/file/clear>`
 
         Args:
             filename (str): The file identifier associated to the file.
@@ -45,6 +52,6 @@ class FileAPI(SCEndpoint):
             :obj:`str`:
                 The file location on disk that was removed.
         '''
-        return self._api.post('file/clear', json={
-            'filename': self._check('filename', filename, str)
-        }).json()['response']['filename']
+        return self._post('clear',
+                          json={'filename': filename}
+                          ).response.filename

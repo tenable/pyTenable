@@ -2,7 +2,7 @@
 APIKeys
 =======
 
-Methods described in this section relate to the the APIKeys API.
+Methods described in this section relate to the APIKeys API.
 These methods can be accessed at ``TenableAD.api_keys``.
 
 .. rst-class:: hide-signature

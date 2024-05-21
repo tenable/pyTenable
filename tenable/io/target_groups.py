@@ -2,7 +2,7 @@
 Target Groups
 =============
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`target_groups <target-groups>` API endpoints.
 
 Methods available on ``tio.target_groups``:

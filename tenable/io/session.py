@@ -2,7 +2,7 @@
 Session
 =======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`session <session>` API endpoints.
 
 Methods available on ``tio.session``:
@@ -16,7 +16,7 @@ from .base import TIOEndpoint
 
 class SessionAPI(TIOEndpoint):
     '''
-    Tenable.io session API is deprecated.
+    Tenable Vulnerability Management session API is deprecated.
     it is recommended to use ``users`` endpoint instead
     '''
 

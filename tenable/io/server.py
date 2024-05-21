@@ -2,7 +2,7 @@
 Server
 ======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`server <server>` API endpoints.
 
 Methods available on ``tio.server``:
@@ -16,7 +16,7 @@ from .base import TIOEndpoint
 class ServerAPI(TIOEndpoint):
     def properties(self):
         '''
-        Retrieves the various properties used within the Tenable.io instance.
+        Retrieves the various properties used within the Tenable Vulnerability Management instance.
 
         :devportal:`server: properties <server-properties>`
 
@@ -32,7 +32,7 @@ class ServerAPI(TIOEndpoint):
 
     def status(self):
         '''
-        Retrieves the server status of the Tenable.io instance.
+        Retrieves the server status of the Tenable Vulnerability Management instance.
 
         :devportal:`server: status <server-status>`
 

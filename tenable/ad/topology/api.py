@@ -2,7 +2,7 @@
 Topology
 ========
 
-Methods described in this section relate to the the topology API.
+Methods described in this section relate to the topology API.
 These methods can be accessed at ``TenableAD.topology``.
 
 .. rst-class:: hide-signature

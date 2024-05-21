@@ -1,7 +1,6 @@
 '''
 test Remediation scans
 '''
-from pprint import pprint
 import pytest
 from tenable.errors import UnexpectedValueError, NotFoundError
 from tests.checker import check, single
@@ -75,10 +74,26 @@ def test_remedyscan_create_scan_document_template_pass(api):
 	test to create scan document basic template
 	'''
 	templates = api.policies.templates()
-	resp = getattr(api.remediationscans, '_create_scan_document')({'template': 'basic'})
+	resp = getattr(api.remediationscans, '_create_scan_document')(
+		{'template': 'basic'})
 	assert isinstance(resp, dict)
 	check(resp, 'uuid', 'scanner-uuid')
 	assert resp['uuid'] == templates['basic']
+
+
+@pytest.mark.vcr()
+def test_remedyscan_create_advanced_scan_document_template_pass(api):
+	'''
+	test to create scan document using advanced template, credentials and compliance
+	'''
+	templates = api.policies.templates()
+	resp = getattr(api.remediationscans, '_create_scan_document')(
+		{'template': 'advanced', 'credentials': {'name': "Test"}, 'compliance': {"name": "Policy Compliance"}})
+	assert isinstance(resp, dict), "Response of create scan template for remediation scan is not of type dict."
+	check(resp, 'uuid', 'scanner-uuid')
+	assert resp['uuid'] == templates['advanced'], \
+		"UUID of remediation scan template created in this test-case not matched with UUID of advanced scan template."
+
 
 @pytest.mark.vcr()
 def test_remedyscan_create_scan_document_policies_id_pass(api):
@@ -226,62 +241,3 @@ def test_remedyscan_check_auto_targets_success(api):
 	check(resp, 'missed_targets', list)
 	check(resp, 'total_matched_resource_uuids', int)
 	check(resp, 'total_missed_targets', int)
-
-@pytest.mark.vcr()
-def test_remedyscan_check_auto_targets_limit_typeerror(api):
-	'''
-	test to raise exception when type of limit param does not match the expected type.
-	'''
-	with pytest.raises(TypeError):
-		api.scans.check_auto_targets('nope', 5, targets=['192.168.16.108'])
-
-@pytest.mark.vcr()
-def test_remedyscan_check_auto_targets_matched_resource_limit_typeerror(api):
-	'''
-	test to raise exception when type of matched_resource_limit param
-	does not match the expected type.
-	'''
-	with pytest.raises(TypeError):
-		api.scans.check_auto_targets(10, 'nope', targets=['127.0.0.1'])
-
-@pytest.mark.vcr()
-def test_remedyscan_check_auto_targets_network_uuid_unexpectedvalueerror(api):
-	'''
-	test to raise exception when network_uuid param value does not match the choices.
-	'''
-	with pytest.raises(UnexpectedValueError):
-		api.scans.check_auto_targets(10, 5, network_uuid='nope', targets=['127.0.0.1'])
-
-@pytest.mark.vcr()
-def test_remedyscan_check_auto_targets_network_uuid_typeerror(api):
-	'''
-	test to raise exception when type of network_uuid param does not match the expected type.
-	'''
-	with pytest.raises(TypeError):
-		api.scans.check_auto_targets(10, 5, network_uuid=1, targets=['127.0.0.1'])
-
-@pytest.mark.vcr()
-def test_remedyscan_check_auto_targets_tags_unexpectedvalueerror(api):
-	'''
-	test to raise exception when type of any value in tags param
-	does not match the expected type.
-	'''
-	with pytest.raises(UnexpectedValueError):
-		api.scans.check_auto_targets(10, 5, tags=['nope'], targets=['127.0.0.1'])
-
-@pytest.mark.vcr()
-def test_remedyscan_check_auto_targets_tags_typeerror(api):
-	'''
-	test to raise exception when type of tags param does not match the expected type.
-	'''
-	with pytest.raises(TypeError):
-		api.scans.check_auto_targets(10, 5, tags=1, targets=['127.0.0.1'])
-
-@pytest.mark.vcr()
-def test_remedyscan_check_auto_targets_targets_typeerror(api):
-	'''
-	test to raise exception when type of targets param does not match the expected type.
-	'''
-	with pytest.raises(TypeError):
-		api.scans.check_auto_targets(10, 5, targets=1)
-
