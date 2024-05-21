@@ -19,6 +19,7 @@ from .checker.api import CheckerAPI
 from .checker_option.api import CheckerOptionAPI
 from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
+from .email_notifiers.api import EmailNotifiersAPI
 from .event.api import EventAPI
 from .infrastructure.api import InfrastructureAPI
 from .ldap_configuration.api import LDAPConfigurationAPI
@@ -164,6 +165,14 @@ class TenableAD(APIPlatform):
         '''
         return DirectoriesAPI(self)
 
+    @property
+    def email_notifiers(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Email Notifiers APIs <email_notifiers>`.
+        '''
+        return EmailNotifiersAPI(self)
+    
     @property
     def event(self):
         '''
