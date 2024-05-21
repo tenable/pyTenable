@@ -2,8 +2,8 @@
 Current Session
 ===============
 
-The following methods allow for interaction with the Tenable.sc
-:sc-api:`CurrentOrganization <Current-Organization.html>` API and the
+The following methods allow for interaction with the Tenable Security Center
+:sc-api:`CurrentOrganization <Current-Organization.htm>` API and the
 :sc-api:`CurrentUser <>` API.
 
 Methods available on ``sc.current``:
@@ -34,7 +34,7 @@ class CurrentSessionAPI(SCEndpoint):
         '''
         Returns the organization of the current session.
 
-        :sc-api:`current-organization <Current-Organization.html>`
+        :sc-api:`current-organization <Current-Organization.htm>`
 
         Args:
             fields (list, optional):
@@ -58,7 +58,7 @@ class CurrentSessionAPI(SCEndpoint):
         '''
         Returns the user of the current session.
 
-        :sc-api:`current-user </Current-User.html>`
+        :sc-api:`current-user <Current-User.htm>`
 
         Args:
             fields (list, optional):

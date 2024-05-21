@@ -145,6 +145,20 @@ def test_scans_constructor_timeout_typeerror(security_center):
     with pytest.raises(TypeError):
         security_center.scans._constructor(timeout=1)
 
+def test_scans_constructor_inactivity_timeout(security_center):
+    """
+    Tests inactivity_timeout is mapped correctly in the constructor.
+    """
+    scan_params = {
+        "inactivity_timeout": 3600,
+        "policy_id": 1000001
+    }
+
+    scan = security_center.scans._constructor(**scan_params)
+
+    assert "inactivity_timeout" not in scan
+    assert scan["inactivityTimeout"] == "3600"
+
 
 def test_scans_constructor_timeout_unexpectedvalueerror(security_center):
     '''
@@ -372,28 +386,17 @@ def test_scans_constructor_creds_success(security_center):
     assert resp == {'credentials': [{'id': 1}, {'id': 2}]}
 
 
-def test_scans_constructor_both_policy_and_plugin_unexpectedvalueerror(security_center):
-    '''
-    test scans constructor for 'both policy id and plugin id' unexpected value error
-    '''
-    with pytest.raises(UnexpectedValueError):
-        security_center.scans._constructor(plugin_id=1, policy_id=1)
-
-
-def test_scans_constructor_plugin_id_typeerror(security_center):
-    '''
-    test scans constructor for 'plugin id' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.scans._constructor(plugin_id='nope')
-
-
 def test_scans_constructor_plugin_id_success(security_center):
     '''
     test scans constructor for plugin id success
     '''
-    resp = security_center.scans._constructor(plugin_id=19506)
-    assert resp == {'type': 'plugin', 'pluginID': 19506}
+    resp = security_center.scans._constructor(policy_id=19506)
+    assert resp == {
+        'type': 'policy',
+        'policy': {
+            'id': 19506
+        }
+    }
 
 
 def test_scans_constructor_policy_id_typeerror(security_center):

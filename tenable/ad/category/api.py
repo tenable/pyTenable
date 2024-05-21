@@ -2,7 +2,7 @@
 Category
 ========
 
-Methods described in this section relate to the the category API.
+Methods described in this section relate to the category API.
 These methods can be accessed at ``TenableAD.category``.
 
 .. rst-class:: hide-signature

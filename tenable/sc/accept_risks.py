@@ -2,8 +2,8 @@
 Accept Risks
 ============
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Accept Risk <Accept-Risk-Rule.html>` API.
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Accept Risk <Accept-Risk-Rule.htm>` API.
 
 Methods available on ``sc.accept_risks``:
 
@@ -79,7 +79,7 @@ class AcceptRiskAPI(SCEndpoint):
         '''
         Retrieves the list of accepted risk rules.
 
-        :sc-api:`accept-risk: list <Accept-Risk-Rule.html#AcceptRiskRuleRESTReference-/acceptRiskRule>`
+        :sc-api:`accept-risk: list <Accept-Risk-Rule.htm#AcceptRiskRuleRESTReference-/acceptRiskRule>`
 
         Args:
             fields (list, optional):
@@ -136,7 +136,7 @@ class AcceptRiskAPI(SCEndpoint):
         '''
         Retrieves the details of an accepted risk rule.
 
-        :sc-api:`accept-riskL details <Accept-Risk-Rule.html#AcceptRiskRuleRESTReference-/acceptRiskRule/{id}>`
+        :sc-api:`accept-risk details <Accept-Risk-Rule.htm#AcceptRiskRuleRESTReference-/acceptRiskRule/{id}>`
 
         Args:
             id (int): The identifier for the accept risk rule.
@@ -161,9 +161,9 @@ class AcceptRiskAPI(SCEndpoint):
 
     def delete(self, id):
         '''
-        Removes the accepted risk rule from Tenable.sc
+        Removes the accepted risk rule from Tenable Security Center
 
-        :sc-api:`accept-risk: delete <Accept-Risk-Rule.html#acceptRiskRule_id_DELETE>`
+        :sc-api:`accept-risk: delete <Accept-Risk-Rule.htm#acceptRiskRule_id_DELETE>`
 
         Args:
             id (int): The identifier for the accept risk rule.
@@ -183,7 +183,7 @@ class AcceptRiskAPI(SCEndpoint):
         Applies the accept risk rule for either all repositories, or the
         repository specified.
 
-        :sc-api:`accept-risk: apply <Accept-Risk-Rule.html#AcceptRiskRuleRESTReference-/acceptRiskRule/apply>`
+        :sc-api:`accept-risk: apply <Accept-Risk-Rule.htm#AcceptRiskRuleRESTReference-/acceptRiskRule/apply>`
 
         Args:
             id (int): The identifier for the accept risk rule.
@@ -208,7 +208,7 @@ class AcceptRiskAPI(SCEndpoint):
         Creates a new accept risk rule.  Either ips, uuids, or asset_list must
         be specified.
 
-        :sc-api:`accept-risk: create <Accept-Risk-Rule.html#acceptRiskRule_POST>`
+        :sc-api:`accept-risk: create <Accept-Risk-Rule.htm#acceptRiskRule_POST>`
 
         Args:
             plugin_id (int): The plugin to apply the accept risk rule to.

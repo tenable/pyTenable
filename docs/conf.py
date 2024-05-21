@@ -184,7 +184,7 @@ intersphinx_mapping = {
 }
 
 extlinks = {
-    'devportal': ('https://developer.tenable.com/reference#%s', 'devportal'),
-    'sc-api': ('https://docs.tenable.com/sccv/api/%s', 'sc-api'),
+    'devportal': ('https://developer.tenable.com/reference/%s', 'devportal'),
+    'sc-api': ('https://docs.tenable.com/security-center/api/%s', 'sc-api'),
     'requests': ('https://requests.readthedocs.io/en/master/%s', 'requests'),
 }

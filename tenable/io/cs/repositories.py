@@ -2,7 +2,7 @@
 Repositories
 ============
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 Container Security :devportal:`repositories <cs-v2-repositories>`
 API endpoints.
 
