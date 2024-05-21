@@ -138,6 +138,7 @@ class TIOIterator(APIResultsIterator):
     _size = 100
     _page_num = 0
     _api_version = 1
+    _method = "GET"
 
     def _get_data(self):
         '''
@@ -154,8 +155,13 @@ class TIOIterator(APIResultsIterator):
             query['limit'] = self._limit
             query['offset'] = self._offset
 
-        # Lets make the actual call at this point.
-        resp = self._api.get(self._path, params=query).json()
+        if self._method == "GET":
+            # Lets make the actual call at this point.
+            resp = self._api.get(self._path, params=query).json()
+        elif self._method == "POST":
+            self._log.debug(f"Getting the config search data for offset {self._offset}")
+            resp = self._api.post(self._path, params=query, json=self._payload).json()
+
 
         if self._api_version == 2:
             self._page_num += 1

@@ -1,11 +1,12 @@
 import datetime
+import ipaddress
 import typing
 import uuid
 from typing import List, Optional
 
 from dataclasses import dataclass
 
-from tenable.ot.schema.base import NodesList
+from tenable.ot.schema.base import NodesList, IPList, ID
 from tenable.ot.schema.plugins import Plugin, Plugins
 
 
@@ -150,10 +151,11 @@ class NetworkInterface:
     This class holds a network interface's information.
     """
 
-    direct_asset: Asset
-    family: str
-    first_seen: datetime.datetime
     id: uuid.UUID
-    ips: str
     last_seen: datetime.datetime
+    first_seen: datetime.datetime
     mac: str
+    family: str
+    direct_asset: ID
+    ips: IPList
+    dns_names: NodesList

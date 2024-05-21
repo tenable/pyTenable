@@ -2,7 +2,7 @@
 Files
 =====
 
-Methods described in this section relate to the the files API.
+Methods described in this section relate to the files API.
 These methods can be accessed at ``Nessus.files``.
 
 .. rst-class:: hide-signature
@@ -20,7 +20,7 @@ class FilesAPI(APIEndpoint):
     
     def upload(self, fobj: BytesIO, encrypted: bool = False) -> str:
         '''
-        Uploads a file to Nessus
+        Uploads a file to Tenable Nessus
 
         Args:
             fobj (BytesIO): The file object to upload
@@ -51,7 +51,7 @@ class FilesAPI(APIEndpoint):
                   hook_kwargs: Optional[Dict] = None
                   ) -> BytesIO:
         '''
-        File download manager for Nessus
+        File download manager for Tenable Nessus
         
         Args:
             response (Response): The Response object to work on

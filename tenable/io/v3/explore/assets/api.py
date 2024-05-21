@@ -11,9 +11,11 @@ Methods available on ``tio.v3.explore.assets``:
 .. autoclass:: AssetsAPI
     :members:
 '''
+import warnings
 from typing import Union
 
 from requests import Response
+from restfly.errors import ForbiddenError
 
 from tenable.io.v3.base.endpoints.explore import ExploreBaseEndpoint
 from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator, SearchIterator)
@@ -22,6 +24,9 @@ from tenable.io.v3.base.iterators.explore_iterator import (CSVChunkIterator, Sea
 class AssetsAPI(ExploreBaseEndpoint):
     '''
     This will contain methods related to Explore -> Assets V3 API endpoints.
+
+    Tenable.io Assets V3 APIs are deprecated. Tenable recommends you use the equivalent V2 APIs for `search_host()`
+    and refrain from using the other functions.
     '''
     _path = 'api/v3/assets'
     _conv_json = True
@@ -29,6 +34,8 @@ class AssetsAPI(ExploreBaseEndpoint):
     def search_webapp(self, **kw) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves the WAS assets.
+
+        Tenable.io Assets V3 APIs are deprecated and must no longer be used.
 
         Args:
             filter (tuple, dict, optional):
@@ -92,6 +99,7 @@ class AssetsAPI(ExploreBaseEndpoint):
             >>> tio.v3.assets.search_webapp(filter=('netbios_name', 'eq', 'SCCM'),
             ...  limit=2, sort=[('last_observed', 'asc')])
         '''
+        warnings.warn("Tenable.io Assets V3 APIs are deprecated and must no longer be used.")
         iclass = SearchIterator
         if kw.get('return_csv', False):
             iclass = CSVChunkIterator
@@ -103,6 +111,8 @@ class AssetsAPI(ExploreBaseEndpoint):
     def search_host(self, **kw) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves the host assets.
+
+        Tenable.io Assets V3 APIs are deprecated. Tenable recommends that you use the tio.exports.assets() method instead.
 
         Args:
             filter (tuple, dict, optional):
@@ -166,6 +176,7 @@ class AssetsAPI(ExploreBaseEndpoint):
             >>> tio.v3.assets.search_host(filter=('netbios_name', 'eq', 'SCCM'),
             ...  limit=2, sort=[('last_observed', 'asc')])
         '''
+        warnings.warn("Tenable.io Assets V3 APIs are deprecated. Tenable recommends that you use the tio.exports.assets() method instead.")
         iclass = SearchIterator
         if kw.get('return_csv', False):
             iclass = CSVChunkIterator
@@ -177,6 +188,8 @@ class AssetsAPI(ExploreBaseEndpoint):
     def search_cloud_resource(self, **kw) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves the cloud resource assets.
+
+        Tenable.io Assets V3 APIs are deprecated and must no longer be used.
 
         Args:
             filter (tuple, dict, optional):
@@ -240,6 +253,7 @@ class AssetsAPI(ExploreBaseEndpoint):
             >>> tio.v3.assets.search_cloud_resource(filter=('netbios_name', 'eq', 'SCCM'),
             ...  limit=2, sort=[('last_observed', 'asc')])
         '''
+        warnings.warn("Tenable.io Assets V3 APIs are deprecated and must  no longer be used.")
         iclass = SearchIterator
         if kw.get('return_csv', False):
             iclass = CSVChunkIterator
@@ -251,6 +265,8 @@ class AssetsAPI(ExploreBaseEndpoint):
     def search_all(self, **kw) -> Union[SearchIterator, CSVChunkIterator, Response]:
         '''
         Retrieves all the assets.
+
+        Tenable.io Assets V3 APIs are deprecated and must no longer be used.
 
         Args:
             filter (tuple, dict, optional):
@@ -314,6 +330,7 @@ class AssetsAPI(ExploreBaseEndpoint):
             >>> tio.v3.assets.search_all(filter=('netbios_name', 'eq', 'SCCM'),
             ...  limit=2, sort=[('last_observed', 'asc')])
         '''
+        warnings.warn("Tenable.io Assets V3 APIs are deprecated and must no longer be used.")
         iclass = SearchIterator
         if kw.get('return_csv', False):
             iclass = CSVChunkIterator
@@ -321,3 +338,32 @@ class AssetsAPI(ExploreBaseEndpoint):
                                iterator_cls=iclass,
                                api_path=f'{self._path}/search',
                                **kw)
+
+    def get_asset_uuids(self, **kw):
+        """
+        Retrieves all the assets UUID's for the matching filter tags.
+
+        Args:
+            filter (tuple, dict, optional):
+                A nestable filter object detailing how to filter the results
+                down to the desired subset.
+                Examples:
+                    >>> ('and', ('tags','eq', ['00000000-0000-0000-0000-000000000000']),
+                    ...         ('tags', 'neq', ['00000000-0000-0000-0000-000000000001'])
+                    ... )
+        Returns:
+            :obj:`list`:
+                List of asset UUID's.
+
+        Examples:
+            >>> tio.v3.assets.get_asset_uuids(filter=('and', ('tags','eq', ['00000000-0000-0000-0000-000000000000']),
+            ... ('tags', 'neq', ['00000000-0000-0000-0000-000000000001'])
+            ... )
+            ...)
+        """
+        items = []
+
+        iterator = self.search_all(**kw)
+        for item in iterator:
+            items.append(item['id'])
+        return items

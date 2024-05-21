@@ -2,7 +2,7 @@
 Scanner Groups
 ==============
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`scanner-groups <scanner-groups>` API endpoints.
 
 Methods available on ``tio.scanner_groups``:
@@ -189,7 +189,7 @@ class ScannerGroupsAPI(TIOEndpoint):
 
     def list_routes(self, group_id):
         '''
-        List the hostnames, wildcards, IP addresses, and IP address ranges that Tenable.io
+        List the hostnames, wildcards, IP addresses, and IP address ranges that Tenable Vulnerability Management
         matches against targets in auto-routed scans
 
         :devportal:`scanner-groups: list-routes <scanner-groups-list-routes>`
@@ -211,7 +211,7 @@ class ScannerGroupsAPI(TIOEndpoint):
     def edit_routes(self, group_id, routes):
         '''
         Updates the hostnames, hostname wildcards, IP addresses, and IP address ranges
-        that Tenable.io matches against targets in auto-routed scans
+        that Tenable Vulnerability Management matches against targets in auto-routed scans
 
         :devportal:`scanner-groups: edit-routes <scanner-groups-edit-routes>`
 

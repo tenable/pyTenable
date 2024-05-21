@@ -4,6 +4,7 @@ test scans
 import uuid
 import time
 import os
+import responses
 from io import BytesIO
 from sys import stdout
 import pytest
@@ -39,6 +40,12 @@ def fixture_scheduled_scan(request, api):
 
     request.addfinalizer(teardown)
     return scan
+
+
+@responses.activate
+def test_scan_progress(tvm):
+    responses.get('https://nourl/scans/1/progress', json={'progress': 50})
+    assert tvm.scans.progress(1) == 50
 
 
 @pytest.mark.vcr()
@@ -1626,19 +1633,6 @@ def test_scan_import_scan(api):
         fobj = api.scans.export(scan_list[0])
         api.scans.import_scan(fobj)
 
-# @pytest.mark.vcr()
-# def test_scan_launch_scanid_typeerror(api):
-#    with pytest.raises(TypeError):
-#        api.scans.launch('nope')
-
-@pytest.mark.vcr()
-def test_scan_launch_targets_typerror(api):
-    '''
-    test to raise exception when type of targets param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.launch(1, targets='nope')
-
 
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 def test_scan_launch(api, scan):
@@ -1658,24 +1652,6 @@ def test_scan_launch_alt_targets(api, scan):
     api.scans.launch(scan['id'], targets=['127.0.0.2'])
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
-
-
-@pytest.mark.vcr()
-def test_scan_list_folder_id_typeerror(api):
-    '''
-    test to raise exception when type of folder_id param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.list(folder_id='nope')
-
-
-@pytest.mark.vcr()
-def test_scan_list_last_modified_typeerror(api):
-    '''
-    test to raise exception when type of last_modified param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.list(last_modified='nope')
 
 
 @pytest.mark.vcr()
@@ -1705,10 +1681,6 @@ def test_scan_list(api):
     check(scan, 'user_permissions', int)
     check(scan, 'uuid', 'scanner-uuid')
 
-# @pytest.mark.vcr()
-# def test_scan_pause_scan_id_typeerror(api):
-#    with pytest.raises(TypeError):
-#        api.scans.pause('nope')
 
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 def test_scan_pause_scan(api, scan):
@@ -1717,37 +1689,6 @@ def test_scan_pause_scan(api, scan):
     '''
     _ = api.scans.launch(scan['id'])
     api.scans.pause(scan['id'], block=True)
-
-# @pytest.mark.vcr()
-# def test_scan_plugin_output_scan_id_typeerror(api):
-#    with pytest.raises(TypeError):
-#        api.scans.plugin_output('nope', 1, 1)
-
-@pytest.mark.vcr()
-def test_scan_plugin_output_host_id_typeerror(api):
-    '''
-    test to raise exception when type of host_id param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.plugin_output(1, 'nope', 1)
-
-
-@pytest.mark.vcr()
-def test_scan_plugin_output_plugin_id_typeerror(api):
-    '''
-    test to raise exception when type of plugin_id param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.plugin_output(1, 1, 'nope')
-
-
-@pytest.mark.vcr()
-def test_scan_plugin_output_history_id_typeerror(api):
-    '''
-    test to raise exception when type of history_id param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.plugin_output(1, 1, 1, history_id='nope')
 
 
 @pytest.mark.vcr()
@@ -1803,20 +1744,6 @@ def test_scan_plugin_output(api, scan_results):
         print('Invalid key', error)
 
 
-# @pytest.mark.vcr()
-# def test_scan_read_status_scan_id_typeerror(api):
-#    with pytest.raises(TypeError):
-#        api.scans.set_read_status('nope', False)
-
-@pytest.mark.vcr()
-def test_scan_read_status_read_status_typeerror(api):
-    '''
-    test to raise exception when type of read_status param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.set_read_status(1, 'nope')
-
-
 @pytest.mark.vcr()
 def test_scan_read_status(api, scan):
     '''
@@ -1829,10 +1756,6 @@ def test_scan_read_status(api, scan):
         if resp['id'] == scan['id']:
             assert scan['read'] != resp['read']
 
-# @pytest.mark.vcr()
-# def test_scan_resume_scan_id_typeerror(api):
-#    with pytest.raises(TypeError):
-#        api.scans.resume('nope')
 
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 @pytest.mark.vcr()
@@ -1848,19 +1771,6 @@ def test_scan_resume(api, scan):
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
 
-# @pytest.mark.vcr()
-# def test_scan_schedule_scan_id_typeerror(api):
-#    with pytest.raises(TypeError):
-#        api.scans.schedule('nope', False)
-
-@pytest.mark.vcr()
-def test_scan_schedule_enabled_typeerror(api):
-    '''
-    test to raise exception when type of enabled param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.schedule(1, 'nope')
-
 
 @pytest.mark.skip(reason="Need to configure the scan w/ a schedule.")
 @pytest.mark.vcr()
@@ -1870,10 +1780,6 @@ def test_scan_schedule(api, scan):
     '''
     api.scans.schedule(scan['id'], False)
 
-# @pytest.mark.vcr()
-# def test_scan_stop_scan_id_typeerror(api):
-#    with pytest.raises(TypeError):
-#        api.scans.stop('nope')
 
 @pytest.mark.skip(reason="Switching between scan states can be tricky")
 @pytest.mark.vcr()
@@ -1885,10 +1791,7 @@ def test_scan_stop(api, scan):
     time.sleep(5)
     api.scans.stop(scan['id'])
 
-# @pytest.mark.vcr()
-# def test_scan_status_scan_id_typeerror(api):
-#    with pytest.raises(TypeError):
-#        api.scans.status('no')
+
 
 @pytest.mark.vcr()
 def test_scan_status(api, scan):
@@ -1920,78 +1823,6 @@ def test_scan_check_auto_targets_success(api):
     check(resp, 'total_matched_resource_uuids', int)
     check(resp, 'total_missed_targets', int)
 
-
-@pytest.mark.vcr()
-def test_scan_check_auto_targets_limit_typeerror(api):
-    '''
-    test to raise exception when type of limit param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.check_auto_targets('nope', 5, targets=['127.0.0.1'])
-
-
-@pytest.mark.vcr()
-def test_scan_check_auto_targets_matched_resource_limit_typeerror(api):
-    '''
-    test to raise exception when type of matched_resource_limit param
-    does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.check_auto_targets(10, 'nope', targets=['127.0.0.1'])
-
-
-@pytest.mark.vcr()
-def test_scan_check_auto_targets_network_uuid_unexpectedvalueerror(api):
-    '''
-    test to raise exception when network_uuid param value does not match the choices.
-    '''
-    with pytest.raises(UnexpectedValueError):
-        api.scans.check_auto_targets(10, 5, network_uuid='nope', targets=['127.0.0.1'])
-
-
-@pytest.mark.vcr()
-def test_scan_check_auto_targets_network_uuid_typeerror(api):
-    '''
-    test to raise exception when type of network_uuid param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.check_auto_targets(10, 5, network_uuid=1, targets=['127.0.0.1'])
-
-
-@pytest.mark.vcr()
-def test_scan_check_auto_targets_tags_unexpectedvalueerror(api):
-    '''
-    test to raise exception when type of any value in tags param
-    does not match the expected type.
-    '''
-    with pytest.raises(UnexpectedValueError):
-        api.scans.check_auto_targets(10, 5, tags=['nope'], targets=['127.0.0.1'])
-
-
-@pytest.mark.vcr()
-def test_scan_check_auto_targets_tags_typeerror(api):
-    '''
-    test to raise exception when type of tags param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.check_auto_targets(10, 5, tags=1, targets=['127.0.0.1'])
-
-
-@pytest.mark.vcr()
-def test_scan_check_auto_targets_targets_typeerror(api):
-    '''
-    test to raise exception when type of targets param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.check_auto_targets(10, 5, targets=1)
-
-
-# @pytest.mark.vcrx()
-# def test_scan_results_success(api, scan_results, scan):
-#     # print('scan: {}'.format(scan.history['id']))
-#     # print('*'*25)
-#     # print('scan_results: {}'.format(scan_results))
-#     api.scans.details()
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_success(api):

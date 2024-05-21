@@ -39,6 +39,35 @@ def asset_export():
         ]
     }
 
+@pytest.fixture
+def asset_export_with_open_ports_true():
+    """
+    Asset export request with open ports set as true.
+    """
+    return {
+        'chunk_size': 1000,
+        'include_open_ports': True
+    }
+
+@pytest.fixture
+def asset_export_with_open_ports_false():
+    """
+    Asset export request with open ports set as false.
+    """
+    return {
+        'chunk_size': 1000,
+        'include_open_ports': False
+    }
+
+@pytest.fixture
+def asset_export_with_out_open_ports():
+    """
+    Asset export request without open ports.
+    """
+    return {
+        'chunk_size': 1000
+    }
+
 
 @pytest.fixture
 def compliance_export():
@@ -52,6 +81,33 @@ def compliance_export():
                   uuid.UUID('c62f8737-8623-45a3-bdcb-560daacb21f1'),
                   ],
         'num_findings': 1000
+    }
+
+
+@pytest.fixture
+def compliance_export_phase_1_schema():
+    """
+    Example compliance export request with phase 1 filters
+    """
+    return {
+        'first_seen': 1635798607,
+        'last_seen': 1635798607,
+        'asset': ['f634d639-cc33-4149-a683-5ad6b8f29d9c',
+                  uuid.UUID('c62f8737-8623-45a3-bdcb-560daacb21f1'),
+                  ],
+        'num_findings': 1000,
+        'ipv4_addresses': ['192.168.0.1'],
+        'ipv6_addresses': ['2001:0db8:85a3:0000:0000:8a2e:0370:7334'],
+        'plugin_name': ['Debian dla-3719 : php-seclib - security update', 'Debian dsa-5607 : chromium - security update'],
+        'plugin_id': [189491, 189490],
+        'asset_tags': ['tag-a', 'tag-b'],
+        'audit_name': 'my-audit-name',
+        'audit_file_name': 'my-audit-file-name',
+        'compliance_results': ['PASSED'],
+        'last_observed': 1635798607,
+        'indexed_at': 1635798607,
+        'since': 1635798607,
+        'state': ['Active']
     }
 
 
@@ -190,3 +246,38 @@ def test_vulnerabilityschema(vuln_export):
     with pytest.raises(ValidationError):
         vuln_export['scan_uuid'] = 0
         schema.load(vuln_export)
+
+def test_asset_export_schema_for_open_ports_true(asset_export_with_open_ports_true):
+    """
+    Ensure Asset Export request is correctly formed with include_open_ports set to true.
+    """
+    schema = AssetExportSchema()
+    schema_dump = schema.dump(schema.load(asset_export_with_open_ports_true))
+    assert schema_dump["include_open_ports"] == True
+
+
+def test_asset_export_schema_for_open_ports_false(asset_export_with_open_ports_false):
+    """
+    Ensure Asset Export request is correctly formed with include_open_ports set to false.
+    """
+    schema = AssetExportSchema()
+    schema_dump = schema.dump(schema.load(asset_export_with_open_ports_false))
+    assert schema_dump["include_open_ports"] == False
+
+def test_asset_export_schema_without_open_ports(asset_export_with_out_open_ports):
+    """
+    Ensure Asset Export request is correctly formed without include_open_ports.
+    """
+    schema = AssetExportSchema()
+    schema_dump = schema.dump(schema.load(asset_export_with_out_open_ports))
+    assert "include_open_ports" not in schema_dump
+
+def test_compliance_export_phase_1_filters(compliance_export_phase_1_schema):
+    """
+    Test Compliance Export Phase 1 Filter Schema
+    """
+    schema = ComplianceExportSchema()
+    schema_dump = schema.dump(schema.load(compliance_export_phase_1_schema))
+
+    # checking random element
+    assert schema_dump["filters"]["state"][0] == "Active"

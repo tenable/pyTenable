@@ -6,5 +6,6 @@ restfly>=1.4.5
 marshmallow>=3.8
 python-box>=4.0
 defusedxml>=0.5.0
-urllib3>=1.26.5
+urllib3==1.26.18
 typing-extensions>=3.10.0.2
+requests-toolbelt==1.0.0

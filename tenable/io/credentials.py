@@ -2,7 +2,7 @@
 Credentials
 ===========
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`credentials <credentials>` API endpoints.
 
 Methods available on ``tio.credentials``:
@@ -11,6 +11,8 @@ Methods available on ``tio.credentials``:
 .. autoclass:: CredentialsAPI
     :members:
 '''
+from typing import BinaryIO
+
 from tenable.utils import dict_merge
 from .base import TIOEndpoint, TIOIterator
 
@@ -249,7 +251,7 @@ class CredentialsAPI(TIOEndpoint):
 
     def list(self, *filters, **kw):
         '''
-        Get the listing of configured credentials from Tenable.io.
+        Get the listing of configured credentials from Tenable Vulnerability Management.
 
         :devportal:`credentials: list <credentials-list>`
 
@@ -364,7 +366,7 @@ class CredentialsAPI(TIOEndpoint):
             _resource='credentials'
         )
 
-    def upload(self, fobj):
+    def upload(self, fobj: BinaryIO, file_type: str):
         '''
         Uploads a file for use with a managed credential.
 
@@ -372,11 +374,19 @@ class CredentialsAPI(TIOEndpoint):
 
         Args:
             fobj (FileObject):
-                The file object intended to be uploaded into Tenable.io.
+                The file object intended to be uploaded into Tenable Vulnerability Management.
+            file_type (string):
+                File type of the credential being uploaded.
 
         Returns:
             :obj:`str`:
                 The fileuploaded attribute
+
+        Examples:
+            >>>     with open("hello.pem", "rb") as file:
+            ...            response = tio.credentials.upload(file, "pem")
+            ...
+            ...     print(response)
         '''
 
         # We will attempt to discover the name of the file stored within the
@@ -388,5 +398,5 @@ class CredentialsAPI(TIOEndpoint):
                 'Filedata': fobj
             }
         }
-
-        return self._api.post('credentials/files', **kw).json()['fileuploaded']
+        file_type = self._check("file_type", file_type, str, choices=["pem", "json", "csv", "x.509", "p12", "ssh", "cookie"])
+        return self._api.post(f'credentials/files?fileType={file_type}', **kw).json()['fileuploaded']

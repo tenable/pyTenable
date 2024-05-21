@@ -2,7 +2,7 @@
 Score
 =====
 
-Methods described in this section relate to the the score API.
+Methods described in this section relate to the score API.
 These methods can be accessed at ``TenableAD.score``.
 
 .. rst-class:: hide-signature

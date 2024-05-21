@@ -1,6 +1,6 @@
 """
 OT GraphQL API Queries.
-For each class, please refer to the Tenable.ot documentation website for a
+For each class, please refer to the Tenable OT Security documentation website for a
 detailed explanation of the fields.
 """
 
@@ -423,6 +423,21 @@ query events(
     }
     dstInterface{
       id
+      lastSeen
+      firstSeen
+      mac
+      ips {
+        nodes{
+          ip
+        }
+      }
+      dnsNames{
+            nodes
+      }
+      family
+      directAsset {
+        id
+      }
     }
     dstNames{
       nodes

@@ -1,8 +1,8 @@
 """
-Tenable.ot
+Tenable OT Security
 ==========
 
-This package covers the Tenable.ot interface.
+This package covers the Tenable OT Security interface.
 
 .. autoclass:: TenableOT
     :members:
@@ -23,27 +23,28 @@ from tenable.base.platform import APIPlatform
 from tenable.ot.assets import AssetsAPI
 from tenable.ot.events import EventsAPI
 from tenable.ot.plugins import PluginsAPI
+from tenable.ot.exports.api import ExportsAPI
 
 
 class TenableOT(APIPlatform):
     """
-    The Tenable.ot object is the primary interaction point for users to
-    interface with Tenable.OT via the pyTenable library.  All the API
+    The Tenable OT Security object is the primary interaction point for users
+    to interface with Tenable.OT via the pyTenable library.  All the API
     endpoint classes that have been written will be grafted onto this class.
 
     Args:
         api_key (str, optional):
-            The user's API key for Tenable.ot.  If an api key isn't specified,
-            then the library will attempt to read the environment variable
-            ``TOT_API_KEY`` to acquire the key.
+            The user's API key for Tenable OT Security.  If an api key isn't
+            specified, then the library will attempt to read the environment
+            variable ``TOT_API_KEY`` to acquire the key.
         url (str, optional):
-            The base URL used to connect to the Tenable.ot application.  If a
-            URL isn't specified, then the library will attempt to read the
+            The base URL used to connect to the Tenable OT Security service.
+            If a URL isn't specified, then the library will attempt to read the
             environment variable ``TOT_URL`` to acquire the URL.
 
         **kwargs:
             arguments passed to :class:`tenable.base.platform.APIPlatform` for
-            connection management.
+            ConnectionAbortedErrorn management.
 
 
     Examples:
@@ -72,7 +73,7 @@ class TenableOT(APIPlatform):
     _conv_json = True
 
     def _session_auth(self, **kwargs):  # noqa: PLW0221,PLW0613
-        msg = "Session Auth isn't supported with the Tenable.ot APIs"
+        msg = "Session Auth isn't supported with the Tenable OT Security APIs"
         warnings.warn(msg)
         self._log.warning(msg)
 
@@ -121,7 +122,7 @@ class TenableOT(APIPlatform):
     def assets(self):
         """
         The interface object for the
-        :doc:`Tenable.ot Assets APIs <assets>`.
+        :doc:`Tenable OT Security Assets APIs <assets>`.
         """
         return AssetsAPI(self)
 
@@ -129,7 +130,7 @@ class TenableOT(APIPlatform):
     def events(self):
         """
         The interface object for the
-        :doc:`Tenable.ot Events APIs <events>`.
+        :doc:`Tenable OT Security Events APIs <events>`.
         """
         return EventsAPI(self)
 
@@ -137,6 +138,14 @@ class TenableOT(APIPlatform):
     def plugins(self):
         """
         The interface object for the
-        :doc:`Tenable.ot Plugins APIs <plugins>`.
+        :doc:`Tenable OT Security Plugins APIs <plugins>`.
         """
         return PluginsAPI(self)
+
+    @property
+    def exports(self):
+        """
+        The interface object for the
+        :doc:`Tenable OT Security Exports <exports>`.
+        """
+        return ExportsAPI(self)

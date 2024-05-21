@@ -1,8 +1,8 @@
 """
-OT API Base
+Tenable OT Security API Base
 ======
 
-Methods described in this section relate to the OT API Base class.
+Methods described in this section relate to the Tenable OT Security API Base class.
 
 .. rst-class:: hide-signature
 .. autoclass:: OTAPIBase

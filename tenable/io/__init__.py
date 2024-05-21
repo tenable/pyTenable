@@ -1,5 +1,5 @@
 '''
-Tenable.io
+Tenable Vulnerability Management
 ==========
 
 .. autoclass:: TenableIO
@@ -41,6 +41,7 @@ Tenable.io
     target_groups
     users
     v3/index
+    was
     workbenches
 '''
 from typing import Dict, Optional
@@ -79,22 +80,23 @@ from .tags import TagsAPI
 from .target_groups import TargetGroupsAPI
 from .users import UsersAPI
 from .v3 import Version3API
+from .was.api import WasAPI
 from .workbenches import WorkbenchesAPI
 
 
 class TenableIO(APIPlatform):  # noqa: PLR0904
     '''
-    The Tenable.io object is the primary interaction point for users to
-    interface with Tenable.io via the pyTenable library.  All of the API
+    The Tenable Vulnerability Management object is the primary interaction point for users to
+    interface with Tenable Vulnerability Management via the pyTenable library.  All the API
     endpoint classes that have been written will be grafted onto this class.
 
     Args:
         access_key (str, optional):
-            The user's API access key for Tenable.io  If an access key isn't
+            The user's API access key for Tenable Vulnerability Management.  If an access key isn't
             specified, then the library will attempt to read the environment
             variable ``TIO_ACCESS_KEY`` to acquire the key.
         secret_key (str, optional):
-            The user's API secret key for Tenable.io  If a secret key isn't
+            The user's API secret key for Tenable Vulnerability Management.  If a secret key isn't
             specified, then the library will attempt to read the environment
             variable ``TIO_SECRET_KEY`` to acquire the key.
         url (str, optional):
@@ -162,7 +164,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         '''
         kwargs['headers'] = kwargs.get('headers', {})
         # if the request uuid exists in the response, then we will send the
-        # uuid back so that there is solid request chain in the Tenable.io
+        # uuid back so that there is solid request chain in the Tenable Vulnerability Management
         # platform logs.
         request_uuid = response.headers.get('X-Tio-Last-Request-Uuid')
         if request_uuid:
@@ -190,7 +192,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def cs(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Container Security APIs <cs/index>`.
+        :doc:`Tenable Vulnerability Management Container Security APIs <cs/index>`.
         '''
         return ContainerSecurity(self)
 
@@ -198,7 +200,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def access_groups(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Access Groups APIs <access_groups>`.
+        :doc:`Tenable Vulnerability Management Access Groups APIs <access_groups>`.
         '''
         return AccessGroupsAPI(self)
 
@@ -206,7 +208,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def access_groups_v2(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Access Groups v2 APIs <access_groups_v2>`.
+        :doc:`Tenable Vulnerability Management Access Groups v2 APIs <access_groups_v2>`.
         '''
         return AccessGroupsV2API(self)
 
@@ -214,7 +216,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def agent_config(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Agent Config APIs <agent_config>`.
+        :doc:`Tenable Vulnerability Management Agent Config APIs <agent_config>`.
         '''
         return AgentConfigAPI(self)
 
@@ -222,7 +224,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def agent_groups(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Agent Groups APIs <agent_groups>`.
+        :doc:`Tenable Vulnerability Management Agent Groups APIs <agent_groups>`.
         '''
         return AgentGroupsAPI(self)
 
@@ -230,7 +232,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def agent_exclusions(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Agent Exclusions APIs <agent_exclusions>`.
+        :doc:`Tenable Vulnerability Management Agent Exclusions APIs <agent_exclusions>`.
         '''
         return AgentExclusionsAPI(self)
 
@@ -238,7 +240,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def agents(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Agents APIs <agents>`.
+        :doc:`Tenable Vulnerability Management Agents APIs <agents>`.
         '''
         return AgentsAPI(self)
 
@@ -246,7 +248,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def assets(self):
         '''
         The interface object for the
-        :doc:`Tenable.io assets APIs <assets>`.
+        :doc:`Tenable Vulnerability Management assets APIs <assets>`.
         '''
         return AssetsAPI(self)
 
@@ -254,7 +256,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def audit_log(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Audit Log APIs <audit_log>`.
+        :doc:`Tenable Vulnerability Management Audit Log APIs <audit_log>`.
         '''
         return AuditLogAPI(self)
 
@@ -262,7 +264,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def credentials(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Credentials APIs <credentials>`.
+        :doc:`Tenable Vulnerability Management Credentials APIs <credentials>`.
         '''
         return CredentialsAPI(self)
 
@@ -270,7 +272,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def editor(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Editor APIs <editor>`.
+        :doc:`Tenable Vulnerability Management Editor APIs <editor>`.
         '''
         return EditorAPI(self)
 
@@ -278,7 +280,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def exclusions(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Exclusions APIs <exclusions>`.
+        :doc:`Tenable Vulnerability Management Exclusions APIs <exclusions>`.
         '''
         return ExclusionsAPI(self)
 
@@ -286,7 +288,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def exports(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Exports APIs <exports>`.
+        :doc:`Tenable Vulnerability Management Exports APIs <exports>`.
         '''
         return ExportsAPI(self)
 
@@ -294,7 +296,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def files(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Files APIs <files>`.
+        :doc:`Tenable Vulnerability Management Files APIs <files>`.
         '''
         return FileAPI(self)
 
@@ -302,7 +304,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def filters(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Filters APIs <filters>`.
+        :doc:`Tenable Vulnerability Management Filters APIs <filters>`.
         '''
         return FiltersAPI(self)
 
@@ -310,7 +312,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def folders(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Folders APIs <folders>`.
+        :doc:`Tenable Vulnerability Management Folders APIs <folders>`.
         '''
         return FoldersAPI(self)
 
@@ -318,7 +320,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def groups(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Groups APIs <groups>`.
+        :doc:`Tenable Vulnerability Management Groups APIs <groups>`.
         '''
         return GroupsAPI(self)
 
@@ -326,7 +328,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def networks(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Networks APIs <networks>`.
+        :doc:`Tenable Vulnerability Management Networks APIs <networks>`.
         '''
         return NetworksAPI(self)
 
@@ -334,7 +336,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def permissions(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Permissions APIs <permissions>`.
+        :doc:`Tenable Vulnerability Management Permissions APIs <permissions>`.
         '''
         return PermissionsAPI(self)
 
@@ -342,7 +344,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def plugins(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Plugins APIs <plugins>`.
+        :doc:`Tenable Vulnerability Management Plugins APIs <plugins>`.
         '''
         return PluginsAPI(self)
 
@@ -350,7 +352,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def policies(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Policies APIs <policies>`.
+        :doc:`Tenable Vulnerability Management Policies APIs <policies>`.
         '''
         return PoliciesAPI(self)
 
@@ -358,7 +360,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def scanner_groups(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Scanner Groups APIs <scanner_groups>`.
+        :doc:`Tenable Vulnerability Management Scanner Groups APIs <scanner_groups>`.
         '''
         return ScannerGroupsAPI(self)
 
@@ -366,7 +368,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def scanners(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Scanners APIs <scanners>`.
+        :doc:`Tenable Vulnerability Management Scanners APIs <scanners>`.
         '''
         return ScannersAPI(self)
 
@@ -374,7 +376,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def scans(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Scans APIs <scans>`.
+        :doc:`Tenable Vulnerability Management Scans APIs <scans>`.
         '''
         return ScansAPI(self)
 
@@ -382,7 +384,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def remediationscans(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Remediation Scans APIs <remediation_scans>`.
+        :doc:`Tenable Vulnerability Management Remediation Scans APIs <remediation_scans>`.
         '''
         return RemediationScansAPI(self)
 
@@ -390,7 +392,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def server(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Server APIs <server>`.
+        :doc:`Tenable Vulnerability Management Server APIs <server>`.
         '''
         return ServerAPI(self)
 
@@ -398,7 +400,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def session(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Session APIs <session>`.
+        :doc:`Tenable Vulnerability Management Session APIs <session>`.
         '''
         return SessionAPI(self)
 
@@ -406,7 +408,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def tags(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Tags APIs <tags>`.
+        :doc:`Tenable Vulnerability Management Tags APIs <tags>`.
         '''
         return TagsAPI(self)
 
@@ -414,7 +416,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def target_groups(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Target Groups APIs <target_groups>`.
+        :doc:`Tenable Vulnerability Management Target Groups APIs <target_groups>`.
         '''
         return TargetGroupsAPI(self)
 
@@ -422,7 +424,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def users(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Users APIs <users>`.
+        :doc:`Tenable Vulnerability Management Users APIs <users>`.
         '''
         return UsersAPI(self)
 
@@ -430,7 +432,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def workbenches(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Workbenches APIs <workbenches>`.
+        :doc:`Tenable Vulnerability Management Workbenches APIs <workbenches>`.
         '''
         return WorkbenchesAPI(self)
 
@@ -438,7 +440,15 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
     def v3(self):
         '''
         The interface object for the
-        :doc:`Tenable.io v3 APIs <v3/index>`.
+        :doc:`Tenable Vulnerability Management v3 APIs <v3/index>`.
         '''
         return Version3API(self)
+
+    @property
+    def was(self):
+        """
+        The interface object for the
+        :doc:`Tenable Vulnerability Management WAS APIs <was>`.
+        """
+        return WasAPI(self)
 

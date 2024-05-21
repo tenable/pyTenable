@@ -30,10 +30,11 @@ setup(
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Libraries :: Application Frameworks",
         "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
     keywords="tenable tenable_io securitycenter containersecurity",
     packages=find_packages(exclude=["docs", "tests", "tests.*"]),
@@ -45,8 +46,9 @@ setup(
         'marshmallow>=3.8',
         'python-box>=4.0',
         'defusedxml>=0.5.0',
-        'urllib3>=1.26.5',
+        'urllib3>=1.26.18',
         'typing-extensions>=4.0.1',
         'dataclasses>=0.8;python_version=="3.6"',
+        'requests-toolbelt>=1.0.0'
     ],
 )

@@ -1,5 +1,5 @@
 '''
-Tenable.sc
+Tenable Security Center
 ==========
 
 .. note::
@@ -80,20 +80,20 @@ from .users import UserAPI
 
 class TenableSC(APIPlatform):  # noqa PLR0904
     '''TenableSC API Wrapper
-    The Tenable.sc object is the primary interaction point for users to
-    interface with Tenable.sc via the pyTenable library.  All of the API
+    The Tenable Security Center object is the primary interaction point for users to
+    interface with Tenable Security Center via the pyTenable library.  All of the API
     endpoint classes that have been written will be grafted onto this class.
 
     Args:
         host (str):
-            The address of the Tenable.sc instance to connect to.  (NOTE: The
+            The address of the Tenable Security Center instance to connect to.  (NOTE: The
             `hos`t parameter will be deprecated in favor of the `url` parameter
             in future releases).
         access_key (str, optional):
             The API access key to use for sessionless authentication.
         adapter (requests.Adaptor, optional):
             If a requests session adaptor is needed to ensure connectivity
-            to the Tenable.sc host, one can be provided here.
+            to the Tenable Security Center host, one can be provided here.
         backoff (float, optional):
             If a 429 response is returned, how much do we want to backoff
             if the response didn't send a Retry-After header.  The default
@@ -124,7 +124,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             If a requests Session is provided, the provided session will be
             used instead of constructing one during initialization.
         ssl_verify (bool, optional):
-            Should the SSL certificate on the Tenable.sc instance be verified?
+            Should the SSL certificate on the Tenable Security Center instance be verified?
             Default is False.
         username (str, optional):
             The username to use for session authentication.
@@ -135,12 +135,12 @@ class TenableSC(APIPlatform):  # noqa PLR0904
 
 
     Examples:
-        A direct connection to Tenable.sc:
+        A direct connection to Tenable Security Center:
 
         >>> from tenable.sc import TenableSC
         >>> sc = TenableSC('sc.company.tld')
 
-        A connection to Tenable.sc using SSL certificates:
+        A connection to Tenable Security Center using SSL certificates:
 
         >>> sc = TenableSC('sc.company.tld',
         ...     cert=('/path/client.cert', '/path/client.key'))
@@ -154,7 +154,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         ...     pkcs12_password='omgwtfbbq!')
         >>> sc = TenableSC('sc.company.tld', adapter=adapter)
 
-        Using API Keys to communicate to Tenable.sc:
+        Using API Keys to communicate to Tenable Security Center:
 
         >>> sc = TenableSC('sc.company.tld',
         ...     access_key='key',
@@ -167,9 +167,9 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     the `SC API Best Practices Guide`_.
 
     .. _SC API documentation:
-        https://docs.tenable.com/sccv/api/index.html
+        https://docs.tenable.com/security-center/api/index.htm
     .. _SC API Best Practices Guide:
-        https://docs.tenable.com/sccv/api_best_practices/Content/ScApiBestPractices/AboutScApiBestPrac.htm
+        https://docs.tenable.com/security-center/api_best_practices/Content/AboutScApiBestPrac.htm
     .. _Requests Client-Side Certificates:
         http://docs.python-requests.org/en/master/user/advanced/#client-side-certificates
     .. _requests_pkcs12:
@@ -239,7 +239,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             self._auth_mech = 'keys'
         else:
             raise ConnectionError(
-                   f'API Keys not supported on Tenable.sc {self.version}'
+                   f'API Keys not supported on Tenable Security Center {self.version}'
                 )
 
     def _session_auth(self, username, password):
@@ -259,7 +259,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def login(self, username=None, password=None,
               access_key=None, secret_key=None):
         '''
-        Logs the user into Tenable.sc
+        Logs the user into Tenable Security Center
 
         Args:
             username (str, optional): Username
@@ -291,7 +291,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
 
     def logout(self):
         '''
-        Logs out of Tenable.sc and resets the session.
+        Logs out of Tenable Security Center and resets the session.
 
         Examples:
             >>> sc.logout()
@@ -316,7 +316,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def accept_risks(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Accept Risks APIs <accept_risks>`.
+        :doc:`Tenable Security Center Accept Risks APIs <accept_risks>`.
         '''
         return AcceptRiskAPI(self)
 
@@ -324,7 +324,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def alerts(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Alerts APIs <alerts>`.
+        :doc:`Tenable Security Center Alerts APIs <alerts>`.
         '''
         return AlertAPI(self)
 
@@ -332,7 +332,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def analysis(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Analysis APIs <analysis>`.
+        :doc:`Tenable Security Center Analysis APIs <analysis>`.
         '''
         return AnalysisAPI(self)
 
@@ -340,7 +340,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def asset_lists(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Asset Lists APIs <asset_lists>`.
+        :doc:`Tenable Security Center Asset Lists APIs <asset_lists>`.
         '''
         return AssetListAPI(self)
 
@@ -348,7 +348,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def audit_files(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Audit Files APIs <audit_files>`.
+        :doc:`Tenable Security Center Audit Files APIs <audit_files>`.
         '''
         return AuditFileAPI(self)
 
@@ -356,7 +356,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def credentials(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Credentials APIs <credentials>`.
+        :doc:`Tenable Security Center Credentials APIs <credentials>`.
         '''
         return CredentialAPI(self)
 
@@ -364,7 +364,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def current(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Current Session APIs <current>`.
+        :doc:`Tenable Security Center Current Session APIs <current>`.
         '''
         return CurrentSessionAPI(self)
 
@@ -372,7 +372,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def feeds(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Feeds APIs <feeds>`.
+        :doc:`Tenable Security Center Feeds APIs <feeds>`.
         '''
         return FeedAPI(self)
 
@@ -380,7 +380,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def files(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Files APIs <files>`.
+        :doc:`Tenable Security Center Files APIs <files>`.
         '''
         return FileAPI(self)
 
@@ -388,7 +388,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def groups(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Groups APIs <groups>`.
+        :doc:`Tenable Security Center Groups APIs <groups>`.
         '''
         return GroupAPI(self)
 
@@ -396,7 +396,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def organizations(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Organization APIs <organizations>`.
+        :doc:`Tenable Security Center Organization APIs <organizations>`.
         '''
         return OrganizationAPI(self)
 
@@ -404,7 +404,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def plugins(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Plugins APIs <plugins>`.
+        :doc:`Tenable Security Center Plugins APIs <plugins>`.
         '''
         return PluginAPI(self)
 
@@ -412,7 +412,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def policies(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Policies APIs <policies>`.
+        :doc:`Tenable Security Center Policies APIs <policies>`.
         '''
         return ScanPolicyAPI(self)
 
@@ -420,7 +420,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def queries(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Queries APIs <queries>`.
+        :doc:`Tenable Security Center Queries APIs <queries>`.
         '''
         return QueryAPI(self)
 
@@ -428,7 +428,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def recast_risks(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Recast Risks APIs <recast_risks>`.
+        :doc:`Tenable Security Center Recast Risks APIs <recast_risks>`.
         '''
         return RecastRiskAPI(self)
 
@@ -444,7 +444,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def repositories(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Repositories APIs <repositories>`.
+        :doc:`Tenable Security Center Repositories APIs <repositories>`.
         '''
         return RepositoryAPI(self)
 
@@ -452,7 +452,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def roles(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Roles APIs <roles>`.
+        :doc:`Tenable Security Center Roles APIs <roles>`.
         '''
         return RoleAPI(self)
 
@@ -460,7 +460,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def scanners(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Scanners APIs <scanners>`.
+        :doc:`Tenable Security Center Scanners APIs <scanners>`.
         '''
         return ScannerAPI(self)
 
@@ -468,7 +468,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def scans(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Scans APIs <scans>`.
+        :doc:`Tenable Security Center Scans APIs <scans>`.
         '''
         return ScanAPI(self)
 
@@ -476,7 +476,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def scan_instances(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Scan Instances APIs <scan_instances>`.
+        :doc:`Tenable Security Center Scan Instances APIs <scan_instances>`.
         '''
         return ScanResultAPI(self)
 
@@ -484,7 +484,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def scan_zones(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Scan Zones APIs <scan_zones>`.
+        :doc:`Tenable Security Center Scan Zones APIs <scan_zones>`.
         '''
         return ScanZoneAPI(self)
 
@@ -492,7 +492,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def status(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Status APIs <status>`.
+        :doc:`Tenable Security Center Status APIs <status>`.
         '''
         return StatusAPI(self)
 
@@ -500,7 +500,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def system(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc System APIs <system>`.
+        :doc:`Tenable Security Center System APIs <system>`.
         '''
         return SystemAPI(self)
 
@@ -508,6 +508,6 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     def users(self):
         '''
         The interface object for the
-        :doc:`Tenable.sc Users APIs <users>`.
+        :doc:`Tenable Security Center Users APIs <users>`.
         '''
         return UserAPI(self)

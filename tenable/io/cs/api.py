@@ -2,7 +2,7 @@
 Container Security
 ==================
 
-The following sub-package allows for interaction with the Tenable.io
+The following sub-package allows for interaction with the Tenable Vulnerability Management
 Container Security APIs.
 
 .. rst-class:: hide-signature
@@ -30,7 +30,7 @@ class ContainerSecurity(APIEndpoint):
     def images(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Container Security Images APIs <images>`.
+        :doc:`Tenable Vulnerability Management Container Security Images APIs <images>`.
         '''
         return ImagesAPI(self._api)
 
@@ -38,7 +38,7 @@ class ContainerSecurity(APIEndpoint):
     def reports(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Container Security Reports APIs <reports>`.
+        :doc:`Tenable Vulnerability Management Container Security Reports APIs <reports>`.
         '''
         return ReportsAPI(self._api)
 
@@ -46,6 +46,6 @@ class ContainerSecurity(APIEndpoint):
     def repositories(self):
         '''
         The interface object for the
-        :doc:`Tenable.io Container Security Repository APIs <repositories>`.
+        :doc:`Tenable Vulnerability Management Container Security Repository APIs <repositories>`.
         '''
         return RepositoriesAPI(self._api)

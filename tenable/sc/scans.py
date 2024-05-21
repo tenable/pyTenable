@@ -2,12 +2,12 @@
 Scans
 =====
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Scan <Scan.html>` API.  While the api endpoints obliquely refers to the
-model in which this collection of actions modifies as "Scans", Tenable.sc is
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Scan <Scan.htm>` API.  While the api endpoints obliquely refers to the
+model in which this collection of actions modifies as "Scans", Tenable Security Center is
 actually referring to the scan *definitions*, which are the un-launched and/or
 scheduled scans typically seen within the **Active Scans** section within
-Tenable.sc.
+Tenable Security Center.
 
 Methods available on ``sc.scans``:
 
@@ -24,6 +24,11 @@ class ScanAPI(SCEndpoint):
         '''
         Handles parsing the keywords and returns a scan definition document
         '''
+        if 'inactivity_timeout' in kw:
+            kw['inactivityTimeout'] = str(self._check(
+                'inactivity_timeout', kw['inactivity_timeout'], int, default=3600))
+            del (kw['inactivity_timeout'])
+
         if 'name' in kw:
             # simply verify that the name attribute is a string.
             self._check('name', kw['name'], str)
@@ -178,7 +183,7 @@ class ScanAPI(SCEndpoint):
         '''
         Retrieves the list of scan definitions.
 
-        :sc-api:scan: list <Scan.html#scan_GET>`
+        :sc-api:`scan: list <Scan.htm#scan_GET>`
 
         Args:
             fields (list, optional):
@@ -203,7 +208,7 @@ class ScanAPI(SCEndpoint):
         '''
         Creates a scan definition.
 
-        :sc-api:`scan: create <Scan.html#scan_POST>`
+        :sc-api:`scan: create <Scan.htm#scan_POST>`
 
         Args:
             name (str): The name of the scan.
@@ -260,6 +265,8 @@ class ScanAPI(SCEndpoint):
             vhosts (bool, optional):
                 Should virtual host logic be enabled for the scan?  The default
                 is ``False``.
+            inactivity_timeout (int):
+                Inactivity Timeout in seconds. The value should be between 3600 and 432000.
 
         Returns:
             :obj:`dict`:
@@ -287,7 +294,7 @@ class ScanAPI(SCEndpoint):
         '''
         Returns the details for a specific scan.
 
-        :sc-api:`scan: details <Scan.html#ScanRESTReference-/scan/{id}>`
+        :sc-api:`scan: details <Scan.htm#ScanRESTReference-/scan/{id}>`
 
         Args:
             id (int): The identifier for the scan.
@@ -312,7 +319,7 @@ class ScanAPI(SCEndpoint):
         '''
         Edits an existing scan definition.
 
-        :sc-api:`scan: update <Scan.html#scan_id_PATCH>`
+        :sc-api:`scan: update <Scan.htm#scan_id_PATCH>`
 
         Args:
             id (int): The identifier for the scan.
@@ -382,7 +389,7 @@ class ScanAPI(SCEndpoint):
         '''
         Removes the specified scan from SecurityCenter.
 
-        :sc-api:`scan: delete <Scan.html#scan_id_DELETE>`
+        :sc-api:`scan: delete <Scan.htm#scan_id_DELETE>`
 
         Args:
             id (int): The identifier for the scan to delete.
@@ -401,7 +408,7 @@ class ScanAPI(SCEndpoint):
         '''
         Copies an existing scan definition.
 
-        :sc-api:`scan: copy <Scan.html#ScanRESTReference-/scan/{id}/copyScanCopyPOST>`
+        :sc-api:`scan: copy <Scan.htm#ScanRESTReference-/scan/{id}/copyScanCopyPOST>`
 
         Args:
             id (int): The scan definition identifier to copy.
@@ -428,7 +435,7 @@ class ScanAPI(SCEndpoint):
         '''
         Launches a scan definition.
 
-        :sc-api:`scan: launch <Scan.html#ScanRESTReference-/scan/{id}/launch>`
+        :sc-api:`scan: launch <Scan.htm#ScanRESTReference-/scan/{id}/launch>`
 
         Args:
             id (int): The scan definition identifier to launch.

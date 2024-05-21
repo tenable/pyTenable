@@ -1,8 +1,8 @@
 """
-Tenable.ot base package
+Tenable OT Security base package
 =======================
 
-This package covers the Tenable.ad interface.
+This package covers the Tenable OT Security interface.
 
 .. autoclass:: TenableOT
     :members:

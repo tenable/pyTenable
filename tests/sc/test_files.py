@@ -1,18 +1,33 @@
 '''
 test file for testing various scenarios in file functionality
 '''
-import os
-
+from io import BytesIO
+import responses
+from responses.matchers import json_params_matcher
 import pytest
 
 
-@pytest.mark.vcr()
-def test_files_upload_clear_success(security_center):
-    '''
-    test files upload and clear for success
-    '''
-    with open('1000003.xml', 'w+') as file:
-        response = security_center.files.upload(fobj=file)
-        filename = security_center.files.clear(response)
-        assert filename == 'filename'
-    os.remove('1000003.xml')
+@responses.activate
+def test_files_upload(tsc):
+    fake = BytesIO(b'Test File')
+    responses.post('https://nourl/rest/file/upload',
+                   json={
+                       'error_code': 0,
+                       'response': {'filename': 'something'}
+                   },
+                   )
+
+    assert 'something' == tsc.files.upload(fake)
+
+@responses.activate
+def test_files_clear(tsc):
+    responses.post('https://nourl/rest/file/clear',
+                   match=[
+                       json_params_matcher({'filename': 'testfile'})
+                   ],
+                   json={
+                       'error_code': 0,
+                       'response': {'filename': 'testfile'}
+                   }
+                   )
+    assert 'testfile' == tsc.files.clear('testfile')
