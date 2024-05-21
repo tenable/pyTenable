@@ -15,6 +15,7 @@ This package covers the Tenable Identity Exposure interface.
     about
     alert
     api_keys
+    attacks
     attack_types
     application_settings
     category
