@@ -2,7 +2,7 @@
 Networks
 ========
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`networks <networks>` API endpoints.
 
 Methods available on ``tio.networks``:
@@ -42,7 +42,7 @@ class NetworksAPI(TIOEndpoint):
     '''
     def create(self, name, description=None, assets_ttl_days=None):
         '''
-        Creates a new network within Tenable.io
+        Creates a new network within Tenable Vulnerability Management
 
         :devportal:`networks: create <networks-create>`
 
@@ -217,7 +217,7 @@ class NetworksAPI(TIOEndpoint):
 
     def list(self, *filters, **kw):
         '''
-        Get the listing of configured networks from Tenable.io.
+        Get the listing of configured networks from Tenable Vulnerability Management.
 
         :devportal:`networks: list <networks-list>`
 

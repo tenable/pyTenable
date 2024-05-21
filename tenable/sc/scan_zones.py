@@ -2,9 +2,9 @@
 Scan Zones
 ==========
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`Scan Zone <Scan-Zone.html>` API.  These items are typically seen under
-the **Scan Zones** section of Tenable.sc.
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`Scan Zone <Scan-Zone.htm>` API.  These items are typically seen under
+the **Scan Zones** section of Tenable Security Center.
 
 Methods available on ``sc.scan_zones``:
 
@@ -47,7 +47,7 @@ class ScanZoneAPI(SCEndpoint):
         '''
         Creates a scan zone.
 
-        :sc-api:`scan-zone: create <Scan-Zone.html#zone_POST>`
+        :sc-api:`scan-zone: create <Scan-Zone.htm#zone_POST>`
 
         Args:
             name (str): The name of the scan zone
@@ -75,7 +75,7 @@ class ScanZoneAPI(SCEndpoint):
         '''
         Returns the details for a specific scan zone.
 
-        :sc-api:`scan-zone: details <Scan-Zone.html#zone_id_GET>`
+        :sc-api:`scan-zone: details <Scan-Zone.htm#zone_id_GET>`
 
         Args:
             id (int): The identifier for the scan.
@@ -100,7 +100,7 @@ class ScanZoneAPI(SCEndpoint):
         '''
         Edits a scan zone.
 
-        :sc-api:`scan-zone: edit <Scan-Zone.html#zone_id_PATCH>`
+        :sc-api:`scan-zone: edit <Scan-Zone.htm#zone_uuid_PATCH>`
 
         Args:
             description (str, optional):
@@ -129,7 +129,7 @@ class ScanZoneAPI(SCEndpoint):
         '''
         Retrieves the list of scan zone definitions.
 
-        :sc-api:`scan-zone: list <Scan-Zone.html#zone_GET>`
+        :sc-api:`scan-zone: list <Scan-Zone.htm#zone_GET>`
 
         Args:
             fields (list, optional):
@@ -154,7 +154,7 @@ class ScanZoneAPI(SCEndpoint):
         '''
         Removes the specified scan zone.
 
-        :sc-api:`scan-zone: delete <Scan-Zone.html#zone_id_DELETE>`
+        :sc-api:`scan-zone: delete <Scan-Zone.htm#zone_uuid_DELETE>`
 
         Args:
             id (int): The numeric identifier for the scan-zone to remove.

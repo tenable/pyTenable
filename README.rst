@@ -5,12 +5,14 @@ Welcome to pyTenable's documentation!
    :target: https://github.com/tenable/pyTenable/actions
 .. image:: https://img.shields.io/pypi/v/pytenable.svg
    :target: https://pypi.org/project/pyTenable/
-.. image:: https://img.shields.io/badge/python-3.6%203.7%203.8%203.9-blue
+.. image:: https://img.shields.io/badge/python-3.7%203.8%203.9%203.10%203.11-blue
    :target: https://pypi.org/project/pyTenable/
 .. image:: https://img.shields.io/pypi/dm/pytenable
    :target: https://github.com/tenable/pytenable
 .. image:: https://img.shields.io/github/license/tenable/pyTenable.svg
    :target: https://github.com/tenable/pytenable
+.. image:: https://sonarcloud.io/api/project_badges/measure?project=tenable_pyTenable&metric=alert_status
+   :target: https://sonarcloud.io/project/overview?id=tenable_pyTenable
 
 pyTenable is intended to be a pythonic interface into the Tenable application
 APIs.  Further by providing a common interface and a common structure between

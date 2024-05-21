@@ -1,8 +1,8 @@
 '''
-Tenable.ad
+Tenable Identity Exposure
 ==========
 
-This package covers the Tenable.ad interface.
+This package covers the Tenable Identity Exposure interface.
 
 .. autoclass:: TenableAD
     :members:

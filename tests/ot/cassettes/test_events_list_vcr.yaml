@@ -1,0 +1,82 @@
+interactions:
+- request:
+    body: '{"query": "\nquery events(\n  $filter: EventsExpressionsParams,\n  $search:
+      String,\n  $sort: [EventsSortParams!]!,\n  $limit: Int,\n  $startAt: String\n){\n  events(\n    filter:
+      $filter,\n    search: $search,\n    sort: $sort,\n    first: $limit,\n    after:
+      $startAt\n  ){\n    pageInfo{\n      endCursor\n    }\n    nodes{\n    id\n    eventType
+      {\n      type\n      group\n      description\n      schema\n      category\n      family\n      canCapture\n      actions\n      exclusion\n    }\n    srcIP\n    dstIP\n    protocolRaw\n    policy
+      {\n      id\n      index\n      title\n      level\n      disabled\n      archived\n      schema\n      continuous\n      snapshot\n      system\n      key\n      eventTypeDetails
+      {\n        type\n        group\n        description\n        schema\n        category\n        family\n        canCapture\n        actions\n        exclusion\n      }\n      disableAfterHit\n         actions{\n          nodes{\n            aid\n            type\n          }\n        }\n      paused\n      srcAssetGroup{\n        group{\n          id\n        }\n        negate\n      }\n      dstAssetGroup{\n        group{\n          id\n        }\n        negate\n      }\n      schedule{\n        group{\n          id\n        }\n        negate\n      }\n      protocolGroup{\n        group{\n          id\n        }\n        negate\n      }\n      portGroup{\n        group{\n          id\n          name\n        }\n        negate\n      }\n      tagGroup{\n        group{\n          id\n          name\n        }\n        negate\n      }\n      valueGroup{\n        group{\n          id\n        }\n        negate\n      }\n      ruleGroup{\n        group{\n          id\n          name\n        }\n        negate\n      }\n     exclusions{\n      nodes{\n        id\n      }\n    }\n      aggregatedEventsCount{\n        last24h\n        last7d\n        last30d\n      }\n    }\n    time\n    srcMac\n    dstMac\n    completion\n    protocolNiceName\n    resolved\n    resolvedTs\n    hitId\n    severity\n    category\n    comment\n    logId\n    resolvedUser\n    type\n    srcAssets{\n      nodes{\n        name\n        id\n      }\n    }\n    srcInterface{\n      id\n      lastSeen\n      firstSeen\n      mac\n      ips
+      {\n        nodes{\n          ip\n        }\n      }\n      dnsNames{\n            nodes\n      }\n      family\n      directAsset
+      {\n        id\n      }\n    }\n    srcNames{\n      nodes\n    }\n    dstAssets{\n      nodes{\n        name\n        id\n      }\n    }\n    dstInterface{\n      id\n    }\n    dstNames{\n      nodes\n    }\n    hasDetails\n    payloadSize\n    protocol\n    port\n    continuous\n    }\n  }\n}\n",
+      "variables": "{\"search\": null, \"sort\": [{\"field\": \"eventId\", \"direction\":
+      \"DescNullLast\"}], \"startAt\": null, \"limit\": 2}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2832'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/1.4.11) pyTenable/1.4.11
+        (Restfly/1.4.7; Python/3.9.6; Darwin/arm64)
+      X-APIKeys:
+      - key=TOT_X_API_KEYS
+    method: POST
+    uri: https://172.26.68.231/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/+RW227cOBJ9369o8CkLiA4pkaIkYB+yHW+SxcYxfEFuMBYUWWwrVosNkbLTMfrf
+        B1Sr77Znkhkgg5mHICJdXVU8darq3CMtvUTFPYJbaLwLXzM5gTeNsf1to8dd62yLCvTxw3/nHz/U
+        X8qYd5/enxD5Pu/efTn+F1pEqLEaHCo+36NKowLpzJCYJwzrlCSYJaXGGWExTjlPDCFMSlWiaBnz
+        Yj6DEMr3/6N3M2hObetRhCat7WaoQOF4HExRhDQ41VYzX9lmMB4N1k5dw1QO5ufLQ4SU9DCx7RwV
+        6AT8nW1vjpcPjZCR06qeo6Lp6joYNmM5810LqDCydhAhqUKY8Cx0PJVVjSJ0Pne1naCrCMFXVXdu
+        k0afxSJCrlVvTlGBKDmiJPyjR5STkLnz4Q/LaLPWeqtsfSbvUIEuxqcoQjNbV2oeoOgxzExGcyE5
+        ZpkhmDEusCRKY5YbBmAywdMcRahqNHxFBc3zCPnK1wHDSwcja0aXjez8tW2rb6B7lEZVMzqz6uYO
+        6no0to1vbV1DG8Co4RZqVKC3oKtuGtKtnCxr0Bs0WnVd3W5dPAK4bXzVdLZzG8NGzty19ZuLufMw
+        RYVvO4jQDYTqnCY4Sbc58RK8rGr3F6LGAOkL46F9XflDZ/frPrpaRGgmO7cNd6teOAf+1fLpnz/f
+        r1AYCEPjRJJM9FwpMeMxxWVCOI7ThKiUi7ikpO9VmEi/esri6qqn5o7rqyVkugts2iXsYDJc2nb1
+        m/1kklhSaijghOQMszIFnHHQWGiQghIa60ygCDVyGiq7JuW6am4708CTRYS8nOyEv5V1Bzs3bVfv
+        XqxLcYCunEza3r1eVn1su8YHo1o6H7NrVJCo/xZ6/ZmQ8L0IqVR93jGJE0wopskFzQuWF5wfEca5
+        yD6hvmJvpVqlop3fOik7ndUwcHW8Plw2N429a9AG8JNKwUmP0vBEcLbebsPVxYVbmVxX/s13TGEH
+        t9BWfr7d/U/0hrLTaWi4IVhtJyEYJURscrl00K4MDpt3xeSdmtyvuPCidvY1tBBmW3iFLLXOyxJw
+        IhKJGZc5ztKEYq4lzTQTRnJAi2j9+5dwGyAD////ZXTlhDKmgZISG5UlmDFNcJaZBCdUS2A5JCk1
+        207ObDdZZ0BFCZSVKaYkBcwUEzgHwzBQAUoQCSrXaHE1DP/GQ2ukWhfMtSrUb+ex24/cz3cZOnhb
+        teUBd8Mq2Q+jnT8IE2yvpVtP0oExMzmvrdTn1Tfoqb2iGiqQq2ajZ17NnnOSkn+iZYujIpweGO0B
+        sB6hlJSMaUlxLkBipqnEmaAMZ0LEksUslYw8su/HtrmF1sm+FTaDfZt1B7N9Z7HtOVjP+sHD7xv3
+        yw31+LSP0H9s66tXYUztTf6dvLaFgYiP4vRI0COas40u2LqPOUf7EuHfZ+/enx+fHcqEOJcsp7HE
+        NMslZkwpnKVpjEUqhNapyVVMtmSCSDcyYWyn066pVJ/iyLR2Ojr+6qFtZD0aIHpaGQzoPCoMDkrw
+        49qAJk9rg78NjX5QRCwz+FUNkXAGnHOBNYAOo07hUpQGK0lFmiuTl9IcbOaHJMSBZ5YbLohhOGGC
+        YpZRjjNmUkxZmipJcp5LeFidbKTIgeIBarTJOI6BE8wgEbhUpsSGM2ASuBEpO/R5IGb23XLBgSY0
+        wyLJIOxNhiWNY5zmkOUCeMz1A0JqRw4Nq++nCZZ0W7Gkj0iWOCl4VtD4KM7iLE3/DJLlNy6SP0Sy
+        xHlMn5Qs+yPhIdnyPVv/J+30YXWMnnV69pwm2Wat0yR7aKtfLRaLf/wSAAD//zNTWeUaEAAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1365'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Thu, 19 Jan 2023 06:39:01 GMT
+      Etag:
+      - W/"101a-qHo9XwFogQ+a91ORgBxlbfjpHN0"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Vary:
+      - Accept-Encoding
+      - Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,77 @@
+interactions:
+- request:
+    body: '{"filter": {"and": [{"operator": "eq", "value": ["de2e56a2-6a0e-4757-8d00-e9ad635f6231"],
+      "property": "tags"}, {"operator": "neq", "value": ["f038fd3a-a844-438f-b7a7-7acc6369f3e9"],
+      "property": "tags"}]}, "limit": 200}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '218'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Integration/1.0 (pytest; pytenable-automated-testing; Build/unknown) pyTenable/1.4.10
+        (Restfly/1.4.7; Python/3.9.6; Darwin/arm64)
+      X-APIKeys:
+      - accessKey=12326e7a15c1c8684d598ac0018a211db16eb05b1e913a3c53deb23064168497;secretKey=f854d0a89b4cc7293ae6ef6e7f61d709744f62bf331cc96c1c0c118dc0cc16b5
+    method: POST
+    uri: https://cloud.tenable.com/api/v3/assets/search
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA9VUy27bMBD8lYLnUOBbEm9F21uRi9NLi0CgSMoVKkuuSKc1Av97l5KNxnk4ziF9
+        CLJl0bvLmeHu3CITgo8B6S+3qF3fqMo4N3pYS0vXF6j3sW6HUPVm5ZFGqiiYYkxilhdMlLnKog8x
+        s8MKXaDoe1N3vmodRNayhJs1nkkrrKgLrwj3TtWcs5wKAvFh2Ix22ghdflgsPi2qxbu3lwh27UyI
+        Vdda3wfvqmBNX8V2AsAIY5gSTPkVpZpyLVRGCPkM5QC+OIKPGM0zKmhGC3iyVNi1Yd2ZbbUy9hCa
+        WJWaCe1z7ay2XpcGqk2sj5jgRAUnLjiRwffYgFI/hvEb0iBkSiP7Cz/ydbhS2izse9+YTRfR7jfG
+        u3wS82MyF6hpR1BpqIMfb7x7RptQOd/5mOIa0wW/1/jM7JkPFzkvLVbcSiyccbiuhcFcmrpmZals
+        7iH2jrLzITwUF84hbtfzv1+HENOCHb2Jj+EQWhSZUjzhmNGa2A599bt5bl+kxAto74/mbm/urict
+        D62JdBw3oGXz3fUz2afnI7E2y/2kpZ2dZ14qw7AyxGORyxwXDhrEl8YpLhvFOAUUFnRZDuMWMlKt
+        N1AEVm9Mt0ngjB3RLGequAXIrZ1QDms/glL9sgrbEP1qgvex7Tc/785BAv7cWB9i71eEvLkeTPK0
+        UO1hzG94epvkWm9qUOwg1jlWslm7o3agmJVXpNBCaiYzwcp0Pql3zjCm3cVZ1iakYJwU0NplIfIc
+        Ju0paytpQwyjTdEIJwxRNWvywjXCiJwAjuJPWBt4ACkySuFD8qedTXItG22clkZ7qvmxsx2I4MQE
+        Jyo4ccH3yLy2sx1z+QvGJhkveYllQ8DfHaG4lAXBhbVGUt4wycljxvZQ25caWzLy/8TYTkzHv2xs
+        J4f6lYzt5J5PGpvQXGVKPDC2E9WSGmuzbPupcdJ4du2qjUgzQkC6IZoOfu92vwBAa6VH5QkAAA==
+    headers:
+      Cache-Control:
+      - no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Tue, 29 Nov 2022 16:39:11 GMT
+      Expect-CT:
+      - enforce, max-age=86400
+      Pragma:
+      - no-cache
+      Set-Cookie:
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      - nginx-cloud-site-id=us-2b; path=/; HttpOnly; SameSite=Strict; Secure
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - origin,accept-encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+      X-Gateway-Site-ID:
+      - service-nginx-router-ap-northeast-1-prod-7bfcc7b48d-4tqbn
+      X-Request-Uuid:
+      - db7b43137921744b3cf194a067493ddb
+      X-Xss-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

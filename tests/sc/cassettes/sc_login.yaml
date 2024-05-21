@@ -14,7 +14,7 @@ interactions:
       "enabled":"true","attributeSets":[]},{"name":"CSV","type":"csv","enabled":"true","attributeSets":[]},
       {"name":"RTF","type":"rtf","enabled":"true","attributeSets":[]},{"name":"DISA ARF","type":"arf","enabled":"false",
       "attributeSets":["arf"]},{"name":"DISA ASR","type":"asr","enabled":"false","attributeSets":[]},
-      {"name":"CyberScope","type":"lasr","enabled":"true","attributeSets":["lasr"]}],"version":"5.8.0",
+      {"name":"CyberScope","type":"lasr","enabled":"true","attributeSets":["lasr"]}],"version":"6.4.0",
       "buildID":"201810303290","banner":"","releaseID":"201810303290","uuid":"3ae050e2-486c-5c1a-a6a5-45305557cec3",
       "logo":"assets\/mariana\/images\/sc4icon.png","serverAuth":"any","serverClassification":"None",
       "sessionTimeout":"3600","licenseStatus":"Valid","ACAS":"false","freshInstall":"no","headerText":"",
