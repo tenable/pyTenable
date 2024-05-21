@@ -2,7 +2,7 @@
 Remediation Scans
 =================
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 :devportal:`Remediation scan create <io-scans-remediation-creates>` API endpoints.
 :devportal:`Remediation scan list <io-scans-remediation-list>` API endpoints.
 
@@ -73,7 +73,7 @@ class RemediationScansAPI(TIOEndpoint):
 
             For further information on credentials, what settings to use, etc,
             refer to
-            `this doc <https://developer.tenable.com/reference#io-scans-remediation-list>`_  # noqa: E501
+            `this doc <https://developer.tenable.com/reference/io-scans-remediation-list>`_  # noqa: E501
             on the developer portal.
 
             '''
@@ -117,7 +117,7 @@ class RemediationScansAPI(TIOEndpoint):
                 a valid target network UUID from a previous scan you wish to
                 remediate.
             scan_time_window (int, optional): The time frame, in minutes,
-                during which agents must transmit scan results to Tenable.io
+                during which agents must transmit scan results to Tenable Vulnerability Management
                 in order to be included in dashboards and reports. If your
                 request omits this parameter, the default value is 180 minutes.
                 For non-agent scans, this attribute is null.
@@ -174,7 +174,7 @@ class RemediationScansAPI(TIOEndpoint):
 
             For further information on credentials, what settings to use, etc,
             refer to
-            `this doc <https://developer.tenable.com/reference#io-scans-remediation-create>`_
+            `this doc <https://developer.tenable.com/reference/io-scans-remediation-create>`_
             on the developer portal.
 
         '''

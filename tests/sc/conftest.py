@@ -2,7 +2,7 @@
 configuration which would be used for testing sc.
 '''
 import os
-
+import responses
 import pytest
 
 from tenable.errors import APIError, NotFoundError
@@ -112,3 +112,18 @@ def group(request, security_center, vcr):
 
     request.addfinalizer(teardown)
     return grp
+
+
+@pytest.fixture
+def tsc():
+    with responses.RequestsMock() as rsps:
+        rsps.get('https://nourl/rest/system',
+                 json={
+                    'error_code': None,
+                    'response': {'version': '6.4.0'}
+                 }
+                 )
+        return TenableSC(url='https://nourl',
+                         access_key='SOMETHING',
+                         secret_key='SECRET'
+                         )

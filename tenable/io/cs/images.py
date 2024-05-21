@@ -2,7 +2,7 @@
 Images
 ======
 
-The following methods allow for interaction into the Tenable.io
+The following methods allow for interaction into the Tenable Vulnerability Management
 Container Security :devportal:`images <cs-v2-images>` API endpoints.
 
 Methods available on ``tio.cs.images``:

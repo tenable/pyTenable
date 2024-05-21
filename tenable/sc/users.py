@@ -2,9 +2,9 @@
 Users
 =====
 
-The following methods allow for interaction into the Tenable.sc
-:sc-api:`User <User.html>` API.  These items are typically seen under the
-**Users** section of Tenable.sc.
+The following methods allow for interaction into the Tenable Security Center
+:sc-api:`User <User.htm>` API.  These items are typically seen under the
+**Users** section of Tenable Security Center.
 
 Methods available on ``sc.users``:
 
@@ -139,7 +139,7 @@ class UserAPI(SCEndpoint):
         '''
         Creates a user.
 
-        :sc-api:`user: create <User.html#user_POST>`
+        :sc-api:`user: create <User.htm#user_POST>`
 
         Args:
             username (str):
@@ -195,7 +195,7 @@ class UserAPI(SCEndpoint):
             org (int, optional):
                 If logged in as an administrator, and creating a security
                 manager account, the organization id must be passed in order to
-                inform Tenable.sc which organization to create the security
+                inform Tenable Security Center which organization to create the security
                 manager within.
             phone (str, optional):
                 A phone number to associate to the user.
@@ -235,7 +235,7 @@ class UserAPI(SCEndpoint):
         '''
         Returns the details for a specific user.
 
-        :sc-api:`user: details <User.html#UserRESTReference-/user/{id}>`
+        :sc-api:`user: details <User.htm#UserRESTReference-/user/{id}>`
 
         Args:
             id (int): The identifier for the user.
@@ -260,7 +260,7 @@ class UserAPI(SCEndpoint):
         '''
         Edits a user.
 
-        :sc-api:`user: edit <User.html#user_id_PATCH>`
+        :sc-api:`user: edit <User.htm#user_uuid_PATCH>`
 
         Args:
             address (str, optional):
@@ -273,6 +273,9 @@ class UserAPI(SCEndpoint):
                 Optional city information to associate to the user.
             country (str, optional):
                 Optional country information to associate to the user.
+            currentPassword (str, optional):
+                Optional, requirement when updating password for current user in 
+                addition to password kwarg.
             default_dashboards (bool, optional):
                 Should the default dashboards be created for the user?  If left
                 unspecified, the default is True.
@@ -310,10 +313,11 @@ class UserAPI(SCEndpoint):
             org (int, optional):
                 If logged in as an administrator, and creating a security
                 manager account, the organization id must be passed in order to
-                inform Tenable.sc which organization to create the security
+                inform Tenable Security Center which organization to create the security
                 manager within.
             password (str, optional):
-                The user password
+                The user password, currentPassword should be used with this if 
+                updating password for logged in user.
             phone (str, optional):
                 A phone number to associate to the user.
             responsibility (int, optional):
@@ -352,7 +356,7 @@ class UserAPI(SCEndpoint):
         '''
         Removes a user.
 
-        :sc-api:`user: delete <User.html#user_id_DELETE>`
+        :sc-api:`user: delete <User.htm#user_uuid_DELETE>`
 
         Args:
             id (int): The numeric identifier for the user to remove.
@@ -371,7 +375,7 @@ class UserAPI(SCEndpoint):
         '''
         Retrieves the list of user definitions.
 
-        :sc-api:`user: list <User.html#user_GET>`
+        :sc-api:`user: list <User.htm#user_GET>`
 
         Args:
             fields (list, optional):

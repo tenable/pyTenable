@@ -1,8 +1,8 @@
 '''
-Tenable.ad
+Tenable Identity Exposure
 ==========
 
-This package covers the Tenable.ad interface.
+This package covers the Tenable Identity Exposure interface.
 
 .. autoclass:: TenableAD
     :members:
@@ -13,16 +13,23 @@ This package covers the Tenable.ad interface.
     :glob:
 
     about
+    ad_object
+    alert
     api_keys
+    attacks
     attack_types
+    attack_type_options
+    application_settings
     category
     checker
     checker_option
     dashboard
     directories
     email_notifiers
+    event
     infrastructure
     ldap_configuration
+    license
     lockout_policy
     preference
     profiles
@@ -30,6 +37,7 @@ This package covers the Tenable.ad interface.
     roles
     saml_configuration
     score
+    syslog
     topology
     users
     widget
