@@ -1,6 +1,6 @@
 import responses
 
-RE_BASE = 'https://pytenable.tenable.ad/api'
+from tests.ad.conftest import RE_BASE
 
 
 @responses.activate
@@ -14,6 +14,7 @@ def test_ldap_configuration_details(api):
                       'searchUserPassword': None,
                       'userSearchBase': 'tenable.ad',
                       'userSearchFilter': '.ad',
+                      'enable_sasl_binding': True,
                       'allowedGroups': [{
                           'name': 'groups name',
                           'defaultRoleIds': [1, 2],
@@ -26,12 +27,13 @@ def test_ldap_configuration_details(api):
     assert resp['enabled'] is True
     assert resp['url'] == 'customer.tenable.ad'
     assert resp['search_user_dn'] == 'customer.tenable.ad'
-    assert resp['search_user_password'] == None
+    assert resp['search_user_password'] is None
     assert resp['user_search_base'] == 'tenable.ad'
     assert resp['user_search_filter'] == '.ad'
     assert resp['allowed_groups'][0]['name'] == 'groups name'
     assert resp['allowed_groups'][0]['default_role_ids'] == [1, 2]
     assert resp['allowed_groups'][0]['default_profile_id'] == 1
+    assert resp['enable_sasl_binding'] is True
 
 
 @responses.activate
@@ -68,7 +70,7 @@ def test_ldap_configuration_update(api):
     assert resp['enabled'] is True
     assert resp['url'] == 'customer.tenable.ad'
     assert resp['search_user_dn'] == 'customer.tenable.ad'
-    assert resp['search_user_password'] == None
+    assert resp['search_user_password'] is None
     assert resp['user_search_base'] == 'tenable.ad'
     assert resp['user_search_filter'] == '.ad'
     assert resp['allowed_groups'][0]['name'] == 'EDITED'
