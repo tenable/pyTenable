@@ -7,15 +7,23 @@ import os
 from tenable.base.platform import APIPlatform
 
 from .about import AboutAPI
+from .ad_object.api import ADObjectAPI
+from .alert.api import AlertsAPI
 from .api_keys import APIKeyAPI
+from .attack_type_options.api import AttackTypeOptionsAPI
+from .application_settings.api import ApplicationSettingsAPI
 from .attack_types.api import AttackTypesAPI
+from .attacks.api import AttacksAPI
 from .category.api import CategoryAPI
 from .checker.api import CheckerAPI
 from .checker_option.api import CheckerOptionAPI
 from .dashboard.api import DashboardAPI
 from .directories.api import DirectoriesAPI
+from .email_notifiers.api import EmailNotifiersAPI
+from .event.api import EventAPI
 from .infrastructure.api import InfrastructureAPI
 from .ldap_configuration.api import LDAPConfigurationAPI
+from .license.api import LicenseAPI
 from .lockout_policy.api import LockoutPolicyAPI
 from .preference.api import PreferenceAPI
 from .profiles.api import ProfilesAPI
@@ -23,6 +31,7 @@ from .reason.api import ReasonAPI
 from .roles.api import RolesAPI
 from .saml_configuration.api import SAMLConfigurationAPI
 from .score.api import ScoreAPI
+from .syslog.api import SyslogAPI
 from .topology.api import TopologyAPI
 from .users.api import UsersAPI
 from .widget.api import WidgetsAPI
@@ -61,6 +70,22 @@ class TenableAD(APIPlatform):
         return AboutAPI(self)
 
     @property
+    def ad_object(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad AD Object APIs <ad_object>`.
+        '''
+        return ADObjectAPI(self)
+
+    @property
+    def alerts(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Alerts APIs <alert>`.
+        '''
+        return AlertsAPI(self)
+
+    @property
     def api_keys(self):
         '''
         The interface object for the
@@ -69,12 +94,36 @@ class TenableAD(APIPlatform):
         return APIKeyAPI(self)
 
     @property
+    def attacks(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Attacks APIs <attacks>`.
+        '''
+        return AttacksAPI(self)
+
+    @property
+    def application_settings(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Application Settings APIs <application_settings>`.
+        '''
+        return ApplicationSettingsAPI(self)
+
+    @property
     def attack_types(self):
         '''
         The interface object for the
         :doc:`Tenable Identity Exposure Attack Types APIs <attack_types>`.
         '''
         return AttackTypesAPI(self)
+
+    @property
+    def attack_type_options(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Attack Type Options APIs <attack_type_options>`.
+        '''
+        return AttackTypeOptionsAPI(self)
 
     @property
     def category(self):
@@ -117,6 +166,22 @@ class TenableAD(APIPlatform):
         return DirectoriesAPI(self)
 
     @property
+    def email_notifiers(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Email Notifiers APIs <email_notifiers>`.
+        '''
+        return EmailNotifiersAPI(self)
+    
+    @property
+    def event(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Event APIs <event>`.
+        '''
+        return EventAPI(self)
+
+    @property
     def infrastructure(self):
         '''
         The interface object for the
@@ -131,6 +196,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable Identity Exposure LDAP Configuration APIs <ldap_configuration>`.
         '''
         return LDAPConfigurationAPI(self)
+
+    @property
+    def license(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad License APIs <license>`.
+        '''
+        return LicenseAPI(self)
 
     @property
     def lockout_policy(self):
@@ -187,6 +260,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable Identity Exposure Score APIs <score>`.
         '''
         return ScoreAPI(self)
+
+    @property
+    def syslog(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Syslog APIs <syslog>`.
+        '''
+        return SyslogAPI(self)
 
     @property
     def topology(self):

@@ -1,5 +1,6 @@
 '''tests for checker APIs'''
 import responses
+
 from tests.ad.conftest import RE_BASE
 
 
