@@ -9,18 +9,48 @@ These methods can be accessed at ``TenableAPA.findings``.
 .. autoclass:: FindingsAPI
     :members:
 '''
-from typing import List, Dict
+from copy import copy
+from typing import List, Dict, Optional
+
+from restfly import APIIterator
+
 from tenable.apa.findings.schema import FindingSchema
 from tenable.base.endpoint import APIEndpoint
+
+
+class FindingIterator(APIIterator):
+    '''
+    Finding Iterator
+    '''
+    _next_token: str = None
+    _payload: Dict
+
+    def _get_page(self) -> None:
+        '''
+        Request the next page of data
+        '''
+        payload = copy(self._payload)
+        print(self._next_token)
+        payload['next'] = self._next_token
+
+        if self.num_pages >= 1 and self._next_token is None:
+            raise StopIteration()
+        resp = self._api.get('apa/findings-api/v1/findings', params=payload, box=True)
+        self._next_token = resp.get('next')
+        self.page = resp.data
+        self.total = resp.total
 
 
 class FindingsAPI(APIEndpoint):
     _schema = FindingSchema()
 
     def list(self,
-             procedure_name: str,
-             **kwargs
-             ) -> List[Dict]:
+             page_number: int,
+             next: str,
+             limit: int = 50,
+             filter: Optional[dict],
+             sort_filed: Optional[]
+             return_iterator=True, **kwargs) -> List[Dict]:
         '''
         Retrieve findings
 
@@ -56,7 +86,7 @@ class FindingsAPI(APIEndpoint):
                 The list of attacks objects
 
         Examples:
-            >>> tad.attacks.list(
+            >>> tad.findings.list(
             ...     profile_id='1',
             ...     resource_type='infrastructure',
             ...     resource_value='1',
@@ -71,5 +101,5 @@ class FindingsAPI(APIEndpoint):
         '''
         params = self._schema.dump(self._schema.load(kwargs))
         return self._schema.load(
-            self._api.get(f'profiles/{profile_id}/attacks', params=params),
+            self._api.get(f'apa/findings-api/v1/findnigs', params=params),
             many=True, partial=True)
