@@ -14,7 +14,7 @@ from typing import List, Dict, Optional
 
 from restfly import APIIterator
 
-from tenable.apa.findings.schema import FindingSchema
+from tenable.apa.findings.schema import FindingSchema, FindingPageSchema
 from tenable.base.endpoint import APIEndpoint
 
 
@@ -42,7 +42,7 @@ class FindingIterator(APIIterator):
 
 
 class FindingsAPI(APIEndpoint):
-    _schema = FindingSchema()
+    _schema = FindingPageSchema()
 
     def list(self,
              page_number: int,

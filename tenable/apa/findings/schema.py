@@ -1,17 +1,4 @@
-from enum import Enum
-
 from marshmallow import fields, validate as v, Schema
-
-
-class FindingSortEnum(Enum):
-    LAST_UPDATED_AT = "last_updated_at"
-    PRIORITY = "priority"
-    MITRE_ID = "mitre_id"
-    NAME = "name"
-    PROCEDURE_NAME = "procedureName"
-    STATUS = "status"
-    STATE = "state"
-    VECTOR_COUNT = "vectorCount"
 
 
 class NodeInfoSchema(Schema):
@@ -42,31 +29,13 @@ class SourceInformationSchema(Schema):
 
 
 class FindingSchema(Schema):
-    # attack_type_id = fields.Int()
-    # attack_type_ids = fields.List(fields.Int())
-    # dc = fields.Str()
-    # date = fields.DateTime()
-    # vector = fields.Nested(AttackVectorSchema)
-    # source = fields.Nested(AttackPathSchema)
-    # destination = fields.Nested(AttackPathSchema)
-    # is_closed = fields.Bool()
-    # resource_type = fields.Str(required=True, validate=v.OneOf(
-    #     ['infrastructure', 'directory', 'hostname', 'ip']))
-    # resource_value = fields.Str(required=True)
-    # date_end = fields.DateTime()
-    # date_start = fields.DateTime()
-    # include_closed = fields.Str(validate=v.OneOf(['true', 'false']))
-    # limit = fields.Str()
-    # order = fields.Str(validate=v.OneOf(['asc', 'desc']))
-    # search = fields.Str()
-
     mitre_id = fields.Str()
     mitigations = fields.List(fields.Str())
     malwares = fields.List(fields.Str())
     tools = fields.List(fields.Str())
     groups = fields.List(fields.Str())
     name = fields.Str()
-    priority = fields.Str()
+    priority = fields.Str(validate=v.OneOf(['critical', 'high', 'medium', 'low']))
     procedureName = fields.Str()
     relatedNodes = fields.Nested(FindingRelatedNodesSchema)
     tactics = fields.List(fields.Str())
@@ -74,8 +43,8 @@ class FindingSchema(Schema):
     total_critical_assets_count = fields.Int()
     totalVectorCount = fields.Int()
     vectorCount = fields.Int()
-    state = fields.Str()
-    status = fields.Str()
+    state = fields.Str(validate=v.OneOf(['open', 'archive']))
+    status = fields.Str(validate=v.OneOf(['in_progress', 'done', 'to_do', 'in_review']))
     created = fields.Int()
     is_active = fields.Bool()
     has_history = fields.Bool()
@@ -85,3 +54,11 @@ class FindingSchema(Schema):
     assets_ids = fields.List(fields.Str())
     detection_ids = fields.List(fields.Str())
     serial_id = fields.Int()
+
+
+class FindingPageSchema(Schema):
+    data = fields.List(fields.Nested(FindingSchema))
+    next = fields.Str()
+    page_number = fields.Int()
+    count = fields.Int()
+    total = fields.Int()
