@@ -10,11 +10,11 @@ These methods can be accessed at ``TenableAPA.findings``.
     :members:
 '''
 from copy import copy
-from typing import List, Dict, Optional
+from typing import Dict, Optional, Union
 
 from restfly import APIIterator
 
-from tenable.apa.findings.schema import FindingSchema, FindingPageSchema
+from tenable.apa.findings.schema import FindingPageSchema
 from tenable.base.endpoint import APIEndpoint
 
 
@@ -45,61 +45,66 @@ class FindingsAPI(APIEndpoint):
     _schema = FindingPageSchema()
 
     def list(self,
-             page_number: int,
-             next: str,
+             page_number: Optional[int] = None,
+             next: Optional[str] = None,
              limit: int = 50,
-             filter: Optional[dict],
-             sort_filed: Optional[]
-             return_iterator=True, **kwargs) -> List[Dict]:
+             filter: Optional[dict] = None,
+             sort_filed: Optional[str] = None,
+             sort_order: Optional[str] = None,
+             return_iterator=True, **kwargs) -> Union[FindingIterator, FindingPageSchema]:
         '''
         Retrieve findings
 
         Args:
-            procedure_name (str):
-                The finding identifier.
-            resource_type (str):
-                The type of resource. possible values are ``infrastructure``,
-                ``directory``, ``hostname``, ``ip``.
-            resource_value (str):
-                The value of resource.
-            attack_type_ids (optional, list[str]):
-                The list of attack type ids.
-            date_end (optional, str):
+            page_number (optional, int):
+                For offsed-based pagination, the requested page number. Must be bigger or equal to 1.
+
+            next (optional, str):
+                For cusrsor-based pagination, the cursor position for the next page. For the initial request, don't populate. For subsequent requests, set this parameter to the value found in the next property of the previous response. When getting null without specify a page number it means there are no more pages.
+
+            limit (optional, int):
+                The number of records to retrieve. If this parameter is omitted, Tenable uses the default value of 50. The maximum number of events that can be retrieved is 10,000. For example: limit=10000.
+
+            filter (optional, dict):
+                A document as defined by Tenable APA online documentation.
+
+            sort_filed (optional, str):
                 The date before which the attack occurence should be
                 considered.
-            date_start (optional, str):
-                The date after which the attack occurence should be
-                considered.
-            include_closed (optional, str):
-                Whether closed attacks should be included?
-                Accepted values are ``true`` or ``false``
-            limit (optional, str):
-                The number of records user wants to return.
-            order (optional, str):
-                The order of response. Accepted values are
-                ``asc`` or ``desc``.
-            search (optional, str):
-                Search a value in response.
 
-        Returns:
-            list:
-                The list of attacks objects
+            sort_order (optional, str):
+                The sort order
+                Accepted values are ``desc`` or ``acs``
+
+       Returns:
+            :obj:`AuditLogIterator`:
+                List of event records
 
         Examples:
-            >>> tad.findings.list(
-            ...     profile_id='1',
-            ...     resource_type='infrastructure',
-            ...     resource_value='1',
-            ...     attack_type_ids=[1, 2],
-            ...     include_closed='false',
+            >>> findings = tapa.findings.list()
+            >>> for f in findings:
+            ...     pprint(f)
+
+        Examples:
+            >>> tapa.findings.list(
             ...     limit='10',
-            ...     order='asc',
-            ...     search='value',
-            ...     date_end='2022-12-31T18:30:00.000Z',
-            ...     date_start='2021-12-31T18:30:00.000Z'
+            ...     sort_filed='last_updated_at',
+            ...     sort_order='desc',
+            ...     filter='value',
+            ...     return_iterator=False
             ...     )
         '''
-        params = self._schema.dump(self._schema.load(kwargs))
-        return self._schema.load(
-            self._api.get(f'apa/findings-api/v1/findnigs', params=params),
-            many=True, partial=True)
+        payload = {
+            'page_number': page_number,
+            'next': next,
+            'limit': limit,
+            'filter': filter,
+            'sort_filed': sort_filed,
+            'sort_order': sort_order
+        }
+        if return_iterator:
+            return FindingIterator(self._api,
+                                   _payload=payload,
+                                   _next_token=next
+                                   )
+        return self._schema.load(self._get(path=f'apa/findings-api/v1/findnigs', params=payload))
