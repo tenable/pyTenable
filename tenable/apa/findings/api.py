@@ -22,7 +22,7 @@ class FindingsAPI(APIEndpoint):
              **kwargs
              ) -> List[Dict]:
         '''
-        Retrieve all attacks
+        Retrieve findings
 
         Args:
             procedure_name (str):
