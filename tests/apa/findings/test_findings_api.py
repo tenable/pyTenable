@@ -1,8 +1,12 @@
 import pytest
 import responses
 
+from tenable.apa.findings.api import FindingIterator
+from tenable.apa.findings.schema import FindingsPageSchema
+
+
 @pytest.fixture
-def finding():
+def findings_page_response():
     return {
         "data": [
             {
@@ -144,86 +148,33 @@ def finding():
 
 
 @responses.activate
-def test_findings_list_iterator(api, finding):
-    pass
-    # resp = {
-    #     'data': [{}],
-    #     'next': "",
-    #     'page_number': "",
-    #     'total': "",
-    #     'count': ""
-    # }
-    # responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
-    #               json=resp)
-    # resp = api.findings.list(
-    #     profile_id=1,
-    #     resource_type='infrastructure',
-    #     resource_value='1'
-    # )
-    # assert isinstance(resp, list)
-    # assert len(resp) == 1
-    # assert resp[0]['id'] == 1
-    # assert resp[0]['directory_id'] == 1
-    # assert resp[0]['attack_type_id'] == 1
+def test_findings_list_iterator(api, findings_page_response):
+
+    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
+                  json=findings_page_response)
+
+    findings: FindingIterator = api.findings.list(sort_filed='last_updated_at', sort_order='desc', filter='value',
+                                                  limit=1)
+
+    for f in findings:
+        assert f == findings_page_response['data'][0]
+
+    assert len(responses.calls) == 28
+    for i, c in enumerate(responses.calls):
+        if i == 0:
+            assert c.request.url == 'https://cloud.tenable.com/apa/findings-api/v1/findings?limit=1&filter=value&sort_filed=last_updated_at&sort_order=desc'
+        else:
+            assert c.request.url == 'https://cloud.tenable.com/apa/findings-api/v1/findings?next=eyJsYXN0X3NlcmlhbF9pZCI6IDE0MTE2NTEsICJvcmRlcl9ieV9maWVsZF9uYW1lIjogbnVsbCwgImxhc3Rfb3JkZXJfYnlfdmFsdWUiOiBudWxsfQ%3D%3D&limit=1&filter=value&sort_filed=last_updated_at&sort_order=desc'
 
 
 @responses.activate
-def test_attack_list_parameterized(api):
-    pass
-    # responses.add(responses.GET,
-    #               f'{RE_BASE}/profiles/1/attacks'
-    #               f'?resourceValue=1'
-    #               f'&includeClosed=false'
-    #               f'&dateEnd=2022-12-31T18%3A30%3A00%2B00%3A00'
-    #               f'&limit=10'
-    #               f'&search=Something'
-    #               f'&attackTypeIds=1'
-    #               f'&attackTypeIds=2'
-    #               f'&dateStart=2021-12-31T18%3A30%3A00%2B00%3A00'
-    #               f'&resourceType=infrastructure'
-    #               f'&order=desc',
-    #               json=[{
-    #                   'attackTypeId': 1,
-    #                   'date': '2022-01-14T07:24:50.424Z',
-    #                   'dc': 'dc',
-    #                   'destination': {
-    #                       'hostname': 'test',
-    #                       'ip': '192.168.1.1',
-    #                       'type': 'computer'
-    #                   },
-    #                   'directoryId': 1,
-    #                   'id': 1,
-    #                   'isClosed': False,
-    #                   'source': {
-    #                       'hostname': 'Unknown',
-    #                       'ip': '127.0.0.1',
-    #                       'type': 'computer'
-    #                   },
-    #                   'vector': {
-    #                       'attributes': [{
-    #                           'name': 'source_hostname',
-    #                           'value': 'Unknown',
-    #                           'valueType': 'string'
-    #                       }],
-    #                       'template': 'template'
-    #                   }
-    #               }]
-    #               )
-    # resp = api.attacks.list(
-    #     profile_id=1,
-    #     resource_type='infrastructure',
-    #     resource_value='1',
-    #     attack_type_ids=[1, 2],
-    #     include_closed='false',
-    #     limit='10',
-    #     order='desc',
-    #     search='Something',
-    #     date_end='2022-12-31T18:30:00.000Z',
-    #     date_start='2021-12-31T18:30:00.000Z'
-    # )
-    # assert isinstance(resp, list)
-    # assert len(resp) == 1
-    # assert resp[0]['id'] == 1
-    # assert resp[0]['directory_id'] == 1
-    # assert resp[0]['attack_type_id'] == 1
-    # assert resp[0]['is_closed'] is False
+def test_findings_list_findings_page_response(api, findings_page_response):
+
+    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
+                  json=findings_page_response)
+
+    findings_page: FindingsPageSchema = api.findings.list(return_iterator=False)
+
+    assert findings_page == FindingsPageSchema().load(findings_page_response)
+    assert len(responses.calls) == 1
+    assert responses.calls[0].request.url == "https://cloud.tenable.com/apa/findings-api/v1/findings?limit=50"
