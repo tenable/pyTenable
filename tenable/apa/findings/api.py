@@ -14,7 +14,7 @@ from typing import Dict, Optional, Union
 
 from restfly import APIIterator
 
-from tenable.apa.findings.schema import FindingPageSchema
+from tenable.apa.findings.schema import FindingsPageSchema
 from tenable.base.endpoint import APIEndpoint
 
 
@@ -42,7 +42,7 @@ class FindingIterator(APIIterator):
 
 
 class FindingsAPI(APIEndpoint):
-    _schema = FindingPageSchema()
+    _schema = FindingsPageSchema()
 
     def list(self,
              page_number: Optional[int] = None,
@@ -51,7 +51,7 @@ class FindingsAPI(APIEndpoint):
              filter: Optional[dict] = None,
              sort_filed: Optional[str] = None,
              sort_order: Optional[str] = None,
-             return_iterator=True) -> Union[FindingIterator, FindingPageSchema]:
+             return_iterator=True) -> Union[FindingIterator, FindingsPageSchema]:
         '''
         Retrieve findings
 
@@ -107,9 +107,9 @@ class FindingsAPI(APIEndpoint):
             'sort_filed': sort_filed,
             'sort_order': sort_order
         }
-        if return_iterator:
+        if return_iterator and not page_number:
             return FindingIterator(self._api,
                                    _payload=payload,
                                    _next_token=next_token
                                    )
-        return self._schema.load(self._get(path=f'apa/findings-api/v1/findings', params=payload))
+        return self._schema.load(self._get(path=f'apa/findings-api/v1/findings', params=payload).json())
