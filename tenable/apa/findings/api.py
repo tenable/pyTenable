@@ -46,12 +46,12 @@ class FindingsAPI(APIEndpoint):
 
     def list(self,
              page_number: Optional[int] = None,
-             next: Optional[str] = None,
+             next_token: Optional[str] = None,
              limit: int = 50,
              filter: Optional[dict] = None,
              sort_filed: Optional[str] = None,
              sort_order: Optional[str] = None,
-             return_iterator=True, **kwargs) -> Union[FindingIterator, FindingPageSchema]:
+             return_iterator=True) -> Union[FindingIterator, FindingPageSchema]:
         '''
         Retrieve findings
 
@@ -59,7 +59,7 @@ class FindingsAPI(APIEndpoint):
             page_number (optional, int):
                 For offsed-based pagination, the requested page number. Must be bigger or equal to 1.
 
-            next (optional, str):
+            next_token (optional, str):
                 For cusrsor-based pagination, the cursor position for the next page. For the initial request, don't populate. For subsequent requests, set this parameter to the value found in the next property of the previous response. When getting null without specify a page number it means there are no more pages.
 
             limit (optional, int):
@@ -69,16 +69,20 @@ class FindingsAPI(APIEndpoint):
                 A document as defined by Tenable APA online documentation.
 
             sort_filed (optional, str):
-                The date before which the attack occurence should be
-                considered.
+                The field you want to use to sort the results by.
+                Accepted values are ``last_updated_at``, ``state``, ``vectorCount``, ``status``, ``name``, ``procedureName``, ``priority``, and ``mitre_id``.
 
             sort_order (optional, str):
                 The sort order
                 Accepted values are ``desc`` or ``acs``
 
+            return_iterator (bool, optional):
+                Should we return the response instead of iterable?
+
+
        Returns:
-            :obj:`AuditLogIterator`:
-                List of event records
+            :obj:`FindingIterator`:
+                List of findings records
 
         Examples:
             >>> findings = tapa.findings.list()
@@ -94,9 +98,10 @@ class FindingsAPI(APIEndpoint):
             ...     return_iterator=False
             ...     )
         '''
+
         payload = {
             'page_number': page_number,
-            'next': next,
+            'next': next_token,
             'limit': limit,
             'filter': filter,
             'sort_filed': sort_filed,
@@ -105,6 +110,6 @@ class FindingsAPI(APIEndpoint):
         if return_iterator:
             return FindingIterator(self._api,
                                    _payload=payload,
-                                   _next_token=next
+                                   _next_token=next_token
                                    )
-        return self._schema.load(self._get(path=f'apa/findings-api/v1/findnigs', params=payload))
+        return self._schema.load(self._get(path=f'apa/findings-api/v1/findings', params=payload))
