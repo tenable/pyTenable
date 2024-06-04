@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 from tenable.io import TenableIO
-from functools import partial
 import json
 import os
 import click 
