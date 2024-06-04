@@ -11,14 +11,14 @@ import shutil
 @click.command()
 @click.option('--access-key', '-a', help='Tenable.io API Access Key')
 @click.option('--secret-key', '-s', help='Tenable.io API Secret Key')
-@click.option('--days-ago', '-d', type=click.INT, default=90, help='Vulnerability last indexed_at in days')
+@click.option('--days-since', '-d', type=click.INT, default=90, help='Vulnerability last indexed_at in days')
 @click.option('--plugins', '-p', default=None, type=click.STRING, help='Comma separated list of plugin(s)')
 @click.option('--include-unlicensed', '-l', is_flag=True, help='Export findings from unlicensed assets')
 @click.option('--uuid', '-u', default=None, help='Vuln Export Uuid')
 @click.option('--working-dir', '-w', type=click.Path(exists=True), default=os.getcwd(), help='Output directory to write vulns and debug')
 @click.option('--threads', '-t', type=click.INT, default=4, help='Number of CPU threads')
 @click.option('--zip', '-z', is_flag=True, help='Zip results')
-def cli(access_key, secret_key, days_ago, plugins, include_unlicensed, uuid, working_dir, threads, zip):
+def cli(access_key, secret_key, days_since, plugins, include_unlicensed, uuid, working_dir, threads, zip):
     '''
     Export -> RAW Writer
 
@@ -54,7 +54,7 @@ def cli(access_key, secret_key, days_ago, plugins, include_unlicensed, uuid, wor
             json.dump(data, fobj)
 
     # Convert the days_ago vartaible to unix timestamp 
-    indexed_at = current_time - (days_ago * 24 * 60 * 60) 
+    indexed_at = current_time - (days_since * 24 * 60 * 60) 
 
     # Initalize TenableIO
     tio = TenableIO(access_key, secret_key)
