@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from tenable.io import TenableIO
+from functools import partial
 import json
 import os
 import click 
@@ -17,7 +18,13 @@ import shutil
 @click.option('--uuid', '-u', default=None, help='Vuln Export Uuid')
 @click.option('--working-dir', '-w', type=click.Path(exists=True), default=os.getcwd(), help='Output directory to write vulns and debug')
 @click.option('--threads', '-t', type=click.INT, default=4, help='Number of CPU threads')
-def cli(access_key, secret_key, days_ago, plugins, include_unlicensed, uuid, working_dir, threads):
+@click.option('--zip', '-z', is_flag=True, help='Zip results')
+def cli(access_key, secret_key, days_ago, plugins, include_unlicensed, uuid, working_dir, threads, zip):
+    '''
+    Export -> RAW Writer
+
+    Exports raw export chunks to a <current-time>-vulns directory. 
+    '''
 
     # Define output directory that will store the chunk export and pytenable logs.
     current_time = int(time.time())
@@ -68,9 +75,8 @@ def cli(access_key, secret_key, days_ago, plugins, include_unlicensed, uuid, wor
     # Export vulns
     export.run_threaded(write_chunk, num_threads=threads)
 
-    # Zip results
-    shutil.make_archive(output_dir, 'zip', output_dir)
-
+    if zip: 
+        shutil.make_archive(output_dir, 'zip', output_dir)
 
 if __name__ == '__main__':
     cli()
