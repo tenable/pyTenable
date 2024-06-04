@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from tenable.io import TenableIO
 import json
 import os
