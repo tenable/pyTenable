@@ -18,6 +18,7 @@ from .category.api import CategoryAPI
 from .checker.api import CheckerAPI
 from .checker_option.api import CheckerOptionAPI
 from .dashboard.api import DashboardAPI
+from .deviance.api import DevianceAPI
 from .directories.api import DirectoriesAPI
 from .email_notifiers.api import EmailNotifiersAPI
 from .event.api import EventAPI
@@ -156,6 +157,14 @@ class TenableAD(APIPlatform):
         :doc:`Tenable Identity Exposure Dashboard APIs <dashboard>`.
         '''
         return DashboardAPI(self)
+
+    @property
+    def deviance(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.ad Deviance APIs <deviance>`.
+        '''
+        return DevianceAPI(self)
 
     @property
     def directories(self):
