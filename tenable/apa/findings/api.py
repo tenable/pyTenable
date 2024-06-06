@@ -33,8 +33,6 @@ class FindingIterator(APIIterator):
         print(self._next_token)
         payload['next'] = self._next_token
 
-        if self.num_pages >= 1 and self._next_token is None:
-            raise StopIteration()
         resp = self._api.get('apa/findings-api/v1/findings', params=payload, box=True)
         self._next_token = resp.get('next')
         self.page = resp.data
@@ -52,12 +50,12 @@ class FindingsAPI(APIEndpoint):
              sort_filed: Optional[str] = None,
              sort_order: Optional[str] = None,
              return_iterator=True) -> Union[FindingIterator, FindingsPageSchema]:
-        '''
+        """
         Retrieve findings
 
         Args:
             page_number (optional, int):
-                For offsed-based pagination, the requested page number. Must be bigger or equal to 1.
+                For offset-based pagination, the requested page to retrieve. If this parameter is omitted, Tenable uses the default value of 1.
 
             next_token (optional, str):
                 For cusrsor-based pagination, the cursor position for the next page. For the initial request, don't populate. For subsequent requests, set this parameter to the value found in the next property of the previous response. When getting null without specify a page number it means there are no more pages.
@@ -67,6 +65,12 @@ class FindingsAPI(APIEndpoint):
 
             filter (optional, dict):
                 A document as defined by Tenable APA online documentation.
+                Filters to allow the user to get to a specific subset of Findings.
+                For a more detailed listing of what filters are available, please refer to the API documentation
+                linked above, however some examples are as such:
+
+                - ``{"operator":"==", "key":"state", "value":"open"}``
+                - ``{"operator":">", "key":"last_updated_at", "value":"2024-05-30T12:28:11.528118"}``
 
             sort_filed (optional, str):
                 The field you want to use to sort the results by.
@@ -97,7 +101,7 @@ class FindingsAPI(APIEndpoint):
             ...     filter='value',
             ...     return_iterator=False
             ...     )
-        '''
+        """
 
         payload = {
             'page_number': page_number,
@@ -107,9 +111,9 @@ class FindingsAPI(APIEndpoint):
             'sort_filed': sort_filed,
             'sort_order': sort_order
         }
-        if return_iterator and not page_number:
+        if return_iterator:
             return FindingIterator(self._api,
                                    _payload=payload,
                                    _next_token=next_token
                                    )
-        return self._schema.load(self._get(path=f'apa/findings-api/v1/findings', params=payload).json())
+        return self._schema.load(self._get(path=f'apa/findings-api/v1/findings', params=payload))

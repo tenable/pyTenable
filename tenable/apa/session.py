@@ -1,6 +1,6 @@
-'''
+"""
 Tenable Attack Path Analysis session
-'''
+"""
 from typing import Optional
 
 from tenable.base.platform import APIPlatform
@@ -8,10 +8,11 @@ from .findings.api import FindingsAPI
 
 
 class TenableAPA(APIPlatform):
-    '''
-    The Tenable Attack Path Analysis object is the primary interaction point for users to
-    interface with Tenable Attack Path Analysis via the pyTenable library.  All the API
-    endpoint classes that have been written will be grafted onto this class.
+    """
+    The Tenable Attack Path Analysis object is the primary interaction
+    point for users to interface with Tenable Attack Path Analysis
+    via the pyTenable library.  All the API endpoint classes that have
+     been written will be grafted onto this class.
 
     Examples:
         Basic Example:
@@ -25,10 +26,11 @@ class TenableAPA(APIPlatform):
         >>>     vendor='Company Name',
         >>>     product='My Awesome Widget',
         >>>     build='1.0.0')
-    '''
+    """
 
     _env_base = 'TAPA'
     _url = 'https://cloud.tenable.com'
+    _box = True
 
     def __init__(self,
                  access_key: Optional[str] = None,
@@ -43,8 +45,8 @@ class TenableAPA(APIPlatform):
 
     @property
     def findings(self):
-        '''
+        """
         The interface object for the
         :doc:`Tenable Attack Path Analysis APA Findings APIs <findings>`.
-        '''
+        """
         return FindingsAPI(self)
