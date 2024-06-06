@@ -35,7 +35,8 @@ class FindingSchema(Schema):
     tools = fields.List(fields.Str())
     groups = fields.List(fields.Str())
     name = fields.Str(allow_none=True)
-    priority = fields.Str(validate=v.OneOf(['critical', 'high', 'medium', 'low']))
+    priority = fields.Str(validate=v.OneOf(["critical", "high",
+                                            "medium", "low"]))
     procedureName = fields.Str(allow_none=True)
     relatedNodes = fields.Nested(FindingRelatedNodesSchema)
     tactics = fields.List(fields.Str())
@@ -43,8 +44,9 @@ class FindingSchema(Schema):
     total_critical_assets_count = fields.Int(allow_none=True)
     totalVectorCount = fields.Int(allow_none=True)
     vectorCount = fields.Int(allow_none=True)
-    state = fields.Str(validate=v.OneOf(['open', 'archive']))
-    status = fields.Str(validate=v.OneOf(['in_progress', 'done', 'to_do', 'in_review']))
+    state = fields.Str(validate=v.OneOf(["open", "archive"]))
+    status = fields.Str(validate=v.OneOf(["in_progress", "done",
+                                          "to_do", "in_review"]))
     created = fields.Int(allow_none=True)
     is_active = fields.Bool(allow_none=True)
     has_history = fields.Bool(allow_none=True)
