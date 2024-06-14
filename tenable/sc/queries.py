@@ -209,6 +209,7 @@ class QueryAPI(SCEndpoint):
         Examples:
             >>> query = sc.queries.edit()
         '''
+        kw['query_id'] = id
         payload = self._constructor(*filters, **kw)
         return self._api.patch('query/{}'.format(
             self._check('id', id, int)), json=payload).json()['response']
