@@ -154,6 +154,14 @@ def test_findings_list_iterator(api, finding):
                       {"limit": 50,
                        "next": "123"})])
 
+    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
+                  json={"page_number": None, "count": 0, "total": 0,
+                        "next": None,
+                        "data": []},
+                  match=[responses.matchers.query_param_matcher(
+                      {"limit": 50,
+                       "next": "123"})])
+
     findings: FindingIterator = api.findings.list()
 
     for f in findings:
