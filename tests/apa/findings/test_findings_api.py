@@ -179,6 +179,12 @@ def test_findings_list_findings_page_response(api, finding):
                   json=findings_page_response,
                   match=[responses.matchers.query_param_matcher({"limit": 50})])
 
+    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
+                  json={"page_number": None, "count": 0, "total": 0,
+                        "next": None,
+                        "data": []},
+                  match=[responses.matchers.query_param_matcher({"limit": 50, "next": "123"})])
+
     findings_page: FindingsPageSchema = api.findings.list(return_iterator=False)
 
     assert findings_page == FindingsPageSchema().load(findings_page_response)
