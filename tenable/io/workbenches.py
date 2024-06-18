@@ -17,10 +17,10 @@ Methods available on ``tio.workbenches``:
 .. autoclass:: WorkbenchesAPI
     :members:
 '''
+from io import BytesIO
 from .base import TIOEndpoint
 from tenable.errors import UnexpectedValueError
-from io import BytesIO
-import time
+
 
 class WorkbenchesAPI(TIOEndpoint):
     def _workbench_query(self, filters, kw, filterdefs):
@@ -163,7 +163,7 @@ class WorkbenchesAPI(TIOEndpoint):
         '''
         Return the vulnerabilities for a specific asset.
 
-        :devportal:`workbenches: asset-vulnerabilities workbenches-asset-vulnerabilities>`
+        :devportal:`workbenches: asset-vulnerabilities <workbenches-asset-vulnerabilities>`
 
         Args:
             uuid (str):
