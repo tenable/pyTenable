@@ -29,6 +29,7 @@ Tenable Security Center
     feeds
     files
     groups
+    nnmscanner
     organizations
     plugins
     policies
@@ -60,6 +61,7 @@ from .current import CurrentSessionAPI
 from .files import FileAPI
 from .feeds import FeedAPI
 from .groups import GroupAPI
+from .nnmscanner import NNMAPI
 from .organizations import OrganizationAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
@@ -389,6 +391,14 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         :doc:`Tenable Security Center Groups APIs <groups>`.
         '''
         return GroupAPI(self)
+        
+    @property
+    def nnm(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc NNM APIs <passivescanner>`.
+        '''
+        return NNMAPI(self)
 
     @property
     def organizations(self):
