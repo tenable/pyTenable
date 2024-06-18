@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [1.5.0]
+
+### Added
+- Merged in all of the remaining Tenable Identity Exposure API modules #466 #468 #484 #487 #496 #497 #498 #499 #500 #501 #503 #505 #507 #509 #510 #511 #516 #517 #519 #522 #525 #526 #527 #528 #529 #531 #537 #538
+- Added support for Python 3.12 to testing framework #773
+- Refactored Audit Log module to support pagination updates #772
+- Added Job Adoption support to Export sub-pkg #779
+- Added Access control to main IO package
+
+### Fixed
+- Corrected issue with TSC Files module #771
+
+### Removed
+- Pulled v3 Explore sub-pkgs as the API has been deprecated for some time.
+
+### Changed
+- Added deprecation notice to v3 base sub-pkg.  Only applies to access control.
+- Added deprecation notice to Target Groups module (Deprecated APIs)
+- Added deprecation notice to Workbenches module (Soon to be Deprecated APIs)
+- Added deprecation notice to Access Groups module (Deprecated APIs)
+
+
 ## [1.4.22]
 
 ### Added

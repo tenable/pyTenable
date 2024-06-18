@@ -14,12 +14,11 @@ Methods available on ``tio.v3``:
     :hidden:
     :glob:
 
-    explore/index
     access_control
 """
+import warnings
 from tenable.base.endpoint import APIEndpoint
-from tenable.io.v3.access_control import AccessControlAPI
-from tenable.io.v3.explore import Explore, AssetsAPI
+from tenable.io.access_control import AccessControlAPI
 
 
 class Version3API(APIEndpoint):
@@ -28,25 +27,15 @@ class Version3API(APIEndpoint):
     """
 
     @property
-    def explore(self):
-        """
-        The interface object for the
-         :doc:`Tenable Vulnerability Management v3 explore <explore/index>`
-        """
-        return Explore(self._api)
-
-    @property
     def access_control(self):
         """
         The interface object for the
          :doc:`Tenable Vulnerability Management v3 access control <access_control>`
         """
+        warnings.warn('This Method is deprecated and will be removed in a'
+                      'later release, please switch to using the'
+                      '`access_control` method on the base TVM Object instead',
+                      DeprecationWarning,
+                      stacklevel=2
+                      )
         return AccessControlAPI(self._api)
-
-    @property
-    def assets(self):
-        """
-        The interface object for the
-         :doc:`Tenable.io v3 assets <explore/assets>`
-        """
-        return AssetsAPI(self._api)

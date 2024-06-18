@@ -72,9 +72,7 @@ class RemediationScansAPI(TIOEndpoint):
             ...     pprint(remediation_scan)
 
             For further information on credentials, what settings to use, etc,
-            refer to
-            `this doc <https://developer.tenable.com/reference/io-scans-remediation-list>`_  # noqa: E501
-            on the developer portal.
+            refer to the doc linked above on the developer portal.
 
             '''
         params = dict()

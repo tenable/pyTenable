@@ -244,7 +244,7 @@ class ScansAPI(TIOEndpoint):
             timezone (str, optional):
                 The timezone to use for the scan.  The default if none is
                 specified is to use UTC.  For the list of usable timezones,
-                please refer to :devportal:`scans-timezones`
+                please refer to :devportal:`scans-timezones <scans-timezones>`
 
         Returns:
             :obj:`dict`:
@@ -346,7 +346,7 @@ class ScansAPI(TIOEndpoint):
             timezone (str, optional):
                 The timezone to use for the scan.  The default if none is
                 specified is to use UTC.  For the list of usable timezones,
-                please refer to :devportal:`scans-timezones`
+                please refer to :devportal:`scans-timezones <scans-timezones>`
 
         Returns:
             :obj:`dict`:
