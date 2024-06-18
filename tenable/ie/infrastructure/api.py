@@ -3,7 +3,7 @@ Infrastructure
 ==============
 
 Methods described in this section relate to the infrastructure API.
-These methods can be accessed at ``TenableAD.infrastructure``.
+These methods can be accessed at ``TenableIE.infrastructure``.
 
 .. rst-class:: hide-signature
 .. autoclass:: InfrastructureAPI
@@ -28,7 +28,7 @@ class InfrastructureAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.infrastructure.list()
+            >>> tie.infrastructure.list()
         '''
         return self._schema.load(self._get(), many=True)
 
@@ -51,7 +51,7 @@ class InfrastructureAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.infrastructure.create(
+            >>> tie.infrastructure.create(
             ...     name='test_user',
             ...     login='test_user@gmail.com',
             ...     password='tenable.ad'))
@@ -79,7 +79,7 @@ class InfrastructureAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.infrastructure.details(infrastructure_id='1')
+            >>> tie.infrastructure.details(infrastructure_id='1')
         '''
         return self._schema.load(self._get(f'{infrastructure_id}'))
 
@@ -103,7 +103,7 @@ class InfrastructureAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.infrastructure.update(
+            >>> tie.infrastructure.update(
             ...     infrastructure_id='1',
             ...     login='updated_login@tenable.com',
             ...     name='updated_user')
@@ -125,7 +125,7 @@ class InfrastructureAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.infrastructure.delete(infrastructure_id='1')
+            >>> tie.infrastructure.delete(infrastructure_id='1')
         '''
         return self._schema.load(self._delete(f'{infrastructure_id}'),
                                  many=True)

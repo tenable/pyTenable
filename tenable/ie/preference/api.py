@@ -3,7 +3,7 @@ Preference
 =============
 
 Methods described in this section relate to the preferences API.
-These methods can be accessed at ``TenableAD.preference``.
+These methods can be accessed at ``TenableIE.preference``.
 
 .. rst-class:: hide-signature
 .. autoclass:: PreferenceAPI
@@ -27,7 +27,7 @@ class PreferenceAPI(APIEndpoint):
                 The user's preferences object
 
         Examples:
-            >>> tad.preference.details()
+            >>> tie.preference.details()
         '''
         return self._schema.load(self._get())
 
@@ -47,7 +47,7 @@ class PreferenceAPI(APIEndpoint):
             The user's preferences object
 
         Example:
-            >>> tad.preference.update(
+            >>> tie.preference.update(
             ...     language='en',
             ...     preferred_profile_id=1
             ... )

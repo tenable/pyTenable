@@ -3,7 +3,7 @@ Deviance
 =============
 
 Methods described in this section relate to the deviance API.
-These methods can be accessed at ``TenableAD.deviance``.
+These methods can be accessed at ``TenableIE.deviance``.
 
 .. rst-class:: hide-signature
 .. autoclass:: DevianceAPI
@@ -70,7 +70,7 @@ class DevianceAPI(APIEndpoint):
         Examples:
             return an iterator to loop through all records
 
-            >>> for deviance in tad.deviance.list(
+            >>> for deviance in tie.deviance.list(
             ...     infrastructure_id='1',
             ...     directory_id='1',
             ...     resolved=True,
@@ -84,7 +84,7 @@ class DevianceAPI(APIEndpoint):
 
             return a list of requested records using batch_size
 
-            >>> tad.deviance.list(
+            >>> tie.deviance.list(
             ...     infrastructure_id='1',
             ...     directory_id='1',
             ...     resolved=True,
@@ -149,7 +149,7 @@ class DevianceAPI(APIEndpoint):
                 The deviance object.
 
         Example:
-            >>> tad.deviance.history_details(
+            >>> tie.deviance.history_details(
             ...     infrastructure_id='1',
             ...     directory_id='1',
             ...     deviance_id='1'
@@ -185,7 +185,7 @@ class DevianceAPI(APIEndpoint):
                 The deviance object.
 
         Example:
-            >>> tad.deviance.history_details(
+            >>> tie.deviance.history_details(
             ...     infrastructure_id='1',
             ...     directory_id='1',
             ...     deviance_id='1',
@@ -238,7 +238,7 @@ class DevianceAPI(APIEndpoint):
                 records.
 
         Examples:
-            >>> for deviance in tad.deviance.list_by_directory_and_checker(
+            >>> for deviance in tie.deviance.list_by_directory_and_checker(
             ...     profile_id='1',
             ...     infrastructure_id='1',
             ...     dashboard_id='1',
@@ -313,7 +313,7 @@ class DevianceAPI(APIEndpoint):
         Examples:
             return an iterator to loop through all records
 
-            >>> for deviance in tad.deviance.list_by_checker(
+            >>> for deviance in tie.deviance.list_by_checker(
             ...     profile_id='1',
             ...     checker_id='1',
             ...     expression={'OR': [{
@@ -329,7 +329,7 @@ class DevianceAPI(APIEndpoint):
 
             return a list of requested records using batch_size
 
-            >>> tad.deviance.list_by_checker(
+            >>> tie.deviance.list_by_checker(
             ...     profile_id='1',
             ...     checker_id='1',
             ...     expression={'OR': [{
@@ -399,7 +399,7 @@ class DevianceAPI(APIEndpoint):
             None:
 
         Example:
-            >>> tad.deviance.update_by_checker(
+            >>> tie.deviance.update_by_checker(
             ...     profile_id='1',
             ...     checker_id='1',
             ...     ignore_until='2022-01-27T23:59:59.999Z'
@@ -455,7 +455,7 @@ class DevianceAPI(APIEndpoint):
                 records.
 
         Example:
-            >>> for deviance in tad.deviance.search(
+            >>> for deviance in tie.deviance.search(
             ...     profile_id='1',
             ...     checker_id='1',
             ...     ad_object_id='1',
@@ -530,7 +530,7 @@ class DevianceAPI(APIEndpoint):
             None:
 
         Example:
-            >>> tad.deviance.update_on_ado_and_checker(
+            >>> tie.deviance.update_on_ado_and_checker(
             ...     profile_id='1',
             ...     checker_id='1',
             ...     ad_object_id='1',

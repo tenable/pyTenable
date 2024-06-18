@@ -3,7 +3,7 @@ Widget
 =======
 
 Methods described in this section relate to the widget API.
-These methods can be accessed at ``TenableAD.widgets``.
+These methods can be accessed at ``TenableIE.widgets``.
 
 .. rst-class:: hide-signature
 .. autoclass:: WidgetsAPI
@@ -30,7 +30,7 @@ class WidgetsAPI(APIEndpoint):
                 The list of widget objects.
 
         Examples:
-            >>> tad.widgets.list(dashboard_id=13)
+            >>> tie.widgets.list(dashboard_id=13)
         '''
         return self._get(f"{dashboard_id}/widgets")
 
@@ -63,7 +63,7 @@ class WidgetsAPI(APIEndpoint):
                 The created widget object.
 
         Examples:
-            >>> tad.widgets.create(
+            >>> tie.widgets.create(
             ...     dashboard_id=1,
             ...     pos_x=1,
             ...     pos_y=1,
@@ -99,7 +99,7 @@ class WidgetsAPI(APIEndpoint):
                 The widget object.
 
         Examples:
-            >>> tad.widget.details(dashboard_id=1, widget_id=1)
+            >>> tie.widget.details(dashboard_id=1, widget_id=1)
         '''
         return self._schema.load(self._get(f"{dashboard_id}"
                                            f"/widgets/{widget_id}"))
@@ -132,7 +132,7 @@ class WidgetsAPI(APIEndpoint):
                 The updated widget object.
 
         Examples:
-            >>> tad.widgets.update(
+            >>> tie.widgets.update(
             ...     dashboard_id=1,
             ...     widget_id=1,
             ...     pos_x=1,
@@ -163,7 +163,7 @@ class WidgetsAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.widgets.delete(
+            >>> tie.widgets.delete(
             ...     dashboard_id=1,
             ...     widget_id=1
             ...     )
@@ -187,7 +187,7 @@ class WidgetsAPI(APIEndpoint):
                 The widget option object.
 
         Examples:
-            >>> tad.widgets.widget_options_details(
+            >>> tie.widgets.widget_options_details(
             ...     widget_id=1,
             ...     dashboard_id=1
             ...     )
@@ -222,7 +222,7 @@ class WidgetsAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.widgets.define_widget_options(
+            >>> tie.widgets.define_widget_options(
             ...     dashboard_id=1,
             ...     widget_id=1,
             ...     chart_type='BigNumber'

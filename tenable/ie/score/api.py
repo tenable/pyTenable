@@ -3,7 +3,7 @@ Score
 =====
 
 Methods described in this section relate to the score API.
-These methods can be accessed at ``TenableAD.score``.
+These methods can be accessed at ``TenableIE.score``.
 
 .. rst-class:: hide-signature
 .. autoclass:: ScoreAPI
@@ -53,14 +53,14 @@ class ScoreAPI(APIEndpoint):
 
             With single directory_ids, checker_ids, reason_ids
 
-            >>> tad.score.list(profile_id='1',
+            >>> tie.score.list(profile_id='1',
             ...     directory_ids='3',
             ...     checker_ids='1',
             ...     reason_ids='1')
 
             With multiple directory_ids, checker_ids, reason_ids
 
-            >>> tad.score.list(profile_id='1',
+            >>> tie.score.list(profile_id='1',
             ...     directory_ids=[1, 2, 3],
             ...     checker_ids=[1, 2, 3],
             ...     reason_ids=[1, 2, 3])

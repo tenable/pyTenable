@@ -3,7 +3,7 @@ Category
 ========
 
 Methods described in this section relate to the category API.
-These methods can be accessed at ``TenableAD.category``.
+These methods can be accessed at ``TenableIE.category``.
 
 .. rst-class:: hide-signature
 .. autoclass:: CategoryAPI
@@ -28,7 +28,7 @@ class CategoryAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.category.list()
+            >>> tie.category.list()
         '''
         return self._schema.load(self._get(), many=True)
 
@@ -46,6 +46,6 @@ class CategoryAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.category.details(category_id='5')
+            >>> tie.category.details(category_id='5')
         '''
         return self._schema.load(self._get(f'{category_id}'))

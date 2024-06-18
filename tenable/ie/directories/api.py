@@ -3,7 +3,7 @@ Directory
 =========
 
 Methods described in this section relate to the directory API.
-These methods can be accessed at ``TenableAD.directories``.
+These methods can be accessed at ``TenableIE.directories``.
 
 .. rst-class:: hide-signature
 .. autoclass:: DirectoriesAPI
@@ -29,7 +29,7 @@ class DirectoriesAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.directories.list()
+            >>> tie.directories.list()
         '''
         return self._schema.load(self._get(), many=True)
 
@@ -69,7 +69,7 @@ class DirectoriesAPI(APIEndpoint):
                 The created directory instance.
 
         Examples:
-            >>> tad.directories.create(
+            >>> tie.directories.create(
             ...     infrastructure_id=1,
             ...     name='ExampleServer',
             ...     ip='172.16.0.1',
@@ -103,7 +103,7 @@ class DirectoriesAPI(APIEndpoint):
                 the directory object.
 
         Examples:
-            >>> tad.directories.details(directory_id='1')
+            >>> tie.directories.details(directory_id='1')
         '''
         return self._schema.load(self._get(f'{directory_id}'))
 
@@ -144,13 +144,13 @@ class DirectoriesAPI(APIEndpoint):
                 The updated directory object.
 
         Examples:
-            >>> tad.directories.update(
+            >>> tie.directories.update(
             ...     infrastructure_id=2,
             ...     directory_id=9,
             ...     name='updated_new_name'
             ...     )
 
-            >>> tad.directories.update(
+            >>> tie.directories.update(
             ...     infrastructure_id=2,
             ...     directory_id=9,
             ...     name='updated_new_name',
@@ -177,7 +177,7 @@ class DirectoriesAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.directories.delete(
+            >>> tie.directories.delete(
             ...     infrastructure_id=2,
             ...     directory_id='12'
             ...     )

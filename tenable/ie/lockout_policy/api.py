@@ -3,7 +3,7 @@ Lockout Policy
 ==============
 
 Methods described in this section relate to the lockout policy API.
-These methods can be accessed at ``TenableAD.lockout_policy``.
+These methods can be accessed at ``TenableIE.lockout_policy``.
 
 .. rst-class:: hide-signature
 .. autoclass:: LockoutPolicyAPI
@@ -27,7 +27,7 @@ class LockoutPolicyAPI(APIEndpoint):
                 The lockout policy object
 
         Examples:
-            >>> tad.lockout_policy.details()
+            >>> tie.lockout_policy.details()
         '''
         return self._schema.load(self._get())
 
@@ -52,7 +52,7 @@ class LockoutPolicyAPI(APIEndpoint):
             None
 
         Example:
-            >>> tad.lockout_policy.update(enabled=True)
+            >>> tie.lockout_policy.update(enabled=True)
         '''
         payload = self._schema.dump(self._schema.load(kwargs))
         self._patch(json=payload)

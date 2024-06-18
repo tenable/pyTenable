@@ -3,7 +3,7 @@ Application Settings
 ====================
 
 Methods described in this section relate to the application settings API.
-These methods can be accessed at ``TenableAD.application_settings``.
+These methods can be accessed at ``TenableIE.application_settings``.
 
 .. rst-class:: hide-signature
 .. autoclass:: ApplicationSettingsAPI
@@ -27,7 +27,7 @@ class ApplicationSettingsAPI(APIEndpoint):
                 The application settings objects
 
         Examples:
-            >>> tad.application_settings.get_settings()
+            >>> tie.application_settings.get_settings()
         '''
         return self._schema.load(self._get())
 
@@ -66,7 +66,7 @@ class ApplicationSettingsAPI(APIEndpoint):
                 The application settings objects
 
         Example:
-            >>> tad.application_settings.update_settings(
+            >>> tie.application_settings.update_settings(
             ...     smtp_use_start_tls=True,
             ...     tls=False,
             ...     default_profile_id=1,

@@ -3,7 +3,7 @@ Checker
 =======
 
 Methods described in this section relate to the checker API.
-These methods can be accessed at ``TenableAD.checker``.
+These methods can be accessed at ``TenableIE.checker``.
 
 .. rst-class:: hide-signature
 .. autoclass:: CheckerAPI
@@ -28,7 +28,7 @@ class CheckerAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.checker.list()
+            >>> tie.checker.list()
         '''
         return self._schema.load(self._get(), many=True)
 
@@ -46,6 +46,6 @@ class CheckerAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.checker.details(checker_id='1')
+            >>> tie.checker.details(checker_id='1')
         '''
         return self._schema.load(self._get(f'{checker_id}'))

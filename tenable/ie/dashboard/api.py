@@ -3,7 +3,7 @@ Dashboard
 =========
 
 Methods described in this section relate to the dashboard API.
-These methods can be accessed at ``TenableAD.dashboard``.
+These methods can be accessed at ``TenableIE.dashboard``.
 
 .. rst-class:: hide-signature
 .. autoclass:: DashboardAPI
@@ -28,7 +28,7 @@ class DashboardAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.dashboard.list()
+            >>> tie.dashboard.list()
         '''
         return self._schema.load(self._get(), many=True)
 
@@ -48,7 +48,7 @@ class DashboardAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.dashboard.create(
+            >>> tie.dashboard.create(
             ...     name='new_dashboard',
             ...     order=10)
         '''
@@ -72,7 +72,7 @@ class DashboardAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.dashboard.details(dashboard_id='1')
+            >>> tie.dashboard.details(dashboard_id='1')
         '''
         return self._schema.load(self._get(f'{dashboard_id}'))
 
@@ -90,7 +90,7 @@ class DashboardAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.dashboard.update(
+            >>> tie.dashboard.update(
             ...     dashboard_id='23',
             ...     name='updated_dashboard_name',
             ...     order=1)
@@ -109,6 +109,6 @@ class DashboardAPI(APIEndpoint):
                 The dashboard instance identifier.
 
         Examples:
-            >>> tad.dashboard.delete(dashboard_id='22')
+            >>> tie.dashboard.delete(dashboard_id='22')
         '''
         self._delete(f'{dashboard_id}')

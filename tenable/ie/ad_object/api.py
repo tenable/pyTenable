@@ -3,7 +3,7 @@ AD Object
 =============
 
 Methods described in this section relate to the ad object API.
-These methods can be accessed at ``TenableAD.ad_object``.
+These methods can be accessed at ``TenableIE.ad_object``.
 
 .. rst-class:: hide-signature
 .. autoclass:: ADObjectAPI
@@ -52,7 +52,7 @@ class ADObjectAPI(APIEndpoint):
                 The AD object.
 
         Examples:
-            >>> tad.ad_object.details(
+            >>> tie.ad_object.details(
             ...     directory_id='1',
             ...     infrastructure_id='1',
             ...     ad_object_id='1'
@@ -85,7 +85,7 @@ class ADObjectAPI(APIEndpoint):
                 The AD object.
 
         Examples:
-            >>> tad.ad_object.details_by_profile_and_checker(
+            >>> tie.ad_object.details_by_profile_and_checker(
             ...     profile_id='1',
             ...     checker_id='1',
             ...     ad_object_id='1'
@@ -120,7 +120,7 @@ class ADObjectAPI(APIEndpoint):
                 The AD object.
 
         Examples:
-            >>> tad.ad_object.details_by_event(
+            >>> tie.ad_object.details_by_event(
             ...     directory_id='1',
             ...     infrastructure_id='1',
             ...     ad_object_id='1',
@@ -164,7 +164,7 @@ class ADObjectAPI(APIEndpoint):
                 The list of AD objects.
 
         Examples:
-            >>> tad.ad_object.get_changes(
+            >>> tie.ad_object.get_changes(
             ...     directory_id='1',
             ...     infrastructure_id='1',
             ...     ad_object_id='1',
@@ -230,7 +230,7 @@ class ADObjectAPI(APIEndpoint):
                 records.
 
         Examples:
-            >>> for ado in tad.ad_object.search_all(
+            >>> for ado in tie.ad_object.search_all(
             ...     profile_id='1',
             ...     checker_id='1',
             ...     show_ignored=False,

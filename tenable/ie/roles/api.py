@@ -3,7 +3,7 @@ Roles
 =============
 
 Methods described in this section relate to the roles API.
-These methods can be accessed at ``TenableAD.roles``.
+These methods can be accessed at ``TenableIE.roles``.
 
 .. rst-class:: hide-signature
 .. autoclass:: RolesAPI
@@ -28,7 +28,7 @@ class RolesAPI(APIEndpoint):
                 The list of roles objects
 
         Examples:
-            >>> tad.roles.list()
+            >>> tie.roles.list()
         '''
         return self._schema.load(self._get(), many=True)
 
@@ -50,7 +50,7 @@ class RolesAPI(APIEndpoint):
                 The created role object.
 
         Examples:
-            >>> tad.roles.create(
+            >>> tie.roles.create(
             ...     name='Admin',
             ...     description="all privileges"
             ...     )
@@ -73,7 +73,7 @@ class RolesAPI(APIEndpoint):
                 The default roles object.
 
         Examples:
-            >>> tad.roles.default_roles()
+            >>> tie.roles.default_roles()
         '''
         return self._schema.load(
             self._get('user-creation-defaults'), many=True)
@@ -91,7 +91,7 @@ class RolesAPI(APIEndpoint):
                 the role object.
 
         Examples:
-            >>> tad.roles.details(
+            >>> tie.roles.details(
             ...     role_id='1'
             ...     )
         '''
@@ -117,7 +117,7 @@ class RolesAPI(APIEndpoint):
                 The updated widget object.
 
         Examples:
-            >>> tad.roles.update(
+            >>> tie.roles.update(
             ...     role_id='1',
             ...     name='Basic'
             ...     )
@@ -137,7 +137,7 @@ class RolesAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.roles.delete(
+            >>> tie.roles.delete(
             ...     role_id='1',
             ...     )
         '''
@@ -161,7 +161,7 @@ class RolesAPI(APIEndpoint):
                 the copied role object.
 
         Examples:
-            >>> tad.roles.copy_role(
+            >>> tie.roles.copy_role(
             ...     from_id='1',
             ...     name='Copied name'
             ...     )
@@ -198,7 +198,7 @@ class RolesAPI(APIEndpoint):
                 the update permissions role object.
 
         Examples:
-            >>> tad.roles.replace_role_permissions(
+            >>> tie.roles.replace_role_permissions(
             ...     role_id='1',
             ...     permissions=[{
             ...         'entity_name':'dashboard',

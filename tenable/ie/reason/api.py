@@ -2,7 +2,7 @@
 Reason
 ======
 Methods described in this section relate to the reason API.
-These methods can be accessed at ``TenableAD.reason``.
+These methods can be accessed at ``TenableIE.reason``.
 
 .. rst-class:: hide-signature
 .. autoclass:: ReasonAPI
@@ -26,7 +26,7 @@ class ReasonAPI(APIEndpoint):
                 The list of reason instances.
 
         Examples:
-            >>> tad.reason.list()
+            >>> tie.reason.list()
         '''
         return self._schema.load(self._get(), many=True)
 
@@ -43,7 +43,7 @@ class ReasonAPI(APIEndpoint):
                 Details of the reason object .
 
         Examples:
-            >>> tad.reason.details(reason_id='1')
+            >>> tie.reason.details(reason_id='1')
         '''
         return self._schema.load(self._get(f'{reason_id}'))
 
@@ -65,7 +65,7 @@ class ReasonAPI(APIEndpoint):
                 Details of the reason object.
 
         Examples:
-            >>> tad.reason.list_by_checker(
+            >>> tie.reason.list_by_checker(
             ...     profile_id='1',
             ...     checker_id='1'
             ...     )
@@ -99,7 +99,7 @@ class ReasonAPI(APIEndpoint):
                 Details of the reason object.
 
         Examples:
-            >>> tad.reason.list_by_directory_and_event(
+            >>> tie.reason.list_by_directory_and_event(
             ...     profile_id='1',
             ...     infrastructure_id='1',
             ...     directory_id='1',

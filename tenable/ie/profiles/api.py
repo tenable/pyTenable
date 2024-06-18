@@ -3,7 +3,7 @@ Profiles
 =============
 
 Methods described in this section relate to the profiles API.
-These methods can be accessed at ``TenableAD.profiles``.
+These methods can be accessed at ``TenableIE.profiles``.
 
 .. rst-class:: hide-signature
 .. autoclass:: ProfilesAPI
@@ -27,7 +27,7 @@ class ProfilesAPI(APIEndpoint):
                 The list of profile objects
 
         Examples:
-            >>> tad.profiles.list()
+            >>> tie.profiles.list()
         '''
         return self._schema.load(self._get(), many=True)
 
@@ -49,7 +49,7 @@ class ProfilesAPI(APIEndpoint):
                 The created profile objects
 
         Example:
-            >>> tad.profiles.create(
+            >>> tie.profiles.create(
             ...     name='ExampleProfile',
             ...     directories=[1, 2]
             ...     )
@@ -78,7 +78,7 @@ class ProfilesAPI(APIEndpoint):
                 The profile object.
 
         Examples:
-            >>> tad.profiles.details('1')
+            >>> tie.profiles.details('1')
         '''
         return self._schema.load(self._get(f'{profile_id}'))
 
@@ -104,7 +104,7 @@ class ProfilesAPI(APIEndpoint):
                 The updated profile object.
 
         Examples:
-            >>> tad.profiles.update(
+            >>> tie.profiles.update(
             ...     profile_id='1',
             ...     name='EDITED'
             ...     )
@@ -124,7 +124,7 @@ class ProfilesAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.profiles.delete(profile_id='1')
+            >>> tie.profiles.delete(profile_id='1')
         '''
         self._delete(f"{profile_id}")
 
@@ -149,7 +149,7 @@ class ProfilesAPI(APIEndpoint):
                 The copied role object.
 
         Examples:
-            >>> tad.profiles.copy_profile(
+            >>> tie.profiles.copy_profile(
             ...     from_id='1',
             ...     name='Copied name',
             ...     directories=[1, 2]
@@ -175,7 +175,7 @@ class ProfilesAPI(APIEndpoint):
             None
 
         Example:
-            >>> tad.profiles.commit('1')
+            >>> tie.profiles.commit('1')
         '''
         self._post(f'{profile_id}/commit')
 
@@ -193,6 +193,6 @@ class ProfilesAPI(APIEndpoint):
             None
 
         Example:
-            >>> tad.profiles.unstage('1')
+            >>> tie.profiles.unstage('1')
         '''
         self._post(f'{profile_id}/unstage')

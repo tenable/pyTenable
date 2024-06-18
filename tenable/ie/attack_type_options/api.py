@@ -3,7 +3,7 @@ Attack Type Options
 ===================
 
 Methods described in this section relate to the attack type options API.
-These methods can be accessed at ``TenableAD.attack_type_options``.
+These methods can be accessed at ``TenableIE.attack_type_options``.
 
 .. rst-class:: hide-signature
 .. autoclass:: AttackTypeOptionsAPI
@@ -39,7 +39,7 @@ class AttackTypeOptionsAPI(APIEndpoint):
                 The list of attack type options objects
 
         Examples:
-            >>> tad.attack_type_options.list(
+            >>> tie.attack_type_options.list(
             ...     profile_id='1',
             ...     attack_type_id='1',
             ...     staged=False
@@ -84,7 +84,7 @@ class AttackTypeOptionsAPI(APIEndpoint):
                 The newly created attack type options.
 
         Example:
-            >>> tad.attack_type_options.create(
+            >>> tie.attack_type_options.create(
             ...     profile_id='1',
             ...     attack_type_id='1',
             ...     codename='codename',

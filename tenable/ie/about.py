@@ -3,7 +3,7 @@ About
 =====
 
 Methods described in this section relate to the About API.
-These methods can be accessed at ``TenableAD.about``.
+These methods can be accessed at ``TenableIE.about``.
 
 .. rst-class:: hide-signature
 .. autoclass:: AboutAPI
@@ -21,6 +21,6 @@ class AboutAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.about.version()
+            >>> tie.about.version()
         '''
         return self._get(box=True).version

@@ -3,7 +3,7 @@ License
 =============
 
 Methods described in this section relate to the license API.
-These methods can be accessed at ``TenableAD.license``.
+These methods can be accessed at ``TenableIE.license``.
 
 .. rst-class:: hide-signature
 .. autoclass:: LicenseAPI
@@ -27,7 +27,7 @@ class LicenseAPI(APIEndpoint):
                 The license object
 
         Examples:
-            >>> tad.license.details()
+            >>> tie.license.details()
         '''
         return self._schema.load(self._get())
 
@@ -43,7 +43,7 @@ class LicenseAPI(APIEndpoint):
             The license object
 
         Example:
-            >>> tad.license.create(
+            >>> tie.license.create(
             ...     license='license'
             ... )
         '''

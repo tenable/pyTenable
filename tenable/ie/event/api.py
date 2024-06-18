@@ -2,7 +2,7 @@
 Event
 =====
 Methods described in this section relate to the the event API.
-These methods can be accessed at ``TenableAD.event``.
+These methods can be accessed at ``TenableIE.event``.
 
 .. rst-class:: hide-signature
 .. autoclass:: EventAPI
@@ -39,7 +39,7 @@ class EventAPI(APIEndpoint):
                 Details of the event object.
 
         Examples:
-            >>> tad.event.details(
+            >>> tie.event.details(
             ...     event_id='1',
             ...     infrastructure_id='1',
             ...     directory_id='1'
@@ -82,7 +82,7 @@ class EventAPI(APIEndpoint):
 
         Examples:
 
-            >>> tad.event.search_events(
+            >>> tie.event.search_events(
             ...     expression={'AND': [{'systemOnly': 'True'}]},
             ...     profile_id=5,
             ...     date_start='2022-01-05T00:00:00.000Z',

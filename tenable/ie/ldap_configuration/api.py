@@ -3,7 +3,7 @@ LDAP Configuration
 ==================
 
 Methods described in this section relate to the ldap configuration API.
-These methods can be accessed at ``TenableAD.ldap_configuration``.
+These methods can be accessed at ``TenableIE.ldap_configuration``.
 
 .. rst-class:: hide-signature
 .. autoclass:: LDAPConfigurationAPI
@@ -27,7 +27,7 @@ class LDAPConfigurationAPI(APIEndpoint):
                 The LDAP configuration object
 
         Examples:
-            >>> tad.ldap_configuration.details()
+            >>> tie.ldap_configuration.details()
         '''
         return self._schema.load(self._get())
 
@@ -66,7 +66,7 @@ class LDAPConfigurationAPI(APIEndpoint):
             The LDAP configuration object
 
         Example:
-            >>> tad.ldap_configuration.update(
+            >>> tie.ldap_configuration.update(
             ...     enabled=True,
             ...     allowed_groups=[{
             ...         'name': 'group name',

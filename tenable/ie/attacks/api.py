@@ -3,7 +3,7 @@ Attacks
 =============
 
 Methods described in this section relate to the attacks API.
-These methods can be accessed at ``TenableAD.attacks``.
+These methods can be accessed at ``TenableIE.attacks``.
 
 .. rst-class:: hide-signature
 .. autoclass:: AttacksAPI
@@ -56,7 +56,7 @@ class AttacksAPI(APIEndpoint):
                 The list of attacks objects
 
         Examples:
-            >>> tad.attacks.list(
+            >>> tie.attacks.list(
             ...     profile_id='1',
             ...     resource_type='infrastructure',
             ...     resource_value='1',

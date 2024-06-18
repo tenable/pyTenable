@@ -3,7 +3,7 @@ Checker Option
 ==============
 
 Methods described in this section relate to the checker option API.
-These methods can be accessed at ``TenableAD.checker_option``.
+These methods can be accessed at ``TenableIE.checker_option``.
 
 .. rst-class:: hide-signature
 .. autoclass:: CheckerOptionAPI
@@ -42,7 +42,7 @@ class CheckerOptionAPI(APIEndpoint):
                 List of checker options.
 
         Examples:
-            >>> tad.checker_option.list(
+            >>> tie.checker_option.list(
             ...     profile_id='9',
             ...     checker_id='1',
             ...     staged=True
@@ -85,7 +85,7 @@ class CheckerOptionAPI(APIEndpoint):
                 Created checker option instance.
 
         Examples:
-            >>> tad.checker_option.create(
+            >>> tie.checker_option.create(
             ...     profile_id='9',
             ...     checker_id='2',
             ...     codename='codename',

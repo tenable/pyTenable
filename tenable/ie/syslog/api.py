@@ -3,7 +3,7 @@ Syslog
 ======
 
 Methods described in this section relate to the syslog API.
-These methods can be accessed at ``TenableAD.syslog``.
+These methods can be accessed at ``TenableIE.syslog``.
 
 .. rst-class:: hide-signature
 .. autoclass:: SyslogAPI
@@ -29,7 +29,7 @@ class SyslogAPI(APIEndpoint):
                 The list of syslog objects.
 
         Examples:
-            >>> tad.syslog.list()
+            >>> tie.syslog.list()
         '''
         return self._schema.load(self._get(), many=True)
 
@@ -81,7 +81,7 @@ class SyslogAPI(APIEndpoint):
             Create a syslog object with input_type as
             ``ad_object_changes``.
 
-            >>> tad.syslog.create(
+            >>> tie.syslog.create(
             ...     description='test_syslog',
             ...     input_type="ad_object_changes",
             ...     ip='127.0.0.1',
@@ -95,7 +95,7 @@ class SyslogAPI(APIEndpoint):
 
             Create syslog object with input_type as ``attacks``
 
-            >>> tad.syslog.create(
+            >>> tie.syslog.create(
             ...     description='test_syslog',
             ...     input_type="attacks",
             ...     profiles=[1],
@@ -112,7 +112,7 @@ class SyslogAPI(APIEndpoint):
 
             Create syslog object with input_type as ``deviances``
 
-            >>> tad.syslog.create(
+            >>> tie.syslog.create(
             ...     description='test_syslog',
             ...     input_type="deviances",
             ...     profiles=[1],
@@ -130,7 +130,7 @@ class SyslogAPI(APIEndpoint):
             Create syslog object with protocol as ``UDP`` without
             passing ``tls``
 
-            >>> tad.syslog.create(
+            >>> tie.syslog.create(
             ...     description='test_syslog',
             ...     input_type="deviances",
             ...     profiles=[1],
@@ -177,7 +177,7 @@ class SyslogAPI(APIEndpoint):
                 The details of the syslog object.
 
         Examples:
-            >>> tad.syslog.details(syslog_id='1')
+            >>> tie.syslog.details(syslog_id='1')
         '''
         return self._schema.load(self._get(f'{syslog_id}'))
 
@@ -228,7 +228,7 @@ class SyslogAPI(APIEndpoint):
                 The updated syslog object.
 
         Examples:
-            >>> tad.syslog.update(
+            >>> tie.syslog.update(
             ...     syslog_id='1',
             ...     filter_expression={'OR': [{'systemOnly': 'True'}]}
             ...     )
@@ -248,7 +248,7 @@ class SyslogAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.syslog.delete(syslog_id='1')
+            >>> tie.syslog.delete(syslog_id='1')
         '''
         self._delete(f'{syslog_id}')
 
@@ -264,7 +264,7 @@ class SyslogAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.syslog.send_syslog_notification_by_id(syslog_id='1')
+            >>> tie.syslog.send_syslog_notification_by_id(syslog_id='1')
         '''
         self._schema.load(self._get(f'test-message/{syslog_id}'),
                           many=True)
@@ -310,7 +310,7 @@ class SyslogAPI(APIEndpoint):
         Examples:
             Send test syslog with input_type as ``ad_object_changes``.
 
-            >>> tad.syslog.send_notification(
+            >>> tie.syslog.send_notification(
             ...     input_type="ad_object_changes",
             ...     ip='127.0.0.1',
             ...     port=8888,
@@ -321,7 +321,7 @@ class SyslogAPI(APIEndpoint):
 
             Send test syslog with input_type as ``deviances``.
 
-            >>> tad.syslog.send_notification(
+            >>> tie.syslog.send_notification(
             ...     checkers=[1],
             ...     profiles=[1],
             ...     input_type="deviances",
@@ -335,7 +335,7 @@ class SyslogAPI(APIEndpoint):
 
             Send test syslog with input_type as ``attacks``
 
-            >>> tad.syslog.send_notification(
+            >>> tie.syslog.send_notification(
             ...     profiles=[1],
             ...     input_type="attacks",
             ...     attack_types=[1],

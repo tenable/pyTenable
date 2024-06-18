@@ -3,7 +3,7 @@ Email Notifiers
 ===============
 
 Methods described in this section relate to the email-notifier API.
-These methods can be accessed at ``TenableAD.email_notifiers``.
+These methods can be accessed at ``TenableIE.email_notifiers``.
 
 .. rst-class:: hide-signature
 .. autoclass:: EmailNotifiersAPI
@@ -27,7 +27,7 @@ class EmailNotifiersAPI(APIEndpoint):
                 The list of email notifier objects
 
         Examples:
-            >>> tad.email_notifiers.list()
+            >>> tie.email_notifiers.list()
         '''
         return self._schema.load(self._get(), many=True)
 
@@ -66,7 +66,7 @@ class EmailNotifiersAPI(APIEndpoint):
         Example:
             Create email notifier with input_type as deviances
 
-            >>> tad.email_notifiers.create(
+            >>> tie.email_notifiers.create(
             ...     input_type='deviances',
             ...     checkers=[1, 2],
             ...     profiles=[1],
@@ -79,7 +79,7 @@ class EmailNotifiersAPI(APIEndpoint):
 
             Create email notifier with input_type as attacks
 
-            >>> tad.email_notifiers.create(
+            >>> tie.email_notifiers.create(
             ...     input_type='attacks',
             ...     attack_types=[1, 2],
             ...     profiles=[1],
@@ -116,7 +116,7 @@ class EmailNotifiersAPI(APIEndpoint):
                 the email-notifier object.
 
         Examples:
-            >>> tad.email_notifiers.details(
+            >>> tie.email_notifiers.details(
             ...     email_notifier_id='1'
             ...     )
         '''
@@ -158,7 +158,7 @@ class EmailNotifiersAPI(APIEndpoint):
                 The updated email-notifier instance object.
 
         Examples:
-            >>> tad.email_notifiers.update(
+            >>> tie.email_notifiers.update(
             ...     email_notifier_id='1',
             ...     input_type='attacks',
             ...     attack_types=[1, 2]
@@ -180,7 +180,7 @@ class EmailNotifiersAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.email_notifiers.delete(
+            >>> tie.email_notifiers.delete(
             ...     email_notifier_id='1'
             ...     )
         '''
@@ -200,7 +200,7 @@ class EmailNotifiersAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.email_notifiers.send_test_email_by_id(
+            >>> tie.email_notifiers.send_test_email_by_id(
             ...     email_notifier_id='1'
             ...     )
         '''
@@ -237,7 +237,7 @@ class EmailNotifiersAPI(APIEndpoint):
         Examples:
             Send test email notifier with input_type as deviances
 
-            >>> tad.email_notifiers.create(
+            >>> tie.email_notifiers.create(
             ...     input_type='deviances',
             ...     checkers=[1, 2],
             ...     profiles=[1],
@@ -249,7 +249,7 @@ class EmailNotifiersAPI(APIEndpoint):
 
             Send test email notifier with input_type as attacks
 
-            >>> tad.email_notifiers.create(
+            >>> tie.email_notifiers.create(
             ...     input_type='attacks',
             ...     attack_types=[1, 2],
             ...     profiles=[1],

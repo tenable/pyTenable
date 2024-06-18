@@ -3,7 +3,7 @@ SAML Configuration
 ==================
 
 Methods described in this section relate to the SAML Configuration API.
-These methods can be accessed at ``TenableAD.saml_configuration``.
+These methods can be accessed at ``TenableIE.saml_configuration``.
 
 .. rst-class:: hide-signature
 .. autoclass:: SAMLConfigurationAPI
@@ -27,7 +27,7 @@ class SAMLConfigurationAPI(APIEndpoint):
                 The details of saml configuration singleton.
 
         Examples:
-            >>> tad.saml_configuration.details()
+            >>> tie.saml_configuration.details()
         '''
         return self._schema.load(self._get())
 
@@ -65,7 +65,7 @@ class SAMLConfigurationAPI(APIEndpoint):
                 The updated saml-configuration.
 
         Examples:
-            >>> tad.saml_configuration.update(
+            >>> tie.saml_configuration.update(
             ...     enabled=True,
             ...     allowed_groups=[{
             ...         'name': 'updated_name',
@@ -86,6 +86,6 @@ class SAMLConfigurationAPI(APIEndpoint):
                 Generated certificate.
 
         Examples:
-            >>> tad.saml_configuration.generate_saml_certificate()
+            >>> tie.saml_configuration.generate_saml_certificate()
         '''
         return self._schema.load(self._get(f'generate-certificate'))

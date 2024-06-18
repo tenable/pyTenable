@@ -3,7 +3,7 @@ Topology
 ========
 
 Methods described in this section relate to the topology API.
-These methods can be accessed at ``TenableAD.topology``.
+These methods can be accessed at ``TenableIE.topology``.
 
 .. rst-class:: hide-signature
 .. autoclass:: TopologyAPI
@@ -29,7 +29,7 @@ class TopologyAPI(APIEndpoint):
                 Representation of AD topology.
 
         Examples:
-            >>> tad.topology.details(profile_id='1')
+            >>> tie.topology.details(profile_id='1')
         '''
         return self._schema.load(self._api.get(
             f'profiles/{profile_id}/topology'))

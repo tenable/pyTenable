@@ -3,7 +3,7 @@ Alerts
 =============
 
 Methods described in this section relate to the alerts API.
-These methods can be accessed at ``TenableAD.alerts``.
+These methods can be accessed at ``TenableIE.alerts``.
 
 .. rst-class:: hide-signature
 .. autoclass:: AlertsAPI
@@ -62,7 +62,7 @@ class AlertsAPI(APIEndpoint):
                 records.
 
         Examples:
-            >>> for alert in tad.alerts.list_by_profile(
+            >>> for alert in tie.alerts.list_by_profile(
             ...     profile_id='1',
             ...     archived=False,
             ...     read=False,
@@ -102,7 +102,7 @@ class AlertsAPI(APIEndpoint):
                 the alert object.
 
         Examples:
-            >>> tad.alerts.details(
+            >>> tie.alerts.details(
             ...     alert_id='1'
             ...     )
         '''
@@ -128,7 +128,7 @@ class AlertsAPI(APIEndpoint):
                 The updated alert object.
 
         Example:
-            >>> tad.alerts.update(
+            >>> tie.alerts.update(
             ...     alert_id='1',
             ...     archived=False,
             ...     read=False
@@ -156,7 +156,7 @@ class AlertsAPI(APIEndpoint):
             None:
 
         Example:
-            >>> tad.alerts.update_on_profile(
+            >>> tie.alerts.update_on_profile(
             ...     profile_id='1',
             ...     archived=False,
             ...     read=False

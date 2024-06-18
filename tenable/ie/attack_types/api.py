@@ -3,7 +3,7 @@ Attack Type
 =============
 
 Methods described in this section relate to the the attack type API.
-These methods can be accessed at ``TenableAD.attack_types``.
+These methods can be accessed at ``TenableIE.attack_types``.
 
 .. rst-class:: hide-signature
 .. autoclass:: AttackTypesAPI
@@ -27,6 +27,6 @@ class AttackTypesAPI(APIEndpoint):
                 The list of attack types objects
 
         Examples:
-            >>> tad.attack_types.list()
+            >>> tie.attack_types.list()
         '''
         return self._schema.load(self._get('attack-types'), many=True)

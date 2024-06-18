@@ -3,7 +3,7 @@ Users
 =============
 
 Methods described in this section relate to the users API.
-These methods can be accessed at ``TenableAD.users``.
+These methods can be accessed at ``TenableIE.users``.
 
 .. rst-class:: hide-signature
 .. autoclass:: UsersAPI
@@ -28,7 +28,7 @@ class UsersAPI(APIEndpoint):
                 The list of users objects
 
         Examples:
-            >>> tad.users.list()
+            >>> tie.users.list()
         '''
         return self._schema.load(self._get(), many=True)
 
@@ -64,7 +64,7 @@ class UsersAPI(APIEndpoint):
                 The created user objects
 
         Example:
-            >>> tad.users.create(
+            >>> tie.users.create(
             ...     name='username',
             ...     email='test@domain.com',
             ...     password='user_password',
@@ -94,7 +94,7 @@ class UsersAPI(APIEndpoint):
                 The user info object
 
         Example:
-            >>> tad.users.info()
+            >>> tie.users.info()
         '''
         schema = UserInfoSchema()
         return schema.load(self._get('whoami'))
@@ -112,7 +112,7 @@ class UsersAPI(APIEndpoint):
                 the user object.
 
         Examples:
-            >>> tad.users.details('1')
+            >>> tie.users.details('1')
         '''
         return self._schema.load(self._get(f'{user_id}'))
 
@@ -148,7 +148,7 @@ class UsersAPI(APIEndpoint):
                 The updated user object.
 
         Examples:
-            >>> tad.users.update(
+            >>> tie.users.update(
             ...     user_id='1',
             ...     name='EDITED'
             ...     )
@@ -169,7 +169,7 @@ class UsersAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.users.delete(user_id='1')
+            >>> tie.users.delete(user_id='1')
         '''
         self._delete(f"{user_id}")
 
@@ -185,7 +185,7 @@ class UsersAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.users.create_password(email='test@domain.com')
+            >>> tie.users.create_password(email='test@domain.com')
         '''
         payload = self._schema.dump(self._schema.load({
             'email': email
@@ -209,7 +209,7 @@ class UsersAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.users.retrieve_password(
+            >>> tie.users.retrieve_password(
             ...     token='token',
             ...     new_password='new_password'
             ...     )
@@ -237,7 +237,7 @@ class UsersAPI(APIEndpoint):
             None:
 
         Examples:
-            >>> tad.users.change_password(
+            >>> tie.users.change_password(
             ...     old_password='old_password',
             ...     new_password='new_password'
             ...     )
@@ -266,7 +266,7 @@ class UsersAPI(APIEndpoint):
                 updated user roles object
 
         Examples:
-            >>> tad.users.update_user_roles(
+            >>> tie.users.update_user_roles(
             ...     user_id='1',
             ...     roles=[1, 2, 3]
             ...     )
