@@ -1,4 +1,11 @@
 # -*- coding: utf-8 -*-
+import os
+import sys
+import datetime
+sys.path.insert(0, os.path.abspath('..'))
+
+from tenable.version import version
+
 #
 # Configuration file for the Sphinx documentation builder.
 #
@@ -23,23 +30,15 @@ autodoc_mock_imports = [
     'arrow',
 ]
 
-import os, sys, datetime
-sys.path.insert(0, os.path.abspath('..'))
-
-import tenable
 
 def setup(app):
     app.add_css_file('custom.css')
 
+
 # -- Project information -----------------------------------------------------
-
-project = u'pyTenable'
-year = datetime.datetime.now().year
-copyright = u'{}, Tenable, Inc.'.format(year)
-author = u'Tenable, Inc.'
-
-# The short X.Y version
-version = tenable.__version__
+project = 'pyTenable'
+copyright = f'{datetime.datetime.now().year}, Tenable, Inc.'
+author = 'Tenable, Inc.'
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -80,7 +79,7 @@ master_doc = 'index'
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = 'en'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -144,8 +143,12 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'pyTenable.tex', u'pyTenable Documentation',
-     u'Steven McGrath', 'manual'),
+    (master_doc,
+     'pyTenable.tex',
+     'pyTenable Documentation',
+     'Steven McGrath',
+     'manual'
+     ),
 ]
 
 
@@ -154,7 +157,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'pytenable', u'pyTenable Documentation',
+    (master_doc, 'pytenable', 'pyTenable Documentation',
      [author], 1)
 ]
 
@@ -165,9 +168,14 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'pyTenable', u'pyTenable Documentation',
-     author, 'pyTenable', 'One line description of project.',
-     'Miscellaneous'),
+    (master_doc,
+     'pyTenable',
+     'pyTenable Documentation',
+     author,
+     'pyTenable',
+     'pyTenable Documentation',
+     'Miscellaneous'
+     ),
 ]
 
 
@@ -177,10 +185,10 @@ texinfo_documents = [
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'https://docs.python.org/': None,
-    'requests': ('https://requests.readthedocs.io/en/master/', None),
+    'python': ('https://docs.python.org/3', None),
+    'requests': ('https://requests.readthedocs.io/en/latest/', None),
     'restfly': ('https://restfly.readthedocs.io/en/latest/', None),
-    'box': ('https://box.readthedocs.io/en/latest', None),
+    #'box': ('https://box.readthedocs.io/en/stable/', None),
 }
 
 extlinks = {

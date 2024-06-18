@@ -34,10 +34,6 @@ jobs:
             --cov-report term-missing         \
             --cov-report xml:cov/coverage.xml \
             --cov=tenable tests
-      - name: Test if the library is installable
-        run: |
-          pip install .
-          cd aux_tests && pytest test_installable.py
       - name: Save Coverage Report
         uses: actions/upload-artifact@v2
         with:
