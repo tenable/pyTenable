@@ -1,1 +1,1 @@
-.. automodule:: tenable.apa.findings
+.. automodule:: tenable.apa.findings.api

@@ -12,7 +12,6 @@ Tenable Vulnerability Management
 
     cs/index
     access_control
-    access_groups_v2
     agent_config
     agent_exclusions
     agent_groups

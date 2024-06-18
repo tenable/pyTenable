@@ -1,5 +1,18 @@
 """
-Tenable Attack Path Analysis session
+Tenable Attack Path Analysis
+============================
+
+This package covers the Tenable APA.
+
+.. autoclass:: TenableAPA
+    :members:
+
+
+.. toctree::
+    :hidden:
+    :glob:
+
+    findings
 """
 
 from typing import Optional

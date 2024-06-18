@@ -1,6 +1,6 @@
 '''
 Tenable Security Center
-==========
+=======================
 
 .. note::
     Please refer to the common themes section for TenableSC for details on how
