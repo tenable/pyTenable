@@ -19,3 +19,4 @@ certifi>=2023.7.22 # not directly required, pinned by Snyk to avoid a vulnerabil
 requests>=2.32.0 # not directly required, pinned by Snyk to avoid a vulnerability
 black>=24.3.0 # not directly required, pinned by Snyk to avoid a vulnerability
 requests-toolbelt==1.0.0
+urllib3>=2.2.2 # not directly required, pinned by Snyk to avoid a vulnerability
