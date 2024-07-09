@@ -88,6 +88,23 @@ class TenableOT(APIPlatform):
         )
         super()._authenticate(**kwargs)
 
+    def is_em(self) -> bool:
+        """
+        Determine is TOT instance is Enterprise Manager or not
+        """
+        query = '''
+        query getIsEm {
+            isEm {
+                isEm
+            }
+        }
+        '''
+        return self.graphql(query=query).get(
+                                            'data', {}).get(
+                                            'isEm', {}).get(
+                                            'isEm', False)
+        
+        
     def graphql(self, **kwargs):
         """
         GraphQL Endpoint

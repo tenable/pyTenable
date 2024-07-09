@@ -262,7 +262,6 @@ class ExportsAPI(APIEndpoint):
             >>> for finding in tot.exports.findings():
             ...    print(finding)
         """
-
         assets = self._list(query=queries.FINDING_ASSETS,
                             filters=filters,
                             model='assets',
@@ -273,3 +272,50 @@ class ExportsAPI(APIEndpoint):
                             return_json=return_json,
                             )
         return OTFindingsIterator(self._api, _assets=assets)
+    
+    def asset_connections(self,
+                 filters: Optional[List[Dict]] = None,
+                 sort: Optional[List[Dict]] = None,
+                 search: Optional[str] = None,
+                 start_at: Optional[str] = None,
+                 limit: int = 200,
+                 filter_type: str = 'And',
+                 return_json: bool = False,
+                 ) -> Union[OTExportsIterator, Dict]:
+        """
+        Asset Connections Export
+
+        Args:
+            sorted (list[dict], optional):
+                A list of asset sort parameters to be passed to sort the
+                responses.
+            search (str, optional):
+                Asset Search string
+            filters (list[dict], optional):
+                List of asset filters to apply to restict the response to only
+                the desired assets.
+            filter_type (str, optional):
+                When passing multiple filters, how should the filters be
+                applied to the dataset?  Acceptable values are `And` and `Or`.
+
+        Returns:
+            OTFindingsIterator:
+                The Iterable that hadles the more complex logic of gathering
+                the findings for each asset and presenting them to the caller.
+
+        Example:
+
+            >>> for conn in tot.exports.asset_connections():
+            ...    print(conn)
+        """
+        default_sort = {"direction": "AscNullLast","field": "id"}
+        sort = default_sort if sort is None else sort
+        return self._list(query=queries.CONNECTIONS_BETWEEN_ASSETS,
+                            filters=filters,
+                            model='links',
+                            sort=sort,
+                            search=search,
+                            limit=1000,
+                            filter_type=filter_type,
+                            return_json=return_json,
+                            )

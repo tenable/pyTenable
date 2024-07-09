@@ -130,3 +130,41 @@ query getAssets(
   }
 }
 '''
+
+CONNECTIONS_BETWEEN_ASSETS = '''
+  query getLinks(
+    $filter: LinkExpressionsParams, 
+    $search: String, 
+    $sort: [LinkSortParams!]!, 
+    $limit: Int, 
+    $after: String
+    ) {
+    links(
+      filter: $filter
+      search: $search
+      sort: $sort
+      after: $after
+      first: $limit
+    ) {
+      pageInfo{
+        endCursor
+      }
+      nodes {
+        conversationLinkId: id
+        asset1
+        asset2
+        protocols {
+          nodes {
+            name
+            isICSProtocol:ics
+            __typename
+          }
+          __typename
+        }
+        numConversations: convCount
+        firstConversationTime: firstConv
+        lastConversationTime: lastConv
+      }
+    }
+}
+'''
