@@ -71,6 +71,7 @@ class TenableOT(APIPlatform):
     _env_base = "TOT"
     _ssl_verify = False
     _conv_json = True
+    #TODO @Steven - How do we take in address and build URL dending on IEM vs ICP
 
     def _session_auth(self, **kwargs):  # noqa: PLW0221,PLW0613
         msg = "Session Auth isn't supported with the Tenable OT Security APIs"
@@ -88,6 +89,7 @@ class TenableOT(APIPlatform):
         )
         super()._authenticate(**kwargs)
 
+    #TODO @Steven how do we make this proper property? 
     def is_em(self) -> bool:
         """
         Determine is TOT instance is Enterprise Manager or not
@@ -99,11 +101,39 @@ class TenableOT(APIPlatform):
             }
         }
         '''
-        return self.graphql(query=query).get(
-                                            'data', {}).get(
-                                            'isEm', {}).get(
-                                            'isEm', False)
-        
+        return self.graphql(query=query)['data']['isEm']['isEm']
+    
+    def get_paired_icps(self, kwargs) -> dict:
+        query = '''
+        query getPairedIcps(
+        $limit: Int
+            $startAt: String
+            ){
+        emPairedIcps(
+        first:$limit
+            after:$startAt
+            ){
+        pageInfo{
+            endCursor
+        }
+            nodes {
+            status
+            site {
+                name
+                host
+                machineId
+            }
+            version {
+                version
+            }
+            license {
+                status
+            }
+            }
+        }
+        }
+        '''
+        return self.graphql(query=query)['data']
         
     def graphql(self, **kwargs):
         """
