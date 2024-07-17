@@ -65,3 +65,11 @@ class TenableAPA(APIPlatform):
         :doc:`Tenable Attack Path Analysis APA Findings APIs <findings>`.
         """
         return FindingsAPI(self)
+
+    @property
+    def vectors(self):
+        """
+        The interface object for the
+        :doc:`Tenable Attack Path Analysis APA Findings APIs <findings>`.
+        """
+        return VectorsAPI(self)
