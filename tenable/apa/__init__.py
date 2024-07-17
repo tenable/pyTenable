@@ -13,12 +13,14 @@ This package covers the Tenable APA.
     :glob:
 
     findings
+    vectors
 """
 
 from typing import Optional
 
 from tenable.base.platform import APIPlatform
 from .findings.api import FindingsAPI
+from .vectors.api import VectorsAPI
 
 
 class TenableAPA(APIPlatform):
