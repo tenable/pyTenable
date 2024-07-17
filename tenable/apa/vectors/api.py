@@ -15,7 +15,6 @@ from typing import Dict, Optional, Union
 
 from restfly import APIIterator
 
-from tenable.apa.findings.schema import FindingsPageSchema
 from tenable.apa.vectors.schema import VectorsPageSchema
 from tenable.base.endpoint import APIEndpoint
 
@@ -25,7 +24,7 @@ class VectorIterator(APIIterator):
     Vector Iterator
     """
 
-    _next_token: str = None
+    _next_page: str = None
     _payload: Dict
 
     def _get_page(self) -> None:
@@ -33,13 +32,14 @@ class VectorIterator(APIIterator):
         Request the next page of data
         """
         payload = copy(self._payload)
-        print(self._next_token)
+        print(self._next_page)
+        payload["page"] = self._next_page
 
         resp = self._api.get("apa/api/discover/v1/vectors",
                              params=payload, box=True)
-
-        self.page = resp.data
-        self.total = resp.total
+        self._next_page = resp.get("page") + 1
+        self.page = resp.vectors
+        self.total = resp.totalRecordCount
 
 
 class VectorsAPI(APIEndpoint):
@@ -48,15 +48,15 @@ class VectorsAPI(APIEndpoint):
     def list(
             self,
             page_number: Optional[int] = None,
-            next_token: Optional[str] = None,
-            limit: int = 50,
+            limit: int = 10,
             filter: Optional[dict] = None,
-            sort_filed: Optional[str] = None,
+            sort_field: Optional[str] = None,
             sort_order: Optional[str] = None,
+            sort_type: Optional[str] = None,
             return_iterator=True,
-    ) -> Union[VectorIterator, FindingsPageSchema]:
+    ) -> Union[VectorIterator, VectorsPageSchema]:
         """
-         Retrieve findings
+         Retrieve vectors
 
          Args:
              page_number (optional, int):
@@ -64,21 +64,12 @@ class VectorsAPI(APIEndpoint):
                  If this parameter is omitted,
                  Tenable uses the default value of 1.
 
-             next_token (optional, str):
-                 For cusrsor-based pagination,
-                 the cursor position for the next page.
-                 For the initial request, don't populate.
-                 For subsequent requests, set this parameter to the value found
-                 in the next property of the previous response.
-                 When getting null without specify a page number
-                 it means there are no more pages.
-
              limit (optional, int):
                  The number of records to retrieve.
                  If this parameter is omitted,
-                 Tenable uses the default value of 50.
-                 The maximum number of events that can be retrieved is 10,000.
-                 For example: limit=10000.
+                 Tenable uses the default value of 25.
+                 The maximum number of events that can be retrieved is 25.
+                 For example: limit=25.
 
              filter (optional, dict):
                  A document as defined by Tenable APA online documentation.
@@ -88,38 +79,40 @@ class VectorsAPI(APIEndpoint):
                  please refer to the API documentation
                  linked above, however some examples are as such:
 
-                 - ``{"operator":"==", "key":"state", "value":"open"}``
+                 - ``{"operator":"==", "key":"name", "value":"nice name"}``
                  - ``{"operator":">",
-                      "key":"last_updated_at",
-                      "value":"2024-05-30T12:28:11.528118"}``
+                      "key":"aes",
+                      "value": 10}``
 
-             sort_filed (optional, str):
+             sort_field (optional, str):
                  The field you want to use to sort the results by.
-                 Accepted values are ``last_updated_at``, ``state``,
-                 ``vectorCount``, ``status``, ``name``,
-                 ``procedureName``, ``priority``, and ``mitre_id``.
+                 Accepted values are ``name``, ``priority``
 
              sort_order (optional, str):
                  The sort order
                  Accepted values are ``desc`` or ``acs``
+
+             sort_type (optional, str):
+                The sort type
+                Accepted values are ``number`` or ``string``
 
              return_iterator (bool, optional):
                  Should we return the response instead of iterable?
 
 
         Returns:
-             :obj:`FindingIterator`:
-                 List of findings records
+             :obj:`VectorsIterator`:
+                 List of vectors records
 
          Examples:
-             >>> findings = tapa.findings.list()
-             >>> for f in findings:
+             >>> vectors = tapa.vectors.list()
+             >>> for f in vectors:
              ...     pprint(f)
 
          Examples:
-             >>> tapa.findings.list(
+             >>> tapa.vectors.list(
              ...     limit='10',
-             ...     sort_filed='last_updated_at',
+             ...     sort_field='priority',
              ...     sort_order='desc',
              ...     filter='value',
              ...     return_iterator=False
@@ -127,11 +120,13 @@ class VectorsAPI(APIEndpoint):
         """
 
         payload = {
-            "page_number": page_number,
-            "next": next_token,
-            "limit": limit,
-            "filter": filter,
-            "sort_filed": sort_filed,
+            "pageNumber": page_number,
+            "maxEntriesPerPage": limit,
+            "filters": filter,
+            "sort": {
+                "direction": sort_order,
+                "property": sort_field,
+                "type": sort_type},
             "sort_order": sort_order,
         }
         if return_iterator:
