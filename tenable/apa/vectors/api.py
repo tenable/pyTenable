@@ -80,9 +80,7 @@ class VectorsAPI(APIEndpoint):
                  linked above, however some examples are as such:
 
                  - ``{"operator":"==", "key":"name", "value":"nice name"}``
-                 - ``{"operator":">",
-                      "key":"aes",
-                      "value": 10}``
+                 - ``{"operator":">", "key":"critical_asset", "value": 10}``
 
              sort_field (optional, str):
                  The field you want to use to sort the results by.
@@ -112,9 +110,10 @@ class VectorsAPI(APIEndpoint):
          Examples:
              >>> tapa.vectors.list(
              ...     limit='10',
-             ...     sort_field='priority',
+             ...     sort_field='name',
              ...     sort_order='desc',
-             ...     filter='value',
+             ...     sort_type='string',
+             ...     filter={"operator":"==", "key":"name", "value":"nice name"},
              ...     return_iterator=False
              ...     )
         """
