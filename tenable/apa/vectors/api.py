@@ -33,13 +33,13 @@ class VectorIterator(APIIterator):
         """
         payload = copy(self._payload)
         print(self._next_page)
-        payload["page"] = self._next_page
+        payload["pageNumber"] = self._next_page
 
         resp = self._api.get("apa/api/discover/v1/vectors",
                              params=payload, box=True)
-        self._next_page = resp.get("page") + 1
+        self._next_page = resp.get("Pagination").get("pageNumber") + 1
         self.page = resp.vectors
-        self.total = resp.totalRecordCount
+        self.total = resp.get("Pagination").get("totalRecordCount")
 
 
 class VectorsAPI(APIEndpoint):
@@ -119,16 +119,17 @@ class VectorsAPI(APIEndpoint):
              ...     )
         """
 
+        payload = {}
+        if sort_order and sort_field and sort_type:
+            sort = {"direction": sort_order,
+                    "property": sort_field,
+                    "type": sort_type}
+            payload["sort"] = sort
+
         payload = {
             "pageNumber": page_number,
             "maxEntriesPerPage": limit,
-            "filters": filter,
-            "sort": {
-                "direction": sort_order,
-                "property": sort_field,
-                "type": sort_type},
-            "sort_order": sort_order,
-        }
+            "filters": filter}
         if return_iterator:
             return VectorIterator(self._api, _payload=payload)
         return self._schema.load(

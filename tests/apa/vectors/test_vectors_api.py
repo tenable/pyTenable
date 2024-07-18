@@ -1,190 +1,140 @@
 import pytest
 import responses
 
-from tenable.apa.findings.api import FindingIterator
-from tenable.apa.findings.schema import FindingsPageSchema
+from tenable.apa.vectors.api import VectorIterator
+from tenable.apa.vectors.schema import VectorsPageSchema
 
 
 @pytest.fixture
-def finding():
-    return {"mitre_id": "attack-pattern--1ecfdab8-7d59-4c98-95d4-dc41970f57fc",
-            "mitigations": [
-                "Privileged Account Management",
-                "User Training",
-                "Password Policies"
-            ],
-            "malwares": [
-                "CosmicDuke",
-                "IceApple"
-            ],
-            "tools": [
-                "Impacket",
-                "Pupy",
-                "CrackMapExec",
-                "gsecdump",
-                "Mimikatz",
-                "LaZagne",
-                "AADInternals"
-            ],
-            "groups": [
-                "APT29",
-                "Ke3chang",
-                "OilRig",
-                "Threat Group-3390",
-                "menuPass",
-                "Dragonfly",
-                "MuddyWater",
-                "Leafminer",
-                "APT33"
-            ],
-            "name": "LSA Secrets",
-            "priority": "low",
-            "procedureName": "LSA Secrets-11552",
-            "relatedNodes": {
-                "sources": [
-                    {
-                        "name": "MSSQLSERVER",
-                        "fullname": "sql1.cymptom.labs\\MSSQLSERVER",
-                        "id": "11552",
-                        "labels": [
-                            "Service"
-                        ],
-                        "isCrownJewel": False,
-                        "vulnerability_id": None,
-                        "asset_id": None
-                    }
+def vector():
+    return {
+        "isNew": False,
+        "vectorId": "FFF93960363C0755F8C9D93E241DD26E",
+        "path": None,
+        "techniques": [
+            {
+                "source_information": "[{\"provider_detection_id\":\"71246\",\"detection_code\":\"Enumerate Local Group Memberships\",\"reason_code_name\":null,\"asset_id\":\"0bd1382d-8ba7-41d7-bc27-0e874c655737\",\"id\":\"nessus:71246\",\"provider_code\":\"NESSUS\",\"type\":\"nessus plugin\",\"reason_id\":null},{\"provider_detection_id\":\"44401\",\"detection_code\":\"Microsoft Windows SMB Service Config Enumeration\",\"reason_code_name\":null,\"asset_id\":\"0bd1382d-8ba7-41d7-bc27-0e874c655737\",\"id\":\"nessus:44401\",\"provider_code\":\"NESSUS\",\"type\":\"nessus plugin\",\"reason_id\":null},{\"provider_detection_id\":\"64582\",\"detection_code\":\"Netstat Connection Information\",\"reason_code_name\":null,\"asset_id\":\"0bd1382d-8ba7-41d7-bc27-0e874c655737\",\"id\":\"nessus:64582\",\"provider_code\":\"NESSUS\",\"type\":\"nessus plugin\",\"reason_id\":null}]",
+                "name": "Remote Desktop Protocol-251714",
+                "fullName": "Remote Desktop Protocol-251714",
+                "asset_id": "",
+                "id": 82656,
+                "labels": [
+                    "Procedure"
                 ],
-                "targets": [
-                    {
-                        "name": "Administrator",
-                        "fullname": "CYMPTOM\\administrator",
-                        "id": "3738",
-                        "labels": [
-                            "User",
-                            "WindowsObject",
-                            "Domain",
-                            "DomainAdmin"
-                        ],
-                        "isCrownJewel": False,
-                        "vulnerability_id": None,
-                        "asset_id": None
-                    }
-                ],
-                "cause": {
-                    "name": "MSSQLSERVER",
-                    "fullname": "sql1.cymptom.labs\\MSSQLSERVER",
-                    "id": "11552",
-                    "labels": [
-                        "Service"
-                    ],
-                    "isCrownJewel": False,
-                    "vulnerability_id": None,
-                    "asset_id": None
-                }
+                "procedure_uuid": "b5277de3-2f05-4cf0-96a3-6764c3d230e1"
             },
-            "tactics": [
-                "Credential Access"
-            ],
-            "critical_assets_count": 1,
-            "total_critical_assets_count": 44,
-            "totalVectorCount": 58,
-            "vectorCount": 1,
-            "state": "open",
-            "status": "to_do",
-            "created": 1712659006,
-            "is_active": True,
-            "has_history": None,
-            "last_updated_at": "2024-06-01T00:53:53.513328",
-            "source_information": [
-                {
-                    "id": "nessus:72684",
-                    "asset_id": "e118d26d-ada9-492f-a3b9-e6cc5d9bbca7",
-                    "type": "nessus plugin",
-                    "provider_detection_id": "72684",
-                    "provider_code": "NESSUS",
-                    "reason_id": None,
-                    "reason_code_name": None,
-                    "detection_code": "Enumerate Users via WMI"
-                },
-                {
-                    "id": "nessus:44401",
-                    "asset_id": "e118d26d-ada9-492f-a3b9-e6cc5d9bbca7",
-                    "type": "nessus plugin",
-                    "provider_detection_id": "44401",
-                    "provider_code": "NESSUS",
-                    "reason_id": None,
-                    "reason_code_name": None,
-                    "detection_code": "Microsoft Windows SMB Service Config Enumeration"
-                },
-                {
-                    "id": "nessus:71246",
-                    "asset_id": "e118d26d-ada9-492f-a3b9-e6cc5d9bbca7",
-                    "type": "nessus plugin",
-                    "provider_detection_id": "71246",
-                    "provider_code": "NESSUS",
-                    "reason_id": None,
-                    "reason_code_name": None,
-                    "detection_code": "Enumerate Local Group Memberships"
-                }
-            ],
-            "weaknesses_ids": [],
-            "assets_ids": [],
-            "detection_ids": [
-                "NESSUS:72684",
-                "NESSUS:44401",
-                "NESSUS:71246"
-            ],
-            "serial_id": 1411651
+            {
+                "source_information": "[{\"provider_detection_id\":\"64582\",\"detection_code\":\"Netstat Connection Information\",\"reason_code_name\":null,\"asset_id\":\"fa6ed6d3-9426-4f7e-b414-373eace37f5f\",\"id\":\"nessus:64582\",\"provider_code\":\"NESSUS\",\"type\":\"nessus plugin\",\"reason_id\":null},{\"provider_detection_id\":\"191947\",\"detection_code\":null,\"reason_code_name\":null,\"asset_id\":\"fa6ed6d3-9426-4f7e-b414-373eace37f5f\",\"id\":\"nessus:191947\",\"provider_code\":\"NESSUS\",\"plugin_name\":\"\",\"type\":\"nessus plugin\",\"reason_id\":null},{\"provider_detection_id\":\"191947\",\"detection_code\":null,\"reason_code_name\":null,\"asset_id\":\"fa6ed6d3-9426-4f7e-b414-373eace37f5f\",\"id\":\"nessus:191947\",\"provider_code\":\"NESSUS\",\"plugin_name\":\"KB5035857: Windows 2022 / Azure Stack HCI 22H2 Security Update (March 2024)\",\"type\":\"nessus plugin\",\"reason_id\":null},{\"provider_detection_id\":\"CVE-2024-21444\",\"detection_code\":\"CVE-2024-21444\",\"reason_code_name\":null,\"id\":\"CVE-2024-21444\",\"provider_code\":\"NVD\",\"type\":\"CVE\",\"reason_id\":null}]",
+                "name": "Exploitation of Remote Services-20940:251097",
+                "fullName": "Exploitation of Remote Services-20940:251097",
+                "asset_id": "",
+                "id": 117132,
+                "labels": [
+                    "Procedure"
+                ],
+                "procedure_uuid": "6b2c9d79-3e10-4a6b-b5c2-0c60c453533b"
+            },
+            {
+                "source_information": "[{\"provider_detection_id\":\"64582\",\"detection_code\":\"Netstat Connection Information\",\"reason_code_name\":null,\"asset_id\":\"037cb20a-5b0a-40d2-b5cc-3306ee005429\",\"id\":\"nessus:64582\",\"provider_code\":\"NESSUS\",\"type\":\"nessus plugin\",\"reason_id\":null},{\"provider_detection_id\":\"160937\",\"detection_code\":null,\"reason_code_name\":null,\"asset_id\":\"037cb20a-5b0a-40d2-b5cc-3306ee005429\",\"id\":\"nessus:160937\",\"provider_code\":\"NESSUS\",\"plugin_name\":\"\",\"type\":\"nessus plugin\",\"reason_id\":null},{\"provider_detection_id\":\"CVE-2022-26936\",\"detection_code\":\"CVE-2022-26936\",\"reason_code_name\":null,\"id\":\"CVE-2022-26936\",\"provider_code\":\"NVD\",\"type\":\"CVE\",\"reason_id\":null}]",
+                "name": "Exploitation of Remote Services-12298:19222",
+                "fullName": "Exploitation of Remote Services-12298:19222",
+                "asset_id": "",
+                "id": 27049,
+                "labels": [
+                    "Procedure"
+                ],
+                "procedure_uuid": "eb10d48d-9d4d-4ca2-bfa4-3ec6d76cbec5"
             }
+        ],
+        "nodes": [
+            {
+                "name": "Domain Users",
+                "fullName": "APADOMAIN\\domain users",
+                "asset_id": "",
+                "id": 252949,
+                "labels": [
+                    "WindowsObject",
+                    "Domain",
+                    "Group"
+                ]
+            },
+            {
+                "name": "APAENG",
+                "fullName": "apaeng.apadomain.internal",
+                "asset_id": "0bd1382d-8ba7-41d7-bc27-0e874c655737",
+                "id": 251098,
+                "labels": [
+                    "WindowsObject",
+                    "Domain",
+                    "Computer",
+                    "WindowsServer"
+                ]
+            },
+            {
+                "name": "APADC",
+                "fullName": "apadc.apadomain.internal",
+                "asset_id": "fa6ed6d3-9426-4f7e-b414-373eace37f5f",
+                "id": 251097,
+                "labels": [
+                    "WindowsObject",
+                    "Domain",
+                    "Computer",
+                    "WindowsServer",
+                    "DomainController"
+                ]
+            },
+            {
+                "name": "baaaaacnet",
+                "fullName": "baaaaacnet.indegy.local",
+                "asset_id": "037cb20a-5b0a-40d2-b5cc-3306ee005429",
+                "id": 19222,
+                "labels": [
+                    "Computer",
+                    "WindowsServer"
+                ]
+            }
+        ],
+        "findingsNames": [],
+        "name": "Domain Users can reach baaaaacnet by exploiting CVE-2024-21444 and CVE-2022-26936",
+        "summary": "An attacker can use Domain Users to access baaaaacnet by exploiting two vulnerabilities. First, the attacker exploits CVE-2024-21444 on APAENG to gain access to APADC. Then, the attacker exploits CVE-2022-26936 on APADC to gain access to baaaaacnet. This attack path is possible because Domain Users is a member of Remote Desktop Users, which has remote desktop access to APAENG. This attack path is dangerous because it allows an attacker to gain access to a critical asset, baaaaacnet, by exploiting two vulnerabilities.",
+        "firstAES": None,
+        "lastACR": 9
+    }
 
 
 @responses.activate
-def test_findings_list_iterator(api, finding):
-    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
-                  json={"page_number": 1, "count": 50, "total": 100,
-                        "next": "123",
-                        "data": [finding for _ in range(50)]},
-                  match=[responses.matchers.query_param_matcher({"limit": 50})])
+def test_vectors_list_iterator(api, vector):
+    responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
+                  json={"Pagination": {"pageNumber": 1, "maxEntriesPerPage": 10, "totalRecordCount": 21},
+                        "vectors": [vector for _ in range(10)]},
+                  match=[responses.matchers.query_param_matcher({"maxEntriesPerPage": 10})])
 
-    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
-                  json={"page_number": 2, "count": 50, "total": 100,
-                        "next": "123",
-                        "data": [finding for _ in range(50)]},
-                  match=[responses.matchers.query_param_matcher(
-                      {"limit": 50,
-                       "next": "123"})])
+    responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
+                  json={"Pagination": {"pageNumber": 2, "maxEntriesPerPage": 10, "totalRecordCount": 21},
+                        "vectors": [vector for _ in range(10)]},
+                  match=[responses.matchers.query_param_matcher({"maxEntriesPerPage": 10, "pageNumber": 2})])
 
-    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
-                  json={"page_number": None, "count": 0, "total": 0,
-                        "next": None,
-                        "data": []},
-                  match=[responses.matchers.query_param_matcher(
-                      {"limit": 50,
-                       "next": "123"})])
+    responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
+                  json={"Pagination": {"pageNumber": 3, "maxEntriesPerPage": 10, "totalRecordCount": 21},
+                        "vectors": [vector for _ in range(1)]},
+                  match=[responses.matchers.query_param_matcher({"maxEntriesPerPage": 10, "pageNumber": 3})])
 
-    findings: FindingIterator = api.findings.list()
+    vectors: VectorIterator = api.vectors.list()
 
-    for f in findings:
-        assert f == finding
-    assert findings.total == 100
-    assert findings.count == 100
+    for v in vectors:
+        assert v == vector
+    assert vectors.total == 21
+    assert vectors.count == 21
 
 
 @responses.activate
-def test_findings_list_findings_page_response(api, finding):
-    findings_page_response = {"page_number": 1, "count": 50, "total": 100,
-                              "next": "123",
-                              "data": [finding for _ in range(50)]}
-    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
-                  json=findings_page_response,
-                  match=[responses.matchers.query_param_matcher({"limit": 50})])
+def test_vectors_list_vector_page_response(api, vector):
+    vectors_page_response = {"Pagination": {"pageNumber": 1, "maxEntriesPerPage": 10, "totalRecordCount": 10},
+                             "vectors": [vector for _ in range(10)]}
+    responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
+                  json=vectors_page_response,
+                  match=[responses.matchers.query_param_matcher({"maxEntriesPerPage": 10})])
 
-    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
-                  json={"page_number": None, "count": 0, "total": 0,
-                        "next": None,
-                        "data": []},
-                  match=[responses.matchers.query_param_matcher({"limit": 50, "next": "123"})])
+    vectors_page: VectorsPageSchema = api.vectors.list(return_iterator=False)
 
-    findings_page: FindingsPageSchema = api.findings.list(return_iterator=False)
-
-    assert findings_page == FindingsPageSchema().load(findings_page_response)
+    assert vectors_page == VectorsPageSchema().load(vectors_page_response)
