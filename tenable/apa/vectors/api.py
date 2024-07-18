@@ -32,7 +32,6 @@ class VectorIterator(APIIterator):
         Request the next page of data
         """
         payload = copy(self._payload)
-        print(self._next_page)
         payload["pageNumber"] = self._next_page
 
         resp = self._api.get("apa/api/discover/v1/vectors",
