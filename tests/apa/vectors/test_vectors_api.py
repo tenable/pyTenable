@@ -105,19 +105,19 @@ def vector():
 @responses.activate
 def test_vectors_list_iterator(api, vector):
     responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
-                  json={"Pagination": {"pageNumber": 1, "maxEntriesPerPage": 10, "totalRecordCount": 21},
-                        "vectors": [vector for _ in range(10)]},
-                  match=[responses.matchers.query_param_matcher({"maxEntriesPerPage": 10})])
+                  json={"pageNumber": 1, "count": 10, "total": 21,
+                        "data": [vector for _ in range(10)]},
+                  match=[responses.matchers.query_param_matcher({"limit": 10})])
 
     responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
-                  json={"Pagination": {"pageNumber": 2, "maxEntriesPerPage": 10, "totalRecordCount": 21},
-                        "vectors": [vector for _ in range(10)]},
-                  match=[responses.matchers.query_param_matcher({"maxEntriesPerPage": 10, "pageNumber": 2})])
+                  json={"pageNumber": 2, "count": 10, "total": 21,
+                        "data": [vector for _ in range(10)]},
+                  match=[responses.matchers.query_param_matcher({"limit": 10, "pageNumber": 2})])
 
     responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
-                  json={"Pagination": {"pageNumber": 3, "maxEntriesPerPage": 10, "totalRecordCount": 21},
-                        "vectors": [vector for _ in range(1)]},
-                  match=[responses.matchers.query_param_matcher({"maxEntriesPerPage": 10, "pageNumber": 3})])
+                  json={"pageNumber": 3, "count": 10, "total": 21,
+                        "data": [vector for _ in range(1)]},
+                  match=[responses.matchers.query_param_matcher({"limit": 10, "pageNumber": 3})])
 
     vectors: VectorIterator = api.vectors.list()
 
@@ -129,11 +129,11 @@ def test_vectors_list_iterator(api, vector):
 
 @responses.activate
 def test_vectors_list_vector_page_response(api, vector):
-    vectors_page_response = {"Pagination": {"pageNumber": 1, "maxEntriesPerPage": 10, "totalRecordCount": 10},
-                             "vectors": [vector for _ in range(10)]}
+    vectors_page_response = {"pageNumber": 1, "count": 10, "total": 10,
+                             "data": [vector for _ in range(10)]}
     responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
                   json=vectors_page_response,
-                  match=[responses.matchers.query_param_matcher({"maxEntriesPerPage": 10})])
+                  match=[responses.matchers.query_param_matcher({"limit": 10})])
 
     vectors_page: VectorsPageSchema = api.vectors.list(return_iterator=False)
 

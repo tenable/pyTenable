@@ -44,12 +44,8 @@ class VectorSchema(Schema):
     lastACR = fields.Int(allow_none=True)
 
 
-class PaginationSchema(Schema):
-    pageNumber = fields.Int(allow_none=True)
-    totalRecordCount = fields.Int(allow_none=True)
-    maxEntriesPerPage = fields.Int(allow_none=True)
-
-
 class VectorsPageSchema(Schema):
-    vectors = fields.List(fields.Nested(VectorSchema), allow_none=True)
-    Pagination = fields.Nested(PaginationSchema, allow_none=True)
+    data = fields.List(fields.Nested(VectorSchema), allow_none=True)
+    pageNumber = fields.Int(allow_none=True)
+    count = fields.Int(allow_none=True)
+    total = fields.Int(allow_none=True)

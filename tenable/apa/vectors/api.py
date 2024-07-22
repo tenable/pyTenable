@@ -36,9 +36,9 @@ class VectorIterator(APIIterator):
 
         resp = self._api.get("apa/api/discover/v1/vectors",
                              params=payload, box=True)
-        self._next_page = resp.get("Pagination").get("pageNumber") + 1
-        self.page = resp.vectors
-        self.total = resp.get("Pagination").get("totalRecordCount")
+        self._next_page = resp.get("pageNumber") + 1
+        self.page = resp.data
+        self.total = resp.get("total")
 
 
 class VectorsAPI(APIEndpoint):
@@ -51,7 +51,6 @@ class VectorsAPI(APIEndpoint):
             filter: Optional[dict] = None,
             sort_field: Optional[str] = None,
             sort_order: Optional[str] = None,
-            sort_type: Optional[str] = None,
             return_iterator=True,
     ) -> Union[VectorIterator, VectorsPageSchema]:
         """
@@ -89,10 +88,6 @@ class VectorsAPI(APIEndpoint):
                  The sort order
                  Accepted values are ``desc`` or ``acs``
 
-             sort_type (optional, str):
-                The sort type
-                Accepted values are ``number`` or ``string``
-
              return_iterator (bool, optional):
                  Should we return the response instead of iterable?
 
@@ -111,23 +106,17 @@ class VectorsAPI(APIEndpoint):
              ...     limit='10',
              ...     sort_field='name',
              ...     sort_order='desc',
-             ...     sort_type='string',
              ...     filter={"operator":"==", "key":"name", "value":"nice name"},
              ...     return_iterator=False
              ...     )
         """
 
-        payload = {}
-        if sort_order and sort_field and sort_type:
-            sort = {"direction": sort_order,
-                    "property": sort_field,
-                    "type": sort_type}
-            payload["sort"] = sort
-
         payload = {
             "pageNumber": page_number,
-            "maxEntriesPerPage": limit,
-            "filters": filter}
+            "limit": limit,
+            "filter": filter,
+            "sort_field": sort_field,
+            "sort_order": sort_order}
         if return_iterator:
             return VectorIterator(self._api, _payload=payload)
         return self._schema.load(
