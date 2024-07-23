@@ -145,6 +145,7 @@ class ComplianceExportSchema(Schema):
     since = fields.Int()
     state = fields.List(fields.Str())
     tags = fields.List(fields.Tuple((fields.Str(), fields.List(fields.Str()))))
+    network_id = fields.Str()
 
     # Other params
     asset = fields.List(fields.UUID())

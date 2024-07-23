@@ -385,6 +385,8 @@ class ExportsAPI(APIEndpoint):
             tags (list[tuple[str, list[str]]], optional):
                 A list of tag pairs to filter the results on.  The tag pairs
                 should be presented as ``('CATEGORY', ['VALUE'])``.
+            network_id (str, optional):
+                Returns Compliance findings for the specified network ID.
             num_findings (int):
                 The number of findings to return per chunk of data.  If left
                 unspecified, the default is ``5000``.

@@ -109,7 +109,8 @@ def compliance_export_phase_1_and_2_schema():
         'state': ['Active'],
         'tags': [
             ('Category', ['value1', 'value2'])
-        ]
+        ],
+        'network_id': 'd6797cf4-42b9-4cad-8591-9dd91c3f0fc3'
     }
 
 
@@ -284,3 +285,4 @@ def test_compliance_export_phase_1_and_2_filters(compliance_export_phase_1_and_2
     # checking random element
     assert schema_dump["filters"]["state"][0] == "Active"
     assert len(schema_dump["filters"]["tags"]) == 1
+    assert schema_dump["filters"]["network_id"] == "d6797cf4-42b9-4cad-8591-9dd91c3f0fc3"
