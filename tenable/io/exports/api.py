@@ -364,9 +364,7 @@ class ExportsAPI(APIEndpoint):
             plugin_name (list[str], optional):
                 Returns Compliance findings for the specified list of plugin names.
             plugin_id (list[int], optional):
-                Returns Compliance findings for the specified list of plugin IDs.
-            asset_tags (list[str], optional):
-                Returns Compliance findings for the specified list of asset tags.
+                Returns Compliance findings for the specified list of plugin IDs.\
             audit_name (str, optional):
                 Restricts compliance findings to those associated with the specified audit.
             audit_file_name (str, optional):

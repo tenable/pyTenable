@@ -119,7 +119,6 @@ class ComplianceExportSchema(Schema):
     ipv6_addresses = fields.List(fields.Str())
     plugin_name = fields.List(fields.Str())
     plugin_id = fields.List(fields.Int())
-    asset_tags = fields.List(fields.Str())
     audit_name = fields.Str()
     audit_file_name = fields.Str()
     compliance_results = fields.List(fields.Str())

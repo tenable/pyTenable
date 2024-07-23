@@ -100,7 +100,6 @@ def compliance_export_phase_1_schema():
         'ipv6_addresses': ['2001:0db8:85a3:0000:0000:8a2e:0370:7334'],
         'plugin_name': ['Debian dla-3719 : php-seclib - security update', 'Debian dsa-5607 : chromium - security update'],
         'plugin_id': [189491, 189490],
-        'asset_tags': ['tag-a', 'tag-b'],
         'audit_name': 'my-audit-name',
         'audit_file_name': 'my-audit-file-name',
         'compliance_results': ['PASSED'],
