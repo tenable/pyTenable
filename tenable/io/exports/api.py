@@ -382,6 +382,9 @@ class ExportsAPI(APIEndpoint):
                 Vulnerability Management on or after the specified unix timestamp.
             state (list[str], optional):
                 Restricts compliance findings to those associated with the provided list of states, such as open, reopened and fixed.
+            tags (list[tuple[str, list[str]]], optional):
+                A list of tag pairs to filter the results on.  The tag pairs
+                should be presented as ``('CATEGORY', ['VALUE'])``.
             num_findings (int):
                 The number of findings to return per chunk of data.  If left
                 unspecified, the default is ``5000``.

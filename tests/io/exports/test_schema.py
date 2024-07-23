@@ -85,7 +85,7 @@ def compliance_export():
 
 
 @pytest.fixture
-def compliance_export_phase_1_schema():
+def compliance_export_phase_1_and_2_schema():
     """
     Example compliance export request with phase 1 filters
     """
@@ -106,7 +106,10 @@ def compliance_export_phase_1_schema():
         'last_observed': 1635798607,
         'indexed_at': 1635798607,
         'since': 1635798607,
-        'state': ['Active']
+        'state': ['Active'],
+        'tags': [
+            ('Category', ['value1', 'value2'])
+        ]
     }
 
 
@@ -271,12 +274,13 @@ def test_asset_export_schema_without_open_ports(asset_export_with_out_open_ports
     schema_dump = schema.dump(schema.load(asset_export_with_out_open_ports))
     assert "include_open_ports" not in schema_dump
 
-def test_compliance_export_phase_1_filters(compliance_export_phase_1_schema):
+def test_compliance_export_phase_1_and_2_filters(compliance_export_phase_1_and_2_schema):
     """
     Test Compliance Export Phase 1 Filter Schema
     """
     schema = ComplianceExportSchema()
-    schema_dump = schema.dump(schema.load(compliance_export_phase_1_schema))
+    schema_dump = schema.dump(schema.load(compliance_export_phase_1_and_2_schema))
 
     # checking random element
     assert schema_dump["filters"]["state"][0] == "Active"
+    assert len(schema_dump["filters"]["tags"]) == 1
