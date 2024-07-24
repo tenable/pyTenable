@@ -115,8 +115,8 @@ class VectorsAPI(APIEndpoint):
             "pageNumber": page_number,
             "limit": limit,
             "filter": filter,
-            "sort_field": sort_field,
-            "sort_order": sort_order}
+            "sortField": sort_field,
+            "sortOrder": sort_order}
         if return_iterator:
             return VectorIterator(self._api, _payload=payload)
         return self._schema.load(
