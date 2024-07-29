@@ -32,11 +32,11 @@ class VectorIterator(APIIterator):
         Request the next page of data
         """
         payload = copy(self._payload)
-        payload["pageNumber"] = self._next_page
+        payload["page_number"] = self._next_page
 
         resp = self._api.get("apa/api/discover/v1/vectors",
                              params=payload, box=True)
-        self._next_page = resp.get("pageNumber") + 1
+        self._next_page = resp.get("page_number") + 1
         self.page = resp.data
         self.total = resp.get("total")
 
@@ -112,11 +112,11 @@ class VectorsAPI(APIEndpoint):
         """
 
         payload = {
-            "pageNumber": page_number,
+            "page_number": page_number,
             "limit": limit,
             "filter": filter,
-            "sortField": sort_field,
-            "sortOrder": sort_order}
+            "sort_field": sort_field,
+            "sort_order": sort_order}
         if return_iterator:
             return VectorIterator(self._api, _payload=payload)
         return self._schema.load(
