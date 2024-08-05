@@ -554,3 +554,18 @@ class ExportsAPI(APIEndpoint):
             ... )
         '''
         return self._export('vulns', VulnExportSchema(), **kwargs)
+
+    def list_compliance_export_jobs(self):
+        """
+        Returns a list of the last 1,000 compliance export requests along with their statuses
+        and related metadata.
+
+        Returns:
+            :obj:`list`:
+                List of job records.
+
+        Examples:
+            >>> for compliance_job in tio.exports.list_compliance_export_jobs():
+            ...     pprint(compliance_job)
+        """
+        return self._api.get('compliance/export/status').json()["exports"]
