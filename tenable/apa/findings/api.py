@@ -89,9 +89,7 @@ class FindingsAPI(APIEndpoint):
                  linked above, however some examples are as such:
 
                  - ``{"operator":"==", "key":"state", "value":"open"}``
-                 - ``{"operator":">",
-                      "key":"last_updated_at",
-                      "value":"2024-05-30T12:28:11.528118"}``
+                 - ``{"operator":">", "key":"last_updated_at", "value":"2024-05-30T12:28:11.528118"}``
 
              sort_filed (optional, str):
                  The field you want to use to sort the results by.
