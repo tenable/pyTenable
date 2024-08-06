@@ -85,7 +85,7 @@ def compliance_export():
 
 
 @pytest.fixture
-def compliance_export_phase_1_schema():
+def compliance_export_phase_1_and_2_schema():
     """
     Example compliance export request with phase 1 filters
     """
@@ -100,14 +100,17 @@ def compliance_export_phase_1_schema():
         'ipv6_addresses': ['2001:0db8:85a3:0000:0000:8a2e:0370:7334'],
         'plugin_name': ['Debian dla-3719 : php-seclib - security update', 'Debian dsa-5607 : chromium - security update'],
         'plugin_id': [189491, 189490],
-        'asset_tags': ['tag-a', 'tag-b'],
         'audit_name': 'my-audit-name',
         'audit_file_name': 'my-audit-file-name',
         'compliance_results': ['PASSED'],
         'last_observed': 1635798607,
         'indexed_at': 1635798607,
         'since': 1635798607,
-        'state': ['Active']
+        'state': ['Active'],
+        'tags': [
+            ('Category', ['value1', 'value2'])
+        ],
+        'network_id': 'd6797cf4-42b9-4cad-8591-9dd91c3f0fc3'
     }
 
 
@@ -272,12 +275,14 @@ def test_asset_export_schema_without_open_ports(asset_export_with_out_open_ports
     schema_dump = schema.dump(schema.load(asset_export_with_out_open_ports))
     assert "include_open_ports" not in schema_dump
 
-def test_compliance_export_phase_1_filters(compliance_export_phase_1_schema):
+def test_compliance_export_phase_1_and_2_filters(compliance_export_phase_1_and_2_schema):
     """
     Test Compliance Export Phase 1 Filter Schema
     """
     schema = ComplianceExportSchema()
-    schema_dump = schema.dump(schema.load(compliance_export_phase_1_schema))
+    schema_dump = schema.dump(schema.load(compliance_export_phase_1_and_2_schema))
 
     # checking random element
     assert schema_dump["filters"]["state"][0] == "Active"
+    assert len(schema_dump["filters"]["tags"]) == 1
+    assert schema_dump["filters"]["network_id"] == "d6797cf4-42b9-4cad-8591-9dd91c3f0fc3"
