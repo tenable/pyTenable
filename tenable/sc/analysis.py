@@ -131,7 +131,9 @@ class AnalysisResultsIterator(SCResultsIterator):
                 'page_size={},'.format(str(page_size)),
                 'iter_total={}'.format(str(self.total))
             ]))
-            if page_size < self._limit:
+            if total_records:
+                self.total = int(total_records)
+            elif page_size < self._limit:
                 self.total = self.count + page_size
             else:
                 self.total = self.count + self._limit + 1
