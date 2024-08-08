@@ -365,8 +365,6 @@ class ExportsAPI(APIEndpoint):
                 Returns Compliance findings for the specified list of plugin names.
             plugin_id (list[int], optional):
                 Returns Compliance findings for the specified list of plugin IDs.
-            asset_tags (list[str], optional):
-                Returns Compliance findings for the specified list of asset tags.
             audit_name (str, optional):
                 Restricts compliance findings to those associated with the specified audit.
             audit_file_name (str, optional):
@@ -384,6 +382,11 @@ class ExportsAPI(APIEndpoint):
                 Vulnerability Management on or after the specified unix timestamp.
             state (list[str], optional):
                 Restricts compliance findings to those associated with the provided list of states, such as open, reopened and fixed.
+            tags (list[tuple[str, list[str]]], optional):
+                A list of tag pairs to filter the results on.  The tag pairs
+                should be presented as ``('CATEGORY', ['VALUE'])``.
+            network_id (str, optional):
+                Returns Compliance findings for the specified network ID.
             num_findings (int):
                 The number of findings to return per chunk of data.  If left
                 unspecified, the default is ``5000``.
@@ -551,3 +554,18 @@ class ExportsAPI(APIEndpoint):
             ... )
         '''
         return self._export('vulns', VulnExportSchema(), **kwargs)
+
+    def list_compliance_export_jobs(self):
+        """
+        Returns a list of the last 1,000 compliance export requests along with their statuses
+        and related metadata.
+
+        Returns:
+            :obj:`list`:
+                List of job records.
+
+        Examples:
+            >>> for compliance_job in tio.exports.list_compliance_export_jobs():
+            ...     pprint(compliance_job)
+        """
+        return self._api.get('compliance/export/status').json()["exports"]
