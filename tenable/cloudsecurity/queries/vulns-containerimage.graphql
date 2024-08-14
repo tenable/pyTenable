@@ -1,0 +1,81 @@
+# @prettier
+# Genereated On: 2024-08-12T21:01:08.469210+00:00
+query getContainerImagesVulns(
+  $limit: Int
+  $startAt: String
+  $filter: ContainerImagesFilterInput
+) {
+  ContainerImages(first: $limit, after: $startAt, filter: $filter) {
+    pageInfo {
+      endCursor
+    }
+    nodes {
+      Clusters {
+        Name
+        Id
+        AccountId
+      }
+      Digest
+      KubernetesWorkloads {
+        Name
+        Id
+        AccountId
+      }
+      OperatingSystem
+      OperatingSystemType
+      Repository {
+        Name
+        Id
+        AccountId
+      }
+      RepositoryUri
+      LastScannedAt: ScanTime
+      Used
+      VirtualMachines {
+        Name
+        Id
+        AccountId
+      }
+      CloudProvider
+      CustomFields
+      Labels
+      Name
+      LastUpdatedAt: SyncTime
+      Tags {
+        Key
+        Value
+      }
+      AccountId
+      Id
+      Software {
+        Name
+        Paths
+        ResolvedTime
+        Type
+        Version
+        Vulnerabilities {
+          AttackVector
+          CvssScore
+          CvssVersion
+          Description
+          Exploitable
+          ExploitMaturity
+          FirstScanTime
+          Id
+          Resolvable
+          Severity
+          SoftwareResolutionVersions
+          VprScore
+          VprSeverity
+          Sources {
+            CvssScore
+            CvssVersion
+            CvssVector
+            Name
+            Severity
+          }
+        }
+      }
+    }
+  }
+}

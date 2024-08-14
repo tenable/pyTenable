@@ -1,0 +1,70 @@
+# @prettier
+# Genereated On: 2024-08-12T21:01:07.131699+00:00
+query getVirtualMachinesVulns(
+  $limit: Int
+  $startAt: String
+  $filter: VirtualMachinesFilterInput
+) {
+  VirtualMachines(first: $limit, after: $startAt, filter: $filter) {
+    pageInfo {
+      endCursor
+    }
+    nodes {
+      OperatingSystem
+      OperatingSystemType
+      FixedVulnerabilities: ResolvedSoftware {
+        Name
+        Type
+        Paths
+        FixedAt: ResolvedTime
+        Vulnerabilities {
+          Id
+        }
+      }
+      ScanStatus
+      ScanStatusDescription
+      LastScannedAt: ScanTime
+      VulnerabilityResolutionPatches
+      CloudProvider
+      CustomFields
+      Labels
+      Name
+      LastUpdatedAt: SyncTime
+      Tags {
+        Key
+        Value
+      }
+      AccountId
+      Id
+      Software {
+        Name
+        Paths
+        ResolvedTime
+        Type
+        Version
+        Vulnerabilities {
+          AttackVector
+          CvssScore
+          CvssVersion
+          Description
+          Exploitable
+          ExploitMaturity
+          FirstScanTime
+          Id
+          Resolvable
+          Severity
+          SoftwareResolutionVersions
+          VprScore
+          VprSeverity
+          Sources {
+            CvssScore
+            CvssVersion
+            CvssVector
+            Name
+            Severity
+          }
+        }
+      }
+    }
+  }
+}

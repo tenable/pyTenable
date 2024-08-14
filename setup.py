@@ -49,6 +49,8 @@ setup(
         'urllib3>=1.26.18',
         'typing-extensions>=4.0.1',
         'dataclasses>=0.8;python_version=="3.6"',
-        'requests-toolbelt>=1.0.0'
+        'requests-toolbelt>=1.0.0',
+        'gql>=3.5.0'
+        'graphql-core>=3.2.3'
     ],
 )
