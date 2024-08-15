@@ -1,5 +1,5 @@
 # @prettier
-# Genereated On: 2024-08-12T21:01:08.742653+00:00
+# Genereated On: 2024-08-14T20:01:46.632045+00:00
 query getComputeAssets($limit: Int, $startAt: String) {
   Entities(
     first: $limit
@@ -15,6 +15,7 @@ query getComputeAssets($limit: Int, $startAt: String) {
   ) {
     pageInfo {
       endCursor
+      hasNextPage
     }
     nodes {
       ...AwsEc2InstanceSegment

@@ -1,5 +1,5 @@
 # @prettier
-# Genereated On: 2024-08-12T21:01:08.469210+00:00
+# Genereated On: 2024-08-14T20:01:46.516201+00:00
 query getContainerImagesVulns(
   $limit: Int
   $startAt: String
@@ -8,6 +8,7 @@ query getContainerImagesVulns(
   ContainerImages(first: $limit, after: $startAt, filter: $filter) {
     pageInfo {
       endCursor
+      hasNextPage
     }
     nodes {
       Clusters {

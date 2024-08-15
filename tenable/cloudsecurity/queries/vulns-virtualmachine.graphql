@@ -1,5 +1,5 @@
 # @prettier
-# Genereated On: 2024-08-12T21:01:07.131699+00:00
+# Genereated On: 2024-08-14T20:01:46.033380+00:00
 query getVirtualMachinesVulns(
   $limit: Int
   $startAt: String
@@ -8,19 +8,20 @@ query getVirtualMachinesVulns(
   VirtualMachines(first: $limit, after: $startAt, filter: $filter) {
     pageInfo {
       endCursor
+      hasNextPage
     }
     nodes {
       OperatingSystem
       OperatingSystemType
-      FixedVulnerabilities: ResolvedSoftware {
-        Name
-        Type
-        Paths
-        FixedAt: ResolvedTime
-        Vulnerabilities {
-          Id
-        }
-      }
+      #FixedVulnerabilities: ResolvedSoftware {
+      #  Name
+      # Type
+      #  Paths
+      #  FixedAt: ResolvedTime
+      #  Vulnerabilities {
+      #    Id
+      #  }
+      #}
       ScanStatus
       ScanStatusDescription
       LastScannedAt: ScanTime
