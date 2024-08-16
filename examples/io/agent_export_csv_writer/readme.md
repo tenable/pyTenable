@@ -24,13 +24,13 @@ Export unhealthy agents and write results to agents.csv
 Export healthy agents write results to agents.csv
 
 ```bash
-./agentexport.py --access-key <asses-key> --secret-key <secret> --health 'HEALTHY' agents.csv
+./agentexport.py --access-key <access-key> --secret-key <secret-key> --health 'HEALTHY' agents.csv
 ```
 
 Export unknown agents and write results to agents.csv
 
 ```bash
-./agentexport.py --access-key <asses-key> --secret-key <secret> --health 'UNKNOWN' agents.csv
+./agentexport.py --access-key <access-key> --secret-key <secret-key> --health 'UNKNOWN' agents.csv
 ```
 
 In-tool help:
