@@ -12,13 +12,13 @@ pip install -r requirements.txt
 Export all agents and write results to agents.csv
 
 ```bash
-./agentexport.py --access-key <asses-key> --secret-key <secret> agents.csv
+./agentexport.py --access-key <access-key> --secret-key <secret> agents.csv
 ```
 
 Export unhealthy agents and write results to agents.csv
 
 ```bash
-./agentexport.py --access-key <asses-key> --secret-key <secret> --health 'WARNING,CRITICAL' agents.csv
+./agentexport.py --access-key <access-key> --secret-key <secret> --health 'WARNING,CRITICAL' agents.csv
 ```
 
 Export healthy agents write results to agents.csv
