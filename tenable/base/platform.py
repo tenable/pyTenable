@@ -120,6 +120,23 @@ class APIPlatform(Base):
         })
         self._auth_mech = 'keys'
 
+    def _client_cert_auth(self):
+        """
+        Client Certificate Default Authentication Method
+        """
+        resp = self.get('system')
+        token = resp.json()['response'].get('token')
+        if not token:
+            warnings.warn('Authentication failed. The client certificate is not associated with the user.',
+                          AuthenticationWarning)
+            return
+            
+        self._session.headers.update({
+            'X-SecurityCenter': str(token),
+            'TNS_SESSIONID': str(resp.headers['Set-Cookie'])[14:46]
+        })
+        self._auth_mech = 'cert'
+
     def _authenticate(self, **kwargs):
         '''
         This method handles authentication for both API Keys and for session
@@ -134,6 +151,8 @@ class APIPlatform(Base):
                                              self._key_auth)
         kwargs['session_auth_func'] = kwargs.get('session_auth_func',
                                                  self._session_auth)
+        kwargs['client_cert_auth_func'] = kwargs.get('client_cert_auth_func',
+                                                     self._client_cert_auth)
 
         # Pull the API keys from the keyword arguments passed to the
         # constructor and build the keys tuple.  As API Keys will be
@@ -159,6 +178,8 @@ class APIPlatform(Base):
                                    )
         })
 
+        use_client_cert_auth = self._cert or self._adapter
+
         # Run the desired authentication function.  As API keys are generally
         # preferred over session authentication, we will first check to see
         # that keys have been set, as we prefer stateless auth to stateful.
@@ -166,6 +187,8 @@ class APIPlatform(Base):
             kwargs['key_auth_func'](**keys)
         elif None not in [v for _, v in self._auth.items()]:
             kwargs['session_auth_func'](**self._auth)
+        elif use_client_cert_auth:
+            kwargs['client_cert_auth_func']()
         else:
             warnings.warn('Starting an unauthenticated session',
                           AuthenticationWarning)
