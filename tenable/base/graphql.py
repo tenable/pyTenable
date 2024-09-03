@@ -1,3 +1,20 @@
+"""
+GraphQL Base Module
+===================
+
+The GraphQL module offers a simple yet flexible interface to wrap any Tenable GraphQL
+applications into the pyTenable SDK.
+
+.. autoclass:: GraphQLSession
+    :members:
+
+.. autoclass:: GraphQLEndpoint
+    :members:
+    :private-members:
+
+.. autoclass:: GraphQLIterator
+    :members:
+"""
 from typing import Dict, Optional, Union, Any, List
 from io import StringIO
 import os
@@ -297,6 +314,12 @@ class GraphQLSession:
                 The GraphQL query to pass to the remote API.
             stored_file (str, optional):
                 The filename of a vendored (stored) graphql query to construct.
+
+                .. note::
+                    This parameter should not need to be used for outside of the
+                    library itself.  All of the queries available with this parameter
+                    are also wrapped within the endpoint classes.
+
             iterator (GraphQLIterator, optional):
                 If specified, the response will be an instance of this iterable
                 instead of the dictionary response.  Useful for when the
@@ -321,6 +344,25 @@ class GraphQLSession:
                 If an iterator class was passed, then the query is generated
                 and the passed to the iterator nefore returning an instance
                 of the iterator class.
+
+        Example:
+
+            A very basic example:
+
+            >>> session.query('{ hero { name } }')
+
+            An example using a variable within the query:
+
+            >>> query = '''
+            ... query HeroNameAndFriends($episode: Episode) {
+            ...   hero(episode: $episode) {
+            ...     name
+            ...     friends {
+            ...       name
+            ...     }
+            ...   }
+            ... }
+            >>> session.query(query, episode='JEDI')
         """
         query_doc = self.construct_query(query=query, stored_file=stored_file)
         if not keyword_arguments:
@@ -337,7 +379,7 @@ class GraphQLSession:
                             )
         return self._client.execute(query_doc, **keyword_arguments)
 
-    def validate(self, query: Union[str, StringIO]):
+    def validate(self, query: Union[str, StringIO]) -> Dict[str, Any]:
         """
         Validates the query against the schema and returns any validation
         errors that may have occured.
@@ -345,6 +387,9 @@ class GraphQLSession:
         Args:
             query (str | StringIO):
                 The query to validate against
+
+        Returns:
+
         """
         graphql_query = self.construct_query(query=query)
         return validate(self._client.schema, graphql_query)

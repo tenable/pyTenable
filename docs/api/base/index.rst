@@ -6,5 +6,6 @@ Cross-Package Tooling
     :glob:
 
     platform
+    graphql
     endpoint
     v1

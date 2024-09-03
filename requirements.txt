@@ -10,3 +10,5 @@ urllib3==1.26.18
 typing-extensions>=3.10.0.2
 requests-toolbelt==1.0.0
 cryptography==36.0.1
+gql==3.5.0
+graphql-core==3.2.3
