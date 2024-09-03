@@ -214,7 +214,7 @@ class GraphQLSession:
 
         if not api_key or not url:
             raise ConnectionError(
-                f'Invalid connection settings: {url=}, {api_key=}'
+                f'Invalid connection settings: url="{url}", api_key="{api_key}"'
             )
 
         headers = {
@@ -296,7 +296,9 @@ class GraphQLSession:
                 query_obj = gql(fobj.read())
             return query_obj
         else:
-            raise TypeError(f'No query was presented {query=}, {stored_file=}')
+            raise TypeError(
+                f'No query was presented query="{query}", stored_file="{stored_file}"'
+            )
 
     def query(self,
               query: Optional[str] = None,
