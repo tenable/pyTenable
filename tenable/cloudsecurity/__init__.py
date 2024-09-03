@@ -7,6 +7,8 @@ from .vulns.api import VulnsAPI
 
 
 class CloudSecurity(GraphQLSession):
+    """
+    """
     _query_folder: Path = Path(__file__).parent.joinpath('queries')
     _base_path: str = 'api/graph'
     _env_base: str = 'TCS'

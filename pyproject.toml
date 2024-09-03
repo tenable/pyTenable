@@ -54,6 +54,7 @@ dependencies    = [
     "graphql-core>=3.2.3",
 ]
 
+
 [project.urls]
 Homepage        = "https://pytenable.readthedocs.io"
 Repository      = "https://github.com/tenable/pytenable"
@@ -72,3 +73,47 @@ include         = ["tenable*"]
 
 [tool.setuptools.package-data]
 "tenable.cloudsecurity.queries" = ["*.graphql"]
+
+
+[tool.flake8]
+max-line-length = 88
+max-complexity = 12
+per-file-ignores = [
+    "tests/*:PLW0621",
+]
+
+
+[tool.ruff]
+target-version = "py38"
+exclude = [
+  ".nova",
+  ".github",
+  ".git",
+  ".pytest_cache",
+  "__pycache__"
+]
+
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "B"]
+fixable = [ "ALL" ]
+unfixable = [ "B" ]
+
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402"]
+"**/{tests,docs,tools}/*" = ["E402"]
+
+
+[tool.black]
+line-length = 88
+target-version = ["py38"]

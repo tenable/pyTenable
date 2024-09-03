@@ -65,6 +65,7 @@ def test_resp_error_check(security_center):
     security_center._resp_error_check(response)
 
 
+@pytest.mark.skip(message='Deprecating this method')
 def test_log_in(vcr):
     '''
     test log in

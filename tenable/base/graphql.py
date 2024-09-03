@@ -76,19 +76,18 @@ class GraphQLIterator(APIIterator):
         # StopIteration exception to break the iterator out.
         if (
             (self.total and self.count + 1 > self.total)  # noqa: PLR0916
-            or (self.max_items and self.count + 1 > self.max_items)
-            or (self.max_pages and self.num_pages > self.max_pages)
+            or (self.max_items and self.count >= self.max_items)
         ):
             raise StopIteration()
 
         # If we have worked through the current page of records and we still
         # haven't hit to the total number of available records, then we should
         # query the next page of records.
-        if (self.page_count >= len(self.page)
-                and (not self.total or self.count + 1 <= self.total)):
-            # If the number of pages requested reaches the total number of
-            # pages that should be requested, then stop iteration.
-            if self.max_pages and self.num_pages + 1 > self.max_pages:
+        if (
+            self.page_count >= len(self.page)
+            and (not self.total or self.count + 1 <= self.total)
+        ):
+            if (self.max_pages and self.num_pages >= self.max_pages):
                 raise StopIteration()
 
             # Perform the _get_page call.
@@ -118,9 +117,9 @@ class GraphQLEndpoint:
         self._api = api
         self._log = api._log
 
-    def _query(self, **kwargs) -> Union[Dict[str, Any], GraphQLIterator]:
+    def _query(self, *args, **kwargs) -> Union[Dict[str, Any], GraphQLIterator]:
         """Simple helper to call the api query"""
-        return self._api.query(**kwargs)
+        return self._api.query(*args, **kwargs)
 
 
 class GraphQLSession:
@@ -154,6 +153,7 @@ class GraphQLSession:
                  url: Optional[str] = None,
                  api_key: Optional[str] = None,
                  verify: bool = True,
+                 schema_validation: bool = True,
                  retries: int = 3,
                  timeout: int = 300,
                  vendor: str = 'unknown',
@@ -210,7 +210,7 @@ class GraphQLSession:
                                           headers=headers
                                           )
         self._client = Client(transport=transport,
-                              fetch_schema_from_transport=True,
+                              fetch_schema_from_transport=schema_validation,
                               execute_timeout=timeout,
                               )
 

@@ -1,5 +1,4 @@
 from tenable.base.graphql import GraphQLIterator
-from copy import copy
 
 
 class CloudSecurityVulnIterator(GraphQLIterator):
@@ -13,12 +12,10 @@ class CloudSecurityVulnIterator(GraphQLIterator):
         vlen = len(self.page[self.pidx]['Software'][self.sidx]['Vulnerabilities'])
         slen = len(self.page[self.pidx]['Software'])
 
-        if self.vidx < vlen:
-            self.vidx += 1
-        else:
+        self.vidx += 1
+        if self.vidx >= vlen:
             self.vidx = 0
             self.sidx += 1
-
         if self.sidx >= slen:
             self.sidx = 0
             self.pidx += 1
