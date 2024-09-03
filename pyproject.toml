@@ -50,6 +50,7 @@ dependencies    = [
     "typing-extensions>=4.0.1",
     "dataclasses>=0.8;python_version=='3.6'",
     "requests-toolbelt>=1.0.0",
+    "cryptography>=43.0.1",
     "gql>=3.5.0",
     "graphql-core>=3.2.3",
 ]
