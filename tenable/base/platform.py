@@ -12,6 +12,7 @@ base class over the original APISession class.
 '''
 import os
 import warnings
+import inspect
 from restfly import APISession as Base
 from tenable.errors import AuthenticationWarning
 from tenable.utils import url_validator
@@ -75,8 +76,12 @@ class APIPlatform(Base):
     _backoff = 1
     _retries = 5
     _env_base = ''
-    _auth = {}
     _auth_mech = None
+    _allowed_auth_mech_priority = ['key', 'session']
+    _allowed_auth_mech_params = {
+        'session': ['username', 'password'],
+        'key': ['access_key', 'secret_key'],
+    }
 
     def __init__(self, **kwargs):
 
@@ -109,7 +114,7 @@ class APIPlatform(Base):
             'username': username,
             'password': password
         })
-        self._auth_mech = 'user'
+        self._auth_mech = 'session'
 
     def _key_auth(self, access_key, secret_key):
         '''
@@ -130,46 +135,55 @@ class APIPlatform(Base):
         # under the key names below, we will use those instead.  This should
         # essentially allow for the authentication logic to be overridden with
         # minimal effort.
-        kwargs['key_auth_func'] = kwargs.get('key_auth_func',
-                                             self._key_auth)
-        kwargs['session_auth_func'] = kwargs.get('session_auth_func',
-                                                 self._session_auth)
+        auth = kwargs.get('auth_mechs', {})
 
-        # Pull the API keys from the keyword arguments passed to the
-        # constructor and build the keys tuple.  As API Keys will be
-        # injected directly into the session, there is no need to store these.
-        keys = kwargs.get('_key_auth_dict', {
-            'access_key': kwargs.get('access_key',
-                                     os.getenv(f'{self._env_base}_ACCESS_KEY')
-                                     ),
-            'secret_key': kwargs.get('secret_key',
-                                     os.getenv(f'{self._env_base}_SECRET_KEY')
-                                     )
-        })
+        # Collect the auth mechanisms that have been written for this platform.  Auth
+        # methods will always end in _auth, so we will simply inspect the platform
+        # object and look for any methods that end with '_auth'
+        auth_mechs = {
+            i[0]: i[1] for i in inspect.getmembers(self, predicate=inspect.ismethod)
+            if '_auth' in i[0][-5:]
+        }
 
-        # The session authentication tuple.  We will be storing these as its
-        # possible for the session to timeout on the user.  This would require
-        # re-authentication.
-        self._auth = kwargs.get('_session_auth_dict', {
-            'username': kwargs.get('username',
-                                   os.getenv(f'{self._env_base}_USERNAME')
-                                   ),
-            'password': kwargs.get('password',
-                                   os.getenv(f'{self._env_base}_PASSWORD')
-                                   )
-        })
+        # Next we will need to construct the supported auth mechanisms and parameters
+        # that were passed into the constructor and store the function and params for
+        # each authentication mechanism within the auth dict.
+        for name in self._allowed_auth_mech_priority:
+            auth[name] = {
+                'func': kwargs.get(f'{name}_auth_func', auth_mechs[f'_{name}_auth']),
+                'params': {}
+            }
+            for param in self._allowed_auth_mech_params[name]:
+                # for each param, we will attempt to get the value of the parameter,
+                # defaulting back to the environment variable as declared with the
+                # following syntax:
+                # {ENV_BASE}_{PARAM}
+                #
+                value = kwargs.get(
+                    param, os.getenv(f'{self._env_base}_{param.upper()}', None)
+                )
 
-        # Run the desired authentication function.  As API keys are generally
-        # preferred over session authentication, we will first check to see
-        # that keys have been set, as we prefer stateless auth to stateful.
-        if None not in [v for _, v in keys.items()]:
-            kwargs['key_auth_func'](**keys)
-        elif None not in [v for _, v in self._auth.items()]:
-            kwargs['session_auth_func'](**self._auth)
-        else:
-            warnings.warn('Starting an unauthenticated session',
-                          AuthenticationWarning)
-            self._log.warning('Starting an unauthenticated session.')
+                # If the value is an empty field type, then we will store None instead
+                # as we will be using None to denote if all fields were set and if we
+                # can use the func for auth.
+                if not value:
+                    value = None
+                auth[name]['params'][param] = value
+
+        # For each authentication mechanism in the priority list, we need to check
+        # to see if the all the params have been set.  If all of the parameters have
+        # something stored within them, then we will attempt to use this authentication
+        # mechanism and return the result of that method back to the caller.
+        for name in self._allowed_auth_mech_priority:
+            if None not in [v for _, v in auth[name]['params'].items()]:
+                return auth[name]['func'](**auth[name]['params'])
+
+        # If we found no valid authentication mechanisms, then we should warn the user
+        # that we weren't able to find anything and allow the caller to interact with
+        # the unauthenticated session.
+        warnings.warn('Starting an unauthenticated session',
+                      AuthenticationWarning)
+        self._log.warning('Starting an unauthenticated session.')
 
     def _deauthenticate(self,  # noqa PLW0221
                         method: str = 'DELETE',
