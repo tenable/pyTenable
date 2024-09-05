@@ -51,6 +51,7 @@ class VectorsAPI(APIEndpoint):
             filter: Optional[dict] = None,
             sort_field: Optional[str] = None,
             sort_order: Optional[str] = None,
+            run_ai_summarization: Optional[bool] = None,
             return_iterator=True,
     ) -> Union[VectorIterator, VectorsPageSchema]:
         """
@@ -84,11 +85,12 @@ class VectorsAPI(APIEndpoint):
                  The field you want to use to sort the results by.
                  Accepted values are ``name``, ``priority``
 
-             sort_order (optional, str):
-                 The sort order
-                 Accepted values are ``desc`` or ``acs``
+             run_ai_summarization (optional, bool):
+                Indicates whether or not to run the AI summarization for missing paths.
+                Note that enabling the AI summarization results in slower response times.
+                Tenable uses the default value of false.
 
-             return_iterator (bool, optional):
+             return_iterator (optional, bool):
                  Should we return the response instead of iterable?
 
 
@@ -110,13 +112,14 @@ class VectorsAPI(APIEndpoint):
              ...     return_iterator=False
              ...     )
         """
-
         payload = {
             "page_number": page_number,
             "limit": limit,
             "filter": filter,
             "sort_field": sort_field,
             "sort_order": sort_order}
+        if run_ai_summarization:
+            payload["run_ai_summarization"] = 'true'
         if return_iterator:
             return VectorIterator(self._api, _payload=payload)
         return self._schema.load(
