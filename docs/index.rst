@@ -5,6 +5,7 @@
    api/io/index
    api/sc/index
    api/ot/index
+   api/cloudsecurity/index
    api/dl/index
    api/ie/index
    api/apa/index

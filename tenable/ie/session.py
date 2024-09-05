@@ -42,25 +42,16 @@ class TenableIE(APIPlatform):
     _env_base = 'TIE'
     _base_path = 'api'
     _conv_json = True
-
-    def _session_auth(self, **kwargs):
-        warnings.warn('Session Auth isn\'t supported with the '
-                      'Tenable Identity Exposure APIs'
-                      )
+    _allowed_auth_mech_priority = ['key']
+    _allowed_auth_mech_params = {
+        'key': ['api_key']
+    }
 
     def _key_auth(self, api_key):
         self._session.headers.update({
             'X-API-Key': f'{api_key}'
         })
         self._auth_mech = 'keys'
-
-    def _authenticate(self, **kwargs):
-        kwargs['_key_auth_dict'] = kwargs.get('_key_auth_dict', {
-            'api_key': kwargs.get('api_key',
-                                  os.getenv(f'{self._env_base}_API_KEY')
-                                  )
-        })
-        super()._authenticate(**kwargs)
 
     @property
     def about(self):

@@ -1,6 +1,7 @@
 '''
 Base platform Testing module.
 '''
+import os
 import pytest
 import responses
 from tenable.base.platform import APIPlatform
@@ -32,12 +33,13 @@ def test_authentication():
     responses.add(responses.DELETE, 'https://localhost/session')
 
     # Check that session auth worked as expected.
+    os.unsetenv('_USERNAME')
+    os.unsetenv('_PASSWORD')
     api = APIPlatform(username='user',
                       password='pass',
                       url='https://localhost'
                       )
-    assert api._auth_mech == 'user'  # noqa: PLW0212
-    assert api._auth == {'username': 'user', 'password': 'pass'}  # noqa: PLW0212,E501
+    assert api._auth_mech == 'session'  # noqa: PLW0212
 
     # Check to ensure that API Keys are preferred over session auth.
     api = APIPlatform(access_key='1',
@@ -52,7 +54,6 @@ def test_authentication():
     # Test deauthentication.
     api._deauthenticate()  # noqa: PLW0212
     assert api._auth_mech is None  # noqa: PLW0212
-    assert api._auth == {}  # noqa: PLW0212
 
 
 @responses.activate
