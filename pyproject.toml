@@ -4,6 +4,7 @@ build-backend   = "setuptools.build_meta"
 
 
 [project]
+requires-python = ">=3.7"
 dynamic         = ["version", "readme"]
 name            = "pyTenable"
 description     = "Python library to interface into Tenable's products and applications"
@@ -76,14 +77,6 @@ include         = ["tenable*"]
 "tenable.cloudsecurity.queries" = ["*.graphql"]
 
 
-[tool.flake8]
-max-line-length = 88
-max-complexity = 12
-per-file-ignores = [
-    "tests/*:PLW0621",
-]
-
-
 [tool.ruff]
 target-version = "py38"
 exclude = [
@@ -115,6 +108,21 @@ docstring-code-line-length = "dynamic"
 "**/{tests,docs,tools}/*" = ["E402"]
 
 
-[tool.black]
-line-length = 88
-target-version = ["py38"]
+[tool.uv]
+dev-dependencies = [
+    "bpython>=0.24",
+    "pytest-cov>=4.1.0",
+    "pytest-datafiles>=3.0.0",
+    "pytest-vcr>=1.0.2",
+    "pytest>=7.4.4",
+    "responses>=0.23.3",
+    "ruff>=0.6.4",
+    # URLLib3 version 2.x doesn't play well with the version of pytest-vcr that supports
+    # Python 3.9 and lower.  This can be removed once 3.9 goes EOS or when we stop using
+    # VCR for the test suite.
+    "urllib3==1.26.20",
+]
+
+
+[tool.pytest.ini_options]
+addopts  = "--cov-report term-missing --cov=tenable"
