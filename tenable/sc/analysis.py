@@ -121,9 +121,9 @@ class AnalysisResultsIterator(SCResultsIterator):
         records = resp['response'].get('returnedRecords')
         page_size = len(resp['response']['results'])
 
-        if page_size == records and total_records:
+        if total_records:
             self.total = int(total_records)
-        else:
+        if not (page_size == records and total_records):
             self._log.warning(' '.join([
                 'API Recordkeeping error.',
                 'api_total={},'.format(str(total_records)),
