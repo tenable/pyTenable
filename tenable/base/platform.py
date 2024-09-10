@@ -159,9 +159,9 @@ class APIPlatform(Base):
                 # following syntax:
                 # {ENV_BASE}_{PARAM}
                 #
-                value = kwargs.get(
-                    param, os.getenv(f'{self._env_base}_{param.upper()}', None)
-                )
+                value = kwargs.get(param, None)
+                if not value:
+                    value = os.getenv(f'{self._env_base}_{param.upper()}', None)
 
                 # If the value is an empty field type, then we will store None instead
                 # as we will be using None to denote if all fields were set and if we
