@@ -18,6 +18,24 @@ def serialize_tags(data: Dict) -> Dict:
         data[tag_name].append(tag[1])
     return data
 
+def serialize_compliance_tags(data: Dict) -> Dict:
+    """
+    Converts the tag tuples into a list of objects
+    """
+    tags = data.pop("tags", [])
+    modified_tags = []
+    for tag in tags:
+        category = tag[0]
+        values = tag[1]
+        modified_tags.append({
+            "category": category,
+            "values": values
+        })
+
+    if tags:
+        data["tags"] = modified_tags
+
+    return data
 
 class AssetExportSchema(Schema):
     '''
@@ -119,7 +137,6 @@ class ComplianceExportSchema(Schema):
     ipv6_addresses = fields.List(fields.Str())
     plugin_name = fields.List(fields.Str())
     plugin_id = fields.List(fields.Int())
-    asset_tags = fields.List(fields.Str())
     audit_name = fields.Str()
     audit_file_name = fields.Str()
     compliance_results = fields.List(fields.Str())
@@ -127,6 +144,8 @@ class ComplianceExportSchema(Schema):
     indexed_at = fields.Int()
     since = fields.Int()
     state = fields.List(fields.Str())
+    tags = fields.List(fields.Tuple((fields.Str(), fields.List(fields.Str()))))
+    network_id = fields.Str()
 
     # Other params
     asset = fields.List(fields.UUID())
@@ -134,7 +153,7 @@ class ComplianceExportSchema(Schema):
 
     @post_dump
     def post_serialization(self, data, **kwargs):  # noqa PLR0201 PLW0613
-        data = serialize_tags(data)
+        data = serialize_compliance_tags(data)
         data = envelope(data, 'filters', excludes=['asset',
                                                    'num_findings'
                                                    ])

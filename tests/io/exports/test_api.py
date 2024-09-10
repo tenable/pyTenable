@@ -131,3 +131,8 @@ def test_export_adoption(tvm):
     assert UUID(job_id) == tvm.exports.initiate_export('vulns')
     with pytest.raises(RequestConflictError):
         tvm.exports.initiate_export('vulns', adopt_existing=False)
+
+@pytest.mark.vcr()
+def test_list_compliance_export_jobs_returns_a_list(api):
+    jobs = api.exports.list_compliance_export_jobs()
+    assert isinstance(jobs, list)

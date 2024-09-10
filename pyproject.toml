@@ -1,0 +1,130 @@
+[build-system]
+requires        = ["setuptools"]
+build-backend   = "setuptools.build_meta"
+
+
+[project]
+requires-python = ">=3.7"
+dynamic         = ["version", "readme"]
+name            = "pyTenable"
+description     = "Python library to interface into Tenable's products and applications"
+authors         = [
+    {name = "Tenable, Inc."},
+    {name = "Steve McGrath", email = "smcgrath@tenable.com"}
+]
+license = {text = "MIT License"}
+keywords        = [
+    "tenable",
+    "tenable vulnerability management",
+    "tenable security center",
+    "tenable securitycenter",
+    "tenable.io",
+    "tenable.sc",
+    "tenable.cs",
+    "tenable cloud security",
+    "tenable container security",
+    "tenable.ot",
+    "tenable ot security",
+]
+classifiers     = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies    = [
+    "requests>=2.26",
+    "python-dateutil>=2.6",
+    "semver>=2.10.0",
+    "restfly>=1.4.5",
+    "marshmallow>=3.8",
+    "python-box>=4.0",
+    "defusedxml>=0.5.0",
+    "urllib3>=1.26.18",
+    "typing-extensions>=4.0.1",
+    "dataclasses>=0.8;python_version=='3.6'",
+    "requests-toolbelt>=1.0.0",
+    "cryptography>=43.0.1",
+    "gql>=3.5.0",
+    "graphql-core>=3.2.3",
+]
+
+
+[project.urls]
+Homepage        = "https://pytenable.readthedocs.io"
+Repository      = "https://github.com/tenable/pytenable"
+Issues          = "https://github.com/tenable/pytenable/issues"
+Changelog       = "https://github.com/tenable/pytenable/blob/master/CHANGELOG.md"
+
+
+[tool.setuptools.dynamic]
+version = {attr = "tenable.version.version"}
+readme  = {file = ["README.md"], content-type = "text/markdown"}
+
+
+[tool.setuptools.packages.find]
+include         = ["tenable*"]
+
+
+[tool.setuptools.package-data]
+"tenable.cloudsecurity.queries" = ["*.graphql"]
+
+
+[tool.ruff]
+line-length = 88
+indent-width = 4
+exclude = [
+  ".nova",
+  ".github",
+  ".git",
+  ".pytest_cache",
+  "__pycache__"
+]
+
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "B"]
+fixable = [ "ALL" ]
+unfixable = [ "B" ]
+
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "lf"
+docstring-code-format = false
+docstring-code-line-length = "dynamic"
+
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["E402", "F401"]
+"tenable/vm.py" = ["F401"]
+"**/{tests,docs,tools}/*" = ["E402"]
+
+
+[tool.uv]
+dev-dependencies = [
+    "bpython>=0.24",
+    "pytest-cov>=4.1.0",
+    "pytest-datafiles>=3.0.0",
+    "pytest-vcr>=1.0.2",
+    "pytest>=7.4.4",
+    "responses>=0.23.3",
+    "ruff>=0.6.4",
+    # URLLib3 version 2.x doesn't play well with the version of pytest-vcr that supports
+    # Python 3.9 and lower.  This can be removed once 3.9 goes EOS or when we stop using
+    # VCR for the test suite.
+    "urllib3==1.26.20",
+]
+
+
+[tool.pytest.ini_options]
+addopts  = "--cov-report term-missing --cov=tenable"

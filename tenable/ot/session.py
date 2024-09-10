@@ -71,11 +71,10 @@ class TenableOT(APIPlatform):
     _env_base = "TOT"
     _ssl_verify = False
     _conv_json = True
-
-    def _session_auth(self, **kwargs):  # noqa: PLW0221,PLW0613
-        msg = "Session Auth isn't supported with the Tenable OT Security APIs"
-        warnings.warn(msg)
-        self._log.warning(msg)
+    _allowed_auth_mech_priority = ['key']
+    _allowed_auth_mech_params = {
+        'key': ['api_key']
+    }
 
     def _key_auth(self, api_key, **kwargs):  # noqa: PLW0221,PLW0613
         self._session.headers.update({"X-APIKeys": f"key={api_key}"})

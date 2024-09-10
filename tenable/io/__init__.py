@@ -184,7 +184,7 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         checking, we should probably cache the response as a private attribute
         to speed up checking times.
         '''
-        if not self._tzcache:
+        if not self._tzcache and self._auth_mech:
             self._tzcache = self.scans.timezones()
         return self._tzcache
 
