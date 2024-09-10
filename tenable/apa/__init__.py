@@ -13,12 +13,14 @@ This package covers the Tenable APA.
     :glob:
 
     findings
+    vectors
 """
 
 from typing import Optional
 
 from tenable.base.platform import APIPlatform
 from .findings.api import FindingsAPI
+from .vectors.api import VectorsAPI
 
 
 class TenableAPA(APIPlatform):
@@ -65,3 +67,11 @@ class TenableAPA(APIPlatform):
         :doc:`Tenable Attack Path Analysis APA Findings APIs <findings>`.
         """
         return FindingsAPI(self)
+
+    @property
+    def vectors(self):
+        """
+        The interface object for the
+        :doc:`Tenable Attack Path Analysis APA Findings APIs <findings>`.
+        """
+        return VectorsAPI(self)

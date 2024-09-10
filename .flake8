@@ -1,6 +1,0 @@
-[flake8]
-max-line-length = 79
-max-complexity = 12
-
-per-file-ignores =
-    tests/*:PLW0621

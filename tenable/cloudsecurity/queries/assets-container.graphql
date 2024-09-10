@@ -1,0 +1,272 @@
+# @prettier
+# Genereated On: 2024-08-14T20:01:46.992952+00:00
+query getContainerAssets($limit: Int, $startAt: String) {
+  Entities(
+    first: $limit
+    after: $startAt
+    filter: {
+      Types: [
+        AwsContainerImage
+        AzureContainerImage
+        CiContainerImage
+        GcpContainerImage
+        OpContainerImage
+      ]
+    }
+  ) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    nodes {
+      ...AwsContainerImageSegment
+      ...AzureContainerImageSegment
+      ...CiContainerImageSegment
+      ...GcpContainerImageSegment
+      ...OpContainerImageSegment
+    }
+  }
+}
+
+fragment AwsContainerImageSegment on AwsContainerImage {
+  Id
+  AccountId
+  CloudProvider
+  CustomFields
+  Labels
+  Name
+  LastUpdatedAt: SyncTime
+  Tags {
+    Key
+    Value
+  }
+  Arn
+  CreatedAt: CreationTime
+  CreatorIdentity {
+    Id
+    Name
+    AccountId
+  }
+  CreatorOriginator {
+    Id
+    Name
+    AccountId
+  }
+  Region
+  #Stack
+  Clusters {
+    Name
+    AccountId
+    Id
+  }
+  Digest
+  KubernetesWorkloads {
+    Name
+    AccountId
+    Id
+  }
+  OperatingSystem
+  OperatingSystemType
+  Repository {
+    Name
+    AccountId
+    Id
+  }
+  RepositoryUri
+  ScanTime
+  #Software
+  Used
+  VirtualMachines {
+    Name
+    AccountId
+    Id
+  }
+  #Vulnerabilities
+}
+
+fragment AzureContainerImageSegment on AzureContainerImage {
+  Id
+  AccountId
+  CloudProvider
+  CustomFields
+  Labels
+  Name
+  LastUpdatedAt: SyncTime
+  Tags {
+    Key
+    Value
+  }
+  CreatedAt: CreationTime
+  CreatorIdentity {
+    Id
+    Name
+    AccountId
+  }
+  Location
+  Clusters {
+    Name
+    AccountId
+    Id
+  }
+  Digest
+  KubernetesWorkloads {
+    Name
+    AccountId
+    Id
+  }
+  OperatingSystem
+  OperatingSystemType
+  Repository {
+    Name
+    AccountId
+    Id
+  }
+  RepositoryUri
+  ScanTime
+  #Software
+  Used
+  VirtualMachines {
+    Name
+    AccountId
+    Id
+  }
+  #Vulnerabilities
+}
+
+fragment CiContainerImageSegment on CiContainerImage {
+  Id
+  AccountId
+  CloudProvider
+  CustomFields
+  Labels
+  Name
+  LastUpdatedAt: SyncTime
+  Tags {
+    Key
+    Value
+  }
+  Clusters {
+    Name
+    AccountId
+    Id
+  }
+  Digest
+  KubernetesWorkloads {
+    Name
+    AccountId
+    Id
+  }
+  OperatingSystem
+  OperatingSystemType
+  Repository {
+    Name
+    AccountId
+    Id
+  }
+  RepositoryUri
+  ScanTime
+  #Software
+  Used
+  VirtualMachines {
+    Name
+    AccountId
+    Id
+  }
+  #Vulnerabilities
+}
+
+fragment GcpContainerImageSegment on GcpContainerImage {
+  Id
+  AccountId
+  CloudProvider
+  CustomFields
+  Labels
+  Name
+  LastUpdatedAt: SyncTime
+  Tags {
+    Key
+    Value
+  }
+  CreatedAt: CreationTime
+  CreatorIdentity {
+    Id
+    Name
+    AccountId
+  }
+  CreatorOriginator {
+    Id
+    Name
+    AccountId
+  }
+  Location
+  Clusters {
+    Name
+    AccountId
+    Id
+  }
+  Digest
+  KubernetesWorkloads {
+    Name
+    AccountId
+    Id
+  }
+  OperatingSystem
+  OperatingSystemType
+  Repository {
+    Name
+    AccountId
+    Id
+  }
+  RepositoryUri
+  ScanTime
+  #Software
+  Used
+  VirtualMachines {
+    Name
+    AccountId
+    Id
+  }
+  #Vulnerabilities
+}
+
+fragment OpContainerImageSegment on OpContainerImage {
+  Id
+  AccountId
+  CloudProvider
+  CustomFields
+  Labels
+  Name
+  LastUpdatedAt: SyncTime
+  Tags {
+    Key
+    Value
+  }
+  Clusters {
+    Name
+    AccountId
+    Id
+  }
+  Digest
+  KubernetesWorkloads {
+    Name
+    AccountId
+    Id
+  }
+  OperatingSystem
+  OperatingSystemType
+  Repository {
+    Name
+    AccountId
+    Id
+  }
+  RepositoryUri
+  ScanTime
+  #Software
+  Used
+  VirtualMachines {
+    Name
+    AccountId
+    Id
+  }
+  #Vulnerabilities
+}
