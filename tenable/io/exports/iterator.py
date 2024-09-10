@@ -33,6 +33,11 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
             The current chunk of data.
         chunk_id (int):
             The current chunk id.
+        count (int):
+            The current total count of items that have been returned.
+        page_count (int):
+            The current total count of items that have been processed on the
+            current chunk/page.
         timeout (int):
             A timeout in seconds to wait for the job to start processing
             before cancelling.
@@ -52,12 +57,14 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
     chunks: List[int]
     processed: List[int]
     page: List[Dict]
-    chunk_id: int
+    chunk_id: int = None
     timeout: int = None
     uuid: str
     type: str
     status: str
     start_time: int
+    count: int = 0
+    page_count: int = 0
 
     def __init__(self, api, **kwargs):
         self.chunks = []
@@ -137,6 +144,10 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
                 and len(self.chunks) == 0
                 and self._is_iterator
             ):
+                self._log.info(f'Export {self.type}:{self.uuid} '
+                               f'has {self.status} and has '
+                               f'processed {self.page_count} items.'
+                               )
                 raise StopIteration()
         return self.chunks
 
@@ -180,6 +191,10 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
         # If we have worked through the current page of records then we should
         # query the next page of records.
         if self.page_count >= len(self.page):
+            if self.chunk_id:
+                self._log.info(f'Job {self.type}:{self.uuid}:{self.chunk_id} '
+                               f'processed {self.count} items.'
+                               )
             self._get_page()
             self.page_count = 0
 

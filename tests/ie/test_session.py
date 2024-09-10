@@ -11,4 +11,4 @@ def test_session_authentication_error():
     test to raise the exception unauthorized session is created
     '''
     with pytest.warns(AuthenticationWarning):
-        TenableIE()._session_auth()
+        TenableIE()
