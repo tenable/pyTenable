@@ -85,15 +85,15 @@ class APIPlatform(Base):
 
     def __init__(self, **kwargs):
 
-        # if the constructed URL isn't valid, then we will throw a TypeError
+        # if the constructed URL isn't valid, then we will throw a ConnectionError
         # to inform the caller that something isn't right here.
-        self._url = kwargs.get('url',
-                               os.environ.get(f'{self._env_base}_URL',
-                                              self._url
-                                              )
-                               )
-        if not url_validator(self._url):
-            raise TypeError(f'{self._url} is not a valid URL')
+        url = kwargs.get('url')
+        if not url:
+            url = os.environ.get(f'{self._env_base}_URL', self._url)
+        self._url = url
+
+        if not (self._url and url_validator(self._url, validate=['scheme', 'netloc'])):
+            raise ConnectionError(f'{self._url} is not a valid URL')
 
         # CamelCase squashing is an optional parameter thanks to Box.  if the
         # user has requested it, then we should add the appropriate parameter

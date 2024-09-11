@@ -12,7 +12,7 @@ def test_url_constructor():
     Test the URL constructor.
     '''
     # test invalid URL
-    with pytest.raises(TypeError):
+    with pytest.raises(ConnectionError):
         APIPlatform(url='something')
 
 
