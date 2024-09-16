@@ -148,9 +148,8 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         A connection to Tenable Security Center using SSL certificates:
 
         >>> sc = TenableSC(url='https://sc.company.tld',
-        ...                cert_file='/path/client.cert',
-        ...                cert_key='/path/client.key',
-        ...                )
+        ...                cert=('/path/client.cert', '/path/client.key')
+                           )
 
         Using a PKCS12 Certificate:
 
@@ -193,7 +192,6 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     _allowed_auth_mech_params = {
         'session': ['username', 'password'],
         'key': ['access_key', 'secret_key'],
-    #    'p12': ['p12_cert', 'password'],
         'cert': ['_cert'],
     }
 
@@ -220,11 +218,17 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         kwargs['access_key'] = access_key
         kwargs['secret_key'] = secret_key
 
+        # Check to see if there is a p12_cert and password specified, if so, then
+        # convert the cert into an unencrypted PEM format and construct the cert
+        # tuple from the _p12_auth response.
         if 'p12_cert' in kwargs and 'password' in kwargs:
             cert = self._p12_auth(kwargs['p12_cert'], kwargs['password'])
             kwargs['cert'] = cert
+
+        # If the cert argument exists, then set _cert to True in order to pass the
+        # cert auth checks.
         if 'cert' in kwargs:
-            kwargs['_cert'] = kwargs['cert']
+            kwargs['_cert'] = True
         # Now lets pass the relevant parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
         super().__init__(**kwargs)
@@ -304,14 +308,11 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         self._client_cert.write(cert.public_bytes(serialization.Encoding.PEM))
         self._client_cert.flush()
         return self._client_cert.name, self._client_key.name
-        #self._cert_auth(self._client_cert.name, self._client_key.name)
 
     def _cert_auth(self, _cert):
         """
         PEM Cert Authentication
         """
-        assert self._session.cert == _cert
-        #self._session.cert = (cert_file, cert_key)
         resp = self.get('system', box=False)
         self._session.headers.update({
             'X-SecurityCenter': str(resp.json()['response']['token']),
