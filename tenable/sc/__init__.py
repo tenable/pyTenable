@@ -104,6 +104,10 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             format could be either a tuple or a string pointing to the
             certificate.  For more details, please refer to the
             `Requests Client-Side Certificates`_ documentation.
+        p12_cert (str, optional):
+            The client-side PKCS12 certificate to use for certificate-based
+            authentication.  A password must be provided to descrypt the password
+            along with the certificate file (see password).
         password (str, optional):
             The password to use for session authentication.
         port (int, optional):
@@ -185,12 +189,12 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     _version = None
     _client_cert: tempfile.NamedTemporaryFile
     _client_key: tempfile.NamedTemporaryFile
-    _allowed_auth_mech_priority = ['key', 'cert', 'p12', 'session']
+    _allowed_auth_mech_priority = ['key', 'cert', 'session']
     _allowed_auth_mech_params = {
         'session': ['username', 'password'],
         'key': ['access_key', 'secret_key'],
-        'p12': ['p12_cert', 'password'],
-        'cert': ['cert_file', 'cert_key'],
+    #    'p12': ['p12_cert', 'password'],
+        'cert': ['_cert'],
     }
 
     def __init__(self,  # noqa: PLR0913
@@ -206,7 +210,8 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             warnings.warn('The "host", "port", and "scheme" parameters are '
                           'deprecated and will be removed from the TenableSC '
                           'class in version 2.0.',
-                          DeprecationWarning
+                          DeprecationWarning,
+                          stacklevel=2
                           )
             kwargs['url'] = (f'{kwargs.get("scheme", "https")}://'
                              f'{host}:{kwargs.get("port", 443)}'
@@ -214,6 +219,12 @@ class TenableSC(APIPlatform):  # noqa PLR0904
 
         kwargs['access_key'] = access_key
         kwargs['secret_key'] = secret_key
+
+        if 'p12_cert' in kwargs and 'password' in kwargs:
+            cert = self._p12_auth(kwargs['p12_cert'], kwargs['password'])
+            kwargs['cert'] = cert
+        if 'cert' in kwargs:
+            kwargs['_cert'] = kwargs['cert']
         # Now lets pass the relevant parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
         super().__init__(**kwargs)
@@ -260,7 +271,8 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         warnings.warn('Session based authentication to Security Center will be removed'
                       'in later iterations of the library as it\'s no longer an'
                       'oficially recommended method of authentication to SC.',
-                      DeprecationWarning
+                      DeprecationWarning,
+                      stacklevel=2
                       )
         resp = self.post('token', json={
             'username': username,
@@ -291,15 +303,16 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         self._client_cert = tempfile.NamedTemporaryFile()   # noqa: PLR1732
         self._client_cert.write(cert.public_bytes(serialization.Encoding.PEM))
         self._client_cert.flush()
-        self._cert_auth(self._client_cert.name, self._client_key.name)
+        return self._client_cert.name, self._client_key.name
+        #self._cert_auth(self._client_cert.name, self._client_key.name)
 
-    def _cert_auth(self, cert_file, cert_key):
+    def _cert_auth(self, _cert):
         """
         PEM Cert Authentication
         """
-        self._session.cert = (cert_file, cert_key)
-
-        resp = self.get('system')
+        assert self._session.cert == _cert
+        #self._session.cert = (cert_file, cert_key)
+        resp = self.get('system', box=False)
         self._session.headers.update({
             'X-SecurityCenter': str(resp.json()['response']['token']),
             'TNS_SESSIONID': str(resp.headers['Set-Cookie'])[14:46]
@@ -338,7 +351,8 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         '''
         warnings.warn('Use of the login method is deprecated and will be removed in'
                       'later versions of the library',
-                      DeprecationWarning
+                      DeprecationWarning,
+                      stacklevel=2
                       )
         self._authenticate(**{
             'username': username,
