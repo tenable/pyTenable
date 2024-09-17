@@ -5,7 +5,8 @@ build-backend   = "setuptools.build_meta"
 
 [project]
 requires-python = ">=3.7"
-dynamic         = ["version", "readme"]
+dynamic         = ["version"]
+readme          = "README.rst"
 name            = "pyTenable"
 description     = "Python library to interface into Tenable's products and applications"
 authors         = [
@@ -66,7 +67,6 @@ Changelog       = "https://github.com/tenable/pytenable/blob/master/CHANGELOG.md
 
 [tool.setuptools.dynamic]
 version = {attr = "tenable.version.version"}
-readme  = {file = ["README.md"], content-type = "text/markdown"}
 
 
 [tool.setuptools.packages.find]
