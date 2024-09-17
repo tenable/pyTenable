@@ -1175,7 +1175,7 @@ class ScansAPI(TIOEndpoint):
 
     def list(self,
              folder_id: Optional[int] = None,
-             last_modified: Optional[int] = None
+             last_modified: Optional[datetime] = None
              ) -> List[Dict]:
         '''
         Retrieve the list of configured scans.
@@ -1199,11 +1199,13 @@ class ScansAPI(TIOEndpoint):
         params = {}
         if folder_id:
             params['folder_id'] = folder_id
-        if last_modified:
+        if last_modified and isinstance(last_modified, datetime):
             # for the last_modified datetime attribute, we will want to convert
             # that into a timestamp integer before passing it to the API.
-            lm = int(time.mktime(last_modified).timetuple())
+            lm = int(time.mktime(last_modified.timetuple()))
             params['last_modification_date'] = lm
+        if last_modified and isinstance(last_modified, int):
+            params['last_modification_date'] = last_modified
 
         return self._get(params=params).scans
 
