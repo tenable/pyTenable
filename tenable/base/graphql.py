@@ -369,6 +369,7 @@ class GraphQLSession:
         query_doc = self.construct_query(query=query, stored_file=stored_file)
         if not keyword_arguments:
             keyword_arguments = {}
+        keyword_arguments['variable_values'] = variables
         if iterator:
             if not graphql_model:
                 raise TypeError(
