@@ -369,6 +369,7 @@ class GraphQLSession:
         query_doc = self.construct_query(query=query, stored_file=stored_file)
         if not keyword_arguments:
             keyword_arguments = {}
+        keyword_arguments['variable_values'] = variables
         if iterator:
             if not graphql_model:
                 raise TypeError(
@@ -379,7 +380,7 @@ class GraphQLSession:
                             variables=variables,
                             model=graphql_model,
                             )
-        return self._client.execute(query_doc, variable_values=variables)
+        return self._client.execute(query_doc, **keyword_arguments)
 
     def validate(self, query: Union[str, StringIO]) -> Dict[str, Any]:
         """
