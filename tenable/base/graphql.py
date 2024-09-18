@@ -379,7 +379,7 @@ class GraphQLSession:
                             variables=variables,
                             model=graphql_model,
                             )
-        return self._client.execute(query_doc, **keyword_arguments)
+        return self._client.execute(query_doc, variable_values=variables)
 
     def validate(self, query: Union[str, StringIO]) -> Dict[str, Any]:
         """
