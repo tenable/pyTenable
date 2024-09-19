@@ -107,26 +107,9 @@ class UserAPI(SCEndpoint):
                     'managed_userobjs', kw['managed_userobjs'], list)]
             del(kw['managed_userobjs'])
 
-        if 'default_reports' in kw:
-            # Should the default user reports be built as part of the user
-            # creation?
-            kw['importReports'] = str(self._check(
-                'default_reports', kw['default_reports'], bool)).lower()
-            del(kw['default_reports'])
-
-        if 'default_dashboards' in kw:
-            # Should the default user dashboards be built as part of the user
-            # creation?
-            kw['importDashboards'] = str(self._check(
-                'default_dashboards', kw['default_dashboards'], bool)).lower()
-            del(kw['default_dashboards'])
-
-        if 'default_reportcards' in kw:
-            # Should the default user dashboards be built as part of the user
-            # creation?
-            kw['importARCs'] = str(self._check(
-                'default_reportcards', kw['default_reportcards'], bool)).lower()
-            del(kw['default_reportcards'])
+        kw['createDefaultObjects'] = str(
+            kw.pop('default_objects', kw.pop('createDefaultObjects', False))
+        ).lower()
 
         if 'ldap_id' in kw:
             # Convert the ldap_id attribute to a subdocument of "ldap"
@@ -158,15 +141,8 @@ class UserAPI(SCEndpoint):
                 Optional city information to associate to the user.
             country (str, optional):
                 Optional country information to associate to the user.
-            default_dashboards (bool, optional):
-                Should the default dashboards be created for the user?  If left
-                unspecified, the default is True.
-            default_reportcards (bool, optional):
-                Should the default report cards be created for the user?  If
-                left unspecified, the default is True.
-            default_reports (bool, optional):
-                Should the default reports be created for the user?  If left
-                unspecified, the default is True.
+            default_objects (bool, optional):
+                Should the default objects be created for members of this group?
             email (str, optional):
                 The email address to associate to the user.
             email_notice (str, optional):
@@ -274,7 +250,7 @@ class UserAPI(SCEndpoint):
             country (str, optional):
                 Optional country information to associate to the user.
             currentPassword (str, optional):
-                Optional, requirement when updating password for current user in 
+                Optional, requirement when updating password for current user in
                 addition to password kwarg.
             default_dashboards (bool, optional):
                 Should the default dashboards be created for the user?  If left
@@ -316,7 +292,7 @@ class UserAPI(SCEndpoint):
                 inform Tenable Security Center which organization to create the security
                 manager within.
             password (str, optional):
-                The user password, currentPassword should be used with this if 
+                The user password, currentPassword should be used with this if
                 updating password for logged in user.
             phone (str, optional):
                 A phone number to associate to the user.
