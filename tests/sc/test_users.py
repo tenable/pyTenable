@@ -151,28 +151,12 @@ def test_users_constructor_managed_userobjs_item_typeerror(security_center):
         security_center.users._constructor(managed_userobjs=['one'])
 
 
-def test_users_constructor_def_reports_typeerror(security_center):
-    '''
-    test users constructor for 'def reports' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.users._constructor(default_reports='nope')
+def test_users_constructor_create_default_objects(security_center):
+    assert security_center.users._constructor(default_objects=True) == {'createDefaultObjects': 'true'}
+    assert security_center.users._constructor(default_objects=False) == {'createDefaultObjects': 'false'}
+    assert security_center.users._constructor() == {'createDefaultObjects': 'false'}
+    assert security_center.users._constructor(createDefaultObjects='true') == {'createDefaultObjects': 'true'}
 
-
-def test_users_constructor_def_dashboards_typeerror(security_center):
-    '''
-    test users constructor for 'def dashboards' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.users._constructor(default_dashboards='nope')
-
-
-def test_users_constructor_def_reportcards_typeerror(security_center):
-    '''
-    test users constructor for 'def report cards' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.users._constructor(default_reportcards='nope')
 
 
 def test_users_constructor_success(security_center):
@@ -196,9 +180,7 @@ def test_users_constructor_success(security_center):
         update_password=True,
         managed_usergroups=[1],
         managed_userobjs=[1],
-        default_reports=False,
-        default_dashboards=False,
-        default_reportcards=False
+        default_objects=True,
     )
     assert isinstance(user, dict)
     assert user == {
@@ -222,9 +204,7 @@ def test_users_constructor_success(security_center):
         'mustChangePassword': 'true',
         'managedUsersGroups': [{'id': 1}],
         'managedObjectsGroups': [{'id': 1}],
-        'importReports': 'false',
-        'importDashboards': 'false',
-        'importARCs': 'false'
+        'createDefaultObjects': 'true',
     }
 
 
