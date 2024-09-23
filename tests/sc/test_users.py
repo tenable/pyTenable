@@ -2,7 +2,9 @@
 test file for testing various scenarios in security center's users functionality
 '''
 import pytest
-
+import responses
+from responses.matchers import query_param_matcher, json_params_matcher
+from tenable.sc import TenableSC
 from tenable.errors import APIError, UnexpectedValueError
 from tests.pytenable_log_handler import log_exception
 from ..checker import check
@@ -449,3 +451,16 @@ def test_users_delete_success(security_center, user):
     test users delete for success
     '''
     security_center.users.delete(int(user['id']))
+
+
+@responses.activate
+def test_users_delete_migrate_to():
+    responses.get('https://nourl/rest/system', json={'error_code': None, 'response': {}})
+    responses.delete(
+        'https://nourl/rest/user/1',
+        match=[json_params_matcher({
+            'migrateUserID': 2
+        })]
+    )
+    sc = TenableSC(url='https://nourl', access_key='something', secret_key='something')
+    sc.users.delete(1, 2)
