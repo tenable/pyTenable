@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Linted CHANGELOG.md
 - Fixed missing variable passing within graphql queries #839
 - Updated the GQL Queries for Cloud Security #840
+- Updated pipeline w/ pre-commit checks
+
+### Fixed
+
+- Updated default ovject params for Security Center #714
+- Agents List throws an exception when no agents are available #687
+- Updated Security Center users endpoints with user migration upon delete #541
 
 [1.5.2]: https://github.com/tenable/pyTenable/compare/1.5.1...1.5.2
 
