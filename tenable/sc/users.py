@@ -12,9 +12,14 @@ Methods available on ``sc.users``:
 .. autoclass:: UserAPI
     :members:
 '''
+from typing import Dict, List, Optional
+from restfly.utils import dict_clean
 from .base import SCEndpoint
 
 class UserAPI(SCEndpoint):
+    _path = 'user'
+    _box = True
+
     def _constructor(self, **kw):
         '''
         Handles parsing the keywords and returns a user definition document
@@ -205,9 +210,9 @@ class UserAPI(SCEndpoint):
         kw['auth_type'] = kw.get('auth_type', 'tns')
         kw['responsibleAssetID'] = -1
         payload = self._constructor(**kw)
-        return self._api.post('user', json=payload).json()['response']
+        return self._post(json=payload).response
 
-    def details(self, id, fields=None):
+    def details(self, id: int, fields: List[str] = None) -> Dict:
         '''
         Returns the details for a specific user.
 
@@ -227,12 +232,11 @@ class UserAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
+            params['fields'] = ','.join(fields)
 
-        return self._api.get('user/{}'.format(self._check('id', id, int)),
-            params=params).json()['response']
+        return self._get(f'{id}', params=params).response
 
-    def edit(self, id, **kw):
+    def edit(self, id: int, **kw):
         '''
         Edits a user.
 
@@ -325,10 +329,9 @@ class UserAPI(SCEndpoint):
             >>> user = sc.users.edit(1, username='newusername')
         '''
         payload = self._constructor(**kw)
-        return self._api.patch('user/{}'.format(
-            self._check('id', id, int)), json=payload).json()['response']
+        return self._patch(f'{id}', json=payload).response
 
-    def delete(self, id):
+    def delete(self, id: int, migrate_to: Optional[int] = None):
         '''
         Removes a user.
 
@@ -344,10 +347,11 @@ class UserAPI(SCEndpoint):
         Examples:
             >>> sc.users.delete(1)
         '''
-        return self._api.delete('user/{}'.format(
-            self._check('id', id, int))).json()['response']
+        return self._delete(f'{id}', json=dict_clean({
+            'migrateUserID': migrate_to,
+        }))
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> Dict:
         '''
         Retrieves the list of user definitions.
 
@@ -365,9 +369,8 @@ class UserAPI(SCEndpoint):
             >>> for user in sc.users.list():
             ...     pprint(user)
         '''
-        params = dict()
+        params = {}
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str)
-                for f in fields])
+            params['fields'] = ','.join(fields)
 
-        return self._api.get('user', params=params).json()['response']
+        return self._get(params=params).response
