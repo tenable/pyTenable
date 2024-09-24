@@ -49,8 +49,6 @@ import warnings
 from typing import Optional
 from semver import VersionInfo
 import tempfile
-import cryptography.hazmat.primitives.serialization.pkcs12
-from cryptography.hazmat.primitives import serialization
 from tenable.errors import APIError, ConnectionError
 from tenable.base.platform import APIPlatform
 from .accept_risks import AcceptRiskAPI
@@ -77,6 +75,12 @@ from .scan_zones import ScanZoneAPI
 from .status import StatusAPI
 from .system import SystemAPI
 from .users import UserAPI
+
+try:
+   import cryptography.hazmat.primitives.serialization.pkcs12
+   from cryptography.hazmat.primitives import serialization
+except ImportError:
+   serialization = None
 
 
 class TenableSC(APIPlatform):  # noqa PLR0904
@@ -292,6 +296,15 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         """
         PKCS12 Certificate Authentication
         """
+        if not serialization:
+            raise ModuleNotFoundError(
+                (
+                    'Cryptyography library is required for PKCS12 certificate usage. '
+                    'You can either install it with manually or install pytenable with '
+                    '"pytenable[pkcs12]" to install the optional dependencies.'
+                ),
+                name='cryptography',
+            )
         with open(p12_cert, 'rb') as fobj:
             key, cert, _ = serialization.pkcs12.load_key_and_certificates(
                 fobj.read(), password.encode()

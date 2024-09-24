@@ -52,10 +52,14 @@ dependencies    = [
     "typing-extensions>=4.0.1",
     "dataclasses>=0.8;python_version=='3.6'",
     "requests-toolbelt>=1.0.0",
-    "cryptography>=43.0.1",
     "gql>=3.5.0",
     "graphql-core>=3.2.3",
 ]
+
+
+[project.optional-dependencies]
+pkcs12          = ["cryptography>=43.0.1"]
+all             = ["pytenable[pkcs12]"]
 
 
 [project.urls]
@@ -113,6 +117,7 @@ docstring-code-line-length = "dynamic"
 [tool.uv]
 dev-dependencies = [
     "bpython>=0.24",
+    "mock>=5.1.0",
     "pytest-cov>=4.1.0",
     "pytest-datafiles>=3.0.0",
     "pytest-vcr>=1.0.2",

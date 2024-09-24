@@ -43,6 +43,19 @@ class PluginAPI(SCEndpoint):
             kwargs['value'] = self._check('filter:value', kwargs['filter'][2], str)
             del kwargs['filter']
 
+        #filters = kwargs.pop('filters', [])
+        #kwargs['filters'] = []
+        #for filter in filters:
+        #    if isinstance(filter, tuple):
+        #        kwargs['filters'].append({
+        #            'filterField': filter[0],
+        #            'filterOperator': filter[1],
+        #            'filterString': filter[2],
+        #        })
+        #    elif isinstance(filter, dict):
+        #        kwargs['filters'].append(filter)
+
+
         if 'sort_field' in kwargs:
             # convert the snake_cased variant of the parameter to the camelCased
             # variant that the API expects to see.
