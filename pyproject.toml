@@ -54,6 +54,8 @@ dependencies    = [
     "requests-toolbelt>=1.0.0",
     "gql>=3.5.0",
     "graphql-core>=3.2.3",
+    "pydantic>=2.5.3",
+    "pydantic-extra-types>=2.3.0",
 ]
 
 
@@ -102,7 +104,6 @@ unfixable = [ "B" ]
 [tool.ruff.format]
 quote-style = "single"
 indent-style = "space"
-skip-magic-trailing-comma = false
 line-ending = "lf"
 docstring-code-format = false
 docstring-code-line-length = "dynamic"
@@ -116,13 +117,15 @@ docstring-code-line-length = "dynamic"
 
 [tool.uv]
 dev-dependencies = [
-    "bpython>=0.24",
     "mock>=5.1.0",
+    "ptpython>=3.0.29",
+    "pyright>=1.1.384",
     "pytest-cov>=4.1.0",
     "pytest-datafiles>=3.0.0",
     "pytest-vcr>=1.0.2",
     "pytest>=7.4.4",
     "responses>=0.23.3",
+    "rich>=13.8.1",
     "ruff>=0.6.4",
     # URLLib3 version 2.x doesn't play well with the version of pytest-vcr that supports
     # Python 3.9 and lower.  This can be removed once 3.9 goes EOS or when we stop using
