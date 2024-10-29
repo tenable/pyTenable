@@ -4,7 +4,7 @@ build-backend   = "setuptools.build_meta"
 
 
 [project]
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 dynamic         = ["version"]
 readme          = "README.rst"
 name            = "pyTenable"
@@ -34,17 +34,17 @@ classifiers     = [
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+
 ]
 dependencies    = [
     "requests>=2.26",
     "python-dateutil>=2.6",
     "semver>=2.10.0",
-    "restfly>=1.4.5",
+    "restfly>=1.5.1",
     "marshmallow>=3.8",
     "python-box>=4.0",
     "defusedxml>=0.5.0",
@@ -54,6 +54,8 @@ dependencies    = [
     "requests-toolbelt>=1.0.0",
     "gql>=3.5.0",
     "graphql-core>=3.2.3",
+    "pydantic>=2.5.3",
+    "pydantic-extra-types>=2.3.0",
 ]
 
 
@@ -118,6 +120,7 @@ docstring-code-line-length = "dynamic"
 dev-dependencies = [
     "bpython>=0.24",
     "mock>=5.1.0",
+    "ptpython>=3.0.29",
     "pytest-cov>=4.1.0",
     "pytest-datafiles>=3.0.0",
     "pytest-vcr>=1.0.2",
