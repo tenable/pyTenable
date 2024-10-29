@@ -53,19 +53,24 @@ class JobManager:
         self.chunk_id = 1
         self.terminate_on_failure = terminate_on_failue
         self._log = logging.getLogger(f'JobManager[{sync_id}:{job_uuid}]')
-        self._log.info(f'Starting management of job {sync_id}')
+        self._log.info(f'Starting management of job {sync_id} :: {job_uuid}')
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
+        # If no exception was raised while the job was in progress
+        # we will then submit the job and close it out.
         if exc_type is None:
             self.submit()
+
+        # Otherwise we will check to see if we should be terminating
+        # the job and perform the appropriate action.
         else:
+            self._log.error(f'failed with {exc_type}:{exc_value}')
             if self.terminate_on_failure:
                 self.terminate()
-            #Do anything else we want to...    
-        
+
     def add(
         self,
         object: Dict[str, Any],
@@ -88,6 +93,10 @@ class JobManager:
         resp = None
         while retry_counter < self._max_retries and not resp:
             # Need to add try/except handling here.
+            self._log.info(
+                f'Uploading chunk={self.chunk_id} '
+                f'attempt {retry_counter + 1} of {self._max_retries}'
+            )
             resp = self._api.sync.upload_chunk(
                 sync_id=self.sync_id,
                 job_id=self.uuid,
@@ -107,12 +116,24 @@ class JobManager:
         self._cache = []
 
     def terminate(self):
+        """
+        Terminates the current job, abandoning any data that
+        has already been uploaded.
+        """
+        self._log.info(f'terminating Job {self.sync_id} :: {self.uuid}')
         self._api.sync.delete(self.sync_id, self.uuid)
 
     def submit(self) -> bool:
-        """ """
+        """
+        Submits the current job for processing.
+        """
+        # if there are any remaining items in the cache, then we will drain the cache
+        # before submitting the job.
         if len(self._cache) > 0:
             self.upload()
+        self._log.info(f'Submitting {self.sync_id} :: {self.uuid} for processing.')
+
+        # Submit the job
         return self._api.sync.submit(
             sync_id=self.sync_id, job_id=self.uuid, num_chunks=self.chunk_id - 1
         )

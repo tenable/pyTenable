@@ -1,3 +1,4 @@
+from datetime import datetime
 from ipaddress import IPv4Address, IPv6Address
 from typing import List, Literal, Optional
 
@@ -197,6 +198,38 @@ class AssetLocation(BaseModel):
     state_or_province: Optional[AssetLocationStateOrProvince] = None
 
 
+class AssetCloudCompute(BaseModel):
+    image_id: Optional[str128] = None
+    terminated_at: Optional[datetime] = None
+    type: str32
+
+
+class AssetCloudLocation(BaseModel):
+    region_id: Optional[str16] = None
+    scope: Literal['GLOBAL', 'REGION', 'ZONE']
+    zone_id: Optional[str32] = None
+
+
+class AssetCloudNetworking(BaseModel):
+    subnet_id: Optional[str128] = None
+    virtual_network_id: Optional[str128] = None
+
+
+class AssetCloudProvider(BaseModel):
+    id: str128
+    type: Literal['AWS', 'GCP', 'AZURE', 'OTHER']
+
+
+class AssetCloud(BaseModel):
+    compute: Optional[AssetCloudCompute] = None
+    id: str256
+    location: Optional[AssetCloudLocation] = None
+    name: str256
+    networking: Optional[AssetCloudNetworking] = None
+    provider: AssetCloudProvider
+    type: str128
+
+
 class DeviceAsset(BaseModel):
     object_type: Literal['device-asset'] = 'device-asset'
     asset_class: Literal['DEVICE'] = 'DEVICE'
@@ -206,6 +239,7 @@ class DeviceAsset(BaseModel):
     discovery: Optional[DeviceDiscovery] = None
     external_ids: Optional[List[DeviceExternalId]] = None
     id: str128
+    cloud: Optional[AssetCloud] = None
     labels: Optional[List[str]] = None
     lifetime: Optional[DeviceLifetime] = None
     name: Optional[str128] = None

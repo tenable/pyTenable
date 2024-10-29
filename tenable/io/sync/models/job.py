@@ -20,6 +20,7 @@ class JobSummary(BaseModel):
 class Job(BaseModel):
     id: UUID
     state: str
+    sync_id: str
     failure_message: Optional[str] = None
     summary: Optional[JobSummary] = None
     created_at: datetime

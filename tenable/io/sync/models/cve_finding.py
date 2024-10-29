@@ -1,7 +1,8 @@
 from typing import List, Literal, Optional
 
-from pydantic import AfterValidator, AwareDatetime, BaseModel
+from pydantic import AfterValidator, AwareDatetime, BaseModel, Field
 from typing_extensions import Annotated
+from annotated_types import Len
 
 from .common import (
     CustomAttribute,
@@ -28,7 +29,7 @@ class CVEDiscovery(BaseModel):
 
 
 class CVERisk(BaseModel):
-    cves: List[str]
+    cves: Annotated[List[str], Len(min_length=1, max_length=128)]
 
 
 class CVESeverity(BaseModel):
