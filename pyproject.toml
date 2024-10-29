@@ -54,6 +54,8 @@ dependencies    = [
     "requests-toolbelt>=1.0.0",
     "gql>=3.5.0",
     "graphql-core>=3.2.3",
+    "pydantic>=2.5.3",
+    "pydantic-extra-types>=2.3.0",
 ]
 
 
