@@ -2,7 +2,9 @@
 test file for testing various scenarios in security center's users functionality
 '''
 import pytest
-
+import responses
+from responses.matchers import query_param_matcher, json_params_matcher
+from tenable.sc import TenableSC
 from tenable.errors import APIError, UnexpectedValueError
 from tests.pytenable_log_handler import log_exception
 from ..checker import check
@@ -151,28 +153,12 @@ def test_users_constructor_managed_userobjs_item_typeerror(security_center):
         security_center.users._constructor(managed_userobjs=['one'])
 
 
-def test_users_constructor_def_reports_typeerror(security_center):
-    '''
-    test users constructor for 'def reports' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.users._constructor(default_reports='nope')
+def test_users_constructor_create_default_objects(security_center):
+    assert security_center.users._constructor(default_objects=True) == {'createDefaultObjects': 'true'}
+    assert security_center.users._constructor(default_objects=False) == {'createDefaultObjects': 'false'}
+    assert security_center.users._constructor() == {'createDefaultObjects': 'false'}
+    assert security_center.users._constructor(createDefaultObjects='true') == {'createDefaultObjects': 'true'}
 
-
-def test_users_constructor_def_dashboards_typeerror(security_center):
-    '''
-    test users constructor for 'def dashboards' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.users._constructor(default_dashboards='nope')
-
-
-def test_users_constructor_def_reportcards_typeerror(security_center):
-    '''
-    test users constructor for 'def report cards' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.users._constructor(default_reportcards='nope')
 
 
 def test_users_constructor_success(security_center):
@@ -196,9 +182,7 @@ def test_users_constructor_success(security_center):
         update_password=True,
         managed_usergroups=[1],
         managed_userobjs=[1],
-        default_reports=False,
-        default_dashboards=False,
-        default_reportcards=False
+        default_objects=True,
     )
     assert isinstance(user, dict)
     assert user == {
@@ -222,9 +206,7 @@ def test_users_constructor_success(security_center):
         'mustChangePassword': 'true',
         'managedUsersGroups': [{'id': 1}],
         'managedObjectsGroups': [{'id': 1}],
-        'importReports': 'false',
-        'importDashboards': 'false',
-        'importARCs': 'false'
+        'createDefaultObjects': 'true',
     }
 
 
@@ -469,3 +451,16 @@ def test_users_delete_success(security_center, user):
     test users delete for success
     '''
     security_center.users.delete(int(user['id']))
+
+
+@responses.activate
+def test_users_delete_migrate_to():
+    responses.get('https://nourl/rest/system', json={'error_code': None, 'response': {}})
+    responses.delete(
+        'https://nourl/rest/user/1',
+        match=[json_params_matcher({
+            'migrateUserID': 2
+        })]
+    )
+    sc = TenableSC(url='https://nourl', access_key='something', secret_key='something')
+    sc.users.delete(1, 2)

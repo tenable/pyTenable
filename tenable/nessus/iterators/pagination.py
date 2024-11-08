@@ -17,4 +17,6 @@ class PaginationIterator(APIIterator):
         query['offset'] = self.offset
         resp = self._api.get(self.path, params=query)
         self.page = resp[self.envelope]
+        if self.page is None:
+            self.page = []
         self.offset += self.limit

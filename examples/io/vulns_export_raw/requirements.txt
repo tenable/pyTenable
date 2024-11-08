@@ -1,0 +1,2 @@
+click>=7.0
+pytenable>=0.3.15

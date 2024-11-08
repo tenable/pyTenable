@@ -1,6 +1,6 @@
 '''
 Tenable Security Center
-==========
+=======================
 
 .. note::
     Please refer to the common themes section for TenableSC for details on how
@@ -49,6 +49,7 @@ Tenable Security Center
 import warnings
 from typing import Optional
 from semver import VersionInfo
+import tempfile
 from tenable.errors import APIError, ConnectionError
 from tenable.base.platform import APIPlatform
 from .accept_risks import AcceptRiskAPI
@@ -77,6 +78,12 @@ from .status import StatusAPI
 from .system import SystemAPI
 from .users import UserAPI
 
+try:
+   import cryptography.hazmat.primitives.serialization.pkcs12
+   from cryptography.hazmat.primitives import serialization
+except ImportError:
+   serialization = None
+
 
 class TenableSC(APIPlatform):  # noqa PLR0904
     '''TenableSC API Wrapper
@@ -86,9 +93,9 @@ class TenableSC(APIPlatform):  # noqa PLR0904
 
     Args:
         host (str):
-            The address of the Tenable Security Center instance to connect to.  (NOTE: The
-            `hos`t parameter will be deprecated in favor of the `url` parameter
-            in future releases).
+            The address of the Tenable Security Center instance to connect to.
+            (NOTE: The `host` parameter will be deprecated in favor of the `url`
+            parameter in future releases).
         access_key (str, optional):
             The API access key to use for sessionless authentication.
         adapter (requests.Adaptor, optional):
@@ -103,6 +110,10 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             format could be either a tuple or a string pointing to the
             certificate.  For more details, please refer to the
             `Requests Client-Side Certificates`_ documentation.
+        p12_cert (str, optional):
+            The client-side PKCS12 certificate to use for certificate-based
+            authentication.  A password must be provided to descrypt the password
+            along with the certificate file (see password).
         password (str, optional):
             The password to use for session authentication.
         port (int, optional):
@@ -124,8 +135,8 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             If a requests Session is provided, the provided session will be
             used instead of constructing one during initialization.
         ssl_verify (bool, optional):
-            Should the SSL certificate on the Tenable Security Center instance be verified?
-            Default is False.
+            Should the SSL certificate on the Tenable Security Center instance be
+            verified? Default is False.
         username (str, optional):
             The username to use for session authentication.
         timeout (int, optional):
@@ -138,30 +149,29 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         A direct connection to Tenable Security Center:
 
         >>> from tenable.sc import TenableSC
-        >>> sc = TenableSC('sc.company.tld')
+        >>> sc = TenableSC(url='https://sc.company.tld')
 
         A connection to Tenable Security Center using SSL certificates:
 
-        >>> sc = TenableSC('sc.company.tld',
-        ...     cert=('/path/client.cert', '/path/client.key'))
+        >>> sc = TenableSC(url='https://sc.company.tld',
+        ...                cert=('/path/client.cert', '/path/client.key')
+                           )
 
-        Using an adaptor to use a passworded certificate (via the immensely
-        useful `requests_pkcs12`_ adaptor):
+        Using a PKCS12 Certificate:
 
-        >>> from requests_pkcs12 import Pkcs12Adapter
-        >>> adapter = Pkcs12Adapter(
-        ...     pkcs12_filename='certificate.p12',
-        ...     pkcs12_password='omgwtfbbq!')
-        >>> sc = TenableSC('sc.company.tld', adapter=adapter)
+        >>> sc = TenableSC(url='https://sc.company.tld',
+        ...                p12_cert='/path/client.p12',
+        ...                password='s3kr3tsqu1rr3l',
+        ...                )
 
         Using API Keys to communicate to Tenable Security Center:
 
-        >>> sc = TenableSC('sc.company.tld',
-        ...     access_key='key',
-        ...     secret_key='key'
-        ... )
+        >>> sc = TenableSC(url='https://sc.company.tld',
+        ...                access_key='abcdef1234567890',
+        ...                secret_key='abcdef1234567890'
+        ...                )
 
-        Using context management to handle
+
 
     For more information, please See Tenable's `SC API documentation`_ and
     the `SC API Best Practices Guide`_.
@@ -182,6 +192,14 @@ class TenableSC(APIPlatform):  # noqa PLR0904
     _timeout = 300
     _ssl_verify = False
     _version = None
+    _client_cert: tempfile.NamedTemporaryFile
+    _client_key: tempfile.NamedTemporaryFile
+    _allowed_auth_mech_priority = ['key', 'cert', 'session']
+    _allowed_auth_mech_params = {
+        'session': ['username', 'password'],
+        'key': ['access_key', 'secret_key'],
+        'cert': ['_cert'],
+    }
 
     def __init__(self,  # noqa: PLR0913
                  host: Optional[str] = None,
@@ -196,16 +214,27 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             warnings.warn('The "host", "port", and "scheme" parameters are '
                           'deprecated and will be removed from the TenableSC '
                           'class in version 2.0.',
-                          DeprecationWarning
+                          DeprecationWarning,
+                          stacklevel=2
                           )
             kwargs['url'] = (f'{kwargs.get("scheme", "https")}://'
                              f'{host}:{kwargs.get("port", 443)}'
                              )
-        if access_key:
-            kwargs['access_key'] = access_key
-        if secret_key:
-            kwargs['secret_key'] = secret_key
 
+        kwargs['access_key'] = access_key
+        kwargs['secret_key'] = secret_key
+
+        # Check to see if there is a p12_cert and password specified, if so, then
+        # convert the cert into an unencrypted PEM format and construct the cert
+        # tuple from the _p12_auth response.
+        if 'p12_cert' in kwargs and 'password' in kwargs:
+            cert = self._p12_auth(kwargs['p12_cert'], kwargs['password'])
+            kwargs['cert'] = cert
+
+        # If the cert argument exists, then set _cert to True in order to pass the
+        # cert auth checks.
+        if 'cert' in kwargs:
+            kwargs['_cert'] = True
         # Now lets pass the relevant parts off to the APISession's constructor
         # to make sure we have everything lined up as we expect.
         super().__init__(**kwargs)
@@ -227,6 +256,9 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         return response
 
     def _key_auth(self, access_key, secret_key):
+        """
+        API Key Authentication
+        """
         # if we can pull a version, check to see that the version is at least
         # 5.13, which is the minimum version of SC that supports API Keys.  If
         # we cant pull a version, then we will assume it's ok.
@@ -243,6 +275,15 @@ class TenableSC(APIPlatform):  # noqa PLR0904
                 )
 
     def _session_auth(self, username, password):
+        """
+        Basic Session Authentication
+        """
+        warnings.warn('Session based authentication to Security Center will be removed'
+                      'in later iterations of the library as it\'s no longer an'
+                      'oficially recommended method of authentication to SC.',
+                      DeprecationWarning,
+                      stacklevel=2
+                      )
         resp = self.post('token', json={
             'username': username,
             'password': password
@@ -252,6 +293,48 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             'X-SecurityCenter': str(resp.json()['response']['token']),
             'TNS_SESSIONID': str(resp.headers['Set-Cookie'])[14:46]
         })
+
+    def _p12_auth(self, p12_cert, password):
+        """
+        PKCS12 Certificate Authentication
+        """
+        if not serialization:
+            raise ModuleNotFoundError(
+                (
+                    'Cryptyography library is required for PKCS12 certificate usage. '
+                    'You can either install it with manually or install pytenable with '
+                    '"pytenable[pkcs12]" to install the optional dependencies.'
+                ),
+                name='cryptography',
+            )
+        with open(p12_cert, 'rb') as fobj:
+            key, cert, _ = serialization.pkcs12.load_key_and_certificates(
+                fobj.read(), password.encode()
+            )
+        self._client_key = tempfile.NamedTemporaryFile()  # noqa: PLR1732
+        self._client_key.write(key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption(),
+        ))
+        self._client_key.flush()
+
+        self._client_cert = tempfile.NamedTemporaryFile()   # noqa: PLR1732
+        self._client_cert.write(cert.public_bytes(serialization.Encoding.PEM))
+        self._client_cert.flush()
+        return self._client_cert.name, self._client_key.name
+
+    def _cert_auth(self, _cert):
+        """
+        PEM Cert Authentication
+        """
+        resp = self.get('system', box=False)
+        self._session.headers.update({
+            'X-SecurityCenter': str(resp.json()['response']['token']),
+            'TNS_SESSIONID': str(resp.headers['Set-Cookie'])[14:46]
+        })
+        self._auth_meth = 'cert'
+
 
     def _deauthenticate(self):  # noqa PLW0221
         super()._deauthenticate(path='token')
@@ -282,6 +365,11 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             >>> sc = TenableSC('127.0.0.1', port=8443)
             >>> sc.login(access_key='ACCESSKEY', secret_key='SECRETKEY')
         '''
+        warnings.warn('Use of the login method is deprecated and will be removed in'
+                      'later versions of the library',
+                      DeprecationWarning,
+                      stacklevel=2
+                      )
         self._authenticate(**{
             'username': username,
             'password': password,
@@ -300,6 +388,9 @@ class TenableSC(APIPlatform):  # noqa PLR0904
 
     @property
     def version(self):
+        """
+        The version of the SecurityCenter instance
+        """
         if not self._version:
             # We will attempt to pull the version number from the system
             # details method.  If we get an APRError response, then we will

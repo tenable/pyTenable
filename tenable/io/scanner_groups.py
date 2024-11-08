@@ -171,7 +171,7 @@ class ScannerGroupsAPI(TIOEndpoint):
         '''
         List the scanners within a specific scanner group.
 
-        :devportal:`scanner-groups: list-scanners scanner-groups-list-scanners>`
+        :devportal:`scanner-groups: list-scanners <scanner-groups-list-scanners>`
 
         Args:
             group_id (int): The unique identifier of the scanner group.

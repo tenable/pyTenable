@@ -2,10 +2,9 @@
 test file to test various scenarios in init.py
 '''
 import os
-
+import sys
 import pytest
 from requests.models import Response
-
 from requests.exceptions import ConnectionError as RequestsConnectionError
 from tenable.errors import ConnectionError
 from tenable.sc import TenableSC
@@ -65,6 +64,7 @@ def test_resp_error_check(security_center):
     security_center._resp_error_check(response)
 
 
+@pytest.mark.skip(reason='Deprecating this method')
 def test_log_in(vcr):
     '''
     test log in
@@ -83,3 +83,12 @@ def test_log_in(vcr):
     with vcr.use_cassette('sc_login_5_20_0'):
         tsc.login(access_key='access_key', secret_key='secret_key')
         assert tsc._auth_mech == 'keys'
+
+
+def test_pkcs12_import_error():
+    import tenable.sc
+    tenable.sc.serialization = None
+    with pytest.raises(ModuleNotFoundError):
+        sc = TenableSC(
+            url='http://something', p12_cert='something', password='something'
+        )

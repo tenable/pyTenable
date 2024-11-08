@@ -1,0 +1,254 @@
+# @prettier
+# Genereated On: 2024-08-14T20:01:46.632045+00:00
+query getComputeAssets($limit: Int, $startAt: String) {
+  Entities(
+    first: $limit
+    after: $startAt
+    filter: {
+      Types: [
+        AwsEc2Instance
+        AzureComputeVirtualMachine
+        AzureComputeVirtualMachineScaleSetVirtualMachine
+        GcpComputeInstance
+      ]
+    }
+  ) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    nodes {
+      ...AwsEc2InstanceSegment
+      ...AzureComputeVirtualMachineSegment
+      ...AzureComputeVirtualMachineScaleSetVirtualMachineSegment
+      ...GcpComputeInstanceSegment
+    }
+  }
+}
+
+fragment AwsEc2InstanceSegment on AwsEc2Instance {
+  Id
+  AccountId
+  CloudProvider
+  CustomFields
+  Labels
+  Name
+  LastUpdatedAt: SyncTime
+  Tags {
+    Key
+    Value
+  }
+  Arn
+  CreatedAt: CreationTime
+  CreatorIdentity {
+    Id
+    Name
+    AccountId
+  }
+  CreatorOriginator {
+    Id
+    Name
+    AccountId
+  }
+  Region
+  #Stack
+  #SecurityGroups
+  Subnets {
+    Id
+    Name
+    AccountId
+    Arn
+    Region
+  }
+  Vpcs {
+    Id
+    AccountId
+    Region
+    Arn
+    Name
+  }
+  #NetworkAccess
+  OperatingSystem
+  OperatingSystemType
+  #ResolvedSoftware
+  ScanStatus
+  ScanStatusDescription
+  ScanTime
+  #Software
+  #Vulnerabilities
+  #VulnerabilityResolutionPatches
+  AutoScalingGroup {
+    Id
+    Name
+    Region
+    Arn
+    AccountId
+  }
+  Architecture
+  CpuCores
+  InstanceType
+  Image {
+    Id
+    AccountId
+    Name
+    Arn
+    Region
+    AwsManaged
+  }
+  Isolated
+  #LaunchConfiguration
+  #LaunchTemplate
+  LaunchTime
+  MetadataServiceAccessible
+  MetadataServiceVersion
+  MetadataServiceV1UsageTime
+  NetworkInterfaces {
+    Id
+    AccountId
+    Name
+    Arn
+    Region
+    PrivateIpAddresses
+    MacAddress
+  }
+  Platform
+  PrivateDnsNames
+  PrivateIpAddresses
+  #ProductCode
+  PublicIpAddressDnsNames
+  #PublicIpAddresses
+  #Role
+  RootVolume {
+    Id
+    AccountId
+    Name
+    Arn
+    Region
+    DeleteOnTermination
+    RootDevice
+    Size
+    VolumeType
+  }
+  State
+}
+
+fragment AzureComputeVirtualMachineSegment on AzureComputeVirtualMachine {
+  Id
+  AccountId
+  CloudProvider
+  CustomFields
+  Labels
+  Name
+  LastUpdatedAt: SyncTime
+  Tags {
+    Key
+    Value
+  }
+  CreatedAt: CreationTime
+  CreatorIdentity {
+    Id
+    Name
+    AccountId
+  }
+  Location
+  #RoleAssignments
+  ResourceGroupId
+  #NetworkAccess
+  OperatingSystem
+  OperatingSystemType
+  #ResolvedSoftware
+  ScanStatus
+  ScanStatusDescription
+  ScanTime
+  #Software
+  #Vulnerabilities
+  #VulnerabilityResolutionPatches
+  PrivateIpAddresses
+  PublicIpAddressResources {
+    Id
+    AccountId
+    Name
+    IpAddress
+  }
+}
+
+fragment AzureComputeVirtualMachineScaleSetVirtualMachineSegment on AzureComputeVirtualMachineScaleSetVirtualMachine {
+  Id
+  AccountId
+  CloudProvider
+  CustomFields
+  Labels
+  Name
+  LastUpdatedAt: SyncTime
+  Tags {
+    Key
+    Value
+  }
+  CreatedAt: CreationTime
+  CreatorIdentity {
+    Id
+    Name
+    AccountId
+  }
+  Location
+  #RoleAssignments
+  ResourceGroupId
+  #NetworkAccess
+  OperatingSystem
+  OperatingSystemType
+  #ResolvedSoftware
+  ScanStatus
+  ScanStatusDescription
+  ScanTime
+  #Software
+  #Vulnerabilities
+  #VulnerabilityResolutionPatches
+  PrivateIpAddresses
+  #PublicIpAddresses
+  PublicIpAddressResources {
+    Id
+    AccountId
+    Name
+    IpAddress
+  }
+}
+
+fragment GcpComputeInstanceSegment on GcpComputeInstance {
+  Id
+  AccountId
+  CloudProvider
+  CustomFields
+  Labels
+  Name
+  LastUpdatedAt: SyncTime
+  Tags {
+    Key
+    Value
+  }
+  CreatedAt: CreationTime
+  CreatorIdentity {
+    Id
+    Name
+    AccountId
+  }
+  CreatorOriginator {
+    Id
+    Name
+    AccountId
+  }
+  Location
+  AccessLevel
+  #RoleBindings
+  #NetworkAccess
+  OperatingSystem
+  OperatingSystemType
+  #ResolvedSoftware
+  ScanStatus
+  ScanStatusDescription
+  ScanTime
+  #Software
+  #Vulnerabilities
+  #VulnerabilityResolutionPatches
+  PrivateIpAddresses
+  #PublicIpAddresses
+}

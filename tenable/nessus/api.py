@@ -19,15 +19,14 @@ This package covers the Nessus interface.
     folders
     groups
     mail
-    migration
     permissions
-    plugin_rules
     plugins
     policies
     proxy
     scanners
     scans
     server
+    session
     settings
     software_update
     tokens

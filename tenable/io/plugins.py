@@ -113,7 +113,7 @@ class PluginsAPI(TIOEndpoint):
         '''
         Retrieve the details for a specific plugin family.
 
-        :devportal:`plugins: family-details plugins-family-details>`
+        :devportal:`plugins: family-details <plugins-family-details>`
 
         Args:
             family_id (int): The plugin family unique identifier.

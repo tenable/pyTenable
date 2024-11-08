@@ -1,2 +1,4 @@
 click>=7.0
 pytenable>=0.3.15
+requests>=2.32.0 # not directly required, pinned by Snyk to avoid a vulnerability
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability

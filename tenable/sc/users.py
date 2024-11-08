@@ -12,9 +12,14 @@ Methods available on ``sc.users``:
 .. autoclass:: UserAPI
     :members:
 '''
+from typing import Dict, List, Optional
+from restfly.utils import dict_clean
 from .base import SCEndpoint
 
 class UserAPI(SCEndpoint):
+    _path = 'user'
+    _box = True
+
     def _constructor(self, **kw):
         '''
         Handles parsing the keywords and returns a user definition document
@@ -107,26 +112,9 @@ class UserAPI(SCEndpoint):
                     'managed_userobjs', kw['managed_userobjs'], list)]
             del(kw['managed_userobjs'])
 
-        if 'default_reports' in kw:
-            # Should the default user reports be built as part of the user
-            # creation?
-            kw['importReports'] = str(self._check(
-                'default_reports', kw['default_reports'], bool)).lower()
-            del(kw['default_reports'])
-
-        if 'default_dashboards' in kw:
-            # Should the default user dashboards be built as part of the user
-            # creation?
-            kw['importDashboards'] = str(self._check(
-                'default_dashboards', kw['default_dashboards'], bool)).lower()
-            del(kw['default_dashboards'])
-
-        if 'default_reportcards' in kw:
-            # Should the default user dashboards be built as part of the user
-            # creation?
-            kw['importARCs'] = str(self._check(
-                'default_reportcards', kw['default_reportcards'], bool)).lower()
-            del(kw['default_reportcards'])
+        kw['createDefaultObjects'] = str(
+            kw.pop('default_objects', kw.pop('createDefaultObjects', False))
+        ).lower()
 
         if 'ldap_id' in kw:
             # Convert the ldap_id attribute to a subdocument of "ldap"
@@ -158,15 +146,8 @@ class UserAPI(SCEndpoint):
                 Optional city information to associate to the user.
             country (str, optional):
                 Optional country information to associate to the user.
-            default_dashboards (bool, optional):
-                Should the default dashboards be created for the user?  If left
-                unspecified, the default is True.
-            default_reportcards (bool, optional):
-                Should the default report cards be created for the user?  If
-                left unspecified, the default is True.
-            default_reports (bool, optional):
-                Should the default reports be created for the user?  If left
-                unspecified, the default is True.
+            default_objects (bool, optional):
+                Should the default objects be created for members of this group?
             email (str, optional):
                 The email address to associate to the user.
             email_notice (str, optional):
@@ -229,9 +210,9 @@ class UserAPI(SCEndpoint):
         kw['auth_type'] = kw.get('auth_type', 'tns')
         kw['responsibleAssetID'] = -1
         payload = self._constructor(**kw)
-        return self._api.post('user', json=payload).json()['response']
+        return self._post(json=payload).response
 
-    def details(self, id, fields=None):
+    def details(self, id: int, fields: List[str] = None) -> Dict:
         '''
         Returns the details for a specific user.
 
@@ -251,12 +232,11 @@ class UserAPI(SCEndpoint):
         '''
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
+            params['fields'] = ','.join(fields)
 
-        return self._api.get('user/{}'.format(self._check('id', id, int)),
-            params=params).json()['response']
+        return self._get(f'{id}', params=params).response
 
-    def edit(self, id, **kw):
+    def edit(self, id: int, **kw):
         '''
         Edits a user.
 
@@ -274,7 +254,7 @@ class UserAPI(SCEndpoint):
             country (str, optional):
                 Optional country information to associate to the user.
             currentPassword (str, optional):
-                Optional, requirement when updating password for current user in 
+                Optional, requirement when updating password for current user in
                 addition to password kwarg.
             default_dashboards (bool, optional):
                 Should the default dashboards be created for the user?  If left
@@ -316,7 +296,7 @@ class UserAPI(SCEndpoint):
                 inform Tenable Security Center which organization to create the security
                 manager within.
             password (str, optional):
-                The user password, currentPassword should be used with this if 
+                The user password, currentPassword should be used with this if
                 updating password for logged in user.
             phone (str, optional):
                 A phone number to associate to the user.
@@ -349,10 +329,9 @@ class UserAPI(SCEndpoint):
             >>> user = sc.users.edit(1, username='newusername')
         '''
         payload = self._constructor(**kw)
-        return self._api.patch('user/{}'.format(
-            self._check('id', id, int)), json=payload).json()['response']
+        return self._patch(f'{id}', json=payload).response
 
-    def delete(self, id):
+    def delete(self, id: int, migrate_to: Optional[int] = None):
         '''
         Removes a user.
 
@@ -368,10 +347,11 @@ class UserAPI(SCEndpoint):
         Examples:
             >>> sc.users.delete(1)
         '''
-        return self._api.delete('user/{}'.format(
-            self._check('id', id, int))).json()['response']
+        return self._delete(f'{id}', json=dict_clean({
+            'migrateUserID': migrate_to,
+        }))
 
-    def list(self, fields=None):
+    def list(self, fields: List[str] = None) -> Dict:
         '''
         Retrieves the list of user definitions.
 
@@ -389,9 +369,8 @@ class UserAPI(SCEndpoint):
             >>> for user in sc.users.list():
             ...     pprint(user)
         '''
-        params = dict()
+        params = {}
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str)
-                for f in fields])
+            params['fields'] = ','.join(fields)
 
-        return self._api.get('user', params=params).json()['response']
+        return self._get(params=params).response

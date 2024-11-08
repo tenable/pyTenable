@@ -1,6 +1,6 @@
 """
-Tenable OT Security base package
-=======================
+Tenable OT Security
+===================
 
 This package covers the Tenable OT Security interface.
 
@@ -12,6 +12,7 @@ This package covers the Tenable OT Security interface.
     :hidden:
     :glob:
 
+    exports
     assets
     events
     plugins

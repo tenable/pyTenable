@@ -2,9 +2,8 @@
 Exclusions
 ==========
 
-The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`exclusions <exclusions>`
-API endpoints.
+The following methods allow for interaction into the Tenable Vulnerability
+Management :devportal:`exclusions <exclusions>` API endpoints.
 
 Methods available on ``tio.exclusions``:
 
@@ -20,6 +19,7 @@ class ExclusionsAPI(TIOEndpoint):
     '''
     This will contain all methods related to exclusions
     '''
+
     def create(self, name, members, start_time=None, end_time=None,
                timezone=None, description=None, frequency=None,
                interval=None, weekdays=None, day_of_month=None,
@@ -41,7 +41,7 @@ class ExclusionsAPI(TIOEndpoint):
             timezone (str, optional):
                 The timezone to use for the exclusion.  The default if none is
                 specified is to use UTC.  For the list of usable timezones,
-                please refer to :devportal:`scans-timezones`
+                please refer to :devportal:`scans: timezones <scans-timezones>`
             frequency (str, optional):
                 The frequency of the rule. The string inputted will be up-cased.
                 Valid values are: ``ONETIME``, ``DAILY``, ``WEEKLY``,
@@ -58,8 +58,8 @@ class ExclusionsAPI(TIOEndpoint):
                 The day of the month to repeat a **MONTHLY** frequency rule on.
                 The default is today.
             enabled (bool, optional):
-		If enabled is true, the exclusion schedule is active.
-		If enabled is false, the exclusion is "Always Active"
+                If enabled is true, the exclusion schedule is active.
+                If enabled is false, the exclusion is "Always Active".
                 The default value is ``True``
             network_id (uuid, optional):
                 The ID of the network object associated with scanners
@@ -230,7 +230,8 @@ class ExclusionsAPI(TIOEndpoint):
         then be pushed back to the API to modify the exclusion.
 
         Args:
-            exclusion_id (int): The id of the exclusion object in Tenable Vulnerability Management
+            exclusion_id (int): The id of the exclusion object in
+                Tenable Vulnerability Management
             scanner_id (int, optional): The scanner id.
             name (str, optional): The name of the exclusion to create.
             description (str, optional):
@@ -382,7 +383,8 @@ class ExclusionsAPI(TIOEndpoint):
 
         Returns:
             :obj:`None`:
-                Returned if Tenable Vulnerability Management successfully imports the exclusion file.
+                Returned if Tenable Vulnerability Management successfully
+                imports the exclusion file.
 
         Examples:
             >>> with open('import_example.csv') as exclusion:
