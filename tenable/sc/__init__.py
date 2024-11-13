@@ -29,6 +29,7 @@ Tenable Security Center
     feeds
     files
     groups
+    license
     organizations
     plugins
     policies
@@ -61,6 +62,7 @@ from .current import CurrentSessionAPI
 from .files import FileAPI
 from .feeds import FeedAPI
 from .groups import GroupAPI
+from .license import LicenseAPI
 from .organizations import OrganizationAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
@@ -480,6 +482,14 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         :doc:`Tenable Security Center Groups APIs <groups>`.
         '''
         return GroupAPI(self)
+
+    @property
+    def license(self):
+        '''
+        The interface object for the
+        :doc:`Tenable Security Center License APIs <license>`.
+        '''
+        return LicenseAPI(self)
 
     @property
     def organizations(self):
