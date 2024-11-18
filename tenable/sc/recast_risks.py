@@ -1,4 +1,4 @@
-'''
+"""
 Recast Risks
 ============
 
@@ -10,27 +10,31 @@ Methods available on ``sc.recast_risks``:
 .. rst-class:: hide-signature
 .. autoclass:: RecastRiskAPI
     :members:
-'''
+"""
+
 from .base import SCEndpoint
 
 
 class RecastRiskAPI(SCEndpoint):
     def _constructor(self, **kwargs):
-        '''
+        """
         document creator for recastRisk creation and update calls.
-        '''
+        """
         if 'repos' in kwargs:
             # as repositories are passed in the API as a series of sub-documents
             # with the ID attribute set, we will convert the simply list that
             # was passed to us into a series of documents as the API expects.
-            kwargs['repositories'] = [{'id': self._check('repo:id', r, int)}
-                                      for r in self._check('repos', kwargs['repos'], list)]
+            kwargs['repositories'] = [
+                {'id': self._check('repo:id', r, int)}
+                for r in self._check('repos', kwargs['repos'], list)
+            ]
             del kwargs['repos']
 
         if 'plugin_id' in kwargs:
             # the plugin parameter
             kwargs['plugin'] = {
-                'id': str(self._check('plugin_id', kwargs['plugin_id'], int))}
+                'id': str(self._check('plugin_id', kwargs['plugin_id'], int))
+            }
             del kwargs['plugin_id']
 
         if 'port' in kwargs:
@@ -54,33 +58,59 @@ class RecastRiskAPI(SCEndpoint):
             # What should be the new severity id for the vulnerabilities
             # matching the rule?  Converts severity_id to a newSeverity document
             # with an id parameter matching the id passed.
-            kwargs['newSeverity'] = {'id': self._check(
-                'severity_id', kwargs['severity_id'], int, choices=[0, 1, 2, 3, 4])}
+            kwargs['newSeverity'] = {
+                'id': self._check(
+                    'severity_id',
+                    kwargs['severity_id'],
+                    int,
+                    choices=[0, 1, 2, 3, 4],
+                )
+            }
             del kwargs['severity_id']
 
         if 'ips' in kwargs:
             # if the ips list is passed, then
             kwargs['hostType'] = 'ip'
-            kwargs['hostValue'] = ','.join([self._check('ip:item', i, str)
-                                            for i in self._check('ips', kwargs['ips'], list)])
+            kwargs['hostValue'] = ','.join([
+                self._check('ip:item', i, str)
+                for i in self._check('ips', kwargs['ips'], list)
+            ])
             del kwargs['ips']
 
         if 'uuids' in kwargs:
             kwargs['hostType'] = 'uuid'
-            kwargs['hostValue'] = ','.join([self._check('uuid:item', i, str)
-                                            for i in self._check('uuids', kwargs['uuids'], list)])
+            kwargs['hostValue'] = ','.join([
+                self._check('uuid:item', i, str)
+                for i in self._check('uuids', kwargs['uuids'], list)
+            ])
             del kwargs['uuids']
 
         if 'asset_list' in kwargs:
             kwargs['hostType'] = 'asset'
-            kwargs['hostValue'] = {'id': self._check('asset_list', kwargs['asset_list'], int)}
+            kwargs['hostValue'] = {
+                'id': self._check('asset_list', kwargs['asset_list'], int)
+            }
             del kwargs['asset_list']
+
+        if 'host_uuids' in kwargs:
+            kwargs['hostType'] = 'hostUUID'
+            kwargs['hostValue'] = ','.join([
+                self._check('uuid:item', i, str)
+                for i in self._check('host_uuids', kwargs['host_uuids'], list)
+            ])
+            del kwargs['host_uuids']
 
         return kwargs
 
-    def list(self, repo_ids=None, plugin_id=None, port=None,
-             org_ids=None, fields=None):
-        '''
+    def list(
+        self,
+        repo_ids=None,
+        plugin_id=None,
+        port=None,
+        org_ids=None,
+        fields=None,
+    ):
+        """
         Retrieves the list of recasted risk rules.
 
         :sc-api:`recast-risk: list <Recast-Risk-Rule.htm#RecastRiskRuleRESTReference-/recastRiskRule>`
@@ -104,11 +134,10 @@ class RecastRiskAPI(SCEndpoint):
         Examples:
             >>> for rule in sc.recast_risks.list():
             ...     pprint(rule)
-        '''
+        """
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str)
-                                         for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
         if plugin_id:
             # validating that the plugin_id is an integer and assigning it to
@@ -124,20 +153,24 @@ class RecastRiskAPI(SCEndpoint):
             # validating that org_ids is a list of integer values, then
             # converting the result into a comma-seperated string and assigning
             # it to the appropriate query parameter.
-            params['organizationIDs'] = ','.join([str(self._check('org:id', i, int))
-                                                  for i in self._check('org_ids', org_ids, list)])
+            params['organizationIDs'] = ','.join([
+                str(self._check('org:id', i, int))
+                for i in self._check('org_ids', org_ids, list)
+            ])
 
         if repo_ids:
             # validating that repo_ids is a list of integer values, then
             # converting the result into a comma-seperated string and assigning
             # it to the appropriate query parameter.
-            params['repositoryIDs'] = ','.join([str(self._check('repo:id', i, int))
-                                                for i in self._check('repo_ids', repo_ids, list)])
+            params['repositoryIDs'] = ','.join([
+                str(self._check('repo:id', i, int))
+                for i in self._check('repo_ids', repo_ids, list)
+            ])
 
         return self._api.get('recastRiskRule', params=params).json()['response']
 
     def details(self, risk_id, fields=None):
-        '''
+        """
         Retrieves the details of an recast risk rule.
 
         :sc-api:`recast-risk: details <Recast-Risk-Rule.htm#RecastRiskRuleRESTReference-/recastRiskRule/{id}>`
@@ -154,17 +187,18 @@ class RecastRiskAPI(SCEndpoint):
         Examples:
             >>> rule = sc.recast_risks.details(1)
             >>> pprint(rule)
-        '''
+        """
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str)
-                                         for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
-        return self._api.get('recastRiskRule/{}'.format(self._check('risk_id', risk_id, int)),
-                             params=params).json()['response']
+        return self._api.get(
+            'recastRiskRule/{}'.format(self._check('risk_id', risk_id, int)),
+            params=params,
+        ).json()['response']
 
     def delete(self, risk_id):
-        '''
+        """
         Removes the recast risk rule from Tenable Security Center
 
         :sc-api:`recast-risk: delete <Recast-Risk-Rule.htm#recastRiskRule_id_DELETE>`
@@ -178,12 +212,13 @@ class RecastRiskAPI(SCEndpoint):
 
         Examples:
             >>> sc.recast_risks.delete(1)
-        '''
-        return self._api.delete('recastRiskRule/{}'.format(
-            self._check('risk_id', risk_id, int))).json()['response']
+        """
+        return self._api.delete(
+            'recastRiskRule/{}'.format(self._check('risk_id', risk_id, int))
+        ).json()['response']
 
     def apply(self, risk_id, repo):
-        '''
+        """
         Applies the recast risk rule for either all repositories, or the
         repository specified.
 
@@ -201,14 +236,14 @@ class RecastRiskAPI(SCEndpoint):
 
         Examples:
             >>> sc.recast_risks.apply(1)
-        '''
-        return self._api.post('recastRiskRule/{}/apply'.format(
-            self._check('risk_id', risk_id, int)), json={
-            'repository': {'id': self._check('repo', repo, int)}
-        }).json()['response']
+        """
+        return self._api.post(
+            'recastRiskRule/{}/apply'.format(self._check('risk_id', risk_id, int)),
+            json={'repository': {'id': self._check('repo', repo, int)}},
+        ).json()['response']
 
     def create(self, plugin_id, repos, severity_id, **kwargs):
-        '''
+        """
         Creates a new recast risk rule.  Either ips, uuids, or asset_list must
         be specified.
 
@@ -242,6 +277,10 @@ class RecastRiskAPI(SCEndpoint):
                 The agent uuids to apply the recast risk rule to.  Please note
                 that ``asset_list``, ``ips``, and ``uuids`` are mutually
                 exclusive.
+            host_uuids (list[str], optional):
+                The hostUUIDs to apply the accept risk rule to.  Please note
+                that ``asset_list``, ``ips``, ``uuids``, and ``host_uuids`` are
+                mutually exclusive.
 
         Returns:
             :obj:`dict`:
@@ -252,11 +291,10 @@ class RecastRiskAPI(SCEndpoint):
 
             >>> rule = sc.recast_risks.create(97737, [1], 0
             ...     ips=['192.168.0.101', '192.168.0.102'])
-        '''
+        """
         kwargs['plugin_id'] = plugin_id
         kwargs['repos'] = repos
         kwargs['severity_id'] = severity_id
         payload = self._constructor(**kwargs)
 
-        return self._api.post('recastRiskRule',
-                              json=payload).json()['response'][0]
+        return self._api.post('recastRiskRule', json=payload).json()['response'][0]
