@@ -59,13 +59,13 @@ class JobManager:
         return self
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
-        if exc_type is not None and self.terminate_on_failure:
-            self.terminate()
-        elif not (exc_type, exc_traceback, exc_value):
-            pass
-        else:
+        if exc_type is None:
             self.submit()
-
+        else:
+            if self.terminate_on_failure:
+                self.terminate()
+            #Do anything else we want to...    
+        
     def add(
         self,
         object: Dict[str, Any],
@@ -111,6 +111,8 @@ class JobManager:
 
     def submit(self) -> bool:
         """ """
+        if len(self._cache) > 0:
+            self.upload()
         return self._api.sync.submit(
             sync_id=self.sync_id, job_id=self.uuid, num_chunks=self.chunk_id - 1
         )
