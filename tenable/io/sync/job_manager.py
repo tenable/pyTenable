@@ -59,9 +59,11 @@ class JobManager:
         return self
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
-        if exc_type and self.terminate_on_failure:
+        if exc_type is not None and self.terminate_on_failure:
             self.terminate()
         elif not (exc_type, exc_traceback, exc_value):
+            pass
+        else:
             self.submit()
 
     def add(
