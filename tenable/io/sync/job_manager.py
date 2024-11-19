@@ -53,7 +53,7 @@ class JobManager:
         self.chunk_id = 1
         self.terminate_on_failure = terminate_on_failue
         self._log = logging.getLogger(f'JobManager[{sync_id}:{job_uuid}]')
-        self._log.info(f'starting management of job {sync_id}')
+        self._log.info(f'Starting management of job {sync_id}')
 
     def __enter__(self):
         return self
