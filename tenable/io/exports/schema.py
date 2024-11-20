@@ -72,6 +72,45 @@ class AssetExportSchema(Schema):
         return data
 
 
+class AssetV2ExportSchema(Schema):
+    '''
+    Asset V2 Export API Schema
+    '''
+    # Temporal fields
+    created_at = fields.Int()
+    updated_at = fields.Int()
+    terminated_at = fields.Int()
+    deleted_at = fields.Int()
+
+    first_scan_time = fields.Int()
+    last_authenticated_scan_time = fields.Int()
+    last_assessed = fields.Int()
+    since = fields.Int()
+    last_scan_id = fields.Str()
+
+    # Boolean flags
+    is_terminated = fields.Bool()
+    is_deleted = fields.Bool()
+    is_licensed = fields.Bool()
+    has_plugin_results = fields.Bool()
+    servicenow_sysid = fields.Bool()
+
+    include_open_ports = fields.Bool()
+
+    # Other params
+    network_id = fields.UUID()
+    sources = fields.List(fields.Str())
+    types = fields.List(fields.Str(dump_default="host"))
+
+    chunk_size = fields.Int(dump_default=1000)
+
+    @post_dump
+    def post_serialization(self, data, **kwargs):  # noqa PLR0201 PLW0613
+        data = serialize_tags(data)
+        data = envelope(data, 'filters', excludes=['chunk_size', 'include_open_ports'])
+        return data
+
+
 class VPRSchema(Schema):
     '''
     VPR Sub-object Schema

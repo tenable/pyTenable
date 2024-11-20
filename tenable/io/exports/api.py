@@ -18,7 +18,7 @@ from typing import Dict, Union, List, Optional
 from marshmallow import Schema
 from restfly.errors import RequestConflictError
 from tenable.base.endpoint import APIEndpoint
-from .schema import AssetExportSchema, VulnExportSchema, ComplianceExportSchema
+from .schema import AssetExportSchema, VulnExportSchema, ComplianceExportSchema, AssetV2ExportSchema
 from .iterator import ExportsIterator
 
 
@@ -42,23 +42,27 @@ class ExportsAPI(APIEndpoint):
         :devportal:`compliance <io-exports-compliance-create>`, and
         :devportal:`vulnerabilities <exports-vulns-request-export>` datatypes.
         '''
+        version = kwargs.pop('version', '')
         schemas = {
-            'vulns': VulnExportSchema,
-            'assets': AssetExportSchema,
-            'compliance': ComplianceExportSchema,
+            'vulns': { '': VulnExportSchema },
+            'assets': { 'v2': AssetV2ExportSchema, '': AssetExportSchema },
+            'compliance': { '': ComplianceExportSchema },
         }
+
         if not schema:
-            schema = schemas[export_type]()
+            schema = schemas[export_type][version]()
+
         payload = schema.dump(schema.load(kwargs))
 
         if not export_uuid:
             try:
-                export_uuid = self._api.post(f'{export_type}/export',
+                path = f'{export_type}/{version}/export' if version else f'{export_type}/export'
+                export_uuid = self._api.post(path,
                                              json=payload,
                                              box=True
                                              ).export_uuid
                 self._log.debug(
-                    f'{export_type} export job {export_uuid} initiated'
+                    f'{export_type} {version} export job {export_uuid} initiated'
                 )
             except RequestConflictError as conflict:
                 if not adopt_existing:
@@ -67,7 +71,7 @@ class ExportsAPI(APIEndpoint):
                 export_uuid = resp['active_job_id']
                 msg = resp['failure_reason']
                 self._log.warning(
-                    f'Adopted {export_type} export job {export_uuid}.  '
+                    f'Adopted {export_type} {version} export job {export_uuid}.  '
                     f'Original message from platform was "{msg}"'
                 )
         if use_iterator:
@@ -186,7 +190,7 @@ class ExportsAPI(APIEndpoint):
 
         Examples:
 
-            >>> status = tio.exports.status('vulns', {UUID}')
+            >>> status = tio.exports.status('vulns', '{UUID}')
         '''
         return self._api.get(f'{export_type}/export/{export_uuid}/status',
                              box=True,
@@ -341,6 +345,102 @@ class ExportsAPI(APIEndpoint):
             ... )
         '''
         return self._export('assets', AssetExportSchema(), **kwargs)
+
+    def assets_v2(self, **kwargs) -> Union[ExportsIterator, UUID]:
+        '''
+        Initiate an asset v2 export.
+
+        :devportal:`API Documentation <exports-v2-assets-request-export>`
+
+        Args:
+            last_scan_id (str, optional):
+                Scan uuid of the scan to be exported.
+            created_at (int, optional):
+                Assets created after this timestamp will be returned.
+            deleted_at (int, optional):
+                Assets deleted after this timestamp will be returned.
+            first_scan_time (int, optional):
+                Assets with a first_scan time later that this timestamp
+                will be returned.
+            last_assessed (int, optional):
+                Assets last scanned after this timestamp will be returned.
+            last_authenticated_scan_time (int, optional):
+                Assets last scanned with an authenticated scan after this
+                timestamp will be returned.
+            terminated_at (int, optional):
+                Assets terminated after this timestamp will be returned.
+            updated_at (int, optional):
+                Assets updated after this timestamp will be returned.
+            has_plugin_results (bool, optional):
+                Should assets only be returned if they have plugin results?
+            is_deleted (bool, optional):
+                Should we return only assets that have been deleted?
+            is_licensed (bool, optional):
+                Should we return only assets that are licensed?
+            is_terminated (bool, optional):
+                Should we return assets that have been terminated?
+            servicenow_sysid (bool, optional):
+                Should we return assets that have a ServiceNOW sysid?
+                if ``True`` only assets with an id will be returned.
+                if ``False`` only assets without an id will be returned.
+            include_open_ports (bool, optional):
+                Should we include open ports of assets in the exported chunks?
+            chunk_size (int, optional):
+                How many asset objects should be returned per chunk of data?
+                The default is ``1000``.
+            network_id (str, optional):
+                Only assets within the specified network UUID will be returned.
+            sources (list[str], optional):
+                Only assets with a source matching one of these source values
+                will be returned.  Note that this value is case-sensitive.
+            types (list[str], optional):
+                Only assets with specified type will be returned.
+            since (int, optional):
+                Assets terminated after this timestamp will be returned.
+            uuid (str, optional):
+                A predefined export UUID to use for generating an
+                ExportIterator.  Using this parameter will ignore all of the
+                filter arguments.
+            use_iterator (bool, optional):
+                Determines if we should return an iterator, or simply the
+                export job UUID.  The default is to return an iterator.
+            when_done (bool, optional):
+                When creating the iterator, setting this flag to true will tell
+                the iterator to wait until the export job has completed before
+                processing the first chunk.  The default behaviour is to start
+                processing chunks of data as soon as they become available.
+            timeout (int, optional):
+                If specified, determines a timeout in seconds to wait for the
+                export job to sit in the queue before cancelling the job and
+                raising a ``TioExportsTimeout`` error.  Once a job has started
+                to be processed, the timeout is ignored.
+            iterator (Iterator, optional):
+                Supports overloading the iterator class to be used to process
+                the datachunks.
+            adopt_existing (bool, optional):
+                Should we automatically adopt an existing Job UUID with we
+                receive a 409 conflict?  Defaults to True.
+
+        Examples:
+
+            Iterating over the results of an asset export:
+
+            >>> for asset in tio.exports.assets_v2():
+            ...     print(asset)
+
+            Getting hosts that have been updated within the last 24 hours
+
+            >>> assets = tio.exports.assets_v2(
+            ...     updated_at=int(arrow.now().shift(days=-1).timestamp())
+            ... )
+
+            Getting assets that have the the ``host`` type:
+
+            >>> assets = tio.exports.assets_v2(
+            ...     types=['host']
+            ... )
+        '''
+        return self._export('assets', AssetV2ExportSchema(), version='v2', **kwargs)
 
     def compliance(self, **kwargs) -> Union[ExportsIterator, UUID]:
         '''
