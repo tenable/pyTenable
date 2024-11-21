@@ -34,6 +34,7 @@ Tenable Security Center
     policies
     queries
     recast_risks
+    report_definition
     repositories
     roles
     scan_instances
@@ -66,6 +67,7 @@ from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
 from .queries import QueryAPI
 from .recast_risks import RecastRiskAPI
+from .report_definition import ReportDefinitionAPI
 from .repositories import RepositoryAPI
 from .roles import RoleAPI
 from .scanners import ScannerAPI
@@ -520,6 +522,14 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         :doc:`Tenable Security Center Recast Risks APIs <recast_risks>`.
         '''
         return RecastRiskAPI(self)
+
+    @property
+    def report_definition(self):
+        '''
+        The interface object for the
+        :doc:`Tenable.sc ReportDefinition APIs <report_definition>`.
+        '''
+        return ReportDefinitionAPI(self)
 
     @property
     def repositories(self):
