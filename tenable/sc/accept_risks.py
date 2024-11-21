@@ -1,4 +1,4 @@
-'''
+"""
 Accept Risks
 ============
 
@@ -10,27 +10,30 @@ Methods available on ``sc.accept_risks``:
 .. rst-class:: hide-signature
 .. autoclass:: AcceptRiskAPI
     :members:
-'''
+"""
+
 from .base import SCEndpoint
+
 
 class AcceptRiskAPI(SCEndpoint):
     def _constructor(self, **kw):
-        '''
+        """
         document creator for acceptRisk creation and update calls.
-        '''
+        """
         if 'repos' in kw:
             # as repositories are passed in the API as a series of sub-documents
             # with the ID attribute set, we will convert the simply list that
             # was passed to us into a series of documents as the API expects.
-            kw['repositories'] = [{'id': self._check('repo:id', r, int)}
-                for r in self._check('repos', kw['repos'], list)]
-            del(kw['repos'])
+            kw['repositories'] = [
+                {'id': self._check('repo:id', r, int)}
+                for r in self._check('repos', kw['repos'], list)
+            ]
+            del kw['repos']
 
         if 'plugin_id' in kw:
             # the plugin parameter
-            kw['plugin'] = {
-                'id': str(self._check('plugin_id', kw['plugin_id'], int))}
-            del(kw['plugin_id'])
+            kw['plugin'] = {'id': str(self._check('plugin_id', kw['plugin_id'], int))}
+            del kw['plugin_id']
 
         if 'port' in kw:
             # as the port will only be passed if the default of "any" isn't
@@ -57,26 +60,37 @@ class AcceptRiskAPI(SCEndpoint):
         if 'ips' in kw:
             # if the ips list is passed, then
             kw['hostType'] = 'ip'
-            kw['hostValue'] = ','.join([self._check('ip:item', i, str)
-                for i in self._check('ips', kw['ips'], list)])
-            del(kw['ips'])
+            kw['hostValue'] = ','.join([
+                self._check('ip:item', i, str)
+                for i in self._check('ips', kw['ips'], list)
+            ])
+            del kw['ips']
 
         if 'uuids' in kw:
             kw['hostType'] = 'uuid'
-            kw['hostValue'] = ','.join([self._check('uuid:item', i, str)
-                for i in self._check('uuids', kw['uuids'], list)])
-            del(kw['uuids'])
+            kw['hostValue'] = ','.join([
+                self._check('uuid:item', i, str)
+                for i in self._check('uuids', kw['uuids'], list)
+            ])
+            del kw['uuids']
 
         if 'asset_list' in kw:
             kw['hostType'] = 'asset'
             kw['hostValue'] = {'id': self._check('asset_list', kw['asset_list'], int)}
-            del(kw['asset_list'])
+            del kw['asset_list']
+
+        if 'host_uuids' in kw:
+            kw['hostType'] = 'hostUUID'
+            kw['hostValue'] = ','.join([
+                self._check('uuid:item', i, str)
+                for i in self._check('host_uuids', kw['host_uuids'], list)
+            ])
+            del kw['host_uuids']
 
         return kw
 
-    def list(self, repo_ids=None, plugin_id=None, port=None,
-             org_ids=None, fields=None):
-        '''
+    def list(self, repo_ids=None, plugin_id=None, port=None, org_ids=None, fields=None):
+        """
         Retrieves the list of accepted risk rules.
 
         :sc-api:`accept-risk: list <Accept-Risk-Rule.htm#AcceptRiskRuleRESTReference-/acceptRiskRule>`
@@ -100,11 +114,10 @@ class AcceptRiskAPI(SCEndpoint):
         Examples:
             >>> for rule in sc.accept_risks.list():
             ...     pprint(rule)
-        '''
+        """
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str)
-                for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
         if plugin_id:
             # validating that the plugin_id is an integer and assigning it to
@@ -120,20 +133,24 @@ class AcceptRiskAPI(SCEndpoint):
             # validating that org_ids is a list of integer values, then
             # converting the result into a comma-seperated string and assigning
             # it to the appropriate query parameter.
-            params['organizationIDs'] = ','.join([str(self._check('org:id', i, int))
-                for i in self._check('org_ids', org_ids, list)])
+            params['organizationIDs'] = ','.join([
+                str(self._check('org:id', i, int))
+                for i in self._check('org_ids', org_ids, list)
+            ])
 
         if repo_ids:
             # validating that repo_ids is a list of integer values, then
             # converting the result into a comma-seperated string and assigning
             # it to the appropriate query parameter.
-            params['repositoryIDs'] = ','.join([str(self._check('repo:id', i, int))
-                for i in self._check('repo_ids', repo_ids, list)])
+            params['repositoryIDs'] = ','.join([
+                str(self._check('repo:id', i, int))
+                for i in self._check('repo_ids', repo_ids, list)
+            ])
 
         return self._api.get('acceptRiskRule', params=params).json()['response']
 
     def details(self, id, fields=None):
-        '''
+        """
         Retrieves the details of an accepted risk rule.
 
         :sc-api:`accept-risk details <Accept-Risk-Rule.htm#AcceptRiskRuleRESTReference-/acceptRiskRule/{id}>`
@@ -150,17 +167,17 @@ class AcceptRiskAPI(SCEndpoint):
         Examples:
             >>> rule = sc.accept_risks.details(1)
             >>> pprint(rule)
-        '''
+        """
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str)
-                for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
-        return self._api.get('acceptRiskRule/{}'.format(self._check('id', id, int)),
-            params=params).json()['response']
+        return self._api.get(
+            'acceptRiskRule/{}'.format(self._check('id', id, int)), params=params
+        ).json()['response']
 
     def delete(self, id):
-        '''
+        """
         Removes the accepted risk rule from Tenable Security Center
 
         :sc-api:`accept-risk: delete <Accept-Risk-Rule.htm#acceptRiskRule_id_DELETE>`
@@ -174,12 +191,13 @@ class AcceptRiskAPI(SCEndpoint):
 
         Examples:
             >>> sc.accept_risks.delete(1)
-        '''
-        return self._api.delete('acceptRiskRule/{}'.format(
-            self._check('id', id, int))).json()['response']
+        """
+        return self._api.delete(
+            'acceptRiskRule/{}'.format(self._check('id', id, int))
+        ).json()['response']
 
     def apply(self, id, repo):
-        '''
+        """
         Applies the accept risk rule for either all repositories, or the
         repository specified.
 
@@ -197,14 +215,14 @@ class AcceptRiskAPI(SCEndpoint):
 
         Examples:
             >>> sc.accept_risks.apply(1)
-        '''
-        return self._api.post('acceptRiskRule/{}/apply'.format(
-            self._check('id', id, int)), json={
-                'repository': {'id': self._check('repo', repo, int)}
-            }).json()['response']
+        """
+        return self._api.post(
+            'acceptRiskRule/{}/apply'.format(self._check('id', id, int)),
+            json={'repository': {'id': self._check('repo', repo, int)}},
+        ).json()['response']
 
     def create(self, plugin_id, repos, **kw):
-        '''
+        """
         Creates a new accept risk rule.  Either ips, uuids, or asset_list must
         be specified.
 
@@ -238,6 +256,10 @@ class AcceptRiskAPI(SCEndpoint):
                 The agent uuids to apply the accept risk rule to.  Please note
                 that ``asset_list``, ``ips``, and ``uuids`` are mutually
                 exclusive.
+            host_uuids (list[str], optional):
+                The hostUUIDs to apply the accept risk rule to.  Please note
+                that ``asset_list``, ``ips``, ``uuids``, and ``host_uuids`` are
+                mutually exclusive.
 
         Returns:
             :obj:`dict`:
@@ -252,7 +274,7 @@ class AcceptRiskAPI(SCEndpoint):
             Create a rule to accept 97737 on all IPs on repository 1:
 
             >>> rule = sc.accept_risks.create(97737, [1])
-        '''
+        """
         kw['hostType'] = 'all'
         kw['plugin_id'] = plugin_id
         kw['repos'] = repos
