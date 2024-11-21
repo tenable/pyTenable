@@ -282,7 +282,7 @@ class ExportsAPI(APIEndpoint):
         '''
         Initiate an asset export.
 
-        :devportal:`API Documentation <exports-assets-request-export>`
+        :devportal:`API Documentation <export-assets-v1>`
 
         Args:
             last_scan_id (str, optional):
@@ -374,10 +374,10 @@ class ExportsAPI(APIEndpoint):
         return self._export('assets', AssetExportSchema(), **kwargs)
 
     def assets_v2(self, **kwargs) -> Union[ExportsIterator, UUID]:
-        '''
+        """
         Initiate an asset v2 export.
 
-        :devportal:`API Documentation <exports-v2-assets-request-export>`
+        :devportal:`API Documentation <export-assets-v2>`
 
         Args:
             last_scan_id (str, optional):
@@ -466,7 +466,7 @@ class ExportsAPI(APIEndpoint):
             >>> assets = tio.exports.assets_v2(
             ...     types=['host']
             ... )
-        '''
+        """
         return self._export('assets', AssetV2ExportSchema(), version='v2', **kwargs)
 
     def compliance(self, **kwargs) -> Union[ExportsIterator, UUID]:
@@ -685,7 +685,7 @@ class ExportsAPI(APIEndpoint):
     def was_vulns(self, **kwargs) -> Union[ExportsIterator, UUID]:
         """
         Initiate a WAS vulnerability export.
-        :devportal:`API Documentation <exports-was-vulns-request-export>`
+        :devportal:`API Documentation <was-export-findings>`
         Args:
             first_found (int, optional):
                 Findings first discovered after this timestamp will be
@@ -812,7 +812,7 @@ class ExportsAPI(APIEndpoint):
         Gets the status of the WAS export job.
 
         API Documentation for the status of an export job for the
-        :devportal:`was-vulnerabilities <exports-was-vulns-export-status>` datatypes.
+        :devportal:`was-vulnerabilities <was-export-findings-status>` datatypes.
 
         Args:
             export_uuid (str):
@@ -829,7 +829,7 @@ class ExportsAPI(APIEndpoint):
         Returns the list of WAS export jobs.
 
         API Documentation for the job listing APIs for
-        :devportal:`WAS vulnerabilities <exports-was-vulns-export-status-recent>`
+        :devportal:`WAS vulnerabilities <was-export-findings-jobs-list>`
         datatypes.
 
         Examples:
@@ -843,7 +843,7 @@ class ExportsAPI(APIEndpoint):
         Cancels the specified WAS export job.
 
         API Documentation for cancel export jobs with
-        :devportal:`was vulnerabilities <exports-was-vulns-export-cancel>` datatype.
+        :devportal:`was vulnerabilities <was-export-findings-cancel>` datatype.
 
         Args:
             export_uuid:
@@ -870,7 +870,7 @@ class ExportsAPI(APIEndpoint):
         Downloads a WAS export chunk from the specified job.
 
         API Documentation for downloading an export chunk for
-        :devportal:`WAS vulnerabilities <exports-was-vulns-download-chunk>`.
+        :devportal:`WAS vulnerabilities <was-export-findings-download-chunk>`.
 
         Args:
             export_uuid:
