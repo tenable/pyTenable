@@ -19,6 +19,7 @@ def test_report_definition_id_item_typeerror(security_center):
     with pytest.raises(TypeError):
         security_center.report_definition.launch(id=['one'])
 
+@pytest.mark.vcr()
 def test_report_definition_launch_success(security_center):
     '''
     validate launch is successful and returns running report ID
