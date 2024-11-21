@@ -26,6 +26,6 @@ def test_report_definition_launch_success(security_center):
     '''
     report = security_center.report_definition.launch(id=1)
     assert isinstance(report, dict)
-    check(report['reportResult'], 'id', int)
+    check(report['reportResult'], 'id', str)
     check(report['reportResult'], 'name', str)
     check(report['reportResult'], 'status', str)
