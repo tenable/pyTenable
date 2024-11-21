@@ -128,8 +128,12 @@ dev-dependencies = [
     # Python 3.9 and lower.  This can be removed once 3.9 goes EOS or when we stop using
     # VCR for the test suite.
     "urllib3==1.26.20",
+    "rich>=13.8.1",
 ]
 
 
 [tool.pytest.ini_options]
 addopts  = "--cov-report term-missing --cov=tenable"
+filterWarnings = [
+    "ignore::DeprecationWarning"
+]

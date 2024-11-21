@@ -61,6 +61,7 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
     timeout: int = None
     uuid: str
     type: str
+    version: str
     status: str
     start_time: int
     count: int = 0
@@ -73,14 +74,18 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
         self.start_time = int(time.time())
         super().__init__(api, **kwargs)
 
+    def _get_status_resp(self) -> Dict:
+        return self._api.exports.status(self.type, self.uuid, version=self.version)
+
     def _get_status(self) -> Dict:
         '''
         Get the current status of the export, and then calculate where the
         iterator is within the export job and return the status to the caller
         '''
-        status = self._api.exports.status(self.type, self.uuid)
-        self._log.debug('%s export %s is currently %s',
+        status = self._get_status_resp()
+        self._log.debug('%s export %s %s is currently %s',
                         self.type,
+                        self.version,
                         self.uuid,
                         status.status
                         )
@@ -151,6 +156,9 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
                 raise StopIteration()
         return self.chunks
 
+    def _get_chunk_data(self, type, uuid, chunk_id) -> List:
+        return self._api.exports.download_chunk(type, uuid, chunk_id, version=self.version)
+
     def _get_page(self):
         '''
         Gets the next chunk of data for the iterator
@@ -163,10 +171,7 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
         # processed list, and store the chunk id
         self.chunk_id = self.chunks.pop(0)
         self.processed.append(self.chunk_id)
-        self.page = self._api.exports.download_chunk(self.type,
-                                                     self.uuid,
-                                                     self.chunk_id
-                                                     )
+        self.page = self._get_chunk_data(self.type, self.uuid, self.chunk_id)
 
         # If the chunk of data is empty, then we will call ourselves to get the
         # next page of data.  This allows us to properly handle empty chunks of
@@ -211,7 +216,7 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
         '''
         Cancels the current export
         '''
-        self._api.exports.cancel(self.type, self.uuid)
+        self._api.exports.cancel(self.type, self.uuid, version=self.version)
 
     def run_threaded(self,
                      func: Any,
@@ -227,6 +232,7 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
             * export_uuid (str): Receiver for the export job UUID.
             * export_type (str): Receiver for the export data-type.
             * export_chunk_id (int): Receiver for the export chunk id.
+            * version (int): Receiver for the export version.
 
         Args:
             func:
@@ -245,9 +251,10 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
             >>> def write_chunk(data,
             ...                 export_uuid: str,
             ...                 export_type: str,
-            ...                 export_chunk_id: int
+            ...                 export_chunk_id: int,
+            ...                 version: int
             ...                 ):
-            ...     fn = f'{export_type}-{export_uuid}-{export_chunk_id}.json'
+            ...     fn = f'{export_type}-{export_uuid}-{export_chunk_id}-{version}.json'
             ...     with open(fn, 'w') as fobj:
             ...         json.dump(data, fobj)
             >>>
@@ -273,13 +280,11 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
 
         def thread_job(chunk_id: int):
             kw = copy(kwargs)
-            kw['data'] = self._api.exports.download_chunk(self.type,
-                                                          self.uuid,
-                                                          chunk_id
-                                                          )
+            kw['data'] = self._get_chunk_data(self.type, self.uuid, chunk_id)
             kw['export_uuid'] = self.uuid
             kw['export_type'] = self.type
             kw['export_chunk_id'] = chunk_id
+            kw['version'] = self.version
             self._log.debug(
                 (f'{self.type} export {self.uuid} chunk {chunk_id} '
                  'has been downloaded and the data has been handed '
