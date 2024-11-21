@@ -2,7 +2,7 @@
 test file to test various scenarios in sc report_definition
 '''
 import pytest
-from ..checker import check, single
+from ..checker import check
 
 def test_report_definition_id_typeerror(security_center):
     '''
