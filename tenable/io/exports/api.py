@@ -1,4 +1,4 @@
-'''
+"""
 Exports
 =======
 
@@ -10,67 +10,77 @@ Methods available on ``tio.exports``:
 .. rst-class:: hide-signature
 .. autoclass:: ExportsAPI
     :members:
-'''
-from uuid import UUID
-from json.decoder import JSONDecodeError
+"""
 
-from typing_extensions import Literal
-from typing import Dict, Union, List, Optional
+import warnings
+from json.decoder import JSONDecodeError
+from typing import Dict, List, Optional, Union
+from uuid import UUID
+
 from marshmallow import Schema
 from restfly.errors import RequestConflictError
+from typing_extensions import Literal
+
 from tenable.base.endpoint import APIEndpoint
-from .schema import AssetExportSchema, VulnExportSchema, ComplianceExportSchema, AssetV2ExportSchema, WASVulnExportSchema
+
 from .iterator import ExportsIterator
+from .schema import (
+    AssetExportSchema,
+    AssetV2ExportSchema,
+    ComplianceExportSchema,
+    VulnExportSchema,
+    WASVulnExportSchema,
+)
 
-
-EXPORT_API_PATHS = {
-    'vulns': { '': 'vulns/export'},
-    'assets': { '': 'assets/export', 'v2': 'assets/v2/export' },
-    'compliance': { '': 'compliance/export'},
-    'was/vulns': { 'v1': 'was/v1/export/vulns' }
+EXPORTS_MAP = {
+    'vulns': {
+        None: {'path': 'vulns/export', 'schema': VulnExportSchema},
+    },
+    'assets': {
+        None: {'path': 'assets/export', 'schema': AssetExportSchema},
+        'v2': {'path': 'assets/v2/export', 'schema': AssetV2ExportSchema},
+    },
+    'compliance': {
+        None: {'path': 'compliance/export', 'schema': ComplianceExportSchema},
+    },
+    'was': {
+        None: {'path': 'was/v1/export/vulns', 'schema': WASVulnExportSchema},
+    },
 }
 
 
 class ExportsAPI(APIEndpoint):
-    def _export(self,
-                export_type: Literal['vulns', 'assets', 'compliance', 'was/vulns'],
-                schema: Optional[Schema] = None,
-                use_iterator: bool = True,
-                when_done: bool = False,
-                iterator: ExportsIterator = ExportsIterator,
-                timeout: Optional[int] = None,
-                export_uuid: Optional[UUID] = None,
-                adopt_existing: bool = True,
-                **kwargs
-                ) -> Union[ExportsIterator, UUID]:
-        '''
+    def _export(
+        self,
+        export_type: Literal['vulns', 'assets', 'compliance', 'was'],
+        schema: Optional[Schema] = None,
+        version: Optional[str] = None,
+        use_iterator: bool = True,
+        when_done: bool = False,
+        iterator: ExportsIterator = ExportsIterator,
+        timeout: Optional[int] = None,
+        export_uuid: Optional[UUID] = None,
+        adopt_existing: bool = True,
+        **kwargs,
+    ) -> Union[ExportsIterator, UUID]:
+        """
         Submit new export job for the specified datatype.
 
         API Documentation for the job listings for
         :devportal:`assets <exports-assets-request-export>`,
         :devportal:`compliance <io-exports-compliance-create>`, and
         :devportal:`vulnerabilities <exports-vulns-request-export>` datatypes.
-        '''
-        version = kwargs.pop('version', '')
-        schemas = {
-            'vulns': { '': VulnExportSchema },
-            'assets': { 'v2': AssetV2ExportSchema, '': AssetExportSchema },
-            'compliance': { '': ComplianceExportSchema },
-            'was/vulns': { 'v1': WASVulnExportSchema }
-        }
-
+        """
+        exmap = EXPORTS_MAP[export_type][version]
         if not schema:
-            schema = schemas[export_type][version]()
+            schema = exmap['schema']()
 
         payload = schema.dump(schema.load(kwargs))
-        path = EXPORT_API_PATHS[export_type][version]
+        path = exmap['path']
 
         if not export_uuid:
             try:
-                export_uuid = self._api.post(path,
-                                             json=payload,
-                                             box=True
-                                             ).export_uuid
+                export_uuid = self._api.post(path, json=payload, box=True).export_uuid
                 self._log.debug(
                     f'{export_type} {version} export job {export_uuid} initiated'
                 )
@@ -87,22 +97,25 @@ class ExportsAPI(APIEndpoint):
                 )
 
         if use_iterator:
-            return iterator(self._api,
-                            type=export_type,
-                            uuid=export_uuid,
-                            version=version,
-                            _wait_for_complete=when_done,
-                            timeout=timeout
-                            )
+            return iterator(
+                self._api,
+                type=export_type,
+                uuid=export_uuid,
+                version=version,
+                _wait_for_complete=when_done,
+                timeout=timeout,
+            )
 
         return UUID(export_uuid)
 
-    def cancel(self,
-               export_type: Literal['vulns', 'assets', 'compliance', 'was/vulns'],
-               export_uuid: UUID,
-               **kwargs
-               ) -> str:
-        '''
+    def cancel(
+        self,
+        export_type: Literal['vulns', 'assets', 'compliance', 'was'],
+        export_uuid: UUID,
+        version: Optional[str] = None,
+        **kwargs,
+    ) -> str:
+        """
         Cancels the specified export job.
 
         API Documentation for cancel export jobs with
@@ -115,7 +128,8 @@ class ExportsAPI(APIEndpoint):
                 The type of export job that we are to cancel.
             export_uuid:
                 The export job's unique identifier.
-
+            version:
+                The export type version.
         Returns:
             str:
                 The status of the job.
@@ -124,21 +138,20 @@ class ExportsAPI(APIEndpoint):
 
             >>> tio.exports.cancel('vuln', '{UUID}')
             'CANCELLED'
-        '''
-        version = '' if export_type == 'assets' else kwargs.pop('version', '')
-        path = EXPORT_API_PATHS[export_type][version]
-        return self._api.post(f'{path}/{export_uuid}/cancel',
-                              box=True
-                              ).status
+        """
+        path = EXPORTS_MAP[export_type][version]['path']
+        return self._api.post(f'{path}/{export_uuid}/cancel', box=True).status
 
-    def download_chunk(self,
-                       export_type: Literal['vulns', 'assets', 'compliance', 'was/vulns'],
-                       export_uuid: UUID,
-                       chunk_id: int,
-                       retries: int = 3,
-                       **kwargs
-                       ) -> List:
-        '''
+    def download_chunk(
+        self,
+        export_type: Literal['vulns', 'assets', 'compliance', 'was'],
+        export_uuid: UUID,
+        chunk_id: int,
+        version: Optional[str] = None,
+        retries: int = 3,
+        **kwargs,
+    ) -> List:
+        """
         Downloads an export chunk from the specified job.
 
         API Documentation for downloading an export chunk for
@@ -153,6 +166,8 @@ class ExportsAPI(APIEndpoint):
                 The export job's unique identifier.
             chunk_id:
                 The identifier for the specific chunk to download.
+            version:
+                The export type version.
 
         Returns:
             List:
@@ -161,7 +176,7 @@ class ExportsAPI(APIEndpoint):
         Example:
 
             >>> chunk = tio.exports.download_chunk('vulns', '{UUID}', 1)
-        '''
+        """
         # We will attempt to download a chunk of data and convert it into JSON.
         # If the conversion fails, then we will increment our own retry counter
         # and attempt to download the chunk again.  After 3 attempts, we will
@@ -169,33 +184,36 @@ class ExportsAPI(APIEndpoint):
         downloaded = False
         counter = 0
         resp = []
-        version = '' if export_type == 'assets' else kwargs.pop('version', '')
-        path = EXPORT_API_PATHS[export_type][version]
+        path = EXPORTS_MAP[export_type][version]['path']
         while not downloaded and counter <= retries:
             try:
-                resp = self._api.get(
-                    f'{path}/{export_uuid}/chunks/{chunk_id}'
-                ).json()
+                resp = self._api.get(f'{path}/{export_uuid}/chunks/{chunk_id}').json()
                 downloaded = True
             except JSONDecodeError:
-                self._log.warning((
-                    f'{export_type} {version} export {export_uuid} encountered an '
-                    f'invalid chunk on chunk id {chunk_id}'
-                ))
+                self._log.warning(
+                    (
+                        f'{export_type} {version} export {export_uuid} encountered an '
+                        f'invalid chunk on chunk id {chunk_id}'
+                    )
+                )
                 counter += 1
         if len(resp) < 1:
-            self._log.warning((
-                f'{export_type} {version} export {export_uuid} encoundered an empty '
-                f'chunk on chunk id {chunk_id}'
-            ))
+            self._log.warning(
+                (
+                    f'{export_type} {version} export {export_uuid} encoundered an empty '
+                    f'chunk on chunk id {chunk_id}'
+                )
+            )
         return resp
 
-    def status(self,
-               export_type: Literal['vulns', 'assets', 'compliance', 'was/vulns'],
-               export_uuid: UUID,
-               **kwargs
-               ) -> Dict:
-        '''
+    def status(
+        self,
+        export_type: Literal['vulns', 'assets', 'compliance', 'was'],
+        export_uuid: UUID,
+        version: Optional[str] = None,
+        **kwargs,
+    ) -> Dict:
+        """
         Gets the status of the export job.
 
         API Documentation for the status of an export job for the
@@ -208,23 +226,27 @@ class ExportsAPI(APIEndpoint):
                 The datatype of the export job.
             export_uuid (str):
                 The UUID of the export job.
+            version:
+                The export type version.
 
         Examples:
 
             >>> status = tio.exports.status('vulns', '{UUID}')
-        '''
+        """
         # Note: Assets export doesn't have v2 api for status call. Its only available for /status call.
-        version = '' if export_type == 'assets' else kwargs.pop('version', '')
-        path = EXPORT_API_PATHS[export_type][version]
-        return self._api.get(f'{path}/{export_uuid}/status',
-                             box=True,
-                             )
+        path = EXPORTS_MAP[export_type][version]['path']
+        return self._api.get(
+            f'{path}/{export_uuid}/status',
+            box=True,
+        )
 
-    def jobs(self,
-             export_type: Literal['vulns', 'assets', 'was/vulns'],
-             **kwargs
-             ) -> Dict:
-        '''
+    def jobs(
+        self,
+        export_type: Literal['vulns', 'assets', 'was'],
+        version: Optional[str] = None,
+        **kwargs,
+    ) -> Dict:
+        """
         Returns the list of jobs available for a given datatype.
 
         API Documentation for the job listing APIs for
@@ -235,19 +257,22 @@ class ExportsAPI(APIEndpoint):
         Args:
             export_type (str):
                 The datatype of export to get the jobs for.
+            version:
+                The export type version.
 
         Examples:
 
             >>> jobs = tio.exports.jobs('vulns')
-        '''
-        version = '' if export_type == 'assets' else kwargs.pop('version', '')
-        path = EXPORT_API_PATHS[export_type][version]
+        """
+        path = EXPORTS_MAP[export_type][version]['path']
         return self._api.get(f'{path}/status', box=True).exports
 
-    def initiate_export(self,
-                        export_type: Literal['vulns', 'assets', 'compliance', 'was/vulns'],
-                        **kwargs
-                        ):
+    def initiate_export(
+        self,
+        export_type: Literal['vulns', 'assets', 'compliance', 'was'],
+        version: Optional[str] = None,
+        **kwargs,
+    ):
         """
         Initiate an export job of the specified export type, and return the
         export UUID.
@@ -260,8 +285,10 @@ class ExportsAPI(APIEndpoint):
         method, and so forth.
 
         Args:
-            export_type (str):
+            export_type:
                 The datatype of export to get the jobs for.
+            version:
+                The export type version.
 
         Examples:
 
@@ -273,13 +300,12 @@ class ExportsAPI(APIEndpoint):
 
             >>> export_uuid = tio.exports.initiate_export("vulns", timeout=10)
         """
-        return self._export(export_type=export_type,
-                            use_iterator=False,
-                            **kwargs
-                            )
+        return self._export(
+            export_type=export_type, version=version, use_iterator=False, **kwargs
+        )
 
     def assets(self, **kwargs) -> Union[ExportsIterator, UUID]:
-        '''
+        """
         Initiate an asset export.
 
         :devportal:`API Documentation <exports-assets-request-export>`
@@ -370,11 +396,11 @@ class ExportsAPI(APIEndpoint):
             >>> assets = tio.exports.assets(
             ...     tags=[('Region', 'Chicago')]
             ... )
-        '''
+        """
         return self._export('assets', AssetExportSchema(), **kwargs)
 
     def assets_v2(self, **kwargs) -> Union[ExportsIterator, UUID]:
-        '''
+        """
         Initiate an asset v2 export.
 
         :devportal:`API Documentation <exports-v2-assets-request-export>`
@@ -466,11 +492,11 @@ class ExportsAPI(APIEndpoint):
             >>> assets = tio.exports.assets_v2(
             ...     types=['host']
             ... )
-        '''
+        """
         return self._export('assets', AssetV2ExportSchema(), version='v2', **kwargs)
 
     def compliance(self, **kwargs) -> Union[ExportsIterator, UUID]:
-        '''
+        """
         Initiate a compliance export.
 
         :devportal:`API Documentation <io-exports-compliance-create>`
@@ -545,11 +571,11 @@ class ExportsAPI(APIEndpoint):
 
             >>> for findings in tio.exports.compliance():
             ...     print(finding)
-        '''
+        """
         return self._export('compliance', ComplianceExportSchema(), **kwargs)
 
     def vulns(self, **kwargs) -> Union[ExportsIterator, UUID]:
-        '''
+        """
         Initiate a vulnerability export.
 
         :devportal:`API Documentation <exports-vulns-request-export>`
@@ -679,10 +705,10 @@ class ExportsAPI(APIEndpoint):
             >>> vulns = tio.exports.vulns(
             ...     tags=[('Region', 'Chicago')]
             ... )
-        '''
+        """
         return self._export('vulns', VulnExportSchema(), **kwargs)
 
-    def was_vulns(self, **kwargs) -> Union[ExportsIterator, UUID]:
+    def was(self, **kwargs) -> Union[ExportsIterator, UUID]:
         """
         Initiate a WAS vulnerability export.
         :devportal:`API Documentation <exports-was-vulns-request-export>`
@@ -805,88 +831,7 @@ class ExportsAPI(APIEndpoint):
             ...     tags=[('Region', 'Chicago')]
             ... )
         """
-        return self._export('was/vulns', WASVulnExportSchema(), version='v1', **kwargs)
-
-    def was_status(self, export_uuid: UUID, **kwargs) -> Dict:
-        """
-        Gets the status of the WAS export job.
-
-        API Documentation for the status of an export job for the
-        :devportal:`was-vulnerabilities <exports-was-vulns-export-status>` datatypes.
-
-        Args:
-            export_uuid (str):
-                The UUID of the export job.
-
-        Examples:
-
-            >>> status = tio.exports.was_status('{UUID}')
-        """
-        return self.status('was/vulns', export_uuid, version='v1', **kwargs)
-
-    def was_jobs(self, **kwargs) -> Dict:
-        """
-        Returns the list of WAS export jobs.
-
-        API Documentation for the job listing APIs for
-        :devportal:`WAS vulnerabilities <exports-was-vulns-export-status-recent>`
-        datatypes.
-
-        Examples:
-
-            >>> jobs = tio.exports.was_jobs()
-        """
-        return self.jobs('was/vulns', version='v1', **kwargs)
-
-    def cancel_was_job(self, export_uuid: UUID, **kwargs) -> str:
-        """
-        Cancels the specified WAS export job.
-
-        API Documentation for cancel export jobs with
-        :devportal:`was vulnerabilities <exports-was-vulns-export-cancel>` datatype.
-
-        Args:
-            export_uuid:
-                The export job's unique identifier.
-
-        Returns:
-            str:
-                The status of the job.
-
-        Example:
-
-            >>> tio.exports.cancel_was_job('{UUID}')
-            'CANCELLED'
-        """
-        return self.cancel('was/vulns', export_uuid, version='v1', **kwargs)
-
-    def download_was_chunk(self,
-                       export_uuid: UUID,
-                       chunk_id: int,
-                       retries: int = 3,
-                       **kwargs
-                       ) -> List:
-        """
-        Downloads a WAS export chunk from the specified job.
-
-        API Documentation for downloading an export chunk for
-        :devportal:`WAS vulnerabilities <exports-was-vulns-download-chunk>`.
-
-        Args:
-            export_uuid:
-                The export job's unique identifier.
-            chunk_id:
-                The identifier for the specific chunk to download.
-
-        Returns:
-            List:
-                The list of objects that entail the chunk of data requested.
-
-        Example:
-
-            >>> chunk = tio.exports.download_chunk('{UUID}', 1)
-        """
-        return self.download_chunk('was/vulns', export_uuid, chunk_id, retries, version='v1', **kwargs)
+        return self._export('was', WASVulnExportSchema(), **kwargs)
 
     def list_compliance_export_jobs(self):
         """
@@ -901,4 +846,10 @@ class ExportsAPI(APIEndpoint):
             >>> for compliance_job in tio.exports.list_compliance_export_jobs():
             ...     pprint(compliance_job)
         """
-        return self._api.get('compliance/export/status').json()["exports"]
+        warnings.warn(
+            'list_compliance_export_jobs is deprecated in favor of using the generic'
+            'job listing method instead.',
+            DeprecationWarning,
+            stacklevel=1,
+        )
+        return self._api.get('compliance/export/status').json()['exports']
