@@ -28,7 +28,6 @@ class ReportDefinitionAPI(SCEndpoint):
             >>> print('The Scan Result ID is {}'.format(
             ...     running['scanResult']['id']))
         '''
-        payload = dict()
 
         return self._api.post('reportDefinition/{}/launch'.format(
-            self._check('id', id, int)), json=payload).json()['response']
+            self._check('id', id, int))).json()['response']
