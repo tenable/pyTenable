@@ -62,7 +62,6 @@ from .cs.api import ContainerSecurity
 from .editor import EditorAPI
 from .exclusions import ExclusionsAPI
 from .exports.api import ExportsAPI
-from .exports.was.api import WASVulnsExportsAPI
 from .files import FileAPI
 from .filters import FiltersAPI
 from .folders import FoldersAPI
@@ -313,13 +312,13 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         '''
         return ExportsAPI(self)
 
-    @property
-    def was_exports(self):
-        '''
-        The interface object for the
-        :doc:`Tenable Vulnerability Management Exports APIs <exports>`.
-        '''
-        return WASVulnsExportsAPI(self)
+    # @property
+    # def was_exports(self):
+    #     """
+    #     The interface object for the
+    #     :doc:`Tenable Vulnerability Management Exports APIs <exports>`.
+    #     """
+    #     return WASVulnsExportsAPI(self)
 
     @property
     def files(self):

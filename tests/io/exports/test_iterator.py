@@ -5,6 +5,8 @@ import re
 import pytest
 import responses
 from box import Box
+
+from build.lib.tenable.version import version
 from tenable.errors import TioExportsError, TioExportsTimeout
 from tenable.io.exports.iterator import ExportsIterator
 
@@ -53,6 +55,7 @@ def test_iterator_term_on_error(api):
     iterator = ExportsIterator(api,
                                type='assets',
                                uuid='01234567-89ab-cdef-0123-4567890abcde',
+                               version='',
                                _term_on_error=True
                                )
 
@@ -69,6 +72,7 @@ def test_iterator_timeout(api):
     responses.add(responses.POST, URL_CANCEL, json={'status': 'CANCELLED'})
     iterator = ExportsIterator(api,
                                type='assets',
+                               version='',
                                uuid='01234567-89ab-cdef-0123-4567890abcde',
                                timeout=0
                                )
@@ -85,6 +89,7 @@ def test_empty_chunk(api):
     responses.add(responses.GET, URL_CHUNK, json=[])
     export = ExportsIterator(api,
                              type='assets',
+                             version='',
                              uuid='01234567-89ab-cdef-0123-4567890abcde',
                              )
     for _ in export:

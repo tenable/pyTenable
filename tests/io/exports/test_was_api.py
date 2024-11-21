@@ -8,7 +8,7 @@ import pytest
 import responses
 from restfly.errors import RequestConflictError
 
-from tenable.io.exports.was.iterator import WASExportsIterator
+from tenable.io.exports.iterator import ExportsIterator
 
 RE_BASE = (r'https://nourl/was/v1/export/vulns/'
            r'([0-9a-fA-F\-]+)'
@@ -23,7 +23,7 @@ def test_status(tvm):
                         'status': 'FINISHED',
                         }
                   )
-    status = tvm.was_exports.status('01234567-89ab-cdef-0123-4567890abcde')
+    status = tvm.exports.was_status('01234567-89ab-cdef-0123-4567890abcde')
     assert isinstance(status, dict)
     assert status.uuid == '01234567-89ab-cdef-0123-4567890abcde'
     assert status.status == 'FINISHED'
@@ -35,7 +35,7 @@ def test_cancel(tvm):
                   re.compile(f'{RE_BASE}/cancel'),
                   json={'status': 'CANCELLED'}
                   )
-    assert 'CANCELLED' == tvm.was_exports.cancel('01234567-89ab-cdef-0123-4567890abcde')
+    assert 'CANCELLED' == tvm.exports.cancel_was_job('01234567-89ab-cdef-0123-4567890abcde')
 
 
 
@@ -47,7 +47,7 @@ def test_download_chunk(tvm):
                                             {'name': 'example_item2'}
                                             ]
                   )
-    resp = tvm.was_exports.download_chunk('01234567-89ab-cdef-0123-4567890abcde', 1)
+    resp = tvm.exports.download_was_chunk('01234567-89ab-cdef-0123-4567890abcde', 1)
     assert isinstance(resp, list)
 
 
@@ -59,7 +59,7 @@ def test_jobs(tvm):
                                     {'name': 'job2'}
                                     ]
                   })
-    jobs = tvm.was_exports.jobs()
+    jobs = tvm.exports.was_jobs()
     assert isinstance(jobs, list)
 
 
@@ -76,12 +76,12 @@ def export_request():
 
 
 def test_was_findings_export(export_request, tvm):
-    export = tvm.was_exports.export()
-    assert isinstance(export, WASExportsIterator)
+    export = tvm.exports.was_vulns()
+    assert isinstance(export, ExportsIterator)
 
 
 def test_was_findings_export_returns_uuid(export_request, tvm):
-    export_uuid = tvm.was_exports.export(use_iterator=False)
+    export_uuid = tvm.exports.was_vulns(use_iterator=False)
     assert export_uuid == UUID('01234567-89ab-cdef-0123-4567890abcde')
 
 
@@ -95,9 +95,9 @@ def test_export_adoption_false(tvm):
                        'failure_reason': 'Some message goes here from platform'
                    }
     )
-    assert UUID(job_id) == tvm.was_exports.export(use_iterator=False)
+    assert UUID(job_id) == tvm.exports.was_vulns(use_iterator=False)
     with pytest.raises(RequestConflictError):
-        tvm.was_exports.export(adopt_existing=False)
+        tvm.exports.was_vulns(adopt_existing=False)
 
 
 @responses.activate
@@ -110,5 +110,5 @@ def test_export_adoption_true(tvm):
                        'failure_reason': 'Some message goes here from platform'
                    }
     )
-    assert UUID(job_id) == tvm.was_exports.export(use_iterator=False)
-    assert UUID(job_id) == tvm.was_exports.export(adopt_existing=True, use_iterator=False)
+    assert UUID(job_id) == tvm.exports.was_vulns(use_iterator=False)
+    assert UUID(job_id) == tvm.exports.was_vulns(adopt_existing=True, use_iterator=False)

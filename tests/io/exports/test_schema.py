@@ -4,6 +4,10 @@ Testing the asset schemas
 import pytest
 import uuid
 from marshmallow.exceptions import ValidationError
+
+from tenable.io.exports.schema import OWASPAPIChapters, Severity, State, SeverityModificationType, WASVulnExportSchema
+from tenable.io.exports.schema import OWASPChapters
+
 from tenable.io.exports.schema import (
     AssetExportSchema,
     VulnExportSchema,
@@ -38,6 +42,7 @@ def asset_export():
             ('test3', 'val4')
         ]
     }
+
 
 @pytest.fixture
 def asset_export_with_open_ports_true():
@@ -250,6 +255,7 @@ def test_vulnerabilityschema(vuln_export):
         vuln_export['scan_uuid'] = 0
         schema.load(vuln_export)
 
+
 def test_asset_export_schema_for_open_ports_true(asset_export_with_open_ports_true):
     """
     Ensure Asset Export request is correctly formed with include_open_ports set to true.
@@ -286,3 +292,64 @@ def test_compliance_export_phase_1_and_2_filters(compliance_export_phase_1_and_2
     assert schema_dump["filters"]["state"][0] == "Active"
     assert len(schema_dump["filters"]["tags"]) == 1
     assert schema_dump["filters"]["network_id"] == "d6797cf4-42b9-4cad-8591-9dd91c3f0fc3"
+
+
+@pytest.fixture
+def was_vulns_export():
+    '''
+    Example was vulns export request
+    '''
+    return {
+        'asset_uuid': ['d27b3f28-9a36-4127-b63a-3da3801121ec'],
+        'asset_name': 'abc.com',
+        'first_found': 1635798607,
+        'last_found': 1635798606,
+        'last_fixed': 1635798605,
+        'indexed_at': 1635798604,
+        'since': 1635798603,
+        'plugin_ids': [1340, 2554],
+        'owasp_2010': [OWASPChapters.A1],
+        'owasp_2013': [OWASPChapters.A1],
+        'owasp_2017': [OWASPChapters.A1],
+        'owasp_2021': [OWASPChapters.A1],
+        'owasp_api_2019': [OWASPAPIChapters.API1],
+        'severity': [Severity.LOW],
+        'state': [State.FIXED],
+        'severity_modification_type': [SeverityModificationType.ACCEPTED],
+        'vpr_score': {'eq': [1.2, 3.5]},
+        'ipv4s': ['134.43.4.34']
+    }
+
+
+def test_was_vulns_schema_all_values(was_vulns_export):
+    test_resp = {
+        'num_assets': 50,
+        'include_unlicensed': False,
+        'filters': {
+            'asset_uuid': ['d27b3f28-9a36-4127-b63a-3da3801121ec'],
+            'asset_name': 'abc.com',
+            'first_found': 1635798607,
+            'last_found': 1635798606,
+            'last_fixed': 1635798605,
+            'indexed_at': 1635798604,
+            'since': 1635798603,
+            'plugin_ids': [1340, 2554],
+            'owasp_2010': ['A1'],
+            'owasp_2013': ['A1'],
+            'owasp_2017': ['A1'],
+            'owasp_2021': ['A1'],
+            'owasp_api_2019': ['API1'],
+            'severity': ['LOW'],
+            'state': ['FIXED'],
+            'severity_modification_type': ['ACCEPTED'],
+            'vpr_score': {'eq': [1.2, 3.5]},
+            'ipv4s': ['134.43.4.34']
+        }
+    }
+
+    schema = WASVulnExportSchema()
+    assert test_resp == schema.dump(schema.load(was_vulns_export))
+
+    with pytest.raises(ValidationError):
+        was_vulns_export['new_val'] = 'something'
+        schema.load(was_vulns_export)
