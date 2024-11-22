@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0]
+
+### Added
+
+- Tenable.sc plugin listing now supports the `filters` parameter #718
+- Tenable.sc report definition launching capability #656
+- Tenable.io (TVM) WAS Export support #850
+- Tenable.sc HostUUID support for accept & recast risks #843
+
+[1.6.0]: https://github.com/tenable/pyTenable/compare/1.5.3...1.6.0
+
+## [1.5.3]
+
+### Changed
+
+- Moved cryptography to be an optional package only for the pkcs12 extra
+
+[1.5.3]: https://github.com/tenable/pyTenable/compare/1.5.2...1.5.3
+
 ## [1.5.2]
 
 ### Changed
