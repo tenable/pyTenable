@@ -27,7 +27,7 @@ class LicenseAPI(SCEndpoint):
     AND bind the license in one HTTP(S) session.  Otherwise the file gets deleted and the reference to the
     file is lost.  This is why we have to do the file read and upload in a single session in the set() method.
     '''
-    def set(self, file):
+    def update(self, file):
         '''
         Sets the license file.
 
