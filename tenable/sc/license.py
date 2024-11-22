@@ -50,7 +50,7 @@ class LicenseAPI(SCEndpoint):
         resp = self._api.post('config/license/register', json={'filename': fileName}).json()
         return resp['response']['config']['LicenseConfig']
     
-    def get(self):
+    def details(self):
         '''
         Retrieves the current license information.
 
