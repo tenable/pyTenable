@@ -1,8 +1,8 @@
 from typing import List, Literal, Optional
 
+from annotated_types import Len
 from pydantic import AfterValidator, AwareDatetime, BaseModel, Field
 from typing_extensions import Annotated
-from annotated_types import Len
 
 from .common import (
     CustomAttribute,
@@ -23,36 +23,36 @@ def int_range_64k(v: int) -> int:
 int64k = Annotated[int, AfterValidator(int_range_64k)]
 
 
-class CVEDiscovery(BaseModel):
+class CVEDiscovery(BaseModel, strict=True):
     first_observed_at: Optional[AwareDatetime] = None
     last_observed_on: Optional[AwareDatetime] = None
 
 
-class CVERisk(BaseModel):
-    cves: Annotated[List[str], Len(min_length=1, max_length=128)]
+class CVERisk(BaseModel, strict=True):
+    cves: Annotated[List[str], Len(min_length=1, max_length=512)]
 
 
-class CVESeverity(BaseModel):
+class CVESeverity(BaseModel, strict=True):
     level: Literal['NONE', 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL']
 
 
-class CVEExposure(BaseModel):
+class CVEExposure(BaseModel, strict=True):
     severity: Optional[CVESeverity] = None
 
 
-class CVELibBin(BaseModel):
+class CVELibBin(BaseModel, strict=True):
     path: Optional[str512] = None
     sha256: Optional[str64] = None
     size: Optional[intpos] = None
 
 
-class CVEPortBinding(BaseModel):
+class CVEPortBinding(BaseModel, strict=True):
     interfaces: Optional[List[str]] = None
     port: int64k
     protocol: Literal['ICMP', 'TCP', 'UDP']
 
 
-class CVEProcess(BaseModel):
+class CVEProcess(BaseModel, strict=True):
     arguments: Optional[List[str]] = None
     environment_variables: Optional[List[CustomAttribute]] = None
     libraries: Optional[List[CVELibBin]] = None
@@ -63,19 +63,19 @@ class CVEProcess(BaseModel):
     software_index: Optional[intpos] = None
 
 
-class CVESoftware(BaseModel):
+class CVESoftware(BaseModel, strict=True):
     binary: Optional[CVELibBin] = None
     configuration: Optional[List[CVELibBin]] = None
     product: Optional[ProductCPE] = None
     script: Optional[CVELibBin] = None
 
 
-class CVEObservations(BaseModel):
+class CVEObservations(BaseModel, strict=True):
     processes: Optional[List[CVEProcess]] = None
     software: Optional[List[CVESoftware]] = None
 
 
-class CVEFinding(BaseModel):
+class CVEFinding(BaseModel, strict=True):
     object_type: Literal['cve-finding'] = 'cve-finding'
     asset_id: str128
     custom_attributes: Optional[List[CustomAttribute]] = None

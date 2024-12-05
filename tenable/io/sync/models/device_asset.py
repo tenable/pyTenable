@@ -26,14 +26,14 @@ from .common import (
 )
 
 
-class DeviceBios(BaseModel):
+class DeviceBios(BaseModel, strict=True):
     build_number: Optional[intpos] = None
     id: Optional[str] = None
     manufacturer: Optional[str64] = None
     version: Optional[str32] = None
 
 
-class DeviceCPU(BaseModel):
+class DeviceCPU(BaseModel, strict=True):
     count: Optional[intpos] = None
     manufacturer: Optional[str64] = None
     name: Optional[str128] = None
@@ -41,7 +41,7 @@ class DeviceCPU(BaseModel):
     type: Optional[str64] = None
 
 
-class DeviceHardware(BaseModel):
+class DeviceHardware(BaseModel, strict=True):
     bios: Optional[DeviceBios] = None
     cpu: Optional[DeviceCPU] = None
     family: Optional[str64] = None
@@ -53,29 +53,29 @@ class DeviceHardware(BaseModel):
     tpm_id: Optional[str128] = None
 
 
-class DeviceFQDN(BaseModel):
+class DeviceFQDN(BaseModel, strict=True):
     type: Optional[Literal['REVERSE_LOOKUP', 'FORWARD_LOOKUP']] = None
     value: str256
 
 
-class DeviceDHCPAssignment(BaseModel):
+class DeviceDHCPAssignment(BaseModel, strict=True):
     lease_expires_at: Optional[AwareDatetime] = None
     lease_started_at: Optional[AwareDatetime] = None
     subnet_prefix: Optional[intpos] = None
     type: Literal['DHCP_STATIC', 'DHCP_DYNAMIC', 'MANUAL', 'APIPA', 'PPPOE']
 
 
-class DeviceIPv6(BaseModel):
+class DeviceIPv6(BaseModel, strict=True):
     address: Optional[IPv6Address] = None
     assignment: Optional[DeviceDHCPAssignment] = None
 
 
-class DeviceIPv4(BaseModel):
+class DeviceIPv4(BaseModel, strict=True):
     address: Optional[IPv4Address] = None
     assignment: Optional[DeviceDHCPAssignment] = None
 
 
-class DeviceNetworking(BaseModel):
+class DeviceNetworking(BaseModel, strict=True):
     fqdns: Optional[List[DeviceFQDN]] = None
     ip_address_v4: Optional[List[DeviceIPv4]] = None
     ip_address_v6: Optional[List[DeviceIPv6]] = None
@@ -83,12 +83,12 @@ class DeviceNetworking(BaseModel):
     network_group_id: Optional[str64] = None
 
 
-class DeviceOSServicePack(BaseModel):
+class DeviceOSServicePack(BaseModel, strict=True):
     name: Optional[str64] = None
     version: Optional[intpos] = None
 
 
-class DeviceOS(BaseModel):
+class DeviceOS(BaseModel, strict=True):
     build: Optional[str64] = None
     confidence: Optional[int100] = None
     hoxfix: Optional[str64] = None
@@ -109,7 +109,7 @@ class DeviceOS(BaseModel):
     ]
 
 
-class Device(BaseModel):
+class Device(BaseModel, strict=True):
     hardware: Optional[DeviceHardware] = None
     manufacturer: Optional[str64] = None
     netbios_name: Optional[str16] = None
@@ -128,13 +128,13 @@ class Device(BaseModel):
     uptime_ms: Optional[intpos] = None
 
 
-class DeviceDiscoveryAuth(BaseModel):
+class DeviceDiscoveryAuth(BaseModel, strict=True):
     attempted: bool
     successful: bool
     type: Optional[Literal['AGENT', 'PASSIVE', 'AUTHENTICATED_SCAN', 'OTHER']] = None
 
 
-class DeviceDiscovery(BaseModel):
+class DeviceDiscovery(BaseModel, strict=True):
     authentication: Optional[DeviceDiscoveryAuth] = None
     first_observed_at: Optional[AwareDatetime] = None
     last_observed_on: Optional[AwareDatetime] = None
@@ -142,52 +142,52 @@ class DeviceDiscovery(BaseModel):
     produced_findings: Optional[bool] = None
 
 
-class DeviceExternalId(BaseModel):
+class DeviceExternalId(BaseModel, strict=True):
     qualifier: Optional[str32] = None
     value: Optional[str256] = None
 
 
-class DeviceLifetime(BaseModel):
+class DeviceLifetime(BaseModel, strict=True):
     delete_on: Optional[AwareDatetime] = None
     license_expires_at: Optional[AwareDatetime] = None
     type: Literal['UNTIL_DELETED', 'DELETE_AFTER']
 
 
-class AssetTag(BaseModel):
+class AssetTag(BaseModel, strict=True):
     name: str128
     value: Optional[str512] = None
 
 
-class AssetExposureCriticality(BaseModel):
+class AssetExposureCriticality(BaseModel, strict=True):
     level: Literal['NONE', 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL']
     score: Optional[float100] = None
 
 
-class AssetExposure(BaseModel):
+class AssetExposure(BaseModel, strict=True):
     criticality: Optional[AssetExposureCriticality] = None
 
 
-class AssetLocationCity(BaseModel):
+class AssetLocationCity(BaseModel, strict=True):
     name: str64
     postal_code: Optional[int] = None
 
 
-class AssetLocationCountry(BaseModel):
+class AssetLocationCountry(BaseModel, strict=True):
     iso_code: Annotated[str, StringConstraints(max_length=3)]
     name: Optional[str64] = None
 
 
-class AssetLocationGeo(BaseModel):
+class AssetLocationGeo(BaseModel, strict=True):
     latitude: Annotated[Optional[float], Field(le=-90, ge=90)] = None
     longitude: Annotated[Optional[float], Field(le=-180, ge=180)] = None
 
 
-class AssetLocationStateOrProvince(BaseModel):
+class AssetLocationStateOrProvince(BaseModel, strict=True):
     name: str64
     abbreviation: Optional[str16] = None
 
 
-class AssetLocation(BaseModel):
+class AssetLocation(BaseModel, strict=True):
     area: Optional[str32] = None
     building: Optional[str64] = None
     city: Optional[AssetLocationCity] = None
@@ -198,29 +198,29 @@ class AssetLocation(BaseModel):
     state_or_province: Optional[AssetLocationStateOrProvince] = None
 
 
-class AssetCloudCompute(BaseModel):
+class AssetCloudCompute(BaseModel, strict=True):
     image_id: Optional[str128] = None
     terminated_at: Optional[datetime] = None
     type: str32
 
 
-class AssetCloudLocation(BaseModel):
+class AssetCloudLocation(BaseModel, strict=True):
     region_id: Optional[str16] = None
     scope: Literal['GLOBAL', 'REGION', 'ZONE']
     zone_id: Optional[str32] = None
 
 
-class AssetCloudNetworking(BaseModel):
+class AssetCloudNetworking(BaseModel, strict=True):
     subnet_id: Optional[str128] = None
     virtual_network_id: Optional[str128] = None
 
 
-class AssetCloudProvider(BaseModel):
+class AssetCloudProvider(BaseModel, strict=True):
     id: str128
     type: Literal['AWS', 'GCP', 'AZURE', 'OTHER']
 
 
-class AssetCloud(BaseModel):
+class AssetCloud(BaseModel, strict=True):
     compute: Optional[AssetCloudCompute] = None
     id: str256
     location: Optional[AssetCloudLocation] = None
@@ -230,7 +230,7 @@ class AssetCloud(BaseModel):
     type: str128
 
 
-class DeviceAsset(BaseModel):
+class DeviceAsset(BaseModel, strict=True):
     object_type: Literal['device-asset'] = 'device-asset'
     asset_class: Literal['DEVICE'] = 'DEVICE'
     custom_attributes: Optional[List[CustomAttribute]] = None
