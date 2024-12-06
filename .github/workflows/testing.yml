@@ -30,26 +30,23 @@ jobs:
         run: uv run ruff check tenable --exit-zero
 
       - name: Run unit tests
-        run: uv run pytest --vcr-record=none tests --cov-report=term-missing
+        run: uv run pytest --vcr-record=none tests --cov-report=term-missing --cov-report=xml:coverage.xml --cov=tenable
 
+      - name: Upload Coverage
+        uses: orgoro/coverage@v3.2
+        with:
+          thresholdNew: 0.9
+          thresholdModified: 0.8
+          coverageFile: coverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
   code-assessments:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v4
         with:
           python-version: "3.10"
-      - uses: astral-sh/setup-uv@v4
-
-      - name: Run coverage
-        run: uv tool run coverage xml coverage.xml
-      
-      - name: Upload Coverage
-        uses: orgoro/coverage@v3.2
-        with:
-          coverageFile: coverage.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Run pip-audit
         run: uv export --format requirements-txt | uv tool run pip-audit
 
