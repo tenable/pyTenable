@@ -54,7 +54,7 @@ class AcceptRiskAPI(SCEndpoint):
 
         if 'expires' in kw:
             # how many days until the accept risk rule expires?  We should
-            # simply checkt o see if the value is an integer.
+            # simply check to see if the value is an integer.
             self._check('expires', kw['expires'], int)
 
         if 'ips' in kw:
@@ -223,8 +223,8 @@ class AcceptRiskAPI(SCEndpoint):
 
     def create(self, plugin_id, repos, **kw):
         """
-        Creates a new accept risk rule.  Either ips, uuids, or asset_list must
-        be specified.
+        Creates a new accept risk rule.  Either ips, uuids, asset_list, or host_uuids must
+        be specified, otherwise it will apply to all.
 
         :sc-api:`accept-risk: create <Accept-Risk-Rule.htm#acceptRiskRule_POST>`
 
@@ -234,7 +234,7 @@ class AcceptRiskAPI(SCEndpoint):
                 The list of repositories to apply this accept risk rule to.
             asset_list (int, optional):
                 The asset list id to apply the accept risk rule to.  Please note
-                that ``asset_list``, ``ips``, and ``uuids`` are mutually
+                that ``asset_list``, ``ips``, ``uuids``, and ``host_uuids`` are mutually
                 exclusive.
             comments (str, optional):
                 The comment associated to the accept risk rule.
@@ -244,7 +244,7 @@ class AcceptRiskAPI(SCEndpoint):
                 (-1 represents December 31st 1969 23:59:59 hours GMT)
             ips (list, optional):
                 A list of IPs to apply the accept risk rule to.  Please note
-                that ``asset_list``, ``ips``, and ``uuids`` are mutually
+                that ``asset_list``, ``ips``, ``uuids``, and ``host_uuids`` are mutually
                 exclusive.
             port (int, optional):
                 The port to restrict this accept risk rule to.  The default is
@@ -254,7 +254,7 @@ class AcceptRiskAPI(SCEndpoint):
                 is unrestricted.
             uuids (list, optional):
                 The agent uuids to apply the accept risk rule to.  Please note
-                that ``asset_list``, ``ips``, and ``uuids`` are mutually
+                that ``asset_list``, ``ips``, ``uuids``, and ``host_uuids`` are mutually
                 exclusive.
             host_uuids (list[str], optional):
                 The hostUUIDs to apply the accept risk rule to.  Please note

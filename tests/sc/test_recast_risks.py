@@ -5,6 +5,7 @@ functionality
 
 import pytest
 import uuid
+
 from tenable.errors import APIError
 from tests.pytenable_log_handler import log_exception
 from ..checker import check
@@ -57,6 +58,13 @@ def test_recast_risks_constructor_comments_typeerror(security_center):
     with pytest.raises(TypeError):
         security_center.recast_risks._constructor(comments=1)
 
+
+def test_recast_risks_constructor_expires_typeerror(security_center):
+    """
+    test recast risks constructor for expires type error
+    """
+    with pytest.raises(TypeError):
+        security_center.recast_risks._constructor(expires='nope')
 
 def test_recast_risks_constructor_severity_id_typeerror(security_center):
     """
@@ -133,6 +141,7 @@ def test_recast_risks_constructor_success(security_center):
         protocol=1,
         comments='comment',
         severity_id=0,
+        expires=9999999999,
         ips=['192.168.0.1'],
     )
     assert resp == {
@@ -141,6 +150,7 @@ def test_recast_risks_constructor_success(security_center):
         'port': '0',
         'protocol': '1',
         'comments': 'comment',
+        'expires': 9999999999,
         'newSeverity': {'id': 0},
         'hostType': 'ip',
         'hostValue': '192.168.0.1',
@@ -183,6 +193,7 @@ def test_recast_risks_list_success(security_center):
     check(risk, 'hostValue', str)
     check(risk, 'port', str)
     check(risk, 'protocol', str)
+    check(risk, 'expires', str)
     check(risk, 'newSeverity', str)
     check(risk, 'status', str)
     check(risk, 'repository', dict)
@@ -236,6 +247,7 @@ def test_recast_risks_create_success(arisk):
     check(arisk, 'port', str)
     check(arisk, 'protocol', str)
     check(arisk, 'comments', str)
+    check(arisk, 'expires', str)
     check(arisk, 'newSeverity', str)
     check(arisk, 'status', str)
     check(arisk, 'repository', dict)
@@ -269,6 +281,7 @@ def test_recast_risks_details_success(security_center, arisk):
     check(risk, 'port', str)
     check(risk, 'protocol', str)
     check(risk, 'comments', str)
+    check(risk, 'expires', str)
     check(risk, 'newSeverity', str)
     check(risk, 'status', str)
     check(risk, 'repository', dict)

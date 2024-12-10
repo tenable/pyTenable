@@ -54,6 +54,11 @@ class RecastRiskAPI(SCEndpoint):
             # that we actually have a string here before moving on.
             self._check('comments', kwargs['comments'], str)
 
+        if 'expires' in kwargs:
+            # how many days until the recast risk rule expires?  We should
+            # simply check to see if the value is an integer.
+            self._check('expires', kwargs['expires'], int)
+
         if 'severity_id' in kwargs:
             # What should be the new severity id for the vulnerabilities
             # matching the rule?  Converts severity_id to a newSeverity document
@@ -244,8 +249,8 @@ class RecastRiskAPI(SCEndpoint):
 
     def create(self, plugin_id, repos, severity_id, **kwargs):
         """
-        Creates a new recast risk rule.  Either ips, uuids, or asset_list must
-        be specified.
+        Creates a new recast risk rule. Either ips, uuids, asset_list, or host_uuids must
+        be specified, otherwise it will apply to all.
 
         :sc-api:`recast-risk: create <Recast-Risk-Rule.htm#recastRiskRule_POST>`
 
@@ -259,13 +264,17 @@ class RecastRiskAPI(SCEndpoint):
                 ``3``: High, and ``4``: Critical.
             asset_list (int, optional):
                 The asset list id to apply the recast risk rule to.  Please note
-                that ``asset_list``, ``ips``, and ``uuids`` are mutually
+                that ``asset_list``, ``ips``, ``uuids``, and ``host_uuids`` are mutually
                 exclusive.
             comments (str, optional):
                 The comment associated to the recast risk rule.
+            expires (int, optional):
+                Timestamp. When should the rule expire?  if no expiration is set, the rule
+                will never expire. If not mentioned, value is -1
+                (-1 represents December 31st 1969 23:59:59 hours GMT)
             ips (list, optional):
                 A list of IPs to apply the recast risk rule to.  Please note
-                that ``asset_list``, ``ips``, and ``uuids`` are mutually
+                that ``asset_list``, ``ips``, ``uuids``, and ``host_uuids`` are mutually
                 exclusive.
             port (int, optional):
                 The port to restrict this recast risk rule to.  The default is
@@ -275,7 +284,7 @@ class RecastRiskAPI(SCEndpoint):
                 is unrestricted.
             uuids (list, optional):
                 The agent uuids to apply the recast risk rule to.  Please note
-                that ``asset_list``, ``ips``, and ``uuids`` are mutually
+                that ``asset_list``, ``ips``, ``uuids``, and ``host_uuids`` are mutually
                 exclusive.
             host_uuids (list[str], optional):
                 The hostUUIDs to apply the accept risk rule to.  Please note
@@ -291,7 +300,12 @@ class RecastRiskAPI(SCEndpoint):
 
             >>> rule = sc.recast_risks.create(97737, [1], 0
             ...     ips=['192.168.0.101', '192.168.0.102'])
+
+            Create a rule to recast 97737 on all IPs on repository 1:
+
+            >>> rule = sc.recast_risks.create(97737, [1])
         """
+        kwargs['hostType'] = 'all'
         kwargs['plugin_id'] = plugin_id
         kwargs['repos'] = repos
         kwargs['severity_id'] = severity_id
