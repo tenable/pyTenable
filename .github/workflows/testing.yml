@@ -20,15 +20,10 @@ jobs:
         - "3.12"
 
     steps:
-      - name: Pull package data
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Setup up uv
-        run: curl -LsSf https://astral.sh/uv/0.4.5/install.sh | sh
 
       - name: Install dependencies
         run: uv sync --all-extras --dev
@@ -49,17 +44,27 @@ jobs:
   security_tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Pull package data
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.8"
-      - name: Setup up uv
-        run: curl -LsSf https://astral.sh/uv/0.4.5/install.sh | sh
+      - uses: astral-sh/setup-uv@v4
+
       - name: Run pip-audit
         run: |
           uv export --format requirements-txt | uv tool run pip-audit
+
       - name: Run Bandit code auditor
         run: uv tool run --with "bandit[toml,baseline,sarif]" bandit -c pyproject.toml -r . -ll
+      
+      - name: Export & Install requirements to run Snyk
+        run: |
+          uv pip compile pyproject.toml -o requirements.txt
+          pip3 install -r requirements.txt
+
+      - name: Snyk Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: test --command=python3 --skip-unresolved=true
