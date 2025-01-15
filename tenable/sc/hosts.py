@@ -36,4 +36,4 @@ class HostsAPI(SCEndpoint):
         if fields:
             params["fields"] = ",".join([self._check("field", f, str) for f in fields])
 
-        return self._api.get("hosts").json()["response"]
+        return self._api.get('hosts', params=params).json()['response']
