@@ -16,14 +16,14 @@ def test_hosts_list_success_for_fields(security_center):
     testing hosts list success for fields
     """
     hosts = security_center.hosts.list(
-        fields=['id', 'uuid', 'tenableUUID', 'name', 'ipAddress'],
+        fields=['id', 'name', 'uuid', 'tenableUUID', 'ipAddress'],
     )
     assert isinstance(hosts, list)
     for host in hosts:
         check(host, 'id', str)
+        check(host, 'name', str)
         check(host, 'uuid', str)
         check(host, 'tenableUUID', str)
-        check(host, 'name', str)
         check(host, 'ipAddress', str)
 
 @pytest.mark.vcr()
