@@ -7,17 +7,15 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  unit_tests:
+  unit-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version:
-        - "3.7"
-        - "3.8"
-        - "3.9"
         - "3.10"
         - "3.11"
         - "3.12"
+        - "3.13"
 
     steps:
       - uses: actions/checkout@v4
@@ -32,39 +30,28 @@ jobs:
         run: uv run ruff check tenable --exit-zero
 
       - name: Run unit tests
-        run: uv run pytest --vcr-record=none tests --cov-report xml:cov/coverage.xml
+        run: uv run pytest --vcr-record=none tests --cov-report=term-missing
 
-      - name: Save Coverage Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage_report_${{ matrix.python-version }}
-          path: cov
-          retention-days: 1
-
-  security_tests:
+  code-assessments:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.8"
+          python-version: "3.10"
       - uses: astral-sh/setup-uv@v4
 
+      - name: Run coverage
+        run: uv tool run coverage xml coverage.xml
+      
+      - name: Upload Coverage
+        uses: orgoro/coverage@v3.2
+        with:
+          coverageFile: coverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run pip-audit
-        run: |
-          uv export --format requirements-txt | uv tool run pip-audit
+        run: uv export --format requirements-txt | uv tool run pip-audit
 
       - name: Run Bandit code auditor
         run: uv tool run --with "bandit[toml,baseline,sarif]" bandit -c pyproject.toml -r . -ll
-      
-      - name: Export & Install requirements to run Snyk
-        run: |
-          uv pip compile pyproject.toml -o requirements.txt
-          pip3 install -r requirements.txt
-
-      - name: Snyk Scan
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: test --command=python3 --skip-unresolved=true
