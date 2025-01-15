@@ -29,6 +29,7 @@ Tenable Security Center
     feeds
     files
     groups
+    hosts
     organizations
     plugins
     policies
@@ -59,9 +60,10 @@ from .asset_lists import AssetListAPI
 from .audit_files import AuditFileAPI
 from .credentials import CredentialAPI
 from .current import CurrentSessionAPI
-from .files import FileAPI
 from .feeds import FeedAPI
+from .files import FileAPI
 from .groups import GroupAPI
+from .hosts import HostsAPI
 from .organizations import OrganizationAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
@@ -70,10 +72,10 @@ from .recast_risks import RecastRiskAPI
 from .report_definition import ReportDefinitionAPI
 from .repositories import RepositoryAPI
 from .roles import RoleAPI
-from .scanners import ScannerAPI
-from .scans import ScanAPI
 from .scan_instances import ScanResultAPI
 from .scan_zones import ScanZoneAPI
+from .scanners import ScannerAPI
+from .scans import ScanAPI
 from .status import StatusAPI
 from .system import SystemAPI
 from .users import UserAPI
@@ -482,6 +484,14 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         :doc:`Tenable Security Center Groups APIs <groups>`.
         '''
         return GroupAPI(self)
+    
+    @property
+    def hosts(self):
+        '''
+        The interface object for the
+        :doc:`Tenable Security Center Groups APIs <hosts>`.
+        '''
+        return HostsAPI(self)
 
     @property
     def organizations(self):

@@ -1,0 +1,36 @@
+interactions:
+  - request:
+      body: null
+      headers:
+        Accept: ["*/*"]
+        Accept-Encoding: ["gzip, deflate"]
+        Connection: [keep-alive]
+        Cookie: [TNS_SESSIONID=SESSIONID]
+        User-Agent: [pyTenable/0.3.16 (pyTenable/0.3.16; Python/2.7.15)]
+        X-SecurityCenter: ["0000000000"]
+      method: GET
+      uri: https://securitycenter.home.cugnet.net/rest/hosts
+    response:
+      body: { string: !!python/unicode '{ "type": "regular", "response": [ { "id": "154", "uuid": "68262460-941b-4762-906e-47298f79911e",
+          "tenableUUID": "58bd0909-f66d-4248-8c20-2501b208bb65", "name": "Aerified", "ipAddress": "201.22.196.102", "os": "Linux",
+          "firstSeen": "1770798", "lastSeen": "1685038", }, { "id": "47", "uuid": "e9344880-c32f-458c-b78e-211ce81d10cb",
+          "tenableUUID": "dce3a590-70f0-4530-9843-5d3c83666f75", "name": "Windows 10", "ipAddress": "90.248.112.168", "os": "Windows 10",
+          "firstSeen": "1755893", "lastSeen": "1221376", } ], "error_code": 0, "error_msg": "", "warnings": [], "timestamp": 1626889388 }',
+        }
+      headers:
+        cache-control: ["no-store, no-cache, must-revalidate"]
+        connection: [Keep-Alive]
+        content-length: ["526"]
+        content-type: [application/json]
+        date: ["Mon, 08 Apr 2019 13:56:30 GMT"]
+        expires: ["Thu, 19 Nov 1981 08:52:00 GMT"]
+        keep-alive: ["timeout=15, max=100"]
+        pragma: [no-cache]
+        securitycenter: [5.8.0]
+        server: [Apache]
+        strict-transport-security: [max-age=31536000; includeSubDomains]
+        x-content-type-options: [nosniff]
+        x-frame-options: [DENY]
+        x-xss-protection: [1; mode=block]
+      status: { code: 200, message: OK }
+version: 1
