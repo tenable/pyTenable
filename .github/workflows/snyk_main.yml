@@ -33,4 +33,4 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          command: test --command=python3 --skip-unresolved=true
+          command: monitor --command=python3 --skip-unresolved=true

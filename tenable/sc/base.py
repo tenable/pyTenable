@@ -1,4 +1,4 @@
-'''
+"""
 Common Themes
 =============
 
@@ -76,13 +76,15 @@ There are detailed instructions in the RFC documentation on how to construct
 these recurrence rules.  Further there are some packages out there to aid in
 converting more human-readable text into recurrence rules, such as the
 `recurrent package <https://pypi.org/project/recurrent/>`_ for example.
-'''
+"""
+
 from tenable.base.endpoint import APIEndpoint
 from tenable.base.v1 import APIResultsIterator
 
+
 class SCEndpoint(APIEndpoint):
     def _combo_expansion(self, item):
-        '''
+        """
         Expands the asset combination expressions from nested tuples to the
         nested dictionary structure that's expected.
 
@@ -92,17 +94,13 @@ class SCEndpoint(APIEndpoint):
         Returns:
             :obj:`dict`:
                 The dictionary structure of the expanded asset list combinations.
-        '''
+        """
 
         # the operator conversion dictionary.  The UI uses "and", "or", and
         # "not" whereas the API uses "intersection", "union", and "compliment".
         # if the user is passing us the tuples, lets assume that they are using
         # the UI definitions and not the API ones.
-        oper = {
-            'and': 'intersection',
-            'or': 'union',
-            'not': 'complement'
-        }
+        oper = {'and': 'intersection', 'or': 'union', 'not': 'complement'}
 
         # some simple checking to ensure that we are being passed good data
         # before we expand the tuple.
@@ -138,29 +136,25 @@ class SCEndpoint(APIEndpoint):
         return resp
 
     def _query_constructor(self, *filters, **kw):
-        '''
+        """
         Constructs an analysis query.  This part has been pulled out of the
         _analysis method and placed here so that it can be re-used in other
         part of the library.
-        '''
+        """
         if 'filters' in kw:
             # if filters are explicitly called, then we will replace the
             # implicit filters with the explicit ones and remove the entry from
             # the keywords dictionary
             filters = self._check('filters', kw['filters'], list)
-            del(kw['filters'])
+            del kw['filters']
 
         if 'query' not in kw and 'tool' in kw and 'type' in kw:
-            kw['query'] = {
-                'tool': kw['tool'],
-                'type': kw['type'],
-                'filters': list()
-            }
+            kw['query'] = {'tool': kw['tool'], 'type': kw['type'], 'filters': list()}
             if 'query_id' in kw:
                 # Request the specific query ID provided and fetch only the filters
                 query_response = self._api.get(
-                    'query/{}?fields=filters'.format(
-                        kw['query_id'])).json()['response']
+                    'query/{}?fields=filters'.format(kw['query_id'])
+                ).json()['response']
 
                 # Extract the filters or set to null if nothing is returned
                 query_filters = query_response.get('filters', list())
@@ -174,20 +168,22 @@ class SCEndpoint(APIEndpoint):
                     item = {'filterName': f[0], 'operator': f[1]}
 
                 if len(f) >= 3:
-                    if (isinstance(f[2], tuple)
-                      and f[1] == '~' and f[0] == 'asset'):
+                    if isinstance(f[2], tuple) and f[1] == '~' and f[0] == 'asset':
                         # if this is a asset combination, then we will want to
                         # expand the tuple into the expected dictionary
                         # structure that the API is expecting.
                         item['value'] = self._combo_expansion(f[2])
-                    elif (isinstance(f[2], list)
-                      and all(isinstance(i, int) for i in f[2])):
+                    elif isinstance(f[2], list) and all(
+                        isinstance(i, int) for i in f[2]
+                    ):
                         # if the value is a list and all of the items within
                         # that list are integers, then we can safely assume that
                         # this is a list of integer ids that need to be expanded
                         # into a list of dictionaries.
                         item['value'] = [dict(id=str(i)) for i in f[2]]
-                    elif (isinstance(f[2], int) and f[0] in ['asset',]):
+                    elif isinstance(f[2], int) and f[0] in [
+                        'asset',
+                    ]:
                         # If the value is an integer, then we will want to
                         # expand the value into a dictionary with an id attr.
                         item['value'] = dict(id=str(f[2]))
@@ -214,17 +210,21 @@ class SCEndpoint(APIEndpoint):
                 # specified.
                 if f[1] != None and f[2] != None:
                     kw['query']['filters'].append(item)
-            del(kw['type'])
+            del kw['type']
         return kw
 
     def _schedule_constructor(self, item):
-        '''
+        """
         Handles creation of the schedule sub-document.
-        '''
+        """
         self._check('schedule:item', item, dict)
-        item['type'] = self._check('schedule:type',  item.get('type'), str,
+        item['type'] = self._check(
+            'schedule:type',
+            item.get('type'),
+            str,
             choices=['ical', 'dependent', 'never', 'rollover', 'template', 'now'],
-            default='never')
+            default='never',
+        )
         if item['type'] == 'ical':
             self._check('schedule:start', item.get('start'), str)
             self._check('schedule:repeatRule', item.get('repeatRule'), str)
@@ -232,12 +232,16 @@ class SCEndpoint(APIEndpoint):
             self._check('schedule:dependentID', item.get('dependentID'), int)
         return item
 
+
 class SCResultsIterator(APIResultsIterator):
+    _method = 'GET'
+    _body = None
+
     def _get_page(self):
-        '''
+        """
         Retrieves the next page of results when the current page has been
         exhausted.
-        '''
+        """
         # First we need to see if there is a page limit and if there is, have
         # we run into that limit.  If we have, then return a StopIteration
         # exception.
@@ -251,7 +255,12 @@ class SCResultsIterator(APIResultsIterator):
         query['endOffset'] = self._limit + self._offset
 
         # Lets actually call the API for the data at this point.
-        resp = self._api.get(self._resource, params=query).json()
+        resp = self._api._req(
+            self._method,
+            self._resource,
+            params=query,
+            json=self._body,
+        ).json()
 
         # Now that we have the response, lets reset any counters we need to,
         # and increment things like the page counter, offset, etc.
