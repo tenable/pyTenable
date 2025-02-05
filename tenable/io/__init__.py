@@ -45,11 +45,10 @@ Tenable Vulnerability Management
 
 import warnings
 from typing import Dict, Optional
-
 from requests import Response
 
-from tenable.base.platform import APIPlatform
 
+from tenable.base.platform import APIPlatform
 from .access_control import AccessControlAPI
 from .access_groups import AccessGroupsAPI
 from .access_groups_v2 import AccessGroupsV2API
@@ -84,6 +83,7 @@ from .users import UsersAPI
 from .v3 import Version3API
 from .was.api import WasAPI
 from .workbenches import WorkbenchesAPI
+from .sync.api import SynchronizationAPI
 
 
 class TenableIO(APIPlatform):  # noqa: PLR0904
@@ -497,3 +497,11 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         :doc:`Tenable Vulnerability Management WAS APIs <was>`.
         """
         return WasAPI(self)
+
+    @property
+    def sync(self):
+        """
+        The interface object for the
+        :doc:`Tenable Vulnerability Management Syncropnization APIs <sync>`.
+        """
+        return SynchronizationAPI(self)
