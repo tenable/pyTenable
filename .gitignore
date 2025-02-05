@@ -25,3 +25,4 @@ Jenkinsfile
 .idea
 /dist
 sync_job_example_run.py
+__MACOSX

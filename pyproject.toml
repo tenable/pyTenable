@@ -138,6 +138,5 @@ dev-dependencies = [
 
 [tool.pytest.ini_options]
 addopts  = "--cov-report term-missing --cov=tenable"
-filterWarnings = [
-    "ignore::DeprecationWarning"
-]
+testpaths = ['./tests']
+filterwarnings = ["ignore:::DeprecationWarning"]

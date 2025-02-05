@@ -1,24 +1,29 @@
-name: Deploy to PyPI
+name: Testing Pipeline
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
-  deploy:
+  security_tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: 3.12
+          python-version: "3.10"
       - uses: astral-sh/setup-uv@v4
-      - uses: snyk/actions/setup@master
 
-      - name: Build package
-        run: uv build
+      - name: Run pip-audit
+        run: |
+          uv export --format requirements-txt | uv tool run pip-audit
 
-      - name: Export requirements for Snyk
+      - name: Run Bandit code auditor
+        run: uv tool run --with "bandit[toml,baseline,sarif]" bandit -c pyproject.toml -r . -ll
+      
+      - name: Export & Install requirements to run Snyk
         run: |
           uv pip compile pyproject.toml -o requirements.txt
           pip3 install -r requirements.txt
@@ -29,10 +34,3 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: monitor --command=python3 --skip-unresolved=true
-
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.4.1
-        with:
-          skip_existing: true
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
