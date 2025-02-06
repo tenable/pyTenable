@@ -91,7 +91,9 @@ def upper_if_exist(value: Any, default=None) -> Any:
 
 
 UpperCaseStr = BeforeValidator(lambda v: str(v).upper() if v else None)
-UniqueListSerializer = PlainSerializer(lambda v: list(set(v)))
+UniqueListSerializer = PlainSerializer(
+    lambda v: list(set(v)) if v and len(v) > 0 else None
+)
 TruncListValidator = WrapValidator(trunc_list)
 
 intpos = Annotated[int, Field(gt=0)]
