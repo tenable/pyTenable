@@ -4,6 +4,7 @@ from datetime import datetime
 from ipaddress import IPv4Address, IPv6Address
 from typing import Literal
 
+from arrow import ArrowFactory
 from pydantic import (
     AwareDatetime,
     BeforeValidator,
@@ -46,7 +47,8 @@ def list_of_addresses(
             and value not in resp
         ):
             resp.append(value)
-    return resp
+    if len(resp) > 0:
+        return resp
 
 
 NonLocalAddressSerializer = PlainSerializer(list_of_addresses)
@@ -207,10 +209,19 @@ class DeviceDiscoveryAuth(BaseModel):
 
 class DeviceDiscovery(BaseModel):
     authentication: DeviceDiscoveryAuth | None = None
-    first_observed_at: AwareDatetime | None = None
+    first_assessed_on: AwareDatetime | None = None
+    last_assessed_on: AwareDatetime | None = None
+    first_observed_on: AwareDatetime | None = None
     last_observed_on: AwareDatetime | None = None
     id: str64 | None = None
-    produced_findings: bool | None = None
+    assessment_status: Annotated[
+        Literal["ATTEMPTED_FINDINGS", "SKIPPED_FINDINGS"],
+        UpperCaseStr,
+    ]
+    assessment_type: (
+        Annotated[Literal["KEEP_ALIVE", "INVENTORY", "RISK_ASSESSMENT"], UpperCaseStr]
+        | None
+    ) = None
 
 
 class DeviceExternalId(BaseModel):
