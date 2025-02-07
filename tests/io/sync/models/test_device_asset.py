@@ -79,6 +79,14 @@ def test_list_of_addresses():
     assert len(resp) == 3
 
 
+def test_list_of_ipaddresses_nonetype():
+    test_set = [
+        d.DeviceIPv4(address="169.254.1.1"),
+        d.DeviceIPv4(address="127.0.0.1"),
+    ]
+    assert d.list_of_addresses(test_set) is None
+
+
 def test_device_networking():
     obj = d.DeviceNetworking(
         fqdns=[
