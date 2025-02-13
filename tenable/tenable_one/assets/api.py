@@ -11,9 +11,11 @@ These methods can be accessed at ``TenableOne.assets``.
 """
 
 from tenable.base.endpoint import APIEndpoint
+from tenable.tenable_one.assets.schema import AssetsPropertiesSchema
 
 
 class AssetsAPI(APIEndpoint):
+
     def list_properties(self) -> list[str]:
         """
          Retrieve assets properties
@@ -31,6 +33,6 @@ class AssetsAPI(APIEndpoint):
 
         """
 
-        return self._schema.load(
+        return AssetsPropertiesSchema().load(
             self._get(path="one/api/v1/assets/properties")
         )
