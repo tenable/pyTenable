@@ -29,9 +29,9 @@ class Job(BaseModel):
 
 class LogLine(BaseModel):
     id: str
-    chunk_id: Annotated[int, Field(validation_alias="chunk_sequence_number")]
+    chunk_id: Annotated[int, Field(validation_alias='chunk_sequence_number')]
     log_level: str
     message: str
     path: str
     object_id: str
-    type: Annotated[str, Field(validation_alias="audit_type")]
+    type: Annotated[str, Field(validation_alias='audit_type')]

@@ -3,9 +3,7 @@ import warnings
 from typing import TYPE_CHECKING, Any
 
 from pydantic import (
-    BaseModel as PydanticBaseModel,
-)
-from pydantic import (
+    AfterValidator,
     BeforeValidator,
     ConfigDict,
     Field,
@@ -14,18 +12,20 @@ from pydantic import (
     WrapValidator,
     model_validator,
 )
-from pydantic.functional_serializers import PlainSerializer
+from pydantic import (
+    BaseModel as PydanticBaseModel,
+)
 from restfly.utils import trunc
 from typing_extensions import Annotated
 
 if TYPE_CHECKING:
     from pydantic_core.core_schema import ValidationInfo, ValidatorFunctionWrapHandler
 
-logger = logging.getLogger("tenable.io.sync.schema")
+logger = logging.getLogger('tenable.io.sync.schema')
 
 
 def trunc_str(
-    v: Any, handler: "ValidatorFunctionWrapHandler", info: "ValidationInfo"
+    v: Any, handler: 'ValidatorFunctionWrapHandler', info: 'ValidationInfo'
 ) -> str:
     """
     Ensure that a constrained string does not extend beyond the length limit.
@@ -39,14 +39,14 @@ def trunc_str(
         return handler(v)
     except ValidationError as err:
         errors = err.errors()
-        if len(errors) > 1 or errors[0]["type"] != "string_too_long":
+        if len(errors) > 1 or errors[0]['type'] != 'string_too_long':
             raise err
-        model = info.config["title"]
+        model = info.config['title']
         name = info.field_name
-        limit = errors[0]["ctx"]["max_length"]
+        limit = errors[0]['ctx']['max_length']
         value = trunc(v, limit)
         warnings.warn(
-            f"{model}.{name} has been truncated to {limit} chars, originally {len(str(v))}",
+            f'{model}.{name} has been truncated to {limit} chars, originally {len(str(v))}',
             SyntaxWarning,
             stacklevel=0,
         )
@@ -54,7 +54,7 @@ def trunc_str(
 
 
 def trunc_list(
-    v: Any, handler: "ValidatorFunctionWrapHandler", info: "ValidationInfo"
+    v: Any, handler: 'ValidatorFunctionWrapHandler', info: 'ValidationInfo'
 ) -> list:
     """
     Ensure that a constrained list does not extend beyond the length limit.  Please
@@ -65,14 +65,14 @@ def trunc_list(
         return handler(v)
     except ValidationError as err:
         errors = err.errors()
-        if len(errors) > 1 or errors[0]["type"] != "too_long":
+        if len(errors) > 1 or errors[0]['type'] != 'too_long':
             raise err
-        model = info.config["title"]
+        model = info.config['title']
         name = info.field_name
-        limit = errors[0]["ctx"]["max_length"]
+        limit = errors[0]['ctx']['max_length']
         value = v[:limit]
         warnings.warn(
-            f"{model}.{name} has been truncated to {limit} items, originally {len(v)}",
+            f'{model}.{name} has been truncated to {limit} items, originally {len(v)}',
             SyntaxWarning,
             stacklevel=0,
         )
@@ -91,9 +91,7 @@ def upper_if_exist(value: Any, default=None) -> Any:
 
 
 UpperCaseStr = BeforeValidator(lambda v: str(v).upper() if v else None)
-UniqueListSerializer = PlainSerializer(
-    lambda v: list(set(v)) if v and len(v) > 0 else None
-)
+UniqueList = AfterValidator(lambda v: list(set(v)) if v and len(v) > 0 else None)
 TruncListValidator = WrapValidator(trunc_list)
 
 intpos = Annotated[int, Field(gt=0)]
@@ -111,9 +109,9 @@ str512 = Annotated[str, StringConstraints(max_length=512), WrapValidator(trunc_s
 
 
 class BaseModel(PydanticBaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra='forbid')
 
-    @model_validator(mode="before")
+    @model_validator(mode='before')
     @classmethod
     def empty_list_to_none(cls, data):
         if isinstance(data, dict):
@@ -126,7 +124,7 @@ class CustomAttribute(BaseModel):
     value: str512 | None
 
     def __hash__(self) -> int:
-        return hash(f"{self.name}:{str(self.value)}")
+        return hash(f'{self.name}:{str(self.value)}')
 
     def __eq__(self, other: Any) -> bool:
         return self.name == other.name and self.value == other.value

@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 
 class JobListIterator(APIIterator):
-    _api: "TenableIO"
+    _api: 'TenableIO'
     _sync_id: str | None = None
     _limit: int = 25
     _states: list[str] | None = None
@@ -34,7 +34,7 @@ class JobListIterator(APIIterator):
 
 
 class JobLogIterator(APIIterator):
-    _api: "TenableIO"
+    _api: 'TenableIO'
     _sync_id: str
     _job_id: str
     _levels: list[str] | None = None

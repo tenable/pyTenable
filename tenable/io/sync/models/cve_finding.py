@@ -8,7 +8,7 @@ from .common import (
     CustomAttribute,
     ProductCPE,
     TruncListValidator,
-    UniqueListSerializer,
+    UniqueList,
     UpperCaseStr,
     int64k,
     intpos,
@@ -18,7 +18,7 @@ from .common import (
     str512,
 )
 
-CVEStr = Annotated[str, Field(pattern=r"CVE-\d{4}-\d{4,7}")]
+CVEStr = Annotated[str, Field(pattern=r'CVE-\d{4}-\d{4,7}')]
 
 
 class CVEDiscovery(BaseModel):
@@ -31,12 +31,12 @@ class CVERisk(BaseModel):
         list[CVEStr],
         Len(min_length=1, max_length=512),
         TruncListValidator,
-        UniqueListSerializer,
+        UniqueList,
     ]
 
 
 class CVESeverity(BaseModel):
-    level: Annotated[Literal["NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"], UpperCaseStr]
+    level: Annotated[Literal['NONE', 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], UpperCaseStr]
 
 
 class CVEExposure(BaseModel):
@@ -52,7 +52,7 @@ class CVELibBin(BaseModel):
 class CVEPortBinding(BaseModel):
     interfaces: list[str] | None = None
     port: int64k
-    protocol: Annotated[Literal["ICMP", "TCP", "UDP"], UpperCaseStr]
+    protocol: Annotated[Literal['ICMP', 'TCP', 'UDP'], UpperCaseStr]
 
 
 class CVEProcess(BaseModel):
@@ -79,15 +79,13 @@ class CVEObservations(BaseModel):
 
 
 class CVEFinding(BaseModel):
-    object_type: Literal["cve-finding"] = "cve-finding"
+    object_type: Literal['cve-finding'] = 'cve-finding'
     asset_id: str128
-    custom_attributes: Annotated[list[CustomAttribute], UniqueListSerializer] | None = (
-        None
-    )
+    custom_attributes: Annotated[list[CustomAttribute], UniqueList] | None = None
     definition_urn: str256 | None = None
     discovery: CVEDiscovery | None = None
     id: str128
-    state: Annotated[Literal["ACTIVE", "INACTIVE", "REOPENED"], UpperCaseStr] | None = (
+    state: Annotated[Literal['ACTIVE', 'INACTIVE', 'REOPENED'], UpperCaseStr] | None = (
         None
     )
     cve: CVERisk | None = None
