@@ -16,7 +16,7 @@ from tenable.tenable_one.assets.schema import AssetsPropertiesSchema
 
 class AssetsAPI(APIEndpoint):
 
-    def list_properties(self) -> list[str]:
+    def list_properties(self) -> AssetsPropertiesSchema:
         """
          Retrieve assets properties
 
