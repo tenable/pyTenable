@@ -12,10 +12,24 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: 3.12
-      - name: Build Package
+      - uses: astral-sh/setup-uv@v4
+      - uses: snyk/actions/setup@master
+
+      - name: Build package
+        run: uv build
+
+      - name: Export requirements for Snyk
         run: |
-          pip install -U wheel build
-          python -m build
+          uv pip compile pyproject.toml -o requirements.txt
+          pip3 install -r requirements.txt
+
+      - name: Snyk Scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor --command=python3 --skip-unresolved=true
+
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.4.1
         with:

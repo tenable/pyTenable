@@ -1,29 +1,33 @@
-'''
+"""
 test file to test various scenarios in init.py
-'''
+"""
+
 import os
+import sys
 
 import pytest
+from requests.exceptions import ConnectionError as RequestsConnectionError
 from requests.models import Response
 
-from requests.exceptions import ConnectionError as RequestsConnectionError
 from tenable.errors import ConnectionError
 from tenable.sc import TenableSC
 
 
 def test_init_connection_error():
-    '''
+    """
     test init for connection error
-    '''
+    """
     with pytest.raises(RequestsConnectionError):
-        TenableSC(host='nothing_here',
-                  username='something',
-                  password='something',
-                  vendor='pytest',
-                  product='pytenable-automated-testing')
+        TenableSC(
+            url='https://nothing_here',
+            username='something',
+            password='something',
+            vendor='pytest',
+            product='pytenable-automated-testing',
+        )
 
 
-#def test_init_self_details_connection_error(vcr):
+# def test_init_self_details_connection_error(vcr):
 #    '''
 #    test init self details for connection error
 #    '''
@@ -37,24 +41,26 @@ def test_init_connection_error():
 
 
 def test_enter(security_center):
-    '''
+    """
     test enter
-    '''
+    """
     assert security_center == security_center.__enter__()
 
 
 def test_exit(security_center, vcr):
-    '''
+    """
     test exit
-    '''
+    """
     with vcr.use_cassette('sc_login'):
-        security_center.__exit__(exc_type='exc_type', exc_value='exc_value', exc_traceback='exc_traceback')
+        security_center.__exit__(
+            exc_type='exc_type', exc_value='exc_value', exc_traceback='exc_traceback'
+        )
 
 
 def test_resp_error_check(security_center):
-    '''
+    """
     test response error check
-    '''
+    """
     with pytest.raises(AttributeError):
         response = Response()
         response._content = b'{ "error_code": 401}'
@@ -67,9 +73,9 @@ def test_resp_error_check(security_center):
 
 @pytest.mark.skip(reason='Deprecating this method')
 def test_log_in(vcr):
-    '''
+    """
     test log in
-    '''
+    """
     tsc = TenableSC(url='https://localhost')
     tsc._version = '5.12.0'
     with pytest.raises(ConnectionError):
@@ -84,3 +90,13 @@ def test_log_in(vcr):
     with vcr.use_cassette('sc_login_5_20_0'):
         tsc.login(access_key='access_key', secret_key='secret_key')
         assert tsc._auth_mech == 'keys'
+
+
+def test_pkcs12_import_error():
+    import tenable.sc
+
+    tenable.sc.serialization = None
+    with pytest.raises(ModuleNotFoundError):
+        sc = TenableSC(
+            url='http://something', p12_cert='something', password='something'
+        )

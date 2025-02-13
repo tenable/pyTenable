@@ -85,15 +85,15 @@ class APIPlatform(Base):
 
     def __init__(self, **kwargs):
 
-        # if the constructed URL isn't valid, then we will throw a TypeError
+        # if the constructed URL isn't valid, then we will throw a ConnectionError
         # to inform the caller that something isn't right here.
-        self._url = kwargs.get('url',
-                               os.environ.get(f'{self._env_base}_URL',
-                                              self._url
-                                              )
-                               )
-        if not url_validator(self._url):
-            raise TypeError(f'{self._url} is not a valid URL')
+        url = kwargs.get('url')
+        if not url:
+            url = os.environ.get(f'{self._env_base}_URL', self._url)
+        self._url = url
+
+        if not (self._url and url_validator(self._url, validate=['scheme', 'netloc'])):
+            raise ConnectionError(f'{self._url} is not a valid URL')
 
         # CamelCase squashing is an optional parameter thanks to Box.  if the
         # user has requested it, then we should add the appropriate parameter
@@ -159,9 +159,9 @@ class APIPlatform(Base):
                 # following syntax:
                 # {ENV_BASE}_{PARAM}
                 #
-                value = kwargs.get(
-                    param, os.getenv(f'{self._env_base}_{param.upper()}', None)
-                )
+                value = kwargs.get(param, None)
+                if not value:
+                    value = os.getenv(f'{self._env_base}_{param.upper()}', None)
 
                 # If the value is an empty field type, then we will store None instead
                 # as we will be using None to denote if all fields were set and if we

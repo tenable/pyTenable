@@ -4,10 +4,14 @@ test scans
 import uuid
 import time
 import os
+import datetime
 import responses
 from io import BytesIO
 from sys import stdout
 import pytest
+import responses
+from tenable.io import TenableIO
+from responses.matchers import query_param_matcher
 from tenable.reports.nessusv2 import NessusReportv2
 from tenable.errors import UnexpectedValueError, NotFoundError, BadRequestError
 from tests.checker import check, single
@@ -1955,3 +1959,19 @@ def test_scan_create_scan_document_credentials_compliance_plugins(api):
                                                                                        'auth_method': 'Password'}]}},
                                                  'compliance': {'test': 'testvalue'},
                                                  'plugins': {12122: 13, 12050: 13}})
+
+
+@responses.activate
+def test_list_api():
+    dt = datetime.datetime(2024, 1, 1)
+    dt_int = int(time.mktime(dt.timetuple()))
+    responses.get(
+        'https://nourl/scans',
+        json={'scans': []},
+        match=[
+            query_param_matcher({'last_modification_date': dt_int,'folder_id': 1})
+        ]
+    )
+    tvm = TenableIO(url='https://nourl', access_key='something', secret_key='something')
+    assert tvm.scans.list(folder_id=1, last_modified=dt) == []
+    assert tvm.scans.list(folder_id=1, last_modified=dt_int) == []
