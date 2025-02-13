@@ -30,7 +30,7 @@ class SynchronizationJobCreationError(Exception):
 
 
 class SynchronizationAPI(APIEndpoint):
-    _path = "api/v3/data/synchronizations"
+    _path = 'api/v3/data/synchronizations'
     _box = True
 
     def list(
@@ -65,11 +65,11 @@ class SynchronizationAPI(APIEndpoint):
         """
         if return_json:
             params = {
-                "after": after,
-                "limit": limit,
-                "states": [s.upper() for s in states] if states else None,
+                'after': after,
+                'limit': limit,
+                'states': [s.upper() for s in states] if states else None,
             }
-            path = f"{sync_id}/jobs" if sync_id else "jobs"
+            path = f'{sync_id}/jobs' if sync_id else 'jobs'
             return self._get(path, params=params).jobs
         return JobListIterator(
             self._api, _sync_id=sync_id, _after=after, _limit=limit, _states=states
@@ -89,7 +89,7 @@ class SynchronizationAPI(APIEndpoint):
             Job:
                 The job resource object
         """
-        response = self._get(f"{sync_id}/jobs/{job_id}")
+        response = self._get(f'{sync_id}/jobs/{job_id}')
         return Job(**response)
 
     def create(
@@ -133,11 +133,11 @@ class SynchronizationAPI(APIEndpoint):
             >>> print(job.counters)
         """
         payload = {
-            "active_state_timeout_seconds": submission_timeout,
-            "expire_after_seconds": job_lifetime,
+            'active_state_timeout_seconds': submission_timeout,
+            'expire_after_seconds': job_lifetime,
         }
         resp = self._post(
-            path=f"{sync_id}/jobs",
+            path=f'{sync_id}/jobs',
             json=payload,
         )
         if return_json:
@@ -145,7 +145,7 @@ class SynchronizationAPI(APIEndpoint):
         if resp.success:
             return JobManager(api=self._api, sync_id=sync_id, job_uuid=resp.id)
         raise SynchronizationJobCreationError(
-            "Could not create the job, received {dict(resp)}"
+            'Could not create the job, received {dict(resp)}'
         )
 
     def upload_chunk(
@@ -182,8 +182,8 @@ class SynchronizationAPI(APIEndpoint):
         """
         data = SyncChunkObjects(objects=objects)
         return self._post(
-            f"{sync_id}/jobs/{job_id}/chunks/{chunk_id}",
-            json=data.model_dump(exclude_none=True, mode="json"),
+            f'{sync_id}/jobs/{job_id}/chunks/{chunk_id}',
+            json=data.model_dump(exclude_none=True, mode='json'),
         ).success
 
     def delete(self, sync_id: str, job_id: UUID | str) -> None:
@@ -203,7 +203,7 @@ class SynchronizationAPI(APIEndpoint):
         Example:
             >>> tvm.sync.delete('example_id', '12345678-1234-1234-1234-123456789012')
         """
-        self._delete(f"{sync_id}/jobs/{job_id}")
+        self._delete(f'{sync_id}/jobs/{job_id}')
 
     def submit(self, sync_id: str, job_id: str, num_chunks: int) -> bool:
         """
@@ -229,15 +229,15 @@ class SynchronizationAPI(APIEndpoint):
             ... )
         """
         return self._post(
-            path=f"{sync_id}/jobs/{job_id}/_submit",
-            json={"number_of_chunks": num_chunks},
+            path=f'{sync_id}/jobs/{job_id}/_submit',
+            json={'number_of_chunks': num_chunks},
         ).success
 
     def audit_logs(
         self,
         sync_id: str,
         job_id: UUID | str,
-        levels: list[Literal["INFO", "WARN", "ERROR"]] | None = None,
+        levels: list[Literal['INFO', 'WARN', 'ERROR']] | None = None,
         after: str | None = None,
         limit: int | None = 25,
         return_json: bool = False,
@@ -270,8 +270,8 @@ class SynchronizationAPI(APIEndpoint):
         """
         if return_json:
             resp = self._get(
-                f"{sync_id}/jobs/{job_id}/audits",
-                params={"after": after, "levels": levels},
+                f'{sync_id}/jobs/{job_id}/audits',
+                params={'after': after, 'levels': levels},
             )
             return [LogLine(**i) for i in resp.audits]
         return JobLogIterator(
