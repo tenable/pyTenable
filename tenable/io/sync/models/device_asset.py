@@ -4,7 +4,9 @@ from datetime import datetime
 from ipaddress import IPv4Address, IPv6Address
 from typing import Literal
 
+from arrow import ArrowFactory
 from pydantic import (
+    AfterValidator,
     AwareDatetime,
     BeforeValidator,
     Field,
@@ -18,7 +20,7 @@ from .common import (
     BaseModel,
     CustomAttribute,
     ProductCPE,
-    UniqueListSerializer,
+    UniqueList,
     UpperCaseStr,
     float1000,
     int100,
@@ -33,8 +35,8 @@ from .common import (
 
 
 def list_of_addresses(
-    values: list["DeviceIPv6"] | list["DeviceIPv4"],
-) -> list["DeviceIPv6"] | list["DeviceIPv4"]:
+    values: list['DeviceIPv6'] | list['DeviceIPv4'],
+) -> list['DeviceIPv6'] | list['DeviceIPv4']:
     """
     Returns a list of unique device info objects that are not link local or loopback
     addresses.
@@ -46,10 +48,11 @@ def list_of_addresses(
             and value not in resp
         ):
             resp.append(value)
-    return resp
+    if len(resp) > 0:
+        return resp
 
 
-NonLocalAddressSerializer = PlainSerializer(list_of_addresses)
+NonLocalAddress = AfterValidator(list_of_addresses)
 
 
 class DeviceBios(BaseModel):
@@ -82,7 +85,7 @@ class DeviceHardware(BaseModel):
 class DeviceFQDN(BaseModel):
     type: (
         Annotated[
-            Literal["REVERSE_LOOKUP", "FORWARD_LOOKUP"],
+            Literal['REVERSE_LOOKUP', 'FORWARD_LOOKUP'],
             UpperCaseStr,
         ]
         | None
@@ -92,7 +95,7 @@ class DeviceFQDN(BaseModel):
     def __hash__(self):
         return hash(self.value)
 
-    def __eq__(self, other: "DeviceFQDN") -> bool:
+    def __eq__(self, other: 'DeviceFQDN') -> bool:
         return self.value == other.value
 
 
@@ -101,7 +104,7 @@ class DeviceDHCPAssignment(BaseModel):
     lease_started_at: AwareDatetime | None = None
     subnet_prefix: intpos | None = None
     type: Annotated[
-        Literal["DHCP_STATIC", "DHCP_DYNAMIC", "MANUAL", "APIPA", "PPPOE"],
+        Literal['DHCP_STATIC', 'DHCP_DYNAMIC', 'MANUAL', 'APIPA', 'PPPOE'],
         UpperCaseStr,
     ]
 
@@ -129,14 +132,10 @@ class DeviceIPv4(BaseModel):
 
 
 class DeviceNetworking(BaseModel):
-    fqdns: Annotated[list[DeviceFQDN], UniqueListSerializer] | None = None
-    ip_addresses_v4: Annotated[list[DeviceIPv4], NonLocalAddressSerializer] | None = (
-        None
-    )
-    ip_addresses_v6: Annotated[list[DeviceIPv6], NonLocalAddressSerializer] | None = (
-        None
-    )
-    mac_addresses: Annotated[list[MacAddress], UniqueListSerializer] | None = None
+    fqdns: Annotated[list[DeviceFQDN], UniqueList] | None = None
+    ip_addresses_v4: Annotated[list[DeviceIPv4], NonLocalAddress] | None = None
+    ip_addresses_v6: Annotated[list[DeviceIPv6], NonLocalAddress] | None = None
+    mac_addresses: Annotated[list[MacAddress], UniqueList] | None = None
     network_group_id: str64 | None = None
 
 
@@ -153,21 +152,21 @@ class DeviceOS(BaseModel):
     service_path: DeviceOSServicePack | None = None
     type: Annotated[
         Literal[
-            "UNKNOWN",
-            "OTHER",
-            "WINDOWS",
-            "WINDOWS_MOBILE",
-            "LINUX",
-            "ANDROID",
-            "MAC_OS",
-            "IOS",
-            "SOLARIS",
-            "AIX",
-            "HP_UX",
+            'UNKNOWN',
+            'OTHER',
+            'WINDOWS',
+            'WINDOWS_MOBILE',
+            'LINUX',
+            'ANDROID',
+            'MAC_OS',
+            'IOS',
+            'SOLARIS',
+            'AIX',
+            'HP_UX',
         ],
-        BeforeValidator(lambda v: str(v).upper() if v else "UNKNOWN"),
+        BeforeValidator(lambda v: str(v).upper() if v else 'UNKNOWN'),
         Field(default=None, validate_default=True),
-    ] = "UNKNOWN"
+    ] = 'UNKNOWN'
 
 
 class Device(BaseModel):
@@ -179,11 +178,11 @@ class Device(BaseModel):
     status: (
         Annotated[
             Literal[
-                "INITIALIZING",
-                "RUNNING",
-                "STOPPED",
-                "TERMINATED",
-                "FAULT",
+                'INITIALIZING',
+                'RUNNING',
+                'STOPPED',
+                'TERMINATED',
+                'FAULT',
             ],
             UpperCaseStr,
         ]
@@ -198,7 +197,7 @@ class DeviceDiscoveryAuth(BaseModel):
     successful: bool
     type: (
         Annotated[
-            Literal["AGENT", "PASSIVE", "AUTHENTICATED_SCAN", "OTHER"],
+            Literal['AGENT', 'PASSIVE', 'AUTHENTICATED_SCAN', 'OTHER'],
             UpperCaseStr,
         ]
         | None
@@ -207,24 +206,33 @@ class DeviceDiscoveryAuth(BaseModel):
 
 class DeviceDiscovery(BaseModel):
     authentication: DeviceDiscoveryAuth | None = None
-    first_observed_at: AwareDatetime | None = None
+    first_assessed_on: AwareDatetime | None = None
+    last_assessed_on: AwareDatetime | None = None
+    first_observed_on: AwareDatetime | None = None
     last_observed_on: AwareDatetime | None = None
     id: str64 | None = None
-    produced_findings: bool | None = None
+    assessment_status: Annotated[
+        Literal['ATTEMPTED_FINDINGS', 'SKIPPED_FINDINGS'],
+        UpperCaseStr,
+    ]
+    assessment_type: (
+        Annotated[Literal['KEEP_ALIVE', 'INVENTORY', 'RISK_ASSESSMENT'], UpperCaseStr]
+        | None
+    ) = None
 
 
 class DeviceExternalId(BaseModel):
-    qualifier: Annotated[str32 | None, Field(pattern="^[a-z]([a-z0-9-]+\\.?)+$")] = None
+    qualifier: Annotated[str32 | None, Field(pattern='^[a-z]([a-z0-9-]+\\.?)+$')] = None
     value: str256 | None = None
 
     def __hash__(self):
-        return hash(f"{str(self.qualifier)}:{str(self.value)}")
+        return hash(f'{str(self.qualifier)}:{str(self.value)}')
 
 
 class DeviceLifetime(BaseModel):
     delete_on: AwareDatetime | None = None
     license_expires_at: AwareDatetime | None = None
-    type: Annotated[Literal["UNTIL_DELETED", "DELETE_AFTER"], UpperCaseStr]
+    type: Annotated[Literal['UNTIL_DELETED', 'DELETE_AFTER'], UpperCaseStr]
 
 
 class AssetTag(BaseModel):
@@ -232,12 +240,12 @@ class AssetTag(BaseModel):
     value: str512 | None = None
 
     def __hash__(self):
-        return hash(f"{self.name}:{str(self.value)}")
+        return hash(f'{self.name}:{str(self.value)}')
 
 
 class AssetExposureCriticality(BaseModel):
     level: Annotated[
-        Literal["NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+        Literal['NONE', 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL'],
         UpperCaseStr,
     ]
     score: float1000 | None = None
@@ -286,7 +294,7 @@ class AssetCloudCompute(BaseModel):
 
 class AssetCloudLocation(BaseModel):
     region_id: str16 | None = None
-    scope: Annotated[Literal["GLOBAL", "REGION", "ZONE"], UpperCaseStr]
+    scope: Annotated[Literal['GLOBAL', 'REGION', 'ZONE'], UpperCaseStr]
     zone_id: str32 | None = None
 
 
@@ -297,7 +305,7 @@ class AssetCloudNetworking(BaseModel):
 
 class AssetCloudProvider(BaseModel):
     id: str128
-    type: Annotated[Literal["AWS", "GCP", "AZURE", "OTHER"], UpperCaseStr]
+    type: Annotated[Literal['AWS', 'GCP', 'AZURE', 'OTHER'], UpperCaseStr]
 
 
 class AssetCloud(BaseModel):
@@ -311,20 +319,18 @@ class AssetCloud(BaseModel):
 
 
 class DeviceAsset(BaseModel):
-    object_type: Literal["device-asset"] = "device-asset"
-    asset_class: Literal["DEVICE"] = "DEVICE"
-    custom_attributes: Annotated[list[CustomAttribute], UniqueListSerializer] | None = (
-        None
-    )
+    object_type: Literal['device-asset'] = 'device-asset'
+    asset_class: Literal['DEVICE'] = 'DEVICE'
+    custom_attributes: Annotated[list[CustomAttribute], UniqueList] | None = None
     device: Device
     description: str512 | None = None
     discovery: DeviceDiscovery | None = None
-    external_ids: Annotated[list[DeviceExternalId], UniqueListSerializer] | None = None
+    external_ids: Annotated[list[DeviceExternalId], UniqueList] | None = None
     id: str128
     cloud: AssetCloud | None = None
-    labels: Annotated[list[str], UniqueListSerializer] | None = None
+    labels: Annotated[list[str], UniqueList] | None = None
     lifetime: DeviceLifetime | None = None
     name: str128 | None = None
-    tags: Annotated[list[AssetTag], UniqueListSerializer] | None = None
+    tags: Annotated[list[AssetTag], UniqueList] | None = None
     exposure: AssetExposure | None = None
     location: AssetLocation | None = None
