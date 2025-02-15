@@ -5,7 +5,7 @@ from tenable.one.assets.schema import AssetClass, AssetProperties
 
 
 @pytest.fixture
-def asset_properties() -> dict[str, dict]:
+def asset_properties_response() -> dict[str, dict]:
     return {"asset_id": {"key": "asset_id", "readable_name": "Asset ID",
                          "control": {"type": "STRING", "multiple_allowed": True,
                                      "regex": {"hint": "01234567-abcd-ef01-2345-6789abcdef01",
@@ -128,9 +128,8 @@ def asset_properties() -> dict[str, dict]:
 
 
 @responses.activate
-def test_properties_list(api, asset_properties):
+def test_properties_list(api, asset_properties_response):
     # Arrange
-    asset_properties_response = asset_properties
     asset_classes = [AssetClass.ACCOUNT, AssetClass.DEVICE]
     asset_classes_str = ",".join([asset_class.value for asset_class in asset_classes])
     responses.get('https://cloud.tenable.com/one/api/v1/assets/properties',

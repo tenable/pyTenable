@@ -18,18 +18,51 @@ class AssetClass(Enum):
     UNKNOWN = "UNKNOWN"
 
 
+class Operators(Enum):
+    EQUAL = "="
+    NOT_EQUAL = "!="
+    CONTAINS = "contains"
+    NOT_CONTAINS = "not contains"
+    EXISTS = "exists"
+    NOT_EXISTS = "not exists"
+    LOWER_THAN = "<"
+    LOWER_OR_EQUALS = "<="
+    GREATER_THAN = ">"
+    GREATER_OR_EQUALS = ">="
+    OLDER_THAN = "older than"
+    NEWER_THAN = "newer than"
+    WITHIN_LAST = "within last"
+    BETWEEN = "between"
+
+
+class ControlType(Enum):
+    STRING = "STRING"
+    NUMBER = "NUMBER"
+    DATE = "DATE"
+    BOOLEAN = "BOOLEAN"
+    ARRAY = "ARRAY"
+    OBJECT = "OBJECT"
+
+
+class SelectionControl(BaseModel):
+    name: Optional[str] = None
+    value: Optional[str] = None
+    deprecated: Optional[bool] = None
+    third_party: Optional[bool] = None
+
+
 class Control(BaseModel):
-    type: str
+    type: ControlType
     multiple_allowed: bool
     regex: Optional[dict[str, Any]] = None
-    selection: Optional[list[dict[str, Any]]] = None
+    selection: Optional[list[SelectionControl]] = None
 
 
 class AssetField(BaseModel):
     key: str
     readable_name: str
     control: Control
-    operators: list[str]
+    operators: list[Operators]
     sortable: bool
     filterable: bool
     weight: float
