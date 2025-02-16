@@ -138,4 +138,4 @@ def test_properties_list(api, asset_properties_response):
     # Act
     asset_properties_result: AssetProperties = api.assets.list_properties(asset_classes=asset_classes)
     # Assert
-    assert asset_properties_result == AssetProperties(asset_properties={**asset_properties_response})
+    assert asset_properties_result == AssetProperties(property_to_asset_field={**asset_properties_response})
