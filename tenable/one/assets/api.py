@@ -17,7 +17,7 @@ from tenable.one.assets.schema import AssetProperties, AssetClass
 
 class AssetsAPI(APIEndpoint):
 
-    def list_properties(self, asset_classes: Optional[list[AssetClass]] = None):
+    def list_properties(self, asset_classes: Optional[list[AssetClass]] = None) -> AssetProperties:
         """
          Retrieve assets properties
 
@@ -33,7 +33,7 @@ class AssetsAPI(APIEndpoint):
                 The asset properties.
 
          Examples:
-             >>> tone_asset_properties = tone.assets.list_properties()
+             >>> tone_asset_properties = tone.assets.list_properties().property_to_asset_field
              >>> for asset_property in tone_asset_properties:
              ...     pprint(asset_property)
 
@@ -43,4 +43,4 @@ class AssetsAPI(APIEndpoint):
             asset_classes: str = ",".join([asset_class.value for asset_class in asset_classes])
             payload["asset_classes"] = asset_classes
         asset_properties_response: dict[str, dict] = self._get(path="one/api/v1/assets/properties", params=payload)
-        return AssetProperties(asset_properties={**asset_properties_response})
+        return AssetProperties(property_to_asset_field={**asset_properties_response})
