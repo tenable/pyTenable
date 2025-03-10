@@ -147,9 +147,9 @@ class DeviceOSServicePack(BaseModel):
 class DeviceOS(BaseModel):
     build: str64 | None = None
     confidence: int100 | None = None
-    hoxfix: str64 | None = None
+    hotfix: str64 | None = None
     product: ProductCPE | None = None
-    service_path: DeviceOSServicePack | None = None
+    service_pack: DeviceOSServicePack | None = None
     type: Annotated[
         Literal[
             'UNKNOWN',
