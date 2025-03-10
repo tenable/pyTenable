@@ -137,3 +137,9 @@ dev-dependencies = [
 addopts  = "--cov-report term-missing --cov=tenable"
 testpaths = ['./tests']
 filterwarnings = ["ignore:::DeprecationWarning"]
+
+[dependency-groups]
+docs = [
+    "furo==2024.5.6",
+    "sphinx-argparse>=0.4.0",
+]
