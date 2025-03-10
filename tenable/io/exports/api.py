@@ -34,17 +34,37 @@ from .schema import (
 
 EXPORTS_MAP = {
     'vulns': {
-        None: {'path': 'vulns/export', 'schema': VulnExportSchema},
+        None: {
+            'path': 'vulns/export',
+            'job_path': 'vulns/export',
+            'schema': VulnExportSchema,
+        },
     },
     'assets': {
-        None: {'path': 'assets/export', 'schema': AssetExportSchema},
-        'v2': {'path': 'assets/v2/export', 'schema': AssetV2ExportSchema},
+        None: {
+            'path': 'assets/export',
+            'job_path': 'assets/export',
+            'schema': AssetExportSchema,
+        },
+        'v2': {
+            'path': 'assets/v2/export',
+            'job_path': 'assets/export',
+            'schema': AssetV2ExportSchema,
+        },
     },
     'compliance': {
-        None: {'path': 'compliance/export', 'schema': ComplianceExportSchema},
+        None: {
+            'path': 'compliance/export',
+            'job_path': 'compliance/export',
+            'schema': ComplianceExportSchema,
+        },
     },
     'was': {
-        None: {'path': 'was/v1/export/vulns', 'schema': WASVulnExportSchema},
+        None: {
+            'path': 'was/v1/export/vulns',
+            'job_path': 'was/v1/export/vulns',
+            'schema': WASVulnExportSchema,
+        },
     },
 }
 
@@ -142,7 +162,7 @@ class ExportsAPI(APIEndpoint):
             'CANCELLED'
         """
         export_uuid = kwargs.pop('uuid', export_uuid)
-        path = EXPORTS_MAP[export_type][version]['path']
+        path = EXPORTS_MAP[export_type][version]['job_path']
         return self._api.post(f'{path}/{export_uuid}/cancel', box=True).status
 
     def download_chunk(
@@ -188,7 +208,7 @@ class ExportsAPI(APIEndpoint):
         downloaded = False
         counter = 0
         resp = []
-        path = EXPORTS_MAP[export_type][version]['path']
+        path = EXPORTS_MAP[export_type][version]['job_path']
         while not downloaded and counter <= retries:
             try:
                 resp = self._api.get(f'{path}/{export_uuid}/chunks/{chunk_id}').json()
@@ -239,7 +259,7 @@ class ExportsAPI(APIEndpoint):
         """
         # Note: Assets export doesn't have v2 api for status call. Its only available for /status call.
         export_uuid = kwargs.pop('uuid', export_uuid)
-        path = EXPORTS_MAP[export_type][version]['path']
+        path = EXPORTS_MAP[export_type][version]['job_path']
         return self._api.get(
             f'{path}/{export_uuid}/status',
             box=True,
@@ -269,7 +289,7 @@ class ExportsAPI(APIEndpoint):
 
             >>> jobs = tio.exports.jobs('vulns')
         """
-        path = EXPORTS_MAP[export_type][version]['path']
+        path = EXPORTS_MAP[export_type][version]['job_path']
         return self._api.get(f'{path}/status', box=True).exports
 
     def initiate_export(
@@ -716,7 +736,7 @@ class ExportsAPI(APIEndpoint):
     def was(self, **kwargs) -> Union[ExportsIterator, UUID]:
         """
         Initiate a WAS vulnerability export.
-        :devportal:`API Documentation <exports-was-vulns-request-export>`
+        :devportal:`API Documentation <was-export-findings>`
         Args:
             first_found (int, optional):
                 Findings first discovered after this timestamp will be
@@ -821,19 +841,17 @@ class ExportsAPI(APIEndpoint):
                 receive a 409 conflict?  Defaults to True.
         Examples:
             Examples:
+
             Iterating over the results of a WAS vuln export:
             >>> from tenable.io import TenableIO
             >>> tio = TenableIO("<apiKey>", "secret")
             >>> for vuln in tio.exports.was_vulns():
             ...     print(vuln)
+
             Getting findings that have been observed within the last 24 hours
             >>> import arrow
-            >>> vulns = tio.exports.was_vulns(
+            >>> vulns = tio.exports.was(
             ...     since=int(arrow.now().shift(days=-1).timestamp())
-            ... )
-            Getting findings that have the ``Region:Chicago`` tag:
-            >>> vulns = tio.exports.was_vulns(
-            ...     tags=[('Region', 'Chicago')]
             ... )
         """
         return self._export('was', WASVulnExportSchema(), **kwargs)
