@@ -12,28 +12,33 @@ Methods described in this section relate to the inventory API and can be accesse
 .. autoclass:: InventoryIterator
     :members:
 """
-from typing import Dict, List, Any, Optional, Tuple, TYPE_CHECKING
+
 from copy import copy
-from tenable.base.endpoint import APIEndpoint
+from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
+
 from restfly.iterator import APIIterator
 
+from tenable.base.endpoint import APIEndpoint
+
 if TYPE_CHECKING:
-    from .session import TenableASM
     from box import BoxList
+
+    from .session import TenableASM
 
 
 class InventoryIterator(APIIterator):
     """
     Asset inventory iterator
     """
+
     _after_asset_id: str = '0000000000'
     _filters: List[Dict[str, str]]
     _query: Dict[str, Any]
     _api: 'TenableASM'
     page: 'BoxList'
     limit: int = 1000
-    total: int
-    stats: Dict[str, Any]
+    total: Optional[int] = None
+    stats: Optional[Dict[str, Any]] = None
 
     def _get_page(self):
         query = copy(self._query)
@@ -43,23 +48,23 @@ class InventoryIterator(APIIterator):
         query['limit'] = self.limit
         resp = self._api.post('inventory', params=query, json=self._filters)
         self.page = resp.assets
-        self.total = resp.total
-        self.stats = resp.stats
+        self.total = resp.get('total')
+        self.stats = resp.get('stats')
 
         if self.page:
             self._after_asset_id = self.page[-1].id
 
 
-
 class InventoryAPI(APIEndpoint):
-    def list(self,
-             *search: Tuple[str, str, str],
-             columns: Optional[List[str]] = None,
-             size: int = 1000,
-             sort_field: Optional[str] = None,
-             sort_asc: bool = True,
-             inventory: bool = False,
-             ) -> InventoryIterator:
+    def list(
+        self,
+        *search: Tuple[str, str, str],
+        columns: Optional[List[str]] = None,
+        size: int = 1000,
+        sort_field: Optional[str] = None,
+        sort_asc: bool = True,
+        inventory: bool = False,
+    ) -> InventoryIterator:
         """
         Lists the assets in the inventory
 
@@ -107,6 +112,6 @@ class InventoryAPI(APIEndpoint):
                 'sortorder': str(bool(sort_asc)).lower(),
                 'sortby': sort_field,
             },
-            _filters = [{'column': c, 'type': t, 'value': v} for c, t, v in search],
-            limit=size
+            _filters=[{'column': c, 'type': t, 'value': v} for c, t, v in search],
+            limit=size,
         )
