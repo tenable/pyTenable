@@ -78,6 +78,8 @@ class ExportsAPI(APIEndpoint):
         payload = schema.dump(schema.load(kwargs))
         path = exmap['path']
 
+        export_uuid = kwargs.pop('uuid', export_uuid)
+
         if not export_uuid:
             try:
                 export_uuid = self._api.post(path, json=payload, box=True).export_uuid
@@ -139,6 +141,7 @@ class ExportsAPI(APIEndpoint):
             >>> tio.exports.cancel('vuln', '{UUID}')
             'CANCELLED'
         """
+        export_uuid = kwargs.pop('uuid', export_uuid)
         path = EXPORTS_MAP[export_type][version]['path']
         return self._api.post(f'{path}/{export_uuid}/cancel', box=True).status
 
@@ -181,6 +184,7 @@ class ExportsAPI(APIEndpoint):
         # If the conversion fails, then we will increment our own retry counter
         # and attempt to download the chunk again.  After 3 attempts, we will
         # assume that the chunk is dead and return an empty list.
+        export_uuid = kwargs.pop('uuid', export_uuid)
         downloaded = False
         counter = 0
         resp = []
@@ -234,6 +238,7 @@ class ExportsAPI(APIEndpoint):
             >>> status = tio.exports.status('vulns', '{UUID}')
         """
         # Note: Assets export doesn't have v2 api for status call. Its only available for /status call.
+        export_uuid = kwargs.pop('uuid', export_uuid)
         path = EXPORTS_MAP[export_type][version]['path']
         return self._api.get(
             f'{path}/{export_uuid}/status',
