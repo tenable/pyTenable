@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1]
+
+### Added
+
+- SecurityCenter Hosts API Support (Backported from v1.7) #866
+- SecurityCenter Risk Recast expiration parameters (Backported from v1.7) #858
+
+### Fixed
+
+- SecurityCenter Repo constructor doesn't support universal repos (Backported from 1.7) #854, #875
+- Tenable Vulnerability Management asset delete 504s #855
+- SecuritySenter Max Scan Time is incorrect #863 #873
+- Tenable Vulnerability Management Exports APIs for Assets v2 has changed between IA and GA
+
+[1.6.1]: https://github.com/tenable/pyTenable/compare/1.6.0...1.6.1
+
 ## [1.6.0]
 
 ### Added
@@ -84,7 +100,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Added deprecation notice to v3 base sub-pkg.  Only applies to access control.
+- Added deprecation notice to v3 base sub-pkg. Only applies to access control.
 - Added deprecation notice to Target Groups module (Deprecated APIs)
 - Added deprecation notice to Workbenches module (Soon to be Deprecated APIs)
 - Added deprecation notice to Access Groups module (Deprecated APIs)
@@ -107,7 +123,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support for new Compliance Export Enhancement fields in Vulnerability Management.
 - Support for `currentPassword` field in SC Users API.
-
 
 ## [1.4.20]
 
@@ -244,7 +259,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support for Python Version 3.6.
 
- [1.4.9]: https://github.com/tenable/pyTenable/compare/1.4.8...1.4.9
+[1.4.9]: https://github.com/tenable/pyTenable/compare/1.4.8...1.4.9
 
 ## [1.4.8]
 
@@ -331,7 +346,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored the API Docsite to be easier to navigate, read, and link. #460 #464
 - Rebased low-level connection logic to use RESTfly instead. (v2 work) #457
 - Refactored Container Security Package to be within the IO package and
-  recoded to properly follow the API docs.  #459 #474
+  recoded to properly follow the API docs. #459 #474
 - Refactored Exports API code to follow v2 standard #463
 
 ### Fixed
@@ -376,7 +391,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed github issue 298 io_exception_handling #354
 - Fixed the documentation issue in exclusions #352
 - Fixed the import os problem of PR 299 #351
-- Fixed invalid creation date in row num  #341
+- Fixed invalid creation date in row num #341
 
 [1.3.3]: https://github.com/tenable/pyTenable/compare/1.3.1...1.3.3
 
@@ -440,7 +455,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Centralized the SSL Verification process and support passing the verify param
-  to Python Requests regardless of the of the session setting.  This addresses
+  to Python Requests regardless of the of the session setting. This addresses
   the requests issue identified <https://github.com/psf/requests/issues/3829>
   #265 #166 #139
 
@@ -497,7 +512,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.4]
 
-This version was pulled due to a dirty build environment.  All 1.2.4 notes are in 1.2.5
+This version was pulled due to a dirty build environment. All 1.2.4 notes are in 1.2.5
 
 ## [1.2.3]
 
@@ -642,8 +657,8 @@ This version was pulled due to a dirty build environment.  All 1.2.4 notes are i
 - Increased default chunk sizing for TenableIO.exports.assets to 1000
 - Increased default num_assets chunk sizing for TenableIO.exports.vulns to 500
 - Increased default page sizing for TenableSC.analysis calls to 1000
-- Improved debug logs for all API calls.  Debug logs now effectively log before, during, and after.
-- Improved debug log format.  Pre-Request logs now output a standard JSON format.
+- Improved debug logs for all API calls. Debug logs now effectively log before, during, and after.
+- Improved debug log format. Pre-Request logs now output a standard JSON format.
 
 [1.0.4]: https://github.com/tenable/pyTenable/compare/1.0.3...1.0.4
 
@@ -728,7 +743,6 @@ This version was pulled due to a dirty build environment.  All 1.2.4 notes are i
 - host_tracking for scans constructor was documented, however unimplemented #152
 - Unable to set the max scan time to unlimited #149
 
-
 ## [0.3.26]
 
 ### Fixed
@@ -790,7 +804,7 @@ This version was pulled due to a dirty build environment.  All 1.2.4 notes are i
 
 ### Changed
 
-- Export wait logic is now centralized.  Both scan export and workbench export now use this new method.
+- Export wait logic is now centralized. Both scan export and workbench export now use this new method.
 
 ### Fixed
 
@@ -875,7 +889,7 @@ This version was pulled due to a dirty build environment.  All 1.2.4 notes are i
 ### Added
 
 - Analysis filters now allow for collapsing lists if id dicts into lists of
-  integer ids.  e.g. `('name', '=', [{'id': 1}])` is now `('name', '=', [1])`
+  integer ids. e.g. `('name', '=', [{'id': 1}])` is now `('name', '=', [1])`
 - Added and tested out support for TenableSC AuditFileAPI #75
 
 ### Changed
@@ -1001,8 +1015,8 @@ This version was pulled due to a dirty build environment.  All 1.2.4 notes are i
 ### Removed
 
 - schedule_* parameters in scans have been removed in favor of direct checking
-    and documentation of the schedule dictionary.  This has larger implications
-    down the line with repositories, alerts, etc.
+  and documentation of the schedule dictionary. This has larger implications
+  down the line with repositories, alerts, etc.
 
 [0.3.10]: https://github.com/tenable/pyTenable/compare/0.3.9...0.3.10
 

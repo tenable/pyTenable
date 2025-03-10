@@ -4,13 +4,13 @@ build-backend   = "setuptools.build_meta"
 
 
 [project]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 dynamic         = ["version"]
 readme          = "README.rst"
 name            = "pyTenable"
 description     = "Python library to interface into Tenable's products and applications"
 authors         = [
-    {name = "Tenable, Inc."},
+    {name = "Tenable, Inc.", email = "support@tenable.com"},
     {name = "Steve McGrath", email = "smcgrath@tenable.com"}
 ]
 license = {text = "MIT License"}
