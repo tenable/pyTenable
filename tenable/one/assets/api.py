@@ -12,12 +12,12 @@ These methods can be accessed at ``TenableOne.assets``.
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.one.assets.schema import AssetProperties, AssetClass
+from tenable.one.assets.schema import AssetProperties, AssetClass, AssetField
 
 
 class AssetsAPI(APIEndpoint):
 
-    def list_properties(self, asset_classes: Optional[list[AssetClass]] = None) -> AssetProperties:
+    def list_properties(self, asset_classes: Optional[list[AssetClass]] = None) -> list[AssetField]:
         """
          Retrieve assets properties
 
@@ -33,7 +33,7 @@ class AssetsAPI(APIEndpoint):
                 The asset properties.
 
          Examples:
-             >>> tone_asset_properties = tone.assets.list_properties().property_to_asset_field
+             >>> tone_asset_properties = tone.assets.list_properties()
              >>> for asset_property in tone_asset_properties:
              ...     pprint(asset_property)
 
@@ -42,5 +42,5 @@ class AssetsAPI(APIEndpoint):
         if asset_classes is not None:
             asset_classes: str = ",".join([asset_class.value for asset_class in asset_classes])
             payload["asset_classes"] = asset_classes
-        asset_properties_response: dict[str, dict] = self._get(path="one/api/v1/assets/properties", params=payload)
-        return AssetProperties(property_to_asset_field={**asset_properties_response})
+        asset_properties_response: dict[str, list[dict]] = self._get(path="one/api/v1/assets/properties", params=payload)
+        return AssetProperties(**asset_properties_response).properties
