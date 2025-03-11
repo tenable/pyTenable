@@ -71,4 +71,4 @@ class AssetField(BaseModel):
 
 
 class AssetProperties(BaseModel):
-    property_to_asset_field: dict[str, AssetField]
+    properties: list[AssetField]
