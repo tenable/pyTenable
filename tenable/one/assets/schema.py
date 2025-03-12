@@ -72,3 +72,4 @@ class AssetField(BaseModel):
 
 class AssetProperties(BaseModel):
     properties: list[AssetField]
+
