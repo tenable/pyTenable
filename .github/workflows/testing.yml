@@ -30,15 +30,11 @@ jobs:
         run: uv run ruff check tenable --exit-zero
 
       - name: Run unit tests
-        run: uv run pytest --vcr-record=none tests --cov-report=term-missing --cov-report=xml:coverage.xml --cov=tenable
-
-      - name: Upload Coverage
-        uses: orgoro/coverage@v3.2
-        with:
-          thresholdNew: 0.9
-          thresholdModified: 0.8
-          coverageFile: coverage.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          uv run pytest \
+            --vcr-record=none \
+            --cov-report=xml:coverage.xml \
+            --cov-fail-under=95
           
   code-assessments:
     runs-on: ubuntu-latest
