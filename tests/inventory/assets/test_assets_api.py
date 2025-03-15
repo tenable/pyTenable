@@ -1,7 +1,7 @@
 import pytest
 import responses
 
-from tenable.one.assets.schema import AssetClass, AssetProperties
+from tenable.inventory.assets.schema import AssetClass, AssetProperties
 
 
 @pytest.fixture
