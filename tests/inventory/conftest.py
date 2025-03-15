@@ -3,13 +3,13 @@ import os
 
 import pytest
 
-from tenable.one import TenableOne
+from tenable.inventory import TenableInventory
 
 
 @pytest.fixture
 def api():
     '''api key fixture'''
-    return TenableOne(
+    return TenableInventory(
         os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
         os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',
