@@ -97,5 +97,19 @@ class AssetsAPI(APIEndpoint):
         # asset_properties_response: dict[str, list[dict]] = self._get(path="one/api/v1/assets/properties", params=payload)
         # return AssetProperties(**asset_properties_response).properties
 
-
-        return
+        payload = {
+            "search": {
+                "query": {
+                    "text": query_text,
+                    "mode": query_mode
+                },
+                "filters": filters if filters is not None else []
+            },
+            "extra_properties": extra_properties if extra_properties is not None else [],
+            "skip": skip,
+            "max_page_size": max_page_size,
+            "sort_by": sort_by,
+            "sort_direction": sort_direction,
+            "timezone": timezone
+        }
+        self._post(path="one/api/v1/assets", json=payload)
