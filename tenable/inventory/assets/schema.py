@@ -73,3 +73,16 @@ class AssetField(BaseModel):
 class AssetProperties(BaseModel):
     properties: list[AssetField]
 
+
+class Asset(BaseModel):
+    id: str
+    asset_class: AssetClass
+    name: str
+    aes: int
+    acr: int
+    additional_properties: dict[str, Any]  # Supports arbitrary key-value pairs
+
+
+class Assets(BaseModel):
+    values: list[Asset]
+    total_count: int

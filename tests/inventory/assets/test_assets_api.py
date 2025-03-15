@@ -1,7 +1,9 @@
+import json
+
 import pytest
 import responses
 
-from tenable.inventory.assets.schema import AssetClass, AssetProperties
+from tenable.inventory.assets.schema import AssetClass, AssetProperties, Assets
 
 
 @pytest.fixture
@@ -153,7 +155,7 @@ def test_properties_list(api, asset_properties_response):
     # Arrange
     asset_classes = [AssetClass.ACCOUNT, AssetClass.DEVICE]
     asset_classes_str = ",".join([asset_class.value for asset_class in asset_classes])
-    responses.get('https://cloud.tenable.com/one/api/v1/assets/properties',
+    responses.get('https://cloud.tenable.com/inventory/api/v1/assets/properties',
                   json=asset_properties_response,
                   match=[responses.matchers.query_param_matcher({"asset_classes": asset_classes_str})])
     # Act
@@ -164,4 +166,41 @@ def test_properties_list(api, asset_properties_response):
 
 @responses.activate
 def test_list(api, assets_response):
-    pass
+    query_text = "accurics"
+    query_mode = "simple"
+    filters = []
+
+    extra_properties = ["apa_asset_total_paths_count"]
+    offset = 0
+    limit = 100
+    sort_by = "aes"
+    sort_direction = "desc"
+    timezone = "America/Chicago"
+
+    # Construct the dictionary using variables
+    payload = {
+        "search": {
+            "query": {
+                "text": query_text,
+                "mode": query_mode
+            },
+            "filters": filters
+        },
+        "extra_properties": extra_properties,
+        "limit": limit,
+        "offset": offset,
+        "sort_by": sort_by,
+        "sort_direction": sort_direction,
+        "timezone": timezone
+    }
+    responses.add(responses.POST,
+                  'https://cloud.tenable.com/inventory/api/v1/assets',
+                  json=assets_response,
+                  match=[responses.matchers.body_matcher(params=json.dumps(payload))])
+    # Act
+    assets: Assets = api.assets.list(query_text=query_text, query_mode=query_mode,
+                                     filters=filters, extra_properties=extra_properties,
+                                     offset=offset, limit=limit, sort_by=sort_by,
+                                     sort_direction=sort_direction, timezone=timezone)
+    # Assert
+    assert assets == Assets(**assets_response)
