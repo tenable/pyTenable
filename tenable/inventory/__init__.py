@@ -21,7 +21,7 @@ from tenable.base.platform import APIPlatform
 from .assets.api import AssetsAPI
 
 
-class TenableOne(APIPlatform):
+class TenableInventory(APIPlatform):
     """
     The Tenable One object is the primary interaction
     point for users to interface with Tenable One
@@ -31,12 +31,12 @@ class TenableOne(APIPlatform):
     Examples:
         Basic Example:
 
-        >>> from tenable.one import TenableOne
-        >>> tapa = TenableOne('ACCESS_KEY', 'SECRET_KEY')
+        >>> from tenable.inventory import TenableInventory
+        >>> tenable_inventory = TenableInventory('ACCESS_KEY', 'SECRET_KEY')
 
         Example with proper identification:
 
-        >>> tapa = TenableOne('ACCESS_KEY', 'SECRET_KEY',
+        >>> tenable_inventory = TenableInventory('ACCESS_KEY', 'SECRET_KEY',
         >>>     vendor='Company Name',
         >>>     product='My Awesome Widget',
         >>>     build='1.0.0')

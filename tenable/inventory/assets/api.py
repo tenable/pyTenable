@@ -3,7 +3,7 @@ Assets
 =============
 
 Methods described in this section relate to the assets API.
-These methods can be accessed at ``TenableOne.assets``.
+These methods can be accessed at ``TenableInventory.assets``.
 
 .. rst-class:: hide-signature
 .. autoclass:: AssetsAPI
@@ -12,7 +12,7 @@ These methods can be accessed at ``TenableOne.assets``.
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.one.assets.schema import AssetProperties, AssetClass, AssetField
+from tenable.inventory.assets.schema import AssetProperties, AssetClass, AssetField
 
 
 class AssetsAPI(APIEndpoint):
