@@ -1,10 +1,10 @@
 """
-Tenable One
+Tenable Inventory
 ============================
 
-This package covers the Tenable One.
+This package covers the Tenable Inventory.
 
-.. autoclass:: TenableOne
+.. autoclass:: TenableInventory
     :members:
 
 
@@ -23,8 +23,8 @@ from .assets.api import AssetsAPI
 
 class TenableInventory(APIPlatform):
     """
-    The Tenable One object is the primary interaction
-    point for users to interface with Tenable One
+    The Tenable Inventory object is the primary interaction
+    point for users to interface with Tenable Inventory
     via the pyTenable library.  All the API endpoint classes that have
      been written will be grafted onto this class.
 
@@ -42,7 +42,7 @@ class TenableInventory(APIPlatform):
         >>>     build='1.0.0')
     """
 
-    _env_base = "TONE"
+    _env_base = "TENABLE_INVENTORY"
     _url = "https://cloud.tenable.com"
     _box = True
 
