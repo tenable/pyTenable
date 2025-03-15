@@ -99,6 +99,7 @@ class InventoryAPI(APIEndpoint):
                 'bd.addedtoportfolio',
                 'bd.smartfolders',
                 'bd.app_updates',
+                'bd.last_metadata_change',
                 'ports.ports',
                 'screenshot.redirect_chain',
                 'screenshot.finalurl',
