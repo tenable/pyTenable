@@ -17,7 +17,7 @@ from tenable.inventory.assets.schema import AssetProperties, AssetClass, AssetFi
 
 class AssetsAPI(APIEndpoint):
 
-    def list_properties(self, asset_classes: Optional[list[AssetClass]] = None):
+    def list_properties(self, asset_classes: Optional[list[AssetClass]] = None) -> list[AssetField]:
         """
          Retrieve assets properties
 
