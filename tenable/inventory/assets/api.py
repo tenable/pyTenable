@@ -12,7 +12,7 @@ These methods can be accessed at ``TenableInventory.assets``.
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.inventory.assets.schema import AssetProperties, AssetClass, AssetField
+from tenable.inventory.assets.schema import AssetProperties, AssetClass, AssetField, Assets
 
 
 class AssetsAPI(APIEndpoint):
@@ -33,8 +33,8 @@ class AssetsAPI(APIEndpoint):
                 The asset properties.
 
          Examples:
-             >>> tone_asset_properties = tone.assets.list_properties()
-             >>> for asset_property in tone_asset_properties:
+             >>> tenable_inventory_asset_properties = tenable_inventory.assets.list_properties()
+             >>> for asset_property in asset_properties:
              ...     pprint(asset_property)
 
         """
@@ -42,7 +42,7 @@ class AssetsAPI(APIEndpoint):
         if asset_classes is not None:
             asset_classes: str = ",".join([asset_class.value for asset_class in asset_classes])
             payload["asset_classes"] = asset_classes
-        asset_properties_response: dict[str, list[dict]] = self._get(path="one/api/v1/assets/properties", params=payload)
+        asset_properties_response: dict[str, list[dict]] = self._get(path="inventory/api/v1/assets/properties", params=payload)
         return AssetProperties(**asset_properties_response).properties
 
     def list(
@@ -51,12 +51,12 @@ class AssetsAPI(APIEndpoint):
             query_mode: str = "simple",
             filters: Optional[list[dict]] = None,
             extra_properties: Optional[list[str]] = None,
-            skip: int = 0,
-            max_page_size: int = 100,
+            offset: int = 0,
+            limit: int = 100,
             sort_by: str = "aes",
             sort_direction: str = "desc",
             timezone: str = "America/Chicago",
-    ):
+    ) -> Assets:
         """
          Retrieve assets
 
@@ -69,9 +69,9 @@ class AssetsAPI(APIEndpoint):
                 A list of filters to apply. Defaults to None.
             extra_properties (list, optional):
                 Additional properties to include in the response. Defaults to None.
-            skip (int, optional):
+            offset (int, optional):
                 Number of records to skip. Defaults to 0.
-            max_page_size (int, optional):
+            limit (int, optional):
                 Maximum number of records per page. Defaults to 100.
             sort_by (str, optional):
                 Field to sort by. Defaults to "aes".
@@ -81,22 +81,15 @@ class AssetsAPI(APIEndpoint):
                 Timezone setting for the query. Defaults to "America/Chicago".
 
         Returns:
-            :obj:`AssetProperties`:
-                The asset properties.
+            :obj:`Asset`:
+                The request assets.
 
          Examples:
-             >>> tone_assets = tone.assets.list()
-             >>> for asset_property in tone_asset_properties:
-             ...     pprint(asset_property)
+             >>> assets = tenable_inventory.assets.list()
+             >>> for asset in assets:
+             ...     pprint(asset)
 
         """
-        # payload = {}
-        # if asset_classes is not None:
-        #     asset_classes: str = ",".join([asset_class.value for asset_class in asset_classes])
-        #     payload["asset_classes"] = asset_classes
-        # asset_properties_response: dict[str, list[dict]] = self._get(path="one/api/v1/assets/properties", params=payload)
-        # return AssetProperties(**asset_properties_response).properties
-
         payload = {
             "search": {
                 "query": {
@@ -106,10 +99,12 @@ class AssetsAPI(APIEndpoint):
                 "filters": filters if filters is not None else []
             },
             "extra_properties": extra_properties if extra_properties is not None else [],
-            "skip": skip,
-            "max_page_size": max_page_size,
+            "limit": limit,
+            "offset": offset,
             "sort_by": sort_by,
             "sort_direction": sort_direction,
             "timezone": timezone
         }
-        self._post(path="one/api/v1/assets", json=payload)
+        assets_response: dict = self._post("inventory/api/v1/assets", json=payload)
+        return Assets(**assets_response)
+
