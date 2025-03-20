@@ -1,7 +1,6 @@
 import pytest
 import responses
 
-from tenable.inventory.assets.schema import AssetClass
 from tenable.inventory.schema import Field, Properties
 
 
