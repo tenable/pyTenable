@@ -19,6 +19,7 @@ from typing import Optional
 
 from tenable.base.platform import APIPlatform
 from .assets.api import AssetsAPI
+from .software.api import SoftwareAPI
 
 
 class TenableInventory(APIPlatform):
@@ -62,6 +63,14 @@ class TenableInventory(APIPlatform):
     def assets(self):
         """
         The interface object for the
-        :doc:`Tenable One Assets APIs <findings>`.
+        :doc:`Tenable Inventory Assets APIs <findings>`.
         """
         return AssetsAPI(self)
+
+    @property
+    def software(self):
+        """
+        The interface object for the
+        :doc:`Tenable Inventory Software APIs <findings>`.
+        """
+        return SoftwareAPI(self)
