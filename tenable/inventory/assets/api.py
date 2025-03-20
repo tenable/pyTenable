@@ -12,12 +12,13 @@ These methods can be accessed at ``TenableInventory.assets``.
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.inventory.assets.schema import AssetProperties, AssetClass, AssetField, Assets
+from tenable.inventory.assets.schema import AssetClass, Assets
+from tenable.inventory.schema import Field, Properties
 
 
 class AssetsAPI(APIEndpoint):
 
-    def list_properties(self, asset_classes: Optional[list[AssetClass]] = None) -> list[AssetField]:
+    def list_properties(self, asset_classes: Optional[list[AssetClass]] = None) -> list[Field]:
         """
          Retrieve assets properties
 
@@ -29,7 +30,7 @@ class AssetsAPI(APIEndpoint):
                  For example: asset_classes=[AssetClass.DEVICE].
 
         Returns:
-            :obj:`AssetProperties`:
+            :list:`Field`:
                 The asset properties.
 
          Examples:
@@ -43,7 +44,7 @@ class AssetsAPI(APIEndpoint):
             asset_classes: str = ",".join([asset_class.value for asset_class in asset_classes])
             payload["asset_classes"] = asset_classes
         asset_properties_response: dict[str, list[dict]] = self._get(path="inventory/api/v1/assets/properties", params=payload)
-        return AssetProperties(**asset_properties_response).properties
+        return Properties(**asset_properties_response).properties
 
     def list(
             self,

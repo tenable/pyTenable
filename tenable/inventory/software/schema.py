@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from tenable.inventory.schema import AssetClass
 
 
-class Asset(BaseModel):
+class Software(BaseModel):
     id: str
     asset_class: AssetClass
     name: str
@@ -13,6 +13,6 @@ class Asset(BaseModel):
     additional_properties: dict[str, Any]  # Supports arbitrary key-value pairs
 
 
-class Assets(BaseModel):
-    values: list[Asset]
+class SoftwareValues(BaseModel):
+    values: list[Software]
     total_count: int

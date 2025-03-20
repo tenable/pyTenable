@@ -3,7 +3,8 @@ import json
 import pytest
 import responses
 
-from tenable.inventory.assets.schema import AssetClass, AssetProperties, Assets
+from tenable.inventory.assets.schema import AssetClass, Assets
+from tenable.inventory.schema import Field, Properties
 
 
 @pytest.fixture
@@ -159,9 +160,9 @@ def test_properties_list(api, asset_properties_response):
                   json=asset_properties_response,
                   match=[responses.matchers.query_param_matcher({"asset_classes": asset_classes_str})])
     # Act
-    asset_properties_result: AssetProperties = api.assets.list_properties(asset_classes=asset_classes)
+    asset_properties_result: list[Field] = api.assets.list_properties(asset_classes=asset_classes)
     # Assert
-    assert asset_properties_result == AssetProperties(**asset_properties_response).properties
+    assert asset_properties_result == Properties(**asset_properties_response).properties
 
 
 @responses.activate
