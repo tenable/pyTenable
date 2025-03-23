@@ -4,7 +4,7 @@ import pytest
 import responses
 
 from tenable.inventory.assets.schema import AssetClass, Assets
-from tenable.inventory.schema import Field, Properties
+from tenable.inventory.schema import Field, Properties, SortDirection, QueryMode, PropertyFilter, Operator
 
 
 @pytest.fixture
@@ -138,7 +138,7 @@ def asset_properties_response() -> dict[str, list[dict]]:
 
 
 @pytest.fixture
-def assets_response() -> dict[str, list[dict]]:
+def assets_response() -> dict:
     return {
         "values": [
             {
@@ -168,14 +168,14 @@ def test_properties_list(api, asset_properties_response):
 @responses.activate
 def test_list(api, assets_response):
     query_text = "accurics"
-    query_mode = "simple"
-    filters = []
+    query_mode = QueryMode.SIMPLE
+    filters = [PropertyFilter(property="property", operator=Operator.EQUAL, value=["value"])]
 
     extra_properties = ["apa_asset_total_paths_count"]
     offset = 0
     limit = 100
     sort_by = "aes"
-    sort_direction = "desc"
+    sort_direction = SortDirection.DESC
     timezone = "America/Chicago"
 
     # Construct the dictionary using variables
@@ -183,15 +183,15 @@ def test_list(api, assets_response):
         "search": {
             "query": {
                 "text": query_text,
-                "mode": query_mode
+                "mode": query_mode.value
             },
-            "filters": filters
+            "filters": [filter.model_dump(mode='json') for filter in filters]
         },
         "extra_properties": extra_properties,
-        "limit": limit,
         "offset": offset,
+        "limit": limit,
         "sort_by": sort_by,
-        "sort_direction": sort_direction,
+        "sort_direction": sort_direction.value,
         "timezone": timezone
     }
     responses.add(responses.POST,

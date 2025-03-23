@@ -13,7 +13,7 @@ from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
 from tenable.inventory.assets.schema import AssetClass, Assets
-from tenable.inventory.schema import Field, Properties
+from tenable.inventory.schema import Field, Properties, SortDirection, QueryMode, PropertyFilter
 
 
 class AssetsAPI(APIEndpoint):
@@ -43,29 +43,30 @@ class AssetsAPI(APIEndpoint):
         if asset_classes is not None:
             asset_classes: str = ",".join([asset_class.value for asset_class in asset_classes])
             payload["asset_classes"] = asset_classes
-        asset_properties_response: dict[str, list[dict]] = self._get(path="inventory/api/v1/assets/properties", params=payload)
+        asset_properties_response: dict[str, list[dict]] = self._get(path="inventory/api/v1/assets/properties",
+                                                                     params=payload)
         return Properties(**asset_properties_response).properties
 
     def list(
             self,
-            query_text: str,
-            query_mode: str = "simple",
-            filters: Optional[list[dict]] = None,
+            query_text: Optional[str] = None,
+            query_mode: Optional[QueryMode] = None,
+            filters: Optional[list[PropertyFilter]] = None,
             extra_properties: Optional[list[str]] = None,
-            offset: int = 0,
-            limit: int = 100,
-            sort_by: str = "aes",
-            sort_direction: str = "desc",
-            timezone: str = "America/Chicago",
+            offset: Optional[int] = None,
+            limit: Optional[int] = None,
+            sort_by: Optional[str] = None,
+            sort_direction: Optional[SortDirection] = None,
+            timezone: Optional[str] = None,
     ) -> Assets:
         """
          Retrieve assets
 
          Args:
-            query_text (str):
+            query_text (str, optional):
                 The text to search for.
-            query_mode (str, optional):
-                The search mode. Defaults to "simple".
+            query_mode (QueryMode, optional):
+                The search mode. Defaults to QueryMode.SIMPLE.
             filters (list, optional):
                 A list of filters to apply. Defaults to None.
             extra_properties (list, optional):
@@ -75,11 +76,11 @@ class AssetsAPI(APIEndpoint):
             limit (int, optional):
                 Maximum number of records per page. Defaults to 100.
             sort_by (str, optional):
-                Field to sort by. Defaults to "aes".
-            sort_direction (str, optional):
-                Sorting direction, either "asc" or "desc". Defaults to "desc".
+                Field to sort by.
+            sort_direction (SortDirection, optional):
+                Sorting direction, either SortDirection.ASC or SortDirection.DESC.
             timezone (str, optional):
-                Timezone setting for the query. Defaults to "America/Chicago".
+                Timezone setting for the query. Defaults to "UTC".
 
         Returns:
             :obj:`Asset`:
@@ -91,20 +92,29 @@ class AssetsAPI(APIEndpoint):
              ...     pprint(asset)
 
         """
-        payload = {
-            "search": {
+        payload = {}
+
+        if query_text is not None and query_mode is not None and filters is not None:
+            payload["search"] = {
                 "query": {
                     "text": query_text,
-                    "mode": query_mode
+                    "mode": query_mode.value
                 },
-                "filters": filters if filters is not None else []
-            },
-            "extra_properties": extra_properties if extra_properties is not None else [],
-            "limit": limit,
-            "offset": offset,
-            "sort_by": sort_by,
-            "sort_direction": sort_direction,
-            "timezone": timezone
-        }
+                "filters": [filter.model_dump(mode='json') for filter in filters] if filters is not None else []
+            }
+
+        if extra_properties is not None:
+            payload["extra_properties"] = extra_properties
+        if offset is not None:
+            payload["offset"] = offset
+        if limit is not None:
+            payload["limit"] = limit
+        if sort_by is not None:
+            payload["sort_by"] = sort_by
+        if sort_direction is not None:
+            payload["sort_direction"] = sort_direction.value
+        if timezone is not None:
+            payload["timezone"] = timezone
+
         assets_response: dict = self._post("inventory/api/v1/assets", json=payload)
         return Assets(**assets_response)

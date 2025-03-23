@@ -3,22 +3,7 @@ from enum import Enum
 from pydantic import BaseModel
 
 
-class AssetClass(Enum):
-    IAC = "IAC"
-    STORAGE = "STORAGE"
-    DEVICE = "DEVICE"
-    APPLICATION = "APPLICATION"
-    GENERAL = "GENERAL"
-    CONTAINER = "CONTAINER"
-    ACCOUNT = "ACCOUNT"
-    RESOURCE = "RESOURCE"
-    IDENTITY = "IDENTITY"
-    ROLE = "ROLE"
-    GROUP = "GROUP"
-    UNKNOWN = "UNKNOWN"
-
-
-class Operators(Enum):
+class Operator(Enum):
     EQUAL = "="
     NOT_EQUAL = "!="
     CONTAINS = "contains"
@@ -33,6 +18,37 @@ class Operators(Enum):
     NEWER_THAN = "newer than"
     WITHIN_LAST = "within last"
     BETWEEN = "between"
+
+
+class QueryMode(Enum):
+    SIMPLE = "simple"
+    ADVANCED = "advanced"
+
+
+class PropertyFilter(BaseModel):
+    property: str
+    operator: Operator
+    value: list[str]
+
+
+class SortDirection(Enum):
+    ASC = "asc"
+    DESC = "desc"
+
+
+class AssetClass(Enum):
+    IAC = "IAC"
+    STORAGE = "STORAGE"
+    DEVICE = "DEVICE"
+    APPLICATION = "APPLICATION"
+    GENERAL = "GENERAL"
+    CONTAINER = "CONTAINER"
+    ACCOUNT = "ACCOUNT"
+    RESOURCE = "RESOURCE"
+    IDENTITY = "IDENTITY"
+    ROLE = "ROLE"
+    GROUP = "GROUP"
+    UNKNOWN = "UNKNOWN"
 
 
 class ControlType(Enum):
@@ -62,7 +78,7 @@ class Field(BaseModel):
     key: str
     readable_name: str
     control: Control
-    operators: list[Operators]
+    operators: list[Operator]
     sortable: bool
     filterable: bool
     weight: float

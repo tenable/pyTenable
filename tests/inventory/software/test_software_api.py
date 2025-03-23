@@ -1,7 +1,10 @@
+import json
+
 import pytest
 import responses
 
-from tenable.inventory.schema import Field, Properties
+from tenable.inventory.schema import Field, Properties, QueryMode, PropertyFilter, Operator, SortDirection
+from tenable.inventory.software.schema import SoftwareValues
 
 
 @pytest.fixture
@@ -214,6 +217,22 @@ def software_properties_response() -> dict[str, list[dict]]:
                            devices that may be vulnerable to attack.\n"""}]}
 
 
+@pytest.fixture
+def software_response() -> dict:
+    return {"values": [{"application": ".net_framework", "publisher": "microsoft", "type": ["APPLICATION"],
+                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 2}},
+                       {"application": "edge", "publisher": "microsoft", "type": ["APPLICATION"],
+                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}},
+                       {"application": "onedrive", "publisher": "microsoft", "type": ["APPLICATION"],
+                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 3}},
+                       {"application": "remote_desktop_connection", "publisher": "microsoft", "type": ["APPLICATION"],
+                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}},
+                       {"application": "sql_server", "publisher": "microsoft", "type": ["APPLICATION"],
+                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}},
+                       {"application": "windows_defender", "publisher": "microsoft", "type": ["APPLICATION"],
+                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}}], "total_count": 6}
+
+
 @responses.activate
 def test_properties_list(api, software_properties_response):
     # Arrange
@@ -224,3 +243,45 @@ def test_properties_list(api, software_properties_response):
     software_properties_result: list[Field] = api.software.list_properties()
     # Assert
     assert software_properties_result == Properties(**software_properties_response).properties
+
+
+@responses.activate
+def test_list(api, software_response):
+    query_text = "accurics"
+    query_mode = QueryMode.SIMPLE
+    filters = [PropertyFilter(property="property", operator=Operator.EQUAL, value=["value"])]
+
+    extra_properties = ["apa_asset_total_paths_count"]
+    offset = 0
+    limit = 100
+    sort_by = "aes"
+    sort_direction = SortDirection.DESC
+    timezone = "America/Chicago"
+
+    # Construct the dictionary using variables
+    payload = {
+        "search": {
+            "query": {
+                "text": query_text,
+                "mode": query_mode.value
+            },
+            "filters": [filter.model_dump(mode='json') for filter in filters]
+        },
+        "extra_properties": extra_properties,
+        "offset": offset,
+        "limit": limit,
+        "sort_by": sort_by,
+        "sort_direction": sort_direction.value,
+        "timezone": timezone
+    }
+    responses.add(responses.POST,
+                  'https://cloud.tenable.com/inventory/api/v1/software',
+                  json=software_response,
+                  match=[responses.matchers.body_matcher(params=json.dumps(payload))])
+    # Act
+    software: SoftwareValues = api.software.list(query_text=query_text, query_mode=query_mode,
+                                                 filters=filters, extra_properties=extra_properties,
+                                                 offset=offset, limit=limit, sort_by=sort_by,
+                                                 sort_direction=sort_direction, timezone=timezone)
+    # Assert
+    assert software == SoftwareValues(**software_response)

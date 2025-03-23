@@ -1,15 +1,18 @@
+from enum import Enum
 from typing import Any
 from pydantic import BaseModel
 
-from tenable.inventory.schema import AssetClass
+
+class Part(Enum):
+    APPLICATION = "APPLICATION"
+    OPERATING_SYSTEM = "OPERATING_SYSTEM"
+    HARDWARE = "HARDWARE"
 
 
 class Software(BaseModel):
-    id: str
-    asset_class: AssetClass
-    name: str
-    aes: int
-    acr: int
+    application: str
+    publisher: str
+    type: list[Part]
     additional_properties: dict[str, Any]  # Supports arbitrary key-value pairs
 
 
