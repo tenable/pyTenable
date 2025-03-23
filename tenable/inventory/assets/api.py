@@ -108,4 +108,3 @@ class AssetsAPI(APIEndpoint):
         }
         assets_response: dict = self._post("inventory/api/v1/assets", json=payload)
         return Assets(**assets_response)
-

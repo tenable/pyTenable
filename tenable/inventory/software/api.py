@@ -32,3 +32,6 @@ class SoftwareAPI(APIEndpoint):
         """
         asset_properties_response: dict[str, list[dict]] = self._get(path="inventory/api/v1/software/properties")
         return Properties(**asset_properties_response).properties
+
+    def list(self):
+        pass
