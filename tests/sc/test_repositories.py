@@ -393,6 +393,16 @@ def test_repositories_create_success_data_format_ipv6(admin):
     check(repo, 'id', str)
     admin.repositories.delete(int(repo['id']))
 
+@pytest.mark.vcr()
+def test_repositories_create_success_data_format_universal(admin):
+    '''
+    test repositories create success with data format universal
+    '''
+    repo = admin.repositories.create(dataFormat='universal', type='remote')
+    assert isinstance(repo, dict)
+    check(repo, 'name', str)
+    check(repo, 'id', str)
+    admin.repositories.delete(int(repo['id']))
 
 @pytest.mark.vcr()
 def test_repositories_create_success_data_format_mobile(admin):

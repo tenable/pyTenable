@@ -279,7 +279,7 @@ class RepositoryAPI(SCEndpoint):
                 scanner from which to query the MDM source.
             trending (int, optional):
                 How many days of trending snapshots should be created for this
-                repository.  This value is only used for IPv4, IPv6, and agent
+                repository.  This value is only used for IPv4, IPv6, universal, and agent
                 repositories.  If not supplied, the default will be 0.
 
         Returns:
@@ -346,7 +346,7 @@ class RepositoryAPI(SCEndpoint):
         kwargs["dataFormat"] = kwargs.get("dataFormat", "IPv4")
         kwargs["type"] = kwargs.get("type", "Local")
 
-        if kwargs["dataFormat"] in ["IPv4", "IPv6", "agent"]:
+        if kwargs["dataFormat"] in ["IPv4", "IPv6", "agent", "universal"]:
             kwargs["trendingDays"] = kwargs.get("trendingDays", 0)
             kwargs["trendWithRaw"] = kwargs.get("trendWithRaw", "false")
 
