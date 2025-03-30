@@ -20,6 +20,7 @@ from typing import Optional
 from tenable.base.platform import APIPlatform
 from .assets.api import AssetsAPI
 from .software.api import SoftwareAPI
+from .tags.api import TagsAPI
 
 
 class TenableInventory(APIPlatform):
@@ -48,10 +49,10 @@ class TenableInventory(APIPlatform):
     _box = True
 
     def __init__(
-        self,
-        access_key: Optional[str] = None,
-        secret_key: Optional[str] = None,
-        **kwargs
+            self,
+            access_key: Optional[str] = None,
+            secret_key: Optional[str] = None,
+            **kwargs
     ):
         if access_key:
             kwargs["access_key"] = access_key
@@ -74,3 +75,11 @@ class TenableInventory(APIPlatform):
         :doc:`Tenable Inventory Software APIs <findings>`.
         """
         return SoftwareAPI(self)
+
+    @property
+    def tags(self):
+        """
+        The interface object for the
+        :doc:`Tenable Inventory Tags APIs <findings>`.
+        """
+        return TagsAPI(self)
