@@ -23,120 +23,120 @@ class RepositoryAPI(SCEndpoint):
         """
         Repository document constructor
         """
-        if "nessus_sched" in kwargs:
-            kwargs["nessusSchedule"] = self._schedule_constructor(
-                kwargs["nessus_sched"]
+        if 'nessus_sched' in kwargs:
+            kwargs['nessusSchedule'] = self._schedule_constructor(
+                kwargs['nessus_sched']
             )
-            del kwargs["nessus_sched"]
-        if "mobile_sched" in kwargs:
-            kwargs["mobileSchedule"] = self._schedule_constructor(
-                kwargs["mobile_sched"]
+            del kwargs['nessus_sched']
+        if 'mobile_sched' in kwargs:
+            kwargs['mobileSchedule'] = self._schedule_constructor(
+                kwargs['mobile_sched']
             )
-            del kwargs["mobile_sched"]
-        if "remote_sched" in kwargs:
-            kwargs["remoteSchedule"] = self._schedule_constructor(
-                kwargs["remote_sched"]
+            del kwargs['mobile_sched']
+        if 'remote_sched' in kwargs:
+            kwargs['remoteSchedule'] = self._schedule_constructor(
+                kwargs['remote_sched']
             )
-            del kwargs["remote_sched"]
+            del kwargs['remote_sched']
 
-        if "name" in kwargs:
+        if 'name' in kwargs:
             # Validate the name is a string
-            self._check("name", kwargs["name"], str)
+            self._check('name', kwargs['name'], str)
 
-        if "description" in kwargs:
+        if 'description' in kwargs:
             # Verify that the description is a string
-            self._check("description", kwargs["description"], str)
+            self._check('description', kwargs['description'], str)
 
-        if "format" in kwargs:
+        if 'format' in kwargs:
             # The data format for the repository.
-            kwargs["dataFormat"] = self._check(
-                "format",
-                kwargs["format"],
+            kwargs['dataFormat'] = self._check(
+                'format',
+                kwargs['format'],
                 str,
-                choices=["agent", "IPv4", "IPv6", "mobile", "universal"],
+                choices=['agent', 'IPv4', 'IPv6', 'mobile', 'universal'],
             )
-            del kwargs["format"]
+            del kwargs['format']
 
-        if "repo_type" in kwargs:
+        if 'repo_type' in kwargs:
             # The type of repository
-            kwargs["type"] = self._check(
-                "repo_type",
-                kwargs["repo_type"],
+            kwargs['type'] = self._check(
+                'repo_type',
+                kwargs['repo_type'],
                 str,
-                choices=["Local", "Remote", "Offline"],
+                choices=['Local', 'Remote', 'Offline'],
             )
-            del kwargs["repo_type"]
+            del kwargs['repo_type']
 
-        if "orgs" in kwargs:
+        if 'orgs' in kwargs:
             # Validate all of the organizational sub-documents.
-            kwargs["organizations"] = [
-                {"id": self._check("org_id", o, int)}
-                for o in self._check("orgs", kwargs["orgs"], list)
+            kwargs['organizations'] = [
+                {'id': self._check('org_id', o, int)}
+                for o in self._check('orgs', kwargs['orgs'], list)
             ]
-            del kwargs["orgs"]
+            del kwargs['orgs']
 
-        if "trending" in kwargs:
+        if 'trending' in kwargs:
             # Trending should be between 0 and 365.
-            kwargs["trendingDays"] = self._check(
-                "trending", kwargs["trending"], int, choices=list(range(366))
+            kwargs['trendingDays'] = self._check(
+                'trending', kwargs['trending'], int, choices=list(range(366))
             )
-            del kwargs["trending"]
+            del kwargs['trending']
 
-        if "fulltext_search" in kwargs:
+        if 'fulltext_search' in kwargs:
             # trendWithRaw is the backend paramater name for "Full Text Search"
             # within the UI.  We will be calling it fulltest_search to more
             # closely align with what the frontend calls this feature.
-            kwargs["trendWithRaw"] = str(
-                self._check("fulltext_search", kwargs["fulltext_search"], bool)
+            kwargs['trendWithRaw'] = str(
+                self._check('fulltext_search', kwargs['fulltext_search'], bool)
             ).lower()
-            del kwargs["fulltext_search"]
+            del kwargs['fulltext_search']
 
-        if "lce_correlation" in kwargs:
+        if 'lce_correlation' in kwargs:
             # The correlation parameter isn't well named here, we will call it
             # out as LCE correlation to specifically note what it is for.
-            kwargs["correlation"] = [
-                {"id": self._check("lce_id", l, int)}
-                for l in self._check("lce_correlation", kwargs["lce_correlation"], list)
+            kwargs['correlation'] = [
+                {'id': self._check('lce_id', l, int)}
+                for l in self._check('lce_correlation', kwargs['lce_correlation'], list)
             ]
-            del kwargs["lce_correlation"]
+            del kwargs['lce_correlation']
 
-        if "allowed_ips" in kwargs:
+        if 'allowed_ips' in kwargs:
             # Using valid IPs here instead of ipRange to again more closely
             # align to the frontend and to more explicitly call out the
             # function of this paramater
-            kwargs["ipRange"] = ",".join(
+            kwargs['ipRange'] = ','.join(
                 [
-                    self._check("ip", i, str)
-                    for i in self._check("allowed_ips", kwargs["allowed_ips"], list)
+                    self._check('ip', i, str)
+                    for i in self._check('allowed_ips', kwargs['allowed_ips'], list)
                 ]
             )
-            del kwargs["allowed_ips"]
+            del kwargs['allowed_ips']
 
-        if "remote_ip" in kwargs:
-            kwargs["remoteIP"] = self._check("remote_ip", kwargs["remote_ip"], str)
-            del kwargs["remote_ip"]
+        if 'remote_ip' in kwargs:
+            kwargs['remoteIP'] = self._check('remote_ip', kwargs['remote_ip'], str)
+            del kwargs['remote_ip']
 
-        if "remote_repo" in kwargs:
-            kwargs["remoteID"] = self._check("remote_repo", kwargs["remote_repo"], int)
-            del kwargs["remote_repo"]
+        if 'remote_repo' in kwargs:
+            kwargs['remoteID'] = self._check('remote_repo', kwargs['remote_repo'], int)
+            del kwargs['remote_repo']
 
-        if "preferences" in kwargs:
+        if 'preferences' in kwargs:
             # Validate that all of the preferences are K:V pairs of strings.
-            for key in self._check("preferences", kwargs["preferences"], dict):
-                self._check("preference:{}".format(key), key, str)
+            for key in self._check('preferences', kwargs['preferences'], dict):
+                self._check('preference:{}'.format(key), key, str)
                 self._check(
-                    "preference:{}:value".format(key), kwargs["preferences"][key], str
+                    'preference:{}:value'.format(key), kwargs['preferences'][key], str
                 )
 
-        if "mdm_id" in kwargs:
-            kwargs["mdm"] = {"id": self._check("mdm_id", kwargs["mdm_id"], int)}
-            del kwargs["mdm_id"]
+        if 'mdm_id' in kwargs:
+            kwargs['mdm'] = {'id': self._check('mdm_id', kwargs['mdm_id'], int)}
+            del kwargs['mdm_id']
 
-        if "scanner_id" in kwargs:
-            kwargs["scanner"] = {
-                "id": self._check("scanner_id", kwargs["scanner_id"], int)
+        if 'scanner_id' in kwargs:
+            kwargs['scanner'] = {
+                'id': self._check('scanner_id', kwargs['scanner_id'], int)
             }
-            del kwargs["scanner_id"]
+            del kwargs['scanner_id']
 
         return kwargs
 
@@ -144,28 +144,28 @@ class RepositoryAPI(SCEndpoint):
         """
         Accept/Recast Rule Query Creator
         """
-        if "plugin_id" in kwargs:
+        if 'plugin_id' in kwargs:
             # Convert the snake_cased variant to the camelCased variant.
-            kwargs["pluginID"] = self._check("plugin_id", kwargs["plugin_id"], int)
-            del kwargs["plugin_id"]
-        if "port" in kwargs:
+            kwargs['pluginID'] = self._check('plugin_id', kwargs['plugin_id'], int)
+            del kwargs['plugin_id']
+        if 'port' in kwargs:
             # validate port is a integer
-            self._check("port", kwargs["port"], int)
-        if "orgs" in kwargs:
+            self._check('port', kwargs['port'], int)
+        if 'orgs' in kwargs:
             # convert the list of organization IDs into the comma-separated
             # string that the API expects.
-            kwargs["organizationIDs"] = ",".join(
+            kwargs['organizationIDs'] = ','.join(
                 [
-                    str(self._check("org:id", o, int))
-                    for o in self._check("orgs", kwargs["orgs"], list)
+                    str(self._check('org:id', o, int))
+                    for o in self._check('orgs', kwargs['orgs'], list)
                 ]
             )
-            del kwargs["orgs"]
-        if "fields" in kwargs:
+            del kwargs['orgs']
+        if 'fields' in kwargs:
             # convert the list of field names into the comma-separated string
             # that the API expects.
-            kwargs["fields"] = ",".join(
-                [self._check("field", f, str) for f in kwargs["fields"]]
+            kwargs['fields'] = ','.join(
+                [self._check('field', f, str) for f in kwargs['fields']]
             )
         return kwargs
 
@@ -200,15 +200,15 @@ class RepositoryAPI(SCEndpoint):
         """
         params = dict()
         if repo_type:
-            params["type"] = self._check(
-                "repo_type",
+            params['type'] = self._check(
+                'repo_type',
                 repo_type,
                 str,
-                choices=["All", "Local", "Remote", "Offline"],
+                choices=['All', 'Local', 'Remote', 'Offline'],
             )
         if fields:
-            params["fields"] = ",".join([self._check("field", f, str) for f in fields])
-        return self._api.get("repository", params=params).json()["response"]
+            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
+        return self._api.get('repository', params=params).json()['response']
 
     def create(self, **kwargs):
         """
@@ -233,7 +233,7 @@ class RepositoryAPI(SCEndpoint):
                 unspecified is ``IPv4``.
             fulltext_search (bool, optional):
                 Should full-text searching be enabled?  This option is used for
-                IPv4, IPv6, and agent repository formats and determins whether
+                IPv4, IPv6, universal, and agent repository formats and determins whether
                 the plugin output is trended along with the normalized data.  If
                 left unspecified, the default is set to ``False``.
             lce_correlation (list, optional):
@@ -242,7 +242,7 @@ class RepositoryAPI(SCEndpoint):
                 supplied.  This option is used on IPv4, IPv6, and agent formats
                 and is defaulted to nothing if left unspecified.
             nessus_sched (dict, optional):
-                This is the .Nessus file generation schedule for IPv4 and IPv6
+                This is the .Nessus file generation schedule for IPv4, IPv6, and universal
                 repository formats.  This option should only be used if there
                 is a need to consume the Repository in a raw Nessus XML format.
                 If left unspecified, it will default to ``{'type': 'never'}``.
@@ -279,7 +279,7 @@ class RepositoryAPI(SCEndpoint):
                 scanner from which to query the MDM source.
             trending (int, optional):
                 How many days of trending snapshots should be created for this
-                repository.  This value is only used for IPv4, IPv6, and agent
+                repository.  This value is only used for IPv4, IPv6, universal, and agent
                 repositories.  If not supplied, the default will be 0.
 
         Returns:
@@ -343,29 +343,32 @@ class RepositoryAPI(SCEndpoint):
             ... })
         """
         kwargs = self._constructor(**kwargs)
-        kwargs["dataFormat"] = kwargs.get("dataFormat", "IPv4")
-        kwargs["type"] = kwargs.get("type", "Local")
+        kwargs['dataFormat'] = kwargs.get('dataFormat', 'IPv4')
+        kwargs['type'] = kwargs.get('type', 'Local')
 
-        if kwargs["dataFormat"] in ["IPv4", "IPv6", "agent"]:
-            kwargs["trendingDays"] = kwargs.get("trendingDays", 0)
-            kwargs["trendWithRaw"] = kwargs.get("trendWithRaw", "false")
+        if kwargs['dataFormat'] in ['IPv4', 'IPv6', 'agent', 'universal']:
+            kwargs['trendingDays'] = kwargs.get('trendingDays', 0)
+            kwargs['trendWithRaw'] = kwargs.get('trendWithRaw', 'false')
 
-        if kwargs["dataFormat"] in ["IPv4", "IPv6"]:
-            kwargs["nessusSchedule"] = kwargs.get("nessusSchedule", {"type": "never"})
+        if kwargs['dataFormat'] in ['IPv4', 'IPv6', 'universal']:
+            kwargs['nessusSchedule'] = kwargs.get('nessusSchedule', {'type': 'never'})
 
-        if kwargs["dataFormat"] == "IPv4":
-            kwargs["ipRange"] = kwargs.get("ipRange", "0.0.0.0/0")
+        if kwargs['dataFormat'] == 'IPv4':
+            kwargs['ipRange'] = kwargs.get('ipRange', '0.0.0.0/0')
 
-        if kwargs["dataFormat"] == "IPv6":
-            kwargs["ipRange"] = kwargs.get("ipRange", "::/0")
+        if kwargs['dataFormat'] == 'IPv6':
+            kwargs['ipRange'] = kwargs.get('ipRange', '::/0')
 
-        if kwargs["dataFormat"] == "mobile":
-            kwargs["mobileSchedule"] = kwargs.get("mobileSchedule", {"type": "never"})
+        if kwargs['dataFormat'] == 'universal':
+            kwargs['ipRange'] = kwargs.get('ipRange', '0.0.0.0/0, ::/0')
 
-        if kwargs["type"] == "remote":
-            kwargs["remoteSchedule"] = kwargs.get("remoteSchedule", {"type": "never"})
+        if kwargs['dataFormat'] == 'mobile':
+            kwargs['mobileSchedule'] = kwargs.get('mobileSchedule', {'type': 'never'})
 
-        return self._api.post("repository", json=kwargs).json()["response"]
+        if kwargs['type'] == 'remote':
+            kwargs['remoteSchedule'] = kwargs.get('remoteSchedule', {'type': 'never'})
+
+        return self._api.post('repository', json=kwargs).json()['response']
 
     def details(self, repository_id, fields=None):
         """
@@ -389,12 +392,12 @@ class RepositoryAPI(SCEndpoint):
         """
         params = dict()
         if fields:
-            params["fields"] = ",".join([self._check("field", f, str) for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
         return self._api.get(
-            "repository/{}".format(self._check("repository_id", repository_id, int)),
+            'repository/{}'.format(self._check('repository_id', repository_id, int)),
             params=params,
-        ).json()["response"]
+        ).json()['response']
 
     def delete(self, repository_id):
         """
@@ -413,8 +416,8 @@ class RepositoryAPI(SCEndpoint):
             >>> sc.repositories.delete(1)
         """
         return self._api.delete(
-            "repository/{}".format(self._check("repository_id", repository_id, int))
-        ).json()["response"]
+            'repository/{}'.format(self._check('repository_id', repository_id, int))
+        ).json()['response']
 
     def edit(self, repository_id, **kwargs):
         """
@@ -479,9 +482,9 @@ class RepositoryAPI(SCEndpoint):
         """
         kwargs = self._constructor(**kwargs)
         return self._api.patch(
-            "repository/{}".format(self._check("repository_id", repository_id, int)),
+            'repository/{}'.format(self._check('repository_id', repository_id, int)),
             json=kwargs,
-        ).json()["response"]
+        ).json()['response']
 
     def accept_risk_rules(self, repository_id, **kwargs):
         """
@@ -506,11 +509,11 @@ class RepositoryAPI(SCEndpoint):
         """
         params = self._rules_constructor(**kwargs)
         return self._api.get(
-            "repository/{}/acceptRiskRule".format(
-                self._check("repository_id", repository_id, int)
+            'repository/{}/acceptRiskRule'.format(
+                self._check('repository_id', repository_id, int)
             ),
             params=params,
-        ).json()["response"]
+        ).json()['response']
 
     def recast_risk_rules(self, repository_id, **kwargs):
         """
@@ -536,11 +539,11 @@ class RepositoryAPI(SCEndpoint):
         """
         params = self._rules_constructor(**kwargs)
         return self._api.get(
-            "repository/{}/recastRiskRule".format(
-                self._check("repository_id", repository_id, int)
+            'repository/{}/recastRiskRule'.format(
+                self._check('repository_id', repository_id, int)
             ),
             params=params,
-        ).json()["response"]
+        ).json()['response']
 
     def asset_intersections(self, repository_id, uuid=None, ip_address=None, dns=None):
         """
@@ -565,20 +568,20 @@ class RepositoryAPI(SCEndpoint):
         """
         params = dict()
         if dns:
-            params["dnsName"] = self._check("dns", dns, str)
+            params['dnsName'] = self._check('dns', dns, str)
         if ip_address:
-            params["ip"] = self._check("ip_address", ip_address, str)
+            params['ip'] = self._check('ip_address', ip_address, str)
         if uuid:
-            params["uuid"] = self._check("uuid", uuid, "uuid")
+            params['uuid'] = self._check('uuid', uuid, 'uuid')
         return (
             self._api.get(
-                "repository/{}/assetIntersections".format(
-                    self._check("repository_id", repository_id, int)
+                'repository/{}/assetIntersections'.format(
+                    self._check('repository_id', repository_id, int)
                 ),
                 params=params,
             )
-            .json()["response"]
-            .get("assets")
+            .json()['response']
+            .get('assets')
         )
 
     def import_repository(self, repository_id, fobj):
@@ -601,11 +604,11 @@ class RepositoryAPI(SCEndpoint):
             ...     sc.repositories.import_repository(1, archive)
         """
         return self._api.post(
-            "repository/{}/import".format(
-                self._check("repository_id", repository_id, int)
+            'repository/{}/import'.format(
+                self._check('repository_id', repository_id, int)
             ),
-            json={"file": self._api.files.upload(fobj)},
-        ).json()["response"]
+            json={'file': self._api.files.upload(fobj)},
+        ).json()['response']
 
     def export_repository(self, repository_id, fobj):
         """
@@ -628,8 +631,8 @@ class RepositoryAPI(SCEndpoint):
             ...     sc.repositories.export_repository(1, archive)
         """
         resp = self._api.get(
-            "repository/{}/export".format(
-                self._check("repository_id", repository_id, int)
+            'repository/{}/export'.format(
+                self._check('repository_id', repository_id, int)
             ),
             stream=True,
         )
@@ -660,11 +663,11 @@ class RepositoryAPI(SCEndpoint):
             >>> sc.repositories.remote_sync(1)
         """
         return self._api.post(
-            "repository/{}/sync".format(
-                self._check("repository_id", repository_id, int)
+            'repository/{}/sync'.format(
+                self._check('repository_id', repository_id, int)
             ),
             json={},
-        ).json()["response"]
+        ).json()['response']
 
     def mobile_sync(self, repository_id):
         """
@@ -685,11 +688,11 @@ class RepositoryAPI(SCEndpoint):
             >>> sc.repositories.mobile_sync(1)
         """
         return self._api.post(
-            "repository/{}/updateMobileData".format(
-                self._check("repository_id", repository_id, int)
+            'repository/{}/updateMobileData'.format(
+                self._check('repository_id', repository_id, int)
             ),
             json={},
-        ).json()["response"]
+        ).json()['response']
 
     def device_info(
         self, repository_id, dns=None, ip_address=None, uuid=None, fields=None
@@ -723,24 +726,24 @@ class RepositoryAPI(SCEndpoint):
         # We will generally want to query the deviceInfo action, however if we
         # happen to be on a Tenable Security Center instance version that's less than 5.7, we
         # have to instead query ipInfo.
-        method = "deviceInfo"
-        if VersionInfo.parse(self._api.version).match("<5.7.0"):
-            method = "ipInfo"
+        method = 'deviceInfo'
+        if VersionInfo.parse(self._api.version).match('<5.7.0'):
+            method = 'ipInfo'
 
         params = dict()
         if fields:
-            params["fields"] = ",".join([self._check("field", f, str) for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
         if dns:
-            params["dnsName"] = self._check("dns", dns, str)
+            params['dnsName'] = self._check('dns', dns, str)
         if ip_address:
-            params["ip"] = self._check("ip_address", ip_address, str)
+            params['ip'] = self._check('ip_address', ip_address, str)
         if uuid:
-            params["uuid"] = self._check("uuid", uuid, "uuid")
+            params['uuid'] = self._check('uuid', uuid, 'uuid')
 
-        self._check("repository_id", repository_id, int)
+        self._check('repository_id', repository_id, int)
         return self._api.get(
-            f"repository/{repository_id}/{method}", params=params
-        ).json()["response"]
+            f'repository/{repository_id}/{method}', params=params
+        ).json()['response']
 
     def remote_authorize(self, host, username, password):
         """
@@ -763,13 +766,13 @@ class RepositoryAPI(SCEndpoint):
             ...     '192.168.0.101', 'admin', 'password')
         """
         return self._api.post(
-            "repository/authorize",
+            'repository/authorize',
             json={
-                "host": self._check("host", host, str),
-                "username": self._check("username", username, str),
-                "password": self._check("password", password, str),
+                'host': self._check('host', host, str),
+                'username': self._check('username', username, str),
+                'password': self._check('password', password, str),
             },
-        ).json()["response"]
+        ).json()['response']
 
     def remote_fetch(self, host):
         """
@@ -786,5 +789,5 @@ class RepositoryAPI(SCEndpoint):
                 The list of repositories on the downstream Tenable Security Center instance.
         """
         return self._api.get(
-            "repository/fetchRemote", params={"host": self._check("host", host, str)}
-        ).json()["response"]
+            'repository/fetchRemote', params={'host': self._check('host', host, str)}
+        ).json()['response']
