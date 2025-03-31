@@ -27,185 +27,187 @@ class ScanAPI(SCEndpoint):
         """
         Handles parsing the keywords and returns a scan definition document
         """
-        if "inactivity_timeout" in kw:
-            kw["inactivityTimeout"] = str(
+        if 'inactivity_timeout' in kw:
+            kw['inactivityTimeout'] = str(
                 self._check(
-                    "inactivity_timeout", kw["inactivity_timeout"], int, default=3600
+                    'inactivity_timeout', kw['inactivity_timeout'], int, default=3600
                 )
             )
-            del kw["inactivity_timeout"]
+            del kw['inactivity_timeout']
 
-        if "name" in kw:
+        if 'name' in kw:
             # simply verify that the name attribute is a string.
-            self._check("name", kw["name"], str)
+            self._check('name', kw['name'], str)
 
-        if "type" in kw:
+        if 'type' in kw:
             # If the scan type is manually specified, then we will want to make
             # sure that its a valid input.
-            self._check("type", kw["type"], str, choices=["plugin", "policy"])
+            self._check('type', kw['type'], str, choices=['plugin', 'policy'])
 
-        if "description" in kw:
+        if 'description' in kw:
             # The description should always be a string value.
-            self._check("description", kw["description"], str)
+            self._check('description', kw['description'], str)
 
-        if "repo" in kw:
+        if 'repo' in kw:
             # as we accept input as a integer, we need to expand the repository
             # attribute to be a dictionary item with just the ID (per API docs)
-            kw["repository"] = {"id": self._check("repo", kw["repo"], int)}
-            del kw["repo"]
+            kw['repository'] = {'id': self._check('repo', kw['repo'], int)}
+            del kw['repo']
 
-        if "scan_zone" in kw:
+        if 'scan_zone' in kw:
             # similarly to the repository, the API expects the zone to be
             # defined as a sub-dictionary with just the id field.
-            kw["zone"] = {
-                "id": self._check("scan_zone", kw["scan_zone"], int, default=0)
+            kw['zone'] = {
+                'id': self._check('scan_zone', kw['scan_zone'], int, default=0)
             }
-            del kw["scan_zone"]
+            del kw['scan_zone']
 
-        if "email_complete" in kw:
+        if 'email_complete' in kw:
             # As emailOnFinish is effectively a string interpretation of a bool
             # value, if the snake case equivalent is used, we will convert it
             # into the expected parameter and remove the snake cased version.
-            kw["emailOnFinish"] = str(
-                self._check("email_complete", kw["email_complete"], bool, default=False)
+            kw['emailOnFinish'] = str(
+                self._check('email_complete', kw['email_complete'], bool, default=False)
             ).lower()
-            del kw["email_complete"]
+            del kw['email_complete']
 
-        if "email_launch" in kw:
+        if 'email_launch' in kw:
             # As emailOnLaunch is effectively a string interpretation of a bool
             # value, if the snake case equivalent is used, we will convert it
             # into the expected parameter and remove the snake cased version.
-            kw["emailOnLaunch"] = str(
-                self._check("email_launch", kw["email_launch"], bool, default=False)
+            kw['emailOnLaunch'] = str(
+                self._check('email_launch', kw['email_launch'], bool, default=False)
             ).lower()
-            del kw["email_launch"]
+            del kw['email_launch']
 
-        if "host_tracking" in kw:
+        if 'host_tracking' in kw:
             # As host_tracking is effectively a string interpretation of a bool
             # value, if the snake case equivalent is used, we will convert it
             # into the expected parameter and remove the snake cased version.
-            kw["dhcpTracking"] = str(
-                self._check("host_tracking", kw["host_tracking"], bool, default=False)
+            kw['dhcpTracking'] = str(
+                self._check('host_tracking', kw['host_tracking'], bool, default=False)
             ).lower()
-            del kw["host_tracking"]
+            del kw['host_tracking']
 
-        if "timeout" in kw:
+        if 'timeout' in kw:
             # timeout is the checked version of timeoutAction.  If timeout is
             # specified, we will check to make sure that the action is a valid
             # one, put the result into timeoutAction, and remove timeout.
-            kw["timeoutAction"] = self._check(
-                "timeout",
-                kw["timeout"],
+            kw['timeoutAction'] = self._check(
+                'timeout',
+                kw['timeout'],
                 str,
-                choices=["discard", "import", "rollover"],
-                default="import",
+                choices=['discard', 'import', 'rollover'],
+                default='import',
             )
-            del kw["timeout"]
+            del kw['timeout']
 
-        if "vhosts" in kw:
+        if 'vhosts' in kw:
             # As scanningVirtualHosts is effectively a string interpretation of
             # a bool value, if the snake case equivalent is used, we will
             # convert it into the expected parameter and remove the snake cased
             # version.
-            kw["scanningVirtualHosts"] = str(
-                self._check("vhosts", kw["vhosts"], bool, default=False)
+            kw['scanningVirtualHosts'] = str(
+                self._check('vhosts', kw['vhosts'], bool, default=False)
             ).lower()
-            del kw["vhosts"]
+            del kw['vhosts']
 
-        if "rollover" in kw:
+        if 'rollover' in kw:
             # The scan rolloverType parameter simply shortened to better conform
             # to pythonic naming convention.
-            kw["rolloverType"] = self._check(
-                "rollover",
-                kw["rollover"],
+            kw['rolloverType'] = self._check(
+                'rollover',
+                kw['rollover'],
                 str,
-                choices=["nextDay", "template"],
-                default="template",
+                choices=['nextDay', 'template'],
+                default='template',
             )
-            del kw["rollover"]
+            del kw['rollover']
 
-        if "targets" in kw:
+        if 'targets' in kw:
             # targets is list representation of a comma-separated string of
             # values for the ipList attribute.  By handling as a list instead of
             # the raw string variant the API expects, we can ensure that there
             # isn't any oddities, such as extra spaces, between the commas.
-            kw["ipList"] = ",".join(
+            kw['ipList'] = ','.join(
                 [
-                    self._check("target", i.strip(), str)
-                    for i in self._check("targets", kw["targets"], list)
+                    self._check('target', i.strip(), str)
+                    for i in self._check('targets', kw['targets'], list)
                 ]
             )
-            del kw["targets"]
+            del kw['targets']
 
-        if "max_time" in kw:
+        if 'max_time' in kw:
             # maxScanTime is a integer encased in a string value.  the snake
             # cased version of that expects an integer and converts it into the
             # string equivalent.
-            max_time = int(kw.pop("max_time", None))
-            kw["maxScanTime"] = str(max_time)
+            max_time = kw.pop('max_time', 0)
+            if max_time in ('unlimited', 0):
+                max_time = 'unlimited'
+            kw['maxScanTime'] = str(max_time)
 
-        if "auto_mitigation" in kw:
+        if 'auto_mitigation' in kw:
             # As classifyMitigatedAge is effectively a string interpretation of
             # an int value, if the snake case equivalent is used, we will
             # convert it into the expected parameter and remove the snake cased
             # version.
-            kw["classifyMitigatedAge"] = str(
-                self._check("auto_mitigation", kw["auto_mitigation"], int, default=0)
+            kw['classifyMitigatedAge'] = str(
+                self._check('auto_mitigation', kw['auto_mitigation'], int, default=0)
             ).lower()
-            del kw["auto_mitigation"]
+            del kw['auto_mitigation']
 
         # hand off the building the schedule sub-document to the schedule
         # document builder.
-        if "schedule" in kw:
-            kw["schedule"] = self._schedule_constructor(kw["schedule"])
+        if 'schedule' in kw:
+            kw['schedule'] = self._schedule_constructor(kw['schedule'])
 
-        if "reports" in kw:
+        if 'reports' in kw:
             # as the reports list should already be in a format that the API
             # expects, we will simply verify that everything looks like it should.
-            for item in self._check("reports", kw["reports"], list):
-                (self._check("report:id", item["id"], int),)
+            for item in self._check('reports', kw['reports'], list):
+                (self._check('report:id', item['id'], int),)
                 self._check(
-                    "reportSource",
-                    item["reportSource"],
+                    'reportSource',
+                    item['reportSource'],
                     str,
                     choices=[
-                        "cumulative",
-                        "patched",
-                        "individual",
-                        "lce",
-                        "archive",
-                        "mobile",
+                        'cumulative',
+                        'patched',
+                        'individual',
+                        'lce',
+                        'archive',
+                        'mobile',
                     ],
                 )
 
-        if "asset_lists" in kw:
+        if 'asset_lists' in kw:
             # asset_lists is the collapsed list of id documents that the API
             # expects to see.  We will check each item in the list to make sure
             # its in the right type and then expand it into a sub-document.
-            kw["assets"] = [
-                {"id": self._check("asset_list:id", i, int)}
-                for i in self._check("assets_lists", kw["asset_lists"], list)
+            kw['assets'] = [
+                {'id': self._check('asset_list:id', i, int)}
+                for i in self._check('assets_lists', kw['asset_lists'], list)
             ]
-            del kw["asset_lists"]
+            del kw['asset_lists']
 
-        if "creds" in kw:
+        if 'creds' in kw:
             # creds is the collapsed list of id documents that the API expects
             # to see.  We will check each item in the list to make sure its in
             # the right type and then expand it into a sub-document.
-            kw["credentials"] = [
-                {"id": self._check("cred:id", i, int)}
-                for i in self._check("creds", kw["creds"], list)
+            kw['credentials'] = [
+                {'id': self._check('cred:id', i, int)}
+                for i in self._check('creds', kw['creds'], list)
             ]
-            del kw["creds"]
+            del kw['creds']
 
-        if "policy_id" in kw:
+        if 'policy_id' in kw:
             # If just the policy_id is specified, then we are safe to assume
             # that this is a policy-based scan.  set the policy id attribute
             # within the policy document as the API would expect and remove the
             # snake cased variant that was inputted.
-            kw["type"] = "policy"
-            kw["policy"] = {"id": self._check("policy_id", kw["policy_id"], int)}
-            del kw["policy_id"]
+            kw['type'] = 'policy'
+            kw['policy'] = {'id': self._check('policy_id', kw['policy_id'], int)}
+            del kw['policy_id']
 
         return kw
 
@@ -229,9 +231,9 @@ class ScanAPI(SCEndpoint):
         """
         params = dict()
         if fields:
-            params["fields"] = ",".join([self._check("field", f, str) for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
-        return self._api.get("scan", params=params).json()["response"]
+        return self._api.get('scan', params=params).json()['response']
 
     def create(self, name, repo, **kw):
         """
@@ -306,17 +308,17 @@ class ScanAPI(SCEndpoint):
             >>> sc.scans.create('Example scan', 1, policy_id=1001,
             ...     targets=['127.0.0.1'])
         """
-        kw["name"] = name
-        kw["repo"] = repo
+        kw['name'] = name
+        kw['repo'] = repo
 
         # If the policy_id or plugin_id is set (as one or the other generally
         # should be) then we will automatically set the scan type based on
         # which of the values is defined.
-        if "policy_id" in kw:
-            kw["type"] = "policy"
+        if 'policy_id' in kw:
+            kw['type'] = 'policy'
 
         scan = self._constructor(**kw)
-        return self._api.post("scan", json=scan).json()["response"]
+        return self._api.post('scan', json=scan).json()['response']
 
     def details(self, id, fields=None):
         """
@@ -338,11 +340,11 @@ class ScanAPI(SCEndpoint):
         """
         params = dict()
         if fields:
-            params["fields"] = ",".join([self._check("field", f, str) for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
         return self._api.get(
-            "scan/{}".format(self._check("id", id, int)), params=params
-        ).json()["response"]
+            'scan/{}'.format(self._check('id', id, int)), params=params
+        ).json()['response']
 
     def edit(self, id, **kw):
         """
@@ -412,8 +414,8 @@ class ScanAPI(SCEndpoint):
         """
         scan = self._constructor(**kw)
         return self._api.patch(
-            "scan/{}".format(self._check("id", id, int)), json=scan
-        ).json()["response"]
+            'scan/{}'.format(self._check('id', id, int)), json=scan
+        ).json()['response']
 
     def delete(self, id):
         """
@@ -431,8 +433,8 @@ class ScanAPI(SCEndpoint):
         Examples:
             >>> sc.scans.delete(1)
         """
-        return self._api.delete("scan/{}".format(self._check("id", id, int))).json()[
-            "response"
+        return self._api.delete('scan/{}'.format(self._check('id', id, int))).json()[
+            'response'
         ]
 
     def copy(self, id, name, user_id):
@@ -455,13 +457,13 @@ class ScanAPI(SCEndpoint):
             >>> sc.scans.copy(1, name='Cloned Scan')
         """
         payload = {
-            "name": self._check("name", name, str),
-            "targetUser": {"id": self._check("user_id", user_id, int)},
+            'name': self._check('name', name, str),
+            'targetUser': {'id': self._check('user_id', user_id, int)},
         }
 
         return self._api.post(
-            "scan/{}/copy".format(self._check("id", id, int)), json=payload
-        ).json()["response"]["scan"]
+            'scan/{}/copy'.format(self._check('id', id, int)), json=payload
+        ).json()['response']['scan']
 
     def launch(self, id, diagnostic_target=None, diagnostic_password=None):
         """
@@ -491,13 +493,13 @@ class ScanAPI(SCEndpoint):
         """
         payload = dict()
         if diagnostic_target and diagnostic_password:
-            payload["diagnosticTarget"] = self._check(
-                "diagnostic_target", diagnostic_target, str
+            payload['diagnosticTarget'] = self._check(
+                'diagnostic_target', diagnostic_target, str
             )
-            payload["diagnosticPassword"] = self._check(
-                "diagnostic_password", diagnostic_password, str
+            payload['diagnosticPassword'] = self._check(
+                'diagnostic_password', diagnostic_password, str
             )
 
         return self._api.post(
-            "scan/{}/launch".format(self._check("id", id, int)), json=payload
-        ).json()["response"]
+            'scan/{}/launch'.format(self._check('id', id, int)), json=payload
+        ).json()['response']
