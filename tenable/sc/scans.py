@@ -138,11 +138,13 @@ class ScanAPI(SCEndpoint):
             del kw["targets"]
 
         if "max_time" in kw:
-            # maxScanTime is a integer encased in a string value.  the snake
-            # cased version of that expects an integer and converts it into the
-            # string equivalent.
-            max_time = int(kw.pop("max_time", None))
-            kw["maxScanTime"] = str(max_time)
+            # Handle the maxScanTime parameter, which expects a string in API
+            # representing either a number or "unlimited"
+            # keep unlimited because details get "unlimited" not 0 or -
+            max_time_val = kw.pop("max_time")
+            kw["maxScanTime"] = (
+                "unlimited" if max_time_val == "unlimited" 
+                else str(int(max_time_val)))
 
         if "auto_mitigation" in kw:
             # As classifyMitigatedAge is effectively a string interpretation of
