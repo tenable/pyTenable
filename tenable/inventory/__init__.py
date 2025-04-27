@@ -20,6 +20,7 @@ from typing import Optional
 from tenable.base.platform import APIPlatform
 from .assets.api import AssetsAPI
 from .software.api import SoftwareAPI
+from .tags.api import TagsAPI
 
 
 class TenableInventory(APIPlatform):
@@ -74,3 +75,11 @@ class TenableInventory(APIPlatform):
         :doc:`Tenable Inventory Software APIs <findings>`.
         """
         return SoftwareAPI(self)
+
+    @property
+    def tags(self):
+        """
+        The interface object for the
+        :doc:`Tenable Inventory Tags APIs <findings>`.
+        """
+        return TagsAPI(self)
