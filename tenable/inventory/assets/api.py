@@ -74,7 +74,7 @@ class AssetsAPI(APIEndpoint):
             offset (int, optional):
                 Number of records to skip. Defaults to 0.
             limit (int, optional):
-                Maximum number of records per page. Defaults to 100.
+                Maximum number of records per page. Defaults to 1000.
             sort_by (str, optional):
                 Field to sort by.
             sort_direction (SortDirection, optional):
