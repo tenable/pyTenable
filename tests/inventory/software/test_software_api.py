@@ -220,17 +220,19 @@ def software_properties_response() -> dict[str, list[dict]]:
 @pytest.fixture
 def software_response() -> dict:
     return {"values": [{"application": ".net_framework", "publisher": "microsoft", "type": ["APPLICATION"],
-                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 2}},
+                        "extra_properties": {"asset_sources": ["T.IO"], "cpe_count": 2}},
                        {"application": "edge", "publisher": "microsoft", "type": ["APPLICATION"],
-                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}},
+                        "extra_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}},
                        {"application": "onedrive", "publisher": "microsoft", "type": ["APPLICATION"],
-                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 3}},
+                        "extra_properties": {"asset_sources": ["T.IO"], "cpe_count": 3}},
                        {"application": "remote_desktop_connection", "publisher": "microsoft", "type": ["APPLICATION"],
-                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}},
+                        "extra_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}},
                        {"application": "sql_server", "publisher": "microsoft", "type": ["APPLICATION"],
-                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}},
+                        "extra_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}},
                        {"application": "windows_defender", "publisher": "microsoft", "type": ["APPLICATION"],
-                        "additional_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}}], "total_count": 6}
+                        "extra_properties": {"asset_sources": ["T.IO"], "cpe_count": 1}}], "total_count": 6,
+            "offset": 0, "limit": 100, "sort_by": "application", "sort_direction": "desc"
+            }
 
 
 @responses.activate
@@ -254,7 +256,7 @@ def test_list(api, software_response):
     extra_properties = ["apa_asset_total_paths_count"]
     offset = 0
     limit = 100
-    sort_by = "aes"
+    sort_by = "application"
     sort_direction = SortDirection.DESC
     timezone = "America/Chicago"
 
