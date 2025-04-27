@@ -13,9 +13,13 @@ class Software(BaseModel):
     application: str
     publisher: str
     type: list[Part]
-    additional_properties: dict[str, Any]  # Supports arbitrary key-value pairs
+    extra_properties: dict[str, Any]  # Supports arbitrary key-value pairs
 
 
 class SoftwareValues(BaseModel):
     values: list[Software]
     total_count: int
+    offset: int
+    limit: int
+    sort_by: str
+    sort_direction: str
