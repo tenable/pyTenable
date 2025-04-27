@@ -147,8 +147,8 @@ def assets_response() -> dict:
                 "name": "accurics_1669914793_elb",
                 "aes": 0,
                 "acr": 0,
-                "additional_properties": {}
-            }], "total_count": 1868}
+                "extra_properties": {}
+            }], "total_count": 1868, "offset": 0, "limit": 100, "sort_by": "aes", "sort_direction": "DESC"}
 
 
 @responses.activate
