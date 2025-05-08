@@ -3,8 +3,8 @@ import json
 import pytest
 import responses
 
-from tenable.inventory.assets.schema import AssetClass, Assets
-from tenable.inventory.schema import Field, Properties, SortDirection, QueryMode, PropertyFilter, Operator
+from tenable.exposure_management.inventory.assets import AssetClass, Assets
+from tenable.exposure_management.inventory.schema import Field, Properties, SortDirection, QueryMode, PropertyFilter, Operator
 
 
 @pytest.fixture

@@ -3,7 +3,7 @@ import os
 
 import pytest
 
-from tenable.inventory import TenableInventory
+from tenable.exposure_management.inventory import TenableInventory
 
 
 @pytest.fixture

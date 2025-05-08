@@ -3,8 +3,8 @@ import json
 import pytest
 import responses
 
-from tenable.inventory.schema import Field, Properties, SortDirection, Operator, PropertyFilter, QueryMode
-from tenable.inventory.tags.schema import Tags
+from tenable.exposure_management.inventory.schema import Field, Properties, SortDirection, Operator, PropertyFilter, QueryMode
+from tenable.exposure_management.tags import Tags
 
 
 @pytest.fixture

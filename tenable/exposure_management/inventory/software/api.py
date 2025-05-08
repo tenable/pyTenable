@@ -12,8 +12,8 @@ These methods can be accessed at ``TenableInventory.software``.
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.inventory.schema import Properties, Field, QueryMode, PropertyFilter, SortDirection
-from tenable.inventory.software.schema import SoftwareValues
+from tenable.exposure_management.inventory.schema import Properties, Field, QueryMode, PropertyFilter, SortDirection
+from tenable.exposure_management.inventory.software.schema import SoftwareValues
 
 
 class SoftwareAPI(APIEndpoint):

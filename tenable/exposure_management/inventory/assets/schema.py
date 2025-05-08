@@ -1,7 +1,7 @@
 from typing import Any
 from pydantic import BaseModel
 
-from tenable.inventory.schema import AssetClass
+from tenable.exposure_management.inventory.schema import AssetClass
 
 
 class Asset(BaseModel):

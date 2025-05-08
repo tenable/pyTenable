@@ -20,7 +20,7 @@ from typing import Optional
 from tenable.base.platform import APIPlatform
 from .assets.api import AssetsAPI
 from .software.api import SoftwareAPI
-from .tags.api import TagsAPI
+from tenable.exposure_management.tags.api import TagsAPI
 
 
 class TenableInventory(APIPlatform):

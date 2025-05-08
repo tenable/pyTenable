@@ -12,8 +12,8 @@ These methods can be accessed at ``TenableInventory.tags``.
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.inventory.schema import Properties, Field, QueryMode, PropertyFilter, SortDirection
-from tenable.inventory.tags.schema import Tags
+from tenable.exposure_management.inventory.schema import Properties, Field, QueryMode, PropertyFilter, SortDirection
+from tenable.exposure_management.tags.schema import Tags
 
 
 class TagsAPI(APIEndpoint):

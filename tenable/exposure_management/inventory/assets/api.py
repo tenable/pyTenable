@@ -12,8 +12,8 @@ These methods can be accessed at ``TenableInventory.assets``.
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.inventory.assets.schema import AssetClass, Assets
-from tenable.inventory.schema import Field, Properties, SortDirection, QueryMode, PropertyFilter
+from tenable.exposure_management.inventory.assets.schema import AssetClass, Assets
+from tenable.exposure_management.inventory.schema import Field, Properties, SortDirection, QueryMode, PropertyFilter
 
 
 class AssetsAPI(APIEndpoint):
