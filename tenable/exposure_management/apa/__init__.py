@@ -32,33 +32,7 @@ class TenableAPA(APIPlatform):
 
     Examples:
         Basic Example:
-
-        >>> from tenable.apa import TenableAPA
-        >>> tapa = TenableAPA('ACCESS_KEY', 'SECRET_KEY')
-
-        Example with proper identification:
-
-        >>> tapa = TenableAPA('ACCESS_KEY', 'SECRET_KEY',
-        >>>     vendor='Company Name',
-        >>>     product='My Awesome Widget',
-        >>>     build='1.0.0')
     """
-
-    _env_base = "TAPA"
-    _url = "https://cloud.tenable.com"
-    _box = True
-
-    def __init__(
-        self,
-        access_key: Optional[str] = None,
-        secret_key: Optional[str] = None,
-        **kwargs
-    ):
-        if access_key:
-            kwargs["access_key"] = access_key
-        if secret_key:
-            kwargs["secret_key"] = secret_key
-        super().__init__(**kwargs)
 
     @property
     def findings(self):
