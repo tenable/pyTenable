@@ -18,9 +18,6 @@ This package covers the Tenable Exposure Management.
 from typing import Optional
 
 from tenable.base.platform import APIPlatform
-from .assets.api import AssetsAPI
-from .inventory import InventoryAPI
-from .software.api import SoftwareAPI
 from tenable.exposure_management.tags.api import TagsAPI
 
 
