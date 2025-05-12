@@ -1,9 +1,11 @@
 """
 Tags
-=============
+=====
 
-Methods described in this section relate to the tags API.
-These methods can be accessed at ``TenableInventory.tags``.
+The following methods allow for interaction with the Tenable Exposure Management
+Tags APIs.
+
+Methods available on ``TenableExposureManagement.tags``:
 
 .. rst-class:: hide-signature
 .. autoclass:: TagsAPI
@@ -17,7 +19,10 @@ from tenable.exposure_management.tags.schema import Tags
 
 
 class TagsAPI(APIEndpoint):
-
+    """
+    The interface object for the
+    :doc:`Tenable Exposure Management Tags APIs <tags>`.
+    """
     def list_properties(self) -> list[Field]:
         """
          Retrieve tags properties

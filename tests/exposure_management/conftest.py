@@ -3,13 +3,13 @@ import os
 
 import pytest
 
-from tenable.exposure_management.inventory import TenableInventory
+from tenable.exposure_management import TenableExposureManagement
 
 
 @pytest.fixture
-def api():
+def tenable_exposure_management_api():
     '''api key fixture'''
-    return TenableInventory(
+    return TenableExposureManagement(
         os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
         os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',

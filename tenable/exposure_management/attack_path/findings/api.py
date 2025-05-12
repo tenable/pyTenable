@@ -3,7 +3,7 @@ Findings
 =============
 
 Methods described in this section relate to the findings API.
-These methods can be accessed at ``TenableAPA.findings``.
+These methods can be accessed at ``TenableExposureManagement.attack_path.findings``.
 
 .. rst-class:: hide-signature
 .. autoclass:: FindingsAPI

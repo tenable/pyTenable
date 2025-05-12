@@ -18,7 +18,8 @@ Attack Path APIs.
     repositories
 '''
 from tenable.base.endpoint import APIEndpoint
-from tenable.exposure_management.attack_path import FindingsAPI, VectorsAPI
+from tenable.exposure_management.attack_path.findings.api import FindingsAPI
+from tenable.exposure_management.attack_path.vectors.api import VectorsAPI
 
 
 class AttackPathAPI(APIEndpoint):

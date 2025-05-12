@@ -18,6 +18,8 @@ This package covers the Tenable Exposure Management.
 from typing import Optional
 
 from tenable.base.platform import APIPlatform
+from tenable.exposure_management.attack_path.api import AttackPathAPI
+from tenable.exposure_management.inventory.api import InventoryAPI
 from tenable.exposure_management.tags.api import TagsAPI
 
 
@@ -59,18 +61,18 @@ class TenableExposureManagement(APIPlatform):
         super().__init__(**kwargs)
 
     @property
-    def apa(self):
+    def attack_path(self):
         """
         The interface object for the
-        :doc:`Tenable Inventory Assets APIs <findings>`.
+        :doc:`Tenable Exposure Management Attack Path APIs <attack_path>`.
         """
-        return AssetsAPI(self)
+        return AttackPathAPI(self)
 
     @property
     def inventory(self):
         """
         The interface object for the
-        :doc:`Tenable Inventory Software APIs <findings>`.
+        :doc:`Tenable Exposure Management Inventory APIs <inventory>`.
         """
         return InventoryAPI(self)
 
@@ -78,6 +80,6 @@ class TenableExposureManagement(APIPlatform):
     def tags(self):
         """
         The interface object for the
-        :doc:`Tenable Inventory Tags APIs <findings>`.
+        :doc:`Tenable Exposure Management Tags APIs <tags>`.
         """
         return TagsAPI(self)

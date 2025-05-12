@@ -1,9 +1,9 @@
 """
 Assets
-=============
+=======
 
 Methods described in this section relate to the assets API.
-These methods can be accessed at ``TenableInventory.assets``.
+These methods can be accessed at ``TenableExposureManagement.inventory.assets``.
 
 .. rst-class:: hide-signature
 .. autoclass:: AssetsAPI

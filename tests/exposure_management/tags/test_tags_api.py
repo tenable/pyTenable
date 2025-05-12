@@ -4,7 +4,7 @@ import pytest
 import responses
 
 from tenable.exposure_management.inventory.schema import Field, Properties, SortDirection, Operator, PropertyFilter, QueryMode
-from tenable.exposure_management.tags import Tags
+from tenable.exposure_management.tags.schema import Tags
 
 
 @pytest.fixture
@@ -51,19 +51,19 @@ def tags_response() -> dict:
 
 
 @responses.activate
-def test_properties_list(api, tags_properties_response):
+def test_properties_list(tenable_exposure_management_api, tags_properties_response):
     # Arrange
     responses.get('https://cloud.tenable.com/inventory/api/v1/tags/properties',
                   json=tags_properties_response,
                   match=[responses.matchers.query_param_matcher({})])
     # Act
-    tags_properties_result: list[Field] = api.tags.list_properties()
+    tags_properties_result: list[Field] = tenable_exposure_management_api.tags.list_properties()
     # Assert
     assert tags_properties_result == Properties(**tags_properties_response).properties
 
 
 @responses.activate
-def test_list(api, tags_response):
+def test_list(tenable_exposure_management_api, tags_response):
     query_text = "neq-ap"
     query_mode = QueryMode.SIMPLE
     filters = [PropertyFilter(property="tag_name", operator=Operator.EQUAL, value=["neq-ap"])]
@@ -96,7 +96,7 @@ def test_list(api, tags_response):
         match=[responses.matchers.body_matcher(params=json.dumps(payload))]
     )
     # Act
-    tags: Tags = api.tags.list(
+    tags: Tags = tenable_exposure_management_api.tags.list(
         query_text=query_text,
         query_mode=query_mode,
         filters=filters,
