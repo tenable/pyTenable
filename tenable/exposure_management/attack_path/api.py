@@ -1,6 +1,6 @@
 '''
 Attack Path
-==================
+===========
 
 The following sub-package allows for interaction with the Tenable Exposure Management
 Attack Path APIs.

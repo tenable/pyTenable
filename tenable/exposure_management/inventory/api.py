@@ -1,6 +1,6 @@
 """
 Inventory
-==================
+=========
 
 The following sub-package allows for interaction with the Tenable Exposure Management
 Inventory APIs.
