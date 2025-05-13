@@ -32,7 +32,6 @@ class FindingIterator(APIIterator):
         Request the next page of data
         """
         payload = copy(self._payload)
-        print(self._next_token)
         payload["next"] = self._next_token
 
         resp = self._api.get("apa/findings-api/v1/findings",
