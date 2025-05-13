@@ -1,7 +1,7 @@
 import pytest
 import responses
 
-from tenable.exposuremanagement.attack_path.findings.findings import FindingIterator
+from tenable.exposuremanagement.attack_path.findings.api import FindingIterator
 from tenable.exposuremanagement.attack_path.findings.schema import FindingsPageSchema
 
 
