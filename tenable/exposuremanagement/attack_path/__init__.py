@@ -19,8 +19,8 @@ This package covers the Tenable APA.
 from typing import Optional
 
 from tenable.base.platform import APIPlatform
-from .findings.api import FindingsAPI
-from .vectors.api import VectorsAPI
+from .findings.findings import FindingsAPI
+from .vectors.vectors import VectorsAPI
 
 
 class TenableAPA(APIPlatform):

@@ -1,1 +1,1 @@
-.. automodule:: tenable.exposuremanagement.attack_path.findings.api
+.. automodule:: tenable.exposuremanagement.attack_path.findings.findings

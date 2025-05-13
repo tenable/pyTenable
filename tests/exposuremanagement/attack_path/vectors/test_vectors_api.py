@@ -1,7 +1,7 @@
 import pytest
 import responses
 
-from tenable.exposuremanagement.attack_path.vectors.api import VectorIterator
+from tenable.exposuremanagement.attack_path.vectors.vectors import VectorIterator
 from tenable.exposuremanagement.attack_path.vectors.schema import VectorsPageSchema
 
 
