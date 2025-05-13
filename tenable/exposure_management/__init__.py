@@ -1,5 +1,5 @@
 """
-Exposure Management
+Tenable Exposure Management
 ============================
 
 This package covers the Tenable Exposure Management.
@@ -12,7 +12,9 @@ This package covers the Tenable Exposure Management.
     :hidden:
     :glob:
 
-    assets
+    attack_path
+    inventory
+    tags
 """
 
 from typing import Optional
