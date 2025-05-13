@@ -187,4 +187,4 @@ def test_findings_list_findings_page_response(tenable_exposure_management_api, f
 
     findings_page: FindingsPageSchema = tenable_exposure_management_api.attack_path.findings.list(return_iterator=False)
 
-    assert findings_page == FindingsPageSchema().load(findings_page_response)
+    assert findings_page == FindingsPageSchema(**findings_page_response)

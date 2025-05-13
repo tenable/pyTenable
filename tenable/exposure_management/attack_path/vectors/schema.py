@@ -1,51 +1,52 @@
-from marshmallow import fields, Schema
+from pydantic import BaseModel
+from typing import List, Optional, Any
 
 
-class SourceInformationSchema(Schema):
-    provider_detection_id = fields.Str(allow_none=True)
-    detection_code = fields.Str(allow_none=True)
-    reason_code_name = fields.Str(allow_none=True)
-    asset_id = fields.Str(allow_none=True)
-    id = fields.Str(allow_none=True)
-    provider_code = fields.Str(allow_none=True)
-    type = fields.Str(allow_none=True)
-    reason_id = fields.Str(allow_none=True)
-    plugin_name = fields.Str(allow_none=True)
+class SourceInformationSchema(BaseModel):
+    provider_detection_id: Optional[str] = None
+    detection_code: Optional[str] = None
+    reason_code_name: Optional[str] = None
+    asset_id: Optional[str] = None
+    id: Optional[str] = None
+    provider_code: Optional[str] = None
+    type: Optional[str] = None
+    reason_id: Optional[str] = None
+    plugin_name: Optional[str] = None
 
 
-class TechniqueSchema(Schema):
-    source_information = fields.Str(allow_none=True)
-    name = fields.Str(allow_none=True)
-    full_name = fields.Str(allow_none=True)
-    asset_id = fields.Str(allow_none=True)
-    id = fields.Int(allow_none=True)
-    labels = fields.List(fields.Str(), allow_none=True)
-    procedure_uuid = fields.Str(allow_none=True)
+class TechniqueSchema(BaseModel):
+    source_information: Optional[str] = None
+    name: Optional[str] = None
+    full_name: Optional[str] = None
+    asset_id: Optional[str] = None
+    id: Optional[int] = None
+    labels: Optional[List[str]] = None
+    procedure_uuid: Optional[str] = None
 
 
-class NodeSchema(Schema):
-    name = fields.Str(allow_none=True)
-    full_name = fields.Str(allow_none=True)
-    asset_id = fields.Str(allow_none=True)
-    id = fields.Int(allow_none=True)
-    labels = fields.List(fields.Str(), allow_none=True)
+class NodeSchema(BaseModel):
+    name: Optional[str] = None
+    full_name: Optional[str] = None
+    asset_id: Optional[str] = None
+    id: Optional[int] = None
+    labels: Optional[List[str]] = None
 
 
-class VectorSchema(Schema):
-    is_new = fields.Bool(allow_none=True)
-    vector_id = fields.Str(allow_none=True)
-    path = fields.Raw(allow_none=True)
-    techniques = fields.List(fields.Nested(TechniqueSchema), allow_none=True)
-    nodes = fields.List(fields.Nested(NodeSchema), allow_none=True)
-    findings_names = fields.List(fields.Str(), allow_none=True)
-    name = fields.Str(allow_none=True)
-    summary = fields.Str(allow_none=True)
-    first_aes = fields.Raw(allow_none=True)
-    last_acr = fields.Int(allow_none=True)
+class VectorSchema(BaseModel):
+    is_new: Optional[bool] = None
+    vector_id: Optional[str] = None
+    path: Optional[Any] = None
+    techniques: Optional[List[TechniqueSchema]] = None
+    nodes: Optional[List[NodeSchema]] = None
+    findings_names: Optional[List[str]] = None
+    name: Optional[str] = None
+    summary: Optional[str] = None
+    first_aes: Optional[Any] = None
+    last_acr: Optional[int] = None
 
 
-class VectorsPageSchema(Schema):
-    data = fields.List(fields.Nested(VectorSchema), allow_none=True)
-    page_number = fields.Int(allow_none=True)
-    count = fields.Int(allow_none=True)
-    total = fields.Int(allow_none=True)
+class VectorsPageSchema(BaseModel):
+    data: Optional[List[VectorSchema]] = None
+    page_number: Optional[int] = None
+    count: Optional[int] = None
+    total: Optional[int] = None

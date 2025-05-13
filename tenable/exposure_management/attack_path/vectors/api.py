@@ -15,7 +15,7 @@ from typing import Dict, Optional, Union
 
 from restfly import APIIterator
 
-from tenable.apa.vectors.schema import VectorsPageSchema
+from tenable.exposure_management.attack_path.vectors.schema import VectorsPageSchema
 from tenable.base.endpoint import APIEndpoint
 
 
@@ -42,7 +42,7 @@ class VectorIterator(APIIterator):
 
 
 class VectorsAPI(APIEndpoint):
-    _schema = VectorsPageSchema()
+    _schema = VectorsPageSchema
 
     def list(
             self,
@@ -122,6 +122,4 @@ class VectorsAPI(APIEndpoint):
             payload["run_ai_summarization"] = 'true'
         if return_iterator:
             return VectorIterator(self._api, _payload=payload)
-        return self._schema.load(
-            self._get(path="apa/api/discover/v1/vectors", params=payload)
-        )
+        return self._schema(**self._get(path="apa/api/discover/v1/vectors", params=payload))

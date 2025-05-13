@@ -15,7 +15,7 @@ from typing import Dict, Optional, Union
 
 from restfly import APIIterator
 
-from tenable.apa.findings.schema import FindingsPageSchema
+from tenable.exposure_management.attack_path.findings.schema import FindingsPageSchema
 from tenable.base.endpoint import APIEndpoint
 
 
@@ -43,7 +43,7 @@ class FindingIterator(APIIterator):
 
 
 class FindingsAPI(APIEndpoint):
-    _schema = FindingsPageSchema()
+    _schema = FindingsPageSchema
 
     def list(
         self,
@@ -135,6 +135,4 @@ class FindingsAPI(APIEndpoint):
         if return_iterator:
             return FindingIterator(self._api, _payload=payload,
                                    _next_token=next_token)
-        return self._schema.load(
-            self._get(path="apa/findings-api/v1/findings", params=payload)
-        )
+        return self._schema(**self._get(path="apa/findings-api/v1/findings", params=payload))

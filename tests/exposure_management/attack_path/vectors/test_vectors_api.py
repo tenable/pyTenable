@@ -137,4 +137,4 @@ def test_vectors_list_vector_page_response(tenable_exposure_management_api, vect
 
     vectors_page: VectorsPageSchema = tenable_exposure_management_api.attack_path.vectors.list(return_iterator=False)
 
-    assert vectors_page == VectorsPageSchema().load(vectors_page_response)
+    assert vectors_page == VectorsPageSchema(**vectors_page_response)
