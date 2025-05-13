@@ -35,7 +35,7 @@ class TenableExposureManagement(APIPlatform):
     Examples:
         Basic Example:
 
-        >>> from tenable.exposure_management import TenableExposureManagement
+        >>> from tenable.exposuremanagement import TenableExposureManagement
         >>> tenable_exposure_management = TenableExposureManagement('ACCESS_KEY', 'SECRET_KEY')
 
         Example with proper identification:
