@@ -13,9 +13,8 @@ Attack Path APIs.
     :hidden:
     :glob:
 
-    images
-    reports
-    repositories
+    findings
+    vectors
 '''
 from tenable.base.endpoint import APIEndpoint
 from tenable.exposuremanagement.attack_path.findings.api import FindingsAPI
