@@ -11,51 +11,55 @@ Methods available on ``TenableExposureManagement.tags``:
 .. autoclass:: TagsAPI
     :members:
 """
+
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.exposuremanagement.inventory.schema import Properties, Field, QueryMode, PropertyFilter, SortDirection
+from tenable.exposuremanagement.inventory.schema import (
+    Field,
+    Properties,
+    PropertyFilter,
+    QueryMode,
+    SortDirection,
+)
 from tenable.exposuremanagement.tags.schema import Tags
 
 
 class TagsAPI(APIEndpoint):
-    """
-    The interface object for the
-    :doc:`Tenable Exposure Management Tags APIs <tags>`.
-    """
     def list_properties(self) -> list[Field]:
         """
-         Retrieve tags properties
+        Retrieve tags properties
 
         Returns:
-            :list:`Field`:
-                The tags properties.
+            The tags properties.
 
-         Examples:
+        Examples:
              >>> tenable_inventory_tags_properties = tenable_inventory.tags.list_properties()
              >>> for tag_property in tenable_inventory_tags_properties:
              ...     pprint(tag_property)
 
         """
-        tag_properties_response: dict[str, list[dict]] = self._get(path="inventory/api/v1/tags/properties")
+        tag_properties_response: dict[str, list[dict]] = self._get(
+            path='inventory/api/v1/tags/properties'
+        )
         return Properties(**tag_properties_response).properties
 
     def list(
-            self,
-            query_text: Optional[str] = None,
-            query_mode: Optional[QueryMode] = None,
-            filters: Optional[list[PropertyFilter]] = None,
-            extra_properties: Optional[list[str]] = None,
-            offset: Optional[int] = None,
-            limit: Optional[int] = None,
-            sort_by: Optional[str] = None,
-            sort_direction: Optional[SortDirection] = None,
-            timezone: Optional[str] = None,
+        self,
+        query_text: Optional[str] = None,
+        query_mode: Optional[QueryMode] = None,
+        filters: Optional[list[PropertyFilter]] = None,
+        extra_properties: Optional[list[str]] = None,
+        offset: Optional[int] = None,
+        limit: Optional[int] = None,
+        sort_by: Optional[str] = None,
+        sort_direction: Optional[SortDirection] = None,
+        timezone: Optional[str] = None,
     ) -> Tags:
         """
-         Retrieve assets
+        Retrieve assets
 
-         Args:
+        Args:
             query_text (str, optional):
                 The text to search for.
             query_mode (QueryMode, optional):
@@ -76,10 +80,9 @@ class TagsAPI(APIEndpoint):
                 Timezone setting for the query. Defaults to "UTC".
 
         Returns:
-            :obj:`Tag`:
-                The request tags.
+            The request tags.
 
-         Examples:
+        Examples:
              >>> tags = tenable_inventory.tags.list()
              >>> for tag in tags:
              ...     pprint(tag)
@@ -88,26 +91,25 @@ class TagsAPI(APIEndpoint):
         payload = {}
 
         if query_text is not None and query_mode is not None and filters is not None:
-            payload["search"] = {
-                "query": {
-                    "text": query_text,
-                    "mode": query_mode.value
-                },
-                "filters": [filter.model_dump(mode='json') for filter in filters] if filters is not None else []
+            payload['search'] = {
+                'query': {'text': query_text, 'mode': query_mode.value},
+                'filters': [filter.model_dump(mode='json') for filter in filters]
+                if filters is not None
+                else [],
             }
 
         if extra_properties is not None:
-            payload["extra_properties"] = extra_properties
+            payload['extra_properties'] = extra_properties
         if offset is not None:
-            payload["offset"] = offset
+            payload['offset'] = offset
         if limit is not None:
-            payload["limit"] = limit
+            payload['limit'] = limit
         if sort_by is not None:
-            payload["sort_by"] = sort_by
+            payload['sort_by'] = sort_by
         if sort_direction is not None:
-            payload["sort_direction"] = sort_direction.value
+            payload['sort_direction'] = sort_direction.value
         if timezone is not None:
-            payload["timezone"] = timezone
+            payload['timezone'] = timezone
 
-        tags_response: dict = self._post("inventory/api/v1/tags", json=payload)
+        tags_response: dict = self._post('inventory/api/v1/tags', json=payload)
         return Tags(**tags_response)

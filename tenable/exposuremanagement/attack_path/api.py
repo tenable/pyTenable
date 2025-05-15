@@ -1,4 +1,4 @@
-'''
+"""
 Attack Path
 ===========
 
@@ -13,9 +13,10 @@ Attack Path APIs.
     :hidden:
     :glob:
 
-    findings
-    vectors
-'''
+    findings/index
+    vectors/index
+"""
+
 from tenable.base.endpoint import APIEndpoint
 from tenable.exposuremanagement.attack_path.findings.api import FindingsAPI
 from tenable.exposuremanagement.attack_path.vectors.api import VectorsAPI
@@ -24,16 +25,16 @@ from tenable.exposuremanagement.attack_path.vectors.api import VectorsAPI
 class AttackPathAPI(APIEndpoint):
     @property
     def findings(self):
-        '''
+        """
         The interface object for the
-        :doc:`Tenable Exposure Management Attack Path Findings APIs <findings>`.
-        '''
+        :doc:`Tenable Exposure Management Attack Path Findings APIs <findings/index>`.
+        """
         return FindingsAPI(self._api)
 
     @property
     def vectors(self):
-        '''
+        """
         The interface object for the
-        :doc:`Tenable Exposure Management Attack Path Vectors APIs <vectors>`.
-        '''
+        :doc:`Tenable Exposure Management Attack Path Vectors APIs <vectors/index>`.
+        """
         return VectorsAPI(self._api)

@@ -1,1 +1,0 @@
-.. automodule:: tenable.exposuremanagement.inventory.software.api

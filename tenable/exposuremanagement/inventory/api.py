@@ -13,11 +13,11 @@ Inventory APIs.
     :hidden:
     :glob:
 
-    assets
-    software
+    assets/index
+    software/index
 """
-from tenable.base.endpoint import APIEndpoint
 
+from tenable.base.endpoint import APIEndpoint
 from tenable.exposuremanagement.inventory.assets.api import AssetsAPI
 from tenable.exposuremanagement.inventory.software.api import SoftwareAPI
 
@@ -27,7 +27,7 @@ class InventoryAPI(APIEndpoint):
     def assets(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Inventory Assets APIs <assets>`.
+        :doc:`Tenable Exposure Management Inventory Assets APIs <assets/index>`.
         """
         return AssetsAPI(self._api)
 
@@ -35,6 +35,6 @@ class InventoryAPI(APIEndpoint):
     def software(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Inventory Software APIs <software>`.
+        :doc:`Tenable Exposure Management Inventory Software APIs <software/index>`.
         """
         return SoftwareAPI(self._api)

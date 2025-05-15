@@ -8,32 +8,41 @@ These methods can be accessed at ``TenableExposureManagement.inventory.assets``.
 .. rst-class:: hide-signature
 .. autoclass:: AssetsAPI
     :members:
+
 """
+
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
 from tenable.exposuremanagement.inventory.assets.schema import AssetClass, Assets
-from tenable.exposuremanagement.inventory.schema import Field, Properties, SortDirection, QueryMode, PropertyFilter
+from tenable.exposuremanagement.inventory.schema import (
+    Field,
+    Properties,
+    PropertyFilter,
+    QueryMode,
+    SortDirection,
+)
 
 
 class AssetsAPI(APIEndpoint):
-
-    def list_properties(self, asset_classes: Optional[list[AssetClass]] = None) -> list[Field]:
+    def list_properties(
+        self, asset_classes: Optional[list[AssetClass]] = None
+    ) -> list[Field]:
         """
-         Retrieve assets properties
+        Retrieve assets properties
 
-         Args:
-            asset_classes (list, optional):
-                 Getting properties for specifc asset classes
+        Args:
+            asset_classes (list[str], optional):
+                 Getting properties for specific asset classes
                  If this parameter is omitted,
                  Tenable returns properties for all asset classes.
                  For example: asset_classes=[AssetClass.DEVICE].
 
         Returns:
-            :list:`Field`:
+            list[Field]:
                 The asset properties.
 
-         Examples:
+        Examples:
              >>> tenable_inventory_asset_properties = tenable_inventory.assets.list_properties()
              >>> for asset_property in asset_properties:
              ...     pprint(asset_property)
@@ -41,28 +50,31 @@ class AssetsAPI(APIEndpoint):
         """
         payload = {}
         if asset_classes is not None:
-            asset_classes: str = ",".join([asset_class.value for asset_class in asset_classes])
-            payload["asset_classes"] = asset_classes
-        asset_properties_response: dict[str, list[dict]] = self._get(path="inventory/api/v1/assets/properties",
-                                                                     params=payload)
+            asset_classes: str = ','.join(
+                [asset_class.value for asset_class in asset_classes]
+            )
+            payload['asset_classes'] = asset_classes
+        asset_properties_response: dict[str, list[dict]] = self._get(
+            path='inventory/api/v1/assets/properties', params=payload
+        )
         return Properties(**asset_properties_response).properties
 
     def list(
-            self,
-            query_text: Optional[str] = None,
-            query_mode: Optional[QueryMode] = None,
-            filters: Optional[list[PropertyFilter]] = None,
-            extra_properties: Optional[list[str]] = None,
-            offset: Optional[int] = None,
-            limit: Optional[int] = None,
-            sort_by: Optional[str] = None,
-            sort_direction: Optional[SortDirection] = None,
-            timezone: Optional[str] = None,
+        self,
+        query_text: Optional[str] = None,
+        query_mode: Optional[QueryMode] = None,
+        filters: Optional[list[PropertyFilter]] = None,
+        extra_properties: Optional[list[str]] = None,
+        offset: Optional[int] = None,
+        limit: Optional[int] = None,
+        sort_by: Optional[str] = None,
+        sort_direction: Optional[SortDirection] = None,
+        timezone: Optional[str] = None,
     ) -> Assets:
         """
-         Retrieve assets
+        Retrieve assets
 
-         Args:
+        Args:
             query_text (str, optional):
                 The text to search for.
             query_mode (QueryMode, optional):
@@ -86,7 +98,7 @@ class AssetsAPI(APIEndpoint):
             :obj:`Asset`:
                 The request assets.
 
-         Examples:
+        Examples:
              >>> assets = tenable_inventory.assets.list()
              >>> for asset in assets:
              ...     pprint(asset)
@@ -95,26 +107,25 @@ class AssetsAPI(APIEndpoint):
         payload = {}
 
         if query_text is not None and query_mode is not None and filters is not None:
-            payload["search"] = {
-                "query": {
-                    "text": query_text,
-                    "mode": query_mode.value
-                },
-                "filters": [filter.model_dump(mode='json') for filter in filters] if filters is not None else []
+            payload['search'] = {
+                'query': {'text': query_text, 'mode': query_mode.value},
+                'filters': [filter.model_dump(mode='json') for filter in filters]
+                if filters is not None
+                else [],
             }
 
         if extra_properties is not None:
-            payload["extra_properties"] = extra_properties
+            payload['extra_properties'] = extra_properties
         if offset is not None:
-            payload["offset"] = offset
+            payload['offset'] = offset
         if limit is not None:
-            payload["limit"] = limit
+            payload['limit'] = limit
         if sort_by is not None:
-            payload["sort_by"] = sort_by
+            payload['sort_by'] = sort_by
         if sort_direction is not None:
-            payload["sort_direction"] = sort_direction.value
+            payload['sort_direction'] = sort_direction.value
         if timezone is not None:
-            payload["timezone"] = timezone
+            payload['timezone'] = timezone
 
-        assets_response: dict = self._post("inventory/api/v1/assets", json=payload)
+        assets_response: dict = self._post('inventory/api/v1/assets', json=payload)
         return Assets(**assets_response)

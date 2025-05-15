@@ -9,22 +9,27 @@ These methods can be accessed at ``TenableExposureManagement.inventory.assets``.
 .. autoclass:: SoftwareAPI
     :members:
 """
+
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.exposuremanagement.inventory.schema import Properties, Field, QueryMode, PropertyFilter, SortDirection
+from tenable.exposuremanagement.inventory.schema import (
+    Field,
+    Properties,
+    PropertyFilter,
+    QueryMode,
+    SortDirection,
+)
 from tenable.exposuremanagement.inventory.software.schema import SoftwareValues
 
 
 class SoftwareAPI(APIEndpoint):
-
     def list_properties(self) -> list[Field]:
         """
          Retrieve software properties
 
         Returns:
-            :list:`Field`:
-                The software properties.
+            The software properties.
 
          Examples:
              >>> tenable_inventory_software_properties = tenable_inventory.software.list_properties()
@@ -32,20 +37,22 @@ class SoftwareAPI(APIEndpoint):
              ...     pprint(software_property)
 
         """
-        asset_properties_response: dict[str, list[dict]] = self._get(path="inventory/api/v1/software/properties")
+        asset_properties_response: dict[str, list[dict]] = self._get(
+            path='inventory/api/v1/software/properties'
+        )
         return Properties(**asset_properties_response).properties
 
     def list(
-            self,
-            query_text: Optional[str] = None,
-            query_mode: Optional[QueryMode] = None,
-            filters: Optional[list[PropertyFilter]] = None,
-            extra_properties: Optional[list[str]] = None,
-            offset: Optional[int] = None,
-            limit: Optional[int] = None,
-            sort_by: Optional[str] = None,
-            sort_direction: Optional[SortDirection] = None,
-            timezone: Optional[str] = None,
+        self,
+        query_text: Optional[str] = None,
+        query_mode: Optional[QueryMode] = None,
+        filters: Optional[list[PropertyFilter]] = None,
+        extra_properties: Optional[list[str]] = None,
+        offset: Optional[int] = None,
+        limit: Optional[int] = None,
+        sort_by: Optional[str] = None,
+        sort_direction: Optional[SortDirection] = None,
+        timezone: Optional[str] = None,
     ) -> SoftwareValues:
         """
          Retrieve software
@@ -71,8 +78,7 @@ class SoftwareAPI(APIEndpoint):
                 Timezone setting for the query. Defaults to "UTC".
 
         Returns:
-            :obj:`SoftwareValues`:
-                The request assets.
+            The request assets.
 
          Examples:
              >>> tenable_inventory_software = tenable_inventory.software.list()
@@ -83,26 +89,25 @@ class SoftwareAPI(APIEndpoint):
         payload = {}
 
         if query_text is not None and query_mode is not None and filters is not None:
-            payload["search"] = {
-                "query": {
-                    "text": query_text,
-                    "mode": query_mode.value
-                },
-                "filters": [filter.model_dump(mode='json') for filter in filters] if filters is not None else []
+            payload['search'] = {
+                'query': {'text': query_text, 'mode': query_mode.value},
+                'filters': [filter.model_dump(mode='json') for filter in filters]
+                if filters is not None
+                else [],
             }
 
         if extra_properties is not None:
-            payload["extra_properties"] = extra_properties
+            payload['extra_properties'] = extra_properties
         if offset is not None:
-            payload["offset"] = offset
+            payload['offset'] = offset
         if limit is not None:
-            payload["limit"] = limit
+            payload['limit'] = limit
         if sort_by is not None:
-            payload["sort_by"] = sort_by
+            payload['sort_by'] = sort_by
         if sort_direction is not None:
-            payload["sort_direction"] = sort_direction.value
+            payload['sort_direction'] = sort_direction.value
         if timezone is not None:
-            payload["timezone"] = timezone
+            payload['timezone'] = timezone
 
-        software_response: dict = self._post("inventory/api/v1/software", json=payload)
+        software_response: dict = self._post('inventory/api/v1/software', json=payload)
         return SoftwareValues(**software_response)

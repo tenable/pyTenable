@@ -1,5 +1,6 @@
 .. toctree::
    :hidden:
+   :titlesonly:
    :glob:
 
    api/io/index

@@ -12,9 +12,9 @@ This package covers the Tenable Exposure Management.
     :hidden:
     :glob:
 
-    attack_path
-    inventory
-    tags
+    attack_path/index
+    inventory/index
+    tags/index
 """
 
 from typing import Optional
@@ -30,7 +30,14 @@ class TenableExposureManagement(APIPlatform):
     The Tenable Exposure Management object is the primary interaction
     point for users to interface with Tenable Exposure Management
     via the pyTenable library.  All the API endpoint classes that have
-     been written will be grafted onto this class.
+    been written will be grafted onto this class.
+
+    Environment Variables:
+        ``TEM_ACCESS_KEY``: API Access Key for the Tenable Exposure Management Application.
+
+        ``TEM_SECRET_KEY``: API Secret Key for the Tenable Exposure Management Application.
+
+        ``TEM_URL``: The Application URL.  Defaults to `https://cloud.tenable.com`.
 
     Examples:
         Basic Example:
@@ -46,27 +53,27 @@ class TenableExposureManagement(APIPlatform):
         >>>     build='1.0.0')
     """
 
-    _env_base = "TENABLE_EXPOSURE_MANAGEMENT"
-    _url = "https://cloud.tenable.com"
+    _env_base = 'TEM'
+    _url = 'https://cloud.tenable.com'
     _box = True
 
     def __init__(
-            self,
-            access_key: Optional[str] = None,
-            secret_key: Optional[str] = None,
-            **kwargs
+        self,
+        access_key: Optional[str] = None,
+        secret_key: Optional[str] = None,
+        **kwargs,
     ):
         if access_key:
-            kwargs["access_key"] = access_key
+            kwargs['access_key'] = access_key
         if secret_key:
-            kwargs["secret_key"] = secret_key
+            kwargs['secret_key'] = secret_key
         super().__init__(**kwargs)
 
     @property
     def attack_path(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Attack Path APIs <attack_path>`.
+        :doc:`Tenable Exposure Management Attack Path APIs <attack_path/index>`.
         """
         return AttackPathAPI(self)
 
@@ -74,7 +81,7 @@ class TenableExposureManagement(APIPlatform):
     def inventory(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Inventory APIs <inventory>`.
+        :doc:`Tenable Exposure Management Inventory APIs <inventory/index>`.
         """
         return InventoryAPI(self)
 
@@ -82,6 +89,6 @@ class TenableExposureManagement(APIPlatform):
     def tags(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Tags APIs <tags>`.
+        :doc:`Tenable Exposure Management Tags APIs <tags/index>`.
         """
         return TagsAPI(self)
