@@ -143,9 +143,10 @@ def assets_response() -> dict:
     return {
         "values": [
             {
-                "id": "00106d8f-e993-5ac7-bd2c-3225c8f5def7",
+                "asset_id": "00106d8f-e993-5ac7-bd2c-3225c8f5def7",
+                "asset_ids": ["00106d8f-e993-5ac7-bd2c-3225c8f5def7"],
                 "asset_class": "IAC",
-                "name": "accurics_1669914793_elb",
+                "asset_name": "accurics_1669914793_elb",
                 "aes": 0,
                 "acr": 0,
                 "extra_properties": {}

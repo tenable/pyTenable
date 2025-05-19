@@ -5,9 +5,10 @@ from tenable.exposuremanagement.inventory.schema import AssetClass
 
 
 class Asset(BaseModel):
-    id: str
+    asset_id: str
+    asset_ids: list[str]
     asset_class: AssetClass
-    name: str
+    asset_name: str
     aes: int
     acr: int
     extra_properties: dict[str, Any]  # Supports arbitrary key-value pairs
