@@ -6,7 +6,6 @@ from tenable.exposuremanagement.inventory.schema import AssetClass
 
 class Asset(BaseModel):
     asset_id: str
-    asset_ids: list[str]
     asset_class: AssetClass
     asset_name: str
     aes: int
