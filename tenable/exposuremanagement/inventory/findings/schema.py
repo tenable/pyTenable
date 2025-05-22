@@ -1,4 +1,4 @@
-from enum import StrEnum
+from enum import Enum
 from typing import Any, Literal
 from uuid import UUID
 
@@ -6,14 +6,14 @@ from pydantic import PositiveInt, NonNegativeInt
 
 from tenable.io.sync.models.common import BaseModel
 
-class FindingSeverity(StrEnum):
+class FindingSeverity(str, Enum):
     INFO = "INFO"
     LOW = "LOW"
     MEDIUM = "MEDIUM"
     HIGH = "HIGH"
     CRITICAL = "CRITICAL"
 
-class FindingState(StrEnum):
+class FindingState(str, Enum):
     ACTIVE = "ACTIVE"
     RESURFACED = "RESURFACED"
     FIXED = "FIXED"
