@@ -15,6 +15,7 @@ Inventory APIs.
 
     assets/index
     software/index
+    findings/index
 """
 
 from tenable.base.endpoint import APIEndpoint
