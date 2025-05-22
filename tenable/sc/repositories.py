@@ -350,8 +350,9 @@ class RepositoryAPI(SCEndpoint):
             kwargs['trendingDays'] = kwargs.get('trendingDays', 0)
             kwargs['trendWithRaw'] = kwargs.get('trendWithRaw', 'false')
 
-        if kwargs['dataFormat'] in ['IPv4', 'IPv6', 'universal']:
-            kwargs['nessusSchedule'] = kwargs.get('nessusSchedule', {'type': 'never'})
+        if kwargs["dataFormat"] in ["IPv4", "IPv6", "agent", "universal"]:
+            kwargs["trendingDays"] = kwargs.get("trendingDays", 0)
+            kwargs["trendWithRaw"] = kwargs.get("trendWithRaw", "false")
 
         if kwargs['dataFormat'] == 'IPv4':
             kwargs['ipRange'] = kwargs.get('ipRange', '0.0.0.0/0')
