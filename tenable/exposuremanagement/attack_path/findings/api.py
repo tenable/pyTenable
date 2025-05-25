@@ -34,7 +34,7 @@ class FindingIterator(APIIterator):
         payload = copy(self._payload)
         payload["next"] = self._next_token
 
-        resp = self._api.get("apa/findings-api/v1/findings",
+        resp = self._api.get("api/v1/em/apa/findings",
                              params=payload, box=True)
         self._next_token = resp.get("next")
         self.page = resp.data
@@ -134,4 +134,4 @@ class FindingsAPI(APIEndpoint):
         if return_iterator:
             return FindingIterator(self._api, _payload=payload,
                                    _next_token=next_token)
-        return self._schema(**self._get(path="apa/findings-api/v1/findings", params=payload))
+        return self._schema(**self._get(path="api/v1/em/apa/findings", params=payload))

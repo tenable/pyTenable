@@ -40,7 +40,7 @@ class TagsAPI(APIEndpoint):
 
         """
         tag_properties_response: dict[str, list[dict]] = self._get(
-            path='inventory/api/v1/tags/properties'
+            path='api/v1/em/tags/properties'
         )
         return Properties(**tag_properties_response).properties
 
@@ -111,5 +111,5 @@ class TagsAPI(APIEndpoint):
         if timezone is not None:
             payload['timezone'] = timezone
 
-        tags_response: dict = self._post('inventory/api/v1/tags', json=payload)
+        tags_response: dict = self._post('api/v1/em/tags', json=payload)
         return Tags(**tags_response)

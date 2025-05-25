@@ -55,7 +55,7 @@ class AssetsAPI(APIEndpoint):
             )
             payload['asset_classes'] = asset_classes
         asset_properties_response: dict[str, list[dict]] = self._get(
-            path='inventory/api/v1/assets/properties', params=payload
+            path='api/v1/em/inventory/assets/properties', params=payload
         )
         return Properties(**asset_properties_response).properties
 
@@ -127,5 +127,5 @@ class AssetsAPI(APIEndpoint):
         if timezone is not None:
             payload['timezone'] = timezone
 
-        assets_response: dict = self._post('inventory/api/v1/assets', json=payload)
+        assets_response: dict = self._post('/api/v1/em/inventory/assets', json=payload)
         return Assets(**assets_response)
