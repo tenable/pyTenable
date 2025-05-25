@@ -1,3 +1,16 @@
+"""
+Findings
+=======
+
+Methods described in this section relate to the inventory findings API.
+These methods can be accessed at ``TenableExposureManagement.inventory.findings``.
+
+.. rst-class:: hide-signature
+.. autoclass:: FindingsAPI
+    :members:
+
+"""
+
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
