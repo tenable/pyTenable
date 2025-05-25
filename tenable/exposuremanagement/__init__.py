@@ -15,7 +15,6 @@ This package covers the Tenable Exposure Management.
     attack_path/index
     inventory/index
     tags/index
-    findings/index
 """
 
 from typing import Optional
