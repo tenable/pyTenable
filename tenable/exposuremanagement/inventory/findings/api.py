@@ -20,7 +20,7 @@ class FindingsAPI(APIEndpoint):
 
         """
         finding_properties_response: dict[str, list[dict]] = self._get(
-            path='inventory/api/v1/findings/properties'
+            path="/api/v1/em/inventory/findings/properties"
         )
         return Properties(**finding_properties_response).properties
 
@@ -71,25 +71,25 @@ class FindingsAPI(APIEndpoint):
         payload = {}
 
         if query_text is not None and query_mode is not None and filters is not None:
-            payload['search'] = {
-                'query': {'text': query_text, 'mode': query_mode.value},
-                'filters': [filter_.model_dump(mode='json') for filter_ in filters]
+            payload["search"] = {
+                "query": {"text": query_text, "mode": query_mode.value},
+                "filters": [filter_.model_dump(mode="json") for filter_ in filters]
                 if filters is not None
                 else [],
             }
 
         if extra_properties is not None:
-            payload['extra_properties'] = extra_properties
+            payload["extra_properties"] = extra_properties
         if offset is not None:
-            payload['offset'] = offset
+            payload["offset"] = offset
         if limit is not None:
-            payload['limit'] = limit
+            payload["limit"] = limit
         if sort_by is not None:
-            payload['sort_by'] = sort_by
+            payload["sort_by"] = sort_by
         if sort_direction is not None:
-            payload['sort_direction'] = sort_direction.value
+            payload["sort_direction"] = sort_direction.value
         if timezone is not None:
-            payload['timezone'] = timezone
+            payload["timezone"] = timezone
 
-        findings_response: dict = self._post('inventory/api/v1/findings', json=payload)
+        findings_response: dict = self._post(path="/api/v1/em/inventory/findings", json=payload)
         return Findings(**findings_response)
