@@ -68,7 +68,7 @@ def findings_response() -> dict:
 
 
 @responses.activate
-def finding_properties_list(tenable_exposure_management_api, findings_properties_response):
+def test_properties_list(tenable_exposure_management_api, findings_properties_response):
     # Arrange
     responses.get("https://cloud.tenable.com/inventory/api/v1/findings/properties",
                   json=findings_properties_response,
