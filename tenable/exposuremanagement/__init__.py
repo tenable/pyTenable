@@ -21,6 +21,7 @@ from typing import Optional
 
 from tenable.base.platform import APIPlatform
 from tenable.exposuremanagement.attack_path.api import AttackPathAPI
+from tenable.exposuremanagement.exposure_view.api import ExposureViewAPI
 from tenable.exposuremanagement.inventory.api import InventoryAPI
 from tenable.exposuremanagement.tags.api import TagsAPI
 
@@ -92,3 +93,11 @@ class TenableExposureManagement(APIPlatform):
         :doc:`Tenable Exposure Management Tags APIs <tags/index>`.
         """
         return TagsAPI(self)
+
+    @property
+    def exposure_view(self):
+        """
+        The interface object for the
+        :doc:`Tenable Exposure Management Exposure view APIs <exposure_view/index>`.
+        """
+        return ExposureViewAPI(self)
