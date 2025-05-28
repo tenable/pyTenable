@@ -59,21 +59,21 @@ def cards_response() -> dict:
 @responses.activate
 def test_list(cards, cards_response):
     # Arrange
-    is_global = True
+    is_global_card = True
     page_number = 1
     page_size = 25
-    sort_direction = SortDirection.ASC
+    sorting_order = SortDirection.ASC
 
     # Build the expected payload - update to match what the API actually sends
     payload = {
         "filter": {
-            "is_global": is_global
+            "is_global_card": is_global_card
         },
         "pagination": {
             "page_number": page_number,
             "page_size": page_size
         },
-        "sort_direction": sort_direction.value
+        "sorting_order": sorting_order.value
     }
 
     responses.add(
@@ -85,10 +85,10 @@ def test_list(cards, cards_response):
 
     # Act
     result = cards.list(
-        is_global=is_global,
+        is_global_card=is_global_card,
         page_number=page_number,
         page_size=page_size,
-        sort_direction=sort_direction
+        sorting_order=sorting_order
     )
 
     # Assert
@@ -117,7 +117,7 @@ def test_should_pass_request_parameters_for_text_search(cards, cards_response):
             "page_number": 1,
             "page_size": 20
         },
-        "sort_direction": SortDirection.ASC.value
+        "sorting_order": SortDirection.ASC.value
     }
 
     responses.add(
@@ -139,7 +139,7 @@ def test_should_pass_request_parameters_for_text_search(cards, cards_response):
 @responses.activate
 def test_should_pass_request_parameters_for_DESC_sorting(cards, cards_response):
     # Arrange
-    sort_direction = SortDirection.DESC
+    sorting_order = SortDirection.DESC
     
     # Build the expected payload with DESC sorting
     payload = {
@@ -148,7 +148,7 @@ def test_should_pass_request_parameters_for_DESC_sorting(cards, cards_response):
             "page_number": 1,
             "page_size": 20
         },
-        "sort_direction": sort_direction.value
+        "sorting_order": sorting_order.value
     }
 
     responses.add(
@@ -159,7 +159,7 @@ def test_should_pass_request_parameters_for_DESC_sorting(cards, cards_response):
     )
 
     # Act
-    result = cards.list(sort_direction=sort_direction)
+    result = cards.list(sorting_order=sorting_order)
 
     # Assert
     assert len(result.cards) == 2
@@ -177,7 +177,7 @@ def test_list_default_parameters(cards, cards_response):
             "page_number": 1,
             "page_size": 20
         },
-        "sort_direction": SortDirection.ASC.value
+        "sorting_order": SortDirection.ASC.value
     }
 
     responses.add(

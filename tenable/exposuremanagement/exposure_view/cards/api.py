@@ -9,21 +9,21 @@ from tenable.exposuremanagement.inventory.schema import SortDirection
 class CardsAPI(APIEndpoint):
     def list(
             self,
-            is_global: bool = None,
+            is_global_card: bool = None,
             query_text: Optional[str] = None,
             page_number: int = 1,
             page_size: int = 20,
-            sort_direction: Optional[SortDirection] = SortDirection.ASC
+            sorting_order: Optional[SortDirection] = SortDirection.ASC
     ) -> Cards:
         """
         List cards based on filter criteria
         
         Args:
-            is_global: Filter cards by is_global flag
+            is_global_card: Filter cards by is_global flag
             query_text: Text query to filter cards
             page_number: Page number for pagination
             page_size: Number of items per page
-            sort_direction: Sorting direction (ASC or DESC)
+            sorting_order: Sorting direction (ASC or DESC)
             
         Returns:
             Cards object containing the list of cards and pagination info
@@ -34,12 +34,12 @@ class CardsAPI(APIEndpoint):
                 "page_number": page_number,
                 "page_size": page_size
             },
-            "sort_direction": sort_direction.value
+            "sorting_order": sorting_order.value
         }
         
         # Add filter parameters if provided
-        if is_global is not None:
-            payload["filter"]["is_global"] = is_global
+        if is_global_card is not None:
+            payload["filter"]["is_global_card"] = is_global_card
         if query_text is not None:
             payload["filter"]["text_query"] = query_text
 

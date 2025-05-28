@@ -63,7 +63,7 @@ class CardsResponse(BaseModel):
     data: Cards
 
 class CardFilter(BaseModel):
-    is_global: Optional[bool] = None
+    is_global_Card: Optional[bool] = None
     card_id: Optional[int] = None
     asset_id: Optional[int] = None
     text_query: Optional[str] = None
