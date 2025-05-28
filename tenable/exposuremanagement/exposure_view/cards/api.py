@@ -9,10 +9,10 @@ from tenable.exposuremanagement.inventory.schema import SortDirection
 class CardsAPI(APIEndpoint):
     def list(
             self,
-            is_global_card: bool = None,
+            is_global_card: Optional[bool] = None,
             query_text: Optional[str] = None,
-            page_number: int = 1,
-            page_size: int = 20,
+            page_number: Optional[int] = 1,
+            page_size: Optional[int] = 25,
             sorting_order: Optional[SortDirection] = SortDirection.ASC
     ) -> Cards:
         """
