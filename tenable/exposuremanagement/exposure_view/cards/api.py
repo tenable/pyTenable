@@ -7,25 +7,48 @@ from tenable.exposuremanagement.inventory.schema import SortDirection
 
 
 class CardsAPI(APIEndpoint):
-    @property
     def list(
             self,
             is_global: bool = None,
             query_text: Optional[str] = None,
             page_number: int = 1,
             page_size: int = 20,
-            sort_direction: Optional[SortDirection] = None
+            sort_direction: Optional[SortDirection] = SortDirection.ASC
     ) -> Cards:
-        payload = {"filter": CardFilter(), "pagination": Pagination(),
-                   "sort_direction": sort_direction.value if sort_direction else SortDirection.ASC.value}
+        """
+        List cards based on filter criteria
+        
+        Args:
+            is_global: Filter cards by is_global flag
+            query_text: Text query to filter cards
+            page_number: Page number for pagination
+            page_size: Number of items per page
+            sort_direction: Sorting direction (ASC or DESC)
+            
+        Returns:
+            Cards object containing the list of cards and pagination info
+        """
+        payload = {
+            "filter": {},
+            "pagination": {
+                "page_number": page_number,
+                "page_size": page_size
+            },
+            "sort_direction": sort_direction.value
+        }
+        
+        # Add filter parameters if provided
         if is_global is not None:
-            payload["filter"].is_global = is_global
+            payload["filter"]["is_global"] = is_global
         if query_text is not None:
-            payload["filter"].text_query = query_text
-        if page_number is not None:
-            payload["pagination"].page_number = page_number
-        if page_size is not None:
-            payload["pagination"].page_size = page_size
+            payload["filter"]["text_query"] = query_text
 
-        cards_response: dict = self._post(path="/api/v1/em/exposure-view/cards", json=payload)
+        # Make the API request
+        cards_response = self._post(path="/api/v1/em/exposure-view/cards", json=payload)
+        
+        # If the response is a Box object, convert it to a dict first
+        if hasattr(cards_response, 'to_dict'):
+            cards_response = cards_response.to_dict()
+        
+        # Parse the response into a CardsResponse object and return its data attribute
         return CardsResponse(**cards_response).data
