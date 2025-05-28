@@ -77,7 +77,7 @@ def test_list(cards, cards_response):
 
     responses.add(
         responses.POST,
-        'https://cloud.tenable.com//api/v1/em/exposure-view/cards',
+        'https://cloud.tenable.com/api/v1/em/exposure-view/cards',
         json=cards_response,
         match=[responses.matchers.json_params_matcher(payload)]
     )
@@ -114,14 +114,14 @@ def test_should_pass_request_parameters_for_text_search(cards, cards_response):
         },
         "pagination": {
             "page_number": 1,
-            "page_size": 20
+            "page_size": 25
         },
         "sorting_order": SortDirection.ASC.value
     }
 
     responses.add(
         responses.POST,
-        'https://cloud.tenable.com//api/v1/em/exposure-view/cards',
+        'https://cloud.tenable.com/api/v1/em/exposure-view/cards',
         json=cards_response,
         match=[responses.matchers.json_params_matcher(payload)]
     )
@@ -145,14 +145,14 @@ def test_should_pass_request_parameters_for_DESC_sorting(cards, cards_response):
         "filter": {},
         "pagination": {
             "page_number": 1,
-            "page_size": 20
+            "page_size": 25
         },
         "sorting_order": sorting_order.value
     }
 
     responses.add(
         responses.POST,
-        'https://cloud.tenable.com//api/v1/em/exposure-view/cards',
+        'https://cloud.tenable.com/api/v1/em/exposure-view/cards',
         json=cards_response,
         match=[responses.matchers.json_params_matcher(payload)]
     )
@@ -174,14 +174,14 @@ def test_list_default_parameters(cards, cards_response):
         "filter": {},
         "pagination": {
             "page_number": 1,
-            "page_size": 20
+            "page_size": 25
         },
         "sorting_order": SortDirection.ASC.value
     }
 
     responses.add(
         responses.POST,
-        'https://cloud.tenable.com//api/v1/em/exposure-view/cards',
+        'https://cloud.tenable.com/api/v1/em/exposure-view/cards',
         json=cards_response,
         match=[responses.matchers.json_params_matcher(payload)]
     )

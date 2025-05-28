@@ -44,7 +44,7 @@ class CardsAPI(APIEndpoint):
             payload["filter"]["text_query"] = query_text
 
         # Make the API request
-        cards_response = self._post(path="/api/v1/em/exposure-view/cards", json=payload)
+        cards_response = self._post(path="api/v1/em/exposure-view/cards", json=payload)
         
         # If the response is a Box object, convert it to a dict first
         if hasattr(cards_response, 'to_dict'):
