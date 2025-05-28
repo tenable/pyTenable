@@ -77,7 +77,7 @@ def test_list(cards, cards_response):
 
     responses.add(
         responses.POST,
-        'https://https://cloud.tenable.com//api/v1/em/exposure-view/cards',
+        'https://cloud.tenable.com//api/v1/em/exposure-view/cards',
         json=cards_response,
         match=[responses.matchers.json_params_matcher(payload)]
     )
