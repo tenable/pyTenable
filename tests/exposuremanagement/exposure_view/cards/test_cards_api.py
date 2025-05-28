@@ -1,8 +1,7 @@
 import pytest
 import responses
-import json
 
-from tenable.exposuremanagement.exposure_view.cards.schema import CardFilter, Pagination, Cards, CardsResponse, Card, CESScore, CESGrade
+from tenable.exposuremanagement.exposure_view.cards.schema import CESGrade
 from tenable.exposuremanagement.inventory.schema import SortDirection
 
 
@@ -78,7 +77,7 @@ def test_list(cards, cards_response):
 
     responses.add(
         responses.POST,
-        'https://qa-develop.cloud.aws.tenablesecurity.com//api/v1/em/exposure-view/cards',
+        'https://https://cloud.tenable.com//api/v1/em/exposure-view/cards',
         json=cards_response,
         match=[responses.matchers.json_params_matcher(payload)]
     )
@@ -122,7 +121,7 @@ def test_should_pass_request_parameters_for_text_search(cards, cards_response):
 
     responses.add(
         responses.POST,
-        'https://qa-develop.cloud.aws.tenablesecurity.com//api/v1/em/exposure-view/cards',
+        'https://cloud.tenable.com//api/v1/em/exposure-view/cards',
         json=cards_response,
         match=[responses.matchers.json_params_matcher(payload)]
     )
@@ -153,7 +152,7 @@ def test_should_pass_request_parameters_for_DESC_sorting(cards, cards_response):
 
     responses.add(
         responses.POST,
-        'https://qa-develop.cloud.aws.tenablesecurity.com//api/v1/em/exposure-view/cards',
+        'https://cloud.tenable.com//api/v1/em/exposure-view/cards',
         json=cards_response,
         match=[responses.matchers.json_params_matcher(payload)]
     )
@@ -182,7 +181,7 @@ def test_list_default_parameters(cards, cards_response):
 
     responses.add(
         responses.POST,
-        'https://qa-develop.cloud.aws.tenablesecurity.com//api/v1/em/exposure-view/cards',
+        'https://cloud.tenable.com//api/v1/em/exposure-view/cards',
         json=cards_response,
         match=[responses.matchers.json_params_matcher(payload)]
     )
