@@ -1,3 +1,13 @@
+"""
+Findings
+=======
+Methods described in this section relate to the exposure view cards API.
+These methods can be accessed at ``TenableExposureManagement.exposure_view.cards``.
+.. rst-class:: hide-signature
+.. autoclass:: CardsAPI
+    :members:
+"""
+
 from typing import Optional
 
 from restfly import APIEndpoint
@@ -36,19 +46,12 @@ class CardsAPI(APIEndpoint):
             },
             "sorting_order": sorting_order.value
         }
-        
-        # Add filter parameters if provided
+
         if is_global_card is not None:
             payload["filter"]["is_global_card"] = is_global_card
         if query_text is not None:
             payload["filter"]["text_query"] = query_text
 
-        # Make the API request
-        cards_response = self._post(path="api/v1/em/exposure-view/cards", json=payload)
-        
-        # If the response is a Box object, convert it to a dict first
-        if hasattr(cards_response, 'to_dict'):
-            cards_response = cards_response.to_dict()
-        
-        # Parse the response into a CardsResponse object and return its data attribute
-        return CardsResponse(**cards_response).data
+        cards_response = self._post(path="api/v1/em/exposure-view/cards", json=payload, box=False)
+
+        return CardsResponse(**cards_response.json()).data

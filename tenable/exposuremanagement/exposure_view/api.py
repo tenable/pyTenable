@@ -1,3 +1,21 @@
+"""
+Inventory
+=========
+
+The following sub-package allows for interaction with the Tenable Exposure Management
+Exposure View APIs.
+
+.. rst-class:: hide-signature
+.. autoclass:: ExposureViewAPI
+    :members:
+
+.. toctree::
+    :hidden:
+    :glob:
+
+    cards/index
+"""
+
 from restfly import APIEndpoint
 
 from tenable.exposuremanagement.exposure_view.cards.api import CardsAPI
