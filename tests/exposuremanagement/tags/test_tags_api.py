@@ -35,7 +35,7 @@ def tags_response() -> dict:
                     "total": 6580
                 },
                 "total_weakness_count": 6580,
-                "tag_type": "DYNAMIC",
+                "tag": "DYNAMIC",
                 "extra_properties": {
                     "tag_category_name": "AWS Custom",
                     "aes_average": 148

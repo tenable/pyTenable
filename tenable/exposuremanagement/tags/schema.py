@@ -18,7 +18,7 @@ class Tag(BaseModel):
     asset_count: int
     weakness_severity_counts: WeaknessSeverityCounts
     total_weakness_count: int
-    tag_type: str
+    tag: str
     extra_properties: dict[str, Any]  # Supports arbitrary key-value pairs
 
 
