@@ -38,7 +38,7 @@ class SoftwareAPI(APIEndpoint):
 
         """
         asset_properties_response: dict[str, list[dict]] = self._get(
-            path='/api/v1/em/inventory/software/properties'
+            path='api/v1/em/inventory/software/properties'
         )
         return Properties(**asset_properties_response).properties
 
@@ -109,5 +109,5 @@ class SoftwareAPI(APIEndpoint):
         if timezone is not None:
             payload['timezone'] = timezone
 
-        software_response: dict = self._post('/api/v1/em/inventory/software', json=payload)
+        software_response: dict = self._post('api/v1/em/inventory/software', json=payload)
         return SoftwareValues(**software_response)

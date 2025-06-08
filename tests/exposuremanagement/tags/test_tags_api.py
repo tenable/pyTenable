@@ -23,8 +23,8 @@ def tags_response() -> dict:
     return {
         "values": [
             {
-                "tag_id": "d33ae4f1-cc87-42c0-956a-045aa73c33a6",
-                "tag_name": "neq-ap",
+                "id": "d33ae4f1-cc87-42c0-956a-045aa73c33a6",
+                "name": "neq-ap",
                 "product": "TENABLE_IO",
                 "asset_count": 5870,
                 "weakness_severity_counts": {
@@ -53,7 +53,7 @@ def tags_response() -> dict:
 @responses.activate
 def test_properties_list(tenable_exposure_management_api, tags_properties_response):
     # Arrange
-    responses.get('https://cloud.tenable.com/inventory/api/v1/tags/properties',
+    responses.get('https://cloud.tenable.com/api/v1/em/tags/properties',
                   json=tags_properties_response,
                   match=[responses.matchers.query_param_matcher({})])
     # Act
@@ -91,7 +91,7 @@ def test_list(tenable_exposure_management_api, tags_response):
     }
     responses.add(
         responses.POST,
-        'https://cloud.tenable.com/inventory/api/v1/tags',
+        'https://cloud.tenable.com/api/v1/em/tags',
         json=tags_response,
         match=[responses.matchers.body_matcher(params=json.dumps(payload))]
     )

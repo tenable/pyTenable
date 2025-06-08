@@ -239,7 +239,7 @@ def software_response() -> dict:
 @responses.activate
 def test_properties_list(tenable_exposure_management_api, software_properties_response):
     # Arrange
-    responses.get('https://cloud.tenable.com/inventory/api/v1/software/properties',
+    responses.get('https://cloud.tenable.com/api/v1/em/inventory/software/properties',
                   json=software_properties_response,
                   match=[responses.matchers.query_param_matcher({})])
     # Act
@@ -278,7 +278,7 @@ def test_list(tenable_exposure_management_api, software_response):
         "timezone": timezone
     }
     responses.add(responses.POST,
-                  'https://cloud.tenable.com/inventory/api/v1/software',
+                  'https://cloud.tenable.com/api/v1/em/inventory/software',
                   json=software_response,
                   match=[responses.matchers.body_matcher(params=json.dumps(payload))])
     # Act

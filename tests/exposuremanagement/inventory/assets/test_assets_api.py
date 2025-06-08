@@ -143,9 +143,9 @@ def assets_response() -> dict:
     return {
         "values": [
             {
-                "asset_id": "00106d8f-e993-5ac7-bd2c-3225c8f5def7",
+                "id": "00106d8f-e993-5ac7-bd2c-3225c8f5def7",
                 "asset_class": "IAC",
-                "asset_name": "accurics_1669914793_elb",
+                "name": "accurics_1669914793_elb",
                 "aes": 0,
                 "acr": 0,
                 "extra_properties": {}
@@ -157,7 +157,7 @@ def test_properties_list(tenable_exposure_management_api, asset_properties_respo
     # Arrange
     asset_classes = [AssetClass.ACCOUNT, AssetClass.DEVICE]
     asset_classes_str = ",".join([asset_class.value for asset_class in asset_classes])
-    responses.get('https://cloud.tenable.com/inventory/api/v1/assets/properties',
+    responses.get('https://cloud.tenable.com/api/v1/em/inventory/assets/properties',
                   json=asset_properties_response,
                   match=[responses.matchers.query_param_matcher({"asset_classes": asset_classes_str})])
     # Act
@@ -197,7 +197,7 @@ def test_list(tenable_exposure_management_api, assets_response):
         "timezone": timezone
     }
     responses.add(responses.POST,
-                  'https://cloud.tenable.com/inventory/api/v1/assets',
+                  'https://cloud.tenable.com/api/v1/em/inventory/assets',
                   json=assets_response,
                   match=[responses.matchers.body_matcher(params=json.dumps(payload))])
     # Act

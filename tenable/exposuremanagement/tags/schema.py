@@ -12,8 +12,8 @@ class WeaknessSeverityCounts(BaseModel):
 
 
 class Tag(BaseModel):
-    tag_id: str
-    tag_name: str
+    id: str
+    name: str
     product: str
     asset_count: int
     weakness_severity_counts: WeaknessSeverityCounts
