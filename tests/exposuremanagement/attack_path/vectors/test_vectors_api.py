@@ -104,17 +104,17 @@ def vector():
 
 @responses.activate
 def test_vectors_list_iterator(tenable_exposure_management_api, vector):
-    responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
+    responses.get('https://cloud.tenable.com/api/v1/em/apa/vectors',
                   json={"page_number": 1, "count": 10, "total": 21,
                         "data": [vector for _ in range(10)]},
                   match=[responses.matchers.query_param_matcher({"limit": 10})])
 
-    responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
+    responses.get('https://cloud.tenable.com/api/v1/em/apa/vectors',
                   json={"page_number": 2, "count": 10, "total": 21,
                         "data": [vector for _ in range(10)]},
                   match=[responses.matchers.query_param_matcher({"limit": 10, "page_number": 2})])
 
-    responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
+    responses.get('https://cloud.tenable.com/api/v1/em/apa/vectors',
                   json={"page_number": 3, "count": 10, "total": 21,
                         "data": [vector for _ in range(1)]},
                   match=[responses.matchers.query_param_matcher({"limit": 10, "page_number": 3})])
@@ -131,7 +131,7 @@ def test_vectors_list_iterator(tenable_exposure_management_api, vector):
 def test_vectors_list_vector_page_response(tenable_exposure_management_api, vector):
     vectors_page_response = {"page_number": 1, "count": 10, "total": 10,
                              "data": [vector for _ in range(10)]}
-    responses.get('https://cloud.tenable.com/apa/api/discover/v1/vectors',
+    responses.get('https://cloud.tenable.com/api/v1/em/apa/vectors',
                   json=vectors_page_response,
                   match=[responses.matchers.query_param_matcher({"limit": 10})])
 

@@ -140,13 +140,13 @@ def finding():
 
 @responses.activate
 def test_findings_list_iterator(tenable_exposure_management_api, finding):
-    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
+    responses.get('https://cloud.tenable.com/api/v1/em/apa/findings',
                   json={"page_number": 1, "count": 50, "total": 100,
                         "next": "123",
                         "data": [finding for _ in range(50)]},
                   match=[responses.matchers.query_param_matcher({"limit": 50})])
 
-    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
+    responses.get('https://cloud.tenable.com/api/v1/em/apa/findings',
                   json={"page_number": 2, "count": 50, "total": 100,
                         "next": "123",
                         "data": [finding for _ in range(50)]},
@@ -154,7 +154,7 @@ def test_findings_list_iterator(tenable_exposure_management_api, finding):
                       {"limit": 50,
                        "next": "123"})])
 
-    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
+    responses.get('https://cloud.tenable.com/api/v1/em/apa/findings',
                   json={"page_number": None, "count": 0, "total": 0,
                         "next": None,
                         "data": []},
@@ -175,11 +175,11 @@ def test_findings_list_findings_page_response(tenable_exposure_management_api, f
     findings_page_response = {"page_number": 1, "count": 50, "total": 100,
                               "next": "123",
                               "data": [finding for _ in range(50)]}
-    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
+    responses.get('https://cloud.tenable.com/api/v1/em/apa/findings',
                   json=findings_page_response,
                   match=[responses.matchers.query_param_matcher({"limit": 50})])
 
-    responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
+    responses.get('https://cloud.tenable.com/api/v1/em/apa/findings',
                   json={"page_number": None, "count": 0, "total": 0,
                         "next": None,
                         "data": []},
