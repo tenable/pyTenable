@@ -53,7 +53,7 @@ def findings_response() -> dict:
         "values": [
             {
                 "id": "000caf26-c44f-5db1-891f-4d98383812b9",
-                "finding_name": "Dangerous SYSVOL share path",
+                "name": "Dangerous SYSVOL share path",
                 "severity": "HIGH",
                 "state": "ACTIVE",
                 "asset_id": "ea3305bf-6067-4f5d-a381-ffbd9eda2296",
@@ -83,11 +83,11 @@ def test_properties_list(tenable_exposure_management_api, findings_properties_re
 def test_list(tenable_exposure_management_api, findings_response):
     query_text = "Dangerous SYSVOL share path"
     query_mode = QueryMode.SIMPLE
-    filters = [PropertyFilter(property="finding_name", operator=Operator.EQUAL, value=["Dangerous SYSVOL share path"])]
+    filters = [PropertyFilter(property="name", operator=Operator.EQUAL, value=["Dangerous SYSVOL share path"])]
     extra_properties = ["product_code"]
     offset = 0
     limit = 100
-    sort_by = "finding_name"
+    sort_by = "name"
     sort_direction = SortDirection.ASC
     timezone = "UTC"
 

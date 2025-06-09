@@ -20,7 +20,7 @@ class FindingState(str, Enum):
 
 class Finding(BaseModel):
     id: UUID
-    finding_name: str
+    name: str
     severity: FindingSeverity
     state: FindingState
     asset_id: UUID
