@@ -33,11 +33,11 @@ class TenableOne(APIPlatform):
     been written will be grafted onto this class.
 
     Environment Variables:
-        ``TEM_ACCESS_KEY``: API Access Key for the Tenable One Application.
+        ``TO_ACCESS_KEY``: API Access Key for the Tenable One Application.
 
-        ``TEM_SECRET_KEY``: API Secret Key for the Tenable One Application.
+        ``TO_SECRET_KEY``: API Secret Key for the Tenable One Application.
 
-        ``TEM_URL``: The Application URL.  Defaults to `https://cloud.tenable.com`.
+        ``TO_URL``: The Application URL.  Defaults to `https://cloud.tenable.com`.
 
     Examples:
         Basic Example:
@@ -53,7 +53,7 @@ class TenableOne(APIPlatform):
         >>>     build='1.0.0')
     """
 
-    _env_base = 'TEM'
+    _env_base = 'TO'
     _url = 'https://cloud.tenable.com'
     _box = True
 
