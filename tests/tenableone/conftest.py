@@ -3,7 +3,7 @@ import os
 
 import pytest
 
-from tenable.exposuremanagement import TenableExposureManagement
+from tenable.tenableone import TenableExposureManagement
 
 
 @pytest.fixture

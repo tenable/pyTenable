@@ -20,9 +20,9 @@ This package covers the Tenable Exposure Management.
 from typing import Optional
 
 from tenable.base.platform import APIPlatform
-from tenable.exposuremanagement.attack_path.api import AttackPathAPI
-from tenable.exposuremanagement.inventory.api import InventoryAPI
-from tenable.exposuremanagement.tags.api import TagsAPI
+from tenable.tenableone.attack_path.api import AttackPathAPI
+from tenable.tenableone.inventory.api import InventoryAPI
+from tenable.tenableone.tags.api import TagsAPI
 
 
 class TenableExposureManagement(APIPlatform):

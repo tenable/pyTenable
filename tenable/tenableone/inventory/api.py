@@ -18,8 +18,8 @@ Inventory APIs.
 """
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.exposuremanagement.inventory.assets.api import AssetsAPI
-from tenable.exposuremanagement.inventory.software.api import SoftwareAPI
+from tenable.tenableone.inventory.assets.api import AssetsAPI
+from tenable.tenableone.inventory.software.api import SoftwareAPI
 
 
 class InventoryAPI(APIEndpoint):

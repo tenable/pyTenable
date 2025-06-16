@@ -3,8 +3,8 @@ import json
 import pytest
 import responses
 
-from tenable.exposuremanagement.inventory.schema import Field, Properties, SortDirection, Operator, PropertyFilter, QueryMode
-from tenable.exposuremanagement.tags.schema import Tags
+from tenable.tenableone.inventory.schema import Field, Properties, SortDirection, Operator, PropertyFilter, QueryMode
+from tenable.tenableone.tags.schema import Tags
 
 
 @pytest.fixture
@@ -53,7 +53,7 @@ def tags_response() -> dict:
 @responses.activate
 def test_properties_list(tenable_exposure_management_api, tags_properties_response):
     # Arrange
-    responses.get('https://cloud.tenable.com/api/v1/em/tags/properties',
+    responses.get('https://cloud.tenable.com/api/v1/t1/tags/properties',
                   json=tags_properties_response,
                   match=[responses.matchers.query_param_matcher({})])
     # Act
@@ -91,7 +91,7 @@ def test_list(tenable_exposure_management_api, tags_response):
     }
     responses.add(
         responses.POST,
-        'https://cloud.tenable.com/api/v1/em/tags',
+        'https://cloud.tenable.com/api/v1/t1/tags',
         json=tags_response,
         match=[responses.matchers.body_matcher(params=json.dumps(payload))]
     )

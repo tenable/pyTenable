@@ -1,46 +1,48 @@
 """
-Software
-=============
+Tags
+=====
 
-Methods described in this section relate to the software API.
-These methods can be accessed at ``TenableExposureManagement.inventory.assets``.
+The following methods allow for interaction with the Tenable Exposure Management
+Tags APIs.
+
+Methods available on ``TenableExposureManagement.tags``:
 
 .. rst-class:: hide-signature
-.. autoclass:: SoftwareAPI
+.. autoclass:: TagsAPI
     :members:
 """
 
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.exposuremanagement.inventory.schema import (
+from tenable.tenableone.inventory.schema import (
     Field,
     Properties,
     PropertyFilter,
     QueryMode,
     SortDirection,
 )
-from tenable.exposuremanagement.inventory.software.schema import SoftwareValues
+from tenable.tenableone.tags.schema import Tags
 
 
-class SoftwareAPI(APIEndpoint):
+class TagsAPI(APIEndpoint):
     def list_properties(self) -> list[Field]:
         """
-         Retrieve software properties
+        Retrieve tags properties
 
         Returns:
-            The software properties.
+            The tags properties.
 
-         Examples:
-             >>> tenable_inventory_software_properties = tenable_inventory.software.list_properties()
-             >>> for software_property in software_properties:
-             ...     pprint(software_property)
+        Examples:
+             >>> tenable_inventory_tags_properties = tenable_inventory.tags.list_properties()
+             >>> for tag_property in tenable_inventory_tags_properties:
+             ...     pprint(tag_property)
 
         """
-        asset_properties_response: dict[str, list[dict]] = self._get(
-            path='api/v1/em/inventory/software/properties'
+        tag_properties_response: dict[str, list[dict]] = self._get(
+            path='api/v1/t1/tags/properties'
         )
-        return Properties(**asset_properties_response).properties
+        return Properties(**tag_properties_response).properties
 
     def list(
         self,
@@ -53,11 +55,11 @@ class SoftwareAPI(APIEndpoint):
         sort_by: Optional[str] = None,
         sort_direction: Optional[SortDirection] = None,
         timezone: Optional[str] = None,
-    ) -> SoftwareValues:
+    ) -> Tags:
         """
-         Retrieve software
+        Retrieve assets
 
-         Args:
+        Args:
             query_text (str, optional):
                 The text to search for.
             query_mode (QueryMode, optional):
@@ -78,12 +80,12 @@ class SoftwareAPI(APIEndpoint):
                 Timezone setting for the query. Defaults to "UTC".
 
         Returns:
-            The request assets.
+            The request tags.
 
-         Examples:
-             >>> tenable_inventory_software = tenable_inventory.software.list()
-             >>> for software in tenable_inventory_software:
-             ...     pprint(software)
+        Examples:
+             >>> tags = tenable_inventory.tags.list()
+             >>> for tag in tags:
+             ...     pprint(tag)
 
         """
         payload = {}
@@ -109,5 +111,5 @@ class SoftwareAPI(APIEndpoint):
         if timezone is not None:
             payload['timezone'] = timezone
 
-        software_response: dict = self._post('api/v1/em/inventory/software', json=payload)
-        return SoftwareValues(**software_response)
+        tags_response: dict = self._post('api/v1/t1/tags', json=payload)
+        return Tags(**tags_response)

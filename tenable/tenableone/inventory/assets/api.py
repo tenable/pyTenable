@@ -14,8 +14,8 @@ These methods can be accessed at ``TenableExposureManagement.inventory.assets``.
 from typing import Optional
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.exposuremanagement.inventory.assets.schema import AssetClass, Assets
-from tenable.exposuremanagement.inventory.schema import (
+from tenable.tenableone.inventory.assets.schema import AssetClass, Assets
+from tenable.tenableone.inventory.schema import (
     Field,
     Properties,
     PropertyFilter,
@@ -55,7 +55,7 @@ class AssetsAPI(APIEndpoint):
             )
             payload['asset_classes'] = asset_classes
         asset_properties_response: dict[str, list[dict]] = self._get(
-            path='api/v1/em/inventory/assets/properties', params=payload
+            path='api/v1/t1/inventory/assets/properties', params=payload
         )
         return Properties(**asset_properties_response).properties
 
@@ -127,5 +127,5 @@ class AssetsAPI(APIEndpoint):
         if timezone is not None:
             payload['timezone'] = timezone
 
-        assets_response: dict = self._post('api/v1/em/inventory/assets', json=payload)
+        assets_response: dict = self._post('api/v1/t1/inventory/assets', json=payload)
         return Assets(**assets_response)

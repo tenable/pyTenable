@@ -15,7 +15,7 @@ from typing import Dict, Optional, Union
 
 from restfly import APIIterator
 
-from tenable.exposuremanagement.attack_path.vectors.schema import VectorsPageSchema
+from tenable.tenableone.attack_path.vectors.schema import VectorsPageSchema
 from tenable.base.endpoint import APIEndpoint
 
 
@@ -34,7 +34,7 @@ class VectorIterator(APIIterator):
         payload = copy(self._payload)
         payload["page_number"] = self._next_page
 
-        resp = self._api.get("api/v1/em/apa/vectors",
+        resp = self._api.get("api/v1/t1/apa/vectors",
                              params=payload, box=True)
         self._next_page = resp.get("page_number") + 1
         self.page = resp.data
@@ -122,4 +122,4 @@ class VectorsAPI(APIEndpoint):
             payload["run_ai_summarization"] = 'true'
         if return_iterator:
             return VectorIterator(self._api, _payload=payload)
-        return self._schema(**self._get(path="api/v1/em/apa/vectors", params=payload))
+        return self._schema(**self._get(path="api/v1/t1/apa/vectors", params=payload))

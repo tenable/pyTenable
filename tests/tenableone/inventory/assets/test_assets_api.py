@@ -3,8 +3,8 @@ import json
 import pytest
 import responses
 
-from tenable.exposuremanagement.inventory.assets.schema import AssetClass, Assets
-from tenable.exposuremanagement.inventory.schema import Field, Properties, SortDirection, QueryMode, PropertyFilter, \
+from tenable.tenableone.inventory.assets.schema import AssetClass, Assets
+from tenable.tenableone.inventory.schema import Field, Properties, SortDirection, QueryMode, PropertyFilter, \
     Operator
 
 
@@ -157,7 +157,7 @@ def test_properties_list(tenable_exposure_management_api, asset_properties_respo
     # Arrange
     asset_classes = [AssetClass.ACCOUNT, AssetClass.DEVICE]
     asset_classes_str = ",".join([asset_class.value for asset_class in asset_classes])
-    responses.get('https://cloud.tenable.com/api/v1/em/inventory/assets/properties',
+    responses.get('https://cloud.tenable.com/api/v1/t1/inventory/assets/properties',
                   json=asset_properties_response,
                   match=[responses.matchers.query_param_matcher({"asset_classes": asset_classes_str})])
     # Act
@@ -197,7 +197,7 @@ def test_list(tenable_exposure_management_api, assets_response):
         "timezone": timezone
     }
     responses.add(responses.POST,
-                  'https://cloud.tenable.com/api/v1/em/inventory/assets',
+                  'https://cloud.tenable.com/api/v1/t1/inventory/assets',
                   json=assets_response,
                   match=[responses.matchers.body_matcher(params=json.dumps(payload))])
     # Act
