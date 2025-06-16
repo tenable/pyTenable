@@ -1,8 +1,8 @@
 """
-Tenable Exposure Management
+Tenable One
 ============================
 
-This package covers the Tenable Exposure Management.
+This package covers the Tenable One.
 
 .. autoclass:: TenableOne
     :members:
@@ -27,15 +27,15 @@ from tenable.tenableone.tags.api import TagsAPI
 
 class TenableOne(APIPlatform):
     """
-    The Tenable Exposure Management object is the primary interaction
-    point for users to interface with Tenable Exposure Management
+    The Tenable One object is the primary interaction
+    point for users to interface with Tenable One
     via the pyTenable library.  All the API endpoint classes that have
     been written will be grafted onto this class.
 
     Environment Variables:
-        ``TEM_ACCESS_KEY``: API Access Key for the Tenable Exposure Management Application.
+        ``TEM_ACCESS_KEY``: API Access Key for the Tenable One Application.
 
-        ``TEM_SECRET_KEY``: API Secret Key for the Tenable Exposure Management Application.
+        ``TEM_SECRET_KEY``: API Secret Key for the Tenable One Application.
 
         ``TEM_URL``: The Application URL.  Defaults to `https://cloud.tenable.com`.
 
@@ -73,7 +73,7 @@ class TenableOne(APIPlatform):
     def attack_path(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Attack Path APIs <attack_path/index>`.
+        :doc:`Tenable One Attack Path APIs <attack_path/index>`.
         """
         return AttackPathAPI(self)
 
@@ -81,7 +81,7 @@ class TenableOne(APIPlatform):
     def inventory(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Inventory APIs <inventory/index>`.
+        :doc:`Tenable One Inventory APIs <inventory/index>`.
         """
         return InventoryAPI(self)
 
@@ -89,6 +89,6 @@ class TenableOne(APIPlatform):
     def tags(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Tags APIs <tags/index>`.
+        :doc:`Tenable One Tags APIs <tags/index>`.
         """
         return TagsAPI(self)

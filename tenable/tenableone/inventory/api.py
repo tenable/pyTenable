@@ -2,7 +2,7 @@
 Inventory
 =========
 
-The following sub-package allows for interaction with the Tenable Exposure Management
+The following sub-package allows for interaction with the Tenable One
 Inventory APIs.
 
 .. rst-class:: hide-signature
@@ -27,7 +27,7 @@ class InventoryAPI(APIEndpoint):
     def assets(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Inventory Assets APIs <assets/index>`.
+        :doc:`Tenable One Inventory Assets APIs <assets/index>`.
         """
         return AssetsAPI(self._api)
 
@@ -35,6 +35,6 @@ class InventoryAPI(APIEndpoint):
     def software(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Inventory Software APIs <software/index>`.
+        :doc:`Tenable One Inventory Software APIs <software/index>`.
         """
         return SoftwareAPI(self._api)

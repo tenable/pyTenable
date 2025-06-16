@@ -2,7 +2,7 @@
 Tags
 =====
 
-The following methods allow for interaction with the Tenable Exposure Management
+The following methods allow for interaction with the Tenable One
 Tags APIs.
 
 Methods available on ``TenableOne.tags``:

@@ -2,7 +2,7 @@
 Attack Path
 ===========
 
-The following sub-package allows for interaction with the Tenable Exposure Management
+The following sub-package allows for interaction with the Tenable One
 Attack Path APIs.
 
 .. rst-class:: hide-signature
@@ -27,7 +27,7 @@ class AttackPathAPI(APIEndpoint):
     def findings(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Attack Path Findings APIs <findings/index>`.
+        :doc:`Tenable One Attack Path Findings APIs <findings/index>`.
         """
         return FindingsAPI(self._api)
 
@@ -35,6 +35,6 @@ class AttackPathAPI(APIEndpoint):
     def vectors(self):
         """
         The interface object for the
-        :doc:`Tenable Exposure Management Attack Path Vectors APIs <vectors/index>`.
+        :doc:`Tenable One Attack Path Vectors APIs <vectors/index>`.
         """
         return VectorsAPI(self._api)
