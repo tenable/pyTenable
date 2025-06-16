@@ -237,19 +237,19 @@ def software_response() -> dict:
 
 
 @responses.activate
-def test_properties_list(tenable_exposure_management_api, software_properties_response):
+def test_properties_list(tenable_one_api, software_properties_response):
     # Arrange
     responses.get('https://cloud.tenable.com/api/v1/t1/inventory/software/properties',
                   json=software_properties_response,
                   match=[responses.matchers.query_param_matcher({})])
     # Act
-    software_properties_result: list[Field] = tenable_exposure_management_api.inventory.software.list_properties()
+    software_properties_result: list[Field] = tenable_one_api.inventory.software.list_properties()
     # Assert
     assert software_properties_result == Properties(**software_properties_response).properties
 
 
 @responses.activate
-def test_list(tenable_exposure_management_api, software_response):
+def test_list(tenable_one_api, software_response):
     query_text = "accurics"
     query_mode = QueryMode.SIMPLE
     filters = [PropertyFilter(property="property", operator=Operator.EQUAL, value=["value"])]
@@ -282,7 +282,7 @@ def test_list(tenable_exposure_management_api, software_response):
                   json=software_response,
                   match=[responses.matchers.body_matcher(params=json.dumps(payload))])
     # Act
-    software: SoftwareValues = tenable_exposure_management_api.inventory.software.list(query_text=query_text,
+    software: SoftwareValues = tenable_one_api.inventory.software.list(query_text=query_text,
                                                                                        query_mode=query_mode,
                                                                                        filters=filters,
                                                                                        extra_properties=extra_properties,

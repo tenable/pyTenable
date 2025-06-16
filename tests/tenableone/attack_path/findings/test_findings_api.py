@@ -139,7 +139,7 @@ def finding():
 
 
 @responses.activate
-def test_findings_list_iterator(tenable_exposure_management_api, finding):
+def test_findings_list_iterator(tenable_one_api, finding):
     responses.get('https://cloud.tenable.com/api/v1/t1/apa/findings',
                   json={"page_number": 1, "count": 50, "total": 100,
                         "next": "123",
@@ -162,7 +162,7 @@ def test_findings_list_iterator(tenable_exposure_management_api, finding):
                       {"limit": 50,
                        "next": "123"})])
 
-    findings: FindingIterator = tenable_exposure_management_api.attack_path.findings.list()
+    findings: FindingIterator = tenable_one_api.attack_path.findings.list()
 
     for f in findings:
         assert f == finding
@@ -171,7 +171,7 @@ def test_findings_list_iterator(tenable_exposure_management_api, finding):
 
 
 @responses.activate
-def test_findings_list_findings_page_response(tenable_exposure_management_api, finding):
+def test_findings_list_findings_page_response(tenable_one_api, finding):
     findings_page_response = {"page_number": 1, "count": 50, "total": 100,
                               "next": "123",
                               "data": [finding for _ in range(50)]}
@@ -185,6 +185,6 @@ def test_findings_list_findings_page_response(tenable_exposure_management_api, f
                         "data": []},
                   match=[responses.matchers.query_param_matcher({"limit": 50, "next": "123"})])
 
-    findings_page: FindingsPageSchema = tenable_exposure_management_api.attack_path.findings.list(return_iterator=False)
+    findings_page: FindingsPageSchema = tenable_one_api.attack_path.findings.list(return_iterator=False)
 
     assert findings_page == FindingsPageSchema(**findings_page_response)

@@ -103,7 +103,7 @@ def vector():
 
 
 @responses.activate
-def test_vectors_list_iterator(tenable_exposure_management_api, vector):
+def test_vectors_list_iterator(tenable_one_api, vector):
     responses.get('https://cloud.tenable.com/api/v1/t1/apa/vectors',
                   json={"page_number": 1, "count": 10, "total": 21,
                         "data": [vector for _ in range(10)]},
@@ -119,7 +119,7 @@ def test_vectors_list_iterator(tenable_exposure_management_api, vector):
                         "data": [vector for _ in range(1)]},
                   match=[responses.matchers.query_param_matcher({"limit": 10, "page_number": 3})])
 
-    vectors: VectorIterator = tenable_exposure_management_api.attack_path.vectors.list()
+    vectors: VectorIterator = tenable_one_api.attack_path.vectors.list()
 
     for v in vectors:
         assert v == vector
@@ -128,13 +128,13 @@ def test_vectors_list_iterator(tenable_exposure_management_api, vector):
 
 
 @responses.activate
-def test_vectors_list_vector_page_response(tenable_exposure_management_api, vector):
+def test_vectors_list_vector_page_response(tenable_one_api, vector):
     vectors_page_response = {"page_number": 1, "count": 10, "total": 10,
                              "data": [vector for _ in range(10)]}
     responses.get('https://cloud.tenable.com/api/v1/t1/apa/vectors',
                   json=vectors_page_response,
                   match=[responses.matchers.query_param_matcher({"limit": 10})])
 
-    vectors_page: VectorsPageSchema = tenable_exposure_management_api.attack_path.vectors.list(return_iterator=False)
+    vectors_page: VectorsPageSchema = tenable_one_api.attack_path.vectors.list(return_iterator=False)
 
     assert vectors_page == VectorsPageSchema(**vectors_page_response)

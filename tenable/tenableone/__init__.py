@@ -4,7 +4,7 @@ Tenable Exposure Management
 
 This package covers the Tenable Exposure Management.
 
-.. autoclass:: TenableExposureManagement
+.. autoclass:: TenableOne
     :members:
 
 
@@ -25,7 +25,7 @@ from tenable.tenableone.inventory.api import InventoryAPI
 from tenable.tenableone.tags.api import TagsAPI
 
 
-class TenableExposureManagement(APIPlatform):
+class TenableOne(APIPlatform):
     """
     The Tenable Exposure Management object is the primary interaction
     point for users to interface with Tenable Exposure Management
@@ -42,12 +42,12 @@ class TenableExposureManagement(APIPlatform):
     Examples:
         Basic Example:
 
-        >>> from tenable.exposuremanagement import TenableExposureManagement
-        >>> tenable_exposure_management = TenableExposureManagement('ACCESS_KEY', 'SECRET_KEY')
+        >>> from tenable.tenableone import TenableOne
+        >>> tenable_one = TenableOne('ACCESS_KEY', 'SECRET_KEY')
 
         Example with proper identification:
 
-        >>> tenable_inventory = TenableExposureManagement('ACCESS_KEY', 'SECRET_KEY',
+        >>> tenable_inventory = TenableOne('ACCESS_KEY', 'SECRET_KEY',
         >>>     vendor='Company Name',
         >>>     product='My Awesome Widget',
         >>>     build='1.0.0')

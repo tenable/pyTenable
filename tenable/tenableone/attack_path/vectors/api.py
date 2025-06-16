@@ -3,7 +3,7 @@ Vectors
 =======
 
 Methods described in this section relate to the vectors API.
-These methods can be accessed at ``TenableExposureManagement.attack_path``.
+These methods can be accessed at ``TenableOne.attack_path``.
 
 .. rst-class:: hide-signature
 .. autoclass:: VectorsAPI

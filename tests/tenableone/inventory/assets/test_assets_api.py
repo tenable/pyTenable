@@ -153,7 +153,7 @@ def assets_response() -> dict:
 
 
 @responses.activate
-def test_properties_list(tenable_exposure_management_api, asset_properties_response):
+def test_properties_list(tenable_one_api, asset_properties_response):
     # Arrange
     asset_classes = [AssetClass.ACCOUNT, AssetClass.DEVICE]
     asset_classes_str = ",".join([asset_class.value for asset_class in asset_classes])
@@ -161,14 +161,14 @@ def test_properties_list(tenable_exposure_management_api, asset_properties_respo
                   json=asset_properties_response,
                   match=[responses.matchers.query_param_matcher({"asset_classes": asset_classes_str})])
     # Act
-    asset_properties_result: list[Field] = tenable_exposure_management_api.inventory.assets.list_properties(
+    asset_properties_result: list[Field] = tenable_one_api.inventory.assets.list_properties(
         asset_classes=asset_classes)
     # Assert
     assert asset_properties_result == Properties(**asset_properties_response).properties
 
 
 @responses.activate
-def test_list(tenable_exposure_management_api, assets_response):
+def test_list(tenable_one_api, assets_response):
     query_text = "accurics"
     query_mode = QueryMode.SIMPLE
     filters = [PropertyFilter(property="property", operator=Operator.EQUAL, value=["value"])]
@@ -201,7 +201,7 @@ def test_list(tenable_exposure_management_api, assets_response):
                   json=assets_response,
                   match=[responses.matchers.body_matcher(params=json.dumps(payload))])
     # Act
-    assets: Assets = tenable_exposure_management_api.inventory.assets.list(query_text=query_text, query_mode=query_mode,
+    assets: Assets = tenable_one_api.inventory.assets.list(query_text=query_text, query_mode=query_mode,
                                                                            filters=filters,
                                                                            extra_properties=extra_properties,
                                                                            offset=offset, limit=limit, sort_by=sort_by,

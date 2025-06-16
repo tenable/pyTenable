@@ -5,7 +5,7 @@ Tags
 The following methods allow for interaction with the Tenable Exposure Management
 Tags APIs.
 
-Methods available on ``TenableExposureManagement.tags``:
+Methods available on ``TenableOne.tags``:
 
 .. rst-class:: hide-signature
 .. autoclass:: TagsAPI

@@ -3,7 +3,7 @@ Software
 =============
 
 Methods described in this section relate to the software API.
-These methods can be accessed at ``TenableExposureManagement.inventory.assets``.
+These methods can be accessed at ``TenableOne.inventory.assets``.
 
 .. rst-class:: hide-signature
 .. autoclass:: SoftwareAPI
