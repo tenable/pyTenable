@@ -1866,8 +1866,8 @@ interactions:
       API (TAPI) support for programs that control telephony devices on the local
       computer and, through the LAN, on servers that are also running the service.\n@%systemroot%\\system32\\ngcctnrsvc.dll,-2
       : Manages local user identity keys used to authenticate user to identity providers
-      as well as TPM virtual smart exposure_view. If this service is disabled, local user
-      identity keys and TPM virtual smart exposure_view will not be accessible. It is recommended
+      as well as TPM virtual smart cards. If this service is disabled, local user
+      identity keys and TPM virtual smart cards will not be accessible. It is recommended
       that you do not reconfigure this service.\n@%windir%\\system32\\lsm.dll,-1002
       : Core Windows Service that manages local user sessions. Stopping or disabling
       this service will result in system instability.\n@%systemroot%\\system32\\smphost.dll,-102
@@ -2250,8 +2250,8 @@ interactions:
       : WLAN AutoConfig\n@%systemroot%\\system32\\wersvc.dll,-100 : Windows Error
       Reporting Service\n@%systemroot%\\system32\\clipsvc.dll,-103 : Client License
       Service (ClipSVC)\n@%systemroot%\\system32\\scardsvr.dll,-5 : Manages access
-      to smart exposure_view read by this computer. If this service is stopped, this computer
-      will be unable to read smart exposure_view. If this service is disabled, any services
+      to smart cards read by this computer. If this service is stopped, this computer
+      will be unable to read smart cards. If this service is disabled, any services
       that explicitly depend on it will fail to start.\n@%systemroot%\\system32\\drivers\\ndisimplatform.sys,-500
       : Provides a platform for network adapter load balancing and fail-over.\n@%systemroot%\\system32\\shsvcs.dll,-12288
       : Shell Hardware Detection\n@%systemroot%\\system32\\mprmsg.dll,-32007 : Remote
