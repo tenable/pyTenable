@@ -52,6 +52,6 @@ class CardsAPI(APIEndpoint):
         if query_text is not None:
             payload["filter"]["text_query"] = query_text
 
-        cards_response = self._post(path="api/v1/em/exposure-view/cards", json=payload, box=False)
+        cards_response = self._post(path="api/v1/t1/exposure-view/cards", json=payload, box=False)
 
         return CardsResponse(**cards_response.json()).data
