@@ -13,7 +13,7 @@ from typing import Optional
 
 from restfly import APIEndpoint
 
-from tenable.tenableone.exposure_view.cards.schema import Cards
+from tenable.tenableone.exposure_view.cards.schema import Cards, Timeframe, SlaBreakdownFilter, GetCardByIdResponse
 from tenable.tenableone.inventory.schema import SortDirection
 
 
@@ -55,3 +55,46 @@ class CardsAPI(APIEndpoint):
         )
 
         return Cards(**cards_response.json())
+
+    def get_by_id(
+            self,
+            card_id: str,
+            trend_timeframe: Optional[Timeframe] = None,
+            sla_efficiency_timeframe: Optional[Timeframe] = None,
+            sla_breakdown_filter: Optional[SlaBreakdownFilter] = SlaBreakdownFilter.ANY,
+            include_trend_events: Optional[bool] = False
+    ) -> GetCardByIdResponse:
+        """
+        Get a specific card by its ID with optional filters
+
+        Args:
+            card_id: The ID of the card to retrieve
+            trend_timeframe: Optional timeframe for trend data
+            sla_efficiency_timeframe: Optional timeframe for SLA efficiency data
+            sla_breakdown_filter: Optional filter for SLA breakdown (ANY, REMEDIATED, NON_REMEDIATED)
+            include_trend_events: Whether to include trend events in the response
+
+        Returns:
+            GetCardByIdResponse object containing the card details
+        """
+        payload = {
+            "id": card_id,
+            "get_card_request": {
+                "sla_breakdown_filter": sla_breakdown_filter.value,
+                "include_trend_events": include_trend_events
+            }
+        }
+
+        if trend_timeframe:
+            payload["get_card_request"]["trend_timeframe"] = {
+                "start_date": trend_timeframe.start_date.isoformat(),
+                "end_date": trend_timeframe.end_date.isoformat()
+            }
+        if sla_efficiency_timeframe:
+            payload["get_card_request"]["sla_efficiency_timeframe"] = {
+                "start_date": sla_efficiency_timeframe.start_date.isoformat(),
+                "end_date": sla_efficiency_timeframe.end_date.isoformat()
+            }
+
+        card_response = self._post(path=f"api/v1/t1/exposure-view/cards/{card_id}", json=payload, box=False)
+        return GetCardByIdResponse(**card_response.json())
