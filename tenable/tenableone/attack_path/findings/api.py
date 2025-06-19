@@ -55,72 +55,72 @@ class FindingsAPI(APIEndpoint):
         return_iterator=True,
     ) -> Union[FindingIterator, FindingsPageSchema]:
         """
-         Retrieve findings
+        Retrieve findings
 
-         Args:
-             page_number (optional, int):
-                 For offset-based pagination, the requested page to retrieve.
-                 If this parameter is omitted,
-                 Tenable uses the default value of 1.
+        Args:
+            page_number (optional, int):
+                For offset-based pagination, the requested page to retrieve.
+                If this parameter is omitted,
+                Tenable uses the default value of 1.
 
-             next_token (optional, str):
-                 For cusrsor-based pagination,
-                 the cursor position for the next page.
-                 For the initial request, don't populate.
-                 For subsequent requests, set this parameter to the value found
-                 in the next property of the previous response.
-                 When getting null without specify a page number
-                 it means there are no more pages.
+            next_token (optional, str):
+                For cusrsor-based pagination,
+                the cursor position for the next page.
+                For the initial request, don't populate.
+                For subsequent requests, set this parameter to the value found
+                in the next property of the previous response.
+                When getting null without specify a page number
+                it means there are no more pages.
 
-             limit (optional, int):
-                 The number of records to retrieve.
-                 If this parameter is omitted,
-                 Tenable uses the default value of 50.
-                 The maximum number of events that can be retrieved is 10,000.
-                 For example: limit=10000.
+            limit (optional, int):
+                The number of records to retrieve.
+                If this parameter is omitted,
+                Tenable uses the default value of 50.
+                The maximum number of events that can be retrieved is 10,000.
+                For example: limit=10000.
 
-             filter (optional, dict):
-                 A document as defined by Tenable APA online documentation.
-                 Filters to allow the user to get
-                 to a specific subset of Findings.
-                 For a more detailed listing of what filters are available,
-                 please refer to the API documentation
-                 linked above, however some examples are as such:
+            filter (optional, dict):
+                A document as defined by Tenable APA online documentation.
+                Filters to allow the user to get
+                to a specific subset of Findings.
+                For a more detailed listing of what filters are available,
+                please refer to the API documentation
+                linked above, however some examples are as such:
 
-                 - ``{"operator":"==", "key":"state", "value":"open"}``
-                 - ``{"operator":">", "key":"last_updated_at", "value":"2024-05-30T12:28:11.528118"}``
+                - ``{"operator":"==", "key":"state", "value":"open"}``
+                - ``{"operator":">", "key":"last_updated_at", "value":"2024-05-30T12:28:11.528118"}``
 
-             sort_filed (optional, str):
-                 The field you want to use to sort the results by.
-                 Accepted values are ``last_updated_at``, ``state``,
-                 ``vectorCount``, ``status``, ``name``,
-                 ``procedureName``, ``priority``, and ``mitre_id``.
+            sort_filed (optional, str):
+                The field you want to use to sort the results by.
+                Accepted values are ``last_updated_at``, ``state``,
+                ``vectorCount``, ``status``, ``name``,
+                ``procedureName``, ``priority``, and ``mitre_id``.
 
-             sort_order (optional, str):
-                 The sort order
-                 Accepted values are ``desc`` or ``acs``
+            sort_order (optional, str):
+                The sort order
+                Accepted values are ``desc`` or ``acs``
 
-             return_iterator (bool, optional):
-                 Should we return the response instead of iterable?
+            return_iterator (bool, optional):
+                Should we return the response instead of iterable?
 
 
         Returns:
-             :obj:`FindingIterator`:
-                 List of findings records
+            :obj:`FindingIterator`:
+                List of findings records
 
          Examples:
-             >>> findings = tapa.findings.list()
-             >>> for f in findings:
-             ...     pprint(f)
+            >>> findings = tapa.findings.list()
+            >>> for f in findings:
+            ...     pprint(f)
 
          Examples:
-             >>> tapa.findings.list(
-             ...     limit='10',
-             ...     sort_filed='last_updated_at',
-             ...     sort_order='desc',
-             ...     filter='value',
-             ...     return_iterator=False
-             ...     )
+            >>> tapa.findings.list(
+            ...     limit='10',
+            ...     sort_filed='last_updated_at',
+            ...     sort_order='desc',
+            ...     filter='value',
+            ...     return_iterator=False
+            ...     )
         """
 
         payload = {
