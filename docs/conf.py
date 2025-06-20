@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+import datetime
 import os
 import sys
-import datetime
+
 sys.path.insert(0, os.path.abspath('..'))
 
 from tenable.version import version
@@ -60,10 +61,11 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
     'sphinx.ext.extlinks',
+    'sphinxcontrib.autodoc_pydantic',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-#templates_path = ['_templates']
+# templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -87,12 +89,14 @@ language = 'en'
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = "default"
-pygments_dark_style = "monokai"
+pygments_style = 'default'
+pygments_dark_style = 'monokai'
 
 add_module_names = False
 napoleon_google_docstring = True
 napoleon_numpy_docstring = False
+autodoc_pydantic_model_show_json = False
+autodoc_pydantic_settings_show_json = False
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -125,15 +129,12 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
-
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -143,12 +144,13 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc,
-     'pyTenable.tex',
-     'pyTenable Documentation',
-     'Steven McGrath',
-     'manual'
-     ),
+    (
+        master_doc,
+        'pyTenable.tex',
+        'pyTenable Documentation',
+        'Steven McGrath',
+        'manual',
+    ),
 ]
 
 
@@ -156,10 +158,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'pytenable', 'pyTenable Documentation',
-     [author], 1)
-]
+man_pages = [(master_doc, 'pytenable', 'pyTenable Documentation', [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------------
@@ -168,14 +167,15 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc,
-     'pyTenable',
-     'pyTenable Documentation',
-     author,
-     'pyTenable',
-     'pyTenable Documentation',
-     'Miscellaneous'
-     ),
+    (
+        master_doc,
+        'pyTenable',
+        'pyTenable Documentation',
+        author,
+        'pyTenable',
+        'pyTenable Documentation',
+        'Miscellaneous',
+    ),
 ]
 
 

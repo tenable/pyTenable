@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.5]
+
+### Added
+
+- Added TenableInventory package #899
+
+### Fixed
+
+- Fixed SC "unlimited" bug introduced #906
+- Corrected regression identified in SC repos #905
+- Fixed SC universal repo support #904
+- Pinned Marshmallow to <4.x #911
+
+[1.7.5]: https://github.com/tenable/pyTenable/compare/1.7.4...1.7.5
+
 ## [1.7.4]
 
 ### Fixed
