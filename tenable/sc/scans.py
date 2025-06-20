@@ -1,4 +1,4 @@
-'''
+"""
 Scans
 =====
 
@@ -14,20 +14,26 @@ Methods available on ``sc.scans``:
 .. rst-class:: hide-signature
 .. autoclass:: ScanAPI
     :members:
-'''
-from .base import SCEndpoint
-from tenable.utils import dict_merge
+"""
+
 from tenable.errors import UnexpectedValueError
+from tenable.utils import dict_merge
+
+from .base import SCEndpoint
+
 
 class ScanAPI(SCEndpoint):
     def _constructor(self, **kw):
-        '''
+        """
         Handles parsing the keywords and returns a scan definition document
-        '''
+        """
         if 'inactivity_timeout' in kw:
-            kw['inactivityTimeout'] = str(self._check(
-                'inactivity_timeout', kw['inactivity_timeout'], int, default=3600))
-            del (kw['inactivity_timeout'])
+            kw['inactivityTimeout'] = str(
+                self._check(
+                    'inactivity_timeout', kw['inactivity_timeout'], int, default=3600
+                )
+            )
+            del kw['inactivity_timeout']
 
         if 'name' in kw:
             # simply verify that the name attribute is a string.
@@ -45,93 +51,110 @@ class ScanAPI(SCEndpoint):
         if 'repo' in kw:
             # as we accept input as a integer, we need to expand the repository
             # attribute to be a dictionary item with just the ID (per API docs)
-            kw['repository'] = {'id': self._check(
-                'repo', kw['repo'], int)}
-            del(kw['repo'])
+            kw['repository'] = {'id': self._check('repo', kw['repo'], int)}
+            del kw['repo']
 
         if 'scan_zone' in kw:
             # similarly to the repository, the API expects the zone to be
             # defined as a sub-dictionary with just the id field.
-            kw['zone'] = {'id': self._check(
-                'scan_zone', kw['scan_zone'], int, default=0)}
-            del(kw['scan_zone'])
+            kw['zone'] = {
+                'id': self._check('scan_zone', kw['scan_zone'], int, default=0)
+            }
+            del kw['scan_zone']
 
         if 'email_complete' in kw:
             # As emailOnFinish is effectively a string interpretation of a bool
             # value, if the snake case equivalent is used, we will convert it
             # into the expected parameter and remove the snake cased version.
-            kw['emailOnFinish'] = str(self._check(
-                'email_complete', kw['email_complete'], bool, default=False)).lower()
-            del(kw['email_complete'])
+            kw['emailOnFinish'] = str(
+                self._check('email_complete', kw['email_complete'], bool, default=False)
+            ).lower()
+            del kw['email_complete']
 
         if 'email_launch' in kw:
             # As emailOnLaunch is effectively a string interpretation of a bool
             # value, if the snake case equivalent is used, we will convert it
             # into the expected parameter and remove the snake cased version.
-            kw['emailOnLaunch'] = str(self._check(
-                'email_launch', kw['email_launch'], bool, default=False)).lower()
-            del(kw['email_launch'])
+            kw['emailOnLaunch'] = str(
+                self._check('email_launch', kw['email_launch'], bool, default=False)
+            ).lower()
+            del kw['email_launch']
 
         if 'host_tracking' in kw:
             # As host_tracking is effectively a string interpretation of a bool
             # value, if the snake case equivalent is used, we will convert it
             # into the expected parameter and remove the snake cased version.
-            kw['dhcpTracking'] = str(self._check(
-                'host_tracking', kw['host_tracking'], bool, default=False)).lower()
-            del(kw['host_tracking'])
+            kw['dhcpTracking'] = str(
+                self._check('host_tracking', kw['host_tracking'], bool, default=False)
+            ).lower()
+            del kw['host_tracking']
 
         if 'timeout' in kw:
             # timeout is the checked version of timeoutAction.  If timeout is
             # specified, we will check to make sure that the action is a valid
             # one, put the result into timeoutAction, and remove timeout.
-            kw['timeoutAction'] = self._check('timeout', kw['timeout'], str,
-                choices=['discard', 'import', 'rollover'], default='import')
-            del(kw['timeout'])
+            kw['timeoutAction'] = self._check(
+                'timeout',
+                kw['timeout'],
+                str,
+                choices=['discard', 'import', 'rollover'],
+                default='import',
+            )
+            del kw['timeout']
 
         if 'vhosts' in kw:
             # As scanningVirtualHosts is effectively a string interpretation of
             # a bool value, if the snake case equivalent is used, we will
             # convert it into the expected parameter and remove the snake cased
             # version.
-            kw['scanningVirtualHosts'] = str(self._check(
-                'vhosts', kw['vhosts'], bool, default=False)).lower()
-            del(kw['vhosts'])
+            kw['scanningVirtualHosts'] = str(
+                self._check('vhosts', kw['vhosts'], bool, default=False)
+            ).lower()
+            del kw['vhosts']
 
         if 'rollover' in kw:
             # The scan rolloverType parameter simply shortened to better conform
             # to pythonic naming convention.
-            kw['rolloverType'] = self._check('rollover', kw['rollover'], str,
-                choices=['nextDay', 'template'], default='template')
-            del(kw['rollover'])
+            kw['rolloverType'] = self._check(
+                'rollover',
+                kw['rollover'],
+                str,
+                choices=['nextDay', 'template'],
+                default='template',
+            )
+            del kw['rollover']
 
         if 'targets' in kw:
             # targets is list representation of a comma-separated string of
             # values for the ipList attribute.  By handling as a list instead of
             # the raw string variant the API expects, we can ensure that there
             # isn't any oddities, such as extra spaces, between the commas.
-            kw['ipList'] = ','.join([self._check('target', i.strip(), str)
-                for i in self._check('targets', kw['targets'], list)])
-            del(kw['targets'])
+            kw['ipList'] = ','.join(
+                [
+                    self._check('target', i.strip(), str)
+                    for i in self._check('targets', kw['targets'], list)
+                ]
+            )
+            del kw['targets']
 
         if 'max_time' in kw:
             # maxScanTime is a integer encased in a string value.  the snake
             # cased version of that expects an integer and converts it into the
             # string equivalent.
-            kw['maxScanTime'] = self._check('max_time', kw['max_time'], int)
-            if kw['maxScanTime'] <= 0:
-                kw['maxScanTime'] = 'unlimited';
-            else:
-                kw['maxScanTime'] = str(kw['maxScanTime'])
-            del(kw['max_time'])
+            max_time = kw.pop('max_time', 0)
+            if max_time in ('unlimited', 0):
+                max_time = 'unlimited'
+            kw['maxScanTime'] = str(max_time)
 
         if 'auto_mitigation' in kw:
             # As classifyMitigatedAge is effectively a string interpretation of
             # an int value, if the snake case equivalent is used, we will
             # convert it into the expected parameter and remove the snake cased
             # version.
-            kw['classifyMitigatedAge'] = str(self._check(
-                'auto_mitigation', kw['auto_mitigation'], int, default=0)).lower()
-            del(kw['auto_mitigation'])
+            kw['classifyMitigatedAge'] = str(
+                self._check('auto_mitigation', kw['auto_mitigation'], int, default=0)
+            ).lower()
+            del kw['auto_mitigation']
 
         # hand off the building the schedule sub-document to the schedule
         # document builder.
@@ -142,31 +165,40 @@ class ScanAPI(SCEndpoint):
             # as the reports list should already be in a format that the API
             # expects, we will simply verify that everything looks like it should.
             for item in self._check('reports', kw['reports'], list):
-                self._check('report:id', item['id'], int),
-                self._check('reportSource', item['reportSource'], str, choices=[
-                    'cumulative',
-                    'patched',
-                    'individual',
-                    'lce',
-                    'archive',
-                    'mobile'
-                ])
+                (self._check('report:id', item['id'], int),)
+                self._check(
+                    'reportSource',
+                    item['reportSource'],
+                    str,
+                    choices=[
+                        'cumulative',
+                        'patched',
+                        'individual',
+                        'lce',
+                        'archive',
+                        'mobile',
+                    ],
+                )
 
         if 'asset_lists' in kw:
             # asset_lists is the collapsed list of id documents that the API
             # expects to see.  We will check each item in the list to make sure
             # its in the right type and then expand it into a sub-document.
-            kw['assets'] = [{'id': self._check('asset_list:id', i, int)}
-                for i in self._check('assets_lists', kw['asset_lists'], list)]
-            del(kw['asset_lists'])
+            kw['assets'] = [
+                {'id': self._check('asset_list:id', i, int)}
+                for i in self._check('assets_lists', kw['asset_lists'], list)
+            ]
+            del kw['asset_lists']
 
         if 'creds' in kw:
             # creds is the collapsed list of id documents that the API expects
             # to see.  We will check each item in the list to make sure its in
             # the right type and then expand it into a sub-document.
-            kw['credentials'] = [{'id': self._check('cred:id', i, int)}
-                for i in self._check('creds', kw['creds'], list)]
-            del(kw['creds'])
+            kw['credentials'] = [
+                {'id': self._check('cred:id', i, int)}
+                for i in self._check('creds', kw['creds'], list)
+            ]
+            del kw['creds']
 
         if 'policy_id' in kw:
             # If just the policy_id is specified, then we are safe to assume
@@ -175,12 +207,12 @@ class ScanAPI(SCEndpoint):
             # snake cased variant that was inputted.
             kw['type'] = 'policy'
             kw['policy'] = {'id': self._check('policy_id', kw['policy_id'], int)}
-            del(kw['policy_id'])
+            del kw['policy_id']
 
         return kw
 
     def list(self, fields=None):
-        '''
+        """
         Retrieves the list of scan definitions.
 
         :sc-api:`scan: list <Scan.htm#scan_GET>`
@@ -196,16 +228,15 @@ class ScanAPI(SCEndpoint):
         Examples:
             >>> for scan in sc.scans.list():
             ...     pprint(scan)
-        '''
+        """
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str)
-                for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
         return self._api.get('scan', params=params).json()['response']
 
     def create(self, name, repo, **kw):
-        '''
+        """
         Creates a scan definition.
 
         :sc-api:`scan: create <Scan.htm#scan_POST>`
@@ -276,7 +307,7 @@ class ScanAPI(SCEndpoint):
 
             >>> sc.scans.create('Example scan', 1, policy_id=1001,
             ...     targets=['127.0.0.1'])
-        '''
+        """
         kw['name'] = name
         kw['repo'] = repo
 
@@ -290,7 +321,7 @@ class ScanAPI(SCEndpoint):
         return self._api.post('scan', json=scan).json()['response']
 
     def details(self, id, fields=None):
-        '''
+        """
         Returns the details for a specific scan.
 
         :sc-api:`scan: details <Scan.htm#ScanRESTReference-/scan/{id}>`
@@ -306,16 +337,17 @@ class ScanAPI(SCEndpoint):
         Examples:
             >>> scan = sc.scans.detail(1)
             >>> pprint(scan)
-        '''
+        """
         params = dict()
         if fields:
             params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
-        return self._api.get('scan/{}'.format(self._check('id', id, int)),
-            params=params).json()['response']
+        return self._api.get(
+            'scan/{}'.format(self._check('id', id, int)), params=params
+        ).json()['response']
 
     def edit(self, id, **kw):
-        '''
+        """
         Edits an existing scan definition.
 
         :sc-api:`scan: update <Scan.htm#scan_id_PATCH>`
@@ -379,13 +411,14 @@ class ScanAPI(SCEndpoint):
             Editing an existing scan's name:
 
             >>> sc.scans.edit(1, name='Example scan')
-        '''
+        """
         scan = self._constructor(**kw)
-        return self._api.patch('scan/{}'.format(self._check('id', id, int)),
-            json=scan).json()['response']
+        return self._api.patch(
+            'scan/{}'.format(self._check('id', id, int)), json=scan
+        ).json()['response']
 
     def delete(self, id):
-        '''
+        """
         Removes the specified scan from SecurityCenter.
 
         :sc-api:`scan: delete <Scan.htm#scan_id_DELETE>`
@@ -399,12 +432,13 @@ class ScanAPI(SCEndpoint):
 
         Examples:
             >>> sc.scans.delete(1)
-        '''
-        return self._api.delete('scan/{}'.format(self._check('id', id, int))
-            ).json()['response']
+        """
+        return self._api.delete('scan/{}'.format(self._check('id', id, int))).json()[
+            'response'
+        ]
 
     def copy(self, id, name, user_id):
-        '''
+        """
         Copies an existing scan definition.
 
         :sc-api:`scan: copy <Scan.htm#ScanRESTReference-/scan/{id}/copyScanCopyPOST>`
@@ -421,17 +455,18 @@ class ScanAPI(SCEndpoint):
 
         Examples:
             >>> sc.scans.copy(1, name='Cloned Scan')
-        '''
+        """
         payload = {
             'name': self._check('name', name, str),
-            'targetUser': {'id': self._check('user_id', user_id, int)}
+            'targetUser': {'id': self._check('user_id', user_id, int)},
         }
 
-        return self._api.post('scan/{}/copy'.format(
-            self._check('id', id, int)), json=payload).json()['response']['scan']
+        return self._api.post(
+            'scan/{}/copy'.format(self._check('id', id, int)), json=payload
+        ).json()['response']['scan']
 
     def launch(self, id, diagnostic_target=None, diagnostic_password=None):
-        '''
+        """
         Launches a scan definition.
 
         :sc-api:`scan: launch <Scan.htm#ScanRESTReference-/scan/{id}/launch>`
@@ -455,13 +490,16 @@ class ScanAPI(SCEndpoint):
             >>> running = sc.scans.launch(1)
             >>> print('The Scan Result ID is {}'.format(
             ...     running['scanResult']['id']))
-        '''
+        """
         payload = dict()
         if diagnostic_target and diagnostic_password:
             payload['diagnosticTarget'] = self._check(
-                'diagnostic_target', diagnostic_target, str)
+                'diagnostic_target', diagnostic_target, str
+            )
             payload['diagnosticPassword'] = self._check(
-                'diagnostic_password', diagnostic_password, str)
+                'diagnostic_password', diagnostic_password, str
+            )
 
-        return self._api.post('scan/{}/launch'.format(
-            self._check('id', id, int)), json=payload).json()['response']
+        return self._api.post(
+            'scan/{}/launch'.format(self._check('id', id, int)), json=payload
+        ).json()['response']

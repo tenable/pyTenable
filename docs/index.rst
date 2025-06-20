@@ -1,5 +1,6 @@
 .. toctree::
    :hidden:
+   :titlesonly:
    :glob:
 
    api/io/index
@@ -10,6 +11,7 @@
    api/ie/index
    api/apa/index
    api/asm/index
+   api/tenableone/index
    api/nessus/index
    api/reports/index
    api/base/index
