@@ -11,7 +11,7 @@
    api/ie/index
    api/apa/index
    api/asm/index
-   api/exposuremanagement/index
+   api/tenableone/index
    api/nessus/index
    api/reports/index
    api/base/index
