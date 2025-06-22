@@ -18,7 +18,7 @@ Exposure View APIs.
 
 from restfly import APIEndpoint
 
-from tenable.exposuremanagement.exposure_view.cards.api import CardsAPI
+from tenable.tenableone.exposure_view.cards.api import CardsAPI
 
 
 class ExposureViewAPI(APIEndpoint):

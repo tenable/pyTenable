@@ -1,7 +1,7 @@
 import pytest
 import responses
 
-from tenable.exposuremanagement.exposure_view.cards.schema import CESGrade
+from tenable.tenableone.exposure_view.cards.schema import CESGrade
 from tenable.tenableone.inventory.schema import SortDirection
 
 

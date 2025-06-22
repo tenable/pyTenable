@@ -12,8 +12,8 @@ from typing import Optional
 
 from restfly import APIEndpoint
 
-from tenable.exposuremanagement.exposure_view.cards.schema import CardFilter, Cards, Pagination, CardsResponse
-from tenable.exposuremanagement.inventory.schema import SortDirection
+from tenable.tenableone.exposure_view.cards.schema import Cards, CardsResponse
+from tenable.tenableone.inventory.schema import SortDirection
 
 
 class CardsAPI(APIEndpoint):
