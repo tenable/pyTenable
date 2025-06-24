@@ -56,11 +56,8 @@ class Pagination(BaseModel):
 
 
 class Cards(BaseModel):
-    cards: List[Card] = []
+    data: List[Card] = []
     pagination: Pagination = None
-
-class CardsResponse(BaseModel):
-    data: Cards
 
 class CardFilter(BaseModel):
     is_global_Card: Optional[bool] = None

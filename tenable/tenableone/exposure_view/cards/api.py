@@ -12,7 +12,7 @@ from typing import Optional
 
 from restfly import APIEndpoint
 
-from tenable.tenableone.exposure_view.cards.schema import Cards, CardsResponse
+from tenable.tenableone.exposure_view.cards.schema import Cards
 from tenable.tenableone.inventory.schema import SortDirection
 
 
@@ -38,20 +38,17 @@ class CardsAPI(APIEndpoint):
         Returns:
             Cards object containing the list of cards and pagination info
         """
-        payload = {
-            "filter": {},
-            "pagination": {
-                "page_number": page_number,
-                "page_size": page_size
-            },
+        params = {
+            "page_number": page_number,
+            "page_size": page_size,
             "sorting_order": sorting_order.value
         }
 
         if is_global_card is not None:
-            payload["filter"]["is_global_card"] = is_global_card
+            params["is_global_card"] = is_global_card
         if query_text is not None:
-            payload["filter"]["text_query"] = query_text
+            params["text_query"] = query_text
 
-        cards_response = self._post(path="api/v1/t1/exposure-view/cards", json=payload, box=False)
+        cards_response = self._get(path="api/v1/t1/exposure-view/cards", params=params, box=False)
 
-        return CardsResponse(**cards_response.json()).data
+        return Cards(**cards_response.json())
