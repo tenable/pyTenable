@@ -15,12 +15,14 @@ This package covers the Tenable One.
     attack_path/index
     inventory/index
     tags/index
+    exposure_view/index
 """
 
 from typing import Optional
 
 from tenable.base.platform import APIPlatform
 from tenable.tenableone.attack_path.api import AttackPathAPI
+from tenable.tenableone.exposure_view.api import ExposureViewAPI
 from tenable.tenableone.inventory.api import InventoryAPI
 from tenable.tenableone.tags.api import TagsAPI
 
@@ -92,3 +94,11 @@ class TenableOne(APIPlatform):
         :doc:`Tenable One Tags APIs <tags/index>`.
         """
         return TagsAPI(self)
+
+    @property
+    def exposure_view(self):
+        """
+        The interface object for the
+        :doc:`Tenable One Exposure View APIs <exposure_view/index>`.
+        """
+        return ExposureViewAPI(self)
