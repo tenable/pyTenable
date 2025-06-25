@@ -15,6 +15,7 @@ This package covers the Tenable One.
     attack_path/index
     inventory/index
     tags/index
+    exposure_view/index
 """
 
 from typing import Optional

@@ -1,6 +1,6 @@
 """
-Inventory
-=========
+Exposure View
+=============
 
 The following sub-package allows for interaction with the Tenable Exposure Management
 Exposure View APIs.
