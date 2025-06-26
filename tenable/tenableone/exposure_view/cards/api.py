@@ -13,8 +13,12 @@ from typing import Optional
 
 from restfly import APIEndpoint
 
-from tenable.tenableone.exposure_view.cards.schema import Cards, Timeframe, SlaBreakdownFilter, \
-    CardDetails
+from tenable.tenableone.exposure_view.cards.schema import (
+    Cards,
+    CardDetails,
+    SlaBreakdownFilter,
+    Timeframe,
+)
 from tenable.tenableone.inventory.schema import SortDirection
 
 
