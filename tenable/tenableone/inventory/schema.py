@@ -81,10 +81,14 @@ class Field(BaseModel):
     operators: list[Operator]
     sortable: bool
     filterable: bool
-    weight: float
-    object_types: list[AssetClass]
     description: str
 
 
 class Properties(BaseModel):
-    properties: list[Field]
+    data: list[Field]
+
+
+class Pagination(BaseModel):
+    total: int
+    offset: int
+    limit: int

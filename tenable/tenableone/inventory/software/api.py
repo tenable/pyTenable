@@ -3,7 +3,7 @@ Software
 =============
 
 Methods described in this section relate to the software API.
-These methods can be accessed at ``TenableOne.inventory.assets``.
+These methods can be accessed at ``TenableOne.inventory.software``.
 
 .. rst-class:: hide-signature
 .. autoclass:: SoftwareAPI
@@ -40,7 +40,7 @@ class SoftwareAPI(APIEndpoint):
         asset_properties_response: dict[str, list[dict]] = self._get(
             path='api/v1/t1/inventory/software/properties'
         )
-        return Properties(**asset_properties_response).properties
+        return Properties(**asset_properties_response).data
 
     def list(
         self,
@@ -52,7 +52,6 @@ class SoftwareAPI(APIEndpoint):
         limit: Optional[int] = None,
         sort_by: Optional[str] = None,
         sort_direction: Optional[SortDirection] = None,
-        timezone: Optional[str] = None,
     ) -> SoftwareValues:
         """
          Retrieve software
@@ -74,11 +73,9 @@ class SoftwareAPI(APIEndpoint):
                 Field to sort by.
             sort_direction (SortDirection, optional):
                 Sorting direction, either SortDirection.ASC or SortDirection.DESC.
-            timezone (str, optional):
-                Timezone setting for the query. Defaults to "UTC".
 
         Returns:
-            The request assets.
+            The request software.
 
          Examples:
              >>> tenable_inventory_software = tenable_inventory.software.list()
@@ -86,28 +83,27 @@ class SoftwareAPI(APIEndpoint):
              ...     pprint(software)
 
         """
-        payload = {}
-
-        if query_text is not None and query_mode is not None and filters is not None:
-            payload['search'] = {
-                'query': {'text': query_text, 'mode': query_mode.value},
-                'filters': [filter.model_dump(mode='json') for filter in filters]
-                if filters is not None
-                else [],
-            }
-
+        # Build query parameters
+        params = {}
         if extra_properties is not None:
-            payload['extra_properties'] = extra_properties
+            params['extra_properties'] = ','.join(extra_properties)
         if offset is not None:
-            payload['offset'] = offset
+            params['offset'] = offset
         if limit is not None:
-            payload['limit'] = limit
-        if sort_by is not None:
-            payload['sort_by'] = sort_by
-        if sort_direction is not None:
-            payload['sort_direction'] = sort_direction.value
-        if timezone is not None:
-            payload['timezone'] = timezone
+            params['limit'] = limit
+        if sort_by is not None and sort_direction is not None:
+            params['sort'] = f"{sort_by}:{sort_direction.value}"
 
-        software_response: dict = self._post('api/v1/t1/inventory/software', json=payload)
+        # Build request body with flattened search/query params
+        payload = {}
+        if query_text is not None or query_mode is not None:
+            payload['query'] = {}
+            if query_text is not None:
+                payload['query']['text'] = query_text
+            if query_mode is not None:
+                payload['query']['mode'] = query_mode.value
+        if filters is not None:
+            payload['filters'] = [filter.model_dump(mode='json') for filter in filters]
+
+        software_response: dict = self._post('api/v1/t1/inventory/software/search', json=payload, params=params)
         return SoftwareValues(**software_response)

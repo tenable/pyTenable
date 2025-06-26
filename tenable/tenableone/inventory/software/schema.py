@@ -2,6 +2,8 @@ from enum import Enum
 from typing import Any
 from pydantic import BaseModel
 
+from tenable.tenableone.inventory.schema import Pagination
+
 
 class Part(Enum):
     APPLICATION = "APPLICATION"
@@ -17,9 +19,7 @@ class Software(BaseModel):
 
 
 class SoftwareValues(BaseModel):
-    values: list[Software]
-    total_count: int
-    offset: int
-    limit: int
+    data: list[Software]
+    pagination: Pagination
     sort_by: str
     sort_direction: str
