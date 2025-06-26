@@ -42,7 +42,7 @@ def tags_response() -> dict:
             }
         ],
         "pagination": {
-            "total_count": 1,
+            "total": 1,
             "offset": 0,
             "limit": 100
         },
