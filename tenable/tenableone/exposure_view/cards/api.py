@@ -13,7 +13,8 @@ from typing import Optional
 
 from restfly import APIEndpoint
 
-from tenable.tenableone.exposure_view.cards.schema import Cards, Timeframe, SlaBreakdownFilter, GetCardByIdResponse
+from tenable.tenableone.exposure_view.cards.schema import Cards, Timeframe, SlaBreakdownFilter, GetCardByIdResponse, \
+    CardDetails
 from tenable.tenableone.inventory.schema import SortDirection
 
 
@@ -63,7 +64,7 @@ class CardsAPI(APIEndpoint):
             sla_efficiency_timeframe: Optional[Timeframe] = None,
             sla_breakdown_filter: Optional[SlaBreakdownFilter] = SlaBreakdownFilter.ANY,
             include_trend_events: Optional[bool] = False
-    ) -> GetCardByIdResponse:
+    ) -> CardDetails:
         """
         Get a specific card by its ID with optional filters
 
@@ -75,26 +76,19 @@ class CardsAPI(APIEndpoint):
             include_trend_events: Whether to include trend events in the response
 
         Returns:
-            GetCardByIdResponse object containing the card details
+            CardDetails object containing the card details
         """
-        payload = {
-            "id": card_id,
-            "get_card_request": {
-                "sla_breakdown_filter": sla_breakdown_filter.value,
-                "include_trend_events": include_trend_events
-            }
+        params = {
+            "sla_breakdown_filter": sla_breakdown_filter.value,
+            "include_trend_events": include_trend_events
         }
 
         if trend_timeframe:
-            payload["get_card_request"]["trend_timeframe"] = {
-                "start_date": trend_timeframe.start_date.isoformat(),
-                "end_date": trend_timeframe.end_date.isoformat()
-            }
+            params["trend_start_date"] = trend_timeframe.start_date.isoformat()
+            params["trend_end_date"] = trend_timeframe.end_date.isoformat()
         if sla_efficiency_timeframe:
-            payload["get_card_request"]["sla_efficiency_timeframe"] = {
-                "start_date": sla_efficiency_timeframe.start_date.isoformat(),
-                "end_date": sla_efficiency_timeframe.end_date.isoformat()
-            }
+            params["sla_efficiency_start_date"] = sla_efficiency_timeframe.start_date.isoformat()
+            params["sla_efficiency_end_date"] = sla_efficiency_timeframe.end_date.isoformat()
 
-        card_response = self._post(path=f"api/v1/t1/exposure-view/cards/{card_id}", json=payload, box=False)
-        return GetCardByIdResponse(**card_response.json())
+        card_response = self._get(path=f"api/v1/t1/exposure-view/cards/{card_id}", params=params, box=False)
+        return CardDetails(**card_response.json())

@@ -3,13 +3,9 @@ from datetime import datetime
 import pytest
 import responses
 
-<<<<<<< HEAD
-from tenable.tenableone.exposure_view.cards.schema import CESGrade, CardDetails, ExposureClass, SlaSeverityLevel, \
-    Timeframe, SlaBreakdownFilter
-=======
+from tenable.tenableone.exposure_view.cards.schema import  CardDetails
 from tenable.tenableone.exposure_view.cards.schema import CESGrade, GetCardByIdResponse, SlaSeverityLevel, Timeframe, \
     SlaBreakdownFilter, ExposureClass
->>>>>>> f80a3c2 ([AI-24391] - Add get card by id endpoint)
 from tenable.tenableone.inventory.schema import SortDirection
 
 
@@ -187,135 +183,6 @@ def test_list_default_parameters(cards, cards_response):
     assert result.data[1].card_name == "Custom Card"
 
 
-@pytest.fixture
-<<<<<<< HEAD
-def card_details_response() -> dict:
-    return {
-        "card_id": 1,
-        "card_name": "Global Card",
-        "is_global": True,
-        "ces_score": {
-            "score": 750,
-            "grade": "B"
-        },
-        "created_at": "2024-01-01T00:00:00Z",
-        "updated_at": "2024-01-01T00:00:00Z",
-        "exposure_classes_details": {
-            "ALL": {
-                "score_benchmark": {
-                    "industry_benchmark": {
-                        "industry_id": 1,
-                        "ces_score": {
-                            "score": 800,
-                            "grade": "A"
-                        }
-                    },
-                    "population_benchmark": {
-                        "score": 700,
-                        "grade": "B"
-                    }
-                },
-                "asset_risk_breakdown": {
-                    "critical": 10.0,
-                    "high": 20.0,
-                    "medium_low": 70.0
-                },
-                "score_trend_metric": {
-                    "ces_trend": [
-                        {
-                            "date": "2024-01-01T00:00:00Z",
-                            "ces_score": {
-                                "score": 750,
-                                "grade": "B"
-                            }
-                        }
-                    ],
-                    "target_score": 800
-                },
-                "sla_efficiency": [
-                    {
-                        "sla_severity_level": "CRITICAL",
-                        "sla_inside_count": 5,
-                        "sla_total_count": 10,
-                        "sla_efficiency": 50.0,
-                        "sla_efficiency_target": 80.0
-                    }
-                ],
-                "sla_breakdown": {
-                    "risk_distribution": {
-                        "risk_inside_sla": {
-                            "number_of_risks": 5,
-                            "percentage_of_total": 50.0
-                        },
-                        "risks_outside_sla": {
-                            "number_of_risks": 5,
-                            "percentage_of_total": 50.0
-                        }
-                    },
-                    "risk_distribution_in_days": {
-                        "inside_sla": 3,
-                        "outside_sla": 7
-                    },
-                    "exposure_category_breakdown": [
-                        {
-                            "exposure_class": "ALL",
-                            "contribution_percentage": 100.0
-                        }
-                    ],
-                    "top_affecting_tags": [
-                        {
-                            "id": "tag1",
-                            "name": "Critical Tag"
-                        }
-                    ]
-=======
-def cards_response() -> dict:
-    return {
-        "data": [
-            {
-                "card_id": 1,
-                "card_name": "Global Card",
-                "card_type": "GLOBAL",
-                "is_global": True,
-                "ces_score": {
-                    "score": 750,
-                    "grade": "B"
-                },
-                "sla_percentage": 85.5,
-                "ces_trend": [],
-                "tag_count": 3,
-                "exposures": ["VM", "CLOUD"],
-                "last_data_update_date": "2023-09-15T12:30:45Z",
-                "created_at": "2023-08-01T10:00:00Z",
-                "updated_at": "2023-09-15T12:30:45Z",
-                "sources": ["T.IO", "CLOUD"]
-            },
-            {
-                "card_id": 2,
-                "card_name": "Custom Card",
-                "card_type": "CUSTOM",
-                "is_global": False,
-                "ces_score": {
-                    "score": 650,
-                    "grade": "C"
-                },
-                "sla_percentage": 72.5,
-                "ces_trend": [],
-                "tag_count": 5,
-                "exposures": ["VM"],
-                "last_data_update_date": "2023-09-14T08:15:30Z",
-                "created_at": "2023-08-10T14:20:00Z",
-                "updated_at": "2023-09-14T08:15:30Z",
-                "sources": ["T.IO"]
-            }
-        ],
-        "pagination": {
-            "page_number": 1,
-            "page_size": 25
-        }
-    }
-
-
 @responses.activate
 def test_list(cards, cards_response):
     # Arrange
@@ -445,7 +312,6 @@ def test_list_default_parameters(cards, cards_response):
 @pytest.fixture
 def card_details_response() -> dict:
     return {
-        "card_details": {
             "card_id": 1,
             "card_name": "Global Card",
             "is_global": True,
@@ -524,8 +390,7 @@ def card_details_response() -> dict:
                             }
                         ]
                     }
->>>>>>> f80a3c2 ([AI-24391] - Add get card by id endpoint)
-                }
+
             }
         }
     }
@@ -546,7 +411,6 @@ def test_get_by_id(cards, card_details_response):
     sla_breakdown_filter = SlaBreakdownFilter.REMEDIATED
     include_trend_events = True
 
-<<<<<<< HEAD
     # Build the expected query parameters
     params = {
         "trend_start_date": "2024-01-01T00:00:00",
@@ -561,32 +425,7 @@ def test_get_by_id(cards, card_details_response):
         responses.GET,
         f'https://cloud.tenable.com/api/v1/t1/exposure-view/cards/{card_id}',
         json=card_details_response,
-        match=[responses.matchers.query_param_matcher(params)]
-=======
-    # Build the expected payload
-    payload = {
-        "id": card_id,
-        "get_card_request": {
-            "trend_timeframe": {
-                "start_date": "2024-01-01T00:00:00",
-                "end_date": "2024-01-31T00:00:00"
-            },
-            "sla_efficiency_timeframe": {
-                "start_date": "2024-01-01T00:00:00",
-                "end_date": "2024-01-31T00:00:00"
-            },
-            "sla_breakdown_filter": "REMEDIATED",
-            "include_trend_events": True
-        }
-    }
-
-    responses.add(
-        responses.POST,
-        f'https://cloud.tenable.com/api/v1/t1/exposure-view/cards/{card_id}',
-        json=card_details_response,
-        match=[responses.matchers.json_params_matcher(payload)]
->>>>>>> f80a3c2 ([AI-24391] - Add get card by id endpoint)
-    )
+        match=[responses.matchers.query_param_matcher(params)])
 
     # Act
     result = cards.get_by_id(
@@ -598,7 +437,6 @@ def test_get_by_id(cards, card_details_response):
     )
 
     # Assert
-<<<<<<< HEAD
     assert isinstance(result, CardDetails)
     assert result.card_id == 1
     assert result.card_name == "Global Card"
@@ -608,17 +446,8 @@ def test_get_by_id(cards, card_details_response):
 
     # Test exposure classes details
     exposure_details = result.exposure_classes_details[ExposureClass.ALL]
-=======
-    assert isinstance(result, GetCardByIdResponse)
-    assert result.card_details.card_id == 1
-    assert result.card_details.card_name == "Global Card"
-    assert result.card_details.is_global is True
-    assert result.card_details.ces_score.score == 750
-    assert result.card_details.ces_score.grade == CESGrade.B
 
     # Test exposure classes details
-    exposure_details = result.card_details.exposure_classes_details[ExposureClass.ALL]
->>>>>>> f80a3c2 ([AI-24391] - Add get card by id endpoint)
     assert exposure_details.score_benchmark.industry_benchmark.industry_id == 1
     assert exposure_details.score_benchmark.industry_benchmark.ces_score.score == 800
     assert exposure_details.score_benchmark.industry_benchmark.ces_score.grade == CESGrade.A
@@ -663,7 +492,6 @@ def test_get_by_id_minimal_parameters(cards, card_details_response):
     # Arrange
     card_id = "1"
 
-<<<<<<< HEAD
     # Build the expected query parameters with minimal parameters
     params = {
         "sla_breakdown_filter": "ANY",
@@ -674,38 +502,13 @@ def test_get_by_id_minimal_parameters(cards, card_details_response):
         responses.GET,
         f'https://cloud.tenable.com/api/v1/t1/exposure-view/cards/{card_id}',
         json=card_details_response,
-        match=[responses.matchers.query_param_matcher(params)]
-=======
-    # Build the expected payload with minimal parameters
-    payload = {
-        "id": card_id,
-        "get_card_request": {
-            "sla_breakdown_filter": "ANY",
-            "include_trend_events": False
-        }
-    }
-
-    responses.add(
-        responses.POST,
-        f'https://cloud.tenable.com/api/v1/t1/exposure-view/cards/{card_id}',
-        json=card_details_response,
-        match=[responses.matchers.json_params_matcher(payload)]
->>>>>>> f80a3c2 ([AI-24391] - Add get card by id endpoint)
-    )
+        match=[responses.matchers.query_param_matcher(params)])
 
     # Act
     result = cards.get_by_id(card_id=card_id)
 
     # Assert
-<<<<<<< HEAD
     assert isinstance(result, CardDetails)
     assert result.card_id == 1
     assert result.card_name == "Global Card"
     assert result.is_global is True
-=======
-    assert isinstance(result, GetCardByIdResponse)
-    assert result.card_details.card_id == 1
-    assert result.card_details.card_name == "Global Card"
-    assert result.card_details.is_global is True
-
->>>>>>> f80a3c2 ([AI-24391] - Add get card by id endpoint)
