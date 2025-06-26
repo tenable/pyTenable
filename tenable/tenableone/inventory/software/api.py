@@ -91,17 +91,17 @@ class SoftwareAPI(APIEndpoint):
             params['offset'] = offset
         if limit is not None:
             params['limit'] = limit
-        if sort_by is not None:
-            params['sort_by'] = sort_by
-        if sort_direction is not None:
-            params['sort_direction'] = sort_direction.value
+        if sort_by is not None and sort_direction is not None:
+            params['sort'] = f"{sort_by}:{sort_direction.value}"
 
         # Build request body with flattened search/query params
         payload = {}
-        if query_text is not None:
-            payload['text'] = query_text
-        if query_mode is not None:
-            payload['mode'] = query_mode.value
+        if query_text is not None or query_mode is not None:
+            payload['query'] = {}
+            if query_text is not None:
+                payload['query']['text'] = query_text
+            if query_mode is not None:
+                payload['query']['mode'] = query_mode.value
         if filters is not None:
             payload['filters'] = [filter.model_dump(mode='json') for filter in filters]
 

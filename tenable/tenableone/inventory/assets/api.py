@@ -109,10 +109,8 @@ class AssetsAPI(APIEndpoint):
             params['offset'] = offset
         if limit is not None:
             params['limit'] = limit
-        if sort_by is not None:
-            params['sort_by'] = sort_by
-        if sort_direction is not None:
-            params['sort_direction'] = sort_direction.value
+        if sort_by is not None and sort_direction is not None:
+            params['sort'] = f"{sort_by}:{sort_direction.value}"
 
         # Build request body with flattened search/query params
         payload = {}
