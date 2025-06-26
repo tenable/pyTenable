@@ -44,10 +44,10 @@ def tags_response() -> dict:
         "pagination": {
             "total_count": 1,
             "offset": 0,
-            "limit": 100,
-            "sort_by": "tag_name",
-            "sort_direction": "asc"
-        }
+            "limit": 100
+        },
+        "sort_by": "tag_name",
+        "sort_direction": "asc"
     }
 
 
@@ -64,7 +64,7 @@ def test_properties_list(tenable_one_api, tags_properties_response):
 
 
 @responses.activate
-def test_search(tenable_one_api, tags_response):
+def test_list(tenable_one_api, tags_response):
     query_text = "neq-ap"
     query_mode = QueryMode.SIMPLE
     filters = [PropertyFilter(property="tag_name", operator=Operator.EQUAL, value=["neq-ap"])]
@@ -79,14 +79,15 @@ def test_search(tenable_one_api, tags_response):
         "extra_properties": "tag_category_name",
         "offset": 0,
         "limit": 100,
-        "sort_by": "tag_name",
-        "sort_direction": "asc"
+        "sort": "tag_name:asc"
     }
 
-    # Expected request body with flattened structure
+    # Expected request body with query structure
     expected_body = {
-        "text": query_text,
-        "mode": query_mode.value,
+        "query": {
+            "text": query_text,
+            "mode": query_mode.value
+        },
         "filters": [filter.model_dump(mode='json') for filter in filters]
     }
 
@@ -100,7 +101,7 @@ def test_search(tenable_one_api, tags_response):
         ]
     )
     # Act
-    tags: Tags = tenable_one_api.tags.search(
+    tags: Tags = tenable_one_api.tags.list(
         query_text=query_text,
         query_mode=query_mode,
         filters=filters,

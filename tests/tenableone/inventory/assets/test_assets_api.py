@@ -129,7 +129,7 @@ def assets_response() -> dict:
                 "extra_properties": {}
             }], 
         "pagination": {
-            "total_count": 1868, 
+            "total": 1868, 
             "offset": 0, 
             "limit": 100
         },
@@ -170,14 +170,15 @@ def test_list(tenable_one_api, assets_response):
         "extra_properties": "apa_asset_total_paths_count",
         "offset": 0,
         "limit": 100,
-        "sort_by": "aes",
-        "sort_direction": "desc"
+        "sort": "aes:desc"
     }
 
-    # Expected request body with flattened structure
+    # Expected request body with query structure
     expected_body = {
-        "text": query_text,
-        "mode": query_mode.value,
+        "query": {
+            "text": query_text,
+            "mode": query_mode.value
+        },
         "filters": [filter.model_dump(mode='json') for filter in filters]
     }
 

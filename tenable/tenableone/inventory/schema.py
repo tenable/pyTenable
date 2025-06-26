@@ -86,3 +86,9 @@ class Field(BaseModel):
 
 class Properties(BaseModel):
     data: list[Field]
+
+
+class Pagination(BaseModel):
+    total: int
+    offset: int
+    limit: int

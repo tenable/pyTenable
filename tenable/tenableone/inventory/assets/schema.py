@@ -1,7 +1,7 @@
 from typing import Any
 from pydantic import BaseModel
 
-from tenable.tenableone.inventory.schema import AssetClass
+from tenable.tenableone.inventory.schema import AssetClass, Pagination
 
 
 class Asset(BaseModel):
@@ -15,6 +15,6 @@ class Asset(BaseModel):
 
 class Assets(BaseModel):
     data: list[Asset]
-    pagination: dict[str, Any]
+    pagination: Pagination
     sort_by: str
     sort_direction: str
