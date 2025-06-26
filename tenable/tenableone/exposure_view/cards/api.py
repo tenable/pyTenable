@@ -1,6 +1,6 @@
 """
 Cards
-========
+=====
 Methods described in this section relate to the exposure view cards API.
 These methods can be accessed at ``TenableExposureManagement.exposure_view.cards``.
 
