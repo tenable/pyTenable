@@ -4,7 +4,7 @@ import pytest
 import responses
 
 from tenable.tenableone.exposure_view.cards.schema import  CardDetails
-from tenable.tenableone.exposure_view.cards.schema import CESGrade, GetCardByIdResponse, SlaSeverityLevel, Timeframe, \
+from tenable.tenableone.exposure_view.cards.schema import CESGrade, SlaSeverityLevel, Timeframe, \
     SlaBreakdownFilter, ExposureClass
 from tenable.tenableone.inventory.schema import SortDirection
 
