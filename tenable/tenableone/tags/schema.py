@@ -2,6 +2,8 @@ from typing import Any
 
 from pydantic import BaseModel
 
+from tenable.tenableone.inventory.schema import Pagination
+
 
 class WeaknessSeverityCounts(BaseModel):
     low: int
@@ -23,9 +25,7 @@ class Tag(BaseModel):
 
 
 class Tags(BaseModel):
-    values: list[Tag]
-    total_count: int
-    offset: int
-    limit: int
+    data: list[Tag]
+    pagination: Pagination
     sort_by: str
     sort_direction: str
