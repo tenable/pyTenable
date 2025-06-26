@@ -23,9 +23,7 @@ class Tag(BaseModel):
 
 
 class Tags(BaseModel):
-    values: list[Tag]
-    total_count: int
-    offset: int
-    limit: int
+    data: list[Tag]
+    pagination: dict[str, Any]
     sort_by: str
     sort_direction: str

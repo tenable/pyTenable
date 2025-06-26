@@ -14,9 +14,7 @@ class Asset(BaseModel):
 
 
 class Assets(BaseModel):
-    values: list[Asset]
-    total_count: int
-    offset: int
-    limit: int
+    data: list[Asset]
+    pagination: dict[str, Any]
     sort_by: str
     sort_direction: str

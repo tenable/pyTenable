@@ -17,9 +17,7 @@ class Software(BaseModel):
 
 
 class SoftwareValues(BaseModel):
-    values: list[Software]
-    total_count: int
-    offset: int
-    limit: int
+    data: list[Software]
+    pagination: dict[str, Any]
     sort_by: str
     sort_direction: str
