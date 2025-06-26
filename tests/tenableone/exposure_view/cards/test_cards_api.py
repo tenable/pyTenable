@@ -4,8 +4,13 @@ import pytest
 import responses
 
 from tenable.tenableone.exposure_view.cards.schema import  CardDetails
-from tenable.tenableone.exposure_view.cards.schema import CESGrade, SlaSeverityLevel, Timeframe, \
-    SlaBreakdownFilter, ExposureClass
+from tenable.tenableone.exposure_view.cards.schema import (
+    CESGrade,
+    ExposureClass,
+    SlaBreakdownFilter,
+    SlaSeverityLevel,
+    Timeframe,
+)
 from tenable.tenableone.inventory.schema import SortDirection
 
 
