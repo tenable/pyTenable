@@ -13,7 +13,6 @@ Inventory APIs.
     :hidden:
     :glob:
 
-    assets/index
     software/index
 """
 
@@ -25,10 +24,10 @@ from tenable.tenableone.inventory.software.api import SoftwareAPI
 class InventoryAPI(APIEndpoint):
     @property
     def assets(self):
-        """
-        The interface object for the
-        :doc:`Tenable One Inventory Assets APIs <assets/index>`.
-        """
+        # """
+        # The interface object for the
+        # :doc:`Tenable One Inventory Assets APIs <assets/index>`.
+        # """
         return AssetsAPI(self._api)
 
     @property

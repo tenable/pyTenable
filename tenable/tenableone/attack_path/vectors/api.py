@@ -15,8 +15,8 @@ from typing import Dict, Optional, Union
 
 from restfly import APIIterator
 
-from tenable.tenableone.attack_path.vectors.schema import VectorsPageSchema
 from tenable.base.endpoint import APIEndpoint
+from tenable.tenableone.attack_path.vectors.schema import VectorsPageSchema
 
 
 class VectorIterator(APIIterator):
@@ -32,66 +32,65 @@ class VectorIterator(APIIterator):
         Request the next page of data
         """
         payload = copy(self._payload)
-        payload["page_number"] = self._next_page
+        payload['page_number'] = self._next_page
 
-        resp = self._api.get("api/v1/t1/apa/vectors",
-                             params=payload, box=True)
-        self._next_page = resp.get("page_number") + 1
+        resp = self._api.get('api/v1/t1/apa/vectors', params=payload, box=True)
+        self._next_page = resp.get('page_number') + 1
         self.page = resp.data
-        self.total = resp.get("total")
+        self.total = resp.get('total')
 
 
 class VectorsAPI(APIEndpoint):
     _schema = VectorsPageSchema
 
     def list(
-            self,
-            page_number: Optional[int] = None,
-            limit: int = 10,
-            filter: Optional[dict] = None,
-            sort_field: Optional[str] = None,
-            sort_order: Optional[str] = None,
-            run_ai_summarization: Optional[bool] = None,
-            return_iterator=True,
+        self,
+        page_number: Optional[int] = None,
+        limit: int = 10,
+        filter: Optional[dict] = None,
+        sort_field: Optional[str] = None,
+        sort_order: Optional[str] = None,
+        run_ai_summarization: Optional[bool] = None,
+        return_iterator=True,
     ) -> Union[VectorIterator, VectorsPageSchema]:
         """
-         Retrieve vectors
+        Retrieve vectors
 
-         Args:
-             page_number (optional, int):
-                 For offset-based pagination, the requested page to retrieve.
-                 If this parameter is omitted,
-                 Tenable uses the default value of 1.
+        Args:
+            page_number (optional, int):
+                For offset-based pagination, the requested page to retrieve.
+                If this parameter is omitted,
+                Tenable uses the default value of 1.
 
-             limit (optional, int):
-                 The number of records to retrieve.
-                 If this parameter is omitted,
-                 Tenable uses the default value of 25.
-                 The maximum number of events that can be retrieved is 25.
-                 For example: limit=25.
+            limit (optional, int):
+                The number of records to retrieve.
+                If this parameter is omitted,
+                Tenable uses the default value of 25.
+                The maximum number of events that can be retrieved is 25.
+                For example: limit=25.
 
-             filter (optional, dict):
-                 A document as defined by Tenable APA online documentation.
-                 Filters to allow the user to get
-                 to a specific subset of Findings.
-                 For a more detailed listing of what filters are available,
-                 please refer to the API documentation
-                 linked above, however some examples are as such:
+            filter (optional, dict):
+                A document as defined by Tenable APA online documentation.
+                Filters to allow the user to get
+                to a specific subset of Findings.
+                For a more detailed listing of what filters are available,
+                please refer to the API documentation
+                linked above, however some examples are as such:
 
-                 - ``{"operator":"==", "key":"name", "value":"nice name"}``
-                 - ``{"operator":">", "key":"critical_asset", "value": 10}``
+                - ``{"operator":"==", "key":"name", "value":"nice name"}``
+                - ``{"operator":">", "key":"critical_asset", "value": 10}``
 
-             sort_field (optional, str):
-                 The field you want to use to sort the results by.
-                 Accepted values are ``name``, ``priority``
+            sort_field (optional, str):
+                The field you want to use to sort the results by.
+                Accepted values are ``name``, ``priority``
 
-             run_ai_summarization (optional, bool):
-                Indicates whether or not to run the AI summarization for missing paths.
-                Note that enabling the AI summarization results in slower response times.
-                Tenable uses the default value of false.
+            run_ai_summarization (optional, bool):
+               Indicates whether or not to run the AI summarization for missing paths.
+               Note that enabling the AI summarization results in slower response times.
+               Tenable uses the default value of false.
 
-             return_iterator (optional, bool):
-                 Should we return the response instead of iterable?
+            return_iterator (optional, bool):
+                Should we return the response instead of iterable?
 
 
         Returns:
@@ -113,13 +112,14 @@ class VectorsAPI(APIEndpoint):
              ...     )
         """
         payload = {
-            "page_number": page_number,
-            "limit": limit,
-            "filter": filter,
-            "sort_field": sort_field,
-            "sort_order": sort_order}
+            'page_number': page_number,
+            'limit': limit,
+            'filter': filter,
+            'sort_field': sort_field,
+            'sort_order': sort_order,
+        }
         if run_ai_summarization:
-            payload["run_ai_summarization"] = 'true'
+            payload['run_ai_summarization'] = 'true'
         if return_iterator:
             return VectorIterator(self._api, _payload=payload)
-        return self._schema(**self._get(path="api/v1/t1/apa/vectors", params=payload))
+        return self._schema(**self._get(path='api/v1/t1/apa/vectors', params=payload))
