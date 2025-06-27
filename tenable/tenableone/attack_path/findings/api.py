@@ -8,6 +8,7 @@ These methods can be accessed at ``TenableOne.attack_path.findings``.
 .. rst-class:: hide-signature
 .. autoclass:: FindingsAPI
     :members:
+
 """
 
 from copy import copy
@@ -15,8 +16,8 @@ from typing import Dict, Optional, Union
 
 from restfly import APIIterator
 
-from tenable.tenableone.attack_path.findings.schema import FindingsPageSchema
 from tenable.base.endpoint import APIEndpoint
+from tenable.tenableone.attack_path.findings.schema import FindingsPageSchema
 
 
 class FindingIterator(APIIterator):
@@ -32,11 +33,10 @@ class FindingIterator(APIIterator):
         Request the next page of data
         """
         payload = copy(self._payload)
-        payload["next"] = self._next_token
+        payload['next'] = self._next_token
 
-        resp = self._api.get("api/v1/t1/apa/findings",
-                             params=payload, box=True)
-        self._next_token = resp.get("next")
+        resp = self._api.get('api/v1/t1/apa/findings', params=payload, box=True)
+        self._next_token = resp.get('next')
         self.page = resp.data
         self.total = resp.total
 
@@ -124,14 +124,13 @@ class FindingsAPI(APIEndpoint):
         """
 
         payload = {
-            "page_number": page_number,
-            "next": next_token,
-            "limit": limit,
-            "filter": filter,
-            "sort_filed": sort_filed,
-            "sort_order": sort_order,
+            'page_number': page_number,
+            'next': next_token,
+            'limit': limit,
+            'filter': filter,
+            'sort_filed': sort_filed,
+            'sort_order': sort_order,
         }
         if return_iterator:
-            return FindingIterator(self._api, _payload=payload,
-                                   _next_token=next_token)
-        return self._schema(**self._get(path="api/v1/t1/apa/findings", params=payload))
+            return FindingIterator(self._api, _payload=payload, _next_token=next_token)
+        return self._schema(**self._get(path='api/v1/t1/apa/findings', params=payload))
