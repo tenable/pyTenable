@@ -12,6 +12,7 @@ These methods can be accessed at ``TenableExposureManagement.inventory.findings`
 """
 
 from typing import Optional
+from urllib.parse import urlencode
 
 from tenable.base.endpoint import APIEndpoint
 from tenable.tenableone.inventory.findings.schema import Findings
@@ -33,9 +34,9 @@ class FindingsAPI(APIEndpoint):
 
         """
         finding_properties_response: dict[str, list[dict]] = self._get(
-            path="/api/v1/em/inventory/findings/properties"
+            path="/api/v1/t1/inventory/findings/properties"
         )
-        return Properties(**finding_properties_response).properties
+        return Properties(**finding_properties_response).data
 
     def list(
             self,
@@ -47,7 +48,6 @@ class FindingsAPI(APIEndpoint):
             limit: Optional[int] = None,
             sort_by: Optional[str] = None,
             sort_direction: Optional[SortDirection] = None,
-            timezone: Optional[str] = None,
     ) -> Findings:
         """
          Retrieve findings
@@ -69,8 +69,6 @@ class FindingsAPI(APIEndpoint):
                 Field to sort by.
             sort_direction (SortDirection, optional):
                 Sorting direction, either SortDirection.ASC or SortDirection.DESC.
-            timezone (str, optional):
-                Timezone setting for the query. Defaults to "UTC".
 
         Returns:
             The request assets.
@@ -83,26 +81,33 @@ class FindingsAPI(APIEndpoint):
         """
         payload = {}
 
+        # TODO: check what is the actual contract
         if query_text is not None and query_mode is not None and filters is not None:
-            payload["search"] = {
+            payload = {
                 "query": {"text": query_text, "mode": query_mode.value},
                 "filters": [filter_.model_dump(mode="json") for filter_ in filters]
                 if filters is not None
                 else [],
             }
+        base_path = "/api/v1/t1/inventory/findings/search"
+        query_params = {}
 
         if extra_properties is not None:
-            payload["extra_properties"] = extra_properties
+            query_params["extra_properties"] = ",".join(extra_properties)
         if offset is not None:
-            payload["offset"] = offset
+            query_params["offset"] = offset
         if limit is not None:
-            payload["limit"] = limit
+            query_params["limit"] = limit
         if sort_by is not None:
-            payload["sort_by"] = sort_by
+            query_params["sort_by"] = sort_by
         if sort_direction is not None:
-            payload["sort_direction"] = sort_direction.value
-        if timezone is not None:
-            payload["timezone"] = timezone
+            query_params["sort_direction"] = sort_direction.value
 
-        findings_response: dict = self._post(path="/api/v1/em/inventory/findings", json=payload)
+        if query_params:
+            query_string = urlencode(query_params)
+            path = f"{base_path}?{query_string}"
+        else:
+            path = base_path
+
+        findings_response: dict = self._post(path=path, json=payload)
         return Findings(**findings_response)

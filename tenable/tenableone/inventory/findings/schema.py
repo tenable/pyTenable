@@ -1,10 +1,11 @@
 from enum import Enum
-from typing import Any, Literal
+from typing import Any
 from uuid import UUID
 
-from pydantic import PositiveInt, NonNegativeInt
 
 from tenable.io.sync.models.common import BaseModel
+from tenable.tenableone.inventory.schema import Pagination
+
 
 class FindingSeverity(str, Enum):
     INFO = "INFO"
@@ -27,9 +28,5 @@ class Finding(BaseModel):
     extra_properties: dict[str, Any] | None = None
 
 class Findings(BaseModel):
-    values: list[Finding]
-    total_count: NonNegativeInt
-    offset: NonNegativeInt
-    limit: PositiveInt
-    sort_by: str
-    sort_direction: Literal["asc", "desc"]
+    data: list[Finding]
+    pagination: Pagination

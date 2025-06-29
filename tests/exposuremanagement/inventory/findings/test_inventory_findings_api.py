@@ -38,8 +38,6 @@ def findings_properties_response() -> dict[str, list[dict]]:
                 "sortable": True,
                 "filterable": True,
                 "deprecated": False,
-                "weight": 0,
-                "object_types": [],
                 "is_key_property": False,
                 "description": """# Finding ID\n## A unique identifier for a security issue\nEach security issue identified by Exposure Management is assigned a unique Finding ID. This ID helps to track and manage individual findings throughout their lifecycle.\n\nHere"s why Finding IDs are important:\n- **Unique Identification:** Each finding receives a distinct ID, preventing confusion when dealing with multiple security issues.\n- **Tracking and Management:** The ID helps track a finding"s status, remediation efforts, and history over time.\n- **Reporting and Analysis:** Finding IDs enable efficient reporting and analysis of security issues, allowing you to identify trends and patterns.\n- **Integration:** Finding IDs can be integrated with other security tools and systems for streamlined workflows.\n"""
             }
