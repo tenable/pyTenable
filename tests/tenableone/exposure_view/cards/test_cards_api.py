@@ -56,8 +56,8 @@ def cards_response() -> dict:
             }
         ],
         "pagination": {
-            "page_number": 1,
-            "page_size": 25
+            "offset": 0,
+            "limit": 25
         }
     }
 
@@ -66,15 +66,15 @@ def cards_response() -> dict:
 def test_list(cards, cards_response):
     # Arrange
     is_global_card = True
-    page_number = 1
-    page_size = 25
+    offset = 0
+    limit = 25
     sorting_order = SortDirection.ASC
 
     # Build the expected query parameters
     params = {
         "is_global_card": is_global_card,
-        "page_number": page_number,
-        "page_size": page_size,
+        "offset": offset,
+        "limit": limit,
         "sorting_order": sorting_order.value
     }
 
@@ -88,8 +88,8 @@ def test_list(cards, cards_response):
     # Act
     result = cards.list(
         is_global_card=is_global_card,
-        page_number=page_number,
-        page_size=page_size,
+        offset=offset,
+        limit=limit,
         sorting_order=sorting_order
     )
 
@@ -101,8 +101,8 @@ def test_list(cards, cards_response):
     assert result.data[0].ces_score.grade == CESGrade.B
     assert result.data[1].card_name == "Custom Card"
     assert result.data[1].is_global is False
-    assert result.pagination.page_number == 1
-    assert result.pagination.page_size == 25
+    assert result.pagination.offset == 0
+    assert result.pagination.limit == 25
 
 
 @responses.activate
@@ -113,8 +113,8 @@ def test_should_pass_request_parameters_for_text_search(cards, cards_response):
     # Build the expected query parameters with text query
     params = {
         "text_query": query_text,
-        "page_number": 1,
-        "page_size": 25,
+        "offset": 0,
+        "limit": 25,
         "sorting_order": SortDirection.ASC.value
     }
 
@@ -141,8 +141,8 @@ def test_should_pass_request_parameters_for_DESC_sorting(cards, cards_response):
     
     # Build the expected query parameters with DESC sorting
     params = {
-        "page_number": 1,
-        "page_size": 25,
+        "offset": 0,
+        "limit": 25,
         "sorting_order": sorting_order.value
     }
 
@@ -167,134 +167,8 @@ def test_list_default_parameters(cards, cards_response):
     # Arrange - test with minimal parameters
     # Default query parameters with no optional parameters specified
     params = {
-        "page_number": 1,
-        "page_size": 25,
-        "sorting_order": SortDirection.ASC.value
-    }
-
-    responses.add(
-        responses.GET,
-        'https://cloud.tenable.com/api/v1/t1/exposure-view/cards',
-        json=cards_response,
-        match=[responses.matchers.query_param_matcher(params)]
-    )
-
-    # Act
-    result = cards.list()
-
-    # Assert
-    assert len(result.data) == 2
-    assert result.data[0].card_name == "Global Card"
-    assert result.data[1].card_name == "Custom Card"
-
-
-@responses.activate
-def test_list(cards, cards_response):
-    # Arrange
-    is_global_card = True
-    page_number = 1
-    page_size = 25
-    sorting_order = SortDirection.ASC
-
-    # Build the expected query parameters
-    params = {
-        "is_global_card": is_global_card,
-        "page_number": page_number,
-        "page_size": page_size,
-        "sorting_order": sorting_order.value
-    }
-
-    responses.add(
-        responses.GET,
-        'https://cloud.tenable.com/api/v1/t1/exposure-view/cards',
-        json=cards_response,
-        match=[responses.matchers.query_param_matcher(params)]
-    )
-
-    # Act
-    result = cards.list(
-        is_global_card=is_global_card,
-        page_number=page_number,
-        page_size=page_size,
-        sorting_order=sorting_order
-    )
-
-    # Assert
-    assert len(result.data) == 2
-    assert result.data[0].card_name == "Global Card"
-    assert result.data[0].is_global is True
-    assert result.data[0].ces_score.score == 750
-    assert result.data[0].ces_score.grade == CESGrade.B
-    assert result.data[1].card_name == "Custom Card"
-    assert result.data[1].is_global is False
-    assert result.pagination.page_number == 1
-    assert result.pagination.page_size == 25
-
-
-@responses.activate
-def test_should_pass_request_parameters_for_text_search(cards, cards_response):
-    # Arrange
-    query_text = "test"
-
-    # Build the expected query parameters with text query
-    params = {
-        "text_query": query_text,
-        "page_number": 1,
-        "page_size": 25,
-        "sorting_order": SortDirection.ASC.value
-    }
-
-    responses.add(
-        responses.GET,
-        'https://cloud.tenable.com/api/v1/t1/exposure-view/cards',
-        json=cards_response,
-        match=[responses.matchers.query_param_matcher(params)]
-    )
-
-    # Act
-    result = cards.list(query_text=query_text)
-
-    # Assert
-    assert len(result.data) == 2
-    assert result.data[0].card_name == "Global Card"
-    assert result.data[1].card_name == "Custom Card"
-
-
-@responses.activate
-def test_should_pass_request_parameters_for_DESC_sorting(cards, cards_response):
-    # Arrange
-    sorting_order = SortDirection.DESC
-
-    # Build the expected query parameters with DESC sorting
-    params = {
-        "page_number": 1,
-        "page_size": 25,
-        "sorting_order": sorting_order.value
-    }
-
-    responses.add(
-        responses.GET,
-        'https://cloud.tenable.com/api/v1/t1/exposure-view/cards',
-        json=cards_response,
-        match=[responses.matchers.query_param_matcher(params)]
-    )
-
-    # Act
-    result = cards.list(sorting_order=sorting_order)
-
-    # Assert
-    assert len(result.data) == 2
-    assert result.data[0].card_name == "Global Card"
-    assert result.data[1].card_name == "Custom Card"
-
-
-@responses.activate
-def test_list_default_parameters(cards, cards_response):
-    # Arrange - test with minimal parameters
-    # Default query parameters with no optional parameters specified
-    params = {
-        "page_number": 1,
-        "page_size": 25,
+        "offset": 0,
+        "limit": 25,
         "sorting_order": SortDirection.ASC.value
     }
 

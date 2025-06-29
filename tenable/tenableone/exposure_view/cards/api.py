@@ -27,8 +27,8 @@ class CardsAPI(APIEndpoint):
         self,
         is_global_card: Optional[bool] = None,
         query_text: Optional[str] = None,
-        page_number: Optional[int] = 1,
-        page_size: Optional[int] = 25,
+        offset: Optional[int] = 0,
+        limit: Optional[int] = 25,
         sorting_order: Optional[SortDirection] = SortDirection.ASC,
     ) -> Cards:
         """
@@ -37,16 +37,16 @@ class CardsAPI(APIEndpoint):
         Args:
             is_global_card: Filter cards by is_global flag
             query_text: Text query to filter cards
-            page_number: Page number for pagination
-            page_size: Number of items per page
+            offset: The number of items to skip before starting to collect the result set
+            limit: Max number of items to return
             sorting_order: Sorting direction (ASC or DESC)
 
         Returns:
             Cards object containing the list of cards and pagination info
         """
         params = {
-            'page_number': page_number,
-            'page_size': page_size,
+            'offset': offset,
+            'limit': limit,
             'sorting_order': sorting_order.value,
         }
 
