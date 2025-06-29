@@ -48,7 +48,7 @@ def findings_properties_response() -> dict[str, list[dict]]:
 @pytest.fixture
 def findings_response() -> dict:
     return {
-        "values": [
+        "data": [
             {
                 "id": "000caf26-c44f-5db1-891f-4d98383812b9",
                 "name": "Dangerous SYSVOL share path",
@@ -57,9 +57,11 @@ def findings_response() -> dict:
                 "asset_id": "ea3305bf-6067-4f5d-a381-ffbd9eda2296",
             }
         ],
-        "total_count": 1,
-        "offset": 0,
-        "limit": 100,
+        "pagination": {
+            "total": 1,
+            "offset": 0,
+            "limit": 100,
+        },
         "sort_by": "finding_id",
         "sort_direction": "asc"
     }
