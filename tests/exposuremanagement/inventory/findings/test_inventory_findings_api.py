@@ -76,7 +76,7 @@ def test_properties_list(tenable_exposure_management_api, findings_properties_re
     # Act
     finding_properties_result: list[Field] = tenable_exposure_management_api.inventory.findings.list_properties()
     # Assert
-    assert finding_properties_result == Properties(**findings_properties_response).properties
+    assert finding_properties_result == Properties(**findings_properties_response).data
 
 
 @responses.activate
