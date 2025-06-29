@@ -474,7 +474,9 @@ class ExportsAPI(APIEndpoint):
             types (list[str], optional):
                 Only assets with specified type will be returned.
             since (int, optional):
-                Assets terminated after this timestamp will be returned.
+                Returns all assets that were updated, deleted, or terminated since the
+                specified date regardless of state. The timestamp is specified in
+                seconds since epoc (unix timestamp).
             uuid (str, optional):
                 A predefined export UUID to use for generating an
                 ExportIterator.  Using this parameter will ignore all of the

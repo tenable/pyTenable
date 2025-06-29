@@ -3,8 +3,8 @@ import json
 import pytest
 import responses
 
-from tenable.exposuremanagement.inventory.findings.schema import Findings
-from tenable.exposuremanagement.inventory.schema import (
+from tenable.tenableone.inventory.findings.schema import Findings
+from tenable.tenableone.inventory.schema import (
     Field,
     Properties,
     QueryMode,

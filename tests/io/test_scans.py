@@ -1,19 +1,21 @@
-'''
+"""
 test scans
-'''
-import uuid
-import time
-import os
+"""
+
 import datetime
-import responses
+import os
+import time
+import uuid
 from io import BytesIO
 from sys import stdout
+
 import pytest
 import responses
-from tenable.io import TenableIO
 from responses.matchers import query_param_matcher
+
+from tenable.errors import BadRequestError, NotFoundError, UnexpectedValueError
+from tenable.io import TenableIO
 from tenable.reports.nessusv2 import NessusReportv2
-from tenable.errors import UnexpectedValueError, NotFoundError, BadRequestError
 from tests.checker import check, single
 from tests.io.conftest import SCAN_ID_WITH_RESULTS
 from tests.pytenable_log_handler import log_exception
@@ -21,21 +23,21 @@ from tests.pytenable_log_handler import log_exception
 
 @pytest.fixture(name='scheduled_scan')
 def fixture_scheduled_scan(request, api):
-    '''
+    """
     Fixture to create scheduled scan
-    '''
+    """
     schedule_scan = api.scans.create_scan_schedule(enabled=True)
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
-        schedule_scan=schedule_scan
+        schedule_scan=schedule_scan,
     )
 
     def teardown():
-        '''
+        """
         cleanup function to delete scan
-        '''
+        """
         try:
             api.scans.delete(scan['id'])
         except NotFoundError as err:
@@ -54,27 +56,27 @@ def test_scan_progress(tvm):
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_template_typeerror(api):
-    '''
+    """
     test to raise exception when type of template param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         getattr(api.scans, '_create_scan_document')({'template': 123})
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_template_unexpected_value_error(api):
-    '''
+    """
     test to raise exception when template param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         getattr(api.scans, '_create_scan_document')({'template': 'nothing_here'})
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_socument_template_pass(api):
-    '''
+    """
     test to create scan document basic template
-    '''
+    """
     templates = api.policies.templates()
     resp = getattr(api.scans, '_create_scan_document')({'template': 'basic'})
     assert isinstance(resp, dict)
@@ -84,9 +86,9 @@ def test_scan_create_scan_socument_template_pass(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_policies_id_pass(api):
-    '''
+    """
     test to create scan document policy param using id
-    '''
+    """
     policies = api.policies.list()
     policy = policies[0]
     resp = getattr(api.scans, '_create_scan_document')({'policy': policy['id']})
@@ -98,9 +100,9 @@ def test_scan_create_scan_document_policies_id_pass(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_policies_name_pass(api):
-    '''
+    """
     test to create scan document with policy param using name
-    '''
+    """
     policies = api.policies.list()
     policy = policies[0]
     resp = getattr(api.scans, '_create_scan_document')({'policy': policy['name']})
@@ -113,31 +115,32 @@ def test_scan_create_scan_document_policies_name_pass(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_file_target_name(api, target_file):
-    '''
+    """
     test to create scan document with file targets param and uploaded file name
-    '''
-    resp = getattr(api.scans, '_create_scan_document')({'file_targets': target_file.name})
+    """
+    resp = getattr(api.scans, '_create_scan_document')(
+        {'file_targets': target_file.name}
+    )
     assert isinstance(resp, dict)
     check(resp, 'settings', dict)
     check(resp['settings'], 'file_targets', str)
     assert resp['settings']['file_targets'] == target_file.name
 
 
-
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when scanner param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         getattr(api.scans, '_create_scan_document')({'scanner': 'nothing to see here'})
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_uuid_pass(api):
-    '''
+    """
     test to create scan document with scanner uuid param
-    '''
+    """
     scanners = api.scanners.allowed_scanners()
     scanner = scanners[1]
     resp = getattr(api.scans, '_create_scan_document')({'scanner': scanner['id']})
@@ -149,9 +152,9 @@ def test_scan_create_scan_document_scanner_uuid_pass(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_scanner_name_pass(api):
-    '''
+    """
     test to create scan document with scanner name param
-    '''
+    """
     scanners = api.scanners.allowed_scanners()
     scanner = scanners[1]
     resp = getattr(api.scans, '_create_scan_document')({'scanner': scanner['name']})
@@ -160,16 +163,18 @@ def test_scan_create_scan_document_scanner_name_pass(api):
     check(resp['settings'], 'scanner_id', str)
     assert resp['settings']['scanner_id'] == scanner['id']
 
+
 # @pytest.mark.vcr()
 # def test_scan_attachment_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.attachment('nope', 1)
 
+
 @pytest.mark.vcr()
 def test_scan_attachment_attachement_id_typeerror(api):
-    '''
+    """
     test to raise exception when type of attachment_id param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.attachment(1, 'nope')
 
@@ -177,195 +182,209 @@ def test_scan_attachment_attachement_id_typeerror(api):
 @pytest.mark.vcr()
 @pytest.mark.xfail(raises=BadRequestError)
 def test_scan_attachement_notfounderror(api):
-    '''
+    """
     test to raise exception when attachment not found.
-    '''
+    """
     with pytest.raises(NotFoundError):
         api.scans.attachment(1, 1, 'none')
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_freq_typeerror(api):
-    '''
+    """
     test to raise exception when type of frequency param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.create_scan_schedule(enabled=True, frequency=1)
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_freq_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when frequency param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.scans.create_scan_schedule(enabled=True, frequency='nope')
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_interval_typeerror(api):
-    '''
+    """
     test to raise exception when type of interval param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.create_scan_schedule(enabled=True, interval='nope')
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_day_of_month_typeerror(api):
-    '''
+    """
     test to raise exception when type of day_of_month param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
-        api.scans.create_scan_schedule(enabled=True, frequency='monthly', day_of_month='nope')
+        api.scans.create_scan_schedule(
+            enabled=True, frequency='monthly', day_of_month='nope'
+        )
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_day_of_month_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when day_of_month param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
-        api.scans.create_scan_schedule(enabled=True, frequency='monthly', day_of_month=300)
+        api.scans.create_scan_schedule(
+            enabled=True, frequency='monthly', day_of_month=300
+        )
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_weekdays_typeerror(api):
-    '''
+    """
     test to raise exception when type of weekdays param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
-        api.scans.create_scan_schedule(enabled=True, frequency='weekly', weekdays='nope')
+        api.scans.create_scan_schedule(
+            enabled=True, frequency='weekly', weekdays='nope'
+        )
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_weekdays_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when weekdays param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.scans.create_scan_schedule(
-            enabled=True, frequency='weekly', weekdays=['MO', 'WE', 'nope'])
+            enabled=True, frequency='weekly', weekdays=['MO', 'WE', 'nope']
+        )
+
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_starttime_typeerror(api):
-    '''
+    """
     test to raise exception when type of starttime param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.create_scan_schedule(enabled=True, starttime='fail')
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_timezone_typeerror(api):
-    '''
+    """
     test to raise exception when type of timezone param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.create_scan_schedule(enabled=True, timezone=1)
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_timezone_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when timezone param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.scans.create_scan_schedule(enabled=True, timezone='the zone of time')
 
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_freq_typeerror(api, scan):
-    '''
+    """
     test to raise exception when type of frequency param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency=1)
 
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_freq_unexpectedvalueerror(api, scan):
-    '''
+    """
     test to raise exception when frequency param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, frequency='nope')
 
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_interval_typeerror(api, scan):
-    '''
+    """
     test to raise exception when type of interval param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, interval='nope')
 
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_day_of_month_typeerror(api, scan):
-    '''
+    """
     test to raise exception when type of day_of_month param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.configure_scan_schedule(
-            scan['id'], enabled=True, frequency='monthly', day_of_month='nope')
+            scan['id'], enabled=True, frequency='monthly', day_of_month='nope'
+        )
 
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_day_of_month_unexpectedvalueerror(api, scan):
-    '''
+    """
     test to raise exception when day_of_month param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.scans.configure_scan_schedule(
-            scan['id'], enabled=True, frequency='monthly', day_of_month=300)
+            scan['id'], enabled=True, frequency='monthly', day_of_month=300
+        )
 
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_weekdays_typeerror(api, scan):
-    '''
+    """
     test to raise exception when type of weekdays param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.configure_scan_schedule(
-            scan['id'], enabled=True, frequency='weekly', weekdays='nope')
+            scan['id'], enabled=True, frequency='weekly', weekdays='nope'
+        )
 
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_weekdays_unexpectedvalueerror(api, scan):
-    '''
+    """
     test to raise exception when weekdays param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.scans.configure_scan_schedule(
-            scan['id'], enabled=True, frequency='weekly', weekdays=['MO', 'WE', 'nope'])
+            scan['id'], enabled=True, frequency='weekly', weekdays=['MO', 'WE', 'nope']
+        )
 
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_starttime_typeerror(api, scan):
-    '''
+    """
     test to raise exception when type of starttime param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, starttime='fail')
 
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_timezone_typeerror(api, scan):
-    '''
+    """
     test to raise exception when type of timezone param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.configure_scan_schedule(scan['id'], enabled=True, timezone=1)
 
 
 @pytest.mark.vcr()
 def test_scan_configure_scan_schedule_timezone_unexpectedvalueerror(api, scan):
-    '''
+    """
     test to raise exception when timezone param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
-        api.scans.configure_scan_schedule(scan['id'], enabled=True, timezone='the zone of time')
+        api.scans.configure_scan_schedule(
+            scan['id'], enabled=True, timezone='the zone of time'
+        )
 
 
 # @pytest.mark.vcr()
@@ -378,20 +397,21 @@ def test_scan_configure_scan_schedule_timezone_unexpectedvalueerror(api, scan):
 #    with pytest.raises(TypeError):
 #        api.scans.configure('nope')
 
+
 @pytest.mark.vcr()
 def test_scan_configure_notfounderror(api):
-    '''
+    """
     test to raise exception when scan_id not found.
-    '''
+    """
     with pytest.raises(NotFoundError):
         api.scans.configure(1, name=str(uuid.uuid4()))
 
 
 @pytest.mark.vcr()
 def test_scan_configure(api, scan):
-    '''
+    """
     test to configure scan
-    '''
+    """
     mod = api.scans.configure(scan['id'], name='MODIFIED')
     assert mod['id'] == scan['id']
     assert mod['name'] == 'MODIFIED'
@@ -399,12 +419,13 @@ def test_scan_configure(api, scan):
 
 @pytest.mark.vcr()
 def test_scan_configure_schedule_onetime_to_daily(api, scheduled_scan):
-    '''
+    """
     test to edit scan schedule frequency from onetime to daily
-    '''
-    schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='daily')
-    mod = api.scans.configure(scheduled_scan['id'],
-                              schedule_scan=schedule)
+    """
+    schedule = api.scans.configure_scan_schedule(
+        scheduled_scan['id'], frequency='daily'
+    )
+    mod = api.scans.configure(scheduled_scan['id'], schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -433,13 +454,14 @@ def test_scan_configure_schedule_onetime_to_daily(api, scheduled_scan):
 
 @pytest.mark.vcr()
 def test_scan_configure_schedule_onetime_to_weekly_valdefault(api, scheduled_scan):
-    '''
+    """
     test to edit scheduled scan frequency from onetime to weekly
     and assign default value to weekdays param
-    '''
-    schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='weekly')
-    mod = api.scans.configure(scheduled_scan['id'],
-                              schedule_scan=schedule)
+    """
+    schedule = api.scans.configure_scan_schedule(
+        scheduled_scan['id'], frequency='weekly'
+    )
+    mod = api.scans.configure(scheduled_scan['id'], schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -468,14 +490,14 @@ def test_scan_configure_schedule_onetime_to_weekly_valdefault(api, scheduled_sca
 
 @pytest.mark.vcr()
 def test_scan_configure_schedule_onetime_to_weekly_valassigned(api, scheduled_scan):
-    '''
+    """
     test to edit scheduled scan frequency from onetime to weekly
     and assign user defined value to weekdays param
-    '''
+    """
     schedule = api.scans.configure_scan_schedule(
-        scheduled_scan['id'], frequency='weekly', weekdays=['MO', 'TU'])
-    mod = api.scans.configure(scheduled_scan['id'],
-                              schedule_scan=schedule)
+        scheduled_scan['id'], frequency='weekly', weekdays=['MO', 'TU']
+    )
+    mod = api.scans.configure(scheduled_scan['id'], schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -504,19 +526,20 @@ def test_scan_configure_schedule_onetime_to_weekly_valassigned(api, scheduled_sc
 
 @pytest.mark.vcr()
 def test_scan_configure_schedule_freq_weekly_valavailable(api):
-    '''
+    """
     test to edit weekly scheduled scan and assign existing weekdays values to weekdays param
-    '''
+    """
     create_schedule = api.scans.create_scan_schedule(
-        enabled=True, frequency='weekly', weekdays=['MO', 'TU'])
+        enabled=True, frequency='weekly', weekdays=['MO', 'TU']
+    )
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
-        schedule_scan=create_schedule)
+        schedule_scan=create_schedule,
+    )
     update_schedule = api.scans.configure_scan_schedule(scan_id=scan['id'], interval=2)
-    mod = api.scans.configure(scan['id'],
-                              schedule_scan=update_schedule)
+    mod = api.scans.configure(scan['id'], schedule_scan=update_schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -545,26 +568,63 @@ def test_scan_configure_schedule_freq_weekly_valavailable(api):
 
 
 def test_upsert_aws_credentials(api):
-    '''
-        test to check if aws credentials can be added to edit section of credentials
-        dict of scan
-    '''
+    """
+    test to check if aws credentials can be added to edit section of credentials
+    dict of scan
+    """
     scan = {
-        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS1',
-                                                                       'secret_key': 'SECRET1', 'id': 12346}]}},
-                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
-                                                                   'id': 12347}]}}
-                        },
+        'credentials': {
+            'current': {
+                'Cloud Services': {
+                    'Amazon AWS': [
+                        {
+                            'access_key_id': 'ACCESS1',
+                            'secret_key': 'SECRET1',
+                            'id': 12346,
+                        }
+                    ]
+                }
+            },
+            'add': {
+                'Cloud Services': {
+                    'Amazon AWS': [
+                        {
+                            'access_key_id': 'ACCESS2',
+                            'secret_key': 'SECRET2',
+                            'id': 12347,
+                        }
+                    ]
+                }
+            },
+        },
     }
 
     scan_output = {
         'credentials': {
-            'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS1',
-                                                           'secret_key': 'SECRET1', 'id': 12346}]}},
-            'add': {'Cloud Services': {}},
-            'edit': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
-                                                        'id': 12347}]}}
+            'current': {
+                'Cloud Services': {
+                    'Amazon AWS': [
+                        {
+                            'access_key_id': 'ACCESS1',
+                            'secret_key': 'SECRET1',
+                            'id': 12346,
+                        }
+                    ]
+                }
             },
+            'add': {'Cloud Services': {}},
+            'edit': {
+                'Cloud Services': {
+                    'Amazon AWS': [
+                        {
+                            'access_key_id': 'ACCESS2',
+                            'secret_key': 'SECRET2',
+                            'id': 12347,
+                        }
+                    ]
+                }
+            },
+        },
     }
     scan_actual = api.scans.upsert_aws_credentials(scan)
     assert isinstance(scan_actual, dict)
@@ -572,21 +632,41 @@ def test_upsert_aws_credentials(api):
 
 
 def test_upsert_aws_credentials_no_current(api):
-    '''
-        test to check if aws credentials can be added to edit section of credentials
-        dict of scan when there is no current
-    '''
+    """
+    test to check if aws credentials can be added to edit section of credentials
+    dict of scan when there is no current
+    """
     scan = {
-        'credentials': {'current': {},
-                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
-                                                                   'id': 12347}]}}
-                        },
+        'credentials': {
+            'current': {},
+            'add': {
+                'Cloud Services': {
+                    'Amazon AWS': [
+                        {
+                            'access_key_id': 'ACCESS2',
+                            'secret_key': 'SECRET2',
+                            'id': 12347,
+                        }
+                    ]
+                }
+            },
+        },
     }
     scan_expected = {
-        'credentials': {'current': {},
-                        'add': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
-                                                                   'id': 12347}]}}
-                        },
+        'credentials': {
+            'current': {},
+            'add': {
+                'Cloud Services': {
+                    'Amazon AWS': [
+                        {
+                            'access_key_id': 'ACCESS2',
+                            'secret_key': 'SECRET2',
+                            'id': 12347,
+                        }
+                    ]
+                }
+            },
+        },
     }
     scan_actual = api.scans.upsert_aws_credentials(scan)
     assert isinstance(scan_actual, dict)
@@ -594,21 +674,41 @@ def test_upsert_aws_credentials_no_current(api):
 
 
 def test_upsert_aws_credentials_no_add(api):
-    '''
-        test to check if aws credentials can be added to edit section of credentials
-        dict of scan when there is no add
-    '''
+    """
+    test to check if aws credentials can be added to edit section of credentials
+    dict of scan when there is no add
+    """
     scan = {
-        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
-                                                                       'id': 12346}]}},
-                        'add': {}
-                        },
+        'credentials': {
+            'current': {
+                'Cloud Services': {
+                    'Amazon AWS': [
+                        {
+                            'access_key_id': 'ACCESS2',
+                            'secret_key': 'SECRET2',
+                            'id': 12346,
+                        }
+                    ]
+                }
+            },
+            'add': {},
+        },
     }
     scan_expected = {
-        'credentials': {'current': {'Cloud Services': {'Amazon AWS': [{'access_key_id': 'ACCESS2', 'secret_key': 'SECRET2',
-                                                                       'id': 12346}]}},
-                        'add': {}
-                        },
+        'credentials': {
+            'current': {
+                'Cloud Services': {
+                    'Amazon AWS': [
+                        {
+                            'access_key_id': 'ACCESS2',
+                            'secret_key': 'SECRET2',
+                            'id': 12346,
+                        }
+                    ]
+                }
+            },
+            'add': {},
+        },
     }
     scan_actual = api.scans.upsert_aws_credentials(scan)
     assert isinstance(scan_actual, dict)
@@ -617,13 +717,14 @@ def test_upsert_aws_credentials_no_add(api):
 
 @pytest.mark.vcr()
 def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_scan):
-    '''
+    """
     test to edit scheduled scan frequency from onetime to monthly
     and assign default value to day_of_month param
-    '''
-    schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], frequency='monthly')
-    mod = api.scans.configure(scheduled_scan['id'],
-                              schedule_scan=schedule)
+    """
+    schedule = api.scans.configure_scan_schedule(
+        scheduled_scan['id'], frequency='monthly'
+    )
+    mod = api.scans.configure(scheduled_scan['id'], schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -653,14 +754,14 @@ def test_scan_configure_schedule_onetime_to_monthly_valdefault(api, scheduled_sc
 
 @pytest.mark.vcr()
 def test_scan_configure_schedule_onetime_to_monthly_valassigned(api, scheduled_scan):
-    '''
+    """
     test to edit scheduled scan frequency from onetime to monthly
     and assign user defined value to day_of_month param
-    '''
+    """
     schedule = api.scans.configure_scan_schedule(
-        scheduled_scan['id'], frequency='monthly', day_of_month=8)
-    mod = api.scans.configure(scheduled_scan['id'],
-                              schedule_scan=schedule)
+        scheduled_scan['id'], frequency='monthly', day_of_month=8
+    )
+    mod = api.scans.configure(scheduled_scan['id'], schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -689,19 +790,20 @@ def test_scan_configure_schedule_onetime_to_monthly_valassigned(api, scheduled_s
 
 @pytest.mark.vcr()
 def test_scan_configure_schedule_freq_monthly_valavailable(api):
-    '''
+    """
     test to edit scheduled scan and assign existing day_of_month value to day_of_month param
-    '''
+    """
     create_schedule = api.scans.create_scan_schedule(
-        enabled=True, frequency='monthly', day_of_month=8)
+        enabled=True, frequency='monthly', day_of_month=8
+    )
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
-        schedule_scan=create_schedule)
+        schedule_scan=create_schedule,
+    )
     update_schedule = api.scans.configure_scan_schedule(scan['id'], interval=2)
-    mod = api.scans.configure(scan['id'],
-                              schedule_scan=update_schedule)
+    mod = api.scans.configure(scan['id'], schedule_scan=update_schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -731,13 +833,13 @@ def test_scan_configure_schedule_freq_monthly_valavailable(api):
 
 @pytest.mark.vcr()
 def test_scan_configure_schedule_freq_yearly(api, scheduled_scan):
-    '''
+    """
     test to edit scheduled schan frequency from onetime to yearly
-    '''
+    """
     update_schedule = api.scans.configure_scan_schedule(
-        scheduled_scan['id'], frequency='yearly', interval=2)
-    mod = api.scans.configure(scheduled_scan['id'],
-                              schedule_scan=update_schedule)
+        scheduled_scan['id'], frequency='yearly', interval=2
+    )
+    mod = api.scans.configure(scheduled_scan['id'], schedule_scan=update_schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -766,12 +868,11 @@ def test_scan_configure_schedule_freq_yearly(api, scheduled_scan):
 
 @pytest.mark.vcr()
 def test_scan_configure_enable_scan_schedule(api, scan):
-    '''
+    """
     test to enable scan schedule
-    '''
+    """
     schedule = api.scans.configure_scan_schedule(scan['id'], enabled=True)
-    mod = api.scans.configure(scan['id'],
-                              schedule_scan=schedule)
+    mod = api.scans.configure(scan['id'], schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -800,12 +901,11 @@ def test_scan_configure_enable_scan_schedule(api, scan):
 
 @pytest.mark.vcr()
 def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
-    '''
+    """
     test to disable scan schedule
-    '''
+    """
     schedule = api.scans.configure_scan_schedule(scheduled_scan['id'], enabled=False)
-    mod = api.scans.configure(scheduled_scan['id'],
-                              schedule_scan=schedule)
+    mod = api.scans.configure(scheduled_scan['id'], schedule_scan=schedule)
     assert isinstance(mod, dict)
     check(mod, 'creation_date', int)
     check(mod, 'custom_targets', str)
@@ -836,38 +936,39 @@ def test_scan_configure_disable_scan_schedule(api, scheduled_scan):
 #    with pytest.raises(TypeError):
 #        api.scans.copy('nope')
 
+
 @pytest.mark.vcr()
 def test_scan_copy_folder_id_typeerror(api):
-    '''
+    """
     test to raise exception when type of folder_id param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.copy(1, folder_id='nope')
 
 
 @pytest.mark.vcr()
 def test_scan_copy_name_typeerror(api):
-    '''
+    """
     test to raise exception when type of name param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.copy(1, name=1)
 
 
 @pytest.mark.vcr()
 def test_scan_copy_notfounderror(api):
-    '''
+    """
     test to raise exception when scan_id not found.
-    '''
+    """
     with pytest.raises(NotFoundError):
         api.scans.copy(1)
 
 
 @pytest.mark.vcr()
 def test_scan_copy(api, scan):
-    '''
+    """
     test to copy scan
-    '''
+    """
     clone = api.scans.copy(scan['id'])
     assert isinstance(clone, dict)
     check(clone, 'control', bool)
@@ -891,9 +992,9 @@ def test_scan_copy(api, scan):
 
 @pytest.mark.vcr()
 def test_scan_create_no_template_pass(scan):
-    '''
+    """
     test to create scan when no template is provided by user
-    '''
+    """
     assert isinstance(scan, dict)
     check(scan, 'creation_date', int)
     check(scan, 'custom_targets', str)
@@ -919,15 +1020,15 @@ def test_scan_create_no_template_pass(scan):
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_default_schedule(api):
-    '''
+    """
     test to create scan with default schedule
-    '''
+    """
     schedule_scan = api.scans.create_scan_schedule(enabled=True)
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
-        schedule_scan=schedule_scan
+        schedule_scan=schedule_scan,
     )
     assert isinstance(scan, dict)
     check(scan, 'creation_date', int)
@@ -957,15 +1058,15 @@ def test_scan_create_scheduled_scan_default_schedule(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_daily(api):
-    '''
+    """
     test to create scheduled scan with frequency as daily
-    '''
+    """
     schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='daily')
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
-        schedule_scan=schedule_scan
+        schedule_scan=schedule_scan,
     )
     assert isinstance(scan, dict)
     check(scan, 'creation_date', int)
@@ -995,16 +1096,16 @@ def test_scan_create_scheduled_scan_freq_daily(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_weekly_valdefault(api):
-    '''
+    """
     test to create scheduled scan with frequency as weekly
     and default weekdays value
-    '''
+    """
     schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='weekly')
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
-        schedule_scan=schedule_scan
+        schedule_scan=schedule_scan,
     )
     assert isinstance(scan, dict)
     check(scan, 'creation_date', int)
@@ -1034,17 +1135,18 @@ def test_scan_create_scheduled_scan_freq_weekly_valdefault(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_weekly_valassigned(api):
-    '''
+    """
     test to create scheduled scan with frequency as weekly
     with user defined weekdays values
-    '''
+    """
     schedule_scan = api.scans.create_scan_schedule(
-        enabled=True, frequency='weekly', weekdays=['MO', 'TU'])
+        enabled=True, frequency='weekly', weekdays=['MO', 'TU']
+    )
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
-        schedule_scan=schedule_scan
+        schedule_scan=schedule_scan,
     )
     assert isinstance(scan, dict)
     check(scan, 'creation_date', int)
@@ -1074,16 +1176,16 @@ def test_scan_create_scheduled_scan_freq_weekly_valassigned(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_monthly_valdefault(api):
-    '''
+    """
     test to create scheduled scan with frequency as monthly
     and day_of_month as default value
-    '''
+    """
     schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='monthly')
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
-        schedule_scan=schedule_scan
+        schedule_scan=schedule_scan,
     )
     assert isinstance(scan, dict)
     check(scan, 'creation_date', int)
@@ -1113,17 +1215,18 @@ def test_scan_create_scheduled_scan_freq_monthly_valdefault(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_monthly_valassigned(api):
-    '''
+    """
     test to create scheduled scan with frequency as monthly
     with user defined day_of_month value
-    '''
+    """
     schedule_scan = api.scans.create_scan_schedule(
-        enabled=True, frequency='monthly', day_of_month=8)
+        enabled=True, frequency='monthly', day_of_month=8
+    )
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
-        schedule_scan=schedule_scan
+        schedule_scan=schedule_scan,
     )
     assert isinstance(scan, dict)
     check(scan, 'creation_date', int)
@@ -1153,15 +1256,17 @@ def test_scan_create_scheduled_scan_freq_monthly_valassigned(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scheduled_scan_freq_yearly(api):
-    '''
+    """
     test to create scheduled scan with frequency as yearly
-    '''
-    schedule_scan = api.scans.create_scan_schedule(enabled=True, frequency='yearly', interval=2)
+    """
+    schedule_scan = api.scans.create_scan_schedule(
+        enabled=True, frequency='yearly', interval=2
+    )
     scan = api.scans.create(
         name='pytest: {}'.format(uuid.uuid4()),
         template='basic',
         targets=['127.0.0.1'],
-        schedule_scan=schedule_scan
+        schedule_scan=schedule_scan,
     )
     assert isinstance(scan, dict)
     check(scan, 'creation_date', int)
@@ -1188,26 +1293,29 @@ def test_scan_create_scheduled_scan_freq_yearly(api):
     assert scan['rrules'] == 'FREQ=YEARLY;INTERVAL=2'
     api.scans.delete(scan['id'])
 
-#@pytest.mark.vcr()
-#def test_scan_delete_scan_id_typeerror(api):
+
+# @pytest.mark.vcr()
+# def test_scan_delete_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.delete('nope')
 
+
 @pytest.mark.vcr()
 def test_scan_delete_notfounderror(api):
-    '''
+    """
     test to raise exception when scan_id not found.
-    '''
+    """
     with pytest.raises(NotFoundError):
         api.scans.delete(0)
 
 
 @pytest.mark.vcr()
 def test_scan_delete(api, scan):
-    '''
+    """
     test to delete scan
-    '''
+    """
     api.scans.delete(scan['id'])
+
 
 # @pytest.mark.vcr()
 # def test_scan_delete_history_scan_id_typeerror(api):
@@ -1219,35 +1327,42 @@ def test_scan_delete(api, scan):
 #    with pytest.raises(TypeError):
 #        api.scans.delete_history(1, 'nope')
 
+
 @pytest.mark.vcr()
 def test_scan_delete_history_notfounderror(api):
-    '''
+    """
     test to raise exception when scan_id not found.
-    '''
+    """
     with pytest.raises(NotFoundError):
         api.scans.delete_history(1, 1)
+
 
 # @pytest.mark.vcr()
 # def test_scan_details_scan_id_typeerror(api):
 #    with pytest.raises(TypeError):
 #        api.scans.details('nope')
 
+
 @pytest.mark.vcr()
 def test_scan_details_history_it_typeerror(api):
-    '''
+    """
     test to raise exception when type of scan_id param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.details(1, 'nope')
 
 
 @pytest.mark.vcr()
 def test_scan_results(api):
-    '''
+    """
     test to get scan results
-    '''
-    scan_list = [id['id'] for id in list(
-        filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    """
+    scan_list = [
+        id['id']
+        for id in list(
+            filter(lambda value: value['status'] == 'completed', api.scans.list())
+        )
+    ]
     if scan_list:
         scan_results = api.scans.results(scan_list[0])
         assert isinstance(scan_results, dict)
@@ -1390,91 +1505,94 @@ def test_scan_results(api):
 #    with pytest.raises(TypeError):
 #        api.scans.export('nope')
 
+
 @pytest.mark.vcr()
 def test_scan_export_history_id_typeerror(api):
-    '''
+    """
     test to raise exception when type of history_id param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.export(1, history_id='nope')
 
 
 @pytest.mark.vcr()
 def test_scan_export_format_typeerror(api):
-    '''
+    """
     test to raise exception when type of format param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.export(1, format=1)
 
 
 @pytest.mark.vcr()
 def test_scan_export_format_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when format param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.scans.export(1, format='something else')
 
 
 @pytest.mark.vcr()
 def test_scan_export_password_typeerror(api):
-    '''
+    """
     test to raise exception when type of password param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.export(1, password=1)
 
 
 @pytest.mark.vcr()
 def test_scan_export_chapters_typeerror(api):
-    '''
+    """
     test to raise exception when type of chapter param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.export(1, chapters=1)
 
 
 @pytest.mark.vcr()
 def test_scan_export_chapters_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when chapter param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.scans.export(1, chapters=['nothing to see here'])
 
 
 @pytest.mark.vcr()
 def test_scan_export_filter_type_typeerror(api):
-    '''
+    """
     test to raise exception when type of filter_type param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.export(1, filter_type=1)
 
 
 @pytest.mark.vcr()
 def test_scan_export_filter_type_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when filter_type param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.scans.export(1, filter_type='nothing')
 
 
 @pytest.mark.vcr()
 def test_scan_export_was_typeerror(api):
-    '''
+    """
     test to raise exception when scan_type param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.scans.export(SCAN_ID_WITH_RESULTS, scan_type='bad-value')
 
+
 @pytest.mark.vcr()
 def test_scan_export_bytesio_stream_hook(api, scan_results):
-    '''
+    """
     test to export scan using optional `stream_hook` kwarg, provided by user (Issue #305)
-    '''
+    """
+
     def stream_hook(response, _fobj, chunk_size=1024):
         """This is an example callable, the caller provides this"""
         progress_bytes = 0
@@ -1484,7 +1602,10 @@ def test_scan_export_bytesio_stream_hook(api, scan_results):
                 progress_bytes += len(chunk)
                 stdout.write('Progress: %d / %d\n' % (progress_bytes, total_size))
                 _fobj.write(chunk)
-        stdout.write('Complete, %d/%d bytes received in stream_hook\n' % (progress_bytes, total_size))
+        stdout.write(
+            'Complete, %d/%d bytes received in stream_hook\n'
+            % (progress_bytes, total_size)
+        )
 
     fobj = api.scans.export(scan_results['id'], stream_hook=stream_hook)
     assert isinstance(fobj, BytesIO)
@@ -1495,13 +1616,18 @@ def test_scan_export_bytesio_stream_hook(api, scan_results):
         if counter > 10:
             break
 
+
 @pytest.mark.vcr()
 def test_scan_export_bytesio(api):
-    '''
+    """
     test to export scan
-    '''
-    scan_list = [id['id'] for id in list(
-        filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    """
+    scan_list = [
+        id['id']
+        for id in list(
+            filter(lambda value: value['status'] == 'completed', api.scans.list())
+        )
+    ]
     if scan_list:
         fobj = api.scans.export(scan_list[0])
         assert isinstance(fobj, BytesIO)
@@ -1515,11 +1641,15 @@ def test_scan_export_bytesio(api):
 
 @pytest.mark.vcr()
 def test_scan_export_file_object(api):
-    '''
+    """
     test to export scan file object
-    '''
-    scan_list = [id['id'] for id in list(
-        filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    """
+    scan_list = [
+        id['id']
+        for id in list(
+            filter(lambda value: value['status'] == 'completed', api.scans.list())
+        )
+    ]
     if scan_list:
         filename = '{}.nessus'.format(uuid.uuid4())
         with open(filename, 'wb') as fobj:
@@ -1533,46 +1663,25 @@ def test_scan_export_file_object(api):
                     break
         os.remove(filename)
 
-# @pytest.mark.vcr()
-# def test_scan_host_details_scan_id_typeerror(api):
-#    with pytest.raises(TypeError):
-#        api.scans.host_details('nope', 1)
-
-@pytest.mark.vcr()
-def test_scan_host_details_host_id_typeerror(api):
-    '''
-    test to raise exception when type of host_id param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.host_details(1, 'nope')
-
-
-@pytest.mark.vcr()
-def test_scan_host_details_history_id_typeerror(api):
-    '''
-    test to raise exception when type of history_id param does not match the expected type.
-    '''
-    with pytest.raises(TypeError):
-        api.scans.host_details(1, 1, 'nope')
-
 
 @pytest.mark.vcr()
 def test_scan_host_details_notfounderror(api):
-    '''
+    """
     test to raise exception when scan_id not found.
-    '''
+    """
     with pytest.raises(NotFoundError):
         api.scans.host_details(1, 1)
 
 
 @pytest.mark.vcr()
 def test_scan_host_details(api, scan_results):
-    '''
+    """
     test to retrieve the host details from a specific scan
-    '''
+    """
     try:
         host = api.scans.host_details(
-            scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
+            scan_results['id'], scan_results['results']['hosts'][0]['asset_id']
+        )
         assert isinstance(host, dict)
         check(host, 'info', dict)
         check(host['info'], 'host-fqdn', str, allow_none=True)
@@ -1610,39 +1719,43 @@ def test_scan_host_details(api, scan_results):
 
 @pytest.mark.vcr()
 def test_scan_import_scan_folder_id_typeerror(api):
-    '''
+    """
     test to raise exception when type of folder_id param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.import_scan(None, folder_id='nope')
 
 
 @pytest.mark.vcr()
 def test_scan_import_scan_password_typeerror(api):
-    '''
+    """
     test to raise exception when type of password param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.scans.import_scan(None, password=1)
 
 
 @pytest.mark.vcr()
 def test_scan_import_scan(api):
-    '''
+    """
     test to import scan
-    '''
-    scan_list = [id['id'] for id in list(
-        filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    """
+    scan_list = [
+        id['id']
+        for id in list(
+            filter(lambda value: value['status'] == 'completed', api.scans.list())
+        )
+    ]
     if scan_list:
         fobj = api.scans.export(scan_list[0])
         api.scans.import_scan(fobj)
 
 
-@pytest.mark.skip(reason="Switching between scan states can be tricky")
+@pytest.mark.skip(reason='Switching between scan states can be tricky')
 def test_scan_launch(api, scan):
-    '''
+    """
     test to launch scan
-    '''
+    """
     api.scans.launch(scan['id'])
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
@@ -1650,9 +1763,9 @@ def test_scan_launch(api, scan):
 
 @pytest.mark.skip(reason='Switching between scan states this quickly can be trixsy')
 def test_scan_launch_alt_targets(api, scan):
-    '''
+    """
     test to launch scan
-    '''
+    """
     api.scans.launch(scan['id'], targets=['127.0.0.2'])
     time.sleep(5)
     api.scans.stop(scan['id'], block=True)
@@ -1660,9 +1773,9 @@ def test_scan_launch_alt_targets(api, scan):
 
 @pytest.mark.vcr()
 def test_scan_list(api):
-    '''
+    """
     test to get list of scans
-    '''
+    """
     scans = api.scans.list()
     assert isinstance(scans, list)
     scan = scans[0]
@@ -1686,30 +1799,34 @@ def test_scan_list(api):
     check(scan, 'uuid', 'scanner-uuid')
 
 
-@pytest.mark.skip(reason="Switching between scan states can be tricky")
+@pytest.mark.skip(reason='Switching between scan states can be tricky')
 def test_scan_pause_scan(api, scan):
-    '''
+    """
     test to pause scan
-    '''
+    """
     _ = api.scans.launch(scan['id'])
     api.scans.pause(scan['id'], block=True)
 
 
 @pytest.mark.vcr()
 def test_scan_plugin_output(api, scan_results):
-    '''
+    """
     test to get scan plugin output
-    '''
+    """
     try:
         host = api.scans.host_details(
-            scan_results['id'], scan_results['results']['hosts'][0]['asset_id'])
+            scan_results['id'], scan_results['results']['hosts'][0]['asset_id']
+        )
         output = api.scans.plugin_output(
             scan_results['id'],
             host['vulnerabilities'][0]['host_id'],
-            host['vulnerabilities'][0]['plugin_id'])
+            host['vulnerabilities'][0]['plugin_id'],
+        )
         output_info_pdesc = output['info']['plugindescription']
         output_info_pdesc_patt = output_info_pdesc['pluginattributes']
-        output_info_pdesc_patt_pinfo = output_info_pdesc['pluginattributes']['plugin_information']
+        output_info_pdesc_patt_pinfo = output_info_pdesc['pluginattributes'][
+            'plugin_information'
+        ]
         assert isinstance(output, dict)
         check(output, 'info', dict)
         check(output['info'], 'plugindescription', dict)
@@ -1750,9 +1867,9 @@ def test_scan_plugin_output(api, scan_results):
 
 @pytest.mark.vcr()
 def test_scan_read_status(api, scan):
-    '''
+    """
     test to get scan read status
-    '''
+    """
     scans = api.scans.list()
     scan = scans[0]
     api.scans.set_read_status(scans[0]['id'], not scans[0]['read'])
@@ -1761,12 +1878,12 @@ def test_scan_read_status(api, scan):
             assert scan['read'] != resp['read']
 
 
-@pytest.mark.skip(reason="Switching between scan states can be tricky")
+@pytest.mark.skip(reason='Switching between scan states can be tricky')
 @pytest.mark.vcr()
 def test_scan_resume(api, scan):
-    '''
+    """
     test to resume scan
-    '''
+    """
     api.scans.launch(scan['id'])
     time.sleep(5)
     api.scans.pause(scan['id'], block=True)
@@ -1776,50 +1893,49 @@ def test_scan_resume(api, scan):
     api.scans.stop(scan['id'], block=True)
 
 
-@pytest.mark.skip(reason="Need to configure the scan w/ a schedule.")
+@pytest.mark.skip(reason='Need to configure the scan w/ a schedule.')
 @pytest.mark.vcr()
 def test_scan_schedule(api, scan):
-    '''
+    """
     test to disable scan schedule
-    '''
+    """
     api.scans.schedule(scan['id'], False)
 
 
-@pytest.mark.skip(reason="Switching between scan states can be tricky")
+@pytest.mark.skip(reason='Switching between scan states can be tricky')
 @pytest.mark.vcr()
 def test_scan_stop(api, scan):
-    '''
+    """
     test to stop scan
-    '''
+    """
     api.scans.launch(scan['id'])
     time.sleep(5)
     api.scans.stop(scan['id'])
 
 
-
 @pytest.mark.vcr()
 def test_scan_status(api, scan):
-    '''
+    """
     test to check scan status
-    '''
+    """
     status = api.scans.status(scan['id'])
     single(status, str)
 
 
 @pytest.mark.vcr()
 def test_scan_timezones(api):
-    '''
+    """
     test to get list of allowed timezone strings
-    '''
+    """
     assert isinstance(api.scans.timezones(), list)
 
 
 @pytest.mark.vcr()
 def test_scan_check_auto_targets_success(api):
-    '''
+    """
     test to evaluates a list of targets and/or tags against
     the scan route configuration of scanner groups
-    '''
+    """
     resp = api.scans.check_auto_targets(10, 5, targets=['127.0.0.1'])
     assert isinstance(resp, dict)
     check(resp, 'matched_resource_uuids', list)
@@ -1830,18 +1946,18 @@ def test_scan_check_auto_targets_success(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scan_schedule_success(api):
-    '''test to create a scan schedule'''
+    """test to create a scan schedule"""
     api.scans.create_scan_schedule(enabled=False)
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_success(api):
-    '''
+    """
     test to create a scan
-    '''
+    """
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
-        targets=['127.0.0.1'])
+        name='pytest: {}'.format(uuid.uuid4()), targets=['127.0.0.1']
+    )
     assert isinstance(scan, dict)
     check(scan, 'tag_type', None, allow_none=True)
     check(scan, 'container_id', 'uuid')
@@ -1878,29 +1994,28 @@ def test_scan_create_scan_success(api):
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_policy_setting_valueerror(api):
-    '''
+    """
     test to raise when policy setting is invalid
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         getattr(api.scans, '_create_scan_document')({'policy': 'some_policy'})
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_credentials_pass(api):
-    '''
+    """
     test to create a scan document along with credentials
-    '''
+    """
     credentials = api.credentials.list()
     for credential in credentials:
-        getattr(api.scans, '_create_scan_document')(
-            {'credentials': credential})
+        getattr(api.scans, '_create_scan_document')({'credentials': credential})
 
 
 @pytest.mark.vcr()
 def test_block_while_running(api):
-    '''
+    """
     test _block_while_running with expected type.
-    '''
+    """
     api.scans._block_while_running(scan_id=583, sleeper=5)
 
 
@@ -1910,9 +2025,12 @@ def test_scan_results_scan_not_found_error(api):
     test to raise exception when scan not found.
     """
     with pytest.raises(NotFoundError) as not_found_error:
-        api.scans.results(scan_id=583, history_uuid="123e4567-e89b-12d3-a456-426614174000")
-    assert "Scan not found" in not_found_error.value.msg, \
-        "Invalid type validation error for scan_id parameter is not raised by test-case."
+        api.scans.results(
+            scan_id=583, history_uuid='123e4567-e89b-12d3-a456-426614174000'
+        )
+    assert 'Scan not found' in not_found_error.value.msg, (
+        'Invalid type validation error for scan_id parameter is not raised by test-case.'
+    )
 
 
 @pytest.mark.vcr()
@@ -1921,7 +2039,7 @@ def test_scan_results_without_history(api):
     requests using only Scan ID
     """
     scan = api.scans.results(scan_id=419)
-    assert len(scan["vulnerabilities"]) == 223
+    assert len(scan['vulnerabilities']) == 223
 
 
 @pytest.mark.vcr()
@@ -1930,7 +2048,7 @@ def test_scan_results_with_history_id(api):
     requests using only Scan ID
     """
     scan = api.scans.results(scan_id=419, history_id=15184619)
-    assert len(scan["hosts"]) == 221
+    assert len(scan['hosts']) == 221
 
 
 @pytest.mark.vcr()
@@ -1938,27 +2056,49 @@ def test_scan_results_with_history_uuid(api):
     """
     requests using only Scan ID
     """
-    scan = api.scans.results(scan_id=419, history_uuid="b6e2280a-119f-42c8-9af5-a16ae269fb75")
-    assert len(scan["hosts"]) == 221
+    scan = api.scans.results(
+        scan_id=419, history_uuid='b6e2280a-119f-42c8-9af5-a16ae269fb75'
+    )
+    assert len(scan['hosts']) == 221
+
 
 @pytest.mark.vcr()
 def test_scan_history_sort_direction(api):
-    '''
+    """
     test scan history for sort direction.
-    '''
-    api.scans.history(scan_id=11, limit=10, offset="1", pages=3, sort=(('name', 'asc'), ('description', 'desc')))
+    """
+    api.scans.history(
+        scan_id=11,
+        limit=10,
+        offset='1',
+        pages=3,
+        sort=(('name', 'asc'), ('description', 'desc')),
+    )
 
 
 @pytest.mark.vcr()
 def test_scan_create_scan_document_credentials_compliance_plugins(api):
-    '''
+    """
     test to create scan document with credentials, compliance and plugins
-    '''
-    getattr(api.scans, '_create_scan_document')({'credentials': {'Host': {'Windows': [{'domain': '', 'username': 'test',
-                                                                                       'password': 'test',
-                                                                                       'auth_method': 'Password'}]}},
-                                                 'compliance': {'test': 'testvalue'},
-                                                 'plugins': {12122: 13, 12050: 13}})
+    """
+    getattr(api.scans, '_create_scan_document')(
+        {
+            'credentials': {
+                'Host': {
+                    'Windows': [
+                        {
+                            'domain': '',
+                            'username': 'test',
+                            'password': 'test',
+                            'auth_method': 'Password',
+                        }
+                    ]
+                }
+            },
+            'compliance': {'test': 'testvalue'},
+            'plugins': {12122: 13, 12050: 13},
+        }
+    )
 
 
 @responses.activate
@@ -1968,9 +2108,7 @@ def test_list_api():
     responses.get(
         'https://nourl/scans',
         json={'scans': []},
-        match=[
-            query_param_matcher({'last_modification_date': dt_int,'folder_id': 1})
-        ]
+        match=[query_param_matcher({'last_modification_date': dt_int, 'folder_id': 1})],
     )
     tvm = TenableIO(url='https://nourl', access_key='something', secret_key='something')
     assert tvm.scans.list(folder_id=1, last_modified=dt) == []
