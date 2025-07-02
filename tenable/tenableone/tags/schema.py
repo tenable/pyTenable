@@ -27,5 +27,3 @@ class Tag(BaseModel):
 class Tags(BaseModel):
     data: list[Tag]
     pagination: Pagination
-    sort_by: str
-    sort_direction: str

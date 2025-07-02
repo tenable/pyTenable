@@ -16,5 +16,3 @@ class Asset(BaseModel):
 class Assets(BaseModel):
     data: list[Asset]
     pagination: Pagination
-    sort_by: str
-    sort_direction: str

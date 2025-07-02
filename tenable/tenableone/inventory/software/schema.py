@@ -21,5 +21,3 @@ class Software(BaseModel):
 class SoftwareValues(BaseModel):
     data: list[Software]
     pagination: Pagination
-    sort_by: str
-    sort_direction: str

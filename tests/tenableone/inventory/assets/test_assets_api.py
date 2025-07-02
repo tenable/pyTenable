@@ -131,10 +131,12 @@ def assets_response() -> dict:
         "pagination": {
             "total": 1868, 
             "offset": 0, 
-            "limit": 100
-        },
-        "sort_by": "aes", 
-        "sort_direction": "DESC"
+            "limit": 100,
+            "sort": {
+                "name": "aes",
+                "order": "desc"
+            }
+        }
     }
 
 

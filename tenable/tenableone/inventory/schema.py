@@ -88,7 +88,13 @@ class Properties(BaseModel):
     data: list[Field]
 
 
+class Sort(BaseModel):
+    name: str
+    order: SortDirection
+
+
 class Pagination(BaseModel):
     total: int
     offset: int
     limit: int
+    sort: Sort
