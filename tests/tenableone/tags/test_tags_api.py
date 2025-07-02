@@ -44,10 +44,12 @@ def tags_response() -> dict:
         "pagination": {
             "total": 1,
             "offset": 0,
-            "limit": 100
-        },
-        "sort_by": "tag_name",
-        "sort_direction": "asc"
+            "limit": 100,
+            "sort": {
+                "name": "tag_name",
+                "order": "asc"
+            }
+        }
     }
 
 
