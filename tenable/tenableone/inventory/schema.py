@@ -1,6 +1,7 @@
 from typing import Any, Optional
 from enum import Enum
 from pydantic import BaseModel
+from pydantic.v1 import NonNegativeInt
 
 
 class Operator(Enum):
@@ -94,7 +95,7 @@ class Sort(BaseModel):
 
 
 class Pagination(BaseModel):
-    total: int
-    offset: int
-    limit: int
+    total: NonNegativeInt
+    offset: NonNegativeInt
+    limit: NonNegativeInt
     sort: Sort
