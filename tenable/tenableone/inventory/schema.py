@@ -89,7 +89,13 @@ class Properties(BaseModel):
     data: list[Field]
 
 
+class Sort(BaseModel):
+    name: str
+    order: SortDirection
+
+
 class Pagination(BaseModel):
     total: NonNegativeInt
     offset: NonNegativeInt
     limit: NonNegativeInt
+    sort: Sort
