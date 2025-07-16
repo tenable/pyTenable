@@ -9,6 +9,8 @@ from marshmallow import fields
 from marshmallow.decorators import post_load
 from marshmallow.schema import Schema
 
+from tenable.base.schema.fields import ForcedStr
+
 
 class GraphObject:
     """
@@ -128,7 +130,7 @@ class GraphqlErrorSchema(Schema):
     """
 
     message = fields.Str(required=True)
-    path = fields.List(fields.Str())
+    path = fields.List(ForcedStr())
     locations = fields.List(fields.Nested(LocationSchema), allow_none=True)
     extensions = fields.Nested(ExtensionsSchema, allow_none=True)
 
