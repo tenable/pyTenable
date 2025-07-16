@@ -81,12 +81,25 @@ class Location:
 
 
 @dataclass
+class ExtensionException:
+    """
+    This class holds the exception part of the error extensions.
+    """
+
+    message: str
+    type: Optional[str]
+    errno: Optional[str]
+    code: Optional[str]
+
+
+@dataclass
 class Extension:
     """
     This class holds the extensions part of the error.
     """
 
     code: Optional[str] = None
+    exception: Optional[ExtensionException] = None
 
 
 @dataclass
@@ -115,6 +128,18 @@ class LocationSchema(SchemaBase):
     column = fields.Int(required=True)
 
 
+class ExtensionExceptionSchema(SchemaBase):
+    """
+    Schema for GraphQL exception part of the error extensions.
+    """
+
+    dataclass = ExtensionException
+    message = fields.Str()
+    type = fields.Str()
+    errno = fields.Str()
+    code = fields.Str()
+
+
 class ExtensionsSchema(SchemaBase):
     """
     Schema for GraphQL extensions part of the error.
@@ -122,6 +147,7 @@ class ExtensionsSchema(SchemaBase):
 
     dataclass = Extension
     code = fields.Str()
+    exception = fields.Nested(ExtensionExceptionSchema, allow_none=True)
 
 
 class GraphqlErrorSchema(Schema):
