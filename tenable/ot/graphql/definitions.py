@@ -9,6 +9,8 @@ from marshmallow import fields
 from marshmallow.decorators import post_load
 from marshmallow.schema import Schema
 
+from tenable.base.schema.fields import ForcedStr
+
 
 class GraphObject:
     """
@@ -79,12 +81,25 @@ class Location:
 
 
 @dataclass
+class ExtensionException:
+    """
+    This class holds the exception part of the error extensions.
+    """
+
+    message: str
+    type: Optional[str]
+    errno: Optional[str]
+    code: Optional[str]
+
+
+@dataclass
 class Extension:
     """
     This class holds the extensions part of the error.
     """
 
     code: Optional[str] = None
+    exception: Optional[ExtensionException] = None
 
 
 @dataclass
@@ -113,6 +128,18 @@ class LocationSchema(SchemaBase):
     column = fields.Int(required=True)
 
 
+class ExtensionExceptionSchema(SchemaBase):
+    """
+    Schema for GraphQL exception part of the error extensions.
+    """
+
+    dataclass = ExtensionException
+    message = fields.Str()
+    type = fields.Str()
+    errno = fields.Str()
+    code = fields.Str()
+
+
 class ExtensionsSchema(SchemaBase):
     """
     Schema for GraphQL extensions part of the error.
@@ -120,6 +147,7 @@ class ExtensionsSchema(SchemaBase):
 
     dataclass = Extension
     code = fields.Str()
+    exception = fields.Nested(ExtensionExceptionSchema, allow_none=True)
 
 
 class GraphqlErrorSchema(Schema):
@@ -128,7 +156,7 @@ class GraphqlErrorSchema(Schema):
     """
 
     message = fields.Str(required=True)
-    path = fields.List(fields.Str())
+    path = fields.List(ForcedStr())
     locations = fields.List(fields.Nested(LocationSchema), allow_none=True)
     extensions = fields.Nested(ExtensionsSchema, allow_none=True)
 
