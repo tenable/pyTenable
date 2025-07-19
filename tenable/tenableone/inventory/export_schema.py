@@ -1,8 +1,8 @@
 """
-Findings Export Schema
-=====================
+Export Schema
+============
 
-This module contains the schema definitions for the Findings Export API.
+This module contains the shared schema definitions for the Export APIs.
 """
 
 from datetime import datetime
@@ -46,8 +46,8 @@ class PropertyFilter(BaseModel):
     value: List[str] = Field(..., description="The value used for comparison in the filtering operation")
 
 
-class PublicDatasetExportRequest(BaseModel):
-    """Public dataset export request model."""
+class DatasetExportRequest(BaseModel):
+    """Dataset export request model."""
     filters: Optional[List[PropertyFilter]] = Field(None, description="List of filters to apply")
 
 

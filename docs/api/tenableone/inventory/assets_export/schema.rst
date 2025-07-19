@@ -1,1 +1,1 @@
-.. automodule:: tenable.tenableone.inventory.assets_export.schema 
+.. automodule:: tenable.tenableone.inventory.export_schema 

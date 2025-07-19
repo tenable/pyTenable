@@ -14,10 +14,10 @@ These methods can be accessed at ``TenableOne.findings_export``.
 from typing import Optional, List
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.tenableone.inventory.findings_export.schema import (
+from tenable.tenableone.inventory.export_schema import (
     ExportRequestId,
     ExportRequestStatus,
-    PublicDatasetExportRequest,
+    DatasetExportRequest,
     PropertyFilter,
 )
 from tenable.tenableone.inventory.schema import SortDirection
@@ -80,7 +80,7 @@ class FindingsExportAPI(APIEndpoint):
         # Build request body
         payload = None
         if filters is not None:
-            payload = PublicDatasetExportRequest(
+            payload = DatasetExportRequest(
                 filters=[filter.model_dump(mode='json') for filter in filters]
             ).model_dump(mode='json', exclude_none=True)
 

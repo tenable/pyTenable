@@ -4,13 +4,13 @@ from datetime import datetime
 import pytest
 import responses
 
-from tenable.tenableone.inventory.findings_export.schema import (
+from tenable.tenableone.inventory.export_schema import (
     ExportRequestId,
     ExportRequestStatus,
     ExportStatus,
     PropertyFilter,
     PropertyOperator,
-    PublicDatasetExportRequest,
+    DatasetExportRequest,
 )
 from tenable.tenableone.inventory.schema import SortDirection
 
@@ -269,8 +269,8 @@ def test_export_request_status_model():
     assert status.chunks_available == [0, 1, 2]
 
 
-def test_public_dataset_export_request_model():
-    """Test PublicDatasetExportRequest model creation and validation."""
+def test_dataset_export_request_model():
+    """Test DatasetExportRequest model creation and validation."""
     # Arrange
     filters = [
         PropertyFilter(
@@ -281,7 +281,7 @@ def test_public_dataset_export_request_model():
     ]
     
     # Act
-    request = PublicDatasetExportRequest(filters=filters)
+    request = DatasetExportRequest(filters=filters)
     
     # Assert
     assert request.filters is not None
