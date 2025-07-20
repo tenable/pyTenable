@@ -13,7 +13,10 @@ Inventory APIs.
     :hidden:
     :glob:
 
+    assets/index
     software/index
+    assets_export/index
+    findings_export/index
 """
 
 from tenable.base.endpoint import APIEndpoint
