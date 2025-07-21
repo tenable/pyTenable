@@ -22,15 +22,15 @@ from tenable.tenableone.inventory.schema import Field, Properties, QueryMode, Pr
 class FindingsAPI(APIEndpoint):
     def list_properties(self) -> list[Field]:
         """
-             Retrieve finding properties
+        Retrieve finding properties
 
-            Returns:
-                The finding properties.
+        Returns:
+            The finding properties.
 
-             Examples:
-                 >>> tenable_inventory_finding_properties = tenable_inventory.finding.list_properties()
-                 >>> for finding_property in tenable_inventory_finding_properties:
-                 ...     pprint(finding_property)
+        Examples:
+            >>> properties = tenable_inventory.finding.list_properties()
+            >>> for finding_property in properties:
+            ...     pprint(finding_property)
 
         """
         finding_properties_response: dict[str, list[dict]] = self._get(
