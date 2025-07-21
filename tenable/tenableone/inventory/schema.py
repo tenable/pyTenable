@@ -1,7 +1,7 @@
 from typing import Any, Optional
 from enum import Enum
 from pydantic import BaseModel
-from pydantic.v1 import NonNegativeInt
+from pydantic import NonNegativeInt
 
 
 class Operator(Enum):
