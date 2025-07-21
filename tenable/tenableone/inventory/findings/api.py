@@ -50,33 +50,33 @@ class FindingsAPI(APIEndpoint):
             sort_direction: Optional[SortDirection] = None,
     ) -> Findings:
         """
-         Retrieve findings
+        Retrieve findings
 
-         Args:
-            query_text (str, optional):
-                The text to search for.
-            query_mode (QueryMode, optional):
-                The search mode. Defaults to QueryMode.SIMPLE.
-            filters (list, optional):
-                A list of filters to apply. Defaults to None.
-            extra_properties (list, optional):
-                Additional properties to include in the response. Defaults to None.
-            offset (int, optional):
-                Number of records to skip. Defaults to 0.
-            limit (int, optional):
-                Maximum number of records per page. Defaults to 1000.
-            sort_by (str, optional):
-                Field to sort by.
-            sort_direction (SortDirection, optional):
-                Sorting direction, either SortDirection.ASC or SortDirection.DESC.
+        Args:
+           query_text (str, optional):
+               The text to search for.
+           query_mode (QueryMode, optional):
+               The search mode. Defaults to QueryMode.SIMPLE.
+           filters (list, optional):
+               A list of filters to apply. Defaults to None.
+           extra_properties (list, optional):
+               Additional properties to include in the response. Defaults to None.
+           offset (int, optional):
+               Number of records to skip. Defaults to 0.
+           limit (int, optional):
+               Maximum number of records per page. Defaults to 1000.
+           sort_by (str, optional):
+               Field to sort by.
+           sort_direction (SortDirection, optional):
+               Sorting direction, either SortDirection.ASC or SortDirection.DESC.
 
         Returns:
-            The request assets.
+           The request assets.
 
-         Examples:
-             >>> tenable_inventory_findings = tenable_inventory.finding.list()
-             >>> for finding in tenable_inventory_findings:
-             ...     pprint(finding)
+        Example:
+           >>> tenable_inventory_findings = tenable_inventory.finding.list()
+           >>> for finding in tenable_inventory_findings:
+           ...     pprint(finding)
 
         """
         payload = {}
