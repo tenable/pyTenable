@@ -67,10 +67,15 @@ class OTGraphIterator(APIIterator):
                 resp["error"].get("errors", None), unknown=EXCLUDE
             )
             raise errors[0]
+        if "errors" in resp:
+            errors = GraphqlErrorSchema(many=True).load(resp["errors"], unknown=EXCLUDE)
+            raise errors[0]
         if "data" not in resp:
             raise GraphqlParsingError(
                 "graphql data field was not returned but no error occurred"
             )
+        if resp["data"] is None:
+            raise GraphqlParsingError("graphql data field was null")
 
         graphql_response_object = resp["data"][self._graph_object.object_name]
         if graphql_response_object is None:

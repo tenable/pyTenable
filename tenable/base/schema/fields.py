@@ -44,3 +44,16 @@ class UpperCase(BaseField):
         if hasattr(value, 'upper'):
             value = value.upper()
         return super()._deserialize(value, *args, **kwargs)
+
+
+class ForcedStr(fields.Str):
+    '''
+    The field value will be converted to a string.
+    '''
+
+    def _deserialize(self, value, attr, data, **kwargs):
+        try:
+            value = str(value)
+        except Exception:
+            pass
+        return super()._deserialize(value, attr, data, **kwargs)
