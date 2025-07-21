@@ -11,6 +11,7 @@ from tenable.tenableone.inventory.export_schema import (
     PropertyFilter,
     PropertyOperator,
     DatasetExportRequest,
+    DatasetFileFormat,
 )
 from tenable.tenableone.inventory.schema import SortDirection
 
@@ -125,12 +126,14 @@ def test_export_with_all_parameters(tenable_one_api, export_request_id_response)
     max_chunk_file_size = 10485760  # 10MB
     sort_by = "severity"
     sort_direction = SortDirection.DESC
+    file_format = DatasetFileFormat.CSV
     
     expected_params = {
         "properties": properties,
         "use_readable_name": True,
         "max_chunk_file_size": 10485760,
-        "sort": "severity:desc"
+        "sort": "severity:desc",
+        "file_format": "CSV"
     }
     expected_body = {
         "filters": [
@@ -159,7 +162,8 @@ def test_export_with_all_parameters(tenable_one_api, export_request_id_response)
         use_readable_name=use_readable_name,
         max_chunk_file_size=max_chunk_file_size,
         sort_by=sort_by,
-        sort_direction=sort_direction
+        sort_direction=sort_direction,
+        file_format=file_format
     )
     
     # Assert

@@ -39,6 +39,12 @@ class PropertyOperator(str, Enum):
     WITHIN_LAST = "within last"
 
 
+class DatasetFileFormat(str, Enum):
+    """Dataset file format enumeration."""
+    CSV = "CSV"
+    JSON = "JSON"
+
+
 class PropertyFilter(BaseModel):
     """Property filter model."""
     property: str = Field(..., description="The property on which the filtering operation is performed")

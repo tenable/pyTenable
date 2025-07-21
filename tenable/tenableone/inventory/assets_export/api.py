@@ -19,6 +19,7 @@ from tenable.tenableone.inventory.export_schema import (
     ExportRequestStatus,
     DatasetExportRequest,
     PropertyFilter,
+    DatasetFileFormat,
 )
 from tenable.tenableone.inventory.schema import SortDirection
 
@@ -32,6 +33,7 @@ class AssetsExportAPI(APIEndpoint):
         max_chunk_file_size: Optional[int] = None,
         sort_by: Optional[str] = None,
         sort_direction: Optional[SortDirection] = None,
+        file_format: Optional[DatasetFileFormat] = None,
     ) -> ExportRequestId:
         """
         Export assets
@@ -52,6 +54,9 @@ class AssetsExportAPI(APIEndpoint):
                 Field to sort by.
             sort_direction (SortDirection, optional):
                 Sorting direction, either SortDirection.ASC or SortDirection.DESC.
+            file_format (DatasetFileFormat, optional):
+                The file format to be received. If not specified, the default format will be JSON.
+                Supported formats include: CSV and JSON. Defaults to DatasetFileFormat.JSON.
 
         Returns:
             ExportRequestId:
@@ -61,7 +66,8 @@ class AssetsExportAPI(APIEndpoint):
             >>> export_id = tenable_one.inventory.assets_export.export(
             ...     properties="cpe,version,file_location",
             ...     sort_by="name",
-            ...     sort_direction=SortDirection.ASC
+            ...     sort_direction=SortDirection.ASC,
+            ...     file_format=DatasetFileFormat.CSV
             ... )
             >>> print(export_id.export_id)
 
@@ -76,6 +82,8 @@ class AssetsExportAPI(APIEndpoint):
             params['max_chunk_file_size'] = max_chunk_file_size
         if sort_by is not None and sort_direction is not None:
             params['sort'] = f"{sort_by}:{sort_direction.value}"
+        if file_format is not None:
+            params['file_format'] = file_format.value
 
         # Build request body
         payload = None
