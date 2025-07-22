@@ -88,7 +88,13 @@ class Properties(pydantic.BaseModel):
     data: list[Field]
 
 
+class Sort(pydantic.BaseModel):
+    name: str
+    order: SortDirection
+
+
 class Pagination(pydantic.BaseModel):
     total: int = pydantic.Field(..., ge=0)
     offset: int = pydantic.Field(..., ge=0)
     limit: int = pydantic.Field(..., ge=0)
+    sort: Sort

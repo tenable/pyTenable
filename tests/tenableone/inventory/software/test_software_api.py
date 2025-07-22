@@ -36,10 +36,12 @@ def software_response() -> dict:
             "pagination": {
                 "total": 6,
                 "offset": 0, 
-                "limit": 100
-            },
-            "sort_by": "application", 
-            "sort_direction": "desc"
+                "limit": 100,
+                "sort": {
+                    "name": "application",
+                    "order": "desc"
+                }
+            }
             }
 
 

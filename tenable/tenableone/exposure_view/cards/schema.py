@@ -67,8 +67,8 @@ class Card(BaseModel):
     sources: Optional[List[str]] = None
 
 class Pagination(BaseModel):
-    page_number: Optional[int] = Field(1, ge=0)
-    page_size: Optional[int] = Field(25, ge=0)
+    offset: Optional[int] = 0
+    limit: Optional[NonNegativeInt] = 25
 
 
 class Cards(BaseModel):
