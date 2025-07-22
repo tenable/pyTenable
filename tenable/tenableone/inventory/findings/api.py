@@ -34,7 +34,7 @@ class FindingsAPI(APIEndpoint):
 
         """
         finding_properties_response: dict[str, list[dict]] = self._get(
-            path="/api/v1/t1/inventory/findings/properties"
+            path="api/v1/t1/inventory/findings/properties"
         )
         return Properties(**finding_properties_response).data
 
@@ -89,7 +89,7 @@ class FindingsAPI(APIEndpoint):
                 if filters is not None
                 else [],
             }
-        base_path = "/api/v1/t1/inventory/findings/search"
+        base_path = "api/v1/t1/inventory/findings/search"
         query_params = {}
 
         if extra_properties is not None:
@@ -98,10 +98,8 @@ class FindingsAPI(APIEndpoint):
             query_params["offset"] = offset
         if limit is not None:
             query_params["limit"] = limit
-        if sort_by is not None:
-            query_params["sort_by"] = sort_by
-        if sort_direction is not None:
-            query_params["sort_direction"] = sort_direction.value
+        if sort_by is not None and sort_direction is not None:
+            query_params["sort"] = f"{sort_by}:{sort_direction}"
 
         if query_params:
             query_string = urlencode(query_params)

@@ -30,3 +30,5 @@ class Finding(BaseModel):
 class Findings(BaseModel):
     data: list[Finding]
     pagination: Pagination
+    sort_by: str
+    sort_direction: str

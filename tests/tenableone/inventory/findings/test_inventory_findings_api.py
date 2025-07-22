@@ -1,4 +1,5 @@
 import json
+from urllib.parse import urljoin
 
 import pytest
 import responses
@@ -13,11 +14,13 @@ from tenable.tenableone.inventory.schema import (
     SortDirection,
 )
 
+BASE_URL = "https://cloud.tenable.com/"
+
 
 @pytest.fixture
 def findings_properties_response() -> dict[str, list[dict]]:
     return {
-        "properties": [
+        "data": [
             {
                 "key": "finding_id",
                 "readable_name": "Finding ID",
@@ -66,21 +69,21 @@ def findings_response() -> dict:
         "sort_direction": "asc"
     }
 
-
 @responses.activate
-def test_properties_list(tenable_exposure_management_api, findings_properties_response):
+def test_properties_list(tenable_one_api, findings_properties_response):
     # Arrange
-    responses.get("https://cloud.tenable.com/inventory/api/v1/findings/properties",
-                  json=findings_properties_response,
-                  match=[responses.matchers.query_param_matcher({})])
+    endpoint = "/api/v1/t1/inventory/findings/properties"
+    full_url = urljoin(BASE_URL, endpoint)
+
+    responses.get(full_url, json=findings_properties_response, match=[responses.matchers.query_param_matcher({})])
     # Act
-    finding_properties_result: list[Field] = tenable_exposure_management_api.inventory.findings.list_properties()
+    finding_properties_result: list[Field] = tenable_one_api.inventory.findings.list_properties()
     # Assert
     assert finding_properties_result == Properties(**findings_properties_response).data
 
 
 @responses.activate
-def test_list(tenable_exposure_management_api, findings_response):
+def test_list(tenable_one_api, findings_response):
     query_text = "Dangerous SYSVOL share path"
     query_mode = QueryMode.SIMPLE
     filters = [PropertyFilter(property="name", operator=Operator.EQUAL, value=["Dangerous SYSVOL share path"])]
@@ -89,31 +92,35 @@ def test_list(tenable_exposure_management_api, findings_response):
     limit = 100
     sort_by = "name"
     sort_direction = SortDirection.ASC
-    timezone = "UTC"
 
-    payload = {
-        "search": {
-            "query": {
-                "text": query_text,
-                "mode": query_mode.value
-            },
-            "filters": [filter_.model_dump(mode="json") for filter_ in filters]
-        },
-        "extra_properties": extra_properties,
+    # Expected query parameters
+    expected_params = {
+        "extra_properties": ",".join(extra_properties),
         "offset": offset,
         "limit": limit,
-        "sort_by": sort_by,
-        "sort_direction": sort_direction.value,
-        "timezone": timezone
+        "sort": f"{sort_by}:{sort_direction}"
     }
+
+    payload = {
+        "query": {
+            "text": query_text,
+            "mode": query_mode.value
+        },
+        "filters": [filter_.model_dump(mode="json") for filter_ in filters]
+    }
+    endpoint = "/api/v1/t1/inventory/findings/search"
+    full_url = urljoin(BASE_URL, endpoint)
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/inventory/api/v1/findings",
+        full_url,
         json=findings_response,
-        match=[responses.matchers.body_matcher(params=json.dumps(payload))]
+        match=[
+            responses.matchers.body_matcher(params=json.dumps(payload)),
+            responses.matchers.query_param_matcher(expected_params)
+        ]
     )
     # Act
-    findings: Findings = tenable_exposure_management_api.inventory.findings.list(
+    findings: Findings = tenable_one_api.inventory.findings.list(
         query_text=query_text,
         query_mode=query_mode,
         filters=filters,
@@ -122,7 +129,6 @@ def test_list(tenable_exposure_management_api, findings_response):
         limit=limit,
         sort_by=sort_by,
         sort_direction=sort_direction,
-        timezone=timezone
     )
     # Assert
     assert findings == Findings(**findings_response)
