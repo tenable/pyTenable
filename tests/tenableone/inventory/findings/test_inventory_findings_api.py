@@ -64,9 +64,11 @@ def findings_response() -> dict:
             "total": 1,
             "offset": 0,
             "limit": 100,
+            "sort": {
+                "name": "name",
+                "order": "asc"
+            }
         },
-        "sort_by": "finding_id",
-        "sort_direction": "asc"
     }
 
 @responses.activate
