@@ -1,7 +1,6 @@
 from typing import Any, Optional
 from enum import Enum
-from pydantic import BaseModel
-from pydantic.v1 import NonNegativeInt
+import pydantic
 
 
 class Operator(Enum):
@@ -26,7 +25,7 @@ class QueryMode(Enum):
     ADVANCED = "advanced"
 
 
-class PropertyFilter(BaseModel):
+class PropertyFilter(pydantic.BaseModel):
     property: str
     operator: Operator
     value: list[str]
@@ -61,21 +60,21 @@ class ControlType(Enum):
     OBJECT = "OBJECT"
 
 
-class SelectionControl(BaseModel):
+class SelectionControl(pydantic.BaseModel):
     name: Optional[str] = None
     value: Optional[str] = None
     deprecated: Optional[bool] = None
     third_party: Optional[bool] = None
 
 
-class Control(BaseModel):
+class Control(pydantic.BaseModel):
     type: ControlType
     multiple_allowed: bool
     regex: Optional[dict[str, Any]] = None
     selection: Optional[list[SelectionControl]] = None
 
 
-class Field(BaseModel):
+class Field(pydantic.BaseModel):
     key: str
     readable_name: str
     control: Control
@@ -85,11 +84,11 @@ class Field(BaseModel):
     description: str
 
 
-class Properties(BaseModel):
+class Properties(pydantic.BaseModel):
     data: list[Field]
 
 
-class Pagination(BaseModel):
-    total: NonNegativeInt
-    offset: NonNegativeInt
-    limit: NonNegativeInt
+class Pagination(pydantic.BaseModel):
+    total: int = pydantic.Field(..., ge=0)
+    offset: int = pydantic.Field(..., ge=0)
+    limit: int = pydantic.Field(..., ge=0)

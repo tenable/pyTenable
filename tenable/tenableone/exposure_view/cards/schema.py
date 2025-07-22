@@ -2,7 +2,7 @@ import enum
 from datetime import datetime
 from typing import Optional, List
 
-from pydantic import BaseModel, NonNegativeInt, ConfigDict
+from pydantic import BaseModel, NonNegativeInt, ConfigDict, Field
 
 
 class CESTrendDataPoint(BaseModel):
@@ -67,8 +67,8 @@ class Card(BaseModel):
     sources: Optional[List[str]] = None
 
 class Pagination(BaseModel):
-    page_number: Optional[NonNegativeInt] = 1
-    page_size: Optional[NonNegativeInt] = 25
+    page_number: Optional[int] = Field(1, ge=0)
+    page_size: Optional[int] = Field(25, ge=0)
 
 
 class Cards(BaseModel):
