@@ -1,6 +1,6 @@
 """
 Software
-=============
+========
 
 Methods described in this section relate to the software API.
 These methods can be accessed at ``TenableOne.inventory.software``.
@@ -26,15 +26,15 @@ from tenable.tenableone.inventory.software.schema import SoftwareValues
 class SoftwareAPI(APIEndpoint):
     def list_properties(self) -> list[Field]:
         """
-         Retrieve software properties
+        Retrieve software properties
 
         Returns:
             The software properties.
 
-         Examples:
-             >>> tenable_inventory_software_properties = tenable_inventory.software.list_properties()
-             >>> for software_property in software_properties:
-             ...     pprint(software_property)
+        Examples:
+            >>> tenable_inventory_software_properties = tenable_inventory.software.list_properties()
+            >>> for software_property in software_properties:
+            ...     pprint(software_property)
 
         """
         asset_properties_response: dict[str, list[dict]] = self._get(
@@ -54,9 +54,9 @@ class SoftwareAPI(APIEndpoint):
         sort_direction: Optional[SortDirection] = None,
     ) -> SoftwareValues:
         """
-         Retrieve software
+        Retrieve software
 
-         Args:
+        Args:
             query_text (str, optional):
                 The text to search for.
             query_mode (QueryMode, optional):
@@ -77,7 +77,7 @@ class SoftwareAPI(APIEndpoint):
         Returns:
             The request software.
 
-         Examples:
+        Example:
              >>> tenable_inventory_software = tenable_inventory.software.list()
              >>> for software in tenable_inventory_software:
              ...     pprint(software)
@@ -92,7 +92,7 @@ class SoftwareAPI(APIEndpoint):
         if limit is not None:
             params['limit'] = limit
         if sort_by is not None and sort_direction is not None:
-            params['sort'] = f"{sort_by}:{sort_direction.value}"
+            params['sort'] = f'{sort_by}:{sort_direction.value}'
 
         # Build request body with flattened search/query params
         payload = {}
@@ -105,5 +105,7 @@ class SoftwareAPI(APIEndpoint):
         if filters is not None:
             payload['filters'] = [filter.model_dump(mode='json') for filter in filters]
 
-        software_response: dict = self._post('api/v1/t1/inventory/software/search', json=payload, params=params)
+        software_response: dict = self._post(
+            'api/v1/t1/inventory/software/search', json=payload, params=params
+        )
         return SoftwareValues(**software_response)

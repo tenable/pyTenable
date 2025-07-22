@@ -1,6 +1,6 @@
 """
 Assets Export
-============
+=============
 
 Methods described in this section relate to the assets export API.
 These methods can be accessed at ``TenableOne.assets_export``.
@@ -11,15 +11,15 @@ These methods can be accessed at ``TenableOne.assets_export``.
 
 """
 
-from typing import Optional, List
+from typing import List, Optional
 
 from tenable.base.endpoint import APIEndpoint
 from tenable.tenableone.inventory.export_schema import (
+    DatasetExportRequest,
+    DatasetFileFormat,
     ExportRequestId,
     ExportRequestStatus,
-    DatasetExportRequest,
     PropertyFilter,
-    DatasetFileFormat,
 )
 from tenable.tenableone.inventory.schema import SortDirection
 
@@ -81,7 +81,7 @@ class AssetsExportAPI(APIEndpoint):
         if max_chunk_file_size is not None:
             params['max_chunk_file_size'] = max_chunk_file_size
         if sort_by is not None and sort_direction is not None:
-            params['sort'] = f"{sort_by}:{sort_direction.value}"
+            params['sort'] = f'{sort_by}:{sort_direction.value}'
         if file_format is not None:
             params['file_format'] = file_format.value
 
@@ -93,9 +93,7 @@ class AssetsExportAPI(APIEndpoint):
             ).model_dump(mode='json', exclude_none=True)
 
         response = self._post(
-            'api/v1/t1/inventory/export/assets',
-            json=payload,
-            params=params
+            'api/v1/t1/inventory/export/assets', json=payload, params=params
         )
         return ExportRequestId(**response)
 
@@ -141,7 +139,6 @@ class AssetsExportAPI(APIEndpoint):
 
         """
         response = self._get(
-            f'api/v1/t1/inventory/export/{export_id}/download/{chunk_id}',
-            stream=True
+            f'api/v1/t1/inventory/export/{export_id}/download/{chunk_id}', stream=True
         )
-        return response.content 
+        return response.content
