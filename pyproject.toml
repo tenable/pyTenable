@@ -120,7 +120,6 @@ docstring-code-line-length = "dynamic"
 dev-dependencies = [
     "bpython>=0.24",
     "mock>=5.1.0",
-    "ptpython>=3.0.29",
     "pytest-cov>=4.1.0",
     "pytest-datafiles>=3.0.0",
     "pytest-vcr>=1.0.2",
