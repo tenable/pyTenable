@@ -2,7 +2,7 @@ import enum
 from datetime import datetime
 from typing import Optional, List
 
-from pydantic import BaseModel, NonNegativeInt, ConfigDict
+from pydantic import BaseModel, NonNegativeInt, ConfigDict, Field
 
 
 class CESTrendDataPoint(BaseModel):
