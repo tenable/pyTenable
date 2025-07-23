@@ -3,7 +3,7 @@ from typing import Any
 from uuid import UUID
 
 
-from tenable.io.sync.models.common import BaseModel
+from pydantic import BaseModel
 from tenable.tenableone.inventory.schema import Pagination
 
 
