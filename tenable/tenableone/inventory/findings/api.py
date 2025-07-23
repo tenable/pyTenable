@@ -1,6 +1,6 @@
 """
 Findings
-=======
+========
 
 Methods described in this section relate to the inventory findings API.
 These methods can be accessed at ``TenableExposureManagement.inventory.findings``.
