@@ -19,26 +19,16 @@ from tenable.tenableone.inventory.export.schema import (
     DatasetExportRequest,
     DatasetFileFormat,
     ExportRequestId,
-    ExportRequestStatus,
-    PropertyFilter,
+    ExportRequestStatus, ExportType
 )
+from tenable.tenableone.inventory.schema import PropertyFilter
 from tenable.tenableone.inventory.schema import SortDirection
-
-
-EXPORT_TYPES = {
-    'assets': {
-        'path': 'api/v1/t1/inventory/export/assets'
-    },
-    'findings': {
-        'path': 'api/v1/t1/inventory/export/findings'
-    }
-}
 
 
 class ExportAPI(APIEndpoint):
     def _export(
         self,
-        export_type: str,
+        export_type: ExportType,
         filters: Optional[List[PropertyFilter]] = None,
         properties: Optional[List[str]] = None,
         use_readable_name: Optional[bool] = None,
@@ -51,7 +41,7 @@ class ExportAPI(APIEndpoint):
         Internal method to export data from TenableOne inventory.
 
         Args:
-            export_type (str): The type of export to perform ('assets' or 'findings').
+            export_type (ExportType): The type of export to perform ('assets' or 'findings').
             filters (list[PropertyFilter], optional): A list of filters to apply.
             properties (list[str], optional): List of property names.
             use_readable_name (bool, optional): Use readable property names.
@@ -63,8 +53,6 @@ class ExportAPI(APIEndpoint):
         Returns:
             ExportRequestId: The export request ID.
         """
-        if export_type not in EXPORT_TYPES:
-            raise ValueError(f"Invalid export_type: {export_type}. Must be one of {list(EXPORT_TYPES.keys())}")
 
         # Build query parameters
         params = {}
@@ -87,7 +75,7 @@ class ExportAPI(APIEndpoint):
             ).model_dump(mode='json', exclude_none=True)
 
         response = self._post(
-            EXPORT_TYPES[export_type]['path'], json=payload, params=params
+            f'api/v1/t1/inventory/export/{export_type.value}', json=payload, params=params
         )
         return ExportRequestId(**response)
 
@@ -214,7 +202,7 @@ class ExportAPI(APIEndpoint):
 
         """
         return self._export(
-            'assets',
+            export_type=ExportType.ASSETS,
             filters=filters,
             properties=properties,
             use_readable_name=use_readable_name,
@@ -272,7 +260,7 @@ class ExportAPI(APIEndpoint):
 
         """
         return self._export(
-            'findings',
+            export_type=ExportType.FINDINGS,
             filters=filters,
             properties=properties,
             use_readable_name=use_readable_name,

@@ -10,6 +10,13 @@ from enum import Enum
 from typing import List, Optional
 
 from pydantic import BaseModel, Field
+from tenable.tenableone.inventory.schema import PropertyFilter
+
+class ExportType(str, Enum):
+    """Export type enumeration."""
+
+    FINDINGS = 'findings'
+    ASSETS = 'assets'
 
 
 class ExportStatus(str, Enum):
@@ -21,45 +28,11 @@ class ExportStatus(str, Enum):
     ERROR = 'ERROR'
 
 
-class PropertyOperator(str, Enum):
-    """Property operator enumeration."""
-
-    EQUAL = '='
-    NOT_EQUAL = '!='
-    LESS_EQUAL = '<='
-    BETWEEN = 'between'
-    MATCH = 'match'
-    GREATER_EQUAL = '>='
-    LESS = '<'
-    GREATER = '>'
-    CONTAINS = 'contains'
-    NOT_CONTAINS = 'not contains'
-    EXISTS = 'exists'
-    NOT_EXISTS = 'not exists'
-    OLDER_THAN = 'older than'
-    NEWER_THAN = 'newer than'
-    WITHIN_LAST = 'within last'
-
-
 class DatasetFileFormat(str, Enum):
     """Dataset file format enumeration."""
 
     CSV = 'CSV'
     JSON = 'JSON'
-
-
-class PropertyFilter(BaseModel):
-    """Property filter model."""
-
-    property: str = Field(
-        ..., description='The property on which the filtering operation is performed'
-    )
-    operator: PropertyOperator = Field(
-        ..., description='The operator to use for filtering'
-    )
-    value: List[str] = Field(
-        ..., description='The value used for comparison in the filtering operation'
-    )
 
 
 class DatasetExportRequest(BaseModel):

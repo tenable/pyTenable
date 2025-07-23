@@ -13,10 +13,8 @@ from tenable.tenableone.inventory.export.schema import (
     ExportRequestId,
     ExportRequestStatus,
     ExportStatus,
-    PropertyFilter,
-    PropertyOperator,
 )
-from tenable.tenableone.inventory.schema import SortDirection
+from tenable.tenableone.inventory.schema import SortDirection, PropertyFilter, Operator
 
 
 @pytest.fixture
@@ -50,12 +48,12 @@ def test_assets_export(tenable_one_api, export_request_id_response):
     filters = [
         PropertyFilter(
             property="asset_class",
-            operator=PropertyOperator.EQUAL,
+            operator=Operator.EQUAL,
             value=["DEVICE"]
         ),
         PropertyFilter(
             property="ip_address",
-            operator=PropertyOperator.CONTAINS,
+            operator=Operator.CONTAINS,
             value=["192.168.1.1", "192.168.1.2"]
         )
     ]
@@ -120,12 +118,12 @@ def test_findings_export(tenable_one_api, export_request_id_response):
     filters = [
         PropertyFilter(
             property="severity",
-            operator=PropertyOperator.EQUAL,
+            operator=Operator.EQUAL,
             value=["HIGH"]
         ),
         PropertyFilter(
             property="status",
-            operator=PropertyOperator.CONTAINS,
+            operator=Operator.CONTAINS,
             value=["OPEN", "REOPENED"]
         )
     ]
@@ -183,7 +181,6 @@ def test_findings_export(tenable_one_api, export_request_id_response):
     assert result.export_id == "export-12345"
 
 
-
 @responses.activate
 def test_status(tenable_one_api, export_status_response):
     """Test getting export status with finished export."""
@@ -231,18 +228,41 @@ def test_download_with_file_object(tenable_one_api, export_data):
     assert isinstance(result, BytesIO)
 
 
+@responses.activate
+def test_download_without_file_object(tenable_one_api, export_data):
+    """Test downloading export data without file object (returns bytes)."""
+    # Arrange
+    export_id = "export-12345"
+    chunk_id = "0"
+    
+    responses.add(
+        responses.GET,
+        f'https://cloud.tenable.com/api/v1/t1/inventory/export/{export_id}/download/{chunk_id}',
+        body=export_data,
+        content_type='application/octet-stream'
+    )
+    
+    # Act
+    result = tenable_one_api.inventory.export.download(export_id, chunk_id)
+    
+    # Assert
+    assert result == export_data
+    assert isinstance(result, bytes)
+    assert len(result) > 0
+
+
 def test_property_filter_model_with_all_fields():
     """Test PropertyFilter model creation with all fields."""
     # Arrange & Act
     filter_obj = PropertyFilter(
         property="asset_class",
-        operator=PropertyOperator.EQUAL,
+        operator=Operator.EQUAL,
         value=["DEVICE", "SERVER"]
     )
     
     # Assert
     assert filter_obj.property == "asset_class"
-    assert filter_obj.operator == PropertyOperator.EQUAL
+    assert filter_obj.operator == Operator.EQUAL
     assert filter_obj.value == ["DEVICE", "SERVER"]
 
 
@@ -280,12 +300,12 @@ def test_dataset_export_request_model_with_filters():
     filters = [
         PropertyFilter(
             property="asset_class",
-            operator=PropertyOperator.EQUAL,
+            operator=Operator.EQUAL,
             value=["DEVICE"]
         ),
         PropertyFilter(
             property="ip_address",
-            operator=PropertyOperator.CONTAINS,
+            operator=Operator.CONTAINS,
             value=["192.168.1.1", "192.168.1.2"]
         )
     ]
@@ -298,10 +318,3 @@ def test_dataset_export_request_model_with_filters():
     assert len(request.filters) == 2
     assert request.filters[0].property == "asset_class"
     assert request.filters[1].property == "ip_address"
-
-
-def test_invalid_export_type_raises_value_error(tenable_one_api):
-    """Test that invalid export type raises ValueError."""
-    # Act & Assert
-    with pytest.raises(ValueError, match="Invalid export_type: invalid. Must be one of"):
-        tenable_one_api.inventory.export._export("invalid")
