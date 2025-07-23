@@ -1,6 +1,6 @@
 """
 Assets
-======
+=======
 
 Methods described in this section relate to the assets API.
 These methods can be accessed at ``TenableOne.inventory.assets``.
@@ -110,7 +110,7 @@ class AssetsAPI(APIEndpoint):
         if limit is not None:
             params['limit'] = limit
         if sort_by is not None and sort_direction is not None:
-            params['sort'] = f'{sort_by}:{sort_direction.value}'
+            params['sort'] = f"{sort_by}:{sort_direction.value}"
 
         # Build request body with flattened search/query params
         payload = {}
@@ -123,7 +123,5 @@ class AssetsAPI(APIEndpoint):
         if filters is not None:
             payload['filters'] = [filter.model_dump(mode='json') for filter in filters]
 
-        assets_response: dict = self._post(
-            'api/v1/t1/inventory/assets/search', json=payload, params=params
-        )
+        assets_response: dict = self._post('api/v1/t1/inventory/assets/search', json=payload, params=params)
         return Assets(**assets_response)
