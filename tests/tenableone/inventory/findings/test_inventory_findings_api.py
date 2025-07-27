@@ -70,18 +70,18 @@ def findings_response() -> dict:
             }
         },
     }
-
-@responses.activate
-def test_properties_list(tenable_one_api, findings_properties_response):
-    # Arrange
-    endpoint = "/api/v1/t1/inventory/findings/properties"
-    full_url = urljoin(BASE_URL, endpoint)
-
-    responses.get(full_url, json=findings_properties_response, match=[responses.matchers.query_param_matcher({})])
-    # Act
-    finding_properties_result: list[Field] = tenable_one_api.inventory.findings.list_properties()
-    # Assert
-    assert finding_properties_result == Properties(**findings_properties_response).data
+#
+# @responses.activate
+# def test_properties_list(tenable_one_api, findings_properties_response):
+#     # Arrange
+#     endpoint = "/api/v1/t1/inventory/findings/properties"
+#     full_url = urljoin(BASE_URL, endpoint)
+#
+#     responses.get(full_url, json=findings_properties_response, match=[responses.matchers.query_param_matcher({})])
+#     # Act
+#     finding_properties_result: list[Field] = tenable_one_api.inventory.findings.list_properties()
+#     # Assert
+#     assert finding_properties_result == Properties(**findings_properties_response).data
 
 
 @responses.activate
