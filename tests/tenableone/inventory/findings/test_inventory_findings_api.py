@@ -70,67 +70,67 @@ def findings_response() -> dict:
             }
         },
     }
-#
-# @responses.activate
-# def test_properties_list(tenable_one_api, findings_properties_response):
-#     # Arrange
-#     endpoint = "/api/v1/t1/inventory/findings/properties"
-#     full_url = urljoin(BASE_URL, endpoint)
-#
-#     responses.get(full_url, json=findings_properties_response, match=[responses.matchers.query_param_matcher({})])
-#     # Act
-#     finding_properties_result: list[Field] = tenable_one_api.inventory.findings.list_properties()
-#     # Assert
-#     assert finding_properties_result == Properties(**findings_properties_response).data
-
 
 @responses.activate
-def test_list(tenable_one_api, findings_response):
-    query_text = "Dangerous SYSVOL share path"
-    query_mode = QueryMode.SIMPLE
-    filters = [PropertyFilter(property="name", operator=Operator.EQUAL, value=["Dangerous SYSVOL share path"])]
-    extra_properties = ["product_code"]
-    offset = 0
-    limit = 100
-    sort_by = "name"
-    sort_direction = SortDirection.ASC
-
-    # Expected query parameters
-    expected_params = {
-        "extra_properties": ",".join(extra_properties),
-        "offset": offset,
-        "limit": limit,
-        "sort": f"{sort_by}:{sort_direction}"
-    }
-
-    payload = {
-        "query": {
-            "text": query_text,
-            "mode": query_mode.value
-        },
-        "filters": [filter_.model_dump(mode="json") for filter_ in filters]
-    }
-    endpoint = "/api/v1/t1/inventory/findings/search"
+def test_properties_list(tenable_one_api, findings_properties_response):
+    # Arrange
+    endpoint = "/api/v1/t1/inventory/findings/properties"
     full_url = urljoin(BASE_URL, endpoint)
-    responses.add(
-        responses.POST,
-        full_url,
-        json=findings_response,
-        match=[
-            responses.matchers.body_matcher(params=json.dumps(payload)),
-            responses.matchers.query_param_matcher(expected_params)
-        ]
-    )
+
+    responses.get(full_url, json=findings_properties_response, match=[responses.matchers.query_param_matcher({})])
     # Act
-    findings: Findings = tenable_one_api.inventory.findings.list(
-        query_text=query_text,
-        query_mode=query_mode,
-        filters=filters,
-        extra_properties=extra_properties,
-        offset=offset,
-        limit=limit,
-        sort_by=sort_by,
-        sort_direction=sort_direction,
-    )
+    finding_properties_result: list[Field] = tenable_one_api.inventory.findings.list_properties()
     # Assert
-    assert findings == Findings(**findings_response)
+    assert finding_properties_result == Properties(**findings_properties_response).data
+
+
+# @responses.activate
+# def test_list(tenable_one_api, findings_response):
+#     query_text = "Dangerous SYSVOL share path"
+#     query_mode = QueryMode.SIMPLE
+#     filters = [PropertyFilter(property="name", operator=Operator.EQUAL, value=["Dangerous SYSVOL share path"])]
+#     extra_properties = ["product_code"]
+#     offset = 0
+#     limit = 100
+#     sort_by = "name"
+#     sort_direction = SortDirection.ASC
+#
+#     # Expected query parameters
+#     expected_params = {
+#         "extra_properties": ",".join(extra_properties),
+#         "offset": offset,
+#         "limit": limit,
+#         "sort": f"{sort_by}:{sort_direction}"
+#     }
+#
+#     payload = {
+#         "query": {
+#             "text": query_text,
+#             "mode": query_mode.value
+#         },
+#         "filters": [filter_.model_dump(mode="json") for filter_ in filters]
+#     }
+#     endpoint = "/api/v1/t1/inventory/findings/search"
+#     full_url = urljoin(BASE_URL, endpoint)
+#     responses.add(
+#         responses.POST,
+#         full_url,
+#         json=findings_response,
+#         match=[
+#             responses.matchers.body_matcher(params=json.dumps(payload)),
+#             responses.matchers.query_param_matcher(expected_params)
+#         ]
+#     )
+#     # Act
+#     findings: Findings = tenable_one_api.inventory.findings.list(
+#         query_text=query_text,
+#         query_mode=query_mode,
+#         filters=filters,
+#         extra_properties=extra_properties,
+#         offset=offset,
+#         limit=limit,
+#         sort_by=sort_by,
+#         sort_direction=sort_direction,
+#     )
+#     # Assert
+#     assert findings == Findings(**findings_response)
