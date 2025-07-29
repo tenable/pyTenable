@@ -21,9 +21,9 @@ Inventory APIs.
 
 from tenable.base.endpoint import APIEndpoint
 from tenable.tenableone.inventory.assets.api import AssetsAPI
-from tenable.tenableone.inventory.software.api import SoftwareAPI
 from tenable.tenableone.inventory.export.api import ExportAPI
 from tenable.tenableone.inventory.findings.api import FindingsAPI
+from tenable.tenableone.inventory.software.api import SoftwareAPI
 
 
 class InventoryAPI(APIEndpoint):
@@ -47,7 +47,7 @@ class InventoryAPI(APIEndpoint):
     def export(self):
         """
         The interface object for the
-        :doc:`Tenable One Inventory Unified Export APIs <export>`.
+        :doc:`Tenable One Inventory Unified Export APIs <export/index>`.
         """
         return ExportAPI(self._api)
 
