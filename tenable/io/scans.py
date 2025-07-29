@@ -360,18 +360,13 @@ class ScansAPI(TIOEndpoint):
             schedule[self.schedule_const.enabled] = True
             schedule[self.schedule_const.launch] = launch
 
-            # starttime is rounded-off to 30 min schedule to match with values used in UI
-            # will assign schedule datetime in (19700101T013000) format
             starttime = self._check(
                 self.schedule_const.start_time,
                 starttime,
                 datetime,
                 default=self.schedule_const.start_time_default,
             )
-            secs = timedelta(minutes=30).total_seconds()
-            starttime = datetime.fromtimestamp(
-                starttime.timestamp() + secs - starttime.timestamp() % secs
-            )
+
             schedule[self.schedule_const.start_time] = starttime.strftime(
                 self.schedule_const.time_format
             )
@@ -540,18 +535,12 @@ class ScansAPI(TIOEndpoint):
             schedule[self.schedule_const.enabled] = True
             schedule[self.schedule_const.launch] = launch
 
-            # starttime is rounded-off to 30 min schedule and
-            # will assign schedule datetime in (19700101T011223) manner
             starttime = self._check(
                 self.schedule_const.start_time,
                 starttime,
                 datetime,
                 default=existing_rrules.get(self.schedule_const.start_time, None)
                 or self.schedule_const.start_time_default,
-            )
-            secs = timedelta(minutes=30).total_seconds()
-            starttime = datetime.fromtimestamp(
-                starttime.timestamp() + secs - starttime.timestamp() % secs
             )
             schedule[self.schedule_const.start_time] = starttime.strftime(
                 self.schedule_const.time_format
