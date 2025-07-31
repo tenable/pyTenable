@@ -8,7 +8,7 @@ from typing import Dict
 from marshmallow import Schema, fields, post_dump
 from marshmallow import validate as v
 
-from tenable.base.schema.fields import LowerCase
+from tenable.base.schema.fields import LowerCase, UpperCase
 from tenable.base.utils.envelope import envelope
 
 
@@ -149,7 +149,7 @@ class VulnExportSchema(Schema):
 
     # Vulnerability Findings fields
     severity = fields.List(LowerCase(fields.Str()))
-    state = fields.List(LowerCase(fields.Str()))
+    state = fields.List(UpperCase(fields.Str()))
     vpr_score = fields.Nested(VPRSchema())
     scan_uuid = fields.Str()
     source = fields.List(fields.Str())
