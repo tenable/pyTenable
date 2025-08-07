@@ -624,6 +624,16 @@ class ExportsAPI(APIEndpoint):
                 Findings last observed in any state after this timestamp will
                 be returned.  Cannot be used with ``last_found``,
                 ``first_found``, or ``last_fixed``.
+            resurfaced_date (int, optional):
+                Returns findings that have been resurfaced on or after this unix
+                timestamp.
+            time_taken_to_fix (dict[str, int], optional):
+                Returns findings based on how long that it took the organization to
+                resolve. The export will only inclucled ``FIXED`` findings when this
+                filter is applied.  Supported keys are
+                ``lte`` for *Less Than or Equal to* or
+                ``gte`` for *Greater Than or Equal to*.
+                The values should be in seconds.
             plugin_family (list[str], optional):
                 Only return findings from the specified plugin families.
             plugin_id (list[int], optional):
@@ -711,6 +721,27 @@ class ExportsAPI(APIEndpoint):
             adopt_existing (bool, optional):
                 Should we automatically adopt an existing Job UUID with we
                 receive a 409 conflict?  Defaults to True.
+            cve_id (list[str], optional):
+                Returns findings that match the specified CVE IDs.
+            cve_category (list[str], optional):
+                Returns findings the match the specified CVE category. For more
+                information about categories, see the *Vulnerability Categories*
+                section in the _Tenable Vulnerability Management User Guide_.
+            exploit_maturity (list[str], optional):
+                Returns findings that match the specified exploit maturity. Tenable
+                assigns exploit maturity values to vulnerabilities based on the
+                availability and sophistication of exploit code. Supported values are
+                ``high``, ``functional``, ``poc``, ``unproven``.
+            vpr_threat_intensity (list[str], optional):
+                Returns findings that match the specified threat intensity. The threat
+                intensity of a vulnerability is based onf the number and frequency of
+                recently observed events. Supported values are ``very high``, ``high``,
+                ``medium``, ``low``, ``very low``.
+            weaponization (list[str], optional):
+                Returns findings that match the specified weaponizations. Weaponized
+                vulnerabilities are vulnerabilities that are ready for use in a
+                particular type of attack. Supported values are ``apt``, ``botnet``,
+                ``malware``, ``ransomware``, ``rootkit``.
 
         Examples:
 
