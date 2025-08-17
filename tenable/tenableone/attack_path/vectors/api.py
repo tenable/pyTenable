@@ -8,6 +8,13 @@ These methods can be accessed at ``TenableOne.attack_path``.
 .. rst-class:: hide-signature
 .. autoclass:: VectorsAPI
     :members:
+
+.. toctree::
+    :hidden:
+    :glob:
+
+    findings/index
+    vectors/index
 """
 
 from copy import copy
@@ -16,7 +23,7 @@ from typing import Dict, Optional, Union
 from restfly import APIIterator
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.tenableone.attack_path.vectors.schema import VectorsPageSchema
+from tenable.tenableone.attack_path.vectors.schema import VectorsPageSchema, DiscoverPageTableResponse, PublicVectorFilterType
 
 
 class VectorIterator(APIIterator):
@@ -75,7 +82,7 @@ class VectorsAPI(APIEndpoint):
                 to a specific subset of Findings.
                 For a more detailed listing of what filters are available,
                 please refer to the API documentation
-                linked above, however some examples are as such:
+                linked above, however some examples are such:
 
                 - ``{"operator":"==", "key":"name", "value":"nice name"}``
                 - ``{"operator":">", "key":"critical_asset", "value": 10}``
@@ -123,3 +130,81 @@ class VectorsAPI(APIEndpoint):
         if return_iterator:
             return VectorIterator(self._api, _payload=payload)
         return self._schema(**self._get(path='api/v1/t1/apa/vectors', params=payload))
+
+    def top_attack_paths_search(
+        self,
+        limit: int = 1000,
+        sort: Optional[str] = None,
+        run_ai_summarization: Optional[str] = None,
+        filter: Optional[PublicVectorFilterType] = None,
+    ) -> DiscoverPageTableResponse:
+        """
+        Search top attack paths leading to critical assets.
+
+        This endpoint provides comprehensive search capabilities for attack paths with
+        advanced filtering, sorting, and pagination options. The response includes
+        detailed information about each attack path, including techniques, nodes, and metadata.
+
+        Args:
+            limit (optional, int):
+                Number of items per page (default: 1000, min: 100, max: 10000)
+
+            sort (optional, str):
+                Sort parameter in format "{sort_field}:{sort_order}" (e.g., "name:asc", "priority:desc")
+
+            run_ai_summarization (optional, str):
+                Whether to run AI summarization (default: "false"). Enabling AI summarization
+                provides additional insights but results in slower response times.
+                Valid values: "true", "false"
+
+            filter (optional, PublicVectorFilterType):
+                Filter criteria for the search. The filter is passed as a JSON object
+                in the request body. Supports complex filtering with AND/OR operators.
+
+        Returns:
+            :obj:`DiscoverPageTableResponse`:
+                Response containing attack paths data with pagination information
+
+        Examples:
+            >>> # Search for high priority attack paths leading to critical assets
+            >>> filter_data = {
+            ...     "operator": "AND",
+            ...     "value": [
+            ...         {"property": "priority", "operator": "gte", "value": 8},
+            ...         {"property": "critical_asset", "operator": "eq", "value": True}
+            ...     ]
+            ... }
+            >>> response = t1.attack_path.vectors.top_attack_paths_search(
+            ...     limit=500,
+            ...     sort="priority:desc",
+            ...     filter=filter_data
+            ... )
+            >>> for attack_path in response.data:
+            ...     print(f"Attack Path: {attack_path.name}, Priority: {attack_path.priority}")
+
+        Examples:
+            >>> # Simple search with default parameters
+            >>> response = t1.attack_path.vectors.top_attack_paths_search()
+            >>> print(f"Found {response.total} attack paths")
+        """
+        payload = {
+            'limit': limit,
+        }
+        
+        if sort:
+            payload['sort'] = sort
+        if run_ai_summarization:
+            payload['run_ai_summarization'] = run_ai_summarization
+
+        # For POST request with filter in body
+        if filter:
+            return DiscoverPageTableResponse(**self._api.post(
+                'api/v1/t1/top-attack-paths/search',
+                params=payload,
+                json=filter.dict()
+            ))
+        else:
+            return DiscoverPageTableResponse(**self._api.post(
+                'api/v1/t1/top-attack-paths/search',
+                params=payload
+            ))
