@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, RootModel
 from typing import List, Optional, Any, Union
 
 
@@ -64,8 +64,8 @@ class PublicVectorFilterOperator(BaseModel):
     value: List['PublicVectorFilterType']
 
 
-class PublicVectorFilterType(BaseModel):
-    __root__: Union[PublicVectorFilterCondition, PublicVectorFilterOperator]
+class PublicVectorFilterType(RootModel[Union[PublicVectorFilterCondition, PublicVectorFilterOperator]]):
+    pass
 
 
 class VectorRow(BaseModel):

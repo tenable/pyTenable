@@ -198,10 +198,16 @@ class VectorsAPI(APIEndpoint):
 
         # For POST request with filter in body
         if filter:
+            # Handle both PublicVectorFilterType objects and plain dictionaries
+            if hasattr(filter, 'dict'):
+                filter_json = filter.model_dump()
+            else:
+                filter_json = filter
+            
             return DiscoverPageTableResponse(**self._api.post(
                 'api/v1/t1/top-attack-paths/search',
                 params=payload,
-                json=filter.dict()
+                json=filter_json
             ))
         else:
             return DiscoverPageTableResponse(**self._api.post(
