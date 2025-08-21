@@ -166,7 +166,8 @@ class VectorsAPI(APIEndpoint):
                 Response containing attack paths data with pagination information
 
         Examples:
-            >>> # Search for high priority attack paths leading to critical assets
+            Search for high priority attack paths leading to critical assets
+            
             >>> filter_data = {
             ...     "operator": "AND",
             ...     "value": [
@@ -182,8 +183,8 @@ class VectorsAPI(APIEndpoint):
             >>> for attack_path in response.data:
             ...     print(f"Attack Path: {attack_path.name}, Priority: {attack_path.priority}")
 
-        Examples:
-            >>> # Simple search with default parameters
+            Simple search with default parameters
+            
             >>> response = t1.attack_path.vectors.top_attack_paths_search()
             >>> print(f"Found {response.total} attack paths")
         """
