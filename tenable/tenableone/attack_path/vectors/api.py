@@ -23,7 +23,11 @@ from typing import Dict, Optional, Union
 from restfly import APIIterator
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.tenableone.attack_path.vectors.schema import VectorsPageSchema, DiscoverPageTableResponse, PublicVectorFilterType
+from tenable.tenableone.attack_path.vectors.schema import (
+    DiscoverPageTableResponse,
+    PublicVectorFilterType,
+    VectorsPageSchema,
+)
 
 
 class VectorIterator(APIIterator):
@@ -104,19 +108,22 @@ class VectorsAPI(APIEndpoint):
              :obj:`VectorsIterator`:
                  List of vectors records
 
-         Examples:
-             >>> vectors = tapa.vectors.list()
-             >>> for f in vectors:
-             ...     pprint(f)
+        Examples:
+            List all of the available vectors:
 
-         Examples:
-             >>> tapa.vectors.list(
-             ...     limit='10',
-             ...     sort_field='name',
-             ...     sort_order='desc',
-             ...     filter={"operator":"==", "key":"name", "value":"nice name"},
-             ...     return_iterator=False
-             ...     )
+            >>> vectors = tapa.vectors.list()
+            >>> for f in vectors:
+            ...     pprint(f)
+
+            Filtering for a specific subset of vectors:
+
+            >>> tapa.vectors.list(
+            ...     limit='10',
+            ...     sort_field='name',
+            ...     sort_order='desc',
+            ...     filter={"operator":"==", "key":"name", "value":"nice name"},
+            ...     return_iterator=False
+            ...     )
         """
         payload = {
             'page_number': page_number,
@@ -167,7 +174,7 @@ class VectorsAPI(APIEndpoint):
 
         Examples:
             Search for high priority attack paths leading to critical assets
-            
+
             >>> filter_data = {
             ...     "operator": "AND",
             ...     "value": [
@@ -184,14 +191,14 @@ class VectorsAPI(APIEndpoint):
             ...     print(f"Attack Path: {attack_path.name}, Priority: {attack_path.priority}")
 
             Simple search with default parameters
-            
+
             >>> response = t1.attack_path.vectors.top_attack_paths_search()
             >>> print(f"Found {response.total} attack paths")
         """
         payload = {
             'limit': limit,
         }
-        
+
         if sort:
             payload['sort'] = sort
         if run_ai_summarization:
@@ -204,14 +211,15 @@ class VectorsAPI(APIEndpoint):
                 filter_json = filter.model_dump()
             else:
                 filter_json = filter
-            
-            return DiscoverPageTableResponse(**self._api.post(
-                'api/v1/t1/top-attack-paths/search',
-                params=payload,
-                json=filter_json
-            ))
+
+            return DiscoverPageTableResponse(
+                **self._api.post(
+                    'api/v1/t1/top-attack-paths/search',
+                    params=payload,
+                    json=filter_json,
+                )
+            )
         else:
-            return DiscoverPageTableResponse(**self._api.post(
-                'api/v1/t1/top-attack-paths/search',
-                params=payload
-            ))
+            return DiscoverPageTableResponse(
+                **self._api.post('api/v1/t1/top-attack-paths/search', params=payload)
+            )
