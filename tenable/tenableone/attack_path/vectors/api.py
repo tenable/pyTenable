@@ -82,7 +82,7 @@ class VectorsAPI(APIEndpoint):
                 to a specific subset of Findings.
                 For a more detailed listing of what filters are available,
                 please refer to the API documentation
-                linked above, however some examples are such:
+                linked above, however some examples are:
 
                 - ``{"operator":"==", "key":"name", "value":"nice name"}``
                 - ``{"operator":">", "key":"critical_asset", "value": 10}``
