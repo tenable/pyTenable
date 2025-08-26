@@ -2,7 +2,7 @@ import pytest
 import responses
 
 from tenable.tenableone.attack_path.vectors.api import VectorIterator
-from tenable.tenableone.attack_path.vectors.schema import VectorsPageSchema
+from tenable.tenableone.attack_path.vectors.schema import VectorsPageSchema, DiscoverPageTableResponse, VectorRow
 
 
 @pytest.fixture
@@ -102,6 +102,22 @@ def vector():
     }
 
 
+@pytest.fixture
+def vector_row():
+    return {
+        "is_new": False,
+        "vector_id": "FFF93960363C0755F8C9D93E241DD26E",
+        "path": None,
+        "techniques": [],
+        "nodes": [],
+        "findings_names": [],
+        "name": "Domain Users can reach baaaaacnet by exploiting CVE-2024-21444 and CVE-2022-26936",
+        "summary": "An attacker can use Domain Users to access baaaaacnet by exploiting two vulnerabilities.",
+        "first_aes": None,
+        "last_acr": 9
+    }
+
+
 @responses.activate
 def test_vectors_list_iterator(tenable_one_api, vector):
     responses.get('https://cloud.tenable.com/api/v1/t1/apa/vectors',
@@ -138,3 +154,76 @@ def test_vectors_list_vector_page_response(tenable_one_api, vector):
     vectors_page: VectorsPageSchema = tenable_one_api.attack_path.vectors.list(return_iterator=False)
 
     assert vectors_page == VectorsPageSchema(**vectors_page_response)
+
+
+@responses.activate
+def test_top_attack_paths_search_with_filter(tenable_one_api, vector_row):
+    filter_data = {
+        "operator": "AND",
+        "value": [
+            {"property": "priority", "operator": "gte", "value": 8},
+            {"property": "critical_asset", "operator": "eq", "value": True}
+        ]
+    }
+    
+    response_data = {
+        "data": [vector_row for _ in range(5)],
+        "total": 5
+    }
+    
+    responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
+                   json=response_data,
+                   match=[responses.matchers.query_param_matcher({"limit": 1000})])
+    
+    response: DiscoverPageTableResponse = tenable_one_api.attack_path.vectors.top_attack_paths_search(
+        limit=1000,
+        filter=filter_data
+    )
+    
+    assert response.total == 5
+    assert len(response.data) == 5
+    assert isinstance(response.data[0], VectorRow)
+
+
+@responses.activate
+def test_top_attack_paths_search_without_filter(tenable_one_api, vector_row):
+    response_data = {
+        "data": [vector_row for _ in range(10)],
+        "total": 10
+    }
+    
+    responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
+                   json=response_data,
+                   match=[responses.matchers.query_param_matcher({"limit": 500, "sort": "priority:desc"})])
+    
+    response: DiscoverPageTableResponse = tenable_one_api.attack_path.vectors.top_attack_paths_search(
+        limit=500,
+        sort="priority:desc"
+    )
+    
+    assert response.total == 10
+    assert len(response.data) == 10
+    assert isinstance(response.data[0], VectorRow)
+
+
+@responses.activate
+def test_top_attack_paths_search_with_ai_summarization(tenable_one_api, vector_row):
+    response_data = {
+        "data": [vector_row for _ in range(3)],
+        "total": 3
+    }
+    
+    responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
+                   json=response_data,
+                   match=[responses.matchers.query_param_matcher({
+                       "limit": 1000,
+                       "run_ai_summarization": "true"
+                   })])
+    
+    response: DiscoverPageTableResponse = tenable_one_api.attack_path.vectors.top_attack_paths_search(
+        run_ai_summarization="true"
+    )
+    
+    assert response.total == 3
+    assert len(response.data) == 3
+    assert isinstance(response.data[0], VectorRow)

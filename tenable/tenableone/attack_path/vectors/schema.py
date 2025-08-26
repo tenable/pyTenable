@@ -1,5 +1,5 @@
-from pydantic import BaseModel
-from typing import List, Optional, Any
+from pydantic import BaseModel, RootModel
+from typing import List, Optional, Any, Union
 
 
 class SourceInformationSchema(BaseModel):
@@ -49,4 +49,38 @@ class VectorsPageSchema(BaseModel):
     data: Optional[List[VectorSchema]] = None
     page_number: Optional[int] = None
     count: Optional[int] = None
+    total: Optional[int] = None
+
+
+# New schemas for top attack paths search endpoint
+class PublicVectorFilterCondition(BaseModel):
+    property: str
+    operator: str
+    value: Union[str, int, bool, List[Any]]
+
+
+class PublicVectorFilterOperator(BaseModel):
+    operator: str = "AND"
+    value: List['PublicVectorFilterType']
+
+
+class PublicVectorFilterType(RootModel[Union[PublicVectorFilterCondition, PublicVectorFilterOperator]]):
+    pass
+
+
+class VectorRow(BaseModel):
+    is_new: Optional[bool] = None
+    vector_id: Optional[str] = None
+    path: Optional[Any] = None
+    techniques: Optional[List[Any]] = None
+    nodes: Optional[List[Any]] = None
+    findings_names: Optional[List[str]] = None
+    name: Optional[str] = None
+    summary: Optional[str] = None
+    first_aes: Optional[float] = None
+    last_acr: Optional[int] = None
+
+
+class DiscoverPageTableResponse(BaseModel):
+    data: List[VectorRow]
     total: Optional[int] = None
