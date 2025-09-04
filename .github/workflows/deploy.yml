@@ -31,7 +31,7 @@ jobs:
           command: monitor --command=python3 --skip-unresolved=true
 
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@v1.4.1
+        uses: pypa/gh-action-pypi-publish@v1.13.0
         with:
           skip_existing: true
           user: __token__
