@@ -44,12 +44,13 @@ class FindingIterator(APIIterator):
 
 class AttackTechniqueIterator(APIIterator):
     """
-    Attack Technique Iterator
+    Attack Technique Iterator for offset-based pagination
     """
 
     _offset: int = 0
     _payload: Dict
     _filters: Optional[Dict]
+    _limit: int = 1000
 
     def _get_page(self) -> None:
         """
@@ -57,6 +58,7 @@ class AttackTechniqueIterator(APIIterator):
         """
         payload = copy(self._payload)
         payload["offset"] = self._offset
+        payload["limit"] = self._limit
 
         if self._filters:
             resp = self._api.post("apa/findings-api/v1/attack-techniques/search",
@@ -69,8 +71,12 @@ class AttackTechniqueIterator(APIIterator):
         self.total = resp.pagination.get("total", 0)
         
         # Update offset for next page
-        current_limit = payload.get("limit", 1000)
-        self._offset += current_limit
+        self._offset += len(self.page)
+        
+        # Stop iteration if we got fewer items than requested (end of data)
+        # or if we've reached the total count
+        if len(self.page) < self._limit or self._offset >= self.total:
+            self._exhausted = True
 
 
 class FindingsAPI(APIEndpoint):
@@ -239,14 +245,14 @@ class FindingsAPI(APIEndpoint):
             # For POST request with body, we need to handle this differently
             # The filters go in the request body, not as query parameters
             if return_iterator:
-                return AttackTechniqueIterator(self._api, _payload=payload, _filters=filters)
+                return AttackTechniqueIterator(self._api, _payload=payload, _filters=filters, _limit=limit or 1000)
             else:
                 response = self._api.post("apa/findings-api/v1/attack-techniques/search", 
                                         json=filters, params=payload, box=True)
                 return self._attack_techniques_schema.load(response)
         else:
             if return_iterator:
-                return AttackTechniqueIterator(self._api, _payload=payload, _filters=None)
+                return AttackTechniqueIterator(self._api, _payload=payload, _filters=None, _limit=limit or 1000)
             else:
                 response = self._api.post("apa/findings-api/v1/attack-techniques/search", 
                                         params=payload, box=True)
