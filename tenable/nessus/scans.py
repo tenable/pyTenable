@@ -350,7 +350,7 @@ class ScansAPI(APIEndpoint):
         return self._get(params=dict_clean({
             'folder_id': folder_id,
             'last_modification_date': last_modification_date
-        }))
+        }))['scans']
 
     def pause(self, scan_id: int) -> None:
         '''
