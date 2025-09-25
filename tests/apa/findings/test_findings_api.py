@@ -188,3 +188,73 @@ def test_findings_list_findings_page_response(api, finding):
     findings_page: FindingsPageSchema = api.findings.list(return_iterator=False)
 
     assert findings_page == FindingsPageSchema().load(findings_page_response)
+
+
+@responses.activate
+def test_attack_techniques_search(api, finding):
+    """Test attack techniques search method"""
+    attack_techniques_response = {
+        "data": [finding],
+        "pagination": {
+            "total": 1,
+            "offset": 0,
+            "limit": 1000,
+            "sort": {
+                "field": "priority",
+                "order": "desc"
+            }
+        }
+    }
+    
+    responses.post('https://cloud.tenable.com/apa/findings-api/v1/attack-techniques/search',
+                  json=attack_techniques_response,
+                  match=[responses.matchers.query_param_matcher({"offset": 0, "limit": 1000, "sort": "priority:desc"})])
+    
+    result = api.findings.search_attack_techniques(
+        offset=0,
+        limit=1000,
+        sort="priority:desc",
+        return_iterator=False
+    )
+    
+    # The schema converts last_updated_at from string to datetime, so we need to check the structure
+    assert len(result["data"]) == 1
+    assert result["data"][0]["mitre_id"] == finding["mitre_id"]
+    assert result["data"][0]["name"] == finding["name"]
+    assert result["pagination"]["total"] == 1
+
+
+@responses.activate
+def test_attack_techniques_search_with_filters(api, finding):
+    """Test attack techniques search method with filters"""
+    attack_techniques_response = {
+        "data": [finding],
+        "pagination": {
+            "total": 1,
+            "offset": 0,
+            "limit": 1000,
+            "sort": {
+                "field": "priority",
+                "order": "desc"
+            }
+        }
+    }
+    
+    filters = {"operator": "==", "property": "priority", "value": "high"}
+    
+    responses.post('https://cloud.tenable.com/apa/findings-api/v1/attack-techniques/search',
+                  json=attack_techniques_response,
+                  match=[responses.matchers.query_param_matcher({"offset": 0, "limit": 1000})])
+    
+    result = api.findings.search_attack_techniques(
+        filters=filters,
+        offset=0,
+        limit=1000,
+        return_iterator=False
+    )
+    
+    # The schema converts last_updated_at from string to datetime, so we need to check the structure
+    assert len(result["data"]) == 1
+    assert result["data"][0]["mitre_id"] == finding["mitre_id"]
+    assert result["data"][0]["name"] == finding["name"]
+    assert result["pagination"]["total"] == 1
