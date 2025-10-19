@@ -59,7 +59,7 @@ class CardsAPI(APIEndpoint):
             path='api/v1/t1/exposure-view/cards', params=params, box=False
         )
 
-        return Cards(**cards_response.json())
+        return Cards.model_validate(cards_response.json())
 
     def get_by_id(
             self,
@@ -95,4 +95,4 @@ class CardsAPI(APIEndpoint):
             params["sla_efficiency_end_date"] = sla_efficiency_timeframe.end_date.isoformat()
 
         card_response = self._get(path=f"api/v1/t1/exposure-view/cards/{card_id}", params=params, box=False)
-        return CardDetails(**card_response.json())
+        return CardDetails.model_validate(card_response.json())
