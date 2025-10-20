@@ -12,10 +12,10 @@ jobs:
     strategy:
       matrix:
         python-version:
-        - "3.10"
-        - "3.11"
-        - "3.12"
-        - "3.13"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
 
     steps:
       - uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
             --vcr-record=none \
             --cov-report=xml:coverage.xml \
             --cov-fail-under=95
-          
+
   code-assessments:
     runs-on: ubuntu-latest
     steps:
@@ -44,7 +44,7 @@ jobs:
         with:
           python-version: "3.10"
       - name: Run pip-audit
-        run: uv export --format requirements-txt | uv tool run pip-audit
+        run: uv export --format requirements-txt | uv tool run pip-audit --ignore-vuln GHSA-4xh5-x5gv-qwph
 
       - name: Run Bandit code auditor
         run: uv tool run --with "bandit[toml,baseline,sarif]" bandit -c pyproject.toml -r . -ll

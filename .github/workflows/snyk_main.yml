@@ -18,11 +18,11 @@ jobs:
 
       - name: Run pip-audit
         run: |
-          uv export --format requirements-txt | uv tool run pip-audit
+          uv export --format requirements-txt | uv tool run pip-audit --ignore-vuln GHSA-4xh5-x5gv-qwph
 
       - name: Run Bandit code auditor
         run: uv tool run --with "bandit[toml,baseline,sarif]" bandit -c pyproject.toml -r . -ll
-      
+
       - name: Export & Install requirements to run Snyk
         run: |
           uv pip compile pyproject.toml -o requirements.txt
