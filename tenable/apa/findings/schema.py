@@ -64,3 +64,20 @@ class FindingsPageSchema(Schema):
     page_number = fields.Int(allow_none=True)
     count = fields.Int(allow_none=True)
     total = fields.Int(allow_none=True)
+
+
+class AttackTechniqueSortInfoSchema(Schema):
+    field = fields.Str(allow_none=True)
+    order = fields.Str(allow_none=True)
+
+
+class AttackTechniquePaginationInfoSchema(Schema):
+    total = fields.Int(allow_none=True)
+    offset = fields.Int(allow_none=True)
+    limit = fields.Int(allow_none=True)
+    sort = fields.Nested(AttackTechniqueSortInfoSchema, allow_none=True)
+
+
+class AttackTechniquesSearchResponseSchema(Schema):
+    data = fields.List(fields.Nested(FindingSchema))
+    pagination = fields.Nested(AttackTechniquePaginationInfoSchema)
