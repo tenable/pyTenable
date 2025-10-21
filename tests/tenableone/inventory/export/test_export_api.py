@@ -182,6 +182,130 @@ def test_findings_export(tenable_one_api, export_request_id_response):
 
 
 @responses.activate
+def test_assets_export_with_compress(tenable_one_api, export_request_id_response):
+    """Test assets export with compress parameter set to True."""
+    # Arrange
+    properties = ["cpe", "version", "file_location"]
+    compress = True
+    
+    expected_params = {
+        "properties": "cpe,version,file_location",
+        "compress": True
+    }
+    
+    responses.add(
+        responses.POST,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets',
+        json=export_request_id_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+    
+    # Act
+    result: ExportRequestId = tenable_one_api.inventory.export.assets(
+        properties=properties,
+        compress=compress
+    )
+
+    # Assert
+    assert result.export_id == "export-12345"
+
+
+@responses.activate
+def test_findings_export_with_compress(tenable_one_api, export_request_id_response):
+    """Test findings export with compress parameter set to True."""
+    # Arrange
+    properties = ["severity", "status", "created_at"]
+    compress = True
+    
+    expected_params = {
+        "properties": "severity,status,created_at",
+        "compress": True
+    }
+    
+    responses.add(
+        responses.POST,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings',
+        json=export_request_id_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+    
+    # Act
+    result: ExportRequestId = tenable_one_api.inventory.export.findings(
+        properties=properties,
+        compress=compress
+    )
+
+    # Assert
+    assert result.export_id == "export-12345"
+
+
+@responses.activate
+def test_assets_export_with_compress_false(tenable_one_api, export_request_id_response):
+    """Test assets export with compress parameter set to False."""
+    # Arrange
+    properties = ["cpe", "version", "file_location"]
+    compress = False
+    
+    expected_params = {
+        "properties": "cpe,version,file_location",
+        "compress": False
+    }
+    
+    responses.add(
+        responses.POST,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets',
+        json=export_request_id_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+    
+    # Act
+    result: ExportRequestId = tenable_one_api.inventory.export.assets(
+        properties=properties,
+        compress=compress
+    )
+
+    # Assert
+    assert result.export_id == "export-12345"
+
+
+@responses.activate
+def test_findings_export_with_compress_false(tenable_one_api, export_request_id_response):
+    """Test findings export with compress parameter set to False."""
+    # Arrange
+    properties = ["severity", "status", "created_at"]
+    compress = False
+    
+    expected_params = {
+        "properties": "severity,status,created_at",
+        "compress": False
+    }
+    
+    responses.add(
+        responses.POST,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings',
+        json=export_request_id_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+    
+    # Act
+    result: ExportRequestId = tenable_one_api.inventory.export.findings(
+        properties=properties,
+        compress=compress
+    )
+
+    # Assert
+    assert result.export_id == "export-12345"
+
+
+@responses.activate
 def test_status(tenable_one_api, export_status_response):
     """Test getting export status with finished export."""
     # Arrange
