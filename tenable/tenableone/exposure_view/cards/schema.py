@@ -52,11 +52,11 @@ class CESScore(BaseModel):
 
 
 class Card(BaseModel):
-    card_id: int
-    card_name: str
+    card_id: str = Field(alias="id")
+    card_name: str = Field(alias="name")
     card_type: str = CardType.CUSTOM.value
-    is_global: bool = False
-    ces_score: CESScore = None
+    is_global: bool = Field(default=False, alias="is_global_card")
+    ces_score: CESScore = Field(default=None, alias="ces_scores")
     sla_percentage: Optional[float] = None
     ces_trend: List[CESTrendDataPoint] = []
     tag_count: int = 0
@@ -150,7 +150,6 @@ class SeveritySummaryStat(BaseModel):
     sla_efficiency_target: float
 
 
-
 class RiskBreakdownCategory(BaseModel):
     number_of_risks: int
     percentage_of_total: float
@@ -188,13 +187,8 @@ class ExposureClassesDetails(BaseModel):
 
 
 class CardDetails(Card):
-    exposure_classes_details: dict[ExposureClass, ExposureClassesDetails] = None
+    exposure_classes_details: dict[str, ExposureClassesDetails] = None
 
 
 class GetCardByIdResponse(BaseModel):
     card_details: CardDetails
-
-
-
-
-

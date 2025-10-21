@@ -19,11 +19,11 @@ def cards_response() -> dict:
     return {
         "data": [
             {
-                "card_id": 1,
-                "card_name": "Global Card",
+                "id": "62d8d303-5e83-410e-931d-78925e5fc52a",
+                "name": "Global Card",
                 "card_type": "GLOBAL",
-                "is_global": True,
-                "ces_score": {
+                "is_global_card": True,
+                "ces_scores": {
                     "score": 750,
                     "grade": "B"
                 },
@@ -37,11 +37,11 @@ def cards_response() -> dict:
                 "sources": ["T.IO", "CLOUD"]
             },
             {
-                "card_id": 2,
-                "card_name": "Custom Card",
+                "id": "73e9e414-6f94-521f-a42e-89036f6gd63b",
+                "name": "Custom Card",
                 "card_type": "CUSTOM",
-                "is_global": False,
-                "ces_score": {
+                "is_global_card": False,
+                "ces_scores": {
                     "score": 650,
                     "grade": "C"
                 },
@@ -97,10 +97,12 @@ def test_list(cards, cards_response):
     assert len(result.data) == 2
     assert result.data[0].card_name == "Global Card"
     assert result.data[0].is_global is True
+    assert result.data[0].card_id == "62d8d303-5e83-410e-931d-78925e5fc52a"
     assert result.data[0].ces_score.score == 750
     assert result.data[0].ces_score.grade == CESGrade.B
     assert result.data[1].card_name == "Custom Card"
     assert result.data[1].is_global is False
+    assert result.data[1].card_id == "73e9e414-6f94-521f-a42e-89036f6gd63b"
     assert result.pagination.offset == 0
     assert result.pagination.limit == 25
 
@@ -191,10 +193,10 @@ def test_list_default_parameters(cards, cards_response):
 @pytest.fixture
 def card_details_response() -> dict:
     return {
-            "card_id": 1,
-            "card_name": "Global Card",
-            "is_global": True,
-            "ces_score": {
+            "id": "62d8d303-5e83-410e-931d-78925e5fc52a",
+            "name": "Global Card",
+            "is_global_card": True,
+            "ces_scores": {
                 "score": 750,
                 "grade": "B"
             },
@@ -278,7 +280,7 @@ def card_details_response() -> dict:
 @responses.activate
 def test_get_by_id(cards, card_details_response):
     # Arrange
-    card_id = "1"
+    card_id = "62d8d303-5e83-410e-931d-78925e5fc52a"
     trend_timeframe = Timeframe(
         start_date=datetime(2024, 1, 1),
         end_date=datetime(2024, 1, 31)
@@ -317,14 +319,14 @@ def test_get_by_id(cards, card_details_response):
 
     # Assert
     assert isinstance(result, CardDetails)
-    assert result.card_id == 1
+    assert result.card_id == "62d8d303-5e83-410e-931d-78925e5fc52a"
     assert result.card_name == "Global Card"
     assert result.is_global is True
     assert result.ces_score.score == 750
     assert result.ces_score.grade == CESGrade.B
 
     # Test exposure classes details
-    exposure_details = result.exposure_classes_details[ExposureClass.ALL]
+    exposure_details = result.exposure_classes_details["ALL"]
 
     # Test exposure classes details
     assert exposure_details.score_benchmark.industry_benchmark.industry_id == 1
@@ -369,7 +371,7 @@ def test_get_by_id(cards, card_details_response):
 @responses.activate
 def test_get_by_id_minimal_parameters(cards, card_details_response):
     # Arrange
-    card_id = "1"
+    card_id = "62d8d303-5e83-410e-931d-78925e5fc52a"
 
     # Build the expected query parameters with minimal parameters
     params = {
@@ -388,6 +390,6 @@ def test_get_by_id_minimal_parameters(cards, card_details_response):
 
     # Assert
     assert isinstance(result, CardDetails)
-    assert result.card_id == 1
+    assert result.card_id == "62d8d303-5e83-410e-931d-78925e5fc52a"
     assert result.card_name == "Global Card"
     assert result.is_global is True
