@@ -36,6 +36,7 @@ class ExportAPI(APIEndpoint):
         sort_by: Optional[str] = None,
         sort_direction: Optional[SortDirection] = None,
         file_format: Optional[DatasetFileFormat] = None,
+        compress: Optional[bool] = None,
     ) -> ExportRequestId:
         """
         Internal method to export data from TenableOne inventory.
@@ -49,6 +50,8 @@ class ExportAPI(APIEndpoint):
             sort_by (str, optional): Field to sort by.
             sort_direction (SortDirection, optional): Sorting direction.
             file_format (DatasetFileFormat, optional): Output file format.
+            compress (bool, optional): Whether to compress the export using GZIP compression. 
+                Compressed files are smaller but require decompression before processing.
 
         Returns:
             ExportRequestId: The export request ID.
@@ -66,7 +69,8 @@ class ExportAPI(APIEndpoint):
             params['sort'] = f'{sort_by}:{sort_direction.value}'
         if file_format is not None:
             params['file_format'] = file_format.value
-
+        if compress is not None:
+            params['compress'] = compress
         # Build request body
         payload = None
         if filters is not None:
@@ -163,6 +167,7 @@ class ExportAPI(APIEndpoint):
         sort_by: Optional[str] = None,
         sort_direction: Optional[SortDirection] = None,
         file_format: Optional[DatasetFileFormat] = None,
+        compress: Optional[bool] = None,
     ) -> ExportRequestId:
         """
         Export assets from TenableOne inventory
@@ -186,6 +191,8 @@ class ExportAPI(APIEndpoint):
             file_format (DatasetFileFormat, optional):
                 The file format to be received. If not specified, the default format will be JSON.
                 Supported formats include: CSV and JSON. Defaults to DatasetFileFormat.JSON.
+            compress (bool, optional): Whether to compress the export using GZIP compression. 
+                Compressed files are smaller but require decompression before processing.
 
         Returns:
             ExportRequestId:
@@ -210,6 +217,7 @@ class ExportAPI(APIEndpoint):
             sort_by=sort_by,
             sort_direction=sort_direction,
             file_format=file_format,
+            compress=compress,
         )
 
     def findings(
@@ -221,6 +229,7 @@ class ExportAPI(APIEndpoint):
         sort_by: Optional[str] = None,
         sort_direction: Optional[SortDirection] = None,
         file_format: Optional[DatasetFileFormat] = None,
+        compress: Optional[bool] = None,
     ) -> ExportRequestId:
         """
         Export findings from TenableOne inventory
@@ -244,7 +253,8 @@ class ExportAPI(APIEndpoint):
             file_format (DatasetFileFormat, optional):
                 The file format to be received. If not specified, the default format will be JSON.
                 Supported formats include: CSV and JSON. Defaults to DatasetFileFormat.JSON.
-
+            compress (bool, optional): Whether to compress the export using GZIP compression. 
+                Compressed files are smaller but require decompression before processing.
         Returns:
             ExportRequestId:
                 The export request ID.
@@ -268,4 +278,5 @@ class ExportAPI(APIEndpoint):
             sort_by=sort_by,
             sort_direction=sort_direction,
             file_format=file_format,
-        ) 
+            compress=compress,
+        )

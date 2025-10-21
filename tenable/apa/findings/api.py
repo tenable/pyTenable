@@ -15,7 +15,7 @@ from typing import Dict, Optional, Union
 
 from restfly import APIIterator
 
-from tenable.apa.findings.schema import FindingsPageSchema
+from tenable.apa.findings.schema import FindingsPageSchema, AttackTechniquesSearchResponseSchema
 from tenable.base.endpoint import APIEndpoint
 
 
@@ -42,8 +42,46 @@ class FindingIterator(APIIterator):
         self.total = resp.total
 
 
+class AttackTechniqueIterator(APIIterator):
+    """
+    Attack Technique Iterator for offset-based pagination
+    """
+
+    _offset: int = 0
+    _payload: Dict
+    _filters: Optional[Dict]
+    _limit: int = 1000
+
+    def _get_page(self) -> None:
+        """
+        Request the next page of data
+        """
+        payload = copy(self._payload)
+        payload["offset"] = self._offset
+        payload["limit"] = self._limit
+
+        if self._filters:
+            resp = self._api.post("apa/findings-api/v1/attack-techniques/search",
+                                 json=self._filters, params=payload, box=True)
+        else:
+            resp = self._api.post("apa/findings-api/v1/attack-techniques/search",
+                                 params=payload, box=True)
+        
+        self.page = resp.data
+        self.total = resp.pagination.get("total", 0)
+        
+        # Update offset for next page
+        self._offset += len(self.page)
+        
+        # Stop iteration if we got fewer items than requested (end of data)
+        # or if we've reached the total count
+        if len(self.page) < self._limit or self._offset >= self.total:
+            self._exhausted = True
+
+
 class FindingsAPI(APIEndpoint):
     _schema = FindingsPageSchema()
+    _attack_techniques_schema = AttackTechniquesSearchResponseSchema()
 
     def list(
         self,
@@ -138,3 +176,84 @@ class FindingsAPI(APIEndpoint):
         return self._schema.load(
             self._get(path="apa/findings-api/v1/findings", params=payload)
         )
+
+    def search_attack_techniques(
+        self,
+        filters: Optional[dict] = None,
+        offset: Optional[int] = None,
+        limit: Optional[int] = None,
+        sort: Optional[str] = None,
+        return_iterator: bool = True,
+    ) -> Union[AttackTechniqueIterator, dict]:
+        """
+        Search attack techniques
+
+        Args:
+            filters (optional, dict):
+                Filter conditions for searching attack techniques.
+                Supports complex filtering with AND/OR operators.
+                Examples:
+                - ``{"operator":"==", "property":"priority", "value":"high"}``
+                - ``{"operator":"and", "value":[{"operator":"==", "property":"priority", "value":"high"}, {"operator":"==", "property":"state", "value":"open"}]}``
+
+            offset (optional, int):
+                Number of items to skip for pagination.
+                If omitted, the default value is 0.
+
+            limit (optional, int):
+                Number of items per page.
+                If omitted, the default value is 1000.
+                The minimum value is 100 and the maximum value is 10000.
+
+            sort (optional, str):
+                Sort parameter in format "{sort_field}:{sort_order}" with multiple variations:
+                - Ascending: "asc", "ASC", "ascending", "ASCENDING", "Ascending"
+                - Descending: "desc", "DESC", "descending", "DESCENDING", "Descending"
+                - Examples: "priority:desc", "name:asc", "last_updated_at:ASCENDING", "state:DESCENDING"
+                
+                Supported sort fields: last_updated_at, priority, mitre_id, name, 
+                procedureName, status, state, vectorCount
+
+            return_iterator (bool, optional):
+                Should we return the response instead of iterable?
+
+        Returns:
+            :obj:`FindingIterator` or :obj:`dict`:
+                List of attack technique records
+
+        Examples:
+            >>> attack_techniques = tapa.findings.search_attack_techniques()
+            >>> for technique in attack_techniques:
+            ...     pprint(technique)
+
+        Examples:
+            >>> tapa.findings.search_attack_techniques(
+            ...     limit=100,
+            ...     sort='priority:desc',
+            ...     filters={'operator': '==', 'property': 'priority', 'value': 'high'},
+            ...     return_iterator=False
+            ... )
+        """
+        payload = {
+            "offset": offset,
+            "limit": limit,
+            "sort": sort,
+        }
+        
+        # Add filters to request body if provided
+        if filters:
+            # For POST request with body, we need to handle this differently
+            # The filters go in the request body, not as query parameters
+            if return_iterator:
+                return AttackTechniqueIterator(self._api, _payload=payload, _filters=filters, _limit=limit or 1000)
+            else:
+                response = self._api.post("apa/findings-api/v1/attack-techniques/search", 
+                                        json=filters, params=payload, box=True)
+                return self._attack_techniques_schema.load(response)
+        else:
+            if return_iterator:
+                return AttackTechniqueIterator(self._api, _payload=payload, _filters=None, _limit=limit or 1000)
+            else:
+                response = self._api.post("apa/findings-api/v1/attack-techniques/search", 
+                                        params=payload, box=True)
+                return self._attack_techniques_schema.load(response)
