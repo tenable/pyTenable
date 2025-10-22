@@ -104,6 +104,45 @@ class ExportAPI(APIEndpoint):
         response = self._get(f'api/v1/t1/inventory/export/{export_id}/status')
         return ExportRequestStatus(**response)
 
+    def list_jobs(
+        self,
+        status: Optional[str] = None,
+        export_type: Optional[str] = None
+    ) -> List[dict]:
+        """
+        List export jobs
+
+        Args:
+            status (str, optional):
+                Filter by export status (e.g., 'FINISHED', 'PROCESSING', 'ERROR').
+            export_type (str, optional):
+                Filter by export type (e.g., 'assets', 'findings').
+
+        Returns:
+            List[dict]:
+                List of export job information.
+
+        Examples:
+            >>> jobs = tenable_one.inventory.export.list_jobs()
+            >>> for job in jobs:
+            ...     print(f"Export ID: {job['export_id']}, Status: {job['status']}")
+
+            >>> # Filter by status
+            >>> finished_jobs = tenable_one.inventory.export.list_jobs(status='FINISHED')
+
+            >>> # Filter by export type
+            >>> asset_jobs = tenable_one.inventory.export.list_jobs(export_type='assets')
+
+        """
+        params = {}
+        if status is not None:
+            params['status'] = status
+        if export_type is not None:
+            params['export_type'] = export_type
+            
+        response = self._get('api/v1/t1/inventory/export/status', params=params)
+        return response.get('exports', [])
+
     def download(
         self, 
         export_id: str, 

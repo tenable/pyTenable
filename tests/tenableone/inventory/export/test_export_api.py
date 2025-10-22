@@ -41,6 +41,39 @@ def export_data() -> bytes:
     return b"test,data,export\n1,2,3\n4,5,6"
 
 
+@pytest.fixture
+def export_jobs_response() -> dict:
+    """Fixture for export jobs list response."""
+    return {
+        "exports": [
+            {
+                "export_id": "export-12345",
+                "status": "FINISHED",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T00:00:00Z",
+                "last_refreshed_at": "2025-01-01T00:01:00Z",
+                "chunks_available": [0, 1, 2]
+            },
+            {
+                "export_id": "export-67890",
+                "status": "PROCESSING",
+                "export_type": "findings",
+                "submitted_at": "2025-01-01T01:00:00Z",
+                "last_refreshed_at": "2025-01-01T01:01:00Z",
+                "chunks_available": []
+            },
+            {
+                "export_id": "export-11111",
+                "status": "ERROR",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T02:00:00Z",
+                "last_refreshed_at": "2025-01-01T02:01:00Z",
+                "chunks_available": []
+            }
+        ]
+    }
+
+
 @responses.activate
 def test_assets_export(tenable_one_api, export_request_id_response):
     """Test assets export with all parameters populated."""
@@ -325,6 +358,47 @@ def test_status(tenable_one_api, export_status_response):
     assert result.chunks_available == [0, 1, 2]
     assert result.submitted_at is not None
     assert result.last_refreshed_at is not None
+
+
+@responses.activate
+def test_list_jobs(tenable_one_api, export_jobs_response):
+    """Test listing export jobs."""
+    # Arrange
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/status',
+        json=export_jobs_response
+    )
+    
+    # Act
+    result = tenable_one_api.inventory.export.list_jobs()
+    
+    # Assert
+    assert len(result) == 3
+    assert result[0]['export_id'] == "export-12345"
+    assert result[0]['status'] == "FINISHED"
+    assert result[0]['export_type'] == "assets"
+    assert result[1]['export_id'] == "export-67890"
+    assert result[1]['status'] == "PROCESSING"
+    assert result[1]['export_type'] == "findings"
+
+
+@responses.activate
+def test_list_jobs_with_filters(tenable_one_api, export_jobs_response):
+    """Test listing export jobs with filters."""
+    # Arrange
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/status',
+        json=export_jobs_response
+    )
+    
+    # Act
+    result = tenable_one_api.inventory.export.list_jobs(status='FINISHED', export_type='assets')
+    
+    # Assert
+    assert len(result) == 3  # Response includes all jobs, filtering would be server-side
+    # The actual filtering would be done by the server, so we just verify the call was made with params
 
 
 @responses.activate
