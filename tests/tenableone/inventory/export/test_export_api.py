@@ -13,6 +13,9 @@ from tenable.tenableone.inventory.export.schema import (
     ExportRequestId,
     ExportRequestStatus,
     ExportStatus,
+    ExportJobsResponse,
+    ExportJob,
+    ExportType,
 )
 from tenable.tenableone.inventory.schema import SortDirection, PropertyFilter, Operator
 
@@ -374,13 +377,14 @@ def test_list_jobs(tenable_one_api, export_jobs_response):
     result = tenable_one_api.inventory.export.list_jobs()
     
     # Assert
-    assert len(result) == 3
-    assert result[0]['export_id'] == "export-12345"
-    assert result[0]['status'] == "FINISHED"
-    assert result[0]['export_type'] == "assets"
-    assert result[1]['export_id'] == "export-67890"
-    assert result[1]['status'] == "PROCESSING"
-    assert result[1]['export_type'] == "findings"
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 3
+    assert result.exports[0].export_id == "export-12345"
+    assert result.exports[0].status == ExportStatus.FINISHED
+    assert result.exports[0].export_type == ExportType.ASSETS
+    assert result.exports[1].export_id == "export-67890"
+    assert result.exports[1].status == ExportStatus.PROCESSING
+    assert result.exports[1].export_type == ExportType.FINDINGS
 
 
 @responses.activate
@@ -397,7 +401,8 @@ def test_list_jobs_with_filters(tenable_one_api, export_jobs_response):
     result = tenable_one_api.inventory.export.list_jobs(status='FINISHED', export_type='assets')
     
     # Assert
-    assert len(result) == 3  # Response includes all jobs, filtering would be server-side
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 3  # Response includes all jobs, filtering would be server-side
     # The actual filtering would be done by the server, so we just verify the call was made with params
 
 

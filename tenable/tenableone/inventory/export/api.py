@@ -19,7 +19,9 @@ from tenable.tenableone.inventory.export.schema import (
     DatasetExportRequest,
     DatasetFileFormat,
     ExportRequestId,
-    ExportRequestStatus, ExportType
+    ExportRequestStatus,
+    ExportType,
+    ExportJobsResponse
 )
 from tenable.tenableone.inventory.schema import PropertyFilter
 from tenable.tenableone.inventory.schema import SortDirection
@@ -108,7 +110,7 @@ class ExportAPI(APIEndpoint):
         self,
         status: Optional[str] = None,
         export_type: Optional[str] = None
-    ) -> List[dict]:
+    ) -> ExportJobsResponse:
         """
         List export jobs
 
@@ -119,13 +121,13 @@ class ExportAPI(APIEndpoint):
                 Filter by export type (e.g., 'assets', 'findings').
 
         Returns:
-            List[dict]:
-                List of export job information.
+            ExportJobsResponse:
+                Response containing list of export job information.
 
         Examples:
-            >>> jobs = tenable_one.inventory.export.list_jobs()
-            >>> for job in jobs:
-            ...     print(f"Export ID: {job['export_id']}, Status: {job['status']}")
+            >>> response = tenable_one.inventory.export.list_jobs()
+            >>> for job in response.exports:
+            ...     print(f"Export ID: {job.export_id}, Status: {job.status}")
 
             >>> # Filter by status
             >>> finished_jobs = tenable_one.inventory.export.list_jobs(status='FINISHED')
@@ -141,7 +143,7 @@ class ExportAPI(APIEndpoint):
             params['export_type'] = export_type
             
         response = self._get('api/v1/t1/inventory/export/status', params=params)
-        return response.get('exports', [])
+        return ExportJobsResponse(**response)
 
     def download(
         self, 
