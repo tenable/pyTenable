@@ -1,26 +1,32 @@
-'''
+"""
 Base graphql Testing module.
-'''
+"""
+
 import os
-import sys
 import platform
+import sys
 from io import StringIO
 from pathlib import Path
 from tempfile import NamedTemporaryFile
+
 import pytest
 import responses
+from gql import GraphQLRequest
+from graphql import parse
 from responses.registries import OrderedRegistry
-from graphql import DocumentNode, parse
+
+from tenable.base.graphql import GraphQLEndpoint, GraphQLIterator, GraphQLSession
 from tenable.version import version
-from tenable.base.graphql import GraphQLIterator, GraphQLEndpoint, GraphQLSession
 
 
 @pytest.fixture
 def gql_session():
-    return GraphQLSession(url='https://nourl',
-                          api_key='something',
-                          schema_validation=False,
-                          )
+    return GraphQLSession(
+        url='https://nourl',
+        api_key='something',
+        schema_validation=False,
+    )
+
 
 @pytest.fixture
 def gql_test_query():
@@ -33,9 +39,10 @@ def test_session_init(gql_session):
     opsys = uname[0]
     arch = uname[-2]
     assert isinstance(gql_session, GraphQLSession)
-    assert ('Integration/1.0 (unknown; unknown; Build/unknown) '
-            f'pyTenable/{version} (GQL-Requests; Python/{py_version}; {opsys}/{arch})'
-            ) == gql_session._client.transport.headers['User-Agent']
+    assert (
+        'Integration/1.0 (unknown; unknown; Build/unknown) '
+        f'pyTenable/{version} (GQL-Requests; Python/{py_version}; {opsys}/{arch})'
+    ) == gql_session._client.transport.headers['User-Agent']
 
 
 def test_connectionerrors():
@@ -47,7 +54,7 @@ def test_connectionerrors():
 
 def test_construct_query_str(gql_session, gql_test_query):
     test_query = parse(gql_test_query)
-    assert test_query == gql_session.construct_query(query=gql_test_query)
+    assert test_query == gql_session.construct_query(query=gql_test_query).document
 
 
 def test_construct_query_stringio(gql_session, gql_test_query):
@@ -55,12 +62,12 @@ def test_construct_query_stringio(gql_session, gql_test_query):
     fobj.write(gql_test_query)
     fobj.seek(0)
     test_query = parse(gql_test_query)
-    assert test_query == gql_session.construct_query(query=fobj)
+    assert test_query == gql_session.construct_query(query=fobj).document
 
 
 def test_construct_query_docnode(gql_session, gql_test_query):
     test_query = parse(gql_test_query)
-    assert test_query == gql_session.construct_query(query=test_query)
+    assert test_query == gql_session.construct_query(query=test_query).document
 
 
 def test_construct_query_stored_file(gql_session, gql_test_query):
@@ -72,7 +79,7 @@ def test_construct_query_stored_file(gql_session, gql_test_query):
         fname = tpath.name
         fpath = tpath.absolute().parent
         gql_session._query_folder = Path(fpath)
-        assert test_query == gql_session.construct_query(stored_file=fname)
+        assert test_query == gql_session.construct_query(stored_file=fname).document
 
 
 def test_construct_query_typeerror(gql_session, gql_test_query):
@@ -81,12 +88,12 @@ def test_construct_query_typeerror(gql_session, gql_test_query):
 
 
 def test_query_iterator_return(gql_session, gql_test_query):
-    assert isinstance(gql_session.query(gql_test_query,
-                                        iterator=GraphQLIterator,
-                                        graphql_model='hero'
-                                        ),
-                      GraphQLIterator
-                      )
+    assert isinstance(
+        gql_session.query(
+            gql_test_query, iterator=GraphQLIterator, graphql_model='hero'
+        ),
+        GraphQLIterator,
+    )
 
 
 def test_query_iteragtor_typeerror(gql_session, gql_test_query):
@@ -120,22 +127,42 @@ def test_endpoint(gql_session, gql_test_query):
 @responses.activate(registry=OrderedRegistry)
 def test_iterator_pagination(gql_session, gql_test_query):
     item = {'name': 'something'}
-    responses.post('https://nourl/', json={'data': {'heros': {
-        'pageInfo': {'hasNextPage': True, 'endCursor': 'something'},
-        'nodes': [item for _ in range(100)]
-    }}})
-    responses.post('https://nourl/', json={'data': {'heros': {
-        'pageInfo': {'hasNextPage': True, 'endCursor': 'something'},
-        'nodes': [item for _ in range(100)]
-    }}})
-    responses.post('https://nourl/', json={'data': {'heros': {
-        'pageInfo': {'hasNextPage': False},
-        'nodes': [item for _ in range(100)]
-    }}})
-    iter = gql_session.query(gql_test_query,
-                             iterator=GraphQLIterator,
-                             graphql_model='heros'
-                             )
+    responses.post(
+        'https://nourl/',
+        json={
+            'data': {
+                'heros': {
+                    'pageInfo': {'hasNextPage': True, 'endCursor': 'something'},
+                    'nodes': [item for _ in range(100)],
+                }
+            }
+        },
+    )
+    responses.post(
+        'https://nourl/',
+        json={
+            'data': {
+                'heros': {
+                    'pageInfo': {'hasNextPage': True, 'endCursor': 'something'},
+                    'nodes': [item for _ in range(100)],
+                }
+            }
+        },
+    )
+    responses.post(
+        'https://nourl/',
+        json={
+            'data': {
+                'heros': {
+                    'pageInfo': {'hasNextPage': False},
+                    'nodes': [item for _ in range(100)],
+                }
+            }
+        },
+    )
+    iter = gql_session.query(
+        gql_test_query, iterator=GraphQLIterator, graphql_model='heros'
+    )
     for i in iter:
         assert i == item
     assert iter.count == 300
@@ -144,14 +171,20 @@ def test_iterator_pagination(gql_session, gql_test_query):
 @responses.activate(registry=OrderedRegistry)
 def test_iterator_total_term(gql_session, gql_test_query):
     item = {'name': 'something'}
-    responses.post('https://nourl/', json={'data': {'heros': {
-        'pageInfo': {'hasNextPage': True, 'endCursor': 'something'},
-        'nodes': [item for _ in range(100)]
-    }}})
-    iter = gql_session.query(gql_test_query,
-                             iterator=GraphQLIterator,
-                             graphql_model='heros'
-                             )
+    responses.post(
+        'https://nourl/',
+        json={
+            'data': {
+                'heros': {
+                    'pageInfo': {'hasNextPage': True, 'endCursor': 'something'},
+                    'nodes': [item for _ in range(100)],
+                }
+            }
+        },
+    )
+    iter = gql_session.query(
+        gql_test_query, iterator=GraphQLIterator, graphql_model='heros'
+    )
     iter.total = 4
     for i in iter:
         assert i == item
@@ -161,14 +194,20 @@ def test_iterator_total_term(gql_session, gql_test_query):
 @responses.activate(registry=OrderedRegistry)
 def test_iterator_max_page_term(gql_session, gql_test_query):
     item = {'name': 'something'}
-    responses.post('https://nourl/', json={'data': {'heros': {
-        'pageInfo': {'hasNextPage': True, 'endCursor': 'something'},
-        'nodes': [item for _ in range(100)]
-    }}})
-    iter = gql_session.query(gql_test_query,
-                             iterator=GraphQLIterator,
-                             graphql_model='heros'
-                             )
+    responses.post(
+        'https://nourl/',
+        json={
+            'data': {
+                'heros': {
+                    'pageInfo': {'hasNextPage': True, 'endCursor': 'something'},
+                    'nodes': [item for _ in range(100)],
+                }
+            }
+        },
+    )
+    iter = gql_session.query(
+        gql_test_query, iterator=GraphQLIterator, graphql_model='heros'
+    )
     iter.total = 200
     iter.max_pages = 1
     for i in iter:
@@ -179,14 +218,20 @@ def test_iterator_max_page_term(gql_session, gql_test_query):
 @responses.activate(registry=OrderedRegistry)
 def test_iterator_empty_page(gql_session, gql_test_query):
     item = {'name': 'something'}
-    responses.post('https://nourl/', json={'data': {'heros': {
-        'pageInfo': {'hasNextPage': True, 'endCursor': 'something'},
-        'nodes': []
-    }}})
-    iter = gql_session.query(gql_test_query,
-                             iterator=GraphQLIterator,
-                             graphql_model='heros'
-                             )
+    responses.post(
+        'https://nourl/',
+        json={
+            'data': {
+                'heros': {
+                    'pageInfo': {'hasNextPage': True, 'endCursor': 'something'},
+                    'nodes': [],
+                }
+            }
+        },
+    )
+    iter = gql_session.query(
+        gql_test_query, iterator=GraphQLIterator, graphql_model='heros'
+    )
     iter.total = 10
     for i in iter:
         assert i == item
