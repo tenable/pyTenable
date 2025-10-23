@@ -132,6 +132,7 @@ dev-dependencies = [
     "urllib3==1.26.20",
     "rich>=13.8.1",
     "ptpython>=3.0.29",
+    "typer>=0.20.0",
 ]
 
 

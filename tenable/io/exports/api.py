@@ -13,58 +13,32 @@ Methods available on ``tio.exports``:
 """
 
 import warnings
+from datetime import datetime
+from ipaddress import IPv4Address, IPv4Network, IPv6Address
 from json.decoder import JSONDecodeError
-from typing import Dict, List, Optional, Union
+from typing import Any, Literal, Type
 from uuid import UUID
 
-from marshmallow import Schema
 from restfly.errors import RequestConflictError
-from typing_extensions import Literal
 
 from tenable.base.endpoint import APIEndpoint
 
+from . import models
 from .iterator import ExportsIterator
-from .schema import (
-    AssetExportSchema,
-    AssetV2ExportSchema,
-    ComplianceExportSchema,
-    VulnExportSchema,
-    WASVulnExportSchema,
-)
 
 EXPORTS_MAP = {
     'vulns': {
-        None: {
-            'path': 'vulns/export',
-            'job_path': 'vulns/export',
-            'schema': VulnExportSchema,
-        },
+        None: {'path': 'vulns/export', 'job_path': 'vulns/export'},
     },
     'assets': {
-        None: {
-            'path': 'assets/export',
-            'job_path': 'assets/export',
-            'schema': AssetExportSchema,
-        },
-        'v2': {
-            'path': 'assets/v2/export',
-            'job_path': 'assets/export',
-            'schema': AssetV2ExportSchema,
-        },
+        None: {'path': 'assets/export', 'job_path': 'assets/export'},
+        'v2': {'path': 'assets/v2/export', 'job_path': 'assets/export'},
     },
     'compliance': {
-        None: {
-            'path': 'compliance/export',
-            'job_path': 'compliance/export',
-            'schema': ComplianceExportSchema,
-        },
+        None: {'path': 'compliance/export', 'job_path': 'compliance/export'},
     },
     'was': {
-        None: {
-            'path': 'was/v1/export/vulns',
-            'job_path': 'was/v1/export/vulns',
-            'schema': WASVulnExportSchema,
-        },
+        None: {'path': 'was/v1/export/vulns', 'job_path': 'was/v1/export/vulns'},
     },
 }
 
@@ -72,17 +46,16 @@ EXPORTS_MAP = {
 class ExportsAPI(APIEndpoint):
     def _export(
         self,
+        *,
         export_type: Literal['vulns', 'assets', 'compliance', 'was'],
-        schema: Optional[Schema] = None,
-        version: Optional[str] = None,
-        use_iterator: bool = True,
+        payload: dict[str, Any],
+        version: str | None = None,
         when_done: bool = False,
-        iterator: ExportsIterator = ExportsIterator,
-        timeout: Optional[int] = None,
-        export_uuid: Optional[UUID] = None,
+        iterator: Type[ExportsIterator] | None = ExportsIterator,
+        timeout: int | None = None,
+        export_uuid: UUID | None = None,
         adopt_existing: bool = True,
-        **kwargs,
-    ) -> Union[ExportsIterator, UUID]:
+    ) -> ExportsIterator | UUID:
         """
         Submit new export job for the specified datatype.
 
@@ -92,14 +65,7 @@ class ExportsAPI(APIEndpoint):
         :devportal:`vulnerabilities <exports-vulns-request-export>` datatypes.
         """
         exmap = EXPORTS_MAP[export_type][version]
-        if not schema:
-            schema = exmap['schema']()
-
-        payload = schema.dump(schema.load(kwargs))
         path = exmap['path']
-
-        export_uuid = kwargs.pop('uuid', export_uuid)
-
         if not export_uuid:
             try:
                 export_uuid = self._api.post(path, json=payload, box=True).export_uuid
@@ -118,7 +84,7 @@ class ExportsAPI(APIEndpoint):
                     f'Original message from platform was "{msg}"'
                 )
 
-        if use_iterator:
+        if iterator:
             return iterator(
                 self._api,
                 type=export_type,
@@ -128,14 +94,13 @@ class ExportsAPI(APIEndpoint):
                 timeout=timeout,
             )
 
-        return UUID(export_uuid)
+        return UUID(str(export_uuid))
 
     def cancel(
         self,
         export_type: Literal['vulns', 'assets', 'compliance', 'was'],
         export_uuid: UUID,
-        version: Optional[str] = None,
-        **kwargs,
+        version: str | None = None,
     ) -> str:
         """
         Cancels the specified export job.
@@ -161,7 +126,6 @@ class ExportsAPI(APIEndpoint):
             >>> tio.exports.cancel('vuln', '{UUID}')
             'CANCELLED'
         """
-        export_uuid = kwargs.pop('uuid', export_uuid)
         path = EXPORTS_MAP[export_type][version]['job_path']
         return self._api.post(f'{path}/{export_uuid}/cancel', box=True).status
 
@@ -170,10 +134,9 @@ class ExportsAPI(APIEndpoint):
         export_type: Literal['vulns', 'assets', 'compliance', 'was'],
         export_uuid: UUID,
         chunk_id: int,
-        version: Optional[str] = None,
+        version: str | None = None,
         retries: int = 3,
-        **kwargs,
-    ) -> List:
+    ) -> list[dict[str, Any]]:
         """
         Downloads an export chunk from the specified job.
 
@@ -193,8 +156,7 @@ class ExportsAPI(APIEndpoint):
                 The export type version.
 
         Returns:
-            List:
-                The list of objects that entail the chunk of data requested.
+            The list of objects that entail the chunk of data requested.
 
         Example:
 
@@ -202,9 +164,8 @@ class ExportsAPI(APIEndpoint):
         """
         # We will attempt to download a chunk of data and convert it into JSON.
         # If the conversion fails, then we will increment our own retry counter
-        # and attempt to download the chunk again.  After 3 attempts, we will
+        # and attempt to download the chunk again. After 3 attempts, we will
         # assume that the chunk is dead and return an empty list.
-        export_uuid = kwargs.pop('uuid', export_uuid)
         downloaded = False
         counter = 0
         resp = []
@@ -234,9 +195,8 @@ class ExportsAPI(APIEndpoint):
         self,
         export_type: Literal['vulns', 'assets', 'compliance', 'was'],
         export_uuid: UUID,
-        version: Optional[str] = None,
-        **kwargs,
-    ) -> Dict:
+        version: str | None = None,
+    ) -> dict[str, Any]:
         """
         Gets the status of the export job.
 
@@ -257,8 +217,6 @@ class ExportsAPI(APIEndpoint):
 
             >>> status = tio.exports.status('vulns', '{UUID}')
         """
-        # Note: Assets export doesn't have v2 api for status call. Its only available for /status call.
-        export_uuid = kwargs.pop('uuid', export_uuid)
         path = EXPORTS_MAP[export_type][version]['job_path']
         return self._api.get(
             f'{path}/{export_uuid}/status',
@@ -268,9 +226,8 @@ class ExportsAPI(APIEndpoint):
     def jobs(
         self,
         export_type: Literal['vulns', 'assets', 'was'],
-        version: Optional[str] = None,
-        **kwargs,
-    ) -> Dict:
+        version: str | None = None,
+    ) -> dict[str, Any]:
         """
         Returns the list of jobs available for a given datatype.
 
@@ -295,9 +252,16 @@ class ExportsAPI(APIEndpoint):
     def initiate_export(
         self,
         export_type: Literal['vulns', 'assets', 'compliance', 'was'],
-        version: Optional[str] = None,
-        **kwargs,
-    ):
+        *,
+        version: str | None = None,
+        when_done: bool = False,
+        iterator: Type[ExportsIterator] | None = ExportsIterator,
+        timeout: int | None = None,
+        export_uuid: UUID | None = None,
+        uuid: UUID | None = None,
+        adopt_existing: bool = True,
+        **payload,
+    ) -> UUID:
         """
         Initiate an export job of the specified export type, and return the
         export UUID.
@@ -308,6 +272,12 @@ class ExportsAPI(APIEndpoint):
         support the kwargs supported by the assets() method; if export_type is
         "vulns", the method will accept only those supported by the vulns()
         method, and so forth.
+
+        .. deprecated:: 1.9.0
+            This method duplicates functionality that has existed within the bespoke
+            export methods since 1.4.x. Thereforce this method has been flagged for
+            removal. Please switch to using the appropriate export method and pass
+            ``iterator=None`` in order to return a UUID instead of ``ExportIterator``.
 
         Args:
             export_type:
@@ -325,83 +295,123 @@ class ExportsAPI(APIEndpoint):
 
             >>> export_uuid = tio.exports.initiate_export("vulns", timeout=10)
         """
+        warnings.warn(
+            (
+                'This method is deprecated in favor of using the appropriate export '
+                'method instead. If a UUID is expected to be returned, then simply '
+                'set the `iterator` parameter to `None`.'
+            ),
+            DeprecationWarning,
+            stacklevel=2,
+        )
         return self._export(
-            export_type=export_type, version=version, use_iterator=False, **kwargs
+            export_type=export_type,
+            version=version,
+            when_done=when_done,
+            iterator=None,
+            timeout=timeout,
+            export_uuid=export_uuid if export_uuid else uuid,
+            adopt_existing=adopt_existing,
+            payload=payload,
         )
 
-    def assets(self, **kwargs) -> Union[ExportsIterator, UUID]:
+    def assets(
+        self,
+        *,
+        chunk_size: int = 1000,
+        include_open_ports: bool | None = None,
+        include_resource_tags: bool | None = None,
+        created_at: datetime | int | None = None,
+        updated_at: datetime | int | None = None,
+        deleted_at: datetime | int | None = None,
+        terminated_at: datetime | int | None = None,
+        first_scan_time: datetime | int | None = None,
+        last_authenticated_scan_time: datetime | int | None = None,
+        last_assessed: datetime | int | None = None,
+        is_deleted: bool | None = None,
+        is_licensed: bool | None = None,
+        is_terminated: bool | None = None,
+        has_plugin_results: bool | None = None,
+        last_scan_id: str | None = None,
+        network_id: UUID | str | None = None,
+        sources: list[str] | None = None,
+        tags: list[tuple[str, list[str] | str]] | None = None,
+        servicenow_sysid: bool | None = None,
+        uuid: UUID | str | None = None,
+        timeout: int | None = None,
+        when_done: bool = False,
+        adopt_existing: bool = True,
+        iterator: Type[ExportsIterator] | None = ExportsIterator,
+    ) -> ExportsIterator | UUID:
         """
         Initiate an asset export.
 
         :devportal:`API Documentation <exports-assets-request-export>`
 
         Args:
-            last_scan_id (str, optional):
+            last_scan_id:
                 Scan uuid of the scan to be exported.
-            created_at (int, optional):
+            created_at:
                 Assets created after this timestamp will be returned.
-            deleted_at (int, optional):
+            deleted_at:
                 Assets deleted after this timestamp will be returned.
-            first_scan_time (int, optional):
+            first_scan_time:
                 Assets with a first_scan time later that this timestamp
                 will be returned.
-            last_assessed (int, optional):
+            last_assessed:
                 Assets last scanned after this timestamp will be returned.
-            last_authenticated_scan_time (int, optional):
+            last_authenticated_scan_time:
                 Assets last scanned with an authenticated scan after this
                 timestamp will be returned.
-            terminated_at (int, optional):
+            terminated_at:
                 Assets terminated after this timestamp will be returned.
-            updated_at (int, optional):
+            updated_at:
                 Assets updated after this timestamp will be returned.
-            has_plugin_results (bool, optional):
+            has_plugin_results:
                 Should assets only be returned if they have plugin results?
-            is_deleted (bool, optional):
+            is_deleted:
                 Should we return only assets that have been deleted?
-            is_licensed (bool, optional):
+            is_licensed:
                 Should we return only assets that are licensed?
-            is_terminated (bool, optional):
+            is_terminated:
                 Should we return assets that have been terminated?
-            servicenow_sysid (bool, optional):
+            servicenow_sysid:
                 Should we return assets that have a ServiceNOW sysid?
                 if ``True`` only assets with an id will be returned.
                 if ``False`` only assets without an id will be returned.
-            include_open_ports (bool, optional):
+            include_open_ports:
                 Should we include open ports of assets in the exported chunks?
-            chunk_size (int, optional):
+            chunk_size:
                 How many asset objects should be returned per chunk of data?
-                The default is ``1000``.
-            network_id (str, optional):
+            network_id:
                 Only assets within the specified network UUID will be returned.
-            sources (list[str], optional):
+            sources:
                 Only assets with a source matching one of these source values
                 will be returned.  Note that this value is case-sensitive.
             tags (list[tuple[str, str]], optional):
                 A list of tag pairs to filter the results on.  The tag pairs
                 should be presented as ``('CATEGORY', 'VALUE')``.
-            uuid (str, optional):
+            uuid:
                 A predefined export UUID to use for generating an
                 ExportIterator.  Using this parameter will ignore all of the
                 filter arguments.
-            use_iterator (bool, optional):
-                Determines if we should return an iterator, or simply the
-                export job UUID.  The default is to return an iterator.
-            when_done (bool, optional):
+            when_done:
                 When creating the iterator, setting this flag to true will tell
                 the iterator to wait until the export job has completed before
                 processing the first chunk.  The default behaviour is to start
                 processing chunks of data as soon as they become available.
-            timeout (int, optional):
+            timeout:
                 If specified, determines a timeout in seconds to wait for the
                 export job to sit in the queue before cancelling the job and
                 raising a ``TioExportsTimeout`` error.  Once a job has started
                 to be processed, the timeout is ignored.
-            iterator (Iterator, optional):
-                Supports overloading the iterator class to be used to process
-                the datachunks.
-            adopt_existing (bool, optional):
+            iterator:
+                Supports overloading the iterator class to be used to process the
+                datachunks. If set to ``None``, then the job UUID will be returned
+                instead of an iterator.
+            adopt_existing:
                 Should we automatically adopt an existing Job UUID with we
-                receive a 409 conflict?  Defaults to True.
+                receive a 409 conflict?
 
         Examples:
 
@@ -422,84 +432,137 @@ class ExportsAPI(APIEndpoint):
             ...     tags=[('Region', 'Chicago')]
             ... )
         """
-        return self._export('assets', AssetExportSchema(), **kwargs)
+        return self._export(
+            export_type='assets',
+            version=None,
+            iterator=iterator,
+            timeout=timeout,
+            export_uuid=uuid,
+            adopt_existing=adopt_existing,
+            payload=models.AssetExportV1(
+                chunk_size=chunk_size,
+                include_open_ports=include_open_ports,
+                include_resource_tags=include_resource_tags,
+                filters=models.AssetExportFiltersV1(
+                    created_at=created_at,
+                    updated_at=updated_at,
+                    deleted_at=deleted_at,
+                    terminated_at=terminated_at,
+                    first_scan_time=first_scan_time,
+                    last_authenticated_scan_time=last_authenticated_scan_time,
+                    last_assessed=last_assessed,
+                    is_deleted=is_deleted,
+                    is_licensed=is_licensed,
+                    is_terminated=is_terminated,
+                    has_plugin_results=has_plugin_results,
+                    servicenow_sysid=servicenow_sysid,
+                    last_scan_id=last_scan_id,
+                    network_id=network_id,  # ty: ignore[invalid-argument-type]
+                    sources=sources,
+                    tags=tags,
+                ),
+            ).model_dump(mode='json', exclude_none=True),
+        )
 
-    def assets_v2(self, **kwargs) -> Union[ExportsIterator, UUID]:
+    def assets_v2(
+        self,
+        *,
+        chunk_size: int = 1000,
+        include_open_ports: bool | None = None,
+        include_resource_tags: bool | None = None,
+        since: datetime | int | None = None,
+        created_at: datetime | int | None = None,
+        updated_at: datetime | int | None = None,
+        deleted_at: datetime | int | None = None,
+        terminated_at: datetime | int | None = None,
+        first_scan_time: datetime | int | None = None,
+        last_authenticated_scan_time: datetime | int | None = None,
+        last_assessed: datetime | int | None = None,
+        is_deleted: bool | None = None,
+        is_licensed: bool | None = None,
+        is_terminated: bool | None = None,
+        has_plugin_results: bool | None = None,
+        servicenow_sysid: bool | None = None,
+        last_scan_id: str | None = None,
+        network_id: UUID | str | None = None,
+        sources: list[str] | None = None,
+        types: list[str] | None = None,
+        iterator: Type[ExportsIterator] | None = ExportsIterator,
+        timeout: int | None = None,
+        adopt_existing: bool = True,
+        when_done: bool = False,
+        uuid: UUID | str | None = None,
+    ) -> ExportsIterator | UUID:
         """
         Initiate an asset v2 export.
 
         :devportal:`API Documentation <exports-v2-assets-request-export>`
 
         Args:
-            last_scan_id (str, optional):
+            last_scan_id:
                 Scan uuid of the scan to be exported.
-            created_at (int, optional):
+            created_at:
                 Assets created after this timestamp will be returned.
-            deleted_at (int, optional):
+            deleted_at:
                 Assets deleted after this timestamp will be returned.
-            first_scan_time (int, optional):
-                Assets with a first_scan time later that this timestamp
-                will be returned.
-            last_assessed (int, optional):
+            first_scan_time:
+                Return Assets with a first_scan time later that this timestamp will.
+            last_assessed:
                 Assets last scanned after this timestamp will be returned.
-            last_authenticated_scan_time (int, optional):
-                Assets last scanned with an authenticated scan after this
-                timestamp will be returned.
-            terminated_at (int, optional):
+            last_authenticated_scan_time:
+                Return Assets last scanned with an authenticated scan after this
+                timestamp.
+            terminated_at:
                 Assets terminated after this timestamp will be returned.
-            updated_at (int, optional):
+            updated_at:
                 Assets updated after this timestamp will be returned.
-            has_plugin_results (bool, optional):
+            has_plugin_results:
                 Should assets only be returned if they have plugin results?
-            is_deleted (bool, optional):
+            is_deleted:
                 Should we return only assets that have been deleted?
-            is_licensed (bool, optional):
+            is_licensed:
                 Should we return only assets that are licensed?
-            is_terminated (bool, optional):
+            is_terminated:
                 Should we return assets that have been terminated?
-            servicenow_sysid (bool, optional):
+            servicenow_sysid:
                 Should we return assets that have a ServiceNOW sysid?
-                if ``True`` only assets with an id will be returned.
-                if ``False`` only assets without an id will be returned.
-            include_open_ports (bool, optional):
+                If ``True`` only assets with an id will be returned.
+                If ``False`` only assets without an id will be returned.
+            include_open_ports:
                 Should we include open ports of assets in the exported chunks?
-            chunk_size (int, optional):
+            chunk_size:
                 How many asset objects should be returned per chunk of data?
-                The default is ``1000``.
-            network_id (str, optional):
+            network_id:
                 Only assets within the specified network UUID will be returned.
-            sources (list[str], optional):
-                Only assets with a source matching one of these source values
-                will be returned.  Note that this value is case-sensitive.
-            types (list[str], optional):
+            sources:
+                Only assets with a source matching one of these source values will be
+                returned. Note that this value is case-sensitive.
+            types:
                 Only assets with specified type will be returned.
-            since (int, optional):
+            since:
                 Returns all assets that were updated, deleted, or terminated since the
                 specified date regardless of state. The timestamp is specified in
                 seconds since epoc (unix timestamp).
-            uuid (str, optional):
-                A predefined export UUID to use for generating an
-                ExportIterator.  Using this parameter will ignore all of the
-                filter arguments.
-            use_iterator (bool, optional):
-                Determines if we should return an iterator, or simply the
-                export job UUID.  The default is to return an iterator.
-            when_done (bool, optional):
-                When creating the iterator, setting this flag to true will tell
-                the iterator to wait until the export job has completed before
-                processing the first chunk.  The default behaviour is to start
-                processing chunks of data as soon as they become available.
-            timeout (int, optional):
-                If specified, determines a timeout in seconds to wait for the
-                export job to sit in the queue before cancelling the job and
-                raising a ``TioExportsTimeout`` error.  Once a job has started
-                to be processed, the timeout is ignored.
-            iterator (Iterator, optional):
-                Supports overloading the iterator class to be used to process
-                the datachunks.
-            adopt_existing (bool, optional):
+            uuid:
+                A predefined export UUID to use for generating an ExportIterator. Using
+                this parameter will ignore all of the filter arguments.
+            when_done:
+                When creating the iterator, setting this flag to true will tell the
+                iterator to wait until the export job has completed before processing
+                the first chunk.  The default behaviour is to start processing chunks
+                of data as soon as they become available.
+            timeout:
+                If specified, determines a timeout in seconds to wait for the export \
+                job to sit in the queue before cancelling the job and raising a
+                ``TioExportsTimeout`` error.  Once a job has started o be processed,
+                the timeout is ignored.
+            iterator:
+                Supports overloading the iterator class to be used to process the
+                datachunks. If set to ``None``, then the job UUID will be returned
+                instead of an iterator.
+            adopt_existing:
                 Should we automatically adopt an existing Job UUID with we
-                receive a 409 conflict?  Defaults to True.
+                receive a 409 conflict?
 
         Examples:
 
@@ -520,140 +583,288 @@ class ExportsAPI(APIEndpoint):
             ...     types=['host']
             ... )
         """
-        return self._export('assets', AssetV2ExportSchema(), version='v2', **kwargs)
+        return self._export(
+            export_type='assets',
+            version='v2',
+            when_done=when_done,
+            iterator=iterator,
+            timeout=timeout,
+            export_uuid=uuid,
+            adopt_existing=adopt_existing,
+            payload=models.AssetExportV2(
+                chunk_size=chunk_size,
+                include_open_ports=include_open_ports,
+                include_resource_tags=include_resource_tags,
+                filters=models.AssetExportFiltersV2(
+                    created_at=created_at,
+                    updated_at=updated_at,
+                    deleted_at=deleted_at,
+                    terminated_at=terminated_at,
+                    first_scan_time=first_scan_time,
+                    last_authenticated_scan_time=last_authenticated_scan_time,
+                    last_assessed=last_assessed,
+                    is_deleted=is_deleted,
+                    is_licensed=is_licensed,
+                    is_terminated=is_terminated,
+                    has_plugin_results=has_plugin_results,
+                    servicenow_sysid=servicenow_sysid,
+                    last_scan_id=last_scan_id,
+                    network_id=network_id,  # ty: ignore[invalid-argument-type]
+                    sources=sources,
+                    types=types,
+                    since=since,
+                ),
+            ).model_dump(mode='json', exclude_none=True),
+        )
 
-    def compliance(self, **kwargs) -> Union[ExportsIterator, UUID]:
+    def compliance(
+        self,
+        *,
+        num_findings: int = 5000,
+        asset: list[UUID | str] | None = None,
+        last_seen: datetime | int | None = None,
+        first_seen: datetime | int | None = None,
+        last_observed: datetime | int | None = None,
+        indexed_at: datetime | int | None = None,
+        since: datetime | int | None = None,
+        audit_name: str | None = None,
+        audit_file_name: str | None = None,
+        compliance_results: list[
+            Literal['PASSED', 'FAILED', 'WARNING', 'SKIPPED', 'ERROR', 'UNKNOWN']
+        ]
+        | None = None,
+        ipv4_addresses: list[str | IPv4Address] | None = None,
+        ipv6_addresses: list[str | IPv6Address] | None = None,
+        network_id: UUID | str | None = None,
+        plugin_id: list[int] | None = None,
+        state: list[Literal['info', 'low', 'medium', 'high', 'critical']] | None = None,
+        tags: list[tuple[str, list[str] | str]] | None = None,
+        iterator: Type[ExportsIterator] | None = ExportsIterator,
+        when_done: bool = False,
+        uuid: UUID | str | None = None,
+        timeout: int | None = None,
+        adopt_existing: bool = True,
+    ) -> ExportsIterator | UUID:
         """
         Initiate a compliance export.
 
         :devportal:`API Documentation <io-exports-compliance-create>`
 
         Args:
-            asset (list[str], optional):
+            asset:
                 A list of assets to return compliance results for.
-            first_seen (int, optional):
-                Returns findings with a first seen time newer than the
-                specified unix timestamp.
-            last_seen (int, optional):
-                Returns findings with a last seen time newer than the
-                specified unix timestamp.
-            ipv4_addresses (list[str], optional):
+            first_seen:
+                Returns findings with a first seen time newer than the specified unix
+                timestamp.
+            last_seen:
+                Returns findings with a last seen time newer than the specified unix
+                timestamp.
+            ipv4_addresses:
                 Returns Compliance findings found for the provided list of ipv4 addresses.
-            ipv6_addresses (list[str], optional):
+            ipv6_addresses:
                 Returns Compliance findings found for the provided list of ipv6 addresses.
-            plugin_name (list[str], optional):
+            plugin_name:
                 Returns Compliance findings for the specified list of plugin names.
-            plugin_id (list[int], optional):
+            plugin_id:
                 Returns Compliance findings for the specified list of plugin IDs.
-            audit_name (str, optional):
-                Restricts compliance findings to those associated with the specified audit.
-            audit_file_name (str, optional):
-                Restricts compliance findings to those associated with the specified audit file name.
-            compliance_results (list[str], optional):
-                Restricts compliance findings to those associated with the specified list of compliance results,
-                such as PASSED, FAILED, SKIPPED, ERROR, UNKNOWN etc.
-            last_observed (int,optional):
-                Restricts compliance findings to those that were last observed on or after the specified unix timestamp.
-            indexed_at (int, optional):
-                Restricts compliance findings to those that were updated or indexed into Tenable Vulnerability Management
-                 on or after the specified unix timestamp.
-            since (int, optional):
-                Same as indexed_at. Restricts compliance findings to those that were updated or indexed into Tenable
-                Vulnerability Management on or after the specified unix timestamp.
-            state (list[str], optional):
-                Restricts compliance findings to those associated with the provided list of states, such as open, reopened and fixed.
-            tags (list[tuple[str, list[str]]], optional):
-                A list of tag pairs to filter the results on.  The tag pairs
-                should be presented as ``('CATEGORY', ['VALUE'])``.
-            network_id (str, optional):
+            audit_name:
+                Restricts compliance findings to those associated with the specified
+                audit.
+            audit_file_name:
+                Restricts compliance findings to those associated with the specified
+                audit file name.
+            compliance_results:
+                Restricts compliance findings to those associated with the specified
+                list of compliance results, such as PASSED, FAILED, SKIPPED, ERROR,
+                UNKNOWN etc.
+            last_observed:
+                Restricts compliance findings to those that were last observed on or
+                after the specified unix timestamp.
+            indexed_at:
+                Restricts compliance findings to those that were updated or indexed
+                into Tenable Vulnerability Management on or after the specified unix
+                timestamp.
+            since:
+                Same as indexed_at. Restricts compliance findings to those that were
+                updated or indexed into Tenable Vulnerability Management on or after
+                the specified unix timestamp.
+            state:
+                Restricts compliance findings to those associated with the provided
+                list of states, such as open, reopened and fixed.
+            tags:
+                A list of tag pairs to filter the results on.  The tag pairs should be
+                presented as ``('CATEGORY', ['VALUE'])``.
+            network_id:
                 Returns Compliance findings for the specified network ID.
-            num_findings (int):
-                The number of findings to return per chunk of data.  If left
-                unspecified, the default is ``5000``.
-            uuid (str, optional):
-                A predefined export UUID to use for generating an
-                ExportIterator.  Using this parameter will ignore all of the
-                filter arguments.
-            use_iterator (bool, optional):
-                Determines if we should return an iterator, or simply the
-                export job UUID.  The default is to return an iterator.
-            when_done (bool, optional):
-                When creating the iterator, setting this flag to true will tell
-                the iterator to wait until the export job has completed before
-                processing the first chunk.  The default behaviour is to start
-                processing chunks of data as soon as they become available.
-            timeout (int, optional):
-                If specified, determines a timeout in seconds to wait for the
-                export job to sit in the queue before cancelling the job and
-                raising a ``TioExportsTimeout`` error.  Once a job has started
-                to be processed, the timeout is ignored.
-            iterator (Iterator, optional):
-                Supports overloading the iterator class to be used to process
-                the datachunks.
-            adopt_existing (bool, optional):
-                Should we automatically adopt an existing Job UUID with we
-                receive a 409 conflict?  Defaults to True.
+            num_findings:
+                The number of findings to return per chunk of data.
+            uuid:
+                A predefined export UUID to use for generating an ExportIterator. Using
+                this parameter will ignore all of the filter arguments.
+            when_done:
+                When creating the iterator, setting this flag to true will tell the
+                iterator to wait until the export job has completed before processing
+                the first chunk.  The default behaviour is to start processing chunks
+                of data as soon as they become available.
+            timeout:
+                If specified, determines a timeout in seconds to wait for the export
+                job to sit in the queue before cancelling the job and raising a
+                ``TioExportsTimeout`` error. Once a job has started to be processed,
+                the timeout is ignored.
+            iterator:
+                Supports overloading the iterator class to be used to process the
+                datachunks. If set to None, then the job ID will be returned instead
+                of an iterator.
+            adopt_existing:
+                Should we automatically adopt an existing Job UUID with we receive a
+                409 conflict?
 
         Examples:
 
             >>> for findings in tio.exports.compliance():
             ...     print(finding)
         """
-        return self._export('compliance', ComplianceExportSchema(), **kwargs)
+        return self._export(
+            export_type='compliance',
+            version=None,
+            iterator=iterator,
+            timeout=timeout,
+            export_uuid=uuid,
+            adopt_existing=adopt_existing,
+            when_done=when_done,
+            payload=models.ComplianceExportV1(
+                num_findings=num_findings,
+                asset=asset,  # ty: ignore[invalid-argument-type]
+                filters=models.ComplianceExportFiltersV1(
+                    last_seen=last_seen,
+                    first_seen=first_seen,
+                    last_observed=last_observed,
+                    indexed_at=indexed_at,
+                    since=since,
+                    audit_name=audit_name,
+                    audit_file_name=audit_file_name,
+                    compliance_results=compliance_results,
+                    ipv4_addresses=ipv4_addresses,  # ty: ignore[invalid-argument-type]
+                    ipv6_addresses=ipv6_addresses,  # ty: ignore[invalid-argument-type]
+                    network_id=network_id,  # ty: ignore[invalid-argument-type]
+                    plugin_id=plugin_id,
+                    state=state,
+                    tags=tags,
+                ),
+            ).model_dump(mode='json', exclude_none=True),
+        )
 
-    def vulns(self, **kwargs) -> Union[ExportsIterator, UUID]:
+    def vulns(
+        self,
+        *,
+        num_assets: int = 500,
+        include_unlicensed: bool = True,
+        since: datetime | int | None = None,
+        first_found: datetime | int | None = None,
+        first_seen: datetime | int | None = None,
+        last_found: datetime | int | None = None,
+        last_seen: datetime | int | None = None,
+        last_fixed: datetime | int | None = None,
+        resurfaced_date: datetime | int | None = None,
+        indexed_at: datetime | int | None = None,
+        time_taken_to_fix: dict[str, int] | None = None,
+        cvss4_base_score: dict[str, float] | None = None,
+        epss_score: dict[str, float] | None = None,
+        cidr_range: IPv4Network | str | None = None,
+        cve_id: list[str] | None = None,
+        cve_category: list[
+            Literal[
+                'cisa known exploitable',
+                'emerging threats',
+                'in the news',
+                'persistently exploited',
+                'ransomware',
+                'recent active exploitation',
+                'top 50 vpr',
+            ]
+        ]
+        | None = None,
+        exploit_maturity: list[Literal['high', 'functional', 'poc', 'unproven']]
+        | None = None,
+        initiative_id: UUID | str | None = None,
+        network_id: UUID | str | None = None,
+        plugin_family: list[str] | None = None,
+        plugin_id: list[int] | None = None,
+        plugin_type: str | None = None,
+        scan_uuid: UUID | str | None = None,
+        severity: list[Literal['info', 'low', 'medium', 'high', 'critical']]
+        | None = None,
+        severity_modification_type: list[Literal['NONE', 'ACCEPTED', 'RECASTED']]
+        | None = None,
+        state: list[Literal['OPEN', 'REOPENED', 'FIXED']] | None = None,
+        source: list[str] | None = None,
+        vpr_score: dict[str, float] | None = None,
+        vpr_v2_score: dict[str, float] | None = None,
+        vpr_threat_intensity: list[
+            Literal['very high', 'high', 'medium', 'low', 'very low']
+        ]
+        | None = None,
+        weaponization: list[
+            Literal['apt', 'botnet', 'malware', 'ransomware', 'rootkit']
+        ]
+        | None = None,
+        tags: list[tuple[str, list[str] | str]] | None = None,
+        uuid: UUID | str | None = None,
+        timeout: int | None = None,
+        when_done: bool = False,
+        adopt_existing: bool = True,
+        iterator: Type[ExportsIterator] | None = ExportsIterator,
+    ) -> ExportsIterator | UUID:
         """
         Initiate a vulnerability export.
 
         :devportal:`API Documentation <exports-vulns-request-export>`
 
         Args:
-            first_found (int, optional):
-                Findings first discovered after this timestamp will be
-                returned.
-            indexed_at (int, optional):
-                Findings indexed into Tenable Vulnerability Management after this timestamp will
-                be returned.
-            last_fixed (int, optional):
-                Findings fixed after this timestamp will be returned.  Note
-                that this filter only applies to fixed data and should not be
-                used when searching for active findings.
-            last_found (int, optional):
+            first_found:
+                Findings first discovered after this timestamp will be returned.
+            indexed_at:
+                Findings indexed into Tenable Vulnerability Management after this
+                timestamp will be returned.
+            last_fixed:
+                Findings fixed after this timestamp will be returned. Note that this
+                filter only applies to fixed data and should not be used when searching
+                for active findings.
+            last_found:
                 Findings last observed after this timestamp will be returned.
-            since (int, optional):
-                Findings last observed in any state after this timestamp will
-                be returned.  Cannot be used with ``last_found``,
-                ``first_found``, or ``last_fixed``.
-            resurfaced_date (int, optional):
-                Returns findings that have been resurfaced on or after this unix
-                timestamp.
-            time_taken_to_fix (dict[str, int], optional):
+            since:
+                Findings last observed in any state after this timestamp will be
+                returned.  Cannot be used with ``last_found``, ``first_found``,
+                or ``last_fixed``.
+            resurfaced_date:
+                Returns findings that have been resurfaced on or after this datetime.
+            time_taken_to_fix:
                 Returns findings based on how long that it took the organization to
                 resolve. The export will only inclucled ``FIXED`` findings when this
                 filter is applied.  Supported keys are
                 ``lte`` for *Less Than or Equal to* or
                 ``gte`` for *Greater Than or Equal to*.
                 The values should be in seconds.
-            plugin_family (list[str], optional):
+            plugin_family:
                 Only return findings from the specified plugin families.
-            plugin_id (list[int], optional):
+            plugin_id:
                 Only return findings from the specified plugin ids.
-            plugin_type (str, optional):
+            plugin_type:
                 Only return findings with the specified plugin type.
-            scan_uuid (uuid, optional):
+            scan_uuid:
                 Only return findings with the specified scan UUID.
-            source (list[str], optional):
+            source:
                 Only return vulnerabilities for assets that have the specified scan source.
-            severity_modification_type (list[str], optional):
+            severity_modification_type:
                 Only return vulnerabilities with the specified severity modification type.
-            severity (list[str], optional):
+            severity:
                 Only return findings with the specified severities.
-            state (list[str], optional):
+            state:
                 Only return findings with the specified states.
-            vpr_score (dict, optional):
-                Only returns findings that meet the specified VPR criteria.
-                The filter is formatted as a dictionary with the mathematical
-                operation as the key.  Supported operations are:
+            vpr_score:
+                Only returns findings that meet the specified VPR criteria. The filter
+                is formatted as a dictionary with the mathematical operation as the
+                key. Supported operations are:
 
                 .. list-table:: Supported Operations
                     :widths: auto
@@ -682,62 +893,57 @@ class ExportsAPI(APIEndpoint):
                       - float
                       - VPR scores must be less than or equal to the
                         specified value.
-            network_id (str, optional):
+            network_id:
                 Only findings within the specified network UUID will be
                 returned.
-            cidr_range (str, optional):
+            cidr_range:
                 Restrict the export to only vulns assigned to assets within the
                 CIDR range specified.
-            tags (list[tuple[str, str]], optional):
-                A list of tag pairs to filter the results on.  The tag pairs
-                should be presented as ``('CATEGORY', 'VALUE')``.
-            include_unlicensed (bool, optional):
-                Should findings for assets that are not licensed be included in
-                the results?
-            num_assets (int, optional):
-                As findings are grouped by asset, how many assets's findings
-                should exist within each data chunk?  If left unspecified the
-                default is ``500``.
-            uuid (str, optional):
-                A predefined export UUID to use for generating an
-                ExportIterator.  Using this parameter will ignore all of the
-                filter arguments.
-            use_iterator (bool, optional):
-                Determines if we should return an iterator, or simply the
-                export job UUID.  The default is to return an iterator.
-            when_done (bool, optional):
-                When creating the iterator, setting this flag to true will tell
-                the iterator to wait until the export job has completed before
-                processing the first chunk.  The default behaviour is to start
-                processing chunks of data as soon as they become available.
-            timeout (int, optional):
-                If specified, determines a timeout in seconds to wait for the
-                export job to sit in the queue before cancelling the job and
-                raising a ``TioExportsTimeout`` error.  Once a job has started
-                to be processed, the timeout is ignored.
-            iterator (Iterator, optional):
-                Supports overloading the iterator class to be used to process
-                the datachunks.
-            adopt_existing (bool, optional):
-                Should we automatically adopt an existing Job UUID with we
-                receive a 409 conflict?  Defaults to True.
-            cve_id (list[str], optional):
+            tags:
+                A list of tag pairs to filter the results on.  The tag pairs should be
+                presented as ``('CATEGORY', 'VALUE')``.
+            include_unlicensed:
+                Should findings for unlicensed assets that be included in the results?
+            num_assets:
+                As findings are grouped by asset, how many assets's findings should
+                exist within each data chunk?
+            uuid:
+                A predefined export UUID to use for generating an ExportIterator. Using
+                this parameter will ignore all of the filter arguments.
+            when_done:
+                When creating the iterator, setting this flag to true will tell the
+                iterator to wait until the export job has completed before processing
+                the first chunk.  The default behaviour is to start processing chunks
+                of data as soon as they become available.
+            timeout:
+                If specified, determines a timeout in seconds to wait for the export
+                job to sit in the queue before cancelling the job and raising a
+                ``TioExportsTimeout`` error. Once a job has started to be processed,
+                the timeout is ignored.
+            iterator:
+                Supports overloading the iterator class to be used to process the
+                datachunks. If set to None, then the job ID will be returned instead
+                of an iterator.
+            adopt_existing:
+                Should we automatically adopt an existing Job UUID with we receive a
+                409 conflict?
+            cve_id:
                 Returns findings that match the specified CVE IDs.
-            cve_category (list[str], optional):
+            cve_category:
                 Returns findings the match the specified CVE category. For more
                 information about categories, see the *Vulnerability Categories*
                 section in the _Tenable Vulnerability Management User Guide_.
-            exploit_maturity (list[str], optional):
+            exploit_maturity:
                 Returns findings that match the specified exploit maturity. Tenable
                 assigns exploit maturity values to vulnerabilities based on the
                 availability and sophistication of exploit code. Supported values are
                 ``high``, ``functional``, ``poc``, ``unproven``.
-            vpr_threat_intensity (list[str], optional):
+            vpr_threat_intensity:
                 Returns findings that match the specified threat intensity. The threat
                 intensity of a vulnerability is based onf the number and frequency of
                 recently observed events. Supported values are ``very high``, ``high``,
                 ``medium``, ``low``, ``very low``.
-            weaponization (list[str], optional):
+            weaponization:
                 Returns findings that match the specified weaponizations. Weaponized
                 vulnerabilities are vulnerabilities that are ready for use in a
                 particular type of attack. Supported values are ``apt``, ``botnet``,
@@ -764,58 +970,166 @@ class ExportsAPI(APIEndpoint):
             ...     tags=[('Region', 'Chicago')]
             ... )
         """
-        return self._export('vulns', VulnExportSchema(), **kwargs)
+        return self._export(
+            export_type='vulns',
+            version=None,
+            when_done=when_done,
+            iterator=iterator,
+            timeout=timeout,
+            export_uuid=uuid,
+            adopt_existing=adopt_existing,
+            payload=models.VulnerabilityExportV1(
+                num_assets=num_assets,
+                include_unlicensed=include_unlicensed,
+                filters=models.VulnerabilityExportFiltersV1(
+                    since=since,
+                    first_found=first_found,
+                    first_seen=first_seen,
+                    last_found=last_found,
+                    last_seen=last_seen,
+                    indexed_at=indexed_at,
+                    last_fixed=last_fixed,
+                    resurfaced_date=resurfaced_date,
+                    time_taken_to_fix=time_taken_to_fix,  # ty: ignore[invalid-argument-type]
+                    cidr_range=cidr_range,  # ty: ignore[invalid-argument-type]
+                    cve_id=cve_id,
+                    cve_category=cve_category,
+                    cvss4_base_score=cvss4_base_score,  # ty: ignore[invalid-argument-type]
+                    epss_score=epss_score,  # ty: ignore[invalid-argument-type]
+                    exploit_maturity=exploit_maturity,
+                    initiative_id=initiative_id,  # ty: ignore[invalid-argument-type]
+                    network_id=network_id,  # ty: ignore[invalid-argument-type]
+                    plugin_family=plugin_family,
+                    plugin_id=plugin_id,
+                    plugin_type=plugin_type,
+                    scan_uuid=scan_uuid,  # ty: ignore[invalid-argument-type]
+                    severity=severity,
+                    severity_modification_type=severity_modification_type,
+                    state=state,
+                    source=source,
+                    vpr_score=vpr_score,  # ty: ignore[invalid-argument-type]
+                    vpr_v2_score=vpr_v2_score,  # ty: ignore[invalid-argument-type]
+                    vpr_threat_intensity=vpr_threat_intensity,
+                    weaponization=weaponization,
+                    tags=tags,
+                ),
+            ).model_dump(mode='json', exclude_none=True),
+        )
 
-    def was(self, **kwargs) -> Union[ExportsIterator, UUID]:
+    def was(
+        self,
+        *,
+        num_assets: int = 500,
+        include_unlicensed: bool = True,
+        since: datetime | int | None = None,
+        first_found: datetime | int | None = None,
+        last_fixed: datetime | int | None = None,
+        last_found: datetime | int | None = None,
+        indexed_at: datetime | int | None = None,
+        asset_uuid: list[UUID | str] | None = None,
+        asset_name: str | None = None,
+        cvss4_base_score: dict[str, float] | None = None,
+        epss_score: dict[str, float] | None = None,
+        ipv4s: list[IPv4Address | str] | None = None,
+        owasp_2010: list[
+            Literal['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10']
+        ]
+        | None = None,
+        owasp_2013: list[
+            Literal['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10']
+        ]
+        | None = None,
+        owasp_2017: list[
+            Literal['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10']
+        ]
+        | None = None,
+        owasp_2021: list[
+            Literal['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10']
+        ]
+        | None = None,
+        owasp_api_2019: list[
+            Literal[
+                'API1',
+                'API2',
+                'API3',
+                'API4',
+                'API5',
+                'API6',
+                'API7',
+                'API8',
+                'API9',
+                'API10',
+            ]
+        ]
+        | None = None,
+        plugin_ids: list[int] | None = None,
+        severity: list[Literal['info', 'low', 'medium', 'high', 'critical']]
+        | None = None,
+        severity_modification_type: list[Literal['NONE', 'ACCEPTED', 'RECASTED']]
+        | None = None,
+        state: list[Literal['OPEN', 'REOPENED', 'FIXED']] | None = None,
+        vpr_score: dict[str, float] | None = None,
+        vpr_v2_score: dict[str, float] | None = None,
+        uuid: UUID | str | None = None,
+        timeout: int | None = None,
+        when_done: bool = False,
+        adopt_existing: bool = True,
+        iterator: Type[ExportsIterator] | None = ExportsIterator,
+    ) -> ExportsIterator | UUID:
         """
         Initiate a WAS vulnerability export.
         :devportal:`API Documentation <was-export-findings>`
         Args:
-            first_found (int, optional):
-                Findings first discovered after this timestamp will be
-                returned.
-            indexed_at (int, optional):
-                Findings indexed into Tenable Vulnerability Management after this timestamp will
-                be returned.
-            last_fixed (int, optional):
-                Findings fixed after this timestamp will be returned.  Note
-                that this filter only applies to fixed data and should not be
-                used when searching for active findings.
-            last_found (int, optional):
+            first_found:
+                Findings first discovered after this timestamp will be returned.
+            indexed_at:
+                Findings indexed after this timestamp will be returned.
+            last_fixed:
+                Findings fixed after this timestamp will be returned. Note that this
+                filter only applies to fixed data and should not be used when searching
+                for active findings.
+            last_found:
                 Findings last observed after this timestamp will be returned.
-            since (int, optional):
-                Findings last observed in any state after this timestamp will
-                be returned.  Cannot be used with ``last_found``,
-                ``first_found``, or ``last_fixed``.
-            plugin_ids (list[int], optional):
+            since:
+                Findings last observed in any state after this timestamp will be
+                returned.  Cannot be used with ``last_found``, ``first_found``, or
+                ``last_fixed``.
+            plugin_ids:
                 Only return findings from the specified plugin ids.
-            asset_uuid (list[str], optional):
+            asset_uuid:
                 Only return findings for the assets with specific asset-uuids.
-            asset_name (str, optional):
+            asset_name:
                 Only return findings for the asset with given name.
-            owasp_2010 (list[str], optional):
-                A list of chapters from the OWASP Categories 2010 report for which you want to filter findings returned in the findings export.
-            owasp_2013 (list[str], optional):
-                A list of chapters from the OWASP Categories 2013 report for which you want to filter findings returned in the findings export.
-            owasp_2017 (list[str], optional):
-                A list of chapters from the OWASP Categories 2017 report for which you want to filter findings returned in the findings export.
-            owasp_2021 (list[str], optional):
-                A list of chapters from the OWASP Categories 2021 report for which you want to filter findings returned in the findings export.
-            owasp_api_2019 (list[str], optional):
-                A list of chapters from the OWASP Categories API 2019 report for which you want to filter findings returned in the findings export.
-            severity_modification_type (list[str], optional):
-                Only return vulnerabilities with the specified severity modification type.
-            severity (list[str], optional):
+            owasp_2010:
+                A list of chapters from the OWASP Categories 2010 report for which you
+                want to filter findings returned in the findings export.
+            owasp_2013:
+                A list of chapters from the OWASP Categories 2013 report for which you
+                want to filter findings returned in the findings export.
+            owasp_2017:
+                A list of chapters from the OWASP Categories 2017 report for which you
+                want to filter findings returned in the findings export.
+            owasp_2021:
+                A list of chapters from the OWASP Categories 2021 report for which you
+                want to filter findings returned in the findings export.
+            owasp_api_2019:
+                A list of chapters from the OWASP Categories API 2019 report for which
+                you want to filter findings returned in the findings export.
+            severity_modification_type:
+                Only return vulnerabilities with the specified modification type.
+            severity:
                 Only return findings with the specified severities.
-            state (list[str], optional):
+            state:
                 Only return findings with the specified states.
-            vpr_score (dict, optional):
-                Only returns findings that meet the specified VPR criteria.
-                The filter is formatted as a dictionary with the mathematical
-                operation as the key.  Supported operations are:
+            vpr_score:
+                Only returns findings that meet the specified VPR criteria. The filter
+                is formatted as a dictionary with the mathematical operation as the key.
+                Supported operations are:
+
                 .. list-table:: Supported Operations
                     :widths: auto
                     :header-rows: 1
+
                     * - Operation
                       - Type
                       - Description
@@ -839,41 +1153,37 @@ class ExportsAPI(APIEndpoint):
                       - float
                       - VPR scores must be less than or equal to the
                         specified value.
-            ipv4s (list[str], optional):
+            ipv4s:
                 Restrict the export to only vulns assigned to assets with specific
                 ip-addresses.
-            include_unlicensed (bool, optional):
+            include_unlicensed:
                 Should findings for assets that are not licensed be included in
                 the results?
-            num_assets (int, optional):
+            num_assets:
                 As findings are grouped by asset, how many assets' findings
-                should exist within each data chunk?  If left unspecified the
-                default is ``500``.
-            uuid (str, optional):
-                A predefined export UUID to use for generating an
-                ExportIterator.  Using this parameter will ignore all the
-                filter arguments.
-            use_iterator (bool, optional):
-                Determines if we should return an iterator, or simply the
-                export job UUID.  The default is to return an iterator.
-            when_done (bool, optional):
-                When creating the iterator, setting this flag to true will tell
-                the iterator to wait until the export job has completed before
-                processing the first chunk.  The default behaviour is to start
-                processing chunks of data as soon as they become available.
-            timeout (int, optional):
-                If specified, determines a timeout in seconds to wait for the
-                export job to sit in the queue before cancelling the job and
-                raising a ``TioExportsTimeout`` error.  Once a job has started
-                to be processed, the timeout is ignored.
-            iterator (Iterator, optional):
-                Supports overloading the iterator class to be used to process
-                the datachunks.
-            adopt_existing (bool, optional):
-                Should we automatically adopt an existing Job UUID with we
-                receive a 409 conflict?  Defaults to True.
+                should exist within each data chunk.
+            uuid:
+                A predefined export UUID to use for generating an ExportIterator. Using
+                this parameter will ignore all the filter arguments.
+            when_done:
+                When creating the iterator, setting this flag to true will tell the
+                iterator to wait until the export job has completed before processing
+                the first chunk.  The default behaviour is to start processing chunks
+                of data as soon as they become available.
+            timeout:
+                If specified, determines a timeout in seconds to wait for the export
+                job to sit in the queue before cancelling the job and raising a
+                ``TioExportsTimeout`` error.  Once a job has started to be processed,
+                the timeout is ignored.
+            iterator:
+                Supports overloading the iterator class to be used to process the
+                datachunks. If set to None, then the job ID will be returned instead
+                of an iterator.
+            adopt_existing:
+                Should we automatically adopt an existing Job UUID with we receive a
+                409 conflict?
+
         Examples:
-            Examples:
 
             Iterating over the results of a WAS vuln export:
             >>> from tenable.io import TenableIO
@@ -887,25 +1197,39 @@ class ExportsAPI(APIEndpoint):
             ...     since=int(arrow.now().shift(days=-1).timestamp())
             ... )
         """
-        return self._export('was', WASVulnExportSchema(), **kwargs)
-
-    def list_compliance_export_jobs(self):
-        """
-        Returns a list of the last 1,000 compliance export requests along with their statuses
-        and related metadata.
-
-        Returns:
-            :obj:`list`:
-                List of job records.
-
-        Examples:
-            >>> for compliance_job in tio.exports.list_compliance_export_jobs():
-            ...     pprint(compliance_job)
-        """
-        warnings.warn(
-            'list_compliance_export_jobs is deprecated in favor of using the generic'
-            'job listing method instead.',
-            DeprecationWarning,
-            stacklevel=1,
+        return self._export(
+            export_type='was',
+            version=None,
+            when_done=when_done,
+            iterator=iterator,
+            timeout=timeout,
+            export_uuid=uuid,
+            adopt_existing=adopt_existing,
+            payload=models.WASExportV1(
+                num_assets=num_assets,
+                include_unlicensed=include_unlicensed,
+                filters=models.WASExportFiltersV1(
+                    since=since,
+                    first_found=first_found,
+                    last_found=last_found,
+                    indexed_at=indexed_at,
+                    last_fixed=last_fixed,
+                    asset_uuid=asset_uuid,  # ty: ignore[invalid-argument-type]
+                    asset_name=asset_name,
+                    cvss4_base_score=cvss4_base_score,  # ty: ignore[invalid-argument-type]
+                    epss_score=epss_score,  # ty: ignore[invalid-argument-type]
+                    ipv4s=ipv4s,  # ty: ignore[invalid-argument-type]
+                    plugin_ids=plugin_ids,
+                    owasp_2010=owasp_2010,
+                    owasp_2013=owasp_2013,
+                    owasp_2017=owasp_2017,
+                    owasp_2021=owasp_2021,
+                    owasp_api_2019=owasp_api_2019,
+                    severity=severity,
+                    severity_modification_type=severity_modification_type,
+                    state=state,
+                    vpr_score=vpr_score,  # ty: ignore[invalid-argument-type]
+                    vpr_v2_score=vpr_v2_score,  # ty: ignore[invalid-argument-type]
+                ),
+            ).model_dump(mode='json', exclude_none=True),
         )
-        return self._api.get('compliance/export/status').json()['exports']
