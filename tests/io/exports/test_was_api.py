@@ -80,7 +80,7 @@ def test_was_findings_export(export_request, tvm):
 
 
 def test_was_findings_export_returns_uuid(export_request, tvm):
-    export_uuid = tvm.exports.was(use_iterator=False)
+    export_uuid = tvm.exports.was(iterator=None)
     assert export_uuid == UUID('01234567-89ab-cdef-0123-4567890abcde')
 
 
@@ -95,7 +95,7 @@ def test_export_adoption_false(tvm):
             'failure_reason': 'Some message goes here from platform',
         },
     )
-    assert UUID(job_id) == tvm.exports.was(use_iterator=False)
+    assert UUID(job_id) == tvm.exports.was(iterator=None)
     with pytest.raises(RequestConflictError):
         tvm.exports.was(adopt_existing=False)
 
@@ -111,5 +111,5 @@ def test_export_adoption_true(tvm):
             'failure_reason': 'Some message goes here from platform',
         },
     )
-    assert UUID(job_id) == tvm.exports.was(use_iterator=False)
-    assert UUID(job_id) == tvm.exports.was(adopt_existing=True, use_iterator=False)
+    assert UUID(job_id) == tvm.exports.was(iterator=None)
+    assert UUID(job_id) == tvm.exports.was(adopt_existing=True, iterator=None)

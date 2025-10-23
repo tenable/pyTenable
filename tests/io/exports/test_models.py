@@ -1,23 +1,9 @@
-"""
-Testing the asset schemas
-"""
-
-import uuid
+from uuid import UUID, uuid4
 
 import pytest
-from marshmallow.exceptions import ValidationError
+from pydantic import ValidationError
 
-from tenable.io.exports.schema import (
-    AssetExportSchema,
-    ComplianceExportSchema,
-    OWASPAPIChapters,
-    OWASPChapters,
-    Severity,
-    SeverityModificationType,
-    State,
-    VulnExportSchema,
-    WASVulnExportSchema,
-)
+from tenable.io.exports import models as m
 
 
 @pytest.fixture
@@ -26,26 +12,28 @@ def asset_export():
     Example asset export request
     """
     return {
-        'last_scan_id': 'd27b3f28-9a36-4127-b63a-3da3801121ec',
-        'created_at': 1635798607,
-        'deleted_at': 1635798607,
-        'first_scan_time': 1635798607,
-        'last_assessed': 1635798607,
-        'last_authenticated_scan_time': 1635798607,
-        'terminated_at': 1635798607,
-        'updated_at': 1635798607,
-        'has_plugin_results': 'no',
-        'is_licensed': 'yes',
-        'is_terminated': True,
-        'servicenow_sysid': 'true',
         'chunk_size': 1000,
-        'network_id': 'f634d639-cc33-4149-a683-5ad6b8f29d9c',
-        'tags': [
-            ('test1', 'val1'),
-            ('test2', 'val2'),
-            ('test3', 'val3'),
-            ('test3', 'val4'),
-        ],
+        'filters': {
+            'last_scan_id': 'd27b3f28-9a36-4127-b63a-3da3801121ec',
+            'created_at': 1635798607,
+            'deleted_at': 1635798607,
+            'first_scan_time': 1635798607,
+            'last_assessed': 1635798607,
+            'last_authenticated_scan_time': 1635798607,
+            'terminated_at': 1635798607,
+            'updated_at': 1635798607,
+            'has_plugin_results': 'no',
+            'is_licensed': 'yes',
+            'is_terminated': True,
+            'servicenow_sysid': 'true',
+            'network_id': 'f634d639-cc33-4149-a683-5ad6b8f29d9c',
+            'tags': [
+                ('test1', 'val1'),
+                ('test2', 'val2'),
+                ('test3', 'val3'),
+                ('test3', 'val4'),
+            ],
+        },
     }
 
 
@@ -54,7 +42,7 @@ def asset_export_with_open_ports_true():
     """
     Asset export request with open ports set as true.
     """
-    return {'chunk_size': 1000, 'include_open_ports': True}
+    return {'chunk_size': 1000, 'include_open_ports': True, 'filters': {}}
 
 
 @pytest.fixture
@@ -62,7 +50,7 @@ def asset_export_with_open_ports_false():
     """
     Asset export request with open ports set as false.
     """
-    return {'chunk_size': 1000, 'include_open_ports': False}
+    return {'chunk_size': 1000, 'include_open_ports': False, 'filters': {}}
 
 
 @pytest.fixture
@@ -70,7 +58,7 @@ def asset_export_with_out_open_ports():
     """
     Asset export request without open ports.
     """
-    return {'chunk_size': 1000}
+    return {'chunk_size': 1000, 'filters': {}}
 
 
 @pytest.fixture
@@ -79,13 +67,15 @@ def compliance_export():
     Example compliance export request
     """
     return {
-        'first_seen': 1635798607,
-        'last_seen': 1635798607,
+        'num_findings': 1000,
         'asset': [
             'f634d639-cc33-4149-a683-5ad6b8f29d9c',
-            uuid.UUID('c62f8737-8623-45a3-bdcb-560daacb21f1'),
+            UUID('c62f8737-8623-45a3-bdcb-560daacb21f1'),
         ],
-        'num_findings': 1000,
+        'filters': {
+            'first_seen': 1635798607,
+            'last_seen': 1635798607,
+        },
     }
 
 
@@ -95,29 +85,31 @@ def compliance_export_phase_1_and_2_schema():
     Example compliance export request with phase 1 filters
     """
     return {
-        'first_seen': 1635798607,
-        'last_seen': 1635798607,
+        'num_findings': 1000,
         'asset': [
             'f634d639-cc33-4149-a683-5ad6b8f29d9c',
-            uuid.UUID('c62f8737-8623-45a3-bdcb-560daacb21f1'),
+            UUID('c62f8737-8623-45a3-bdcb-560daacb21f1'),
         ],
-        'num_findings': 1000,
-        'ipv4_addresses': ['192.168.0.1'],
-        'ipv6_addresses': ['2001:0db8:85a3:0000:0000:8a2e:0370:7334'],
-        'plugin_name': [
-            'Debian dla-3719 : php-seclib - security update',
-            'Debian dsa-5607 : chromium - security update',
-        ],
-        'plugin_id': [189491, 189490],
-        'audit_name': 'my-audit-name',
-        'audit_file_name': 'my-audit-file-name',
-        'compliance_results': ['PASSED'],
-        'last_observed': 1635798607,
-        'indexed_at': 1635798607,
-        'since': 1635798607,
-        'state': ['Active'],
-        'tags': [('Category', ['value1', 'value2'])],
-        'network_id': 'd6797cf4-42b9-4cad-8591-9dd91c3f0fc3',
+        'filters': {
+            'first_seen': 1635798607,
+            'last_seen': 1635798607,
+            'ipv4_addresses': ['192.168.0.1'],
+            'ipv6_addresses': ['2001:0db8:85a3:0000:0000:8a2e:0370:7334'],
+            'plugin_name': [
+                'Debian dla-3719 : php-seclib - security update',
+                'Debian dsa-5607 : chromium - security update',
+            ],
+            'plugin_id': [189491, 189490],
+            'audit_name': 'my-audit-name',
+            'audit_file_name': 'my-audit-file-name',
+            'compliance_results': ['PASSED'],
+            'last_observed': 1635798607,
+            'indexed_at': 1635798607,
+            'since': 1635798607,
+            'state': ['open'],
+            'tags': [('Category', ['value1', 'value2'])],
+            'network_id': 'd6797cf4-42b9-4cad-8591-9dd91c3f0fc3',
+        },
     }
 
 
@@ -127,33 +119,36 @@ def vuln_export():
     Example vulnerability export request
     """
     return {
-        'first_found': 1635798607,
-        'last_found': 1635798607,
-        'indexed_at': 1635798607,
-        'last_fixed': 1635798607,
-        'since': 1635798607,
-        'plugin_family': ['Family Name'],
-        'plugin_id': [19506, 21745, 66334],
-        'scan_uuid': '992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c',
-        'severity': ['CRITICAL', 'High', 'medium', 'LoW', 'InfO'],
-        'state': ['OPEN', 'reopened', 'Fixed'],
-        'vpr_score': {
-            'eq': [2.0, 3.1],
-            'neq': [9.9],
-            'gt': 1,
-            'gte': 1.1,
-            'lt': 0.5,
-            'lte': 0.4,
-        },
-        'tags': [
-            ('test1', 'val1'),
-            ('test2', 'val2'),
-            ('test3', 'val3'),
-            ('test3', 'val4'),
-        ],
-        'network_id': 'f634d639-cc33-4149-a683-5ad6b8f29d9c',
-        'cidr_range': '192.0.2.0/24',
         'include_unlicensed': True,
+        'num_assets': 500,
+        'filters': {
+            'first_found': 1635798607,
+            'last_found': 1635798607,
+            'indexed_at': 1635798607,
+            'last_fixed': 1635798607,
+            'since': 1635798607,
+            'plugin_family': ['Family Name'],
+            'plugin_id': [19506, 21745, 66334],
+            'scan_uuid': '992b7204-bde2-d17c-cabf-1191f2f6f56b7f1dbd59e117463c',
+            'severity': ['CRITICAL', 'High', 'medium', 'LoW', 'InfO'],
+            'state': ['OPEN', 'reopened', 'Fixed'],
+            'vpr_score': {
+                'eq': [2.0, 3.1],
+                'neq': [9.9],
+                'gt': 1,
+                'gte': 1.1,
+                'lt': 0.5,
+                'lte': 0.4,
+            },
+            'tags': [
+                ('test1', 'val1'),
+                ('test2', 'val2'),
+                ('test3', 'val3'),
+                ('test3', 'val4'),
+            ],
+            'network_id': 'f634d639-cc33-4149-a683-5ad6b8f29d9c',
+            'cidr_range': '192.0.2.0/24',
+        },
     }
 
 
@@ -183,12 +178,13 @@ def test_assetschema(asset_export):
         },
     }
 
-    schema = AssetExportSchema()
-    assert test_resp == schema.dump(schema.load(asset_export))
+    assert test_resp == m.AssetExportV1(**asset_export).model_dump(
+        mode='json', exclude_none=True
+    )
 
     with pytest.raises(ValidationError):
         asset_export['new_val'] = 'something'
-        schema.load(asset_export)
+        m.AssetExportV1(**asset_export)
 
 
 def test_complianceschema(compliance_export):
@@ -203,19 +199,19 @@ def test_complianceschema(compliance_export):
         ],
         'filters': {'first_seen': 1635798607, 'last_seen': 1635798607},
     }
-    schema = ComplianceExportSchema()
-    assert test_resp == schema.dump(schema.load(compliance_export))
+    assert test_resp == m.ComplianceExportV1(**compliance_export).model_dump(
+        mode='json', exclude_none=True
+    )
 
     with pytest.raises(ValidationError):
         compliance_export['new_val'] = 'something'
-        schema.load(compliance_export)
+        m.ComplianceExportV1(**compliance_export)
 
 
 def test_vulnerabilityschema(vuln_export):
     """
     Test the vulnerability finding schema
     """
-    schema = VulnExportSchema()
     test_resp = {
         'num_assets': 500,
         'include_unlicensed': True,
@@ -245,41 +241,46 @@ def test_vulnerabilityschema(vuln_export):
             'tag.test3': ['val3', 'val4'],
         },
     }
-    assert test_resp == schema.dump(schema.load(vuln_export))
+    assert test_resp == m.VulnerabilityExportV1(**vuln_export).model_dump(
+        mode='json', exclude_none=True
+    )
 
     with pytest.raises(ValidationError):
         vuln_export['new_val'] = 'something'
-        schema.load(vuln_export)
+        m.VulnerabilityExportV1(**vuln_export)
 
     with pytest.raises(ValidationError):
         vuln_export['scan_uuid'] = 0
-        schema.load(vuln_export)
+        m.VulnerabilityExportV1(**vuln_export)
 
 
 def test_asset_export_schema_for_open_ports_true(asset_export_with_open_ports_true):
     """
     Ensure Asset Export request is correctly formed with include_open_ports set to true.
     """
-    schema = AssetExportSchema()
-    schema_dump = schema.dump(schema.load(asset_export_with_open_ports_true))
-    assert schema_dump['include_open_ports'] == True
+    schema_dump = m.AssetExportV1(**asset_export_with_open_ports_true).model_dump(
+        mode='json', exclude_none=True
+    )
+    assert schema_dump['include_open_ports'] is True
 
 
 def test_asset_export_schema_for_open_ports_false(asset_export_with_open_ports_false):
     """
     Ensure Asset Export request is correctly formed with include_open_ports set to false.
     """
-    schema = AssetExportSchema()
-    schema_dump = schema.dump(schema.load(asset_export_with_open_ports_false))
-    assert schema_dump['include_open_ports'] == False
+    schema_dump = m.AssetExportV1(**asset_export_with_open_ports_false).model_dump(
+        mode='json', exclude_none=True
+    )
+    assert schema_dump['include_open_ports'] is False
 
 
 def test_asset_export_schema_without_open_ports(asset_export_with_out_open_ports):
     """
     Ensure Asset Export request is correctly formed without include_open_ports.
     """
-    schema = AssetExportSchema()
-    schema_dump = schema.dump(schema.load(asset_export_with_out_open_ports))
+    schema_dump = m.AssetExportV1(**asset_export_with_out_open_ports).model_dump(
+        mode='json', exclude_none=True
+    )
     assert 'include_open_ports' not in schema_dump
 
 
@@ -289,11 +290,12 @@ def test_compliance_export_phase_1_and_2_filters(
     """
     Test Compliance Export Phase 1 Filter Schema
     """
-    schema = ComplianceExportSchema()
-    schema_dump = schema.dump(schema.load(compliance_export_phase_1_and_2_schema))
+    schema_dump = m.ComplianceExportV1(
+        **compliance_export_phase_1_and_2_schema
+    ).model_dump(mode='json', exclude_none=True)
 
     # checking random element
-    assert schema_dump['filters']['state'][0] == 'Active'
+    assert schema_dump['filters']['state'][0] == 'OPEN'
     assert len(schema_dump['filters']['tags']) == 1
     assert (
         schema_dump['filters']['network_id'] == 'd6797cf4-42b9-4cad-8591-9dd91c3f0fc3'
@@ -306,24 +308,28 @@ def was_vulns_export():
     Example was vulns export request
     """
     return {
-        'asset_uuid': ['d27b3f28-9a36-4127-b63a-3da3801121ec'],
-        'asset_name': 'abc.com',
-        'first_found': 1635798607,
-        'last_found': 1635798606,
-        'last_fixed': 1635798605,
-        'indexed_at': 1635798604,
-        'since': 1635798603,
-        'plugin_ids': [1340, 2554],
-        'owasp_2010': [OWASPChapters.A1],
-        'owasp_2013': [OWASPChapters.A1],
-        'owasp_2017': [OWASPChapters.A1],
-        'owasp_2021': [OWASPChapters.A1],
-        'owasp_api_2019': [OWASPAPIChapters.API1],
-        'severity': [Severity.LOW],
-        'state': [State.FIXED],
-        'severity_modification_type': [SeverityModificationType.ACCEPTED],
-        'vpr_score': {'eq': [1.2, 3.5]},
-        'ipv4s': ['134.43.4.34'],
+        'num_assets': 50,
+        'include_unlicensed': False,
+        'filters': {
+            'asset_uuid': ['d27b3f28-9a36-4127-b63a-3da3801121ec'],
+            'asset_name': 'abc.com',
+            'first_found': 1635798607,
+            'last_found': 1635798606,
+            'last_fixed': 1635798605,
+            'indexed_at': 1635798604,
+            'since': 1635798603,
+            'plugin_ids': [1340, 2554],
+            'owasp_2010': ['A1'],
+            'owasp_2013': ['A1'],
+            'owasp_2017': ['a1'],
+            'owasp_2021': ['a1'],
+            'owasp_api_2019': ['api1'],
+            'severity': ['Low'],
+            'state': ['Fixed'],
+            'severity_modification_type': ['ACCEPTED'],
+            'vpr_score': {'eq': [1.2, 3.5]},
+            'ipv4s': ['134.43.4.34'],
+        },
     }
 
 
@@ -345,7 +351,7 @@ def test_was_vulns_schema_all_values(was_vulns_export):
             'owasp_2017': ['A1'],
             'owasp_2021': ['A1'],
             'owasp_api_2019': ['API1'],
-            'severity': ['LOW'],
+            'severity': ['low'],
             'state': ['FIXED'],
             'severity_modification_type': ['ACCEPTED'],
             'vpr_score': {'eq': [1.2, 3.5]},
@@ -353,9 +359,10 @@ def test_was_vulns_schema_all_values(was_vulns_export):
         },
     }
 
-    schema = WASVulnExportSchema()
-    assert test_resp == schema.dump(schema.load(was_vulns_export))
+    assert test_resp == m.WASExportV1(**was_vulns_export).model_dump(
+        mode='json', exclude_none=True
+    )
 
     with pytest.raises(ValidationError):
         was_vulns_export['new_val'] = 'something'
-        schema.load(was_vulns_export)
+        m.WASExportV1(**was_vulns_export)
