@@ -15,27 +15,31 @@ applications into the pyTenable SDK.
 .. autoclass:: GraphQLIterator
     :members:
 """
-from typing import Dict, Optional, Union, Any, List
-from io import StringIO
-import os
-import sys
+
 import logging
+import os
 import platform
+import sys
+from io import StringIO
 from pathlib import Path
-from restfly.iterator import APIIterator
-from tenable.version import version
-from gql import Client, gql
+from typing import Any, Dict, List, Optional, Union
+
+from gql import Client, GraphQLRequest, gql
 from gql.transport.requests import RequestsHTTPTransport
-from graphql import DocumentNode, validate
+from graphql import DocumentNode, GraphQLError, validate
+from restfly.iterator import APIIterator
+
+from tenable.version import version
 
 
 class GraphQLIterator(APIIterator):
     """
     An iterator class to be used with GraphQL paginated/iterable datasets.
     """
+
     _api: 'GraphQLSession'
     model: str
-    query: DocumentNode
+    query: GraphQLRequest
     variables: Dict[str, Any]
     next_token: Optional[str] = None
 
@@ -100,11 +104,10 @@ class GraphQLIterator(APIIterator):
         # If we have worked through the current page of records and we still
         # haven't hit to the total number of available records, then we should
         # query the next page of records.
-        if (
-            self.page_count >= len(self.page)
-            and (not self.total or self.count + 1 <= self.total)
+        if self.page_count >= len(self.page) and (
+            not self.total or self.count + 1 <= self.total
         ):
-            if (self.max_pages and self.num_pages >= self.max_pages):
+            if self.max_pages and self.num_pages >= self.max_pages:
                 raise StopIteration()
 
             # Perform the _get_page call.
@@ -124,12 +127,12 @@ class GraphQLIterator(APIIterator):
         return item
 
 
-
 class GraphQLEndpoint:
     """
     A GraphQL Endpoint class to be used in-place of the Restfly-base endpoint
     adaptor.
     """
+
     def __init__(self, api: 'GraphQLSession'):
         self._api = api
         self._log = api._log
@@ -166,17 +169,18 @@ class GraphQLSession:
     _env_base: str = ''
     _client: Client
 
-    def __init__(self,
-                 url: Optional[str] = None,
-                 api_key: Optional[str] = None,
-                 verify: bool = True,
-                 schema_validation: bool = True,
-                 retries: int = 3,
-                 timeout: int = 300,
-                 vendor: str = 'unknown',
-                 product: str = 'unknown',
-                 build: str = 'unknown',
-                 ):
+    def __init__(
+        self,
+        url: Optional[str] = None,
+        api_key: Optional[str] = None,
+        verify: bool = True,
+        schema_validation: bool = True,
+        retries: int = 3,
+        timeout: int = 300,
+        vendor: str = 'unknown',
+        product: str = 'unknown',
+        build: str = 'unknown',
+    ):
         """
         Creates a new GraphQLSession object
 
@@ -204,9 +208,7 @@ class GraphQLSession:
                 Identifies the build of the integration making the call to
                 the API.  This is used as part of the User-Agent construction.
         """
-        self._log = logging.getLogger(
-            f'{self.__module__}.{self.__class__.__name__}'
-        )
+        self._log = logging.getLogger(f'{self.__module__}.{self.__class__.__name__}')
         if not url:
             url = os.environ.get(f'{self._env_base}_URL')
         if not api_key:
@@ -219,23 +221,23 @@ class GraphQLSession:
 
         headers = {
             **self._authorization(api_key),
-            **self._build_session(vendor, product, build)
+            **self._build_session(vendor, product, build),
         }
-        transport = RequestsHTTPTransport(url=f'{url}/{self._base_path}',
-                                          verify=verify,
-                                          retries=retries,
-                                          headers=headers
-                                          )
-        self._client = Client(transport=transport,
-                              fetch_schema_from_transport=schema_validation,
-                              execute_timeout=timeout,
-                              )
+        transport = RequestsHTTPTransport(
+            url=f'{url}/{self._base_path}',
+            verify=verify,
+            retries=retries,
+            headers=headers,
+        )
+        self._client = Client(
+            transport=transport,
+            fetch_schema_from_transport=schema_validation,
+            execute_timeout=timeout,
+        )
 
-    def _build_session(self,
-                       vendor: str = 'unknown',
-                       product: str = 'unknown',
-                       build: str = 'unknown'
-                       ) -> Dict:
+    def _build_session(
+        self, vendor: str = 'unknown', product: str = 'unknown', build: str = 'unknown'
+    ) -> Dict:
         """
         Handles initial header setup for things such as user-agent
         """
@@ -259,13 +261,11 @@ class GraphQLSession:
         """
         return {}
 
-    def construct_query(self,
-                        query: Optional[Union[str,
-                                              StringIO,
-                                              DocumentNode
-                                              ]] = None,
-                        stored_file: Optional[str] = None
-                        ) -> DocumentNode:
+    def construct_query(
+        self,
+        query: str | StringIO | GraphQLRequest | None = None,
+        stored_file: str | None = None,
+    ) -> GraphQLRequest:
         """
         The query constructor takes any of the input types given and will
         return a DocumentNode containing the GraphQL query to be used with the
@@ -276,38 +276,38 @@ class GraphQLSession:
         two methods.
 
         Args:
-            query (str | StringIO | DocumentNode, optional):
-                The query obj that we want to normalize into a DocumentNode.
+            query (str | StringIO | GraphQLRequest, optional):
+                The query obj that we want to normalize into a GraphQLRequest.
             stored_file (str, optional):
                 The filename of a vendored (stored) graphql query to construct.
 
         Returns:
-            DocumentNode
+            GraphQLRequest
         """
+
         if query and isinstance(query, StringIO):
-            return gql(query.read())
-        elif query and isinstance(query, str):
-            return gql(query)
-        elif query and isinstance(query, DocumentNode):
-            return query
+            data = query.read()
         elif not query and stored_file:
             queryfile = self._query_folder.joinpath(stored_file)
             with queryfile.open('r', encoding='utf-8') as fobj:
-                query_obj = gql(fobj.read())
-            return query_obj
+                data = fobj.read()
         else:
-            raise TypeError(
-                f'No query was presented query="{query}", stored_file="{stored_file}"'
-            )
+            data = query
 
-    def query(self,
-              query: Optional[str] = None,
-              stored_file: Optional[str] = None,
-              keyword_arguments: Optional[Dict[str, Any]] = None,
-              iterator: Optional[GraphQLIterator] = None,
-              graphql_model: Optional[str] = None,
-              **variables: Any
-              ) -> Dict[str, Any]:
+        if not isinstance(data, (str, GraphQLRequest, DocumentNode)):
+            raise TypeError(f'No valid query was presented, received "{data}"')
+
+        return GraphQLRequest(data)
+
+    def query(
+        self,
+        query: str | None = None,
+        stored_file: str | None = None,
+        keyword_arguments: dict[str, Any] | None = None,
+        iterator: GraphQLIterator | None = None,
+        graphql_model: str | None = None,
+        **variables: Any,
+    ) -> dict[str, Any]:
         """
         Query the GraphQL API
 
@@ -375,14 +375,15 @@ class GraphQLSession:
                 raise TypeError(
                     'No "graphql_model" name was assigned for the iterator.'
                 )
-            return iterator(self,
-                            query=query_doc,
-                            variables=variables,
-                            model=graphql_model,
-                            )
+            return iterator(
+                self,
+                query=query_doc,
+                variables=variables,
+                model=graphql_model,
+            )
         return self._client.execute(query_doc, **keyword_arguments)
 
-    def validate(self, query: Union[str, StringIO]) -> Dict[str, Any]:
+    def validate(self, query: str | StringIO) -> list[GraphQLError]:
         """
         Validates the query against the schema and returns any validation
         errors that may have occured.
@@ -396,4 +397,3 @@ class GraphQLSession:
         """
         graphql_query = self.construct_query(query=query)
         return validate(self._client.schema, graphql_query)
-
