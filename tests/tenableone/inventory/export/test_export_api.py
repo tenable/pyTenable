@@ -391,19 +391,196 @@ def test_list_jobs(tenable_one_api, export_jobs_response):
 def test_list_jobs_with_filters(tenable_one_api, export_jobs_response):
     """Test listing export jobs with filters."""
     # Arrange
+    expected_params = {
+        'status': 'FINISHED',
+        'query_type': 'assets'
+    }
+
     responses.add(
         responses.GET,
         'https://cloud.tenable.com/api/v1/t1/inventory/export/status',
-        json=export_jobs_response
+        json=export_jobs_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
     )
-    
+
     # Act
     result = tenable_one_api.inventory.export.list_jobs(status='FINISHED', export_type='assets')
-    
+
     # Assert
     assert isinstance(result, ExportJobsResponse)
     assert len(result.exports) == 3  # Response includes all jobs, filtering would be server-side
     # The actual filtering would be done by the server, so we just verify the call was made with params
+
+
+@responses.activate
+def test_list_jobs_with_limit(tenable_one_api, export_jobs_response):
+    """Test listing export jobs with limit parameter."""
+    # Arrange
+    expected_params = {
+        'limit': 100
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/status',
+        json=export_jobs_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.list_jobs(limit=100)
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 3
+
+
+@responses.activate
+def test_list_jobs_with_multiple_statuses(tenable_one_api, export_jobs_response):
+    """Test listing export jobs with comma-separated statuses."""
+    # Arrange
+    expected_params = {
+        'status': 'FINISHED,PROCESSING'
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/status',
+        json=export_jobs_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.list_jobs(status='FINISHED,PROCESSING')
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 3
+
+
+@responses.activate
+def test_list_jobs_with_multiple_export_types(tenable_one_api, export_jobs_response):
+    """Test listing export jobs with comma-separated export types."""
+    # Arrange
+    expected_params = {
+        'query_type': 'assets,findings'
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/status',
+        json=export_jobs_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.list_jobs(export_type='assets,findings')
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 3
+
+
+@responses.activate
+def test_list_jobs_with_all_parameters(tenable_one_api, export_jobs_response):
+    """Test listing export jobs with all parameters (status, export_type, and limit)."""
+    # Arrange
+    expected_params = {
+        'status': 'FINISHED',
+        'query_type': 'assets',
+        'limit': 50
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/status',
+        json=export_jobs_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.list_jobs(
+        status='FINISHED',
+        export_type='assets',
+        limit=50
+    )
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 3
+
+
+@responses.activate
+def test_list_jobs_query_type_parameter_mapping(tenable_one_api, export_jobs_response):
+    """Test that export_type parameter is correctly mapped to query_type in API call."""
+    # Arrange
+    expected_params = {
+        'query_type': 'findings'
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/status',
+        json=export_jobs_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.list_jobs(export_type='findings')
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    # Verify that the correct parameter name (query_type) was used in the request
+
+
+@responses.activate
+def test_list_jobs_limit_boundary_values(tenable_one_api, export_jobs_response):
+    """Test listing export jobs with limit boundary values (1 and 1000)."""
+    # Test minimum limit (1)
+    expected_params_min = {
+        'limit': 1
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/status',
+        json=export_jobs_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params_min)
+        ]
+    )
+
+    result_min = tenable_one_api.inventory.export.list_jobs(limit=1)
+    assert isinstance(result_min, ExportJobsResponse)
+
+    # Test maximum limit (1000)
+    expected_params_max = {
+        'limit': 1000
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/status',
+        json=export_jobs_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params_max)
+        ]
+    )
+
+    result_max = tenable_one_api.inventory.export.list_jobs(limit=1000)
+    assert isinstance(result_max, ExportJobsResponse)
 
 
 @responses.activate

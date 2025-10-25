@@ -109,20 +109,32 @@ class ExportAPI(APIEndpoint):
     def list_jobs(
         self,
         status: Optional[str] = None,
-        export_type: Optional[str] = None
+        export_type: Optional[str] = None,
+        limit: Optional[int] = None
     ) -> ExportJobsResponse:
         """
-        List export jobs
+        List export jobs submitted in the last 3 days
+
+        This endpoint only returns dataset export jobs (assets and findings) that were
+        submitted within the last 3 days. Results are sorted by submission time (newest first).
 
         Args:
             status (str, optional):
                 Filter by export status (e.g., 'FINISHED', 'PROCESSING', 'ERROR').
+                Multiple values can be provided as a comma-separated string (e.g., 'FINISHED,PROCESSING').
             export_type (str, optional):
                 Filter by export type (e.g., 'assets', 'findings').
+                Multiple values can be provided as a comma-separated string (e.g., 'assets,findings').
+            limit (int, optional):
+                Maximum number of export jobs to return from the last 3 days.
+                Note: This endpoint only returns jobs submitted within the last 3 days,
+                so the actual number of results may be less than the limit if fewer jobs
+                exist within that time window. Defaults to 1000 if not specified.
+                Minimum: 1, Maximum: 1000.
 
         Returns:
             ExportJobsResponse:
-                Response containing list of export job information.
+                Response containing list of export job information from the last 3 days.
 
         Examples:
             >>> response = tenable_one.inventory.export.list_jobs()
@@ -135,13 +147,25 @@ class ExportAPI(APIEndpoint):
             >>> # Filter by export type
             >>> asset_jobs = tenable_one.inventory.export.list_jobs(export_type='assets')
 
+            >>> # Limit results to 100 most recent jobs
+            >>> recent_jobs = tenable_one.inventory.export.list_jobs(limit=100)
+
+            >>> # Combine multiple filters
+            >>> recent_finished_assets = tenable_one.inventory.export.list_jobs(
+            ...     status='FINISHED',
+            ...     export_type='assets',
+            ...     limit=50
+            ... )
+
         """
         params = {}
         if status is not None:
             params['status'] = status
         if export_type is not None:
-            params['export_type'] = export_type
-            
+            params['query_type'] = export_type
+        if limit is not None:
+            params['limit'] = limit
+
         response = self._get('api/v1/t1/inventory/export/status', params=params)
         return ExportJobsResponse(**response)
 
