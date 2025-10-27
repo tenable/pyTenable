@@ -79,10 +79,6 @@ class ExportJob(BaseModel):
     )
     status: ExportStatus = Field(..., description='The status of the export request')
     export_type: ExportType = Field(..., description='The type of export request')
-    chunks_available: List[int] = Field(
-        default_factory=list,
-        description='A list of completed chunk numbers available for download. Each integer represents a chunk file that can be downloaded. If no chunks are available, the list will be empty',
-    )
 
 
 class ExportJobsResponse(BaseModel):
