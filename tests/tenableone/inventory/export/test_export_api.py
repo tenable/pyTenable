@@ -13,6 +13,9 @@ from tenable.tenableone.inventory.export.schema import (
     ExportRequestId,
     ExportRequestStatus,
     ExportStatus,
+    ExportJobsResponse,
+    ExportJob,
+    ExportType,
 )
 from tenable.tenableone.inventory.schema import SortDirection, PropertyFilter, Operator
 
@@ -39,6 +42,36 @@ def export_status_response() -> dict:
 def export_data() -> bytes:
     """Fixture for export data."""
     return b"test,data,export\n1,2,3\n4,5,6"
+
+
+@pytest.fixture
+def export_jobs_response() -> dict:
+    """Fixture for export jobs list response."""
+    return {
+        "exports": [
+            {
+                "export_id": "export-12345",
+                "status": "FINISHED",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T00:00:00Z",
+                "last_refreshed_at": "2025-01-01T00:01:00Z"
+            },
+            {
+                "export_id": "export-67890",
+                "status": "PROCESSING",
+                "export_type": "findings",
+                "submitted_at": "2025-01-01T01:00:00Z",
+                "last_refreshed_at": "2025-01-01T01:01:00Z"
+            },
+            {
+                "export_id": "export-11111",
+                "status": "ERROR",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T02:00:00Z",
+                "last_refreshed_at": "2025-01-01T02:01:00Z"
+            }
+        ]
+    }
 
 
 @responses.activate
@@ -325,6 +358,514 @@ def test_status(tenable_one_api, export_status_response):
     assert result.chunks_available == [0, 1, 2]
     assert result.submitted_at is not None
     assert result.last_refreshed_at is not None
+
+
+@responses.activate
+def test_assets_status(tenable_one_api):
+    """Test listing asset export jobs."""
+    # Arrange
+    assets_response = {
+        "exports": [
+            {
+                "export_id": "export-12345",
+                "status": "FINISHED",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T00:00:00Z",
+                "last_refreshed_at": "2025-01-01T00:01:00Z"
+            },
+            {
+                "export_id": "export-11111",
+                "status": "PROCESSING",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T02:00:00Z",
+                "last_refreshed_at": "2025-01-01T02:01:00Z"
+            }
+        ]
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets/status',
+        json=assets_response
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.assets_status()
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 2
+    assert result.exports[0].export_id == "export-12345"
+    assert result.exports[0].status == ExportStatus.FINISHED
+    assert result.exports[0].export_type == ExportType.ASSETS
+    assert result.exports[1].export_id == "export-11111"
+    assert result.exports[1].status == ExportStatus.PROCESSING
+    assert result.exports[1].export_type == ExportType.ASSETS
+
+
+@responses.activate
+def test_findings_status(tenable_one_api):
+    """Test listing finding export jobs."""
+    # Arrange
+    findings_response = {
+        "exports": [
+            {
+                "export_id": "export-67890",
+                "status": "FINISHED",
+                "export_type": "findings",
+                "submitted_at": "2025-01-01T01:00:00Z",
+                "last_refreshed_at": "2025-01-01T01:01:00Z"
+            },
+            {
+                "export_id": "export-22222",
+                "status": "ERROR",
+                "export_type": "findings",
+                "submitted_at": "2025-01-01T03:00:00Z",
+                "last_refreshed_at": "2025-01-01T03:01:00Z"
+            }
+        ]
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings/status',
+        json=findings_response
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.findings_status()
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 2
+    assert result.exports[0].export_id == "export-67890"
+    assert result.exports[0].status == ExportStatus.FINISHED
+    assert result.exports[0].export_type == ExportType.FINDINGS
+    assert result.exports[1].export_id == "export-22222"
+    assert result.exports[1].status == ExportStatus.ERROR
+    assert result.exports[1].export_type == ExportType.FINDINGS
+
+
+@responses.activate
+def test_assets_status_with_filter(tenable_one_api):
+    """Test listing asset export jobs with status filter."""
+    # Arrange
+    assets_response = {
+        "exports": [
+            {
+                "export_id": "export-12345",
+                "status": "FINISHED",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T00:00:00Z",
+                "last_refreshed_at": "2025-01-01T00:01:00Z"
+            }
+        ]
+    }
+
+    expected_params = {
+        'status': 'FINISHED'
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets/status',
+        json=assets_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.assets_status(status='FINISHED')
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 1
+    assert result.exports[0].status == ExportStatus.FINISHED
+
+
+@responses.activate
+def test_findings_status_with_filter(tenable_one_api):
+    """Test listing finding export jobs with status filter."""
+    # Arrange
+    findings_response = {
+        "exports": [
+            {
+                "export_id": "export-67890",
+                "status": "PROCESSING",
+                "export_type": "findings",
+                "submitted_at": "2025-01-01T01:00:00Z",
+                "last_refreshed_at": "2025-01-01T01:01:00Z"
+            }
+        ]
+    }
+
+    expected_params = {
+        'status': 'PROCESSING'
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings/status',
+        json=findings_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.findings_status(status='PROCESSING')
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 1
+    assert result.exports[0].status == ExportStatus.PROCESSING
+
+
+@responses.activate
+def test_assets_status_with_limit(tenable_one_api):
+    """Test listing asset export jobs with limit parameter."""
+    # Arrange
+    assets_response = {
+        "exports": [
+            {
+                "export_id": "export-12345",
+                "status": "FINISHED",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T00:00:00Z",
+                "last_refreshed_at": "2025-01-01T00:01:00Z"
+            }
+        ]
+    }
+
+    expected_params = {
+        'limit': 100
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets/status',
+        json=assets_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.assets_status(limit=100)
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 1
+
+
+@responses.activate
+def test_findings_status_with_limit(tenable_one_api):
+    """Test listing finding export jobs with limit parameter."""
+    # Arrange
+    findings_response = {
+        "exports": [
+            {
+                "export_id": "export-67890",
+                "status": "FINISHED",
+                "export_type": "findings",
+                "submitted_at": "2025-01-01T01:00:00Z",
+                "last_refreshed_at": "2025-01-01T01:01:00Z"
+            }
+        ]
+    }
+
+    expected_params = {
+        'limit': 50
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings/status',
+        json=findings_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.findings_status(limit=50)
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 1
+
+
+@responses.activate
+def test_assets_status_with_multiple_statuses(tenable_one_api):
+    """Test listing asset export jobs with comma-separated statuses."""
+    # Arrange
+    assets_response = {
+        "exports": [
+            {
+                "export_id": "export-12345",
+                "status": "FINISHED",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T00:00:00Z",
+                "last_refreshed_at": "2025-01-01T00:01:00Z"
+            },
+            {
+                "export_id": "export-11111",
+                "status": "PROCESSING",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T02:00:00Z",
+                "last_refreshed_at": "2025-01-01T02:01:00Z"
+            }
+        ]
+    }
+
+    expected_params = {
+        'status': 'FINISHED,PROCESSING'
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets/status',
+        json=assets_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.assets_status(status='FINISHED,PROCESSING')
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 2
+
+
+@responses.activate
+def test_findings_status_with_multiple_statuses(tenable_one_api):
+    """Test listing finding export jobs with comma-separated statuses."""
+    # Arrange
+    findings_response = {
+        "exports": [
+            {
+                "export_id": "export-67890",
+                "status": "FINISHED",
+                "export_type": "findings",
+                "submitted_at": "2025-01-01T01:00:00Z",
+                "last_refreshed_at": "2025-01-01T01:01:00Z"
+            },
+            {
+                "export_id": "export-22222",
+                "status": "ERROR",
+                "export_type": "findings",
+                "submitted_at": "2025-01-01T03:00:00Z",
+                "last_refreshed_at": "2025-01-01T03:01:00Z"
+            }
+        ]
+    }
+
+    expected_params = {
+        'status': 'FINISHED,ERROR'
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings/status',
+        json=findings_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.findings_status(status='FINISHED,ERROR')
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 2
+
+
+@responses.activate
+def test_assets_status_with_all_parameters(tenable_one_api):
+    """Test listing asset export jobs with all parameters (status and limit)."""
+    # Arrange
+    assets_response = {
+        "exports": [
+            {
+                "export_id": "export-12345",
+                "status": "FINISHED",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T00:00:00Z",
+                "last_refreshed_at": "2025-01-01T00:01:00Z"
+            }
+        ]
+    }
+
+    expected_params = {
+        'status': 'FINISHED',
+        'limit': 50
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets/status',
+        json=assets_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.assets_status(
+        status='FINISHED',
+        limit=50
+    )
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 1
+
+
+@responses.activate
+def test_findings_status_with_all_parameters(tenable_one_api):
+    """Test listing finding export jobs with all parameters (status and limit)."""
+    # Arrange
+    findings_response = {
+        "exports": [
+            {
+                "export_id": "export-67890",
+                "status": "PROCESSING",
+                "export_type": "findings",
+                "submitted_at": "2025-01-01T01:00:00Z",
+                "last_refreshed_at": "2025-01-01T01:01:00Z"
+            }
+        ]
+    }
+
+    expected_params = {
+        'status': 'PROCESSING',
+        'limit': 25
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings/status',
+        json=findings_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params)
+        ]
+    )
+
+    # Act
+    result = tenable_one_api.inventory.export.findings_status(
+        status='PROCESSING',
+        limit=25
+    )
+
+    # Assert
+    assert isinstance(result, ExportJobsResponse)
+    assert len(result.exports) == 1
+
+
+@responses.activate
+def test_assets_status_limit_boundary_values(tenable_one_api):
+    """Test listing asset export jobs with limit boundary values (1 and 1000)."""
+    # Arrange
+    assets_response = {
+        "exports": [
+            {
+                "export_id": "export-12345",
+                "status": "FINISHED",
+                "export_type": "assets",
+                "submitted_at": "2025-01-01T00:00:00Z",
+                "last_refreshed_at": "2025-01-01T00:01:00Z"
+            }
+        ]
+    }
+
+    # Test minimum limit (1)
+    expected_params_min = {
+        'limit': 1
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets/status',
+        json=assets_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params_min)
+        ]
+    )
+
+    result_min = tenable_one_api.inventory.export.assets_status(limit=1)
+    assert isinstance(result_min, ExportJobsResponse)
+
+    # Test maximum limit (1000)
+    expected_params_max = {
+        'limit': 1000
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets/status',
+        json=assets_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params_max)
+        ]
+    )
+
+    result_max = tenable_one_api.inventory.export.assets_status(limit=1000)
+    assert isinstance(result_max, ExportJobsResponse)
+
+
+@responses.activate
+def test_findings_status_limit_boundary_values(tenable_one_api):
+    """Test listing finding export jobs with limit boundary values (1 and 1000)."""
+    # Arrange
+    findings_response = {
+        "exports": [
+            {
+                "export_id": "export-67890",
+                "status": "FINISHED",
+                "export_type": "findings",
+                "submitted_at": "2025-01-01T01:00:00Z",
+                "last_refreshed_at": "2025-01-01T01:01:00Z"
+            }
+        ]
+    }
+
+    # Test minimum limit (1)
+    expected_params_min = {
+        'limit': 1
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings/status',
+        json=findings_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params_min)
+        ]
+    )
+
+    result_min = tenable_one_api.inventory.export.findings_status(limit=1)
+    assert isinstance(result_min, ExportJobsResponse)
+
+    # Test maximum limit (1000)
+    expected_params_max = {
+        'limit': 1000
+    }
+
+    responses.add(
+        responses.GET,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings/status',
+        json=findings_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params_max)
+        ]
+    )
+
+    result_max = tenable_one_api.inventory.export.findings_status(limit=1000)
+    assert isinstance(result_max, ExportJobsResponse)
 
 
 @responses.activate
