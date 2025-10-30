@@ -50,10 +50,9 @@ dependencies    = [
     "defusedxml>=0.5.0",
     "urllib3>=1.26.18",
     "typing-extensions>=4.0.1",
-    "dataclasses>=0.8;python_version=='3.6'",
     "requests-toolbelt>=1.0.0",
-    "gql>=3.5.0",
-    "graphql-core>=3.2.3",
+    "gql>=4.0.0",
+    "graphql-core>=3.2.6",
     "pydantic>=2.5.3",
     "pydantic-extra-types>=2.3.0",
 ]
@@ -132,6 +131,7 @@ dev-dependencies = [
     "urllib3==1.26.20",
     "rich>=13.8.1",
     "ptpython>=3.0.29",
+    "typer>=0.20.0",
 ]
 
 

@@ -291,7 +291,10 @@ class EditorAPI(TIOEndpoint):
         editor = self.obj_details(etype, id)
 
         # define the initial skeleton of the scan object
-        obj = {'settings': policy_settings(editor['settings']), 'uuid': editor['uuid']}
+        obj = {
+            'settings': policy_settings(editor['settings']),
+            'uuid': editor.get('uuid'),
+        }
 
         # graft on the basic settings that aren't stored in any input sections.
         for item in editor['settings']['basic']['groups']:
