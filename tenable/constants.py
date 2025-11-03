@@ -1,9 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+
 
 class IOConstants:
-    '''
+    """
     This class contains all the constants related to IO package
-    '''
+    """
 
     class CaseConst:
         # for case parameter in check
@@ -11,9 +12,10 @@ class IOConstants:
         lowecase = 'lower'
 
     class ScheduleConst:
-        '''
+        """
         This class contains common constants required for schedule
-        '''
+        """
+
         # frequency type
         onetime = 'ONETIME'
         daily = 'DAILY'
@@ -41,11 +43,11 @@ class IOConstants:
 
         # START-TIME
         start_time = 'starttime'
-        start_time_default = datetime.utcnow()
+        start_time_default = datetime.now(timezone.utc)
 
         # END-TIME
         end_time = 'endtime'
-        end_time_default = datetime.utcnow() + timedelta(hours=1)
+        end_time_default = datetime.now(timezone.utc) + timedelta(hours=1)
 
         # TIMEZONE
         timezone = 'timezone'
@@ -55,10 +57,11 @@ class IOConstants:
         rrules = 'rrules'
 
     class ScanScheduleConst(ScheduleConst):
-        '''
+        """
         This class inherits all variables from ScheduleConst and
         contains additional variables required for scan scheduling
-        '''
+        """
+
         # formatting and comparison values required in scan schedule
         ffrequency = 'FREQ={}'
         finterval = 'INTERVAL={}'

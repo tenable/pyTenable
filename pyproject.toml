@@ -132,13 +132,17 @@ dev-dependencies = [
     "rich>=13.8.1",
     "ptpython>=3.0.29",
     "typer>=0.20.0",
+    "mypy>=1.18.2",
 ]
 
 
 [tool.pytest.ini_options]
 addopts  = "--cov-report term-missing --cov=tenable"
 testpaths = ['tests']
-filterwarnings = ["ignore::DeprecationWarning"]
+filterwarnings = [
+    "ignore::DeprecationWarning:tenable.*",
+    "ignore:::tenable",
+]
 
 [dependency-groups]
 docs = [
