@@ -115,8 +115,21 @@ docstring-code-line-length = "dynamic"
 "**/{tests,docs,tools}/*" = ["E402"]
 
 
-[tool.uv]
-dev-dependencies = [
+[tool.pytest.ini_options]
+addopts  = "--cov-report term-missing --cov=tenable"
+testpaths = ['tests']
+filterwarnings = [
+    "ignore::DeprecationWarning:tenable.*",
+    "ignore:::tenable",
+]
+
+[dependency-groups]
+docs = [
+    "autodoc-pydantic>=2.2.0",
+    "furo==2024.5.6",
+    "sphinx-argparse>=0.5.2",
+]
+dev = [
     "bpython>=0.24",
     "mock>=5.1.0",
     "pytest-cov>=4.1.0",
@@ -133,20 +146,4 @@ dev-dependencies = [
     "ptpython>=3.0.29",
     "typer>=0.20.0",
     "mypy>=1.18.2",
-]
-
-
-[tool.pytest.ini_options]
-addopts  = "--cov-report term-missing --cov=tenable"
-testpaths = ['tests']
-filterwarnings = [
-    "ignore::DeprecationWarning:tenable.*",
-    "ignore:::tenable",
-]
-
-[dependency-groups]
-docs = [
-    "autodoc-pydantic>=2.2.0",
-    "furo==2024.5.6",
-    "sphinx-argparse>=0.5.2",
 ]
