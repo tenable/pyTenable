@@ -30,6 +30,9 @@ class PropertyFilter(pydantic.BaseModel):
     operator: Operator
     value: list[str]
 
+class Query(pydantic.BaseModel):
+text: Optional[str] = None
+mode: Optional[QueryMode] = None
 
 class SortDirection(Enum):
     ASC = "asc"
