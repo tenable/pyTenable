@@ -37,7 +37,6 @@ Tenable Vulnerability Management
     server
     session
     tags
-    target_groups
     users
     was
     workbenches
@@ -45,13 +44,12 @@ Tenable Vulnerability Management
 
 import warnings
 from typing import Dict, Optional
+
 from requests import Response
 
-
 from tenable.base.platform import APIPlatform
+
 from .access_control import AccessControlAPI
-from .access_groups import AccessGroupsAPI
-from .access_groups_v2 import AccessGroupsV2API
 from .agent_config import AgentConfigAPI
 from .agent_exclusions import AgentExclusionsAPI
 from .agent_groups import AgentGroupsAPI
@@ -68,6 +66,7 @@ from .filters import FiltersAPI
 from .folders import FoldersAPI
 from .groups import GroupsAPI
 from .networks import NetworksAPI
+from .pci import PCIASVAPI
 from .permissions import PermissionsAPI
 from .plugins import PluginsAPI
 from .policies import PoliciesAPI
@@ -77,13 +76,12 @@ from .scanners import ScannersAPI
 from .scans import ScansAPI
 from .server import ServerAPI
 from .session import SessionAPI
+from .sync.api import SynchronizationAPI
 from .tags import TagsAPI
-from .target_groups import TargetGroupsAPI
 from .users import UsersAPI
 from .v3 import Version3API
 from .was.api import WasAPI
 from .workbenches import WorkbenchesAPI
-from .sync.api import SynchronizationAPI
 
 
 class TenableIO(APIPlatform):  # noqa: PLR0904
@@ -206,36 +204,6 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         return AccessControlAPI(self)
 
     @property
-    def access_groups(self):
-        """
-        The interface object for the
-        :doc:`Tenable Vulnerability Management Access Groups APIs <access_groups>`.
-        """
-        warnings.warn(
-            'Access Groups have been deprecated from the TVM'
-            'platform.  This method will be removed in a future'
-            'version of the SDK.',
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return AccessGroupsAPI(self)
-
-    @property
-    def access_groups_v2(self):
-        """
-        The interface object for the
-        :doc:`Tenable Vulnerability Management Access Groups v2 APIs <access_groups_v2>`.
-        """
-        warnings.warn(
-            'Access Groups have been deprecated from the TVM'
-            'platform.  This method will be removed in a future'
-            'version of the SDK.',
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return AccessGroupsV2API(self)
-
-    @property
     def agent_config(self):
         """
         The interface object for the
@@ -356,6 +324,13 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         return NetworksAPI(self)
 
     @property
+    def pci(self) -> PCIASVAPI:
+        """
+        The interface for :doc:`TVM PCI-ACV APIs <pci/index>`.
+        """
+        return PCIASVAPI(self)
+
+    @property
     def permissions(self):
         """
         The interface object for the
@@ -436,21 +411,6 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         return TagsAPI(self)
 
     @property
-    def target_groups(self):
-        """
-        The interface object for the
-        :doc:`Tenable Vulnerability Management Target Groups APIs <target_groups>`.
-        """
-        warnings.warn(
-            'Target Groups have been deprecated from the TVM'
-            'platform.  This method will be removed in a future'
-            'version of the SDK.',
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return TargetGroupsAPI(self)
-
-    @property
     def users(self):
         """
         The interface object for the
@@ -465,9 +425,9 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         :doc:`Tenable Vulnerability Management Workbenches APIs <workbenches>`.
         """
         warnings.warn(
-            'The workbench module been deprecated from the TVM'
-            'package.  This method will be removed in a future'
-            'version of the SDK.  Please use the exports sub-pkg'
+            'The workbench module been deprecated from the TVM '
+            'package.  This method will be removed in a future '
+            'version of the SDK.  Please use the exports sub-pkg '
             'instead.',
             DeprecationWarning,
             stacklevel=2,
@@ -481,9 +441,9 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         :doc:`Tenable Vulnerability Management v3 APIs <v3/index>`.
         """
         warnings.warn(
-            'The V3 sub-pkg have been deprecated from the TVM'
-            'package.  This method will be removed in a future'
-            'version of the SDK.  Please use the relocated modules'
+            'The V3 sub-pkg have been deprecated from the TVM '
+            'package.  This method will be removed in a future '
+            'version of the SDK.  Please use the relocated modules '
             'within the package',
             DeprecationWarning,
             stacklevel=2,
@@ -498,10 +458,10 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
         """
         return WasAPI(self)
 
-    @property
-    def sync(self):
-        """
-        The interface object for the
-        :doc:`Tenable Vulnerability Management Syncropnization APIs <sync>`.
-        """
-        return SynchronizationAPI(self)
+    # @property
+    # def sync(self):
+    #    """
+    #    The interface object for the
+    #    :doc:`Tenable Vulnerability Management Synchronization APIs <sync>`.
+    #    """
+    #    return SynchronizationAPI(self)
