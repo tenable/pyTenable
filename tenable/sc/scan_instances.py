@@ -1,4 +1,4 @@
-'''
+"""
 Scan Instances
 ==============
 
@@ -15,14 +15,18 @@ Methods available on ``sc.scan_instances``:
 .. rst-class:: hide-signature
 .. autoclass:: ScanResultAPI
     :members:
-'''
-from .base import SCEndpoint
-from tenable.utils import dict_merge
+"""
+
 from io import BytesIO
+
+from tenable.utils import dict_merge
+
+from .base import SCEndpoint
+
 
 class ScanResultAPI(SCEndpoint):
     def copy(self, id, *users):
-        '''
+        """
         Clones the scan instance.
 
         :sc-api:`scan-result: copy <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/copy>`
@@ -38,15 +42,16 @@ class ScanResultAPI(SCEndpoint):
 
         Examples:
             >>> sc.scan_instances.copy(1)
-        '''
+        """
         payload = dict()
         if users:
             payload['users'] = [{'id': self._check('user:id', u, int)} for u in users]
-        return self._api.post('scanResult/{}/copy'.format(
-            self._check('id', id, int)), json=payload).json()['response']
+        return self._api.post(
+            'scanResult/{}/copy'.format(self._check('id', id, int)), json=payload
+        ).json()['response']
 
     def delete(self, id):
-        '''
+        """
         Removes the scan instance from TenableSC.
 
         :sc-api:`scan-result: delete <Scan-Result.htm#scanResult_id_DELETE>`
@@ -60,12 +65,13 @@ class ScanResultAPI(SCEndpoint):
 
         Examples:
             >>> sc.scan_instances.delete(1)
-        '''
-        return self._api.delete('scanResult/{}'.format(
-            self._check('id', id, int))).json()['response']
+        """
+        return self._api.delete(
+            'scanResult/{}'.format(self._check('id', id, int))
+        ).json()['response']
 
     def details(self, id, fields=None):
-        '''
+        """
         Retrieves the details for the specified scan instance.
 
         :sc-api:`scan-result: details <Scan-Result.htm#scanResult_id_GET>`
@@ -92,16 +98,21 @@ class ScanResultAPI(SCEndpoint):
             >>> scan = sc.scan_instances.details(1,
             ...     fields=['name', 'status', 'scannedIPs', 'startTime', 'finishTime'])
             >>> pprint(scan)
-        '''
+        """
         params = dict()
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str)
-                for f in self._check('fields', fields, list)])
-        return self._api.get('scanResult/{}'.format(self._check('id', id, int)),
-            params=params).json()['response']
+            params['fields'] = ','.join(
+                [
+                    self._check('field', f, str)
+                    for f in self._check('fields', fields, list)
+                ]
+            )
+        return self._api.get(
+            'scanResult/{}'.format(self._check('id', id, int)), params=params
+        ).json()['response']
 
     def email(self, id, *emails):
-        '''
+        """
         Emails the scan results of the requested scan to the email addresses
         defined.
 
@@ -117,13 +128,14 @@ class ScanResultAPI(SCEndpoint):
 
         Examples:
             >>> sc.scan_instances.email(1, 'email@company.tld')
-        '''
-        return self._api.post('scanResult/{}/email'.format(
-            self._check('id', id, int)), json={'email': ','.join(
-                [self._check('address', e, str) for e in emails])}).json()['response']
+        """
+        return self._api.post(
+            'scanResult/{}/email'.format(self._check('id', id, int)),
+            json={'email': ','.join([self._check('address', e, str) for e in emails])},
+        ).json()['response']
 
     def export_scan(self, id, fobj=None, export_format=None):
-        '''
+        """
         Downloads the results of the scan.
 
         :sc-api:`scan-result: download <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/download>`
@@ -149,11 +161,20 @@ class ScanResultAPI(SCEndpoint):
         Examples:
             >>> with open('example.zip', 'wb') as fobj:
             ...     sc.scan_instances.export_scan(1, fobj)
-        '''
-        resp = self._api.post('scanResult/{}/download'.format(
-            self._check('id', id, int)), stream=True, json={
-                'downloadType': self._check('export_format', export_format, str,
-                    choices=['scap1_2', 'v2'], default='v2')})
+        """
+        resp = self._api.post(
+            'scanResult/{}/download'.format(self._check('id', id, int)),
+            stream=True,
+            json={
+                'downloadType': self._check(
+                    'export_format',
+                    export_format,
+                    str,
+                    choices=['scap1_2', 'v2'],
+                    default='v2',
+                )
+            },
+        )
 
         # if no file-like object was passed, then we will instantiate a BytesIO
         # object to push the file into.
@@ -169,7 +190,7 @@ class ScanResultAPI(SCEndpoint):
         return fobj
 
     def import_scan(self, fobj, repo, **kw):
-        '''
+        """
         Imports a nessus file into Tenable Security Center.
 
         :sc-api:`scan-result: import <Scan-Result.htm#ScanResultRESTReference-/scanResult/import>`
@@ -193,17 +214,16 @@ class ScanResultAPI(SCEndpoint):
                 An empty string response.
 
         Examples:
-            >>> with open('example.nessus') as fobj:
+            >>> with open('example.nessus', 'rb') as fobj:
             ...     sc.scan_instances.import_scan(fobj, 1)
-        '''
+        """
         kw['repo'] = repo
         payload = self._api.scans._constructor(**kw)
         payload['filename'] = self._api.files.upload(fobj)
-        return self._api.post(
-            'scanResult/import', json=payload).json()['response']
+        return self._api.post('scanResult/import', json=payload).json()['response']
 
     def reimport_scan(self, id, **kw):
-        '''
+        """
         Re-imports an existing scan into the cumulative repository.
 
         :sc-api:`scan-result: re-import <Scan-Result.htm#ScanResultRESTReference-/scanResult/{id}/import>`
@@ -226,13 +246,14 @@ class ScanResultAPI(SCEndpoint):
 
         Examples:
             >>> sc.scan_instances.reimport_scan(1)
-        '''
+        """
         payload = self._api.scans._constructor(**kw)
-        return self._api.post('scanResult/{}/import'.format(self._check(
-            'id', id, int)), json=payload).json()['response']
+        return self._api.post(
+            'scanResult/{}/import'.format(self._check('id', id, int)), json=payload
+        ).json()['response']
 
     def list(self, fields=None, start_time=None, end_time=None, optimize=True):
-        '''
+        """
         Retrieves the list of scan instances.
 
         :sc-api:`scan-result: list <Scan-Result.htm#ScanResultRESTReference-/scanResult>`
@@ -257,13 +278,10 @@ class ScanResultAPI(SCEndpoint):
 
             >>> for scan in sc.scan_instances.list()['manageable']:
             ...     pprint(scan)
-        '''
-        params = dict(
-            optimizeCompletedScanResults=str(optimize).lower()
-        )
+        """
+        params = dict(optimizeCompletedScanResults=str(optimize).lower())
         if fields:
-            params['fields'] = ','.join([self._check('field', f, str)
-                for f in fields])
+            params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
         if start_time:
             params['startTime'] = self._check('start_time', start_time, int)
@@ -274,7 +292,7 @@ class ScanResultAPI(SCEndpoint):
         return self._api.get('scanResult', params=params).json()['response']
 
     def pause(self, id):
-        '''
+        """
         Pauses a running scan instance.  Note that this will not impact agent
         scan instances.
 
@@ -289,12 +307,13 @@ class ScanResultAPI(SCEndpoint):
 
         Examples:
             >>> sc.scan_instances.pause(1)
-        '''
-        return self._api.post('scanResult/{}/pause'.format(self._check(
-            'id', id, int))).json()['response']
+        """
+        return self._api.post(
+            'scanResult/{}/pause'.format(self._check('id', id, int))
+        ).json()['response']
 
     def resume(self, id):
-        '''
+        """
         Resumes a paused scan instance.  Note that this will not impact agent
         scan instances.
 
@@ -309,12 +328,13 @@ class ScanResultAPI(SCEndpoint):
 
         Examples:
             >>> sc.scan_instances.resume(1)
-        '''
-        return self._api.post('scanResult/{}/resume'.format(self._check(
-            'id', id, int))).json()['response']
+        """
+        return self._api.post(
+            'scanResult/{}/resume'.format(self._check('id', id, int))
+        ).json()['response']
 
     def stop(self, id):
-        '''
+        """
         Stops a running scan instance.  Note that this will not impact agent
         scan instances.
 
@@ -329,6 +349,7 @@ class ScanResultAPI(SCEndpoint):
 
         Examples:
             >>> sc.scan_instances.stop(1)
-        '''
-        return self._api.post('scanResult/{}/stop'.format(self._check(
-            'id', id, int))).json()['response']
+        """
+        return self._api.post(
+            'scanResult/{}/stop'.format(self._check('id', id, int))
+        ).json()['response']
