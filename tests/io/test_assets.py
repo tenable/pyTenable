@@ -1,19 +1,22 @@
-'''
+"""
 test assets
-'''
+"""
+
 import time
 import uuid
+
 import pytest
-from tenable.errors import UnexpectedValueError, ForbiddenError
+
+from tenable.errors import ForbiddenError, UnexpectedValueError
 from tests.checker import check, single
 from tests.io.test_networks import fixture_network
 
 
 @pytest.mark.vcr()
 def test_assets_list(api):
-    '''
+    """
     test to get list of assets
-    '''
+    """
     assets = api.assets.list()
     assert isinstance(assets, list)
     resp = assets[0]
@@ -36,60 +39,69 @@ def test_assets_list(api):
 
 @pytest.mark.vcr()
 def test_assets_import_assets_typeerror(api):
-    '''
+    """
     test to raise exception when type of assets param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.assets.asset_import('pytest', 1)
 
 
 @pytest.mark.vcr()
 def test_assets_import_source_typeerror(api):
-    '''
+    """
     test to raise exception when type of source param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
-        api.assets.asset_import(1, {
-            'fqdn': ['example.py.test'],
-            'ipv4': ['192.168.254.1'],
-            'netbios_name': '',
-            'mac_address': []
-        })
+        api.assets.asset_import(
+            1,
+            {
+                'fqdn': ['example.py.test'],
+                'ipv4': ['192.168.254.1'],
+                'netbios_name': '',
+                'mac_address': [],
+            },
+        )
 
 
 @pytest.mark.vcr()
 def test_assets_import_standard_user_permissionerror(stdapi):
-    '''
+    """
     test to raise exception when standard user try to import asset.
-    '''
+    """
     with pytest.raises(ForbiddenError):
-        stdapi.assets.asset_import('pytest', {
-            'fqdn': ['example.py.test'],
-            'ipv4': ['192.168.254.1'],
-            'netbios_name': '',
-            'mac_address': []
-        })
+        stdapi.assets.asset_import(
+            'pytest',
+            {
+                'fqdn': ['example.py.test'],
+                'ipv4': ['192.168.254.1'],
+                'netbios_name': '',
+                'mac_address': [],
+            },
+        )
 
 
 @pytest.mark.vcr()
 def test_assets_import(api):
-    '''
+    """
     test to import asset
-    '''
-    resp = api.assets.asset_import('pytest', {
-        'fqdn': ['example.py.test'],
-        'ipv4': ['192.168.254.1'],
-        'netbios_name': '',
-        'mac_address': []
-    })
+    """
+    resp = api.assets.asset_import(
+        'pytest',
+        {
+            'fqdn': ['example.py.test'],
+            'ipv4': ['192.168.254.1'],
+            'netbios_name': '',
+            'mac_address': [],
+        },
+    )
     single(resp, 'uuid')
 
 
 @pytest.mark.vcr()
 def test_assets_import_jobs(api):
-    '''
+    """
     test to get list of asset import jobs
-    '''
+    """
     jobs = api.assets.list_import_jobs()
     assert isinstance(jobs, list)
     for i in jobs:
@@ -108,9 +120,9 @@ def test_assets_import_jobs(api):
 
 @pytest.mark.vcr()
 def test_assets_import_job_info(api):
-    '''
+    """
     test to get the details about a specific asset import job
-    '''
+    """
     jobs = api.assets.list_import_jobs()
     if len(jobs) > 0:
         job = api.assets.import_job_details(jobs[0]['job_id'])
@@ -130,119 +142,121 @@ def test_assets_import_job_info(api):
 
 @pytest.mark.vcr()
 def test_assets_tags_uuid_typeerror(api):
-    '''
+    """
     test to raise exception when type of uuid param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.assets.tags(1)
 
 
 @pytest.mark.vcr()
 def test_assets_tags_uuid_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when uuid param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.assets.tags('somethign else')
 
 
 @pytest.mark.vcr()
 def test_workbenches_asset_delete_asset_uuid_typeerror(api):
-    '''
+    """
     test to raise exception when type of uuid param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.workbenches.asset_delete(1)
 
 
 @pytest.mark.vcr()
-@pytest.mark.skip('We don\'t want to actually delete an asset')
+@pytest.mark.skip("We don't want to actually delete an asset")
 def test_workbenches_asset_delete_success(api):
-    '''
+    """
     test to delete the asset
-    '''
+    """
     asset = api.workbenches.assets()[0]
     api.workbenches.asset_delete(asset['id'])
 
 
 @pytest.mark.vcr()
 def test_assign_tags(api):
-    '''
+    """
     test to raise exception when action param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.assets.assign_tags('foo', [], [])
 
 
 @pytest.mark.vcr()
 def test_assets_move_assets_source_typeerror(api):
-    '''
+    """
     test to raise exception when type of source param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
-        api.assets.move_assets(1, str(uuid.uuid4()), ["127.0.0.1"])
+        api.assets.move_assets(1, str(uuid.uuid4()), ['127.0.0.1'])
 
 
 @pytest.mark.vcr()
 def test_assets_move_assets_source_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when source param value does not match the pattern.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
-        api.assets.move_assets('nope', str(uuid.uuid4()), ["127.0.0.1"])
+        api.assets.move_assets('nope', str(uuid.uuid4()), ['127.0.0.1'])
 
 
 @pytest.mark.vcr()
 def test_assets_move_assets_destination_typeerror(api):
-    '''
+    """
     test to raise exception when type of destination param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
-        api.assets.move_assets(str(uuid.uuid4()), 1, ["127.0.0.1"])
+        api.assets.move_assets(str(uuid.uuid4()), 1, ['127.0.0.1'])
 
 
 @pytest.mark.vcr()
 def test_assets_move_assets_destination_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when destination param value does not match the pattern.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
-        api.assets.move_assets(str(uuid.uuid4()), 'nope', ["127.0.0.1"])
+        api.assets.move_assets(str(uuid.uuid4()), 'nope', ['127.0.0.1'])
 
 
 @pytest.mark.vcr()
 def test_assets_move_assets_target_typeerror(api):
-    '''
+    """
     test to raise exception when type of target param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.assets.move_assets(str(uuid.uuid4()), str(uuid.uuid4()), 1)
 
 
 @pytest.mark.vcr()
-@pytest.mark.xfail(raises=AssertionError, reason="asset import job not completed")
+@pytest.mark.xfail(raises=AssertionError, reason='asset import job not completed')
 def test_assets_move_assets_success(api, network):
-    '''
+    """
     test to move assets from the specified network to another network
-    '''
+    """
     ip_addr = '192.168.254.1'
 
     # import asset
-    job_id = api.assets.asset_import('pytest', {
-        'fqdn': ['example.py.test'],
-        'ipv4': [ip_addr],
-        'netbios_name': '',
-        'mac_address': []
-    })
+    job_id = api.assets.asset_import(
+        'pytest',
+        {
+            'fqdn': ['example.py.test'],
+            'ipv4': [ip_addr],
+            'netbios_name': '',
+            'mac_address': [],
+        },
+    )
 
     # wait for asset to import
     iterate = True
     iterate_count = 0
     while iterate:
-        time.sleep(5)
+        # time.sleep(5)
         job = api.assets.list_import_jobs()
-        asset = [data['status'] for data in job
-                 if job_id in data['job_id']]
+        asset = [data['status'] for data in job if job_id in data['job_id']]
         iterate_count = iterate_count + 1
 
         # break iteration
@@ -250,9 +264,10 @@ def test_assets_move_assets_success(api, network):
             break
 
     # move asset to new network
-    time.sleep(45)
+    # time.sleep(45)
     resp = api.assets.move_assets(
-        '00000000-0000-0000-0000-000000000000', network['uuid'], ['192.168.254.1'])
+        '00000000-0000-0000-0000-000000000000', network['uuid'], ['192.168.254.1']
+    )
 
     # remove imported asset
     api.assets.bulk_delete(('ipv4', 'eq', ip_addr))
@@ -262,70 +277,80 @@ def test_assets_move_assets_success(api, network):
 
 
 def test_assets_bulk_delete_filter_type_typeerror(api):
-    '''
+    """
     test to raise exception when type of filter_type param does not match the expected type.
-    '''
+    """
     with pytest.raises(TypeError):
         api.assets.bulk_delete(filter_type=1)
 
 
 @pytest.mark.vcr()
 def test_assets_bulk_delete_filter_type_unexpectedvalueerror(api):
-    '''
+    """
     test to raise exception when filter_type param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.assets.bulk_delete(filter_type='NOT')
 
 
 @pytest.mark.vcr()
 def test_assets_bulk_delete_bad_filter(api):
-    '''
+    """
     test to raise exception when filter_type param value does not match the choices.
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
         api.assets.bulk_delete(('operating_system', 'contains', 'Linux'))
 
 
 @pytest.mark.vcr()
-@pytest.mark.xfail(raises=AssertionError, reason="asset import job not completed")
+@pytest.mark.xfail(raises=AssertionError, reason='asset import job not completed')
 def test_assets_bulk_delete_success(api):
-    '''
+    """
     test to delete multiple assets
-    '''
+    """
     ip_addr = '192.168.254.2'
 
     # import assets
-    first_asset = api.assets.asset_import('pytest', {
-        'fqdn': ['example1.py.test'],
-        'ipv4': [ip_addr],
-        'netbios_name': '',
-        'mac_address': []
-    })
-    second_asset = api.assets.asset_import('pytest', {
-        'fqdn': ['example2.py.test'],
-        'ipv4': [ip_addr],
-        'netbios_name': '',
-        'mac_address': []
-    })
+    first_asset = api.assets.asset_import(
+        'pytest',
+        {
+            'fqdn': ['example1.py.test'],
+            'ipv4': [ip_addr],
+            'netbios_name': '',
+            'mac_address': [],
+        },
+    )
+    second_asset = api.assets.asset_import(
+        'pytest',
+        {
+            'fqdn': ['example2.py.test'],
+            'ipv4': [ip_addr],
+            'netbios_name': '',
+            'mac_address': [],
+        },
+    )
 
     # wait for asset to import
     iterate = True
     iterate_count = 0
     while iterate:
-        time.sleep(5)
+        # time.sleep(5)
         job = api.assets.list_import_jobs()
-        asset = [data['status'] for data in job
-                 if first_asset in data['job_id'] or second_asset in data['job_id']]
+        asset = [
+            data['status']
+            for data in job
+            if first_asset in data['job_id'] or second_asset in data['job_id']
+        ]
         iterate_count = iterate_count + 1
 
         # break iteration
         if iterate_count == 5 or (
-                len(asset) == 2 and len(set(asset)) == 1 and asset[0] == 'COMPLETE'):
+            len(asset) == 2 and len(set(asset)) == 1 and asset[0] == 'COMPLETE'
+        ):
             break
 
     # remove imported asset
-    time.sleep(45)
+    # time.sleep(45)
     resp = api.assets.bulk_delete(('ipv4', 'eq', ip_addr))
     check(resp['response']['data'], 'asset_count', int)
     assert resp['response']['data']['asset_count'] == 2
@@ -426,5 +451,7 @@ def test_update_acr(api):
     Test case to check update acr happens.
     """
 
-    status_code = api.assets.update_acr(['de2e56a2-6a0e-4757-8d00-e9ad635f6231'], ['Other'], 1, 'something')
+    status_code = api.assets.update_acr(
+        ['de2e56a2-6a0e-4757-8d00-e9ad635f6231'], ['Other'], 1, 'something'
+    )
     assert status_code == 202
