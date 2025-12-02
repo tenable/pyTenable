@@ -36,12 +36,12 @@ class TicketAPI(SCEndpoint):
         if 'classification' in kw:
             # Verify that classification is one of the correct possible values.
             kw['classification'] = self._check(
-                'classification', kw['classification'], str, choices=['information', 'configuration', 'patch', 'disable', 'firewall', 'schedule', 'ids', 'accept risk', 'recast risk', 're-scan request', 'false positive', 'system probe', 'external probe', 'investigation needed', 'compromised system', 'virus incident', 'bad credentials', 'unauthorized software', 'unauthorized system', 'unauthorized user', 'other'])
+                'classification', kw['classification'], str, choices=['Information', 'Configuration', 'Patch', 'Disable', 'Firewall', 'Schedule', 'IDS', 'Other', 'Accept Risk', 'Recast Risk', 'Re-scan Request', 'False Positive', 'System Probe', 'External Probe', 'Investigation Needed', 'Compromised System', 'Virus Incident', 'Bad Credentials', 'Unauthorized Software', 'Unauthorized System', 'Unauthorized User'])
 
         if 'status' in kw:
             # Verify that status is one of the correct possible values
             kw['status'] = self._check('status', kw['status'], str,
-                choices=['assigned', 'resolved', 'more information', 'not applicable', 'duplicate', 'closed'])
+                choices=['assigned', 'resolved', 'more information', 'not applicable', 'duplicate', 'closed'], case="lower")
 
         return kw
 
@@ -74,12 +74,6 @@ class TicketAPI(SCEndpoint):
         '''
         kw['name'] = name
         kw['assignee'] = assignee
-        #kw['status'] = status
-        #kw['classification'] = classification
-        #kw['description'] = description
-        #kw['notes'] = notes
-        #kw['queries'] = queries
-        #kw['query'] = query
         payload = self._constructor(**kw)
         return self._api.post('ticket', json=payload).json()['response']
 
@@ -99,7 +93,7 @@ class TicketAPI(SCEndpoint):
             >>> ticket = sc.tickets.details(1)
             >>> pprint(ticket)
         '''
-        params = dict()
+        params = {}
         if fields:
             params['fields'] = ','.join([self._check('field', f, str) for f in fields])
 
