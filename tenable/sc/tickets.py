@@ -41,7 +41,7 @@ class TicketAPI(SCEndpoint):
         if 'status' in kw:
             # Verify that status is one of the correct possible values
             kw['status'] = self._check('status', kw['status'], str,
-                choices=['assigned', 'resolved', 'more information', 'not applicable', 'duplicate', 'closed'], case="lower")
+                choices=['Assigned', 'Resolved', 'More Information', 'Not Applicable', 'Duplicate', 'Closed'])
 
         return kw
 
@@ -148,7 +148,7 @@ class TicketAPI(SCEndpoint):
             >>> for ticket in sc.tickets.list():
             ...     pprint(ticket)
         '''
-        params = dict()
+        params = {}
         if fields:
             params['fields'] = ','.join([self._check('field', f, str)
                 for f in fields])
