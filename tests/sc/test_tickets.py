@@ -4,10 +4,6 @@ test file for testing various scenarios in tickets
 import re
 import responses
 
-from tenable.errors import APIError, UnexpectedValueError
-from tests.pytenable_log_handler import log_exception
-from ..checker import check
-
 RE_BASE = (
     r'https://nourl/rest'
 )
@@ -17,7 +13,14 @@ def test_contructor(tsc):
     '''
     test tickets contstructor
     '''
-    tickets = tsc.tickets._constructor(assignee={'id': 0}, name='test', description='test123', notes='additional notes', classification='Information', status='Resolved')
+    tickets = tsc.tickets._constructor(
+        assignee={'id': 0},
+        name='test',
+        description='test123',
+        notes='additional notes',
+        classification='Information',
+        status='Resolved'
+    )
     assert isinstance(tickets, dict)
     assert tickets['assignee'] == {'id': 0}
     assert tickets['name'] == 'test'

@@ -21,7 +21,7 @@ class TicketAPI(SCEndpoint):
         Handles parsing the keywords and returns a ticket document
         '''
 
-        # Validate as dict and pass to assignee  
+        # Validate as dict and pass to assignee
         if 'assignee' in kw:
             kw['assignee'] = self._check('assignee', kw['assignee'], dict)
 
@@ -36,13 +36,49 @@ class TicketAPI(SCEndpoint):
         if 'classification' in kw:
             # Verify that classification is one of the correct possible values.
             kw['classification'] = self._check(
-                'classification', kw['classification'], str, choices=['Information', 'Configuration', 'Patch', 'Disable', 'Firewall', 'Schedule', 'IDS', 'Other', 'Accept Risk', 'Recast Risk', 'Re-scan Request', 'False Positive', 'System Probe', 'External Probe', 'Investigation Needed', 'Compromised System', 'Virus Incident', 'Bad Credentials', 'Unauthorized Software', 'Unauthorized System', 'Unauthorized User'])
+                'classification',
+                kw['classification'],
+                str,
+                choices=[
+                    'Information',
+                    'Configuration',
+                    'Patch',
+                    'Disable',
+                    'Firewall',
+                    'Schedule',
+                    'IDS',
+                    'Other',
+                    'Accept Risk',
+                    'Recast Risk',
+                    'Re-scan Request',
+                    'False Positive',
+                    'System Probe',
+                    'External Probe',
+                    'Investigation Needed',
+                    'Compromised System',
+                    'Virus Incident',
+                    'Bad Credentials',
+                    'Unauthorized Software',
+                    'Unauthorized System',
+                    'Unauthorized User'
+                ]
+            )
 
         if 'status' in kw:
             # Verify that status is one of the correct possible values
-            kw['status'] = self._check('status', kw['status'], str,
-                choices=['Assigned', 'Resolved', 'More Information', 'Not Applicable', 'Duplicate', 'Closed'])
-
+            kw['status'] = self._check(
+                'status',
+                kw['status'],
+                str,
+                choices=[
+                    'Assigned',
+                    'Resolved',
+                    'More Information',
+                    'Not Applicable',
+                    'Duplicate',
+                    'Closed'
+                ]
+            )
         return kw
 
     def create(self, name, assignee, **kw):
@@ -96,9 +132,8 @@ class TicketAPI(SCEndpoint):
         params = {}
         if fields:
             params['fields'] = ','.join([self._check('field', f, str) for f in fields])
-
-        return self._api.get('ticket/{}'.format(self._check('id', id, int)),
-            params=params).json()['response']
+        ticket_id = self._check('id', id, int)
+        return self._api.get(f'ticket/{ticket_id}', params=params).json()['response']
 
     def edit(self, id, **kw):
         '''
@@ -131,8 +166,8 @@ class TicketAPI(SCEndpoint):
             >>> ticket = sc.tickets.edit(1, status='Resolved', notes='ran updates')
         '''
         payload = self._constructor(**kw)
-        return self._api.patch('ticket/{}'.format(
-            self._check('id', id, int)), json=payload).json()['response']
+        ticket_id = self._check('id', id, int)
+        return self._api.patch(f'ticket/{ticket_id}', json=payload).json()['response']
 
     def list(self, fields=None):
         '''
