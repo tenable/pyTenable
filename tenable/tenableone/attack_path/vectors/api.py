@@ -8,13 +8,6 @@ These methods can be accessed at ``TenableOne.attack_path``.
 .. rst-class:: hide-signature
 .. autoclass:: VectorsAPI
     :members:
-
-.. toctree::
-    :hidden:
-    :glob:
-
-    findings/index
-    vectors/index
 """
 
 from copy import copy
