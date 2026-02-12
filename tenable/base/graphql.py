@@ -24,7 +24,7 @@ from io import StringIO
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-from gql import Client, GraphQLRequest, gql
+from gql import Client, GraphQLRequest
 from gql.transport.requests import RequestsHTTPTransport
 from graphql import DocumentNode, GraphQLError, validate
 from restfly.iterator import APIIterator
@@ -40,7 +40,7 @@ class GraphQLIterator(APIIterator):
     _api: 'GraphQLSession'
     model: str
     query: GraphQLRequest
-    variables: Dict[str, Any]
+    variables: Dict[str, object]
     next_token: Optional[str] = None
 
     def _transform(self, data: Dict) -> List[Dict[str, Any]]:

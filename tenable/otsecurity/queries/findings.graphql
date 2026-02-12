@@ -1,0 +1,110 @@
+query getFindings(
+    $filter: FindingsObjExpressionsParams
+    $search: String
+    $sort: [FindingsObjSortParams!]!
+    $after: String
+    $first: Int
+) {
+    findings(
+        filter: $filter
+        search: $search
+        sort: $sort
+        after: $after
+        first: $first
+    ) {
+        nodes {
+            id
+            firstHit
+            lastHit
+            fixedAt
+            protocol
+            port
+            output
+            status
+            asset {
+                id
+                type
+                superType
+                slot
+                name
+                ips {
+                    nodes
+                }
+                directIps {
+                    nodes
+                }
+                macs {
+                    nodes
+                }
+                directMacs {
+                    nodes
+                }
+                category
+                family
+                firmwareVersion
+                location
+                runStatus
+                model
+                vendor
+                description
+                os
+                customField1
+                customField2
+                customField3
+                customField4
+                customField5
+                customField6
+                customField7
+                customField8
+                customField9
+                customField10
+                backplane {
+                    id
+                    name
+                    size
+                }
+                firstSeen
+                lastSeen
+                lastUpdate
+                risk {
+                    totalRisk
+                }
+                criticality
+                purdueLevel
+                category
+                hidden
+                segments {
+                    nodes {
+                        id
+                        name
+                        type
+                        assetType
+                        subnet
+                        systemName
+                        system
+                        isPredefinedName
+                    }
+                }
+            }
+            plugin {
+                id
+                name
+                severity
+                vprLevel
+                vprScore
+                family
+                totalAffectedAssets
+                totalFixedAssets
+                source
+                comment
+                owner
+            }
+        }
+        pageInfo {
+            startCursor
+            endCursor
+            hasNextPage
+        }
+        count: totalCount
+    }
+}

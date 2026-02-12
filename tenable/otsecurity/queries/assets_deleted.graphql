@@ -1,0 +1,15 @@
+query getDeletedAssets(
+  $since: Time
+  $limit: Int
+  $startAt: String
+)
+{ deletedAssets(
+  since: $since
+  after: $startAt
+  first: $limit
+){
+  nodes 
+  pageInfo {
+    endCursor
+  }
+}}
