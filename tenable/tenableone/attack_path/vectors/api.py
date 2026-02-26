@@ -190,6 +190,17 @@ class VectorsAPI(APIEndpoint):
             >>> for attack_path in response.data:
             ...     print(f"Attack Path: {attack_path.name}, Priority: {attack_path.priority}")
 
+            Filter by path_status to get only actionable paths
+
+            >>> filter_data = {
+            ...     "property": "path_status",
+            ...     "operator": "in",
+            ...     "value": ["to_do", "in_progress", "in_review"]
+            ... }
+            >>> response = t1.attack_path.vectors.top_attack_paths_search(
+            ...     filter=filter_data
+            ... )
+
             Simple search with default parameters
 
             >>> response = t1.attack_path.vectors.top_attack_paths_search()
