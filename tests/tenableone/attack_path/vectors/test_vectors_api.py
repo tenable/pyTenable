@@ -167,21 +167,23 @@ def test_top_attack_paths_search_with_filter(tenable_one_api, vector_row):
             {"property": "critical_asset", "operator": "eq", "value": True}
         ]
     }
-    
+
     response_data = {
         "data": [vector_row for _ in range(5)],
         "total": 5
     }
-    
+
     responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
                    json=response_data,
-                   match=[responses.matchers.query_param_matcher({"limit": 1000})])
-    
+                   match=[responses.matchers.query_param_matcher({
+                       "limit": 1000, "exclude_resolved": True
+                   })])
+
     response: DiscoverPageTableResponse = tenable_one_api.attack_path.vectors.top_attack_paths_search(
         limit=1000,
         filter=filter_data
     )
-    
+
     assert response.total == 5
     assert len(response.data) == 5
     assert isinstance(response.data[0], VectorRow)
@@ -193,16 +195,18 @@ def test_top_attack_paths_search_without_filter(tenable_one_api, vector_row):
         "data": [vector_row for _ in range(10)],
         "total": 10
     }
-    
+
     responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
                    json=response_data,
-                   match=[responses.matchers.query_param_matcher({"limit": 500, "sort": "priority:desc"})])
-    
+                   match=[responses.matchers.query_param_matcher({
+                       "limit": 500, "sort": "priority:desc", "exclude_resolved": True
+                   })])
+
     response: DiscoverPageTableResponse = tenable_one_api.attack_path.vectors.top_attack_paths_search(
         limit=500,
         sort="priority:desc"
     )
-    
+
     assert response.total == 10
     assert len(response.data) == 10
     assert isinstance(response.data[0], VectorRow)
@@ -214,18 +218,63 @@ def test_top_attack_paths_search_with_ai_summarization(tenable_one_api, vector_r
         "data": [vector_row for _ in range(3)],
         "total": 3
     }
-    
+
     responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
                    json=response_data,
                    match=[responses.matchers.query_param_matcher({
                        "limit": 1000,
-                       "run_ai_summarization": "true"
+                       "run_ai_summarization": "true",
+                       "exclude_resolved": True
                    })])
-    
+
     response: DiscoverPageTableResponse = tenable_one_api.attack_path.vectors.top_attack_paths_search(
         run_ai_summarization="true"
     )
-    
+
     assert response.total == 3
     assert len(response.data) == 3
     assert isinstance(response.data[0], VectorRow)
+
+
+@responses.activate
+def test_top_attack_paths_search_exclude_resolved_default(tenable_one_api, vector_row):
+    """Test that exclude_resolved=True is sent by default"""
+    response_data = {
+        "data": [vector_row for _ in range(5)],
+        "total": 5
+    }
+
+    responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
+                   json=response_data,
+                   match=[responses.matchers.query_param_matcher({
+                       "limit": 1000,
+                       "exclude_resolved": True
+                   })])
+
+    response: DiscoverPageTableResponse = tenable_one_api.attack_path.vectors.top_attack_paths_search()
+
+    assert response.total == 5
+    assert len(response.data) == 5
+
+
+@responses.activate
+def test_top_attack_paths_search_exclude_resolved_false(tenable_one_api, vector_row):
+    """Test that exclude_resolved=False is passed correctly"""
+    response_data = {
+        "data": [vector_row for _ in range(10)],
+        "total": 10
+    }
+
+    responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
+                   json=response_data,
+                   match=[responses.matchers.query_param_matcher({
+                       "limit": 1000,
+                       "exclude_resolved": False
+                   })])
+
+    response: DiscoverPageTableResponse = tenable_one_api.attack_path.vectors.top_attack_paths_search(
+        exclude_resolved=False
+    )
+
+    assert response.total == 10
+    assert len(response.data) == 10
