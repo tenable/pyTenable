@@ -21,6 +21,7 @@ class StatusEnum(Enum):
     done = "done"
     to_do = "to_do"
     in_review = "in_review"
+    accepted = "accepted"
 
 
 class NodeInfoSchema(BaseModel):

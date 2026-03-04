@@ -90,7 +90,7 @@ def finding():
             "totalVectorCount": 58,
             "vectorCount": 1,
             "state": "open",
-            "status": "to_do",
+            "status": "accepted",
             "created": 1712659006,
             "is_active": True,
             "has_history": None,

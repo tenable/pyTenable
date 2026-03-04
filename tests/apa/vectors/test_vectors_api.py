@@ -98,7 +98,8 @@ def vector():
         "name": "Domain Users can reach baaaaacnet by exploiting CVE-2024-21444 and CVE-2022-26936",
         "summary": "An attacker can use Domain Users to access baaaaacnet by exploiting two vulnerabilities. First, the attacker exploits CVE-2024-21444 on APAENG to gain access to APADC. Then, the attacker exploits CVE-2022-26936 on APADC to gain access to baaaaacnet. This attack path is possible because Domain Users is a member of Remote Desktop Users, which has remote desktop access to APAENG. This attack path is dangerous because it allows an attacker to gain access to a critical asset, baaaaacnet, by exploiting two vulnerabilities.",
         "first_aes": None,
-        "last_acr": 9
+        "last_acr": 9,
+        "path_status": "in_progress"
     }
 
 
