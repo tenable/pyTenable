@@ -15,6 +15,8 @@ This package covers the Tenable OT Security interface.
     exports
     assets
     events
+    findings
+    policy_findings
     plugins
 """
 

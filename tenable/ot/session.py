@@ -14,6 +14,8 @@ This package covers the Tenable OT Security interface.
 
     assets
     events
+    findings
+    policy_findings
     plugins
 """
 import os
@@ -22,6 +24,8 @@ import warnings
 from tenable.base.platform import APIPlatform
 from tenable.ot.assets import AssetsAPI
 from tenable.ot.events import EventsAPI
+from tenable.ot.findings import FindingsAPI
+from tenable.ot.policy_findings import PolicyFindingsAPI
 from tenable.ot.plugins import PluginsAPI
 from tenable.ot.exports.api import ExportsAPI
 
@@ -132,6 +136,22 @@ class TenableOT(APIPlatform):
         :doc:`Tenable OT Security Events APIs <events>`.
         """
         return EventsAPI(self)
+
+    @property
+    def findings(self):
+        """
+        The interface object for the
+        :doc:`Tenable OT Security Findings APIs <findings>`.
+        """
+        return FindingsAPI(self)
+
+    @property
+    def policy_findings(self):
+        """
+        The interface object for the
+        :doc:`Tenable OT Security Policy Findings APIs <policy_findings>`.
+        """
+        return PolicyFindingsAPI(self)
 
     @property
     def plugins(self):
