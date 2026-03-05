@@ -932,7 +932,7 @@ class ExportsAPI(APIEndpoint):
             cve_category:
                 Returns findings the match the specified CVE category. For more
                 information about categories, see the *Vulnerability Categories*
-                section in the _Tenable Vulnerability Management User Guide_.
+                section in the Tenable Vulnerability Management User Guide.
             exploit_maturity:
                 Returns findings that match the specified exploit maturity. Tenable
                 assigns exploit maturity values to vulnerabilities based on the
@@ -1079,6 +1079,7 @@ class ExportsAPI(APIEndpoint):
         """
         Initiate a WAS vulnerability export.
         :devportal:`API Documentation <was-export-findings>`
+
         Args:
             first_found:
                 Findings first discovered after this timestamp will be returned.
