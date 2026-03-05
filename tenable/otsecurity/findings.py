@@ -1,6 +1,6 @@
 """
-Vulns
-=====
+Findings
+========
 
 The following methods leverage stored queries relating to vulnerability metadata within
 Cloud Security.
@@ -9,11 +9,11 @@ Cloud Security.
 .. autoclass:: FindingsAPI
     :members:
 
-
-.. autoclass:: CloudSecurityVulnIterator
-    :members:
 """
-from tenable.base.graphql import GraphQLEndpoint, GraphQLIterator
+
+from tenable.base.graphql import GraphQLEndpoint
+
+from .iterator import OTSecurityIterator
 
 
 class FindingsAPI(GraphQLEndpoint):
@@ -23,7 +23,7 @@ class FindingsAPI(GraphQLEndpoint):
         search: str | None = None,
         sort: list[dict[str, str]] | None = None,
         after: str | None = None,
-    ):
+    ) -> OTSecurityIterator:
         """
         Requests virtual machine vulnerability metadata.
 
@@ -40,14 +40,14 @@ class FindingsAPI(GraphQLEndpoint):
             >>> for finding in otsecurity.findings.get():
             ...     print(finding)
         """
-        variables = {"startAt": after}
+        variables = {'startAt': after}
         if search:
-            variables["search"] = search
+            variables['search'] = search
         if sort:
-            variables["sort"] = sort
+            variables['sort'] = sort
         return self._query(
             stored_file='findings.graphql',
-            iterator=GraphQLIterator,
+            iterator=OTSecurityIterator,
             graphql_model='findings',
             startAt=after,
             variables=variables,

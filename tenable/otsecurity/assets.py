@@ -8,20 +8,15 @@ Cloud Security.
 .. rst-class:: hide-signature
 .. autoclass:: AssetsAPI
     :members:
-
-
-.. autoclass:: CloudSecurityAssetIterator
-    :members:
 """
-from tenable.base.graphql import GraphQLEndpoint, GraphQLIterator
 
+from tenable.base.graphql import GraphQLEndpoint
 
-class CloudSecurityAssetIterator(GraphQLIterator):
-    pass
+from .iterator import OTSecurityIterator
 
 
 class AssetsAPI(GraphQLEndpoint):
-    def compute(self, page_size: int = 10) -> CloudSecurityAssetIterator:
+    def list(self, page_size: int = 10) -> OTSecurityIterator:
         """
         Requests compute asset metadata.
 
@@ -33,34 +28,15 @@ class AssetsAPI(GraphQLEndpoint):
             An iterable is returned that handles paging of the data.
 
         Example:
-            >>> for asset in cloudsecurity.assets.compute():
+            >>> for asset in otsecurity.assets.list():
             ...     print(asset)
         """
         return self._query(
             stored_file='assets-compute.graphql',
-            iterator=CloudSecurityAssetIterator,
+            iterator=OTSecurityIterator,
             graphql_model='Entities',
-            limit=page_size
+            limit=page_size,
         )
 
-    def container(self, page_size: int = 10):
-        """
-        Requests container asset metadata.
-
-        Args:
-            page_size (int, optional):
-                How many items should be returned per page?
-
-        Returns:
-            An iterable is returned that handles paging of the data.
-
-        Example:
-            >>> for asset in cloudsecurity.assets.container():
-            ...     print(asset)
-        """
-        return self._query(
-            stored_file='assets-container.graphql',
-            iterator=CloudSecurityAssetIterator,
-            graphql_model='Entities',
-            limit=page_size
-        )
+    def get(self, id) -> None:
+        """ """
