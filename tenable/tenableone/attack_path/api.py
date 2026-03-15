@@ -13,16 +13,26 @@ Attack Path APIs.
     :hidden:
     :glob:
 
+    export/index
     findings/index
     vectors/index
 """
 
 from tenable.base.endpoint import APIEndpoint
+from tenable.tenableone.attack_path.export.api import ExportAPI
 from tenable.tenableone.attack_path.findings.api import FindingsAPI
 from tenable.tenableone.attack_path.vectors.api import VectorsAPI
 
 
 class AttackPathAPI(APIEndpoint):
+    @property
+    def export(self):
+        """
+        The interface object for the
+        :doc:`Tenable One Attack Path Export APIs <export/index>`.
+        """
+        return ExportAPI(self._api)
+
     @property
     def findings(self):
         """
