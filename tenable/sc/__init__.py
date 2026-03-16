@@ -29,6 +29,7 @@ Tenable Security Center
     feeds
     files
     groups
+    hosts
     license
     organizations
     plugins
@@ -44,6 +45,7 @@ Tenable Security Center
     scans
     status
     system
+    tickets
     users
 
 """
@@ -67,8 +69,8 @@ from .current import CurrentSessionAPI
 from .feeds import FeedAPI
 from .files import FileAPI
 from .groups import GroupAPI
-from .license import LicenseAPI
 from .hosts import HostsAPI
+from .license import LicenseAPI
 from .organizations import OrganizationAPI
 from .plugins import PluginAPI
 from .policies import ScanPolicyAPI
@@ -83,6 +85,7 @@ from .scanners import ScannerAPI
 from .scans import ScanAPI
 from .status import StatusAPI
 from .system import SystemAPI
+from .tickets import TicketAPI
 from .users import UserAPI
 
 try:
@@ -228,8 +231,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
                 stacklevel=2,
             )
             kwargs['url'] = (
-                f'{kwargs.get("scheme", "https")}://'
-                f'{host}:{kwargs.get("port", 443)}'
+                f'{kwargs.get("scheme", "https")}://{host}:{kwargs.get("port", 443)}'
             )
 
         kwargs['access_key'] = access_key
@@ -507,12 +509,12 @@ class TenableSC(APIPlatform):  # noqa PLR0904
 
     @property
     def license(self):
-        '''
+        """
         The interface object for the
         :doc:`Tenable Security Center License APIs <license>`.
-        '''
-        return LicenseAPI(self)      
-    
+        """
+        return LicenseAPI(self)
+
     @property
     def organizations(self):
         """
@@ -624,6 +626,14 @@ class TenableSC(APIPlatform):  # noqa PLR0904
         :doc:`Tenable Security Center System APIs <system>`.
         """
         return SystemAPI(self)
+
+    @property
+    def tickets(self):
+        """
+        The interface object for the
+        :doc:`Tenable Security Center Ticket APIs <system>`.
+        """
+        return TicketAPI(self)
 
     @property
     def users(self):

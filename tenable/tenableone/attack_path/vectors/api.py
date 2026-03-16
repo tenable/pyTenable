@@ -8,13 +8,6 @@ These methods can be accessed at ``TenableOne.attack_path``.
 .. rst-class:: hide-signature
 .. autoclass:: VectorsAPI
     :members:
-
-.. toctree::
-    :hidden:
-    :glob:
-
-    findings/index
-    vectors/index
 """
 
 from copy import copy
@@ -144,6 +137,7 @@ class VectorsAPI(APIEndpoint):
         sort: Optional[str] = None,
         run_ai_summarization: Optional[str] = None,
         filter: Optional[PublicVectorFilterType] = None,
+        exclude_resolved: bool = True,
     ) -> DiscoverPageTableResponse:
         """
         Search top attack paths leading to critical assets.
@@ -152,12 +146,17 @@ class VectorsAPI(APIEndpoint):
         advanced filtering, sorting, and pagination options. The response includes
         detailed information about each attack path, including techniques, nodes, and metadata.
 
+        Note: Attack Paths now inherit their status from the underlying techniques. Paths
+        marked as "Chain Prevented" (partially fixed), "Accepted" or "Done" are excluded by
+        default to prioritize active threats. Set exclude_resolved=False to include all paths.
+
         Args:
             limit (optional, int):
                 Number of items per page (default: 1000, min: 100, max: 10000)
 
             sort (optional, str):
-                Sort parameter in format "{sort_field}:{sort_order}" (e.g., "name:asc", "priority:desc")
+                Sort parameter in format "{sort_field}:{sort_order}"
+                (e.g., "name:asc", "priority:desc", "path_status:asc")
 
             run_ai_summarization (optional, str):
                 Whether to run AI summarization (default: "false"). Enabling AI summarization
@@ -167,6 +166,10 @@ class VectorsAPI(APIEndpoint):
             filter (optional, PublicVectorFilterType):
                 Filter criteria for the search. The filter is passed as a JSON object
                 in the request body. Supports complex filtering with AND/OR operators.
+
+            exclude_resolved (bool, optional):
+                When True (default), excludes paths with path_status 'done',
+                'chain_prevented', or 'accepted'. Set to False to include all paths.
 
         Returns:
             :obj:`DiscoverPageTableResponse`:
@@ -190,6 +193,23 @@ class VectorsAPI(APIEndpoint):
             >>> for attack_path in response.data:
             ...     print(f"Attack Path: {attack_path.name}, Priority: {attack_path.priority}")
 
+            Filter by path_status to get only actionable paths
+
+            >>> filter_data = {
+            ...     "property": "path_status",
+            ...     "operator": "in",
+            ...     "value": ["to_do", "in_progress", "in_review"]
+            ... }
+            >>> response = t1.attack_path.vectors.top_attack_paths_search(
+            ...     filter=filter_data
+            ... )
+
+            Include resolved paths
+
+            >>> response = t1.attack_path.vectors.top_attack_paths_search(
+            ...     exclude_resolved=False
+            ... )
+
             Simple search with default parameters
 
             >>> response = t1.attack_path.vectors.top_attack_paths_search()
@@ -197,6 +217,7 @@ class VectorsAPI(APIEndpoint):
         """
         payload = {
             'limit': limit,
+            'exclude_resolved': exclude_resolved,
         }
 
         if sort:

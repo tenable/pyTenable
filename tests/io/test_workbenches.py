@@ -35,6 +35,8 @@ from tests.checker import check
 #        api.workbenches.assets(filter_type='NOT')
 #
 
+pytestmark = pytest.mark.filterwarnings('ignore::DeprecationWarning')
+
 
 @pytest.mark.vcr()
 def test_workbench_assets(api):

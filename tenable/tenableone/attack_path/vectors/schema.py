@@ -1,5 +1,16 @@
+from enum import Enum
+
 from pydantic import BaseModel, RootModel
 from typing import List, Optional, Any, Union
+
+
+class PathStatusEnum(Enum):
+    to_do = "to_do"
+    in_progress = "in_progress"
+    in_review = "in_review"
+    done = "done"
+    chain_prevented = "chain_prevented"
+    accepted = "accepted"
 
 
 class SourceInformationSchema(BaseModel):
@@ -79,6 +90,7 @@ class VectorRow(BaseModel):
     summary: Optional[str] = None
     first_aes: Optional[float] = None
     last_acr: Optional[int] = None
+    path_status: Optional[PathStatusEnum] = None
 
 
 class DiscoverPageTableResponse(BaseModel):
