@@ -135,7 +135,7 @@ class MultipleFilters(BaseModel):
 class AttackPathExportParams(BaseModel):
     """Parameters for attack path export requests."""
 
-    sort: Optional[ExportSortParams] = Field(
+    sort: Optional[List[ExportSortParams]] = Field(
         None, description='Sort parameters'
     )
     filters: Optional[Union[SingleFilter, MultipleFilters]] = Field(
@@ -157,8 +157,8 @@ class AttackPathExportRequest(BaseModel):
 
     export_type: str = Field(..., description='The type of export')
     file_format: FileFormat = Field(..., description='The output file format')
-    params: AttackPathExportParams = Field(
-        ..., description='Export parameters'
+    params: Optional[AttackPathExportParams] = Field(
+        None, description='Export parameters'
     )
     columns: Optional[List[AttackPathColumnKey]] = Field(
         None, description='Columns to include in the export'
@@ -175,7 +175,7 @@ class AttackTechniqueExportRequest(BaseModel):
     filter: Optional[Union[SingleFilter, MultipleFilters]] = Field(
         None, description='Filters to apply'
     )
-    sort: Optional[ExportSortParams] = Field(
+    sort: Optional[List[ExportSortParams]] = Field(
         None, description='Sort parameters'
     )
     columns: Optional[List[AttackTechniqueColumnKey]] = Field(

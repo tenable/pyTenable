@@ -36,7 +36,7 @@ class ExportAPI(APIEndpoint):
         self,
         export_type: str,
         file_format: FileFormat,
-        params: AttackPathExportParams,
+        params: Optional[AttackPathExportParams] = None,
         columns: Optional[List[AttackPathColumnKey]] = None,
         file_name: Optional[str] = None,
     ) -> ExportRequestId:
@@ -88,7 +88,7 @@ class ExportAPI(APIEndpoint):
         self,
         file_format: FileFormat,
         filter: Optional[Union[SingleFilter, MultipleFilters]] = None,
-        sort: Optional[ExportSortParams] = None,
+        sort: Optional[List[ExportSortParams]] = None,
         columns: Optional[List[AttackTechniqueColumnKey]] = None,
         file_name: Optional[str] = None,
         page_number: Optional[int] = None,
