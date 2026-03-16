@@ -17,26 +17,26 @@ from io import BytesIO
 from tenable.base.endpoint import APIEndpoint
 from tenable.tenableone.attack_path.export.schema import (
     AttackPathColumnKey,
-    AttackPathExportParams,
     AttackPathExportRequest,
+    AttackPathExportType,
     AttackTechniqueColumnKey,
     AttackTechniqueExportRequest,
+    ExportFilter,
+    ExportFilterCondition,
     ExportRequestId,
     ExportRequestStatus,
     ExportSortParams,
     FileFormat,
-    MultipleFilters,
-    SingleFilter,
-    SortDirection,
+    VectorsExportParams,
 )
 
 
 class ExportAPI(APIEndpoint):
     def attack_paths(
         self,
-        export_type: str,
+        export_type: AttackPathExportType,
         file_format: FileFormat,
-        params: Optional[AttackPathExportParams] = None,
+        params: Optional[VectorsExportParams] = None,
         columns: Optional[List[AttackPathColumnKey]] = None,
         file_name: Optional[str] = None,
     ) -> ExportRequestId:
@@ -44,14 +44,15 @@ class ExportAPI(APIEndpoint):
         Export top attack paths
 
         Args:
-            export_type (str):
+            export_type (AttackPathExportType):
                 The type of export to perform. Use ``VECTORS`` to export
                 pre-computed top attack paths.
             file_format (FileFormat):
                 The output file format (CSV or JSON).
-            params (AttackPathExportParams):
+            params (VectorsExportParams, optional):
                 Export parameters including sort, filters, vector_ids,
-                page_number, and max_entries_per_page.
+                page_number, and max_entries_per_page. Defaults to empty
+                ``VectorsExportParams`` if not provided.
             columns (list[AttackPathColumnKey], optional):
                 Columns to include in the export.
             file_name (str, optional):
@@ -63,14 +64,16 @@ class ExportAPI(APIEndpoint):
 
         Examples:
             >>> export = tenable_one.attack_path.export.attack_paths(
-            ...     export_type='VECTORS',
+            ...     export_type=AttackPathExportType.VECTORS,
             ...     file_format=FileFormat.CSV,
-            ...     params=AttackPathExportParams(),
             ...     columns=[AttackPathColumnKey.PATH_NAME, AttackPathColumnKey.PRIORITY],
             ... )
             >>> print(export.export_id)
 
         """
+        if params is None:
+            params = VectorsExportParams()
+
         payload = AttackPathExportRequest(
             export_type=export_type,
             file_format=file_format,
@@ -87,8 +90,8 @@ class ExportAPI(APIEndpoint):
     def attack_techniques(
         self,
         file_format: FileFormat,
-        filter: Optional[Union[SingleFilter, MultipleFilters]] = None,
-        sort: Optional[List[ExportSortParams]] = None,
+        filter: Optional[Union[ExportFilter, ExportFilterCondition]] = None,
+        sort: Optional[ExportSortParams] = None,
         columns: Optional[List[AttackTechniqueColumnKey]] = None,
         file_name: Optional[str] = None,
         page_number: Optional[int] = None,
@@ -101,7 +104,7 @@ class ExportAPI(APIEndpoint):
         Args:
             file_format (FileFormat):
                 The output file format (CSV or JSON).
-            filter (SingleFilter | MultipleFilters, optional):
+            filter (ExportFilter | ExportFilterCondition, optional):
                 Filters to apply to the export. Can be a single filter
                 condition or a compound filter with multiple conditions.
             sort (ExportSortParams, optional):

@@ -11,17 +11,17 @@ from io import BytesIO
 
 from tenable.tenableone.attack_path.export.schema import (
     AttackPathColumnKey,
-    AttackPathExportParams,
+    AttackPathExportType,
     AttackTechniqueColumnKey,
+    ExportFilter,
+    ExportFilterCondition,
     ExportRequestId,
     ExportRequestStatus,
     ExportStatus,
     ExportSortParams,
     FileFormat,
-    FilterOperator,
-    MultipleFilters,
-    SingleFilter,
     SortDirection,
+    VectorsExportParams,
 )
 
 
@@ -71,8 +71,9 @@ def export_data() -> bytes:
 def test_attack_paths_minimal(tenable_one_api, export_request_id_response):
     """Test attack_paths with only required parameters."""
     expected_body = {
-        "export_type": "top_attack_paths",
+        "export_type": "VECTORS",
         "file_format": "CSV",
+        "params": {},
     }
 
     responses.add(
@@ -83,7 +84,7 @@ def test_attack_paths_minimal(tenable_one_api, export_request_id_response):
     )
 
     result = tenable_one_api.attack_path.export.attack_paths(
-        export_type="top_attack_paths",
+        export_type=AttackPathExportType.VECTORS,
         file_format=FileFormat.CSV,
     )
 
@@ -95,8 +96,9 @@ def test_attack_paths_minimal(tenable_one_api, export_request_id_response):
 def test_attack_paths_with_columns(tenable_one_api, export_request_id_response):
     """Test attack_paths with specific columns."""
     expected_body = {
-        "export_type": "top_attack_paths",
+        "export_type": "VECTORS",
         "file_format": "JSON",
+        "params": {},
         "columns": ["path_name", "priority", "source_nes"],
     }
 
@@ -108,7 +110,7 @@ def test_attack_paths_with_columns(tenable_one_api, export_request_id_response):
     )
 
     result = tenable_one_api.attack_path.export.attack_paths(
-        export_type="top_attack_paths",
+        export_type=AttackPathExportType.VECTORS,
         file_format=FileFormat.JSON,
         columns=[
             AttackPathColumnKey.PATH_NAME,
@@ -124,8 +126,9 @@ def test_attack_paths_with_columns(tenable_one_api, export_request_id_response):
 def test_attack_paths_with_file_name(tenable_one_api, export_request_id_response):
     """Test attack_paths with a custom file name."""
     expected_body = {
-        "export_type": "top_attack_paths",
+        "export_type": "VECTORS",
         "file_format": "CSV",
+        "params": {},
         "file_name": "my_attack_paths_export",
     }
 
@@ -137,7 +140,7 @@ def test_attack_paths_with_file_name(tenable_one_api, export_request_id_response
     )
 
     result = tenable_one_api.attack_path.export.attack_paths(
-        export_type="top_attack_paths",
+        export_type=AttackPathExportType.VECTORS,
         file_format=FileFormat.CSV,
         file_name="my_attack_paths_export",
     )
@@ -148,15 +151,15 @@ def test_attack_paths_with_file_name(tenable_one_api, export_request_id_response
 @responses.activate
 def test_attack_paths_with_params(tenable_one_api, export_request_id_response):
     """Test attack_paths with full params object (sort, filters, vector_ids, pagination)."""
-    params = AttackPathExportParams(
-        sort=[ExportSortParams(property="priority", direction=SortDirection.DESC)],
-        filters=MultipleFilters(
+    params = VectorsExportParams(
+        sort=ExportSortParams(property="priority", direction=SortDirection.DESC),
+        filters=ExportFilter(
             operator="and",
             value=[
-                SingleFilter(
-                    property="priority",
-                    operator=FilterOperator.GTE,
-                    value=8,
+                ExportFilterCondition(
+                    key="priority",
+                    operator="gte",
+                    value="8",
                 ),
             ],
         ),
@@ -166,14 +169,14 @@ def test_attack_paths_with_params(tenable_one_api, export_request_id_response):
     )
 
     expected_body = {
-        "export_type": "top_attack_paths",
+        "export_type": "VECTORS",
         "file_format": "CSV",
         "params": {
-            "sort": [{"property": "priority", "direction": "desc"}],
+            "sort": {"property": "priority", "direction": "desc"},
             "filters": {
                 "operator": "and",
                 "value": [
-                    {"property": "priority", "operator": "gte", "value": 8},
+                    {"key": "priority", "operator": "gte", "value": "8"},
                 ],
             },
             "vector_ids": ["vec-001", "vec-002"],
@@ -191,7 +194,7 @@ def test_attack_paths_with_params(tenable_one_api, export_request_id_response):
     )
 
     result = tenable_one_api.attack_path.export.attack_paths(
-        export_type="top_attack_paths",
+        export_type=AttackPathExportType.VECTORS,
         file_format=FileFormat.CSV,
         params=params,
         columns=[AttackPathColumnKey.PATH_NAME, AttackPathColumnKey.PRIORITY],
@@ -206,8 +209,9 @@ def test_attack_paths_all_columns(tenable_one_api, export_request_id_response):
     all_columns = list(AttackPathColumnKey)
 
     expected_body = {
-        "export_type": "top_attack_paths",
+        "export_type": "VECTORS",
         "file_format": "JSON",
+        "params": {},
         "columns": [c.value for c in all_columns],
     }
 
@@ -219,7 +223,7 @@ def test_attack_paths_all_columns(tenable_one_api, export_request_id_response):
     )
 
     result = tenable_one_api.attack_path.export.attack_paths(
-        export_type="top_attack_paths",
+        export_type=AttackPathExportType.VECTORS,
         file_format=FileFormat.JSON,
         columns=all_columns,
     )
@@ -290,11 +294,11 @@ def test_attack_techniques_with_filter_and_sort(
         "filter": {
             "operator": "and",
             "value": [
-                {"property": "priority", "operator": "gte", "value": 7},
-                {"property": "status", "operator": "eq", "value": "active"},
+                {"key": "priority", "operator": "gte", "value": "7"},
+                {"key": "status", "operator": "==", "value": "active"},
             ],
         },
-        "sort": [{"property": "priority", "direction": "desc"}],
+        "sort": {"property": "priority", "direction": "desc"},
     }
 
     responses.add(
@@ -306,14 +310,14 @@ def test_attack_techniques_with_filter_and_sort(
 
     result = tenable_one_api.attack_path.export.attack_techniques(
         file_format=FileFormat.JSON,
-        filter=MultipleFilters(
+        filter=ExportFilter(
             operator="and",
             value=[
-                SingleFilter(property="priority", operator=FilterOperator.GTE, value=7),
-                SingleFilter(property="status", operator=FilterOperator.EQ, value="active"),
+                ExportFilterCondition(key="priority", operator="gte", value="7"),
+                ExportFilterCondition(key="status", operator="==", value="active"),
             ],
         ),
-        sort=[ExportSortParams(property="priority", direction=SortDirection.DESC)],
+        sort=ExportSortParams(property="priority", direction=SortDirection.DESC),
     )
 
     assert result.export_id == "export-ap-12345"
@@ -402,10 +406,10 @@ def test_attack_techniques_all_params(tenable_one_api, export_request_id_respons
         "filter": {
             "operator": "and",
             "value": [
-                {"property": "state", "operator": "eq", "value": "active"},
+                {"key": "state", "operator": "==", "value": "active"},
             ],
         },
-        "sort": [{"property": "technique_name", "direction": "asc"}],
+        "sort": {"property": "technique_name", "direction": "asc"},
         "columns": ["mitre_id", "technique_name", "tactics"],
         "file_name": "full_export",
         "page_number": 1,
@@ -422,13 +426,13 @@ def test_attack_techniques_all_params(tenable_one_api, export_request_id_respons
 
     result = tenable_one_api.attack_path.export.attack_techniques(
         file_format=FileFormat.JSON,
-        filter=MultipleFilters(
+        filter=ExportFilter(
             operator="and",
             value=[
-                SingleFilter(property="state", operator=FilterOperator.EQ, value="active"),
+                ExportFilterCondition(key="state", operator="==", value="active"),
             ],
         ),
-        sort=[ExportSortParams(property="technique_name", direction=SortDirection.ASC)],
+        sort=ExportSortParams(property="technique_name", direction=SortDirection.ASC),
         columns=[
             AttackTechniqueColumnKey.MITRE_ID,
             AttackTechniqueColumnKey.TECHNIQUE_NAME,
@@ -656,24 +660,15 @@ def test_export_status_enum_values():
     assert ExportStatus.CANCELLED == "CANCELLED"
 
 
+def test_attack_path_export_type_enum_values():
+    """Test AttackPathExportType enum has expected values."""
+    assert AttackPathExportType.VECTORS == "VECTORS"
+
+
 def test_sort_direction_enum_values():
     """Test SortDirection enum values."""
     assert SortDirection.ASC == "asc"
     assert SortDirection.DESC == "desc"
-
-
-def test_filter_operator_enum_values():
-    """Test FilterOperator enum has all expected values."""
-    assert FilterOperator.EQ == "eq"
-    assert FilterOperator.NE == "ne"
-    assert FilterOperator.GT == "gt"
-    assert FilterOperator.GTE == "gte"
-    assert FilterOperator.LT == "lt"
-    assert FilterOperator.LTE == "lte"
-    assert FilterOperator.CONTAINS == "contains"
-    assert FilterOperator.NOT_CONTAINS == "not_contains"
-    assert FilterOperator.IN == "in"
-    assert FilterOperator.NOT_IN == "not_in"
 
 
 def test_attack_path_column_key_enum_values():
@@ -726,46 +721,40 @@ def test_export_request_status_model_optional_fields():
     assert obj.last_refreshed_at is None
 
 
-def test_single_filter_model():
-    """Test SingleFilter model creation."""
-    f = SingleFilter(property="priority", operator=FilterOperator.GTE, value=8)
-    assert f.property == "priority"
-    assert f.operator == FilterOperator.GTE
-    assert f.value == 8
+def test_export_filter_condition_model():
+    """Test ExportFilterCondition model creation."""
+    f = ExportFilterCondition(key="priority", operator="gte", value="8")
+    assert f.key == "priority"
+    assert f.operator == "gte"
+    assert f.value == "8"
 
 
-def test_single_filter_model_with_list_value():
-    """Test SingleFilter model with a list value."""
-    f = SingleFilter(property="state", operator=FilterOperator.IN, value=["active", "inactive"])
-    assert f.value == ["active", "inactive"]
-
-
-def test_multiple_filters_model():
-    """Test MultipleFilters model with nested filters."""
-    mf = MultipleFilters(
+def test_export_filter_model():
+    """Test ExportFilter model with nested conditions."""
+    ef = ExportFilter(
         operator="and",
         value=[
-            SingleFilter(property="priority", operator=FilterOperator.GTE, value=5),
-            SingleFilter(property="status", operator=FilterOperator.EQ, value="active"),
+            ExportFilterCondition(key="priority", operator="gte", value="5"),
+            ExportFilterCondition(key="status", operator="==", value="active"),
         ],
     )
-    assert mf.operator == "and"
-    assert len(mf.value) == 2
+    assert ef.operator == "and"
+    assert len(ef.value) == 2
 
 
-def test_multiple_filters_nested():
-    """Test MultipleFilters with nested MultipleFilters."""
-    inner = MultipleFilters(
+def test_export_filter_nested():
+    """Test ExportFilter with nested ExportFilter."""
+    inner = ExportFilter(
         operator="or",
         value=[
-            SingleFilter(property="a", operator=FilterOperator.EQ, value="x"),
-            SingleFilter(property="b", operator=FilterOperator.EQ, value="y"),
+            ExportFilterCondition(key="a", operator="==", value="x"),
+            ExportFilterCondition(key="b", operator="==", value="y"),
         ],
     )
-    outer = MultipleFilters(
+    outer = ExportFilter(
         operator="and",
         value=[
-            SingleFilter(property="c", operator=FilterOperator.GT, value=10),
+            ExportFilterCondition(key="c", operator="!=", value="10"),
             inner,
         ],
     )
@@ -787,19 +776,21 @@ def test_export_sort_params_with_type():
     assert sp.type == "string"
 
 
-def test_attack_path_export_params_model():
-    """Test AttackPathExportParams model with all fields."""
-    params = AttackPathExportParams(
-        sort=[ExportSortParams(property="priority", direction=SortDirection.DESC)],
-        filters=MultipleFilters(
+def test_vectors_export_params_model():
+    """Test VectorsExportParams model with all fields."""
+    params = VectorsExportParams(
+        sort=ExportSortParams(property="priority", direction=SortDirection.DESC),
+        filters=ExportFilter(
             operator="and",
-            value=[SingleFilter(property="p", operator=FilterOperator.EQ, value="v")],
+            value=[ExportFilterCondition(key="p", operator="==", value="v")],
         ),
         vector_ids=["v1", "v2"],
         page_number=3,
         max_entries_per_page=100,
     )
-    assert len(params.sort) == 1
+    assert params.sort.property == "priority"
     assert params.vector_ids == ["v1", "v2"]
     assert params.page_number == 3
     assert params.max_entries_per_page == 100
+
+

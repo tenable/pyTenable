@@ -29,6 +29,12 @@ class ExportStatus(str, Enum):
     CANCELLED = 'CANCELLED'
 
 
+class AttackPathExportType(str, Enum):
+    """Attack path export type enumeration."""
+
+    VECTORS = 'VECTORS'
+
+
 class AttackPathColumnKey(str, Enum):
     """Column keys available for attack path exports."""
 
@@ -83,21 +89,6 @@ class LogicalOperator(str, Enum):
     OR = 'or'
 
 
-class FilterOperator(str, Enum):
-    """Filter operator enumeration."""
-
-    EQ = 'eq'
-    NE = 'ne'
-    GT = 'gt'
-    GTE = 'gte'
-    LT = 'lt'
-    LTE = 'lte'
-    CONTAINS = 'contains'
-    NOT_CONTAINS = 'not_contains'
-    IN = 'in'
-    NOT_IN = 'not_in'
-
-
 class ExportSortParams(BaseModel):
     """Sort parameters for export requests."""
 
@@ -105,40 +96,40 @@ class ExportSortParams(BaseModel):
     direction: SortDirection = Field(..., description='The sort direction')
     type: Optional[SortType] = Field(
         None,
-        description='The data type of the sort property. Use number for '
-        'numeric fields and string for text fields.',
+        description='The data type of the sort property.',
     )
 
 
-class SingleFilter(BaseModel):
+class ExportFilterCondition(BaseModel):
     """A single filter condition."""
 
-    property: str = Field(..., description='The property to filter on')
-    operator: FilterOperator = Field(..., description='The filter operator')
-    value: Union[str, int, float, bool, List[str], List[int], List[float]] = Field(
-        ..., description='The filter value'
+    operator: str = Field(
+        ...,
+        description='Comparison operator (e.g., ==, !=, includes, excludes)',
     )
+    key: str = Field(..., description='Property key for filter condition')
+    value: str = Field(..., description='Value for filter condition')
 
 
-class MultipleFilters(BaseModel):
-    """A group of filters combined with a logical operator."""
+class ExportFilter(BaseModel):
+    """A filter group with AND/OR operator and nested conditions."""
 
-    operator: LogicalOperator = Field(
-        LogicalOperator.AND,
+    operator: Optional[LogicalOperator] = Field(
+        None,
         description='The logical operator to combine filters',
     )
-    value: List[Union[SingleFilter, 'MultipleFilters']] = Field(
-        ..., description='The list of filters or nested filter groups'
+    value: Optional[List[Union['ExportFilter', ExportFilterCondition]]] = Field(
+        None, description='The list of filters or nested filter groups'
     )
 
 
-class AttackPathExportParams(BaseModel):
-    """Parameters for attack path export requests."""
+class VectorsExportParams(BaseModel):
+    """Parameters for exporting pre-computed vectors."""
 
-    sort: Optional[List[ExportSortParams]] = Field(
+    sort: Optional[ExportSortParams] = Field(
         None, description='Sort parameters'
     )
-    filters: Optional[Union[SingleFilter, MultipleFilters]] = Field(
+    filters: Optional[Union[ExportFilter, ExportFilterCondition]] = Field(
         None, description='Filters to apply'
     )
     vector_ids: Optional[List[str]] = Field(
@@ -155,10 +146,12 @@ class AttackPathExportParams(BaseModel):
 class AttackPathExportRequest(BaseModel):
     """Request model for attack path exports."""
 
-    export_type: str = Field(..., description='The type of export')
+    export_type: AttackPathExportType = Field(
+        ..., description='The type of export'
+    )
     file_format: FileFormat = Field(..., description='The output file format')
-    params: Optional[AttackPathExportParams] = Field(
-        None, description='Export parameters'
+    params: VectorsExportParams = Field(
+        ..., description='Export parameters'
     )
     columns: Optional[List[AttackPathColumnKey]] = Field(
         None, description='Columns to include in the export'
@@ -172,10 +165,10 @@ class AttackTechniqueExportRequest(BaseModel):
     """Request model for attack technique exports."""
 
     file_format: FileFormat = Field(..., description='The output file format')
-    filter: Optional[Union[SingleFilter, MultipleFilters]] = Field(
+    filter: Optional[Union[ExportFilter, ExportFilterCondition]] = Field(
         None, description='Filters to apply'
     )
-    sort: Optional[List[ExportSortParams]] = Field(
+    sort: Optional[ExportSortParams] = Field(
         None, description='Sort parameters'
     )
     columns: Optional[List[AttackTechniqueColumnKey]] = Field(
@@ -205,7 +198,9 @@ class ExportRequestStatus(BaseModel):
     """Export request status model."""
 
     export_id: str = Field(..., description='The export request ID')
-    status: ExportStatus = Field(..., description='The current status of the export')
+    status: ExportStatus = Field(
+        ..., description='The current status of the export'
+    )
     submitted_at: Optional[datetime] = Field(
         None, description='When the export was submitted'
     )
