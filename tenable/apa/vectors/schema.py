@@ -1,4 +1,4 @@
-from marshmallow import fields, Schema
+from marshmallow import fields, validate as v, Schema
 
 
 class SourceInformationSchema(Schema):
@@ -42,6 +42,11 @@ class VectorSchema(Schema):
     summary = fields.Str(allow_none=True)
     first_aes = fields.Raw(allow_none=True)
     last_acr = fields.Int(allow_none=True)
+    path_status = fields.Str(validate=v.OneOf(["to_do", "in_progress",
+                                                "in_review", "done",
+                                                "chain_prevented",
+                                                "accepted"]),
+                             allow_none=True)
 
 
 class VectorsPageSchema(Schema):

@@ -17,7 +17,7 @@ from tenable.tenableone.inventory.export.schema import (
     ExportJob,
     ExportType,
 )
-from tenable.tenableone.inventory.schema import SortDirection, PropertyFilter, Operator
+from tenable.tenableone.inventory.schema import SortDirection, PropertyFilter, Operator, Query, QueryMode
 
 
 @pytest.fixture
@@ -336,6 +336,259 @@ def test_findings_export_with_compress_false(tenable_one_api, export_request_id_
 
     # Assert
     assert result.export_id == "export-12345"
+
+
+@responses.activate
+def test_assets_export_with_simple_query(tenable_one_api, export_request_id_response):
+    """Test assets export with simple query parameter."""
+    # Arrange
+    properties = ["cpe", "version", "file_location"]
+    query = Query(text="test query", mode=QueryMode.SIMPLE)
+    
+    expected_params = {
+        "properties": "cpe,version,file_location"
+    }
+    expected_body = {
+        "query": {
+            "text": "test query",
+            "mode": "simple"
+        }
+    }
+    
+    responses.add(
+        responses.POST,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets',
+        json=export_request_id_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params),
+            responses.matchers.body_matcher(params=json.dumps(expected_body))
+        ]
+    )
+    
+    # Act
+    result: ExportRequestId = tenable_one_api.inventory.export.assets(
+        properties=properties,
+        query=query
+    )
+
+    # Assert
+    assert result.export_id == "export-12345"
+
+
+@responses.activate
+def test_assets_export_with_advanced_query(tenable_one_api, export_request_id_response):
+    """Test assets export with query parameter using advanced mode."""
+    # Arrange
+    properties = ["cpe", "version", "file_location"]
+    query = Query(text="advanced search", mode=QueryMode.ADVANCED)
+    
+    expected_params = {
+        "properties": "cpe,version,file_location"
+    }
+    expected_body = {
+        "query": {
+            "text": "advanced search",
+            "mode": "advanced"
+        }
+    }
+    
+    responses.add(
+        responses.POST,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets',
+        json=export_request_id_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params),
+            responses.matchers.body_matcher(params=json.dumps(expected_body))
+        ]
+    )
+    
+    # Act
+    result: ExportRequestId = tenable_one_api.inventory.export.assets(
+        properties=properties,
+        query=query
+    )
+
+    # Assert
+    assert result.export_id == "export-12345"
+
+@responses.activate
+def test_assets_export_with_filters_and_query(tenable_one_api, export_request_id_response):
+    """Test assets export with both filters and query parameters."""
+    # Arrange
+    filters = [
+        PropertyFilter(
+            property="asset_class",
+            operator=Operator.EQUAL,
+            value=["DEVICE"]
+        )
+    ]
+    query = Query(text="test query", mode=QueryMode.ADVANCED)
+    properties = ["cpe", "version", "file_location"]
+    
+    expected_params = {
+        "properties": "cpe,version,file_location"
+    }
+    expected_body = {
+        "filters": [
+            {
+                "property": "asset_class",
+                "operator": "=",
+                "value": ["DEVICE"]
+            }
+        ],
+        "query": {
+            "text": "test query",
+            "mode": "advanced"
+        }
+    }
+    
+    responses.add(
+        responses.POST,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/assets',
+        json=export_request_id_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params),
+            responses.matchers.body_matcher(params=json.dumps(expected_body))
+        ]
+    )
+    
+    # Act
+    result: ExportRequestId = tenable_one_api.inventory.export.assets(
+        filters=filters,
+        query=query,
+        properties=properties
+    )
+
+    # Assert
+    assert result.export_id == "export-12345"
+
+
+@responses.activate
+def test_findings_export_with_simple_query(tenable_one_api, export_request_id_response):
+    """Test findings export with simple query parameter."""
+    # Arrange
+    properties = ["severity", "status", "created_at"]
+    query = Query(text="vulnerability search", mode=QueryMode.SIMPLE)
+    
+    expected_params = {
+        "properties": "severity,status,created_at"
+    }
+    expected_body = {
+        "query": {
+            "text": "vulnerability search",
+            "mode": "simple"
+        }
+    }
+    
+    responses.add(
+        responses.POST,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings',
+        json=export_request_id_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params),
+            responses.matchers.body_matcher(params=json.dumps(expected_body))
+        ]
+    )
+    
+    # Act
+    result: ExportRequestId = tenable_one_api.inventory.export.findings(
+        properties=properties,
+        query=query
+    )
+
+    # Assert
+    assert result.export_id == "export-12345"
+
+
+@responses.activate
+def test_findings_export_with_advanced_query(tenable_one_api, export_request_id_response):
+    """Test findings export with query parameter using advanced mode."""
+    # Arrange
+    properties = ["severity", "status", "created_at"]
+    query = Query(text="critical vulnerabilities", mode=QueryMode.ADVANCED)
+    
+    expected_params = {
+        "properties": "severity,status,created_at"
+    }
+    expected_body = {
+        "query": {
+            "text": "critical vulnerabilities",
+            "mode": "advanced"
+        }
+    }
+    
+    responses.add(
+        responses.POST,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings',
+        json=export_request_id_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params),
+            responses.matchers.body_matcher(params=json.dumps(expected_body))
+        ]
+    )
+    
+    # Act
+    result: ExportRequestId = tenable_one_api.inventory.export.findings(
+        properties=properties,
+        query=query
+    )
+
+    # Assert
+    assert result.export_id == "export-12345"
+
+
+@responses.activate
+def test_findings_export_with_filters_and_query(tenable_one_api, export_request_id_response):
+    """Test findings export with both filters and query parameters."""
+    # Arrange
+    filters = [
+        PropertyFilter(
+            property="severity",
+            operator=Operator.EQUAL,
+            value=["HIGH"]
+        )
+    ]
+    query = Query(text="test query", mode=QueryMode.SIMPLE)
+    properties = ["severity", "status", "created_at"]
+    
+    expected_params = {
+        "properties": "severity,status,created_at"
+    }
+    expected_body = {
+        "filters": [
+            {
+                "property": "severity",
+                "operator": "=",
+                "value": ["HIGH"]
+            }
+        ],
+        "query": {
+            "text": "test query",
+            "mode": "simple"
+        }
+    }
+    
+    responses.add(
+        responses.POST,
+        'https://cloud.tenable.com/api/v1/t1/inventory/export/findings',
+        json=export_request_id_response,
+        match=[
+            responses.matchers.query_param_matcher(expected_params),
+            responses.matchers.body_matcher(params=json.dumps(expected_body))
+        ]
+    )
+    
+    # Act
+    result: ExportRequestId = tenable_one_api.inventory.export.findings(
+        filters=filters,
+        query=query,
+        properties=properties
+    )
+
+    # Assert
+    assert result.export_id == "export-12345"
+
+
 
 
 @responses.activate

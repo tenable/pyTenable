@@ -10,7 +10,7 @@ from enum import Enum
 from typing import List, Optional
 
 from pydantic import BaseModel, Field
-from tenable.tenableone.inventory.schema import PropertyFilter
+from tenable.tenableone.inventory.schema import PropertyFilter, Query
 
 class ExportType(str, Enum):
     """Export type enumeration."""
@@ -41,6 +41,9 @@ class DatasetExportRequest(BaseModel):
 
     filters: Optional[List[PropertyFilter]] = Field(
         None, description='List of filters to apply'
+    )
+    query: Optional[Query] = Field(
+        None, description='Query to apply'
     )
 
 

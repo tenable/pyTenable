@@ -90,7 +90,7 @@ def finding():
             "totalVectorCount": 58,
             "vectorCount": 1,
             "state": "open",
-            "status": "to_do",
+            "status": "accepted",
             "created": 1712659006,
             "is_active": True,
             "has_history": None,
@@ -205,18 +205,21 @@ def test_attack_techniques_search(api, finding):
             }
         }
     }
-    
+
     responses.post('https://cloud.tenable.com/apa/findings-api/v1/attack-techniques/search',
                   json=attack_techniques_response,
-                  match=[responses.matchers.query_param_matcher({"offset": 0, "limit": 1000, "sort": "priority:desc"})])
-    
+                  match=[responses.matchers.query_param_matcher({
+                      "offset": 0, "limit": 1000, "sort": "priority:desc",
+                      "exclude_resolved": True
+                  })])
+
     result = api.findings.search_attack_techniques(
         offset=0,
         limit=1000,
         sort="priority:desc",
         return_iterator=False
     )
-    
+
     # The schema converts last_updated_at from string to datetime, so we need to check the structure
     assert len(result["data"]) == 1
     assert result["data"][0]["mitre_id"] == finding["mitre_id"]
@@ -239,22 +242,86 @@ def test_attack_techniques_search_with_filters(api, finding):
             }
         }
     }
-    
+
     filters = {"operator": "==", "property": "priority", "value": "high"}
-    
+
     responses.post('https://cloud.tenable.com/apa/findings-api/v1/attack-techniques/search',
                   json=attack_techniques_response,
-                  match=[responses.matchers.query_param_matcher({"offset": 0, "limit": 1000})])
-    
+                  match=[responses.matchers.query_param_matcher({
+                      "offset": 0, "limit": 1000, "exclude_resolved": True
+                  })])
+
     result = api.findings.search_attack_techniques(
         filters=filters,
         offset=0,
         limit=1000,
         return_iterator=False
     )
-    
+
     # The schema converts last_updated_at from string to datetime, so we need to check the structure
     assert len(result["data"]) == 1
     assert result["data"][0]["mitre_id"] == finding["mitre_id"]
     assert result["data"][0]["name"] == finding["name"]
+    assert result["pagination"]["total"] == 1
+
+
+@responses.activate
+def test_attack_techniques_search_exclude_resolved_default(api, finding):
+    """Test that exclude_resolved=True is sent by default"""
+    attack_techniques_response = {
+        "data": [finding],
+        "pagination": {
+            "total": 1,
+            "offset": 0,
+            "limit": 1000,
+            "sort": {"field": "priority", "order": "desc"}
+        }
+    }
+
+    responses.post('https://cloud.tenable.com/apa/findings-api/v1/attack-techniques/search',
+                  json=attack_techniques_response,
+                  match=[responses.matchers.query_param_matcher({
+                      "offset": 0, "limit": 1000, "sort": "priority:desc",
+                      "exclude_resolved": True
+                  })])
+
+    result = api.findings.search_attack_techniques(
+        offset=0,
+        limit=1000,
+        sort="priority:desc",
+        return_iterator=False
+    )
+
+    assert len(result["data"]) == 1
+    assert result["pagination"]["total"] == 1
+
+
+@responses.activate
+def test_attack_techniques_search_exclude_resolved_false(api, finding):
+    """Test that exclude_resolved=False is passed correctly"""
+    attack_techniques_response = {
+        "data": [finding],
+        "pagination": {
+            "total": 1,
+            "offset": 0,
+            "limit": 1000,
+            "sort": {"field": "priority", "order": "desc"}
+        }
+    }
+
+    responses.post('https://cloud.tenable.com/apa/findings-api/v1/attack-techniques/search',
+                  json=attack_techniques_response,
+                  match=[responses.matchers.query_param_matcher({
+                      "offset": 0, "limit": 1000,
+                      "exclude_resolved": False
+                  })])
+
+    result = api.findings.search_attack_techniques(
+        offset=0,
+        limit=1000,
+        exclude_resolved=False,
+        return_iterator=False
+    )
+
+    assert len(result["data"]) == 1
     assert result["pagination"]["total"] == 1

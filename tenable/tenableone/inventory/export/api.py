@@ -23,7 +23,7 @@ from tenable.tenableone.inventory.export.schema import (
     ExportType,
     ExportJobsResponse
 )
-from tenable.tenableone.inventory.schema import PropertyFilter
+from tenable.tenableone.inventory.schema import PropertyFilter, QueryMode, Query
 from tenable.tenableone.inventory.schema import SortDirection
 
 
@@ -32,6 +32,7 @@ class ExportAPI(APIEndpoint):
         self,
         export_type: ExportType,
         filters: Optional[List[PropertyFilter]] = None,
+        query: Optional[Query] = None,
         properties: Optional[List[str]] = None,
         use_readable_name: Optional[bool] = None,
         max_chunk_file_size: Optional[int] = None,
@@ -46,6 +47,7 @@ class ExportAPI(APIEndpoint):
         Args:
             export_type (ExportType): The type of export to perform ('assets' or 'findings').
             filters (list[PropertyFilter], optional): A list of filters to apply.
+            query (Query, optional): The query to apply.
             properties (list[str], optional): List of property names.
             use_readable_name (bool, optional): Use readable property names.
             max_chunk_file_size (int, optional): Maximum chunk file size in bytes.
@@ -75,9 +77,10 @@ class ExportAPI(APIEndpoint):
             params['compress'] = compress
         # Build request body
         payload = None
-        if filters is not None:
+        if filters is not None or query is not None:
             payload = DatasetExportRequest(
-                filters=[filter.model_dump(mode='json') for filter in filters]
+                filters=filters,
+                query=query
             ).model_dump(mode='json', exclude_none=True)
 
         response = self._post(
@@ -269,6 +272,7 @@ class ExportAPI(APIEndpoint):
     def assets(
         self,
         filters: Optional[List[PropertyFilter]] = None,
+        query: Optional[Query] = None,
         properties: Optional[List[str]] = None,
         use_readable_name: Optional[bool] = None,
         max_chunk_file_size: Optional[int] = None,
@@ -283,6 +287,7 @@ class ExportAPI(APIEndpoint):
         Args:
             filters (list[PropertyFilter], optional):
                 A list of filters to apply to the export. Defaults to None.
+            query (Query, optional): The query to apply.
             properties (list[str], optional):
                 Properties to include about the assets returned in the search results.
                 List of property names. Defaults to None.
@@ -319,6 +324,7 @@ class ExportAPI(APIEndpoint):
         return self._export(
             export_type=ExportType.ASSETS,
             filters=filters,
+            query=query,
             properties=properties,
             use_readable_name=use_readable_name,
             max_chunk_file_size=max_chunk_file_size,
@@ -331,6 +337,7 @@ class ExportAPI(APIEndpoint):
     def findings(
         self,
         filters: Optional[List[PropertyFilter]] = None,
+        query: Optional[Query] = None,
         properties: Optional[List[str]] = None,
         use_readable_name: Optional[bool] = None,
         max_chunk_file_size: Optional[int] = None,
@@ -345,6 +352,7 @@ class ExportAPI(APIEndpoint):
         Args:
             filters (list[PropertyFilter], optional):
                 A list of filters to apply to the export. Defaults to None.
+            query (Query, optional): The query to apply.
             properties (list[str], optional):
                 Properties to include about the findings returned in the search results.
                 List of property names. Defaults to None.
@@ -380,6 +388,7 @@ class ExportAPI(APIEndpoint):
         return self._export(
             export_type=ExportType.FINDINGS,
             filters=filters,
+            query=query,
             properties=properties,
             use_readable_name=use_readable_name,
             max_chunk_file_size=max_chunk_file_size,

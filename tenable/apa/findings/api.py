@@ -183,6 +183,7 @@ class FindingsAPI(APIEndpoint):
         offset: Optional[int] = None,
         limit: Optional[int] = None,
         sort: Optional[str] = None,
+        exclude_resolved: bool = True,
         return_iterator: bool = True,
     ) -> Union[AttackTechniqueIterator, dict]:
         """
@@ -210,9 +211,13 @@ class FindingsAPI(APIEndpoint):
                 - Ascending: "asc", "ASC", "ascending", "ASCENDING", "Ascending"
                 - Descending: "desc", "DESC", "descending", "DESCENDING", "Descending"
                 - Examples: "priority:desc", "name:asc", "last_updated_at:ASCENDING", "state:DESCENDING"
-                
-                Supported sort fields: last_updated_at, priority, mitre_id, name, 
+
+                Supported sort fields: last_updated_at, priority, mitre_id, name,
                 procedureName, status, state, vectorCount
+
+            exclude_resolved (bool, optional):
+                When True (default), excludes techniques with status 'done' or 'accepted'
+                and state 'archive'. Set to False to include all techniques.
 
             return_iterator (bool, optional):
                 Should we return the response instead of iterable?
@@ -233,11 +238,19 @@ class FindingsAPI(APIEndpoint):
             ...     filters={'operator': '==', 'property': 'priority', 'value': 'high'},
             ...     return_iterator=False
             ... )
+
+            Include resolved techniques:
+
+            >>> tapa.findings.search_attack_techniques(
+            ...     exclude_resolved=False,
+            ...     return_iterator=False
+            ... )
         """
         payload = {
             "offset": offset,
             "limit": limit,
             "sort": sort,
+            "exclude_resolved": exclude_resolved,
         }
         
         # Add filters to request body if provided
