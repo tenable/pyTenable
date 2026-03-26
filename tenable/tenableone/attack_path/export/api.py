@@ -18,7 +18,6 @@ from tenable.base.endpoint import APIEndpoint
 from tenable.tenableone.attack_path.export.schema import (
     AttackPathColumnKey,
     AttackPathExportRequest,
-    AttackPathExportType,
     AttackTechniqueColumnKey,
     AttackTechniqueExportRequest,
     ExportFilter,
@@ -27,16 +26,16 @@ from tenable.tenableone.attack_path.export.schema import (
     ExportRequestStatus,
     ExportSortParams,
     FileFormat,
-    VectorsExportParams,
 )
 
 
 class ExportAPI(APIEndpoint):
     def attack_paths(
         self,
-        export_type: AttackPathExportType,
         file_format: FileFormat,
-        params: Optional[VectorsExportParams] = None,
+        sort: Optional[ExportSortParams] = None,
+        filters: Optional[Union[ExportFilter, ExportFilterCondition]] = None,
+        vector_ids: Optional[List[str]] = None,
         columns: Optional[List[AttackPathColumnKey]] = None,
         file_name: Optional[str] = None,
     ) -> ExportRequestId:
@@ -44,15 +43,15 @@ class ExportAPI(APIEndpoint):
         Export top attack paths
 
         Args:
-            export_type (AttackPathExportType):
-                The type of export to perform. Use ``VECTORS`` to export
-                pre-computed top attack paths.
             file_format (FileFormat):
                 The output file format (CSV or JSON).
-            params (VectorsExportParams, optional):
-                Export parameters including sort, filters, vector_ids,
-                page_number, and max_entries_per_page. Defaults to empty
-                ``VectorsExportParams`` if not provided.
+            sort (ExportSortParams, optional):
+                Sort parameters for the export.
+            filters (ExportFilter | ExportFilterCondition, optional):
+                Filters to apply to the export. Can be a single filter
+                condition or a compound filter with multiple conditions.
+            vector_ids (list[str], optional):
+                List of vector IDs to filter by.
             columns (list[AttackPathColumnKey], optional):
                 Columns to include in the export.
             file_name (str, optional):
@@ -64,38 +63,33 @@ class ExportAPI(APIEndpoint):
 
         Examples:
             >>> export = tenable_one.attack_path.export.attack_paths(
-            ...     export_type=AttackPathExportType.VECTORS,
             ...     file_format=FileFormat.CSV,
             ...     columns=[AttackPathColumnKey.PATH_NAME, AttackPathColumnKey.PRIORITY],
             ... )
             >>> print(export.export_id)
 
         """
-        if params is None:
-            params = VectorsExportParams()
-
         payload = AttackPathExportRequest(
-            export_type=export_type,
             file_format=file_format,
-            params=params,
+            sort=sort,
+            filters=filters,
+            vector_ids=vector_ids,
             columns=columns,
             file_name=file_name,
         ).model_dump(mode='json', exclude_none=True)
 
         response = self._post(
-            'api/v1/t1/apa/export/attack-path', json=payload
+            'api/v1/export/attack-path', json=payload
         )
         return ExportRequestId(**response)
 
     def attack_techniques(
         self,
         file_format: FileFormat,
-        filter: Optional[Union[ExportFilter, ExportFilterCondition]] = None,
+        filters: Optional[Union[ExportFilter, ExportFilterCondition]] = None,
         sort: Optional[ExportSortParams] = None,
         columns: Optional[List[AttackTechniqueColumnKey]] = None,
         file_name: Optional[str] = None,
-        page_number: Optional[int] = None,
-        max_findings_per_page: Optional[int] = None,
         attack_technique_ids: Optional[List[str]] = None,
     ) -> ExportRequestId:
         """
@@ -104,7 +98,7 @@ class ExportAPI(APIEndpoint):
         Args:
             file_format (FileFormat):
                 The output file format (CSV or JSON).
-            filter (ExportFilter | ExportFilterCondition, optional):
+            filters (ExportFilter | ExportFilterCondition, optional):
                 Filters to apply to the export. Can be a single filter
                 condition or a compound filter with multiple conditions.
             sort (ExportSortParams, optional):
@@ -113,10 +107,6 @@ class ExportAPI(APIEndpoint):
                 Columns to include in the export.
             file_name (str, optional):
                 The name of the export file.
-            page_number (int, optional):
-                The page number to export.
-            max_findings_per_page (int, optional):
-                Maximum number of findings per page.
             attack_technique_ids (list[str], optional):
                 List of attack technique IDs to filter by.
 
@@ -137,17 +127,15 @@ class ExportAPI(APIEndpoint):
         """
         payload = AttackTechniqueExportRequest(
             file_format=file_format,
-            filter=filter,
+            filters=filters,
             sort=sort,
             columns=columns,
             file_name=file_name,
-            page_number=page_number,
-            max_findings_per_page=max_findings_per_page,
             attack_technique_ids=attack_technique_ids,
         ).model_dump(mode='json', exclude_none=True)
 
         response = self._post(
-            'api/v1/t1/apa/export/attack-technique', json=payload
+            'api/v1/export/attack-technique', json=payload
         )
         return ExportRequestId(**response)
 
@@ -169,7 +157,7 @@ class ExportAPI(APIEndpoint):
 
         """
         response = self._get(
-            f'api/v1/t1/apa/export/{export_id}/status'
+            f'api/v1/export/{export_id}/status'
         )
         return ExportRequestStatus(**response)
 
@@ -210,7 +198,7 @@ class ExportAPI(APIEndpoint):
 
         """
         response = self._get(
-            f'api/v1/t1/apa/export/{export_id}/download',
+            f'api/v1/export/{export_id}/download',
             stream=True,
         )
 

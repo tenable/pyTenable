@@ -11,7 +11,6 @@ from io import BytesIO
 
 from tenable.tenableone.attack_path.export.schema import (
     AttackPathColumnKey,
-    AttackPathExportType,
     AttackTechniqueColumnKey,
     ExportFilter,
     ExportFilterCondition,
@@ -21,7 +20,6 @@ from tenable.tenableone.attack_path.export.schema import (
     ExportSortParams,
     FileFormat,
     SortDirection,
-    VectorsExportParams,
 )
 
 
@@ -71,20 +69,17 @@ def export_data() -> bytes:
 def test_attack_paths_minimal(tenable_one_api, export_request_id_response):
     """Test attack_paths with only required parameters."""
     expected_body = {
-        "export_type": "VECTORS",
         "file_format": "CSV",
-        "params": {},
     }
 
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-path",
+        "https://cloud.tenable.com/api/v1/export/attack-path",
         json=export_request_id_response,
         match=[responses.matchers.json_params_matcher(expected_body)],
     )
 
     result = tenable_one_api.attack_path.export.attack_paths(
-        export_type=AttackPathExportType.VECTORS,
         file_format=FileFormat.CSV,
     )
 
@@ -96,21 +91,18 @@ def test_attack_paths_minimal(tenable_one_api, export_request_id_response):
 def test_attack_paths_with_columns(tenable_one_api, export_request_id_response):
     """Test attack_paths with specific columns."""
     expected_body = {
-        "export_type": "VECTORS",
         "file_format": "JSON",
-        "params": {},
         "columns": ["path_name", "priority", "source_nes"],
     }
 
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-path",
+        "https://cloud.tenable.com/api/v1/export/attack-path",
         json=export_request_id_response,
         match=[responses.matchers.json_params_matcher(expected_body)],
     )
 
     result = tenable_one_api.attack_path.export.attack_paths(
-        export_type=AttackPathExportType.VECTORS,
         file_format=FileFormat.JSON,
         columns=[
             AttackPathColumnKey.PATH_NAME,
@@ -126,21 +118,18 @@ def test_attack_paths_with_columns(tenable_one_api, export_request_id_response):
 def test_attack_paths_with_file_name(tenable_one_api, export_request_id_response):
     """Test attack_paths with a custom file name."""
     expected_body = {
-        "export_type": "VECTORS",
         "file_format": "CSV",
-        "params": {},
         "file_name": "my_attack_paths_export",
     }
 
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-path",
+        "https://cloud.tenable.com/api/v1/export/attack-path",
         json=export_request_id_response,
         match=[responses.matchers.json_params_matcher(expected_body)],
     )
 
     result = tenable_one_api.attack_path.export.attack_paths(
-        export_type=AttackPathExportType.VECTORS,
         file_format=FileFormat.CSV,
         file_name="my_attack_paths_export",
     )
@@ -149,9 +138,30 @@ def test_attack_paths_with_file_name(tenable_one_api, export_request_id_response
 
 
 @responses.activate
-def test_attack_paths_with_params(tenable_one_api, export_request_id_response):
-    """Test attack_paths with full params object (sort, filters, vector_ids, pagination)."""
-    params = VectorsExportParams(
+def test_attack_paths_with_all_params(tenable_one_api, export_request_id_response):
+    """Test attack_paths with all parameters (sort, filters, vector_ids)."""
+    expected_body = {
+        "file_format": "CSV",
+        "sort": {"property": "priority", "direction": "desc"},
+        "filters": {
+            "operator": "and",
+            "value": [
+                {"key": "priority", "operator": "gte", "value": "8"},
+            ],
+        },
+        "vector_ids": ["vec-001", "vec-002"],
+        "columns": ["path_name", "priority"],
+    }
+
+    responses.add(
+        responses.POST,
+        "https://cloud.tenable.com/api/v1/export/attack-path",
+        json=export_request_id_response,
+        match=[responses.matchers.json_params_matcher(expected_body)],
+    )
+
+    result = tenable_one_api.attack_path.export.attack_paths(
+        file_format=FileFormat.CSV,
         sort=ExportSortParams(property="priority", direction=SortDirection.DESC),
         filters=ExportFilter(
             operator="and",
@@ -164,39 +174,6 @@ def test_attack_paths_with_params(tenable_one_api, export_request_id_response):
             ],
         ),
         vector_ids=["vec-001", "vec-002"],
-        page_number=1,
-        max_entries_per_page=500,
-    )
-
-    expected_body = {
-        "export_type": "VECTORS",
-        "file_format": "CSV",
-        "params": {
-            "sort": {"property": "priority", "direction": "desc"},
-            "filters": {
-                "operator": "and",
-                "value": [
-                    {"key": "priority", "operator": "gte", "value": "8"},
-                ],
-            },
-            "vector_ids": ["vec-001", "vec-002"],
-            "page_number": 1,
-            "max_entries_per_page": 500,
-        },
-        "columns": ["path_name", "priority"],
-    }
-
-    responses.add(
-        responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-path",
-        json=export_request_id_response,
-        match=[responses.matchers.json_params_matcher(expected_body)],
-    )
-
-    result = tenable_one_api.attack_path.export.attack_paths(
-        export_type=AttackPathExportType.VECTORS,
-        file_format=FileFormat.CSV,
-        params=params,
         columns=[AttackPathColumnKey.PATH_NAME, AttackPathColumnKey.PRIORITY],
     )
 
@@ -209,21 +186,18 @@ def test_attack_paths_all_columns(tenable_one_api, export_request_id_response):
     all_columns = list(AttackPathColumnKey)
 
     expected_body = {
-        "export_type": "VECTORS",
         "file_format": "JSON",
-        "params": {},
         "columns": [c.value for c in all_columns],
     }
 
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-path",
+        "https://cloud.tenable.com/api/v1/export/attack-path",
         json=export_request_id_response,
         match=[responses.matchers.json_params_matcher(expected_body)],
     )
 
     result = tenable_one_api.attack_path.export.attack_paths(
-        export_type=AttackPathExportType.VECTORS,
         file_format=FileFormat.JSON,
         columns=all_columns,
     )
@@ -244,7 +218,7 @@ def test_attack_techniques_minimal(tenable_one_api, export_request_id_response):
 
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-technique",
+        "https://cloud.tenable.com/api/v1/export/attack-technique",
         json=export_request_id_response,
         match=[responses.matchers.json_params_matcher(expected_body)],
     )
@@ -267,7 +241,7 @@ def test_attack_techniques_with_columns(tenable_one_api, export_request_id_respo
 
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-technique",
+        "https://cloud.tenable.com/api/v1/export/attack-technique",
         json=export_request_id_response,
         match=[responses.matchers.json_params_matcher(expected_body)],
     )
@@ -285,13 +259,13 @@ def test_attack_techniques_with_columns(tenable_one_api, export_request_id_respo
 
 
 @responses.activate
-def test_attack_techniques_with_filter_and_sort(
+def test_attack_techniques_with_filters_and_sort(
     tenable_one_api, export_request_id_response
 ):
-    """Test attack_techniques with filter and sort parameters."""
+    """Test attack_techniques with filters and sort parameters."""
     expected_body = {
         "file_format": "JSON",
-        "filter": {
+        "filters": {
             "operator": "and",
             "value": [
                 {"key": "priority", "operator": "gte", "value": "7"},
@@ -303,14 +277,14 @@ def test_attack_techniques_with_filter_and_sort(
 
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-technique",
+        "https://cloud.tenable.com/api/v1/export/attack-technique",
         json=export_request_id_response,
         match=[responses.matchers.json_params_matcher(expected_body)],
     )
 
     result = tenable_one_api.attack_path.export.attack_techniques(
         file_format=FileFormat.JSON,
-        filter=ExportFilter(
+        filters=ExportFilter(
             operator="and",
             value=[
                 ExportFilterCondition(key="priority", operator="gte", value="7"),
@@ -318,33 +292,6 @@ def test_attack_techniques_with_filter_and_sort(
             ],
         ),
         sort=ExportSortParams(property="priority", direction=SortDirection.DESC),
-    )
-
-    assert result.export_id == "export-ap-12345"
-
-
-@responses.activate
-def test_attack_techniques_with_pagination(
-    tenable_one_api, export_request_id_response
-):
-    """Test attack_techniques with pagination parameters."""
-    expected_body = {
-        "file_format": "CSV",
-        "page_number": 2,
-        "max_findings_per_page": 100,
-    }
-
-    responses.add(
-        responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-technique",
-        json=export_request_id_response,
-        match=[responses.matchers.json_params_matcher(expected_body)],
-    )
-
-    result = tenable_one_api.attack_path.export.attack_techniques(
-        file_format=FileFormat.CSV,
-        page_number=2,
-        max_findings_per_page=100,
     )
 
     assert result.export_id == "export-ap-12345"
@@ -360,7 +307,7 @@ def test_attack_techniques_with_ids(tenable_one_api, export_request_id_response)
 
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-technique",
+        "https://cloud.tenable.com/api/v1/export/attack-technique",
         json=export_request_id_response,
         match=[responses.matchers.json_params_matcher(expected_body)],
     )
@@ -385,7 +332,7 @@ def test_attack_techniques_with_file_name(
 
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-technique",
+        "https://cloud.tenable.com/api/v1/export/attack-technique",
         json=export_request_id_response,
         match=[responses.matchers.json_params_matcher(expected_body)],
     )
@@ -403,7 +350,7 @@ def test_attack_techniques_all_params(tenable_one_api, export_request_id_respons
     """Test attack_techniques with every parameter populated."""
     expected_body = {
         "file_format": "JSON",
-        "filter": {
+        "filters": {
             "operator": "and",
             "value": [
                 {"key": "state", "operator": "==", "value": "active"},
@@ -412,21 +359,19 @@ def test_attack_techniques_all_params(tenable_one_api, export_request_id_respons
         "sort": {"property": "technique_name", "direction": "asc"},
         "columns": ["mitre_id", "technique_name", "tactics"],
         "file_name": "full_export",
-        "page_number": 1,
-        "max_findings_per_page": 250,
         "attack_technique_ids": ["T1021"],
     }
 
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-technique",
+        "https://cloud.tenable.com/api/v1/export/attack-technique",
         json=export_request_id_response,
         match=[responses.matchers.json_params_matcher(expected_body)],
     )
 
     result = tenable_one_api.attack_path.export.attack_techniques(
         file_format=FileFormat.JSON,
-        filter=ExportFilter(
+        filters=ExportFilter(
             operator="and",
             value=[
                 ExportFilterCondition(key="state", operator="==", value="active"),
@@ -439,8 +384,6 @@ def test_attack_techniques_all_params(tenable_one_api, export_request_id_respons
             AttackTechniqueColumnKey.TACTICS,
         ],
         file_name="full_export",
-        page_number=1,
-        max_findings_per_page=250,
         attack_technique_ids=["T1021"],
     )
 
@@ -459,7 +402,7 @@ def test_attack_techniques_all_columns(tenable_one_api, export_request_id_respon
 
     responses.add(
         responses.POST,
-        "https://cloud.tenable.com/api/v1/t1/apa/export/attack-technique",
+        "https://cloud.tenable.com/api/v1/export/attack-technique",
         json=export_request_id_response,
         match=[responses.matchers.json_params_matcher(expected_body)],
     )
@@ -483,7 +426,7 @@ def test_status_finished(tenable_one_api, export_status_response_finished):
 
     responses.add(
         responses.GET,
-        f"https://cloud.tenable.com/api/v1/t1/apa/export/{export_id}/status",
+        f"https://cloud.tenable.com/api/v1/export/{export_id}/status",
         json=export_status_response_finished,
     )
 
@@ -503,7 +446,7 @@ def test_status_processing(tenable_one_api, export_status_response_processing):
 
     responses.add(
         responses.GET,
-        f"https://cloud.tenable.com/api/v1/t1/apa/export/{export_id}/status",
+        f"https://cloud.tenable.com/api/v1/export/{export_id}/status",
         json=export_status_response_processing,
     )
 
@@ -525,7 +468,7 @@ def test_status_queued(tenable_one_api):
 
     responses.add(
         responses.GET,
-        f"https://cloud.tenable.com/api/v1/t1/apa/export/{export_id}/status",
+        f"https://cloud.tenable.com/api/v1/export/{export_id}/status",
         json=response_data,
     )
 
@@ -549,7 +492,7 @@ def test_status_error(tenable_one_api):
 
     responses.add(
         responses.GET,
-        f"https://cloud.tenable.com/api/v1/t1/apa/export/{export_id}/status",
+        f"https://cloud.tenable.com/api/v1/export/{export_id}/status",
         json=response_data,
     )
 
@@ -571,7 +514,7 @@ def test_status_cancelled(tenable_one_api):
 
     responses.add(
         responses.GET,
-        f"https://cloud.tenable.com/api/v1/t1/apa/export/{export_id}/status",
+        f"https://cloud.tenable.com/api/v1/export/{export_id}/status",
         json=response_data,
     )
 
@@ -591,7 +534,7 @@ def test_download_without_file_object(tenable_one_api, export_data):
 
     responses.add(
         responses.GET,
-        f"https://cloud.tenable.com/api/v1/t1/apa/export/{export_id}/download",
+        f"https://cloud.tenable.com/api/v1/export/{export_id}/download",
         body=export_data,
         content_type="application/octet-stream",
     )
@@ -611,7 +554,7 @@ def test_download_with_file_object(tenable_one_api, export_data):
 
     responses.add(
         responses.GET,
-        f"https://cloud.tenable.com/api/v1/t1/apa/export/{export_id}/download",
+        f"https://cloud.tenable.com/api/v1/export/{export_id}/download",
         body=export_data,
         content_type="application/octet-stream",
     )
@@ -630,7 +573,7 @@ def test_download_empty_response(tenable_one_api):
 
     responses.add(
         responses.GET,
-        f"https://cloud.tenable.com/api/v1/t1/apa/export/{export_id}/download",
+        f"https://cloud.tenable.com/api/v1/export/{export_id}/download",
         body=b"",
         content_type="application/octet-stream",
     )
@@ -658,11 +601,6 @@ def test_export_status_enum_values():
     assert ExportStatus.FINISHED == "FINISHED"
     assert ExportStatus.ERROR == "ERROR"
     assert ExportStatus.CANCELLED == "CANCELLED"
-
-
-def test_attack_path_export_type_enum_values():
-    """Test AttackPathExportType enum has expected values."""
-    assert AttackPathExportType.VECTORS == "VECTORS"
 
 
 def test_sort_direction_enum_values():
@@ -767,30 +705,19 @@ def test_export_sort_params_model():
     sp = ExportSortParams(property="priority", direction=SortDirection.DESC)
     assert sp.property == "priority"
     assert sp.direction == SortDirection.DESC
-    assert sp.type is None
 
 
-def test_export_sort_params_with_type():
-    """Test ExportSortParams model with optional type field."""
-    sp = ExportSortParams(property="name", direction=SortDirection.ASC, type="string")
-    assert sp.type == "string"
-
-
-def test_vectors_export_params_model():
-    """Test VectorsExportParams model with all fields."""
-    params = VectorsExportParams(
+def test_attack_path_export_request_model():
+    """Test AttackPathExportRequest model with all fields."""
+    from tenable.tenableone.attack_path.export.schema import AttackPathExportRequest
+    req = AttackPathExportRequest(
+        file_format=FileFormat.CSV,
         sort=ExportSortParams(property="priority", direction=SortDirection.DESC),
         filters=ExportFilter(
             operator="and",
             value=[ExportFilterCondition(key="p", operator="==", value="v")],
         ),
         vector_ids=["v1", "v2"],
-        page_number=3,
-        max_entries_per_page=100,
     )
-    assert params.sort.property == "priority"
-    assert params.vector_ids == ["v1", "v2"]
-    assert params.page_number == 3
-    assert params.max_entries_per_page == 100
-
-
+    assert req.sort.property == "priority"
+    assert req.vector_ids == ["v1", "v2"]

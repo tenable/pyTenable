@@ -29,12 +29,6 @@ class ExportStatus(str, Enum):
     CANCELLED = 'CANCELLED'
 
 
-class AttackPathExportType(str, Enum):
-    """Attack path export type enumeration."""
-
-    VECTORS = 'VECTORS'
-
-
 class AttackPathColumnKey(str, Enum):
     """Column keys available for attack path exports."""
 
@@ -75,13 +69,6 @@ class SortDirection(str, Enum):
     DESC = 'desc'
 
 
-class SortType(str, Enum):
-    """Sort type enumeration."""
-
-    STRING = 'string'
-    NUMBER = 'number'
-
-
 class LogicalOperator(str, Enum):
     """Logical operator enumeration for combining multiple filters."""
 
@@ -94,10 +81,6 @@ class ExportSortParams(BaseModel):
 
     property: str = Field(..., description='The property to sort by')
     direction: SortDirection = Field(..., description='The sort direction')
-    type: Optional[SortType] = Field(
-        None,
-        description='The data type of the sort property.',
-    )
 
 
 class ExportFilterCondition(BaseModel):
@@ -123,9 +106,10 @@ class ExportFilter(BaseModel):
     )
 
 
-class VectorsExportParams(BaseModel):
-    """Parameters for exporting pre-computed vectors."""
+class AttackPathExportRequest(BaseModel):
+    """Request model for attack path exports."""
 
+    file_format: FileFormat = Field(..., description='The output file format')
     sort: Optional[ExportSortParams] = Field(
         None, description='Sort parameters'
     )
@@ -134,24 +118,6 @@ class VectorsExportParams(BaseModel):
     )
     vector_ids: Optional[List[str]] = Field(
         None, description='List of vector IDs to filter by'
-    )
-    page_number: Optional[int] = Field(
-        None, description='The page number to export'
-    )
-    max_entries_per_page: Optional[int] = Field(
-        None, description='Maximum number of entries per page'
-    )
-
-
-class AttackPathExportRequest(BaseModel):
-    """Request model for attack path exports."""
-
-    export_type: AttackPathExportType = Field(
-        ..., description='The type of export'
-    )
-    file_format: FileFormat = Field(..., description='The output file format')
-    params: VectorsExportParams = Field(
-        ..., description='Export parameters'
     )
     columns: Optional[List[AttackPathColumnKey]] = Field(
         None, description='Columns to include in the export'
@@ -165,7 +131,7 @@ class AttackTechniqueExportRequest(BaseModel):
     """Request model for attack technique exports."""
 
     file_format: FileFormat = Field(..., description='The output file format')
-    filter: Optional[Union[ExportFilter, ExportFilterCondition]] = Field(
+    filters: Optional[Union[ExportFilter, ExportFilterCondition]] = Field(
         None, description='Filters to apply'
     )
     sort: Optional[ExportSortParams] = Field(
@@ -176,12 +142,6 @@ class AttackTechniqueExportRequest(BaseModel):
     )
     file_name: Optional[str] = Field(
         None, description='The name of the export file'
-    )
-    page_number: Optional[int] = Field(
-        None, description='The page number to export'
-    )
-    max_findings_per_page: Optional[int] = Field(
-        None, description='Maximum number of findings per page'
     )
     attack_technique_ids: Optional[List[str]] = Field(
         None, description='List of attack technique IDs to filter by'
