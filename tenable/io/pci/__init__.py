@@ -10,6 +10,13 @@ Methods available on ``tio.pci``:
 .. autoclass:: PCIASVAPI
     :members:
 
+.. toctree::
+    :hidden:
+    :glob:
+
+    attestations
+    scans
+
 """
 
 from typing import Any, Literal, Type

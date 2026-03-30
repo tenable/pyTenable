@@ -3,7 +3,7 @@ Hosts
 =====
 
 The following methods allow for interaction with the Tenable Security Center
-:sc-api:`Hosts <Hosts.htm>` API.  These items are typically seen under the
+:sc-api:`Hosts <Hosts.htm>` API. These items are typically seen under the
 **Hosts** section of Tenable Security Center.
 
 Methods available on ``sc.hosts``:
@@ -36,7 +36,7 @@ class HostsAPI(SCEndpoint):
         return_json: bool = False,
     ) -> Union[HostsResultsIterator, Dict]:
         """
-        Retreive the list of hosts from the system.
+        Retrieve the list of hosts from the system.
 
         Args:
             fields (list[str], optional):
@@ -55,10 +55,9 @@ class HostsAPI(SCEndpoint):
         Response:
             The response will be either the HostResultsIterator to handle
             pagination of the data (preferred) or the raw response from the
-            api (if return_json is set to `True`).
+            API (if return_json is set to `True`).
 
         Examples:
-
             >>> for host in sc.hosts.list():
             ...     print(host)
         """
@@ -112,7 +111,7 @@ class HostsAPI(SCEndpoint):
         return_json: bool = False,
     ) -> Union[HostsResultsIterator, Dict]:
         """
-        Retreive the list of hosts from the system.
+        Retrieve the list of hosts from the system.
 
         Args:
             filters (list[tuple[str, str, str]], optional):
@@ -136,7 +135,7 @@ class HostsAPI(SCEndpoint):
         Response:
             The response will be either the HostResultsIterator to handle
             pagination of the data (preferred) or the raw response from the
-            api (if return_json is set to `True`).
+            API (if return_json is set to `True`).
 
         Examples:
 
@@ -201,7 +200,7 @@ class HostsAPI(SCEndpoint):
     ) -> Dict:
         """
         Override the Asset Criticality Rating (ACR) score and the reasons for the
-        specified Host
+        specified host.
 
         Args:
             host_uuid (str): The Host UUID to modify

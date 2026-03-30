@@ -11,6 +11,7 @@ Tenable Vulnerability Management
     :glob:
 
     cs/index
+    pci/index
     access_control
     agent_config
     agent_exclusions
@@ -436,10 +437,6 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
 
     @property
     def v3(self):
-        """
-        The interface object for the
-        :doc:`Tenable Vulnerability Management v3 APIs <v3/index>`.
-        """
         warnings.warn(
             'The V3 sub-pkg have been deprecated from the TVM '
             'package.  This method will be removed in a future '
