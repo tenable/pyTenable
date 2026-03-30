@@ -451,3 +451,182 @@ query events(
   }
 }
 """
+
+"""
+GraphQL query for Tenable.OT findings.
+This query retrieves security findings (vulnerabilities) detected on assets.
+Each finding represents a plugin detection on a specific asset.
+"""
+FINDINGS_QUERY = """
+query findings(
+  $filter: FindingsObjExpressionsParams
+  $search: String
+  $sort: [FindingsObjSortParams!]!
+  $limit: Int
+  $startAt: String
+) {
+  findings(
+    filter: $filter
+    search: $search
+    sort: $sort
+    first: $limit
+    after: $startAt
+  ) {
+    pageInfo {
+      endCursor
+    }
+    nodes {
+      id
+      status
+      firstHit
+      lastHit
+      fixedAt
+      port
+      protocol
+      svcName
+      output
+      asset {
+        id
+        name
+        type
+        criticality
+        location
+        purdueLevel
+        risk {
+          totalRisk
+          unresolvedEvents
+        }
+        ips {
+          nodes
+        }
+        macs {
+          nodes
+        }
+      }
+      plugin {
+        id
+        name
+        severity
+        family
+        source
+        vprScore
+        comment
+        owner
+        details {
+          id
+          name
+          description
+          solution
+          seeAlso
+          pluginType
+          pluginPubDate
+          pluginModDate
+          vulnPubDate
+          vulnModDate
+          refs {
+            name
+            value
+            url
+          }
+          cpe
+          cvssVector
+          cvssV3Vector
+          cvssBaseScore
+          cvssV3BaseScore
+          cvssTemporalScore
+          cvssV3TemporalScore
+          cvssImpactScore
+        }
+      }
+    }
+    totalCount
+  }
+}
+"""
+
+"""
+GraphQL query for Tenable.OT policy findings.
+This query retrieves policy violation findings detected in the OT environment.
+Each policy finding represents one or more policy violations (events) grouped together.
+"""
+POLICY_FINDINGS_QUERY = """
+query policyFindings(
+  $filter: PolicyFindingsExpressionsParams
+  $search: String
+  $sort: [PolicyFindingsSortParams!]!
+  $limit: Int
+  $startAt: String
+) {
+  policyFindings(
+    filter: $filter
+    search: $search
+    sort: $sort
+    first: $limit
+    after: $startAt
+  ) {
+    pageInfo {
+      endCursor
+    }
+    nodes {
+      id
+      status
+      severity
+      category
+      policyTitle
+      firstHitTime
+      lastHitTime
+      activePolicyHits
+      resolvedOn
+      resolvedUser
+      srcNames
+      srcIps
+      dstNames
+      dstIps
+      eventType {
+        type
+        description
+        category
+        family
+      }
+      policy {
+        id
+        title
+        level
+        schema
+        disabled
+        archived
+        system
+      }
+      srcAssets {
+        nodes {
+          id
+          name
+          type
+          criticality
+          location
+          purdueLevel
+          risk {
+            totalRisk
+            unresolvedEvents
+          }
+        }
+      }
+      dstAssets {
+        nodes {
+          id
+          name
+          type
+          criticality
+          location
+          purdueLevel
+          risk {
+            totalRisk
+            unresolvedEvents
+          }
+        }
+      }
+    }
+    totalCount
+  }
+}
+"""
