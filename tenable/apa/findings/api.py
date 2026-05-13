@@ -13,7 +13,7 @@ These methods can be accessed at ``TenableAPA.findings``.
 from copy import copy
 from typing import Dict, Optional, Union
 
-from restfly import APIIterator
+from tenable.base._restfly_v1 import APIIterator
 
 from tenable.apa.findings.schema import FindingsPageSchema, AttackTechniquesSearchResponseSchema
 from tenable.base.endpoint import APIEndpoint

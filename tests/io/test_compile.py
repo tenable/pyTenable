@@ -5,7 +5,7 @@ test compile
 import pytest
 
 # from tests.io.conftest import api
-from tenable.errors import AuthenticationWarning, UnexpectedValueError
+from tenable.errors import UnexpectedValueError
 from tenable.io import TenableIO
 from tenable.io.agent_config import AgentConfigAPI
 from tenable.io.agent_exclusions import AgentExclusionsAPI

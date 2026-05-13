@@ -1,19 +1,21 @@
-'''
+"""
 .. autoclass:: NessusReportv2
-'''
+"""
+
 from tenable.errors import PackageMissingError
 
 try:
     from defusedxml.ElementTree import iterparse
-except ImportError:
+except ImportError as err:
     raise PackageMissingError(
-        'The python package defusedxml is required for NessusReportv2')
+        'The python package defusedxml is required for NessusReportv2'
+    ) from err
 
-import dateutil.parser, time
+import dateutil.parser
 
 
 class NessusReportv2(object):
-    '''
+    """
     The NessusReportv2 generator will return vulnerability items from any
     Nessus version 2 formatted Nessus report file.  The returned data will be
     a python dictionary representation of the ReportItem with the relevant
@@ -36,7 +38,8 @@ class NessusReportv2(object):
         ...     report = NessusReportv2(nessus_file)
         ...     for item in report:
         ...         print(item)
-    '''
+    """
+
     def __init__(self, fobj):
         self._iter = iterparse(fobj, events=('start', 'end'))
 
@@ -57,8 +60,14 @@ class NessusReportv2(object):
             if value:
                 return float(value)
 
-        elif name in ['first_found', 'last_found', 'plugin_modification_date',
-                      'plugin_publication_date', 'HOST_END', 'HOST_START']:
+        elif name in [
+            'first_found',
+            'last_found',
+            'plugin_modification_date',
+            'plugin_publication_date',
+            'HOST_END',
+            'HOST_START',
+        ]:
             # The first and last found attributes use a datetime timestamp
             # format that we should convert into a unix timestamp.
             return dateutil.parser.parse(value)
@@ -70,13 +79,13 @@ class NessusReportv2(object):
             return value
 
     def next(self):
-        '''
+        """
         Get the next ReportItem from the nessus file and return it as a
         python dictionary.
 
         Generally speaking this method is not called directly, but is instead
         called as part of a loop.
-        '''
+        """
         try:
             for event, elem in self._iter:
                 if event == 'start' and elem.tag == 'ReportHost':
@@ -126,7 +135,9 @@ class NessusReportv2(object):
 
                         if c.tag in vuln:
                             if not isinstance(vuln[c.tag], list):
-                                vuln[c.tag] = [vuln[c.tag],]
+                                vuln[c.tag] = [
+                                    vuln[c.tag],
+                                ]
                             vuln[c.tag].append(self._defs(c.tag, c.text))
                         else:
                             vuln[c.tag] = self._defs(c.tag, c.text)
@@ -137,6 +148,6 @@ class NessusReportv2(object):
                     return vuln
         except TypeError as err:
             if err.args[0] == 'reading file objects must return bytes objects':
-                raise TypeError('File object not opened in binary mode.')
+                raise TypeError('File object not opened in binary mode.') from err
             else:
                 raise err

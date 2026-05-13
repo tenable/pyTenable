@@ -10,7 +10,7 @@ These methods can be accessed at ``TenableIE.ad_object``.
     :members:
 '''
 from typing import List, Dict, Mapping
-from restfly.utils import dict_clean
+from tenable.utils import dict_clean
 from tenable.ie.ad_object.schema import ADObjectSchema, ADObjectChangesSchema
 from tenable.ie.base.iterator import ADIterator
 from tenable.base.endpoint import APIEndpoint

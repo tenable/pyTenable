@@ -1,6 +1,4 @@
-from typing import Dict, List, Union
-from restfly.utils import dict_merge
-from marshmallow import Schema, fields, post_dump, pre_load, validate as v
+from marshmallow import Schema, fields, post_dump, validate as v
 
 
 class SettingsSchema(Schema):

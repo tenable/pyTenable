@@ -12,7 +12,7 @@ These methods can be accessed at ``Nessus.mail``.
 from typing import Dict, Optional
 from typing_extensions import Literal
 from tenable.base.endpoint import APIEndpoint
-from restfly.utils import dict_clean, dict_merge
+from tenable.utils import dict_clean, dict_merge
 
 
 class MailAPI(APIEndpoint):

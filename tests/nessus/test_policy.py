@@ -1,4 +1,3 @@
-import pytest
 import responses
 from responses import matchers
 from io import BytesIO

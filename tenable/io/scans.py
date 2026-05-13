@@ -14,17 +14,15 @@ Methods available on ``tio.scans``:
 
 import time
 import warnings
-from datetime import datetime, timedelta
+from datetime import datetime
 from io import BytesIO
 from typing import Callable, Dict, List, Optional, Tuple, Union
 from uuid import UUID
 
-from restfly.utils import dict_clean
-
 from tenable.constants import IOConstants
 from tenable.errors import UnexpectedValueError
 from tenable.io.base import TIOEndpoint, TIOIterator
-from tenable.utils import dict_merge, scrub
+from tenable.utils import dict_clean, dict_merge, scrub
 
 
 class ScanHistoryIterator(TIOIterator):
@@ -1012,6 +1010,7 @@ class ScansAPI(TIOEndpoint):
             warnings.warn(
                 'The history_uuid parameter is deprecated, use history_id instead',
                 DeprecationWarning,
+                stacklevel=2,
             )
             params['history_id'] = history_uuid
 

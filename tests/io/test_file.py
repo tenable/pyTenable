@@ -1,8 +1,6 @@
 """
 test for uploading the file and file with encryption
 """
-import os
-import pytest
 import responses
 from io import BytesIO
 from responses import matchers

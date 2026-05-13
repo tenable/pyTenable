@@ -1,4 +1,3 @@
-import pytest
 from tenable.nessus.schema.scans import ScanExportSchema
 
 

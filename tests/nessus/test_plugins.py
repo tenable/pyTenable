@@ -1,6 +1,3 @@
-import pytest
-import re
-import random
 import responses
 from tenable.nessus.iterators.plugins import PluginIterator
 

@@ -2,14 +2,12 @@
 test assets
 """
 
-import time
 import uuid
 
 import pytest
 
 from tenable.errors import ForbiddenError, UnexpectedValueError
 from tests.checker import check, single
-from tests.io.test_networks import fixture_network
 
 
 @pytest.mark.vcr()

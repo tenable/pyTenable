@@ -11,9 +11,9 @@ Methods available on ``tio.agent_exclusions``:
 .. autoclass:: AgentExclusionsAPI
     :members:
 '''
-from restfly.utils import dict_merge, dict_clean
+from tenable.utils import dict_merge, dict_clean
 from .base import TIOEndpoint
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
 class AgentExclusionsAPI(TIOEndpoint):
     def create(self, name, scanner_id=1, start_time=None, end_time=None,

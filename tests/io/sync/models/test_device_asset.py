@@ -1,4 +1,3 @@
-import pytest
 
 from tenable.io.sync.models import device_asset as d
 

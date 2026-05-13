@@ -1,4 +1,4 @@
-'''
+"""
 Agent Groups
 ============
 
@@ -10,13 +10,14 @@ Methods available on ``tio.agent_groups``:
 .. rst-class:: hide-signature
 .. autoclass:: AgentGroupsAPI
     :members:
-'''
+"""
+
 from .base import TIOEndpoint
 
 
 class AgentGroupsAPI(TIOEndpoint):
     def add_agent(self, group_id, *agent_ids, **kw):
-        '''
+        """
         Adds an agent or multiple agents to the agent group specified.
 
         :devportal:`agent-groups: add-agent <agent-groups-add-agent>`
@@ -44,7 +45,7 @@ class AgentGroupsAPI(TIOEndpoint):
             Adding multiple agents by uuid:
 
             >>> tio.agent_groups.add_agent(1, 'uuid-1', 'uuid-2', 'uuid-3')
-        '''
+        """
         scanner_id = 1
         if 'scanner_id' in kw:
             scanner_id = kw['scanner_id']
@@ -54,22 +55,31 @@ class AgentGroupsAPI(TIOEndpoint):
 
         if len(agent_ids) <= 1:
             # if there is only 1 agent id, we will perform a singular add.
-            self._api.put('scanners/{}/agent-groups/{}/agents/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('group_id', group_id, int),
-                self._check('agent_id', agent_ids[0], 'uuid' if useUuids else int)
-            ))
+            self._api.put(
+                'scanners/{}/agent-groups/{}/agents/{}'.format(
+                    self._check('scanner_id', scanner_id, int),
+                    self._check('group_id', group_id, int),
+                    self._check('agent_id', agent_ids[0], 'uuid' if useUuids else int),
+                )
+            )
         else:
             # If there are many agent_ids, then we will want to perform a bulk
             # operation.
             return self._api.post(
                 'scanners/{}/agent-groups/{}/agents/_bulk/add'.format(
                     self._check('scanner_id', scanner_id, int),
-                    self._check('group_id', group_id, int)),
-                json={'items': [self._check('agent_id', i, 'uuid' if useUuids else int) for i in agent_ids]}).json()
+                    self._check('group_id', group_id, int),
+                ),
+                json={
+                    'items': [
+                        self._check('agent_id', i, 'uuid' if useUuids else int)
+                        for i in agent_ids
+                    ]
+                },
+            ).json()
 
     def configure(self, group_id, name, scanner_id=1):
-        '''
+        """
         Renames an existing agent group.
 
         :devportal:`agent-groups: configure <agent-groups-configure>`
@@ -84,14 +94,17 @@ class AgentGroupsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.agent_groups.configure(1, 'New Name')
-        '''
-        self._api.put('scanners/{}/agent-groups/{}'.format(
-            self._check('scanner_id', scanner_id, int),
-            self._check('group_id', group_id, int)
-        ), json={'name': self._check('name', name, str)}).json()
+        """
+        self._api.put(
+            'scanners/{}/agent-groups/{}'.format(
+                self._check('scanner_id', scanner_id, int),
+                self._check('group_id', group_id, int),
+            ),
+            json={'name': self._check('name', name, str)},
+        ).json()
 
     def create(self, name, scanner_id=1):
-        '''
+        """
         Creates a new agent group.
 
         :devportal:`agent-groups: create <agent-groups-create>`
@@ -107,14 +120,16 @@ class AgentGroupsAPI(TIOEndpoint):
 
         Examples:
             >>> group = tio.agent_groups.create('New Agent Group')
-        '''
+        """
         return self._api.post(
             'scanners/{}/agent-groups'.format(
                 self._check('scanner_id', scanner_id, int)
-            ), json={'name': self._check('name', name, str)}).json()
+            ),
+            json={'name': self._check('name', name, str)},
+        ).json()
 
     def delete(self, group_id, scanner_id=1):
-        '''
+        """
         Delete an agent group.
 
         :devportal:`agent-groups: delete <agent-groups-delete>`
@@ -128,14 +143,16 @@ class AgentGroupsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.agent_groups.delete(1)
-        '''
-        self._api.delete('scanners/{}/agent-groups/{}'.format(
-            self._check('scanner_id', scanner_id, int),
-            self._check('group_id', group_id, int)
-        ))
+        """
+        self._api.delete(
+            'scanners/{}/agent-groups/{}'.format(
+                self._check('scanner_id', scanner_id, int),
+                self._check('group_id', group_id, int),
+            )
+        )
 
     def delete_agent(self, group_id, *agent_ids, **kw):
-        '''
+        """
         Delete one or many agents from an agent group.
 
         :devportal:`agent-groups: delete-agent <agent-groups-delete-agent>`
@@ -159,29 +176,33 @@ class AgentGroupsAPI(TIOEndpoint):
             Delete multiple agents from an agent group:
 
             >>> tio.agent_groups.delete_agent(1, 1, 2, 3)
-        '''
+        """
         scanner_id = 1
         if 'scanner_id' in kw:
             scanner_id = kw['scanner_id']
 
         if len(agent_ids) <= 1:
             # if only a singular agent_id was passed, then we will want to
-            self._api.delete('scanners/{}/agent-groups/{}/agents/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('group_id', group_id, int),
-                self._check('agent_id', agent_ids[0], int)
-            ))
+            self._api.delete(
+                'scanners/{}/agent-groups/{}/agents/{}'.format(
+                    self._check('scanner_id', scanner_id, int),
+                    self._check('group_id', group_id, int),
+                    self._check('agent_id', agent_ids[0], int),
+                )
+            )
         else:
             # if multiple agent ids were requested to be deleted, then we will
             # call the bulk deletion API.
             return self._api.post(
                 'scanners/{}/agent-groups/{}/agents/_bulk/remove'.format(
                     self._check('scanner_id', scanner_id, int),
-                    self._check('group_id', group_id, int)),
-                json={'items': [self._check('agent_ids', i, int) for i in agent_ids]}).json()
+                    self._check('group_id', group_id, int),
+                ),
+                json={'items': [self._check('agent_ids', i, int) for i in agent_ids]},
+            ).json()
 
     def details(self, group_id, *filters, **kw):
-        '''
+        """
         Retrieve the details about the specified agent group.
 
         :devportal:`agent-groups: details <agent-groups-details>`
@@ -229,13 +250,11 @@ class AgentGroupsAPI(TIOEndpoint):
         Examples:
             >>> group = tio.agent_groups.details(1)
             >>> pprint(group)
-        '''
+        """
         scanner_id = 1
-        limit = 50
-        offset = 0
-        pages = None
-        query = self._parse_filters(filters,
-            self._api.filters.agents_filters(), rtype='colon')
+        query = self._parse_filters(
+            filters, self._api.filters.agents_filters(), rtype='colon'
+        )
 
         # Overload the scanner_id with a new value if it has been requested
         # to do so.
@@ -254,16 +273,24 @@ class AgentGroupsAPI(TIOEndpoint):
         #   sort=field1:asc,field2:desc
         #
         if 'sort' in kw and self._check('sort', kw['sort'], tuple):
-            query['sort'] = ','.join(['{}:{}'.format(
-                self._check('sort_field', i[0], str),
-                self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
-            ) for i in kw['sort']])
+            query['sort'] = ','.join(
+                [
+                    '{}:{}'.format(
+                        self._check('sort_field', i[0], str),
+                        self._check(
+                            'sort_direction', i[1], str, choices=['asc', 'desc']
+                        ),
+                    )
+                    for i in kw['sort']
+                ]
+            )
 
         # The filter_type determines how the filters are combined together.
         # The default is 'and', however you can always explicitly define 'and'
         # or 'or'.
         if 'filter_type' in kw and self._check(
-            'filter_type', kw['filter_type'], str, choices=['and', 'or']):
+            'filter_type', kw['filter_type'], str, choices=['and', 'or']
+        ):
             query['ft'] = kw['filter_type']
 
         # The wild-card filter text refers to how the API will pattern match
@@ -274,7 +301,8 @@ class AgentGroupsAPI(TIOEndpoint):
         # The wildcard_fields parameter allows the user to restrict the fields
         # that the wild-card pattern match pertains to.
         if 'wildcard_fields' in kw and self._check(
-            'wildcard_fields', kw['wildcard_fields'], list):
+            'wildcard_fields', kw['wildcard_fields'], list
+        ):
             query['wf'] = ','.join(kw['wildcard_fields'])
 
         # If the offset was set to something other than the default starting
@@ -291,12 +319,13 @@ class AgentGroupsAPI(TIOEndpoint):
         return self._api.get(
             'scanners/{}/agent-groups/{}'.format(
                 self._check('scanner_id', scanner_id, int),
-                self._check('group_id', group_id, int)
-            ), params=query
+                self._check('group_id', group_id, int),
+            ),
+            params=query,
         ).json()
 
     def list(self, scanner_id=1):
-        '''
+        """
         Retrieves the list of agent groups configured
 
         :devportal:`agent-groups: list <agent-groups-list>`
@@ -312,12 +341,15 @@ class AgentGroupsAPI(TIOEndpoint):
             >>>> for agent_group in tio.agent_groups.list():
             ...     pprint(agent_group)
 
-        '''
-        return self._api.get('scanners/{}/agent-groups'.format(
-            self._check('scanner_id', scanner_id, int))).json()['groups']
+        """
+        return self._api.get(
+            'scanners/{}/agent-groups'.format(
+                self._check('scanner_id', scanner_id, int)
+            )
+        ).json()['groups']
 
     def task_status(self, group_id, task_uuid, scanner_id=1):
-        '''
+        """
         Retrieves the current status of a bulk task.
 
         :devportal:`bulk-operations: bulk-agent-group-status <bulk-task-agent-group-status>`
@@ -335,10 +367,11 @@ class AgentGroupsAPI(TIOEndpoint):
             >>> item = tio.agent_groups.add_agent(1, 21, 22, 23)
             >>> task = tio.agent_groups.task_status(item['task_uuid'])
             >>> pprint(task)
-        '''
+        """
         return self._api.get(
             'scanners/{}/agent-groups/{}/agents/_bulk/{}'.format(
                 self._check('scanner_id', scanner_id, int),
                 self._check('group_id', group_id, int),
-                self._check('task_uuid', task_uuid, 'uuid')
-            )).json()
+                self._check('task_uuid', task_uuid, 'uuid'),
+            )
+        ).json()

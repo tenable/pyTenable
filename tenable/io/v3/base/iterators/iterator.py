@@ -6,7 +6,7 @@ This class is a iterator for version 3 API call
 .. autoclass:: APIResultIterator
     :members:
 '''
-from restfly.iterator import APIIterator
+from tenable.base._restfly_v1 import APIIterator
 
 
 class APIResultIterator(APIIterator):

@@ -19,7 +19,7 @@ from json.decoder import JSONDecodeError
 from typing import Any, Literal, Type
 from uuid import UUID
 
-from restfly.errors import RequestConflictError
+from tenable.errors import RequestConflictError
 
 from tenable.base.endpoint import APIEndpoint
 

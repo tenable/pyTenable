@@ -3,7 +3,7 @@ Base schemas for pagination
 '''
 from typing import Dict
 from marshmallow import Schema, fields, post_dump, pre_load, validate as v
-from restfly.utils import dict_clean
+from tenable.utils import dict_clean
 from tenable.base.schema.fields import LowerCase
 
 

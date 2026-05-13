@@ -9,7 +9,7 @@ These methods can be accessed at ``TenableIE.alerts``.
 .. autoclass:: AlertsAPI
     :members:
 '''
-from typing import List, Dict
+from typing import Dict
 from tenable.ie.alert.schema import AlertSchema, AlertParamsSchema
 from tenable.ie.base.iterator import ADIterator
 from tenable.base.endpoint import APIEndpoint

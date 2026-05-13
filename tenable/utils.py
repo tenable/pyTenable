@@ -2,8 +2,29 @@ import string
 import warnings
 from typing import Any
 
-from restfly.utils import dict_merge as _dm
-from restfly.utils import url_validator
+from tenable.base._restfly_v1 import (
+    check,
+    dict_clean,
+    dict_flatten,
+    force_case,
+    redact_values,
+    trunc,
+    url_validator,
+)
+from tenable.base._restfly_v1 import dict_merge as _dm
+
+__all__ = [
+    'check',
+    'dict_clean',
+    'dict_flatten',
+    'dict_merge',
+    'force_case',
+    'redact_values',
+    'url_validator',
+    'policy_settings',
+    'scrub',
+    'trunc',
+]
 
 
 def dict_merge(m, *args, **kwargs):
@@ -36,7 +57,7 @@ def policy_settings(item):
         # if we find both an 'id' and a 'default' attribute, or if we find
         # a 'type' attribute matching one of the known attribute types, then
         # we will parse out the data and append it to the response dictionary
-        if not 'default' in item:
+        if 'default' not in item:
             item['default'] = ''
         resp[item['id']] = item['default']
 

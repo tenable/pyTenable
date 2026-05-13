@@ -4,7 +4,7 @@ build-backend   = "setuptools.build_meta"
 
 
 [project]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dynamic         = ["version"]
 readme          = "README.rst"
 name            = "pyTenable"
@@ -26,6 +26,8 @@ keywords        = [
     "tenable container security",
     "tenable.ot",
     "tenable ot security",
+    "tenable one",
+    "tenable cloud",
 ]
 classifiers     = [
     "Development Status :: 5 - Production/Stable",
@@ -41,20 +43,20 @@ classifiers     = [
 
 ]
 dependencies    = [
-    "requests>=2.26",
+    "requests>=2.33",
     "python-dateutil>=2.6",
     "semver>=2.10.0",
-    "restfly>=1.5.1",
-    "marshmallow>=3.8,<4",
+    "marshmallow>=3.26.2,<4",
     "python-box>=4.0",
     "defusedxml>=0.5.0",
-    "urllib3>=1.26.18",
+    "urllib3>=1.26.20",
     "typing-extensions>=4.0.1",
     "requests-toolbelt>=1.0.0",
     "gql>=4.0.0",
     "graphql-core>=3.2.6",
     "pydantic>=2.5.3",
     "pydantic-extra-types>=2.3.0",
+    "arrow>=1.4.0",
 ]
 
 
@@ -116,7 +118,7 @@ docstring-code-line-length = "dynamic"
 
 
 [tool.pytest.ini_options]
-addopts  = "--cov-report term-missing --cov=tenable"
+addopts  = "--cov-report term-missing:skip-covered --cov=tenable"
 testpaths = ['tests']
 filterwarnings = [
     "ignore::DeprecationWarning:tenable.*",
@@ -135,15 +137,13 @@ dev = [
     "pytest-cov>=4.1.0",
     "pytest-datafiles>=3.0.0",
     "pytest-vcr>=1.0.2",
-    "pytest>=7.4.4",
+    "pytest>=8,<9",
     "responses>=0.23.3",
     "ruff>=0.6.4",
-    # URLLib3 version 2.x doesn't play well with the version of pytest-vcr that supports
-    # Python 3.9 and lower.  This can be removed once 3.9 goes EOS or when we stop using
-    # VCR for the test suite.
-    "urllib3==1.26.20",
     "rich>=13.8.1",
+    "urllib3>=1.26.18,<2", # Required until VCR is no longer needed.
     "ptpython>=3.0.29",
     "typer>=0.20.0",
     "mypy>=1.18.2",
+    "rust-just>=1.51.0",
 ]

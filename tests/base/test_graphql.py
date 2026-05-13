@@ -2,7 +2,6 @@
 Base graphql Testing module.
 """
 
-import os
 import platform
 import sys
 from io import StringIO
@@ -11,7 +10,6 @@ from tempfile import NamedTemporaryFile
 
 import pytest
 import responses
-from gql import GraphQLRequest
 from graphql import parse
 from responses.registries import OrderedRegistry
 

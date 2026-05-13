@@ -4,7 +4,6 @@ test audit-log
 import pytest
 import responses
 from responses.matchers import query_param_matcher
-from copy import copy
 
 
 @pytest.fixture

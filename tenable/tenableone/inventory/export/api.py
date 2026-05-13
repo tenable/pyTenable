@@ -23,7 +23,7 @@ from tenable.tenableone.inventory.export.schema import (
     ExportType,
     ExportJobsResponse
 )
-from tenable.tenableone.inventory.schema import PropertyFilter, QueryMode, Query
+from tenable.tenableone.inventory.schema import PropertyFilter, Query
 from tenable.tenableone.inventory.schema import SortDirection
 
 

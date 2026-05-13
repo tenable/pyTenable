@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 from tenable.io import TenableIO
 from csv import DictWriter
-import click, logging
+import click
+import logging
 
 # Function to format agent groups into a single string
 def agent_groups(groups):
@@ -56,7 +57,7 @@ def cli(output, access_key, secret_key, health, debug):
         
     else:
         # Log that all agents are being exported since 'health' is None or empty
-        logging.info(f'Exporting all agents') 
+        logging.info('Exporting all agents') 
 
     # Define the fields/columns for the CSV
     fields = [

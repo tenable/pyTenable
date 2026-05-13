@@ -1,8 +1,6 @@
 '''
 Tenable Identity Exposure session
 '''
-import warnings
-import os
 
 from tenable.base.platform import APIPlatform
 

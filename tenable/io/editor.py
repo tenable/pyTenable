@@ -350,7 +350,7 @@ class EditorAPI(TIOEndpoint):
         # Clean out the empty attributes for templates:
         if etype == 'scan/policy':
             for key in list(obj['settings'].keys()):
-                if obj['settings'][key] == None:
+                if obj['settings'][key] is None:
                     del obj['settings'][key]
 
         # return the scan document to the caller.

@@ -2,8 +2,6 @@
 test file to test various scenarios in init.py
 """
 
-import os
-import sys
 
 import pytest
 from requests.exceptions import ConnectionError as RequestsConnectionError

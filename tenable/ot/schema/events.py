@@ -1,22 +1,11 @@
 import datetime
 import ipaddress
-import typing
 import uuid
 from dataclasses import dataclass
 from typing import List, Optional
 
 from tenable.ot.schema.assets import NetworkInterface
-from tenable.ot.schema.base import (
-    NodesList,
-    AssetInfoList,
-    IDList
-)
-
-
-@dataclass
-class Action:
-    aid: uuid.UUID
-    type: str
+from tenable.ot.schema.base import AssetInfoList, IDList, NodesList
 
 
 @dataclass
@@ -38,12 +27,6 @@ class Group:
     archived: Optional[bool] = None
     system: Optional[bool] = None
     key: Optional[str] = None
-
-
-@dataclass
-class GroupMember:
-    group: Group
-    negate: bool
 
 
 @dataclass

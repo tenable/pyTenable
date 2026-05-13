@@ -76,7 +76,6 @@ Methods available on ``sc.analysis``:
     :members:
 '''
 from .base import SCEndpoint, SCResultsIterator
-from tenable.utils import dict_merge
 from tenable.errors import UnexpectedValueError
 
 class AnalysisResultsIterator(SCResultsIterator):

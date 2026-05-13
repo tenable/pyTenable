@@ -14,7 +14,6 @@ Methods available on ``tio.remediation_scans``:
 '''
 
 
-from tenable.constants import IOConstants
 from tenable.errors import UnexpectedValueError
 from tenable.io.base import TIOEndpoint, TIOIterator
 from tenable.utils import dict_merge

@@ -35,8 +35,7 @@ class GroupsAPI(TIOEndpoint):
         '''
         self._api.post('groups/{}/users/{}'.format(
             self._check('group_id', group_id, int),
-            self._check('user_id', user_id, int), json={}
-        ))
+            self._check('user_id', user_id, int), ))
 
     def create(self, name):
         '''

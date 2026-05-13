@@ -13,7 +13,7 @@ These methods can be accessed at ``TenableOne.attack_path``.
 from copy import copy
 from typing import Dict, Optional, Union
 
-from restfly import APIIterator
+from tenable.base._restfly_v1 import APIIterator
 
 from tenable.base.endpoint import APIEndpoint
 from tenable.tenableone.attack_path.vectors.schema import (

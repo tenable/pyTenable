@@ -4,7 +4,6 @@ test file for testing various scenarios in file functionality
 from io import BytesIO
 import responses
 from responses.matchers import json_params_matcher
-import pytest
 
 
 @responses.activate

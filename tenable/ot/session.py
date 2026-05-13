@@ -17,7 +17,6 @@ This package covers the Tenable OT Security interface.
     plugins
 """
 import os
-import warnings
 
 from tenable.base.platform import APIPlatform
 from tenable.ot.assets import AssetsAPI

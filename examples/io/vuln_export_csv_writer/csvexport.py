@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 from tenable.io import TenableIO
 from csv import DictWriter
-import collections, click, logging
+import collections
+import click
+import logging
 
 
 def flatten(d, parent_key='', sep='.'):

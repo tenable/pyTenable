@@ -1,4 +1,3 @@
-import pytest
 import responses
 from responses.registries import OrderedRegistry
 from responses.matchers import json_params_matcher, query_param_matcher

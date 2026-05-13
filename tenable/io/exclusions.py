@@ -12,7 +12,7 @@ Methods available on ``tio.exclusions``:
     :members:
 '''
 from datetime import datetime
-from restfly.utils import dict_merge
+from tenable.utils import dict_merge
 from tenable.io.base import TIOEndpoint
 
 class ExclusionsAPI(TIOEndpoint):

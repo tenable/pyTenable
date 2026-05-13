@@ -4,10 +4,7 @@ from uuid import UUID
 import pytest
 import responses
 from pydantic import ValidationError
-from requests import status_codes
-from responses.matchers import json_params_matcher, query_param_matcher
 from responses.registries import OrderedRegistry
-from restfly.errors import InvalidContentError
 
 from tenable.io.sync.job_manager import JobManager, SyncJobTerminated
 

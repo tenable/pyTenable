@@ -163,7 +163,7 @@ class WasAPI(TIOEndpoint):
             offset += limit
 
             if not items_in_response:
-                self._log.debug(f"Stopping the iteration as we encountered an empty response from the API.")
+                self._log.debug("Stopping the iteration as we encountered an empty response from the API.")
                 break
 
         self._log.debug(f"Parent ID: {parent_scan_id} has {len(flattened_list)} target ID(s).")

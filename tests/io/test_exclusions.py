@@ -15,7 +15,6 @@ from tenable.errors import (
     UnexpectedValueError,
 )
 from tests.checker import check
-from tests.io.test_networks import fixture_network
 from tests.pytenable_log_handler import log_exception
 
 

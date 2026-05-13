@@ -1,4 +1,3 @@
-import pytest
 import responses
 from responses.matchers import multipart_matcher
 from io import BytesIO
