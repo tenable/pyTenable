@@ -1,4 +1,6 @@
+import string
 import warnings
+from typing import Any
 
 from restfly.utils import dict_merge as _dm
 from restfly.utils import url_validator
@@ -56,3 +58,11 @@ def policy_settings(item):
 
     # Return the key-value pair.
     return resp
+
+
+def scrub(value: Any) -> str:
+    """
+    Scrubs converts the value to a string and then scrubs out any illegal characters.
+    """
+    safe_chars = string.ascii_letters + string.digits + '-_%@'
+    return ''.join([c for c in str(value) if c in safe_chars])
