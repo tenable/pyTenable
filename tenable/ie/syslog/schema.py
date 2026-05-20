@@ -1,5 +1,8 @@
-'''Syslog schema'''
-from marshmallow import fields, validate as v, validates_schema
+"""Syslog schema"""
+
+from marshmallow import fields, validates_schema
+from marshmallow import validate as v
+
 from tenable.ie.base.schema import CamelCaseSchema, camelcase
 
 
@@ -11,16 +14,20 @@ class SyslogSchema(CamelCaseSchema):
     tls = fields.Bool()
     criticity_threshold = fields.Int(required=True)
     description = fields.Str(allow_none=True)
-    filter_expression = fields.Mapping(allow_none=True)
+    filter_expression = fields.Dict(allow_none=True)
     input_type = fields.Str()
-    directories = fields.List(fields.Int(), required=True, allow_none=True,
-                              validate=v.Length(min=1))
-    checkers = fields.List(fields.Int(), required=True, allow_none=True,
-                           validate=v.Length(min=1))
-    attack_types = fields.List(fields.Int(), required=True, allow_none=True,
-                               validate=v.Length(min=1))
-    profiles = fields.List(fields.Int(), required=True, allow_none=True,
-                           validate=v.Length(min=1))
+    directories = fields.List(
+        fields.Int(), required=True, allow_none=True, validate=v.Length(min=1)
+    )
+    checkers = fields.List(
+        fields.Int(), required=True, allow_none=True, validate=v.Length(min=1)
+    )
+    attack_types = fields.List(
+        fields.Int(), required=True, allow_none=True, validate=v.Length(min=1)
+    )
+    profiles = fields.List(
+        fields.Int(), required=True, allow_none=True, validate=v.Length(min=1)
+    )
     should_notify_on_initial_full_security_check = fields.Bool(required=True)
 
     @validates_schema
