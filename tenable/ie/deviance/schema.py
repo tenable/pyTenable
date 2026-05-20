@@ -1,5 +1,6 @@
 from marshmallow import fields
-from tenable.ie.base.schema import CamelCaseSchema, BoolInt
+
+from tenable.ie.base.schema import BoolInt, CamelCaseSchema
 
 
 class DevianceAttributesSchema(CamelCaseSchema):
@@ -40,7 +41,7 @@ class DevianceSchema(CamelCaseSchema):
     max_items = fields.Int(allow_none=True)
     last_identifier_seen = fields.Int()
     resolved = BoolInt()
-    expression = fields.Mapping()
+    expression = fields.Dict()
     show_ignored = fields.Bool()
     checkers = fields.List(fields.Int())
     reasons = fields.List(fields.Int())

@@ -1,4 +1,4 @@
-'''
+"""
 Infrastructure
 ==============
 
@@ -8,10 +8,12 @@ These methods can be accessed at ``TenableIE.infrastructure``.
 .. rst-class:: hide-signature
 .. autoclass:: InfrastructureAPI
     :members:
-'''
-from typing import List, Dict
-from tenable.ie.infrastructure.schema import InfrastructureSchema
+"""
+
+from typing import Dict, List
+
 from tenable.base.endpoint import APIEndpoint
+from tenable.ie.infrastructure.schema import InfrastructureSchema
 
 
 class InfrastructureAPI(APIEndpoint):
@@ -19,7 +21,7 @@ class InfrastructureAPI(APIEndpoint):
     _schema = InfrastructureSchema()
 
     def list(self) -> List[Dict]:
-        '''
+        """
         Retrieves the list of infrastructures.
 
         Returns:
@@ -29,11 +31,11 @@ class InfrastructureAPI(APIEndpoint):
         Examples:
 
             >>> tie.infrastructure.list()
-        '''
+        """
         return self._schema.load(self._get(), many=True)
 
     def create(self, name: str, login: str, password: str) -> List[Dict]:
-        '''
+        """
         Creates a new infrastructure instance with inputs of name, username
         and password.
 
@@ -55,18 +57,16 @@ class InfrastructureAPI(APIEndpoint):
             ...     name='test_user',
             ...     login='test_user@gmail.com',
             ...     password='tenable.ad'))
-        '''
+        """
         payload = [
-            self._schema.dump(self._schema.load({
-                'name': name,
-                'login': login,
-                'password': password
-            }))
+            self._schema.dump(
+                self._schema.load({'name': name, 'login': login, 'password': password})
+            )
         ]
         return self._schema.load(self._post(json=payload), many=True)
 
     def details(self, infrastructure_id: str) -> Dict:
-        '''
+        """
         Gets the details of particular infrastructure instance.
 
         Args:
@@ -80,11 +80,11 @@ class InfrastructureAPI(APIEndpoint):
         Examples:
 
             >>> tie.infrastructure.details(infrastructure_id='1')
-        '''
+        """
         return self._schema.load(self._get(f'{infrastructure_id}'))
 
     def update(self, infrastructure_id: str, **kwargs) -> Dict:
-        '''
+        """
         Updates the infrastructure of the specific infrastructure instance.
 
         Args:
@@ -107,13 +107,12 @@ class InfrastructureAPI(APIEndpoint):
             ...     infrastructure_id='1',
             ...     login='updated_login@tenable.com',
             ...     name='updated_user')
-        '''
+        """
         payload = self._schema.dump(self._schema.load(kwargs))
-        return self._schema.load(
-            self._patch(f'{infrastructure_id}', json=payload))
+        return self._schema.load(self._patch(f'{infrastructure_id}', json=payload))
 
     def delete(self, infrastructure_id: str):
-        '''
+        """
         Deletes the particular infrastructure instance.
 
         Args:
@@ -126,6 +125,5 @@ class InfrastructureAPI(APIEndpoint):
         Examples:
 
             >>> tie.infrastructure.delete(infrastructure_id='1')
-        '''
-        return self._schema.load(self._delete(f'{infrastructure_id}'),
-                                 many=True)
+        """
+        return self._delete(f'{infrastructure_id}')

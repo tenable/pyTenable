@@ -91,7 +91,8 @@ class ExportFilterV1Base(BaseModel):
         tags = data.pop('tags', None)
         if tags:
             for category, value in tags:
-                name = f'tag.{category.replace(" ", "_")}'
+                # name = f'tag.{category.replace(" ", "_")}'
+                name = f'tag.{category}'
                 if name not in data:
                     data[name] = []
                 if isinstance(value, list):

@@ -1,9 +1,9 @@
-from marshmallow import Schema, fields, post_dump, validate as v
+from marshmallow import Schema, fields, post_dump
+from marshmallow import validate as v
 
 
 class SettingsSchema(Schema):
-    action = fields.Str(required=True,
-                        validate=v.OneOf(['add', 'edit', 'remove']))
+    action = fields.Str(required=True, validate=v.OneOf(['add', 'edit', 'remove']))
     name = fields.Str(required=True)
     id = fields.Str(required=False)
     value = fields.Str(required=False)
@@ -12,7 +12,7 @@ class SettingsSchema(Schema):
 class SettingsListSchema(Schema):
     settings = fields.List(fields.Nested(SettingsSchema))
 
-    @post_dump(pass_many=False)
+    @post_dump(pass_collection=False)
     def reformat_settings_list(self, data, **kwargs):
         idx = 0
         resp = {}
