@@ -141,7 +141,7 @@ dev = [
     # URLLib3 version 2.x doesn't play well with the version of pytest-vcr that supports
     # Python 3.9 and lower.  This can be removed once 3.9 goes EOS or when we stop using
     # VCR for the test suite.
-    "urllib3==1.26.20",
+    "urllib3==2.7.0",
     "rich>=13.8.1",
     "ptpython>=3.0.29",
     "typer>=0.20.0",
