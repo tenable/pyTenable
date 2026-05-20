@@ -10,7 +10,6 @@ These methods can be accessed at ``TenableIE.roles``.
     :members:
 '''
 from typing import List, Dict
-from marshmallow import ValidationError
 from tenable.base.endpoint import APIEndpoint
 from .schema import RoleSchema, RolePermissionsSchema
 

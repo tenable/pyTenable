@@ -1,6 +1,5 @@
 from typing import Dict, List
-from copy import copy
-from restfly.iterator import APIIterator
+from tenable.base._restfly_v1 import APIIterator
 
 
 class PluginIterator(APIIterator):

@@ -9,7 +9,7 @@ These methods can be accessed at ``TenableIE.event``.
     :members:
 '''
 from typing import Dict, List, Mapping
-from restfly.utils import dict_clean
+from tenable.utils import dict_clean
 from tenable.ie.event.schema import EventSchema
 from tenable.base.endpoint import APIEndpoint
 

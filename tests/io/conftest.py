@@ -1,11 +1,14 @@
-'''conftest'''
+"""conftest"""
+
 import os
 import uuid
+
 import pytest
 import responses
-from tenable.errors import NotFoundError
+
+from tenable.errors import APIError, NotFoundError
 from tenable.io import TenableIO
-from tests.pytenable_log_handler import setup_logging_to_file, log_exception
+from tests.pytenable_log_handler import log_exception, setup_logging_to_file
 
 SCAN_ID_WITH_RESULTS = 6799
 
@@ -13,15 +16,14 @@ SCAN_ID_WITH_RESULTS = 6799
 @pytest.fixture
 @responses.activate
 def tvm():
-    return TenableIO(url='https://nourl',
-                     access_key='ACCESS_KEY',
-                     secret_key='SECRET_KEY'
-                     )
+    return TenableIO(
+        url='https://nourl', access_key='ACCESS_KEY', secret_key='SECRET_KEY'
+    )
 
 
 @pytest.fixture(scope='module')
 def vcr_config():
-    '''vcr config fixture'''
+    """vcr config fixture"""
     return {
         'filter_headers': [
             ('X-APIKeys', 'accessKey=TIO_ACCESS_KEY;secretKey=TIO_SECRET_KEY'),
@@ -32,38 +34,40 @@ def vcr_config():
 
 @pytest.fixture
 def api():
-    '''api keys fixture'''
+    """api keys fixture"""
     setup_logging_to_file()
     return TenableIO(
         os.getenv('TIO_TEST_ADMIN_ACCESS', 'ffffffffffffffffffffffffffffffff'),
         os.getenv('TIO_TEST_ADMIN_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',
-        product='pytenable-automated-testing')
+        product='pytenable-automated-testing',
+    )
 
 
 @pytest.fixture
 def stdapi():
-    '''std api keys fixture'''
+    """std api keys fixture"""
     return TenableIO(
         os.getenv('TIO_TEST_STD_ACCESS', 'ffffffffffffffffffffffffffffffff'),
         os.getenv('TIO_TEST_STD_SECRET', 'ffffffffffffffffffffffffffffffff'),
         vendor='pytest',
-        product='pytenable-automated-testing')
+        product='pytenable-automated-testing',
+    )
 
 
 @pytest.fixture
 def agent(api):
-    '''agent fixture'''
+    """agent fixture"""
     return api.agents.list().next()
 
 
 @pytest.fixture
 def folder(request, api):
-    '''fixture to create a folder'''
+    """fixture to create a folder"""
     folder = api.folders.create(str(uuid.uuid4())[:20])
 
     def teardown():
-        '''function to clear the folder'''
+        """function to clear the folder"""
         try:
             api.folders.delete(folder)
         except NotFoundError as notfound:
@@ -75,17 +79,19 @@ def folder(request, api):
 
 @pytest.fixture
 def policy(request, api):
-    '''fixture to create a policy'''
-    policy = api.policies.create({
-        'credentials': {'add': {}, 'delete': [], 'edit': {}},
-        'settings': {
-            'name': str(uuid.uuid4()),
-        },
-        'uuid': '731a8e52-3ea6-a291-ec0a-d2ff0619c19d7bd788d6be818b65'
-    })
+    """fixture to create a policy"""
+    policy = api.policies.create(
+        {
+            'credentials': {'add': {}, 'delete': [], 'edit': {}},
+            'settings': {
+                'name': str(uuid.uuid4()),
+            },
+            'uuid': '731a8e52-3ea6-a291-ec0a-d2ff0619c19d7bd788d6be818b65',
+        }
+    )
 
     def teardown():
-        '''function to clear policy'''
+        """function to clear policy"""
         try:
             api.policies.delete(policy['policy_id'])
         except NotFoundError as notfound:
@@ -97,14 +103,13 @@ def policy(request, api):
 
 @pytest.fixture
 def user(request, api):
-    '''fixture to create an user'''
+    """fixture to create an user"""
     user = api.users.create(
-        '{}@tenable.com'.format(uuid.uuid4()),
-        '{}Tt!'.format(uuid.uuid4()),
-        64)
+        '{}@tenable.com'.format(uuid.uuid4()), '{}Tt!'.format(uuid.uuid4()), 64
+    )
 
     def teardown():
-        '''function to clear the user'''
+        """function to clear the user"""
         try:
             api.users.delete(user['id'])
         except NotFoundError as notfound:
@@ -116,7 +121,7 @@ def user(request, api):
 
 @pytest.fixture
 def scanner(api):
-    '''fixture to filter scanner which has owner permission'''
+    """fixture to filter scanner which has owner permission"""
     scanners = api.scanners.list()
     for scanner in scanners:
         if scanner['user_permissions'] == 128 and not scanner['pool']:
@@ -125,13 +130,13 @@ def scanner(api):
 
 @pytest.fixture
 def scannergroup(request, api):
-    '''
+    """
     fixture to create a scanner_group
-    '''
+    """
     scannergroup = api.scanner_groups.create(str(uuid.uuid4()))
 
     def teardown():
-        '''function to clear the scanner_group'''
+        """function to clear the scanner_group"""
         try:
             api.scanner_groups.delete(scannergroup['id'])
         except NotFoundError as notfound:
@@ -143,18 +148,17 @@ def scannergroup(request, api):
 
 @pytest.fixture
 def scan(request, api):
-    '''
+    """
     fixture to create a scan
-    '''
+    """
     scan = api.scans.create(
-        name='pytest: {}'.format(uuid.uuid4()),
-        template='basic',
-        targets=['127.0.0.1'])
+        name='pytest: {}'.format(uuid.uuid4()), template='basic', targets=['127.0.0.1']
+    )
 
     def teardown():
-        '''
+        """
         function to clear the scan
-        '''
+        """
         try:
             api.scans.delete(scan['id'])
         except NotFoundError as notfound:
@@ -166,21 +170,22 @@ def scan(request, api):
 
 @pytest.fixture
 def remediationscan(request, api):
-    '''
+    """
     remediation scan fixture
-    '''
+    """
     scan = api.remediationscans.create_remediation_scan(
         uuid='76d67790-2969-411e-a9d0-667f05e8d49e',
         name='RemedyScan',
         description='RemediationScan Creation',
         scan_time_window=10,
         targets=['http://127.0.0.1'],
-        template='advanced')
+        template='advanced',
+    )
 
     def teardown():
-        '''
+        """
         function to delete the scan
-        '''
+        """
         try:
             api.scans.delete(scan['id'])
         except NotFoundError as notfound:
@@ -192,11 +197,16 @@ def remediationscan(request, api):
 
 @pytest.fixture
 def scan_results(api):
-    '''fixture to get the scan results'''
-    scan_list = [id['id'] for id in list(filter(lambda value: value['status'] == 'completed', api.scans.list()))]
+    """fixture to get the scan results"""
+    scan_list = [
+        id['id']
+        for id in list(
+            filter(lambda value: value['status'] == 'completed', api.scans.list())
+        )
+    ]
     if scan_list:
         return {'results': api.scans.results(scan_list[0]), 'id': scan_list[0]}
-    raise NotFoundError("Scan not found")
+    raise NotFoundError('Scan not found')
 
 
 @pytest.fixture
@@ -214,3 +224,26 @@ def target_file(request, api):
 
     request.addfinalizer(teardown)
     return targetFile
+
+
+@pytest.fixture(name='network')
+def fixture_network(request, api, vcr):
+    """
+    Fixture to create network
+    """
+    with vcr.use_cassette('test_networks_create_success'):
+        network = api.networks.create('Network-{}'.format(uuid.uuid4()))
+
+    def teardown():
+        """
+        cleanup function to delete network
+        """
+        try:
+            with vcr.use_cassette('test_networks_delete_success'):
+                api.networks.delete(network['uuid'])
+        except APIError as err:
+            log_exception(err)
+            pass
+
+    request.addfinalizer(teardown)
+    return network

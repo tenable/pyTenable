@@ -10,7 +10,7 @@ These methods can be accessed at ``TenableIE.users``.
     :members:
 '''
 from typing import List, Dict
-from restfly.utils import dict_merge
+from tenable.utils import dict_merge
 from tenable.base.endpoint import APIEndpoint
 from .schema import UserSchema, UserInfoSchema
 

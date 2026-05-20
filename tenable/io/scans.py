@@ -14,17 +14,15 @@ Methods available on ``tio.scans``:
 
 import time
 import warnings
-from datetime import datetime, timedelta
+from datetime import datetime
 from io import BytesIO
 from typing import Callable, Dict, List, Optional, Tuple, Union
 from uuid import UUID
 
-from restfly.utils import dict_clean
-
 from tenable.constants import IOConstants
 from tenable.errors import UnexpectedValueError
 from tenable.io.base import TIOEndpoint, TIOIterator
-from tenable.utils import dict_merge
+from tenable.utils import dict_clean, dict_merge, scrub
 
 
 class ScanHistoryIterator(TIOIterator):
@@ -614,7 +612,9 @@ class ScansAPI(TIOEndpoint):
 
         # Make the HTTP call and stream the data into the file object.
         resp = self._get(
-            f'{scan_id}/attachments/{attachment_id}', params={'key': key}, stream=True
+            f'{scrub(scan_id)}/attachments/{scrub(attachment_id)}',
+            params={'key': key},
+            stream=True,
         )
         for chunk in resp.iter_content(chunk_size=1024):
             if chunk:
@@ -681,7 +681,7 @@ class ScansAPI(TIOEndpoint):
         scan = dict_merge(current, updated)
         scan = self.upsert_aws_credentials(scan)
         # Performing the actual call to the API with the updated scan record.
-        return self._put(f'{str(scan_id)}', json=scan)
+        return self._put(f'{scrub(scan_id)}', json=scan)
 
     def upsert_aws_credentials(self, scan):
         """
@@ -758,7 +758,7 @@ class ScansAPI(TIOEndpoint):
             payload['name'] = self._check('name', name, str)
 
         # make the call and return the resulting JSON document to the caller.
-        return self._api.post(f'scans/{str(scan_id)}/copy', json=payload).json()
+        return self._api.post(f'scans/{scrub(scan_id)}/copy', json=payload).json()
 
     def create(self, **kw):
         """
@@ -862,7 +862,7 @@ class ScansAPI(TIOEndpoint):
         Examples:
             >>> tio.scans.delete(1)
         """
-        self._delete(f'{str(scan_id)}')
+        self._delete(f'{scrub(scan_id)}')
 
     def history(
         self,
@@ -907,7 +907,7 @@ class ScansAPI(TIOEndpoint):
             _offset=offset if offset else 0,
             _pages_total=pages,
             _query=query,
-            _path=f'scans/{str(scan_id)}/history',
+            _path=f'scans/{scrub(scan_id)}/history',
             _resource='history',
         )
 
@@ -930,7 +930,7 @@ class ScansAPI(TIOEndpoint):
         Examples:
             >>> tio.scans.delete_history(1, 1)
         """
-        self._delete(f'{str(scan_id)}/history/{str(history_id)}')
+        self._delete(f'{scrub(scan_id)}/history/{scrub(history_id)}')
 
     def details(self, scan_id: Union[int, UUID]) -> Dict:
         """
@@ -1010,10 +1010,11 @@ class ScansAPI(TIOEndpoint):
             warnings.warn(
                 'The history_uuid parameter is deprecated, use history_id instead',
                 DeprecationWarning,
+                stacklevel=2,
             )
             params['history_id'] = history_uuid
 
-        return self._api.get(f'scans/{str(scan_id)}', params=params).json()
+        return self._api.get(f'scans/{scrub(scan_id)}', params=params).json()
 
     def export(
         self,
@@ -1167,14 +1168,14 @@ class ScansAPI(TIOEndpoint):
         # The first thing that we need to do is make the request and get the
         # File id for the job.
         fid = self._api.post(
-            f'scans/{str(scan_id)}/export', params=params, json=payload
+            f'scans/{scrub(scan_id)}/export', params=params, json=payload
         ).json()['file']
         self._api._log.debug(f'Initiated scan export {str(fid)}')
 
         # Next we will wait for the status of the export request to become
         # ready.
         _ = self._wait_for_download(
-            f'scans/{str(scan_id)}/export/{str(fid)}/status',
+            f'scans/{scrub(scan_id)}/export/{scrub(fid)}/status',
             'scans',
             scan_id,
             fid,
@@ -1184,7 +1185,7 @@ class ScansAPI(TIOEndpoint):
         # Now that the status has reported back as "ready", we can actually
         # download the file.
         resp = self._api.get(
-            f'scans/{str(scan_id)}/export/{str(fid)}/download',
+            f'scans/{scrub(scan_id)}/export/{scrub(fid)}/download',
             params=dl_params,
             stream=True,
         )
@@ -1243,7 +1244,7 @@ class ScansAPI(TIOEndpoint):
             )
 
         return self._api.get(
-            f'scans/{str(scan_id)}/hosts/{str(host_id)}',
+            f'scans/{scrub(scan_id)}/hosts/{scrub(host_id)}',
             params=params,
         ).json()
 
@@ -1332,7 +1333,7 @@ class ScansAPI(TIOEndpoint):
         if targets:
             payload['alt_targets'] = targets
 
-        return self._post(f'{str(scan_id)}/launch', json=payload).scan_uuid
+        return self._post(f'{scrub(scan_id)}/launch', json=payload).scan_uuid
 
     def list(
         self, folder_id: Optional[int] = None, last_modified: Optional[datetime] = None
@@ -1387,7 +1388,7 @@ class ScansAPI(TIOEndpoint):
         Examples:
             >>> tio.scans.pause(1)
         """
-        self._post(f'{str(scan_id)}/pause', json={})
+        self._post(f'{scrub(scan_id)}/pause', json={})
         if block:
             self._block_while_running(scan_id)
 
@@ -1427,7 +1428,7 @@ class ScansAPI(TIOEndpoint):
             params['history_uuid'] = history_uuid
 
         return self._get(
-            f'{str(scan_id)}/hosts/{str(host_id)}/plugins/{str(plugin_id)}',
+            f'{scrub(scan_id)}/hosts/{scrub(host_id)}/plugins/{scrub(plugin_id)}',
             params=params,
         )
 
@@ -1453,7 +1454,7 @@ class ScansAPI(TIOEndpoint):
 
             >>> tio.scans.set_read_status(1, False)
         """
-        self._put(f'{str(scan_id)}/status', json={'read': read_status})
+        self._put(f'{scrub(scan_id)}/status', json={'read': read_status})
 
     def resume(self, scan_id: Union[str, UUID]):
         """
@@ -1471,7 +1472,7 @@ class ScansAPI(TIOEndpoint):
         Examples:
             >>> tio.scans.resume(1)
         """
-        self._post(f'{str(scan_id)}/resume')
+        self._post(f'{scrub(scan_id)}/resume')
 
     def schedule(self, scan_id: Union[str, UUID], enabled: bool) -> dict:
         """
@@ -1492,7 +1493,7 @@ class ScansAPI(TIOEndpoint):
 
             >>> tio.scans.schedule(1, True)
         """
-        return self._put(f'{str(scan_id)}/schedule', json={'enabled': enabled})
+        return self._put(f'{scrub(scan_id)}/schedule', json={'enabled': enabled})
 
     def stop(self, scan_id: Union[str, UUID], block: bool = False):
         """
@@ -1518,7 +1519,7 @@ class ScansAPI(TIOEndpoint):
 
             >>> tio.scans.stop(1, True)
         """
-        self._post(f'{str(scan_id)}/stop')
+        self._post(f'{scrub(scan_id)}/stop')
         if block:
             self._block_while_running(scan_id)
 
@@ -1539,7 +1540,7 @@ class ScansAPI(TIOEndpoint):
             >>> tio.scans.status(1)
             u'completed'
         """
-        return self._get(f'{str(scan_id)}/latest-status').status
+        return self._get(f'{scrub(scan_id)}/latest-status').status
 
     def progress(
         self,
@@ -1555,6 +1556,7 @@ class ScansAPI(TIOEndpoint):
         Args:
             scan_id (int | UUID): The
         """
+        scan_id: str = str(scan_id).strip('/.')
         params = {}
         if history_id:
             params['history_id'] = history_id
@@ -1597,7 +1599,10 @@ class ScansAPI(TIOEndpoint):
         Examples:
             >>> info = tio.scans.info(1, 'BA0ED610-C27B-4096-A8F4-3189279AFFE7')
         """
-        return self._api.get(f'scans/{str(scan_id)}/history/{str(history_uuid)}').json()
+        scan_id: str = str(scan_id).strip('/.')
+        return self._api.get(
+            f'scans/{scrub(scan_id)}/history/{scrub(history_uuid)}'
+        ).json()
 
     def check_auto_targets(
         self,

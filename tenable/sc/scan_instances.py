@@ -19,7 +19,6 @@ Methods available on ``sc.scan_instances``:
 
 from io import BytesIO
 
-from tenable.utils import dict_merge
 
 from .base import SCEndpoint
 

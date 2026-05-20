@@ -2,7 +2,6 @@
 Test the CS Reports API
 '''
 import re
-import pytest
 import responses
 
 

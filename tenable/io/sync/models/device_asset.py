@@ -4,13 +4,11 @@ from datetime import datetime
 from ipaddress import IPv4Address, IPv6Address
 from typing import Literal
 
-from arrow import ArrowFactory
 from pydantic import (
     AfterValidator,
     AwareDatetime,
     BeforeValidator,
     Field,
-    PlainSerializer,
     StringConstraints,
 )
 from pydantic_extra_types.mac_address import MacAddress

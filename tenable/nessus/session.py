@@ -10,7 +10,7 @@ These methods can be accessed at ``Nessus.session``.
     :members:
 '''
 from typing import Dict, Optional
-from restfly.utils import dict_clean
+from tenable.utils import dict_clean
 from tenable.base.endpoint import APIEndpoint
 
 

@@ -1,4 +1,4 @@
-'''
+"""
 Permissions
 ===========
 
@@ -10,12 +10,16 @@ Methods available on ``tio.permissions``:
 .. rst-class:: hide-signature
 .. autoclass:: PermissionsAPI
     :members:
-'''
+"""
+
+from tenable.utils import scrub
+
 from .base import TIOEndpoint
+
 
 class PermissionsAPI(TIOEndpoint):
     def change(self, otype, id, *acls):
-        '''
+        """
         Modify the permission of a specific object.
 
         :devportal:`permissions: change <permissions-change>`
@@ -36,19 +40,16 @@ class PermissionsAPI(TIOEndpoint):
 
         .. _permissions documentation:
             https://developer.tenable.com/docs/permissions
-        '''
+        """
         # Check to make sure all of the ACLs are dictionaries.
         for item in acls:
             self._check('acl', item, dict)
 
         # Make the API call.
-        self._api.put('permissions/{}/{}'.format(
-            self._check('otype', otype, str),
-            self._check('id', id, int)
-        ), json={'acls': acls})
+        self._api.put(f'permissions/{scrub(otype)}/{scrub(id)}', json={'acls': acls})
 
     def list(self, otype, id):
-        '''
+        """
         List the permissions of a specific object.
 
         :devportal:`permissions: list <permissions-list>`
@@ -62,9 +63,5 @@ class PermissionsAPI(TIOEndpoint):
         Returns:
             :obj:`list`:
                 The permission recourse record listings for the specified object.
-        '''
-        return self._api.get(
-            'permissions/{}/{}'.format(
-                self._check('otype', otype, str),
-                self._check('id', id, int)
-            )).json()['acls']
+        """
+        return self._api.get(f'permissions/{scrub(otype)}/{scrub(id)}').json()['acls']

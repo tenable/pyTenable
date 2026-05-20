@@ -15,7 +15,7 @@ from typing_extensions import Literal
 from typing import Tuple, Optional, Dict
 from copy import copy
 from .base import TIOEndpoint
-from restfly.iterator import APIIterator
+from tenable.base._restfly_v1 import APIIterator
 
 
 class AuditLogIterator(APIIterator):

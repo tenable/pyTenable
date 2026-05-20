@@ -14,7 +14,6 @@ from tenable.tenableone.inventory.export.schema import (
     ExportRequestStatus,
     ExportStatus,
     ExportJobsResponse,
-    ExportJob,
     ExportType,
 )
 from tenable.tenableone.inventory.schema import SortDirection, PropertyFilter, Operator, Query, QueryMode

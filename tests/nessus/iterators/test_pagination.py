@@ -1,4 +1,3 @@
-import pytest
 import responses
 from tenable.nessus.iterators.pagination import PaginationIterator
 

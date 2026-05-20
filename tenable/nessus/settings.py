@@ -10,8 +10,7 @@ These methods can be accessed at ``Nessus.settings``.
     :members:
 '''
 from typing import List, Dict, Optional
-from typing_extensions import Literal
-from restfly.utils import dict_clean
+from tenable.utils import dict_clean
 from tenable.base.endpoint import APIEndpoint
 from .schema.settings import SettingsListSchema
 

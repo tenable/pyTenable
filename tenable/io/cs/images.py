@@ -13,7 +13,7 @@ Methods available on ``tio.cs.images``:
 '''
 from typing_extensions import Literal
 from typing import Optional, Dict, Union
-from restfly.utils import dict_clean
+from tenable.utils import dict_clean
 from tenable.base.endpoint import APIEndpoint
 from tenable.io.cs.iterator import CSIterator
 

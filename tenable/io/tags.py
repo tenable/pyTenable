@@ -1,4 +1,4 @@
-'''
+"""
 Tags
 ====
 
@@ -10,16 +10,17 @@ Methods available on ``tio.tags``:
 .. rst-class:: hide-signature
 .. autoclass:: TagsAPI
     :members:
-'''
+"""
+
 import json
 import re
 
-from tenable.utils import dict_merge
 from tenable.io.base import TIOEndpoint, TIOIterator
+from tenable.utils import dict_merge, scrub
 
 
 class TagsIterator(TIOIterator):
-    '''
+    """
     The tags iterator provides a scalable way to work through tag list result
     sets of any size.  The iterator will walk through each page of data,
     returning one record at a time.  If it reaches the end of a page of
@@ -36,114 +37,153 @@ class TagsIterator(TIOIterator):
         page_count (int): The number of record returned from the current page.
         total (int):
             The total number of records that exist for the current request.
-    '''
+    """
+
     pass
 
 
 class TagsAPI(TIOEndpoint):
-    '''
+    """
     This will contain all methods related to tags
-    '''
+    """
+
     _filterset_tags = {
-        'value': {
-            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
-        },
+        'value': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
         'category_name': {
-            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
+            'operators': ['eq', 'match'],
+            'pattern': None,
+            'choices': None,
         },
         'category_uuid': {
-            'operators': ['eq'], 'pattern': r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12,32}$', 'choices': None
+            'operators': ['eq'],
+            'pattern': r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12,32}$',
+            'choices': None,
         },
-        'description': {
-            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
-        },
+        'description': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
         'updated_at': {
-            'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None
+            'operators': ['date-eq', 'date-gt', 'date-lt'],
+            'pattern': '\\d+',
+            'choices': None,
         },
-        'updated_by': {
-            'operators': ['eq'], 'pattern': None
-        }  # Add UUID regex here
+        'updated_by': {'operators': ['eq'], 'pattern': None},  # Add UUID regex here
     }
     _filterset_categories = {
-        'name': {
-            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
-        },
-        'description': {
-            'operators': ['eq', 'match'], 'pattern': None, 'choices': None
-        },
+        'name': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
+        'description': {'operators': ['eq', 'match'], 'pattern': None, 'choices': None},
         'created_at': {
-            'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None
+            'operators': ['date-eq', 'date-gt', 'date-lt'],
+            'pattern': '\\d+',
+            'choices': None,
         },
         'updated_at': {
-            'operators': ['date-eq', 'date-gt', 'date-lt'], 'pattern': '\\d+', 'choices': None
+            'operators': ['date-eq', 'date-gt', 'date-lt'],
+            'pattern': '\\d+',
+            'choices': None,
         },
         'updated_by': {
-            'operators': ['eq'], 'pattern': None, 'choices': None
-        }  # Add UUID regex here
+            'operators': ['eq'],
+            'pattern': None,
+            'choices': None,
+        },  # Add UUID regex here
     }
 
     def _permission_constructor(self, items):
-        '''
+        """
         Simple current_domain_permission tuple expander. Also supports validation of values
-        '''
+        """
         resp = list()
         for item in items:
             self._check('item', item, (tuple, dict))
             if isinstance(item, tuple):
                 if len(item) == 3:
                     item = item + ([],)
-                resp.append({
-                    'id': self._check('id', item[0], 'uuid'),
-                    "name": self._check('name', item[1], str),
-                    "type": self._check('type', item[2], str,
-                                        choices=['user', 'group'], case='upper'),
-                    "permissions": [
-                        self._check('i', i, str,
-                                    choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'], case='upper')
-                        for i in self._check('permissions', item[3], list)],
-                })
+                resp.append(
+                    {
+                        'id': self._check('id', item[0], 'uuid'),
+                        'name': self._check('name', item[1], str),
+                        'type': self._check(
+                            'type',
+                            item[2],
+                            str,
+                            choices=['user', 'group'],
+                            case='upper',
+                        ),
+                        'permissions': [
+                            self._check(
+                                'i',
+                                i,
+                                str,
+                                choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'],
+                                case='upper',
+                            )
+                            for i in self._check('permissions', item[3], list)
+                        ],
+                    }
+                )
             else:
                 data = dict()
                 data['id'] = self._check('id', item['id'], 'uuid')
                 data['name'] = self._check('name', item['name'], str)
-                data['type'] = self._check('type', item['type'], str,
-                                           choices=['user', 'group'], case='upper')
+                data['type'] = self._check(
+                    'type', item['type'], str, choices=['user', 'group'], case='upper'
+                )
                 data['permissions'] = [
-                    self._check('i', i, str,
-                                choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'], case='upper')
-                    for i in self._check('permissions', item['permissions']
-                    if 'permissions' in item else None, list,
-                                         default=list())]
+                    self._check(
+                        'i',
+                        i,
+                        str,
+                        choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'],
+                        case='upper',
+                    )
+                    for i in self._check(
+                        'permissions',
+                        item['permissions'] if 'permissions' in item else None,
+                        list,
+                        default=list(),
+                    )
+                ]
                 resp.append(data)
 
         return resp
 
     def _tag_value_constructor(self, filters, filterdefs, filter_type):
-        '''
+        """
         A simple constructor to handle constructing the filter parameters for the
         create and edit tag value.
-        '''
-        filter_type = self._check('filter_type', filter_type, str,
-                                  choices=['and', 'or'], default='and', case='lower')
+        """
+        filter_type = self._check(
+            'filter_type',
+            filter_type,
+            str,
+            choices=['and', 'or'],
+            default='and',
+            case='lower',
+        )
 
         # created default dictionary for payload filters key
-        payload_filters = dict({
-            'asset': dict({
-                filter_type: list()
-            })
-        })
+        payload_filters = dict({'asset': dict({filter_type: list()})})
 
         if len(filters) > 0:
             # run the filters through the filter parser and update payload_filters
-            parsed_filters = self._parse_filters(filters, filterdefs, rtype='assets')['asset']
+            parsed_filters = self._parse_filters(filters, filterdefs, rtype='assets')[
+                'asset'
+            ]
             payload_filters['asset'][filter_type] = parsed_filters
 
         return payload_filters
 
-    def create(self, category, value, description=None, category_description=None,
-               filters=None, filter_type=None, all_users_permissions=None,
-               current_domain_permissions=None):
-        '''
+    def create(
+        self,
+        category,
+        value,
+        description=None,
+        category_description=None,
+        filters=None,
+        filter_type=None,
+        all_users_permissions=None,
+        current_domain_permissions=None,
+    ):
+        """
         Create a tag category/value pair
 
         :devportal:`tags: create-tag-value <tags-create-tag-value-1>`
@@ -219,7 +259,7 @@ class TagsAPI(TIOEndpoint):
             Creating a new Tag Value within a Category by UUID:
 
             >>> tio.tags.create('00000000-0000-0000-0000-000000000000', 'Madison')
-        '''
+        """
         all_permissions = ['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS']
         payload = dict()
 
@@ -228,7 +268,9 @@ class TagsAPI(TIOEndpoint):
         # parameter, if not (but is still a string), then we will pass into
         # category_name
 
-        uuid_pattern = re.compile(r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$')
+        uuid_pattern = re.compile(
+            r'^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$'
+        )
 
         if uuid_pattern.search(category):
             payload['category_uuid'] = self._check('category', category, 'uuid')
@@ -241,34 +283,45 @@ class TagsAPI(TIOEndpoint):
             payload['description'] = self._check('description', description, str)
         if category_description:
             payload['category_description'] = self._check(
-                'category_description', category_description, str)
+                'category_description', category_description, str
+            )
         if not current_domain_permissions:
             current_domain_permissions = list()
 
         payload['access_control'] = {
             # setting default current_user_permissions to all
             'current_user_permissions': all_permissions,
-
             # check and assign all_users_permissions
             'all_users_permissions': [
-                self._check('i', i, str, choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'])
-                for i in self._check('all_users_permissions', all_users_permissions, list,
-                                     default=list(), case='upper')],
-
+                self._check(
+                    'i', i, str, choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS']
+                )
+                for i in self._check(
+                    'all_users_permissions',
+                    all_users_permissions,
+                    list,
+                    default=list(),
+                    case='upper',
+                )
+            ],
             # run the current_domain_permissions through the permission_constructor
             'current_domain_permissions': self._permission_constructor(
-                self._check('current_domain_permissions', current_domain_permissions, list)),
+                self._check(
+                    'current_domain_permissions', current_domain_permissions, list
+                )
+            ),
         }
 
         # if filters are defined, run the filters through the filter parser...
         if self._check('filters', filters, list):
             payload['filters'] = self._tag_value_constructor(
-                filters, self._api.filters.asset_tag_filters(), filter_type)
+                filters, self._api.filters.asset_tag_filters(), filter_type
+            )
 
         return self._api.post('tags/values', json=payload).json()
 
     def create_category(self, name, description=None):
-        '''
+        """
         Creates a new category
 
         :devportal:`tags: create-category <tags-create-tag-category>`
@@ -283,7 +336,7 @@ class TagsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.tags.create_category('Location')
-        '''
+        """
         payload = dict()
         payload['name'] = self._check('name', name, str)
         if description:
@@ -291,7 +344,7 @@ class TagsAPI(TIOEndpoint):
         return self._api.post('tags/categories', json=payload).json()
 
     def delete(self, *tag_value_uuids):
-        '''
+        """
         Deletes tag value(s).
 
         :devportal:`tag: delete tag value <tags-delete-tag-value>`
@@ -312,18 +365,26 @@ class TagsAPI(TIOEndpoint):
 
             >>> tio.tags.delete('00000000-0000-0000-0000-000000000000',
             ...     '10000000-0000-0000-0000-000000000001')
-        '''
+        """
         if len(tag_value_uuids) <= 1:
-            self._api.delete('tags/values/{}'.format(
-                self._check('tag_value_uuid', tag_value_uuids[0], 'uuid')))
+            self._api.delete(
+                'tags/values/{}'.format(
+                    scrub(self._check('tag_value_uuid', tag_value_uuids[0], 'uuid'))
+                )
+            )
         else:
-            self._api.post('tags/values/delete-requests',
-                           json={'values': [
-                               self._check('tag_value_uuid', i, 'uuid') for i in tag_value_uuids
-                           ]})
+            self._api.post(
+                'tags/values/delete-requests',
+                json={
+                    'values': [
+                        self._check('tag_value_uuid', i, 'uuid')
+                        for i in tag_value_uuids
+                    ]
+                },
+            )
 
     def delete_category(self, tag_category_uuid):
-        '''
+        """
         Deletes a tag category.
 
         :devportal:`tag: delete tag category <tags-delete-tag-category>`
@@ -337,12 +398,15 @@ class TagsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.tags.delete('00000000-0000-0000-0000-000000000000')
-        '''
-        self._api.delete('tags/categories/{}'.format(
-            self._check('tag_category_uuid', tag_category_uuid, 'uuid')))
+        """
+        self._api.delete(
+            'tags/categories/{}'.format(
+                scrub(self._check('tag_category_uuid', tag_category_uuid, 'uuid'))
+            )
+        )
 
     def details(self, tag_value_uuid):
-        '''
+        """
         Retrieves the details for a specific tag category/value pair.
 
         :devportal:`tag: tag details <tags-tag-value-details>`
@@ -357,12 +421,15 @@ class TagsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.tags.details('00000000-0000-0000-0000-000000000000')
-        '''
-        return self._api.get('tags/values/{}'.format(self._check(
-            'tag_value_uuid', tag_value_uuid, 'uuid'))).json()
+        """
+        return self._api.get(
+            'tags/values/{}'.format(
+                scrub(self._check('tag_value_uuid', tag_value_uuid, 'uuid'))
+            )
+        ).json()
 
     def details_category(self, tag_category_uuid):
-        '''
+        """
         Retrieves the details for a specific tag category.
 
         :devportal:`tag: tag category details <tags-tag-category-details>`
@@ -377,13 +444,24 @@ class TagsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.tags.details_category('00000000-0000-0000-0000-000000000000')
-        '''
-        return self._api.get('tags/categories/{}'.format(self._check(
-            'tag_category_uuid', tag_category_uuid, 'uuid'))).json()
+        """
+        return self._api.get(
+            'tags/categories/{}'.format(
+                scrub(self._check('tag_category_uuid', tag_category_uuid, 'uuid'))
+            )
+        ).json()
 
-    def edit(self, tag_value_uuid, value=None, description=None, filters=None, filter_type=None,
-             all_users_permissions=None, current_domain_permissions=None):
-        '''
+    def edit(
+        self,
+        tag_value_uuid,
+        value=None,
+        description=None,
+        filters=None,
+        filter_type=None,
+        all_users_permissions=None,
+        current_domain_permissions=None,
+    ):
+        """
         Updates Tag category/value pair information.
 
         :devportal:`tag: edit tag value <tags-update-tag-value>`
@@ -431,7 +509,7 @@ class TagsAPI(TIOEndpoint):
         Examples:
             >>> tio.tags.edit('00000000-0000-0000-0000-000000000000',
             ...     name='NewValueName')
-        '''
+        """
         payload = dict()
         payload['value'] = self._check('value', value, str)
         if description:
@@ -451,17 +529,24 @@ class TagsAPI(TIOEndpoint):
         # Set all users permission
         if all_users_permissions is not None:
             current_access_control['all_users_permissions'] = [
-                self._check('i', i, str, choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS'])
-                for i in self._check('all_users_permissions', all_users_permissions, list,
-                                     case='upper')]
+                self._check(
+                    'i', i, str, choices=['ALL', 'CAN_EDIT', 'CAN_SET_PERMISSIONS']
+                )
+                for i in self._check(
+                    'all_users_permissions', all_users_permissions, list, case='upper'
+                )
+            ]
 
         # run current_domain_permissions through permission parser
         if current_domain_permissions is not None:
-            current_access_control['current_domain_permissions'] = self._permission_constructor(
-                current_domain_permissions)
+            current_access_control['current_domain_permissions'] = (
+                self._permission_constructor(current_domain_permissions)
+            )
 
         # update payload access control with new values
-        payload['access_control'] = dict_merge(payload['access_control'], current_access_control)
+        payload['access_control'] = dict_merge(
+            payload['access_control'], current_access_control
+        )
 
         # We need to pick current value of version if available or set default value to 0
         # this value will be incremented when permissions are updated
@@ -479,18 +564,23 @@ class TagsAPI(TIOEndpoint):
         if filters is not None:
             self._check('filters', filters, list)
             payload['filters'] = self._tag_value_constructor(
-                filters, self._api.filters.asset_tag_filters(), filter_type)
+                filters, self._api.filters.asset_tag_filters(), filter_type
+            )
         elif 'filters' in current and current['filters']:
             # current value in filters are in form of string.
             # we have to first convert it into dict() form before applying
             current['filters']['asset'] = json.loads(current['filters']['asset'])
             payload['filters'] = current['filters']
 
-        return self._api.put('tags/values/{}'.format(self._check(
-            'tag_value_uuid', tag_value_uuid, 'uuid')), json=payload).json()
+        return self._api.put(
+            'tags/values/{}'.format(
+                scrub(self._check('tag_value_uuid', tag_value_uuid, 'uuid')),
+                json=payload,
+            )
+        ).json()
 
     def edit_category(self, tag_category_uuid, name=None, description=None):
-        '''
+        """
         Updates Tag category information.
 
         :devportal:`tag: edit tag category <tags-edit-tag-category>`
@@ -510,32 +600,49 @@ class TagsAPI(TIOEndpoint):
         Examples:
             >>> tio.tags.edit_category('00000000-0000-0000-0000-000000000000',
             ...     name='NewValueName')
-        '''
+        """
         payload = dict()
         payload['name'] = self._check('name', name, str)
         if description:
             payload['description'] = self._check('description', description, str)
-        return self._api.put('tags/categories/{}'.format(self._check(
-            'tag_category_uuid', tag_category_uuid, 'uuid')), json=payload).json()
+        return self._api.put(
+            'tags/categories/{}'.format(
+                scrub(self._check('tag_category_uuid', tag_category_uuid, 'uuid')),
+                json=payload,
+            )
+        ).json()
 
     def _tag_list_constructor(self, filters, filterdefs, filter_type, sort):
-        '''
+        """
         A simple constructor to handle constructing the query parameters for the
         list and list_category methods.
-        '''
+        """
         query = self._parse_filters(filters, filterdefs, rtype='colon')
         if filter_type:
-            query['ft'] = self._check('filter_type', filter_type, str,
-                                      choices=['AND', 'OR'], case='upper')
+            query['ft'] = self._check(
+                'filter_type', filter_type, str, choices=['AND', 'OR'], case='upper'
+            )
         if sort and self._check('sort', sort, tuple):
-            query['sort'] = ','.join(['{}:{}'.format(
-                self._check('sort_field', i[0], str, choices=[k for k in filterdefs.keys()]),
-                self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
-            ) for i in sort])
+            query['sort'] = ','.join(
+                [
+                    '{}:{}'.format(
+                        self._check(
+                            'sort_field',
+                            i[0],
+                            str,
+                            choices=[k for k in filterdefs.keys()],
+                        ),
+                        self._check(
+                            'sort_direction', i[1], str, choices=['asc', 'desc']
+                        ),
+                    )
+                    for i in sort
+                ]
+            )
         return query
 
     def list(self, *filters, **kw):
-        '''
+        """
         Retrieves a list of tag category/value pairs based off of the filters
         defined within the query.
 
@@ -577,21 +684,25 @@ class TagsAPI(TIOEndpoint):
 
             >>> for tag in tio.tags.list(('category_name', 'eq', 'Location')):
             ...     pprint(tag)
-        '''
-        query = self._tag_list_constructor(filters, self._filterset_tags,
-                                           kw['filter_type'] if 'filter_type' in kw else None,
-                                           kw['sort'] if 'sort' in kw else None)
-        return TagsIterator(self._api,
-                            _limit=self._check('limit', kw.get('limit', 1000), int),
-                            _offset=self._check('offset', kw.get('offset', 0), int),
-                            _pages_total=self._check('pages', kw.get('pages'), int),
-                            _query=query,
-                            _path='tags/values',
-                            _resource='values'
-                            )
+        """
+        query = self._tag_list_constructor(
+            filters,
+            self._filterset_tags,
+            kw['filter_type'] if 'filter_type' in kw else None,
+            kw['sort'] if 'sort' in kw else None,
+        )
+        return TagsIterator(
+            self._api,
+            _limit=self._check('limit', kw.get('limit', 1000), int),
+            _offset=self._check('offset', kw.get('offset', 0), int),
+            _pages_total=self._check('pages', kw.get('pages'), int),
+            _query=query,
+            _path='tags/values',
+            _resource='values',
+        )
 
     def list_categories(self, *filters, **kw):
-        '''
+        """
         Retrieves a list of tag categories based off of the filters defined
         within the query.
 
@@ -634,21 +745,25 @@ class TagsAPI(TIOEndpoint):
             >>> for tag in tio.tags.list_categories(
             ...   ('name', 'eq', 'Location')):
             ...     pprint(tag)
-        '''
-        query = self._tag_list_constructor(filters, self._filterset_categories,
-                                           kw['filter_type'] if 'filter_type' in kw else None,
-                                           kw['sort'] if 'sort' in kw else None)
-        return TagsIterator(self._api,
-                            _limit=self._check('limit', kw.get('limit', 1000), int),
-                            _offset=self._check('offset', kw.get('offset', 0), int),
-                            _pages_total=self._check('pages', kw.get('pages'), int),
-                            _query=query,
-                            _path='tags/categories',
-                            _resource='categories'
-                            )
+        """
+        query = self._tag_list_constructor(
+            filters,
+            self._filterset_categories,
+            kw['filter_type'] if 'filter_type' in kw else None,
+            kw['sort'] if 'sort' in kw else None,
+        )
+        return TagsIterator(
+            self._api,
+            _limit=self._check('limit', kw.get('limit', 1000), int),
+            _offset=self._check('offset', kw.get('offset', 0), int),
+            _pages_total=self._check('pages', kw.get('pages'), int),
+            _query=query,
+            _path='tags/categories',
+            _resource='categories',
+        )
 
     def assign(self, assets, tags):
-        '''
+        """
         Assigns the tag category/value pairs defined to the assets defined.
 
         :devportal:`tags: assign tags <tags-assign-asset-tags>`
@@ -667,17 +782,20 @@ class TagsAPI(TIOEndpoint):
             >>> tio.tags.assign(
             ...     assets=['00000000-0000-0000-0000-000000000000'],
             ...     tags=['00000000-0000-0000-0000-000000000000'])
-        '''
+        """
         self._check('assets', assets, list)
         self._check('tags', tags, list)
-        return self._api.post('tags/assets/assignments', json={
-            'action': 'add',
-            'assets': [self._check('asset', a, 'uuid') for a in assets],
-            'tags': [self._check('tag', t, 'uuid') for t in tags],
-        }).json()['job_uuid']
+        return self._api.post(
+            'tags/assets/assignments',
+            json={
+                'action': 'add',
+                'assets': [self._check('asset', a, 'uuid') for a in assets],
+                'tags': [self._check('tag', t, 'uuid') for t in tags],
+            },
+        ).json()['job_uuid']
 
     def unassign(self, assets, tags):
-        '''
+        """
         Un-assigns the tag category/value pairs defined to the assets defined.
 
         :devportal:`tags: assign tags <tags-assign-asset-tags>`
@@ -696,14 +814,17 @@ class TagsAPI(TIOEndpoint):
             >>> tio.tags.unassign(
             ...     assets=['00000000-0000-0000-0000-000000000000'],
             ...     tags=['00000000-0000-0000-0000-000000000000'])
-        '''
+        """
         self._check('assets', assets, list)
         self._check('tags', tags, list)
-        return self._api.post('tags/assets/assignments', json={
-            'action': 'remove',
-            'assets': [self._check('asset', a, 'uuid') for a in assets],
-            'tags': [self._check('tag', t, 'uuid') for t in tags],
-        }).json()['job_uuid']
+        return self._api.post(
+            'tags/assets/assignments',
+            json={
+                'action': 'remove',
+                'assets': [self._check('asset', a, 'uuid') for a in assets],
+                'tags': [self._check('tag', t, 'uuid') for t in tags],
+            },
+        ).json()['job_uuid']
 
     def get_tag_uuid(self, category, value):
         """

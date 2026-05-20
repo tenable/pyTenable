@@ -1,5 +1,4 @@
 from tenable.base.endpoint import APIEndpoint
-import pytest
 
 
 def test_apiendpoint():

@@ -4,7 +4,6 @@ Tests for the TenableOne Attack Path Export API.
 This module tests all public methods of the attack path ExportAPI class.
 """
 
-import json
 import pytest
 import responses
 from io import BytesIO

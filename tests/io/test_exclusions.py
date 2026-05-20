@@ -15,7 +15,6 @@ from tenable.errors import (
     UnexpectedValueError,
 )
 from tests.checker import check
-from tests.io.test_networks import fixture_network
 from tests.pytenable_log_handler import log_exception
 
 
@@ -579,24 +578,6 @@ def test_exclusions_delete_standard_user_fail(stdapi, exclusion):
     """
     with pytest.raises(ForbiddenError):
         stdapi.exclusions.delete(exclusion['id'])
-
-
-@pytest.mark.vcr()
-def test_exclusions_edit_no_exclusion_id_typeerror(api):
-    """
-    test to raise exception when exclusion_id is not provided.
-    """
-    with pytest.raises(TypeError):
-        api.exclusions.edit()
-
-
-@pytest.mark.vcr()
-def test_exclusions_edit_exclusion_id_typeerror(api):
-    """
-    test to raise exception when type of exclusion_id param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.exclusions.edit('nope')
 
 
 @pytest.mark.vcr()

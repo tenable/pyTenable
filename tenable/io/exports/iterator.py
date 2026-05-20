@@ -15,7 +15,7 @@ from copy import deepcopy
 from typing import Any, Callable
 
 from box import Box
-from restfly.iterator import APIIterator
+from tenable.base._restfly_v1 import APIIterator
 
 from tenable.errors import TioExportsError, TioExportsTimeout
 

@@ -1,4 +1,4 @@
-'''
+"""
 Base Platform
 =============
 
@@ -9,18 +9,21 @@ base class over the original APISession class.
 .. autoclass:: APIPlatform
     :members:
     :inherited-members:
-'''
+"""
+
+import inspect
 import os
 import warnings
-import inspect
-from restfly import APISession as Base
+
 from tenable.errors import AuthenticationWarning
 from tenable.utils import url_validator
 from tenable.version import version
 
+from ._restfly_v1 import APISession as Base
+
 
 class APIPlatform(Base):
-    '''
+    """
     Base class for all API Platform packages.  This class handles all of the
     base connection logic.
 
@@ -70,7 +73,8 @@ class APIPlatform(Base):
             The base URL that the paths will be appended onto.
         vendor (str, optional):
             The vendor name to put into the User-Agent string.
-    '''
+    """
+
     _lib_name = 'pyTenable'
     _lib_version = version
     _backoff = 1
@@ -84,7 +88,6 @@ class APIPlatform(Base):
     }
 
     def __init__(self, **kwargs):
-
         # if the constructed URL isn't valid, then we will throw a ConnectionError
         # to inform the caller that something isn't right here.
         url = kwargs.get('url')
@@ -107,29 +110,26 @@ class APIPlatform(Base):
         super().__init__(**kwargs)
 
     def _session_auth(self, username, password):
-        '''
+        """
         Default Session auth behavior
-        '''
-        self.post('session', json={
-            'username': username,
-            'password': password
-        })
+        """
+        self.post('session', json={'username': username, 'password': password})
         self._auth_mech = 'session'
 
     def _key_auth(self, access_key, secret_key):
-        '''
+        """
         Default API Key Auth Behavior
-        '''
-        self._session.headers.update({
-            'X-APIKeys': f'accessKey={access_key}; secretKey={secret_key}'
-        })
+        """
+        self._session.headers.update(
+            {'X-APIKeys': f'accessKey={access_key}; secretKey={secret_key}'}
+        )
         self._auth_mech = 'keys'
 
     def _authenticate(self, **kwargs):
-        '''
+        """
         This method handles authentication for both API Keys and for session
         authentication.
-        '''
+        """
         # Here we are grafting the authentication functions into the keyword
         # arguments for later usage.  If a function is provided in the keywords
         # under the key names below, we will use those instead.  This should
@@ -141,7 +141,8 @@ class APIPlatform(Base):
         # methods will always end in _auth, so we will simply inspect the platform
         # object and look for any methods that end with '_auth'
         auth_mechs = {
-            i[0]: i[1] for i in inspect.getmembers(self, predicate=inspect.ismethod)
+            i[0]: i[1]
+            for i in inspect.getmembers(self, predicate=inspect.ismethod)
             if '_auth' in i[0][-5:]
         }
 
@@ -151,7 +152,7 @@ class APIPlatform(Base):
         for name in self._allowed_auth_mech_priority:
             auth[name] = {
                 'func': kwargs.get(f'{name}_auth_func', auth_mechs[f'_{name}_auth']),
-                'params': {}
+                'params': {},
             }
             for param in self._allowed_auth_mech_params[name]:
                 # for each param, we will attempt to get the value of the parameter,
@@ -181,18 +182,20 @@ class APIPlatform(Base):
         # If we found no valid authentication mechanisms, then we should warn the user
         # that we weren't able to find anything and allow the caller to interact with
         # the unauthenticated session.
-        warnings.warn('Starting an unauthenticated session',
-                      AuthenticationWarning)
+        warnings.warn(
+            'Starting an unauthenticated session', AuthenticationWarning, stacklevel=2
+        )
         self._log.warning('Starting an unauthenticated session.')
 
-    def _deauthenticate(self,  # noqa PLW0221
-                        method: str = 'DELETE',
-                        path: str = 'session'
-                        ):
-        '''
+    def _deauthenticate(
+        self,  # noqa PLW0221
+        method: str = 'DELETE',
+        path: str = 'session',
+    ):
+        """
         This method handles de-authentication.  This is only necessary for
         session-based authentication.
-        '''
+        """
         if self._auth_mech == 'user':
             self._req(method, path)
         self._auth = {}

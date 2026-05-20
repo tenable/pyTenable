@@ -9,7 +9,7 @@ These methods can be accessed at ``Nessus.permissions``.
 .. autoclass:: PermissionsAPI
     :members:
 '''
-from typing import Dict, Optional, List
+from typing import Dict, List
 from typing_extensions import Literal
 from tenable.base.endpoint import APIEndpoint
 

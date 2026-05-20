@@ -25,12 +25,6 @@ class NodesList:
 
 
 @dataclass
-class AssetInfo:
-    id: uuid.UUID
-    name: str
-
-
-@dataclass
 class AssetInfoList(NodesList):
     nodes: List[AssetInfo]
 

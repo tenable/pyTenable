@@ -6,7 +6,8 @@ import json
 import typing
 from typing import Type
 
-from restfly.iterator import APIIterator
+
+from tenable.base._restfly_v1 import APIIterator
 
 from tenable.ot.graphql.definitions import (
     GraphObject,

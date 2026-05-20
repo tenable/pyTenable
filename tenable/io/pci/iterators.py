@@ -2,7 +2,7 @@ from copy import deepcopy
 from typing import TYPE_CHECKING, Any
 from uuid import UUID
 
-from restfly.iterator import APIIterator
+from tenable.base._restfly_v1 import APIIterator
 
 if TYPE_CHECKING:
     from tenable.io import TenableIO

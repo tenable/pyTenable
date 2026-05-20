@@ -6,9 +6,9 @@ from typing import Dict
 
 from marshmallow import Schema, fields, post_dump, pre_load
 from marshmallow import validate as v
-from restfly.utils import dict_clean
 
 from tenable.base.schema.fields import LowerCase
+from tenable.utils import dict_clean
 
 
 class FilterSchema(Schema):

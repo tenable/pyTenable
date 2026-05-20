@@ -1,4 +1,4 @@
-'''
+"""
 Credentials
 ===========
 
@@ -10,14 +10,17 @@ Methods available on ``tio.credentials``:
 .. rst-class:: hide-signature
 .. autoclass:: CredentialsAPI
     :members:
-'''
+"""
+
 from typing import BinaryIO
 
-from tenable.utils import dict_merge
+from tenable.utils import dict_merge, scrub
+
 from .base import TIOEndpoint, TIOIterator
 
+
 class CredentialsIterator(TIOIterator):
-    '''
+    """
     The credentials iterator provides a scalable way to work through networks
     result sets of any size.  The iterator will walk through each page of data,
     returning one record at a time.  If it reaches the end of a page of records,
@@ -34,15 +37,17 @@ class CredentialsIterator(TIOIterator):
         page_count (int): The number of record returned from the current page.
         total (int):
             The total number of records that exist for the current request.
-    '''
+    """
+
     pass
+
 
 class CredentialsAPI(TIOEndpoint):
     def _permissions_constructor(self, permissions):
-        '''
+        """
         Validates and/or transforms thew permissions items into the desired
         format.  If a dict it will validate.  If a tuple, will convert.
-        '''
+        """
         resp = list()
         for p in permissions:
             if isinstance(p, tuple):
@@ -54,32 +59,43 @@ class CredentialsAPI(TIOEndpoint):
                     'use': 32,
                     'edit': 64,
                 }
-                resp.append({
-                    'type': self._check('permission:type', p[0], str,
-                        choices=['user', 'group']),
-                    'permissions': ptnx[self._check('permissions:permission',
-                        p[1], (str, int), choices=[32, 64, 'use', 'edit'])],
-                    'grantee_uuid': self._check('permission:uuid', p[2], 'uuid')
-                })
+                resp.append(
+                    {
+                        'type': self._check(
+                            'permission:type', p[0], str, choices=['user', 'group']
+                        ),
+                        'permissions': ptnx[
+                            self._check(
+                                'permissions:permission',
+                                p[1],
+                                (str, int),
+                                choices=[32, 64, 'use', 'edit'],
+                            )
+                        ],
+                        'grantee_uuid': self._check('permission:uuid', p[2], 'uuid'),
+                    }
+                )
 
-            elif isinstance(p, dict) :
+            elif isinstance(p, dict):
                 # if the item is a dictionary, validate it and then pass into
                 # the response list.
-                self._check('permission:type', p['type'], str,
-                    choices=['user', 'group'])
-                self._check('permission:permissions', p['permissions'], int,
-                    choices=[32, 64])
+                self._check(
+                    'permission:type', p['type'], str, choices=['user', 'group']
+                )
+                self._check(
+                    'permission:permissions', p['permissions'], int, choices=[32, 64]
+                )
                 self._check('permission:grantee_uuid', p['grantee_uuid'], 'uuid')
                 resp.append(p)
 
-            else :
+            else:
                 raise TypeError('permission object is not tuple or dict type')
         return resp
 
-
-    def create(self, cred_name, cred_type, description=None,
-               permissions=None, **settings):
-        '''
+    def create(
+        self, cred_name, cred_type, description=None, permissions=None, **settings
+    ):
+        """
         Creates a new managed credential.
 
         :devportal:`credentials: create <credentials-create>`
@@ -124,21 +140,31 @@ class CredentialsAPI(TIOEndpoint):
             ...     elevate_privileges_with='sudo',
             ...     bin_directory='/usr/bin',
             ...     custom_password_prompt='')
-        '''
+        """
         if not permissions:
             permissions = list()
 
-        return self._api.post('credentials', json={
-            'name': self._check('cred_name', cred_name, str),
-            'description': self._check('description', description, str, default=''),
-            'type': self._check('cred_type', cred_type, str),
-            'settings': settings,
-            'permissions': self._permissions_constructor(permissions)
-        }).json()['uuid']
+        return self._api.post(
+            'credentials',
+            json={
+                'name': self._check('cred_name', cred_name, str),
+                'description': self._check('description', description, str, default=''),
+                'type': self._check('cred_type', cred_type, str),
+                'settings': settings,
+                'permissions': self._permissions_constructor(permissions),
+            },
+        ).json()['uuid']
 
-    def edit(self, cred_uuid, cred_name=None, description=None,
-             permissions=None, ad_hoc=None, **settings):
-        '''
+    def edit(
+        self,
+        cred_uuid,
+        cred_name=None,
+        description=None,
+        permissions=None,
+        ad_hoc=None,
+        **settings,
+    ):
+        """
         Creates a new managed credential.
 
         :devportal:`credentials: create <credentials-create>`
@@ -176,26 +202,26 @@ class CredentialsAPI(TIOEndpoint):
             >>> tio.credentials.edit(cred_uuid,
             ...     password='sekretsquirrel',
             ...     escalation_password='sudopassword')
-        '''
+        """
         current = self.details(cred_uuid)
 
         payload = {
-            'name': self._check('cred_name', cred_name, str,
-                default=current['name']),
-            'description': self._check('description', description, str,
-                default=current['description']),
-            'ad_hoc': self._check('ad_hoc', ad_hoc, bool,
-                default=current['ad_hoc']),
+            'name': self._check('cred_name', cred_name, str, default=current['name']),
+            'description': self._check(
+                'description', description, str, default=current['description']
+            ),
+            'ad_hoc': self._check('ad_hoc', ad_hoc, bool, default=current['ad_hoc']),
         }
         if permissions:
             payload['permissions'] = self._permissions_constructor(permissions)
         payload['settings'] = dict_merge(current['settings'], settings)
 
-        return self._api.put('credentials/{}'.format(cred_uuid),
-            json=payload).json()['updated']
+        return self._api.put(f'credentials/{scrub(cred_uuid)}', json=payload).json()[
+            'updated'
+        ]
 
     def details(self, id):
-        '''
+        """
         Retrieves the details of the specified credential.
 
         :devportal:`credentials: details <credentials-details>`
@@ -210,12 +236,11 @@ class CredentialsAPI(TIOEndpoint):
         Examples:
             >>> cred_uuid = '00000000-0000-0000-0000-000000000000'
             >>> cred = tio.credentials.details(cred_uuid)
-        '''
-        return self._api.get('credentials/{}'.format(
-            self._check('id', id, 'uuid'))).json()
+        """
+        return self._api.get(f'credentials/{scrub(id)}').json()
 
     def delete(self, id):
-        '''
+        """
         Deletes the specified credential.
 
         :devportal:`credentials: delete <credentials-delete>`
@@ -230,12 +255,11 @@ class CredentialsAPI(TIOEndpoint):
         Examples:
             >>> cred_uuid = '00000000-0000-0000-0000-000000000000'
             >>> cred = tio.credentials.delete(cred_uuid)
-        '''
-        return self._api.delete('credentials/{}'.format(
-            self._check('id', id, 'uuid'))).json()['deleted']
+        """
+        return self._api.delete(f'credentials/{scrub(id)}').json()['deleted']
 
     def types(self):
-        '''
+        """
         Lists all of the available credential types.
 
         :devportal:`credentials: list-types <credentials-list-credential-types>`
@@ -246,11 +270,11 @@ class CredentialsAPI(TIOEndpoint):
 
         Examples:
             >>> cred_types = tio.credentials.types()
-        '''
+        """
         return self._api.get('credentials/types').json()['credentials']
 
     def list(self, *filters, **kw):
-        '''
+        """
         Get the listing of configured credentials from Tenable Vulnerability Management.
 
         :devportal:`credentials: list <credentials-list>`
@@ -299,12 +323,13 @@ class CredentialsAPI(TIOEndpoint):
         Examples:
             >>> for cred in tio.credentials.list():
             ...     pprint(cred)
-        '''
+        """
         limit = 50
         offset = 0
         pages = None
-        query = self._parse_filters(filters,
-            self._api.filters.networks_filters(), rtype='colon')
+        query = self._parse_filters(
+            filters, self._api.filters.networks_filters(), rtype='colon'
+        )
 
         # If a referrer owner uuid is passed, then add it to the query.
         if 'owner_uuid' in kw and self._check('owner_uuid', kw['owner_uuid'], 'uuid'):
@@ -333,16 +358,24 @@ class CredentialsAPI(TIOEndpoint):
         #   sort=field1:asc,field2:desc
         #
         if 'sort' in kw and self._check('sort', kw['sort'], tuple):
-            query['sort'] = ','.join(['{}:{}'.format(
-                self._check('sort_field', i[0], str),
-                self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
-            ) for i in kw['sort']])
+            query['sort'] = ','.join(
+                [
+                    '{}:{}'.format(
+                        self._check('sort_field', i[0], str),
+                        self._check(
+                            'sort_direction', i[1], str, choices=['asc', 'desc']
+                        ),
+                    )
+                    for i in kw['sort']
+                ]
+            )
 
         # The filter_type determines how the filters are combined together.
         # The default is 'and', however you can always explicitly define 'and'
         # or 'or'.
         if 'filter_type' in kw and self._check(
-            'filter_type', kw['filter_type'], str, choices=['and', 'or']):
+            'filter_type', kw['filter_type'], str, choices=['and', 'or']
+        ):
             query['ft'] = kw['filter_type']
 
         # The wild-card filter text refers to how the API will pattern match
@@ -353,21 +386,23 @@ class CredentialsAPI(TIOEndpoint):
         # The wildcard_fields parameter allows the user to restrict the fields
         # that the wild-card pattern match pertains to.
         if 'wildcard_fields' in kw and self._check(
-            'wildcard_fields', kw['wildcard_fields'], list):
+            'wildcard_fields', kw['wildcard_fields'], list
+        ):
             query['wf'] = ','.join(kw['wildcard_fields'])
 
         # Return the Iterator.
-        return CredentialsIterator(self._api,
+        return CredentialsIterator(
+            self._api,
             _limit=limit,
             _offset=offset,
             _pages_total=pages,
             _query=query,
             _path='credentials',
-            _resource='credentials'
+            _resource='credentials',
         )
 
     def upload(self, fobj: BinaryIO, file_type: str):
-        '''
+        """
         Uploads a file for use with a managed credential.
 
         :devportal:`credentials: upload <file-upload>`
@@ -387,16 +422,19 @@ class CredentialsAPI(TIOEndpoint):
             ...            response = tio.credentials.upload(file, "pem")
             ...
             ...     print(response)
-        '''
+        """
 
         # We will attempt to discover the name of the file stored within the
         # file object.  If the name of the file is successfully discovered, we
         # will generate a random uuid string and append it to the name.
         # Otherwise, we will generate a random uuid string to use instead.
-        kw = {
-            'files': {
-                'Filedata': fobj
-            }
-        }
-        file_type = self._check("file_type", file_type, str, choices=["pem", "json", "csv", "x.509", "p12", "ssh", "cookie"])
-        return self._api.post(f'credentials/files?fileType={file_type}', **kw).json()['fileuploaded']
+        kw = {'files': {'Filedata': fobj}}
+        file_type = self._check(
+            'file_type',
+            file_type,
+            str,
+            choices=['pem', 'json', 'csv', 'x.509', 'p12', 'ssh', 'cookie'],
+        )
+        return self._api.post(f'credentials/files?fileType={file_type}', **kw).json()[
+            'fileuploaded'
+        ]

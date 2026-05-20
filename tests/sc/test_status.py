@@ -1,5 +1,5 @@
 import pytest
-from ..checker import check, single
+from ..checker import check
 
 @pytest.mark.vcr()
 def test_status_status(admin):

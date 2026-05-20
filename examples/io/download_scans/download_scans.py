@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 from tenable.io import TenableIO
-import os, click, arrow
+import os
+import click
+import arrow
 
 @click.command()
 @click.option('--tio-access-key', 'access_key', envvar='TIO_ACCESS_KEY',
