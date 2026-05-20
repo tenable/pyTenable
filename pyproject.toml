@@ -135,7 +135,7 @@ dev = [
     "pytest-cov>=4.1.0",
     "pytest-datafiles>=3.0.0",
     "pytest-vcr>=1.0.2",
-    "pytest>=7.4.4,<9",
+    "pytest>=7.4.4,<10",
     "responses>=0.23.3",
     "ruff>=0.6.4",
     # URLLib3 version 2.x doesn't play well with the version of pytest-vcr that supports
