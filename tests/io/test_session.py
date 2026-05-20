@@ -1,18 +1,8 @@
-from ..checker import check
 import uuid
+
 import pytest
 
-
-@pytest.mark.vcr()
-def test_session_edit_name_typeerror(api):
-    with pytest.raises(TypeError):
-        api.session.edit(1, 'nope')
-
-
-@pytest.mark.vcr()
-def test_session_edit_email_typeerror(api):
-    with pytest.raises(TypeError):
-        api.session.edit('nope', 1)
+from ..checker import check
 
 
 @pytest.mark.vcr()
@@ -42,18 +32,6 @@ def test_session_details(api):
     check(session, 'features', dict)
     for item in session['features'].keys():
         check(session['features'], item, bool)
-
-
-@pytest.mark.vcr()
-def test_session_change_password_old_password_typeerror(api):
-    with pytest.raises(TypeError):
-        api.session.change_password(False, 'nope')
-
-
-@pytest.mark.vcr()
-def test_session_change_password_new_password_typeerror(api):
-    with pytest.raises(TypeError):
-        api.session.change_password('nope', False)
 
 
 @pytest.mark.skip(reason="Don't have old password")

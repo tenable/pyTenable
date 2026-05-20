@@ -12,6 +12,8 @@ Methods available on ``tio.agent_groups``:
     :members:
 """
 
+from tenable.utils import scrub
+
 from .base import TIOEndpoint
 
 
@@ -57,9 +59,13 @@ class AgentGroupsAPI(TIOEndpoint):
             # if there is only 1 agent id, we will perform a singular add.
             self._api.put(
                 'scanners/{}/agent-groups/{}/agents/{}'.format(
-                    self._check('scanner_id', scanner_id, int),
-                    self._check('group_id', group_id, int),
-                    self._check('agent_id', agent_ids[0], 'uuid' if useUuids else int),
+                    scrub(self._check('scanner_id', scanner_id, int)),
+                    scrub(self._check('group_id', group_id, int)),
+                    scrub(
+                        self._check(
+                            'agent_id', agent_ids[0], 'uuid' if useUuids else int
+                        )
+                    ),
                 )
             )
         else:
@@ -67,8 +73,8 @@ class AgentGroupsAPI(TIOEndpoint):
             # operation.
             return self._api.post(
                 'scanners/{}/agent-groups/{}/agents/_bulk/add'.format(
-                    self._check('scanner_id', scanner_id, int),
-                    self._check('group_id', group_id, int),
+                    scrub(self._check('scanner_id', scanner_id, int)),
+                    scrub(self._check('group_id', group_id, int)),
                 ),
                 json={
                     'items': [
@@ -97,8 +103,8 @@ class AgentGroupsAPI(TIOEndpoint):
         """
         self._api.put(
             'scanners/{}/agent-groups/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('group_id', group_id, int),
+                scrub(self._check('scanner_id', scanner_id, int)),
+                scrub(self._check('group_id', group_id, int)),
             ),
             json={'name': self._check('name', name, str)},
         ).json()
@@ -123,7 +129,7 @@ class AgentGroupsAPI(TIOEndpoint):
         """
         return self._api.post(
             'scanners/{}/agent-groups'.format(
-                self._check('scanner_id', scanner_id, int)
+                scrub(self._check('scanner_id', scanner_id, int))
             ),
             json={'name': self._check('name', name, str)},
         ).json()
@@ -146,8 +152,8 @@ class AgentGroupsAPI(TIOEndpoint):
         """
         self._api.delete(
             'scanners/{}/agent-groups/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('group_id', group_id, int),
+                scrub(self._check('scanner_id', scanner_id, int)),
+                scrub(self._check('group_id', group_id, int)),
             )
         )
 
@@ -185,9 +191,9 @@ class AgentGroupsAPI(TIOEndpoint):
             # if only a singular agent_id was passed, then we will want to
             self._api.delete(
                 'scanners/{}/agent-groups/{}/agents/{}'.format(
-                    self._check('scanner_id', scanner_id, int),
-                    self._check('group_id', group_id, int),
-                    self._check('agent_id', agent_ids[0], int),
+                    scrub(self._check('scanner_id', scanner_id, int)),
+                    scrub(self._check('group_id', group_id, int)),
+                    scrub(self._check('agent_id', agent_ids[0], int)),
                 )
             )
         else:
@@ -195,8 +201,8 @@ class AgentGroupsAPI(TIOEndpoint):
             # call the bulk deletion API.
             return self._api.post(
                 'scanners/{}/agent-groups/{}/agents/_bulk/remove'.format(
-                    self._check('scanner_id', scanner_id, int),
-                    self._check('group_id', group_id, int),
+                    scrub(self._check('scanner_id', scanner_id, int)),
+                    scrub(self._check('group_id', group_id, int)),
                 ),
                 json={'items': [self._check('agent_ids', i, int) for i in agent_ids]},
             ).json()
@@ -318,8 +324,8 @@ class AgentGroupsAPI(TIOEndpoint):
 
         return self._api.get(
             'scanners/{}/agent-groups/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('group_id', group_id, int),
+                scrub(self._check('scanner_id', scanner_id, int)),
+                scrub(self._check('group_id', group_id, int)),
             ),
             params=query,
         ).json()
@@ -344,7 +350,7 @@ class AgentGroupsAPI(TIOEndpoint):
         """
         return self._api.get(
             'scanners/{}/agent-groups'.format(
-                self._check('scanner_id', scanner_id, int)
+                scrub(self._check('scanner_id', scanner_id, int))
             )
         ).json()['groups']
 
@@ -370,8 +376,8 @@ class AgentGroupsAPI(TIOEndpoint):
         """
         return self._api.get(
             'scanners/{}/agent-groups/{}/agents/_bulk/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('group_id', group_id, int),
-                self._check('task_uuid', task_uuid, 'uuid'),
+                scrub(self._check('scanner_id', scanner_id, int)),
+                scrub(self._check('group_id', group_id, int)),
+                scrub(self._check('task_uuid', task_uuid, 'uuid')),
             )
         ).json()

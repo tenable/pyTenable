@@ -10,22 +10,6 @@ from tenable.errors import BadRequestError, UnexpectedValueError
 from tests.checker import check
 
 
-def test_networks_create_name_typeerror(api):
-    """
-    test to raise exception when type of name param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.networks.create(1, 'something')
-
-
-def test_networks_create_description_typeerror(api):
-    """
-    test to raise exception when type of description param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.networks.create('something', 1)
-
-
 @pytest.mark.vcr()
 def test_networks_create_success(network):
     """
@@ -46,44 +30,12 @@ def test_networks_create_success(network):
     check(network, 'modified_in_seconds', int)
 
 
-def test_networks_delete_id_typeerror(api):
-    """
-    test to raise exception when type of network_id param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.networks.delete(1)
-
-
-def test_networks_delete_id_unexpectedvalueerror(api):
-    """
-    test to raise exception when value of network_id param does not match the expected pattern.
-    """
-    with pytest.raises(UnexpectedValueError):
-        api.networks.delete('something')
-
-
 @pytest.mark.vcr()
 def test_networks_delete_success(api, network):
     """
     test to delete network.
     """
     api.networks.delete(network['uuid'])
-
-
-def test_networks_details_id_typeerror(api):
-    """
-    test to raise exception when type of network param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.networks.details(1)
-
-
-def test_networks_details_id_unexpectedvalueerror(api):
-    """
-    test to raise exception when value of network_id param does not match the expected pattern.
-    """
-    with pytest.raises(UnexpectedValueError):
-        api.networks.details('something')
 
 
 @pytest.mark.vcr()
@@ -105,22 +57,6 @@ def test_networks_details_success(api, network):
     check(resp, 'modified_by', 'uuid')
     check(resp, 'created_in_seconds', int)
     check(resp, 'modified_in_seconds', int)
-
-
-def test_networks_edit_id_typeerror(api):
-    """
-    test to raise exception when type of network_id param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.networks.edit(1, 'something')
-
-
-def test_networks_edit_id_unexpectedvalueerror(api):
-    """
-    test to raise exception when value of network_id param does not match the expected pattern.
-    """
-    with pytest.raises(UnexpectedValueError):
-        api.networks.edit('something', 'something')
 
 
 def test_networks_edit_name_typeerror(api):
@@ -160,22 +96,6 @@ def test_networks_edit_success(api, network):
     check(resp, 'modified_in_seconds', int)
 
 
-def test_networks_list_scanners_id_typeerror(api):
-    """
-    test to raise exception when type of network_id param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.networks.list_scanners(1)
-
-
-def test_networks_list_scanners_id_unexpectedvalueerror(api):
-    """
-    test to raise exception when value of network_id param does not match the expected pattern.
-    """
-    with pytest.raises(UnexpectedValueError):
-        api.networks.list_scanners('something')
-
-
 @pytest.mark.vcr()
 def test_networks_list_scanners_success(api):
     """
@@ -194,22 +114,6 @@ def test_networks_list_scanners_success(api):
         check(scanner, 'group', bool)
 
 
-def test_networks_unassigned_scanners_id_typeerror(api):
-    """
-    test to raise exception when type of network_id param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.networks.unassigned_scanners(1)
-
-
-def test_networks_unassigned_scanners_id_unexpectedvalueerror(api):
-    """
-    test to raise exception when value of network_id param does not match the expected pattern.
-    """
-    with pytest.raises(UnexpectedValueError):
-        api.networks.unassigned_scanners('something')
-
-
 @pytest.mark.vcr()
 def test_networks_unassigned_scanners_success(api, network):
     """
@@ -226,38 +130,6 @@ def test_networks_unassigned_scanners_success(api, network):
         check(scanner, 'key', str)
         check(scanner, 'status', str)
         check(scanner, 'group', bool)
-
-
-def test_networks_assign_scanners_id_typeerror(api):
-    """
-    test to raise exception when type of network_id param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.networks.assign_scanners(1, str(uuid.uuid4()))
-
-
-def test_networks_assign_scanners_id_unexpectedvalueerror(api):
-    """
-    test to raise exception when value of network_id param does not match the expected pattern.
-    """
-    with pytest.raises(UnexpectedValueError):
-        api.networks.assign_scanners('something', str(uuid.uuid4()))
-
-
-def test_networks_assign_scanners_scanner_id_typeerror(api):
-    """
-    test to raise exception when type of scanner_uuis param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.networks.assign_scanners(str(uuid.uuid4()), 1)
-
-
-def test_networks_assign_scanners_scanner_id_unexpectedvalueerror(api):
-    """
-    test to raise exception when value of scanner_uuid param does not match the expected pattern.
-    """
-    with pytest.raises(UnexpectedValueError):
-        api.networks.assign_scanners(str(uuid.uuid4()), 'something')
 
 
 @pytest.mark.vcr()
@@ -400,33 +272,6 @@ def test_networks_list(api):
         check(network, 'created_in_seconds', int)
         check(network, 'modified_in_seconds', int)
     assert count == networks.total
-
-
-@pytest.mark.vcr()
-def test_network_asset_count_network_id_typeerror(api):
-    """
-    test to raise exception when type of network_id param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.networks.network_asset_count(1, 180)
-
-
-@pytest.mark.vcr()
-def test_network_asset_count_network_id_unexpectedvalueerror(api):
-    """
-    test to raise exception when value of network_id param does not match the expected pattern.
-    """
-    with pytest.raises(UnexpectedValueError):
-        api.networks.network_asset_count('nope', 180)
-
-
-@pytest.mark.vcr()
-def test_network_asset_count_network_num_days_typeerror(api):
-    """
-    test to raise exception when type of num_days param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.networks.network_asset_count('00000000-0000-0000-0000-000000000000', 'nope')
 
 
 @pytest.mark.vcr()

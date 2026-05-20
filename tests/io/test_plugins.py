@@ -1,15 +1,19 @@
-'''
+"""
 test plugins
-'''
+"""
+
 from datetime import date
+
 import pytest
+
 from tenable.io.plugins import PluginIterator
+
 from ..checker import check
 
 
 @pytest.mark.vcr()
 def test_families(api):
-    '''test to get the plugin families'''
+    """test to get the plugin families"""
     families = api.plugins.families()
     assert isinstance(families, list)
     for family in families:
@@ -19,15 +23,8 @@ def test_families(api):
 
 
 @pytest.mark.vcr()
-def test_family_details_family_id_typeerror(api):
-    '''test to raise the exception when parameter is not passed of expected type'''
-    with pytest.raises(TypeError):
-        api.plugins.family_details('nope')
-
-
-@pytest.mark.vcr()
 def test_family_details(api):
-    '''test to get the family details'''
+    """test to get the family details"""
     data = api.plugins.family_details(27)
     assert isinstance(data, dict)
     check(data, 'name', str)
@@ -40,15 +37,8 @@ def test_family_details(api):
 
 
 @pytest.mark.vcr()
-def test_plugin_details_plugin_id_typerror(api):
-    '''test to raise the exception when parameter is not passed of expected type'''
-    with pytest.raises(TypeError):
-        api.plugins.plugin_details('nope')
-
-
-@pytest.mark.vcr()
 def test_plugin_details(api):
-    '''test to get the plugin details'''
+    """test to get the plugin details"""
     detail = api.plugins.plugin_details(19506)
     assert isinstance(detail, dict)
     check(detail, 'attributes', list)
@@ -63,39 +53,36 @@ def test_plugin_details(api):
 
 @pytest.mark.vcr()
 def test_plugins_list_page_typeerror(api):
-    '''test to raise the exception when parameter is not passed of expected type'''
+    """test to raise the exception when parameter is not passed of expected type"""
     with pytest.raises(TypeError):
         api.plugins.list(page='one')
 
 
 @pytest.mark.vcr()
 def test_plugins_list_size_typeerror(api):
-    '''test to raise the exception when parameter is not passed of expected type'''
+    """test to raise the exception when parameter is not passed of expected type"""
     with pytest.raises(TypeError):
         api.plugins.list(size='one')
 
 
 @pytest.mark.vcr()
 def test_plugins_list_last_updated_date_typeerror(api):
-    '''test to raise the exception when parameter is not passed of expected type'''
+    """test to raise the exception when parameter is not passed of expected type"""
     with pytest.raises(TypeError):
         api.plugins.list(last_updated=1)
 
 
 @pytest.mark.vcr()
 def test_plugins_list_num_pages_typeerror(api):
-    '''test to raise the exception when parameter is not passed of expected type'''
+    """test to raise the exception when parameter is not passed of expected type"""
     with pytest.raises(TypeError):
         api.plugins.list(num_pages='one')
 
 
 @pytest.mark.vcr()
 def test_plugins_list_success(api):
-    '''test to get the plugins list'''
-    plugins = api.plugins.list(
-        last_updated=date(2019, 1, 1),
-        num_pages=2,
-        size=10)
+    """test to get the plugins list"""
+    plugins = api.plugins.list(last_updated=date(2019, 1, 1), num_pages=2, size=10)
     for plugin in plugins:
         check(plugin, 'attributes', dict)
         check(plugin['attributes'], 'description', str)
@@ -109,17 +96,14 @@ def test_plugins_list_success(api):
 
 @pytest.mark.vcr()
 def test_plugin_iterator_populate_family_cache(api):
-    '''test for _populate_family_cache in PluginIterator'''
+    """test for _populate_family_cache in PluginIterator"""
     getattr(PluginIterator(api), '_populate_family_cache')()
 
 
 @pytest.mark.vcr()
 def test_plugins_populate_family_cache_with_maptable(api):
-    '''test next method in PluginIterator'''
-    plugins = api.plugins.list(
-        last_updated=date(2019, 1, 1),
-        num_pages=1,
-        size=4)
+    """test next method in PluginIterator"""
+    plugins = api.plugins.list(last_updated=date(2019, 1, 1), num_pages=1, size=4)
     plugins._maptable = {'plugins': {12122: 13, 12050: 13}, 'families': {13: 'Netware'}}
     for plugin in plugins:
         check(plugin, 'name', str)

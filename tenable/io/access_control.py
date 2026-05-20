@@ -11,9 +11,12 @@ Methods available on ``tio.v3.access_control``:
 .. autoclass:: AccessControlAPI
     :members:
 """
-from uuid import UUID
+
 from typing import Dict, List
+from uuid import UUID
+
 from tenable.io.base import TIOEndpoint
+from tenable.utils import scrub
 
 
 class AccessControlAPI(TIOEndpoint):
@@ -39,7 +42,7 @@ class AccessControlAPI(TIOEndpoint):
                 ...     '4f948c22-ae2c-4d0b-bab4-0fc1088a85bd'
                 ... )
         """
-        return self._get(f'permissions/{uuid}')
+        return self._get(f'permissions/{scrub(uuid)}')
 
     def get_user_permission(self, user_uuid: UUID) -> Dict:
         """
@@ -60,7 +63,7 @@ class AccessControlAPI(TIOEndpoint):
                 ...     '4f948c22-ae2c-4d0b-bab4-0fc1088a85bd'
                 ... )
         """
-        return self._get(f'permissions/users/{user_uuid}')
+        return self._get(f'permissions/users/{scrub(user_uuid)}')
 
     def get_user_group_permission(self, user_group_uuid: UUID) -> Dict:
         """
@@ -82,7 +85,7 @@ class AccessControlAPI(TIOEndpoint):
                 ...     '4f948c22-ae2c-4d0b-bab4-0fc1088a85bd'
                 ... )
         """
-        return self._get(f'permissions/user-groups/{user_group_uuid}')
+        return self._get(f'permissions/user-groups/{scrub(user_group_uuid)}')
 
     def get_current_user_permission(self) -> Dict:
         """
@@ -122,7 +125,7 @@ class AccessControlAPI(TIOEndpoint):
             ...     '4f948c22-ae2c-4d0b-bab4-0fc1088a85bd'
             ... )
         """
-        return self._delete(f'permissions/{permission_uuid}')
+        return self._delete(f'permissions/{scrub(permission_uuid)}')
 
     def create(self, permission: Dict) -> Dict:
         """
@@ -200,7 +203,7 @@ class AccessControlAPI(TIOEndpoint):
             >>>  permission_uuid_val = "212-ae2c-4d0b-bab4-0fc1088a85bd"
             >>>  tio.v3.access_control.update(permission_uuid_val, payload)
         """
-        self._put(f'permissions/{permission_uuid}', json=permission)
+        self._put(f'permissions/{scrub(permission_uuid)}', json=permission)
 
     def list(self) -> List:
         """

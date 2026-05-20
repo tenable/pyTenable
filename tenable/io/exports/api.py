@@ -19,9 +19,9 @@ from json.decoder import JSONDecodeError
 from typing import Any, Literal, Type
 from uuid import UUID
 
-from tenable.errors import RequestConflictError
-
 from tenable.base.endpoint import APIEndpoint
+from tenable.errors import RequestConflictError
+from tenable.utils import scrub
 
 from . import models
 from .iterator import ExportsIterator
@@ -127,7 +127,7 @@ class ExportsAPI(APIEndpoint):
             'CANCELLED'
         """
         path = EXPORTS_MAP[export_type][version]['job_path']
-        return self._api.post(f'{path}/{export_uuid}/cancel', box=True).status
+        return self._api.post(f'{path}/{scrub(export_uuid)}/cancel', box=True).status
 
     def download_chunk(
         self,
@@ -172,7 +172,9 @@ class ExportsAPI(APIEndpoint):
         path = EXPORTS_MAP[export_type][version]['job_path']
         while not downloaded and counter <= retries:
             try:
-                resp = self._api.get(f'{path}/{export_uuid}/chunks/{chunk_id}').json()
+                resp = self._api.get(
+                    f'{path}/{scrub(export_uuid)}/chunks/{scrub(chunk_id)}'
+                ).json()
                 downloaded = True
             except JSONDecodeError:
                 self._log.warning(
@@ -219,7 +221,7 @@ class ExportsAPI(APIEndpoint):
         """
         path = EXPORTS_MAP[export_type][version]['job_path']
         return self._api.get(
-            f'{path}/{export_uuid}/status',
+            f'{path}/{scrub(export_uuid)}/status',
             box=True,
         )
 

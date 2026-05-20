@@ -1,4 +1,4 @@
-'''
+"""
 Agent Config
 ============
 
@@ -10,15 +10,19 @@ Methods available on ``tio.agent_config``:
 .. rst-class:: hide-signature
 .. autoclass:: AgentConfigAPI
     :members:
-'''
+"""
+
 from tenable.io.base import TIOEndpoint
+from tenable.utils import scrub
+
 
 class AgentConfigAPI(TIOEndpoint):
-    '''
+    """
     This will contain all methods related to agent config
-    '''
+    """
+
     def edit(self, scanner_id=1, software_update=None, auto_unlink=None):
-        '''
+        """
         Edits the agent configuration.
 
         :devportal:`agent-config: edit <agent-config-details>`
@@ -52,7 +56,7 @@ class AgentConfigAPI(TIOEndpoint):
             Enabling software updates for agents:
 
             >>> tio.agent_config.edit(software_update=True)
-        '''
+        """
         # Lets build the dictionary that we will present to the API...
         payload = {'auto_unlink': {}}
         if not scanner_id:
@@ -62,18 +66,18 @@ class AgentConfigAPI(TIOEndpoint):
         if auto_unlink:
             payload['auto_unlink']['enabled'] = True
             payload['auto_unlink']['expiration'] = self._check(
-                'auto_unlink', auto_unlink, int, [False] + list(range(1, 366)))
+                'auto_unlink', auto_unlink, int, [False] + list(range(1, 366))
+            )
         elif auto_unlink in [False, 0]:
             payload['auto_unlink']['enabled'] = False
 
         # Now to run the API call and get the response
         return self._api.put(
-            'scanners/{}/agents/config'.format(
-                self._check('scanner_id', scanner_id, int)
-            ), json=payload).json()
+            f'scanners/{scrub(scanner_id)}/agents/config', json=payload
+        ).json()
 
     def details(self, scanner_id=1):
-        '''
+        """
         Returns the current agent configuration.
 
         :devportal:`agent-config: details <agent-config-edit>`
@@ -88,10 +92,7 @@ class AgentConfigAPI(TIOEndpoint):
         Examples:
             >>> details = tio.agent_config.details()
             >>> pprint(details)
-        '''
+        """
         if not scanner_id:
             scanner_id = 1
-        return self._api.get(
-            'scanners/{}/agents/config'.format(
-                self._check('scanner_id', scanner_id, int)
-            )).json()
+        return self._api.get(f'scanners/{scrub(scanner_id)}/agents/config').json()

@@ -1,4 +1,4 @@
-'''
+"""
 Users
 =====
 
@@ -10,17 +10,21 @@ Methods available on ``tio.users``:
 .. rst-class:: hide-signature
 .. autoclass:: UsersAPI
     :members:
-'''
-from tenable.utils import dict_merge
+"""
+
 from tenable.io.base import TIOEndpoint
+from tenable.utils import dict_merge, scrub
+
 
 class UsersAPI(TIOEndpoint):
-    '''
+    """
     This will contain all methods related to Users
-    '''
-    def create(self, username, password, permissions,
-            name=None, email=None, account_type=None):
-        '''
+    """
+
+    def create(
+        self, username, password, permissions, name=None, email=None, account_type=None
+    ):
+        """
         Create a new user.
 
         :devportal:`users: create <users-create>`
@@ -53,7 +57,7 @@ class UsersAPI(TIOEndpoint):
             >>> user = tio.users.create('jdoe@company.com', 'password', 64,
             ...     name='Jane Doe', email='jdoe@company.com')
 
-        '''
+        """
         payload = {
             'username': self._check('username', username, str),
             'password': self._check('password', password, str),
@@ -69,7 +73,7 @@ class UsersAPI(TIOEndpoint):
         return self._api.post('users', json=payload).json()
 
     def delete(self, user_id):
-        '''
+        """
         Removes a user from Tenable Vulnerability Management.
 
         :devportal:`users: delete <users-delete>`
@@ -83,11 +87,11 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> tio.users.delete(1)
-        '''
+        """
         self._api.delete('users/{}'.format(self._check('user_id', user_id, int)))
 
     def details(self, user_id):
-        '''
+        """
         Retrieve the details of a user.
 
         :devportal:`users: details <users-details>`
@@ -101,11 +105,11 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> user = tio.users.details(1)
-        '''
-        return self._api.get('users/{}'.format(self._check('user_id', user_id, int))).json()
+        """
+        return self._api.get(f'users/{scrub(user_id)}').json()
 
     def edit(self, user_id, permissions=None, name=None, email=None, enabled=None):
-        '''
+        """
         Modify an existing user.
 
         :devportal:`users: edit <users-edit>`
@@ -128,12 +132,11 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> user = tio.users.edit(1, name='New Full Name')
-        '''
+        """
         payload = dict()
 
         if permissions:
-            payload['permissions'] = self._check('permissions', permissions,
-                                                 int)
+            payload['permissions'] = self._check('permissions', permissions, int)
         if enabled is not None:
             payload['enabled'] = self._check('enabled', enabled, bool)
         if email:
@@ -143,16 +146,19 @@ class UsersAPI(TIOEndpoint):
 
         # Merge the data that we build with the payload with the user details.
         user = self.details(self._check('user_id', user_id, int))
-        payload = dict_merge({
-            'permissions': user['permissions'],
-            'enabled': user['enabled'],
-            'email': user['email'],
-            'name': user.get('name', None),
-        }, payload)
-        return self._api.put('users/{}'.format(user_id), json=payload).json()
+        payload = dict_merge(
+            {
+                'permissions': user['permissions'],
+                'enabled': user['enabled'],
+                'email': user['email'],
+                'name': user.get('name', None),
+            },
+            payload,
+        )
+        return self._api.put(f'users/{scrub(user_id)}').json()
 
     def enabled(self, user_id, enabled):
-        '''
+        """
         Enable the user account.
 
         :devportal:`users: enabled <users-enabled>`
@@ -173,13 +179,14 @@ class UsersAPI(TIOEndpoint):
             Disable a user:
 
             >>> tio.users.enabled(1, False)
-        '''
-        return self._api.put('users/{}/enabled'.format(
-            self._check('user_id', user_id, int)), json={
-                'enabled': self._check('enabled', enabled, bool)}).json()
+        """
+        return self._api.put(
+            f'users/{scrub(user_id)}/enabled',
+            json={'enabled': self._check('enabled', enabled, bool)},
+        ).json()
 
     def two_factor(self, user_id, email, sms, phone=None):
-        '''
+        """
         Configure two-factor authorization for a specific user.
 
         :devportal:`users: two-factor <users-two-factor>`
@@ -206,18 +213,17 @@ class UsersAPI(TIOEndpoint):
             Enable SMS authorization for a user:
 
             >>> tio.users.two_factor(1, False, True, '9998887766')
-        '''
+        """
         payload = {
             'email_enabled': self._check('email', email, bool),
-            'sms_enabled': self._check('sms', sms, bool)
+            'sms_enabled': self._check('sms', sms, bool),
         }
         if phone:
             payload['sms_phone'] = self._check('phone', phone, str)
-        self._api.put('users/{}/two-factor'.format(
-            self._check('user_id', user_id, int)), json=payload)
+        self._api.put(f'users/{scrub(user_id)}/two-factor', json=payload)
 
     def enable_two_factor(self, user_id, phone, password):
-        '''
+        """
         Enable phone-based two-factor authorization for a specific user.
 
         :devportal:`users: two-factor-enable <users-two-factor-enable>`
@@ -233,15 +239,17 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> tio.users.enable_two_factor(1, '9998887766')
-        '''
-        self._api.post('users/{}/two-factor/send-verification'.format(
-            self._check('user_id', user_id, int)), json={
+        """
+        self._api.post(
+            f'users/{scrub(user_id)}/two-factor/send-verification',
+            json={
                 'sms_phone': self._check('phone', phone, str),
-                'password': self._check('password', password, str)
-            })
+                'password': self._check('password', password, str),
+            },
+        )
 
     def verify_two_factor(self, user_id, code):
-        '''
+        """
         Send the verification code for two-factor authorization.
 
         :devportal:`users: two-factor-enable-verify <users-two-factor-enable-verify>`
@@ -255,13 +263,14 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> tio.users.verify_two_factor(1, 'abc123')
-        '''
-        self._api.post('users/{}/two-factor/verify-code'.format(
-            self._check('user_id', user_id, int)), json={
-                'verification_code': self._check('code', code, str)})
+        """
+        self._api.post(
+            f'users/{scrub(user_id)}/two-factor/verify-code',
+            json={'verification_code': self._check('code', code, str)},
+        )
 
     def impersonate(self, name):
-        '''
+        """
         Impersonate as a specific user.
 
         :devportal:`users: impersonate <users/impersonate>`
@@ -275,13 +284,13 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> tio.users.impersonate('jdoe@company.com')
-        '''
-        self._api._session.headers.update({
-            'X-Impersonate': 'username={}'.format(self._check('name', name, str))
-        })
+        """
+        self._api._session.headers.update(
+            {'X-Impersonate': 'username={}'.format(self._check('name', name, str))}
+        )
 
     def list(self):
-        '''
+        """
         Retrieves a list of users.
 
         :devportal:`users: list <users-list>`
@@ -293,11 +302,11 @@ class UsersAPI(TIOEndpoint):
         Examples:
             >>> for user in tio.users.list():
             ...     pprint(user)
-        '''
+        """
         return self._api.get('users').json()['users']
 
     def change_password(self, user_id, old_password, new_password):
-        '''
+        """
         Change the password for a specific user.
 
         :devportal:`users: password <users-password>`
@@ -313,14 +322,17 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> tio.users.change_password(1, 'old_pass', 'new_pass')
-        '''
-        self._api.put('users/{}/chpasswd'.format(self._check('user_id', user_id, int)), json={
-            'password': self._check('new_password', new_password, str),
-            'current_password': self._check('old_password', old_password, str)
-        })
+        """
+        self._api.put(
+            f'users/{scrub(user_id)}/chpasswd',
+            json={
+                'password': self._check('new_password', new_password, str),
+                'current_password': self._check('old_password', old_password, str),
+            },
+        )
 
     def gen_api_keys(self, user_id):
-        '''
+        """
         Generate the API keys for a specific user.
 
         :devportal:`users: keys <user-keys>`
@@ -334,12 +346,11 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> keys = tio.users.gen_api_keys(1)
-        '''
-        return self._api.put('users/{}/keys'.format(
-            self._check('user_id', user_id, int))).json()
+        """
+        return self._api.put(f'users/{scrub(user_id)}/keys').json()
 
     def list_auths(self, user_id):
-        '''
+        """
         list user authorizations for accessing a Tenable Vulnerability Management instance.
 
         :devportal:`users: list-auths <users-list-auths>`
@@ -353,12 +364,13 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> auth = tio.users.list_auths(1)
-        '''
-        return self._api.get('users/{}/authorizations'.format(
-            self._check('user_id', user_id, int))).json()
+        """
+        return self._api.get(f'users/{scrub(user_id)}/authorizations').json()
 
-    def edit_auths(self, user_id, api_permitted=None, password_permitted=None, saml_permitted=None):
-        '''
+    def edit_auths(
+        self, user_id, api_permitted=None, password_permitted=None, saml_permitted=None
+    ):
+        """
         update user authorizations for accessing a Tenable Vulnerability Management instance.
 
         :devportal:`users: edit-auths <users-update-auths>`
@@ -379,19 +391,30 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> tio.users.edit_auths(1, True, True, False)
-        '''
+        """
         # get current settings
         current = self.list_auths(self._check('user_id', user_id, int))
 
         # update payload with new settings
         payload = {
-            'api_permitted': self._check('api_permitted', api_permitted, bool,
-                default=current['api_permitted']),
-            'password_permitted': self._check('password_permitted', password_permitted, bool,
-                default=current['password_permitted']),
-            'saml_permitted': self._check('saml_permitted', saml_permitted, bool,
-                default=current['saml_permitted'])
+            'api_permitted': self._check(
+                'api_permitted', api_permitted, bool, default=current['api_permitted']
+            ),
+            'password_permitted': self._check(
+                'password_permitted',
+                password_permitted,
+                bool,
+                default=current['password_permitted'],
+            ),
+            'saml_permitted': self._check(
+                'saml_permitted',
+                saml_permitted,
+                bool,
+                default=current['saml_permitted'],
+            ),
         }
 
-        return self._api.put('users/{}/authorizations'.format(
-            self._check('user_id', user_id, int)), json=payload)
+        return self._api.put(
+            f'users/{scrub(user_id)}/authorizations',
+            json=payload,
+        )

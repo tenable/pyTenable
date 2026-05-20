@@ -13,6 +13,7 @@ Methods available on ``tio.assets``:
 """
 
 from tenable.io.base import TIOEndpoint
+from tenable.utils import scrub
 
 
 class AssetsAPI(TIOEndpoint):
@@ -34,7 +35,7 @@ class AssetsAPI(TIOEndpoint):
             >>> for asset in tio.assets.list():
             ...     pprint(asset)
         """
-        return self._api.get("assets").json()["assets"]
+        return self._api.get('assets').json()['assets']
 
     def delete(self, *uuid):
         """
@@ -55,7 +56,7 @@ class AssetsAPI(TIOEndpoint):
             >>> asset_id = '00000000-0000-0000-0000-000000000000'
             >>> tio.asset.delete(asset_id)
         """
-        self.bulk_delete(*[("host.id", "eq", str(i)) for i in uuid], filter_type="or")
+        self.bulk_delete(*[('host.id', 'eq', str(i)) for i in uuid], filter_type='or')
 
     def details(self, uuid):
         """
@@ -75,7 +76,7 @@ class AssetsAPI(TIOEndpoint):
             >>> asset = tio.assets.details(
             ...     '00000000-0000-0000-0000-000000000000')
         """
-        return self._api.get("assets/{}".format(self._check("uuid", uuid, str))).json()
+        return self._api.get(f'assets/{scrub(uuid)}').json()
 
     def assign_tags(self, action, assets, tags):
         """
@@ -101,11 +102,11 @@ class AssetsAPI(TIOEndpoint):
             ...     ['00000000-0000-0000-0000-000000000000'])
         """
         return self._api.post(
-            "tags/assets/assignments",
+            'tags/assets/assignments',
             json={
-                "action": self._check("action", action, str, choices=["add", "remove"]),
-                "assets": [self._check("asset", i, "uuid") for i in assets],
-                "tags": [self._check("source", i, "uuid") for i in tags],
+                'action': self._check('action', action, str, choices=['add', 'remove']),
+                'assets': [self._check('asset', i, 'uuid') for i in assets],
+                'tags': [self._check('source', i, 'uuid') for i in tags],
             },
         ).json()
 
@@ -127,9 +128,7 @@ class AssetsAPI(TIOEndpoint):
             >>> asset = tio.assets.tags(
             ...     '00000000-0000-0000-0000-000000000000')
         """
-        return self._api.get(
-            "tags/assets/{}/assignments".format(self._check("uuid", uuid, "uuid"))
-        ).json()
+        return self._api.get(f'tags/assets/{scrub(uuid)}/assignments').json()
 
     def asset_import(self, source, *assets):
         """
@@ -181,12 +180,12 @@ class AssetsAPI(TIOEndpoint):
         # asset resources that are being defined, however a simple type check
         # should suffice for now.
         return self._api.post(
-            "import/assets",
+            'import/assets',
             json={
-                "assets": [self._check("asset", i, dict) for i in assets],
-                "source": self._check("source", source, str),
+                'assets': [self._check('asset', i, dict) for i in assets],
+                'source': self._check('source', source, str),
             },
-        ).json()["asset_import_job_uuid"]
+        ).json()['asset_import_job_uuid']
 
     def list_import_jobs(self):
         """
@@ -202,7 +201,7 @@ class AssetsAPI(TIOEndpoint):
             >>> for job in tio.assets.list_import_jobs():
             ...     pprint(job)
         """
-        return self._api.get("import/asset-jobs").json()["asset_import_jobs"]
+        return self._api.get('import/asset-jobs').json()['asset_import_jobs']
 
     def import_job_details(self, uuid):
         """
@@ -222,9 +221,7 @@ class AssetsAPI(TIOEndpoint):
             ...     '00000000-0000-0000-0000-000000000000')
             >>> pprint(job)
         """
-        return self._api.get(
-            "import/asset-jobs/{}".format(self._check("uuid", uuid, str))
-        ).json()
+        return self._api.get(f'import/asset-jobs/{scrub(uuid)}').json()
 
     def move_assets(self, source, destination, targets):
         """
@@ -249,13 +246,13 @@ class AssetsAPI(TIOEndpoint):
             >>> pprint(asset)
         """
         payload = {
-            "source": self._check("source", source, "uuid"),
-            "destination": self._check("destination", destination, "uuid"),
-            "targets": ",".join(self._check("targets", targets, list)),
+            'source': self._check('source', source, 'uuid'),
+            'destination': self._check('destination', destination, 'uuid'),
+            'targets': ','.join(self._check('targets', targets, list)),
         }
 
         return self._api.post(
-            "api/v2/assets/bulk-jobs/move-to-network", json=payload
+            'api/v2/assets/bulk-jobs/move-to-network', json=payload
         ).json()
 
     def bulk_delete(self, *filters, hard_delete=None, filter_type=None):
@@ -290,24 +287,24 @@ class AssetsAPI(TIOEndpoint):
 
         # run the rules through the filter parser...
         filter_type = self._check(
-            "filter_type",
+            'filter_type',
             filter_type,
             str,
-            choices=["and", "or"],
-            default="and",
-            case="lower",
+            choices=['and', 'or'],
+            default='and',
+            case='lower',
         )
         parsed = self._parse_filters(
-            filters, self._api.filters.workbench_asset_filters(), rtype="assets"
-        )["asset"]
+            filters, self._api.filters.workbench_asset_filters(), rtype='assets'
+        )['asset']
 
         if hard_delete:
-            payload["hard_delete"] = self._check("hard_delete", hard_delete, bool)
-        payload["query"] = {filter_type: parsed}
+            payload['hard_delete'] = self._check('hard_delete', hard_delete, bool)
+        payload['query'] = {filter_type: parsed}
 
-        return self._api.post("api/v2/assets/bulk-jobs/delete", json=payload).json()
+        return self._api.post('api/v2/assets/bulk-jobs/delete', json=payload).json()
 
-    def update_acr(self, assets_uuid_list, reason, value, note=""):
+    def update_acr(self, assets_uuid_list, reason, value, note=''):
         """
         Updates ACR for the provided asset UUID's with reason(s).
 
@@ -333,16 +330,16 @@ class AssetsAPI(TIOEndpoint):
         asset_uuids = []
 
         for asset_uuid in assets_uuid_list:
-            asset_uuids.append({"id": asset_uuid})
+            asset_uuids.append({'id': asset_uuid})
 
-        note = note + " - pyTenable"
+        note = note + ' - pyTenable'
         payload = [
             {
-                "acr_score": int(value),
-                "reason": reason,
-                "asset": asset_uuids,
-                "note": note,
+                'acr_score': int(value),
+                'reason': reason,
+                'asset': asset_uuids,
+                'note': note,
             }
         ]
 
-        return self._api.post("api/v2/assets/bulk-jobs/acr", json=payload).status_code
+        return self._api.post('api/v2/assets/bulk-jobs/acr', json=payload).status_code

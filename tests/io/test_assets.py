@@ -139,33 +139,6 @@ def test_assets_import_job_info(api):
 
 
 @pytest.mark.vcr()
-def test_assets_tags_uuid_typeerror(api):
-    """
-    test to raise exception when type of uuid param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.assets.tags(1)
-
-
-@pytest.mark.vcr()
-def test_assets_tags_uuid_unexpectedvalueerror(api):
-    """
-    test to raise exception when uuid param value does not match the choices.
-    """
-    with pytest.raises(UnexpectedValueError):
-        api.assets.tags('somethign else')
-
-
-@pytest.mark.vcr()
-def test_workbenches_asset_delete_asset_uuid_typeerror(api):
-    """
-    test to raise exception when type of uuid param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.workbenches.asset_delete(1)
-
-
-@pytest.mark.vcr()
 @pytest.mark.skip("We don't want to actually delete an asset")
 def test_workbenches_asset_delete_success(api):
     """

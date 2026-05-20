@@ -1,4 +1,4 @@
-'''
+"""
 Exclusions
 ==========
 
@@ -10,21 +10,35 @@ Methods available on ``tio.exclusions``:
 .. rst-class:: hide-signature
 .. autoclass:: ExclusionsAPI
     :members:
-'''
+"""
+
 from datetime import datetime
-from tenable.utils import dict_merge
+
 from tenable.io.base import TIOEndpoint
+from tenable.utils import dict_merge, scrub
+
 
 class ExclusionsAPI(TIOEndpoint):
-    '''
+    """
     This will contain all methods related to exclusions
-    '''
+    """
 
-    def create(self, name, members, start_time=None, end_time=None,
-               timezone=None, description=None, frequency=None,
-               interval=None, weekdays=None, day_of_month=None,
-               enabled=True, network_id=None):
-        '''
+    def create(
+        self,
+        name,
+        members,
+        start_time=None,
+        end_time=None,
+        timezone=None,
+        description=None,
+        frequency=None,
+        interval=None,
+        weekdays=None,
+        day_of_month=None,
+        enabled=True,
+        network_id=None,
+    ):
+        """
         Create a scan target exclusion.
 
         :devportal:`exclusions: create <exclusions-create>`
@@ -98,7 +112,7 @@ class ExclusionsAPI(TIOEndpoint):
             ...     start_time=datetime.utcnow(),
             ...     end_time=datetime.utcnow() + timedelta(hours=1))
 
-            Creating a monthly esxclusion:
+            Creating a monthly exclusion:
 
             >>> exclusion = tio.exclusions.create(
             ...     'Example Monthly Exclusion',
@@ -116,27 +130,36 @@ class ExclusionsAPI(TIOEndpoint):
             ...     frequency='yearly',
             ...     start_time=datetime.utcnow(),
             ...     end_time=datetime.utcnow() + timedelta(hours=1))
-        '''
+        """
         # Starting with the innermost part of the payload, lets construct the
         # rrules dictionary.
-        frequency = self._check('frequency', frequency, str,
+        frequency = self._check(
+            'frequency',
+            frequency,
+            str,
             choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
             default='ONETIME',
-            case='upper')
+            case='upper',
+        )
 
         rrules = {
             'freq': frequency,
-            'interval': self._check('interval', interval, int, default=1)
+            'interval': self._check('interval', interval, int, default=1),
         }
 
         # if the frequency is a weekly one, then we will need to specify the
         # days of the week that the exclusion is run on.
         if frequency == 'WEEKLY':
-            rrules['byweekday'] = ','.join(self._check(
-                'weekdays', weekdays, list,
-                choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                default=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                case='upper'))
+            rrules['byweekday'] = ','.join(
+                self._check(
+                    'weekdays',
+                    weekdays,
+                    list,
+                    choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                    default=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                    case='upper',
+                )
+            )
             # In the same vein as the frequency check, we're accepting
             # case-insensitive input, comparing it to our known list of
             # acceptable responses, then joining them all together into a
@@ -145,21 +168,28 @@ class ExclusionsAPI(TIOEndpoint):
         # if the frequency is monthly, then we will need to specify the day of
         # the month that the rule will run on.
         if frequency == 'MONTHLY':
-            rrules['bymonthday'] = self._check('day_of_month', day_of_month, int,
-                choices=list(range(1,32)),
-                default=datetime.today().day)
+            rrules['bymonthday'] = self._check(
+                'day_of_month',
+                day_of_month,
+                int,
+                choices=list(range(1, 32)),
+                default=datetime.today().day,
+            )
 
         # construct payload schedule based on enable
         if enabled is True:
             schedule = {
                 'enabled': True,
-                'starttime':
-                    self._check('start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'endtime':
-                    self._check('end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S'),
-                'timezone': self._check('timezone', timezone, str,
-                    choices=self._api._tz, default='Etc/UTC'),
-                'rrules': rrules
+                'starttime': self._check('start_time', start_time, datetime).strftime(
+                    '%Y-%m-%d %H:%M:%S'
+                ),
+                'endtime': self._check('end_time', end_time, datetime).strftime(
+                    '%Y-%m-%d %H:%M:%S'
+                ),
+                'timezone': self._check(
+                    'timezone', timezone, str, choices=self._api._tz, default='Etc/UTC'
+                ),
+                'rrules': rrules,
             }
         elif enabled is False:
             schedule = {'enabled': False}
@@ -171,16 +201,20 @@ class ExclusionsAPI(TIOEndpoint):
             'name': self._check('name', name, str),
             'members': ','.join(self._check('members', members, list)),
             'description': self._check('description', description, str, default=''),
-            'network_id': self._check('network_id', network_id, 'uuid',
-                                      default='00000000-0000-0000-0000-000000000000'),
-            'schedule': schedule
+            'network_id': self._check(
+                'network_id',
+                network_id,
+                'uuid',
+                default='00000000-0000-0000-0000-000000000000',
+            ),
+            'schedule': schedule,
         }
 
         # And now to make the call and return the data.
         return self._api.post('exclusions', json=payload).json()
 
     def delete(self, exclusion_id):
-        '''
+        """
         Delete a scan target exclusion.
 
         :devportal:`exclusions: delete <exclusions-delete>`
@@ -194,11 +228,11 @@ class ExclusionsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.exclusions.delete(1)
-        '''
-        self._api.delete('exclusions/{}'.format(self._check('exclusion_id', exclusion_id, int)))
+        """
+        self._api.delete(f'exclusions/{scrub(exclusion_id)}')
 
     def details(self, exclusion_id):
-        '''
+        """
         Retrieve the details for a specific scan target exclusion.
 
         :devportal:`exclusions: details <exclusions-details>`
@@ -213,14 +247,26 @@ class ExclusionsAPI(TIOEndpoint):
         Examples:
             >>> exclusion = tio.exclusions.details(1)
             >>> pprint(exclusion)
-        '''
-        return self._api.get(
-            'exclusions/{}'.format(self._check('exclusion_id', exclusion_id, int))).json()
+        """
+        return self._api.get(f'exclusions/{scrub(exclusion_id)}').json()
 
-    def edit(self, exclusion_id, name=None, members=None, start_time=None,
-             end_time=None, timezone=None, description=None, frequency=None,
-             interval=None, weekdays=None, day_of_month=None, enabled=None, network_id=None):
-        '''
+    def edit(
+        self,
+        exclusion_id,
+        name=None,
+        members=None,
+        start_time=None,
+        end_time=None,
+        timezone=None,
+        description=None,
+        frequency=None,
+        interval=None,
+        weekdays=None,
+        day_of_month=None,
+        enabled=None,
+        network_id=None,
+    ):
+        """
         Edit an existing scan target exclusion.
 
         :devportal:`exclusions: edit <exclusions-edit>`
@@ -266,7 +312,7 @@ class ExclusionsAPI(TIOEndpoint):
             Modifying the name of an exclusion:
 
             >>> exclusion = tio.exclusions.edit(1, name='New Name')
-        '''
+        """
 
         # Lets start constructing the payload to be sent to the API...
         payload = self.details(exclusion_id)
@@ -284,17 +330,23 @@ class ExclusionsAPI(TIOEndpoint):
             payload['schedule']['enabled'] = self._check('enabled', enabled, bool)
 
         if payload['schedule']['enabled']:
-            frequency = self._check('frequency', frequency, str,
-                                    choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
-                                    default=payload['schedule']['rrules'].get('freq')
-                                    if payload['schedule']['rrules'] is not None else 'ONETIME',
-                                    case='upper')
+            frequency = self._check(
+                'frequency',
+                frequency,
+                str,
+                choices=['ONETIME', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'],
+                default=payload['schedule']['rrules'].get('freq')
+                if payload['schedule']['rrules'] is not None
+                else 'ONETIME',
+                case='upper',
+            )
 
-            # interval needs to be handled in schedule enabled excusion
+            # interval needs to be handled in schedule enabled exclusion
             rrules = {
                 'freq': frequency,
                 'interval': payload['schedule']['rrules'].get('interval', None) or 1
-                if payload['schedule']['rrules'] is not None else 1
+                if payload['schedule']['rrules'] is not None
+                else 1,
             }
 
             # frequency default value is designed for weekly and monthly based on below conditions
@@ -304,14 +356,21 @@ class ExclusionsAPI(TIOEndpoint):
             # and byweekday/bymonthday key not already exist, assign default values
             # - if schedule rrules is not None and defined in edit params, assign new values
             if frequency == 'WEEKLY':
-                rrules['byweekday'] = ','.join(self._check(
-                    'weekdays', weekdays, list,
-                    choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                    default=payload['schedule']['rrules'].get('byweekday', '').split()
-                            or ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']
-                    if payload['schedule']['rrules'] is not None else
-                    ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
-                    case='upper'))
+                rrules['byweekday'] = ','.join(
+                    self._check(
+                        'weekdays',
+                        weekdays,
+                        list,
+                        choices=['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                        default=payload['schedule']['rrules']
+                        .get('byweekday', '')
+                        .split()
+                        or ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA']
+                        if payload['schedule']['rrules'] is not None
+                        else ['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'],
+                        case='upper',
+                    )
+                )
                 # In the same vein as the frequency check, we're accepting
                 # case-insensitive input, comparing it to our known list of
                 # acceptable responses, then joining them all together into a
@@ -319,9 +378,16 @@ class ExclusionsAPI(TIOEndpoint):
 
             if frequency == 'MONTHLY':
                 rrules['bymonthday'] = self._check(
-                    'day_of_month', day_of_month, int, choices=list(range(1, 32)),
-                    default=payload['schedule']['rrules'].get('bymonthday', datetime.today().day)
-                    if payload['schedule']['rrules'] is not None else datetime.today().day)
+                    'day_of_month',
+                    day_of_month,
+                    int,
+                    choices=list(range(1, 32)),
+                    default=payload['schedule']['rrules'].get(
+                        'bymonthday', datetime.today().day
+                    )
+                    if payload['schedule']['rrules'] is not None
+                    else datetime.today().day,
+                )
 
             # update new rrules in existing payload
             if payload['schedule']['rrules'] is not None:
@@ -331,18 +397,22 @@ class ExclusionsAPI(TIOEndpoint):
 
             if start_time:
                 payload['schedule']['starttime'] = self._check(
-                    'start_time', start_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+                    'start_time', start_time, datetime
+                ).strftime('%Y-%m-%d %H:%M:%S')
 
             if end_time:
                 payload['schedule']['endtime'] = self._check(
-                    'end_time', end_time, datetime).strftime('%Y-%m-%d %H:%M:%S')
+                    'end_time', end_time, datetime
+                ).strftime('%Y-%m-%d %H:%M:%S')
 
             if interval:
                 payload['schedule']['rrules']['interval'] = self._check(
-                    'interval', interval, int)
+                    'interval', interval, int
+                )
 
             payload['schedule']['timezone'] = self._check(
-                'timezone', timezone, str, choices=self._api._tz, default='Etc/UTC')
+                'timezone', timezone, str, choices=self._api._tz, default='Etc/UTC'
+            )
 
         if network_id:
             payload['network_id'] = self._check('network_id', network_id, 'uuid')
@@ -350,13 +420,10 @@ class ExclusionsAPI(TIOEndpoint):
         # Lets check to make sure that the scanner_id  and exclusion_id are
         # integers as the API documentation requests and if we don't raise an
         # error, then lets make the call.
-        return self._api.put(
-            'exclusions/{}'.format(
-                self._check('exclusion_id', exclusion_id, int)
-            ), json=payload).json()
+        return self._api.put(f'exclusions/{scrub(exclusion_id)}', json=payload).json()
 
     def list(self):
-        '''
+        """
         List the currently configured scan target exclusions.
 
         :devportal:`exclusions: list <exclusions-list>`
@@ -368,11 +435,11 @@ class ExclusionsAPI(TIOEndpoint):
         Examples:
             >>> for exclusion in tio.exclusions.list():
             ...     pprint(exclusion)
-        '''
+        """
         return self._api.get('exclusions').json()['exclusions']
 
     def exclusions_import(self, fobj):
-        '''
+        """
         Import exclusions into Tenable Vulnerability Management.
 
         :devportal:`exclusions: import <exclusions-import>`
@@ -389,6 +456,6 @@ class ExclusionsAPI(TIOEndpoint):
         Examples:
             >>> with open('import_example.csv') as exclusion:
             ...     tio.exclusions.exclusions_import(exclusion)
-        '''
+        """
         fid = self._api.files.upload(fobj)
         return self._api.post('exclusions/import', json={'file': fid})

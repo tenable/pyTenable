@@ -1,4 +1,4 @@
-'''
+"""
 Groups
 ======
 
@@ -10,12 +10,16 @@ Methods available on ``tio.groups``:
 .. rst-class:: hide-signature
 .. autoclass:: GroupsAPI
     :members:
-'''
+"""
+
+from tenable.utils import scrub
+
 from .base import TIOEndpoint
+
 
 class GroupsAPI(TIOEndpoint):
     def add_user(self, group_id, user_id):
-        '''
+        """
         Add a user to a user group.
 
         :devportal:`groups: add-user <groups-add-user>`
@@ -32,13 +36,11 @@ class GroupsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.groups.add_user(1, 1)
-        '''
-        self._api.post('groups/{}/users/{}'.format(
-            self._check('group_id', group_id, int),
-            self._check('user_id', user_id, int), ))
+        """
+        self._api.post(f'groups/{scrub(group_id)}/users/{scrub(user_id)}')
 
     def create(self, name):
-        '''
+        """
         Create a new user group.
 
         :devportal:`groups: create <groups-create>`
@@ -53,13 +55,13 @@ class GroupsAPI(TIOEndpoint):
 
         Examples:
             >>> group = tio.groups.create('Group Name')
-        '''
-        return self._api.post('groups', json={
-            'name': self._check('name', name, str)
-        }).json()
+        """
+        return self._api.post(
+            'groups', json={'name': self._check('name', name, str)}
+        ).json()
 
     def delete(self, id):
-        '''
+        """
         Delete a user group.
 
         :devportal:`groups: delete <groups-delete>`
@@ -73,11 +75,11 @@ class GroupsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.groups.delete(1)
-        '''
-        self._api.delete('groups/{}'.format(self._check('id', id, int)))
+        """
+        self._api.delete(f'groups/{scrub(id)}')
 
     def delete_user(self, group_id, user_id):
-        '''
+        """
         Delete a user from a user group.
 
         :devportal:`groups: delete-user <groups-delete-user>`
@@ -94,14 +96,11 @@ class GroupsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.groups.delete_user(1, 1)
-        '''
-        self._api.delete('groups/{}/users/{}'.format(
-            self._check('group_id', group_id, int),
-            self._check('user_id', user_id, int)
-        ))
+        """
+        self._api.delete(f'groups/{scrub(group_id)}/users/{scrub(user_id)}')
 
     def edit(self, id, name):
-        '''
+        """
         Edit a user group.
 
         :devportal:`groups: edit <groups/edit>`
@@ -118,12 +117,13 @@ class GroupsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.groups.edit(1, 'Updated name')
-        '''
-        return self._api.put('groups/{}'.format(self._check('id', id, int)),
-            json={'name': self._check('name', name, str)}).json()
+        """
+        return self._api.put(
+            f'groups/{scrub(id)}', json={'name': self._check('name', name, str)}
+        ).json()
 
     def list(self):
-        '''
+        """
         Lists all of the available user groups.
 
         :devportal:`groups: list <groups-list>`
@@ -135,11 +135,11 @@ class GroupsAPI(TIOEndpoint):
         Examples:
             >>> for group in tio.groups.list():
             ...     pprint(group)
-        '''
+        """
         return self._api.get('groups').json()['groups']
 
     def list_users(self, id):
-        '''
+        """
         List the user memberships within a specific user group.
 
         :devportal:`groups: list-users <groups-list-users>`
@@ -155,7 +155,5 @@ class GroupsAPI(TIOEndpoint):
         Example:
             >>> for user in tio.groups.list_users(1):
             ...     pprint(user)
-        '''
-        return self._api.get('groups/{}/users'.format(
-            self._check('id', id, int))).json()['users']
-
+        """
+        return self._api.get(f'groups/{scrub(id)}/users').json()['users']

@@ -581,24 +581,6 @@ def test_exclusions_delete_standard_user_fail(stdapi, exclusion):
 
 
 @pytest.mark.vcr()
-def test_exclusions_edit_no_exclusion_id_typeerror(api):
-    """
-    test to raise exception when exclusion_id is not provided.
-    """
-    with pytest.raises(TypeError):
-        api.exclusions.edit()
-
-
-@pytest.mark.vcr()
-def test_exclusions_edit_exclusion_id_typeerror(api):
-    """
-    test to raise exception when type of exclusion_id param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.exclusions.edit('nope')
-
-
-@pytest.mark.vcr()
 def test_exclusions_edit_members_typeerror(api, exclusion):
     """
     test to raise exception when type of members param does not match the expected type.

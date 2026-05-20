@@ -24,7 +24,7 @@ Methods available on ``io.editor``:
 from io import BytesIO
 from typing import Any, Dict, List, Literal
 
-from tenable.utils import dict_merge, policy_settings
+from tenable.utils import dict_merge, policy_settings, scrub
 
 from .base import TIOEndpoint
 
@@ -169,7 +169,7 @@ class EditorAPI(TIOEndpoint):
 
         # Now we need to make the actual call.
         resp = self._api.get(
-            f'editor/{str(etype)}/{str(object_id)}/audits/{str(file_id)}',
+            f'editor/{scrub(etype)}/{scrub(object_id)}/audits/{scrub(file_id)}',
             stream=True,
         )
 
@@ -200,7 +200,7 @@ class EditorAPI(TIOEndpoint):
             :obj:`dict`:
                 Details on the requested template
         """
-        return self._api.get(f'editor/{str(etype)}/templates/{str(uuid)}').json()
+        return self._api.get(f'editor/{scrub(etype)}/templates/{scrub(uuid)}').json()
 
     def obj_details(self, etype, id):
         """
@@ -219,7 +219,7 @@ class EditorAPI(TIOEndpoint):
             :obj:`dict`:
                 Details of the requested object
         """
-        return self._api.get(f'editor/{str(etype)}/{str(id)}').json()
+        return self._api.get(f'editor/{etype}/{scrub(id)}').json()
 
     def template_list(self, etype):
         """
@@ -236,7 +236,7 @@ class EditorAPI(TIOEndpoint):
             :obj:`list`:
                 Listing of template records.
         """
-        return self._api.get(f'editor/{str(etype)}/templates').json()['templates']
+        return self._api.get(f'editor/{scrub(etype)}/templates').json()['templates']
 
     def plugin_description(self, policy_id, family_id, plugin_id):
         """
@@ -258,8 +258,8 @@ class EditorAPI(TIOEndpoint):
         """
         return self._api.get(
             (
-                f'editor/policy/{str(policy_id)}/'
-                f'families/{str(family_id)}/plugins/{str(plugin_id)}'
+                f'editor/policy/{scrub(policy_id)}/'
+                f'families/{scrub(family_id)}/plugins/{scrub(plugin_id)}'
             )
         ).json()['plugindescription']
 

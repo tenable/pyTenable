@@ -16,6 +16,8 @@ Methods available on ``tio.pci.attestations``:
 from typing import Any, List, Literal, Type
 from uuid import UUID
 
+from tenable.utils import scrub
+
 from ..base import TIOEndpoint
 from .iterators import (
     PCIAttestationAssetsIterator,
@@ -123,7 +125,7 @@ class AttestationsAPI(TIOEndpoint):
                 Should an iterator be returned or a page of data? If set to `None`,
                 the page will be returned instead of the iterable.
         """
-        path = f'details/{str(id)}/disputes'
+        path = f'details/{scrub(id)}/disputes'
         params = {'sort': self._format_sorts(sort), 'limit': limit, 'offset': offset}
         if iterator:
             return iterator(
@@ -160,7 +162,7 @@ class AttestationsAPI(TIOEndpoint):
                 Should an iterator be returned or a page of data? If set to `None`,
                 the page will be returned instead of the iterable.
         """
-        path = f'{str(id)}/failures/undisputed/list'
+        path = f'{scrub(id)}/failures/undisputed/list'
         params = {'sort': self._format_sorts(sort), 'limit': limit, 'offset': offset}
         if iterator:
             return iterator(
@@ -197,7 +199,7 @@ class AttestationsAPI(TIOEndpoint):
                 Should an iterator be returned or a page of data? If set to `None`,
                 the page will be returned instead of the iterable.
         """
-        path = f'{str(id)}/assets/list'
+        path = f'{scrub(id)}/assets/list'
         params = {'sort': self._format_sorts(sort), 'limit': limit, 'offset': offset}
         if iterator:
             return iterator(
