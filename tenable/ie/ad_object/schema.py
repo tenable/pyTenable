@@ -1,4 +1,5 @@
 from marshmallow import fields
+
 from tenable.ie.base.schema import CamelCaseSchema
 
 
@@ -28,7 +29,7 @@ class ADObjectSchema(CamelCaseSchema):
     object_attributes = fields.Nested(ADObjectAttributesSchema, many=True)
     reasons = fields.List(fields.Int())
     wanted_values = fields.List(fields.Str())
-    expression = fields.Mapping()
+    expression = fields.Dict()
     directories = fields.List(fields.Int())
     date_start = fields.DateTime()
     date_end = fields.DateTime()
