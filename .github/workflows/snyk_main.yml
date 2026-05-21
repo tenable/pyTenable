@@ -29,8 +29,8 @@ jobs:
           pip3 install -r requirements.txt
 
       - name: Snyk Scan
-        uses: snyk/actions/node@master
+        uses: snyk/actions/python-3.12@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          command: monitor --command=python3 --skip-unresolved=true
+          args: --severity-threshold=high
