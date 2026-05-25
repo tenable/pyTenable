@@ -19,6 +19,8 @@ from tenable.tenableone.attack_path.export.schema import (
     ExportStatus,
     ExportSortParams,
     FileFormat,
+    MitreHeatmapFilter,
+    MitreMatrix,
     SortDirection,
 )
 
@@ -410,6 +412,115 @@ def test_attack_techniques_all_columns(tenable_one_api, export_request_id_respon
     result = tenable_one_api.attack_path.export.attack_techniques(
         file_format=FileFormat.CSV,
         columns=all_columns,
+    )
+
+    assert result.export_id == "export-ap-12345"
+
+
+# ---------------------------------------------------------------------------
+# mitre_heatmap() tests
+# ---------------------------------------------------------------------------
+
+@responses.activate
+def test_mitre_heatmap_minimal(tenable_one_api, export_request_id_response):
+    """Test mitre_heatmap with only required parameters."""
+    expected_body = {
+        "file_format": "JSON",
+    }
+
+    responses.add(
+        responses.POST,
+        "https://cloud.tenable.com/api/v1/export/mitre-heatmap",
+        json=export_request_id_response,
+        match=[responses.matchers.json_params_matcher(expected_body)],
+    )
+
+    result = tenable_one_api.attack_path.export.mitre_heatmap(
+        file_format=FileFormat.JSON,
+    )
+
+    assert isinstance(result, ExportRequestId)
+    assert result.export_id == "export-ap-12345"
+
+
+@responses.activate
+def test_mitre_heatmap_with_filter(tenable_one_api, export_request_id_response):
+    """Test mitre_heatmap with a populated filter."""
+    expected_body = {
+        "file_format": "JSON",
+        "filter": {
+            "platform": "Windows",
+            "matrix": "enterprise",
+            "show_all_techniques": False,
+            "severities": ["high", "critical"],
+        },
+    }
+
+    responses.add(
+        responses.POST,
+        "https://cloud.tenable.com/api/v1/export/mitre-heatmap",
+        json=export_request_id_response,
+        match=[responses.matchers.json_params_matcher(expected_body)],
+    )
+
+    result = tenable_one_api.attack_path.export.mitre_heatmap(
+        file_format=FileFormat.JSON,
+        filter=MitreHeatmapFilter(
+            platform="Windows",
+            matrix=MitreMatrix.ENTERPRISE,
+            show_all_techniques=False,
+            severities=["high", "critical"],
+        ),
+    )
+
+    assert result.export_id == "export-ap-12345"
+
+
+@responses.activate
+def test_mitre_heatmap_csv_with_columns_and_file_name(
+    tenable_one_api, export_request_id_response
+):
+    """Test mitre_heatmap with CSV format, custom columns, and file name."""
+    expected_body = {
+        "file_format": "CSV",
+        "columns": ["mitre_id", "technique_name", "priority"],
+        "file_name": "mitre_export_2026_06",
+    }
+
+    responses.add(
+        responses.POST,
+        "https://cloud.tenable.com/api/v1/export/mitre-heatmap",
+        json=export_request_id_response,
+        match=[responses.matchers.json_params_matcher(expected_body)],
+    )
+
+    result = tenable_one_api.attack_path.export.mitre_heatmap(
+        file_format=FileFormat.CSV,
+        columns=["mitre_id", "technique_name", "priority"],
+        file_name="mitre_export_2026_06",
+    )
+
+    assert result.export_id == "export-ap-12345"
+
+
+@responses.activate
+def test_mitre_heatmap_ics_matrix(tenable_one_api, export_request_id_response):
+    """Test mitre_heatmap with the ICS matrix."""
+    expected_body = {
+        "file_format": "JSON",
+        "filter": {"matrix": "ics"},
+    }
+
+    responses.add(
+        responses.POST,
+        "https://cloud.tenable.com/api/v1/export/mitre-heatmap",
+        json=export_request_id_response,
+        match=[responses.matchers.json_params_matcher(expected_body)],
+    )
+
+    result = tenable_one_api.attack_path.export.mitre_heatmap(
+        file_format=FileFormat.JSON,
+        filter=MitreHeatmapFilter(matrix=MitreMatrix.ICS),
     )
 
     assert result.export_id == "export-ap-12345"

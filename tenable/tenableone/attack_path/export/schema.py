@@ -41,6 +41,13 @@ class AttackPathColumnKey(str, Enum):
     ASSET_IDS = 'asset_ids'
 
 
+class MitreMatrix(str, Enum):
+    """MITRE ATT&CK matrix type."""
+
+    ENTERPRISE = 'enterprise'
+    ICS = 'ics'
+
+
 class AttackTechniqueColumnKey(str, Enum):
     """Column keys available for attack technique exports."""
 
@@ -145,6 +152,47 @@ class AttackTechniqueExportRequest(BaseModel):
     )
     attack_technique_ids: Optional[List[str]] = Field(
         None, description='List of attack technique IDs to filter by'
+    )
+
+
+class MitreHeatmapFilter(BaseModel):
+    """Filter for MITRE heatmap exports."""
+
+    platform: Optional[str] = Field(
+        None, description='Filter by platform (e.g. Windows, Linux, macOS)'
+    )
+    query: Optional[str] = Field(
+        None, description='Search query to filter techniques by name'
+    )
+    show_all_techniques: Optional[bool] = Field(
+        None,
+        description='When false, only show techniques with active findings',
+    )
+    severities: Optional[List[str]] = Field(
+        None, description='Filter by severity levels'
+    )
+    matrix: Optional[MitreMatrix] = Field(
+        None, description='MITRE matrix type (enterprise or ics)'
+    )
+
+
+class MitreHeatmapExportRequest(BaseModel):
+    """Request model for MITRE heatmap exports."""
+
+    file_format: FileFormat = Field(..., description='The output file format')
+    filter: Optional[MitreHeatmapFilter] = Field(
+        None, description='Filter criteria for the heatmap'
+    )
+    columns: Optional[List[str]] = Field(
+        None, description='Columns to include in the export'
+    )
+    file_name: Optional[str] = Field(
+        None,
+        max_length=100,
+        description=(
+            'Optional custom file name for the export. '
+            'Defaults to Tenable_APA_MITRE_YYYY-MM-DD'
+        ),
     )
 
 
