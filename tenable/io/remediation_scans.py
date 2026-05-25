@@ -1,4 +1,4 @@
-'''
+"""
 Remediation Scans
 =================
 
@@ -11,17 +11,15 @@ Methods available on ``tio.remediation_scans``:
 .. rst-class:: hide-signature
 .. autoclass:: RemediationScansAPI
     :members:
-'''
+"""
 
-
-from tenable.constants import IOConstants
 from tenable.errors import UnexpectedValueError
 from tenable.io.base import TIOEndpoint, TIOIterator
 from tenable.utils import dict_merge
 
 
 class RemediationScansIteratorV2(TIOIterator):
-    '''
+    """
     The Remediation scans iterator provides a scalable way to work through
     scan history result sets of any size. The iterator will walk through
     each page of data, returning one record at a time.  If it reaches the
@@ -39,16 +37,16 @@ class RemediationScansIteratorV2(TIOIterator):
         page_count (int): The number of record returned from the current page.
         total (int):
             The total number of records that exist for the current request.
-    '''
+    """
+
     pass
 
 
 class RemediationScansAPI(TIOEndpoint):
-    def list_remediation_scan(self,
-                              limit=50,
-                              offset=0,
-                              sortval='scan_creation_date:desc'):
-        '''
+    def list_remediation_scan(
+        self, limit=50, offset=0, sortval='scan_creation_date:desc'
+    ):
+        """
         Retrieve the list of Remediation scans.
 
         :devportal:`scans: list_remediation_scan <io-scans-remediation-list>`
@@ -74,26 +72,28 @@ class RemediationScansAPI(TIOEndpoint):
             For further information on credentials, what settings to use, etc,
             refer to the doc linked above on the developer portal.
 
-            '''
+        """
         params = dict()
         pages = None
-        if limit>0 and limit < 200:
+        if limit > 0 and limit < 200:
             params['limit'] = self._check('limit', limit, int)
         if offset >= 0:
             params['offset'] = self._check('offset', offset, int)
         if 'scan_creation_date:asc' or 'scan_creation_date:desc' in sortval:
             params['sort'] = self._check('sort', sortval, str)
 
-        return RemediationScansIteratorV2(self._api,
-                                          _limit=limit,
-                                          _offset=offset,
-                                          _pages_total=pages,
-                                          _query=params,
-                                          _path='scans/remediation',
-                                          _resource='scans')
+        return RemediationScansIteratorV2(
+            self._api,
+            _limit=limit,
+            _offset=offset,
+            _pages_total=pages,
+            _query=params,
+            _path='scans/remediation',
+            _resource='scans',
+        )
 
     def create_remediation_scan(self, **kwargs):
-        '''
+        """
         Create a new remediation scan.
 
         :devportal:`scans: create_remediation_scan <io-scans-remediation-create>`  # noqa: E501
@@ -175,7 +175,7 @@ class RemediationScansAPI(TIOEndpoint):
             `this doc <https://developer.tenable.com/reference/io-scans-remediation-create>`_
             on the developer portal.
 
-        '''
+        """
 
         if 'template' not in kwargs:
             kwargs['template'] = 'advanced'
@@ -186,7 +186,7 @@ class RemediationScansAPI(TIOEndpoint):
         return self._api.post('scans/remediation', json=scan).json()['scan']
 
     def _create_scan_document(self, kwargs):
-        '''
+        """
         Takes the key-worded arguments and will provide a scan settings
         document based on the values inputted.
 
@@ -196,7 +196,7 @@ class RemediationScansAPI(TIOEndpoint):
             :obj:`dict`:
                 The resulting scan document based on the kwargs provided.
 
-        '''
+        """
         scan = {
             'settings': dict(),
         }
@@ -204,13 +204,16 @@ class RemediationScansAPI(TIOEndpoint):
         # If a template is specified, then we will pull the listing of available
         # templates and set the policy UUID to match the template name given.
         if 'template' in kwargs:
-
             templates = self._api.policies.templates()
-            scan['uuid'] = templates[self._check(
-                'template', kwargs['template'], str,
-                default='advanced',
-                choices=list(templates.keys())
-            )]
+            scan['uuid'] = templates[
+                self._check(
+                    'template',
+                    kwargs['template'],
+                    str,
+                    default='advanced',
+                    choices=list(templates.keys()),
+                )
+            ]
             del kwargs['template']
 
         # If a policy UUID is sent, then we will set the scan template UUID to
@@ -252,17 +255,20 @@ class RemediationScansAPI(TIOEndpoint):
             # we will always want to attempt to use the UUID first as it's
             # the cheapest check that we can run.
             scan['settings']['scanner_id'] = self._check(
-                'scanner', kwargs['scanner'], 'scanner-uuid',
-                choices=[s['id'] for s in scanners])
+                'scanner',
+                kwargs['scanner'],
+                'scanner-uuid',
+                choices=[s['id'] for s in scanners],
+            )
             del kwargs['scanner']
 
         # If the targets parameter is specified, then we will need to convert
         # the list of targets to a comma-delimited string and then set the
         # text_targets parameter with the result.
         if 'targets' in kwargs:
-
-            scan['settings']['text_targets'] = ','.join(self._check(
-                'targets', kwargs['targets'], list))
+            scan['settings']['text_targets'] = ','.join(
+                self._check('targets', kwargs['targets'], list)
+            )
             del kwargs['targets']
 
         # For credentials, we will simply push the dictionary as-is into the
@@ -270,7 +276,8 @@ class RemediationScansAPI(TIOEndpoint):
         if 'credentials' in kwargs:
             scan['credentials'] = {'add': dict()}
             scan['credentials']['add'] = self._check(
-                'credentials', kwargs['credentials'], dict)
+                'credentials', kwargs['credentials'], dict
+            )
             del kwargs['credentials']
 
         # Just like with credentials, we will push the dictionary as-is into the
@@ -284,7 +291,10 @@ class RemediationScansAPI(TIOEndpoint):
         if 'enabled_plugins' in kwargs:
             scan['enabled_plugins'] = [
                 self._check('plugin_id', plugin_id, int)
-                for plugin_id in self._check('enabled_plugins', kwargs['enabled_plugins'], list)]
+                for plugin_id in self._check(
+                    'enabled_plugins', kwargs['enabled_plugins'], list
+                )
+            ]
             del kwargs['enabled_plugins']
 
         # any other remaining keyword arguments will be passed into the settings

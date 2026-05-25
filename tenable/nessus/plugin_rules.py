@@ -11,9 +11,8 @@ These methods can be accessed at ``Nessus.plugin_rules``.
 '''
 from typing import List, Dict, Optional
 from typing_extensions import Literal
-from restfly.utils import dict_clean, dict_merge
+from tenable.utils import dict_clean, dict_merge
 from tenable.base.endpoint import APIEndpoint
-from .iterators.plugins import PluginIterator
 
 
 class PluginRulesAPI(APIEndpoint):

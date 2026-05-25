@@ -11,10 +11,8 @@ These methods can be accessed at ``Nessus.tokens``.
 '''
 import time
 from io import BytesIO
-from typing import List, Dict, Optional, Callable
-from typing_extensions import Literal
+from typing import Dict, Optional, Callable
 from requests import Response
-from restfly.utils import dict_clean
 from tenable.errors import FileDownloadError
 from tenable.base.endpoint import APIEndpoint
 

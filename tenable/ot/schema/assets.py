@@ -1,5 +1,4 @@
 import datetime
-import ipaddress
 import typing
 import uuid
 from typing import List, Optional
@@ -7,7 +6,7 @@ from typing import List, Optional
 from dataclasses import dataclass
 
 from tenable.ot.schema.base import NodesList, IPList, ID
-from tenable.ot.schema.plugins import Plugin, Plugins
+from tenable.ot.schema.plugins import Plugins
 
 
 @dataclass

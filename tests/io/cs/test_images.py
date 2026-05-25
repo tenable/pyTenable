@@ -2,7 +2,6 @@
 Test the CS Images API
 '''
 import re
-import pytest
 import responses
 from tenable.io.cs.iterator import CSIterator
 

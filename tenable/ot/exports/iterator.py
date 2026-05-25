@@ -1,11 +1,13 @@
 from typing import Dict
-from restfly.iterator import APIIterator
+
+from tenable.base._restfly_v1 import APIIterator
 
 
 class OTExportsIterator(APIIterator):
     """
     Tenable OT Security Exports Iterator
     """
+
     _model: str
     _query: str
     _variables: Dict
@@ -14,13 +16,13 @@ class OTExportsIterator(APIIterator):
         """
         Fetches the next page of data from the GraphQL API
         """
-        resp = self._api.graphql(query=self._query,
-                                 variables=self._variables,
-                                 )
+        resp = self._api.graphql(
+            query=self._query,
+            variables=self._variables,
+        )
         raw_page = resp.get('data', {}).get(self._model, {})
         self.page = raw_page.get('nodes', [])
-        self._variables['startAt'] = raw_page.get('pageInfo', {})\
-                                             .get('endCursor', None)
+        self._variables['startAt'] = raw_page.get('pageInfo', {}).get('endCursor', None)
         self.total = raw_page.get('count')
         return self.page
 
@@ -29,6 +31,7 @@ class OTFindingsIterator(APIIterator):
     """
     Tenable OT Security Findings Iterator
     """
+
     empty_asset_count: int = 0
     _assets: OTExportsIterator
 
@@ -44,7 +47,7 @@ class OTFindingsIterator(APIIterator):
             try:
                 asset = self._assets.next()
             except StopIteration:
-                raise StopIteration()
+                raise StopIteration() from None
             self._asset_id = asset['id']
             items = self._api.get(f'v1/assets/{self._asset_id}/plugin_hits')
         self.page = items

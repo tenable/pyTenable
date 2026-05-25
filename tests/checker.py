@@ -1,5 +1,7 @@
 from dateutil.parser import parse as dateparse
-import datetime, sys, re
+import datetime
+import sys
+import re
 
 
 def check(i, name, val_type, allow_none=False):

@@ -83,8 +83,8 @@ class RepositoryAPI(SCEndpoint):
             del kwargs['trending']
 
         if 'fulltext_search' in kwargs:
-            # trendWithRaw is the backend paramater name for "Full Text Search"
-            # within the UI.  We will be calling it fulltest_search to more
+            # trendWithRaw is the backend parameter name for "Full Text Search"
+            # within the UI.  We will be calling it fulltext_search to more
             # closely align with what the frontend calls this feature.
             kwargs['trendWithRaw'] = str(
                 self._check('fulltext_search', kwargs['fulltext_search'], bool)
@@ -95,19 +95,21 @@ class RepositoryAPI(SCEndpoint):
             # The correlation parameter isn't well named here, we will call it
             # out as LCE correlation to specifically note what it is for.
             kwargs['correlation'] = [
-                {'id': self._check('lce_id', l, int)}
-                for l in self._check('lce_correlation', kwargs['lce_correlation'], list)
+                {'id': self._check('lce_id', lce, int)}
+                for lce in self._check(
+                    'lce_correlation', kwargs['lce_correlation'], list
+                )
             ]
             del kwargs['lce_correlation']
 
         if 'allowed_ips' in kwargs:
             # Using valid IPs here instead of ipRange to again more closely
             # align to the frontend and to more explicitly call out the
-            # function of this paramater
+            # function of this parameter
             kwargs['ipRange'] = ','.join(
                 [
-                    self._check('ip', i, str)
-                    for i in self._check('allowed_ips', kwargs['allowed_ips'], list)
+                    self._check('ip', ip, str)
+                    for ip in self._check('allowed_ips', kwargs['allowed_ips'], list)
                 ]
             )
             del kwargs['allowed_ips']

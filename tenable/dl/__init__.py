@@ -1,17 +1,22 @@
-'''
+"""
 Product Downloads
 =================
 
 .. autoclass:: Downloads
     :members:
-'''
-from tenable.base.platform import APIPlatform
-from box import BoxList
+"""
+
+import os
+import warnings
 from io import BytesIO
-import os, warnings
+
+from box import BoxList
+
+from tenable.base.platform import APIPlatform
+
 
 class Downloads(APIPlatform):
-    '''
+    """
     The Downloads object is the primary interaction point for users to
     interface with Downloads API via the pyTenable library.  All of the API
     endpoint classes that have been written will be grafted onto this class.
@@ -57,7 +62,8 @@ class Downloads(APIPlatform):
 
         >>> dl = Downloads(
         >>>     vendor='Company Name', product='Widget', build='1.0.0')
-    '''
+    """
+
     _box = True
     _env_base = 'TDL'
     _url = 'https://www.tenable.com'
@@ -70,21 +76,23 @@ class Downloads(APIPlatform):
         super().__init__(**kwargs)
 
     def _authenticate(self, **kwargs):
-        '''
+        """
         Authentication method for Downloads API
-        '''
+        """
         if not kwargs.get('api_token'):
-            warnings.warn('Starting an unauthenticated session')
+            warnings.warn('Starting an unauthenticated session', stacklevel=2)
             self._log.warning('Starting an unauthenticated session.')
         else:
-            self._session.headers.update({
-                'Authorization': 'Bearer {token}'.format(
-                    token=kwargs.get('api_token')
-                )
-            })
+            self._session.headers.update(
+                {
+                    'Authorization': 'Bearer {token}'.format(
+                        token=kwargs.get('api_token')
+                    )
+                }
+            )
 
     def list(self):
-        '''
+        """
         Lists the available content pages.
 
         :devportal:`API Endpoint Documentation <get_pages>`
@@ -97,11 +105,11 @@ class Downloads(APIPlatform):
             >>> pages = dl.list()
             >>> for page in pages:
             ...     pprint(page)
-        '''
+        """
         return self.get('pages', box=BoxList)
 
     def details(self, page):
-        '''
+        """
         Retrieves the specific download items for the page requested.
 
         :devportal:`API Endpoint Documentation <get_pages-slug>`
@@ -115,11 +123,11 @@ class Downloads(APIPlatform):
 
         Examples:
             >>> details = dl.details('nessus')
-        '''
+        """
         return self.get('pages/{}'.format(page))
 
     def download(self, page, package, fobj=None):
-        '''
+        """
         Retrieves the requested package and downloads the file.
 
         :devportal:`API Endpoint Documentation <get_pages-slug-files-file>`
@@ -139,12 +147,13 @@ class Downloads(APIPlatform):
             >>> with open('Nessus-latest.x86_64.rpm', 'wb') as pkgfile:
             ...     dl.download('nessus',
             ...         'Nessus-8.3.0-es7.x86_64.rpm', pkgfile)
-        '''
+        """
         if not fobj:
             fobj = BytesIO()
 
         resp = self.get(
-            'pages/{}/files/{}'.format(page, package), stream=True, box=False)
+            'pages/{}/files/{}'.format(page, package), stream=True, box=False
+        )
 
         # Lets stream the file into the file-like object...
         for chunk in resp.iter_content(chunk_size=1024):

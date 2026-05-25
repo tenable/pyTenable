@@ -1,8 +1,6 @@
 '''
 Testing the CS iterator
 '''
-import re
-import pytest
 import responses
 from tenable.io.cs.iterator import CSIterator
 

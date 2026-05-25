@@ -7,7 +7,7 @@ import uuid
 import pytest
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.errors import NotFoundError, UnexpectedValueError
+from tenable.errors import NotFoundError
 
 ###
 ### As the editor endpoints are really meant to drive the UI, the tests here

@@ -13,7 +13,7 @@ Methods available on ``sc.users``:
     :members:
 '''
 from typing import Dict, List, Optional
-from restfly.utils import dict_clean
+from tenable.utils import dict_clean
 from .base import SCEndpoint
 
 class UserAPI(SCEndpoint):

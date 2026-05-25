@@ -9,9 +9,9 @@ These methods can be accessed at ``Nessus.software_update``.
 .. autoclass:: SoftwareUpdateAPI
     :members:
 '''
-from typing import Dict, Optional
+from typing import Optional
 from typing_extensions import Literal
-from restfly.utils import dict_clean
+from tenable.utils import dict_clean
 from tenable.base.endpoint import APIEndpoint
 
 

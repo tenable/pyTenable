@@ -11,8 +11,8 @@ base class over the original APISession class.
     :inherited-members:
 '''
 from typing import Any, List, Optional
-from restfly.utils import check
-from restfly import APIEndpoint as Base
+from tenable.utils import check
+from tenable.base._restfly_v1 import APIEndpoint as Base
 
 
 class APIEndpoint(Base):  # noqa PLR0903

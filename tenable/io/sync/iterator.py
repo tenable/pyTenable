@@ -1,8 +1,8 @@
 from typing import TYPE_CHECKING
 
-from restfly.iterator import APIIterator
+from tenable.base._restfly_v1 import APIIterator
 
-from .models.job import Job, LogLine
+from .models.job import Job
 
 if TYPE_CHECKING:
     from tenable.io import TenableIO

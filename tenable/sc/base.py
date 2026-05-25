@@ -208,7 +208,7 @@ class SCEndpoint(APIEndpoint):
                 # then skip appending.  This should allow for effectively
                 # removing an unwanted filter from a query if a query id is
                 # specified.
-                if f[1] != None and f[2] != None:
+                if f[1] is not None and f[2] is not None:
                     kw['query']['filters'].append(item)
             del kw['type']
         return kw

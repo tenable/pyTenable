@@ -10,7 +10,7 @@ These methods can be accessed at ``TenableIE.deviance``.
     :members:
 '''
 from typing import List, Dict, Union, Mapping
-from restfly.utils import dict_clean
+from tenable.utils import dict_clean
 from tenable.ie.base.iterator import ADIterator
 from tenable.ie.deviance.schema import DevianceSchema
 from tenable.base.endpoint import APIEndpoint

@@ -1,7 +1,5 @@
-import pytest
 import responses
 from tenable.nessus import Nessus
-from tenable.errors import AuthenticationWarning
 
 
 @responses.activate

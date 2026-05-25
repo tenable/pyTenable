@@ -15,7 +15,7 @@ from pydantic import (
 from pydantic import (
     BaseModel as PydanticBaseModel,
 )
-from restfly.utils import trunc
+from tenable.utils import trunc
 from typing_extensions import Annotated
 
 if TYPE_CHECKING:

@@ -16,7 +16,7 @@ Exposure View APIs.
     cards/index
 """
 
-from restfly import APIEndpoint
+from tenable.base._restfly_v1 import APIEndpoint
 
 from tenable.tenableone.exposure_view.cards.api import CardsAPI
 

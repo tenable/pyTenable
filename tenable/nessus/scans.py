@@ -11,7 +11,7 @@ These methods can be accessed at ``Nessus.scans``.
 '''
 from typing import Dict, List, Optional
 from io import BytesIO
-from restfly.utils import dict_clean
+from tenable.utils import dict_clean
 from tenable.base.endpoint import APIEndpoint
 from .schema.scans import ScanExportSchema
 

@@ -9,9 +9,8 @@ These methods can be accessed at ``Nessus.server``.
 .. autoclass:: ServerAPI
     :members:
 '''
-from typing import List, Dict, Optional
-from typing_extensions import Literal
-from restfly.utils import dict_clean
+from typing import Dict, Optional
+from tenable.utils import dict_clean
 from tenable.base.endpoint import APIEndpoint
 
 

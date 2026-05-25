@@ -1,5 +1,5 @@
 from typing import Any, List, Dict
-from restfly import APIIterator
+from tenable.base._restfly_v1 import APIIterator
 
 
 class WasIterator(APIIterator):

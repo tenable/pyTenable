@@ -16,7 +16,7 @@ Methods described in this section relate to the inventory API and can be accesse
 from copy import copy
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Tuple
 
-from restfly.iterator import APIIterator
+from tenable.base._restfly_v1 import APIIterator
 
 from tenable.base.endpoint import APIEndpoint
 

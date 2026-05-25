@@ -24,10 +24,10 @@ from io import StringIO
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-from gql import Client, GraphQLRequest, gql
+from gql import Client, GraphQLRequest
 from gql.transport.requests import RequestsHTTPTransport
 from graphql import DocumentNode, GraphQLError, validate
-from restfly.iterator import APIIterator
+from tenable.base._restfly_v1 import APIIterator
 
 from tenable.version import version
 

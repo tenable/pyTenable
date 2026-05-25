@@ -11,7 +11,7 @@ These methods can be accessed at ``TenableExposureManagement.exposure_view.cards
 
 from typing import Optional
 
-from restfly import APIEndpoint
+from tenable.base._restfly_v1 import APIEndpoint
 
 from tenable.tenableone.exposure_view.cards.schema import (
     Cards,

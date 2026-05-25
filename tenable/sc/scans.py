@@ -16,8 +16,6 @@ Methods available on ``sc.scans``:
     :members:
 """
 
-from tenable.errors import UnexpectedValueError
-from tenable.utils import dict_merge
 
 from .base import SCEndpoint
 

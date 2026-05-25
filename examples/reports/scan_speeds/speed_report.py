@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from tenable.reports import NessusReportv2
-import click, re
+import click
+import re
 
 @click.command()
 @click.argument('report', type=click.File('r'))

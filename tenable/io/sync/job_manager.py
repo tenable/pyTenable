@@ -3,7 +3,7 @@ import time
 from typing import TYPE_CHECKING, Any, Literal
 from uuid import UUID
 
-from restfly.errors import APIError, InvalidContentError
+from tenable.errors import APIError, InvalidContentError
 
 from .models.cve_finding import CVEFinding
 from .models.device_asset import DeviceAsset

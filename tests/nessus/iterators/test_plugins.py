@@ -1,4 +1,3 @@
-import pytest
 import re
 import responses
 from tenable.nessus.iterators.plugins import PluginIterator

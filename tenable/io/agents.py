@@ -1,4 +1,4 @@
-'''
+"""
 Agents
 ======
 
@@ -10,11 +10,15 @@ Methods available on ``tio.agents``:
 .. rst-class:: hide-signature
 .. autoclass:: AgentsAPI
     :members:
-'''
-from .base import TIOIterator, TIOEndpoint
+"""
+
+from tenable.utils import scrub
+
+from .base import TIOEndpoint, TIOIterator
+
 
 class AgentsIterator(TIOIterator):
-    '''
+    """
     The agents iterator provides a scalable way to work through agent result
     sets of any size.  The iterator will walk through each page of data,
     returning one record at a time.  If it reaches the end of a page of
@@ -31,13 +35,14 @@ class AgentsIterator(TIOIterator):
         page_count (int): The number of record returned from the current page.
         total (int):
             The total number of records that exist for the current request.
-    '''
+    """
+
     pass
 
 
 class AgentsAPI(TIOEndpoint):
     def list(self, *filters, **kw):
-        '''
+        """
         Get the listing of configured agents from Tenable Vulnerability Management.
 
         :devportal:`agents: list <agents-list>`
@@ -92,13 +97,14 @@ class AgentsAPI(TIOEndpoint):
 
             >>> for agent in tio.agents.list(('distro', 'match', 'win')):
             ...     pprint(agent)
-        '''
+        """
         scanner_id = 1
         limit = 50
         offset = 0
         pages = None
-        query = self._parse_filters(filters,
-            self._api.filters.agents_filters(), rtype='colon')
+        query = self._parse_filters(
+            filters, self._api.filters.agents_filters(), rtype='colon'
+        )
 
         # Overload the scanner_id with a new value if it has been requested
         # to do so.
@@ -128,16 +134,24 @@ class AgentsAPI(TIOEndpoint):
         #   sort=field1:asc,field2:desc
         #
         if 'sort' in kw and self._check('sort', kw['sort'], tuple):
-            query['sort'] = ','.join(['{}:{}'.format(
-                self._check('sort_field', i[0], str),
-                self._check('sort_direction', i[1], str, choices=['asc', 'desc'])
-            ) for i in kw['sort']])
+            query['sort'] = ','.join(
+                [
+                    '{}:{}'.format(
+                        self._check('sort_field', i[0], str),
+                        self._check(
+                            'sort_direction', i[1], str, choices=['asc', 'desc']
+                        ),
+                    )
+                    for i in kw['sort']
+                ]
+            )
 
         # The filter_type determines how the filters are combined together.
         # The default is 'and', however you can always explicitly define 'and'
         # or 'or'.
         if 'filter_type' in kw and self._check(
-            'filter_type', kw['filter_type'], str, choices=['and', 'or']):
+            'filter_type', kw['filter_type'], str, choices=['and', 'or']
+        ):
             query['ft'] = kw['filter_type']
 
         # The wild-card filter text refers to how the API will pattern match
@@ -148,21 +162,23 @@ class AgentsAPI(TIOEndpoint):
         # The wildcard_fields parameter allows the user to restrict the fields
         # that the wild-card pattern match pertains to.
         if 'wildcard_fields' in kw and self._check(
-            'wildcard_fields', kw['wildcard_fields'], list):
+            'wildcard_fields', kw['wildcard_fields'], list
+        ):
             query['wf'] = ','.join(kw['wildcard_fields'])
 
         # Return the Iterator.
-        return AgentsIterator(self._api,
+        return AgentsIterator(
+            self._api,
             _limit=limit,
             _offset=offset,
             _pages_total=pages,
             _query=query,
-            _path='scanners/{}/agents'.format(scanner_id),
-            _resource='agents'
+            _path=f'scanners/{scrub(scanner_id)}/agents',
+            _resource='agents',
         )
 
     def details(self, agent_id, scanner_id=1):
-        '''
+        """
         Retrieves the details of an agent.
 
         :devportal:`agents: get <agents-get>`
@@ -180,15 +196,13 @@ class AgentsAPI(TIOEndpoint):
         Examples:
             >>> agent = tio.agents.details(1)
             >>> pprint(agent)
-        '''
+        """
         return self._api.get(
-            'scanners/{}/agents/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('agent_id', agent_id, int)
-            )).json()
+            f'scanners/{scrub(scanner_id)}/agents/{scrub(agent_id)}'
+        ).json()
 
     def unlink(self, *agent_ids, **kw):
-        '''
+        """
         Unlink one or multiple agents from the Tenable Vulnerability Management instance.
 
         :devportal:`agents: delete <agents-delete>`
@@ -213,7 +227,7 @@ class AgentsAPI(TIOEndpoint):
             Unlink many agents:
 
             >>> tio.agents.unlink(1, 2, 3)
-        '''
+        """
         scanner_id = 1
         if 'scanner_id' in kw:
             scanner_id = kw['scanner_id']
@@ -221,17 +235,17 @@ class AgentsAPI(TIOEndpoint):
         if len(agent_ids) <= 1:
             # as only a singular agent_id was sent over, we can call the delete
             # API
-            self._api.delete('scanners/{}/agents/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('agent_id', agent_ids[0], int)
-            ))
+            self._api.delete(
+                f'scanners/{scrub(scanner_id)}/agents/{scrub(agent_ids[0])}'
+            )
         else:
-            return self._api.post('scanners/{}/agents/_bulk/unlink'.format(
-                self._check('scanner_id', scanner_id, int)),
-                json={'items': [self._check('agent_ids', i, int) for i in agent_ids]}).json()
+            return self._api.post(
+                f'scanners/{scrub(scanner_id)}/agents/_bulk/unlink',
+                json={'items': [self._check('agent_ids', i, int) for i in agent_ids]},
+            ).json()
 
     def task_status(self, task_uuid, scanner_id=1):
-        '''
+        """
         Retrieves the current status of the task requested.
 
         :devportal:`bulk-operations: bulk-agent-status <bulk-task-agent-status>`
@@ -248,9 +262,7 @@ class AgentsAPI(TIOEndpoint):
             >>> item = tio.agents.unlink(21, 22, 23)
             >>> task = tio.agent.task_status(item['task_uuid'])
             >>> pprint(task)
-        '''
+        """
         return self._api.get(
-            'scanners/{}/agents/_bulk/{}'.format(
-                self._check('scanner_id', scanner_id, int),
-                self._check('task_uuid', task_uuid, 'uuid')
-            )).json()
+            f'scanners/{scrub(scanner_id)}/agents/_bulk/{scrub(task_uuid)}'
+        ).json()

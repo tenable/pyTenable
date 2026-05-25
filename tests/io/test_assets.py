@@ -2,14 +2,12 @@
 test assets
 """
 
-import time
 import uuid
 
 import pytest
 
 from tenable.errors import ForbiddenError, UnexpectedValueError
 from tests.checker import check, single
-from tests.io.test_networks import fixture_network
 
 
 @pytest.mark.vcr()
@@ -138,33 +136,6 @@ def test_assets_import_job_info(api):
         check(job, 'status_message', str)
         check(job, 'uploaded_assets', int)
         assert job['job_id'] == jobs[0]['job_id']
-
-
-@pytest.mark.vcr()
-def test_assets_tags_uuid_typeerror(api):
-    """
-    test to raise exception when type of uuid param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.assets.tags(1)
-
-
-@pytest.mark.vcr()
-def test_assets_tags_uuid_unexpectedvalueerror(api):
-    """
-    test to raise exception when uuid param value does not match the choices.
-    """
-    with pytest.raises(UnexpectedValueError):
-        api.assets.tags('somethign else')
-
-
-@pytest.mark.vcr()
-def test_workbenches_asset_delete_asset_uuid_typeerror(api):
-    """
-    test to raise exception when type of uuid param does not match the expected type.
-    """
-    with pytest.raises(TypeError):
-        api.workbenches.asset_delete(1)
 
 
 @pytest.mark.vcr()

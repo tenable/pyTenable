@@ -13,7 +13,6 @@ Methods available on ``tio.files``:
 '''
 from typing import BinaryIO
 from .base import TIOEndpoint
-import uuid
 
 class FileAPI(TIOEndpoint):
 

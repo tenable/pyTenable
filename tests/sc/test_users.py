@@ -3,7 +3,7 @@ test file for testing various scenarios in security center's users functionality
 '''
 import pytest
 import responses
-from responses.matchers import query_param_matcher, json_params_matcher
+from responses.matchers import json_params_matcher
 from tenable.sc import TenableSC
 from tenable.errors import APIError, UnexpectedValueError
 from tests.pytenable_log_handler import log_exception

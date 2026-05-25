@@ -80,7 +80,6 @@ from .session import SessionAPI
 from .sync.api import SynchronizationAPI
 from .tags import TagsAPI
 from .users import UsersAPI
-from .v3 import Version3API
 from .was.api import WasAPI
 from .workbenches import WorkbenchesAPI
 
@@ -434,18 +433,6 @@ class TenableIO(APIPlatform):  # noqa: PLR0904
             stacklevel=2,
         )
         return WorkbenchesAPI(self)
-
-    @property
-    def v3(self):
-        warnings.warn(
-            'The V3 sub-pkg have been deprecated from the TVM '
-            'package.  This method will be removed in a future '
-            'version of the SDK.  Please use the relocated modules '
-            'within the package',
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return Version3API(self)
 
     @property
     def was(self):

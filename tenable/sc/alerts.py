@@ -17,7 +17,6 @@ Methods available on ``sc.alerts``:
     https://tools.ietf.org/html/rfc5545#section-3.3.10
 '''
 from .base import SCEndpoint
-from tenable.utils import dict_merge
 
 class AlertAPI(SCEndpoint):
     def _constructor(self, *filters, **kw):

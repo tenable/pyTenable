@@ -7,7 +7,7 @@ from uuid import UUID
 
 import pytest
 import responses
-from restfly.errors import RequestConflictError
+from tenable.errors import RequestConflictError
 
 from tenable.io.exports.iterator import ExportsIterator
 

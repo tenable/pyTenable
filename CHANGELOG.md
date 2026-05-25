@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.05.01]
+
+### Changed
+
+- Vendored RESTFly 1.5.1 into the library and assumed the testing suite for the lib. #994
+- Switched to temporal versioning scheme.
+
+### Updated
+
+- Modified the relevant models to support Marshmallow 4 #995
+
+### Removed
+
+- Removed the deprecated v3 explore APIs
+
+### Fixed
+
+- Corrected Asset Tag space replacement in export job declaration #993
+
+### Added
+
+- Attack Path Export API #983
+- Attack Path Findings #981
+
+[26.05.01]: https://github.com/tenable/pyTenable/compare/1.9.1...26.5.1
+
 ## [1.9.1]
 
 ### Updated
