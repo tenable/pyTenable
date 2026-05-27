@@ -136,7 +136,6 @@ dev = [
     "mock>=5.1.0",
     "pytest-cov>=4.1.0",
     "pytest-datafiles>=3.0.0",
-    "pytest-vcr>=1.0.2",
     "pytest>=8,<9",
     "responses>=0.23.3",
     "ruff>=0.6.4",
@@ -146,4 +145,5 @@ dev = [
     "typer>=0.20.0",
     "mypy>=1.18.2",
     "rust-just>=1.51.0",
+    "pytest-vcr>=1.0.2",
 ]
