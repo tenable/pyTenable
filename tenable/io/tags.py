@@ -573,10 +573,7 @@ class TagsAPI(TIOEndpoint):
             payload['filters'] = current['filters']
 
         return self._api.put(
-            'tags/values/{}'.format(
-                scrub(self._check('tag_value_uuid', tag_value_uuid, 'uuid')),
-                json=payload,
-            )
+            f'tags/values/{scrub(tag_value_uuid)}', json=payload
         ).json()
 
     def edit_category(self, tag_category_uuid, name=None, description=None):
@@ -606,10 +603,7 @@ class TagsAPI(TIOEndpoint):
         if description:
             payload['description'] = self._check('description', description, str)
         return self._api.put(
-            'tags/categories/{}'.format(
-                scrub(self._check('tag_category_uuid', tag_category_uuid, 'uuid')),
-                json=payload,
-            )
+            f'tags/categories/{scrub(tag_category_uuid)}', json=payload
         ).json()
 
     def _tag_list_constructor(self, filters, filterdefs, filter_type, sort):
