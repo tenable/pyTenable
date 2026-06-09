@@ -1,1 +1,2 @@
 -P ubuntu-latest=catthehacker/ubuntu:act-latest
+--secret-file .env
