@@ -8,6 +8,7 @@ docs/source/tenable*.rst
 .pytest_cache
 *.json
 *.log
+.env
 .coverage
 /test_certs
 .python-version

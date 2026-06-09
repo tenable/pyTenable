@@ -1,10 +1,35 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.22.1
+version: v1.25.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
+  SNYK-PYTHON-URLLIB3-10390194:
+    - '*':
+        reason: 'Module not effected, old version only used in testing pipeline'
+        expires: 2027-12-31T00:00:00.000Z
+        created: 2026-05-27T18:41:30.153Z
+  SNYK-PYTHON-URLLIB3-14896210:
+    - '*':
+        reason: 'Module not effected, old version only used in testing pipeline'
+        expires: 2027-12-31T00:00:00.000Z
+        created: 2026-05-27T18:41:54.905Z
+  SNYK-PYTHON-URLLIB3-14192442:
+    - '*':
+        reason: 'Module not effected, old version only used in testing pipeline'
+        expires: 2027-12-31T00:00:00.000Z
+        created: 2026-05-27T18:42:23.245Z
+  SNYK-PYTHON-URLLIB3-16642024:
+    - '*':
+        reason: 'Module not effected, old version only used in testing pipeline'
+        expires: 2027-12-31T00:00:00.000Z
+        created: 2026-05-27T18:42:45.102Z
+  SNYK-PYTHON-URLLIB3-14192443:
+    - '*':
+        reason: 'Module not effected, old version only used in testing pipeline'
+        expires: 2027-12-31T00:00:00.000Z
+        created: 2026-05-27T18:43:01.790Z
   'snyk:lic:pip:certifi:MPL-2.0':
     - '*':
-        reason: Requests Library License
-        expires: 2029-12-31T00:00:00.000Z
-        created: 2021-10-25T22:36:54.046Z
+        reason: Requests License
+        expires: 2027-12-31T00:00:00.000Z
+        created: 2026-05-27T19:37:21.257Z
 patch: {}
