@@ -854,7 +854,6 @@ def test_tags_edit_category_success(api, tagcat):
     check(resp, 'updated_at', 'datetime')
     check(resp, 'updated_by', str)
     check(resp, 'name', str)
-    # check(t, 'description', str, allow_none=True)
     check(resp, 'reserved', bool)
     assert resp['name'] == 'Edited'
 
