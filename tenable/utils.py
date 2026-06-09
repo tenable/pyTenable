@@ -3,8 +3,6 @@ import string
 import warnings
 from typing import Any
 
-logger = logging.getLogger(__name__)
-
 from tenable.base._restfly_v1 import (
     check,
     dict_clean,
@@ -15,6 +13,9 @@ from tenable.base._restfly_v1 import (
     url_validator,
 )
 from tenable.base._restfly_v1 import dict_merge as _dm
+
+logger = logging.getLogger(__name__)
+
 
 __all__ = [
     'check',

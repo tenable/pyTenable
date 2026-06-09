@@ -18,23 +18,15 @@ jobs:
           - "3.14"
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v4
+      - uses: actions/checkout@v6
+      - uses: extractions/setup-just@v4
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
         with:
           python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: uv sync --all-extras --dev
-
-      - name: Run code linting
-        run: uv run ruff check tenable --exit-zero
-
-      - name: Run unit tests
-        run: |
-          uv run pytest \
-            --vcr-record=none \
-            --cov-report=xml:coverage.xml \
-            --cov-fail-under=95
+      - name: "Code Formating and Linting"
+        run: just lint $UV_PYTHON
+      - name: "Unit Testing"
+        run: just unit-tests $UV_PYTHON
 
   code-assessments:
     runs-on: ubuntu-latest
@@ -43,8 +35,6 @@ jobs:
       - uses: astral-sh/setup-uv@v4
         with:
           python-version: "3.12"
-      - name: Run pip-audit
-        run: uv export --format requirements-txt | uv tool run pip-audit --ignore-vuln GHSA-4xh5-x5gv-qwph
-
-      - name: Run Bandit code auditor
-        run: uv tool run --with "bandit[toml,baseline,sarif]" bandit -c pyproject.toml -r . -ll
+      - uses: extractions/setup-just@v4
+      - name: "Code Audits"
+        run: just audit

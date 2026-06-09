@@ -1,4 +1,4 @@
-name: Testing Pipeline
+name: Security Testing Pipeline
 
 on:
   push:
@@ -10,27 +10,19 @@ jobs:
   security_tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
-      - uses: astral-sh/setup-uv@v4
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
+      - uses: snyk/actions/setup@master
+      - uses: extractions/setup-just@v4
 
-      - name: Run pip-audit
-        run: |
-          uv export --format requirements-txt | uv tool run pip-audit --ignore-vuln GHSA-4xh5-x5gv-qwph
-
-      - name: Run Bandit code auditor
-        run: uv tool run --with "bandit[toml,baseline,sarif]" bandit -c pyproject.toml -r . -ll
-
-      - name: Export & Install requirements to run Snyk
-        run: |
-          uv pip compile pyproject.toml -o requirements.txt
-          pip3 install -r requirements.txt
+      - name: OSS Security Audits
+        run: just audit
 
       - name: Snyk Scan
-        uses: snyk/actions/python-3.12@master
+        run: just snyk
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          args: --severity-threshold=high
+          SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
