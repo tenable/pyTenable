@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dynamic = ["version"]
 readme = "README.rst"
 name = "pyTenable"
@@ -46,6 +46,7 @@ dependencies = [
   "marshmallow>=3.8",
   "python-box>=4.0",
   "defusedxml>=0.5.0",
+  "urllib3>=2.8.0",
   "typing-extensions>=4.0.1",
   "requests-toolbelt>=1.0.0",
   "gql>=4.0.0",
@@ -53,6 +54,7 @@ dependencies = [
   "pydantic>=2.5.3",
   "pydantic-extra-types>=2.3.0",
   "arrow>=1.4.0",
+  "restfly>=2.0.0",
 ]
 
 [project.optional-dependencies]
@@ -90,7 +92,7 @@ unfixable = ["B"]
 "**/{tests,docs,tools}/*" = ["E402"]
 
 [tool.ruff.format]
-quote-style = "single"
+# quote-style = "single"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "lf"
@@ -101,7 +103,7 @@ docstring-code-line-length = "dynamic"
 exclude_dirs = [".venv", "tests"]
 
 [tool.pytest.ini_options]
-addopts = "--cov-report term-missing:skip-covered --cov=tenable"
+addopts = "--cov-report term-missing:skip-covered --cov=tenable --asyncio-mode auto"
 testpaths = ["tests"]
 filterwarnings = [
   "ignore::DeprecationWarning:tenable.*",
@@ -129,4 +131,10 @@ dev = [
   "rust-just>=1.51.0",
   "pyright>=1.1.414",
   "ty>=0.0.84",
+  "pytest-asyncio>=1.4.0",
+  "pytest-httpx>=0.36.2",
+]
+test = [
+  "pytest-asyncio>=1.4.0",
+  "pytest-httpx>=0.35.0",
 ]

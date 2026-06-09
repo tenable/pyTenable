@@ -6,9 +6,9 @@ name := "pyTenable"
 
 
 [parallel]
-test-parallel: (test-py "3.14") (test-py "3.12") (test-py "3.13") (test-py "3.14")
+test-parallel: (test-py "3.12") (test-py "3.13") (test-py "3.14")
 
-test: (test-py "3.11") (test-py "3.12") (test-py "3.13") (test-py "3.14") 
+test: (test-py "3.12") (test-py "3.13") (test-py "3.14") 
 
 docs:
     sphinx-build -M clean docs docs/_build

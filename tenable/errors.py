@@ -47,6 +47,21 @@
 import logging
 from typing import Optional
 
+from httpx import Response
+from restfly import APIError as RestflyAPIError
+
+
+class TenableCloudAPIError(RestflyAPIError):
+    request_uuid: str
+    """
+    Request UUID for the API Request. Used by Tenable to track the request through the
+    various services it may traverse.
+    """
+
+    def __init__(self, response: Response, template: str):
+        self.request_uuid = response.headers.get('Request-UUID')
+        super().__init__(response=response, template=template)
+
 
 def api_error_func(resp, **kwargs):  # noqa: PLW0613
     """
