@@ -4,7 +4,7 @@ build-backend   = "setuptools.build_meta"
 
 
 [project]
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dynamic         = ["version"]
 readme          = "README.rst"
 name            = "pyTenable"
@@ -57,6 +57,7 @@ dependencies    = [
     "pydantic>=2.5.3",
     "pydantic-extra-types>=2.3.0",
     "arrow>=1.4.0",
+    "restfly>=2.0.0",
 ]
 
 
@@ -103,7 +104,7 @@ unfixable = [ "B" ]
 
 
 [tool.ruff.format]
-quote-style = "single"
+#quote-style = "single"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "lf"
@@ -118,12 +119,15 @@ docstring-code-line-length = "dynamic"
 
 
 [tool.pytest.ini_options]
-addopts  = "--cov-report term-missing:skip-covered --cov=tenable"
+addopts  = "--cov-report term-missing:skip-covered --cov=tenable --asyncio-mode auto"
 testpaths = ['tests']
 filterwarnings = [
     "ignore::DeprecationWarning:tenable.*",
     "ignore:::tenable",
 ]
+
+[tool.uv.sources]
+restfly = { path = "../restfly/dist/restfly-2.0.0.tar.gz" }
 
 [dependency-groups]
 docs = [
@@ -146,4 +150,8 @@ dev = [
     "mypy>=1.18.2",
     "rust-just>=1.51.0",
     "pytest-vcr>=1.0.2",
+]
+test = [
+    "pytest-asyncio>=1.4.0",
+    "pytest-httpx>=0.35.0",
 ]
