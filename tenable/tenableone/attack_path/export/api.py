@@ -26,6 +26,8 @@ from tenable.tenableone.attack_path.export.schema import (
     ExportRequestStatus,
     ExportSortParams,
     FileFormat,
+    MitreHeatmapExportRequest,
+    MitreHeatmapFilter,
 )
 
 
@@ -136,6 +138,52 @@ class ExportAPI(APIEndpoint):
 
         response = self._post(
             'api/v1/export/attack-technique', json=payload
+        )
+        return ExportRequestId(**response)
+
+    def mitre_heatmap(
+        self,
+        file_format: FileFormat,
+        filter: Optional[MitreHeatmapFilter] = None,
+        columns: Optional[List[str]] = None,
+        file_name: Optional[str] = None,
+    ) -> ExportRequestId:
+        """
+        Export MITRE ATT&CK heatmap
+
+        Args:
+            file_format (FileFormat):
+                The output file format. CSV emits a flat technique table; JSON
+                emits a Navigator-compatible layer document.
+            filter (MitreHeatmapFilter, optional):
+                Filter criteria for the heatmap (platform, query, severities,
+                matrix, show_all_techniques).
+            columns (list[str], optional):
+                Column names to include in the export.
+            file_name (str, optional):
+                Custom file name for the export.
+
+        Returns:
+            ExportRequestId:
+                The export request ID.
+
+        Examples:
+            >>> export = tenable_one.attack_path.export.mitre_heatmap(
+            ...     file_format=FileFormat.JSON,
+            ...     filter=MitreHeatmapFilter(matrix=MitreMatrix.ENTERPRISE),
+            ... )
+            >>> print(export.export_id)
+
+        """
+        payload = MitreHeatmapExportRequest(
+            file_format=file_format,
+            filter=filter,
+            columns=columns,
+            file_name=file_name,
+        ).model_dump(mode='json', exclude_none=True)
+
+        response = self._post(
+            'api/v1/export/mitre-heatmap', json=payload
         )
         return ExportRequestId(**response)
 
