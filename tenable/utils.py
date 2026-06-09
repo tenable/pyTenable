@@ -1,6 +1,9 @@
+import logging
 import string
 import warnings
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 from tenable.base._restfly_v1 import (
     check,
@@ -85,5 +88,10 @@ def scrub(value: Any) -> str:
     """
     Scrubs converts the value to a string and then scrubs out any illegal characters.
     """
-    safe_chars = string.ascii_letters + string.digits + '-_%@'
-    return ''.join([c for c in str(value) if c in safe_chars])
+    safe_chars = string.ascii_letters + string.digits + '-_%@:'
+    scrubbed_value = ''.join([c for c in str(value) if c in safe_chars])
+    if value != scrubbed_value:
+        logger.warning(
+            f"Value '{value}' has unsafe chars, scrubbing to '{scrubbed_value}'"
+        )
+    return scrubbed_value
