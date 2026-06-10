@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.6.1]
+
+### Fixed
+
+- Corrected regression created from incorporating the scrub utility as part of vendoring restfly #1006
+- Corrected tagging issue with exports #1004
+
+### Changed
+
+- Switched build pipeline to use Justfile (replaces the need to use act to test the pipeline) #1000, #1003
+
+### Added
+
+- MITRE Heatmap Export method #1001
+
+[26.6.1]: https://github.com/tenable/pyTenable/compare/26.5.1...26.6.1
+
 ## [26.05.01]
 
 ### Changed
