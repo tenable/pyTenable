@@ -21,6 +21,9 @@ def stringify_list(value, handler) -> str:
 def destringify_list(value) -> Any:
     if isinstance(value, str):
         return [v.strip() for v in value.split(",") if v != ""]
+    elif value is None:
+        return []
+    return value
 
 
 StrList = Annotated[
@@ -32,7 +35,11 @@ ACActions = Literal["CanScan", "CanView", "CanEdit", "CanUse"]
 
 
 class AllowedIPAddresses(BaseModel):
-    model_config = ConfigDict(serialize_by_alias=True)
+    """
+    Access Control :: API Allowed IPs
+    """
+
+    model_config = ConfigDict(serialize_by_alias=True, validate_by_name=True)
     ipv4: Annotated[StrList, Field(alias="allowed_ipv4_addresses")]
     ipv6: Annotated[StrList, Field(alias="allowed_ipv6_addresses")]
 
@@ -87,7 +94,7 @@ class AccessControlUser(AccessControlUserBase):
     Access Control :: User Response Object
     """
 
-    model_config = ConfigDict(serialize_by_alias=True)
+    model_config = ConfigDict(serialize_by_alias=True, validate_by_name=True)
     uuid: UUID
     id: int
     type: str
@@ -130,7 +137,7 @@ class AccessControlApiKeys(BaseModel):
     Access Control :: API Key Assignment Response
     """
 
-    model_config = ConfigDict(serialize_by_alias=True)
+    model_config = ConfigDict(serialize_by_alias=True, validate_by_name=True)
     access_key: Annotated[str, Field(alias="accessKey")]
     secret_key: Annotated[str, Field(alias="secretKey")]
 
@@ -152,18 +159,30 @@ class ListGroupsResponse(BaseModel):
 
 
 class AccessControlPermObj(BaseModel):
+    """
+    Access Control :: Permissions Object
+    """
+
     name: str | None = None
     type: Literal["Tag", "AllAssets"]
     uuid: UUID | None = None
 
 
 class AccessControlSubject(BaseModel):
+    """
+    Access Control :: Permissions Subject
+    """
+
     name: str | None = None
     type: Literal["User", "UserGroup", "AllUsers"]
     uuid: UUID | None = None
 
 
 class AccessControlPermissionBase(BaseModel):
+    """
+    Access Control :: Permissions Base Object
+    """
+
     name: str
     actions: list[ACActions]
     objects: list[AccessControlPermObj]
@@ -171,7 +190,11 @@ class AccessControlPermissionBase(BaseModel):
 
 
 class AccessControlPermission(AccessControlPermissionBase):
-    model_config = ConfigDict(serialize_by_alias=True)
+    """
+    Access Control :: Permissions Object
+    """
+
+    model_config = ConfigDict(serialize_by_alias=True, validate_by_name=True)
     uuid: Annotated[UUID, Field(alias="permission_uuid")]
     created_at: datetime
     created_by: str
@@ -180,11 +203,19 @@ class AccessControlPermission(AccessControlPermissionBase):
 
 
 class ListPermissions(BaseModel):
+    """
+    Access Control :: Permissions Object List Response
+    """
+
     permissions: list[AccessControlPermission]
 
 
 class UserGroupPermissions(BaseModel):
-    model_config = ConfigDict(serialize_by_alias=True)
+    """
+    Access Control :: User Group Permissions
+    """
+
+    model_config = ConfigDict(serialize_by_alias=True, validate_by_name=True)
     granted: Annotated[
         list[AccessControlPermission], Field(alias="permissions_granted")
     ]

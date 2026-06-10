@@ -5,9 +5,9 @@ build-backend   = "setuptools.build_meta"
 
 [project]
 requires-python = ">=3.12"
-dynamic         = ["version"]
 readme          = "README.rst"
 name            = "pyTenable"
+version         = "26.6.1"
 description     = "Python library to interface into Tenable's products and applications"
 authors         = [
     {name = "Tenable, Inc."},
@@ -73,8 +73,6 @@ Issues          = "https://github.com/tenable/pytenable/issues"
 Changelog       = "https://github.com/tenable/pytenable/blob/master/CHANGELOG.md"
 
 
-[tool.setuptools.dynamic]
-version = {attr = "tenable.version.version"}
 
 
 [tool.setuptools.packages.find]
@@ -127,7 +125,7 @@ filterwarnings = [
 ]
 
 [tool.uv.sources]
-restfly = { path = "../restfly/dist/restfly-2.0.0.tar.gz" }
+restfly = { path = "../restfly/dist/restfly-2.0.1.tar.gz" }
 
 [dependency-groups]
 docs = [
