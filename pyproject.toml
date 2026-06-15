@@ -117,7 +117,7 @@ docstring-code-line-length = "dynamic"
 
 
 [tool.pytest.ini_options]
-addopts  = "--cov-report term-missing:skip-covered --cov=tenable --asyncio-mode auto"
+addopts  = "--cov-report term-missing:skip-covered --cov=tenable"
 testpaths = ['tests']
 filterwarnings = [
     "ignore::DeprecationWarning:tenable.*",
@@ -148,8 +148,6 @@ dev = [
     "mypy>=1.18.2",
     "rust-just>=1.51.0",
     "pytest-vcr>=1.0.2",
-]
-test = [
     "pytest-asyncio>=1.4.0",
     "pytest-httpx>=0.35.0",
 ]

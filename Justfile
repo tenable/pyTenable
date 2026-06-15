@@ -1,3 +1,4 @@
+set dotenv-load
 pkg_folder := "tenable"
 repo := "https://github.com/tenable/pyTenable"
 snyk_org := "pytenable"
@@ -43,3 +44,8 @@ audit:
 snyk:
     snyk monitor {{ snyk_args }}
     snyk code test {{ snyk_args }} --severity-threshold=high --project-name="Code Analysis" --report {{ pkg_folder }}
+
+publish:
+    uv build
+    uv publish
+    rm -rf dist/
