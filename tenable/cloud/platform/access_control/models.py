@@ -44,16 +44,25 @@ class AllowedIPAddresses(BaseModel):
     ipv6: Annotated[StrList, Field(alias="allowed_ipv6_addresses")]
 
 
-class AccessControlGroup(BaseModel):
+class AccessControlGroupBase(BaseModel):
     """
-    Access Control :: User Groups
+    fpermiss    Access Control :: User Group Base Model
     """
 
-    permissions: int
     name: str
     uuid: UUID
     id: int
+    immutable: bool = False
     user_count: int | None = None
+    container_uuid: UUID
+
+
+class AccessControlGroup(AccessControlGroupBase):
+    """
+    Access Control :: User Group Base Model
+    """
+
+    permissions: int
 
 
 class AccessControlTwoFactor(BaseModel):
@@ -99,13 +108,15 @@ class AccessControlUser(AccessControlUserBase):
     id: int
     type: str
     username: str
-    last_login_attempt: datetime
-    last_login: Annotated[datetime, Field(alias="lastLogin")]
-    login__count: datetime
+    last_login_attempt: datetime | None = None
+    last_apikey_access: datetime | None = None
+    last_login: Annotated[datetime | None, Field(alias="lastlogin")] = None
+    login_fail_count: int
     login_fail_total: int
-    undeletable: bool = False
     lockout: bool
-    two_factor: AccessControlTwoFactor
+    two_factor: AccessControlTwoFactor | None = None
+    group_uuids: list[UUID]
+    preferences: dict[str, Any]
     container_uuid: UUID
 
 
@@ -155,7 +166,7 @@ class ListGroupsResponse(BaseModel):
     Access Control :: Groups List Response
     """
 
-    groups: list[AccessControlGroup]
+    groups: list[AccessControlGroupBase]
 
 
 class AccessControlPermObj(BaseModel):

@@ -37,7 +37,9 @@ class AccessControlGroupAPI(APIEndpoint):
             The updated group object
         """
         return self._put(
-            scrub(group_id), json={"name": name}, response_model=AccessControlGroup
+            f"/{scrub(group_id)}",
+            json={"name": name},
+            response_model=AccessControlGroup,
         )
 
     def delete(self, group_id: int) -> None:
@@ -47,7 +49,7 @@ class AccessControlGroupAPI(APIEndpoint):
         Args:
             group_id: Unique id for the group
         """
-        self._delete(scrub(group_id))
+        self._delete(f"/{scrub(group_id)}")
 
     def get(self) -> list[AccessControlGroup]:
         """
@@ -69,7 +71,7 @@ class AccessControlGroupAPI(APIEndpoint):
         Returns:
             List of associated user objects
         """
-        resp = self._get(f"/{scrub(group_id)}", response_model=ListUsersResponse)
+        resp = self._get(f"/{scrub(group_id)}/users", response_model=ListUsersResponse)
         return resp.users
 
     def add_user(self, group_id: int, user_id: int) -> None:
@@ -154,7 +156,9 @@ class AsyncAccessControlGroupAPI(AsyncAPIEndpoint):
         Returns:
             List of associated user objects
         """
-        resp = await self._get(f"/{scrub(group_id)}", response_model=ListUsersResponse)
+        resp = await self._get(
+            f"/{scrub(group_id)}/users", response_model=ListUsersResponse
+        )
         return resp.users
 
     async def add_user(self, group_id: int, user_id: int) -> None:
