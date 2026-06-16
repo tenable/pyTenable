@@ -20,10 +20,28 @@ test-py version: (lint version) (unit-tests version) audit
 lint version:
     #uv run --python {{version}} --isolated --group dev mypy {{pkg_folder}}
     #uv run --python {{version}} --isolated --group dev ty check {{pkg_folder}}
-    uv run --python {{ version }} --isolated --group dev ruff check {{ pkg_folder }}
+    uv run                     \
+        --python {{ version }} \
+        --isolated             \
+        --group dev            \
+        ruff check {{ pkg_folder }}
 
 unit-tests version:
-    uv run --python {{ version }} --isolated --group dev pytest -q --cov-fail-under 80
+    uv run                     \
+        --python {{ version }} \
+        --isolated             \
+        --group dev            \
+        pytest -q --cov-fail-under 80
+
+partial-tests path:
+    uv run                           \
+        --isolated                   \
+        --group dev                  \
+        pytest tests/{{ path }}      \
+            -q -vv                   \
+            --cov-fail-under 95      \
+            --cov=tenable/{{ path }} \
+            --cov-report term-missing:skip-covered
 
 audit:
     # urllib3 1.x issues relating to the requirement

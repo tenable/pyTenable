@@ -12,7 +12,7 @@ from tenable.cloud.platform.access_control.models import (
 )
 
 
-def test_access_control_group_model():
+def test_group_model():
     obj = AccessControlGroup(
         permissions=16,
         name="Something",
@@ -31,7 +31,7 @@ def test_access_control_group_model():
     )
 
 
-def test_access_control_group_create(httpx_mock: HTTPXMock):
+def test_group_create(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups",
         method="post",
@@ -55,7 +55,7 @@ def test_access_control_group_create(httpx_mock: HTTPXMock):
     )
 
 
-def test_access_control_group_update(httpx_mock: HTTPXMock):
+def test_group_update(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups/123",
         method="put",
@@ -79,13 +79,13 @@ def test_access_control_group_update(httpx_mock: HTTPXMock):
     )
 
 
-def test_access_control_group_delete(httpx_mock: HTTPXMock):
+def test_group_delete(httpx_mock: HTTPXMock):
     httpx_mock.add_response(url="https://cloud.tenable.com/groups/123", method="delete")
     cloud = TenableCloud(access_key="ABC", secret_key="DEF")
     assert cloud.platform.access_control.groups.delete(group_id=123) is None
 
 
-def test_access_control_group_get(httpx_mock: HTTPXMock):
+def test_group_get(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups",
         method="get",
@@ -112,7 +112,7 @@ def test_access_control_group_get(httpx_mock: HTTPXMock):
     ]
 
 
-def test_access_control_group_get_users(httpx_mock: HTTPXMock):
+def test_group_get_users(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups/123/users",
         method="get",
@@ -166,7 +166,7 @@ def test_access_control_group_get_users(httpx_mock: HTTPXMock):
     ]
 
 
-def test_access_control_group_add_user(httpx_mock: HTTPXMock):
+def test_group_add_user(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups/123/users/345", method="post"
     )
@@ -176,7 +176,7 @@ def test_access_control_group_add_user(httpx_mock: HTTPXMock):
     )
 
 
-def test_access_control_group_rm_user(httpx_mock: HTTPXMock):
+def test_group_rm_user(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups/123/users/345", method="delete"
     )
@@ -188,7 +188,7 @@ def test_access_control_group_rm_user(httpx_mock: HTTPXMock):
 
 
 @pytest.mark.asyncio
-async def test_async_access_control_group_create(httpx_mock: HTTPXMock):
+async def test_async_group_create(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups",
         method="post",
@@ -213,7 +213,7 @@ async def test_async_access_control_group_create(httpx_mock: HTTPXMock):
 
 
 @pytest.mark.asyncio
-async def test_async_access_control_group_update(httpx_mock: HTTPXMock):
+async def test_async_group_update(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups/123",
         method="put",
@@ -240,14 +240,14 @@ async def test_async_access_control_group_update(httpx_mock: HTTPXMock):
 
 
 @pytest.mark.asyncio
-async def test_async_access_control_group_delete(httpx_mock: HTTPXMock):
+async def test_async_group_delete(httpx_mock: HTTPXMock):
     httpx_mock.add_response(url="https://cloud.tenable.com/groups/123", method="delete")
     cloud = AsyncTenableCloud(access_key="ABC", secret_key="DEF")
     assert await cloud.platform.access_control.groups.delete(group_id=123) is None
 
 
 @pytest.mark.asyncio
-async def test_async_access_control_group_get(httpx_mock: HTTPXMock):
+async def test_async_group_get(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups",
         method="get",
@@ -275,7 +275,7 @@ async def test_async_access_control_group_get(httpx_mock: HTTPXMock):
 
 
 @pytest.mark.asyncio
-async def test_async_access_control_group_add_user(httpx_mock: HTTPXMock):
+async def test_async_group_add_user(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups/123/users/345", method="post"
     )
@@ -287,7 +287,7 @@ async def test_async_access_control_group_add_user(httpx_mock: HTTPXMock):
 
 
 @pytest.mark.asyncio
-async def test_async_access_control_group_rm_user(httpx_mock: HTTPXMock):
+async def test_async_group_rm_user(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups/123/users/345", method="delete"
     )
@@ -301,7 +301,7 @@ async def test_async_access_control_group_rm_user(httpx_mock: HTTPXMock):
 
 
 @pytest.mark.asyncio
-async def test_async_access_control_group_get_users(httpx_mock: HTTPXMock):
+async def test_async_group_get_users(httpx_mock: HTTPXMock):
     httpx_mock.add_response(
         url="https://cloud.tenable.com/groups/123/users",
         method="get",

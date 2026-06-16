@@ -14,6 +14,7 @@ class TenableCloud(APIClient):
     _error_class = TenableCloudAPIError
     _lib_name = lib_name
     _lib_version = version
+    _json_dump_kwargs = {"exclude_none": True}
 
     platform: PlatformAPIs
 
@@ -66,6 +67,7 @@ class AsyncTenableCloud(AsyncAPIClient):
     _error_class = TenableCloudAPIError
     _lib_name = lib_name
     _lib_version = version
+    _json_dump_kwargs = {"exclude_none": True}
 
     platform: AsyncPlatformAPIs
 

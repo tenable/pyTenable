@@ -31,7 +31,17 @@ StrList = Annotated[
 ]
 
 BoolInt = Annotated[bool, PlainSerializer(lambda v: int(v))]
-ACActions = Literal["CanScan", "CanView", "CanEdit", "CanUse"]
+ACActions = Literal[
+    "CanScan",
+    "CanView",
+    "CanEdit",
+    "CanUse",
+    "CanViewMssp",
+    "CanEditMssp",
+    "CanImpersonateAdmin",
+    "CanImpersonateScanManager",
+    "CanImpersonateScanOperator",
+]
 
 
 class AllowedIPAddresses(BaseModel):
@@ -175,18 +185,16 @@ class AccessControlPermObj(BaseModel):
     """
 
     name: str | None = None
-    type: Literal["Tag", "AllAssets"]
+    type: Literal["Tag", "AllAssets", "AllObjects"]
     uuid: UUID | None = None
 
 
-class AccessControlSubject(BaseModel):
+class AccessControlSubject(AccessControlPermObj):
     """
     Access Control :: Permissions Subject
     """
 
-    name: str | None = None
-    type: Literal["User", "UserGroup", "AllUsers"]
-    uuid: UUID | None = None
+    type: Literal["User", "UserGroup", "AllUsers", "AllAdmins"]
 
 
 class AccessControlPermissionBase(BaseModel):
@@ -207,10 +215,10 @@ class AccessControlPermission(AccessControlPermissionBase):
 
     model_config = ConfigDict(serialize_by_alias=True, validate_by_name=True)
     uuid: Annotated[UUID, Field(alias="permission_uuid")]
-    created_at: datetime
-    created_by: str
-    updated_at: datetime
-    updated_by: str
+    created_at: datetime | None = None
+    created_by: str | None = None
+    updated_at: datetime | None = None
+    updated_by: str | None = None
 
 
 class ListPermissions(BaseModel):

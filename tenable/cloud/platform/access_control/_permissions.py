@@ -94,7 +94,11 @@ class AccessControlPermissionsAPI(APIEndpoint):
             objects=objects if objects else perm.objects,
             subjects=subjects if subjects else perm.subjects,
         )
-        return self._put(f"/{scrub}", json=new, response_model=AccessControlPermission)
+        return self._put(
+            f"/{scrub(permission_uuid)}",
+            json=new,
+            response_model=AccessControlPermission,
+        )
 
     def delete(self, permission_uuid: UUID) -> None:
         """
@@ -132,10 +136,10 @@ class AccessControlPermissionsAPI(APIEndpoint):
             Assigned permissions object
         """
         return self._get(
-            f"/users/{scrub(group_uuid)}", response_model=UserGroupPermissions
+            f"/user-groups/{scrub(group_uuid)}", response_model=UserGroupPermissions
         )
 
-    def get_current_user_permissions(self) -> UserGroupPermissions:
+    def get_self_permissions(self) -> UserGroupPermissions:
         """
         Lists the current user's permission objects.
 
@@ -225,7 +229,9 @@ class AsyncAccessControlPermissionsAPI(AsyncAPIEndpoint):
             subjects=subjects if subjects else perm.subjects,
         )
         return await self._put(
-            f"/{scrub}", json=new, response_model=AccessControlPermission
+            f"/{scrub(permission_uuid)}",
+            json=new,
+            response_model=AccessControlPermission,
         )
 
     async def delete(self, permission_uuid: UUID) -> None:
@@ -264,10 +270,10 @@ class AsyncAccessControlPermissionsAPI(AsyncAPIEndpoint):
             Assigned permissions object
         """
         return await self._get(
-            f"/users/{scrub(group_uuid)}", response_model=UserGroupPermissions
+            f"/user-groups/{scrub(group_uuid)}", response_model=UserGroupPermissions
         )
 
-    async def get_current_user_permissions(self) -> UserGroupPermissions:
+    async def get_self_permissions(self) -> UserGroupPermissions:
         """
         Lists the current user's permission objects.
 
