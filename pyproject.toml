@@ -125,7 +125,7 @@ filterwarnings = [
 ]
 
 [tool.uv.sources]
-restfly = { path = "../restfly/dist/restfly-2.0.1.tar.gz" }
+restfly = { path = "../restfly/dist/restfly-2.0.2.tar.gz" }
 
 [dependency-groups]
 docs = [
