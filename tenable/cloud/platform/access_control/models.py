@@ -2,35 +2,10 @@ from datetime import datetime
 from typing import Annotated, Any, Literal
 from uuid import UUID
 
-from pydantic import (
-    BaseModel,
-    BeforeValidator,
-    ConfigDict,
-    Field,
-    PlainSerializer,
-    WrapSerializer,
-)
+from pydantic import EmailStr, Field
 
+from tenable.cloud._common import BaseModel, BoolInt, Role, StrList
 
-def stringify_list(value, handler) -> str:
-    if isinstance(value, list):
-        return ",".join(value)
-    return str(value)
-
-
-def destringify_list(value) -> Any:
-    if isinstance(value, str):
-        return [v.strip() for v in value.split(",") if v != ""]
-    elif value is None:
-        return []
-    return value
-
-
-StrList = Annotated[
-    list[str], BeforeValidator(destringify_list), WrapSerializer(stringify_list)
-]
-
-BoolInt = Annotated[bool, PlainSerializer(lambda v: int(v))]
 ACActions = Literal[
     "CanScan",
     "CanView",
@@ -49,14 +24,13 @@ class AllowedIPAddresses(BaseModel):
     Access Control :: API Allowed IPs
     """
 
-    model_config = ConfigDict(serialize_by_alias=True, validate_by_name=True)
     ipv4: Annotated[StrList, Field(alias="allowed_ipv4_addresses")]
     ipv6: Annotated[StrList, Field(alias="allowed_ipv6_addresses")]
 
 
 class AccessControlGroupBase(BaseModel):
     """
-    fpermiss    Access Control :: User Group Base Model
+    Access Control :: User Group Base Model
     """
 
     name: str
@@ -90,9 +64,12 @@ class AccessControlUserBase(BaseModel):
     Access Control :: User Base Object
     """
 
-    permissions: int
+    role: Annotated[Role, Field(alias="permissions")]
     name: str
-    email: str
+    email: EmailStr
+
+
+class AccessControlUserUpdate(AccessControlUserBase):
     enabled: bool
 
 
@@ -101,11 +78,11 @@ class AccessControlUserCreate(AccessControlUserBase):
     Access Control :: User Creation Payload
     """
 
-    username: str
+    username: EmailStr
     password: str
-    permissions: int | None = None
+    role: Annotated[Role | None, Field(alias="permissions")] = None
     name: str | None = None
-    email: str | None = None
+    email: EmailStr | None = None
 
 
 class AccessControlUser(AccessControlUserBase):
@@ -113,11 +90,11 @@ class AccessControlUser(AccessControlUserBase):
     Access Control :: User Response Object
     """
 
-    model_config = ConfigDict(serialize_by_alias=True, validate_by_name=True)
     uuid: UUID
     id: int
     type: str
-    username: str
+    username: EmailStr
+    enabled: bool
     last_login_attempt: datetime | None = None
     last_apikey_access: datetime | None = None
     last_login: Annotated[datetime | None, Field(alias="lastlogin")] = None
@@ -130,27 +107,31 @@ class AccessControlUser(AccessControlUserBase):
     container_uuid: UUID
 
 
-class AccessControlUserAuthorizations(BaseModel):
+class AccessControlUserAuthorizationsBase(BaseModel):
+    """
+    Access Control :: User Access Authorizations Base Model
+    """
+
+    api: Annotated[bool, Field(alias="api_permitted")]
+    password: Annotated[bool, Field(alias="password_permitted")]
+    saml: Annotated[bool, Field(alias="saml_permitted")]
+
+
+class AccessControlUserAuthorizations(AccessControlUserAuthorizationsBase):
     """
     Access Control :: User Access Authorizations
     """
 
     account_uuid: UUID
     user_uuid: UUID
-    api_permitted: bool
-    password_permitted: bool
-    saml_permitted: bool
 
 
-class AccessControlUserAuthorizationsUpdate(BaseModel):
+class AccessControlUserAuthorizationsUpdate(AccessControlUserAuthorizationsBase):
     """
     Access Control User Access Authorization Update Payload
     """
 
-    api_permitted: bool
-    password_permitted: bool
-    saml_permitted: bool
-    mfa_enrollment_required: bool
+    mfa: Annotated[bool | None, Field(alias="mfa_enrollment_required")] = None
 
 
 class AccessControlApiKeys(BaseModel):
@@ -158,7 +139,6 @@ class AccessControlApiKeys(BaseModel):
     Access Control :: API Key Assignment Response
     """
 
-    model_config = ConfigDict(serialize_by_alias=True, validate_by_name=True)
     access_key: Annotated[str, Field(alias="accessKey")]
     secret_key: Annotated[str, Field(alias="secretKey")]
 
@@ -213,7 +193,6 @@ class AccessControlPermission(AccessControlPermissionBase):
     Access Control :: Permissions Object
     """
 
-    model_config = ConfigDict(serialize_by_alias=True, validate_by_name=True)
     uuid: Annotated[UUID, Field(alias="permission_uuid")]
     created_at: datetime | None = None
     created_by: str | None = None
@@ -234,7 +213,6 @@ class UserGroupPermissions(BaseModel):
     Access Control :: User Group Permissions
     """
 
-    model_config = ConfigDict(serialize_by_alias=True, validate_by_name=True)
     granted: Annotated[
         list[AccessControlPermission], Field(alias="permissions_granted")
     ]

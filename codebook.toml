@@ -1,5 +1,7 @@
 words = [
+    "Mssp",
     "acls",
+    "apikey",
     "autoclass",
     "autoexception",
     "badgatewayerror",
@@ -7,6 +9,7 @@ words = [
     "boxify",
     "bymonthday",
     "byweekday",
+    "chpasswd",
     "cidr",
     "conv",
     "destringify",
@@ -19,6 +22,7 @@ words = [
     "invalidmethoderror",
     "ips",
     "ipv",
+    "lastlogin",
     "lce",
     "lengthrequirederror",
     "lobj",
