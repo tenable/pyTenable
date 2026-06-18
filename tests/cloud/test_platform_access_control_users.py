@@ -105,6 +105,18 @@ def test_users_delete(httpx_mock: HTTPXMock):
     assert cloud.platform.access_control.users.delete(UUID_UUID) is None
 
 
+def test_users_delete_successor(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(
+        url=f"https://cloud.tenable.com/users/{UUID_STR}?successor_user_uuid={UUID_STR}",
+        method="delete",
+    )
+    cloud = TenableCloud(access_key="ABC", secret_key="DEF")
+    assert (
+        cloud.platform.access_control.users.delete(UUID_UUID, successor_id=UUID_UUID)
+        is None
+    )
+
+
 def test_users_details(httpx_mock: HTTPXMock, user_obj, user_json):
     httpx_mock.add_response(
         url=f"https://cloud.tenable.com/users/{UUID_STR}", method="get", json=user_json
@@ -316,6 +328,21 @@ async def test_async_users_delete(httpx_mock: HTTPXMock):
     )
     cloud = AsyncTenableCloud(access_key="ABC", secret_key="DEF")
     assert await cloud.platform.access_control.users.delete(UUID_UUID) is None
+
+
+@pytest.mark.asyncio
+async def test_async_users_delete_successor(httpx_mock: HTTPXMock):
+    httpx_mock.add_response(
+        url=f"https://cloud.tenable.com/users/{UUID_STR}?successor_user_uuid={UUID_STR}",
+        method="delete",
+    )
+    cloud = AsyncTenableCloud(access_key="ABC", secret_key="DEF")
+    assert (
+        await cloud.platform.access_control.users.delete(
+            UUID_UUID, successor_id=UUID_UUID
+        )
+        is None
+    )
 
 
 @pytest.mark.asyncio

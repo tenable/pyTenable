@@ -130,14 +130,20 @@ class AccessControlUserAPI(APIEndpoint):
         """
         return self._get(f"/{scrub(user_id)}", response_model=AccessControlUser)
 
-    def delete(self, user_id: int | UUID | str) -> None:
+    def delete(
+        self, user_id: int | UUID | str, *, successor_id: UUID | str | None = None
+    ) -> None:
         """
         Deletes the specified user.
 
         Args:
             user_id: Id of the user to delete.
+            successor_id: User id to inherit the objects of the deleted user.
         """
-        self._delete(f"/{scrub(user_id)}")
+        params = {}
+        if successor_id is not None:
+            params["successor_user_uuid"] = str(successor_id)
+        self._delete(f"/{scrub(user_id)}", params=params)
 
     def get(self) -> list[AccessControlUser]:
         """
@@ -410,14 +416,20 @@ class AsyncAccessControlUserAPI(AsyncAPIEndpoint):
         """
         return await self._get(f"/{scrub(user_id)}", response_model=AccessControlUser)
 
-    async def delete(self, user_id: int | UUID | str) -> None:
+    async def delete(
+        self, user_id: int | UUID | str, *, successor_id: UUID | str | None = None
+    ) -> None:
         """
         Deletes the specified user.
 
         Args:
             user_id: Id of the user to delete.
+            successor_id: User id to inherit the objects of the deleted user.
         """
-        await self._delete(f"/{scrub(user_id)}")
+        params = {}
+        if successor_id is not None:
+            params["successor_user_uuid"] = str(successor_id)
+        await self._delete(f"/{scrub(user_id)}", params=params)
 
     async def get(self) -> list[AccessControlUser]:
         """
