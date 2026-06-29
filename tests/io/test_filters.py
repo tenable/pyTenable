@@ -167,3 +167,24 @@ def test_filters_credentials_false_filters(api):
         check(data[1], 'readable_name', str, allow_none=True)
         check(data[1], 'operators', list, allow_none=True)
         check(data[1], 'control', dict, allow_none=True)
+
+
+def test_normalize_name_only_choices(api):
+    """
+    test that _normalize handles list items that only carry a 'name' key
+    (e.g. the target_group filter) instead of raising KeyError: 'id'
+    """
+    filterset = [
+        {
+            'name': 'target_group',
+            'operators': ['eq', 'neq'],
+            'control': {
+                'type': 'dropdown_multi',
+                'list': [{'name': 'mygroup'}],
+            },
+        }
+    ]
+    result = getattr(api.filters, '_normalize')(filterset)
+    assert result['target_group']['choices'] == ['mygroup']
+    assert result['target_group']['operators'] == ['eq', 'neq']
+    assert result['target_group']['pattern'] is None
