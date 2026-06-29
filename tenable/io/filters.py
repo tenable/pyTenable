@@ -44,10 +44,20 @@ class FiltersAPI(TIOEndpoint):
                 # is a list of dictionary items, and in other cases the "list"
                 # is a list of string values.
                 if isinstance(item['control']['list'][0], dict):
-                    key = 'value' if 'value' in item['control']['list'][0] else 'id'
-                    datablock['choices'] = [
-                        str(i[key]) for i in item['control']['list']
-                    ]
+                    # The list items don't always carry the same key. Most use
+                    # 'value' or 'id', but some (e.g. the target_group filter)
+                    # only provide a 'name'. Pick the first key that exists
+                    # rather than assuming 'id', which raised KeyError before.
+                    first = item['control']['list'][0]
+                    key = next(
+                        (k for k in ('value', 'id', 'name') if k in first), None
+                    )
+                    if key is not None:
+                        datablock['choices'] = [
+                            str(i[key])
+                            for i in item['control']['list']
+                            if key in i
+                        ]
                 elif isinstance(item['control']['list'], list):
                     datablock['choices'] = [str(i) for i in item['control']['list']]
             if 'regex' in item['control']:
