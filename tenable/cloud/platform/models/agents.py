@@ -14,11 +14,12 @@ from tenable.cloud._common import (
     TIMEZONES,
     APIModel,
     BaseModel,
-    PaginationV1,
     StrList,
     ser_list_to_str,
     val_str_to_list,
 )
+
+from .pagination_v1 import PageV1Response
 
 HealthState = Literal["HEALTHY", "WARNING", "CRITICAL", "SAFE MODE", "UNKNOWN"]
 RRuleFreq = Literal["ONETIME", "DAILY", "WEEKLY", "MONTHLY", "YEARLY"]
@@ -135,9 +136,8 @@ class AgentDetail(Agent):
     health_events: list[AgentHealthEvent] | None = None
 
 
-class AgentListResponse(BaseModel):
-    agents: list[Agent]
-    pagination: PaginationV1
+class AgentListResponse(PageV1Response):
+    items: Annotated[list[Agent], Field(validation_alias="agents")]
 
 
 class AgentConfigUnlink(BaseModel):
@@ -257,12 +257,40 @@ class AgentGroupTask(BaseModel):
 class BulkAgentCriteria(BaseModel):
     all_agents: bool = True
     wildcard: str | None = None
-    filters: list[AgentFilter]
+    filters: list[AgentFilter] | None = None
     filter_type: Literal["and", "or"] = "and"
     hardcoded_filters: list[AgentFilter] | None = None
 
 
 class BulkAgentQuery(BaseModel):
     criteria: BulkAgentCriteria | None = None
-    items: list[int] | list[UUID] | None = None
-    not_items: list[int] | list[UUID] | None = None
+    items: list[int | UUID] | None = None
+    not_items: list[int | UUID] | None = None
+
+
+class DirectiveSettingItem(BaseModel):
+    setting: str
+    value: str
+
+
+class DirectiveOptions(BaseModel):
+    hard: bool | None = None
+    idle: bool | None = None
+    settings: list[DirectiveSettingItem] | None = None
+
+
+class AgentDirective(BaseModel):
+    type: Literal["restart", "settings"]
+    options: DirectiveOptions | None = None
+
+
+class BulkAgentNetworkQuery(BulkAgentQuery):
+    network_uuid: str
+
+
+class BulkAgentProfileQuery(BulkAgentQuery):
+    profile_uuid: str | None = None
+
+
+class BulkAgentDirectiveQuery(BulkAgentQuery):
+    directive: AgentDirective

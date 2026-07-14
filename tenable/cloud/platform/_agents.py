@@ -3,13 +3,14 @@ from uuid import UUID
 
 from restfly import APIEndpoint, AsyncAPIEndpoint
 
-from tenable.cloud._common import AsyncPaginationV1Iterator, PaginationV1Iterator
 from tenable.utils import scrub
 
+from .iterators import AsyncPaginationV1Iterator, PaginationV1Iterator
 from .models.agents import (
     Agent,
     AgentConfig,
     AgentDetail,
+    AgentDirective,
     AgentExclusion,
     AgentExclusionCreate,
     AgentExclusionListResponse,
@@ -20,8 +21,11 @@ from .models.agents import (
     AgentQueryParams,
     AgentSchedule,
     AgentTask,
-    AgentGroupTask,
     BulkAgentCriteria,
+    BulkAgentDirectiveQuery,
+    BulkAgentNetworkQuery,
+    BulkAgentProfileQuery,
+    BulkAgentQuery,
 )
 
 
@@ -139,7 +143,7 @@ class AgentGroupsAPI(APIEndpoint):
         Returns:
             Created agent group object.
         """
-        return self._post(response_model=AgentExclusion, json={"name": name})
+        return self._post(response_model=AgentGroup, json={"name": name})
 
     def update(self, id: int | UUID, *, name: str) -> AgentGroup:
         """
@@ -165,7 +169,7 @@ class AgentGroupsAPI(APIEndpoint):
         """
         self._delete(f"/{scrub(id)}")
 
-    def get(self) -> list[AgentExclusion]:
+    def get(self) -> list[AgentGroup]:
         """
         Gets the list of agent groups.
 
@@ -175,7 +179,7 @@ class AgentGroupsAPI(APIEndpoint):
         resp = self._get(response_model=AgentGroupListResponse)
         return resp.groups
 
-    def details(self, id: int | UUID) -> AgentExclusion:
+    def details(self, id: int | UUID) -> AgentGroup:
         """
         Gets the details for thew specific agent group.
 
@@ -208,26 +212,1005 @@ class AgentGroupsAPI(APIEndpoint):
         self._delete(f"/{scrub(group_id)}/agents/{scrub(agent_id)}")
 
 
+class AsyncAgentExclusionAPI(AsyncAPIEndpoint):
+    _path = "/scanners/null/agents/exclusions"
+
+    async def create(
+        self,
+        name: str,
+        description: str | None = None,
+        schedule: AgentSchedule | None = None,
+    ) -> AgentExclusion:
+        """
+        Creates a new Agent exclusion
+
+        Args:
+            name: The name of the new exclusion.
+            description: Description of the new exclusion.
+            schedule: Schedule object of the new exclusion.
+
+        Returns:
+            Created exclusion object.
+        """
+        return await self._post(
+            response_model=AgentExclusion,
+            json=AgentExclusionCreate(
+                name=name, description=description, schedule=schedule
+            ),
+        )
+
+    async def update(
+        self,
+        id: int | UUID,
+        *,
+        name: str | None = None,
+        description: str | None = None,
+        schedule: AgentSchedule | None = None,
+    ) -> AgentExclusion:
+        """
+        Updates an existing Agent exclusion object
+
+        Args:
+            id: Unique ID of the exclusion object to edit.
+            name: New name of the exclusion.
+            description: New description for the exclusion.
+            schedule: Updated schedule object for the exclusion.
+
+        Returns:
+            Updated exclusion object.
+        """
+        excl = await self.details(id)
+        updated = AgentExclusionCreate(
+            name=name if name is not None else excl.name,
+            description=description if description is not None else excl.description,
+            schedule=schedule if schedule is not None else excl.schedule,
+        )
+        return await self._put(
+            f"/{scrub(id)}", json=updated, response_model=AgentExclusion
+        )
+
+    async def delete(self, id: int | UUID) -> None:
+        """
+        Deletes the specified agent exclusion.
+
+        Args:
+            id: Unique ID of the exclusion object to delete.
+        """
+        await self._delete(f"/{scrub(id)}")
+
+    async def get(self) -> list[AgentExclusion]:
+        """
+        Gets the list of agent exclusions.
+
+        Returns:
+            List of exclusion objects.
+        """
+        resp = await self._get(response_model=AgentExclusionListResponse)
+        return resp.exclusions
+
+    async def details(self, id: int | UUID) -> AgentExclusion:
+        """
+        Gets the details for the specific agent exclusion.
+
+        Args:
+            id: Unique id of the exclusion object to retrieve.
+
+        Returns:
+            Requested exclusion object.
+        """
+        return await self._get(f"/{scrub(id)}", response_model=AgentExclusion)
+
+
+class AsyncAgentGroupsAPI(AsyncAPIEndpoint):
+    _path = "/scanners/null/agent-groups"
+
+    async def create(self, name: str) -> AgentGroup:
+        """
+        Creates a new Agent group
+
+        Args:
+            name: The name of the new group.
+
+        Returns:
+            Created agent group object.
+        """
+        return await self._post(response_model=AgentGroup, json={"name": name})
+
+    async def update(self, id: int | UUID, *, name: str) -> AgentGroup:
+        """
+        Updates an existing agent group object
+
+        Args:
+            id: Unique ID of the group object to edit.
+            name: New name of the group.
+
+        Returns:
+            Updated agent group object.
+        """
+        return await self._put(
+            f"/{scrub(id)}", json={"name": name}, response_model=AgentGroup
+        )
+
+    async def delete(self, id: int | UUID) -> None:
+        """
+        Deletes the specified agent group.
+
+        Args:
+            id: Unique ID of the agent group object to delete.
+        """
+        await self._delete(f"/{scrub(id)}")
+
+    async def get(self) -> list[AgentGroup]:
+        """
+        Gets the list of agent groups.
+
+        Returns:
+            List of agent group objects.
+        """
+        resp = await self._get(response_model=AgentGroupListResponse)
+        return resp.groups
+
+    async def details(self, id: int | UUID) -> AgentGroup:
+        """
+        Gets the details for the specific agent group.
+
+        Args:
+            id: Unique id of the agent group object to retrieve.
+
+        Returns:
+            Requested agent group object.
+        """
+        return await self._get(f"/{scrub(id)}", response_model=AgentGroup)
+
+    async def add(self, group_id: int | UUID, agent_id: int | UUID) -> None:
+        """
+        Adds an agent to the agent group.
+
+        Args:
+            group_id: Agent Group ID
+            agent_id: Agent ID
+        """
+        await self._put(f"/{scrub(group_id)}/agents/{scrub(agent_id)}")
+
+    async def remove(self, group_id: int | UUID, agent_id: int | UUID) -> None:
+        """
+        Removes an agent from the agent group.
+
+        Args:
+            group_id: Agent Group ID
+            agent_id: Agent ID
+        """
+        await self._delete(f"/{scrub(group_id)}/agents/{scrub(agent_id)}")
+
+
 class AgentTasksAPI(APIEndpoint):
     _path = "/scanners/null"
 
-    def _task(self, model: BulkAgentQuery, response_model: AgentTask) -> AgentTask:
-        ...
+    def task_status(self, task_uuid: UUID | str) -> AgentTask:
+        """
+        Returns the status of a bulk agent task.
 
-    def add_many(
+        Args:
+            task_uuid: The UUID of the task to check.
+
+        Returns:
+            Current status of the specified task.
+        """
+        return self._get(f"/agents/_bulk/{scrub(task_uuid)}", response_model=AgentTask)
+
+    def group_task_status(
+        self, group_id: int | UUID, task_uuid: UUID | str
+    ) -> AgentTask:
+        """
+        Returns the status of a bulk agent group task.
+
+        Args:
+            group_id: The ID of the agent group.
+            task_uuid: The UUID of the task to check.
+
+        Returns:
+            Current status of the specified task.
+        """
+        return self._get(
+            f"/agent-groups/{scrub(group_id)}/agents/_bulk/{scrub(task_uuid)}",
+            response_model=AgentTask,
+        )
+
+    def add_to_group(
         self,
         group_id: int | UUID,
         *,
-        filters: list[str | AgentFilter],
         all_agents: bool = True,
-        wildcard: str | None = None,
+        filters: list[str | AgentFilter] | None = None,
         filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
         hardcoded_filters: list[str | AgentFilter] | None = None,
-        included: list[int] | list[UUID] | None = None,
-        excluded: list[int] | list[UUID] | None = None,
-    ) -> AgentGroupTask:
-        
-        
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-adds agents to an agent group.
+
+        Args:
+            group_id: The ID of the agent group.
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return self._post(
+            f"/agent-groups/{scrub(group_id)}/agents/_bulk/add",
+            json=BulkAgentQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+            ),
+            response_model=AgentTask,
+        )
+
+    def remove_from_group(
+        self,
+        group_id: int | UUID,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-removes agents from an agent group.
+
+        Args:
+            group_id: The ID of the agent group.
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return self._post(
+            f"/agent-groups/{scrub(group_id)}/agents/_bulk/remove",
+            json=BulkAgentQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+            ),
+            response_model=AgentTask,
+        )
+
+    def add_to_network(
+        self,
+        network_uuid: UUID | str,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-adds agents to a network.
+
+        Args:
+            network_uuid: The UUID of the network to add agents to.
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return self._post(
+            "/agents/_bulk/addToNetwork",
+            json=BulkAgentNetworkQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+                network_uuid=str(network_uuid),
+            ),
+            response_model=AgentTask,
+        )
+
+    def remove_from_network(
+        self,
+        network_uuid: UUID | str,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-removes agents from a network.
+
+        Args:
+            network_uuid: The UUID of the network to remove agents from.
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return self._post(
+            "/agents/_bulk/removeFromNetwork",
+            json=BulkAgentNetworkQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+                network_uuid=str(network_uuid),
+            ),
+            response_model=AgentTask,
+        )
+
+    def assign_to_profile(
+        self,
+        profile_uuid: UUID | str | None = None,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-assigns agents to an agent profile, or removes agents from their
+        current profile when ``profile_uuid`` is ``None``.
+
+        Args:
+            profile_uuid:
+                The UUID of the profile to assign. Pass ``None`` to remove
+                agents from their current profile.
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return self._post(
+            "/agents/_bulk/assignToProfile",
+            json=BulkAgentProfileQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+                profile_uuid=str(profile_uuid) if profile_uuid is not None else None,
+            ),
+            response_model=AgentTask,
+        )
+
+    def send_directive(
+        self,
+        directive: AgentDirective,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Sends a bulk directive (restart or settings change) to agents.
+
+        Args:
+            directive:
+                An :class:`~.models.AgentDirective` describing the instruction
+                to send (``type="restart"`` or ``type="settings"``).
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return self._post(
+            "/agents/_bulk/directive",
+            json=BulkAgentDirectiveQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+                directive=directive,
+            ),
+            response_model=AgentTask,
+        )
+
+    def send_group_directive(
+        self,
+        group_id: int | UUID,
+        directive: AgentDirective,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Sends a bulk directive (restart or settings change) to agents in a group.
+
+        Args:
+            group_id: The ID of the agent group.
+            directive:
+                An :class:`~.models.AgentDirective` describing the instruction
+                to send (``type="restart"`` or ``type="settings"``).
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return self._post(
+            f"/agent-groups/{scrub(group_id)}/agents/_bulk/directive",
+            json=BulkAgentDirectiveQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+                directive=directive,
+            ),
+            response_model=AgentTask,
+        )
+
+    def unlink_many(
+        self,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-unlinks (deletes) agents.
+
+        Args:
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return self._post(
+            "/agents/_bulk/unlink",
+            json=BulkAgentQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+            ),
+            response_model=AgentTask,
+        )
+
+
+class AsyncAgentTasksAPI(AsyncAPIEndpoint):
+    _path = "/scanners/null"
+
+    async def task_status(self, task_uuid: UUID | str) -> AgentTask:
+        """
+        Returns the status of a bulk agent task.
+
+        Args:
+            task_uuid: The UUID of the task to check.
+
+        Returns:
+            Current status of the task.
+        """
+        return await self._get(
+            f"/agents/_bulk/{scrub(task_uuid)}", response_model=AgentTask
+        )
+
+    async def group_task_status(
+        self, group_id: int | UUID, task_uuid: UUID | str
+    ) -> AgentTask:
+        """
+        Returns the status of a bulk agent group task.
+
+        Args:
+            group_id: The ID of the agent group.
+            task_uuid: The UUID of the task to check.
+
+        Returns:
+            Current status of the task.
+        """
+        return await self._get(
+            f"/agent-groups/{scrub(group_id)}/agents/_bulk/{scrub(task_uuid)}",
+            response_model=AgentTask,
+        )
+
+    async def add_to_group(
+        self,
+        group_id: int | UUID,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-adds agents to an agent group.
+
+        Args:
+            group_id: The ID of the agent group.
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return await self._post(
+            f"/agent-groups/{scrub(group_id)}/agents/_bulk/add",
+            json=BulkAgentQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+            ),
+            response_model=AgentTask,
+        )
+
+    async def remove_from_group(
+        self,
+        group_id: int | UUID,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-removes agents from an agent group.
+
+        Args:
+            group_id: The ID of the agent group.
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return await self._post(
+            f"/agent-groups/{scrub(group_id)}/agents/_bulk/remove",
+            json=BulkAgentQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+            ),
+            response_model=AgentTask,
+        )
+
+    async def add_to_network(
+        self,
+        network_uuid: UUID | str,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-adds agents to a network.
+
+        Args:
+            network_uuid: The UUID of the network to add agents to.
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return await self._post(
+            "/agents/_bulk/addToNetwork",
+            json=BulkAgentNetworkQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+                network_uuid=str(network_uuid),
+            ),
+            response_model=AgentTask,
+        )
+
+    async def remove_from_network(
+        self,
+        network_uuid: UUID | str,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-removes agents from a network.
+
+        Args:
+            network_uuid: The UUID of the network to remove agents from.
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return await self._post(
+            "/agents/_bulk/removeFromNetwork",
+            json=BulkAgentNetworkQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+                network_uuid=str(network_uuid),
+            ),
+            response_model=AgentTask,
+        )
+
+    async def assign_to_profile(
+        self,
+        profile_uuid: UUID | str | None = None,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-assigns agents to an agent profile, or removes agents from their
+        current profile when ``profile_uuid`` is ``None``.
+
+        Args:
+            profile_uuid:
+                The UUID of the profile to assign. Pass ``None`` to remove
+                agents from their current profile.
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return await self._post(
+            "/agents/_bulk/assignToProfile",
+            json=BulkAgentProfileQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+                profile_uuid=str(profile_uuid) if profile_uuid is not None else None,
+            ),
+            response_model=AgentTask,
+        )
+
+    async def send_directive(
+        self,
+        directive: AgentDirective,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Sends a bulk directive (restart or settings change) to agents.
+
+        Args:
+            directive:
+                An :class:`~.models.AgentDirective` describing the instruction
+                to send (``type="restart"`` or ``type="settings"``).
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return await self._post(
+            "/agents/_bulk/directive",
+            json=BulkAgentDirectiveQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+                directive=directive,
+            ),
+            response_model=AgentTask,
+        )
+
+    async def send_group_directive(
+        self,
+        group_id: int | UUID,
+        directive: AgentDirective,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Sends a bulk directive (restart or settings change) to agents in a group.
+
+        Args:
+            group_id: The ID of the agent group.
+            directive:
+                An :class:`~.models.AgentDirective` describing the instruction
+                to send (``type="restart"`` or ``type="settings"``).
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return await self._post(
+            f"/agent-groups/{scrub(group_id)}/agents/_bulk/directive",
+            json=BulkAgentDirectiveQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+                directive=directive,
+            ),
+            response_model=AgentTask,
+        )
+
+    async def unlink_many(
+        self,
+        *,
+        all_agents: bool = True,
+        filters: list[str | AgentFilter] | None = None,
+        filter_type: Literal["and", "or"] = "and",
+        wildcard: str | None = None,
+        hardcoded_filters: list[str | AgentFilter] | None = None,
+        items: list[int | UUID] | None = None,
+        not_items: list[int | UUID] | None = None,
+    ) -> AgentTask:
+        """
+        Bulk-unlinks (deletes) agents.
+
+        Args:
+            all_agents: Match all agents when building criteria.
+            filters:
+                List of filters in ``field:operator:value`` format or as
+                :class:`AgentFilter` objects.
+            filter_type: Combine filters with ``and`` or ``or``.
+            wildcard: Free-text wildcard search string.
+            hardcoded_filters: Additional filters always combined with ``and``.
+            items: Agent IDs or UUIDs to include.
+            not_items: Agent IDs or UUIDs to exclude.
+
+        Returns:
+            Task object for tracking the bulk operation.
+        """
+        return await self._post(
+            "/agents/_bulk/unlink",
+            json=BulkAgentQuery(
+                criteria=BulkAgentCriteria(
+                    all_agents=all_agents,
+                    wildcard=wildcard,
+                    filters=filters,  # type: ignore[arg-type]
+                    filter_type=filter_type,
+                    hardcoded_filters=hardcoded_filters,  # type: ignore[arg-type]
+                ),
+                items=items,
+                not_items=not_items,
+            ),
+            response_model=AgentTask,
+        )
 
 
 class AgentsAPI(APIEndpoint):
@@ -235,6 +1218,7 @@ class AgentsAPI(APIEndpoint):
 
     exclusions: AgentExclusionAPI
     groups: AgentGroupsAPI
+    tasks: AgentTasksAPI
 
     def _list_agents(self, *, path: str, params: AgentQueryParams) -> AgentListResponse:
         return self._client._get(path, params=params, response_model=AgentListResponse)
@@ -277,7 +1261,7 @@ class AgentsAPI(APIEndpoint):
                 ``"name:desc,platform:asc"``.
 
         Returns:
-            Iterator yielding :class:`~.models.AgentListItem` objects.
+            Iterator yielding agent objects.
         """
         if group_id is not None:
             path = f"/scanners/null/agent-groups/{scrub(group_id)}/agents"
@@ -295,7 +1279,7 @@ class AgentsAPI(APIEndpoint):
                 "limit": limit,
                 "sort": sort,
             },
-            context=schema,
+            context={"filters": schema},
         )
         return AgentsIterator(self._client, path=path, params=params)
 
@@ -307,7 +1291,7 @@ class AgentsAPI(APIEndpoint):
             agent_id: The unique ID of the agent.
 
         Returns:
-            :class:`~.models.AgentDetails` for the specified agent.
+            Specified agent details.
         """
         return self._get(f"/{scrub(agent_id)}", response_model=AgentDetail)
 
@@ -387,6 +1371,10 @@ class AgentsAPI(APIEndpoint):
 class AsyncAgentsAPI(AsyncAPIEndpoint):
     _path = "/scanners/null/agents"
 
+    exclusions: AsyncAgentExclusionAPI
+    groups: AsyncAgentGroupsAPI
+    tasks: AsyncAgentTasksAPI
+
     async def _list_agents(
         self, *, path: str, params: AgentQueryParams
     ) -> AgentListResponse:
@@ -431,7 +1419,7 @@ class AsyncAgentsAPI(AsyncAPIEndpoint):
                 ``"name:desc,platform:asc"``.
 
         Returns:
-            Async iterator yielding :class:`~.models.AgentListItem` objects.
+            Async iterator yielding agent objects.
         """
         if group_id is not None:
             path = f"/scanners/null/agent-groups/{scrub(group_id)}/agents"
@@ -458,7 +1446,7 @@ class AsyncAgentsAPI(AsyncAPIEndpoint):
             agent_id: The unique ID of the agent.
 
         Returns:
-            :class:`~.models.AgentDetails` for the specified agent.
+            Specified agent details.
         """
         return await self._get(f"/{scrub(agent_id)}", response_model=AgentDetail)
 
@@ -471,7 +1459,7 @@ class AsyncAgentsAPI(AsyncAPIEndpoint):
             name: The new name for the agent.
 
         Returns:
-            Updated :class:`~.models.AgentDetails` for the agent.
+            Updated details for the agent.
         """
         return await self._patch(
             f"/{scrub(agent_id)}", json={"name": name}, response_model=AgentDetail
