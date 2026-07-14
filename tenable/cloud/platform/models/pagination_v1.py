@@ -1,5 +1,5 @@
 import re
-from typing import Annotated, Any, Literal, Self
+from typing import Annotated, Any, Literal
 
 from pydantic import (
     Field,
@@ -9,6 +9,28 @@ from pydantic import (
 )
 
 from tenable.cloud._common import BaseModel, StrList
+
+
+class SortObj(BaseModel):
+    name: str
+    order: Literal["asc", "desc"]
+
+
+class PaginationV1(BaseModel):
+    total: int
+    offset: int
+    limit: int
+    sort: list[SortObj]
+
+
+class PageV1Response(BaseModel):
+    items: list[BaseModel]
+    pagination: PaginationV1
+
+
+class PaginationV1Query(BaseModel):
+    limit: int
+    offset: int = 0
 
 
 class BaseFilterV1ItemControl(BaseModel):
@@ -68,6 +90,9 @@ class QueryFilterV1(BaseModel):
     @model_validator(mode="before")
     @classmethod
     def validate_model(cls, data: Any, info: ValidationInfo) -> Any:
+        filters = None
+        if isinstance(info.context, dict):
+            filters: BaseFilterV1Resp | None = info.context.get("filters")
         if isinstance(data, str):
             # Convert the raw string value into the expected model.
             parts = data.split(":", 2)
@@ -77,8 +102,8 @@ class QueryFilterV1(BaseModel):
         elif isinstance(data, tuple) and len(data) == 3:
             # Convert the
             data = {"field": data[0], "operator": data[1], "value": data[2]}
-        if isinstance(info.context, BaseFilterV1Resp) and isinstance(data, dict):
-            if not info.context.is_valid_filter(**data):
+        if isinstance(filters, BaseFilterV1Resp) and isinstance(data, dict):
+            if not filters.is_valid_filter(**data):
                 raise ValueError(f"{data} doesn't match any valid filter schemas.")
         return data
 

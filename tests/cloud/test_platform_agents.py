@@ -126,10 +126,22 @@ def test_agent_query_params():
 
 
 def _pagination(total: int, limit: int, offset: int) -> dict[str, Any]:
-    return {"total": total, "limit": limit, "offset": offset}
+    return {"total": total, "limit": limit, "offset": offset, "sort": []}
+
+
+def _agent_filters_json() -> dict[str, Any]:
+    return {
+        "wildcard_fields": ["name", "distro"],
+        "sort": {"max_sort_fields": 1, "sortable_fields": ["name", "distro", "status"]},
+        "filters": [],
+    }
 
 
 def test_agents_list(httpx_mock: HTTPXMock, agent_json, agent):
+    httpx_mock.add_response(
+        url="https://cloud.tenable.com/filters/scans/agents",
+        json=_agent_filters_json(),
+    )
     httpx_mock.add_response(
         url="https://cloud.tenable.com/scanners/null/agents?limit=50",
         json={
@@ -161,6 +173,10 @@ def test_agents_list(httpx_mock: HTTPXMock, agent_json, agent):
 
 def test_agents_list_by_group(httpx_mock: HTTPXMock, agent_json, agent):
     httpx_mock.add_response(
+        url="https://cloud.tenable.com/filters/scans/agents",
+        json=_agent_filters_json(),
+    )
+    httpx_mock.add_response(
         url="https://cloud.tenable.com/scanners/null/agent-groups/42/agents?limit=50",
         json={
             "agents": [agent_json for _ in range(3)],
@@ -176,6 +192,10 @@ def test_agents_list_by_group(httpx_mock: HTTPXMock, agent_json, agent):
 
 
 def test_agents_list_with_filters(httpx_mock: HTTPXMock, agent_json):
+    httpx_mock.add_response(
+        url="https://cloud.tenable.com/filters/scans/agents",
+        json=_agent_filters_json(),
+    )
     httpx_mock.add_response(
         url=(
             "https://cloud.tenable.com/scanners/null/agents"
@@ -193,7 +213,7 @@ def test_agents_list_with_filters(httpx_mock: HTTPXMock, agent_json):
         limit=100,
         sort="name:asc",
     )
-    assert next(it) == AgentListItem.model_validate(agent_json)
+    assert next(it) == Agent.model_validate(agent_json)
 
 
 def test_agents_get(httpx_mock: HTTPXMock, agent_details_json, agent_details):
@@ -216,7 +236,7 @@ def test_agents_rename(httpx_mock: HTTPXMock, agent_details_json):
     )
     cloud = TenableCloud(access_key="ABC", secret_key="DEF")
     resp = cloud.platform.agents.rename(9176838, "NEW-NAME")
-    assert resp == AgentDetails.model_validate(renamed)
+    assert resp == AgentDetail.model_validate(renamed)
 
 
 def test_agents_delete(httpx_mock: HTTPXMock):
@@ -226,7 +246,7 @@ def test_agents_delete(httpx_mock: HTTPXMock):
         json={},
     )
     cloud = TenableCloud(access_key="ABC", secret_key="DEF")
-    cloud.platform.agents.delete(9176838)
+    cloud.platform.agents.unlink(9176838)
 
 
 @pytest.mark.asyncio
@@ -246,7 +266,7 @@ async def test_async_agents_list(httpx_mock: HTTPXMock, agent_json, agent):
         },
     )
     cloud = AsyncTenableCloud(access_key="ABC", secret_key="DEF")
-    it = await cloud.platform.agents.list()
+    it = await cloud.platform.agents.get()
     async for item in it:
         assert item == agent
     assert it.count == 70
@@ -263,7 +283,7 @@ async def test_async_agents_list_by_group(httpx_mock: HTTPXMock, agent_json, age
         },
     )
     cloud = AsyncTenableCloud(access_key="ABC", secret_key="DEF")
-    it = await cloud.platform.agents.list(group_id=7)
+    it = await cloud.platform.agents.get(group_id=7)
     async for item in it:
         assert item == agent
     assert it.count == 2
@@ -278,7 +298,7 @@ async def test_async_agents_get(
         json=agent_details_json,
     )
     cloud = AsyncTenableCloud(access_key="ABC", secret_key="DEF")
-    resp = await cloud.platform.agents.get(9176838)
+    resp = await cloud.platform.agents.details(9176838)
     assert resp == agent_details
 
 
@@ -293,7 +313,7 @@ async def test_async_agents_rename(httpx_mock: HTTPXMock, agent_details_json):
     )
     cloud = AsyncTenableCloud(access_key="ABC", secret_key="DEF")
     resp = await cloud.platform.agents.rename(9176838, "NEW-NAME")
-    assert resp == AgentDetails.model_validate(renamed)
+    assert resp == AgentDetail.model_validate(renamed)
 
 
 @pytest.mark.asyncio
@@ -304,4 +324,4 @@ async def test_async_agents_delete(httpx_mock: HTTPXMock):
         json={},
     )
     cloud = AsyncTenableCloud(access_key="ABC", secret_key="DEF")
-    await cloud.platform.agents.delete(9176838)
+    await cloud.platform.agents.unlink(9176838)
