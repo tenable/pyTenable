@@ -65,6 +65,13 @@ A Python SDK to interact with the various Tenable platform APIs.
 - Tenable Cloud API modules inherit from restfly's `APIEndpoint` and `AsyncAPIEndpoint` classes.
 - Tenable Cloud Pagination iterators use restfly's `APIIterator`.
 
+### Linting
+
+- Linting is performed with a combination of `ty` and `pyright`
+- `ty` can be run through uv: `uv run --isolated --group dev ty`
+- `pyright` can be run through uv: `uv run --isolated --group dev pyright`
+- Code formatting is handled through the `ruff` tool, which can be run through uv: `uv run --isolated --group dev ruff`
+
 ### Testing
 
 - Testing is performed through pytest.
