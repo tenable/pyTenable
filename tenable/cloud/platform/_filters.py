@@ -42,7 +42,7 @@ class FiltersAPI(APIEndpoint):
         """
         Returns the Scan filters.
         """
-        return self._get("scans/reports", response_model=ScanFilters)
+        return self._get("/scans/reports", response_model=ScanFilters)
 
     def scan_history(self) -> ScanHistoryFilters:
         """
@@ -90,7 +90,7 @@ class AsyncFiltersAPI(AsyncAPIEndpoint):
         """
         Returns the Scan filters.
         """
-        return await self._get("scans/reports", response_model=ScanFilters)
+        return await self._get("/scans/reports", response_model=ScanFilters)
 
     async def scan_history(self) -> ScanHistoryFilters:
         """
