@@ -48,7 +48,7 @@ class BaseFilterV1Item(BaseModel):
 
 class BaseFilterV1Sort(BaseModel):
     max_sort_fields: int
-    fields: Annotated[list[str], Field(alias="sortable_fields")] | None = None
+    fields: Annotated[list[str] | None, Field(alias="sortable_fields")] = None
 
 
 class BaseFilterV1Resp(BaseModel):
@@ -74,9 +74,7 @@ class BaseFilterV1Resp(BaseModel):
             if (
                 field == filter.name
                 and operator in filter.operators
-                and (
-                    not filter.control.regex or re.search(filter.control.regex, value)
-                )
+                and (not filter.control.regex or re.search(filter.control.regex, value))
             ):
                 return True
         return False
