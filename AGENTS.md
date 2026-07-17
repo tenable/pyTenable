@@ -69,4 +69,4 @@ A Python SDK to interact with the various Tenable platform APIs.
 
 - Testing is performed through pytest.
 - API Testing is done using the `pytest-httpx` package.
-- To run the tests, use `just test-py 3.12`
+- To run the tests, use `uv run --isolated --group dev pytest`

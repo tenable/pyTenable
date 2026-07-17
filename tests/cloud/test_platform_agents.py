@@ -6,6 +6,7 @@ from pytest_httpx import HTTPXMock
 from tenable.cloud import AsyncTenableCloud, TenableCloud
 from tenable.cloud.platform.models.agents import (
     Agent,
+    AgentConfig,
     AgentDetail,
     AgentFilter,
     AgentQueryParams,
@@ -325,3 +326,71 @@ async def test_async_agents_delete(httpx_mock: HTTPXMock):
     )
     cloud = AsyncTenableCloud(access_key="ABC", secret_key="DEF")
     await cloud.platform.agents.unlink(9176838)
+
+
+CONFIG_URL = "https://cloud.tenable.com/scanners/null/agents/config"
+
+
+def _config_json():
+    return {
+        "auto_unlink": {"enabled": True, "expiration": 90},
+        "concurrent_update": {"enabled": True, "max_concurrent_update": 10},
+        "software_update": True,
+        "hybrid_scanning_enabled": False,
+    }
+
+
+def test_agents_get_config(httpx_mock: HTTPXMock):
+    data = _config_json()
+    httpx_mock.add_response(url=CONFIG_URL, method="get", json=data)
+    cloud = TenableCloud(access_key="ABC", secret_key="DEF")
+    resp = cloud.platform.agents.get_config()
+    assert resp == AgentConfig.model_validate(data)
+
+
+def test_agents_update_config(httpx_mock: HTTPXMock):
+    initial = _config_json()
+    updated = {**initial, "auto_unlink": {"enabled": False, "expiration": 90}}
+    httpx_mock.add_response(url=CONFIG_URL, method="get", json=initial)
+    httpx_mock.add_response(
+        url=CONFIG_URL,
+        method="put",
+        match_json={
+            "auto_unlink": {"enabled": False, "expiration": 90},
+            "concurrent_update": {"enabled": True, "max_concurrent_update": 10},
+            "software_update": True,
+            "hybrid_scanning_enabled": False,
+        },
+        json=updated,
+    )
+    cloud = TenableCloud(access_key="ABC", secret_key="DEF")
+    resp = cloud.platform.agents.update_config(auto_unlink=False)
+    assert resp == AgentConfig.model_validate(updated)
+
+
+def test_agents_update_config_remaining_params(httpx_mock: HTTPXMock):
+    initial = _config_json()
+    updated = {
+        "auto_unlink": {"enabled": True, "expiration": 60},
+        "concurrent_update": {"enabled": False, "max_concurrent_update": 5},
+        "software_update": False,
+        "hybrid_scanning_enabled": True,
+    }
+    httpx_mock.add_response(url=CONFIG_URL, method="get", json=initial)
+    httpx_mock.add_response(
+        url=CONFIG_URL,
+        method="put",
+        match_json=updated,
+        json=updated,
+    )
+    cloud = TenableCloud(access_key="ABC", secret_key="DEF")
+    resp = cloud.platform.agents.update_config(
+        auto_unlink_expiration=60,
+        concurrent_update=False,
+        concurrent_update_max_agents=5,
+        software_update=False,
+        hybrid_scanning=True,
+    )
+    assert resp == AgentConfig.model_validate(updated)
+
+

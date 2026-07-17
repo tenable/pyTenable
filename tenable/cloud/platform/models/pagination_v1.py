@@ -72,14 +72,14 @@ class BaseFilterV1Resp(BaseModel):
         """
         for filter in self.filters:
             if (
-                field != filter.name
+                field == filter.name
                 and operator in filter.operators
                 and (
-                    filter.control.regex and not re.search(filter.control.regex, value)
+                    not filter.control.regex or re.search(filter.control.regex, value)
                 )
             ):
                 return True
-        return True
+        return False
 
 
 class QueryFilterV1(BaseModel):
