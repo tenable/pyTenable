@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated, Any, Literal, Self
+from typing import Annotated, Literal, Self
 from uuid import UUID
 
 from pydantic import Field, TypeAdapter
