@@ -17,9 +17,7 @@ from .models.connectors import (
     ConnectorListResponse,
     ConnectorParams,
     ConnectorQueryParams,
-    ConnectorRegion,
     ConnectorRequest,
-    ConnectorSchedule,
     ConnectorTrail,
     ConnectorUpdateResponse,
 )
