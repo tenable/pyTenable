@@ -27,18 +27,18 @@ from . import models
 from .iterator import ExportsIterator
 
 EXPORTS_MAP = {
-    'vulns': {
-        None: {'path': 'vulns/export', 'job_path': 'vulns/export'},
+    "vulns": {
+        None: {"path": "vulns/export", "job_path": "vulns/export"},
     },
-    'assets': {
-        None: {'path': 'assets/export', 'job_path': 'assets/export'},
-        'v2': {'path': 'assets/v2/export', 'job_path': 'assets/export'},
+    "assets": {
+        None: {"path": "assets/export", "job_path": "assets/export"},
+        "v2": {"path": "assets/v2/export", "job_path": "assets/export"},
     },
-    'compliance': {
-        None: {'path': 'compliance/export', 'job_path': 'compliance/export'},
+    "compliance": {
+        None: {"path": "compliance/export", "job_path": "compliance/export"},
     },
-    'was': {
-        None: {'path': 'was/v1/export/vulns', 'job_path': 'was/v1/export/vulns'},
+    "was": {
+        None: {"path": "was/v1/export/vulns", "job_path": "was/v1/export/vulns"},
     },
 }
 
@@ -47,7 +47,7 @@ class ExportsAPI(APIEndpoint):
     def _export(
         self,
         *,
-        export_type: Literal['vulns', 'assets', 'compliance', 'was'],
+        export_type: Literal["vulns", "assets", "compliance", "was"],
         payload: dict[str, Any],
         version: str | None = None,
         when_done: bool = False,
@@ -65,22 +65,22 @@ class ExportsAPI(APIEndpoint):
         :devportal:`vulnerabilities <exports-vulns-request-export>` datatypes.
         """
         exmap = EXPORTS_MAP[export_type][version]
-        path = exmap['path']
+        path = exmap["path"]
         if not export_uuid:
             try:
                 export_uuid = self._api.post(path, json=payload, box=True).export_uuid
                 self._log.debug(
-                    f'{export_type} {version} export job {export_uuid} initiated'
+                    f"{export_type} {version} export job {export_uuid} initiated"
                 )
 
             except RequestConflictError as conflict:
                 if not adopt_existing:
                     raise conflict
                 resp = conflict.response.json()
-                export_uuid = resp['active_job_id']
-                msg = resp['failure_reason']
+                export_uuid = resp["active_job_id"]
+                msg = resp["failure_reason"]
                 self._log.warning(
-                    f'Adopted {export_type} {version} export job {export_uuid}.  '
+                    f"Adopted {export_type} {version} export job {export_uuid}.  "
                     f'Original message from platform was "{msg}"'
                 )
 
@@ -98,7 +98,7 @@ class ExportsAPI(APIEndpoint):
 
     def cancel(
         self,
-        export_type: Literal['vulns', 'assets', 'compliance', 'was'],
+        export_type: Literal["vulns", "assets", "compliance", "was"],
         export_uuid: UUID,
         version: str | None = None,
     ) -> str:
@@ -126,12 +126,12 @@ class ExportsAPI(APIEndpoint):
             >>> tio.exports.cancel('vuln', '{UUID}')
             'CANCELLED'
         """
-        path = EXPORTS_MAP[export_type][version]['job_path']
-        return self._api.post(f'{path}/{scrub(export_uuid)}/cancel', box=True).status
+        path = EXPORTS_MAP[export_type][version]["job_path"]
+        return self._api.post(f"{path}/{scrub(export_uuid)}/cancel", box=True).status
 
     def download_chunk(
         self,
-        export_type: Literal['vulns', 'assets', 'compliance', 'was'],
+        export_type: Literal["vulns", "assets", "compliance", "was"],
         export_uuid: UUID,
         chunk_id: int,
         version: str | None = None,
@@ -169,33 +169,33 @@ class ExportsAPI(APIEndpoint):
         downloaded = False
         counter = 0
         resp = []
-        path = EXPORTS_MAP[export_type][version]['job_path']
+        path = EXPORTS_MAP[export_type][version]["job_path"]
         while not downloaded and counter <= retries:
             try:
                 resp = self._api.get(
-                    f'{path}/{scrub(export_uuid)}/chunks/{scrub(chunk_id)}'
+                    f"{path}/{scrub(export_uuid)}/chunks/{scrub(chunk_id)}"
                 ).json()
                 downloaded = True
             except JSONDecodeError:
                 self._log.warning(
                     (
-                        f'{export_type} {version} export {export_uuid} encountered an '
-                        f'invalid chunk on chunk id {chunk_id}'
+                        f"{export_type} {version} export {export_uuid} encountered an "
+                        f"invalid chunk on chunk id {chunk_id}"
                     )
                 )
                 counter += 1
         if len(resp) < 1:
             self._log.warning(
                 (
-                    f'{export_type} {version} export {export_uuid} encoundered an empty '
-                    f'chunk on chunk id {chunk_id}'
+                    f"{export_type} {version} export {export_uuid} encoundered an empty "
+                    f"chunk on chunk id {chunk_id}"
                 )
             )
         return resp
 
     def status(
         self,
-        export_type: Literal['vulns', 'assets', 'compliance', 'was'],
+        export_type: Literal["vulns", "assets", "compliance", "was"],
         export_uuid: UUID,
         version: str | None = None,
     ) -> dict[str, Any]:
@@ -219,15 +219,15 @@ class ExportsAPI(APIEndpoint):
 
             >>> status = tio.exports.status('vulns', '{UUID}')
         """
-        path = EXPORTS_MAP[export_type][version]['job_path']
+        path = EXPORTS_MAP[export_type][version]["job_path"]
         return self._api.get(
-            f'{path}/{scrub(export_uuid)}/status',
+            f"{path}/{scrub(export_uuid)}/status",
             box=True,
         )
 
     def jobs(
         self,
-        export_type: Literal['vulns', 'assets', 'was'],
+        export_type: Literal["vulns", "assets", "was"],
         version: str | None = None,
     ) -> dict[str, Any]:
         """
@@ -248,12 +248,12 @@ class ExportsAPI(APIEndpoint):
 
             >>> jobs = tio.exports.jobs('vulns')
         """
-        path = EXPORTS_MAP[export_type][version]['job_path']
-        return self._api.get(f'{path}/status', box=True).exports
+        path = EXPORTS_MAP[export_type][version]["job_path"]
+        return self._api.get(f"{path}/status", box=True).exports
 
     def initiate_export(
         self,
-        export_type: Literal['vulns', 'assets', 'compliance', 'was'],
+        export_type: Literal["vulns", "assets", "compliance", "was"],
         *,
         version: str | None = None,
         when_done: bool = False,
@@ -299,9 +299,9 @@ class ExportsAPI(APIEndpoint):
         """
         warnings.warn(
             (
-                'This method is deprecated in favor of using the appropriate export '
-                'method instead. If a UUID is expected to be returned, then simply '
-                'set the `iterator` parameter to `None`.'
+                "This method is deprecated in favor of using the appropriate export "
+                "method instead. If a UUID is expected to be returned, then simply "
+                "set the `iterator` parameter to `None`."
             ),
             DeprecationWarning,
             stacklevel=2,
@@ -436,8 +436,13 @@ class ExportsAPI(APIEndpoint):
             ...     tags=[('Region', 'Chicago')]
             ... )
         """
+        if isinstance(uuid, str):
+            try:
+                uuid = UUID(uuid)
+            except Exception as e:
+                raise ValueError("Not a valid UUID") from e
         return self._export(
-            export_type='assets',
+            export_type="assets",
             version=None,
             iterator=iterator,
             timeout=timeout,
@@ -465,7 +470,7 @@ class ExportsAPI(APIEndpoint):
                     sources=sources,
                     tags=tags,
                 ),
-            ).model_dump(mode='json', exclude_none=True),
+            ).model_dump(mode="json", exclude_none=True),
         )
 
     def assets_v2(
@@ -587,9 +592,14 @@ class ExportsAPI(APIEndpoint):
             ...     types=['host']
             ... )
         """
+        if isinstance(uuid, str):
+            try:
+                uuid = UUID(uuid)
+            except Exception as e:
+                raise ValueError("Not a valid UUID") from e
         return self._export(
-            export_type='assets',
-            version='v2',
+            export_type="assets",
+            version="v2",
             when_done=when_done,
             iterator=iterator,
             timeout=timeout,
@@ -618,7 +628,7 @@ class ExportsAPI(APIEndpoint):
                     types=types,
                     since=since,
                 ),
-            ).model_dump(mode='json', exclude_none=True),
+            ).model_dump(mode="json", exclude_none=True),
         )
 
     def compliance(
@@ -634,14 +644,14 @@ class ExportsAPI(APIEndpoint):
         audit_name: str | None = None,
         audit_file_name: str | None = None,
         compliance_results: list[
-            Literal['PASSED', 'FAILED', 'WARNING', 'SKIPPED', 'ERROR', 'UNKNOWN']
+            Literal["PASSED", "FAILED", "WARNING", "SKIPPED", "ERROR", "UNKNOWN"]
         ]
         | None = None,
         ipv4_addresses: list[str | IPv4Address] | None = None,
         ipv6_addresses: list[str | IPv6Address] | None = None,
         network_id: UUID | str | None = None,
         plugin_id: list[int] | None = None,
-        state: list[Literal['info', 'low', 'medium', 'high', 'critical']] | None = None,
+        state: list[Literal["info", "low", "medium", "high", "critical"]] | None = None,
         tags: list[tuple[str, list[str] | str]] | None = None,
         iterator: Type[ExportsIterator] | None = ExportsIterator,
         when_done: bool = False,
@@ -730,8 +740,13 @@ class ExportsAPI(APIEndpoint):
             >>> for findings in tio.exports.compliance():
             ...     print(finding)
         """
+        if isinstance(uuid, str):
+            try:
+                uuid = UUID(uuid)
+            except Exception as e:
+                raise ValueError("Not a valid UUID") from e
         return self._export(
-            export_type='compliance',
+            export_type="compliance",
             version=None,
             iterator=iterator,
             timeout=timeout,
@@ -757,7 +772,7 @@ class ExportsAPI(APIEndpoint):
                     state=state,
                     tags=tags,
                 ),
-            ).model_dump(mode='json', exclude_none=True),
+            ).model_dump(mode="json", exclude_none=True),
         )
 
     def vulns(
@@ -783,17 +798,17 @@ class ExportsAPI(APIEndpoint):
         cve_id: list[str] | None = None,
         cve_category: list[
             Literal[
-                'cisa known exploitable',
-                'emerging threats',
-                'in the news',
-                'persistently exploited',
-                'ransomware',
-                'recent active exploitation',
-                'top 50 vpr',
+                "cisa known exploitable",
+                "emerging threats",
+                "in the news",
+                "persistently exploited",
+                "ransomware",
+                "recent active exploitation",
+                "top 50 vpr",
             ]
         ]
         | None = None,
-        exploit_maturity: list[Literal['high', 'functional', 'poc', 'unproven']]
+        exploit_maturity: list[Literal["high", "functional", "poc", "unproven"]]
         | None = None,
         initiative_id: UUID | str | None = None,
         network_id: UUID | str | None = None,
@@ -801,32 +816,32 @@ class ExportsAPI(APIEndpoint):
         plugin_id: list[int] | None = None,
         plugin_type: str | None = None,
         scan_uuid: UUID | str | None = None,
-        severity: list[Literal['info', 'low', 'medium', 'high', 'critical']]
+        severity: list[Literal["info", "low", "medium", "high", "critical"]]
         | None = None,
-        severity_modification_type: list[Literal['NONE', 'ACCEPTED', 'RECASTED']]
+        severity_modification_type: list[Literal["NONE", "ACCEPTED", "RECASTED"]]
         | None = None,
-        state: list[Literal['OPEN', 'REOPENED', 'FIXED']] | None = None,
+        state: list[Literal["OPEN", "REOPENED", "FIXED"]] | None = None,
         source: list[str] | None = None,
         vpr_score: dict[str, float] | None = None,
         vpr_v2_score: dict[str, float] | None = None,
         vpr_threat_intensity: list[
-            Literal['very high', 'high', 'medium', 'low', 'very low']
+            Literal["very high", "high", "medium", "low", "very low"]
         ]
         | None = None,
         weaponization: list[
-            Literal['apt', 'botnet', 'malware', 'ransomware', 'rootkit']
+            Literal["apt", "botnet", "malware", "ransomware", "rootkit"]
         ]
         | None = None,
         zero_day: bool | None = None,
         software_vulns_potential: bool | None = None,
         software_vulns_potential_reasons: list[
             Literal[
-                'Managed',
-                'Component',
-                'Config Required',
-                'Low Fidelity',
-                'Incomplete Version',
-                'Backported',
+                "Managed",
+                "Component",
+                "Config Required",
+                "Low Fidelity",
+                "Incomplete Version",
+                "Backported",
             ]
         ]
         | None = None,
@@ -1042,8 +1057,13 @@ class ExportsAPI(APIEndpoint):
 
             >>> vulns = tio.exports.vulns(zero_day=True)
         """
+        if isinstance(uuid, str):
+            try:
+                uuid = UUID(uuid)
+            except Exception as e:
+                raise ValueError("Not a valid UUID") from e
         return self._export(
-            export_type='vulns',
+            export_type="vulns",
             version=None,
             when_done=when_done,
             iterator=iterator,
@@ -1091,7 +1111,7 @@ class ExportsAPI(APIEndpoint):
                     software_vulns_potential_reasons=software_vulns_potential_reasons,
                     tags=tags,
                 ),
-            ).model_dump(mode='json', exclude_none=True),
+            ).model_dump(mode="json", exclude_none=True),
         )
 
     def was(
@@ -1111,42 +1131,42 @@ class ExportsAPI(APIEndpoint):
         epss_score: dict[str, float] | None = None,
         ipv4s: list[IPv4Address | str] | None = None,
         owasp_2010: list[
-            Literal['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10']
+            Literal["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"]
         ]
         | None = None,
         owasp_2013: list[
-            Literal['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10']
+            Literal["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"]
         ]
         | None = None,
         owasp_2017: list[
-            Literal['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10']
+            Literal["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"]
         ]
         | None = None,
         owasp_2021: list[
-            Literal['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10']
+            Literal["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"]
         ]
         | None = None,
         owasp_api_2019: list[
             Literal[
-                'API1',
-                'API2',
-                'API3',
-                'API4',
-                'API5',
-                'API6',
-                'API7',
-                'API8',
-                'API9',
-                'API10',
+                "API1",
+                "API2",
+                "API3",
+                "API4",
+                "API5",
+                "API6",
+                "API7",
+                "API8",
+                "API9",
+                "API10",
             ]
         ]
         | None = None,
         plugin_ids: list[int] | None = None,
-        severity: list[Literal['info', 'low', 'medium', 'high', 'critical']]
+        severity: list[Literal["info", "low", "medium", "high", "critical"]]
         | None = None,
-        severity_modification_type: list[Literal['NONE', 'ACCEPTED', 'RECASTED']]
+        severity_modification_type: list[Literal["NONE", "ACCEPTED", "RECASTED"]]
         | None = None,
-        state: list[Literal['OPEN', 'REOPENED', 'FIXED']] | None = None,
+        state: list[Literal["OPEN", "REOPENED", "FIXED"]] | None = None,
         vpr_score: dict[str, float] | None = None,
         vpr_v2_score: dict[str, float] | None = None,
         uuid: UUID | str | None = None,
@@ -1296,8 +1316,13 @@ class ExportsAPI(APIEndpoint):
             ...     severity=['high', 'critical'],
             ... )
         """
+        if isinstance(uuid, str):
+            try:
+                uuid = UUID(uuid)
+            except Exception as e:
+                raise ValueError("Not a valid UUID") from e
         return self._export(
-            export_type='was',
+            export_type="was",
             version=None,
             when_done=when_done,
             iterator=iterator,
@@ -1314,11 +1339,11 @@ class ExportsAPI(APIEndpoint):
                     last_found=last_found,
                     indexed_at=indexed_at,
                     last_fixed=last_fixed,
-                    asset_uuid=asset_uuid,  # ty: ignore[invalid-argument-type]
+                    asset_uuid=asset_uuid,
                     asset_name=asset_name,
-                    cvss4_base_score=cvss4_base_score,  # ty: ignore[invalid-argument-type]
-                    epss_score=epss_score,  # ty: ignore[invalid-argument-type]
-                    ipv4s=ipv4s,  # ty: ignore[invalid-argument-type]
+                    cvss4_base_score=cvss4_base_score,
+                    epss_score=epss_score,
+                    ipv4s=ipv4s,
                     plugin_ids=plugin_ids,
                     owasp_2010=owasp_2010,
                     owasp_2013=owasp_2013,
@@ -1328,8 +1353,8 @@ class ExportsAPI(APIEndpoint):
                     severity=severity,
                     severity_modification_type=severity_modification_type,
                     state=state,
-                    vpr_score=vpr_score,  # ty: ignore[invalid-argument-type]
-                    vpr_v2_score=vpr_v2_score,  # ty: ignore[invalid-argument-type]
+                    vpr_score=vpr_score,
+                    vpr_v2_score=vpr_v2_score,
                 ),
-            ).model_dump(mode='json', exclude_none=True),
+            ).model_dump(mode="json", exclude_none=True),
         )

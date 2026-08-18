@@ -44,12 +44,6 @@ partial-tests path:
             --cov-report term-missing:skip-covered
 
 audit:
-    # urllib3 1.x issues relating to the requirement
-    # to install <2 for the development pipeline as
-    # it relies on pytest-vcr and a lot of old VCR
-    # recordings that break in newer versions. These
-    # should be removed once the VCR requirement is
-    # no longer necessary.
     uv audit -U --no-group test --no-group dev --no-group docs
     uv tool run --with "bandit[toml,baseline,sarif]" bandit -c pyproject.toml -r . -ll
 
