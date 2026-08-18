@@ -5,6 +5,8 @@ from ._agents import AgentsAPI, AsyncAgentsAPI
 from ._connectors import AsyncConnectorsAPI, ConnectorsAPI
 from ._exclusions import AsyncExclusionsAPI, ExclusionsAPI
 from ._filters import AsyncFiltersAPI, FiltersAPI
+from ._networks import AsyncNetworksAPI, NetworksAPI
+from ._permissions import AsyncPermissionsAPI, PermissionsAPI
 from .access_control import AccessControlAPI, AsyncAccessControlAPI
 
 
@@ -15,6 +17,8 @@ class PlatformAPIs(APIEndpoint):
     connectors: ConnectorsAPI
     exclusions: ExclusionsAPI
     filters: FiltersAPI
+    networks: NetworksAPI
+    permissions: PermissionsAPI
 
 
 class AsyncPlatformAPIs(AsyncAPIEndpoint):
@@ -24,3 +28,5 @@ class AsyncPlatformAPIs(AsyncAPIEndpoint):
     connectors: AsyncConnectorsAPI
     exclusions: AsyncExclusionsAPI
     filters: AsyncFiltersAPI
+    networks: AsyncNetworksAPI
+    permissions: AsyncPermissionsAPI

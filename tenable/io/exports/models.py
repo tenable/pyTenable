@@ -33,51 +33,51 @@ def ser_to_ts(value: Any) -> int:
 
 Timestamp = Annotated[datetime | int | str, PlainSerializer(ser_to_ts)]
 ComplianceState = Annotated[
-    Literal['PASSED', 'FAILED', 'WARNING', 'SKIPPED', 'ERROR', 'UNKNOWN'],
+    Literal["PASSED", "FAILED", "WARNING", "SKIPPED", "ERROR", "UNKNOWN"],
     BeforeValidator(to_upper),
 ]
 CVECategory = Annotated[
     Literal[
-        'cisa known exploitable',
-        'emerging threats',
-        'in the news',
-        'persistently exploited',
-        'ransomware',
-        'recent active exploitation',
-        'top 50 vpr',
+        "cisa known exploitable",
+        "emerging threats",
+        "in the news",
+        "persistently exploited",
+        "ransomware",
+        "recent active exploitation",
+        "top 50 vpr",
     ],
     BeforeValidator(to_lower),
 ]
-CVEId = Annotated[str, Field(pattern=r'^CVE-\d{4}-\d{1,5}$')]
+CVEId = Annotated[str, Field(pattern=r"^CVE-\d{4}-\d{1,5}$")]
 CVSSScore = Annotated[float, Field(ge=0, le=10)]
 ExploitMaturity = Annotated[
-    Literal['high', 'functional', 'poc', 'unproven'], BeforeValidator(to_lower)
+    Literal["high", "functional", "poc", "unproven"], BeforeValidator(to_lower)
 ]
 EPSSScore = Annotated[float, Field(le=0, ge=100)]
 OWASPChapters = Annotated[
-    Literal['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10'],
+    Literal["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10"],
     BeforeValidator(to_upper),
 ]
 OWASPAPIChapters = Annotated[
     Literal[
-        'API1', 'API2', 'API3', 'API4', 'API5', 'API6', 'API7', 'API8', 'API9', 'API10'
+        "API1", "API2", "API3", "API4", "API5", "API6", "API7", "API8", "API9", "API10"
     ],
     BeforeValidator(to_upper),
 ]
 Severity = Annotated[
-    Literal['info', 'low', 'medium', 'high', 'critical'],
+    Literal["info", "low", "medium", "high", "critical"],
     BeforeValidator(to_lower),
 ]
 SeverityModificationType = Annotated[
-    Literal['NONE', 'ACCEPTED', 'RECASTED'], BeforeValidator(to_upper)
+    Literal["NONE", "ACCEPTED", "RECASTED"], BeforeValidator(to_upper)
 ]
-State = Annotated[Literal['OPEN', 'REOPENED', 'FIXED'], BeforeValidator(to_upper)]
+State = Annotated[Literal["OPEN", "REOPENED", "FIXED"], BeforeValidator(to_upper)]
 ThreatIntensity = Annotated[
-    Literal['very high', 'high', 'medium', 'low', 'very low'],
+    Literal["very high", "high", "medium", "low", "very low"],
     BeforeValidator(to_lower),
 ]
 Weaponization = Annotated[
-    Literal['apt', 'botnet', 'malware', 'ransomware', 'rootkit'],
+    Literal["apt", "botnet", "malware", "ransomware", "rootkit"],
     BeforeValidator(to_lower),
 ]
 
@@ -85,14 +85,14 @@ Weaponization = Annotated[
 class ExportFilterV1Base(BaseModel):
     tags: list[tuple[str, list[str] | str]] | None = None
 
-    @model_serializer(mode='wrap')
+    @model_serializer(mode="wrap")
     def serialize_tags(self, handler: SerializerFunctionWrapHandler) -> dict[str, Any]:
         data = handler(self)
-        tags = data.pop('tags', None)
+        tags = data.pop("tags", None)
         if tags:
             for category, value in tags:
                 # name = f'tag.{category.replace(" ", "_")}'
-                name = f'tag.{category}'
+                name = f"tag.{category}"
                 if name not in data:
                     data[name] = []
                 if isinstance(value, list):
@@ -141,12 +141,12 @@ class AssetExportFiltersV2(AssetExportFiltersBase):
 
 
 class AssetExportV1(AssetExportBase):
-    model_config = ConfigDict(extra='forbid')
+    model_config = ConfigDict(extra="forbid")
     filters: AssetExportFiltersV1
 
 
 class AssetExportV2(AssetExportBase):
-    model_config = ConfigDict(extra='forbid')
+    model_config = ConfigDict(extra="forbid")
     filters: AssetExportFiltersV2
 
 
@@ -208,9 +208,10 @@ class VulnerabilityExportFiltersV1(ExportFilterV1Base):
 
 
 class VulnerabilityExportV1(BaseModel):
-    model_config = ConfigDict(extra='forbid')
+    model_config = ConfigDict(extra="forbid")
     num_assets: Annotated[int, Field(ge=50, le=5000)] = 500
     include_unlicensed: bool = True
+    include_software_vulns: bool | None = None
     filters: VulnerabilityExportFiltersV1
 
 
@@ -232,24 +233,24 @@ class ComplianceExportFiltersV1(BaseModel):
     state: list[State] | None = None
     tags: list[tuple[str, list[str] | str]] | None = None
 
-    @model_serializer(mode='wrap')
+    @model_serializer(mode="wrap")
     def serialize_tags(self, handler: SerializerFunctionWrapHandler) -> dict[str, Any]:
         data = handler(self)
-        tags = data.pop('tags', None)
+        tags = data.pop("tags", None)
         if tags:
-            data['tags'] = {}
+            data["tags"] = {}
             for category, value in tags:
-                if category not in data['tags']:
-                    data['tags'][category] = []
+                if category not in data["tags"]:
+                    data["tags"][category] = []
                 if isinstance(value, list):
-                    data['tags'][category] + value
+                    data["tags"][category] + value
                 elif isinstance(value, str):
-                    data['tags'][category].append(value)
+                    data["tags"][category].append(value)
         return data
 
 
 class ComplianceExportV1(BaseModel):
-    model_config = ConfigDict(extra='forbid')
+    model_config = ConfigDict(extra="forbid")
     num_findings: int = 5000
     asset: list[UUID] | None = None
     filters: ComplianceExportFiltersV1
@@ -282,7 +283,7 @@ class WASExportFiltersV1(BaseModel):
 
 
 class WASExportV1(BaseModel):
-    model_config = ConfigDict(extra='forbid')
+    model_config = ConfigDict(extra="forbid")
     num_assets: int = 500
     include_unlicensed: bool = True
     filters: WASExportFiltersV1

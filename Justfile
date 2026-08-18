@@ -44,19 +44,7 @@ partial-tests path:
             --cov-report term-missing:skip-covered
 
 audit:
-    # urllib3 1.x issues relating to the requirement
-    # to install <2 for the development pipeline as
-    # it relies on pytest-vcr and a lot of old VCR
-    # recordings that break in newer versions. These
-    # should be removed once the VCR requirement is
-    # no longer necessary.
-    uv audit -U --no-group test --no-group dev --no-group docs \
-        --ignore GHSA-2xpw-w6gg-jr37 \
-        --ignore GHSA-38jv-5279-wg99 \
-        --ignore GHSA-gm62-xv2j-4w53 \
-        --ignore GHSA-pq67-6m6q-mj2v \
-        --ignore GHSA-qccp-gfcp-xxvc \
-        --ignore PYSEC-2026-141
+    uv audit -U --no-group test --no-group dev --no-group docs
     uv tool run --with "bandit[toml,baseline,sarif]" bandit -c pyproject.toml -r . -ll
 
 snyk:
