@@ -1,4 +1,5 @@
 import os
+import warnings
 from ssl import SSLContext
 
 from restfly import APIClient, AsyncAPIClient
@@ -7,6 +8,15 @@ from restfly.types import CertTypes, ProxyTypes
 from ..errors import TenableCloudAPIError
 from ..version import lib_name, version
 from .platform import AsyncPlatformAPIs, PlatformAPIs
+
+# TODO: We will eventually need to remove this when the new package is in a better
+#       state.  This will likely take some time, and require the documentation wiring
+#       to be performed as well.
+warnings.warn(
+    "The Tenable Cloud package is under very active development and may change over time.",
+    Warning,
+    stacklevel=1,
+)
 
 
 class TenableCloud(APIClient):
