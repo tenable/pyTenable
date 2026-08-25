@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.8.1]
+
+### Fixed
+
+- Updated the T1 Inventory Findings module to appropriately handle the passed attributes #1019
+- Corrected the comparison type mismatch in the scrub utility. #1018
+- Updated dependencies #1011, #1012, #1017 in lockfile.
+
 ## [26.6.1]
 
 ### Fixed
