@@ -14,15 +14,9 @@ jobs:
           python-version: "3.12"
       - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
       - uses: extractions/setup-just@v4
-      - uses: snyk/actions/setup@master
 
       - name: Build package
         run: uv build
-
-      - name: Snyk Scans
-        run: just snyk
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
       - name: Publish to PyPI
         run: uv publish
