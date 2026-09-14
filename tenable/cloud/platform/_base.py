@@ -7,6 +7,7 @@ from ._exclusions import AsyncExclusionsAPI, ExclusionsAPI
 from ._filters import AsyncFiltersAPI, FiltersAPI
 from ._networks import AsyncNetworksAPI, NetworksAPI
 from ._permissions import AsyncPermissionsAPI, PermissionsAPI
+from ._server import AsyncServerAPI, ServerAPI
 from .access_control import AccessControlAPI, AsyncAccessControlAPI
 
 
@@ -19,6 +20,7 @@ class PlatformAPIs(APIEndpoint):
     filters: FiltersAPI
     networks: NetworksAPI
     permissions: PermissionsAPI
+    server: ServerAPI
 
 
 class AsyncPlatformAPIs(AsyncAPIEndpoint):
@@ -30,3 +32,4 @@ class AsyncPlatformAPIs(AsyncAPIEndpoint):
     filters: AsyncFiltersAPI
     networks: AsyncNetworksAPI
     permissions: AsyncPermissionsAPI
+    server: AsyncServerAPI
