@@ -43,6 +43,7 @@ A Python SDK to interact with the various Tenable platform APIs.
 - Listing methods should use the `get()` method name.
 - Fetching individual Items from the API should use the `details()` method name.
 - Any fixes in any of the legacy packages should be as minimal as possible. Do not rewrite the entire module.
+- Any pydantic model attributes that appear to be a timestamp should be a datetime.
 
 ### Working with Tenable Cloud APIs:
 
