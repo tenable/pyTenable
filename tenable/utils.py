@@ -90,7 +90,7 @@ def scrub(value: Any) -> str:
     Scrubs converts the value to a string and then scrubs out any illegal characters.
     """
     value = str(value)
-    safe_chars = string.ascii_letters + string.digits + '-_%@:'
+    safe_chars = string.ascii_letters + string.digits + '-_%@:#'
     scrubbed_value = ''.join([c for c in value if c in safe_chars])
     if value != scrubbed_value:
         logger.warning(
