@@ -326,7 +326,7 @@ def redact_values(
             The modified object.
     """
     if not keys:
-        keys = []
+        keys = ['password', 'secret', 'key', 'token', 'current_password']
     new = copy(obj)
     for key in new:
         if isinstance(new[key], dict):
