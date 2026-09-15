@@ -285,7 +285,9 @@ class GraphQLSession:
 
         if query and isinstance(query, StringIO):
             data = query.read()
-        elif not query and stored_file:
+        elif query is None and stored_file is not None:
+            if stored_file.startswith('../'):
+                raise TypeError(f"{stored_file} isn't valid.")
             queryfile = self._query_folder.joinpath(stored_file)
             with queryfile.open('r', encoding='utf-8') as fobj:
                 data = fobj.read()
