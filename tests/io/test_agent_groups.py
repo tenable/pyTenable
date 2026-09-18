@@ -3,6 +3,7 @@ test agent groups
 '''
 import time
 import uuid
+from unittest.mock import patch
 
 import pytest
 
@@ -257,6 +258,18 @@ def test_agentgroups_delete_agent_from_group_scanner_id_typeerror(api):
     '''
     with pytest.raises(TypeError):
         api.agent_groups.delete_agent(1, 1, scanner_id='nope')
+
+
+def test_agentgroups_delete_agents_alias(api):
+    """
+    The plural spelling should preserve the existing delete-agent behavior.
+    """
+    agent_groups = api.agent_groups
+    with patch.object(agent_groups, 'delete_agent', return_value={'task_id': 'task'}) as delete_agent:
+        result = agent_groups.delete_agents(42, 10, 11, scanner_id=7)
+
+    assert result == {'task_id': 'task'}
+    delete_agent.assert_called_once_with(42, 10, 11, scanner_id=7)
 
 
 @pytest.mark.vcr()
