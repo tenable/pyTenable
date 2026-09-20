@@ -1,2 +1,3 @@
 click>=7.0
 pytenable>=1.5.0
+anyio>=4.14.2 # not directly required, pinned by Snyk to avoid a vulnerability
