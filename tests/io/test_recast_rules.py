@@ -21,7 +21,7 @@ def api():
 def test_recast_rules_create(api):
     responses.add(
         responses.POST,
-        'https://cloud.tenable.com/recast/rules',
+        'https://cloud.tenable.com/v1/recast/rules',
         json={'id': RULE_ID},
         status=200,
         match=[
@@ -38,7 +38,7 @@ def test_recast_rules_create(api):
 def test_recast_rules_search(api):
     responses.add(
         responses.POST,
-        'https://cloud.tenable.com/recast/rules/search',
+        'https://cloud.tenable.com/v1/recast/rules/search',
         json={'items': [{'id': RULE_ID}]},
         status=200,
         match=[
@@ -68,13 +68,13 @@ def test_recast_rules_search(api):
 def test_recast_rules_details_edit_delete_and_filters(api):
     responses.add(
         responses.GET,
-        f'https://cloud.tenable.com/recast/rules/{RULE_ID}',
+        f'https://cloud.tenable.com/v1/recast/rules/{RULE_ID}',
         json={'id': RULE_ID},
         status=200,
     )
     responses.add(
         responses.PUT,
-        f'https://cloud.tenable.com/recast/rules/{RULE_ID}',
+        f'https://cloud.tenable.com/v1/recast/rules/{RULE_ID}',
         json={'id': RULE_ID, 'updated': True},
         status=200,
         match=[
@@ -85,13 +85,13 @@ def test_recast_rules_details_edit_delete_and_filters(api):
     )
     responses.add(
         responses.DELETE,
-        f'https://cloud.tenable.com/recast/rules/{RULE_ID}',
+        f'https://cloud.tenable.com/v1/recast/rules/{RULE_ID}',
         json={'deleted': True},
         status=200,
     )
     responses.add(
         responses.GET,
-        'https://cloud.tenable.com/recast/rules/filters',
+        'https://cloud.tenable.com/v1/recast/rules/filters',
         json={'filters': []},
         status=200,
     )

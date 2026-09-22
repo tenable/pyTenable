@@ -61,7 +61,7 @@ class RecastRulesAPI(TIOEndpoint):
     ) -> dict[str, Any]:
         """Create a recast rule."""
         return self._api.post(
-            'recast/rules',
+            'v1/recast/rules',
             json=self._payload(
                 resource_type,
                 rule_value,
@@ -99,11 +99,11 @@ class RecastRulesAPI(TIOEndpoint):
         if next is not None:
             payload['next'] = self._check('next', next, str)
 
-        return self._api.post('recast/rules/search', json=payload).json()
+        return self._api.post('v1/recast/rules/search', json=payload).json()
 
     def details(self, rule_id: str) -> dict[str, Any]:
         """Retrieve a recast rule by UUID."""
-        return self._api.get(f'recast/rules/{scrub(self._check("rule_id", rule_id, "uuid"))}').json()
+        return self._api.get(f'v1/recast/rules/{scrub(self._check("rule_id", rule_id, "uuid"))}').json()
 
     def edit(
         self,
@@ -117,7 +117,7 @@ class RecastRulesAPI(TIOEndpoint):
     ) -> dict[str, Any]:
         """Update a recast rule by UUID."""
         return self._api.put(
-            f'recast/rules/{scrub(self._check("rule_id", rule_id, "uuid"))}',
+            f'v1/recast/rules/{scrub(self._check("rule_id", rule_id, "uuid"))}',
             json=self._payload(
                 resource_type,
                 rule_value,
@@ -131,9 +131,9 @@ class RecastRulesAPI(TIOEndpoint):
     def delete(self, rule_id: str) -> dict[str, Any]:
         """Delete a recast rule by UUID."""
         return self._api.delete(
-            f'recast/rules/{scrub(self._check("rule_id", rule_id, "uuid"))}'
+            f'v1/recast/rules/{scrub(self._check("rule_id", rule_id, "uuid"))}'
         ).json()
 
     def filters(self) -> dict[str, Any]:
         """Retrieve the available recast rule filters."""
-        return self._api.get('recast/rules/filters').json()
+        return self._api.get('v1/recast/rules/filters').json()
