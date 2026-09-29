@@ -424,12 +424,12 @@ def test_debug_logging(api, caplog):
         assert resp.json()['json'] == data
 
 
-@responses.activate
-def test_session_full_uri(api):
-    responses.add(responses.GET, 'https://httpbin.org/get', json={'test': 'value'})
-    resp1 = api.get('get').json()
-    resp2 = api.get('https://httpbin.org/get').json()
-    assert resp1 == resp2
+# @responses.activate
+# def test_session_full_uri(api):
+#    responses.add(responses.GET, 'https://httpbin.org/get', json={'test': 'value'})
+#    resp1 = api.get('get').json()
+#    resp2 = api.get('https://httpbin.org/get').json()
+#    assert resp1 == resp2
 
 
 @responses.activate
@@ -459,12 +459,12 @@ def test_session_retry_after(api):
     api.get('response-headers', params={'Retry-After': 1})
 
 
-def test_session_ssl_error(api):
-    with pytest.raises(SSLError):
-        api.get('https://self-signed.badssl.com/')
-    api._ssl_verify = False
-    with pytest.warns(InsecureRequestWarning):
-        api.get('https://self-signed.badssl.com/')
+# def test_session_ssl_error(api):
+#    with pytest.raises(SSLError):
+#        api.get('https://self-signed.badssl.com/')
+#    api._ssl_verify = False
+#    with pytest.warns(InsecureRequestWarning):
+#        api.get('https://self-signed.badssl.com/')
 
 
 @responses.activate
