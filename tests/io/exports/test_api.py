@@ -2,11 +2,13 @@
 Testing the exports endpoints
 """
 
+import json
 import re
 from uuid import UUID
 
 import pytest
 import responses
+from pydantic import ValidationError
 from tenable.errors import RequestConflictError
 
 from tenable.io.exports.iterator import ExportsIterator
@@ -127,3 +129,25 @@ def test_export_adoption(tvm):
     assert UUID(job_id) == tvm.exports.initiate_export('vulns')
     with pytest.raises(RequestConflictError):
         tvm.exports.initiate_export('vulns', adopt_existing=False)
+
+
+@pytest.mark.parametrize('properties', [['asset.hostname', 'severity'], []])
+@pytest.mark.parametrize('iterator', [None, ExportsIterator])
+def test_vuln_export_properties(export_request, tvm, properties, iterator):
+    tvm.exports.vulns(properties=properties, severity=['high'], iterator=iterator)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['properties'] == properties
+    assert payload['filters'] == {'severity': ['high']}
+
+
+@pytest.mark.parametrize('kwargs', [{}, {'properties': None}])
+def test_vuln_export_without_properties(export_request, tvm, kwargs):
+    tvm.exports.vulns(iterator=None, **kwargs)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload == {'num_assets': 500, 'include_unlicensed': True, 'filters': {}}
+
+
+@pytest.mark.parametrize('properties', ['severity', [123], {'severity': True}])
+def test_vuln_export_invalid_properties(tvm, properties):
+    with pytest.raises(ValidationError):
+        tvm.exports.vulns(properties=properties, iterator=None)
