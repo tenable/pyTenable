@@ -211,6 +211,7 @@ class VulnerabilityExportV1(BaseModel):
     model_config = ConfigDict(extra='forbid')
     num_assets: Annotated[int, Field(ge=50, le=5000)] = 500
     include_unlicensed: bool = True
+    properties: list[str] | None = None
     filters: VulnerabilityExportFiltersV1
 
 
