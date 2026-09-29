@@ -196,7 +196,7 @@ class APIPlatform(Base):
         This method handles de-authentication.  This is only necessary for
         session-based authentication.
         """
-        if self._auth_mech == 'user':
+        if self._auth_mech == 'session':
             self._req(method, path)
         self._auth = {}
         self._auth_mech = None
