@@ -761,6 +761,7 @@ class ExportsAPI(APIEndpoint):
         *,
         num_assets: int = 500,
         include_unlicensed: bool = True,
+        properties: list[str] | None = None,
         since: datetime | int | None = None,
         first_found: datetime | int | None = None,
         first_seen: datetime | int | None = None,
@@ -906,6 +907,10 @@ class ExportsAPI(APIEndpoint):
                 presented as ``('CATEGORY', 'VALUE')``.
             include_unlicensed:
                 Should findings for unlicensed assets that be included in the results?
+            properties:
+                Property names to include in each exported finding. If omitted,
+                all available properties are returned. The server always includes
+                its core identifying properties regardless of this selection.
             num_assets:
                 As findings are grouped by asset, how many assets's findings should
                 exist within each data chunk?
@@ -983,6 +988,7 @@ class ExportsAPI(APIEndpoint):
             payload=models.VulnerabilityExportV1(
                 num_assets=num_assets,
                 include_unlicensed=include_unlicensed,
+                properties=properties,
                 filters=models.VulnerabilityExportFiltersV1(
                     since=since,
                     first_found=first_found,

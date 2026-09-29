@@ -12,7 +12,7 @@ authors = [
   { name = "Tenable, Inc." },
   { name = "Steve McGrath", email = "smcgrath@tenable.com" }
 ]
-license = { text = "MIT License" }
+license = "MIT"
 keywords = [
   "tenable",
   "tenable vulnerability management",
@@ -34,7 +34,6 @@ classifiers = [
   "Topic :: Software Development",
   "Topic :: Software Development :: Libraries",
   "Topic :: Software Development :: Libraries :: Application Frameworks",
-  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
