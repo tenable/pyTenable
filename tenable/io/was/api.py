@@ -102,6 +102,8 @@ class WasAPI(TIOEndpoint):
         """
         Downloads the individual target scan results.
 
+        :devportal:`was: download scan report <was-v2-scans-download-export>`
+
         Args:
             scan_uuid (str):
              UUID of the scan whose report to download.

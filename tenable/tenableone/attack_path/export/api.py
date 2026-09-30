@@ -44,6 +44,8 @@ class ExportAPI(APIEndpoint):
         """
         Export top attack paths
 
+        :devportal:`attack path export: attack paths <apa-export-attack-path>`
+
         Args:
             file_format (FileFormat):
                 The output file format (CSV or JSON).
@@ -96,6 +98,8 @@ class ExportAPI(APIEndpoint):
     ) -> ExportRequestId:
         """
         Export attack techniques
+
+        :devportal:`attack path export: attack techniques <apa-export-attack-technique>`
 
         Args:
             file_format (FileFormat):
@@ -151,6 +155,8 @@ class ExportAPI(APIEndpoint):
         """
         Export MITRE ATT&CK heatmap
 
+        :devportal:`attack path export: MITRE heatmap <apa-export-mitre-heatmap>`
+
         Args:
             file_format (FileFormat):
                 The output file format. CSV emits a flat technique table; JSON
@@ -191,6 +197,8 @@ class ExportAPI(APIEndpoint):
         """
         Get export status
 
+        :devportal:`attack path export: status <apa-export-status>`
+
         Args:
             export_id (str):
                 The export ID to check status for.
@@ -216,6 +224,8 @@ class ExportAPI(APIEndpoint):
     ) -> Union[bytes, BytesIO]:
         """
         Download export results
+
+        :devportal:`attack path export: download <apa-export-download>`
 
         Args:
             export_id (str):

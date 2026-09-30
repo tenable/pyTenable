@@ -308,6 +308,8 @@ class AssetsAPI(TIOEndpoint):
         """
         Updates ACR for the provided asset UUID's with reason(s).
 
+        :devportal:`assets: bulk update ACR <assets-bulk-update-acr>`
+
         Args:
             assets_uuid_list (list):
                 Asset UUID's which are being updated.
