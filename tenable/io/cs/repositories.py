@@ -3,7 +3,7 @@ Repositories
 ============
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-Container Security :devportal:`repositories <cs-v2-repositories>`
+Container Security repositories
 API endpoints.
 
 Methods available on ``tio.cs.repositories``:
@@ -32,8 +32,6 @@ class RepositoriesAPI(APIEndpoint):
              ) -> Union[Dict, CSIterator]:
         '''
         Returns the list of images stored within Container Security.
-
-        :devportal:`API Documentation <container-security-v2-list-repositories>`  # noqa: E501
 
         Args:
             name (str, optional):
@@ -81,8 +79,6 @@ class RepositoriesAPI(APIEndpoint):
         '''
         Returns the details for the specified repository.
 
-        :devportal:`API Documentation <container-security-v2-get-repository-details>`  # noqa: E501
-
         Args:
             name (str):
                 The repository name.
@@ -96,8 +92,6 @@ class RepositoriesAPI(APIEndpoint):
     def delete(self, name: str) -> None:
         '''
         Deleted the specified repository.
-
-        :devportal:`API Documentation <container-security-v2-delete-repository>`  # noqa: E501
 
         Args:
             name (str):

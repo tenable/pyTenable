@@ -3,7 +3,7 @@ WAS
 ===
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`WAS <was>` API endpoints.
+:devportal:`WAS <was-v2-scans-search>` API endpoints.
 
 Methods available on ``tio.was``:
 

@@ -3,7 +3,7 @@ Assets
 ======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`assets <assets>` API endpoints.
+:devportal:`assets <assets-list-assets>` API endpoints.
 
 Methods available on ``tio.assets``:
 

@@ -3,7 +3,7 @@ Reports
 =======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-Container Security :devportal:`report <cs-v2-reports>` API endpoints.
+Container Security report API endpoints.
 
 Methods available on ``tio.cs.reports``:
 
@@ -23,8 +23,6 @@ class ReportsAPI(APIEndpoint):  # noqa: PLR0903
     def report(self, repository: str, image: str, tag: str) -> Dict:
         '''
         Returns the report for the specified image.
-
-        :devportal:`API Documentation <container-security-v2-get-image-report>`
 
         Args:
             repository (str):

@@ -3,7 +3,7 @@ Exclusions
 ==========
 
 The following methods allow for interaction into the Tenable Vulnerability
-Management :devportal:`exclusions <exclusions>` API endpoints.
+Management :devportal:`exclusions <exclusions-list>` API endpoints.
 
 Methods available on ``tio.exclusions``:
 

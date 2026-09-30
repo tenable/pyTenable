@@ -3,7 +3,7 @@ Session
 =======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`session <session>` API endpoints.
+session API endpoints.
 
 Methods available on ``tio.session``:
 
@@ -25,8 +25,6 @@ class SessionAPI(TIOEndpoint):
         """
         Modify the currently logged-in user.
 
-        :devportal:`session: edit <session-edit>`
-
         Args:
             name (str): The full name of the user.
             email (str): The email address of the user.
@@ -46,8 +44,6 @@ class SessionAPI(TIOEndpoint):
         """
         Retrieve the current users resource record.
 
-        :devportal:`session: get <session-get>`
-
         Returns:
             :obj:`dict`:
                 The user's session resource record.
@@ -61,8 +57,6 @@ class SessionAPI(TIOEndpoint):
     def change_password(self, old_password, new_password):
         """
         Change the password of the current user.
-
-        :devportal:`session: password <session-password>`
 
         Args:
             old_password (str): The current password.
@@ -87,8 +81,6 @@ class SessionAPI(TIOEndpoint):
         """
         Generate new API keys for the current user.
 
-        :devportal:`session: keys <session-keys>`
-
         Returns:
             :obj:`dict`:
                 A dictionary containing the new API Keypair.
@@ -101,8 +93,6 @@ class SessionAPI(TIOEndpoint):
     def two_factor(self, email, sms, phone=None):
         """
         Configure two-factor authorization.
-
-        :devportal:`session: two-factor <session-two-factor-settings>`
 
         Args:
             email (bool):
@@ -138,8 +128,6 @@ class SessionAPI(TIOEndpoint):
         """
         Initiate the phone-based two-factor authorization verification process.
 
-        :devportal:`session: two-factor-enable <session-send-code>`
-
         Args:
             phone (str): The phone number to use for two-factor auth.
 
@@ -158,8 +146,6 @@ class SessionAPI(TIOEndpoint):
     def verify_two_factor(self, code):
         """
         Send the verification code for two-factor authorization.
-
-        :devportal:`session: verify-code <session-verify-code>`
 
         Args:
             code (str): The verification code that was sent to the device.
@@ -180,8 +166,6 @@ class SessionAPI(TIOEndpoint):
         """
         Restore the session to the logged-in user.  This will remove any user
         impersonation setting that have been set.
-
-        :devportal:`session: restore <session-restore>`
 
         Returns:
             :obj:`None`:

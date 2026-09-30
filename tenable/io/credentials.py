@@ -3,7 +3,7 @@ Credentials
 ===========
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`credentials <credentials>` API endpoints.
+:devportal:`credentials <credentials-list>` API endpoints.
 
 Methods available on ``tio.credentials``:
 

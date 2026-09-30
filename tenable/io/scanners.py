@@ -3,7 +3,7 @@ Scanners
 ========
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`scanners <scanners>` API.
+:devportal:`scanners <scanners-list>` API.
 
 Methods available on ``tio.scanners``:
 
