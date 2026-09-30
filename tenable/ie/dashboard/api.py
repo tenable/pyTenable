@@ -22,6 +22,8 @@ class DashboardAPI(APIEndpoint):
         '''
         Retrieve all dashboard instances.
 
+        :devportal:`dashboard: list <get_api-dashboards>`
+
         Returns:
             list:
                 The list of dashboard objects.
@@ -35,6 +37,8 @@ class DashboardAPI(APIEndpoint):
     def create(self, name: str, order: int) -> Dict:
         '''
         Create a new dashboard instance.
+
+        :devportal:`dashboard: create <post_api-dashboards>`
 
         Args:
             name (str):
@@ -62,6 +66,8 @@ class DashboardAPI(APIEndpoint):
         '''
         Retrieves the details for a specific dashboard instance.
 
+        :devportal:`dashboard: details <get_api-dashboards-id>`
+
         Args:
             dashboard_id (str):
                 The dashboard instance identifier.
@@ -79,6 +85,8 @@ class DashboardAPI(APIEndpoint):
     def update(self, dashboard_id: str, **kwargs):
         '''
         Updates the dashboard instance based on ``dashboard_id``.
+
+        :devportal:`dashboard: update <patch_api-dashboards-id>`
 
         Args:
             dashboard_id (str):
@@ -103,6 +111,8 @@ class DashboardAPI(APIEndpoint):
     def delete(self, dashboard_id: str) -> None:
         '''
         Deletes the dashboard instance
+
+        :devportal:`dashboard: delete <delete_api-dashboards-id>`
 
         Args:
             dashboard_id (str):

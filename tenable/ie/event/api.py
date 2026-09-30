@@ -26,6 +26,8 @@ class EventAPI(APIEndpoint):
         '''
         Retrieves the details of specific event instance.
 
+        :devportal:`event: details <get_api-infrastructures-infrastructureid-directories-directoryid-events-id>`
+
         Args:
             event_id (str):
                 The event instance identifier.
@@ -60,6 +62,8 @@ class EventAPI(APIEndpoint):
                       ) -> List[Dict]:
         '''
         Searches the events.
+
+        :devportal:`event: search-events <post_api-events-search>`
 
         Args:
             expression (mapping):

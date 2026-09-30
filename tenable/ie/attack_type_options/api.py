@@ -25,6 +25,8 @@ class AttackTypeOptionsAPI(APIEndpoint):
         '''
         Get all attack type options related to a profile and attack type.
 
+        :devportal:`attack-type-options: list <get_api-profiles-profileid-attack-types-attacktypeid-attack-type-options>`
+
         Args:
             profile_id (str):
                 The attack profile identifier.
@@ -61,6 +63,8 @@ class AttackTypeOptionsAPI(APIEndpoint):
                ) -> List:
         '''
         Create attack type options related to a profile and attack type.
+
+        :devportal:`attack-type-options: create <post_api-profiles-profileid-attack-types-attacktypeid-attack-type-options>`
 
         Args:
             profile_id (str):

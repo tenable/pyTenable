@@ -21,6 +21,8 @@ class TopologyAPI(APIEndpoint):
         '''
         Gets the representation of AD topology.
 
+        :devportal:`topology: details <get_api-profiles-profileid-topology>`
+
         Args:
             profile_id (str): The profile instance identifier.
 

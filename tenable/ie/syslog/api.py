@@ -24,6 +24,8 @@ class SyslogAPI(APIEndpoint):
         '''
         Returns all the syslog objects.
 
+        :devportal:`syslog: list <get_api-syslogs>`
+
         Returns:
             list:
                 The list of syslog objects.
@@ -36,6 +38,8 @@ class SyslogAPI(APIEndpoint):
     def create(self, **kwargs) -> List[Dict]:
         '''
         Creates a syslog object.
+
+        :devportal:`syslog: create <post_api-syslogs>`
 
         Args:
             profiles (List[int]):
@@ -168,6 +172,8 @@ class SyslogAPI(APIEndpoint):
         Returns the details of the syslog object of the given syslog
         identifier.
 
+        :devportal:`syslog: details <get_api-syslogs-id>`
+
         Args:
             syslog_id (str):
                 The syslog object identifier.
@@ -184,6 +190,8 @@ class SyslogAPI(APIEndpoint):
     def update(self, syslog_id: str, **kwargs) -> Dict:
         '''
         Updates the existing syslog object.
+
+        :devportal:`syslog: update <patch_api-syslogs-id>`
 
         Args:
             syslog_id (str):
@@ -240,6 +248,8 @@ class SyslogAPI(APIEndpoint):
         '''
         Deletes the syslog object of given syslog identifier.
 
+        :devportal:`syslog: delete <delete_api-syslogs-id>`
+
         Args:
             syslog_id (str):
                 The syslog object identifier.
@@ -255,6 +265,8 @@ class SyslogAPI(APIEndpoint):
     def send_syslog_notification_by_id(self, syslog_id: str) -> None:
         '''
         Send a test syslog notification by syslog identifier.
+
+        :devportal:`syslog: send-syslog-notification-by-id <get_api-syslogs-test-message-id>`
 
         Args:
             syslog_id (str):
@@ -272,6 +284,8 @@ class SyslogAPI(APIEndpoint):
     def send_notification(self, **kwargs) -> None:
         '''
         Send a test syslog notification.
+
+        :devportal:`syslog: send-notification <post_api-syslogs-test-message>`
 
         Args:
             profiles (List[int]):

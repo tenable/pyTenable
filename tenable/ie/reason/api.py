@@ -21,6 +21,8 @@ class ReasonAPI(APIEndpoint):
         '''
         Retrieves the list of reason instances.
 
+        :devportal:`reason: list <get_api-reasons>`
+
         Returns:
             list:
                 The list of reason instances.
@@ -33,6 +35,8 @@ class ReasonAPI(APIEndpoint):
     def details(self, reason_id: str) -> Dict:
         '''
         Retrieves the details of the reason based on reason_id
+
+        :devportal:`reason: details <get_api-reasons-id>`
 
         Args:
             reason_id (str):
@@ -53,6 +57,8 @@ class ReasonAPI(APIEndpoint):
                         ) -> List[Dict]:
         '''
         Retrieves the details of the reason based on profile_id and checker_id.
+
+        :devportal:`reason: list-by-checker <get_api-profiles-profileid-checkers-checkerid-reasons>`
 
         Args:
             profile_id (str):
@@ -83,6 +89,8 @@ class ReasonAPI(APIEndpoint):
         '''
         Retrieves the details of the reason object based on profile_id,
         directory_id and event_id.
+
+        :devportal:`reason: list-by-directory-and-event <get_api-profiles-profileid-infrastructures-infrastructureid-directories-directoryid-events-eventid-reasons>`
 
         Args:
             profile_id (str):
