@@ -25,7 +25,7 @@ def test_scrub_remove_path_traversal():
 def test_scrub_scan_id_formats():
     formats = [
         12345,
-        '44346bcb-4afc-4db0-b283-2dd823fa8579'
+        '44346bcb-4afc-4db0-b283-2dd823fa8579',
         'SSEUF-ee904e9c-4fb6-4643-88a2-a4e388651568-C:e112bd1-754-946-e35-1a7bf1cbd33-pdf',
         'SSE-85b9353d-45f6-47ca-8510-abdb38bf1d5a-csv',
     ]
@@ -35,5 +35,14 @@ def test_scrub_scan_id_formats():
 
 def test_scrub_warning(caplog):
     caplog.set_level(logging.WARN)
-    _ = scrub('This_is_unsafe!../')
-    assert "Value 'This_is_unsafe!../' has unsafe chars, scrubbing to 'This_is_unsafe!'"
+    assert scrub('This_is_unsafe!../') == 'This_is_unsafe'
+    assert (
+        "Value 'This_is_unsafe!../' has unsafe chars, scrubbing to 'This_is_unsafe'"
+        in caplog.text
+    )
+
+
+def test_scrub_no_warning_for_safe_value(caplog):
+    caplog.set_level(logging.WARN)
+    assert scrub('SSE-85b9353d#1') == 'SSE-85b9353d#1'
+    assert caplog.text == ''
