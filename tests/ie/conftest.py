@@ -12,7 +12,7 @@ RE_BASE = 'https://pytenable.tenable.ad/api'
 def api():
     '''api key fixture'''
     return TenableIE(
-        api_keys=os.getenv('TAD_API_KEY',
+        api_key=os.getenv('TAD_API_KEY',
                            'ffffffffffffffffffffffffffffffffffff'),
         url='https://pytenable.tenable.ad',
         ssl_verify=False,
