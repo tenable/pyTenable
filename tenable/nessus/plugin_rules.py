@@ -106,7 +106,7 @@ class PluginRulesAPI(APIEndpoint):
         date: Optional[int] = None,
     ) -> None:
         """
-        Creates a new plugin rule
+        Updates an existing plugin rule
 
         Args:
             rule_id (int): The rule to modify
@@ -123,7 +123,12 @@ class PluginRulesAPI(APIEndpoint):
         payload = dict_merge(
             rule,
             dict_clean(
-                {'plugin_id': str(plugin_id), 'type': type, 'host': host, 'date': date}
+                {
+                    'plugin_id': str(plugin_id) if plugin_id is not None else None,
+                    'type': type,
+                    'host': host,
+                    'date': date,
+                }
             ),
         )
         return self._put(f'{rule_id}', json=payload)
