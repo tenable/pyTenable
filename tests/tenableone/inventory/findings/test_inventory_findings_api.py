@@ -138,3 +138,25 @@ def test_list(tenable_one_api, findings_response):
     )
     # Assert
     assert findings == Findings(**findings_response)
+
+
+@pytest.mark.parametrize(
+    'sort_direction, expected',
+    [(SortDirection.ASC, 'asc'), (SortDirection.DESC, 'desc'), ('desc', 'desc')],
+)
+@responses.activate
+def test_list_sort_direction_serialization(
+    tenable_one_api, findings_response, sort_direction, expected
+):
+    """
+    The sort direction must be sent as its value whether an enum or a string
+    is passed.
+    """
+    responses.post(
+        urljoin(BASE_URL, '/api/v1/t1/inventory/findings/search'),
+        json=findings_response,
+        match=[responses.matchers.query_param_matcher({'sort': f'name:{expected}'})],
+    )
+    tenable_one_api.inventory.findings.list(
+        sort_by='name', sort_direction=sort_direction
+    )

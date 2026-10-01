@@ -1,3 +1,5 @@
+import json
+
 import pytest
 import responses
 
@@ -188,3 +190,29 @@ def test_findings_list_findings_page_response(tenable_one_api, finding):
     findings_page: FindingsPageSchema = tenable_one_api.attack_path.findings.list(return_iterator=False)
 
     assert findings_page == FindingsPageSchema(**findings_page_response)
+
+
+@pytest.mark.parametrize('filter_value', [
+    {'operator': '==', 'key': 'priority', 'value': 'high'},
+    '{"operator": "==", "key": "priority", "value": "high"}',
+])
+@responses.activate
+def test_attack_path_findings_list_filter_sent_as_json(
+    filter_value, tenable_one_api, finding
+):
+    """
+    The API expects the filter as a JSON string; a dict must be serialized.
+    """
+    expected = json.dumps({'operator': '==', 'key': 'priority', 'value': 'high'})
+    responses.get(
+        'https://cloud.tenable.com/api/v1/t1/apa/findings',
+        json={
+            'page_number': 1, 'count': 1, 'total': 1, 'next': None,
+            'data': [finding],
+        },
+        match=[responses.matchers.query_param_matcher(
+            {'limit': 50, 'filter': expected}, strict_match=False
+        )],
+    )
+    items = tenable_one_api.attack_path.findings.list(filter=filter_value, limit=50)
+    assert next(items) == finding

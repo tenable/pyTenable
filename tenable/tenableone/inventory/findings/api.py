@@ -74,6 +74,7 @@ class FindingsAPI(APIEndpoint):
                Field to sort by.
            sort_direction (SortDirection, optional):
                Sorting direction, either SortDirection.ASC or SortDirection.DESC.
+               The plain strings ``'asc'`` and ``'desc'`` are also accepted.
 
         Returns:
            The request assets.
@@ -100,7 +101,7 @@ class FindingsAPI(APIEndpoint):
         if limit is not None:
             query_params['limit'] = limit
         if sort_by is not None and sort_direction is not None:
-            query_params['sort'] = f'{sort_by}:{str(sort_direction)}'
+            query_params['sort'] = f'{sort_by}:{SortDirection(sort_direction).value}'
 
         # if query_params:
         #    query_string = urlencode(query_params)
