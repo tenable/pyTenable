@@ -86,3 +86,24 @@ def test_scans_no_iterator(tvm, scan_list):
     resp = tvm.pci.scans.list(iterator=None)
     assert isinstance(resp, dict)
     assert len(resp['scans']) == 2
+
+
+@responses.activate
+def test_scans_iterator_requests_next_offset(tvm, scan_list):
+    """
+    Each page request must advance the offset rather than re-request page 1.
+    """
+    first, second = scan_list['scans']
+    page1 = {'pagination': {'total': 2, 'offset': 0, 'limit': 1}, 'scans': [first]}
+    page2 = {'pagination': {'total': 2, 'offset': 1, 'limit': 1}, 'scans': [second]}
+    responses.get(
+        'https://nourl/pci-asv/scans/list',
+        match=[query_param_matcher({'limit': 1, 'offset': 0})],
+        json=page1,
+    )
+    responses.get(
+        'https://nourl/pci-asv/scans/list',
+        match=[query_param_matcher({'limit': 1, 'offset': 1})],
+        json=page2,
+    )
+    assert list(tvm.pci.scans.list(limit=1)) == [first, second]

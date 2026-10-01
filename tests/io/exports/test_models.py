@@ -366,3 +366,55 @@ def test_was_vulns_schema_all_values(was_vulns_export):
     with pytest.raises(ValidationError):
         was_vulns_export['new_val'] = 'something'
         m.WASExportV1(**was_vulns_export)
+
+
+def test_vuln_export_tag_filters_merge_lists_and_strings():
+    """
+    Tag filters with list values must be serialized, not dropped.
+    """
+    dump = m.VulnerabilityExportV1(
+        filters={'tags': [('Cat', ['a', 'b']), ('Cat', 'c'), ('Other', ['d'])]}
+    ).model_dump(mode='json', exclude_none=True)
+    assert dump['filters']['tag.Cat'] == ['a', 'b', 'c']
+    assert dump['filters']['tag.Other'] == ['d']
+
+
+def test_compliance_export_tag_filters_merge_lists_and_strings():
+    """
+    Compliance tag filters with list values must be serialized, not dropped,
+    using the documented list of category/values objects.
+    """
+    dump = m.ComplianceExportV1(
+        filters={'tags': [('Cat', ['a', 'b']), ('Cat', 'c'), ('Other', 'd')]}
+    ).model_dump(mode='json', exclude_none=True)
+    assert dump['filters']['tags'] == [
+        {'category': 'Cat', 'values': ['a', 'b', 'c']},
+        {'category': 'Other', 'values': ['d']},
+    ]
+
+
+@pytest.mark.parametrize('value', [0, 5.5, 100])
+def test_vuln_export_epss_score_accepts_valid_range(value):
+    """
+    EPSS scores are percentages from 0 to 100.
+    """
+    dump = m.VulnerabilityExportV1(
+        filters={'epss_score': {'gte': value, 'eq': [value]}}
+    ).model_dump(mode='json', exclude_none=True)
+    assert dump['filters']['epss_score'] == {'eq': [value], 'gte': value}
+
+
+@pytest.mark.parametrize('value', [-1, 100.1])
+def test_vuln_export_epss_score_rejects_out_of_range(value):
+    with pytest.raises(ValidationError):
+        m.VulnerabilityExportV1(filters={'epss_score': {'gte': value}})
+
+
+def test_asset_export_tag_filters_merge_lists_and_strings():
+    """
+    Asset (v1) exports share the vulnerability tag serializer.
+    """
+    dump = m.AssetExportV1(
+        filters={'tags': [('Cat', ['a', 'b']), ('Cat', 'c')]}
+    ).model_dump(mode='json', exclude_none=True)
+    assert dump['filters']['tag.Cat'] == ['a', 'b', 'c']

@@ -55,7 +55,7 @@ def test_audit_log_json(api, event):
 
 
 @responses.activate
-def test_audit_log_iter(api, event):
+def test_audit_log_iter(api, event, capsys):
     with responses.RequestsMock() as rsps:
         rsps.get('https://cloud.tenable.com/audit-log/v1/events',
                  json={
@@ -95,3 +95,4 @@ def test_audit_log_iter(api, event):
             assert e == event
         assert events.total == 2000
         assert events.count == 2000
+        assert capsys.readouterr().out == ''
