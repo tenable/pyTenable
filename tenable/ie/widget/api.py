@@ -22,6 +22,8 @@ class WidgetsAPI(APIEndpoint):
         '''
         Retrieves all the widgets.
 
+        :devportal:`widget: list <get_api-dashboards-dashboardid-widgets>`
+
         Args:
             dashboard_id (int):
                 The dashboard instance identifier.
@@ -43,6 +45,8 @@ class WidgetsAPI(APIEndpoint):
                title: str) -> List[Dict]:
         '''
         Creates a new widget.
+
+        :devportal:`widget: create <post_api-dashboards-dashboardid-widgets>`
 
         Args:
             dashboard_id (int):
@@ -88,6 +92,8 @@ class WidgetsAPI(APIEndpoint):
         '''
         Retrieves the details for a specific widget.
 
+        :devportal:`widget: details <get_api-dashboards-dashboardid-widgets-id>`
+
         Args:
             dashboard_id (int):
                 The dashboard instance identifier.
@@ -110,6 +116,8 @@ class WidgetsAPI(APIEndpoint):
                **kwargs) -> Dict:
         '''
         Updates an existing widget.
+
+        :devportal:`widget: update <patch_api-dashboards-dashboardid-widgets-id>`
 
         Args:
             dashboard_id (int):
@@ -153,6 +161,8 @@ class WidgetsAPI(APIEndpoint):
         '''
         Deletes an existing widget.
 
+        :devportal:`widget: delete <delete_api-dashboards-dashboardid-widgets-id>`
+
         Args:
             dashboard_id (int):
                 The dashboard instance identifier.
@@ -175,6 +185,8 @@ class WidgetsAPI(APIEndpoint):
                                widget_id: int) -> Dict:
         '''
         Gets the details of widget options.
+
+        :devportal:`widget: widget-options-details <get_api-dashboards-dashboardid-widgets-id-options>`
 
         Args:
             dashboard_id (int):
@@ -204,6 +216,8 @@ class WidgetsAPI(APIEndpoint):
                               ) -> None:
         '''
         Defines the widget option.
+
+        :devportal:`widget: define-widget-options <put_api-dashboards-dashboardid-widgets-id-options>`
 
         Args:
             dashboard_id (int):

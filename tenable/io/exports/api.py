@@ -3,7 +3,7 @@ Exports
 =======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`exports <exports>` API endpoints.
+:devportal:`exports <exports-vulns-request-export>` API endpoints.
 
 Methods available on ``tio.exports``:
 
@@ -60,7 +60,7 @@ class ExportsAPI(APIEndpoint):
         Submit new export job for the specified datatype.
 
         API Documentation for the job listings for
-        :devportal:`assets <exports-assets-request-export>`,
+        :devportal:`assets <export-assets-v2>`,
         :devportal:`compliance <io-exports-compliance-create>`, and
         :devportal:`vulnerabilities <exports-vulns-request-export>` datatypes.
         """
@@ -348,7 +348,7 @@ class ExportsAPI(APIEndpoint):
         """
         Initiate an asset export.
 
-        :devportal:`API Documentation <exports-assets-request-export>`
+        :devportal:`API Documentation <export-assets-v2>`
 
         Args:
             last_scan_id:
@@ -500,7 +500,7 @@ class ExportsAPI(APIEndpoint):
         """
         Initiate an asset v2 export.
 
-        :devportal:`API Documentation <exports-v2-assets-request-export>`
+        :devportal:`API Documentation <export-assets-v2>`
 
         Args:
             last_scan_id:
@@ -1035,6 +1035,7 @@ class ExportsAPI(APIEndpoint):
         *,
         num_assets: int = 500,
         include_unlicensed: bool = True,
+        properties: list[str] | None = None,
         since: datetime | int | None = None,
         first_found: datetime | int | None = None,
         last_fixed: datetime | int | None = None,
@@ -1174,6 +1175,19 @@ class ExportsAPI(APIEndpoint):
             include_unlicensed:
                 Should findings for assets that are not licensed be included in
                 the results?
+            properties:
+                Property names to include in each exported finding.  If omitted,
+                all available properties are returned.  The server always includes
+                its core identifying properties regardless of this selection.
+
+                The values are the request-side names listed in
+                `Select Vulnerability Export Properties
+                <https://developer.tenable.com/docs/select-vulnerability-export-properties>`_.
+                Exported findings keep
+                the field names of a full export, so some returned names differ
+                from the requested ones (for example, ``asset.name`` is returned as
+                ``asset.fqdn``).  The API rejects unknown names, which raises a
+                :obj:`~tenable.errors.BadRequestError`.
             num_assets:
                 As findings are grouped by asset, how many assets' findings
                 should exist within each data chunk.
@@ -1203,13 +1217,19 @@ class ExportsAPI(APIEndpoint):
             Iterating over the results of a WAS vuln export:
             >>> from tenable.io import TenableIO
             >>> tio = TenableIO("<apiKey>", "secret")
-            >>> for vuln in tio.exports.was_vulns():
+            >>> for vuln in tio.exports.was():
             ...     print(vuln)
 
             Getting findings that have been observed within the last 24 hours
             >>> import arrow
             >>> vulns = tio.exports.was(
             ...     since=int(arrow.now().shift(days=-1).timestamp())
+            ... )
+
+            Exporting only selected properties for each finding
+            >>> vulns = tio.exports.was(
+            ...     properties=['url', 'severity', 'state', 'asset.name'],
+            ...     severity=['high', 'critical'],
             ... )
         """
         return self._export(
@@ -1223,6 +1243,7 @@ class ExportsAPI(APIEndpoint):
             payload=models.WASExportV1(
                 num_assets=num_assets,
                 include_unlicensed=include_unlicensed,
+                properties=properties,
                 filters=models.WASExportFiltersV1(
                     since=since,
                     first_found=first_found,

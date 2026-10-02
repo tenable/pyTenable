@@ -22,6 +22,8 @@ class LockoutPolicyAPI(APIEndpoint):
         '''
         Get the lockout policy
 
+        :devportal:`lockout-policy: details <get_api-lockout-policy>`
+
         Returns:
             dict:
                 The lockout policy object
@@ -36,6 +38,8 @@ class LockoutPolicyAPI(APIEndpoint):
                ) -> None:
         '''
         Update the lockout policy
+
+        :devportal:`lockout-policy: update <patch_api-lockout-policy>`
 
         Args:
             enabled (optional, bool):

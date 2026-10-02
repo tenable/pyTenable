@@ -24,6 +24,8 @@ class ScoreAPI(APIEndpoint):
         '''
         Get the list of directories score by profile.
 
+        :devportal:`score: list <get_api-profiles-profileid-scores>`
+
         Args:
             Option-1:
                 profile_id (str):

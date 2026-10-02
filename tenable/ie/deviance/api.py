@@ -135,6 +135,8 @@ class DevianceAPI(APIEndpoint):
         '''
         Retrieve ad-object-deviance-history instance by id.
 
+        :devportal:`deviance: get-history-details <get_api-infrastructures-infrastructureid-directories-directoryid-deviances-id>`
+
 
         Args:
             infrastructure_id (str):
@@ -168,6 +170,8 @@ class DevianceAPI(APIEndpoint):
                                ) -> Dict:
         '''
         Retrieve ad-object-deviance-history instance by id.
+
+        :devportal:`deviance: update-history-details <patch_api-infrastructures-infrastructureid-directories-directoryid-deviances-id>`
 
 
         Args:
@@ -387,6 +391,8 @@ class DevianceAPI(APIEndpoint):
         '''
         Update instances matching a checker id.
 
+        :devportal:`deviance: update-by-checker <patch_api-profiles-profileid-checkers-checkerid-deviances>`
+
         Args:
             profile_id (str):
                 The profile instance identifier.
@@ -515,6 +521,8 @@ class DevianceAPI(APIEndpoint):
         '''
         Update the deviances emitted on a specific AD object and
         for specific checker.
+
+        :devportal:`deviance: update-on-ado-and-checker <patch_api-profiles-profileid-checkers-checkerid-ad-objects-adobjectid-deviances>`
 
         Args:
             profile_id (str):

@@ -28,6 +28,7 @@ class AccessControlAPI(TIOEndpoint):
         Retrieves the details of the specified permission.
 
         :devportal:`access-control: details <io-v3-access-control-permissions-details>`
+
         Args:
             uuid (str):
                 the uuid of the permission to retrieve

@@ -3,7 +3,7 @@ Networks
 ========
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`networks <networks>` API endpoints.
+:devportal:`networks <networks-list>` API endpoints.
 
 Methods available on ``tio.networks``:
 
@@ -367,7 +367,7 @@ class NetworksAPI(TIOEndpoint):
         get the total number of assets in the network along with the number of assets
         that have not been seen for the specified number of days.
 
-        :devportal:`networks: network_asset_count <networks-asset-count-details>`
+        :devportal:`networks: network_asset_count <io-networks-asset-count-details>`
 
         Args:
             network_id (str): The UUID of the network.

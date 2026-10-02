@@ -3,7 +3,7 @@ Attestations
 ============
 
 The following methods allow for interaction into the TVM
-:devportal:`PCI Attestation API <pci-attestations>` API endpoints.
+:devportal:`PCI Attestation API <pci-attestations-list>` API endpoints.
 
 Methods available on ``tio.pci.attestations``:
 

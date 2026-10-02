@@ -24,6 +24,8 @@ class InfrastructureAPI(APIEndpoint):
         """
         Retrieves the list of infrastructures.
 
+        :devportal:`infrastructure: list <get_api-infrastructures>`
+
         Returns:
             list:
                 List of infrastructure instances.
@@ -38,6 +40,8 @@ class InfrastructureAPI(APIEndpoint):
         """
         Creates a new infrastructure instance with inputs of name, username
         and password.
+
+        :devportal:`infrastructure: create <post_api-infrastructures>`
 
         Args:
             name (str):
@@ -69,6 +73,8 @@ class InfrastructureAPI(APIEndpoint):
         """
         Gets the details of particular infrastructure instance.
 
+        :devportal:`infrastructure: details <get_api-infrastructures-id>`
+
         Args:
             infrastructure_id (str):
                 The infrastructure instance identifier.
@@ -86,6 +92,8 @@ class InfrastructureAPI(APIEndpoint):
     def update(self, infrastructure_id: str, **kwargs) -> Dict:
         """
         Updates the infrastructure of the specific infrastructure instance.
+
+        :devportal:`infrastructure: update <patch_api-infrastructures-id>`
 
         Args:
             infrastructure_id (str):
@@ -114,6 +122,8 @@ class InfrastructureAPI(APIEndpoint):
     def delete(self, infrastructure_id: str):
         """
         Deletes the particular infrastructure instance.
+
+        :devportal:`infrastructure: delete <delete_api-infrastructures-id>`
 
         Args:
             infrastructure_id (str):

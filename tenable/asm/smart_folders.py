@@ -20,6 +20,8 @@ class SmartFoldersAPI(APIEndpoint):
         """
         Returns the list of smart folders from ASM.
 
+        :devportal:`smart folders: list <getSmartFolders>`
+
         Example:
             >>> folders = asm.smartfolders.list()
         """

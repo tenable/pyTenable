@@ -3,7 +3,7 @@ Audit Log
 =========
 
 The following methods allow for interaction into the Tenable Vulnerability
-Management :devportal:`audit log <audit-log>` API endpoints.
+Management :devportal:`audit log <audit-log-events>` API endpoints.
 
 Methods available on ``io.audit_log``:
 

@@ -3,7 +3,7 @@ Editor
 ======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`editor <editor>` API endpoints.  While these endpoints are
+:devportal:`editor <editor-details>` API endpoints.  While these endpoints are
 pythonized for completeness within pyTenable, the Editor API endpoints should
 generally be avoided unless absolutely necessary.  These endpoints are used to
 drive the Tenable Vulnerability Management UI, and not designed to be used programmatically.

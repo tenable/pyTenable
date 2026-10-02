@@ -19,6 +19,8 @@ class APIKeyAPI(APIEndpoint):
         '''
         Gets the API Key of the current user.
 
+        :devportal:`api-keys: get <get_api-api-key>`
+
         Examples:
 
             >>> tie.api_keys.get()
@@ -29,6 +31,8 @@ class APIKeyAPI(APIEndpoint):
         '''
         Creates or renews an API for the current user.  Will also refresh the
         API Key used in the current TenableIE session.
+
+        :devportal:`api-keys: refresh <post_api-api-key>`
 
         Examples:
 

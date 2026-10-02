@@ -22,6 +22,8 @@ class PreferenceAPI(APIEndpoint):
         '''
         Get the user's preferences
 
+        :devportal:`preference: details <get_api-preferences>`
+
         Returns:
             dict:
                 The user's preferences object
@@ -36,6 +38,8 @@ class PreferenceAPI(APIEndpoint):
                ) -> Dict:
         '''
         Update the user's preferences
+
+        :devportal:`preference: update <patch_api-preferences>`
 
         Args:
             language (optional, str):

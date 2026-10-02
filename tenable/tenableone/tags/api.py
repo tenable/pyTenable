@@ -58,6 +58,8 @@ class TagsAPI(APIEndpoint):
         """
         Retrieve tags
 
+        :devportal:`tags: search <inventory-tag-search>`
+
         Args:
             query_text (str, optional):
                 The text to search for.

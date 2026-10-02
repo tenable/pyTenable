@@ -56,6 +56,8 @@ class SoftwareAPI(APIEndpoint):
         """
         Retrieve software
 
+        :devportal:`inventory: software search <inventory-software-search>`
+
         Args:
            query_text (str, optional):
                The text to search for.

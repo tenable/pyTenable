@@ -25,6 +25,8 @@ class CheckerOptionAPI(APIEndpoint):
         '''
         Retrieves the list of checker-options.
 
+        :devportal:`checker-option: list <get_api-profiles-profileid-checkers-checkerid-checker-options>`
+
         Args:
             profile_id (str):
                 The profile instance identifier.
@@ -61,6 +63,8 @@ class CheckerOptionAPI(APIEndpoint):
                ) -> List[Dict]:
         '''
         Creates the new checker-option.
+
+        :devportal:`checker-option: create <post_api-profiles-profileid-checkers-checkerid-checker-options>`
 
         Args:
             profile_id (str):

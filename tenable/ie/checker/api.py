@@ -22,6 +22,8 @@ class CheckerAPI(APIEndpoint):
         '''
         Retrieves the list of checkers.
 
+        :devportal:`checker: list <get_api-checkers>`
+
         Returns:
             list:
                 A list of checkers.
@@ -36,6 +38,8 @@ class CheckerAPI(APIEndpoint):
         '''
         Gets the details of the particular checker based on checker
         identifier.
+
+        :devportal:`checker: details <get_api-checkers-id>`
 
         Args:
             checker_id (str): The checker instance identifier.
