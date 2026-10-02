@@ -3,7 +3,7 @@ Remediation Scans
 =================
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`Remediation scan create <io-scans-remediation-creates>` API endpoints.
+:devportal:`Remediation scan create <io-scans-remediation-create>` API endpoints.
 :devportal:`Remediation scan list <io-scans-remediation-list>` API endpoints.
 
 Methods available on ``tio.remediation_scans``:

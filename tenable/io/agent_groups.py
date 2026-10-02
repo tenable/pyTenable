@@ -3,7 +3,7 @@ Agent Groups
 ============
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`agent groups <agent-groups>` API endpoints.
+:devportal:`agent groups <agent-groups-list>` API endpoints.
 
 Methods available on ``tio.agent_groups``:
 

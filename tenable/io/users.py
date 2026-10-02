@@ -3,7 +3,7 @@ Users
 =====
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`users <users>` API endpoints.
+:devportal:`users <users-list>` API endpoints.
 
 Methods available on ``tio.users``:
 
@@ -273,8 +273,6 @@ class UsersAPI(TIOEndpoint):
         """
         Impersonate as a specific user.
 
-        :devportal:`users: impersonate <users/impersonate>`
-
         Args:
             name (str): The user-name of the user to impersonate.
 
@@ -335,7 +333,7 @@ class UsersAPI(TIOEndpoint):
         """
         Generate the API keys for a specific user.
 
-        :devportal:`users: keys <user-keys>`
+        :devportal:`users: keys <users-keys>`
 
         Args:
             user_id (int): The unique identifier for the user.

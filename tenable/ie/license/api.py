@@ -22,6 +22,8 @@ class LicenseAPI(APIEndpoint):
         '''
         Get license singleton
 
+        :devportal:`license: details <get_api-license>`
+
         Returns:
             dict:
                 The license object
@@ -34,6 +36,8 @@ class LicenseAPI(APIEndpoint):
     def create(self, license: str) -> Dict:
         '''
         Create new license singleton
+
+        :devportal:`license: create <post_api-license>`
 
         Args:
             license (str):

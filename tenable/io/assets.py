@@ -3,7 +3,7 @@ Assets
 ======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`assets <assets>` API endpoints.
+:devportal:`assets <assets-list-assets>` API endpoints.
 
 Methods available on ``tio.assets``:
 
@@ -307,6 +307,8 @@ class AssetsAPI(TIOEndpoint):
     def update_acr(self, assets_uuid_list, reason, value, note=''):
         """
         Updates ACR for the provided asset UUID's with reason(s).
+
+        :devportal:`assets: bulk update ACR <assets-bulk-update-acr>`
 
         Args:
             assets_uuid_list (list):

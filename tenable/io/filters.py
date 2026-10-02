@@ -3,7 +3,7 @@ Filters
 =======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`filters <filters-1>` API endpoints.
+:devportal:`filters <io-filters-scan-list>` API endpoints.
 
 Methods available on ``tio.filters``:
 
@@ -96,7 +96,7 @@ class FiltersAPI(TIOEndpoint):
         """
         Returns access group rules filters.
 
-        :devportal:`filters: access-control-rules-filters <access-groups-list-rule-filters>`
+        :devportal:`filters: access-control-rules-filters <io-v1-access-groups-list-rule-filters>`
 
         Args:
             normalize:
@@ -128,7 +128,7 @@ class FiltersAPI(TIOEndpoint):
         """
         Returns access group filters.
 
-        :devportal:`filters: access-group-filters <access-groups-list-filters>`
+        :devportal:`filters: access-group-filters <io-v1-access-groups-list-filters>`
 
         Args:
             normalize:
@@ -155,7 +155,7 @@ class FiltersAPI(TIOEndpoint):
         """
         Returns access group filters v2.
 
-        :devportal:`filters: access_group_filters_v2 <v2-access-groups-list-filters>`
+        :devportal:`filters: access_group_filters_v2 <io-v2-access-groups-list-filters>`
 
         Args:
             normalize:
@@ -183,7 +183,7 @@ class FiltersAPI(TIOEndpoint):
         """
         Returns access group rules filters v2.
 
-        :devportal:`filters: access_group_asset_rules_filters_v2 <v2-access-groups-list-rule-filters>`
+        :devportal:`filters: access_group_asset_rules_filters_v2 <io-v2-access-groups-list-rule-filters>`
 
         Args:
             normalize:
@@ -215,7 +215,7 @@ class FiltersAPI(TIOEndpoint):
         """
         Returns agent filters.
 
-        :devportal:`filters: agents-filters <filters-agents-filters>`
+        :devportal:`filters: agents-filters <io-filters-agents-list>`
 
         Args:
             normalize:
@@ -246,7 +246,7 @@ class FiltersAPI(TIOEndpoint):
         """
         Returns the vulnerability workbench filters
 
-        :devportal:`workbenches: vulnerabilities-filters <workbenches-vulnerabilities-filters>`
+        :devportal:`workbenches: vulnerabilities-filters <io-filters-vulnerabilities-workbench-list>`
 
         Args:
             normalize:
@@ -277,7 +277,7 @@ class FiltersAPI(TIOEndpoint):
         """
         Returns the asset workbench filters.
 
-        :devportal:`workbenches: assets-filters <filters-assets-filter>`
+        :devportal:`workbenches: assets-filters <io-filters-assets-list>`
 
         Args:
             normalize:
@@ -332,7 +332,7 @@ class FiltersAPI(TIOEndpoint):
         """
         Returns the individual scan filters.
 
-        :devportal:`filters: credentials <credentials-filters>`
+        :devportal:`filters: credentials <io-filters-credentials-list>`
 
         Args:
             normalize:

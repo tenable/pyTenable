@@ -3,7 +3,7 @@ Images
 ======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-Container Security :devportal:`images <cs-v2-images>` API endpoints.
+Container Security images API endpoints.
 
 Methods available on ``tio.cs.images``:
 
@@ -37,8 +37,6 @@ class ImagesAPI(APIEndpoint):
              ) -> Union[Dict, CSIterator]:
         '''
         Returns the list of images stored within Container Security.
-
-        :devportal:`API Documentation <container-security-v2-list-images>`
 
         Args:
             name (str, optional):
@@ -107,8 +105,6 @@ class ImagesAPI(APIEndpoint):
         '''
         Returns the details for the specified image.
 
-        :devportal:`API Documentation <container-security-v2-get-image-details>`  # noqa: E501
-
         Args:
             repository (str):
                 The repository name.
@@ -126,8 +122,6 @@ class ImagesAPI(APIEndpoint):
     def delete(self, repository: str, image: str, tag: str) -> None:
         '''
         Deleted the specified image.
-
-        :devportal:`API Documentation <container-security-v2-delete-image>`
 
         Args:
             repository (str):

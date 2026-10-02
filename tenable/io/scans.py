@@ -3,7 +3,7 @@ Scans
 =====
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`scans <scans>` API endpoints.
+:devportal:`scans <scans-list>` API endpoints.
 
 Methods available on ``tio.scans``:
 
@@ -1586,7 +1586,7 @@ class ScansAPI(TIOEndpoint):
         Retrieves information about the status of the specified instance
         of the scan.
 
-        :devportal:`scan: get-scan-history <scans-history-by-scan-id>`
+        :devportal:`scan: get-scan-history <scans-history-details>`
 
         Args:
             scan_id (int or uuid): The unique identifier for the scan.
@@ -1616,7 +1616,7 @@ class ScansAPI(TIOEndpoint):
         Evaluates a list of targets and/or tags against
         the scan route configuration of scanner groups.
 
-        :devportal:`scan: check-auto-targets <scans-check-auto-targets>`
+        :devportal:`scan: check-auto-targets <io-scans-check-auto-targets>`
 
         Args:
             limit (int):

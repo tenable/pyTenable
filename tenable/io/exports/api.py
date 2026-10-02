@@ -3,7 +3,7 @@ Exports
 =======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`exports <exports>` API endpoints.
+:devportal:`exports <exports-vulns-request-export>` API endpoints.
 
 Methods available on ``tio.exports``:
 
@@ -60,7 +60,7 @@ class ExportsAPI(APIEndpoint):
         Submit new export job for the specified datatype.
 
         API Documentation for the job listings for
-        :devportal:`assets <exports-assets-request-export>`,
+        :devportal:`assets <export-assets-v2>`,
         :devportal:`compliance <io-exports-compliance-create>`, and
         :devportal:`vulnerabilities <exports-vulns-request-export>` datatypes.
         """
@@ -348,7 +348,7 @@ class ExportsAPI(APIEndpoint):
         """
         Initiate an asset export.
 
-        :devportal:`API Documentation <exports-assets-request-export>`
+        :devportal:`API Documentation <export-assets-v2>`
 
         Args:
             last_scan_id:
@@ -498,7 +498,7 @@ class ExportsAPI(APIEndpoint):
         """
         Initiate an asset v2 export.
 
-        :devportal:`API Documentation <exports-v2-assets-request-export>`
+        :devportal:`API Documentation <export-assets-v2>`
 
         Args:
             last_scan_id:

@@ -22,6 +22,8 @@ class SAMLConfigurationAPI(APIEndpoint):
         '''
         Retrieves the details of the SAML-configuration singleton.
 
+        :devportal:`saml-configuration: details <get_api-saml-configuration>`
+
         Returns:
             dict:
                 The details of saml configuration singleton.
@@ -36,6 +38,8 @@ class SAMLConfigurationAPI(APIEndpoint):
                ) -> Dict:
         '''
         Updates the SAML-configuration.
+
+        :devportal:`saml-configuration: update <patch_api-saml-configuration>`
 
         Args:
             enabled (optional, bool):
@@ -80,6 +84,8 @@ class SAMLConfigurationAPI(APIEndpoint):
     def generate_saml_certificate(self) -> Dict:
         '''
         Generates a SAML certificate.
+
+        :devportal:`saml-configuration: generate-saml-certificate <get_api-saml-configuration-generate-certificate>`
 
         Returns:
             dict:

@@ -22,6 +22,8 @@ class EmailNotifiersAPI(APIEndpoint):
         '''
         Retrieve all email notifiers instances
 
+        :devportal:`email-notifiers: list <get_api-email-notifiers>`
+
         Returns:
             list:
                 The list of email notifier objects
@@ -36,6 +38,8 @@ class EmailNotifiersAPI(APIEndpoint):
                ) -> List[Dict]:
         '''
         Create email notifiers
+
+        :devportal:`email-notifiers: create <post_api-email-notifiers>`
 
         Args:
             input_type (optional, str):
@@ -107,6 +111,8 @@ class EmailNotifiersAPI(APIEndpoint):
         '''
         Retrieves the details for a specific email-notifier
 
+        :devportal:`email-notifiers: details <get_api-email-notifiers-id>`
+
         Args:
             email_notifier_id (str):
                 The email-notifier instance identifier.
@@ -128,6 +134,8 @@ class EmailNotifiersAPI(APIEndpoint):
                ) -> Dict:
         '''
         Update an existing profile
+
+        :devportal:`email-notifiers: update <patch_api-email-notifiers-id>`
 
         Args:
             email_notifier_id (str):
@@ -172,6 +180,8 @@ class EmailNotifiersAPI(APIEndpoint):
         '''
         Delete an Email-Notifier instance
 
+        :devportal:`email-notifiers: delete <delete_api-email-notifiers-id>`
+
         Args:
             email_notifier_id (str):
                 The profile instance identifier.
@@ -192,6 +202,8 @@ class EmailNotifiersAPI(APIEndpoint):
         '''
         Send a test Email notification by id
 
+        :devportal:`email-notifiers: send-test-email-by-id <get_api-email-notifiers-test-message-id>`
+
         Args:
             email_notifier_id (str):
                 The profile instance identifier.
@@ -211,6 +223,8 @@ class EmailNotifiersAPI(APIEndpoint):
                         ) -> None:
         '''
         Send a test Email notification
+
+        :devportal:`email-notifiers: send-test-email <post_api-email-notifiers-test-message>`
 
         Args:
             input_type (optional, str):

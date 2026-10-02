@@ -3,7 +3,7 @@ Workbenches
 ===========
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`workbenches <workbenches>` API endpoints.
+:devportal:`workbenches <workbenches-vulnerabilities>` API endpoints.
 
 .. note::
 
@@ -135,7 +135,7 @@ class WorkbenchesAPI(TIOEndpoint):
         Query for the information for a specific asset within the asset
         workbench.
 
-        :devportal:`workbenches: asset-info </workbenches-asset-info>`
+        :devportal:`workbenches: asset-info <workbenches-asset-info>`
 
         Args:
             id (str): The unique identifier (UUID) of the asset.
@@ -302,7 +302,7 @@ class WorkbenchesAPI(TIOEndpoint):
         """
         Deletes the asset.
 
-        :devportal:`workbenches: asset-delete <workbenches-asset-delete>`
+        :devportal:`workbenches: asset-delete <workbenches-assets-delete>`
 
         Args:
             asset_uuid (str): The unique identifier for the asset.

@@ -3,7 +3,7 @@ Server
 ======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`server <server>` API endpoints.
+:devportal:`server <server-properties>` API endpoints.
 
 Methods available on ``tio.server``:
 

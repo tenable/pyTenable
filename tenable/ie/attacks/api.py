@@ -24,6 +24,8 @@ class AttacksAPI(APIEndpoint):
         '''
         Retrieve all attacks
 
+        :devportal:`attacks: list <get_api-profiles-profileid-attacks>`
+
         Args:
             profile_id (str):
                 The attack profile identifier.

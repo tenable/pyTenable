@@ -22,6 +22,8 @@ class ApplicationSettingsAPI(APIEndpoint):
         '''
         Get the application settings
 
+        :devportal:`application-settings: details <get_api-application-settings>`
+
         Returns:
             dict:
                 The application settings objects
@@ -36,6 +38,8 @@ class ApplicationSettingsAPI(APIEndpoint):
                ) -> Dict:
         '''
         Update the application settings
+
+        :devportal:`application-settings: update <patch_api-application-settings>`
 
         Args:
             smtp_server_address (optional, str):

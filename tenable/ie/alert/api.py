@@ -93,6 +93,8 @@ class AlertsAPI(APIEndpoint):
         '''
         Retrieves the details of a specific alert.
 
+        :devportal:`alert: details <get_api-alerts-id>`
+
         Args:
             alert_id (str):
                 The alert instance identifier.
@@ -114,6 +116,8 @@ class AlertsAPI(APIEndpoint):
                ) -> Dict:
         '''
         Update alert instance
+
+        :devportal:`alert: update <patch_api-alerts-id>`
 
         Args:
             alert_id (str):
@@ -143,6 +147,8 @@ class AlertsAPI(APIEndpoint):
                           ) -> None:
         '''
         Update alerts for one profile
+
+        :devportal:`alert: update-on-profile <patch_api-profiles-profileid-alerts>`
 
         Args:
             profile_id (str):
