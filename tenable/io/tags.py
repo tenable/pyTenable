@@ -3,7 +3,7 @@ Tags
 ====
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`tagging <tags>` API endpoints.
+:devportal:`tagging <tags-list-tag-values>` API endpoints.
 
 Methods available on ``tio.tags``:
 
@@ -186,7 +186,7 @@ class TagsAPI(TIOEndpoint):
         """
         Create a tag category/value pair
 
-        :devportal:`tags: create-tag-value <tags-create-tag-value-1>`
+        :devportal:`tags: create-tag-value <tags-create-tag-value>`
 
         Args:
             category (str):

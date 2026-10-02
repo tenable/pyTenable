@@ -3,7 +3,7 @@ Policies
 ========
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`policies <policies>` API.
+:devportal:`policies <policies-list>` API.
 
 Methods available on ``tio.policies``:
 

@@ -27,8 +27,8 @@ from typing import Any, Dict, List, Optional, Union
 from gql import Client, GraphQLRequest
 from gql.transport.requests import RequestsHTTPTransport
 from graphql import DocumentNode, GraphQLError, validate
-from tenable.base._restfly_v1 import APIIterator
 
+from tenable.base._restfly_v1 import APIIterator
 from tenable.version import version
 
 
@@ -215,9 +215,7 @@ class GraphQLSession:
             api_key = os.environ.get(f'{self._env_base}_API_KEY')
 
         if not api_key or not url:
-            raise ConnectionError(
-                f'Invalid connection settings: url="{url}", api_key="{api_key}"'
-            )
+            raise ConnectionError(f'Invalid connection settings to {url=}')
 
         headers = {
             **self._authorization(api_key),
@@ -287,7 +285,9 @@ class GraphQLSession:
 
         if query and isinstance(query, StringIO):
             data = query.read()
-        elif not query and stored_file:
+        elif query is None and stored_file is not None:
+            if stored_file.startswith('../'):
+                raise TypeError(f"{stored_file} isn't valid.")
             queryfile = self._query_folder.joinpath(stored_file)
             with queryfile.open('r', encoding='utf-8') as fobj:
                 data = fobj.read()

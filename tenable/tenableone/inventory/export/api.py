@@ -224,6 +224,8 @@ class ExportAPI(APIEndpoint):
         """
         Download export chunk
 
+        :devportal:`inventory export: download <inventory-export-download>`
+
         Args:
             export_id (str):
                 The export ID.

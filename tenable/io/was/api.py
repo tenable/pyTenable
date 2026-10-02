@@ -3,7 +3,7 @@ WAS
 ===
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`WAS <was>` API endpoints.
+:devportal:`WAS <was-v2-scans-search>` API endpoints.
 
 Methods available on ``tio.was``:
 
@@ -101,6 +101,8 @@ class WasAPI(TIOEndpoint):
     def download_scan_report(self, scan_uuid: str) -> Dict:
         """
         Downloads the individual target scan results.
+
+        :devportal:`was: download scan report <was-v2-scans-download-export>`
 
         Args:
             scan_uuid (str):

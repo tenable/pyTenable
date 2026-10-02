@@ -3,7 +3,7 @@ Files
 =====
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`file <file>` API endpoints.
+:devportal:`file <file-upload>` API endpoints.
 
 Methods available on ``tio.files``:
 

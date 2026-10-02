@@ -1,4 +1,5 @@
 import responses
+from responses import matchers
 
 
 RULE = {
@@ -63,3 +64,25 @@ def test_plugin_rules_list(nessus):
     assert isinstance(resp, list)
     for item in resp:
         assert item == RULE
+
+@responses.activate
+def test_plugin_rules_edit_keeps_existing_plugin_id(nessus):
+    '''
+    Omitting plugin_id must keep the rule's existing value, not send "None".
+    '''
+    responses.get('https://localhost:8834/plugin-rules/1', json=RULE)
+    responses.put(
+        'https://localhost:8834/plugin-rules/1',
+        match=[matchers.json_params_matcher({**RULE, 'host': '192.0.2.1'})],
+    )
+    nessus.plugin_rules.edit(1, host='192.0.2.1')
+
+
+@responses.activate
+def test_plugin_rules_edit_sets_plugin_id(nessus):
+    responses.get('https://localhost:8834/plugin-rules/1', json=RULE)
+    responses.put(
+        'https://localhost:8834/plugin-rules/1',
+        match=[matchers.json_params_matcher({**RULE, 'plugin_id': '12345'})],
+    )
+    nessus.plugin_rules.edit(1, plugin_id=12345)

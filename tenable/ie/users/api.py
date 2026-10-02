@@ -23,6 +23,8 @@ class UsersAPI(APIEndpoint):
         '''
         Retrieve all users
 
+        :devportal:`users: list <get_api-users>`
+
         Returns:
             list:
                 The list of users objects
@@ -40,6 +42,8 @@ class UsersAPI(APIEndpoint):
                ) -> List[Dict]:
         '''
         Create users
+
+        :devportal:`users: create <post_api-users>`
 
         Args:
             name (str):
@@ -89,6 +93,8 @@ class UsersAPI(APIEndpoint):
         '''
         Gets user information
 
+        :devportal:`users: info <get_api-users-whoami>`
+
         Return:
             dict:
                 The user info object
@@ -102,6 +108,8 @@ class UsersAPI(APIEndpoint):
     def details(self, user_id: str) -> Dict:
         '''
         Retrieves the details for a specific user
+
+        :devportal:`users: details <get_api-users-id>`
 
         Args:
             user_id (str):
@@ -122,6 +130,8 @@ class UsersAPI(APIEndpoint):
                ) -> Dict:
         '''
         Update an existing user
+
+        :devportal:`users: update <patch_api-users-id>`
 
         Args:
             user_id (str):
@@ -160,6 +170,8 @@ class UsersAPI(APIEndpoint):
     def delete(self, user_id: str) -> None:
         '''
         Delete an existing user
+
+        :devportal:`users: delete <delete_api-users-id>`
 
         Args:
             user_id (str):
@@ -227,6 +239,8 @@ class UsersAPI(APIEndpoint):
         '''
         Update a user password
 
+        :devportal:`users: change-password <patch_api-users-password>`
+
         Args:
             old_password (str):
                 old password of user.
@@ -254,6 +268,8 @@ class UsersAPI(APIEndpoint):
                           ) -> Dict:
         '''
         Replace role list for user
+
+        :devportal:`users: update-user-roles <put_api-users-id-roles>`
 
         Args:
             user_id (str):

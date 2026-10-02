@@ -3,7 +3,7 @@ Folders
 =======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`folders <folders>` API endpoints.
+:devportal:`folders <folders-list>` API endpoints.
 
 Methods available on ``tio.folders``:
 

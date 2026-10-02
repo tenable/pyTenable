@@ -3,7 +3,7 @@ Audit Log
 =========
 
 The following methods allow for interaction into the Tenable Vulnerability
-Management :devportal:`audit log <audit-log>` API endpoints.
+Management :devportal:`audit log <audit-log-events>` API endpoints.
 
 Methods available on ``io.audit_log``:
 
@@ -30,7 +30,6 @@ class AuditLogIterator(APIIterator):
         Request the next page of data
         '''
         payload = copy(self._payload)
-        print(self._next_token)
         payload['next'] = self._next_token
 
         if self.num_pages >= 1 and self._next_token is None:

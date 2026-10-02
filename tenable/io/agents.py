@@ -3,7 +3,7 @@ Agents
 ======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`agents <agents>` API endpoints.
+:devportal:`agents <agents-list>` API endpoints.
 
 Methods available on ``tio.agents``:
 

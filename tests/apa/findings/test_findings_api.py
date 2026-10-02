@@ -1,3 +1,5 @@
+import json
+
 import pytest
 import responses
 
@@ -139,7 +141,7 @@ def finding():
 
 
 @responses.activate
-def test_findings_list_iterator(api, finding):
+def test_findings_list_iterator(api, finding, capsys):
     responses.get('https://cloud.tenable.com/apa/findings-api/v1/findings',
                   json={"page_number": 1, "count": 50, "total": 100,
                         "next": "123",
@@ -168,6 +170,7 @@ def test_findings_list_iterator(api, finding):
         assert f == finding
     assert findings.total == 100
     assert findings.count == 100
+    assert capsys.readouterr().out == ''
 
 
 @responses.activate
@@ -325,3 +328,27 @@ def test_attack_techniques_search_exclude_resolved_false(api, finding):
 
     assert len(result["data"]) == 1
     assert result["pagination"]["total"] == 1
+
+
+@pytest.mark.parametrize('filter_value', [
+    {'operator': '==', 'key': 'priority', 'value': 'high'},
+    '{"operator": "==", "key": "priority", "value": "high"}',
+])
+@responses.activate
+def test_findings_list_filter_sent_as_json(filter_value, api, finding):
+    """
+    The API expects the filter as a JSON string; a dict must be serialized.
+    """
+    expected = json.dumps({'operator': '==', 'key': 'priority', 'value': 'high'})
+    responses.get(
+        'https://cloud.tenable.com/apa/findings-api/v1/findings',
+        json={
+            'page_number': 1, 'count': 1, 'total': 1, 'next': None,
+            'data': [finding],
+        },
+        match=[responses.matchers.query_param_matcher(
+            {'limit': 50, 'filter': expected}, strict_match=False
+        )],
+    )
+    items = api.findings.list(filter=filter_value, limit=50)
+    assert next(items) == finding

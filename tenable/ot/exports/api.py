@@ -86,7 +86,7 @@ class ExportsAPI(APIEndpoint):
         filter = filters[0] if filters else None
         if len(filters) > 1:
             filter = {
-                'op': 'And',
+                'op': filter_type,
                 'expressions': filters
             }
 
@@ -99,10 +99,7 @@ class ExportsAPI(APIEndpoint):
         }
 
         if return_json:
-            return self._api.query(query=query,
-                                   variables=variables,
-                                   **kwargs
-                                   )
+            return self._api.graphql(query=query, variables=variables)
         return iterable(self._api,
                         _model=model,
                         _query=query,

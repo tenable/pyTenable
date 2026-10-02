@@ -19,6 +19,8 @@ class AboutAPI(APIEndpoint):
         '''
         Returns the version of the connected Tenable Identity Exposure instance.
 
+        :devportal:`about: version <get_api-about>`
+
         Examples:
 
             >>> tie.about.version()

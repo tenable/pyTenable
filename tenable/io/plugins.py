@@ -3,7 +3,7 @@ Plugins
 =======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`plugins <plugins>` API endpoints.
+:devportal:`plugins <io-plugins-list>` API endpoints.
 
 Methods available on ``tio.plugins``:
 
@@ -100,7 +100,7 @@ class PluginsAPI(TIOEndpoint):
         """
         List the available plugin families.
 
-        :devportal:`plugins: families <plugins-families>`
+        :devportal:`plugins: families <io-plugins-families-list>`
 
         Returns:
             :obj:`list`:
@@ -116,7 +116,7 @@ class PluginsAPI(TIOEndpoint):
         """
         Retrieve the details for a specific plugin family.
 
-        :devportal:`plugins: family-details <plugins-family-details>`
+        :devportal:`plugins: family-details <io-plugins-family-details-id>`
 
         Args:
             family_id (int): The plugin family unique identifier.
@@ -135,7 +135,7 @@ class PluginsAPI(TIOEndpoint):
         """
         Retrieve the details for a specific plugin.
 
-        :devportal:`plugins: plugin-details <plugins-plugin-details>`
+        :devportal:`plugins: plugin-details <io-plugins-details>`
 
         Args:
             plugin_id (int): The plugin id for the requested plugin.

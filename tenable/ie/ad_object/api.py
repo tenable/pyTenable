@@ -39,6 +39,8 @@ class ADObjectAPI(APIEndpoint):
         '''
         Retrieves the details of a specific AD object.
 
+        :devportal:`ad-object: details <get_api-infrastructures-infrastructureid-directories-directoryid-ad-objects-id>`
+
         Args:
             directory_id (str):
                 The directory instance identifier.
@@ -72,6 +74,8 @@ class ADObjectAPI(APIEndpoint):
         Retrieves an AD object details by id that have deviances for a
         specific profile and checker
 
+        :devportal:`ad-object: details-by-profile-and-checker <get_api-profiles-profileid-checkers-checkerid-ad-objects-id>`
+
         Args:
             profile_id (str):
                 The profile instance identifier.
@@ -104,6 +108,8 @@ class ADObjectAPI(APIEndpoint):
                          ) -> Dict:
         '''
         Retrieves the details of a specific AD object.
+
+        :devportal:`ad-object: details-by-event <get_api-infrastructures-infrastructureid-directories-directoryid-events-eventid-ad-objects-id>`
 
         Args:
             directory_id (str):
@@ -143,6 +149,8 @@ class ADObjectAPI(APIEndpoint):
         '''
         Get the AD object changes between a given event and event which
         precedes it.
+
+        :devportal:`ad-object: get-changes <get_api-infrastructures-infrastructureid-directories-directoryid-events-eventid-ad-objects-id-changes>`
 
         Args:
             directory_id (str):

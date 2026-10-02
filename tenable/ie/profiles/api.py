@@ -22,6 +22,8 @@ class ProfilesAPI(APIEndpoint):
         '''
         Retrieve all profiles
 
+        :devportal:`profiles: list <get_api-profiles>`
+
         Returns:
             list[dict]:
                 The list of profile objects
@@ -37,6 +39,8 @@ class ProfilesAPI(APIEndpoint):
                ) -> List[Dict]:
         '''
         Create a profile
+
+        :devportal:`profiles: create <post_api-profiles>`
 
         Args:
             name (str):
@@ -69,6 +73,8 @@ class ProfilesAPI(APIEndpoint):
         '''
         Retrieves the details for a specific profile
 
+        :devportal:`profiles: details <get_api-profiles-id>`
+
         Args:
             profile_id (str):
                 The profile instance identifier.
@@ -88,6 +94,8 @@ class ProfilesAPI(APIEndpoint):
                ) -> Dict:
         '''
         Update an existing profile
+
+        :devportal:`profiles: update <patch_api-profiles-id>`
 
         Args:
             profile_id (str):
@@ -116,6 +124,8 @@ class ProfilesAPI(APIEndpoint):
         '''
         Delete an existing profile
 
+        :devportal:`profiles: delete <delete_api-profiles-id>`
+
         Args:
             profile_id (str):
                 The profile instance identifier.
@@ -135,6 +145,8 @@ class ProfilesAPI(APIEndpoint):
                      ) -> Dict:
         '''
         Creates a new profile from another profile
+
+        :devportal:`profiles: copy-profile <post_api-profiles-from-fromid>`
 
         Args:
             from_id (str):
@@ -167,6 +179,8 @@ class ProfilesAPI(APIEndpoint):
         '''
         Commits change of the related profile
 
+        :devportal:`profiles: commit <post_api-profiles-id-commit>`
+
         Args:
             profile_id (str):
                 The profile instance identifier.
@@ -184,6 +198,8 @@ class ProfilesAPI(APIEndpoint):
                 ) -> None:
         '''
         Unstages changes of the related profile
+
+        :devportal:`profiles: unstage <post_api-profiles-id-unstage>`
 
         Args:
             profile_id (str):

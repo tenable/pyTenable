@@ -3,7 +3,7 @@ Groups
 ======
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`groups <groups>` API.
+:devportal:`groups <groups-list>` API.
 
 Methods available on ``tio.groups``:
 
@@ -103,7 +103,7 @@ class GroupsAPI(TIOEndpoint):
         """
         Edit a user group.
 
-        :devportal:`groups: edit <groups/edit>`
+        :devportal:`groups: edit <groups-edit>`
 
         Args:
             id (int):

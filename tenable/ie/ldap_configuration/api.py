@@ -22,6 +22,8 @@ class LDAPConfigurationAPI(APIEndpoint):
         '''
         Get LDAP configuration singleton
 
+        :devportal:`ldap-configuration: details <get_api-ldap-configuration>`
+
         Returns:
             dict:
                 The LDAP configuration object
@@ -36,6 +38,8 @@ class LDAPConfigurationAPI(APIEndpoint):
                ) -> Dict:
         '''
         Update LDAP configuration singleton
+
+        :devportal:`ldap-configuration: update <patch_api-ldap-configuration>`
 
         Args:
             enabled (optional, bool):

@@ -3,7 +3,7 @@ Scans
 =====
 
 The following methods allow for interaction into the TVM
-:devportal:`PCI Scans API <pci-scans>` API endpoints.
+:devportal:`PCI Scans API <pci-scans-list>` API endpoints.
 
 Methods available on ``tio.pci.scans``:
 

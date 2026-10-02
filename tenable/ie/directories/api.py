@@ -23,6 +23,8 @@ class DirectoriesAPI(APIEndpoint):
         '''
         Retrieves all directory instances.
 
+        :devportal:`directories: list <get_api-directories>`
+
         Returns:
             list:
                 The list of directory objects
@@ -42,6 +44,8 @@ class DirectoriesAPI(APIEndpoint):
                ) -> List[Dict]:
         '''
         Creates a new directory instance.
+
+        :devportal:`directories: create <post_api-directories>`
 
         Args:
             infrastructure_id (int):
@@ -95,6 +99,8 @@ class DirectoriesAPI(APIEndpoint):
         '''
         Retrieves the details for a specific directory instance.
 
+        :devportal:`directories: details <get_api-directories-id>`
+
         Args:
             directory_id (str): The directory instance identifier.
 
@@ -115,6 +121,8 @@ class DirectoriesAPI(APIEndpoint):
         '''
         Updates the directory instance based on infrastrcture_id and
         directory_id.
+
+        :devportal:`directories: update <patch_api-infrastructures-infrastructureid-directories-id>`
 
         Args:
             infrastructure_id (int):
@@ -166,6 +174,8 @@ class DirectoriesAPI(APIEndpoint):
     def delete(self, infrastructure_id: int, directory_id: int) -> None:
         '''
         Deletes the directory instance.
+
+        :devportal:`directories: delete <delete_api-infrastructures-infrastructureid-directories-id>`
 
         Args:
             infrastructure_id (int):

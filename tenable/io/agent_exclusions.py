@@ -3,7 +3,7 @@ Agent Exclusions
 ================
 
 The following methods allow for interaction into the Tenable Vulnerability Management
-:devportal:`agent exclusions <agent-exclusions>` API endpoints.
+:devportal:`agent exclusions <agent-exclusions-list>` API endpoints.
 
 Methods available on ``tio.agent_exclusions``:
 

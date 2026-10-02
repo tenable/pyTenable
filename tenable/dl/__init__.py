@@ -95,7 +95,7 @@ class Downloads(APIPlatform):
         """
         Lists the available content pages.
 
-        :devportal:`API Endpoint Documentation <get_pages>`
+        :devportal:`API Endpoint Documentation <downloads-pages-list>`
 
         Returns:
             :obj:`list`:
@@ -112,7 +112,7 @@ class Downloads(APIPlatform):
         """
         Retrieves the specific download items for the page requested.
 
-        :devportal:`API Endpoint Documentation <get_pages-slug>`
+        :devportal:`API Endpoint Documentation <downloads-files-list>`
 
         Args:
             page (str): The name of the page to request.
@@ -130,7 +130,7 @@ class Downloads(APIPlatform):
         """
         Retrieves the requested package and downloads the file.
 
-        :devportal:`API Endpoint Documentation <get_pages-slug-files-file>`
+        :devportal:`API Endpoint Documentation <downloads-files-download>`
 
         Args:
             page (str): The name of the page

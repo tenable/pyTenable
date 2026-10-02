@@ -73,6 +73,8 @@ class AssetsAPI(APIEndpoint):
         """
         Retrieve assets
 
+        :devportal:`inventory: assets search <inventory-assets-search>`
+
         Args:
             query_text (str, optional):
                 The text to search for.

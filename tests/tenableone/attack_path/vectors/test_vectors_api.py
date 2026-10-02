@@ -1,3 +1,5 @@
+import json
+
 import pytest
 import responses
 
@@ -278,3 +280,51 @@ def test_top_attack_paths_search_exclude_resolved_false(tenable_one_api, vector_
 
     assert response.total == 10
     assert len(response.data) == 10
+
+
+@pytest.mark.parametrize('filter_value', [
+    {'operator': '==', 'key': 'priority', 'value': 'high'},
+    '{"operator": "==", "key": "priority", "value": "high"}',
+])
+@responses.activate
+def test_attack_path_vectors_list_filter_sent_as_json(
+    filter_value, tenable_one_api, vector
+):
+    """
+    The API expects the filter as a JSON string; a dict must be serialized.
+    """
+    expected = json.dumps({'operator': '==', 'key': 'priority', 'value': 'high'})
+    responses.get(
+        'https://cloud.tenable.com/api/v1/t1/apa/vectors',
+        json={
+            'page_number': 1, 'count': 1, 'total': 1, 'next': None,
+            'data': [vector],
+        },
+        match=[responses.matchers.query_param_matcher(
+            {'limit': 10, 'filter': expected}, strict_match=False
+        )],
+    )
+    items = tenable_one_api.attack_path.vectors.list(filter=filter_value, limit=10)
+    assert next(items) == vector
+
+
+@pytest.mark.parametrize('start, pages', [(None, [None, 2, 3]), (2, [2, 3])])
+@responses.activate(registry=responses.registries.OrderedRegistry)
+def test_attack_path_vectors_iterator_without_page_number_in_response(
+    start, pages, tenable_one_api, vector
+):
+    """
+    The live API only echoes page_number when it was sent, so the iterator
+    must track the page itself and honor a caller-supplied starting page.
+    """
+    total = 2 * len(pages)
+    for page in pages:
+        params = {'limit': 2} if page is None else {'limit': 2, 'page_number': page}
+        responses.get(
+            'https://cloud.tenable.com/api/v1/t1/apa/vectors',
+            json={'count': 2, 'total': total, 'data': [vector, vector]},
+            match=[responses.matchers.query_param_matcher(params)],
+        )
+    vectors = tenable_one_api.attack_path.vectors.list(limit=2, page_number=start)
+    assert len(list(vectors)) == total
+    assert vectors.num_pages == len(pages)

@@ -22,6 +22,8 @@ class AttackTypesAPI(APIEndpoint):
         '''
         Retrieve all attack types
 
+        :devportal:`attack-types: list <get_api-attack-types>`
+
         Returns:
             list:
                 The list of attack types objects

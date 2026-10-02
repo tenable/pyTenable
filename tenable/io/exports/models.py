@@ -53,7 +53,7 @@ CVSSScore = Annotated[float, Field(ge=0, le=10)]
 ExploitMaturity = Annotated[
     Literal['high', 'functional', 'poc', 'unproven'], BeforeValidator(to_lower)
 ]
-EPSSScore = Annotated[float, Field(le=0, ge=100)]
+EPSSScore = Annotated[float, Field(ge=0, le=100)]
 OWASPChapters = Annotated[
     Literal['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10'],
     BeforeValidator(to_upper),
@@ -96,7 +96,7 @@ class ExportFilterV1Base(BaseModel):
                 if name not in data:
                     data[name] = []
                 if isinstance(value, list):
-                    data[name] + value
+                    data[name] += value
                 elif isinstance(value, str):
                     data[name].append(value)
         return data
@@ -238,14 +238,20 @@ class ComplianceExportFiltersV1(BaseModel):
         data = handler(self)
         tags = data.pop('tags', None)
         if tags:
-            data['tags'] = {}
+            # The compliance export API expects a list of
+            # {"category": ..., "values": [...]} objects.
+            merged = {}
             for category, value in tags:
-                if category not in data['tags']:
-                    data['tags'][category] = []
+                if category not in merged:
+                    merged[category] = []
                 if isinstance(value, list):
-                    data['tags'][category] + value
+                    merged[category] += value
                 elif isinstance(value, str):
-                    data['tags'][category].append(value)
+                    merged[category].append(value)
+            data['tags'] = [
+                {'category': category, 'values': values}
+                for category, values in merged.items()
+            ]
         return data
 
 
@@ -286,4 +292,5 @@ class WASExportV1(BaseModel):
     model_config = ConfigDict(extra='forbid')
     num_assets: int = 500
     include_unlicensed: bool = True
+    properties: list[str] | None = None
     filters: WASExportFiltersV1

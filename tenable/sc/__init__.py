@@ -297,7 +297,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
             stacklevel=2,
         )
         resp = self.post('token', json={'username': username, 'password': password})
-        self._auth_mech = 'user'
+        self._auth_mech = 'session'
         self._session.headers.update(
             {
                 'X-SecurityCenter': str(resp.json()['response']['token']),
@@ -348,7 +348,7 @@ class TenableSC(APIPlatform):  # noqa PLR0904
                 'TNS_SESSIONID': str(resp.headers['Set-Cookie'])[14:46],
             }
         )
-        self._auth_meth = 'cert'
+        self._auth_mech = 'cert'
 
     def _deauthenticate(self):  # noqa PLW0221
         super()._deauthenticate(path='token')

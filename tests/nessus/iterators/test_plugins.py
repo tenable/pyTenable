@@ -31,3 +31,17 @@ def test_plugin_iterator(nessus):
     for plugin in iter:
         assert plugin == plugin_mock
     
+
+@responses.activate
+def test_plugin_iterator_instances_do_not_share_plugins(nessus):
+    responses.get('https://localhost:8834/plugins/families',
+                  json={'families': [{'id': 1, 'count': 3}]}
+                  )
+    responses.get('https://localhost:8834/plugins/families/1',
+                  json={'id': 1, 'plugins': [{'id': i} for i in range(3)]}
+                  )
+    first = PluginIterator(nessus)
+    second = PluginIterator(nessus)
+    assert first.plugins == [0, 1, 2]
+    assert second.plugins == [0, 1, 2]
+    assert first.total == second.total == 3

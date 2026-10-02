@@ -9,6 +9,7 @@ class PluginIterator(APIIterator):
 
     def __init__(self, api, **kw):
         super().__init__(api, **kw)
+        self.plugins = []
         for fam in self._api.plugins.families():
             family = self._api.plugins.family_details(fam['id'])
             self.plugins += [p['id'] for p in family['plugins']]

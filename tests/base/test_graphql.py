@@ -5,8 +5,6 @@ Base graphql Testing module.
 import platform
 import sys
 from io import StringIO
-from pathlib import Path
-from tempfile import NamedTemporaryFile
 
 import pytest
 import responses
@@ -68,16 +66,13 @@ def test_construct_query_docnode(gql_session, gql_test_query):
     assert test_query == gql_session.construct_query(query=test_query).document
 
 
-def test_construct_query_stored_file(gql_session, gql_test_query):
+def test_construct_query_stored_file(gql_session, gql_test_query, tmp_path):
     test_query = parse(gql_test_query)
-    with NamedTemporaryFile() as tfile:
-        tfile.write(gql_test_query.encode('utf-8'))
-        tfile.seek(0)
-        tpath = Path(tfile.name)
-        fname = tpath.name
-        fpath = tpath.absolute().parent
-        gql_session._query_folder = Path(fpath)
-        assert test_query == gql_session.construct_query(stored_file=fname).document
+    tmp_path.joinpath('test.graphql').write_text(gql_test_query, encoding='utf-8')
+    gql_session._query_folder = tmp_path
+    assert test_query == gql_session.construct_query(
+        stored_file='test.graphql'
+    ).document
 
 
 def test_construct_query_typeerror(gql_session, gql_test_query):

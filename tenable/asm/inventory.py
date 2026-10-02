@@ -68,6 +68,8 @@ class InventoryAPI(APIEndpoint):
         """
         Lists the assets in the inventory
 
+        :devportal:`inventory: global search <globalSearch>`
+
         Args:
             *search (tuple[str, str, str], optional):
                 A 3-part search tuple detailing what to search for from the ASM

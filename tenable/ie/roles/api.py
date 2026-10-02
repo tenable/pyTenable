@@ -22,6 +22,8 @@ class RolesAPI(APIEndpoint):
         '''
         Retrieve all roles
 
+        :devportal:`roles: list <get_api-roles>`
+
         Returns:
             list[dict]:
                 The list of roles objects
@@ -37,6 +39,8 @@ class RolesAPI(APIEndpoint):
                ) -> List[Dict]:
         '''
         Create a new role
+
+        :devportal:`roles: create <post_api-roles>`
 
         Args:
             name (str):
@@ -67,6 +71,8 @@ class RolesAPI(APIEndpoint):
         '''
         Return the default roles for user creation
 
+        :devportal:`roles: default-roles <get_api-roles-user-creation-defaults>`
+
         Returns:
             list[dict]:
                 The default roles object.
@@ -80,6 +86,8 @@ class RolesAPI(APIEndpoint):
     def details(self, role_id: str) -> Dict:
         '''
         Retrieves the details of a specific role.
+
+        :devportal:`roles: details <get_api-roles-id>`
 
         Args:
             role_id (str):
@@ -102,6 +110,8 @@ class RolesAPI(APIEndpoint):
                ) -> Dict:
         '''
         Update an existing role
+
+        :devportal:`roles: update <patch_api-roles-id>`
 
         Args:
             role_id (str):
@@ -128,6 +138,8 @@ class RolesAPI(APIEndpoint):
         '''
         Delete an existing role
 
+        :devportal:`roles: delete <delete_api-roles-id>`
+
         Args:
             role_id (str):
                 The role instance identifier.
@@ -148,6 +160,8 @@ class RolesAPI(APIEndpoint):
                   ) -> Dict:
         '''
         Creates a new role from another role
+
+        :devportal:`roles: copy-role <post_api-roles-from-fromid>`
 
         Args:
             from_id (str):
@@ -176,6 +190,8 @@ class RolesAPI(APIEndpoint):
                                  ) -> Dict:
         '''
         Replace permission list for a role
+
+        :devportal:`roles: replace-role-permissions <put_api-roles-id-permissions>`
 
         Args:
             role_id (str):

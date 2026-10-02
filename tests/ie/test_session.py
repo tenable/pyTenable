@@ -12,3 +12,11 @@ def test_session_authentication_error():
     '''
     with pytest.warns(AuthenticationWarning):
         TenableIE(url='http://nourl')
+
+
+def test_api_fixture_is_authenticated(api):
+    '''
+    The shared fixture must authenticate so tests exercise the real header.
+    '''
+    assert api._auth_mech == 'keys'
+    assert 'X-API-Key' in api._session.headers

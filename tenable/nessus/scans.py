@@ -1,4 +1,4 @@
-'''
+"""
 Scans
 =====
 
@@ -8,24 +8,24 @@ These methods can be accessed at ``Nessus.scans``.
 .. rst-class:: hide-signature
 .. autoclass:: ScansAPI
     :members:
-'''
-from typing import Dict, List, Optional
+"""
+
 from io import BytesIO
-from tenable.utils import dict_clean
+from typing import Dict, List, Optional
+
 from tenable.base.endpoint import APIEndpoint
+from tenable.utils import dict_clean, scrub
+
 from .schema.scans import ScanExportSchema
 
 
 class ScansAPI(APIEndpoint):
     _path = 'scans'
 
-    def attachment(self,
-                   scan_id: int,
-                   attachment_id: int,
-                   key: str,
-                   fobj: Optional[BytesIO] = None
-                   ) -> BytesIO:
-        '''
+    def attachment(
+        self, scan_id: int, attachment_id: int, key: str, fobj: Optional[BytesIO] = None
+    ) -> BytesIO:
+        """
         Returns the requested attachment file
 
         Args:
@@ -42,14 +42,15 @@ class ScansAPI(APIEndpoint):
 
             >>> with open('example.png', 'wb') as image_file:
             ...     nessus.scans.attachment(1, 1, 'something', image_file)
-        '''
+        """
         if not fobj:
             fobj = BytesIO()
 
-        resp = self._get(f'{scan_id}/attachments/{attachment_id}',
-                         params={'key': key},
-                         stream=True
-                         )
+        resp = self._get(
+            f'{scrub(scan_id)}/attachments/{scrub(attachment_id)}',
+            params={'key': key},
+            stream=True,
+        )
         for chunk in resp.iter_content(chunk_size=1024):
             if chunk:
                 fobj.write(chunk)
@@ -58,7 +59,7 @@ class ScansAPI(APIEndpoint):
         return fobj
 
     def configure(self, scan_id: int, **kwargs) -> None:
-        '''
+        """
         Reconfigures an existing scan.
 
         Args:
@@ -76,15 +77,13 @@ class ScansAPI(APIEndpoint):
             ...     'enabled': True,
             ...     'text_targets': '192.168.1.1'
             ... })
-        '''
-        return self._put(f'{scan_id}', json=kwargs)
+        """
+        return self._put(f'{scrub(scan_id)}', json=kwargs)
 
-    def copy(self,
-             scan_id: int,
-             folder_id: Optional[int] = None,
-             name: Optional[str] = None
-             ) -> Dict:
-        '''
+    def copy(
+        self, scan_id: int, folder_id: Optional[int] = None, name: Optional[str] = None
+    ) -> Dict:
+        """
         Copies the scan object
 
         Args:
@@ -99,14 +98,14 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.copy(1)
-        '''
-        return self._post(f'{scan_id}/copy', json=dict_clean({
-            'folder_id': folder_id,
-            'name': name
-        }))
+        """
+        return self._post(
+            f'{scrub(scan_id)}/copy',
+            json=dict_clean({'folder_id': folder_id, 'name': name}),
+        )
 
     def create(self, **kwargs) -> Dict:
-        '''
+        """
         Creates a new scan
 
         Args:
@@ -126,11 +125,11 @@ class ScansAPI(APIEndpoint):
                                         'enabled': False,
                                         'text_targets': '192.168.1.1'
                                     })
-        '''
+        """
         return self._post(json=kwargs)
 
     def delete(self, scan_id: int) -> None:
-        '''
+        """
         Deletes the specified scan object
 
         Args:
@@ -139,11 +138,11 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.delete(1)
-        '''
-        self._delete(f'{scan_id}')
+        """
+        self._delete(f'{scrub(scan_id)}')
 
     def delete_many(self, scan_ids: List[int]) -> List:
-        '''
+        """
         Deletes multiple scan objects
 
         Args:
@@ -156,11 +155,11 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.delete_many([1, 2, 3])
-        '''
+        """
         return self._delete(json={'ids': scan_ids})['deleted']
 
     def delete_history(self, scan_id: int, history_id: int) -> None:
-        '''
+        """
         Deletes the specified history object within a scan.
 
         Args:
@@ -170,11 +169,11 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.delete_history(1, 1)
-        '''
-        self._delete(f'{scan_id}/history/{history_id}')
+        """
+        self._delete(f'{scrub(scan_id)}/history/{scrub(history_id)}')
 
     def details(self, scan_id: int) -> Dict:
-        '''
+        """
         Returns the details for the specified scan.
 
         Args:
@@ -183,14 +182,11 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.details(1)
-        '''
-        return self._get(f'{scan_id}')
+        """
+        return self._get(f'{scrub(scan_id)}')
 
-    def export_formats(self,
-                       scan_id: int,
-                       schedule_id: Optional[int] = None
-                       ) -> Dict:
-        '''
+    def export_formats(self, scan_id: int, schedule_id: Optional[int] = None) -> Dict:
+        """
         Returns the available export formats and report options.
 
         Args:
@@ -205,18 +201,20 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.export_formats(1)
-        '''
-        return self._get(f'{scan_id}/export/formats', params=dict_clean({
-            'schedule_id': schedule_id
-        }))
+        """
+        return self._get(
+            f'{scrub(scan_id)}/export/formats',
+            params=dict_clean({'schedule_id': schedule_id}),
+        )
 
-    def export_scan(self,
-                    scan_id: int,
-                    history_id: Optional[int] = None,
-                    fobj: Optional[BytesIO] = None,
-                    **kwargs
-                    ) -> BytesIO:
-        '''
+    def export_scan(
+        self,
+        scan_id: int,
+        history_id: Optional[int] = None,
+        fobj: Optional[BytesIO] = None,
+        **kwargs,
+    ) -> BytesIO:
+        """
         Generate a scan export or report and download it.
 
         Args:
@@ -245,28 +243,30 @@ class ScansAPI(APIEndpoint):
             hook_kwargs (dict, optional):
                 keyword arguments to pass to the stream_hook callable in
                 addition to the default passed params.
-        '''
+        """
         dlopts = {
             'fobj': fobj,
             'chunk_size': kwargs.pop('chunk_size', None),
             'stream_hook': kwargs.pop('stream_hook', None),
-            'hook_kwargs': kwargs.pop('hook_kwargs', None)
+            'hook_kwargs': kwargs.pop('hook_kwargs', None),
         }
         schema = ScanExportSchema()
         payload = dict_clean(schema.dump(schema.load(kwargs)))
-        token = self._post(f'{scan_id}/export',
-                           params=dict_clean({'history_id': history_id}),
-                           json=payload
-                           )['token']
+        token = self._post(
+            f'{scrub(scan_id)}/export',
+            params=dict_clean({'history_id': history_id}),
+            json=payload,
+        )['token']
         return self._api.tokens._fetch(token, **dlopts)  # noqa PLW0212
 
-    def import_scan(self,
-                    fobj: Optional[BytesIO] = None,
-                    file_id: Optional[str] = None,
-                    folder_id: Optional[int] = None,
-                    password: Optional[str] = None
-                    ) -> Dict:
-        '''
+    def import_scan(
+        self,
+        fobj: Optional[BytesIO] = None,
+        file_id: Optional[str] = None,
+        folder_id: Optional[int] = None,
+        password: Optional[str] = None,
+    ) -> Dict:
+        """
         Import a scan report into the Tenable Nessus scanner.  Either a file object or
         a file_id must be specified.
 
@@ -285,17 +285,18 @@ class ScansAPI(APIEndpoint):
 
             >>> with open('Example.nessus', 'rb') as reportfile:
             ...     nessus.scans.import_scan(reportfile)
-        '''
+        """
         if not file_id:
             file_id = self._api.files.upload(fobj)
-        return self._post('import', json=dict_clean({
-            'file': file_id,
-            'folder_id': folder_id,
-            'password': password
-        }))
+        return self._post(
+            'import',
+            json=dict_clean(
+                {'file': file_id, 'folder_id': folder_id, 'password': password}
+            ),
+        )
 
     def kill(self, scan_id: int) -> None:
-        '''
+        """
         Forcefully terminate the currently running scan.
 
         Args:
@@ -304,14 +305,11 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.kill(1)
-        '''
-        self._post(f'{scan_id}/kill')
+        """
+        self._post(f'{scrub(scan_id)}/kill')
 
-    def launch(self,
-               scan_id: int,
-               alt_targets: Optional[List[str]] = None
-               ) -> str:
-        '''
+    def launch(self, scan_id: int, alt_targets: Optional[List[str]] = None) -> str:
+        """
         Launch a configured scan.
 
         Args:
@@ -323,16 +321,17 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scan.launch(1)
-        '''
-        return self._post(f'{scan_id}/launch',
-                          json=dict_clean({'alt_targets': alt_targets})
-                          )['scan_uuid']
+        """
+        return self._post(
+            f'{scrub(scan_id)}/launch', json=dict_clean({'alt_targets': alt_targets})
+        )['scan_uuid']
 
-    def list(self,
-             folder_id: Optional[int] = None,
-             last_modification_date: Optional[int] = None
-             ) -> Dict:
-        '''
+    def list(
+        self,
+        folder_id: Optional[int] = None,
+        last_modification_date: Optional[int] = None,
+    ) -> Dict:
+        """
         List of the available scan objects.
 
         Args:
@@ -346,14 +345,18 @@ class ScansAPI(APIEndpoint):
 
             >>> for scan in nessus.scans.list():
             ...     print(scan)
-        '''
-        return self._get(params=dict_clean({
-            'folder_id': folder_id,
-            'last_modification_date': last_modification_date
-        }))
+        """
+        return self._get(
+            params=dict_clean(
+                {
+                    'folder_id': folder_id,
+                    'last_modification_date': last_modification_date,
+                }
+            )
+        )
 
     def pause(self, scan_id: int) -> None:
-        '''
+        """
         Pauses a currently running scans.
 
         Args:
@@ -362,16 +365,17 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.pause(1)
-        '''
-        self._post(f'{scan_id}/pause')
+        """
+        self._post(f'{scrub(scan_id)}/pause')
 
-    def plugin_output(self,
-                      scan_id: int,
-                      host_id: int,
-                      plugin_id: int,
-                      history_id: Optional[int] = None
-                      ) -> Dict:
-        '''
+    def plugin_output(
+        self,
+        scan_id: int,
+        host_id: int,
+        plugin_id: int,
+        history_id: Optional[int] = None,
+    ) -> Dict:
+        """
         Returns the plugin output for a specific finding within a scan.
 
         Args:
@@ -388,13 +392,14 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.plugin_output(1, 1, 19506)
-        '''
-        return self._get(f'{scan_id}/hosts/{host_id}/plugins/{plugin_id}',
-                         params=dict_clean({'history_id': history_id})
-                         )
+        """
+        return self._get(
+            f'{scrub(scan_id)}/hosts/{scrub(host_id)}/plugins/{scrub(plugin_id)}',
+            params=dict_clean({'history_id': history_id}),
+        )
 
     def read_status(self, scan_id: int, read: bool) -> None:
-        '''
+        """
         Sets the read status for the given scan.
 
         Args:
@@ -404,11 +409,11 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.read_status(1, True)
-        '''
-        self._put(f'{scan_id}/status', params={'read': str(read).lower()})
+        """
+        self._put(f'{scrub(scan_id)}/status', params={'read': str(read).lower()})
 
     def resume(self, scan_id: int) -> None:
-        '''
+        """
         Resumes a paused scan.
 
         Args:
@@ -417,11 +422,11 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.resume(1)
-        '''
-        self._post(f'{scan_id}/resume')
+        """
+        self._post(f'{scrub(scan_id)}/resume')
 
     def schedule(self, scan_id: int, enabled: bool) -> Dict:
-        '''
+        """
         Enables/Disables the scan schedule for the given scan.
 
         Args:
@@ -433,13 +438,13 @@ class ScansAPI(APIEndpoint):
         Returns:
             Dict:
                 The scan schedule settings.
-        '''
-        return self._put(f'{scan_id}/schedule',
-                         params={'enabled': str(enabled).lower()}
-                         )
+        """
+        return self._put(
+            f'{scrub(scan_id)}/schedule', params={'enabled': str(enabled).lower()}
+        )
 
     def stop(self, scan_id: int) -> None:
-        '''
+        """
         Stops a running scan
 
         Args:
@@ -448,11 +453,11 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.stop(1)
-        '''
-        return self._post(f'{scan_id}/stop')
+        """
+        return self._post(f'{scrub(scan_id)}/stop')
 
     def timezones(self) -> List[Dict]:
-        '''
+        """
         Returns the currently configured timezone data
 
         Returns:
@@ -462,5 +467,5 @@ class ScansAPI(APIEndpoint):
         Example:
 
             >>> nessus.scans.timezones()
-        '''
+        """
         return self._get('timezones')['timezones']

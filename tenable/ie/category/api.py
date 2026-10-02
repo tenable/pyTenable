@@ -22,6 +22,8 @@ class CategoryAPI(APIEndpoint):
         '''
         Retrieves the list of categories in the instance.
 
+        :devportal:`category: list <get_api-categories>`
+
         Returns:
             list:
                 Returns a list of categories.
@@ -35,6 +37,8 @@ class CategoryAPI(APIEndpoint):
     def details(self, category_id: str) -> Dict:
         '''
         Retrieves the details of particlar category bases on category_id.
+
+        :devportal:`category: details <get_api-categories-id>`
 
         Args:
             category_id (str):

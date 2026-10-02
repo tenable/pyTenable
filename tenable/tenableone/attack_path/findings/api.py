@@ -11,6 +11,7 @@ These methods can be accessed at ``TenableOne.attack_path.findings``.
 
 """
 
+import json
 from copy import copy
 from typing import Dict, Optional, Union
 
@@ -49,7 +50,7 @@ class FindingsAPI(APIEndpoint):
         page_number: Optional[int] = None,
         next_token: Optional[str] = None,
         limit: int = 50,
-        filter: Optional[dict] = None,
+        filter: Optional[Union[dict, str]] = None,
         sort_filed: Optional[str] = None,
         sort_order: Optional[str] = None,
         return_iterator=True,
@@ -79,8 +80,10 @@ class FindingsAPI(APIEndpoint):
                 The maximum number of events that can be retrieved is 10,000.
                 For example: limit=10000.
 
-            filter (optional, dict):
+            filter (optional, dict | str):
                 A document as defined by Tenable APA online documentation.
+                A dict is serialized to a JSON string before it is sent, and a
+                string is passed through as-is.
                 Filters to allow the user to get
                 to a specific subset of Findings.
                 For a more detailed listing of what filters are available,
@@ -118,7 +121,7 @@ class FindingsAPI(APIEndpoint):
             ...     limit='10',
             ...     sort_filed='last_updated_at',
             ...     sort_order='desc',
-            ...     filter='value',
+            ...     filter={'operator': '==', 'key': 'state', 'value': 'open'},
             ...     return_iterator=False
             ...     )
         """
@@ -127,7 +130,7 @@ class FindingsAPI(APIEndpoint):
             'page_number': page_number,
             'next': next_token,
             'limit': limit,
-            'filter': filter,
+            'filter': json.dumps(filter) if isinstance(filter, dict) else filter,
             'sort_filed': sort_filed,
             'sort_order': sort_order,
         }
