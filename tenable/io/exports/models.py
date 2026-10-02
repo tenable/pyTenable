@@ -286,4 +286,5 @@ class WASExportV1(BaseModel):
     model_config = ConfigDict(extra='forbid')
     num_assets: int = 500
     include_unlicensed: bool = True
+    properties: list[str] | None = None
     filters: WASExportFiltersV1
