@@ -4,6 +4,7 @@ test file to test various scenarios in init.py
 
 
 import pytest
+import responses
 from requests.exceptions import ConnectionError as RequestsConnectionError
 from requests.models import Response
 
@@ -98,3 +99,28 @@ def test_pkcs12_import_error():
         sc = TenableSC(
             url='http://something', p12_cert='something', password='something'
         )
+
+
+@responses.activate
+def test_session_logout_deletes_token():
+    """
+    Session-based auth must send DELETE /rest/token when the session is closed.
+    """
+    responses.post(
+        'https://nourl/rest/token',
+        json={'error_code': 0, 'response': {'token': 1234}},
+        headers={'Set-Cookie': 'TNS_SESSIONID=0123456789abcdef0123456789abcdef'},
+    )
+    responses.get(
+        'https://nourl/rest/system',
+        json={'error_code': 0, 'response': {'version': '6.4.0'}},
+    )
+    logout = responses.delete(
+        'https://nourl/rest/token', json={'error_code': 0, 'response': {}}
+    )
+    with pytest.warns(DeprecationWarning):
+        tsc = TenableSC(url='https://nourl', username='user', password='pass')
+    assert tsc._auth_mech == 'session'
+    tsc.logout()
+    assert logout.call_count == 1
+    assert tsc._auth_mech is None

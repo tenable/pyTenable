@@ -30,7 +30,6 @@ class AuditLogIterator(APIIterator):
         Request the next page of data
         '''
         payload = copy(self._payload)
-        print(self._next_token)
         payload['next'] = self._next_token
 
         if self.num_pages >= 1 and self._next_token is None:

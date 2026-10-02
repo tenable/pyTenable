@@ -20,7 +20,7 @@ class PCIBaseIterator(APIIterator):
         params = deepcopy(self.params)
         params['offset'] = self.offset
         params['limit'] = self.limit
-        resp = self._api.get(self.url, params=self.params).json()
+        resp = self._api.get(self.url, params=params).json()
         self.total = resp['pagination']['total']
         self.page = resp[self.envelope]
         self.offset += self.limit

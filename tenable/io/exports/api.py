@@ -390,9 +390,11 @@ class ExportsAPI(APIEndpoint):
             sources:
                 Only assets with a source matching one of these source values
                 will be returned.  Note that this value is case-sensitive.
-            tags (list[tuple[str, str]], optional):
+            tags (list[tuple[str, str | list[str]]], optional):
                 A list of tag pairs to filter the results on.  The tag pairs
-                should be presented as ``('CATEGORY', 'VALUE')``.
+                should be presented as ``('CATEGORY', 'VALUE')`` or
+                ``('CATEGORY', ['VALUE1', 'VALUE2'])``.  Values for the same
+                category are combined.
             uuid:
                 A predefined export UUID to use for generating an
                 ExportIterator.  Using this parameter will ignore all of the
@@ -695,7 +697,9 @@ class ExportsAPI(APIEndpoint):
                 list of states, such as open, reopened and fixed.
             tags:
                 A list of tag pairs to filter the results on.  The tag pairs should be
-                presented as ``('CATEGORY', ['VALUE'])``.
+                presented as ``('CATEGORY', 'VALUE')`` or
+                ``('CATEGORY', ['VALUE1', 'VALUE2'])``.  Values for the same category
+                are combined.
             network_id:
                 Returns Compliance findings for the specified network ID.
             num_findings:
@@ -904,7 +908,9 @@ class ExportsAPI(APIEndpoint):
                 CIDR range specified.
             tags:
                 A list of tag pairs to filter the results on.  The tag pairs should be
-                presented as ``('CATEGORY', 'VALUE')``.
+                presented as ``('CATEGORY', 'VALUE')`` or
+                ``('CATEGORY', ['VALUE1', 'VALUE2'])``.  Values for the same category
+                are combined.
             include_unlicensed:
                 Should findings for unlicensed assets that be included in the results?
             properties:

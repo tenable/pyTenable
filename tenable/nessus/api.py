@@ -74,7 +74,7 @@ class Nessus(APIPlatform):
             'session', json={'username': username, 'password': password}
         ).get('token')
         self._session.headers.update({'X-Cookie': f'token={token}'})
-        self._auth_mech = 'user'
+        self._auth_mech = 'session'
 
     @property
     def agent_groups(self):

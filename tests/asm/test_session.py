@@ -15,3 +15,8 @@ def test_asm_session_authentication():
     os.environ.pop('TASM_API_KEY')
     with pytest.warns(AuthenticationWarning):
         asm = TenableASM(url='http://nourl')
+
+
+def test_asm_session_auth_mech():
+    asm = TenableASM(url='http://nourl', api_key='abcdef')
+    assert asm._auth_mech == 'keys'

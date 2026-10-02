@@ -10,6 +10,7 @@ These methods can be accessed at ``TenableAPA.vectors``.
     :members:
 """
 
+import json
 from copy import copy
 from typing import Dict, Optional, Union
 
@@ -32,11 +33,14 @@ class VectorIterator(APIIterator):
         Request the next page of data
         """
         payload = copy(self._payload)
-        payload["page_number"] = self._next_page
-
+        if self._next_page is not None:
+            payload["page_number"] = self._next_page
+        # The API only echoes page_number back when it was sent, so track
+        # the page locally.  Pages are 1-based.
+        current_page = payload.get("page_number") or 1
         resp = self._api.get("apa/api/discover/v1/vectors",
                              params=payload, box=True)
-        self._next_page = resp.get("page_number") + 1
+        self._next_page = current_page + 1
         self.page = resp.data
         self.total = resp.get("total")
 
@@ -48,7 +52,7 @@ class VectorsAPI(APIEndpoint):
             self,
             page_number: Optional[int] = None,
             limit: int = 10,
-            filter: Optional[dict] = None,
+            filter: Optional[Union[dict, str]] = None,
             sort_field: Optional[str] = None,
             sort_order: Optional[str] = None,
             run_ai_summarization: Optional[bool] = None,
@@ -70,8 +74,10 @@ class VectorsAPI(APIEndpoint):
                  The maximum number of events that can be retrieved is 25.
                  For example: limit=25.
 
-             filter (optional, dict):
+             filter (optional, dict | str):
                  A document as defined by Tenable APA online documentation.
+                 A dict is serialized to a JSON string before it is sent, and a
+                 string is passed through as-is.
                  Filters to allow the user to get
                  to a specific subset of Findings.
                  For a more detailed listing of what filters are available,
@@ -115,7 +121,7 @@ class VectorsAPI(APIEndpoint):
         payload = {
             "page_number": page_number,
             "limit": limit,
-            "filter": filter,
+            "filter": json.dumps(filter) if isinstance(filter, dict) else filter,
             "sort_field": sort_field,
             "sort_order": sort_order}
         if run_ai_summarization:

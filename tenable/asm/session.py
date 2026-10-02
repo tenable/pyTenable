@@ -93,7 +93,7 @@ class TenableASM(APIPlatform):
         API Key authorization mechanism for Tenable ASM.
         """
         self._session.headers.update({'Authorization': api_key})
-        self._auth_meth = 'key'
+        self._auth_mech = 'keys'
 
     @property
     def inventory(self):
