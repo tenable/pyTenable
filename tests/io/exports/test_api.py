@@ -171,4 +171,57 @@ def test_vuln_export_include_plugin_output_omitted(export_request, tvm):
 @pytest.mark.parametrize('include_plugin_output', ['nope', [True]])
 def test_vuln_export_include_plugin_output_invalid(tvm, include_plugin_output):
     with pytest.raises(ValidationError):
-        tvm.exports.vulns(include_plugin_output=include_plugin_output, iterator=None)
+        tvm.exports.vulns(
+            include_plugin_output=include_plugin_output, iterator=None
+        )
+
+
+def test_vuln_export_software_vulns_options(export_request, tvm):
+    tvm.exports.vulns(
+        include_software_vulns=True,
+        software_vulns_potential=True,
+        software_vulns_potential_reasons=['Managed', 'Component'],
+        iterator=None,
+    )
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['include_software_vulns'] is True
+    assert payload['filters'] == {
+        'software_vulns_potential': True,
+        'software_vulns_potential_reasons': ['Managed', 'Component'],
+    }
+
+
+def test_vuln_export_software_vulns_options_omitted(export_request, tvm):
+    tvm.exports.vulns(iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert 'include_software_vulns' not in payload
+    assert payload['filters'] == {}
+
+
+def test_vuln_export_software_vulns_potential_false(export_request, tvm):
+    tvm.exports.vulns(software_vulns_potential=False, iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['filters'] == {'software_vulns_potential': False}
+
+
+def test_vuln_export_potential_reasons_normalized_in_request(export_request, tvm):
+    tvm.exports.vulns(
+        software_vulns_potential_reasons=['managed', 'CONFIG REQUIRED'],
+        iterator=None,
+    )
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['filters'] == {
+        'software_vulns_potential_reasons': ['Managed', 'Config Required'],
+    }
+
+
+def test_vuln_export_potential_false_with_reasons_rejected(tvm):
+    """
+    The API returns a 400 for this combination, so reject it before the request.
+    """
+    with pytest.raises(ValidationError, match='cannot be used when'):
+        tvm.exports.vulns(
+            software_vulns_potential=False,
+            software_vulns_potential_reasons=['Managed'],
+            iterator=None,
+        )

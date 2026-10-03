@@ -418,3 +418,45 @@ def test_asset_export_tag_filters_merge_lists_and_strings():
         filters={'tags': [('Cat', ['a', 'b']), ('Cat', 'c')]}
     ).model_dump(mode='json', exclude_none=True)
     assert dump['filters']['tag.Cat'] == ['a', 'b', 'c']
+
+
+@pytest.mark.parametrize(
+    'given, expected',
+    [
+        (['managed'], ['Managed']),
+        (['CONFIG REQUIRED', ' low fidelity '], ['Config Required', 'Low Fidelity']),
+        (['Incomplete Version', 'backported'], ['Incomplete Version', 'Backported']),
+    ],
+)
+def test_vuln_export_potential_reasons_normalized(given, expected):
+    """
+    The API matches reasons case-sensitively and returns nothing for other
+    casings, so the model normalizes them to the documented spelling.
+    """
+    dump = m.VulnerabilityExportFiltersV1(
+        software_vulns_potential_reasons=given
+    ).model_dump(mode='json', exclude_none=True)
+    assert dump['software_vulns_potential_reasons'] == expected
+
+
+@pytest.mark.parametrize('reasons', [[], ['Bogus'], 'Managed'])
+def test_vuln_export_potential_reasons_invalid(reasons):
+    with pytest.raises(ValidationError):
+        m.VulnerabilityExportFiltersV1(software_vulns_potential_reasons=reasons)
+
+
+@pytest.mark.parametrize('potential', [None, True])
+def test_vuln_export_potential_reasons_allowed(potential):
+    filters = m.VulnerabilityExportFiltersV1(
+        software_vulns_potential=potential,
+        software_vulns_potential_reasons=['Managed'],
+    )
+    assert filters.software_vulns_potential_reasons == ['Managed']
+
+
+def test_vuln_export_potential_false_with_reasons_invalid():
+    with pytest.raises(ValidationError):
+        m.VulnerabilityExportFiltersV1(
+            software_vulns_potential=False,
+            software_vulns_potential_reasons=['Managed'],
+        )
