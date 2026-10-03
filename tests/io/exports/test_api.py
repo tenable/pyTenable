@@ -151,3 +151,24 @@ def test_vuln_export_without_properties(export_request, tvm, kwargs):
 def test_vuln_export_invalid_properties(tvm, properties):
     with pytest.raises(ValidationError):
         tvm.exports.vulns(properties=properties, iterator=None)
+
+
+@pytest.mark.parametrize('include_plugin_output', [True, False])
+def test_vuln_export_include_plugin_output(
+    export_request, tvm, include_plugin_output
+):
+    tvm.exports.vulns(include_plugin_output=include_plugin_output, iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['include_plugin_output'] is include_plugin_output
+
+
+def test_vuln_export_include_plugin_output_omitted(export_request, tvm):
+    tvm.exports.vulns(iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert 'include_plugin_output' not in payload
+
+
+@pytest.mark.parametrize('include_plugin_output', ['nope', [True]])
+def test_vuln_export_include_plugin_output_invalid(tvm, include_plugin_output):
+    with pytest.raises(ValidationError):
+        tvm.exports.vulns(include_plugin_output=include_plugin_output, iterator=None)

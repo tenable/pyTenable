@@ -765,6 +765,7 @@ class ExportsAPI(APIEndpoint):
         *,
         num_assets: int = 500,
         include_unlicensed: bool = True,
+        include_plugin_output: bool | None = None,
         properties: list[str] | None = None,
         since: datetime | int | None = None,
         first_found: datetime | int | None = None,
@@ -913,6 +914,10 @@ class ExportsAPI(APIEndpoint):
                 are combined.
             include_unlicensed:
                 Should findings for unlicensed assets that be included in the results?
+            include_plugin_output:
+                Should each exported finding include its plugin output?  If omitted,
+                the API includes it.  Set to ``False`` to leave out the ``output``
+                property, which can make large exports much smaller.
             properties:
                 Property names to include in each exported finding. If omitted,
                 all available properties are returned. The server always includes
@@ -982,6 +987,10 @@ class ExportsAPI(APIEndpoint):
             >>> vulns = tio.exports.vulns(
             ...     tags=[('Region', 'Chicago')]
             ... )
+
+            Exporting findings without their plugin output:
+
+            >>> vulns = tio.exports.vulns(include_plugin_output=False)
         """
         return self._export(
             export_type='vulns',
@@ -994,6 +1003,7 @@ class ExportsAPI(APIEndpoint):
             payload=models.VulnerabilityExportV1(
                 num_assets=num_assets,
                 include_unlicensed=include_unlicensed,
+                include_plugin_output=include_plugin_output,
                 properties=properties,
                 filters=models.VulnerabilityExportFiltersV1(
                     since=since,
