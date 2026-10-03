@@ -151,3 +151,96 @@ def test_vuln_export_without_properties(export_request, tvm, kwargs):
 def test_vuln_export_invalid_properties(tvm, properties):
     with pytest.raises(ValidationError):
         tvm.exports.vulns(properties=properties, iterator=None)
+
+
+@pytest.mark.parametrize('include_plugin_output', [True, False])
+def test_vuln_export_include_plugin_output(
+    export_request, tvm, include_plugin_output
+):
+    tvm.exports.vulns(include_plugin_output=include_plugin_output, iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['include_plugin_output'] is include_plugin_output
+
+
+def test_vuln_export_include_plugin_output_omitted(export_request, tvm):
+    tvm.exports.vulns(iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert 'include_plugin_output' not in payload
+
+
+@pytest.mark.parametrize('include_plugin_output', ['nope', [True]])
+def test_vuln_export_include_plugin_output_invalid(tvm, include_plugin_output):
+    with pytest.raises(ValidationError):
+        tvm.exports.vulns(
+            include_plugin_output=include_plugin_output, iterator=None
+        )
+
+
+def test_vuln_export_software_vulns_options(export_request, tvm):
+    tvm.exports.vulns(
+        include_software_vulns=True,
+        software_vulns_potential=True,
+        software_vulns_potential_reasons=['Managed', 'Component'],
+        iterator=None,
+    )
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['include_software_vulns'] is True
+    assert payload['filters'] == {
+        'software_vulns_potential': True,
+        'software_vulns_potential_reasons': ['Managed', 'Component'],
+    }
+
+
+def test_vuln_export_software_vulns_options_omitted(export_request, tvm):
+    tvm.exports.vulns(iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert 'include_software_vulns' not in payload
+    assert payload['filters'] == {}
+
+
+def test_vuln_export_software_vulns_potential_false(export_request, tvm):
+    tvm.exports.vulns(software_vulns_potential=False, iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['filters'] == {'software_vulns_potential': False}
+
+
+def test_vuln_export_potential_reasons_normalized_in_request(export_request, tvm):
+    tvm.exports.vulns(
+        software_vulns_potential_reasons=['managed', 'CONFIG REQUIRED'],
+        iterator=None,
+    )
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['filters'] == {
+        'software_vulns_potential_reasons': ['Managed', 'Config Required'],
+    }
+
+
+def test_vuln_export_potential_false_with_reasons_rejected(tvm):
+    """
+    The API returns a 400 for this combination, so reject it before the request.
+    """
+    with pytest.raises(ValidationError, match='cannot be used when'):
+        tvm.exports.vulns(
+            software_vulns_potential=False,
+            software_vulns_potential_reasons=['Managed'],
+            iterator=None,
+        )
+
+
+@pytest.mark.parametrize('zero_day', [True, False])
+def test_vuln_export_zero_day(export_request, tvm, zero_day):
+    tvm.exports.vulns(zero_day=zero_day, iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['filters'] == {'zero_day': zero_day}
+
+
+def test_vuln_export_zero_day_omitted(export_request, tvm):
+    tvm.exports.vulns(iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert 'zero_day' not in payload['filters']
+
+
+@pytest.mark.parametrize('zero_day', ['sometimes', [True]])
+def test_vuln_export_zero_day_invalid(tvm, zero_day):
+    with pytest.raises(ValidationError):
+        tvm.exports.vulns(zero_day=zero_day, iterator=None)
