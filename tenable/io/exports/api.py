@@ -817,6 +817,7 @@ class ExportsAPI(APIEndpoint):
             Literal['apt', 'botnet', 'malware', 'ransomware', 'rootkit']
         ]
         | None = None,
+        zero_day: bool | None = None,
         software_vulns_potential: bool | None = None,
         software_vulns_potential_reasons: list[
             Literal[
@@ -984,6 +985,13 @@ class ExportsAPI(APIEndpoint):
                 vulnerabilities are vulnerabilities that are ready for use in a
                 particular type of attack. Supported values are ``apt``, ``botnet``,
                 ``malware``, ``ransomware``, ``rootkit``.
+            zero_day:
+                Returns findings by zero-day status, meaning vulnerabilities with no
+                official patch or fix available when they were disclosed.  Zero-day
+                status comes from the CVEs on each finding's plugin, so ``True`` and
+                ``False`` aren't complements.  Findings whose plugin has no CVEs
+                match neither value, and findings whose plugin has several CVEs can
+                match both.  Omit the filter to return every finding.
             software_vulns_potential:
                 Returns only potential vulnerabilities when ``True``, meaning ones
                 whose presence on the affected software package can't be confirmed
@@ -1029,6 +1037,10 @@ class ExportsAPI(APIEndpoint):
             ...     include_software_vulns=True,
             ...     software_vulns_potential=True,
             ... )
+
+            Exporting zero-day findings:
+
+            >>> vulns = tio.exports.vulns(zero_day=True)
         """
         return self._export(
             export_type='vulns',
@@ -1074,6 +1086,7 @@ class ExportsAPI(APIEndpoint):
                     vpr_v2_score=vpr_v2_score,  # ty: ignore[invalid-argument-type]
                     vpr_threat_intensity=vpr_threat_intensity,
                     weaponization=weaponization,
+                    zero_day=zero_day,
                     software_vulns_potential=software_vulns_potential,
                     software_vulns_potential_reasons=software_vulns_potential_reasons,
                     tags=tags,

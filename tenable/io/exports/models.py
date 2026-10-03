@@ -226,6 +226,7 @@ class VulnerabilityExportFiltersV1(ExportFilterV1Base):
     vpr_v2_score: CVSSScores | None = None
     vpr_threat_intensity: list[ThreatIntensity] | None = None
     weaponization: list[Weaponization] | None = None
+    zero_day: bool | None = None
     software_vulns_potential: bool | None = None
     software_vulns_potential_reasons: (
         Annotated[list[SoftwareVulnsPotentialReason], Field(min_length=1)] | None

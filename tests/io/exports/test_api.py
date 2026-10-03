@@ -225,3 +225,22 @@ def test_vuln_export_potential_false_with_reasons_rejected(tvm):
             software_vulns_potential_reasons=['Managed'],
             iterator=None,
         )
+
+
+@pytest.mark.parametrize('zero_day', [True, False])
+def test_vuln_export_zero_day(export_request, tvm, zero_day):
+    tvm.exports.vulns(zero_day=zero_day, iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['filters'] == {'zero_day': zero_day}
+
+
+def test_vuln_export_zero_day_omitted(export_request, tvm):
+    tvm.exports.vulns(iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert 'zero_day' not in payload['filters']
+
+
+@pytest.mark.parametrize('zero_day', ['sometimes', [True]])
+def test_vuln_export_zero_day_invalid(tvm, zero_day):
+    with pytest.raises(ValidationError):
+        tvm.exports.vulns(zero_day=zero_day, iterator=None)
