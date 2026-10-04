@@ -317,11 +317,18 @@ class UsersAPI(TIOEndpoint):
             {'X-Impersonate': 'username={}'.format(self._check('name', name, str))}
         )
 
-    def list(self):
+    def list(self, *, with_roles=None):
         """
         Retrieves a list of users.
 
         :devportal:`users: list <users-list>`
+
+        Args:
+            with_roles (bool, optional):
+                If ``True``, each user record includes an ``rbac_roles`` list
+                with the ``name`` and ``uuid`` of each role-based access
+                control (RBAC) role assigned to the user.  If omitted or
+                ``False``, the records do not include roles.
 
         Returns:
             :obj:`list`:
@@ -330,8 +337,18 @@ class UsersAPI(TIOEndpoint):
         Examples:
             >>> for user in tio.users.list():
             ...     pprint(user)
+
+            Include each user's RBAC roles:
+
+            >>> for user in tio.users.list(with_roles=True):
+            ...     print(user['username'], [r['name'] for r in user['rbac_roles']])
         """
-        return self._api.get('users').json()['users']
+        params = {}
+        if with_roles is not None:
+            params['withRoles'] = str(
+                self._check('with_roles', with_roles, bool)
+            ).lower()
+        return self._api.get('users', params=params).json()['users']
 
     def change_password(self, user_id, old_password, new_password):
         """
