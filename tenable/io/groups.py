@@ -39,7 +39,7 @@ class GroupsAPI(TIOEndpoint):
         """
         self._api.post(f'groups/{scrub(group_id)}/users/{scrub(user_id)}')
 
-    def create(self, name):
+    def create(self, name, *, managed_by_saml=None):
         """
         Create a new user group.
 
@@ -48,17 +48,30 @@ class GroupsAPI(TIOEndpoint):
         Args:
             name (str):
                 The name of the group that will be created.
+            managed_by_saml (bool, optional):
+                If ``True``, SAML single sign-on can add users to and remove
+                users from the group.  If ``False``, group membership is
+                managed independently of SAML.  If omitted, the API default
+                applies.
 
         Returns:
             :obj:`dict`:
-                The group resource record of the newly minted group.
+                The group resource record of the newly minted group.  It
+                includes ``managed_by_saml`` only if the flag was set.
 
         Examples:
             >>> group = tio.groups.create('Group Name')
+
+            Create a group whose membership SAML manages:
+
+            >>> group = tio.groups.create('SAML Admins', managed_by_saml=True)
         """
-        return self._api.post(
-            'groups', json={'name': self._check('name', name, str)}
-        ).json()
+        payload = {'name': self._check('name', name, str)}
+        if managed_by_saml is not None:
+            payload['managed_by_saml'] = self._check(
+                'managed_by_saml', managed_by_saml, bool
+            )
+        return self._api.post('groups', json=payload).json()
 
     def delete(self, id):
         """
@@ -99,7 +112,7 @@ class GroupsAPI(TIOEndpoint):
         """
         self._api.delete(f'groups/{scrub(group_id)}/users/{scrub(user_id)}')
 
-    def edit(self, id, name):
+    def edit(self, id, name, *, managed_by_saml=None):
         """
         Edit a user group.
 
@@ -109,7 +122,14 @@ class GroupsAPI(TIOEndpoint):
             id (int):
                 The unique identifier for the group to be modified.
             name (str):
-                The new name for the group.
+                The new name for the group.  The API requires a name on every
+                edit, so pass the current name to change only
+                ``managed_by_saml``.
+            managed_by_saml (bool, optional):
+                If ``True``, SAML single sign-on can add users to and remove
+                users from the group.  If ``False``, group membership is
+                managed independently of SAML.  If omitted, the current
+                setting is kept.
 
         Returns:
             :obj:`dict`:
@@ -117,10 +137,17 @@ class GroupsAPI(TIOEndpoint):
 
         Examples:
             >>> tio.groups.edit(1, 'Updated name')
+
+            Stop SAML from managing the group's membership:
+
+            >>> tio.groups.edit(1, 'SAML Admins', managed_by_saml=False)
         """
-        return self._api.put(
-            f'groups/{scrub(id)}', json={'name': self._check('name', name, str)}
-        ).json()
+        payload = {'name': self._check('name', name, str)}
+        if managed_by_saml is not None:
+            payload['managed_by_saml'] = self._check(
+                'managed_by_saml', managed_by_saml, bool
+            )
+        return self._api.put(f'groups/{scrub(id)}', json=payload).json()
 
     def list(self):
         """
