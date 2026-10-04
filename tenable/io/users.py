@@ -79,7 +79,9 @@ class UsersAPI(TIOEndpoint):
         :devportal:`users: delete <users-delete>`
 
         Args:
-            user_id (int): The unique identifier of the user.
+            user_id (int or str):
+                The unique identifier of the user, as either the integer ID or
+                the user UUID.
 
         Returns:
             :obj:`None`:
@@ -87,8 +89,14 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> tio.users.delete(1)
+
+            >>> tio.users.delete('00000000-0000-0000-0000-000000000000')
         """
-        self._api.delete('users/{}'.format(self._check('user_id', user_id, int)))
+        if isinstance(user_id, str) and not user_id.isdigit():
+            user_id = self._check('user_id', user_id, 'uuid', case='lower')
+        else:
+            user_id = self._check('user_id', user_id, int)
+        self._api.delete(f'users/{scrub(user_id)}')
 
     def details(self, user_id):
         """

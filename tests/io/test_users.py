@@ -5,8 +5,15 @@ test users
 import uuid
 
 import pytest
+import responses
+from responses.matchers import query_param_matcher
 
-from tenable.errors import BadRequestError, ForbiddenError, NotFoundError
+from tenable.errors import (
+    BadRequestError,
+    ForbiddenError,
+    NotFoundError,
+    UnexpectedValueError,
+)
 from tests.checker import check
 
 
@@ -521,3 +528,37 @@ def test_users_edit_auths_permissionerror(stdapi, user):
     """
     with pytest.raises(ForbiddenError):
         stdapi.users.edit_auths(user['id'])
+
+
+USER_UUID = '0d67d2fa-558c-4f89-b506-41b4b73101e1'
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    'user_id, path',
+    [
+        (2247978, '2247978'),
+        ('2247978', '2247978'),
+        (USER_UUID, USER_UUID),
+        (USER_UUID.upper(), USER_UUID),
+    ],
+)
+def test_users_delete_id_or_uuid(tvm, user_id, path):
+    responses.delete(
+        f'https://nourl/users/{path}',
+        json={},
+        match=[query_param_matcher({})],
+    )
+    assert tvm.users.delete(user_id) is None
+    assert len(responses.calls) == 1
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    'user_id, error',
+    [('not-a-uuid', UnexpectedValueError), (1.5, TypeError)],
+)
+def test_users_delete_invalid_user_id(tvm, user_id, error):
+    with pytest.raises(error):
+        tvm.users.delete(user_id)
+    assert len(responses.calls) == 0
