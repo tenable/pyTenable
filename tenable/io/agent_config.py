@@ -25,7 +25,7 @@ class AgentConfigAPI(TIOEndpoint):
         """
         Edits the agent configuration.
 
-        :devportal:`agent-config: edit <agent-config-details>`
+        :devportal:`agent-config: edit <agent-config-edit>`
 
         Args:
             scanner_id (int, optional): The scanner ID.
@@ -80,7 +80,7 @@ class AgentConfigAPI(TIOEndpoint):
         """
         Returns the current agent configuration.
 
-        :devportal:`agent-config: details <agent-config-edit>`
+        :devportal:`agent-config: details <agent-config-details>`
 
         Args:
             scanner_id (int, optional): The scanner ID.
