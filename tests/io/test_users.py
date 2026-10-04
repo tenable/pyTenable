@@ -562,3 +562,33 @@ def test_users_delete_invalid_user_id(tvm, user_id, error):
     with pytest.raises(error):
         tvm.users.delete(user_id)
     assert len(responses.calls) == 0
+
+
+SUCCESSOR_UUID = '1697d500-30a5-4a47-bb7a-f239f3c4fe00'
+
+
+@responses.activate
+@pytest.mark.parametrize('successor', [SUCCESSOR_UUID, SUCCESSOR_UUID.upper()])
+def test_users_delete_successor(tvm, successor):
+    responses.delete(
+        f'https://nourl/users/{USER_UUID}',
+        json={},
+        match=[query_param_matcher({'successor_user_uuid': SUCCESSOR_UUID})],
+    )
+    assert tvm.users.delete(USER_UUID, successor_user_uuid=successor) is None
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    'successor, error',
+    [('not-a-uuid', UnexpectedValueError), (2247978, TypeError)],
+)
+def test_users_delete_successor_invalid(tvm, successor, error):
+    with pytest.raises(error):
+        tvm.users.delete(1, successor_user_uuid=successor)
+    assert len(responses.calls) == 0
+
+
+def test_users_delete_successor_keyword_only(tvm):
+    with pytest.raises(TypeError):
+        tvm.users.delete(1, SUCCESSOR_UUID)

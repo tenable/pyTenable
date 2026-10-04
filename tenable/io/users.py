@@ -72,7 +72,7 @@ class UsersAPI(TIOEndpoint):
 
         return self._api.post('users', json=payload).json()
 
-    def delete(self, user_id):
+    def delete(self, user_id, *, successor_user_uuid=None):
         """
         Removes a user from Tenable Vulnerability Management.
 
@@ -82,6 +82,17 @@ class UsersAPI(TIOEndpoint):
             user_id (int or str):
                 The unique identifier of the user, as either the integer ID or
                 the user UUID.
+            successor_user_uuid (str, optional):
+                The UUID of the user to transfer the deleted user's objects to,
+                such as scans.  The successor must have permissions that allow
+                it to own those objects; otherwise, the API returns a 409
+                conflict and the user is not deleted.  Web App Scanning scans
+                are not transferred, so reassign them before deleting the user.
+
+        Raises:
+            UnexpectedValueError:
+                If ``user_id`` is a string that is not a UUID, or
+                ``successor_user_uuid`` is not a UUID.
 
         Returns:
             :obj:`None`:
@@ -91,12 +102,23 @@ class UsersAPI(TIOEndpoint):
             >>> tio.users.delete(1)
 
             >>> tio.users.delete('00000000-0000-0000-0000-000000000000')
+
+            Transfer the deleted user's objects to another user:
+
+            >>> tio.users.delete(
+            ...     1, successor_user_uuid='00000000-0000-0000-0000-000000000000'
+            ... )
         """
         if isinstance(user_id, str) and not user_id.isdigit():
             user_id = self._check('user_id', user_id, 'uuid', case='lower')
         else:
             user_id = self._check('user_id', user_id, int)
-        self._api.delete(f'users/{scrub(user_id)}')
+        params = {}
+        if successor_user_uuid is not None:
+            params['successor_user_uuid'] = self._check(
+                'successor_user_uuid', successor_user_uuid, 'uuid', case='lower'
+            )
+        self._api.delete(f'users/{scrub(user_id)}', params=params)
 
     def details(self, user_id):
         """
