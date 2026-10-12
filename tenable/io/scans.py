@@ -1336,7 +1336,12 @@ class ScansAPI(TIOEndpoint):
         return self._post(f'{scrub(scan_id)}/launch', json=payload).scan_uuid
 
     def list(
-        self, folder_id: Optional[int] = None, last_modified: Optional[datetime] = None
+        self,
+        folder_id: Optional[int] = None,
+        last_modified: Optional[datetime] = None,
+        *,
+        started_from: Optional[Union[datetime, int]] = None,
+        started_to: Optional[Union[datetime, int]] = None,
     ) -> List[Dict]:
         """
         Retrieve the list of configured scans.
@@ -1348,6 +1353,23 @@ class ScansAPI(TIOEndpoint):
             last_modified (datetime, optional):
                 Only return scans that have been modified since the time
                 specified.
+            started_from (datetime or int, optional):
+                Only return scans whose most recent run started at or after
+                this time.  Accepts a datetime or an integer Unix timestamp in
+                seconds.  Scans that have never run are excluded.
+            started_to (datetime or int, optional):
+                Only return scans whose most recent run started before this
+                time.  Accepts a datetime or an integer Unix timestamp in
+                seconds.  Scans that have never run are excluded.  The API
+                documents this bound as "on or before", but it excludes scans
+                that started at exactly this second.
+
+        Raises:
+            TypeError:
+                If ``started_from`` or ``started_to`` is not a datetime or an
+                integer.
+            UnexpectedValueError:
+                If ``started_from`` is later than ``started_to``.
 
         Returns:
             :obj:`list`:
@@ -1356,6 +1378,18 @@ class ScansAPI(TIOEndpoint):
         Examples:
             >>> for scan in tio.scans.list():
             ...     pprint(scan)
+
+            Scans whose most recent run started in the last 7 days:
+
+            >>> from datetime import datetime, timedelta
+            >>> week_ago = datetime.now() - timedelta(days=7)
+            >>> for scan in tio.scans.list(started_from=week_ago):
+            ...     pprint(scan)
+
+            Scans whose most recent run started during January 2026, using
+            Unix timestamps:
+
+            >>> scans = tio.scans.list(started_from=1767225600, started_to=1769904000)
         """
         params = {}
         if folder_id:
@@ -1367,6 +1401,23 @@ class ScansAPI(TIOEndpoint):
             params['last_modification_date'] = lm
         if last_modified and isinstance(last_modified, int):
             params['last_modification_date'] = last_modified
+        for name, value in (('started_from', started_from), ('started_to', started_to)):
+            if value is None:
+                continue
+            if isinstance(value, datetime):
+                value = int(value.timestamp())
+            elif isinstance(value, bool) or not isinstance(value, int):
+                raise TypeError(
+                    f'{name} is of type {value.__class__.__name__}.  '
+                    'Expected datetime or int'
+                )
+            params[name] = value
+        if (
+            'started_from' in params
+            and 'started_to' in params
+            and params['started_from'] > params['started_to']
+        ):
+            raise UnexpectedValueError('started_from cannot be later than started_to')
 
         return self._get(params=params).scans
 
