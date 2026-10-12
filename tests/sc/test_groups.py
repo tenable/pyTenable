@@ -1,55 +1,78 @@
-'''
+"""
 test file for testing various scenarios in security center groups
 functionality
-'''
+"""
+
 import pytest
+import responses
+from responses import matchers
 
 from ..checker import check
 
 
-def test_groups_constructor_name_typeerror(security_center):
-    '''
+def test_groups_constructor_name_typeerror(tsc):
+    """
     test groups constructor name for type error
-    '''
+    """
     with pytest.raises(TypeError):
-        getattr(security_center.groups, '_constructor')(name=1)
+        getattr(tsc.groups, '_constructor')(name=1)
 
 
-def test_groups_constructor_description_typeerror(security_center):
-    '''
+def test_groups_constructor_description_typeerror(tsc):
+    """
     test groups constructor description for type error
-    '''
+    """
     with pytest.raises(TypeError):
-        getattr(security_center.groups, '_constructor')(description=1)
+        getattr(tsc.groups, '_constructor')(description=1)
 
 
-def test_groups_constructor_list_mapping_typeerror(security_center):
-    '''
+def test_groups_constructor_list_mapping_typeerror(tsc):
+    """
     test groups constructor 'list mapping' for type error
-    '''
-    items = ['viewable', 'repos', 'lce_ids', 'asset_lists', 'scan_policies',
-             'query_ids', 'scan_creds', 'dashboards', 'report_cards', 'audit_files']
+    """
+    items = [
+        'viewable',
+        'repos',
+        'lce_ids',
+        'asset_lists',
+        'scan_policies',
+        'query_ids',
+        'scan_creds',
+        'dashboards',
+        'report_cards',
+        'audit_files',
+    ]
     for i in items:
         with pytest.raises(TypeError):
-            getattr(security_center.groups, '_constructor')(**{i: 1})
+            getattr(tsc.groups, '_constructor')(**{i: 1})
 
 
-def test_groups_constructor_list_item_mapping_typeerror(security_center):
-    '''
+def test_groups_constructor_list_item_mapping_typeerror(tsc):
+    """
     test groups constructor 'list item mapping' for type error
-    '''
-    items = ['viewable', 'repos', 'lce_ids', 'asset_lists', 'scan_policies',
-             'query_ids', 'scan_creds', 'dashboards', 'report_cards', 'audit_files']
+    """
+    items = [
+        'viewable',
+        'repos',
+        'lce_ids',
+        'asset_lists',
+        'scan_policies',
+        'query_ids',
+        'scan_creds',
+        'dashboards',
+        'report_cards',
+        'audit_files',
+    ]
     for item in items:
         with pytest.raises(TypeError):
-            getattr(security_center.groups, '_constructor')(**{item: ['one']})
+            getattr(tsc.groups, '_constructor')(**{item: ['one']})
 
 
-def test_groups_constructor_success(security_center):
-    '''
+def test_groups_constructor_success(tsc):
+    """
     test groups constructor for success
-    '''
-    group = getattr(security_center.groups, '_constructor')(
+    """
+    group = getattr(tsc.groups, '_constructor')(
         name='Example',
         description='Stuff',
         viewable=[1, 2, 3],
@@ -61,7 +84,7 @@ def test_groups_constructor_success(security_center):
         scan_creds=[1, 2, 3],
         dashboards=[1, 2],
         report_cards=[1],
-        audit_files=[1, 2]
+        audit_files=[1, 2],
     )
     assert isinstance(group, dict)
     assert group == {
@@ -76,15 +99,45 @@ def test_groups_constructor_success(security_center):
         'credentials': [{'id': 1}, {'id': 2}, {'id': 3}],
         'dashboardTabs': [{'id': 1}, {'id': 2}],
         'arcs': [{'id': 1}],
-        'auditFiles': [{'id': 1}, {'id': 2}]
+        'auditFiles': [{'id': 1}, {'id': 2}],
     }
 
 
-@pytest.mark.vcr()
-def test_groups_create_success(security_center, group):
-    '''
+@responses.activate
+def test_groups_create_success(tsc):
+    """
     test groups create for success
-    '''
+    """
+    responses.post(
+        'https://nourl/rest/group',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '2',
+                'name': 'groupname',
+                'description': '',
+                'createdTime': '1554499673',
+                'modifiedTime': '1554499673',
+                'lces': [],
+                'repositories': [],
+                'definingAssets': [],
+                'userCount': 0,
+                'users': [],
+                'assets': [],
+                'policies': [],
+                'queries': [],
+                'credentials': [],
+                'dashboardTabs': [],
+                'auditFiles': [],
+                'arcs': [],
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554499673,
+        },
+    )
+    group = tsc.groups.create('groupname')
     assert isinstance(group, dict)
     check(group, 'id', str)
     check(group, 'name', str)
@@ -92,8 +145,18 @@ def test_groups_create_success(security_center, group):
     check(group, 'createdTime', str)
     check(group, 'modifiedTime', str)
     check(group, 'userCount', int)
-    key_list = ['definingAssets', 'lces', 'repositories', 'assets', 'policies',
-               'queries', 'credentials', 'dashboardTabs', 'arcs', 'auditFiles']
+    key_list = [
+        'definingAssets',
+        'lces',
+        'repositories',
+        'assets',
+        'policies',
+        'queries',
+        'credentials',
+        'dashboardTabs',
+        'arcs',
+        'auditFiles',
+    ]
     for key in key_list:
         check(group, key, list)
         for group in group[key]:
@@ -108,12 +171,41 @@ def test_groups_create_success(security_center, group):
                 check(group, 'dataFormat', str)
 
 
-@pytest.mark.vcr()
-def test_groups_edit_success(security_center, group):
-    '''
+@responses.activate
+def test_groups_edit_success(tsc, group):
+    """
     test groups edit for success
-    '''
-    group = security_center.groups.edit(int(group['id']), name='new name')
+    """
+    responses.patch(
+        'https://nourl/rest/group/2',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '3',
+                'name': 'new name',
+                'description': '',
+                'createdTime': '1554499816',
+                'modifiedTime': '1554499816',
+                'lces': [],
+                'repositories': [],
+                'definingAssets': [],
+                'userCount': 0,
+                'users': [],
+                'assets': [],
+                'policies': [],
+                'queries': [],
+                'credentials': [],
+                'dashboardTabs': [],
+                'auditFiles': [],
+                'arcs': [],
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554499816,
+        },
+    )
+    group = tsc.groups.edit(int(group['id']), name='new name')
     assert isinstance(group, dict)
     check(group, 'id', str)
     check(group, 'name', str)
@@ -121,8 +213,18 @@ def test_groups_edit_success(security_center, group):
     check(group, 'createdTime', str)
     check(group, 'modifiedTime', str)
     check(group, 'userCount', int)
-    key_list = ['definingAssets', 'lces', 'repositories', 'assets', 'policies',
-               'queries', 'credentials', 'dashboardTabs', 'arcs', 'auditFiles']
+    key_list = [
+        'definingAssets',
+        'lces',
+        'repositories',
+        'assets',
+        'policies',
+        'queries',
+        'credentials',
+        'dashboardTabs',
+        'arcs',
+        'auditFiles',
+    ]
     for key in key_list:
         check(group, key, list)
         for a_group in group[key]:
@@ -137,24 +239,52 @@ def test_groups_edit_success(security_center, group):
                 check(a_group, 'dataFormat', str)
 
 
-@pytest.mark.vcr()
-def test_groups_details_success_for_fields(security_center, group):
-    '''
+@responses.activate
+def test_groups_details_success_for_fields(tsc, group):
+    """
     test groups details success for fields
-    '''
-    group = security_center.groups.details(int(group['id']), fields=['id', 'name', 'description'])
+    """
+    responses.get(
+        'https://nourl/rest/group/2',
+        json={
+            'type': 'regular',
+            'response': {'id': '4', 'name': 'groupname', 'description': ''},
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554499827,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,name,description'})],
+    )
+    group = tsc.groups.details(int(group['id']), fields=['id', 'name', 'description'])
     assert isinstance(group, dict)
     check(group, 'id', str)
     check(group, 'name', str)
     check(group, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_groups_list_success_for_fields(security_center, group):
-    '''
+@responses.activate
+def test_groups_list_success_for_fields(tsc, group):
+    """
     test groups list success for fields
-    '''
-    groups = security_center.groups.list(fields=['id', 'name', 'description'])
+    """
+    responses.get(
+        'https://nourl/rest/group',
+        json={
+            'type': 'regular',
+            'response': [
+                {'id': '4', 'name': 'groupname', 'description': ''},
+                {'id': '5', 'name': 'groupname', 'description': ''},
+                {'id': '6', 'name': 'groupname', 'description': ''},
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554499827,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,name,description'})],
+    )
+    groups = tsc.groups.list(fields=['id', 'name', 'description'])
     assert isinstance(groups, list)
     for group in groups:
         check(group, 'id', str)
@@ -162,12 +292,41 @@ def test_groups_list_success_for_fields(security_center, group):
         check(group, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_groups_details_success(security_center, group):
-    '''
+@responses.activate
+def test_groups_details_success(tsc, group):
+    """
     test groups details for success
-    '''
-    group_details = security_center.groups.details(int(group['id']))
+    """
+    responses.get(
+        'https://nourl/rest/group/2',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '4',
+                'name': 'groupname',
+                'description': '',
+                'createdTime': '1554499827',
+                'modifiedTime': '1554499827',
+                'lces': [],
+                'repositories': [],
+                'definingAssets': [],
+                'userCount': 0,
+                'users': [],
+                'assets': [],
+                'policies': [],
+                'queries': [],
+                'credentials': [],
+                'dashboardTabs': [],
+                'auditFiles': [],
+                'arcs': [],
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554499827,
+        },
+    )
+    group_details = tsc.groups.details(int(group['id']))
     assert isinstance(group_details, dict)
     check(group_details, 'id', str)
     check(group_details, 'name', str)
@@ -175,8 +334,18 @@ def test_groups_details_success(security_center, group):
     check(group_details, 'createdTime', str)
     check(group_details, 'modifiedTime', str)
     check(group_details, 'userCount', int)
-    key_list = ['definingAssets', 'lces', 'repositories', 'assets', 'policies',
-               'queries', 'credentials', 'dashboardTabs', 'arcs', 'auditFiles']
+    key_list = [
+        'definingAssets',
+        'lces',
+        'repositories',
+        'assets',
+        'policies',
+        'queries',
+        'credentials',
+        'dashboardTabs',
+        'arcs',
+        'auditFiles',
+    ]
     for data in key_list:
         check(group_details, data, list)
         for info in group_details[data]:
@@ -191,9 +360,20 @@ def test_groups_details_success(security_center, group):
                 check(info, 'dataFormat', str)
 
 
-@pytest.mark.vcr()
-def test_groups_delete_success(security_center, group):
-    '''
+@responses.activate
+def test_groups_delete_success(tsc, group):
+    """
     test groups delete for success
-    '''
-    security_center.groups.delete(int(group['id']))
+    """
+    responses.delete(
+        'https://nourl/rest/group/2',
+        json={
+            'type': 'regular',
+            'response': '',
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554499674,
+        },
+    )
+    tsc.groups.delete(int(group['id']))

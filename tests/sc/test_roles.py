@@ -1,60 +1,62 @@
-'''
+"""
 test file for testing various scenarios in security center's role functionality
-'''
-import pytest
+"""
 
-from tenable.errors import APIError, UnexpectedValueError
-from tests.pytenable_log_handler import log_exception
+import pytest
+import responses
+from responses import matchers
+
+from tenable.errors import UnexpectedValueError
 from ..checker import check
 
 
-def test_roles_constructor_name_typeerror(security_center):
-    '''
+def test_roles_constructor_name_typeerror(tsc):
+    """
     test roles constructor for name type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.roles._constructor(name=1)
+        tsc.roles._constructor(name=1)
 
 
-def test_roles_constructor_description_typeerror(security_center):
-    '''
+def test_roles_constructor_description_typeerror(tsc):
+    """
     test roles constructor for description type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.roles._constructor(description=1)
+        tsc.roles._constructor(description=1)
 
 
-def test_roles_constructor_role_mapping_typeerror(security_center):
-    '''
+def test_roles_constructor_role_mapping_typeerror(tsc):
+    """
     test roles constructor for 'role mapping' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.roles._constructor(can_view_logs='nothing')
+        tsc.roles._constructor(can_view_logs='nothing')
 
 
-def test_roles_constructor_can_scan_(security_center):
-    '''
+def test_roles_constructor_can_scan_(tsc):
+    """
     test roles constructor for 'can scan' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.roles._constructor(can_scan=True)
+        tsc.roles._constructor(can_scan=True)
     with pytest.raises(UnexpectedValueError):
-        security_center.roles._constructor(can_scan='something')
-    assert security_center.roles._constructor(can_scan='full') == {'permScan': 'full'}
-    assert security_center.roles._constructor(can_scan='Full') == {'permScan': 'full'}
+        tsc.roles._constructor(can_scan='something')
+    assert tsc.roles._constructor(can_scan='full') == {'permScan': 'full'}
+    assert tsc.roles._constructor(can_scan='Full') == {'permScan': 'full'}
 
 
-def test_roles_constructor_success(security_center):
-    '''
+def test_roles_constructor_success(tsc):
+    """
     test roles constructor for success
-    '''
-    role = security_center.roles._constructor(
+    """
+    role = tsc.roles._constructor(
         name='Example',
         description='stuff',
         manage_attributes=True,
         can_share=True,
         create_policies=True,
-        can_view_logs=False
+        can_view_logs=False,
     )
     assert role == {
         'name': 'Example',
@@ -63,34 +65,95 @@ def test_roles_constructor_success(security_center):
         'permShareObjects': 'true',
         'permCreatePolicies': 'true',
         'permViewOrgLogs': 'false',
-        'permScan': 'none'
+        'permScan': 'none',
     }
 
 
 @pytest.fixture
-def role(request, security_center, vcr):
-    '''
+def role():
+    """
     test fixture for role
-    '''
-    with vcr.use_cassette('test_roles_create_success'):
-        role = security_center.roles.create('Example Role')
+    """
+    return {
+        'id': '1000006',
+        'creatorID': '2',
+        'name': 'Example Role',
+        'description': '',
+        'createdTime': '1554132029',
+        'modifiedTime': '1554132029',
+        'permManageApp': 'false',
+        'permManageGroups': 'false',
+        'permManageRoles': 'false',
+        'permManageImages': 'false',
+        'permManageGroupRelationships': 'false',
+        'permManageBlackoutWindows': 'false',
+        'permManageAttributeSets': 'false',
+        'permCreateTickets': 'false',
+        'permCreateAlerts': 'false',
+        'permCreateAuditFiles': 'false',
+        'permCreateLDAPAssets': 'false',
+        'permCreatePolicies': 'false',
+        'permPurgeTickets': 'false',
+        'permPurgeScanResults': 'false',
+        'permPurgeReportResults': 'false',
+        'permScan': 'none',
+        'permAgentsScan': 'false',
+        'permShareObjects': 'false',
+        'permUpdateFeeds': 'false',
+        'permUploadNessusResults': 'false',
+        'permViewOrgLogs': 'false',
+        'permManageAcceptRiskRules': 'false',
+        'permManageRecastRiskRules': 'false',
+    }
 
-    def teardown():
-        try:
-            with vcr.use_cassette('test_roles_delete_success'):
-                security_center.roles.delete(int(role['id']))
-        except APIError as error:
-            log_exception(error)
 
-    request.addfinalizer(teardown)
-    return role
-
-
-@pytest.mark.vcr()
-def test_roles_create_success(role):
-    '''
+@responses.activate
+def test_roles_create_success(tsc):
+    """
     test roles create for success
-    '''
+    """
+    responses.post(
+        'https://nourl/rest/role',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '1000006',
+                'creatorID': '2',
+                'name': 'Example Role',
+                'description': '',
+                'createdTime': '1554132029',
+                'modifiedTime': '1554132029',
+                'permManageApp': 'false',
+                'permManageGroups': 'false',
+                'permManageRoles': 'false',
+                'permManageImages': 'false',
+                'permManageGroupRelationships': 'false',
+                'permManageBlackoutWindows': 'false',
+                'permManageAttributeSets': 'false',
+                'permCreateTickets': 'false',
+                'permCreateAlerts': 'false',
+                'permCreateAuditFiles': 'false',
+                'permCreateLDAPAssets': 'false',
+                'permCreatePolicies': 'false',
+                'permPurgeTickets': 'false',
+                'permPurgeScanResults': 'false',
+                'permPurgeReportResults': 'false',
+                'permScan': 'none',
+                'permAgentsScan': 'false',
+                'permShareObjects': 'false',
+                'permUpdateFeeds': 'false',
+                'permUploadNessusResults': 'false',
+                'permViewOrgLogs': 'false',
+                'permManageAcceptRiskRules': 'false',
+                'permManageRecastRiskRules': 'false',
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554132029,
+        },
+    )
+    role = tsc.roles.create('Example Role')
     assert isinstance(role, dict)
     check(role, 'id', str)
     check(role, 'name', str)
@@ -123,12 +186,58 @@ def test_roles_create_success(role):
     check(role, 'permManageRecastRiskRules', str)
 
 
-@pytest.mark.vcr()
-def test_roles_details_success(security_center, role):
-    '''
+@responses.activate
+def test_roles_details_success(tsc, role):
+    """
     test roles details for success
-    '''
-    role = security_center.roles.details(int(role['id']))
+    """
+    responses.get(
+        'https://nourl/rest/role/1000006',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '1000003',
+                'name': 'Example Role',
+                'description': '',
+                'createdTime': '1554132027',
+                'modifiedTime': '1554132027',
+                'permManageApp': 'false',
+                'permManageGroups': 'false',
+                'permManageRoles': 'false',
+                'permManageImages': 'false',
+                'permManageGroupRelationships': 'false',
+                'permManageBlackoutWindows': 'false',
+                'permManageAttributeSets': 'false',
+                'permCreateTickets': 'false',
+                'permCreateAlerts': 'false',
+                'permCreateAuditFiles': 'false',
+                'permCreateLDAPAssets': 'false',
+                'permCreatePolicies': 'false',
+                'permPurgeTickets': 'false',
+                'permPurgeScanResults': 'false',
+                'permPurgeReportResults': 'false',
+                'permScan': 'none',
+                'permAgentsScan': 'false',
+                'permShareObjects': 'false',
+                'permUpdateFeeds': 'false',
+                'permUploadNessusResults': 'false',
+                'permViewOrgLogs': 'false',
+                'permManageAcceptRiskRules': 'false',
+                'permManageRecastRiskRules': 'false',
+                'organizationCounts': [{'id': '1', 'userCount': '0'}],
+                'creator': {
+                    'id': '2',
+                    'username': 'api',
+                    'firstname': 'api',
+                    'lastname': 'user',
+                },
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1554132027,
+        },
+    )
+    role = tsc.roles.details(int(role['id']))
     assert isinstance(role, dict)
     check(role, 'id', str)
     check(role, 'name', str)
@@ -170,35 +279,103 @@ def test_roles_details_success(security_center, role):
     check(role['creator'], 'lastname', str)
 
 
-@pytest.mark.vcr()
-def test_roles_details_success_for_fields(security_center, role):
-    '''
+@responses.activate
+def test_roles_details_success_for_fields(tsc, role):
+    """
     test roles details success for fields
-    '''
-    role = security_center.roles.details(int(role['id']), fields=['id', 'name', 'description'])
+    """
+    responses.get(
+        'https://nourl/rest/role/1000006',
+        json={
+            'type': 'regular',
+            'response': {'id': '1000003', 'name': 'Example Role', 'description': ''},
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554132027,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,name,description'})],
+    )
+    role = tsc.roles.details(int(role['id']), fields=['id', 'name', 'description'])
     assert isinstance(role, dict)
     check(role, 'id', str)
     check(role, 'name', str)
     check(role, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_roles_list_success(security_center):
-    '''
+@responses.activate
+def test_roles_list_success(tsc):
+    """
     test roles list for success
-    '''
-    for role in security_center.roles.list(fields=['id', 'name']):
+    """
+    responses.get(
+        'https://nourl/rest/role',
+        json={
+            'type': 'regular',
+            'response': [
+                {'id': '1000003', 'name': 'Example Role'},
+                {'id': '1000003', 'name': 'Example Role'},
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554132027,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,name'})],
+    )
+    for role in tsc.roles.list(fields=['id', 'name']):
         assert isinstance(role, dict)
         check(role, 'id', str)
         check(role, 'name', str)
 
 
-@pytest.mark.vcr()
-def test_roles_edit_success(security_center, role):
-    '''
+@responses.activate
+def test_roles_edit_success(tsc, role):
+    """
     test roles edit for success
-    '''
-    role = security_center.roles.edit(int(role['id']), name='Updated Role')
+    """
+    responses.patch(
+        'https://nourl/rest/role/1000006',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '1000008',
+                'creatorID': '2',
+                'name': 'Updated Role',
+                'description': '',
+                'createdTime': '1554132239',
+                'modifiedTime': '1554132240',
+                'permManageApp': 'false',
+                'permManageGroups': 'false',
+                'permManageRoles': 'false',
+                'permManageImages': 'false',
+                'permManageGroupRelationships': 'false',
+                'permManageBlackoutWindows': 'false',
+                'permManageAttributeSets': 'false',
+                'permCreateTickets': 'false',
+                'permCreateAlerts': 'false',
+                'permCreateAuditFiles': 'false',
+                'permCreateLDAPAssets': 'false',
+                'permCreatePolicies': 'false',
+                'permPurgeTickets': 'false',
+                'permPurgeScanResults': 'false',
+                'permPurgeReportResults': 'false',
+                'permScan': 'none',
+                'permAgentsScan': 'false',
+                'permShareObjects': 'false',
+                'permUpdateFeeds': 'false',
+                'permUploadNessusResults': 'false',
+                'permViewOrgLogs': 'false',
+                'permManageAcceptRiskRules': 'false',
+                'permManageRecastRiskRules': 'false',
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554132240,
+        },
+    )
+    role = tsc.roles.edit(int(role['id']), name='Updated Role')
     assert isinstance(role, dict)
     check(role, 'id', str)
     check(role, 'name', str)
@@ -231,9 +408,20 @@ def test_roles_edit_success(security_center, role):
     check(role, 'permManageRecastRiskRules', str)
 
 
-@pytest.mark.vcr()
-def test_roles_delete_success(security_center, role):
-    '''
+@responses.activate
+def test_roles_delete_success(tsc, role):
+    """
     test roles delete for success
-    '''
-    security_center.roles.delete(int(role['id']))
+    """
+    responses.delete(
+        'https://nourl/rest/role/1000006',
+        json={
+            'type': 'regular',
+            'response': '',
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554132026,
+        },
+    )
+    tsc.roles.delete(int(role['id']))

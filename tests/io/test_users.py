@@ -5,9 +5,35 @@ test users
 import uuid
 
 import pytest
+import responses
+from responses import matchers
 
-from tenable.errors import BadRequestError, ForbiddenError, NotFoundError
+from tenable.errors import ForbiddenError, NotFoundError
 from tests.checker import check
+
+USERS = {
+    'id': 3344,
+    'user_name': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+    'username': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+    'email': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+    'name': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+    'type': 'local',
+    'permissions': 64,
+    'login_fail_count': 0,
+    'login_fail_total': 0,
+    'enabled': True,
+    'uuid': '88aba081-9505-4e06-9acc-2530b486c8d4',
+    'container_uuid': 'a0abbae8-512f-4b9d-93f3-74d9809a1004',
+    'uuid_id': '88aba081-9505-4e06-9acc-2530b486c8d4',
+}
+
+USERS_AUTHORIZATIONS = {
+    'account_uuid': 'a0abbae8-512f-4b9d-93f3-74d9809a1004',
+    'user_uuid': '88aba081-9505-4e06-9acc-2530b486c8d4',
+    'api_permitted': True,
+    'password_permitted': True,
+    'saml_permitted': True,
+}
 
 
 def guser():
@@ -24,74 +50,76 @@ def gpass():
     return '{}Tt!'.format(uuid.uuid4())
 
 
-@pytest.mark.vcr()
-def test_users_create_username_typeerror(api):
+def test_users_create_username_typeerror(tvm):
     """
     test to raise exception when type of username param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.create(False, gpass(), 1)
+        tvm.users.create(False, gpass(), 1)
 
 
-@pytest.mark.vcr()
-def test_users_create_password_typeerror(api):
+def test_users_create_password_typeerror(tvm):
     """
     test to raise exception when type of password param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.create(guser(), False, 1)
+        tvm.users.create(guser(), False, 1)
 
 
-@pytest.mark.vcr()
-def test_users_create_permissions_typeerror(api):
+def test_users_create_permissions_typeerror(tvm):
     """
     test to raise exception when type of permissions param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.create(guser(), gpass(), 'nope')
+        tvm.users.create(guser(), gpass(), 'nope')
 
 
-@pytest.mark.vcr()
-def test_users_create_name_typeerror(api):
+def test_users_create_name_typeerror(tvm):
     """
     test to raise exception when type of name param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.create(guser(), gpass(), 1, name=1)
+        tvm.users.create(guser(), gpass(), 1, name=1)
 
 
-@pytest.mark.vcr()
-def test_users_create_email_typeerror(api):
+def test_users_create_email_typeerror(tvm):
     """
     test to raise exception when type of email param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.create(guser(), gpass(), 1, email=1)
+        tvm.users.create(guser(), gpass(), 1, email=1)
 
 
-@pytest.mark.vcr()
-def test_users_create_account_type_typeerror(api):
+def test_users_create_account_type_typeerror(tvm):
     """
     test to raise exception when type of account_type param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.create(guser(), gpass(), 1, account_type=False)
+        tvm.users.create(guser(), gpass(), 1, account_type=False)
 
 
-@pytest.mark.vcr()
-def test_users_create_permissionserror(stdapi):
+@responses.activate
+def test_users_create_permissionserror(tvm):
     """
     test to raise exception when standard_user tries to create user.
     """
+    responses.add(
+        responses.POST,
+        'https://nourl/users',
+        json={'statusCode': 403, 'error': 'Forbidden', 'message': 'Insufficient scope'},
+        status=403,
+    )
     with pytest.raises(ForbiddenError):
-        stdapi.users.create(guser(), gpass(), 16)
+        tvm.users.create(guser(), gpass(), 16)
 
 
-@pytest.mark.vcr()
-def test_users_create(user):
+@responses.activate
+def test_users_create(tvm, user):
     """
     test to create user
     """
+    responses.add(responses.POST, 'https://nourl/users', json=user)
+    user = tvm.users.create(user['username'], 'Sup3r-s3cret-Tt!', 64)
     assert isinstance(user, dict)
     check(user, 'email', str)
     check(user, 'enabled', bool)
@@ -105,48 +133,69 @@ def test_users_create(user):
     check(user, 'uuid_id', 'uuid')
 
 
-@pytest.mark.vcr()
-def test_users_delete_notfounderror(api):
+@responses.activate
+def test_users_delete_notfounderror(tvm):
     """
     test to raise exception when user_id not found.
     """
+    responses.add(
+        responses.DELETE,
+        'https://nourl/users/0',
+        json={'statusCode': 404, 'error': 'Not Found', 'message': 'Not Found'},
+        status=404,
+    )
     with pytest.raises(NotFoundError):
-        api.users.delete(0)
+        tvm.users.delete(0)
 
 
-@pytest.mark.vcr()
-def test_users_delete_permissionerror(stdapi, user):
+@responses.activate
+def test_users_delete_permissionerror(tvm, user):
     """
     test to raise exception when standard_user tries to delete user.
     """
+    responses.add(
+        responses.DELETE,
+        'https://nourl/users/3344',
+        json={'statusCode': 403, 'error': 'Forbidden', 'message': 'Insufficient scope'},
+        status=403,
+    )
     with pytest.raises(ForbiddenError):
-        stdapi.users.delete(user['id'])
+        tvm.users.delete(user['id'])
 
 
-@pytest.mark.vcr()
-def test_users_delete(api, user):
+@responses.activate
+def test_users_delete(tvm, user):
     """
     test to delete user
     """
-    api.users.delete(user['id'])
-    assert user['id'] not in [u['id'] for u in api.users.list()]
+    responses.add(responses.DELETE, 'https://nourl/users/3344')
+    responses.add(responses.GET, 'https://nourl/users', json={'users': []})
+    tvm.users.delete(user['id'])
+    assert user['id'] not in [u['id'] for u in tvm.users.list()]
 
 
-@pytest.mark.vcr()
-def test_users_details_notfounderror(api):
+@responses.activate
+def test_users_details_notfounderror(tvm):
     """
     test to raise exception when user_id not found.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/users/0',
+        json={'statusCode': 404, 'error': 'Not Found', 'message': 'Not Found'},
+        status=404,
+    )
     with pytest.raises(NotFoundError):
-        api.users.details(0)
+        tvm.users.details(0)
 
 
-@pytest.mark.vcr()
-def test_users_details(api, user):
+@responses.activate
+def test_users_details(tvm, user):
     """
     test to get user details
     """
-    resp = api.users.details(user['id'])
+    responses.add(responses.GET, 'https://nourl/users/3344', json=USERS)
+    resp = tvm.users.details(user['id'])
     assert isinstance(user, dict)
     check(resp, 'email', str)
     check(resp, 'enabled', bool)
@@ -160,48 +209,80 @@ def test_users_details(api, user):
     check(resp, 'uuid_id', 'uuid')
 
 
-@pytest.mark.vcr()
-def test_users_edit_email_typeerror(api):
+def test_users_edit_email_typeerror(tvm):
     """
     test to raise exception when type of email param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.edit(1, email=1)
+        tvm.users.edit(1, email=1)
 
 
-@pytest.mark.vcr()
-def test_users_edit_enabled_typeerror(api):
+def test_users_edit_enabled_typeerror(tvm):
     """
     test to raise exception when type of enabled param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.edit(1, enabled='nope')
+        tvm.users.edit(1, enabled='nope')
 
 
-@pytest.mark.vcr()
-def test_users_edit_notfounderror(api):
+@responses.activate
+def test_users_edit_notfounderror(tvm):
     """
     test to raise exception when user_id not found.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/users/0',
+        json={'statusCode': 404, 'error': 'Not Found', 'message': 'Not Found'},
+        status=404,
+    )
     with pytest.raises(NotFoundError):
-        api.users.edit(0, email=guser())
+        tvm.users.edit(0, email=guser())
 
 
-@pytest.mark.vcr()
-def test_users_edit_permissionerror(stdapi, user):
+@responses.activate
+def test_users_edit_permissionerror(tvm, user):
     """
     test to raise exception when standard user try to edit user.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/users/3344',
+        json={'statusCode': 403, 'error': 'Forbidden', 'message': 'Insufficient scope'},
+        status=403,
+    )
     with pytest.raises(ForbiddenError):
-        stdapi.users.edit(user['id'], name=str(uuid.uuid4()))
+        tvm.users.edit(user['id'], name=str(uuid.uuid4()))
 
 
-@pytest.mark.vcr()
-def test_users_edit(api, user):
+@responses.activate
+def test_users_edit(tvm, user):
     """
     test to edit user
     """
-    resp = api.users.edit(user['id'], name='MODDED NAME')
+    responses.add(responses.GET, 'https://nourl/users/3344', json=USERS)
+    responses.add(
+        responses.PUT,
+        'https://nourl/users/3344',
+        json={
+            'id': 3344,
+            'user_name': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+            'username': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+            'email': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+            'name': 'MODDED NAME',
+            'type': 'local',
+            'whatsnew_version': '',
+            'aggregate': True,
+            'permissions': 64,
+            'login_fail_count': 0,
+            'login_fail_total': 0,
+            'enabled': True,
+            'uuid': '88aba081-9505-4e06-9acc-2530b486c8d4',
+            'container_uuid': 'a0abbae8-512f-4b9d-93f3-74d9809a1004',
+            'uuid_id': '88aba081-9505-4e06-9acc-2530b486c8d4',
+        },
+    )
+    resp = tvm.users.edit(user['id'], name='MODDED NAME')
     assert isinstance(user, dict)
     check(resp, 'id', int)
     check(resp, 'username', str)
@@ -216,221 +297,405 @@ def test_users_edit(api, user):
     assert resp['name'] == 'MODDED NAME'
 
 
-@pytest.mark.vcr()
-def test_users_enabled_enabled_typeerror(api):
+def test_users_enabled_enabled_typeerror(tvm):
     """
     test to raise exception when type of enabled param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.enabled(1, 'nope')
+        tvm.users.enabled(1, 'nope')
 
 
-@pytest.mark.vcr()
-def test_users_enabled_notfounderror(api):
+@responses.activate
+def test_users_enabled_notfounderror(tvm):
     """
     test to raise exception when user provided user_id not found.
     """
+    responses.add(
+        responses.PUT,
+        'https://nourl/users/0/enabled',
+        json={'statusCode': 404, 'error': 'Not Found', 'message': 'Not Found'},
+        status=404,
+    )
     with pytest.raises(NotFoundError):
-        api.users.enabled(0, False)
+        tvm.users.enabled(0, False)
 
 
-@pytest.mark.vcr()
-def test_users_enabled_permissionerror(stdapi, user):
+@responses.activate
+def test_users_enabled_permissionerror(tvm, user):
     """
     test to raise exception when standard user try to disable user.
     """
+    responses.add(
+        responses.PUT,
+        'https://nourl/users/3344/enabled',
+        json={'statusCode': 403, 'error': 'Forbidden', 'message': 'Insufficient scope'},
+        status=403,
+    )
     with pytest.raises(ForbiddenError):
-        stdapi.users.enabled(user['id'], False)
+        tvm.users.enabled(user['id'], False)
 
 
-@pytest.mark.vcr()
-def test_users_enabled(api, user):
+@responses.activate
+def test_users_enabled(tvm, user):
     """
     test to disable user
     """
-    disabled = api.users.enabled(user['id'], False)
+    responses.add(
+        responses.PUT,
+        'https://nourl/users/3344/enabled',
+        json={
+            'id': 3344,
+            'user_name': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+            'username': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+            'email': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+            'name': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+            'type': 'local',
+            'whatsnew_version': '',
+            'aggregate': True,
+            'permissions': 64,
+            'login_fail_count': 0,
+            'login_fail_total': 0,
+            'enabled': False,
+            'uuid': '88aba081-9505-4e06-9acc-2530b486c8d4',
+            'container_uuid': 'a0abbae8-512f-4b9d-93f3-74d9809a1004',
+            'uuid_id': '88aba081-9505-4e06-9acc-2530b486c8d4',
+        },
+    )
+    disabled = tvm.users.enabled(user['id'], False)
     assert isinstance(disabled, dict)
     assert disabled['enabled'] is False
 
 
-@pytest.mark.vcr()
-def test_users_two_factor_email_typeerror(api):
+def test_users_two_factor_email_typeerror(tvm):
     """
     test to raise exception when type of email param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.two_factor(0, False, 'nope')
+        tvm.users.two_factor(0, False, 'nope')
 
 
-@pytest.mark.vcr()
-def test_users_two_factor_sms_typeerror(api):
+def test_users_two_factor_sms_typeerror(tvm):
     """
     test to raise exception when type of sms param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.two_factor('nope', False)
+        tvm.users.two_factor('nope', False)
 
 
-@pytest.mark.vcr()
-def test_users_two_factor_phone_typeerror(api):
+def test_users_two_factor_phone_typeerror(tvm):
     """
     test to raise exception when type of phone param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.two_factor(False, False, 8675309)
+        tvm.users.two_factor(False, False, 8675309)
 
 
-@pytest.mark.vcr()
-@pytest.mark.xfail(raises=BadRequestError)
-def test_users_two_factor(api, user):
+@responses.activate
+def test_users_two_factor(tvm, user):
     """
     test to configure two-factor authorization for a specific user
     """
-    api.users.two_factor(user['id'], False, False)
+    responses.add(
+        responses.PUT,
+        f'https://nourl/users/{user["id"]}/two-factor',
+        match=[
+            matchers.json_params_matcher({'email_enabled': False, 'sms_enabled': False})
+        ],
+    )
+    tvm.users.two_factor(user['id'], False, False)
 
 
-@pytest.mark.vcr()
-def test_users_enable_two_factor_phone_typeerror(api):
+def test_users_enable_two_factor_phone_typeerror(tvm):
     """
     test to raise exception when type of phone param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.enable_two_factor(False)
+        tvm.users.enable_two_factor(False)
 
 
-@pytest.mark.vcr()
 @pytest.mark.skip(reason="Don't want to enable two-facor on the user.")
-def test_users_enable_two_factor(api):
+def test_users_enable_two_factor(tvm):
     """
     test to enable two_factor authentication for user.
     """
-    api.users.enable_two_factor('867-5309')
+    tvm.users.enable_two_factor('867-5309')
 
 
-@pytest.mark.vcr()
-def test_users_verify_two_factor_code_typeerror(api):
+def test_users_verify_two_factor_code_typeerror(tvm):
     """
     test to raise exception when type of code param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.verify_two_factor(False)
+        tvm.users.verify_two_factor(False)
 
 
-@pytest.mark.vcr()
 @pytest.mark.skip(reason="Don't want to enable two-factor on the user.")
-def test_users_verify_two_factor(api):
+def test_users_verify_two_factor(tvm):
     """
     test to verify two_factor authentication for user.
     """
-    api.users.verify_two_factor(False)
+    tvm.users.verify_two_factor(False)
 
 
-@pytest.mark.vcr()
-def test_users_impersonate_id_typeerror(api):
+def test_users_impersonate_id_typeerror(tvm):
     """
     test to raise exception when type of name param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.impersonate(1)
-        api.session.restore()
+        tvm.users.impersonate(1)
+        tvm.session.restore()
 
 
-@pytest.mark.vcr()
-def test_users_impersonate_notfounderror(api):
+@responses.activate
+def test_users_impersonate_notfounderror(tvm):
     """
     test to raise exception when user provided user_id not found.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/session',
+        json={'statusCode': 403, 'error': 'Forbidden', 'message': 'Forbidden'},
+        status=403,
+    )
     with pytest.raises(ForbiddenError):
-        api.users.impersonate(guser())
-        api.session.details()
-        api.session.restore()
+        tvm.users.impersonate(guser())
+        tvm.session.details()
+        tvm.session.restore()
 
 
-@pytest.mark.vcr()
-def test_users_impersonate_permissionerror(stdapi, user):
+@responses.activate
+def test_users_impersonate_permissionerror(tvm, user):
     """
     test to raise exception when standard user try to impersonate user.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/session',
+        json={'statusCode': 403, 'error': 'Forbidden', 'message': 'Forbidden'},
+        status=403,
+    )
     with pytest.raises(ForbiddenError):
-        stdapi.users.impersonate(user['username'])
-        stdapi.session.details()
-        stdapi.session.restore()
+        tvm.users.impersonate(user['username'])
+        tvm.session.details()
+        tvm.session.restore()
 
 
-@pytest.mark.vcr()
-def test_users_impersonate(api, user):
+@responses.activate
+def test_users_impersonate(tvm, user):
     """
     test to impersonate user
     """
-    api.users.impersonate(user['username'])
-    assert api.session.details()['username'] == user['username']
-    api.session.restore()
-    assert api.session.details()['username'] != user['username']
+    responses.add(
+        responses.GET,
+        'https://nourl/session',
+        json={
+            'id': 3344,
+            'uuid': '88aba081-9505-4e06-9acc-2530b486c8d4',
+            'uuid_id': '88aba081-9505-4e06-9acc-2530b486c8d4',
+            'username': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+            'user_name': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+            'email': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+            'name': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+            'type': 'local',
+            'permissions': 64,
+            'enabled': True,
+            'login_fail_count': 0,
+            'login_fail_total': 0,
+            'container_id': 1215,
+            'container_uuid': 'a0abbae8-512f-4b9d-93f3-74d9809a1004',
+            'container_name': 'pyTenable Test Container',
+        },
+    )
+    responses.add(
+        responses.GET,
+        'https://nourl/session',
+        json={
+            'id': 3,
+            'uuid': 'a09161a2-3860-4ca8-93c8-b3f7be366e50',
+            'uuid_id': 'a09161a2-3860-4ca8-93c8-b3f7be366e50',
+            'username': 'test_admin@pytenable.io',
+            'user_name': 'test_admin@pytenable.io',
+            'email': 'noreply@pytenable.test',
+            'name': '00bc5450-497e-4047-9f0b-0e2755d7cd2e',
+            'type': 'local',
+            'permissions': 64,
+            'enabled': True,
+            'login_fail_count': 0,
+            'login_fail_total': 0,
+            'container_id': 1215,
+            'container_uuid': 'a0abbae8-512f-4b9d-93f3-74d9809a1004',
+            'container_name': 'pyTenable Test Container',
+            'features': {
+                'access_groups': True,
+                'access_groups_migration': True,
+                'advanced_search_v2': True,
+                'agent_triage_m2': True,
+                'agent_updates': True,
+                'analytics': True,
+                'analytics_v2': True,
+                'asset_deleting_ui': True,
+                'asset_management': True,
+                'audits_workbench': False,
+                'aws_connector_v1': True,
+                'cfl_core_ssor': False,
+                'connectors_gen2': False,
+                'container_security': True,
+                'container_security_gen2': True,
+                'container_security_gen2_runtime': False,
+                'credentials_mgmt': True,
+                'credentials_mgmt_v2': True,
+                'dashboards_gen2': True,
+                'dashboards_gen2_blank_canvas': False,
+                'dashboards_gen2_export': True,
+                'dashboards_gen2_export_png': False,
+                'dashboards_gen2_lumin_enabled': False,
+                'dashboards_gen2_schedule': True,
+                'dashboards_gen2_tag_filter': False,
+                'dashboards_gen2_widget_filters': False,
+                'dashboards_gen2_widget_library': False,
+                'dynamic_tagging': True,
+                'environment_management': False,
+                'export_dashboard': True,
+                'export_dashboard_pdf': True,
+                'general_data_protection_compliance': False,
+                'import_data': False,
+                'indexing_v2': True,
+                'lumin_beta_allowed': False,
+                'lumin_beta_enabled': False,
+                'modify_vulnerability': False,
+                'pci_multiscan': False,
+                'qualys_connector': True,
+                'qualys_vuln_connector': False,
+                'rbac': True,
+                'recast_rules': True,
+                'reporting': True,
+                'scan_service': True,
+                'scans_gen2': False,
+                'state': True,
+                'suggest_feature': True,
+                'system': False,
+                'tagging': True,
+                'vm_service_query': True,
+                'vulnerability_management_gen2': True,
+                'was_discovery': False,
+                'was_multi_scanning': False,
+                'was_plugin_selection': True,
+                'was_scan_progress': True,
+                'webapp_scanning': False,
+                'webapp_scanning_gen2': False,
+            },
+            'apps': {'consec': 'standard', 'was': 'standard'},
+            'group_uuids': [],
+            'groups': [],
+        },
+    )
+    tvm.users.impersonate(user['username'])
+    assert tvm.session.details()['username'] == user['username']
+    tvm.session.restore()
+    assert tvm.session.details()['username'] != user['username']
 
 
-@pytest.mark.vcr()
-def test_users_list_users(api, user):
+@responses.activate
+def test_users_list_users(tvm, user):
     """
     test to list users
     """
-    users = api.users.list()
+    responses.add(responses.GET, 'https://nourl/users', json={'users': [user]})
+    users = tvm.users.list()
     assert isinstance(users, list)
     assert user['id'] in [u['id'] for u in users]
 
 
-@pytest.mark.vcr()
-def test_users_change_password_orig_typeerror(api):
+def test_users_change_password_orig_typeerror(tvm):
     """
     test to raise exception when type of old_password param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.change_password(0, False, 'nope')
+        tvm.users.change_password(0, False, 'nope')
 
 
-@pytest.mark.vcr()
-def test_users_change_password_new_typeerror(api):
+def test_users_change_password_new_typeerror(tvm):
     """
     test to raise exception when type of new_password param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.change_password(0, 'nope', False)
+        tvm.users.change_password(0, 'nope', False)
 
 
-@pytest.mark.vcr()
-def test_users_change_password_notfounderror(api):
+@responses.activate
+def test_users_change_password_notfounderror(tvm):
     """
     test to raise exception when user_id not found.
     """
+    responses.add(
+        responses.PUT,
+        'https://nourl/users/0/chpasswd',
+        json={'statusCode': 404, 'error': 'Not Found', 'message': 'Not Found'},
+        status=404,
+    )
     with pytest.raises(NotFoundError):
-        api.users.change_password(0, 'nope', 'nope')
+        tvm.users.change_password(0, 'nope', 'nope')
 
 
-@pytest.mark.vcr()
-def test_users_change_password_permissionserror(stdapi, user):
+@responses.activate
+def test_users_change_password_permissionserror(tvm, user):
     """
     test to raise exception when standard user try to change password.
     """
+    responses.add(
+        responses.PUT,
+        'https://nourl/users/3344/chpasswd',
+        json={'statusCode': 403, 'error': 'Forbidden', 'message': 'Insufficient scope'},
+        status=403,
+    )
     with pytest.raises(ForbiddenError):
-        stdapi.users.change_password(user['id'], 'nope', 'nope')
+        tvm.users.change_password(user['id'], 'nope', 'nope')
 
 
-@pytest.mark.vcr()
-def test_users_change_password(api):
+@responses.activate
+def test_users_change_password(tvm):
     """
     test to change password
     """
+    responses.add(
+        responses.POST,
+        'https://nourl/users',
+        json={
+            'id': 3170,
+            'user_name': '1dfdf567-a832-4edb-9d65-692e7ba5ec6f@pytenable.io',
+            'username': '1dfdf567-a832-4edb-9d65-692e7ba5ec6f@pytenable.io',
+            'email': '1dfdf567-a832-4edb-9d65-692e7ba5ec6f@pytenable.io',
+            'name': '1dfdf567-a832-4edb-9d65-692e7ba5ec6f@pytenable.io',
+            'type': 'local',
+            'aggregate': True,
+            'permissions': 16,
+            'login_fail_count': 0,
+            'login_fail_total': 0,
+            'enabled': True,
+            'uuid': 'c8e27278-1f81-4fdb-8d7c-4bcfb13748d0',
+            'container_uuid': 'a0abbae8-512f-4b9d-93f3-74d9809a1004',
+            'uuid_id': 'c8e27278-1f81-4fdb-8d7c-4bcfb13748d0',
+        },
+    )
+    responses.add(responses.PUT, 'https://nourl/users/3170/chpasswd')
+    responses.add(responses.DELETE, 'https://nourl/users/3170')
     password = gpass()
-    user = api.users.create(guser(), password, 16)
-    api.users.change_password(user['id'], password, gpass())
-    api.users.delete(user['id'])
+    user = tvm.users.create(guser(), password, 16)
+    tvm.users.change_password(user['id'], password, gpass())
+    tvm.users.delete(user['id'])
 
 
-@pytest.mark.vcr()
-def test_users_list_auths_success(api, user):
+@responses.activate
+def test_users_list_auths_success(tvm, user):
     """
     test to list user auths
     """
-    user_auth = api.users.list_auths(user['id'])
+    responses.add(
+        responses.GET,
+        'https://nourl/users/3344/authorizations',
+        json=USERS_AUTHORIZATIONS,
+    )
+    user_auth = tvm.users.list_auths(user['id'])
     assert isinstance(user, dict)
     check(user_auth, 'account_uuid', 'uuid')
     check(user_auth, 'api_permitted', bool)
@@ -439,85 +704,140 @@ def test_users_list_auths_success(api, user):
     check(user_auth, 'user_uuid', 'uuid')
 
 
-@pytest.mark.vcr()
-def test_users_list_auths_notfounderror(api):
+@responses.activate
+def test_users_list_auths_notfounderror(tvm):
     """
     test to raise exception when user_id not found.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/users/1/authorizations',
+        json={'statusCode': 404, 'error': 'Not Found', 'message': 'Not Found'},
+        status=404,
+    )
     with pytest.raises(NotFoundError):
-        api.users.list_auths(1)
+        tvm.users.list_auths(1)
 
 
-@pytest.mark.vcr()
-def test_users_list_auths_permissionerror(stdapi, user):
+@responses.activate
+def test_users_list_auths_permissionerror(tvm, user):
     """
     test to raise exception when standard user try to get list of user auths.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/users/3344/authorizations',
+        json={'statusCode': 403, 'error': 'Forbidden', 'message': 'Insufficient scope'},
+        status=403,
+    )
     with pytest.raises(ForbiddenError):
-        stdapi.users.list_auths(user['id'])
+        tvm.users.list_auths(user['id'])
 
 
-@pytest.mark.vcr()
-def test_users_edit_auths_success(api, user):
+@responses.activate
+def test_users_edit_auths_success(tvm, user):
     """
     test to edit user auths
     """
-    api.users.edit_auths(user['id'], False, False, False)
-    user_auth = api.users.list_auths(user['id'])
+    responses.add(
+        responses.GET,
+        'https://nourl/users/3344/authorizations',
+        json=USERS_AUTHORIZATIONS,
+    )
+    responses.add(responses.PUT, 'https://nourl/users/3344/authorizations')
+    responses.add(
+        responses.GET,
+        'https://nourl/users/3344/authorizations',
+        json={
+            'account_uuid': 'a0abbae8-512f-4b9d-93f3-74d9809a1004',
+            'user_uuid': '88aba081-9505-4e06-9acc-2530b486c8d4',
+            'api_permitted': False,
+            'password_permitted': False,
+            'saml_permitted': False,
+        },
+    )
+    tvm.users.edit_auths(user['id'], False, False, False)
+    user_auth = tvm.users.list_auths(user['id'])
     assert user_auth['api_permitted'] is False
     assert user_auth['password_permitted'] is False
     assert user_auth['saml_permitted'] is False
 
 
-@pytest.mark.vcr()
-def test_users_edit_auths_notfounderror(api):
+@responses.activate
+def test_users_edit_auths_notfounderror(tvm):
     """
     test to raise exception when user_id not found.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/users/1/authorizations',
+        json={'statusCode': 404, 'error': 'Not Found', 'message': 'Not Found'},
+        status=404,
+    )
     with pytest.raises(NotFoundError):
-        api.users.edit_auths(1)
+        tvm.users.edit_auths(1)
 
 
-@pytest.mark.vcr()
-def test_users_edit_auths_typeerror(api):
+def test_users_edit_auths_typeerror(tvm):
     """
     test to raise exception when type of user_id param does not match the expected type.
     """
     with pytest.raises(TypeError):
-        api.users.edit_auths('nope')
+        tvm.users.edit_auths('nope')
 
 
-@pytest.mark.vcr()
-def test_users_edit_auths_api_permitted_typeerror(api, user):
+@responses.activate
+def test_users_edit_auths_api_permitted_typeerror(tvm, user):
     """
     test to raise exception when type of api_permitted param does not match the expected type.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/users/3344/authorizations',
+        json=USERS_AUTHORIZATIONS,
+    )
     with pytest.raises(TypeError):
-        api.users.edit_auths(user['id'], api_permitted='nope')
+        tvm.users.edit_auths(user['id'], api_permitted='nope')
 
 
-@pytest.mark.vcr()
-def test_users_edit_auths_password_permitted_typeerror(api, user):
+@responses.activate
+def test_users_edit_auths_password_permitted_typeerror(tvm, user):
     """
     test to raise exception when type of password_permitted param does not match the expected type.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/users/3344/authorizations',
+        json=USERS_AUTHORIZATIONS,
+    )
     with pytest.raises(TypeError):
-        api.users.edit_auths(user['id'], password_permitted='nope')
+        tvm.users.edit_auths(user['id'], password_permitted='nope')
 
 
-@pytest.mark.vcr()
-def test_users_edit_auths_saml_permitted_typeerror(api, user):
+@responses.activate
+def test_users_edit_auths_saml_permitted_typeerror(tvm, user):
     """
     test to raise exception when type of saml_permitted param does not match the expected type.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/users/3344/authorizations',
+        json=USERS_AUTHORIZATIONS,
+    )
     with pytest.raises(TypeError):
-        api.users.edit_auths(user['id'], saml_permitted='nope')
+        tvm.users.edit_auths(user['id'], saml_permitted='nope')
 
 
-@pytest.mark.vcr()
-def test_users_edit_auths_permissionerror(stdapi, user):
+@responses.activate
+def test_users_edit_auths_permissionerror(tvm, user):
     """
     test to raise exception when standard user try to edit user auths.
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/users/3344/authorizations',
+        json={'statusCode': 403, 'error': 'Forbidden', 'message': 'Insufficient scope'},
+        status=403,
+    )
     with pytest.raises(ForbiddenError):
-        stdapi.users.edit_auths(user['id'])
+        tvm.users.edit_auths(user['id'])
