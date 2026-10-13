@@ -12,6 +12,7 @@ Methods available on ``tio.agent_config``:
     :members:
 """
 
+from tenable.errors import UnexpectedValueError
 from tenable.io.base import TIOEndpoint
 from tenable.utils import scrub
 
@@ -21,11 +22,20 @@ class AgentConfigAPI(TIOEndpoint):
     This will contain all methods related to agent config
     """
 
-    def edit(self, scanner_id=1, software_update=None, auto_unlink=None):
+    def edit(
+        self,
+        scanner_id=1,
+        software_update=None,
+        auto_unlink=None,
+        *,
+        concurrent_update=None,
+        max_concurrent_update=None,
+        hybrid_scanning_enabled=None,
+    ):
         """
         Edits the agent configuration.
 
-        :devportal:`agent-config: edit <agent-config-details>`
+        :devportal:`agent-config: edit <agent-config-edit>`
 
         Args:
             scanner_id (int, optional): The scanner ID.
@@ -38,6 +48,19 @@ class AgentConfigAPI(TIOEndpoint):
                 automatically unlink themselves after a given period of time.
                 If the value is 0 or false, auto-unlinking is disabled.  True
                 values are between 1 and 365.
+            concurrent_update (bool, optional):
+                If True, the number of agents that can update plugins at the
+                same time is limited to ``max_concurrent_update``.  If False,
+                no limit is enforced.
+            max_concurrent_update (int, optional):
+                The maximum number of agents that can update plugins at the
+                same time, from 0 to 2500.  A value of 0 prevents agents from
+                updating plugins.  The limit applies only while
+                ``concurrent_update`` is enabled.
+            hybrid_scanning_enabled (bool, optional):
+                Enables or disables hybrid scanning for agents.
+
+        Settings that are not specified keep their current values.
 
         Returns:
             :obj:`dict`:
@@ -56,6 +79,14 @@ class AgentConfigAPI(TIOEndpoint):
             Enabling software updates for agents:
 
             >>> tio.agent_config.edit(software_update=True)
+
+            Limiting plugin updates to 500 agents at a time:
+
+            >>> tio.agent_config.edit(concurrent_update=True, max_concurrent_update=500)
+
+            Enabling hybrid scanning for agents:
+
+            >>> tio.agent_config.edit(hybrid_scanning_enabled=True)
         """
         # Lets build the dictionary that we will present to the API...
         payload = {'auto_unlink': {}}
@@ -70,6 +101,30 @@ class AgentConfigAPI(TIOEndpoint):
             )
         elif auto_unlink in [False, 0]:
             payload['auto_unlink']['enabled'] = False
+        concurrent = {}
+        if concurrent_update is not None:
+            concurrent['enabled'] = self._check(
+                'concurrent_update', concurrent_update, bool
+            )
+        if max_concurrent_update is not None:
+            if isinstance(max_concurrent_update, bool) or not isinstance(
+                max_concurrent_update, int
+            ):
+                raise TypeError(
+                    'max_concurrent_update is of type '
+                    f'{max_concurrent_update.__class__.__name__}.  Expected int'
+                )
+            if not 0 <= max_concurrent_update <= 2500:
+                raise UnexpectedValueError(
+                    'max_concurrent_update must be between 0 and 2500'
+                )
+            concurrent['max_concurrent_update'] = max_concurrent_update
+        if concurrent:
+            payload['concurrent_update'] = concurrent
+        if hybrid_scanning_enabled is not None:
+            payload['hybrid_scanning_enabled'] = self._check(
+                'hybrid_scanning_enabled', hybrid_scanning_enabled, bool
+            )
 
         # Now to run the API call and get the response
         return self._api.put(
@@ -80,7 +135,7 @@ class AgentConfigAPI(TIOEndpoint):
         """
         Returns the current agent configuration.
 
-        :devportal:`agent-config: details <agent-config-edit>`
+        :devportal:`agent-config: details <agent-config-details>`
 
         Args:
             scanner_id (int, optional): The scanner ID.
