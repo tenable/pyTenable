@@ -60,12 +60,12 @@ def download_scans(
         # scan-{SCAN_NAME}-{HISTORY_ID}.{FORMAT}
         if len(completed) > 0:
             history = completed[0]
-            name = scan['name'].replace(' ', '_')
+            uuid = scan['uuid']
             hid = history['uuid']
-            fname = path.joinpath(f'scan-{name}-{hid}.{format}')
+            fname = path.joinpath(f'scan-{uuid}-{hid}.{format}')
             with (
                 open(fname, 'wb') as report_file,
-                console.status(f'Downloading {name}:{hid} to {fname}'),
+                console.status(f'Downloading {uuid}:{hid} to {fname}'),
             ):
                 tio.scans.export(
                     scan['id'],

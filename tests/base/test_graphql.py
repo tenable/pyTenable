@@ -5,6 +5,7 @@ Base graphql Testing module.
 import platform
 import sys
 from io import StringIO
+from pathlib import Path
 
 import pytest
 import responses
@@ -70,9 +71,21 @@ def test_construct_query_stored_file(gql_session, gql_test_query, tmp_path):
     test_query = parse(gql_test_query)
     tmp_path.joinpath('test.graphql').write_text(gql_test_query, encoding='utf-8')
     gql_session._query_folder = tmp_path
-    assert test_query == gql_session.construct_query(
-        stored_file='test.graphql'
-    ).document
+    assert (
+        test_query == gql_session.construct_query(stored_file='test.graphql').document
+    )
+
+
+def test_construct_query_abs_path_error(gql_session):
+    with pytest.raises(TypeError):
+        gql_session.construct_query(
+            query=None, stored_file=Path('../something.graphql')
+        )
+
+
+def test_construct_query_file_not_found_error(gql_session):
+    with pytest.raises(FileNotFoundError):
+        gql_session.construct_query(query=None, stored_file=Path('nothing.thing'))
 
 
 def test_construct_query_typeerror(gql_session, gql_test_query):
