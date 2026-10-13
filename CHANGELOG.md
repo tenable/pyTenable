@@ -5,11 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [26.10.1]
 
 ### Added
 
 - Support selecting vulnerability export `properties` in `exports.vulns()`. #1026
+- Added quickstart example in documentation #1023
+- Added support for vulnerability export property selection #1027
+- Added agent group delete alias for Nessus #1022
+- Added propertied parameter for WAS export #1032
+- Recast rules API support #1024
+- Scan list filter options added (start_from && started_to) #1039
+- Added new agent-config options #1043
+- Added updated fields to user's module #1041
+
+### Updated
+
+- Modernized scan download example #1028
+- Added default redaction fields to vendored restfly lib #1028
+- Nessus scans module now supports URI scrubbing for path vars #1028
+- Refactored vuln export download example #1028
+- Updated example requirements files #1028
+- Existing test suite refactored to use responses and mock requests instead of VCR #1045
+
+### Fixed
+
+- Updated developer portal links #1029
+- Session logout default mechanism corrected #1031
+- Connection Error exceptions no longer leak API keys #1028
+- Plugin rule edit method no longer throws an erroneous error #1028
+- Corrected potential relative path escape #1028
+
+### Removed
+
+- Vendored RESTfly v1 lib no longer supports absolute URLs #1028
+- pytest-vcr no longer required for testing framework #1045
+
+[26.6.1]: https://github.com/tenable/pyTenable/compare/v26.8.1...v26.10.1
 
 ## [26.8.1]
 
@@ -18,6 +50,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated the T1 Inventory Findings module to appropriately handle the passed attributes #1019
 - Corrected the comparison type mismatch in the scrub utility. #1018
 - Updated dependencies #1011, #1012, #1017 in lockfile.
+
+[26.6.1]: https://github.com/tenable/pyTenable/compare/26.6.1...v26.8.1
 
 ## [26.6.1]
 
