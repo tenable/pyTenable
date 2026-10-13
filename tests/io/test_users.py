@@ -5,8 +5,15 @@ test users
 import uuid
 
 import pytest
+import responses
+from responses.matchers import query_param_matcher
 
-from tenable.errors import BadRequestError, ForbiddenError, NotFoundError
+from tenable.errors import (
+    BadRequestError,
+    ForbiddenError,
+    NotFoundError,
+    UnexpectedValueError,
+)
 from tests.checker import check
 
 
@@ -521,3 +528,91 @@ def test_users_edit_auths_permissionerror(stdapi, user):
     """
     with pytest.raises(ForbiddenError):
         stdapi.users.edit_auths(user['id'])
+
+
+USER_UUID = '0d67d2fa-558c-4f89-b506-41b4b73101e1'
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    'user_id, path',
+    [
+        (2247978, '2247978'),
+        ('2247978', '2247978'),
+        (USER_UUID, USER_UUID),
+        (USER_UUID.upper(), USER_UUID),
+    ],
+)
+def test_users_delete_id_or_uuid(tvm, user_id, path):
+    responses.delete(
+        f'https://nourl/users/{path}',
+        json={},
+        match=[query_param_matcher({})],
+    )
+    assert tvm.users.delete(user_id) is None
+    assert len(responses.calls) == 1
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    'user_id, error',
+    [('not-a-uuid', UnexpectedValueError), (1.5, TypeError)],
+)
+def test_users_delete_invalid_user_id(tvm, user_id, error):
+    with pytest.raises(error):
+        tvm.users.delete(user_id)
+    assert len(responses.calls) == 0
+
+
+SUCCESSOR_UUID = '1697d500-30a5-4a47-bb7a-f239f3c4fe00'
+
+
+@responses.activate
+@pytest.mark.parametrize('successor', [SUCCESSOR_UUID, SUCCESSOR_UUID.upper()])
+def test_users_delete_successor(tvm, successor):
+    responses.delete(
+        f'https://nourl/users/{USER_UUID}',
+        json={},
+        match=[query_param_matcher({'successor_user_uuid': SUCCESSOR_UUID})],
+    )
+    assert tvm.users.delete(USER_UUID, successor_user_uuid=successor) is None
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    'successor, error',
+    [('not-a-uuid', UnexpectedValueError), (2247978, TypeError)],
+)
+def test_users_delete_successor_invalid(tvm, successor, error):
+    with pytest.raises(error):
+        tvm.users.delete(1, successor_user_uuid=successor)
+    assert len(responses.calls) == 0
+
+
+def test_users_delete_successor_keyword_only(tvm):
+    with pytest.raises(TypeError):
+        tvm.users.delete(1, SUCCESSOR_UUID)
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    'kwargs, query',
+    [({}, {}), ({'with_roles': True}, {'withRoles': 'true'}),
+     ({'with_roles': False}, {'withRoles': 'false'})],
+)
+def test_users_list_with_roles(tvm, kwargs, query):
+    users = [{'id': 1, 'rbac_roles': [{'name': 'Administrator', 'uuid': USER_UUID}]}]
+    responses.get(
+        'https://nourl/users',
+        json={'users': users},
+        match=[query_param_matcher(query)],
+    )
+    assert tvm.users.list(**kwargs) == users
+
+
+@responses.activate
+@pytest.mark.parametrize('value', ['maybe', 1])
+def test_users_list_with_roles_typeerror(tvm, value):
+    with pytest.raises(TypeError):
+        tvm.users.list(with_roles=value)
+    assert len(responses.calls) == 0
