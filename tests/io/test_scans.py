@@ -4354,3 +4354,116 @@ def test_list_api():
     tvm = TenableIO(url='https://nourl', access_key='something', secret_key='something')
     assert tvm.scans.list(folder_id=1, last_modified=dt) == []
     assert tvm.scans.list(folder_id=1, last_modified=dt_int) == []
+
+
+@responses.activate
+def test_list_started_from_to_ints():
+    responses.get(
+        'https://nourl/scans',
+        json={'scans': [{'id': 1}]},
+        match=[
+            query_param_matcher(
+                {'started_from': 1767225600, 'started_to': 1769904000}
+            )
+        ],
+    )
+    tvm = TenableIO(url='https://nourl', access_key='something', secret_key='something')
+    scans = tvm.scans.list(started_from=1767225600, started_to=1769904000)
+    assert scans == [{'id': 1}]
+
+
+@responses.activate
+def test_list_started_from_to_datetimes():
+    utc = datetime.timezone.utc
+    responses.get(
+        'https://nourl/scans',
+        json={'scans': []},
+        match=[
+            query_param_matcher(
+                {'started_from': 1767225600, 'started_to': 1769904000}
+            )
+        ],
+    )
+    tvm = TenableIO(url='https://nourl', access_key='something', secret_key='something')
+    assert (
+        tvm.scans.list(
+            started_from=datetime.datetime(2026, 1, 1, tzinfo=utc),
+            started_to=datetime.datetime(2026, 2, 1, 0, 0, 0, 900000, tzinfo=utc),
+        )
+        == []
+    )
+
+
+@responses.activate
+def test_list_started_from_naive_datetime_uses_local_time():
+    dt = datetime.datetime(2026, 1, 1)
+    responses.get(
+        'https://nourl/scans',
+        json={'scans': []},
+        match=[query_param_matcher({'started_from': int(time.mktime(dt.timetuple()))})],
+    )
+    tvm = TenableIO(url='https://nourl', access_key='something', secret_key='something')
+    assert tvm.scans.list(started_from=dt) == []
+
+
+@responses.activate
+def test_list_started_with_other_filters():
+    responses.get(
+        'https://nourl/scans',
+        json={'scans': []},
+        match=[
+            query_param_matcher(
+                {
+                    'folder_id': 3,
+                    'last_modification_date': 1700000000,
+                    'started_to': 1769904000,
+                }
+            )
+        ],
+    )
+    tvm = TenableIO(url='https://nourl', access_key='something', secret_key='something')
+    assert (
+        tvm.scans.list(folder_id=3, last_modified=1700000000, started_to=1769904000)
+        == []
+    )
+
+
+@responses.activate
+def test_list_started_from_equal_to_started_to():
+    responses.get(
+        'https://nourl/scans',
+        json={'scans': []},
+        match=[
+            query_param_matcher(
+                {'started_from': 1767225600, 'started_to': 1767225600}
+            )
+        ],
+    )
+    tvm = TenableIO(url='https://nourl', access_key='something', secret_key='something')
+    assert tvm.scans.list(started_from=1767225600, started_to=1767225600) == []
+
+
+@responses.activate
+def test_list_started_from_after_started_to():
+    tvm = TenableIO(url='https://nourl', access_key='something', secret_key='something')
+    with pytest.raises(UnexpectedValueError):
+        tvm.scans.list(started_from=1769904000, started_to=1767225600)
+    assert len(responses.calls) == 0
+
+
+@pytest.mark.parametrize(
+    'value', ['1767225600', '2026-01-01T00:00:00Z', 1767225600.5, True]
+)
+@pytest.mark.parametrize('name', ['started_from', 'started_to'])
+@responses.activate
+def test_list_started_typeerror(name, value):
+    tvm = TenableIO(url='https://nourl', access_key='something', secret_key='something')
+    with pytest.raises(TypeError):
+        tvm.scans.list(**{name: value})
+    assert len(responses.calls) == 0
+
+
+def test_list_started_keyword_only():
+    tvm = TenableIO(url='https://nourl', access_key='something', secret_key='something')
+    with pytest.raises(TypeError):
+        tvm.scans.list(None, None, 1767225600)
