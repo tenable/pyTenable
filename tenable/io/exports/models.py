@@ -1,6 +1,6 @@
 from datetime import datetime
 from ipaddress import IPv4Address, IPv4Network, IPv6Address
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, get_args
 from uuid import UUID
 
 import arrow
@@ -12,6 +12,7 @@ from pydantic import (
     PlainSerializer,
     SerializerFunctionWrapHandler,
     model_serializer,
+    model_validator,
 )
 
 
@@ -24,6 +25,15 @@ def to_lower(value: Any) -> Any:
 def to_upper(value: Any) -> Any:
     if isinstance(value, str):
         return value.upper()
+    return value
+
+
+def to_potential_reason(value: Any) -> Any:
+    # The API matches these values case-sensitively and returns no results for
+    # any other casing, so normalize to the documented spelling.
+    if isinstance(value, str):
+        lookup = {r.lower(): r for r in get_args(PotentialReasonValue)}
+        return lookup.get(value.strip().lower(), value)
     return value
 
 
@@ -79,6 +89,17 @@ ThreatIntensity = Annotated[
 Weaponization = Annotated[
     Literal['apt', 'botnet', 'malware', 'ransomware', 'rootkit'],
     BeforeValidator(to_lower),
+]
+PotentialReasonValue = Literal[
+    'Managed',
+    'Component',
+    'Config Required',
+    'Low Fidelity',
+    'Incomplete Version',
+    'Backported',
+]
+SoftwareVulnsPotentialReason = Annotated[
+    PotentialReasonValue, BeforeValidator(to_potential_reason)
 ]
 
 
@@ -205,12 +226,32 @@ class VulnerabilityExportFiltersV1(ExportFilterV1Base):
     vpr_v2_score: CVSSScores | None = None
     vpr_threat_intensity: list[ThreatIntensity] | None = None
     weaponization: list[Weaponization] | None = None
+    zero_day: bool | None = None
+    software_vulns_potential: bool | None = None
+    software_vulns_potential_reasons: (
+        Annotated[list[SoftwareVulnsPotentialReason], Field(min_length=1)] | None
+    ) = None
+
+    @model_validator(mode='after')
+    def check_potential_reasons(self):
+        # The API rejects this combination with a 400, so fail before sending it.
+        if (
+            self.software_vulns_potential is False
+            and self.software_vulns_potential_reasons
+        ):
+            raise ValueError(
+                'software_vulns_potential_reasons cannot be used when '
+                'software_vulns_potential is False'
+            )
+        return self
 
 
 class VulnerabilityExportV1(BaseModel):
     model_config = ConfigDict(extra='forbid')
     num_assets: Annotated[int, Field(ge=50, le=5000)] = 500
     include_unlicensed: bool = True
+    include_plugin_output: bool | None = None
+    include_software_vulns: bool | None = None
     properties: list[str] | None = None
     filters: VulnerabilityExportFiltersV1
 
