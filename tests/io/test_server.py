@@ -1,15 +1,66 @@
-'''
+"""
 test server
-'''
-import pytest
+"""
+
+import responses
 from tests.checker import check
 
-@pytest.mark.vcr()
-def test_server_properties(api):
-    '''
+
+@responses.activate
+def test_server_properties(tvm):
+    """
     test to get server properties
-    '''
-    resp = api.server.properties()
+    """
+    responses.add(
+        responses.GET,
+        'https://nourl/server/properties',
+        json={
+            'limitEnabled': False,
+            'loaded_plugin_set': '201812051251',
+            'server_uuid': '417457f6-cd2b-727c-d94f-06bce34d74cf27789b39c292efc6',
+            'update': {'href': None, 'new_version': 0, 'restart': 0},
+            'expiration': 1893304800,
+            'nessus_ui_version': '11.0.46',
+            'nessus_type': 'Nessus Cloud',
+            'notifications': [],
+            'expiration_time': 4041,
+            'license': {
+                'expiration_date': 1893304800,
+                'ips': -1,
+                'agents': -1,
+                'users': -1,
+                'scanners': -1,
+                'evaluation': False,
+                'scanners_used': 0,
+                'agents_used': 0,
+                'apps': {},
+            },
+            'enterprise': True,
+            'analytics': {
+                'key': 'ddf4b2ef-ac5e-4ee7-701d-7fd1a95bc458',
+                'enabled': True,
+                'site_id': 'us-2b',
+            },
+            'msp': True,
+            'server_build': 'C20023',
+            'force_ui_reload': True,
+            'capabilities': {
+                'multi_user': 'full',
+                'multi_scanner': True,
+                'report_email_config': True,
+                'two_factor': {'twilio': True, 'smtp': False},
+            },
+            'plugin_set': '201812051251',
+            'idle_timeout': '30',
+            'nessus_ui_build': '155',
+            'scanner_boottime': 1531265862,
+            'evaluation': {'limitEnabled': True, 'targets': 25},
+            'container_db_version': '10.43.0',
+            'login_banner': None,
+            'server_version': '6.9.1',
+        },
+    )
+    resp = tvm.server.properties()
     assert isinstance(resp, dict)
     check(resp, 'analytics', dict)
     check(resp['analytics'], 'enabled', bool)
@@ -58,12 +109,18 @@ def test_server_properties(api):
     if 'update' in resp:
         check(resp, 'update', dict)
 
-@pytest.mark.vcr()
-def test_server_status(api):
-    '''
+
+@responses.activate
+def test_server_status(tvm):
+    """
     test to get server status
-    '''
-    status = api.server.status()
+    """
+    responses.add(
+        responses.GET,
+        'https://nourl/server/status',
+        json={'code': 200, 'status': 'ready'},
+    )
+    status = tvm.server.status()
     assert isinstance(status, dict)
     check(status, 'code', int)
     check(status, 'status', str)

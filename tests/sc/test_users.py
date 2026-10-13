@@ -1,171 +1,188 @@
-'''
+"""
 test file for testing various scenarios in security center's users functionality
-'''
+"""
+
 import pytest
+from responses import matchers
 import responses
 from responses.matchers import json_params_matcher
 from tenable.sc import TenableSC
-from tenable.errors import APIError, UnexpectedValueError
-from tests.pytenable_log_handler import log_exception
+from tenable.errors import UnexpectedValueError
 from ..checker import check
 
 
-def test_users_constructor_role_typeerror(security_center):
-    '''
+def test_users_constructor_role_typeerror(tsc):
+    """
     test users constructor for role type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(role='one')
+        tsc.users._constructor(role='one')
 
 
-def test_users_constructor_group_typeerror(security_center):
-    '''
+def test_users_constructor_group_typeerror(tsc):
+    """
     test users constructor for group type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(group='one')
+        tsc.users._constructor(group='one')
 
 
-def test_users_constructor_org_typeerror(security_center):
-    '''
+def test_users_constructor_org_typeerror(tsc):
+    """
     test users constructor for org type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(org='one')
+        tsc.users._constructor(org='one')
 
 
-def test_users_constructor_responsibility_typeerror(security_center):
-    '''
+def test_users_constructor_responsibility_typeerror(tsc):
+    """
     test users constructor for responsibility type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(responsibility='one')
+        tsc.users._constructor(responsibility='one')
 
 
-def test_users_constructor_ldap_id(security_center):
-    '''
+def test_users_constructor_ldap_id(tsc):
+    """
     test users constructor for 'ldap id' success
-    '''
-    kwargs = security_center.users._constructor(ldap_id=1)
+    """
+    kwargs = tsc.users._constructor(ldap_id=1)
     check(kwargs, 'ldap', object)
     assert kwargs.get('ldap')['id'] == 1
 
 
-def test_users_constructor_keys_typeerror(security_center):
-    '''
+def test_users_constructor_keys_typeerror(tsc):
+    """
     test users constructor for keys type error
-    '''
+    """
     keys = [
-        'ldapUsername', 'username', 'firstname', 'lastname', 'title',
-        'email', 'address', 'city', 'state', 'country', 'phone', 'fax',
-        'fingerprint', 'status'
+        'ldapUsername',
+        'username',
+        'firstname',
+        'lastname',
+        'title',
+        'email',
+        'address',
+        'city',
+        'state',
+        'country',
+        'phone',
+        'fax',
+        'fingerprint',
+        'status',
     ]
     for key in keys:
         with pytest.raises(TypeError):
-            security_center.users._constructor(*{key: 1})
+            tsc.users._constructor(*{key: 1})
 
 
-def test_users_constructor_is_locked_typeerror(security_center):
-    '''
+def test_users_constructor_is_locked_typeerror(tsc):
+    """
     test users constructor for 'is locked' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(is_locked='yup')
+        tsc.users._constructor(is_locked='yup')
 
 
-def test_users_constructor_auth_type_typeerror(security_center):
-    '''
+def test_users_constructor_auth_type_typeerror(tsc):
+    """
     test users constructor for 'auth type' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(auth_type=1)
+        tsc.users._constructor(auth_type=1)
 
 
-def test_users_constructor_auth_type_unexpectedvalueerror(security_center):
-    '''
+def test_users_constructor_auth_type_unexpectedvalueerror(tsc):
+    """
     test users constructor for auth type unexpected value error
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
-        security_center.users._constructor(auth_type='something')
+        tsc.users._constructor(auth_type='something')
 
 
-def test_users_constructor_email_notice_typeerror(security_center):
-    '''
+def test_users_constructor_email_notice_typeerror(tsc):
+    """
     test users constructor for email notice type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(email_notice=1)
+        tsc.users._constructor(email_notice=1)
 
 
-def test_users_constructor_email_notice_unexpectedvalueerror(security_center):
-    '''
+def test_users_constructor_email_notice_unexpectedvalueerror(tsc):
+    """
     test users constructor for email notice unexpected value error
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
-        security_center.users._constructor(email_notice='something')
+        tsc.users._constructor(email_notice='something')
 
 
-def test_users_constructor_timezone_typeerror(security_center):
-    '''
+def test_users_constructor_timezone_typeerror(tsc):
+    """
     test users constructor for timezone type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(timezone=1)
+        tsc.users._constructor(timezone=1)
 
 
-def test_users_constructor_update_password_typeerror(security_center):
-    '''
+def test_users_constructor_update_password_typeerror(tsc):
+    """
     test users constructor for 'update password' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(update_password='nope')
+        tsc.users._constructor(update_password='nope')
 
 
-def test_users_constructor_managed_usergroups_typeerror(security_center):
-    '''
+def test_users_constructor_managed_usergroups_typeerror(tsc):
+    """
     test users constructor for 'manage user groups' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(managed_usergroups=1)
+        tsc.users._constructor(managed_usergroups=1)
 
 
-def test_users_constructor_managed_usergroups_item_typeerror(security_center):
-    '''
+def test_users_constructor_managed_usergroups_item_typeerror(tsc):
+    """
     test users constructor for 'manage user groups item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(managed_usergroups=['one'])
+        tsc.users._constructor(managed_usergroups=['one'])
 
 
-def test_users_constructor_managed_userobjs_typeerror(security_center):
-    '''
+def test_users_constructor_managed_userobjs_typeerror(tsc):
+    """
     test users constructor for 'manage user objs' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(managed_userobjs=1)
+        tsc.users._constructor(managed_userobjs=1)
 
 
-def test_users_constructor_managed_userobjs_item_typeerror(security_center):
-    '''
+def test_users_constructor_managed_userobjs_item_typeerror(tsc):
+    """
     test users constructor for 'manage user objs item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.users._constructor(managed_userobjs=['one'])
+        tsc.users._constructor(managed_userobjs=['one'])
 
 
-def test_users_constructor_create_default_objects(security_center):
-    assert security_center.users._constructor(default_objects=True) == {'createDefaultObjects': 'true'}
-    assert security_center.users._constructor(default_objects=False) == {'createDefaultObjects': 'false'}
-    assert security_center.users._constructor() == {'createDefaultObjects': 'false'}
-    assert security_center.users._constructor(createDefaultObjects='true') == {'createDefaultObjects': 'true'}
+def test_users_constructor_create_default_objects(tsc):
+    assert tsc.users._constructor(default_objects=True) == {
+        'createDefaultObjects': 'true'
+    }
+    assert tsc.users._constructor(default_objects=False) == {
+        'createDefaultObjects': 'false'
+    }
+    assert tsc.users._constructor() == {'createDefaultObjects': 'false'}
+    assert tsc.users._constructor(createDefaultObjects='true') == {
+        'createDefaultObjects': 'true'
+    }
 
 
-
-def test_users_constructor_success(security_center):
-    '''
+def test_users_constructor_success(tsc):
+    """
     test users constructor for success
-    '''
-    user = security_center.users._constructor(
+    """
+    user = tsc.users._constructor(
         username='jsmith',
         password='notmypassword',
         role=1,
@@ -198,11 +215,9 @@ def test_users_constructor_success(security_center):
         'locked': 'false',
         'authType': 'tns',
         'emailNotice': 'both',
-        'preferences': [{
-            'name': 'timezone',
-            'tag': 'system',
-            'value': 'Americas/Chicago'
-        }],
+        'preferences': [
+            {'name': 'timezone', 'tag': 'system', 'value': 'Americas/Chicago'}
+        ],
         'mustChangePassword': 'true',
         'managedUsersGroups': [{'id': 1}],
         'managedObjectsGroups': [{'id': 1}],
@@ -211,29 +226,100 @@ def test_users_constructor_success(security_center):
 
 
 @pytest.fixture
-def user(request, security_center, vcr):
-    '''
+def user():
+    """
     test fixture for user
-    '''
-    with vcr.use_cassette('test_users_create_success'):
-        user = security_center.users.create('user', 'password', 2, group=0)
+    """
+    return {
+        'id': '4',
+        'status': '0',
+        'username': 'user',
+        'firstname': '',
+        'lastname': '',
+        'title': '',
+        'email': '',
+        'address': '',
+        'city': '',
+        'state': '',
+        'country': '',
+        'phone': '',
+        'fax': '',
+        'createdTime': '1554493356',
+        'modifiedTime': '1554493356',
+        'lastLogin': '0',
+        'lastLoginIP': '',
+        'mustChangePassword': 'false',
+        'locked': 'false',
+        'failedLogins': '0',
+        'authType': 'tns',
+        'fingerprint': None,
+        'password': 'SET',
+        'ldapUsername': '',
+        'canUse': True,
+        'canManage': True,
+    }
 
-    def teardown():
-        try:
-            with vcr.use_cassette('test_users_delete_success'):
-                security_center.users.delete(int(user['id']))
-        except APIError as error:
-            log_exception(error)
 
-    request.addfinalizer(teardown)
-    return user
-
-
-@pytest.mark.vcr()
-def test_users_create_success(user):
-    '''
+@responses.activate
+def test_users_create_success(tsc):
+    """
     test users create for success
-    '''
+    """
+    responses.post(
+        'https://nourl/rest/user',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '4',
+                'status': '0',
+                'username': 'user',
+                'firstname': '',
+                'lastname': '',
+                'title': '',
+                'email': '',
+                'address': '',
+                'city': '',
+                'state': '',
+                'country': '',
+                'phone': '',
+                'fax': '',
+                'createdTime': '1554493356',
+                'modifiedTime': '1554493356',
+                'lastLogin': '0',
+                'lastLoginIP': '',
+                'mustChangePassword': 'false',
+                'locked': 'false',
+                'failedLogins': '0',
+                'authType': 'tns',
+                'fingerprint': None,
+                'password': 'SET',
+                'ldapUsername': '',
+                'managedUsersGroups': [],
+                'managedObjectsGroups': [],
+                'preferences': [
+                    {'name': 'timezone', 'value': 'America/New_York', 'tag': 'system'}
+                ],
+                'canUse': True,
+                'canManage': True,
+                'role': {
+                    'id': '2',
+                    'name': 'Security Manager',
+                    'description': 'The Security Manager role has full access to all actions at the organization level. A Security Manager has the ability t',
+                },
+                'responsibleAsset': {'id': -1, 'name': '', 'description': ''},
+                'group': {
+                    'id': '0',
+                    'name': 'Full Access',
+                    'description': 'Full Access group',
+                },
+                'ldap': {'id': -1, 'name': '', 'description': ''},
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1554493355,
+        },
+    )
+    user = tsc.users.create('user', 'password', 2, group=0)
     assert isinstance(user, dict)
     check(user, 'id', str)
     check(user, 'status', str)
@@ -292,12 +378,66 @@ def test_users_create_success(user):
     check(user['ldap'], 'description', str)
 
 
-@pytest.mark.vcr()
-def test_users_edit_success(security_center, user):
-    '''
+@responses.activate
+def test_users_edit_success(tsc, user):
+    """
     test users edit for success
-    '''
-    user = security_center.users.edit(int(user['id']), username='newusername')
+    """
+    responses.patch(
+        'https://nourl/rest/user/4',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '6',
+                'status': '0',
+                'username': 'newusername',
+                'firstname': '',
+                'lastname': '',
+                'title': '',
+                'email': '',
+                'address': '',
+                'city': '',
+                'state': '',
+                'country': '',
+                'phone': '',
+                'fax': '',
+                'createdTime': '1554493701',
+                'modifiedTime': '1554493702',
+                'lastLogin': '0',
+                'lastLoginIP': '',
+                'mustChangePassword': 'false',
+                'locked': 'false',
+                'failedLogins': '0',
+                'authType': 'tns',
+                'fingerprint': None,
+                'password': 'SET',
+                'ldapUsername': '',
+                'managedUsersGroups': [],
+                'managedObjectsGroups': [],
+                'preferences': [
+                    {'name': 'timezone', 'value': 'America/New_York', 'tag': 'system'}
+                ],
+                'canUse': True,
+                'canManage': True,
+                'role': {
+                    'id': '2',
+                    'name': 'Security Manager',
+                    'description': 'The Security Manager role has full access to all actions at the organization level. A Security Manager has the ability t',
+                },
+                'responsibleAsset': {'id': -1, 'name': '', 'description': ''},
+                'group': {
+                    'id': '0',
+                    'name': 'Full Access',
+                    'description': 'Full Access group',
+                },
+                'ldap': {'id': -1, 'name': '', 'description': ''},
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1554493702,
+        },
+    )
+    user = tsc.users.edit(int(user['id']), username='newusername')
     assert isinstance(user, dict)
     check(user, 'id', str)
     check(user, 'status', str)
@@ -356,12 +496,66 @@ def test_users_edit_success(security_center, user):
     check(user['ldap'], 'description', str)
 
 
-@pytest.mark.vcr()
-def test_users_details_success(security_center, user):
-    '''
+@responses.activate
+def test_users_details_success(tsc, user):
+    """
     test users details for success
-    '''
-    user = security_center.users.details(int(user['id']))
+    """
+    responses.get(
+        'https://nourl/rest/user/4',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '7',
+                'status': '0',
+                'username': 'user',
+                'firstname': '',
+                'lastname': '',
+                'title': '',
+                'email': '',
+                'address': '',
+                'city': '',
+                'state': '',
+                'country': '',
+                'phone': '',
+                'fax': '',
+                'createdTime': '1554493762',
+                'modifiedTime': '1554493762',
+                'lastLogin': '0',
+                'lastLoginIP': '',
+                'mustChangePassword': 'false',
+                'locked': 'false',
+                'failedLogins': '0',
+                'authType': 'tns',
+                'fingerprint': None,
+                'password': 'SET',
+                'ldapUsername': '',
+                'managedUsersGroups': [],
+                'managedObjectsGroups': [],
+                'preferences': [
+                    {'name': 'timezone', 'value': 'America/New_York', 'tag': 'system'}
+                ],
+                'canUse': True,
+                'canManage': True,
+                'role': {
+                    'id': '2',
+                    'name': 'Security Manager',
+                    'description': 'The Security Manager role has full access to all actions at the organization level. A Security Manager has the ability t',
+                },
+                'responsibleAsset': {'id': -1, 'name': '', 'description': ''},
+                'group': {
+                    'id': '0',
+                    'name': 'Full Access',
+                    'description': 'Full Access group',
+                },
+                'ldap': {'id': -1, 'name': '', 'description': ''},
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1554493762,
+        },
+    )
+    user = tsc.users.details(int(user['id']))
     assert isinstance(user, dict)
     check(user, 'id', str)
     check(user, 'status', str)
@@ -420,24 +614,53 @@ def test_users_details_success(security_center, user):
     check(user['ldap'], 'description', str)
 
 
-@pytest.mark.vcr()
-def test_users_details_success_for_fields(security_center, user):
-    '''
+@responses.activate
+def test_users_details_success_for_fields(tsc, user):
+    """
     test users details success for fields
-    '''
-    user = security_center.users.details(int(user['id']), fields=['id', 'status', 'username'])
+    """
+    responses.get(
+        'https://nourl/rest/user/4',
+        json={
+            'type': 'regular',
+            'response': {'id': '7', 'status': '0', 'username': 'user'},
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554493762,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,status,username'})],
+    )
+    user = tsc.users.details(int(user['id']), fields=['id', 'status', 'username'])
     assert isinstance(user, dict)
     check(user, 'id', str)
     check(user, 'status', str)
     check(user, 'username', str)
 
 
-@pytest.mark.vcr()
-def test_users_list_success(security_center):
-    '''
+@responses.activate
+def test_users_list_success(tsc):
+    """
     test users list for success
-    '''
-    users = security_center.users.list(fields=['id', 'status', 'username'])
+    """
+    responses.get(
+        'https://nourl/rest/user',
+        json={
+            'type': 'regular',
+            'response': {
+                'users': [
+                    {'id': '7', 'status': '0', 'username': 'user7'},
+                    {'id': '8', 'status': '0', 'username': 'user8'},
+                ]
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554493762,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,status,username'})],
+    )
+    users = tsc.users.list(fields=['id', 'status', 'username'])
     for user in users['users']:
         assert isinstance(user, dict)
         check(user, 'id', str)
@@ -445,22 +668,32 @@ def test_users_list_success(security_center):
         check(user, 'username', str)
 
 
-@pytest.mark.vcr()
-def test_users_delete_success(security_center, user):
-    '''
+@responses.activate
+def test_users_delete_success(tsc, user):
+    """
     test users delete for success
-    '''
-    security_center.users.delete(int(user['id']))
+    """
+    responses.delete(
+        'https://nourl/rest/user/4',
+        json={
+            'type': 'regular',
+            'response': '',
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554493356,
+        },
+    )
+    tsc.users.delete(int(user['id']))
 
 
 @responses.activate
 def test_users_delete_migrate_to():
-    responses.get('https://nourl/rest/system', json={'error_code': None, 'response': {}})
+    responses.get(
+        'https://nourl/rest/system', json={'error_code': None, 'response': {}}
+    )
     responses.delete(
-        'https://nourl/rest/user/1',
-        match=[json_params_matcher({
-            'migrateUserID': 2
-        })]
+        'https://nourl/rest/user/1', match=[json_params_matcher({'migrateUserID': 2})]
     )
     sc = TenableSC(url='https://nourl', access_key='something', secret_key='something')
     sc.users.delete(1, 2)

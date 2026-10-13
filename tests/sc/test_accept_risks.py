@@ -4,130 +4,130 @@ in sc accept_risks
 """
 
 import pytest
+import responses
+from responses import matchers
 import uuid
 
-from tenable.errors import APIError
-from tests.pytenable_log_handler import log_exception
 from ..checker import check
 
 
-def test_accept_risks_constructor_repos_typeerror(security_center):
+def test_accept_risks_constructor_repos_typeerror(tsc):
     """
     testing accept risks constructor for repos type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(repos=1)
+        tsc.accept_risks._constructor(repos=1)
 
 
-def test_accept_risks_constructor_repos_item_typeerror(security_center):
+def test_accept_risks_constructor_repos_item_typeerror(tsc):
     """
     testing accept risks constructor for repos item type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(repos=['one'])
+        tsc.accept_risks._constructor(repos=['one'])
 
 
-def test_accept_risks_constructor_plugin_id_typeerror(security_center):
+def test_accept_risks_constructor_plugin_id_typeerror(tsc):
     """
     testing accept risks constructor for plugin id type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(plugin_id='nope')
+        tsc.accept_risks._constructor(plugin_id='nope')
 
 
-def test_accept_risks_constructor_port_typeerror(security_center):
+def test_accept_risks_constructor_port_typeerror(tsc):
     """
     testing accept risks constructor for port type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(port='nope')
+        tsc.accept_risks._constructor(port='nope')
 
 
-def test_accept_risks_constructor_protocol_typeerror(security_center):
+def test_accept_risks_constructor_protocol_typeerror(tsc):
     """
     testing accept risks constructor for protocol type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(protocol='nothing')
+        tsc.accept_risks._constructor(protocol='nothing')
 
 
-def test_accept_risks_constructor_comments_typeerror(security_center):
+def test_accept_risks_constructor_comments_typeerror(tsc):
     """
     testing accept risks constructor for comments type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(comments=1)
+        tsc.accept_risks._constructor(comments=1)
 
 
-def test_accept_risks_constructor_expires_typeerror(security_center):
+def test_accept_risks_constructor_expires_typeerror(tsc):
     """
     testing accept risks constructor for expires type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(expires='nope')
+        tsc.accept_risks._constructor(expires='nope')
 
 
-def test_accept_risks_constructor_ips_typeerror(security_center):
+def test_accept_risks_constructor_ips_typeerror(tsc):
     """
     testing accept risks constructor for ips type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(ips=1)
+        tsc.accept_risks._constructor(ips=1)
 
 
-def test_accept_risks_constructor_ips_item_typeerror(security_center):
+def test_accept_risks_constructor_ips_item_typeerror(tsc):
     """
     testing accept risks constructor for ips item type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(ips=[1])
+        tsc.accept_risks._constructor(ips=[1])
 
 
-def test_accept_risks_constructor_uuids_typeerror(security_center):
+def test_accept_risks_constructor_uuids_typeerror(tsc):
     """
     testing accept risks constructor for uuids type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(uuids=1)
+        tsc.accept_risks._constructor(uuids=1)
 
 
-def test_accept_risks_constructor_uuids_item_typeerror(security_center):
+def test_accept_risks_constructor_uuids_item_typeerror(tsc):
     """
     testing accept risks constructor for uuids item type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(uuids=[1])
+        tsc.accept_risks._constructor(uuids=[1])
 
 
-def test_accept_risks_constructor_asset_list_typeerror(security_center):
+def test_accept_risks_constructor_asset_list_typeerror(tsc):
     """
     testing accept risks constructor for asset list type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(asset_list='nope')
+        tsc.accept_risks._constructor(asset_list='nope')
 
 
-def test_accept_risks_constructur_host_uuid_typeerror(security_center):
+def test_accept_risks_constructur_host_uuid_typeerror(tsc):
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(host_uuids='nope')
+        tsc.accept_risks._constructor(host_uuids='nope')
 
 
-def test_accept_risks_constructor_host_uuid_item_typeerror(security_center):
+def test_accept_risks_constructor_host_uuid_item_typeerror(tsc):
     with pytest.raises(TypeError):
-        security_center.accept_risks._constructor(host_uuids=[1])
+        tsc.accept_risks._constructor(host_uuids=[1])
 
 
-def test_accept_risks_constructor_host_uuid_success(security_center):
+def test_accept_risks_constructor_host_uuid_success(tsc):
     tuuid = str(uuid.uuid4())
-    resp = security_center.accept_risks._constructor(host_uuids=[tuuid])
+    resp = tsc.accept_risks._constructor(host_uuids=[tuuid])
     assert resp == {'hostType': 'hostUUID', 'hostValue': tuuid}
 
 
-def test_accept_risks_constructor_success(security_center):
+def test_accept_risks_constructor_success(tsc):
     """
     testing accept risks constructor for success
     """
-    resp = security_center.accept_risks._constructor(
+    resp = tsc.accept_risks._constructor(
         repos=[1, 2],
         plugin_id=19506,
         port=0,
@@ -146,37 +146,70 @@ def test_accept_risks_constructor_success(security_center):
         'hostType': 'ip',
         'hostValue': '192.168.0.1',
     }
-    resp = security_center.accept_risks._constructor(uuids=['UUID1', 'UUID2'])
+    resp = tsc.accept_risks._constructor(uuids=['UUID1', 'UUID2'])
     assert resp == {'hostType': 'uuid', 'hostValue': 'UUID1,UUID2'}
-    resp = security_center.accept_risks._constructor(asset_list=1)
+    resp = tsc.accept_risks._constructor(asset_list=1)
     assert resp == {'hostType': 'asset', 'hostValue': {'id': 1}}
 
 
 @pytest.fixture
-def accept_risk(request, security_center, vcr):
+def accept_risk():
     """
     test fixture for accept_risk
     """
-    with vcr.use_cassette('test_accept_risks_create_success'):
-        accept_risk = security_center.accept_risks.create(19506, [1], ips=['127.0.0.1'])
+    return {
+        'id': '24',
+        'hostType': 'ip',
+        'hostValue': '127.0.0.1',
+        'port': 'any',
+        'protocol': 'any',
+        'comments': '',
+        'expires': '-1',
+        'status': '0',
+        'createdTime': '1553612053',
+        'modifiedTime': '1553612053',
+        'repository': {'id': '1', 'name': 'Default', 'description': ''},
+        'organization': {'id': '1', 'name': 'HomeNet', 'description': ''},
+        'user': {'id': '2', 'username': 'api', 'firstname': 'api', 'lastname': 'user'},
+        'plugin': {
+            'id': '19506',
+            'name': 'Nessus Scan Information',
+            'description': 'This plugin displays, for each tested host, information about the scan itself :\n\n  - The version of the plugin set.\n  - ',
+        },
+    }
 
-    def teardown():
-        try:
-            with vcr.use_cassette('test_accept_risks_delete_success'):
-                security_center.accept_risks.delete(int(accept_risk['id']))
-        except APIError as error:
-            log_exception(error)
 
-    request.addfinalizer(teardown)
-    return accept_risk
-
-
-@pytest.mark.vcr()
-def test_accept_risks_list_success_for_fields(security_center):
+@responses.activate
+def test_accept_risks_list_success_for_fields(tsc):
     """
     testing accept risks list success for fields
     """
-    accept_risks = security_center.accept_risks.list(
+    responses.get(
+        'https://nourl/rest/acceptRiskRule',
+        json={
+            'type': 'regular',
+            'response': [
+                {'id': '5', 'hostType': 'ip', 'port': 'any'},
+                {'id': '6', 'hostType': 'ip', 'port': 'any'},
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553612053,
+        },
+        match=[
+            matchers.query_param_matcher(
+                {
+                    'fields': 'id,hostType,port',
+                    'pluginID': '1',
+                    'port': '1234',
+                    'organizationIDs': '1,2',
+                    'repositoryIDs': '3,4',
+                }
+            )
+        ],
+    )
+    accept_risks = tsc.accept_risks.list(
         fields=['id', 'hostType', 'port'],
         plugin_id=1,
         port=1234,
@@ -190,12 +223,46 @@ def test_accept_risks_list_success_for_fields(security_center):
         check(accept_risk, 'port', str)
 
 
-@pytest.mark.vcr()
-def test_accept_risks_list_success(security_center):
+@responses.activate
+def test_accept_risks_list_success(tsc):
     """
     testing accept risks list success
     """
-    resp = security_center.accept_risks.list()
+    responses.get(
+        'https://nourl/rest/acceptRiskRule',
+        json={
+            'type': 'regular',
+            'response': [
+                {
+                    'id': '5',
+                    'hostType': 'ip',
+                    'hostValue': '192.168.100.1,192.168.101.1,192.168.102.1,192.168.103.1,192.168.104.1,192.168.105.1,192.168.106.1,192.168.199.1',
+                    'port': '0',
+                    'protocol': 'TCP',
+                    'expires': '-1',
+                    'status': '0',
+                    'repository': {'id': '1', 'name': 'Default', 'description': ''},
+                    'organization': {'id': '1', 'name': 'HomeNet', 'description': ''},
+                    'user': {
+                        'id': '1',
+                        'username': 'steve',
+                        'firstname': 'Steve',
+                        'lastname': 'McGrath',
+                    },
+                    'plugin': {
+                        'id': '33850',
+                        'name': 'Unix Operating System Unsupported Version Detection',
+                        'description': 'According to its self-reported version number, the Unix operating system running on the remote host is no longer support',
+                    },
+                }
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553612053,
+        },
+    )
+    resp = tsc.accept_risks.list()
     assert isinstance(resp, list)
     a_resp = resp[0]
     check(a_resp, 'id', str)
@@ -224,11 +291,49 @@ def test_accept_risks_list_success(security_center):
     check(a_resp['plugin'], 'description', str)
 
 
-@pytest.mark.vcr()
-def test_accept_risks_create_success(accept_risk):
+@responses.activate
+def test_accept_risks_create_success(tsc):
     """
     testing accept risks for create success
     """
+    responses.post(
+        'https://nourl/rest/acceptRiskRule',
+        json={
+            'type': 'regular',
+            'response': [
+                {
+                    'id': '24',
+                    'hostType': 'ip',
+                    'hostValue': '127.0.0.1',
+                    'port': 'any',
+                    'protocol': 'any',
+                    'comments': '',
+                    'expires': '-1',
+                    'status': '0',
+                    'createdTime': '1553612053',
+                    'modifiedTime': '1553612053',
+                    'repository': {'id': '1', 'name': 'Default', 'description': ''},
+                    'organization': {'id': '1', 'name': 'HomeNet', 'description': ''},
+                    'user': {
+                        'id': '2',
+                        'username': 'api',
+                        'firstname': 'api',
+                        'lastname': 'user',
+                    },
+                    'plugin': {
+                        'id': '19506',
+                        'name': 'Nessus Scan Information',
+                        'description': 'This plugin displays, for each tested host, information about the scan itself :\n\n  - The version of the plugin set.\n  - ',
+                    },
+                }
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553612052,
+        },
+    )
+    accept_risk = tsc.accept_risks.create(19506, [1], ips=['127.0.0.1'])
     assert isinstance(accept_risk, dict)
     check(accept_risk, 'id', str)
     check(accept_risk, 'hostType', str)
@@ -257,12 +362,29 @@ def test_accept_risks_create_success(accept_risk):
     check(accept_risk['plugin'], 'description', str)
 
 
-@pytest.mark.vcr()
-def test_accept_risks_details_success_for_fields(security_center, accept_risk):
+@responses.activate
+def test_accept_risks_details_success_for_fields(tsc, accept_risk):
     """
     testing accept risks details success for fields
     """
-    accept_risk = security_center.accept_risks.details(
+    responses.get(
+        'https://nourl/rest/acceptRiskRule/24',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '26',
+                'hostType': 'ip',
+                'hostValue': '127.0.0.1',
+                'port': 'any',
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553612055,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,hostType,hostValue,port'})],
+    )
+    accept_risk = tsc.accept_risks.details(
         int(accept_risk['id']), fields=['id', 'hostType', 'hostValue', 'port']
     )
     check(accept_risk, 'id', str)
@@ -271,12 +393,47 @@ def test_accept_risks_details_success_for_fields(security_center, accept_risk):
     check(accept_risk, 'port', str)
 
 
-@pytest.mark.vcr()
-def test_accept_risks_details_success(security_center, accept_risk):
+@responses.activate
+def test_accept_risks_details_success(tsc, accept_risk):
     """
     testing accept risks for details success
     """
-    accept_risk = security_center.accept_risks.details(int(accept_risk['id']))
+    responses.get(
+        'https://nourl/rest/acceptRiskRule/24',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '26',
+                'hostType': 'ip',
+                'hostValue': '127.0.0.1',
+                'port': 'any',
+                'protocol': 'any',
+                'comments': '',
+                'expires': '-1',
+                'status': '0',
+                'createdTime': '1553612055',
+                'modifiedTime': '1553612055',
+                'repository': {'id': '1', 'name': 'Default', 'description': ''},
+                'organization': {'id': '1', 'name': 'HomeNet', 'description': ''},
+                'user': {
+                    'id': '2',
+                    'username': 'api',
+                    'firstname': 'api',
+                    'lastname': 'user',
+                },
+                'plugin': {
+                    'id': '19506',
+                    'name': 'Nessus Scan Information',
+                    'description': 'This plugin displays, for each tested host, information about the scan itself :\n\n  - The version of the plugin set.\n  - ',
+                },
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553612055,
+        },
+    )
+    accept_risk = tsc.accept_risks.details(int(accept_risk['id']))
     check(accept_risk, 'id', str)
     check(accept_risk, 'hostType', str)
     check(accept_risk, 'hostValue', str)
@@ -304,33 +461,55 @@ def test_accept_risks_details_success(security_center, accept_risk):
     check(accept_risk['plugin'], 'description', str)
 
 
-@pytest.mark.vcr()
-def test_accept_risks_delete_success(security_center, accept_risk):
+@responses.activate
+def test_accept_risks_delete_success(tsc, accept_risk):
     """
     testing accept risks for delete success
     """
-    security_center.accept_risks.delete(int(accept_risk['id']))
+    responses.delete(
+        'https://nourl/rest/acceptRiskRule/24',
+        json={
+            'type': 'regular',
+            'response': '',
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553612053,
+        },
+    )
+    tsc.accept_risks.delete(int(accept_risk['id']))
 
 
-def test_accept_risks_apply_id_typeerror(security_center):
+def test_accept_risks_apply_id_typeerror(tsc):
     """
     testing accept risks for apply id type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks.apply('one', 1)
+        tsc.accept_risks.apply('one', 1)
 
 
-def test_accept_risks_apply_repo_typeerror(security_center):
+def test_accept_risks_apply_repo_typeerror(tsc):
     """
     testing accept risks for apply repo type error
     """
     with pytest.raises(TypeError):
-        security_center.accept_risks.apply(1, 'one')
+        tsc.accept_risks.apply(1, 'one')
 
 
-@pytest.mark.vcr()
-def test_accept_risks_apply_success(security_center, accept_risk):
+@responses.activate
+def test_accept_risks_apply_success(tsc, accept_risk):
     """
     testing accept risks for apply success
     """
-    security_center.accept_risks.apply(int(accept_risk['id']), 1)
+    responses.post(
+        'https://nourl/rest/acceptRiskRule/24/apply',
+        json={
+            'type': 'regular',
+            'response': '',
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553613070,
+        },
+    )
+    tsc.accept_risks.apply(int(accept_risk['id']), 1)

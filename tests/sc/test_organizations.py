@@ -1,251 +1,257 @@
-'''
+"""
 test file for testing various scenarios in security center organizations
 functionality
-'''
-import pytest
+"""
 
-from tenable.errors import APIError, UnexpectedValueError
-from tests.pytenable_log_handler import log_exception
+import pytest
+import responses
+from responses import matchers
+
+from tenable.errors import UnexpectedValueError
 from ..checker import check
 
 
-def test_organizations_constructor_name_typeerror(security_center):
-    '''
+def test_organizations_constructor_name_typeerror(tsc):
+    """
     test organizations constructor for name type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(name=1)
+        tsc.organizations._constructor(name=1)
 
 
-def test_organizations_constructor_description_typeerror(security_center):
-    '''
+def test_organizations_constructor_description_typeerror(tsc):
+    """
     test organizations constructor for description type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(description=1)
+        tsc.organizations._constructor(description=1)
 
 
-def test_organizations_constructor_address_typeerror(security_center):
-    '''
+def test_organizations_constructor_address_typeerror(tsc):
+    """
     test organizations constructor for address type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(address=1)
+        tsc.organizations._constructor(address=1)
 
 
-def test_organizations_constructor_city_typeerror(security_center):
-    '''
+def test_organizations_constructor_city_typeerror(tsc):
+    """
     test organizations constructor for city type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(city=1)
+        tsc.organizations._constructor(city=1)
 
 
-def test_organizations_constructor_state_typeerror(security_center):
-    '''
+def test_organizations_constructor_state_typeerror(tsc):
+    """
     test organizations constructor for state type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(state=1)
+        tsc.organizations._constructor(state=1)
 
 
-def test_organizations_constructor_country_typeerror(security_center):
-    '''
+def test_organizations_constructor_country_typeerror(tsc):
+    """
     test organizations constructor for country type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(country=1)
+        tsc.organizations._constructor(country=1)
 
 
-def test_organizations_constructor_phone_typeerror(security_center):
-    '''
+def test_organizations_constructor_phone_typeerror(tsc):
+    """
     test organizations constructor for phone type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(phone=1)
+        tsc.organizations._constructor(phone=1)
 
 
-def test_organizations_constructor_lce_ids_typeerror(security_center):
-    '''
+def test_organizations_constructor_lce_ids_typeerror(tsc):
+    """
     test organizations constructor for lce ids type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(lce_ids=1)
+        tsc.organizations._constructor(lce_ids=1)
 
 
-def test_organizations_constructor_lce_ids_item_typeerror(security_center):
-    '''
+def test_organizations_constructor_lce_ids_item_typeerror(tsc):
+    """
     test organizations constructor for 'lce ids item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(lce_ids=['one', ])
+        tsc.organizations._constructor(
+            lce_ids=[
+                'one',
+            ]
+        )
 
 
-def test_organizations_constructor_zone_selection_typeerror(security_center):
-    '''
+def test_organizations_constructor_zone_selection_typeerror(tsc):
+    """
     test organizations constructor for 'zone selection' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(zone_selection=1)
+        tsc.organizations._constructor(zone_selection=1)
 
 
-def test_organizations_constructor_zone_selection_unexpectedvalueerror(security_center):
-    '''
+def test_organizations_constructor_zone_selection_unexpectedvalueerror(tsc):
+    """
     test organizations constructor for 'zone selection' unexpected value error
-    '''
+    """
     with pytest.raises(UnexpectedValueError):
-        security_center.organizations._constructor(zone_selection='something')
+        tsc.organizations._constructor(zone_selection='something')
 
 
-def test_organizations_constructor_restricted_ips_typeerror(security_center):
-    '''
+def test_organizations_constructor_restricted_ips_typeerror(tsc):
+    """
     test organizations constructor for 'restricted ips' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(restricted_ips=1)
+        tsc.organizations._constructor(restricted_ips=1)
 
 
-def test_organizations_constructor_restricted_ips_item_typeerror(security_center):
-    '''
+def test_organizations_constructor_restricted_ips_item_typeerror(tsc):
+    """
     test organizations constructor for 'restricted ips item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(restricted_ips=[1])
+        tsc.organizations._constructor(restricted_ips=[1])
 
 
-def test_organizations_constructor_repos_typeerror(security_center):
-    '''
+def test_organizations_constructor_repos_typeerror(tsc):
+    """
     test organizations constructor for 'repos' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(repos=1)
+        tsc.organizations._constructor(repos=1)
 
 
-def test_organizations_constructor_repos_item_typeerror(security_center):
-    '''
+def test_organizations_constructor_repos_item_typeerror(tsc):
+    """
     test organizations constructor for 'repos item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(repos=['one'])
+        tsc.organizations._constructor(repos=['one'])
 
 
-def test_organizations_constructor_pub_sites_typeerror(security_center):
-    '''
+def test_organizations_constructor_pub_sites_typeerror(tsc):
+    """
     test organizations constructor for 'pub sites' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(pub_sites=1)
+        tsc.organizations._constructor(pub_sites=1)
 
 
-def test_organizations_constructor_pub_sites_item_typeerror(security_center):
-    '''
+def test_organizations_constructor_pub_sites_item_typeerror(tsc):
+    """
     test organizations constructor for 'pub sites item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(pub_sites=['one'])
+        tsc.organizations._constructor(pub_sites=['one'])
 
 
-def test_organizations_constructor_ldap_ids_typeerror(security_center):
-    '''
+def test_organizations_constructor_ldap_ids_typeerror(tsc):
+    """
     test organizations constructor for 'ldap ids' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(ldap_ids=1)
+        tsc.organizations._constructor(ldap_ids=1)
 
 
-def test_organizations_constructor_ldap_ids_item_typeerror(security_center):
-    '''
+def test_organizations_constructor_ldap_ids_item_typeerror(tsc):
+    """
     test organizations constructor for 'ldap ids item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(ldap_ids=['one'])
+        tsc.organizations._constructor(ldap_ids=['one'])
 
 
-def test_organizations_constructor_nessus_managers_typeerror(security_center):
-    '''
+def test_organizations_constructor_nessus_managers_typeerror(tsc):
+    """
     test organizations constructor for 'nessus managers' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(nessus_managers=1)
+        tsc.organizations._constructor(nessus_managers=1)
 
 
-def test_organizations_constructor_nessus_managers_item_typeerror(security_center):
-    '''
+def test_organizations_constructor_nessus_managers_item_typeerror(tsc):
+    """
     test organizations constructor for 'nessus managers item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(nessus_managers=['one'])
+        tsc.organizations._constructor(nessus_managers=['one'])
 
 
-def test_organizations_constructor_info_links_typeerror(security_center):
-    '''
+def test_organizations_constructor_info_links_typeerror(tsc):
+    """
     test organizations constructor for 'info links' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(info_links=1)
+        tsc.organizations._constructor(info_links=1)
 
 
-def test_organizations_constructor_info_links_item_typeerror(security_center):
-    '''
+def test_organizations_constructor_info_links_item_typeerror(tsc):
+    """
     test organizations constructor for 'info links item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(info_links=[1])
+        tsc.organizations._constructor(info_links=[1])
 
 
-def test_organizations_constructor_info_links_item_name_typeerror(security_center):
-    '''
+def test_organizations_constructor_info_links_item_name_typeerror(tsc):
+    """
     test organizations constructor for 'info links item name' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(info_links=[(1, 'http://site.com/%IP%')])
+        tsc.organizations._constructor(info_links=[(1, 'http://site.com/%IP%')])
 
 
-def test_organizations_constructor_info_links_item_link_typeerror(security_center):
-    '''
+def test_organizations_constructor_info_links_item_link_typeerror(tsc):
+    """
     test organizations constructor for 'info links item link' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(info_links=[('name', 1)])
+        tsc.organizations._constructor(info_links=[('name', 1)])
 
 
-def test_organizations_constructor_vuln_score_low_typeerror(security_center):
-    '''
+def test_organizations_constructor_vuln_score_low_typeerror(tsc):
+    """
     test organizations constructor for 'vulnerability score low' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(vuln_score_low='one')
+        tsc.organizations._constructor(vuln_score_low='one')
 
 
-def test_organizations_constructor_vuln_score_medium_typeerror(security_center):
-    '''
+def test_organizations_constructor_vuln_score_medium_typeerror(tsc):
+    """
     test organizations constructor for 'vulnerability score medium' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(vuln_score_medium='one')
+        tsc.organizations._constructor(vuln_score_medium='one')
 
 
-def test_organizations_constructor_vuln_score_high_typeerror(security_center):
-    '''
+def test_organizations_constructor_vuln_score_high_typeerror(tsc):
+    """
     test organizations constructor for 'vulnerability score high' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(vuln_score_high='one')
+        tsc.organizations._constructor(vuln_score_high='one')
 
 
-def test_organizations_constructor_vuln_score_critical_typeerror(security_center):
-    '''
+def test_organizations_constructor_vuln_score_critical_typeerror(tsc):
+    """
     test organizations constructor for 'vulnerability score critical' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations._constructor(vuln_score_critical='one')
+        tsc.organizations._constructor(vuln_score_critical='one')
 
 
-def test_organizations_constructor_success(security_center):
-    '''
+def test_organizations_constructor_success(tsc):
+    """
     test organizations constructor for success
-    '''
-    organization = security_center.organizations._constructor(
+    """
+    organization = tsc.organizations._constructor(
         name='name',
         description='description',
         address='123 main street',
@@ -285,34 +291,89 @@ def test_organizations_constructor_success(security_center):
         'vulnScoreLow': 1,
         'vulnScoreMedium': 5,
         'vulnScoreHigh': 10,
-        'vulnScoreCritical': 40
+        'vulnScoreCritical': 40,
     }
 
 
 @pytest.fixture
-def org(request, admin, vcr):
-    '''
+def org():
+    """
     test fixture for organization
-    '''
-    with vcr.use_cassette('test_organizations_create_success'):
-        organization = admin.organizations.create('New Org')
+    """
+    return {
+        'id': '2',
+        'name': 'New Org',
+        'description': '',
+        'email': '',
+        'address': '',
+        'city': '',
+        'state': '',
+        'country': '',
+        'phone': '',
+        'fax': '',
+        'ipInfoLinks': [],
+        'zoneSelection': 'auto_only',
+        'restrictedIPs': '',
+        'vulnScoreLow': '1',
+        'vulnScoreMedium': '3',
+        'vulnScoreHigh': '10',
+        'vulnScoreCritical': '40',
+        'createdTime': '1557322695',
+        'modifiedTime': '1557322695',
+        'userCount': '0',
+        'lces': [],
+        'repositories': [],
+        'zones': [],
+        'nessusManagers': [],
+        'pubSites': [],
+        'ldaps': [],
+    }
 
-    def teardown():
-        try:
-            with vcr.use_cassette('test_organizations_delete_success'):
-                admin.organizations.delete(int(organization['id']))
-        except APIError as error:
-            log_exception(error)
 
-    request.addfinalizer(teardown)
-    return organization
-
-
-@pytest.mark.vcr()
-def test_organizations_create_success(admin, org):
-    '''
+@responses.activate
+def test_organizations_create_success(tsc):
+    """
     test organizations create for success
-    '''
+    """
+    responses.post(
+        'https://nourl/rest/organization',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '2',
+                'name': 'New Org',
+                'description': '',
+                'email': '',
+                'address': '',
+                'city': '',
+                'state': '',
+                'country': '',
+                'phone': '',
+                'fax': '',
+                'ipInfoLinks': [],
+                'zoneSelection': 'auto_only',
+                'restrictedIPs': '',
+                'vulnScoreLow': '1',
+                'vulnScoreMedium': '3',
+                'vulnScoreHigh': '10',
+                'vulnScoreCritical': '40',
+                'createdTime': '1557322695',
+                'modifiedTime': '1557322695',
+                'userCount': '0',
+                'lces': [],
+                'repositories': [],
+                'zones': [],
+                'nessusManagers': [],
+                'pubSites': [],
+                'ldaps': [],
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557322695,
+        },
+    )
+    org = tsc.organizations.create('New Org')
     assert isinstance(org, dict)
     check(org, 'id', str)
     check(org, 'name', str)
@@ -372,20 +433,46 @@ def test_organizations_create_success(admin, org):
         check(pub_sites, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_organizations_delete_success(admin, org):
-    '''
+@responses.activate
+def test_organizations_delete_success(tsc, org):
+    """
     test organizations delete for success
-    '''
-    admin.organizations.delete(int(org['id']))
+    """
+    responses.delete(
+        'https://nourl/rest/organization/2',
+        json={
+            'type': 'regular',
+            'response': '',
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557322697,
+        },
+    )
+    tsc.organizations.delete(int(org['id']))
 
 
-@pytest.mark.vcr()
-def test_organizations_list_success(admin):
-    '''
+@responses.activate
+def test_organizations_list_success(tsc):
+    """
     test organizations list for success
-    '''
-    organizations = admin.organizations.list(fields=['id', 'name', 'description'])
+    """
+    responses.get(
+        'https://nourl/rest/organization',
+        json={
+            'type': 'regular',
+            'response': [
+                {'id': '3', 'name': 'New Org', 'description': ''},
+                {'id': '4', 'name': 'New Org', 'description': ''},
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557322935,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,name,description'})],
+    )
+    organizations = tsc.organizations.list(fields=['id', 'name', 'description'])
     assert isinstance(organizations, list)
     for organization in organizations:
         check(organization, 'id', str)
@@ -393,12 +480,29 @@ def test_organizations_list_success(admin):
         check(organization, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_organizations_managers_list_success(admin):
-    '''
+@responses.activate
+def test_organizations_managers_list_success(tsc):
+    """
     test organization managers list for success
-    '''
-    managers = admin.organizations.managers_list(org_id=1, fields=['id', 'name', 'description'])
+    """
+    responses.get(
+        'https://nourl/rest/organization/1/securityManager',
+        json={
+            'type': 'regular',
+            'response': [
+                {'id': '3', 'name': 'Sec Manager3', 'description': ''},
+                {'id': '4', 'name': 'Sec Manager4', 'description': ''},
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557322935,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,name,description'})],
+    )
+    managers = tsc.organizations.managers_list(
+        org_id=1, fields=['id', 'name', 'description']
+    )
     assert isinstance(managers, list)
     for manager in managers:
         check(manager, 'id', str)
@@ -406,49 +510,187 @@ def test_organizations_managers_list_success(admin):
         check(manager, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_organizations_manager_details_success(admin):
-    '''
+@responses.activate
+def test_organizations_manager_details_success(tsc):
+    """
     test organizations manager details for success
-    '''
-    manager = admin.organizations.manager_details(org_id=1, user_id=1, fields=['id', 'name', 'description'])
+    """
+    responses.get(
+        'https://nourl/rest/organization/1/securityManager/1',
+        json={
+            'type': 'regular',
+            'response': {'id': '1', 'name': 'Sec Manager1', 'description': ''},
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557322935,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,name,description'})],
+    )
+    manager = tsc.organizations.manager_details(
+        org_id=1, user_id=1, fields=['id', 'name', 'description']
+    )
     assert isinstance(manager, dict)
     check(manager, 'id', str)
     check(manager, 'name', str)
     check(manager, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_organizations_manager_create_edit_delete_success(admin):
-    '''
+@responses.activate
+def test_organizations_manager_create_edit_delete_success(tsc):
+    """
     test organizations manager create, edit and delete for success
-    '''
-    manager = admin.organizations.manager_create(org_id=1,
-                                                 username='username',
-                                                 password='password',
-                                                 role=1)
+    """
+    responses.post(
+        'https://nourl/rest/organization/1/securityManager',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '1',
+                'name': 'New Sec Manager',
+                'description': '',
+                'email': '',
+                'address': '',
+                'city': '',
+                'state': '',
+                'country': '',
+                'phone': '',
+                'fax': '',
+                'ipInfoLinks': [],
+                'zoneSelection': 'auto_only',
+                'restrictedIPs': '',
+                'vulnScoreLow': '1',
+                'vulnScoreMedium': '3',
+                'vulnScoreHigh': '10',
+                'vulnScoreCritical': '40',
+                'createdTime': '1557322695',
+                'modifiedTime': '1557322695',
+                'userCount': '0',
+                'lces': [],
+                'repositories': [],
+                'zones': [],
+                'nessusManagers': [],
+                'pubSites': [],
+                'ldaps': [],
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557322695,
+        },
+    )
+    responses.patch(
+        'https://nourl/rest/organization/1/securityManager/1',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '1',
+                'name': 'new mgr name',
+                'description': '',
+                'email': '',
+                'address': '',
+                'city': '',
+                'state': '',
+                'country': '',
+                'phone': '',
+                'fax': '',
+                'ipInfoLinks': [],
+                'zoneSelection': 'auto_only',
+                'restrictedIPs': '',
+                'vulnScoreLow': '1',
+                'vulnScoreMedium': '3',
+                'vulnScoreHigh': '10',
+                'vulnScoreCritical': '40',
+                'createdTime': '1557322695',
+                'modifiedTime': '1557322695',
+                'userCount': '0',
+                'lces': [],
+                'repositories': [],
+                'zones': [],
+                'nessusManagers': [],
+                'pubSites': [],
+                'ldaps': [],
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557322695,
+        },
+    )
+    responses.delete(
+        'https://nourl/rest/organization/1/securityManager/1',
+        json={
+            'type': 'regular',
+            'response': '',
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557322697,
+        },
+    )
+    manager = tsc.organizations.manager_create(
+        org_id=1, username='username', password='password', role=1
+    )
     assert isinstance(manager, dict)
     check(manager, 'id', str)
     check(manager, 'name', str)
     check(manager, 'description', str)
 
-    manager = admin.organizations.manager_edit(user_id=int(manager['id']),
-                                               org_id=1,
-                                               name='new mgr name')
+    manager = tsc.organizations.manager_edit(
+        user_id=int(manager['id']), org_id=1, name='new mgr name'
+    )
     assert isinstance(manager, dict)
     check(manager, 'id', str)
     check(manager, 'name', str)
     check(manager, 'description', str)
 
-    admin.organizations.manager_delete(org_id=1, user_id=1, migrate_to=1)
+    tsc.organizations.manager_delete(org_id=1, user_id=1, migrate_to=1)
 
 
-@pytest.mark.vcr()
-def test_organizations_details_success(admin, org):
-    '''
+@responses.activate
+def test_organizations_details_success(tsc, org):
+    """
     test organizations details for success
-    '''
-    organization = admin.organizations.details(int(org['id']))
+    """
+    responses.get(
+        'https://nourl/rest/organization/2',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '3',
+                'name': 'New Org',
+                'description': '',
+                'email': '',
+                'address': '',
+                'city': '',
+                'state': '',
+                'country': '',
+                'phone': '',
+                'fax': '',
+                'ipInfoLinks': [],
+                'zoneSelection': 'auto_only',
+                'restrictedIPs': '',
+                'vulnScoreLow': '1',
+                'vulnScoreMedium': '3',
+                'vulnScoreHigh': '10',
+                'vulnScoreCritical': '40',
+                'createdTime': '1557322933',
+                'modifiedTime': '1557322933',
+                'userCount': '0',
+                'lces': [],
+                'repositories': [],
+                'zones': [],
+                'nessusManagers': [],
+                'pubSites': [],
+                'ldaps': [],
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557322935,
+        },
+    )
+    organization = tsc.organizations.details(int(org['id']))
     assert isinstance(organization, dict)
     check(organization, 'id', str)
     check(organization, 'name', str)
@@ -508,24 +750,76 @@ def test_organizations_details_success(admin, org):
         check(pub_site, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_organizations_details_success_for_fields(admin, org):
-    '''
+@responses.activate
+def test_organizations_details_success_for_fields(tsc, org):
+    """
     test organizations details success for fields
-    '''
-    organization = admin.organizations.details(int(org['id']), fields=['id', 'name', 'description'])
+    """
+    responses.get(
+        'https://nourl/rest/organization/2',
+        json={
+            'type': 'regular',
+            'response': {'id': '3', 'name': 'New Org', 'description': ''},
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557322935,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,name,description'})],
+    )
+    organization = tsc.organizations.details(
+        int(org['id']), fields=['id', 'name', 'description']
+    )
     assert isinstance(organization, dict)
     check(organization, 'id', str)
     check(organization, 'name', str)
     check(organization, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_organizations_edit_success(admin, org):
-    '''
+@responses.activate
+def test_organizations_edit_success(tsc, org):
+    """
     test organizations edit for success
-    '''
-    organization = admin.organizations.edit(int(org['id']), name='new org name')
+    """
+    responses.patch(
+        'https://nourl/rest/organization/2',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '4',
+                'name': 'new org name',
+                'description': '',
+                'email': '',
+                'address': '',
+                'city': '',
+                'state': '',
+                'country': '',
+                'phone': '',
+                'fax': '',
+                'ipInfoLinks': [],
+                'zoneSelection': 'auto_only',
+                'restrictedIPs': '',
+                'vulnScoreLow': '1',
+                'vulnScoreMedium': '3',
+                'vulnScoreHigh': '10',
+                'vulnScoreCritical': '40',
+                'createdTime': '1557322978',
+                'modifiedTime': '1557322980',
+                'userCount': '0',
+                'lces': [],
+                'repositories': [],
+                'zones': [],
+                'nessusManagers': [],
+                'pubSites': [],
+                'ldaps': [],
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557322980,
+        },
+    )
+    organization = tsc.organizations.edit(int(org['id']), name='new org name')
     assert isinstance(organization, dict)
     check(organization, 'id', str)
     check(organization, 'name', str)
@@ -585,57 +879,63 @@ def test_organizations_edit_success(admin, org):
         check(pub_site, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_organizations_accept_risk_rules_id_typeerror(security_center):
-    '''
+def test_organizations_accept_risk_rules_id_typeerror(tsc):
+    """
     test organizations accept risk rules for id type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations.accept_risk_rules('one')
+        tsc.organizations.accept_risk_rules('one')
 
 
-@pytest.mark.vcr()
-def test_organizations_accept_risk_rules_repos_typeerror(security_center):
-    '''
+def test_organizations_accept_risk_rules_repos_typeerror(tsc):
+    """
     test organizations accept risk rules for repo type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations.accept_risk_rules(1, repos=1)
+        tsc.organizations.accept_risk_rules(1, repos=1)
 
 
-@pytest.mark.vcr()
-def test_organizations_accept_risk_rules_repos_item_typeerror(security_center):
-    '''
+def test_organizations_accept_risk_rules_repos_item_typeerror(tsc):
+    """
     test organizations accept risk rules for 'repos item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations.accept_risk_rules(1, repos=['one'])
+        tsc.organizations.accept_risk_rules(1, repos=['one'])
 
 
-@pytest.mark.vcr()
-def test_organizations_accept_risk_rules_plugin_typeerror(security_center):
-    '''
+def test_organizations_accept_risk_rules_plugin_typeerror(tsc):
+    """
     test organizations accept risk rules for plugin type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations.accept_risk_rules(1, plugin='one')
+        tsc.organizations.accept_risk_rules(1, plugin='one')
 
 
-@pytest.mark.vcr()
-def test_organizations_accept_risk_rules_port_typeerror(security_center):
-    '''
+def test_organizations_accept_risk_rules_port_typeerror(tsc):
+    """
     test organizations accept risk rules for port type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations.accept_risk_rules(1, port='one')
+        tsc.organizations.accept_risk_rules(1, port='one')
 
 
-@pytest.mark.vcr()
-def test_organizations_accept_risk_rules_success(admin, org):
-    '''
+@responses.activate
+def test_organizations_accept_risk_rules_success(tsc, org):
+    """
     test organizations accept risk rules for success
-    '''
-    rules = admin.organizations.accept_risk_rules(int(org['id']))
+    """
+    responses.get(
+        'https://nourl/rest/organization/2/acceptRiskRule',
+        json={
+            'type': 'regular',
+            'response': [],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557324762,
+        },
+    )
+    rules = tsc.organizations.accept_risk_rules(int(org['id']))
     assert isinstance(rules, list)
     for rule in rules:
         check(rule, 'id', str)
@@ -664,57 +964,63 @@ def test_organizations_accept_risk_rules_success(admin, org):
         check(rule['plugin'], 'description', str)
 
 
-@pytest.mark.vcr()
-def test_organizations_recast_risk_rules_id_typeerror(security_center):
-    '''
+def test_organizations_recast_risk_rules_id_typeerror(tsc):
+    """
     test organizations recast risk rules for id type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations.recast_risk_rules('one')
+        tsc.organizations.recast_risk_rules('one')
 
 
-@pytest.mark.vcr()
-def test_organizations_recast_risk_rules_repos_typeerror(security_center):
-    '''
+def test_organizations_recast_risk_rules_repos_typeerror(tsc):
+    """
     test organizations recast risk rules for repos type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations.recast_risk_rules(1, repos=1)
+        tsc.organizations.recast_risk_rules(1, repos=1)
 
 
-@pytest.mark.vcr()
-def test_organizations_recast_risk_rules_repos_item_typeerror(security_center):
-    '''
+def test_organizations_recast_risk_rules_repos_item_typeerror(tsc):
+    """
     test organizations recast risk rules for 'repos item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations.recast_risk_rules(1, repos=['one'])
+        tsc.organizations.recast_risk_rules(1, repos=['one'])
 
 
-@pytest.mark.vcr()
-def test_organizations_recast_risk_rules_plugin_typeerror(security_center):
-    '''
+def test_organizations_recast_risk_rules_plugin_typeerror(tsc):
+    """
     test organizations recast risk rules for plugin type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations.recast_risk_rules(1, plugin='one')
+        tsc.organizations.recast_risk_rules(1, plugin='one')
 
 
-@pytest.mark.vcr()
-def test_organizations_recast_risk_rules_port_typeerror(security_center):
-    '''
+def test_organizations_recast_risk_rules_port_typeerror(tsc):
+    """
     test organizations recast risk rules for port type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.organizations.recast_risk_rules(1, port='one')
+        tsc.organizations.recast_risk_rules(1, port='one')
 
 
-@pytest.mark.vcr()
-def test_organizations_recast_risk_rules_success(admin, org):
-    '''
+@responses.activate
+def test_organizations_recast_risk_rules_success(tsc, org):
+    """
     test organizations recast risk rules for success
-    '''
-    rules = admin.organizations.recast_risk_rules(int(org['id']))
+    """
+    responses.get(
+        'https://nourl/rest/organization/2/recastRiskRule',
+        json={
+            'type': 'regular',
+            'response': [],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1557324775,
+        },
+    )
+    rules = tsc.organizations.recast_risk_rules(int(org['id']))
     assert isinstance(rules, list)
     for rule in rules:
         check(rule, 'id', str)

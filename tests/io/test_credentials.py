@@ -6,192 +6,228 @@ import io
 import uuid
 
 import pytest
+import responses
+from responses import matchers
 
-from tenable.errors import APIError, UnexpectedValueError
-from tests.pytenable_log_handler import log_exception
+from tenable.errors import UnexpectedValueError
 
 from ..checker import check, single
 
+CREDENTIALS = {
+    'name': 'Example Cred',
+    'description': '',
+    'category': {'id': 'Host', 'name': 'Host'},
+    'type': {'id': 'SSH', 'name': 'SSH'},
+    'ad_hoc': False,
+    'user_permissions': 64,
+    'settings': {
+        'username': 'root',
+        'auth_method': 'password',
+        'custom_password_prompt': '',
+        'elevate_privileges_with': 'Nothing',
+        'password': '********',
+    },
+    'permissions': [
+        {
+            'grantee_uuid': 'a09161a2-3860-4ca8-93c8-b3f7be366e50',
+            'type': 'user',
+            'permissions': 64,
+            'name': 'test_admin@pytenable.io',
+        }
+    ],
+}
 
-def test_credentials_permissions_constructor_tuple_permission_type_typeerror(api):
+
+def test_credentials_permissions_constructor_tuple_permission_type_typeerror(tvm):
     """test to raise the exception when type of permission type is not passed as defined"""
 
     with pytest.raises(TypeError):
-        getattr(api.credentials, '_permissions_constructor')(
+        getattr(tvm.credentials, '_permissions_constructor')(
             [(1, 32, str(uuid.uuid4()))]
         )
 
 
 def test_credentials_permissions_constructor_tuple_permission_type_unexpectedvalueerror(
-    api,
+    tvm,
 ):
     """test to raise the exception when value of permission type is not passed as defined"""
 
     with pytest.raises(UnexpectedValueError):
-        getattr(api.credentials, '_permissions_constructor')(
+        getattr(tvm.credentials, '_permissions_constructor')(
             [('nope', 32, str(uuid.uuid4()))]
         )
 
 
 def test_credentials_permissions_constructor_tuple_permission_permission_unexpectedvalueerror(
-    api,
+    tvm,
 ):
     """test to raise the exception when value of permission is not passed as defined"""
     with pytest.raises(UnexpectedValueError):
-        getattr(api.credentials, '_permissions_constructor')(
+        getattr(tvm.credentials, '_permissions_constructor')(
             [('user', 256, str(uuid.uuid4()))]
         )
 
 
-def test_credentials_permissions_constructor_tuple_permission_uuid_typeerror(api):
+def test_credentials_permissions_constructor_tuple_permission_uuid_typeerror(tvm):
     """test to raise the exception when type of permission is not passed as defined"""
 
     with pytest.raises(TypeError):
-        getattr(api.credentials, '_permissions_constructor')([('user', 32, 1)])
+        getattr(tvm.credentials, '_permissions_constructor')([('user', 32, 1)])
 
 
 def test_credentials_permissions_constructor_tuple_permission_uuid_unexpectedvalueerror(
-    api,
+    tvm,
 ):
     """test to raise the exception when value of permission is not passed as defined"""
     with pytest.raises(UnexpectedValueError):
-        getattr(api.credentials, '_permissions_constructor')([('user', 32, 'someone')])
+        getattr(tvm.credentials, '_permissions_constructor')([('user', 32, 'someone')])
 
 
-def test_credentials_permissions_constructor_dict_permission_type_typeerror(api):
+def test_credentials_permissions_constructor_dict_permission_type_typeerror(tvm):
     """test to raise the exception when type of permission type is not passed as defined"""
 
     with pytest.raises(TypeError):
-        getattr(api.credentials, '_permissions_constructor')(
+        getattr(tvm.credentials, '_permissions_constructor')(
             [{'type': 1, 'permissions': 32, 'grantee_uuid': str(uuid.uuid4())}]
         )
 
 
 def test_credentials_permissions_constructor_dict_permission_type_unexpectedvalueerror(
-    api,
+    tvm,
 ):
     """test to raise the exception when value of permission type is not passed as defined"""
     with pytest.raises(UnexpectedValueError):
-        getattr(api.credentials, '_permissions_constructor')(
+        getattr(tvm.credentials, '_permissions_constructor')(
             [{'type': 'nope', 'permissions': 32, 'grantee_uuid': str(uuid.uuid4())}]
         )
 
 
 def test_credentials_permissions_constructor_dict_permission_permission_unexpectedvalueerror(
-    api,
+    tvm,
 ):
     """test to raise the exception when value of permission is not passed as defined"""
     with pytest.raises(UnexpectedValueError):
-        getattr(api.credentials, '_permissions_constructor')(
+        getattr(tvm.credentials, '_permissions_constructor')(
             [{'type': 'user', 'permissions': 256, 'grantee_uuid': str(uuid.uuid4())}]
         )
 
 
-def test_credentials_permissions_constructor_dict_permission_uuid_typeerror(api):
+def test_credentials_permissions_constructor_dict_permission_uuid_typeerror(tvm):
     """test to raise the exception when type of uuid is not passed as defined"""
     with pytest.raises(TypeError):
-        getattr(api.credentials, '_permissions_constructor')(
+        getattr(tvm.credentials, '_permissions_constructor')(
             [{'type': 'user', 'permissions': 32, 'grantee_uuid': 1}]
         )
 
 
 def test_credentials_permissions_constructor_dict_permission_uuid_unexpectedvalueerror(
-    api,
+    tvm,
 ):
     """test to raise the exception when value of uuid is not passed as defined"""
     with pytest.raises(UnexpectedValueError):
-        getattr(api.credentials, '_permissions_constructor')(
+        getattr(tvm.credentials, '_permissions_constructor')(
             [{'type': 'user', 'permissions': 32, 'grantee_uuid': 'someone'}]
         )
 
 
-def test_credentials_permissions_constructor_tuple_success(api):
+def test_credentials_permissions_constructor_tuple_success(tvm):
     """test to check the type of permission constructor as tuple"""
 
     test_id = str(uuid.uuid4())
-    resp = getattr(api.credentials, '_permissions_constructor')([('user', 32, test_id)])
+    resp = getattr(tvm.credentials, '_permissions_constructor')([('user', 32, test_id)])
     assert resp == [{'type': 'user', 'permissions': 32, 'grantee_uuid': test_id}]
-    resp = getattr(api.credentials, '_permissions_constructor')(
+    resp = getattr(tvm.credentials, '_permissions_constructor')(
         [('user', 'use', test_id)]
     )
     assert resp == [{'type': 'user', 'permissions': 32, 'grantee_uuid': test_id}]
 
 
-def test_credentials_permissions_constructor_dict_success(api):
+def test_credentials_permissions_constructor_dict_success(tvm):
     """test to check the type of permission constructor as dict"""
     test_id = str(uuid.uuid4())
-    resp = getattr(api.credentials, '_permissions_constructor')(
+    resp = getattr(tvm.credentials, '_permissions_constructor')(
         [{'type': 'user', 'permissions': 32, 'grantee_uuid': test_id}]
     )
     assert resp == [{'type': 'user', 'permissions': 32, 'grantee_uuid': test_id}]
 
 
 @pytest.fixture
-def cred(request, api, vcr):
+def cred():
     """fixture credential"""
-    with vcr.use_cassette('test_credentials_create_success'):
-        cred = api.credentials.create(
-            'Example Cred',
-            'SSH',
-            username='root',
-            password='something',
-            auth_method='password',
-            elevate_privileges_with='Nothing',
-            custom_password_prompt='',
-        )
-
-    def teardown():
-        try:
-            with vcr.use_cassette('test_credentials_delete_success'):
-                api.credentials.delete(cred)
-        except APIError as err:
-            log_exception(err)
-
-    request.addfinalizer(teardown)
-    return cred
+    return '5d218473-39c1-4dff-b5af-cc6d68083404'
 
 
-def test_credentials_create_cred_name_typeerror(api):
+def test_credentials_create_cred_name_typeerror(tvm):
     """test to raise the exception when type of credential name  is not as defined"""
     with pytest.raises(TypeError):
-        api.credentials.create(1, 'something')
+        tvm.credentials.create(1, 'something')
 
 
-def test_credentials_create_cred_type_typeerror(api):
+def test_credentials_create_cred_type_typeerror(tvm):
     """test to raise the exception when type of credential type is not as defined"""
     with pytest.raises(TypeError):
-        api.credentials.create('something', 1)
+        tvm.credentials.create('something', 1)
 
 
-def test_credentials_create_description_typeerror(api):
+def test_credentials_create_description_typeerror(tvm):
     """test to raise the exception when type of description is not as defined"""
     with pytest.raises(TypeError):
-        api.credentials.create('something', 'something', 1)
+        tvm.credentials.create('something', 'something', 1)
 
 
-@pytest.mark.vcr()
-def test_credentials_create_success(cred):
+@responses.activate
+def test_credentials_create_success(tvm, cred):
     """test to create the credential"""
+    responses.add(responses.POST, 'https://nourl/credentials', json={'uuid': cred})
+    cred = tvm.credentials.create(
+        'Example Cred',
+        'SSH',
+        username='root',
+        password='something',
+        auth_method='password',
+        elevate_privileges_with='Nothing',
+        custom_password_prompt='',
+    )
     single(cred, 'uuid')
 
 
-@pytest.mark.vcr()
-def test_credentials_delete_success(api, cred):
+@responses.activate
+def test_credentials_delete_success(tvm, cred):
     """test to delete the credential"""
-    api.credentials.delete(cred)
+    responses.add(
+        responses.DELETE,
+        'https://nourl/credentials/5d218473-39c1-4dff-b5af-cc6d68083404',
+        json={'deleted': True},
+    )
+    tvm.credentials.delete(cred)
 
 
-@pytest.mark.vcr()
-def test_credentials_edit_success(api, cred):
+@responses.activate
+def test_credentials_edit_success(tvm, cred):
     """test to edit the credentials"""
-    creds = api.credentials.edit(cred, cred_name='updated cred')
+    responses.add(
+        responses.GET,
+        'https://nourl/credentials/5d218473-39c1-4dff-b5af-cc6d68083404',
+        json=CREDENTIALS,
+    )
+    responses.add(
+        responses.PUT,
+        'https://nourl/credentials/5d218473-39c1-4dff-b5af-cc6d68083404',
+        json={'updated': True},
+    )
+    creds = tvm.credentials.edit(cred, cred_name='updated cred')
     assert isinstance(creds, bool)
 
 
-@pytest.mark.vcr()
-def test_credentials_details_success(api, cred):
+@responses.activate
+def test_credentials_details_success(tvm, cred):
     """test to get the details of the credentials"""
-    creds = api.credentials.details(cred)
+    responses.add(
+        responses.GET,
+        'https://nourl/credentials/5d218473-39c1-4dff-b5af-cc6d68083404',
+        json=CREDENTIALS,
+    )
+    creds = tvm.credentials.details(cred)
     assert isinstance(creds, dict)
     check(creds, 'name', str)
     check(creds, 'description', str)
@@ -214,104 +250,123 @@ def test_credentials_details_success(api, cred):
         check(permission, 'name', str)
 
 
-@pytest.mark.vcr()
-def test_credentials_list_offset_typeerror(api):
+def test_credentials_list_offset_typeerror(tvm):
     """test to raise the exception when type of offset is not as defined"""
     with pytest.raises(TypeError):
-        api.credentials.list(offset='nope')
+        tvm.credentials.list(offset='nope')
 
 
-@pytest.mark.vcr()
-def test_credentials_list_limit_typeerror(api):
+def test_credentials_list_limit_typeerror(tvm):
     """test to raise the exception when type of limit is not as defined"""
     with pytest.raises(TypeError):
-        api.credentials.list(limit='nope')
+        tvm.credentials.list(limit='nope')
 
 
-@pytest.mark.vcr()
-def test_credentials_list_sort_field_typeerror(api):
+def test_credentials_list_sort_field_typeerror(tvm):
     """test to raise the exception when type of sort_field are not as defined"""
     with pytest.raises(TypeError):
-        api.credentials.list(sort=((1, 'asc'),))
+        tvm.credentials.list(sort=((1, 'asc'),))
 
 
-@pytest.mark.vcr()
-def test_credentials_list_sort_direction_typeerror(api):
+def test_credentials_list_sort_direction_typeerror(tvm):
     """test to raise the exception when type of sort direction are not as defined"""
     with pytest.raises(TypeError):
-        api.credentials.list(sort=(('uuid', 1),))
+        tvm.credentials.list(sort=(('uuid', 1),))
 
 
-@pytest.mark.vcr()
-def test_credentials_list_sort_direction_unexpectedvalue(api):
+def test_credentials_list_sort_direction_unexpectedvalue(tvm):
     """
     test to raise the exception when value of sort_direction are not as defined
     """
     with pytest.raises(UnexpectedValueError):
-        api.credentials.list(sort=(('uuid', 'nope'),))
+        tvm.credentials.list(sort=(('uuid', 'nope'),))
 
 
-@pytest.mark.vcr()
-def test_credentials_list_filter_name_typeerror(api):
+def test_credentials_list_filter_name_typeerror(tvm):
     """
     test to raise the exception when type of filter name are not as defined
     """
     with pytest.raises(TypeError):
-        api.credentials.list((1, 'match', 'win'))
+        tvm.credentials.list((1, 'match', 'win'))
 
 
-@pytest.mark.vcr()
-def test_credentials_list_filter_operator_typeerror(api):
+def test_credentials_list_filter_operator_typeerror(tvm):
     """
     test to raise the exception when type of filter operator are not as defined
     """
     with pytest.raises(TypeError):
-        api.credentials.list(('name', 1, 'win'))
+        tvm.credentials.list(('name', 1, 'win'))
 
 
-@pytest.mark.vcr()
-def test_credentials_list_filter_value_typeerror(api):
+def test_credentials_list_filter_value_typeerror(tvm):
     """
     test to raise the exception when type of filter value are not as defined
     """
     with pytest.raises(TypeError):
-        api.credentials.list(('name', 'match', 1))
+        tvm.credentials.list(('name', 'match', 1))
 
 
-@pytest.mark.vcr()
-def test_credentials_list_filter_type_typeerror(api):
+def test_credentials_list_filter_type_typeerror(tvm):
     """
     test to raise the exception when type of filter type are not as defined
     """
     with pytest.raises(TypeError):
-        api.credentials.list(filter_type=1)
+        tvm.credentials.list(filter_type=1)
 
 
-@pytest.mark.vcr()
-def test_credentials_list_wildcard_typeerror(api):
+def test_credentials_list_wildcard_typeerror(tvm):
     """
     test to raise the exception when type of wildcard are not as defined
     """
     with pytest.raises(TypeError):
-        api.credentials.list(wildcard=1)
+        tvm.credentials.list(wildcard=1)
 
 
-@pytest.mark.vcr()
-def test_credentials_list_wildcard_fields_typeerror(api):
+def test_credentials_list_wildcard_fields_typeerror(tvm):
     """
     test to raise the exception when type of wildcard_fields are not as defined
     """
     with pytest.raises(TypeError):
-        api.credentials.list(wildcard_fields='nope')
+        tvm.credentials.list(wildcard_fields='nope')
 
 
-@pytest.mark.vcr()
-def test_credentials_list(api):
+@responses.activate
+def test_credentials_list(tvm):
     """
     test to get credentials list
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/credentials',
+        json={
+            'credentials': [
+                {
+                    'uuid': '91107402-dc87-4779-918d-ab5f76deb3a9',
+                    'name': 'Root',
+                    'description': '',
+                    'category': {'id': 'Host', 'name': 'Host'},
+                    'type': {'id': 'SSH', 'name': 'SSH'},
+                    'created_date': 1538595123,
+                    'created_by': {'id': 3, 'display_name': 'test_admin@pytenable.io'},
+                    'last_used_by': {
+                        'id': 3,
+                        'display_name': 'test_admin@pytenable.io',
+                    },
+                    'permission': 64,
+                    'user_permissions': 64,
+                }
+            ],
+            'pagination': {
+                'total': 1,
+                'limit': 50,
+                'offset': 0,
+                'sort': [{'name': 'created_date', 'order': 'desc'}],
+            },
+        },
+        match=[matchers.query_param_matcher({'limit': '50', 'offset': '0'})],
+    )
     count = 0
-    credentials = api.credentials.list()
+    credentials = tvm.credentials.list()
     for cred in credentials:
         count += 1
         assert isinstance(cred, dict)
@@ -336,8 +391,7 @@ def test_credentials_list(api):
     assert count == credentials.total
 
 
-@pytest.mark.vcr()
-def test_credentials_upload_type_error(api):
+def test_credentials_upload_type_error(tvm):
     """
     test to raise error when the type param is not set.
     """
@@ -346,11 +400,10 @@ def test_credentials_upload_type_error(api):
     file = io.BytesIO(b'\x48\x65\x6c\x6c\x6f\x20\x57\x6f\x72\x6c\x64')
 
     with pytest.raises(TypeError):
-        api.credentials.upload(file)
+        tvm.credentials.upload(file)
 
 
-@pytest.mark.vcr()
-def test_credentials_upload_should_fail_on_unsupported_type(api):
+def test_credentials_upload_should_fail_on_unsupported_type(tvm):
     """
     test to raise error when the type param is not set.
     """
@@ -359,36 +412,69 @@ def test_credentials_upload_should_fail_on_unsupported_type(api):
     file = io.BytesIO(b'\x48\x65\x6c\x6c\x6f\x20\x57\x6f\x72\x6c\x64')
 
     with pytest.raises(UnexpectedValueError):
-        api.credentials.upload(file, 'some_type')
+        tvm.credentials.upload(file, 'some_type')
 
 
-@pytest.mark.vcr()
-def test_credentials_upload_should_succeed(api):
+@responses.activate
+def test_credentials_upload_should_succeed(tvm):
     """
     test to succeed only when all the values are set properly.
     """
+    responses.add(
+        responses.POST,
+        'https://nourl/credentials/files',
+        json={'fileuploaded': 'Filedata_24d3c310-49a3-4adb-a8cd-748a9192f844'},
+        match=[matchers.query_param_matcher({'fileType': 'pem'})],
+    )
 
     # Create a BytesIO object
     file = io.BytesIO(b'\x48\x65\x6c\x6c\x6f\x20\x57\x6f\x72\x6c\x64')
-    uploaded_file = api.credentials.upload(file, 'pem')
+    uploaded_file = tvm.credentials.upload(file, 'pem')
     assert type(uploaded_file) is str
 
 
-@pytest.mark.vcr()
-def test_credentials_permissions_constructor_typeerror(api):
+def test_credentials_permissions_constructor_typeerror(tvm):
     """
     test to raise the exception when the required type of variable is not passed
     """
     with pytest.raises(TypeError):
-        getattr(api.credentials, '_permissions_constructor')('string')
+        getattr(tvm.credentials, '_permissions_constructor')('string')
 
 
-@pytest.mark.vcr()
-def test_credentials_types_success(api):
+@responses.activate
+def test_credentials_types_success(tvm):
     """
     test to check the types of credentials
     """
-    resp = api.credentials.types()
+    responses.add(
+        responses.GET,
+        'https://nourl/credentials/types',
+        json={
+            'credentials': [
+                {
+                    'id': 'API Gateway',
+                    'category': 'API Gateway',
+                    'default_expand': False,
+                    'types': [
+                        {
+                            'id': 'IBM DataPower Gateway',
+                            'name': 'IBM DataPower Gateway',
+                            'max': 1,
+                            'configuration': [
+                                {
+                                    'type': 'file',
+                                    'name': 'Client Certificate',
+                                    'hint': 'PEM formatted certificate.',
+                                    'id': 'datapower_client_cert',
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ]
+        },
+    )
+    resp = tvm.credentials.types()
     assert isinstance(resp, list)
     for data in resp:
         check(data, 'id', str)
@@ -408,13 +494,38 @@ def test_credentials_types_success(api):
                 check(config, 'id', str)
 
 
-@pytest.mark.vcr()
-def test_credentials_list_fields(api, scan):
+@responses.activate
+def test_credentials_list_fields(tvm, scan):
     """
     test to check the list of credentials and their types
     """
+    responses.add(
+        responses.GET,
+        'https://nourl/credentials',
+        json={
+            'credentials': [],
+            'pagination': {
+                'total': 0,
+                'limit': 45,
+                'offset': 2,
+                'sort': [{'name': 'created_date', 'order': 'desc'}],
+            },
+        },
+        match=[
+            matchers.query_param_matcher(
+                {
+                    'referrer_owner_uuid': '1a2d0102-11b0-4aee-b04f-7240fb66514f',
+                    'ft': 'or',
+                    'w': 'match',
+                    'wf': 'name',
+                    'limit': '45',
+                    'offset': '2',
+                }
+            )
+        ],
+    )
     count = 0
-    credentials = api.credentials.list(
+    credentials = tvm.credentials.list(
         filter_type='or',
         limit=45,
         offset=2,
@@ -446,10 +557,47 @@ def test_credentials_list_fields(api, scan):
     assert count == credentials.total
 
 
-@pytest.mark.vcr()
-def test_credentials_edit_with_permissions(api, cred):
+@responses.activate
+def test_credentials_edit_with_permissions(tvm, cred):
     """test to edit with permissions parameter in the credentials"""
-    creds = api.credentials.edit(
+    responses.add(
+        responses.GET,
+        'https://nourl/credentials/f07267e2-2994-4293-900a-8acc9adaacd4',
+        json={
+            'name': 'updated cred',
+            'description': '',
+            'category': {'id': 'Host', 'name': 'Host'},
+            'type': {'id': 'Windows', 'name': 'Windows'},
+            'ad_hoc': False,
+            'user_permissions': 64,
+            'settings': {
+                'domain': '',
+                'username': 'administrator',
+                'auth_method': 'Password',
+                'password': '********',
+            },
+            'permissions': [
+                {
+                    'grantee_uuid': 'e1b94c27-9dca-4367-b75f-ea6c37deaa0f',
+                    'type': 'user',
+                    'permissions': 64,
+                    'name': 'triage_musikaar@tenable.com',
+                },
+                {
+                    'grantee_uuid': '00000000-0000-0000-0000-000000000000',
+                    'type': 'user',
+                    'permissions': 64,
+                    'name': None,
+                },
+            ],
+        },
+    )
+    responses.add(
+        responses.PUT,
+        'https://nourl/credentials/f07267e2-2994-4293-900a-8acc9adaacd4',
+        json={'updated': True},
+    )
+    creds = tvm.credentials.edit(
         'f07267e2-2994-4293-900a-8acc9adaacd4',
         cred_name='updated cred',
         permissions=[

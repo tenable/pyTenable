@@ -4,6 +4,8 @@ functionality
 """
 
 import pytest
+import responses
+from responses import matchers
 
 from tenable.errors import UnexpectedValueError
 from tenable.sc.plugins import PluginResultsIterator
@@ -11,161 +13,161 @@ from tenable.sc.plugins import PluginResultsIterator
 from ..checker import check
 
 
-def test_plugins_constructor_fields_typeerror(security_center):
+def test_plugins_constructor_fields_typeerror(tsc):
     """
     test plugins constructor for fields type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(fields=1)
+        tsc.plugins._constructor(fields=1)
 
 
-def test_plugins_constructor_field_item_typeerror(security_center):
+def test_plugins_constructor_field_item_typeerror(tsc):
     """
     test plugins constructor for 'fields item' type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(fields=[1])
+        tsc.plugins._constructor(fields=[1])
 
 
-def test_plugins_constructor_filter_typeerror(security_center):
+def test_plugins_constructor_filter_typeerror(tsc):
     """
     test plugins constructor for filter type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(filter=1)
+        tsc.plugins._constructor(filter=1)
 
 
-def test_plugins_constructor_filter_name_typeerror(security_center):
+def test_plugins_constructor_filter_name_typeerror(tsc):
     """
     test plugins constructor for 'filter name' type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(filter=(1, 'eq', 'something'))
+        tsc.plugins._constructor(filter=(1, 'eq', 'something'))
 
 
-def test_plugins_constructor_filter_operator_typeerror(security_center):
+def test_plugins_constructor_filter_operator_typeerror(tsc):
     """
     test plugins constructor for 'filter operator' type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(filter=('name', 1, 'something'))
+        tsc.plugins._constructor(filter=('name', 1, 'something'))
 
 
-def test_plugins_constructor_filter_operator_unexpectedvalueerror(security_center):
+def test_plugins_constructor_filter_operator_unexpectedvalueerror(tsc):
     """
     test plugins constructor for 'filter operator' unexpected value error
     """
     with pytest.raises(UnexpectedValueError):
-        security_center.plugins._constructor(filter=('name', 'something', 'something'))
+        tsc.plugins._constructor(filter=('name', 'something', 'something'))
 
 
-def test_plugins_constructor_filter_operator_unexpected_tuple_length(security_center):
+def test_plugins_constructor_filter_operator_unexpected_tuple_length(tsc):
     """
     test plugins constructor for 'filter operator tuple length'
     unexpected value error
     """
     with pytest.raises(UnexpectedValueError):
-        security_center.plugins._constructor(filter=('name', 'something'))
+        tsc.plugins._constructor(filter=('name', 'something'))
 
 
-def test_plugins_constructor_filter_value_typeerror(security_center):
+def test_plugins_constructor_filter_value_typeerror(tsc):
     """
     test plugins constructor for 'filter value' type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(filter=('name', 'eq', 1))
+        tsc.plugins._constructor(filter=('name', 'eq', 1))
 
 
-def test_plugins_constructor_sort_field_typeerror(security_center):
+def test_plugins_constructor_sort_field_typeerror(tsc):
     """
     test plugins constructor for 'sor field' type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(sort_field=1)
+        tsc.plugins._constructor(sort_field=1)
 
 
-def test_plugins_constructor_sort_direction_typeerror(security_center):
+def test_plugins_constructor_sort_direction_typeerror(tsc):
     """
     test plugins constructor for 'sort direction' type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(sort_direction=1)
+        tsc.plugins._constructor(sort_direction=1)
 
 
-def test_plugins_constructor_sort_direction_unexpectedvalueerror(security_center):
+def test_plugins_constructor_sort_direction_unexpectedvalueerror(tsc):
     """
     test plugins constructor for 'sor direction' unexpected value error
     """
     with pytest.raises(UnexpectedValueError):
-        security_center.plugins._constructor(sort_direction='no')
+        tsc.plugins._constructor(sort_direction='no')
 
 
-def test_plugins_constructor_since_typeerror(security_center):
+def test_plugins_constructor_since_typeerror(tsc):
     """
     test plugins constructor for since type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(since='no')
+        tsc.plugins._constructor(since='no')
 
 
-def test_plugins_constructor_type_typeerror(security_center):
+def test_plugins_constructor_type_typeerror(tsc):
     """
     test plugins constructor for type type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(type=1)
+        tsc.plugins._constructor(type=1)
 
 
-def test_plugins_constructor_type_unexpectedvalueerror(security_center):
+def test_plugins_constructor_type_unexpectedvalueerror(tsc):
     """
     test plugins constructor for type unexpected value error
     """
     with pytest.raises(UnexpectedValueError):
-        security_center.plugins._constructor(type='nope')
+        tsc.plugins._constructor(type='nope')
 
 
-def test_plugins_constructor_offset_typeerror(security_center):
+def test_plugins_constructor_offset_typeerror(tsc):
     """
     test plugins constructor for offset type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(offset='nope')
+        tsc.plugins._constructor(offset='nope')
 
 
-def test_plugins_constructor_limit_typeerror(security_center):
+def test_plugins_constructor_limit_typeerror(tsc):
     """
     test plugins constructor for limit type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(limit='nope')
+        tsc.plugins._constructor(limit='nope')
 
 
-def test_plugins_constructor_filters_errors(security_center):
+def test_plugins_constructor_filters_errors(tsc):
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(filters='nope')
+        tsc.plugins._constructor(filters='nope')
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(filters=['one'])
+        tsc.plugins._constructor(filters=['one'])
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(filters=[(1, 1, 1)])
+        tsc.plugins._constructor(filters=[(1, 1, 1)])
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(filters=[('name', 1, 1)])
+        tsc.plugins._constructor(filters=[('name', 1, 1)])
     with pytest.raises(TypeError):
-        security_center.plugins._constructor(filters=[('name', 'eq', 1)])
+        tsc.plugins._constructor(filters=[('name', 'eq', 1)])
     with pytest.raises(UnexpectedValueError):
-        security_center.plugins._constructor(filters=[('name', 'something', 'value')])
+        tsc.plugins._constructor(filters=[('name', 'something', 'value')])
 
 
-def test_plugins_constructor_filters_success(security_center):
-    assert security_center.plugins._constructor(filters=[('name', 'eq', 'value')]) == {
+def test_plugins_constructor_filters_success(tsc):
+    assert tsc.plugins._constructor(filters=[('name', 'eq', 'value')]) == {
         'filters': '[{"filterField": "name", "filterOperator": "eq", "filterString": "value"}]'
     }
 
 
-def test_plugins_constructor(security_center):
+def test_plugins_constructor(tsc):
     """
     test plugins constructor for success
     """
-    resp = security_center.plugins._constructor(
+    resp = tsc.plugins._constructor(
         fields=['one', 'two'],
         filter=('name', 'eq', 'value'),
         sort_field='name',
@@ -191,12 +193,52 @@ def test_plugins_constructor(security_center):
     }
 
 
-@pytest.mark.vcr()
-def test_plugins_list_success(security_center):
+@responses.activate
+def test_plugins_list_success(tsc):
     """
     test plugins list for success
     """
-    plugins = security_center.plugins.list(pages=2, limit=200)
+    responses.get(
+        'https://nourl/rest/plugin',
+        json={
+            'type': 'regular',
+            'response': [
+                {
+                    'id': '12634',
+                    'name': 'Authenticated Check : OS Name and Installed Package Enumeration',
+                    'description': 'This plugin logs into the remote host using SSH, RSH, RLOGIN, Telnet,\nor local commands and extracts the list of install',
+                }
+            ]
+            * 200,
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1550695070,
+        },
+        match=[matchers.query_param_matcher({'endOffset': '200', 'startOffset': '0'})],
+    )
+    responses.get(
+        'https://nourl/rest/plugin',
+        json={
+            'type': 'regular',
+            'response': [
+                {
+                    'id': '122199',
+                    'name': 'Fedora 29 : 2:docker (2019-df2e68aa6b)',
+                    'description': 'Security fix for CVE-2019-5736\n\nNote that Tenable Network Security has extracted the preceding\ndescription block directl',
+                }
+            ]
+            * 199,
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1550695070,
+        },
+        match=[
+            matchers.query_param_matcher({'endOffset': '400', 'startOffset': '200'})
+        ],
+    )
+    plugins = tsc.plugins.list(pages=2, limit=200)
     assert isinstance(plugins, PluginResultsIterator)
     for plugin in plugins:
         assert isinstance(plugin, dict)
@@ -205,12 +247,30 @@ def test_plugins_list_success(security_center):
         check(plugin, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_plugins_list_success_for_json_result(security_center):
+@responses.activate
+def test_plugins_list_success_for_json_result(tsc):
     """
     test plugins list success for json result
     """
-    plugins = security_center.plugins.list(pages=1, limit=200, json_result=True)
+    responses.get(
+        'https://nourl/rest/plugin',
+        json={
+            'type': 'regular',
+            'response': [
+                {
+                    'id': '12634',
+                    'name': 'Authenticated Check : OS Name and Installed Package Enumeration',
+                    'description': 'This plugin logs into the remote host using SSH, RSH, RLOGIN, Telnet,\nor local commands and extracts the list of install',
+                }
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1550695070,
+        },
+        match=[matchers.query_param_matcher({'endOffset': '200'})],
+    )
+    plugins = tsc.plugins.list(pages=1, limit=200, json_result=True)
     assert isinstance(plugins, list)
     for plugin in plugins:
         assert isinstance(plugin, dict)
@@ -219,36 +279,88 @@ def test_plugins_list_success_for_json_result(security_center):
         check(plugin, 'description', str)
 
 
-def test_plugins_details_id_typeerror(security_center):
+def test_plugins_details_id_typeerror(tsc):
     """
     test plugins details for id type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins.details('one')
+        tsc.plugins.details('one')
 
 
-def test_plugins_details_fields_typeerror(security_center):
+def test_plugins_details_fields_typeerror(tsc):
     """
     test plugins details for fields type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins.details(19506, fields=1)
+        tsc.plugins.details(19506, fields=1)
 
 
-def test_plugins_details_field_item_typeerror(security_center):
+def test_plugins_details_field_item_typeerror(tsc):
     """
     test plugins details for 'fields item' type error
     """
     with pytest.raises(TypeError):
-        security_center.plugins.details(19506, fields=[1])
+        tsc.plugins.details(19506, fields=[1])
 
 
-@pytest.mark.vcr()
-def test_plugins_details_success(security_center):
+@responses.activate
+def test_plugins_details_success(tsc):
     """
     test plugins details for success
     """
-    plug_in = security_center.plugins.details(19506)
+    responses.get(
+        'https://nourl/rest/plugin/19506',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '19506',
+                'name': 'Nessus Scan Information',
+                'description': 'This plugin displays, for each tested host, information about the\nscan itself :\n\n  - The version of the plugin set.\n  - ',
+                'type': 'active',
+                'copyright': 'This script is Copyright (C) 2005-2019 and is owned by Tenable, Inc. or an Affiliate thereof.',
+                'version': '1.91',
+                'sourceFile': 'scan_info.nasl',
+                'dependencies': '',
+                'requiredPorts': '',
+                'requiredUDPPorts': '',
+                'cpe': '',
+                'srcPort': None,
+                'dstPort': None,
+                'protocol': '',
+                'riskFactor': 'None',
+                'solution': 'n/a',
+                'seeAlso': '',
+                'synopsis': 'This plugin displays information about the Nessus scan.',
+                'checkType': 'summary',
+                'exploitEase': '',
+                'exploitAvailable': 'false',
+                'exploitFrameworks': '',
+                'cvssVector': '',
+                'cvssVectorBF': '0',
+                'baseScore': None,
+                'temporalScore': None,
+                'cvssV3Vector': '',
+                'cvssV3VectorBF': '0',
+                'cvssV3BaseScore': None,
+                'cvssV3TemporalScore': None,
+                'stigSeverity': None,
+                'pluginPubDate': '1125072000',
+                'pluginModDate': '1549558800',
+                'patchPubDate': '-1',
+                'patchModDate': '-1',
+                'vulnPubDate': '-1',
+                'modifiedTime': '1549617353',
+                'md5': '9d6741749eae57f4ad7a8e262bf66a89',
+                'source': 'IwojIChDKSBUZW5hYmxlIE5ldHdvcmsgU2VjdXJpdHksIEluYy4KIwoKaW5jbHVkZSgiY29tcGF0LmluYyIpOwoKaWYgKGRlc2NyaXB0aW9uKQp7CiAgc2Ny',
+                'xrefs': '',
+                'family': {'id': '41', 'name': 'Settings', 'type': 'active'},
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1550695070,
+        },
+    )
+    plug_in = tsc.plugins.details(19506)
     assert isinstance(plug_in, dict)
     check(plug_in, 'baseScore', str, allow_none=True)
     check(plug_in, 'checkType', str)
@@ -296,24 +408,61 @@ def test_plugins_details_success(security_center):
     check(plug_in, 'xrefs', str)
 
 
-@pytest.mark.vcr()
-def test_plugins_family_list_success(security_center):
+@responses.activate
+def test_plugins_family_list_success(tsc):
     """
     test plugins family list for success
     """
-    families = security_center.plugins.family_list()
+    responses.get(
+        'https://nourl/rest/pluginFamily',
+        json={
+            'type': 'regular',
+            'response': [
+                {'id': '0', 'name': 'N/A'},
+                {'id': '1', 'name': 'Red Hat Local Security Checks'},
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1556296177,
+        },
+    )
+    families = tsc.plugins.family_list()
     assert isinstance(families, list)
     for family in families:
         check(family, 'id', str)
         check(family, 'name', str)
 
 
-@pytest.mark.vcr()
-def test_plugins_family_details_success(security_center):
+@responses.activate
+def test_plugins_family_details_success(tsc):
     """
     test plugins family details for success
     """
-    family_details = security_center.plugins.family_details(10)
+    responses.get(
+        'https://nourl/rest/pluginFamily/10',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '10',
+                'name': 'Windows : Microsoft Bulletins',
+                'type': 'active',
+                'plugins': [
+                    {
+                        'id': '10433',
+                        'name': 'MS00-029: NT IP Fragment Reassembly Patch Not Applied (jolt2) (259728)',
+                        'description': "The hotfix for the 'IP Fragment Reassembly' vulnerability has not been applied on the remote Windows host.\n\nThis vulnera",
+                    }
+                ],
+                'count': 1752,
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1556296095,
+        },
+    )
+    family_details = tsc.plugins.family_details(10)
     assert isinstance(family_details, dict)
     check(family_details, 'id', str)
     check(family_details, 'name', str)
@@ -322,26 +471,76 @@ def test_plugins_family_details_success(security_center):
     check(family_details, 'count', int)
 
 
-@pytest.mark.vcr()
-def test_plugins_family_details_success_for_fields(security_center):
+@responses.activate
+def test_plugins_family_details_success_for_fields(tsc):
     """
     test plugins family details success for fields
     """
-    family_details = security_center.plugins.family_details(
-        10, fields=['id', 'name', 'type']
+    responses.get(
+        'https://nourl/rest/pluginFamily/10',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '10',
+                'name': 'Windows: Microsoft Bulletins',
+                'type': 'active',
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1556296095,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,name,type'})],
     )
+    family_details = tsc.plugins.family_details(10, fields=['id', 'name', 'type'])
     assert isinstance(family_details, dict)
     check(family_details, 'id', str)
     check(family_details, 'name', str)
     check(family_details, 'type', str)
 
 
-@pytest.mark.vcr()
-def test_plugins_family_plugins_success(security_center):
+@responses.activate
+def test_plugins_family_plugins_success(tsc):
     """
     test plugins family plugins success
     """
-    plugs = security_center.plugins.family_plugins(10, limit=100, pages=2)
+    responses.get(
+        'https://nourl/rest/pluginFamily/10/plugins',
+        json={
+            'type': 'regular',
+            'response': [
+                {'id': '0', 'name': 'Open Port', 'description': 'Port is open'}
+            ]
+            * 100,
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1556296096,
+        },
+        match=[matchers.query_param_matcher({'endOffset': '100', 'startOffset': '0'})],
+    )
+    responses.get(
+        'https://nourl/rest/pluginFamily/10/plugins',
+        json={
+            'type': 'regular',
+            'response': [
+                {
+                    'id': '104',
+                    'name': 'TCP Session Duration (25 - 40 minutes)',
+                    'description': 'PVS computes the duration of each TCP session when the session ends. This TCP session duration is more than 25 but less than or equal to 40 minutes.',
+                }
+            ]
+            * 100,
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1556296097,
+        },
+        match=[
+            matchers.query_param_matcher({'endOffset': '200', 'startOffset': '100'})
+        ],
+    )
+    plugs = tsc.plugins.family_plugins(10, limit=100, pages=2)
     assert isinstance(plugs, PluginResultsIterator)
     for plugin in plugs:
         check(plugin, 'id', str)
@@ -349,14 +548,31 @@ def test_plugins_family_plugins_success(security_center):
         check(plugin, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_plugins_family_plugins_success_for_json_result(security_center):
+@responses.activate
+def test_plugins_family_plugins_success_for_json_result(tsc):
     """
     test plugins family plugins success for json result
     """
-    plugs = security_center.plugins.family_plugins(
-        10, limit=100, pages=1, json_result=True
+    responses.get(
+        'https://nourl/rest/plugin',
+        json={
+            'type': 'regular',
+            'response': [
+                {'id': '0', 'name': 'Open Port', 'description': 'Port is open'},
+                {
+                    'id': '100',
+                    'name': 'TCP Session Bandwidth (> 1 GB)',
+                    'description': 'PVS computes the bytes exchanged between each TCP endpoint when the session ends. The total bytes exchanged during the lifetime of this session is more than 1 GB.',
+                },
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1556296096,
+        },
+        match=[matchers.query_param_matcher({'endOffset': '100'})],
     )
+    plugs = tsc.plugins.family_plugins(10, limit=100, pages=1, json_result=True)
     assert isinstance(plugs, list)
     for plugin in plugs:
         check(plugin, 'id', str)

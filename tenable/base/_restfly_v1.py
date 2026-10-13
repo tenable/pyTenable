@@ -243,13 +243,6 @@ def dict_merge(master: dict, *updates: dict) -> dict:
         >>> dict_merge(a, b)
         {'a': 'a', 'one': 1, 'two': 2, 'three': {'b': b, 'four': 4}}
     """
-    warnings.warn(
-        'This function is no longer necessary and will be removed in a later version '
-        'of RESTfly.  For a more pythonic approach to handle this, please refer to '
-        'PEP-584.',
-        DeprecationWarning,
-        stacklevel=2,
-    )
     for update in updates:
         for key in update:
             if (
