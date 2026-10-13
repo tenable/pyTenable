@@ -20,9 +20,10 @@ import logging
 import os
 import platform
 import sys
+from copy import copy
 from io import StringIO
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Optional, Type
 
 from gql import Client, GraphQLRequest
 from gql.transport.requests import RequestsHTTPTransport
@@ -43,7 +44,7 @@ class GraphQLIterator(APIIterator):
     variables: Dict[str, Any]
     next_token: Optional[str] = None
 
-    def _transform(self, data: Dict) -> List[Dict[str, Any]]:
+    def _transform(self, data: dict[str, Any]) -> list[dict[str, Any]]:
         """
         Data transformation method.  Performs any necessary conversion,
         flattening, or data restructuring before returning a list of items
@@ -51,7 +52,7 @@ class GraphQLIterator(APIIterator):
         """
         return data[self.model].get('nodes', [])
 
-    def _get_page_tokens(self, data: Dict) -> None:
+    def _get_page_tokens(self, data: dict[str, Any]) -> None:
         """
         Handles storage of any page-based attributes needed to assist the
         iterator.  Things like the endCursor, count totals, etc.
@@ -80,11 +81,15 @@ class GraphQLIterator(APIIterator):
         Fetches the next page of data.  Will raise a StopIteration if there
         are no more pages to consume.
         """
+        kwargs = copy(self.variables)
         if self.next_token:
-            self.variables['startAt'] = self.next_token
+            kwargs['startAt'] = self.next_token
+            kwargs['iterator'] = None
         elif not self.next_token and self.page_count > 0:
             raise StopIteration()
-        resp = self._api.query(self.query, **self.variables)
+        resp = self._api.query(self.query, **kwargs)
+        if not isinstance(resp, dict):
+            raise TypeError('Invalid response returned from API call.')
         self.raw = resp
         self._get_page_tokens(resp)
         self.page = self._transform(resp)
@@ -137,7 +142,7 @@ class GraphQLEndpoint:
         self._api = api
         self._log = api._log
 
-    def _query(self, *args, **kwargs) -> Union[Dict[str, Any], GraphQLIterator]:
+    def _query(self, *args, **kwargs) -> dict[str, Any] | GraphQLIterator:
         """Simple helper to call the api query"""
         return self._api.query(*args, **kwargs)
 
@@ -164,7 +169,7 @@ class GraphQLSession:
             that will be used to interface to the GQL API.
     """
 
-    _query_folder: Path
+    _query_folder: Path = Path(__file__).parent.joinpath('queries')
     _base_path: str = ''
     _env_base: str = ''
     _client: Client
@@ -253,7 +258,7 @@ class GraphQLSession:
             )
         }
 
-    def _authorization(self, api_key: str) -> Dict:
+    def _authorization(self, api_key: str) -> dict:
         """
         API Authorization stub
         """
@@ -262,7 +267,7 @@ class GraphQLSession:
     def construct_query(
         self,
         query: str | StringIO | GraphQLRequest | None = None,
-        stored_file: str | None = None,
+        stored_file: str | Path | None = None,
     ) -> GraphQLRequest:
         """
         The query constructor takes any of the input types given and will
@@ -284,30 +289,42 @@ class GraphQLSession:
         """
 
         if query and isinstance(query, StringIO):
-            data = query.read()
+            return GraphQLRequest(query.read())
+        elif query and isinstance(query, (str, GraphQLRequest, DocumentNode)):
+            return GraphQLRequest(query)
         elif query is None and stored_file is not None:
-            if stored_file.startswith('../'):
-                raise TypeError(f"{stored_file} isn't valid.")
-            queryfile = self._query_folder.joinpath(stored_file)
-            with queryfile.open('r', encoding='utf-8') as fobj:
+            file_path = Path(stored_file)
+
+            # Ensure that the file path is either an absolute path or if it is relative,
+            # that it's located within the pre-determined vendored path for bundled
+            # GraphQL files.
+            if not file_path.is_absolute():
+                resolved = self._query_folder.joinpath(file_path).resolve()
+                if not resolved.is_relative_to(self._query_folder.resolve()):
+                    raise TypeError(
+                        f'"{file_path}" is not a bundled query or an absolute path.'
+                    )
+                file_path = resolved
+
+            # Ensure that the file path is a file.
+            if not file_path.is_file():
+                raise FileNotFoundError(f'"{file_path}" is not a valid file')
+
+            # Open the file and rest it into the data variable.
+            with file_path.open('r', encoding='utf-8') as fobj:
                 data = fobj.read()
-        else:
-            data = query
-
-        if not isinstance(data, (str, GraphQLRequest, DocumentNode)):
-            raise TypeError(f'No valid query was presented, received "{data}"')
-
-        return GraphQLRequest(data)
+            return GraphQLRequest(data)
+        raise TypeError('No valid query was presented')
 
     def query(
         self,
-        query: str | None = None,
+        query: str | StringIO | GraphQLRequest | None = None,
         stored_file: str | None = None,
         keyword_arguments: dict[str, Any] | None = None,
-        iterator: GraphQLIterator | None = None,
+        iterator: Type[GraphQLIterator] | None = None,
         graphql_model: str | None = None,
         **variables: Any,
-    ) -> dict[str, Any]:
+    ) -> dict[str, Any] | GraphQLIterator:
         """
         Query the GraphQL API
 
@@ -332,8 +349,8 @@ class GraphQLSession:
                 that is returned from the GraphQL response.
             keyword_argument (dict, optional):
                 Anything specified within this dictionary will be passed on
-                to the gql libraries query method.  While not expected to be
-                commonly used, we're exposing this here just incase we need it.
+                to the gql library's query method.  While not expected to be
+                commonly used, we're exposing this here just in-case we need it.
             **variables (dict, optional):
                 Any variable declarations that need to be passed along with
                 the query.
@@ -344,7 +361,7 @@ class GraphQLSession:
                 returned to the caller.
             GraphQLIterator:
                 If an iterator class was passed, then the query is generated
-                and the passed to the iterator nefore returning an instance
+                and the passed to the iterator before returning an instance
                 of the iterator class.
 
         Example:
