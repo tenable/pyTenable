@@ -72,14 +72,27 @@ class UsersAPI(TIOEndpoint):
 
         return self._api.post('users', json=payload).json()
 
-    def delete(self, user_id):
+    def delete(self, user_id, *, successor_user_uuid=None):
         """
         Removes a user from Tenable Vulnerability Management.
 
         :devportal:`users: delete <users-delete>`
 
         Args:
-            user_id (int): The unique identifier of the user.
+            user_id (int or str):
+                The unique identifier of the user, as either the integer ID or
+                the user UUID.
+            successor_user_uuid (str, optional):
+                The UUID of the user to transfer the deleted user's objects to,
+                such as scans.  The successor must have permissions that allow
+                it to own those objects; otherwise, the API returns a 409
+                conflict and the user is not deleted.  Web App Scanning scans
+                are not transferred, so reassign them before deleting the user.
+
+        Raises:
+            UnexpectedValueError:
+                If ``user_id`` is a string that is not a UUID, or
+                ``successor_user_uuid`` is not a UUID.
 
         Returns:
             :obj:`None`:
@@ -87,8 +100,25 @@ class UsersAPI(TIOEndpoint):
 
         Examples:
             >>> tio.users.delete(1)
+
+            >>> tio.users.delete('00000000-0000-0000-0000-000000000000')
+
+            Transfer the deleted user's objects to another user:
+
+            >>> tio.users.delete(
+            ...     1, successor_user_uuid='00000000-0000-0000-0000-000000000000'
+            ... )
         """
-        self._api.delete('users/{}'.format(self._check('user_id', user_id, int)))
+        if isinstance(user_id, str) and not user_id.isdigit():
+            user_id = self._check('user_id', user_id, 'uuid', case='lower')
+        else:
+            user_id = self._check('user_id', user_id, int)
+        params = {}
+        if successor_user_uuid is not None:
+            params['successor_user_uuid'] = self._check(
+                'successor_user_uuid', successor_user_uuid, 'uuid', case='lower'
+            )
+        self._api.delete(f'users/{scrub(user_id)}', params=params)
 
     def details(self, user_id):
         """
@@ -287,11 +317,18 @@ class UsersAPI(TIOEndpoint):
             {'X-Impersonate': 'username={}'.format(self._check('name', name, str))}
         )
 
-    def list(self):
+    def list(self, *, with_roles=None):
         """
         Retrieves a list of users.
 
         :devportal:`users: list <users-list>`
+
+        Args:
+            with_roles (bool, optional):
+                If ``True``, each user record includes an ``rbac_roles`` list
+                with the ``name`` and ``uuid`` of each role-based access
+                control (RBAC) role assigned to the user.  If omitted or
+                ``False``, the records do not include roles.
 
         Returns:
             :obj:`list`:
@@ -300,8 +337,18 @@ class UsersAPI(TIOEndpoint):
         Examples:
             >>> for user in tio.users.list():
             ...     pprint(user)
+
+            Include each user's RBAC roles:
+
+            >>> for user in tio.users.list(with_roles=True):
+            ...     print(user['username'], [r['name'] for r in user['rbac_roles']])
         """
-        return self._api.get('users').json()['users']
+        params = {}
+        if with_roles is not None:
+            params['withRoles'] = str(
+                self._check('with_roles', with_roles, bool)
+            ).lower()
+        return self._api.get('users', params=params).json()['users']
 
     def change_password(self, user_id, old_password, new_password):
         """

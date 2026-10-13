@@ -5,6 +5,8 @@ test groups
 import uuid
 
 import pytest
+import responses
+from responses.matchers import json_params_matcher
 
 from tenable.errors import NotFoundError
 from tests.checker import check
@@ -161,3 +163,64 @@ def test_groups_delete_user_from_group_success(api, group, user):
     """
     api.groups.add_user(group['id'], user['id'])
     api.groups.delete_user(group['id'], user['id'])
+
+
+GROUP = {
+    'uuid': 'd4e5f6a7-b8c9-0123-def4-567890abcdef',
+    'name': 'SAML Admins',
+    'id': 1130088,
+    'container_uuid': 'c1d2e3f4-a5b6-7890-cdef-123456789abc',
+}
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    'kwargs, body',
+    [
+        ({}, {'name': 'SAML Admins'}),
+        ({'managed_by_saml': True}, {'name': 'SAML Admins', 'managed_by_saml': True}),
+        ({'managed_by_saml': False}, {'name': 'SAML Admins', 'managed_by_saml': False}),
+    ],
+)
+def test_groups_create_managed_by_saml(tvm, kwargs, body):
+    responses.post(
+        'https://nourl/groups',
+        json={**GROUP, **kwargs},
+        match=[json_params_matcher(body, strict_match=True)],
+    )
+    assert tvm.groups.create('SAML Admins', **kwargs) == {**GROUP, **kwargs}
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    'kwargs, body',
+    [
+        ({}, {'name': 'SAML Admins'}),
+        ({'managed_by_saml': True}, {'name': 'SAML Admins', 'managed_by_saml': True}),
+        ({'managed_by_saml': False}, {'name': 'SAML Admins', 'managed_by_saml': False}),
+    ],
+)
+def test_groups_edit_managed_by_saml(tvm, kwargs, body):
+    responses.put(
+        'https://nourl/groups/1130088',
+        json={**GROUP, **kwargs},
+        match=[json_params_matcher(body, strict_match=True)],
+    )
+    assert tvm.groups.edit(1130088, 'SAML Admins', **kwargs) == {**GROUP, **kwargs}
+
+
+@responses.activate
+@pytest.mark.parametrize('method', ['create', 'edit'])
+@pytest.mark.parametrize('value', ['maybe', 1])
+def test_groups_managed_by_saml_typeerror(tvm, method, value):
+    args = ('SAML Admins',) if method == 'create' else (1130088, 'SAML Admins')
+    with pytest.raises(TypeError):
+        getattr(tvm.groups, method)(*args, managed_by_saml=value)
+    assert len(responses.calls) == 0
+
+
+@pytest.mark.parametrize('method', ['create', 'edit'])
+def test_groups_managed_by_saml_keyword_only(tvm, method):
+    args = ('SAML Admins',) if method == 'create' else (1130088, 'SAML Admins')
+    with pytest.raises(TypeError):
+        getattr(tvm.groups, method)(*args, True)
