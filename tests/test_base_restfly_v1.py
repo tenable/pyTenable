@@ -788,17 +788,16 @@ def test_force_case_list():
 
 
 def test_dict_merge():
-    with pytest.deprecated_call():
-        assert dict_merge({'a': 1}, {'b': 2}) == {'a': 1, 'b': 2}
-        assert dict_merge({'s': {'a': 1}, 'b': 2}, {'s': {'c': 3, 'a': 4}}) == {
-            's': {'a': 4, 'c': 3},
-            'b': 2,
-        }
-        assert dict_merge({'a': 1}, {'b': 2}, {'c': 3}, {'a': 5}) == {
-            'a': 5,
-            'b': 2,
-            'c': 3,
-        }
+    assert dict_merge({'a': 1}, {'b': 2}) == {'a': 1, 'b': 2}
+    assert dict_merge({'s': {'a': 1}, 'b': 2}, {'s': {'c': 3, 'a': 4}}) == {
+        's': {'a': 4, 'c': 3},
+        'b': 2,
+    }
+    assert dict_merge({'a': 1}, {'b': 2}, {'c': 3}, {'a': 5}) == {
+        'a': 5,
+        'b': 2,
+        'c': 3,
+    }
 
 
 def test_dict_flatten():

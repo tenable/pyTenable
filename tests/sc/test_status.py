@@ -1,9 +1,39 @@
-import pytest
+import responses
 from ..checker import check
 
-@pytest.mark.vcr()
-def test_status_status(admin):
-    s = admin.status.status()
+
+@responses.activate
+def test_status_status(tsc):
+    responses.get(
+        'https://nourl/rest/status',
+        json={
+            'type': 'regular',
+            'response': {
+                'jobd': 'Running',
+                'licenseStatus': 'Valid',
+                'PluginSubscriptionStatus': 'Valid',
+                'LCEPluginSubscriptionStatus': 'Expired',
+                'PassivePluginSubscriptionStatus': None,
+                'pluginUpdates': {
+                    'active': {
+                        'updateTime': '1553156153',
+                        'stale': 'false',
+                        'pluginCurrentSet': '201903202042',
+                    },
+                    'passive': {'updateTime': '1553148005', 'stale': 'false'},
+                    'lce': {'updateTime': '1550205301', 'stale': 'true'},
+                },
+                'feedUpdates': {'updateTime': '1553145023', 'stale': 'false'},
+                'activeIPs': '46',
+                'licensedIPs': '102400',
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553202508,
+        },
+    )
+    s = tsc.status.status()
     assert isinstance(s, dict)
     check(s, 'jobd', str)
     check(s, 'licenseStatus', str)

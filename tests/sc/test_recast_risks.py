@@ -4,137 +4,138 @@ functionality
 """
 
 import pytest
+import responses
+from responses import matchers
 import uuid
 
-from tenable.errors import APIError
-from tests.pytenable_log_handler import log_exception
 from ..checker import check
 
 
-def test_recast_risks_constructor_repos_typeerror(security_center):
+def test_recast_risks_constructor_repos_typeerror(tsc):
     """
     test recast risks constructor for repos type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(repos=1)
+        tsc.recast_risks._constructor(repos=1)
 
 
-def test_recast_risks_constructor_repos_item_typeerror(security_center):
+def test_recast_risks_constructor_repos_item_typeerror(tsc):
     """
     test recast risks constructor for 'repos item' type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(repos=['one'])
+        tsc.recast_risks._constructor(repos=['one'])
 
 
-def test_recast_risks_constructor_plugin_id_typeerror(security_center):
+def test_recast_risks_constructor_plugin_id_typeerror(tsc):
     """
     test recast risks constructor for 'plugin id' type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(plugin_id='nope')
+        tsc.recast_risks._constructor(plugin_id='nope')
 
 
-def test_recast_risks_constructor_port_typeerror(security_center):
+def test_recast_risks_constructor_port_typeerror(tsc):
     """
     test recast risks constructor for port type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(port='nope')
+        tsc.recast_risks._constructor(port='nope')
 
 
-def test_recast_risks_constructor_protocol_typeerror(security_center):
+def test_recast_risks_constructor_protocol_typeerror(tsc):
     """
     test recast risks constructor for protocol type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(protocol='nothing')
+        tsc.recast_risks._constructor(protocol='nothing')
 
 
-def test_recast_risks_constructor_comments_typeerror(security_center):
+def test_recast_risks_constructor_comments_typeerror(tsc):
     """
     test recast risks constructor for comments type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(comments=1)
+        tsc.recast_risks._constructor(comments=1)
 
 
-def test_recast_risks_constructor_expires_typeerror(security_center):
+def test_recast_risks_constructor_expires_typeerror(tsc):
     """
     test recast risks constructor for expires type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(expires='nope')
+        tsc.recast_risks._constructor(expires='nope')
 
-def test_recast_risks_constructor_severity_id_typeerror(security_center):
+
+def test_recast_risks_constructor_severity_id_typeerror(tsc):
     """
     test recast risks constructor for 'severity id' type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(severity_id='nope')
+        tsc.recast_risks._constructor(severity_id='nope')
 
 
-def test_recast_risks_constructor_ips_typeerror(security_center):
+def test_recast_risks_constructor_ips_typeerror(tsc):
     """
     test recast risks constructor for ips type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(ips=1)
+        tsc.recast_risks._constructor(ips=1)
 
 
-def test_recast_risks_constructor_ips_item_typeerror(security_center):
+def test_recast_risks_constructor_ips_item_typeerror(tsc):
     """
     test recast risks constructor for 'ips item' type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(ips=[1])
+        tsc.recast_risks._constructor(ips=[1])
 
 
-def test_recast_risks_constructor_uuids_typeerror(security_center):
+def test_recast_risks_constructor_uuids_typeerror(tsc):
     """
     test recast risks constructor for uuids type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(uuids=1)
+        tsc.recast_risks._constructor(uuids=1)
 
 
-def test_recast_risks_constructor_uuids_item_typeerror(security_center):
+def test_recast_risks_constructor_uuids_item_typeerror(tsc):
     """
     test recast risks constructor for 'uuids item' type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(uuids=[1])
+        tsc.recast_risks._constructor(uuids=[1])
 
 
-def test_recast_risks_constructor_asset_list_typeerror(security_center):
+def test_recast_risks_constructor_asset_list_typeerror(tsc):
     """
     test recast risks constructor for 'asset list' type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(asset_list='nope')
+        tsc.recast_risks._constructor(asset_list='nope')
 
 
-def test_recast_risks_constructur_host_uuid_typeerror(security_center):
+def test_recast_risks_constructur_host_uuid_typeerror(tsc):
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(host_uuids='nope')
+        tsc.recast_risks._constructor(host_uuids='nope')
 
 
-def test_recast_risks_constructor_host_uuid_item_typeerror(security_center):
+def test_recast_risks_constructor_host_uuid_item_typeerror(tsc):
     with pytest.raises(TypeError):
-        security_center.recast_risks._constructor(host_uuids=[1])
+        tsc.recast_risks._constructor(host_uuids=[1])
 
 
-def test_recast_risks_constructor_host_uuid_success(security_center):
+def test_recast_risks_constructor_host_uuid_success(tsc):
     tuuid = str(uuid.uuid4())
-    resp = security_center.recast_risks._constructor(host_uuids=[tuuid])
+    resp = tsc.recast_risks._constructor(host_uuids=[tuuid])
     assert resp == {'hostType': 'hostUUID', 'hostValue': tuuid}
 
 
-def test_recast_risks_constructor_success(security_center):
+def test_recast_risks_constructor_success(tsc):
     """
     test recast risks constructor for success
     """
-    resp = security_center.recast_risks._constructor(
+    resp = tsc.recast_risks._constructor(
         repos=[1, 2],
         plugin_id=19506,
         port=0,
@@ -155,37 +156,83 @@ def test_recast_risks_constructor_success(security_center):
         'hostType': 'ip',
         'hostValue': '192.168.0.1',
     }
-    resp = security_center.recast_risks._constructor(uuids=['UUID1', 'UUID2'])
+    resp = tsc.recast_risks._constructor(uuids=['UUID1', 'UUID2'])
     assert resp == {'hostType': 'uuid', 'hostValue': 'UUID1,UUID2'}
-    resp = security_center.recast_risks._constructor(asset_list=1)
+    resp = tsc.recast_risks._constructor(asset_list=1)
     assert resp == {'hostType': 'asset', 'hostValue': {'id': 1}}
 
 
 @pytest.fixture
-def arisk(request, security_center, vcr):
+def arisk():
     """
     test fixture for a risk
     """
-    with vcr.use_cassette('test_recast_risks_create_success'):
-        arisk = security_center.recast_risks.create(19506, [1], 0, ips=['127.0.0.1'])
+    return {
+        'id': '1',
+        'newSeverity': '0',
+        'hostType': 'ip',
+        'hostValue': '127.0.0.1',
+        'port': 'any',
+        'protocol': 'any',
+        'comments': '',
+        'expires': '-1',
+        'order': '1',
+        'status': '0',
+        'createdTime': '1554731789',
+        'modifiedTime': '1554731789',
+        'repository': {'id': '1', 'name': 'Default', 'description': ''},
+        'organization': {'id': '1', 'name': 'HomeNet', 'description': ''},
+        'user': {'id': '2', 'username': 'api', 'firstname': 'api', 'lastname': 'user'},
+        'plugin': {
+            'id': '19506',
+            'name': 'Nessus Scan Information',
+            'description': 'This plugin displays, for each tested host, information about the scan itself :\n\n  - The version of the plugin set.\n  - ',
+        },
+    }
 
-    def teardown():
-        try:
-            with vcr.use_cassette('test_recast_risks_delete_success'):
-                security_center.recast_risks.delete(int(arisk['id']))
-        except APIError as error:
-            log_exception(error)
 
-    request.addfinalizer(teardown)
-    return arisk
-
-
-@pytest.mark.vcr()
-def test_recast_risks_list_success(security_center):
+@responses.activate
+def test_recast_risks_list_success(tsc):
     """
     test recast risks list for success
     """
-    resp = security_center.recast_risks.list()
+    responses.get(
+        'https://nourl/rest/recastRiskRule',
+        json={
+            'type': 'regular',
+            'response': [
+                {
+                    'id': '1',
+                    'newSeverity': '0',
+                    'hostType': 'ip',
+                    'hostValue': '127.0.0.1',
+                    'port': 'any',
+                    'protocol': 'any',
+                    'expires': '-1',
+                    'order': '1',
+                    'status': '0',
+                    'repository': {'id': '1', 'name': 'Default', 'description': ''},
+                    'organization': {'id': '1', 'name': 'HomeNet', 'description': ''},
+                    'user': {
+                        'id': '2',
+                        'username': 'api',
+                        'firstname': 'api',
+                        'lastname': 'user',
+                    },
+                    'plugin': {
+                        'id': '19506',
+                        'name': 'Nessus Scan Information',
+                        'description': 'This plugin displays, for each tested host, information about the scan itself :\n\n  - The version of the plugin set.\n  - ',
+                    },
+                }
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554731790,
+        },
+    )
+    resp = tsc.recast_risks.list()
     assert isinstance(resp, list)
     risk = resp[0]
     check(risk, 'id', str)
@@ -215,12 +262,58 @@ def test_recast_risks_list_success(security_center):
     check(risk['plugin'], 'description', str)
 
 
-@pytest.mark.vcr()
-def test_recast_risks_list_success_params(security_center):
+@responses.activate
+def test_recast_risks_list_success_params(tsc):
     """
     test recast risks list success for params
     """
-    resp = security_center.recast_risks.list(
+    responses.get(
+        'https://nourl/rest/recastRiskRule',
+        json={
+            'type': 'regular',
+            'response': [
+                {
+                    'id': '1',
+                    'newSeverity': '0',
+                    'hostType': 'ip',
+                    'hostValue': '127.0.0.1',
+                    'port': 'any',
+                    'protocol': 'any',
+                    'order': '1',
+                    'status': '0',
+                    'repository': {'id': '1', 'name': 'Default', 'description': ''},
+                    'organization': {'id': '1', 'name': 'HomeNet', 'description': ''},
+                    'user': {
+                        'id': '2',
+                        'username': 'api',
+                        'firstname': 'api',
+                        'lastname': 'user',
+                    },
+                    'plugin': {
+                        'id': '19506',
+                        'name': 'Nessus Scan Information',
+                        'description': 'This plugin displays, for each tested host, information about the scan itself :\n\n  - The version of the plugin set.\n  - ',
+                    },
+                }
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554731790,
+        },
+        match=[
+            matchers.query_param_matcher(
+                {
+                    'fields': 'id,hostType,hostValue,port',
+                    'pluginID': '1234',
+                    'port': '1234',
+                    'organizationIDs': '1234',
+                    'repositoryIDs': '1234',
+                }
+            )
+        ],
+    )
+    resp = tsc.recast_risks.list(
         fields=['id', 'hostType', 'hostValue', 'port'],
         plugin_id=1234,
         port=1234,
@@ -235,11 +328,51 @@ def test_recast_risks_list_success_params(security_center):
     check(risk, 'port', str)
 
 
-@pytest.mark.vcr()
-def test_recast_risks_create_success(arisk):
+@responses.activate
+def test_recast_risks_create_success(tsc):
     """
     test recast risks create for success
     """
+    responses.post(
+        'https://nourl/rest/recastRiskRule',
+        json={
+            'type': 'regular',
+            'response': [
+                {
+                    'id': '1',
+                    'newSeverity': '0',
+                    'hostType': 'ip',
+                    'hostValue': '127.0.0.1',
+                    'port': 'any',
+                    'protocol': 'any',
+                    'comments': '',
+                    'expires': '-1',
+                    'order': '1',
+                    'status': '0',
+                    'createdTime': '1554731789',
+                    'modifiedTime': '1554731789',
+                    'repository': {'id': '1', 'name': 'Default', 'description': ''},
+                    'organization': {'id': '1', 'name': 'HomeNet', 'description': ''},
+                    'user': {
+                        'id': '2',
+                        'username': 'api',
+                        'firstname': 'api',
+                        'lastname': 'user',
+                    },
+                    'plugin': {
+                        'id': '19506',
+                        'name': 'Nessus Scan Information',
+                        'description': 'This plugin displays, for each tested host, information about the scan itself :\n\n  - The version of the plugin set.\n  - ',
+                    },
+                }
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554731789,
+        },
+    )
+    arisk = tsc.recast_risks.create(19506, [1], 0, ips=['127.0.0.1'])
     assert isinstance(arisk, dict)
     check(arisk, 'id', str)
     check(arisk, 'hostType', str)
@@ -269,12 +402,49 @@ def test_recast_risks_create_success(arisk):
     check(arisk['plugin'], 'description', str)
 
 
-@pytest.mark.vcr()
-def test_recast_risks_details_success(security_center, arisk):
+@responses.activate
+def test_recast_risks_details_success(tsc, arisk):
     """
     test recast risks details for success
     """
-    risk = security_center.recast_risks.details(int(arisk['id']))
+    responses.get(
+        'https://nourl/rest/recastRiskRule/1',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '3',
+                'newSeverity': '0',
+                'hostType': 'ip',
+                'hostValue': '127.0.0.1',
+                'port': 'any',
+                'protocol': 'any',
+                'comments': '',
+                'expires': '-1',
+                'order': '1',
+                'status': '0',
+                'createdTime': '1554731791',
+                'modifiedTime': '1554731791',
+                'repository': {'id': '1', 'name': 'Default', 'description': ''},
+                'organization': {'id': '1', 'name': 'HomeNet', 'description': ''},
+                'user': {
+                    'id': '2',
+                    'username': 'api',
+                    'firstname': 'api',
+                    'lastname': 'user',
+                },
+                'plugin': {
+                    'id': '19506',
+                    'name': 'Nessus Scan Information',
+                    'description': 'This plugin displays, for each tested host, information about the scan itself :\n\n  - The version of the plugin set.\n  - ',
+                },
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554731791,
+        },
+    )
+    risk = tsc.recast_risks.details(int(arisk['id']))
     check(risk, 'id', str)
     check(risk, 'hostType', str)
     check(risk, 'hostValue', str)
@@ -303,12 +473,29 @@ def test_recast_risks_details_success(security_center, arisk):
     check(risk['plugin'], 'description', str)
 
 
-@pytest.mark.vcr()
-def test_recast_risks_details_success_for_fields(security_center, arisk):
+@responses.activate
+def test_recast_risks_details_success_for_fields(tsc, arisk):
     """
     test recast risks details success for fields
     """
-    details = security_center.recast_risks.details(
+    responses.get(
+        'https://nourl/rest/recastRiskRule/1',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '3',
+                'hostType': 'ip',
+                'hostValue': '127.0.0.1',
+                'port': 'any',
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554731791,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,hostType,hostValue,port'})],
+    )
+    details = tsc.recast_risks.details(
         int(arisk['id']), fields=['id', 'hostType', 'hostValue', 'port']
     )
     check(details, 'id', str)
@@ -317,33 +504,55 @@ def test_recast_risks_details_success_for_fields(security_center, arisk):
     check(details, 'port', str)
 
 
-@pytest.mark.vcr()
-def test_recast_risks_delete_success(security_center, arisk):
+@responses.activate
+def test_recast_risks_delete_success(tsc, arisk):
     """
     test recast risks delete for success
     """
-    security_center.recast_risks.delete(int(arisk['id']))
+    responses.delete(
+        'https://nourl/rest/recastRiskRule/1',
+        json={
+            'type': 'regular',
+            'response': '',
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554731790,
+        },
+    )
+    tsc.recast_risks.delete(int(arisk['id']))
 
 
-def test_recast_risks_apply_id_typeerror(security_center):
+def test_recast_risks_apply_id_typeerror(tsc):
     """
     test recast risks apply for id type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks.apply('one', 1)
+        tsc.recast_risks.apply('one', 1)
 
 
-def test_recast_risks_apply_repo_typeerror(security_center):
+def test_recast_risks_apply_repo_typeerror(tsc):
     """
     test recast risks apply for repo type error
     """
     with pytest.raises(TypeError):
-        security_center.recast_risks.apply(1, 'one')
+        tsc.recast_risks.apply(1, 'one')
 
 
-@pytest.mark.vcr()
-def test_recast_risks_apply_success(security_center, arisk):
+@responses.activate
+def test_recast_risks_apply_success(tsc, arisk):
     """
     test recast risks apply for success
     """
-    security_center.recast_risks.apply(int(arisk['id']), 1)
+    responses.post(
+        'https://nourl/rest/recastRiskRule/1/apply',
+        json={
+            'type': 'regular',
+            'response': '',
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1554731794,
+        },
+    )
+    tsc.recast_risks.apply(int(arisk['id']), 1)

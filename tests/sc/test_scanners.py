@@ -1,167 +1,188 @@
-'''
+"""
 test file for testing various scenarios in security center's scanners functionality
-'''
-import pytest
+"""
 
-from tenable.errors import APIError
-from tests.pytenable_log_handler import log_exception
+import pytest
+import responses
+from responses import matchers
+
 from ..checker import check
 
 
 @pytest.fixture
-def scanner(request, admin, vcr):
-    '''
+def scanner():
+    """
     test fixture for scanner
-    '''
-    with vcr.use_cassette('test_scanners_create_success'):
-        scanner = admin.scanners.create('Example', '127.0.0.1',
-                                        username='nouser',
-                                        password='nopassword')
+    """
+    return {
+        'id': '9',
+        'name': 'Example',
+        'description': '',
+        'ip': '127.0.0.1',
+        'port': '8834',
+        'useProxy': 'false',
+        'enabled': 'true',
+        'verifyHost': 'false',
+        'managePlugins': 'false',
+        'authType': 'password',
+        'cert': None,
+        'username': 'nouser',
+        'password': 'SET',
+        'agentCapable': 'false',
+        'version': None,
+        'webVersion': None,
+        'admin': 'false',
+        'msp': 'false',
+        'numScans': '0',
+        'numHosts': '0',
+        'numSessions': '0',
+        'numTCPSessions': '0',
+        'loadAvg': '0.0',
+        'uptime': -1,
+        'status': '8192',
+        'pluginSet': None,
+        'loadedPluginSet': None,
+        'serverUUID': None,
+        'createdTime': '1553266985',
+        'modifiedTime': '1553266985',
+        'zones': [],
+        'nessusManagerOrgs': [],
+    }
 
-    def teardown():
-        try:
-            with vcr.use_cassette('test_scanners_delete_success'):
-                admin.scanners.delete(int(scanner['id']))
-        except APIError as error:
-            log_exception(error)
 
-    request.addfinalizer(teardown)
-    return scanner
-
-
-def test_scanners_constructor_name_typeerror(security_center):
-    '''
+def test_scanners_constructor_name_typeerror(tsc):
+    """
     test scanners constructor for name type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(name=1)
+        tsc.scanners._constructor(name=1)
 
 
-def test_scanners_constructor_description_typeerror(security_center):
-    '''
+def test_scanners_constructor_description_typeerror(tsc):
+    """
     test scanners constructor for description type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(description=1)
+        tsc.scanners._constructor(description=1)
 
 
-def test_scanners_constructor_username_typeerror(security_center):
-    '''
+def test_scanners_constructor_username_typeerror(tsc):
+    """
     test scanners constructor for username type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(username=1)
+        tsc.scanners._constructor(username=1)
 
 
-def test_scanners_constructor_cert_typeerror(security_center):
-    '''
+def test_scanners_constructor_cert_typeerror(tsc):
+    """
     test scanners constructor for 'cert' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(cert=1)
+        tsc.scanners._constructor(cert=1)
 
 
-def test_scanners_constructor_password_typeerror(security_center):
-    '''
+def test_scanners_constructor_password_typeerror(tsc):
+    """
     test scanners constructor for password type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(password=1)
+        tsc.scanners._constructor(password=1)
 
 
-def test_scanners_constructor_address_typeerror(security_center):
-    '''
+def test_scanners_constructor_address_typeerror(tsc):
+    """
     test scanners constructor for address type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(address=1)
+        tsc.scanners._constructor(address=1)
 
 
-def test_scanners_constructor_port_typeerror(security_center):
-    '''
+def test_scanners_constructor_port_typeerror(tsc):
+    """
     test scanners constructor for port type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(port='one')
+        tsc.scanners._constructor(port='one')
 
 
-def test_scanners_constructor_proxy_typeerror(security_center):
-    '''
+def test_scanners_constructor_proxy_typeerror(tsc):
+    """
     test scanners constructor for proxy type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(proxy='one')
+        tsc.scanners._constructor(proxy='one')
 
 
-def test_scanners_constructor_verify_typeerror(security_center):
-    '''
+def test_scanners_constructor_verify_typeerror(tsc):
+    """
     test scanners constructor for verify type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(verify='yup')
+        tsc.scanners._constructor(verify='yup')
 
 
-def test_scanners_constructor_enabled_typeerror(security_center):
-    '''
+def test_scanners_constructor_enabled_typeerror(tsc):
+    """
     test scanners constructor for enabled type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(enabled='nope')
+        tsc.scanners._constructor(enabled='nope')
 
 
-def test_scanners_constructor_managed_typeerror(security_center):
-    '''
+def test_scanners_constructor_managed_typeerror(tsc):
+    """
     test scanners constructor for managed type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(managed='yup')
+        tsc.scanners._constructor(managed='yup')
 
 
-def test_scanners_constructor_agent_capable_typeerror(security_center):
-    '''
+def test_scanners_constructor_agent_capable_typeerror(tsc):
+    """
     test scanners constructor for 'agent capable' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(agent_capable='nope')
+        tsc.scanners._constructor(agent_capable='nope')
 
 
-def test_scanners_constructor_zone_ids_typeerror(security_center):
-    '''
+def test_scanners_constructor_zone_ids_typeerror(tsc):
+    """
     test scanners constructor for 'zone ids' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(zone_ids=1)
+        tsc.scanners._constructor(zone_ids=1)
 
 
-def test_scanners_constructor_zone_ids_item_typeerror(security_center):
-    '''
+def test_scanners_constructor_zone_ids_item_typeerror(tsc):
+    """
     test scanners constructor for 'zone ids item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(zone_ids=['one'])
+        tsc.scanners._constructor(zone_ids=['one'])
 
 
-def test_scanners_constructor_orgs_typeerror(security_center):
-    '''
+def test_scanners_constructor_orgs_typeerror(tsc):
+    """
     test scanners constructor for orgs type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(orgs=1)
+        tsc.scanners._constructor(orgs=1)
 
 
-def test_scanners_constructor_orgs_item_typeerror(security_center):
-    '''
+def test_scanners_constructor_orgs_item_typeerror(tsc):
+    """
     test scanners constructor for 'orgs item' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.scanners._constructor(orgs=['one'])
+        tsc.scanners._constructor(orgs=['one'])
 
 
-def test_scanners_constructor_success(security_center):
-    '''
+def test_scanners_constructor_success(tsc):
+    """
     test scanners constructor for success
-    '''
-    resp = security_center.scanners._constructor(
+    """
+    resp = tsc.scanners._constructor(
         name='Example',
         description='Described',
         username='username',
@@ -174,7 +195,7 @@ def test_scanners_constructor_success(security_center):
         managed=False,
         agent_capable=False,
         zone_ids=[1, 2, 3],
-        orgs=[1, 2, 3]
+        orgs=[1, 2, 3],
     )
     assert resp == {
         'name': 'Example',
@@ -190,15 +211,61 @@ def test_scanners_constructor_success(security_center):
         'managedPlugins': 'false',
         'agentCapable': 'false',
         'zones': [{'id': 1}, {'id': 2}, {'id': 3}],
-        'nessusManagerOrgs': [{'id': 1}, {'id': 2}, {'id': 3}]
+        'nessusManagerOrgs': [{'id': 1}, {'id': 2}, {'id': 3}],
     }
 
 
-@pytest.mark.vcr()
-def test_scanners_create_success(scanner):
-    '''
+@responses.activate
+def test_scanners_create_success(tsc):
+    """
     test scanners create for success
-    '''
+    """
+    responses.post(
+        'https://nourl/rest/scanner',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '9',
+                'name': 'Example',
+                'description': '',
+                'ip': '127.0.0.1',
+                'port': '8834',
+                'useProxy': 'false',
+                'enabled': 'true',
+                'verifyHost': 'false',
+                'managePlugins': 'false',
+                'authType': 'password',
+                'cert': None,
+                'username': 'nouser',
+                'password': 'SET',
+                'agentCapable': 'false',
+                'version': None,
+                'webVersion': None,
+                'admin': 'false',
+                'msp': 'false',
+                'numScans': '0',
+                'numHosts': '0',
+                'numSessions': '0',
+                'numTCPSessions': '0',
+                'loadAvg': '0.0',
+                'uptime': -1,
+                'status': '8192',
+                'pluginSet': None,
+                'loadedPluginSet': None,
+                'serverUUID': None,
+                'createdTime': '1553266985',
+                'modifiedTime': '1553266985',
+                'zones': [],
+                'nessusManagerOrgs': [],
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1553266985,
+        },
+    )
+    scanner = tsc.scanners.create(
+        'Example', '127.0.0.1', username='nouser', password='nopassword'
+    )
     assert isinstance(scanner, dict)
     check(scanner, 'id', str)
     check(scanner, 'name', str)
@@ -241,12 +308,56 @@ def test_scanners_create_success(scanner):
         check(org, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_scanners_details_success(admin, scanner):
-    '''
+@responses.activate
+def test_scanners_details_success(tsc, scanner):
+    """
     test scanners details for success
-    '''
-    scanner = admin.scanners.details(int(scanner['id']))
+    """
+    responses.get(
+        'https://nourl/rest/scanner/9',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '10',
+                'name': 'Example',
+                'description': '',
+                'ip': '127.0.0.1',
+                'port': '8834',
+                'useProxy': 'false',
+                'enabled': 'true',
+                'verifyHost': 'false',
+                'managePlugins': 'false',
+                'authType': 'password',
+                'cert': None,
+                'username': 'nouser',
+                'password': 'SET',
+                'agentCapable': 'false',
+                'version': None,
+                'webVersion': None,
+                'admin': 'false',
+                'msp': 'false',
+                'numScans': '0',
+                'numHosts': '0',
+                'numSessions': '0',
+                'numTCPSessions': '0',
+                'loadAvg': '0.0',
+                'uptime': -1,
+                'status': '8192',
+                'pluginSet': None,
+                'loadedPluginSet': None,
+                'serverUUID': None,
+                'createdTime': '1553266985',
+                'modifiedTime': '1553266985',
+                'zones': [],
+                'nessusManagerOrgs': [],
+                'certInfo': '',
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1553266985,
+        },
+    )
+    scanner = tsc.scanners.details(int(scanner['id']))
     assert isinstance(scanner, dict)
     check(scanner, 'id', str)
     check(scanner, 'name', str)
@@ -289,24 +400,81 @@ def test_scanners_details_success(admin, scanner):
         check(org, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_scanners_details_success_for_fields(admin, scanner):
-    '''
+@responses.activate
+def test_scanners_details_success_for_fields(tsc, scanner):
+    """
     test scanners details success for fields
-    '''
-    scanner = admin.scanners.details(int(scanner['id']), fields=['id', 'name', 'description'])
+    """
+    responses.get(
+        'https://nourl/rest/scanner/9',
+        json={
+            'type': 'regular',
+            'response': {'id': '10', 'name': 'Example', 'description': ''},
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553266985,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,name,description'})],
+    )
+    scanner = tsc.scanners.details(
+        int(scanner['id']), fields=['id', 'name', 'description']
+    )
     assert isinstance(scanner, dict)
     check(scanner, 'id', str)
     check(scanner, 'name', str)
     check(scanner, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_scanners_edit_success(admin, scanner):
-    '''
+@responses.activate
+def test_scanners_edit_success(tsc, scanner):
+    """
     test scanners edit for success
-    '''
-    scanner = admin.scanners.edit(int(scanner['id']), name='Updated Scanner Name')
+    """
+    responses.patch(
+        'https://nourl/rest/scanner/9',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '25',
+                'name': 'Updated Scanner Name',
+                'description': '',
+                'ip': '127.0.0.1',
+                'port': '8834',
+                'useProxy': 'false',
+                'enabled': 'true',
+                'verifyHost': 'false',
+                'managePlugins': 'false',
+                'authType': 'password',
+                'cert': None,
+                'username': 'nouser',
+                'password': 'SET',
+                'agentCapable': 'false',
+                'version': None,
+                'webVersion': None,
+                'admin': 'false',
+                'msp': 'false',
+                'numScans': '0',
+                'numHosts': '0',
+                'numSessions': '0',
+                'numTCPSessions': '0',
+                'loadAvg': '0.0',
+                'uptime': -1,
+                'status': '8192',
+                'pluginSet': None,
+                'loadedPluginSet': None,
+                'serverUUID': None,
+                'createdTime': '1553267776',
+                'modifiedTime': '1553267777',
+                'zones': [],
+                'nessusManagerOrgs': [],
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1553267776,
+        },
+    )
+    scanner = tsc.scanners.edit(int(scanner['id']), name='Updated Scanner Name')
     assert isinstance(scanner, dict)
     check(scanner, 'id', str)
     check(scanner, 'name', str)
@@ -350,57 +518,139 @@ def test_scanners_edit_success(admin, scanner):
         check(org, 'description', str)
 
 
-@pytest.mark.vcr()
-def test_scanners_delete_success(admin, scanner):
-    '''
+@responses.activate
+def test_scanners_delete_success(tsc, scanner):
+    """
     test scanners delete for success
-    '''
-    admin.scanners.delete(int(scanner['id']))
+    """
+    responses.delete(
+        'https://nourl/rest/scanner/9',
+        json={
+            'type': 'regular',
+            'response': '',
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553266987,
+        },
+    )
+    tsc.scanners.delete(int(scanner['id']))
 
 
-@pytest.mark.vcr()
-def test_scanners_list_success(admin):
-    '''
+@responses.activate
+def test_scanners_list_success(tsc):
+    """
     test scanners list for success
-    '''
-    for scanner in admin.scanners.list():
+    """
+    responses.get(
+        'https://nourl/rest/scanner',
+        json={
+            'type': 'regular',
+            'response': [
+                {
+                    'id': '1',
+                    'name': 'Internal Scanner',
+                    'description': '',
+                    'agentCapable': 'false',
+                    'status': '1',
+                },
+                {
+                    'id': '2',
+                    'name': 'Tenable.io',
+                    'description': '',
+                    'agentCapable': 'true',
+                    'status': '1',
+                },
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553266988,
+        },
+    )
+    for scanner in tsc.scanners.list():
         check(scanner, 'id', str)
         check(scanner, 'name', str)
         check(scanner, 'description', str)
         check(scanner, 'status', str)
 
 
-@pytest.mark.vcr()
-def test_scanners_list_success_for_fields(admin, scanner):
-    '''
+@responses.activate
+def test_scanners_list_success_for_fields(tsc, scanner):
+    """
     test scanners list success for fields
-    '''
-    for a_scanner in admin.scanners.list(fields=['id', 'name', 'status', 'description']):
+    """
+    responses.get(
+        'https://nourl/rest/scanner',
+        json={
+            'type': 'regular',
+            'response': [
+                {
+                    'id': '1',
+                    'name': 'Internal Scanner',
+                    'description': '',
+                    'status': '1',
+                },
+                {'id': '2', 'name': 'Tenable.io', 'description': '', 'status': '1'},
+            ],
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553266988,
+        },
+        match=[matchers.query_param_matcher({'fields': 'id,name,status,description'})],
+    )
+    for a_scanner in tsc.scanners.list(fields=['id', 'name', 'status', 'description']):
         check(a_scanner, 'id', str)
         check(a_scanner, 'name', str)
         check(a_scanner, 'status', str)
         check(a_scanner, 'description', str)
 
 
-@pytest.mark.vcr()
 @pytest.mark.skip(reason='No Agent Scanner in test env')
-def test_scanners_agent_scans_success(admin, scanner):
-    '''
+def test_scanners_agent_scans_success(tsc, scanner):
+    """
     test scanners agent scans for success
-    '''
-    resp = admin.scanners.agent_scans(int(scanner['id']), '*')
+    """
+    resp = tsc.scanners.agent_scans(int(scanner['id']), '*')
     assert isinstance(resp, list)
     for scanner in resp:
         check(scanner, 'name', str)
         check(scanner, 'numResults', int)
 
 
-@pytest.mark.vcr()
-def test_scanners_update_status(admin, scanner):
-    '''
+@responses.activate
+def test_scanners_update_status(tsc, scanner):
+    """
     test scanners update status for success
-    '''
-    resp = admin.scanners.update_status()
+    """
+    responses.post(
+        'https://nourl/rest/scanner/updateStatus',
+        json={
+            'type': 'regular',
+            'response': {
+                'status': [
+                    {
+                        'id': '1',
+                        'name': 'Internal Scanner',
+                        'description': '',
+                        'status': '8193',
+                    },
+                    {
+                        'id': '2',
+                        'name': 'Tenable.io',
+                        'description': '',
+                        'status': '8193',
+                    },
+                ]
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1553266989,
+        },
+    )
+    resp = tsc.scanners.update_status()
     assert isinstance(resp, list)
     for scanner in resp:
         check(scanner, 'id', str)

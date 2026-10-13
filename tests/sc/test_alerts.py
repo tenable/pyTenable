@@ -1,167 +1,191 @@
-'''
+"""
 test file to test various scenarios in sc alerts
-'''
-import pytest
+"""
 
-from tenable.errors import APIError, UnexpectedValueError
-from tests.pytenable_log_handler import log_exception
+import pytest
+import responses
+
+from tenable.errors import UnexpectedValueError
 from ..checker import check
 
 
 @pytest.fixture
-def alert(request, vcr, security_center):
-    '''
+def alert():
+    """
     test fixture for alert
-    '''
-    with vcr.use_cassette('alert'):
-        alert = security_center.alerts.create(
-            ('severity', '=', '3,4'),
-            name='Example Alert',
-            trigger=('sumip', '>=', '100'),
-            action=[{
-                'type': 'notification',
-                'message': 'Example Message',
-                'users': [{'id': 1}]
-            }])
-
-    def teardown():
-        try:
-            security_center.alerts.delete(int(alert['id']))
-        except APIError as error:
-            log_exception(error)
-
-    request.addfinalizer(teardown)
-    return alert
-
-
-def test_alerts_constructor_name_typeerror(security_center):
-    '''
-    test alerts constructor for name type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.alerts._constructor(name=1)
-
-
-def test_alerts_constructor_description_typeerror(security_center):
-    '''
-    test alerts constructor for description type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.alerts._constructor(description=1)
-
-
-def test_alerts_constructor_query_typeerror(security_center):
-    '''
-    test alerts constructor for query type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.alerts._constructor(query=1)
-
-
-def test_alerts_constructor_always_exec_on_trigger_typeerror(security_center):
-    '''
-    test alerts constructor for 'always exec on trigger' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.alerts._constructor(always_exec_on_trigger='nope')
-
-
-def test_alerts_constructor_trigger_typeerror(security_center):
-    '''
-    test alerts constructor for trigger type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.alerts._constructor(trigger=1)
-
-
-def test_alerts_constructor_trigger_name_typeerror(security_center):
-    '''
-    test alerts constructor for 'trigger name' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.alerts._constructor(trigger=(1, '=', 'something'))
-
-
-def test_alerts_constructor_trigger_operator_typeerror(security_center):
-    '''
-    test alerts constructor for 'trigger operator' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.alerts._constructor(trigger=('name', 1, 'something'))
-
-
-def test_alerts_constructor_trigger_operator_unexpectedvalueerror(security_center):
-    '''
-    test alerts constructor for 'trigger operator' unexpected value error
-    '''
-    with pytest.raises(UnexpectedValueError):
-        security_center.alerts._constructor(trigger=('name', 'eq', 'something'))
-
-
-def test_alerts_constructor_trigger_value_typeerror(security_center):
-    '''
-    test alerts constructor for 'trigger value' type error
-    '''
-    with pytest.raises(TypeError):
-        security_center.alerts._constructor(trigger=('name', '=', 1))
-
-
-def test_alerts_constructor_success(security_center):
-    '''
-    test alerts constructor for success
-    '''
-    alert = security_center.alerts._constructor(query_id=1,
-                                                always_exec_on_trigger=True,
-                                                schedule={'type': 'ical'})
-    assert isinstance(alert, dict)
-
-
-def test_alerts_constructor(security_center):
-    '''
-    test alerts constructor
-    '''
-    alert = security_center.alerts._constructor(
-        ('severity', '=', '3,4'),
-        name='Example Alert',
-        trigger=('sumip', '>=', '100'),
-        action=[{
-            'type': 'notification',
-            'message': 'Example Message',
-            'users': [{'id': 1}]}])
-    assert alert == {
+    """
+    return {
+        'id': '8',
         'name': 'Example Alert',
-        'action': [{
-            'message': 'Example Message',
-            'type': 'notification',
-            'users': [{'id': 1}]
-        }],
-        'query': {
-            'type': 'vuln',
-            'filters': [{
-                'filterName': 'severity',
-                'operator': '=',
-                'value': '3,4'
-            }]},
+        'description': '',
         'triggerName': 'sumip',
         'triggerOperator': '>=',
-        'triggerValue': '100'
+        'triggerValue': '100',
+        'modifiedTime': '1550599951',
+        'createdTime': '1550599951',
+        'lastTriggered': '0',
+        'lastEvaluated': '0',
+        'executeOnEveryTrigger': 'false',
+        'didTriggerLastEvaluation': 'false',
+        'status': '0',
+        'canUse': 'true',
+        'canManage': 'true',
     }
 
 
-def test_alerts_list_fields_typeerror(security_center):
-    '''
-    test alerts for list fields type error
-    '''
+def test_alerts_constructor_name_typeerror(tsc):
+    """
+    test alerts constructor for name type error
+    """
     with pytest.raises(TypeError):
-        security_center.alerts.list(fields=1)
+        tsc.alerts._constructor(name=1)
 
 
-@pytest.mark.vcr()
-def test_alerts_list_success(security_center, alert):
-    '''
+def test_alerts_constructor_description_typeerror(tsc):
+    """
+    test alerts constructor for description type error
+    """
+    with pytest.raises(TypeError):
+        tsc.alerts._constructor(description=1)
+
+
+def test_alerts_constructor_query_typeerror(tsc):
+    """
+    test alerts constructor for query type error
+    """
+    with pytest.raises(TypeError):
+        tsc.alerts._constructor(query=1)
+
+
+def test_alerts_constructor_always_exec_on_trigger_typeerror(tsc):
+    """
+    test alerts constructor for 'always exec on trigger' type error
+    """
+    with pytest.raises(TypeError):
+        tsc.alerts._constructor(always_exec_on_trigger='nope')
+
+
+def test_alerts_constructor_trigger_typeerror(tsc):
+    """
+    test alerts constructor for trigger type error
+    """
+    with pytest.raises(TypeError):
+        tsc.alerts._constructor(trigger=1)
+
+
+def test_alerts_constructor_trigger_name_typeerror(tsc):
+    """
+    test alerts constructor for 'trigger name' type error
+    """
+    with pytest.raises(TypeError):
+        tsc.alerts._constructor(trigger=(1, '=', 'something'))
+
+
+def test_alerts_constructor_trigger_operator_typeerror(tsc):
+    """
+    test alerts constructor for 'trigger operator' type error
+    """
+    with pytest.raises(TypeError):
+        tsc.alerts._constructor(trigger=('name', 1, 'something'))
+
+
+def test_alerts_constructor_trigger_operator_unexpectedvalueerror(tsc):
+    """
+    test alerts constructor for 'trigger operator' unexpected value error
+    """
+    with pytest.raises(UnexpectedValueError):
+        tsc.alerts._constructor(trigger=('name', 'eq', 'something'))
+
+
+def test_alerts_constructor_trigger_value_typeerror(tsc):
+    """
+    test alerts constructor for 'trigger value' type error
+    """
+    with pytest.raises(TypeError):
+        tsc.alerts._constructor(trigger=('name', '=', 1))
+
+
+def test_alerts_constructor_success(tsc):
+    """
+    test alerts constructor for success
+    """
+    alert = tsc.alerts._constructor(
+        query_id=1, always_exec_on_trigger=True, schedule={'type': 'ical'}
+    )
+    assert isinstance(alert, dict)
+
+
+def test_alerts_constructor(tsc):
+    """
+    test alerts constructor
+    """
+    alert = tsc.alerts._constructor(
+        ('severity', '=', '3,4'),
+        name='Example Alert',
+        trigger=('sumip', '>=', '100'),
+        action=[
+            {'type': 'notification', 'message': 'Example Message', 'users': [{'id': 1}]}
+        ],
+    )
+    assert alert == {
+        'name': 'Example Alert',
+        'action': [
+            {'message': 'Example Message', 'type': 'notification', 'users': [{'id': 1}]}
+        ],
+        'query': {
+            'type': 'vuln',
+            'filters': [{'filterName': 'severity', 'operator': '=', 'value': '3,4'}],
+        },
+        'triggerName': 'sumip',
+        'triggerOperator': '>=',
+        'triggerValue': '100',
+    }
+
+
+def test_alerts_list_fields_typeerror(tsc):
+    """
+    test alerts for list fields type error
+    """
+    with pytest.raises(TypeError):
+        tsc.alerts.list(fields=1)
+
+
+@responses.activate
+def test_alerts_list_success(tsc, alert):
+    """
     test alerts for list success
-    '''
-    alerts = security_center.alerts.list()
+    """
+    responses.get(
+        'https://nourl/rest/alert',
+        json={
+            'type': 'regular',
+            'response': {
+                'usable': [
+                    {'id': '1', 'name': 'Test Alert', 'description': '', 'status': '0'},
+                    {
+                        'id': '3',
+                        'name': 'Example Alert',
+                        'description': '',
+                        'status': '0',
+                    },
+                ],
+                'manageable': [
+                    {'id': '1', 'name': 'Test Alert', 'description': '', 'status': '0'},
+                    {
+                        'id': '3',
+                        'name': 'Example Alert',
+                        'description': '',
+                        'status': '0',
+                    },
+                ],
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1550599938,
+        },
+    )
+    alerts = tsc.alerts.list()
     assert isinstance(alerts, dict)
     for alert in alerts['manageable']:
         check(alert, 'description', str)
@@ -170,28 +194,98 @@ def test_alerts_list_success(security_center, alert):
         check(alert, 'status', str)
 
 
-def test_alerts_details_id_typeerror(security_center):
-    '''
+def test_alerts_details_id_typeerror(tsc):
+    """
     test alerts for 'details id' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.alerts.details('nope')
+        tsc.alerts.details('nope')
 
 
-def test_alerts_fields_typeerror(security_center):
-    '''
+def test_alerts_fields_typeerror(tsc):
+    """
     test alerts for fields type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.alerts.details(1, fields=1)
+        tsc.alerts.details(1, fields=1)
 
 
-@pytest.mark.vcr()
-def test_alerts_details_success(security_center, alert):
-    '''
+@responses.activate
+def test_alerts_details_success(tsc, alert):
+    """
     test alerts for details success
-    '''
-    alert = security_center.alerts.details(int(alert['id']))
+    """
+    responses.get(
+        'https://nourl/rest/alert/8',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '4',
+                'name': 'Example Alert',
+                'description': '',
+                'triggerName': 'sumip',
+                'triggerOperator': '>=',
+                'triggerValue': '100',
+                'modifiedTime': '1550599941',
+                'createdTime': '1550599941',
+                'lastTriggered': '0',
+                'lastEvaluated': '0',
+                'executeOnEveryTrigger': 'false',
+                'didTriggerLastEvaluation': 'false',
+                'status': '0',
+                'action': [
+                    {
+                        'id': '4',
+                        'type': 'notification',
+                        'definition': {
+                            'message': 'Example Message',
+                            'users': [
+                                {
+                                    'id': '1',
+                                    'username': 'steve',
+                                    'firstname': 'Steve',
+                                    'lastname': 'McGrath',
+                                }
+                            ],
+                        },
+                        'status': '0',
+                        'users': [
+                            {
+                                'id': '1',
+                                'username': 'steve',
+                                'firstname': 'Steve',
+                                'lastname': 'McGrath',
+                            }
+                        ],
+                        'objectID': None,
+                    }
+                ],
+                'schedule': {'type': 'never', 'start': '', 'repeatRule': ''},
+                'query': {
+                    'id': '570',
+                    'name': "Query for alert 'Example Alert' at 1550599941",
+                    'description': '',
+                },
+                'canUse': 'true',
+                'canManage': 'true',
+                'owner': {
+                    'id': '2',
+                    'username': 'api',
+                    'firstname': 'api',
+                    'lastname': 'user',
+                },
+                'ownerGroup': {
+                    'id': '0',
+                    'name': 'Full Access',
+                    'description': 'Full Access group',
+                },
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1550599943,
+        },
+    )
+    alert = tsc.alerts.details(int(alert['id']))
     assert isinstance(alert, dict)
     check(alert, 'action', list)
     for action in alert['action']:
@@ -273,11 +367,89 @@ def test_alerts_details_success(security_center, alert):
     check(alert, 'triggerValue', str)
 
 
-@pytest.mark.vcr()
-def test_alerts_create_success(alert):
-    '''
+@responses.activate
+def test_alerts_create_success(tsc):
+    """
     test alerts for create success
-    '''
+    """
+    responses.post(
+        'https://nourl/rest/alert',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '8',
+                'name': 'Example Alert',
+                'description': '',
+                'triggerName': 'sumip',
+                'triggerOperator': '>=',
+                'triggerValue': '100',
+                'modifiedTime': '1550599951',
+                'createdTime': '1550599951',
+                'lastTriggered': '0',
+                'lastEvaluated': '0',
+                'executeOnEveryTrigger': 'false',
+                'didTriggerLastEvaluation': 'false',
+                'status': '0',
+                'action': [
+                    {
+                        'id': '9',
+                        'type': 'notification',
+                        'definition': {
+                            'message': 'Example Message',
+                            'users': [
+                                {
+                                    'id': '1',
+                                    'username': 'steve',
+                                    'firstname': 'Steve',
+                                    'lastname': 'McGrath',
+                                }
+                            ],
+                        },
+                        'status': '0',
+                        'users': [
+                            {
+                                'id': '1',
+                                'username': 'steve',
+                                'firstname': 'Steve',
+                                'lastname': 'McGrath',
+                            }
+                        ],
+                        'objectID': None,
+                    }
+                ],
+                'schedule': {'type': 'never', 'start': '', 'repeatRule': ''},
+                'query': {
+                    'id': '574',
+                    'name': "Query for alert 'Example Alert' at 1550599951",
+                    'description': '',
+                },
+                'canUse': 'true',
+                'canManage': 'true',
+                'owner': {
+                    'id': '2',
+                    'username': 'api',
+                    'firstname': 'api',
+                    'lastname': 'user',
+                },
+                'ownerGroup': {
+                    'id': '0',
+                    'name': 'Full Access',
+                    'description': 'Full Access group',
+                },
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1550599951,
+        },
+    )
+    alert = tsc.alerts.create(
+        ('severity', '=', '3,4'),
+        name='Example Alert',
+        trigger=('sumip', '>=', '100'),
+        action=[
+            {'type': 'notification', 'message': 'Example Message', 'users': [{'id': 1}]}
+        ],
+    )
     assert isinstance(alert, dict)
     check(alert, 'action', list)
     for action in alert['action']:
@@ -359,20 +531,90 @@ def test_alerts_create_success(alert):
     check(alert, 'triggerValue', str)
 
 
-def test_alerts_edit_id_typerror(security_center):
-    '''
+def test_alerts_edit_id_typerror(tsc):
+    """
     test alerts for 'edit id' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.alerts.edit('one')
+        tsc.alerts.edit('one')
 
 
-@pytest.mark.vcr()
-def test_alerts_edit_success(security_center, alert):
-    '''
+@responses.activate
+def test_alerts_edit_success(tsc, alert):
+    """
     test alerts for edit success
-    '''
-    alert = security_center.alerts.edit(int(alert['id']), name='new name for example')
+    """
+    responses.patch(
+        'https://nourl/rest/alert/8',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '6',
+                'name': 'new name for example',
+                'description': '',
+                'triggerName': 'sumip',
+                'triggerOperator': '>=',
+                'triggerValue': '100',
+                'modifiedTime': '1550599948',
+                'createdTime': '1550599946',
+                'lastTriggered': '0',
+                'lastEvaluated': '0',
+                'executeOnEveryTrigger': 'false',
+                'didTriggerLastEvaluation': 'false',
+                'status': '0',
+                'action': [
+                    {
+                        'id': '7',
+                        'type': 'notification',
+                        'definition': {
+                            'message': 'Example Message',
+                            'users': [
+                                {
+                                    'id': '1',
+                                    'username': 'steve',
+                                    'firstname': 'Steve',
+                                    'lastname': 'McGrath',
+                                }
+                            ],
+                        },
+                        'status': '0',
+                        'users': [
+                            {
+                                'id': '1',
+                                'username': 'steve',
+                                'firstname': 'Steve',
+                                'lastname': 'McGrath',
+                            }
+                        ],
+                        'objectID': None,
+                    }
+                ],
+                'schedule': {'type': 'never', 'start': '', 'repeatRule': ''},
+                'query': {
+                    'id': '572',
+                    'name': "Query for alert 'Example Alert' at 1550599946",
+                    'description': '',
+                },
+                'canUse': 'true',
+                'canManage': 'true',
+                'owner': {
+                    'id': '2',
+                    'username': 'api',
+                    'firstname': 'api',
+                    'lastname': 'user',
+                },
+                'ownerGroup': {
+                    'id': '0',
+                    'name': 'Full Access',
+                    'description': 'Full Access group',
+                },
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1550599948,
+        },
+    )
+    alert = tsc.alerts.edit(int(alert['id']), name='new name for example')
     assert isinstance(alert, dict)
     check(alert, 'action', list)
     for action in alert['action']:
@@ -454,36 +696,117 @@ def test_alerts_edit_success(security_center, alert):
     check(alert, 'triggerValue', str)
 
 
-def test_alerts_delete_id_typeerror(security_center):
-    '''
+def test_alerts_delete_id_typeerror(tsc):
+    """
     test alerts for 'delete id' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.alerts.delete('one')
+        tsc.alerts.delete('one')
 
 
-@pytest.mark.vcr()
-def test_alerts_delete_success(security_center, alert):
-    '''
+@responses.activate
+def test_alerts_delete_success(tsc, alert):
+    """
     test alerts for delete success
-    '''
-    security_center.alerts.delete(int(alert['id']))
+    """
+    responses.delete(
+        'https://nourl/rest/alert/8',
+        json={
+            'type': 'regular',
+            'response': '',
+            'error_code': 0,
+            'error_msg': '',
+            'warnings': [],
+            'timestamp': 1550599950,
+        },
+    )
+    tsc.alerts.delete(int(alert['id']))
 
 
-def test_alerts_execute_id_typeerror(security_center):
-    '''
+def test_alerts_execute_id_typeerror(tsc):
+    """
     test alerts for 'execute id' type error
-    '''
+    """
     with pytest.raises(TypeError):
-        security_center.alerts.execute('one')
+        tsc.alerts.execute('one')
 
 
-@pytest.mark.vcr()
-def test_alerts_execute_success(security_center, alert):
-    '''
+@responses.activate
+def test_alerts_execute_success(tsc, alert):
+    """
     test alerts for execute success
-    '''
-    alert = security_center.alerts.execute(int(alert['id']))
+    """
+    responses.post(
+        'https://nourl/rest/alert/8/execute',
+        json={
+            'type': 'regular',
+            'response': {
+                'id': '8',
+                'name': 'Example Alert',
+                'description': '',
+                'triggerName': 'sumip',
+                'triggerOperator': '>=',
+                'triggerValue': '100',
+                'modifiedTime': '1550599951',
+                'createdTime': '1550599951',
+                'lastTriggered': '0',
+                'lastEvaluated': '0',
+                'executeOnEveryTrigger': 'false',
+                'didTriggerLastEvaluation': 'false',
+                'status': '0',
+                'action': [
+                    {
+                        'id': '9',
+                        'type': 'notification',
+                        'definition': {
+                            'message': 'Example Message',
+                            'users': [
+                                {
+                                    'id': '1',
+                                    'username': 'steve',
+                                    'firstname': 'Steve',
+                                    'lastname': 'McGrath',
+                                }
+                            ],
+                        },
+                        'status': '0',
+                        'users': [
+                            {
+                                'id': '1',
+                                'username': 'steve',
+                                'firstname': 'Steve',
+                                'lastname': 'McGrath',
+                            }
+                        ],
+                        'objectID': None,
+                    }
+                ],
+                'schedule': {'type': 'never', 'start': '', 'repeatRule': ''},
+                'query': {
+                    'id': '574',
+                    'name': "Query for alert 'Example Alert' at 1550599951",
+                    'description': '',
+                },
+                'canUse': 'true',
+                'canManage': 'true',
+                'owner': {
+                    'id': '2',
+                    'username': 'api',
+                    'firstname': 'api',
+                    'lastname': 'user',
+                },
+                'ownerGroup': {
+                    'id': '0',
+                    'name': 'Full Access',
+                    'description': 'Full Access group',
+                },
+            },
+            'error_code': 0,
+            'error_msg': '',
+            'timestamp': 1550599952,
+        },
+    )
+    alert = tsc.alerts.execute(int(alert['id']))
     assert isinstance(alert, dict)
     check(alert, 'action', list)
     for action in alert['action']:
