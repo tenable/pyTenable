@@ -1,3 +1,5 @@
+from collections import defaultdict
+from copy import copy
 from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel as PydanticBaseModel
@@ -8,6 +10,9 @@ from pydantic import (
     SerializerFunctionWrapHandler,
     WrapSerializer,
 )
+from httpx import Response
+from restfly import APIClient, AsyncAPIClient, ErrorStatus
+from restfly import APIError as RestflyAPIError
 from restfly import APIModel as RestflyAPIModel
 
 PERMISSIONS = (
@@ -717,3 +722,29 @@ class BaseModel(PydanticBaseModel):
 class APIModel(RestflyAPIModel, BaseModel): ...
 
 
+class AcceptedResponse(RestflyAPIError):
+    """
+    RESTFly only treats a ``200 OK`` as a successful response, so this is raised in
+    place of an error for ``202 Accepted`` responses in order to hand the response
+    back to the caller.  See :func:`accepted_error_map`.
+    """
+
+    def __init__(self, response: Response, template: str, obj: Any = None):
+        # We purposefully skip APIError's init, as it would log a warning for what is
+        # actually a successful response.
+        self.status_code = response.status_code
+        self.response = response
+        self.obj = obj
+        Exception.__init__(self, f"[{response.status_code}] Accepted")
+
+
+def accepted_error_map(
+    client: APIClient | AsyncAPIClient,
+) -> defaultdict[int, ErrorStatus]:
+    """
+    Returns a copy of the client's error map that raises :class:`AcceptedResponse` for
+    ``202 Accepted`` responses.
+    """
+    error_map = copy(client._error_map)
+    error_map[202] = ErrorStatus(exception=AcceptedResponse)
+    return error_map

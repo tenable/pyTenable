@@ -58,9 +58,9 @@ class TenableCloudAPIError(RestflyAPIError):
     various services it may traverse.
     """
 
-    def __init__(self, response: Response, template: str):
+    def __init__(self, response: Response, template: str, obj=None):
         self.request_uuid = response.headers.get('Request-UUID')
-        super().__init__(response=response, template=template)
+        super().__init__(response=response, template=template, obj=obj)
 
 
 def api_error_func(resp, **kwargs):  # noqa: PLW0613

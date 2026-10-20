@@ -8,6 +8,7 @@ from restfly.types import CertTypes, ProxyTypes
 from ..errors import TenableCloudAPIError
 from ..version import lib_name, version
 from .platform import AsyncPlatformAPIs, PlatformAPIs
+from .vm import AsyncVMAPIs, VMAPIs
 
 # TODO: We will eventually need to remove this when the new package is in a better
 #       state.  This will likely take some time, and require the documentation wiring
@@ -27,6 +28,7 @@ class TenableCloud(APIClient):
     _json_dump_kwargs = {"exclude_none": True}
 
     platform: PlatformAPIs
+    vm: VMAPIs
 
     def __init__(
         self,
@@ -80,6 +82,7 @@ class AsyncTenableCloud(AsyncAPIClient):
     _json_dump_kwargs = {"exclude_none": True}
 
     platform: AsyncPlatformAPIs
+    vm: AsyncVMAPIs
 
     def __init__(
         self,
