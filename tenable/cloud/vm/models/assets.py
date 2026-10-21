@@ -304,3 +304,47 @@ class AssetImportJob(BaseModel):
 
 class AssetImportJobListResponse(BaseModel):
     asset_import_jobs: list[AssetImportJob]
+
+
+class AssetAttribute(BaseModel):
+    id: UUID
+    name: str
+    description: str | None = None
+
+
+class AssetAttributeListResponse(BaseModel):
+    attributes: list[AssetAttribute]
+
+
+class AssetAttributeCreate(BaseModel):
+    name: str
+    description: str | None = None
+
+
+class AssetAttributeCreateRequest(BaseModel):
+    attributes: Annotated[list[AssetAttributeCreate], Field(min_length=1)]
+
+
+class AssetAttributeUpdate(BaseModel):
+    description: str
+
+
+class AssetAttributeValue(AssetAttribute):
+    value: str | None = None
+
+
+class AssetAttributeValueListResponse(BaseModel):
+    attributes: list[AssetAttributeValue]
+
+
+class AssetAttributeAssignment(BaseModel):
+    id: UUID
+    value: str
+
+
+class AssetAttributeAssignRequest(BaseModel):
+    attributes: Annotated[list[AssetAttributeAssignment], Field(min_length=1)]
+
+
+class AssetAttributeSingleAssign(BaseModel):
+    value: str

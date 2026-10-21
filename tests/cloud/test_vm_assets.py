@@ -11,6 +11,8 @@ from tenable.cloud.vm.models.assets import (
     Asset,
     AssetAcrIdentifier,
     AssetAcrUpdate,
+    AssetAttribute,
+    AssetAttributeValue,
     AssetImportJob,
     AssetQueryFilter,
     AssetSummary,
@@ -22,6 +24,9 @@ ASSET_UUID = "236224b4-e3e7-4761-ad47-e32daaebec6b"
 JOB_UUID = "3c824793-73d8-4c2e-bfc3-c2f78afa3bbf"
 DEFAULT_NET = "00000000-0000-0000-0000-000000000000"
 CUSTOM_NET = "4dee97b4-592b-4b5b-a8a9-d7a605a3723a"
+ATTR_UUID = "116af8c3-969d-4621-9f9f-364eeb58e3a7"
+ATTR_URL = f"{BASE_URL}/api/v3/assets/attributes"
+ASSET_ATTR_URL = f"{BASE_URL}/api/v3/assets/{ASSET_UUID}/attributes"
 BULK_RESP = {"response": {"data": {"asset_count": 512}}}
 
 
@@ -617,3 +622,213 @@ async def test_async_assets_import_assets(httpx_mock: HTTPXMock, acloud):
 def test_acr_update_asset_must_be_list():
     with pytest.raises(ValidationError):
         AssetAcrUpdate.model_validate({"acr_score": 5, "asset": {"id": ASSET_UUID}})
+
+
+ATTRS_JSON = {
+    "attributes": [
+        {"id": ATTR_UUID, "name": "Owner", "description": "The asset owner."},
+        {"id": ATTR_UUID, "name": "Location"},
+    ]
+}
+ASSET_ATTRS_JSON = {
+    "attributes": [
+        {"id": ATTR_UUID, "name": "Owner", "value": "Rob"},
+        {"id": ATTR_UUID, "name": "Location", "description": "Where it lives."},
+    ]
+}
+
+
+def test_asset_attribute_models():
+    attrs = [AssetAttribute.model_validate(a) for a in ATTRS_JSON["attributes"]]
+    assert attrs[1].description is None
+    values = [
+        AssetAttributeValue.model_validate(a) for a in ASSET_ATTRS_JSON["attributes"]
+    ]
+    assert values[0].value == "Rob"
+    assert values[1].value is None
+
+
+def test_assets_attributes(httpx_mock: HTTPXMock, cloud):
+    httpx_mock.add_response(url=ATTR_URL, method="get", json=ATTRS_JSON)
+    attrs = cloud.vm.assets.attributes()
+    assert [a.name for a in attrs] == ["Owner", "Location"]
+    assert attrs[0].id == UUID(ATTR_UUID)
+
+
+def test_assets_create_attributes(httpx_mock: HTTPXMock, cloud):
+    httpx_mock.add_response(
+        url=ATTR_URL,
+        method="post",
+        match_json={
+            "attributes": [
+                {"name": "Owner", "description": "The asset owner."},
+                {"name": "Location"},
+            ]
+        },
+        json={},
+    )
+    result = cloud.vm.assets.create_attributes(
+        [{"name": "Owner", "description": "The asset owner."}, {"name": "Location"}]
+    )
+    assert result is None
+
+
+def test_assets_create_attributes_requires_attributes(cloud):
+    with pytest.raises(ValidationError):
+        cloud.vm.assets.create_attributes([])
+
+
+def test_assets_create_attributes_requires_name(cloud):
+    with pytest.raises(ValidationError):
+        cloud.vm.assets.create_attributes([{"description": "no name"}])
+
+
+def test_assets_update_attribute(httpx_mock: HTTPXMock, cloud):
+    httpx_mock.add_response(
+        url=f"{ATTR_URL}/{ATTR_UUID}",
+        method="put",
+        match_json={"description": "A new description."},
+        json={},
+    )
+    assert cloud.vm.assets.update_attribute(ATTR_UUID, "A new description.") is None
+
+
+def test_assets_delete_attribute(httpx_mock: HTTPXMock, cloud):
+    httpx_mock.add_response(url=f"{ATTR_URL}/{ATTR_UUID}", method="delete", json={})
+    assert cloud.vm.assets.delete_attribute(ATTR_UUID) is None
+
+
+def test_assets_asset_attributes(httpx_mock: HTTPXMock, cloud):
+    httpx_mock.add_response(url=ASSET_ATTR_URL, method="get", json=ASSET_ATTRS_JSON)
+    attrs = cloud.vm.assets.asset_attributes(ASSET_UUID)
+    assert [(a.name, a.value) for a in attrs] == [("Owner", "Rob"), ("Location", None)]
+
+
+def test_assets_assign_attributes(httpx_mock: HTTPXMock, cloud):
+    httpx_mock.add_response(
+        url=ASSET_ATTR_URL,
+        method="put",
+        match_json={"attributes": [{"id": ATTR_UUID, "value": "Dallas"}]},
+        json={},
+    )
+    result = cloud.vm.assets.assign_attributes(
+        ASSET_UUID, [{"id": ATTR_UUID, "value": "Dallas"}]
+    )
+    assert result is None
+
+
+def test_assets_assign_attributes_requires_value(cloud):
+    with pytest.raises(ValidationError):
+        cloud.vm.assets.assign_attributes(ASSET_UUID, [{"id": ATTR_UUID}])
+
+
+def test_assets_assign_attribute(httpx_mock: HTTPXMock, cloud):
+    httpx_mock.add_response(
+        url=f"{ASSET_ATTR_URL}/{ATTR_UUID}",
+        method="put",
+        match_json={"value": "Boston"},
+        json={},
+    )
+    assert cloud.vm.assets.assign_attribute(ASSET_UUID, ATTR_UUID, "Boston") is None
+
+
+def test_assets_remove_attributes(httpx_mock: HTTPXMock, cloud):
+    httpx_mock.add_response(url=ASSET_ATTR_URL, method="delete", json={})
+    assert cloud.vm.assets.remove_attributes(ASSET_UUID) is None
+
+
+def test_assets_remove_attribute(httpx_mock: HTTPXMock, cloud):
+    httpx_mock.add_response(
+        url=f"{ASSET_ATTR_URL}/{ATTR_UUID}", method="delete", json={}
+    )
+    assert cloud.vm.assets.remove_attribute(ASSET_UUID, ATTR_UUID) is None
+
+
+def test_assets_attribute_error(httpx_mock: HTTPXMock, cloud):
+    httpx_mock.add_response(
+        url=f"{ATTR_URL}/{ATTR_UUID}", method="delete", status_code=403
+    )
+    with pytest.raises(TenableCloudAPIError):
+        cloud.vm.assets.delete_attribute(ATTR_UUID)
+
+
+@pytest.mark.asyncio
+async def test_async_assets_attributes(httpx_mock: HTTPXMock, acloud):
+    httpx_mock.add_response(url=ATTR_URL, method="get", json=ATTRS_JSON)
+    attrs = await acloud.vm.assets.attributes()
+    assert [a.name for a in attrs] == ["Owner", "Location"]
+
+
+@pytest.mark.asyncio
+async def test_async_assets_create_attributes(httpx_mock: HTTPXMock, acloud):
+    httpx_mock.add_response(
+        url=ATTR_URL,
+        method="post",
+        match_json={"attributes": [{"name": "Location"}]},
+        json={},
+    )
+    assert await acloud.vm.assets.create_attributes([{"name": "Location"}]) is None
+
+
+@pytest.mark.asyncio
+async def test_async_assets_update_attribute(httpx_mock: HTTPXMock, acloud):
+    httpx_mock.add_response(
+        url=f"{ATTR_URL}/{ATTR_UUID}",
+        method="put",
+        match_json={"description": "New."},
+        json={},
+    )
+    assert await acloud.vm.assets.update_attribute(ATTR_UUID, "New.") is None
+
+
+@pytest.mark.asyncio
+async def test_async_assets_delete_attribute(httpx_mock: HTTPXMock, acloud):
+    httpx_mock.add_response(url=f"{ATTR_URL}/{ATTR_UUID}", method="delete", json={})
+    assert await acloud.vm.assets.delete_attribute(ATTR_UUID) is None
+
+
+@pytest.mark.asyncio
+async def test_async_assets_asset_attributes(httpx_mock: HTTPXMock, acloud):
+    httpx_mock.add_response(url=ASSET_ATTR_URL, method="get", json=ASSET_ATTRS_JSON)
+    attrs = await acloud.vm.assets.asset_attributes(ASSET_UUID)
+    assert attrs[0].value == "Rob"
+
+
+@pytest.mark.asyncio
+async def test_async_assets_assign_attributes(httpx_mock: HTTPXMock, acloud):
+    httpx_mock.add_response(
+        url=ASSET_ATTR_URL,
+        method="put",
+        match_json={"attributes": [{"id": ATTR_UUID, "value": "Dallas"}]},
+        json={},
+    )
+    result = await acloud.vm.assets.assign_attributes(
+        ASSET_UUID, [{"id": ATTR_UUID, "value": "Dallas"}]
+    )
+    assert result is None
+
+
+@pytest.mark.asyncio
+async def test_async_assets_assign_attribute(httpx_mock: HTTPXMock, acloud):
+    httpx_mock.add_response(
+        url=f"{ASSET_ATTR_URL}/{ATTR_UUID}",
+        method="put",
+        match_json={"value": "Boston"},
+        json={},
+    )
+    result = await acloud.vm.assets.assign_attribute(ASSET_UUID, ATTR_UUID, "Boston")
+    assert result is None
+
+
+@pytest.mark.asyncio
+async def test_async_assets_remove_attributes(httpx_mock: HTTPXMock, acloud):
+    httpx_mock.add_response(url=ASSET_ATTR_URL, method="delete", json={})
+    assert await acloud.vm.assets.remove_attributes(ASSET_UUID) is None
+
+
+@pytest.mark.asyncio
+async def test_async_assets_remove_attribute(httpx_mock: HTTPXMock, acloud):
+    httpx_mock.add_response(
+        url=f"{ASSET_ATTR_URL}/{ATTR_UUID}", method="delete", json={}
+    )
+    assert await acloud.vm.assets.remove_attribute(ASSET_UUID, ATTR_UUID) is None

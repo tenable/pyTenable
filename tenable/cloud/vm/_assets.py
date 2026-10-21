@@ -10,6 +10,16 @@ from .models.assets import (
     AcrReason,
     Asset,
     AssetAcrUpdateRequest,
+    AssetAttribute,
+    AssetAttributeAssignment,
+    AssetAttributeAssignRequest,
+    AssetAttributeCreate,
+    AssetAttributeCreateRequest,
+    AssetAttributeListResponse,
+    AssetAttributeSingleAssign,
+    AssetAttributeUpdate,
+    AssetAttributeValue,
+    AssetAttributeValueListResponse,
     AssetDeleteRequest,
     AssetImport,
     AssetImportCreateResponse,
@@ -253,6 +263,143 @@ class AssetsAPI(APIEndpoint):
         )
         return resp.job_id
 
+    def attributes(self) -> list[AssetAttribute]:
+        """
+        Returns the custom asset attributes defined within the container. A container
+        can have a maximum of 10 custom asset attributes.
+
+        Returns:
+            List of custom asset attribute objects.
+        """
+        resp = self._client._get(
+            "/api/v3/assets/attributes", response_model=AssetAttributeListResponse
+        )
+        return resp.attributes
+
+    def create_attributes(
+        self, attributes: list[AssetAttributeCreate | dict[str, Any]]
+    ) -> None:
+        """
+        Creates new custom asset attributes. Use :meth:`attributes` to retrieve the
+        IDs of the created attributes.
+
+        Args:
+            attributes:
+                The custom asset attributes to create. Each attribute requires a
+                ``name`` and may optionally have a ``description``.
+
+        Example:
+            >>> cloud.vm.assets.create_attributes(
+            ...     [{"name": "Location", "description": "Where the asset is located."}]
+            ... )
+        """
+        self._client._post(
+            "/api/v3/assets/attributes",
+            json=AssetAttributeCreateRequest.model_validate({"attributes": attributes}),
+        )
+
+    def update_attribute(self, attribute_id: UUID | str, description: str) -> None:
+        """
+        Updates the description of the specified custom asset attribute. The
+        description is the only attribute property that can be updated.
+
+        Args:
+            attribute_id: The UUID of the custom asset attribute.
+            description: The new description for the custom asset attribute.
+        """
+        self._client._put(
+            f"/api/v3/assets/attributes/{scrub(attribute_id)}",
+            json=AssetAttributeUpdate(description=description),
+        )
+
+    def delete_attribute(self, attribute_id: UUID | str) -> None:
+        """
+        Deletes the specified custom asset attribute and removes it from all of the
+        assets it is assigned to.
+
+        Args:
+            attribute_id: The UUID of the custom asset attribute.
+        """
+        self._client._delete(f"/api/v3/assets/attributes/{scrub(attribute_id)}")
+
+    def asset_attributes(self, asset_id: UUID | str) -> list[AssetAttributeValue]:
+        """
+        Returns the custom asset attributes assigned to the specified asset.
+
+        Args:
+            asset_id: The UUID of the asset.
+
+        Returns:
+            List of custom asset attribute objects, including the assigned values.
+        """
+        resp = self._client._get(
+            f"/api/v3/assets/{scrub(asset_id)}/attributes",
+            response_model=AssetAttributeValueListResponse,
+        )
+        return resp.attributes
+
+    def assign_attributes(
+        self,
+        asset_id: UUID | str,
+        attributes: list[AssetAttributeAssignment | dict[str, Any]],
+    ) -> None:
+        """
+        Assigns custom asset attribute values to the specified asset.
+
+        Args:
+            asset_id: The UUID of the asset.
+            attributes:
+                The custom asset attribute values to assign. Each entry requires the
+                attribute ``id`` and the ``value`` to assign.
+
+        Example:
+            >>> cloud.vm.assets.assign_attributes(
+            ...     "236224b4-e3e7-4761-ad47-e32daaebec6b",
+            ...     [{"id": "116af8c3-969d-4621-9f9f-364eeb58e3a7", "value": "Dallas"}],
+            ... )
+        """
+        self._client._put(
+            f"/api/v3/assets/{scrub(asset_id)}/attributes",
+            json=AssetAttributeAssignRequest.model_validate({"attributes": attributes}),
+        )
+
+    def assign_attribute(
+        self, asset_id: UUID | str, attribute_id: UUID | str, value: str
+    ) -> None:
+        """
+        Assigns a single custom asset attribute value to the specified asset.
+
+        Args:
+            asset_id: The UUID of the asset.
+            attribute_id: The UUID of the custom asset attribute.
+            value: The value to assign.
+        """
+        self._client._put(
+            f"/api/v3/assets/{scrub(asset_id)}/attributes/{scrub(attribute_id)}",
+            json=AssetAttributeSingleAssign(value=value),
+        )
+
+    def remove_attributes(self, asset_id: UUID | str) -> None:
+        """
+        Removes all custom asset attributes from the specified asset.
+
+        Args:
+            asset_id: The UUID of the asset.
+        """
+        self._client._delete(f"/api/v3/assets/{scrub(asset_id)}/attributes")
+
+    def remove_attribute(self, asset_id: UUID | str, attribute_id: UUID | str) -> None:
+        """
+        Removes a single custom asset attribute from the specified asset.
+
+        Args:
+            asset_id: The UUID of the asset.
+            attribute_id: The UUID of the custom asset attribute.
+        """
+        self._client._delete(
+            f"/api/v3/assets/{scrub(asset_id)}/attributes/{scrub(attribute_id)}"
+        )
+
 
 class AsyncAssetsAPI(AsyncAPIEndpoint):
     _path = "/assets"
@@ -480,3 +627,144 @@ class AsyncAssetsAPI(AsyncAPIEndpoint):
             response_model=AssetImportCreateResponse,
         )
         return resp.job_id
+
+    async def attributes(self) -> list[AssetAttribute]:
+        """
+        Returns the custom asset attributes defined within the container. A container
+        can have a maximum of 10 custom asset attributes.
+
+        Returns:
+            List of custom asset attribute objects.
+        """
+        resp = await self._client._get(
+            "/api/v3/assets/attributes", response_model=AssetAttributeListResponse
+        )
+        return resp.attributes
+
+    async def create_attributes(
+        self, attributes: list[AssetAttributeCreate | dict[str, Any]]
+    ) -> None:
+        """
+        Creates new custom asset attributes. Use :meth:`attributes` to retrieve the
+        IDs of the created attributes.
+
+        Args:
+            attributes:
+                The custom asset attributes to create. Each attribute requires a
+                ``name`` and may optionally have a ``description``.
+
+        Example:
+            >>> await cloud.vm.assets.create_attributes(
+            ...     [{"name": "Location", "description": "Where the asset is located."}]
+            ... )
+        """
+        await self._client._post(
+            "/api/v3/assets/attributes",
+            json=AssetAttributeCreateRequest.model_validate({"attributes": attributes}),
+        )
+
+    async def update_attribute(
+        self, attribute_id: UUID | str, description: str
+    ) -> None:
+        """
+        Updates the description of the specified custom asset attribute. The
+        description is the only attribute property that can be updated.
+
+        Args:
+            attribute_id: The UUID of the custom asset attribute.
+            description: The new description for the custom asset attribute.
+        """
+        await self._client._put(
+            f"/api/v3/assets/attributes/{scrub(attribute_id)}",
+            json=AssetAttributeUpdate(description=description),
+        )
+
+    async def delete_attribute(self, attribute_id: UUID | str) -> None:
+        """
+        Deletes the specified custom asset attribute and removes it from all of the
+        assets it is assigned to.
+
+        Args:
+            attribute_id: The UUID of the custom asset attribute.
+        """
+        await self._client._delete(f"/api/v3/assets/attributes/{scrub(attribute_id)}")
+
+    async def asset_attributes(self, asset_id: UUID | str) -> list[AssetAttributeValue]:
+        """
+        Returns the custom asset attributes assigned to the specified asset.
+
+        Args:
+            asset_id: The UUID of the asset.
+
+        Returns:
+            List of custom asset attribute objects, including the assigned values.
+        """
+        resp = await self._client._get(
+            f"/api/v3/assets/{scrub(asset_id)}/attributes",
+            response_model=AssetAttributeValueListResponse,
+        )
+        return resp.attributes
+
+    async def assign_attributes(
+        self,
+        asset_id: UUID | str,
+        attributes: list[AssetAttributeAssignment | dict[str, Any]],
+    ) -> None:
+        """
+        Assigns custom asset attribute values to the specified asset.
+
+        Args:
+            asset_id: The UUID of the asset.
+            attributes:
+                The custom asset attribute values to assign. Each entry requires the
+                attribute ``id`` and the ``value`` to assign.
+
+        Example:
+            >>> await cloud.vm.assets.assign_attributes(
+            ...     "236224b4-e3e7-4761-ad47-e32daaebec6b",
+            ...     [{"id": "116af8c3-969d-4621-9f9f-364eeb58e3a7", "value": "Dallas"}],
+            ... )
+        """
+        await self._client._put(
+            f"/api/v3/assets/{scrub(asset_id)}/attributes",
+            json=AssetAttributeAssignRequest.model_validate({"attributes": attributes}),
+        )
+
+    async def assign_attribute(
+        self, asset_id: UUID | str, attribute_id: UUID | str, value: str
+    ) -> None:
+        """
+        Assigns a single custom asset attribute value to the specified asset.
+
+        Args:
+            asset_id: The UUID of the asset.
+            attribute_id: The UUID of the custom asset attribute.
+            value: The value to assign.
+        """
+        await self._client._put(
+            f"/api/v3/assets/{scrub(asset_id)}/attributes/{scrub(attribute_id)}",
+            json=AssetAttributeSingleAssign(value=value),
+        )
+
+    async def remove_attributes(self, asset_id: UUID | str) -> None:
+        """
+        Removes all custom asset attributes from the specified asset.
+
+        Args:
+            asset_id: The UUID of the asset.
+        """
+        await self._client._delete(f"/api/v3/assets/{scrub(asset_id)}/attributes")
+
+    async def remove_attribute(
+        self, asset_id: UUID | str, attribute_id: UUID | str
+    ) -> None:
+        """
+        Removes a single custom asset attribute from the specified asset.
+
+        Args:
+            asset_id: The UUID of the asset.
+            attribute_id: The UUID of the custom asset attribute.
+        """
+        await self._client._delete(
+            f"/api/v3/assets/{scrub(asset_id)}/attributes/{scrub(attribute_id)}"
+        )
