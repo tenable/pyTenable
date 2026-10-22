@@ -3,7 +3,6 @@ from uuid import UUID
 
 from restfly import APIEndpoint, AsyncAPIEndpoint
 
-from tenable.cloud._common import AcceptedResponse, accepted_error_map
 from tenable.utils import scrub
 
 from .models.assets import (
@@ -38,17 +37,6 @@ AssetFilter = AssetQueryFilter | tuple[str, str, str] | str
 
 class AssetsAPI(APIEndpoint):
     _path = "/assets"
-
-    def _bulk_job(self, path: str, *, json: Any) -> bytes:
-        # The bulk job endpoints live outside of the /assets path and respond with a
-        # 202 Accepted, so we call the client directly and recover the response body.
-        try:
-            resp = self._client._post(
-                path, json=json, error_map=accepted_error_map(self._client)
-            )
-        except AcceptedResponse as accepted:
-            resp = accepted.response
-        return resp.content
 
     def get(self) -> list[AssetSummary]:
         """
@@ -106,7 +94,7 @@ class AssetsAPI(APIEndpoint):
             ...     reasons=["Business Critical"],
             ... )
         """
-        self._bulk_job(
+        self._client._post(
             "/api/v2/assets/bulk-jobs/acr",
             json=AssetAcrUpdateRequest.model_validate(
                 [
@@ -154,13 +142,14 @@ class AssetsAPI(APIEndpoint):
             ...     ["192.0.2.57-192.0.2.69", "198.51.100.0/24"],
             ... )
         """
-        resp = self._bulk_job(
+        resp: BulkJobResponse = self._client._post(
             "/api/v2/assets/bulk-jobs/move-to-network",
             json=AssetMoveRequest.model_validate(
                 {"source": source, "destination": destination, "targets": targets}
             ),
+            response_model=BulkJobResponse,
         )
-        return BulkJobResponse.model_validate_json(resp).response.data.asset_count
+        return resp.response.data.asset_count
 
     def bulk_delete(
         self,
@@ -196,13 +185,14 @@ class AssetsAPI(APIEndpoint):
         """
         if not filters:
             raise ValueError("At least one filter is required.")
-        resp = self._bulk_job(
+        resp: BulkJobResponse = self._client._post(
             "/api/v2/assets/bulk-jobs/delete",
             json=AssetDeleteRequest.model_validate(
                 {"query": {filter_type: list(filters)}, "hard_delete": hard_delete}
             ),
+            response_model=BulkJobResponse,
         )
-        return BulkJobResponse.model_validate_json(resp).response.data.asset_count
+        return resp.response.data.asset_count
 
     def import_jobs(self) -> list[AssetImportJob]:
         """
@@ -404,17 +394,6 @@ class AssetsAPI(APIEndpoint):
 class AsyncAssetsAPI(AsyncAPIEndpoint):
     _path = "/assets"
 
-    async def _bulk_job(self, path: str, *, json: Any) -> bytes:
-        # The bulk job endpoints live outside of the /assets path and respond with a
-        # 202 Accepted, so we call the client directly and recover the response body.
-        try:
-            resp = await self._client._post(
-                path, json=json, error_map=accepted_error_map(self._client)
-            )
-        except AcceptedResponse as accepted:
-            resp = accepted.response
-        return resp.content
-
     async def get(self) -> list[AssetSummary]:
         """
         Returns up to 5,000 assets. Use the asset exports to retrieve all assets.
@@ -471,7 +450,7 @@ class AsyncAssetsAPI(AsyncAPIEndpoint):
             ...     reasons=["Business Critical"],
             ... )
         """
-        await self._bulk_job(
+        await self._client._post(
             "/api/v2/assets/bulk-jobs/acr",
             json=AssetAcrUpdateRequest.model_validate(
                 [
@@ -519,13 +498,14 @@ class AsyncAssetsAPI(AsyncAPIEndpoint):
             ...     ["192.0.2.57-192.0.2.69", "198.51.100.0/24"],
             ... )
         """
-        resp = await self._bulk_job(
+        resp: BulkJobResponse = await self._client._post(
             "/api/v2/assets/bulk-jobs/move-to-network",
             json=AssetMoveRequest.model_validate(
                 {"source": source, "destination": destination, "targets": targets}
             ),
+            response_model=BulkJobResponse,
         )
-        return BulkJobResponse.model_validate_json(resp).response.data.asset_count
+        return resp.response.data.asset_count
 
     async def bulk_delete(
         self,
@@ -561,13 +541,14 @@ class AsyncAssetsAPI(AsyncAPIEndpoint):
         """
         if not filters:
             raise ValueError("At least one filter is required.")
-        resp = await self._bulk_job(
+        resp: BulkJobResponse = await self._client._post(
             "/api/v2/assets/bulk-jobs/delete",
             json=AssetDeleteRequest.model_validate(
                 {"query": {filter_type: list(filters)}, "hard_delete": hard_delete}
             ),
+            response_model=BulkJobResponse,
         )
-        return BulkJobResponse.model_validate_json(resp).response.data.asset_count
+        return resp.response.data.asset_count
 
     async def import_jobs(self) -> list[AssetImportJob]:
         """
