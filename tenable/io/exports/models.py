@@ -58,7 +58,9 @@ CVECategory = Annotated[
     ],
     BeforeValidator(to_lower),
 ]
-CVEId = Annotated[str, Field(pattern=r'^CVE-\d{4}-\d{1,5}$')]
+# CVE ID syntax: "CVE-", a four-digit year, then a sequence number of four or more
+# digits with no upper limit, such as CVE-2026-109618.
+CVEId = Annotated[str, Field(pattern=r'^CVE-\d{4}-\d{4,}$')]
 CVSSScore = Annotated[float, Field(ge=0, le=10)]
 ExploitMaturity = Annotated[
     Literal['high', 'functional', 'poc', 'unproven'], BeforeValidator(to_lower)
