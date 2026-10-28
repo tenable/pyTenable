@@ -1,25 +1,61 @@
-name: Deploy to PyPI
+name: Publish release to PyPI
 
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+rc[0-9]+"
+      - "v[0-9]+.[0-9]+.[0-9]+[ab][0-9]+"
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          python-version: "3.12"
-      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
-      - uses: extractions/setup-just@v4
+          persist-credentials: false
 
-      - name: Build package
+      - name: Install UV
+        uses: astral-sh/setup-uv@7a047e608db84b3d8c06cd9a7c7dcc9c355c18e
+        with:
+          python-version: 3.14
+
+      - name: Build pyTenable
         run: uv build
 
-      - name: Publish to PyPI
+      # Add Smoke testing here at some point.
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+    permissions:
+      id-token: write
+    steps:
+      - name: Install UV
+        uses: astral-sh/setup-uv@7a047e608db84b3d8c06cd9a7c7dcc9c355c18e
+        with:
+          enable-cache: false
+
+      - name: Download distributions artifact
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
+        with:
+          name: dist
+          path: dist/
+
+      - name: Generate PEP 740 attestations
+        uses: astral-sh/attest-action@f589a42a7efb6fe400b4f400de60b4bc90390027
+
+      - name: Publish
         run: uv publish
-        env:
-          UV_PUBLISH_USERNAME: __token__
-          UV_PUBLISH_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
