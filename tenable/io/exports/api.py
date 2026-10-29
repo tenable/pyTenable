@@ -20,7 +20,7 @@ from typing import Any, Literal, Type
 from uuid import UUID
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.errors import RequestConflictError
+from tenable.errors import RequestConflictError, UnexpectedValueError
 from tenable.utils import scrub
 
 from . import models
@@ -41,6 +41,29 @@ EXPORTS_MAP = {
         None: {'path': 'was/v1/export/vulns', 'job_path': 'was/v1/export/vulns'},
     },
 }
+
+
+def _vpr_score_from_v2(vpr_score, vpr_v2_score, export_name):
+    """
+    Translate the removed ``vpr_v2_score`` filter into ``vpr_score``.
+
+    Tenable removed ``vpr_v2_score`` from the export API on 2026-10-01, and
+    ``vpr_score`` now uses the same VPR v2 model.
+    """
+    if vpr_v2_score is None:
+        return vpr_score
+    if vpr_score is not None:
+        raise UnexpectedValueError(
+            'vpr_score and vpr_v2_score cannot both be specified.  Use vpr_score.'
+        )
+    warnings.warn(
+        f'The vpr_v2_score filter was removed from the {export_name} export API on '
+        '2026-10-01.  pyTenable sends the value as vpr_score, which now uses the same '
+        'VPR v2 model.  Use vpr_score instead.',
+        DeprecationWarning,
+        stacklevel=3,
+    )
+    return vpr_v2_score
 
 
 class ExportsAPI(APIEndpoint):
@@ -915,6 +938,12 @@ class ExportsAPI(APIEndpoint):
                       - float
                       - VPR scores must be less than or equal to the
                         specified value.
+            vpr_v2_score:
+                Deprecated.  Tenable removed the ``vpr_v2_score`` filter from the
+                export API on 2026-10-01, and ``vpr_score`` now uses the same VPR v2
+                model.  A value passed here is sent as ``vpr_score``, and a
+                ``DeprecationWarning`` is emitted.  Use ``vpr_score`` instead.
+                Passing both raises an ``UnexpectedValueError``.
             network_id:
                 Only findings within the specified network UUID will be
                 returned.
@@ -1042,6 +1071,7 @@ class ExportsAPI(APIEndpoint):
 
             >>> vulns = tio.exports.vulns(zero_day=True)
         """
+        vpr_score = _vpr_score_from_v2(vpr_score, vpr_v2_score, 'vulnerability')
         return self._export(
             export_type='vulns',
             version=None,
@@ -1083,7 +1113,6 @@ class ExportsAPI(APIEndpoint):
                     state=state,
                     source=source,
                     vpr_score=vpr_score,  # ty: ignore[invalid-argument-type]
-                    vpr_v2_score=vpr_v2_score,  # ty: ignore[invalid-argument-type]
                     vpr_threat_intensity=vpr_threat_intensity,
                     weaponization=weaponization,
                     zero_day=zero_day,
@@ -1233,6 +1262,12 @@ class ExportsAPI(APIEndpoint):
                       - float
                       - VPR scores must be less than or equal to the
                         specified value.
+            vpr_v2_score:
+                Deprecated.  Tenable removed the ``vpr_v2_score`` filter from the
+                export API on 2026-10-01, and ``vpr_score`` now uses the same VPR v2
+                model.  A value passed here is sent as ``vpr_score``, and a
+                ``DeprecationWarning`` is emitted.  Use ``vpr_score`` instead.
+                Passing both raises an ``UnexpectedValueError``.
             ipv4s:
                 Restrict the export to only vulns assigned to assets with specific
                 ip-addresses.
@@ -1296,6 +1331,7 @@ class ExportsAPI(APIEndpoint):
             ...     severity=['high', 'critical'],
             ... )
         """
+        vpr_score = _vpr_score_from_v2(vpr_score, vpr_v2_score, 'WAS findings')
         return self._export(
             export_type='was',
             version=None,
@@ -1329,7 +1365,6 @@ class ExportsAPI(APIEndpoint):
                     severity_modification_type=severity_modification_type,
                     state=state,
                     vpr_score=vpr_score,  # ty: ignore[invalid-argument-type]
-                    vpr_v2_score=vpr_v2_score,  # ty: ignore[invalid-argument-type]
                 ),
             ).model_dump(mode='json', exclude_none=True),
         )
