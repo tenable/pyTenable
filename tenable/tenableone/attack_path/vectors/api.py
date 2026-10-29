@@ -11,8 +11,11 @@ These methods can be accessed at ``TenableOne.attack_path``.
 """
 
 import json
+import warnings
 from copy import copy
 from typing import Dict, Optional, Union
+
+from pydantic import BaseModel
 
 from tenable.base._restfly_v1 import APIIterator
 
@@ -63,6 +66,11 @@ class VectorsAPI(APIEndpoint):
     ) -> Union[VectorIterator, VectorsPageSchema]:
         """
         Retrieve vectors
+
+        .. warning::
+            Deprecated.  This method calls the attack path list endpoint, which
+            Tenable deprecated on 2025-10-30.  Use :meth:`top_attack_paths_search`
+            instead.
 
         Args:
             page_number (optional, int):
@@ -124,6 +132,12 @@ class VectorsAPI(APIEndpoint):
             ...     return_iterator=False
             ...     )
         """
+        warnings.warn(
+            'attack_path.vectors.list() calls an endpoint that Tenable deprecated on '
+            '2025-10-30.  Use attack_path.vectors.top_attack_paths_search() instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
         payload = {
             'page_number': page_number,
             'limit': limit,
@@ -144,6 +158,8 @@ class VectorsAPI(APIEndpoint):
         run_ai_summarization: Optional[str] = None,
         filter: Optional[PublicVectorFilterType] = None,
         exclude_resolved: bool = True,
+        *,
+        offset: Optional[int] = None,
     ) -> DiscoverPageTableResponse:
         """
         Search top attack paths leading to critical assets.
@@ -172,23 +188,32 @@ class VectorsAPI(APIEndpoint):
             filter (optional, PublicVectorFilterType):
                 Filter criteria for the search. The filter is passed as a JSON object
                 in the request body. Supports complex filtering with AND/OR operators.
+                The API accepts the comparison operators ``==``, ``!=``, ``eq``,
+                ``neq``, ``contains``, ``excludes``, ``includes``, ``>``, ``>=``,
+                ``<`` and ``<=``, and rejects others with a 400 error.
 
             exclude_resolved (bool, optional):
                 When True (default), excludes paths with path_status 'done',
                 'chain_prevented', or 'accepted'. Set to False to include all paths.
 
+            offset (optional, int):
+                The number of records to skip, for paging through results with
+                ``limit``.  If omitted, the API starts at the first record.
+
         Returns:
             :obj:`DiscoverPageTableResponse`:
-                Response containing attack paths data with pagination information
+                Response containing the attack paths in ``data``, and the
+                ``pagination`` details (``total``, ``offset``, ``limit`` and
+                ``sort``).  ``total`` is also available directly on the response.
 
         Examples:
-            Search for high priority attack paths leading to critical assets
+            Search for high priority attack paths that are still to do
 
             >>> filter_data = {
             ...     "operator": "AND",
             ...     "value": [
-            ...         {"property": "priority", "operator": "gte", "value": 8},
-            ...         {"property": "critical_asset", "operator": "eq", "value": True}
+            ...         {"property": "priority", "operator": ">=", "value": 8},
+            ...         {"property": "path_status", "operator": "eq", "value": "to_do"}
             ...     ]
             ... }
             >>> response = t1.attack_path.vectors.top_attack_paths_search(
@@ -199,12 +224,12 @@ class VectorsAPI(APIEndpoint):
             >>> for attack_path in response.data:
             ...     print(f"Attack Path: {attack_path.name}, Priority: {attack_path.priority}")
 
-            Filter by path_status to get only actionable paths
+            Filter by path_status to get only the paths in review
 
             >>> filter_data = {
             ...     "property": "path_status",
-            ...     "operator": "in",
-            ...     "value": ["to_do", "in_progress", "in_review"]
+            ...     "operator": "eq",
+            ...     "value": "in_review"
             ... }
             >>> response = t1.attack_path.vectors.top_attack_paths_search(
             ...     filter=filter_data
@@ -216,6 +241,17 @@ class VectorsAPI(APIEndpoint):
             ...     exclude_resolved=False
             ... )
 
+            Page through all attack paths, 1000 at a time
+
+            >>> offset = 0
+            >>> while True:
+            ...     page = t1.attack_path.vectors.top_attack_paths_search(offset=offset)
+            ...     for attack_path in page.data:
+            ...         print(attack_path.name)
+            ...     offset += len(page.data)
+            ...     if not page.data or offset >= page.total:
+            ...         break
+
             Simple search with default parameters
 
             >>> response = t1.attack_path.vectors.top_attack_paths_search()
@@ -226,6 +262,8 @@ class VectorsAPI(APIEndpoint):
             'exclude_resolved': exclude_resolved,
         }
 
+        if offset is not None:
+            payload['offset'] = offset
         if sort:
             payload['sort'] = sort
         if run_ai_summarization:
@@ -234,19 +272,21 @@ class VectorsAPI(APIEndpoint):
         # For POST request with filter in body
         if filter:
             # Handle both PublicVectorFilterType objects and plain dictionaries
-            if hasattr(filter, 'dict'):
-                filter_json = filter.model_dump()
+            if isinstance(filter, BaseModel):
+                filter_json = filter.model_dump(mode='json')
             else:
                 filter_json = filter
 
             return DiscoverPageTableResponse(
                 **self._api.post(
-                    'api/v1/t1/top-attack-paths/search',
+                    'api/v1/t1/apa/top-attack-paths/search',
                     params=payload,
                     json=filter_json,
                 )
             )
         else:
             return DiscoverPageTableResponse(
-                **self._api.post('api/v1/t1/top-attack-paths/search', params=payload)
+                **self._api.post(
+                    'api/v1/t1/apa/top-attack-paths/search', params=payload
+                )
             )
