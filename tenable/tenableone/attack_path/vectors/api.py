@@ -241,12 +241,14 @@ class VectorsAPI(APIEndpoint):
 
             return DiscoverPageTableResponse(
                 **self._api.post(
-                    'api/v1/t1/top-attack-paths/search',
+                    'api/v1/t1/apa/top-attack-paths/search',
                     params=payload,
                     json=filter_json,
                 )
             )
         else:
             return DiscoverPageTableResponse(
-                **self._api.post('api/v1/t1/top-attack-paths/search', params=payload)
+                **self._api.post(
+                    'api/v1/t1/apa/top-attack-paths/search', params=payload
+                )
             )

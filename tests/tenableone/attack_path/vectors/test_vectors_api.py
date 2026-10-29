@@ -175,7 +175,7 @@ def test_top_attack_paths_search_with_filter(tenable_one_api, vector_row):
         "total": 5
     }
 
-    responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
+    responses.post('https://cloud.tenable.com/api/v1/t1/apa/top-attack-paths/search',
                    json=response_data,
                    match=[responses.matchers.query_param_matcher({
                        "limit": 1000, "exclude_resolved": True
@@ -198,7 +198,7 @@ def test_top_attack_paths_search_without_filter(tenable_one_api, vector_row):
         "total": 10
     }
 
-    responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
+    responses.post('https://cloud.tenable.com/api/v1/t1/apa/top-attack-paths/search',
                    json=response_data,
                    match=[responses.matchers.query_param_matcher({
                        "limit": 500, "sort": "priority:desc", "exclude_resolved": True
@@ -221,7 +221,7 @@ def test_top_attack_paths_search_with_ai_summarization(tenable_one_api, vector_r
         "total": 3
     }
 
-    responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
+    responses.post('https://cloud.tenable.com/api/v1/t1/apa/top-attack-paths/search',
                    json=response_data,
                    match=[responses.matchers.query_param_matcher({
                        "limit": 1000,
@@ -246,7 +246,7 @@ def test_top_attack_paths_search_exclude_resolved_default(tenable_one_api, vecto
         "total": 5
     }
 
-    responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
+    responses.post('https://cloud.tenable.com/api/v1/t1/apa/top-attack-paths/search',
                    json=response_data,
                    match=[responses.matchers.query_param_matcher({
                        "limit": 1000,
@@ -267,7 +267,7 @@ def test_top_attack_paths_search_exclude_resolved_false(tenable_one_api, vector_
         "total": 10
     }
 
-    responses.post('https://cloud.tenable.com/api/v1/t1/top-attack-paths/search',
+    responses.post('https://cloud.tenable.com/api/v1/t1/apa/top-attack-paths/search',
                    json=response_data,
                    match=[responses.matchers.query_param_matcher({
                        "limit": 1000,
