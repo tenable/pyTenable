@@ -4,7 +4,12 @@ import pytest
 import responses
 
 from tenable.tenableone.attack_path.vectors.api import VectorIterator
-from tenable.tenableone.attack_path.vectors.schema import VectorsPageSchema, DiscoverPageTableResponse, VectorRow
+from tenable.tenableone.attack_path.vectors.schema import (
+    DiscoverPageTableResponse,
+    PublicVectorFilterType,
+    VectorRow,
+    VectorsPageSchema,
+)
 
 
 @pytest.fixture
@@ -352,3 +357,67 @@ def test_top_attack_paths_search_offset_keyword_only(tenable_one_api):
         tenable_one_api.attack_path.vectors.top_attack_paths_search(
             1000, None, None, None, True, 100
         )
+
+
+SEARCH_PAGINATION = {
+    'total': 585,
+    'offset': 0,
+    'limit': 100,
+    'sort': {'name': 'priority', 'order': 'desc'},
+}
+SEARCH_ROW = {
+    'vector_id': '0123456789ABCDEF0123456789ABCDEF',
+    'path': None,
+    'techniques': [],
+    'nodes': [],
+    'name': 'Example attack path',
+    'summary': 'An example attack path.',
+    'first_aes': 7.4,
+    'last_acr': 9,
+    'path_status': 'to_do',
+    'priority': 8.15,
+    'graph_node': {'id': 1},
+    'mitigations': [],
+}
+
+
+@responses.activate
+def test_top_attack_paths_search_reads_pagination(tenable_one_api):
+    responses.post(
+        'https://cloud.tenable.com/api/v1/t1/apa/top-attack-paths/search',
+        json={'data': [SEARCH_ROW], 'pagination': SEARCH_PAGINATION},
+    )
+    response = tenable_one_api.attack_path.vectors.top_attack_paths_search(limit=100)
+    assert response.total == 585
+    assert response.pagination.offset == 0
+    assert response.pagination.limit == 100
+    assert response.pagination.sort.name == 'priority'
+    row = response.data[0]
+    assert row.priority == 8.15
+    assert row.graph_node == {'id': 1}
+    assert row.mitigations == []
+
+
+@responses.activate
+@pytest.mark.parametrize(
+    'filter_data',
+    [
+        {'property': 'priority', 'operator': '>=', 'value': 8},
+        {
+            'operator': 'AND',
+            'value': [
+                {'property': 'priority', 'operator': '>=', 'value': 8},
+                {'property': 'path_status', 'operator': 'eq', 'value': 'to_do'},
+            ],
+        },
+    ],
+)
+@pytest.mark.parametrize('as_model', [False, True])
+def test_top_attack_paths_search_filter_body(tenable_one_api, filter_data, as_model):
+    responses.post(
+        'https://cloud.tenable.com/api/v1/t1/apa/top-attack-paths/search',
+        json={'data': [], 'pagination': SEARCH_PAGINATION},
+        match=[responses.matchers.json_params_matcher(filter_data, strict_match=True)],
+    )
+    value = PublicVectorFilterType.model_validate(filter_data) if as_model else filter_data
+    tenable_one_api.attack_path.vectors.top_attack_paths_search(filter=value)
