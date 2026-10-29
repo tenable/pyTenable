@@ -12,6 +12,7 @@ These methods can be accessed at ``TenableOne.attack_path.findings``.
 """
 
 import json
+import warnings
 from copy import copy
 from typing import Dict, Optional, Union
 
@@ -62,6 +63,11 @@ class FindingsAPI(APIEndpoint):
     ) -> Union[FindingIterator, FindingsPageSchema]:
         """
         Retrieve findings
+
+        .. warning::
+            Deprecated.  This method calls the findings list endpoint, which
+            Tenable deprecated on 2025-10-30.  Use
+            :meth:`top_attack_techniques_search` instead.
 
         Args:
             page_number (optional, int):
@@ -130,7 +136,13 @@ class FindingsAPI(APIEndpoint):
             ...     return_iterator=False
             ...     )
         """
-
+        warnings.warn(
+            'attack_path.findings.list() calls an endpoint that Tenable deprecated on '
+            '2025-10-30.  Use attack_path.findings.top_attack_techniques_search() '
+            'instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
         payload = {
             'page_number': page_number,
             'next': next_token,

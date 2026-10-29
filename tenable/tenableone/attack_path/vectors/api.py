@@ -11,6 +11,7 @@ These methods can be accessed at ``TenableOne.attack_path``.
 """
 
 import json
+import warnings
 from copy import copy
 from typing import Dict, Optional, Union
 
@@ -65,6 +66,11 @@ class VectorsAPI(APIEndpoint):
     ) -> Union[VectorIterator, VectorsPageSchema]:
         """
         Retrieve vectors
+
+        .. warning::
+            Deprecated.  This method calls the attack path list endpoint, which
+            Tenable deprecated on 2025-10-30.  Use :meth:`top_attack_paths_search`
+            instead.
 
         Args:
             page_number (optional, int):
@@ -126,6 +132,12 @@ class VectorsAPI(APIEndpoint):
             ...     return_iterator=False
             ...     )
         """
+        warnings.warn(
+            'attack_path.vectors.list() calls an endpoint that Tenable deprecated on '
+            '2025-10-30.  Use attack_path.vectors.top_attack_paths_search() instead.',
+            DeprecationWarning,
+            stacklevel=2,
+        )
         payload = {
             'page_number': page_number,
             'limit': limit,

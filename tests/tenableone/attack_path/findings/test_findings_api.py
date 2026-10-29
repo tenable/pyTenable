@@ -323,3 +323,14 @@ def test_top_attack_techniques_search_exclude_resolved_typeerror(tenable_one_api
 def test_top_attack_techniques_search_keyword_only(tenable_one_api):
     with pytest.raises(TypeError):
         tenable_one_api.attack_path.findings.top_attack_techniques_search(100)
+
+
+@responses.activate
+@pytest.mark.parametrize('return_iterator', [True, False])
+def test_findings_list_deprecation_warning(tenable_one_api, return_iterator):
+    responses.get(
+        'https://cloud.tenable.com/api/v1/t1/apa/findings',
+        json={'page_number': 1, 'count': 0, 'total': 0, 'data': []},
+    )
+    with pytest.warns(DeprecationWarning, match='top_attack_techniques_search'):
+        tenable_one_api.attack_path.findings.list(return_iterator=return_iterator)

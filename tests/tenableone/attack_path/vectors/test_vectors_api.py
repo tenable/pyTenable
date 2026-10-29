@@ -421,3 +421,14 @@ def test_top_attack_paths_search_filter_body(tenable_one_api, filter_data, as_mo
     )
     value = PublicVectorFilterType.model_validate(filter_data) if as_model else filter_data
     tenable_one_api.attack_path.vectors.top_attack_paths_search(filter=value)
+
+
+@responses.activate
+@pytest.mark.parametrize('return_iterator', [True, False])
+def test_vectors_list_deprecation_warning(tenable_one_api, return_iterator):
+    responses.get(
+        'https://cloud.tenable.com/api/v1/t1/apa/vectors',
+        json={'page_number': 1, 'count': 0, 'total': 0, 'data': []},
+    )
+    with pytest.warns(DeprecationWarning, match='top_attack_paths_search'):
+        tenable_one_api.attack_path.vectors.list(return_iterator=return_iterator)
