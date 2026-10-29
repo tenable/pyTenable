@@ -15,10 +15,15 @@ import json
 from copy import copy
 from typing import Dict, Optional, Union
 
+from pydantic import BaseModel
+
 from tenable.base._restfly_v1 import APIIterator
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.tenableone.attack_path.findings.schema import FindingsPageSchema
+from tenable.tenableone.attack_path.findings.schema import (
+    FindingsPageSchema,
+    TopAttackTechniquesSearchResponse,
+)
 
 
 class FindingIterator(APIIterator):
@@ -137,3 +142,107 @@ class FindingsAPI(APIEndpoint):
         if return_iterator:
             return FindingIterator(self._api, _payload=payload, _next_token=next_token)
         return self._schema(**self._get(path='api/v1/t1/apa/findings', params=payload))
+
+    def top_attack_techniques_search(
+        self,
+        *,
+        limit: Optional[int] = None,
+        offset: Optional[int] = None,
+        sort: Optional[str] = None,
+        filter: Optional[Union[Dict, BaseModel]] = None,
+        exclude_resolved: Optional[bool] = None,
+    ) -> TopAttackTechniquesSearchResponse:
+        """
+        Search the top attack techniques in your organization.
+
+        :devportal:`attack-path: search attack techniques <apa-attack-techniques-search>`
+
+        This is the replacement for the deprecated ``list()`` endpoint.  By default, the
+        API excludes resolved techniques: those with a status of ``done`` or
+        ``accepted``, or a state of ``archive``.
+
+        Args:
+            limit (optional, int):
+                The number of techniques to return, from 100 to 10000.  If omitted,
+                the API returns 1000.
+            offset (optional, int):
+                The number of records to skip, for paging through results with
+                ``limit``.  If omitted, the API starts at the first record.
+            sort (optional, str):
+                The sort order, in the format ``property:direction``, such as
+                ``priority:desc``.  The API accepts the properties
+                ``last_updated_at``, ``priority``, ``mitre_id``, ``name``,
+                ``procedure_name``, ``status``, ``state``, ``vector_count`` and
+                ``external_id``.
+            filter (optional, dict):
+                The filter, sent as the JSON request body.  A condition has the
+                form ``{"property": ..., "operator": ..., "value": ...}``, using
+                the operators ``eq``, ``neq``, ``gt``, ``gte``, ``lt``, ``lte``
+                or ``contains``.  Conditions are combined with
+                ``{"operator": "and", "value": [...]}`` or ``"or"``, in
+                lowercase.  A pydantic model is serialized with ``model_dump``.
+            exclude_resolved (optional, bool):
+                If False, resolved techniques are included.  If omitted, the API
+                excludes them.
+
+        Returns:
+            :obj:`TopAttackTechniquesSearchResponse`:
+                The techniques in ``data``, and the ``pagination`` details
+                (``total``, ``offset``, ``limit`` and ``sort``).  ``total`` is
+                also available directly on the response.
+
+        Examples:
+            Search the top attack techniques with the default settings:
+
+            >>> response = t1.attack_path.findings.top_attack_techniques_search()
+            >>> print(f"Found {response.total} attack techniques")
+
+            High priority techniques that are still to do, highest priority
+            first:
+
+            >>> response = t1.attack_path.findings.top_attack_techniques_search(
+            ...     sort='priority:desc',
+            ...     filter={
+            ...         'operator': 'and',
+            ...         'value': [
+            ...             {'property': 'priority', 'operator': 'eq', 'value': 'high'},
+            ...             {'property': 'status', 'operator': 'eq', 'value': 'to_do'},
+            ...         ],
+            ...     },
+            ... )
+            >>> for technique in response.data:
+            ...     print(technique.mitre_id, technique.name)
+
+            Page through every technique, including resolved ones:
+
+            >>> offset = 0
+            >>> while True:
+            ...     page = t1.attack_path.findings.top_attack_techniques_search(
+            ...         offset=offset, exclude_resolved=False
+            ...     )
+            ...     offset += len(page.data)
+            ...     if not page.data or offset >= page.total:
+            ...         break
+        """
+        params = {}
+        if limit is not None:
+            params['limit'] = limit
+        if offset is not None:
+            params['offset'] = offset
+        if sort is not None:
+            params['sort'] = sort
+        if exclude_resolved is not None:
+            if not isinstance(exclude_resolved, bool):
+                raise TypeError(
+                    'exclude_resolved is of type '
+                    f'{exclude_resolved.__class__.__name__}.  Expected bool'
+                )
+            params['exclude_resolved'] = str(exclude_resolved).lower()
+        kwargs = {'params': params}
+        if filter:
+            if isinstance(filter, BaseModel):
+                filter = filter.model_dump(mode='json')
+            kwargs['json'] = filter
+        return TopAttackTechniquesSearchResponse(
+            **self._api.post('api/v1/t1/apa/top-attack-techniques/search', **kwargs)
+        )
