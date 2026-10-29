@@ -328,3 +328,27 @@ def test_attack_path_vectors_iterator_without_page_number_in_response(
     vectors = tenable_one_api.attack_path.vectors.list(limit=2, page_number=start)
     assert len(list(vectors)) == total
     assert vectors.num_pages == len(pages)
+
+
+@responses.activate
+def test_top_attack_paths_search_offset(tenable_one_api, vector_row):
+    responses.post(
+        'https://cloud.tenable.com/api/v1/t1/apa/top-attack-paths/search',
+        json={'data': [vector_row], 'total': 101},
+        match=[
+            responses.matchers.query_param_matcher(
+                {'limit': 100, 'offset': 100, 'exclude_resolved': True}
+            )
+        ],
+    )
+    response = tenable_one_api.attack_path.vectors.top_attack_paths_search(
+        limit=100, offset=100
+    )
+    assert len(response.data) == 1
+
+
+def test_top_attack_paths_search_offset_keyword_only(tenable_one_api):
+    with pytest.raises(TypeError):
+        tenable_one_api.attack_path.vectors.top_attack_paths_search(
+            1000, None, None, None, True, 100
+        )

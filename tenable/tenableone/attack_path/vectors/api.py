@@ -144,6 +144,8 @@ class VectorsAPI(APIEndpoint):
         run_ai_summarization: Optional[str] = None,
         filter: Optional[PublicVectorFilterType] = None,
         exclude_resolved: bool = True,
+        *,
+        offset: Optional[int] = None,
     ) -> DiscoverPageTableResponse:
         """
         Search top attack paths leading to critical assets.
@@ -176,6 +178,10 @@ class VectorsAPI(APIEndpoint):
             exclude_resolved (bool, optional):
                 When True (default), excludes paths with path_status 'done',
                 'chain_prevented', or 'accepted'. Set to False to include all paths.
+
+            offset (optional, int):
+                The number of records to skip, for paging through results with
+                ``limit``.  If omitted, the API starts at the first record.
 
         Returns:
             :obj:`DiscoverPageTableResponse`:
@@ -216,6 +222,10 @@ class VectorsAPI(APIEndpoint):
             ...     exclude_resolved=False
             ... )
 
+            Get the second page of 1000 attack paths
+
+            >>> response = t1.attack_path.vectors.top_attack_paths_search(offset=1000)
+
             Simple search with default parameters
 
             >>> response = t1.attack_path.vectors.top_attack_paths_search()
@@ -226,6 +236,8 @@ class VectorsAPI(APIEndpoint):
             'exclude_resolved': exclude_resolved,
         }
 
+        if offset is not None:
+            payload['offset'] = offset
         if sort:
             payload['sort'] = sort
         if run_ai_summarization:
