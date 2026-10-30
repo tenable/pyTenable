@@ -3,6 +3,7 @@ test scanners
 """
 
 import uuid
+import warnings
 
 import pytest
 import responses
@@ -610,3 +611,35 @@ def test_scanner_edit_name_typeerror(tvm):
     with pytest.raises(TypeError):
         tvm.scanners.edit(1, name=123)
     assert len(responses.calls) == 0
+
+
+@responses.activate
+def test_scanner_edit_warns_on_unsupported_arguments(tvm):
+    responses.put(
+        'https://nourl/scanners/1',
+        match=[
+            responses.matchers.json_params_matcher(
+                {'force_plugin_update': 1}, strict_match=True
+            )
+        ],
+    )
+    with pytest.warns(UserWarning, match='force_plugin_updates, nickname'):
+        tvm.scanners.edit(
+            1, force_plugin_update=True, force_plugin_updates=True, nickname='x'
+        )
+
+
+@responses.activate
+def test_scanner_edit_supported_arguments_do_not_warn(tvm):
+    responses.put('https://nourl/scanners/1')
+    with warnings.catch_warnings():
+        warnings.simplefilter('error')
+        tvm.scanners.edit(
+            1,
+            name='Datacenter scanner 01',
+            force_plugin_update=True,
+            force_ui_update=True,
+            finish_update=True,
+            registration_code='abc',
+            aws_update_interval=30,
+        )

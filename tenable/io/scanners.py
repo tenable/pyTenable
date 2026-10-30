@@ -12,6 +12,8 @@ Methods available on ``tio.scanners``:
     :members:
 """
 
+import warnings
+
 from tenable.errors import UnexpectedValueError
 from tenable.utils import scrub
 
@@ -169,6 +171,8 @@ class ScannersAPI(TIOEndpoint):
                 For AWS scanners this will inform the scanner how often to check
                 into Tenable Vulnerability Management.
 
+        Any other keyword argument is ignored, and a ``UserWarning`` names it.
+
         Returns:
             :obj:`None`:
                 The operation was requested successfully.
@@ -182,6 +186,21 @@ class ScannersAPI(TIOEndpoint):
 
             >>> tio.scanners.edit(1, name='Datacenter scanner 01')
         """
+        supported = {
+            'name',
+            'force_plugin_update',
+            'force_ui_update',
+            'finish_update',
+            'registration_code',
+            'aws_update_interval',
+        }
+        ignored = sorted(set(kwargs) - supported)
+        if ignored:
+            warnings.warn(
+                f'scanners.edit() ignored unsupported arguments: {", ".join(ignored)}',
+                UserWarning,
+                stacklevel=2,
+            )
         payload = dict()
         if 'name' in kwargs:
             name = self._check('name', kwargs['name'], str)
