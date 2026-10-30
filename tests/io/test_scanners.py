@@ -568,3 +568,45 @@ def test_scanner_linking_key(tvm):
     )
     resp = tvm.scanners.linking_key()
     assert resp == 'ffa27c8d0a3f24a8e1ba1b9eaa8b5a35c3a0b1e02c0d1dd1b2cf0c8d2d2a4b6e'
+
+
+@responses.activate
+def test_scanner_edit_name(tvm):
+    responses.put(
+        'https://nourl/scanners/1',
+        match=[
+            responses.matchers.json_params_matcher(
+                {'name': 'Datacenter scanner 01'}, strict_match=True
+            )
+        ],
+    )
+    assert tvm.scanners.edit(1, name='Datacenter scanner 01') is None
+
+
+@responses.activate
+def test_scanner_edit_name_with_other_options(tvm):
+    responses.put(
+        'https://nourl/scanners/1',
+        match=[
+            responses.matchers.json_params_matcher(
+                {'name': 'Datacenter scanner 01', 'force_plugin_update': 1},
+                strict_match=True,
+            )
+        ],
+    )
+    tvm.scanners.edit(1, name='Datacenter scanner 01', force_plugin_update=True)
+
+
+@responses.activate
+@pytest.mark.parametrize('name', ['', '   '])
+def test_scanner_edit_name_blank(tvm, name):
+    with pytest.raises(UnexpectedValueError):
+        tvm.scanners.edit(1, name=name)
+    assert len(responses.calls) == 0
+
+
+@responses.activate
+def test_scanner_edit_name_typeerror(tvm):
+    with pytest.raises(TypeError):
+        tvm.scanners.edit(1, name=123)
+    assert len(responses.calls) == 0

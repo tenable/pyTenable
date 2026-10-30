@@ -12,6 +12,7 @@ Methods available on ``tio.scanners``:
     :members:
 """
 
+from tenable.errors import UnexpectedValueError
 from tenable.utils import scrub
 
 from .base import TIOEndpoint
@@ -151,6 +152,10 @@ class ScannersAPI(TIOEndpoint):
         Args:
             id (int):
                 The unique identifier for the scanner.
+            name (str, optional):
+                The new name for the scanner.  An empty or whitespace-only name
+                raises an ``UnexpectedValueError``, because the API silently
+                ignores an empty name and accepts a blank one.
             force_plugin_update (bool, optional):
                 Force the scanner to perform a plugin update .
             force_ui_update (bool, optional):
@@ -172,8 +177,17 @@ class ScannersAPI(TIOEndpoint):
             Force a plugin update on a scanner:
 
             >>> tio.scanners.edit(1, force_plugin_update=True)
+
+            Rename a scanner:
+
+            >>> tio.scanners.edit(1, name='Datacenter scanner 01')
         """
         payload = dict()
+        if 'name' in kwargs:
+            name = self._check('name', kwargs['name'], str)
+            if not name.strip():
+                raise UnexpectedValueError('name must not be empty or blank.')
+            payload['name'] = name
         if 'force_plugin_update' in kwargs and self._check(
             'force_plugin_update', kwargs['force_plugin_update'], bool
         ):
