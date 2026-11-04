@@ -244,3 +244,17 @@ def test_vuln_export_zero_day_omitted(export_request, tvm):
 def test_vuln_export_zero_day_invalid(tvm, zero_day):
     with pytest.raises(ValidationError):
         tvm.exports.vulns(zero_day=zero_day, iterator=None)
+
+
+def test_vuln_export_cve_id_six_digit_sequence(export_request, tvm):
+    cves = ['CVE-2026-109618', 'CVE-2026-109619']
+    tvm.exports.vulns(cve_id=cves, iterator=None)
+    payload = json.loads(export_request.calls[0].request.body)
+    assert payload['filters']['cve_id'] == cves
+
+
+@responses.activate
+def test_vuln_export_cve_id_invalid_sends_no_request(tvm):
+    with pytest.raises(ValidationError):
+        tvm.exports.vulns(cve_id=['CVE-2024-123'], iterator=None)
+    assert len(responses.calls) == 0
