@@ -1,7 +1,7 @@
 from enum import Enum
 
-from pydantic import BaseModel, RootModel
-from typing import List, Optional, Any, Union
+from pydantic import BaseModel, RootModel, model_validator
+from typing import Dict, List, Optional, Any, Union
 
 
 class PathStatusEnum(Enum):
@@ -91,8 +91,32 @@ class VectorRow(BaseModel):
     first_aes: Optional[float] = None
     last_acr: Optional[int] = None
     path_status: Optional[PathStatusEnum] = None
+    priority: Optional[float] = None
+    graph_node: Optional[Dict[str, Any]] = None
+    mitigations: Optional[List[Any]] = None
+
+
+class SearchSortInfo(BaseModel):
+    name: Optional[str] = None
+    order: Optional[str] = None
+
+
+class SearchPagination(BaseModel):
+    total: Optional[int] = None
+    offset: Optional[int] = None
+    limit: Optional[int] = None
+    sort: Optional[SearchSortInfo] = None
 
 
 class DiscoverPageTableResponse(BaseModel):
     data: List[VectorRow]
+    pagination: Optional[SearchPagination] = None
     total: Optional[int] = None
+
+    @model_validator(mode='after')
+    def _total_from_pagination(self):
+        # The API reports the total inside ``pagination``; keep ``total`` populated
+        # for callers that read it directly.
+        if self.total is None and self.pagination is not None:
+            self.total = self.pagination.total
+        return self
