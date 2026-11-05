@@ -69,8 +69,82 @@ def test_iterator_term_on_error(api):
         _term_on_error=True,
     )
 
-    with pytest.raises(TioExportsError):
+    with pytest.raises(TioExportsError, match='has errored'):
         iterator.next()
+
+
+@responses.activate
+def test_iterator_term_on_cancelled(api):
+    responses.add(
+        responses.GET, URL_STATUS, json={'status': 'PROCESSING', 'chunks_available': []}
+    )
+    responses.add(
+        responses.GET, URL_STATUS, json={'status': 'CANCELLED', 'chunks_available': []}
+    )
+    iterator = ExportsIterator(
+        api,
+        type='assets',
+        uuid='01234567-89ab-cdef-0123-4567890abcde',
+        version=None,
+        _term_on_error=True,
+    )
+
+    with pytest.raises(TioExportsError, match='has cancelled'):
+        iterator.next()
+
+
+@responses.activate
+def test_iterator_cancelled_stops_without_term_on_error(api):
+    responses.add(
+        responses.GET, URL_STATUS, json={'status': 'CANCELLED', 'chunks_available': []}
+    )
+    iterator = ExportsIterator(
+        api,
+        type='assets',
+        uuid='01234567-89ab-cdef-0123-4567890abcde',
+        version=None,
+        _term_on_error=False,
+    )
+
+    with pytest.raises(StopIteration):
+        iterator.next()
+
+
+@responses.activate
+@pytest.mark.parametrize('status', ['ERROR', 'CANCELLED'])
+def test_iterator_threaded_stops_on_terminal_status(api, status):
+    responses.add(
+        responses.GET, URL_STATUS, json={'status': 'PROCESSING', 'chunks_available': []}
+    )
+    responses.add(
+        responses.GET, URL_STATUS, json={'status': status, 'chunks_available': []}
+    )
+    iterator = ExportsIterator(
+        api,
+        type='assets',
+        uuid='01234567-89ab-cdef-0123-4567890abcde',
+        version=None,
+        _term_on_error=False,
+    )
+
+    assert iterator.run_threaded(lambda **kwargs: None) == []
+
+
+@responses.activate
+def test_iterator_threaded_raises_on_cancelled(api):
+    responses.add(
+        responses.GET, URL_STATUS, json={'status': 'CANCELLED', 'chunks_available': []}
+    )
+    iterator = ExportsIterator(
+        api,
+        type='assets',
+        uuid='01234567-89ab-cdef-0123-4567890abcde',
+        version=None,
+        _term_on_error=True,
+    )
+
+    with pytest.raises(TioExportsError, match='has cancelled'):
+        iterator.run_threaded(lambda **kwargs: None)
 
 
 @responses.activate

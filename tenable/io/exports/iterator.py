@@ -50,6 +50,7 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
         start_time:
             The timestamp denoting when the iterator was created.
     '''
+    _TERMINAL = ['ERROR', 'FINISHED', 'CANCELLED']
     boxify: bool = False
     _term_on_error: bool = True
     _wait_for_complete: bool = False
@@ -90,10 +91,14 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
                         status.status
                         )
 
-        # If the export has errored and the _term_on_error flag is set, then
-        # we will raise an export error.
-        if status.status == 'ERROR' and self._term_on_error:
-            raise TioExportsError(self.type, self.uuid)
+        # If the export has errored or been cancelled and the _term_on_error
+        # flag is set, then we will raise an export error.
+        if status.status in ('ERROR', 'CANCELLED') and self._term_on_error:
+            raise TioExportsError(
+                self.type, self.uuid,
+                msg=(f'{self.type} export {self.uuid} has '
+                     f'{"cancelled" if status.status == "CANCELLED" else "errored"}.')
+            )
 
         # If the export is still queued and the timeout has been reached, then
         # we will inform the API that we want to cancel the export and then
@@ -138,14 +143,14 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
             # for us to process yet, then we will wait here in a loop and call
             # for status once a second until we get something else to work on.
             while (len(status.chunks_unfinished) < 1
-                   and status.status not in ['ERROR', 'FINISHED']
+                   and status.status not in self._TERMINAL
                    ):
                 backoff_counter += 1
                 time.sleep(backoff_counter if backoff_counter < 30 else 30)
                 status = self._get_status()
             self._log.debug(f'{status} and {self.chunks}')
             if (
-                self.status in ['ERROR', 'FINISHED']
+                self.status in self._TERMINAL
                 and len(self.chunks) == 0
                 and self._is_iterator
             ):
@@ -296,9 +301,9 @@ class ExportsIterator(APIIterator):  # noqa: PLR0902
         with ThreadPoolExecutor(max_workers=num_threads) as executor:
             jobs = []
             # we will want to make sure to stay in this loop until the job is
-            # finished and all of the chunks have been processed.
+            # in a terminal state and all of the chunks have been processed.
             while not (len(self._get_chunks()) < 1
-                       and self.status in ['FINISHED']
+                       and self.status in self._TERMINAL
                        ):
                 # loop over the number of chunks that are available, pulling
                 # each chunk id out of the chunk list, constructing the kwargs
