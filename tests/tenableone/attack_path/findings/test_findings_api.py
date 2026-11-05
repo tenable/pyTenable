@@ -4,7 +4,10 @@ import pytest
 import responses
 
 from tenable.tenableone.attack_path.findings.api import FindingIterator
-from tenable.tenableone.attack_path.findings.schema import FindingsPageSchema
+from tenable.tenableone.attack_path.findings.schema import (
+    FindingsPageSchema,
+    TopAttackTechnique,
+)
 
 
 @pytest.fixture
@@ -216,3 +219,118 @@ def test_attack_path_findings_list_filter_sent_as_json(
     )
     items = tenable_one_api.attack_path.findings.list(filter=filter_value, limit=50)
     assert next(items) == finding
+
+
+TECHNIQUES_URL = 'https://cloud.tenable.com/api/v1/t1/apa/top-attack-techniques/search'
+TECHNIQUE = {
+    'mitre_id': 'T1021.001',
+    'name': 'Remote Desktop Protocol',
+    'technique_name': 'Remote Services',
+    'priority': 'high',
+    'state': 'open',
+    'status': 'to_do',
+    'tactics': ['Lateral Movement'],
+    'mitigations': [],
+    'malwares': [],
+    'tools': [],
+    'created': '2026-10-26T12:37:59Z',
+    'last_updated_at': '2026-10-27T08:00:00Z',
+    'serial_id': 1001,
+    'vector_count': 3,
+    'total_vector_count': 5,
+    'critical_assets_count': 1,
+    'total_critical_assets_count': 2,
+    'assets_ids': [],
+    'detection_ids': [],
+    'weaknesses_ids': [],
+    'groups': [],
+    'source_information': [],
+    'related_nodes': {'sources': [], 'targets': [], 'cause': {}},
+}
+TECHNIQUES_PAGINATION = {
+    'total': 550,
+    'offset': 100,
+    'limit': 100,
+    'sort': {'name': 'priority', 'order': 'desc'},
+}
+
+
+@responses.activate
+def test_top_attack_techniques_search_defaults(tenable_one_api):
+    responses.post(
+        TECHNIQUES_URL,
+        json={'data': [TECHNIQUE], 'pagination': TECHNIQUES_PAGINATION},
+        match=[responses.matchers.query_param_matcher({})],
+    )
+    response = tenable_one_api.attack_path.findings.top_attack_techniques_search()
+    assert responses.calls[0].request.body is None
+    assert response.total == 550
+    assert response.pagination.sort.name == 'priority'
+    assert isinstance(response.data[0], TopAttackTechnique)
+    assert response.data[0].mitre_id == 'T1021.001'
+    assert response.data[0].related_nodes == {'sources': [], 'targets': [], 'cause': {}}
+
+
+@responses.activate
+@pytest.mark.parametrize('exclude_resolved, sent', [(True, 'true'), (False, 'false')])
+def test_top_attack_techniques_search_params(tenable_one_api, exclude_resolved, sent):
+    responses.post(
+        TECHNIQUES_URL,
+        json={'data': [], 'pagination': TECHNIQUES_PAGINATION},
+        match=[
+            responses.matchers.query_param_matcher(
+                {
+                    'limit': 100,
+                    'offset': 100,
+                    'sort': 'priority:desc',
+                    'exclude_resolved': sent,
+                }
+            )
+        ],
+    )
+    tenable_one_api.attack_path.findings.top_attack_techniques_search(
+        limit=100, offset=100, sort='priority:desc', exclude_resolved=exclude_resolved
+    )
+
+
+@responses.activate
+def test_top_attack_techniques_search_filter_body(tenable_one_api):
+    filter_data = {
+        'operator': 'and',
+        'value': [
+            {'property': 'priority', 'operator': 'eq', 'value': 'high'},
+            {'property': 'status', 'operator': 'eq', 'value': 'to_do'},
+        ],
+    }
+    responses.post(
+        TECHNIQUES_URL,
+        json={'data': [], 'pagination': TECHNIQUES_PAGINATION},
+        match=[responses.matchers.json_params_matcher(filter_data, strict_match=True)],
+    )
+    tenable_one_api.attack_path.findings.top_attack_techniques_search(filter=filter_data)
+
+
+@responses.activate
+@pytest.mark.parametrize('value', ['false', 0])
+def test_top_attack_techniques_search_exclude_resolved_typeerror(tenable_one_api, value):
+    with pytest.raises(TypeError):
+        tenable_one_api.attack_path.findings.top_attack_techniques_search(
+            exclude_resolved=value
+        )
+    assert len(responses.calls) == 0
+
+
+def test_top_attack_techniques_search_keyword_only(tenable_one_api):
+    with pytest.raises(TypeError):
+        tenable_one_api.attack_path.findings.top_attack_techniques_search(100)
+
+
+@responses.activate
+@pytest.mark.parametrize('return_iterator', [True, False])
+def test_findings_list_deprecation_warning(tenable_one_api, return_iterator):
+    responses.get(
+        'https://cloud.tenable.com/api/v1/t1/apa/findings',
+        json={'page_number': 1, 'count': 0, 'total': 0, 'data': []},
+    )
+    with pytest.warns(DeprecationWarning, match='top_attack_techniques_search'):
+        tenable_one_api.attack_path.findings.list(return_iterator=return_iterator)

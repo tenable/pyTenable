@@ -460,3 +460,36 @@ def test_vuln_export_potential_false_with_reasons_invalid():
             software_vulns_potential=False,
             software_vulns_potential_reasons=['Managed'],
         )
+
+
+@pytest.mark.parametrize(
+    'cve',
+    [
+        'CVE-2014-0160',
+        'CVE-2021-44228',
+        'CVE-2026-109618',
+        'CVE-2026-109619',
+        'CVE-2026-111497',
+        'CVE-2026-1234567',
+    ],
+)
+def test_vuln_export_accepts_valid_cve_ids(cve):
+    assert m.VulnerabilityExportFiltersV1(cve_id=[cve]).cve_id == [cve]
+
+
+@pytest.mark.parametrize(
+    'cve',
+    [
+        'CVE-2024-1',
+        'CVE-2024-123',
+        'cve-2021-44228',
+        'CVE-21-44228',
+        'CVE-2021-44228x',
+        'CVE-2021-44228 ',
+        ' CVE-2021-44228',
+        'CVE-2021-',
+    ],
+)
+def test_vuln_export_rejects_invalid_cve_ids(cve):
+    with pytest.raises(ValidationError):
+        m.VulnerabilityExportFiltersV1(cve_id=[cve])

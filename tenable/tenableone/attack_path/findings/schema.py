@@ -1,7 +1,9 @@
 from enum import Enum
 
-from pydantic import BaseModel
-from typing import List, Optional
+from pydantic import BaseModel, model_validator
+from typing import Any, Dict, List, Optional
+
+from tenable.tenableone.attack_path.vectors.schema import SearchPagination
 
 
 class PriorityEnum(Enum):
@@ -85,3 +87,41 @@ class FindingsPageSchema(BaseModel):
     page_number: Optional[int] = None
     count: Optional[int] = None
     total: Optional[int] = None
+
+
+class TopAttackTechnique(BaseModel):
+    mitre_id: Optional[str] = None
+    name: Optional[str] = None
+    technique_name: Optional[str] = None
+    priority: Optional[str] = None
+    state: Optional[str] = None
+    status: Optional[str] = None
+    tactics: Optional[List[Any]] = None
+    mitigations: Optional[List[Any]] = None
+    malwares: Optional[List[Any]] = None
+    tools: Optional[List[Any]] = None
+    created: Optional[str] = None
+    last_updated_at: Optional[str] = None
+    serial_id: Optional[int] = None
+    vector_count: Optional[int] = None
+    total_vector_count: Optional[int] = None
+    critical_assets_count: Optional[int] = None
+    total_critical_assets_count: Optional[int] = None
+    assets_ids: Optional[List[Any]] = None
+    detection_ids: Optional[List[Any]] = None
+    weaknesses_ids: Optional[List[Any]] = None
+    groups: Optional[List[Any]] = None
+    source_information: Optional[List[Any]] = None
+    related_nodes: Optional[Dict[str, Any]] = None
+
+
+class TopAttackTechniquesSearchResponse(BaseModel):
+    data: List[TopAttackTechnique]
+    pagination: Optional[SearchPagination] = None
+    total: Optional[int] = None
+
+    @model_validator(mode='after')
+    def _total_from_pagination(self):
+        if self.total is None and self.pagination is not None:
+            self.total = self.pagination.total
+        return self
