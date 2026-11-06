@@ -185,7 +185,10 @@ class UsersAPI(TIOEndpoint):
             },
             payload,
         )
-        return self._api.put(f'users/{scrub(user_id)}').json()
+        return self._api.put(
+            f'users/{scrub(user_id)}',
+            json=payload,
+        ).json()
 
     def enabled(self, user_id, enabled):
         """

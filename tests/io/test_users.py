@@ -286,6 +286,16 @@ def test_users_edit(tvm, user):
             'container_uuid': 'a0abbae8-512f-4b9d-93f3-74d9809a1004',
             'uuid_id': '88aba081-9505-4e06-9acc-2530b486c8d4',
         },
+        match=[
+            json_params_matcher(
+                {
+                    'permissions': 64,
+                    'enabled': True,
+                    'email': '8367483c-769b-4ad3-bc97-922e2d70c992@pytenable.io',
+                    'name': 'MODDED NAME',
+                }
+            )
+        ],
     )
     resp = tvm.users.edit(user['id'], name='MODDED NAME')
     assert isinstance(user, dict)
