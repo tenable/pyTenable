@@ -4,6 +4,7 @@ Testing the exports endpoints
 
 import json
 import re
+import warnings
 from uuid import UUID
 
 import pytest
@@ -244,6 +245,29 @@ def test_vuln_export_zero_day_omitted(export_request, tvm):
 def test_vuln_export_zero_day_invalid(tvm, zero_day):
     with pytest.raises(ValidationError):
         tvm.exports.vulns(zero_day=zero_day, iterator=None)
+
+
+def test_vuln_export_vpr_v2_score_sent_as_vpr_score(export_request, tvm):
+    with pytest.warns(UserWarning, match='vpr_v2_score is deprecated'):
+        tvm.exports.vulns(vpr_v2_score={'gte': 7}, iterator=None)
+    filters = json.loads(export_request.calls[0].request.body)['filters']
+    assert filters['vpr_score'] == {'gte': 7}
+    assert 'vpr_v2_score' not in filters
+
+
+def test_vuln_export_vpr_score_no_warning(export_request, tvm):
+    with warnings.catch_warnings():
+        warnings.simplefilter('error')
+        tvm.exports.vulns(vpr_score={'gte': 7}, iterator=None)
+    filters = json.loads(export_request.calls[0].request.body)['filters']
+    assert filters['vpr_score'] == {'gte': 7}
+
+
+@responses.activate
+def test_vuln_export_vpr_score_and_vpr_v2_score(tvm):
+    with pytest.raises(ValueError, match='cannot both be set'):
+        tvm.exports.vulns(vpr_score={'gte': 7}, vpr_v2_score={'gte': 7}, iterator=None)
+    assert len(responses.calls) == 0
 
 
 def test_vuln_export_cve_id_six_digit_sequence(export_request, tvm):

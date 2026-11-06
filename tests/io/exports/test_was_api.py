@@ -137,3 +137,18 @@ def test_was_findings_export_without_properties(export_request, tvm, kwargs):
 def test_was_findings_export_invalid_properties(tvm, properties):
     with pytest.raises(ValidationError):
         tvm.exports.was(properties=properties, iterator=None)
+
+
+def test_was_export_vpr_v2_score_sent_as_vpr_score(export_request, tvm):
+    with pytest.warns(UserWarning, match='vpr_v2_score is deprecated'):
+        tvm.exports.was(vpr_v2_score={'gte': 7}, iterator=None)
+    filters = json.loads(export_request.calls[0].request.body)['filters']
+    assert filters['vpr_score'] == {'gte': 7}
+    assert 'vpr_v2_score' not in filters
+
+
+@responses.activate
+def test_was_export_vpr_score_and_vpr_v2_score(tvm):
+    with pytest.raises(ValueError, match='cannot both be set'):
+        tvm.exports.was(vpr_score={'gte': 7}, vpr_v2_score={'gte': 7}, iterator=None)
+    assert len(responses.calls) == 0

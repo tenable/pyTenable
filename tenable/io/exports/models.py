@@ -225,7 +225,6 @@ class VulnerabilityExportFiltersV1(ExportFilterV1Base):
     state: list[State] | None = None
     source: list[str] | None = None
     vpr_score: CVSSScores | None = None
-    vpr_v2_score: CVSSScores | None = None
     vpr_threat_intensity: list[ThreatIntensity] | None = None
     weaponization: list[Weaponization] | None = None
     zero_day: bool | None = None
@@ -328,7 +327,6 @@ class WASExportFiltersV1(BaseModel):
     severity_modification_type: list[SeverityModificationType] | None = None
     state: list[State] | None = None
     vpr_score: CVSSScores | None = None
-    vpr_v2_score: CVSSScores | None = None
 
 
 class WASExportV1(BaseModel):
