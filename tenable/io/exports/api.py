@@ -20,7 +20,7 @@ from typing import Any, Literal, Type
 from uuid import UUID
 
 from tenable.base.endpoint import APIEndpoint
-from tenable.errors import RequestConflictError, UnexpectedValueError
+from tenable.errors import RequestConflictError
 from tenable.utils import scrub
 
 from . import models
@@ -41,29 +41,6 @@ EXPORTS_MAP = {
         None: {'path': 'was/v1/export/vulns', 'job_path': 'was/v1/export/vulns'},
     },
 }
-
-
-def _vpr_score_from_v2(vpr_score, vpr_v2_score, export_name):
-    """
-    Translate the removed ``vpr_v2_score`` filter into ``vpr_score``.
-
-    Tenable removed ``vpr_v2_score`` from the export API on 2026-10-01, and
-    ``vpr_score`` now uses the same VPR v2 model.
-    """
-    if vpr_v2_score is None:
-        return vpr_score
-    if vpr_score is not None:
-        raise UnexpectedValueError(
-            'vpr_score and vpr_v2_score cannot both be specified.  Use vpr_score.'
-        )
-    warnings.warn(
-        f'The vpr_v2_score filter was removed from the {export_name} export API on '
-        '2026-10-01.  pyTenable sends the value as vpr_score, which now uses the same '
-        'VPR v2 model.  Use vpr_score instead.',
-        DeprecationWarning,
-        stacklevel=3,
-    )
-    return vpr_v2_score
 
 
 class ExportsAPI(APIEndpoint):
@@ -939,11 +916,12 @@ class ExportsAPI(APIEndpoint):
                       - VPR scores must be less than or equal to the
                         specified value.
             vpr_v2_score:
-                Deprecated.  Tenable removed the ``vpr_v2_score`` filter from the
+                Deprecated, and to be removed from pyTenable in the 2027.03
+                releases.  Tenable removed the ``vpr_v2_score`` filter from the
                 export API on 2026-10-01, and ``vpr_score`` now uses the same VPR v2
-                model.  A value passed here is sent as ``vpr_score``, and a
-                ``DeprecationWarning`` is emitted.  Use ``vpr_score`` instead.
-                Passing both raises an ``UnexpectedValueError``.
+                model.  A value passed here is sent as ``vpr_score``, with a
+                warning.  Use ``vpr_score`` instead.  Passing both raises a
+                ``ValueError``.
             network_id:
                 Only findings within the specified network UUID will be
                 returned.
@@ -1071,7 +1049,15 @@ class ExportsAPI(APIEndpoint):
 
             >>> vulns = tio.exports.vulns(zero_day=True)
         """
-        vpr_score = _vpr_score_from_v2(vpr_score, vpr_v2_score, 'vulnerability')
+        if vpr_score is not None and vpr_v2_score is not None:
+            raise ValueError('vpr_score and vpr_v2_score cannot both be set')
+        elif vpr_v2_score is not None:
+            vpr_score = vpr_v2_score
+            warnings.warn(
+                'vpr_v2_score is deprecated, use vpr_score instead. vpr_v2_score '
+                'will be removed from pyTenable in 2027.03 releases.',
+                stacklevel=2,
+            )
         return self._export(
             export_type='vulns',
             version=None,
@@ -1263,11 +1249,12 @@ class ExportsAPI(APIEndpoint):
                       - VPR scores must be less than or equal to the
                         specified value.
             vpr_v2_score:
-                Deprecated.  Tenable removed the ``vpr_v2_score`` filter from the
+                Deprecated, and to be removed from pyTenable in the 2027.03
+                releases.  Tenable removed the ``vpr_v2_score`` filter from the
                 export API on 2026-10-01, and ``vpr_score`` now uses the same VPR v2
-                model.  A value passed here is sent as ``vpr_score``, and a
-                ``DeprecationWarning`` is emitted.  Use ``vpr_score`` instead.
-                Passing both raises an ``UnexpectedValueError``.
+                model.  A value passed here is sent as ``vpr_score``, with a
+                warning.  Use ``vpr_score`` instead.  Passing both raises a
+                ``ValueError``.
             ipv4s:
                 Restrict the export to only vulns assigned to assets with specific
                 ip-addresses.
@@ -1331,7 +1318,15 @@ class ExportsAPI(APIEndpoint):
             ...     severity=['high', 'critical'],
             ... )
         """
-        vpr_score = _vpr_score_from_v2(vpr_score, vpr_v2_score, 'WAS findings')
+        if vpr_score is not None and vpr_v2_score is not None:
+            raise ValueError('vpr_score and vpr_v2_score cannot both be set')
+        elif vpr_v2_score is not None:
+            vpr_score = vpr_v2_score
+            warnings.warn(
+                'vpr_v2_score is deprecated, use vpr_score instead. vpr_v2_score '
+                'will be removed from pyTenable in 2027.03 releases.',
+                stacklevel=2,
+            )
         return self._export(
             export_type='was',
             version=None,

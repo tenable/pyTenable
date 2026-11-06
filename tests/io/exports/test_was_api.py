@@ -9,8 +9,7 @@ from uuid import UUID
 import pytest
 import responses
 from pydantic import ValidationError
-from tenable.errors import RequestConflictError, UnexpectedValueError
-from tenable.io.exports import models
+from tenable.errors import RequestConflictError
 
 from tenable.io.exports.iterator import ExportsIterator
 
@@ -141,7 +140,7 @@ def test_was_findings_export_invalid_properties(tvm, properties):
 
 
 def test_was_export_vpr_v2_score_sent_as_vpr_score(export_request, tvm):
-    with pytest.warns(DeprecationWarning, match='vpr_v2_score'):
+    with pytest.warns(UserWarning, match='vpr_v2_score is deprecated'):
         tvm.exports.was(vpr_v2_score={'gte': 7}, iterator=None)
     filters = json.loads(export_request.calls[0].request.body)['filters']
     assert filters['vpr_score'] == {'gte': 7}
@@ -150,19 +149,6 @@ def test_was_export_vpr_v2_score_sent_as_vpr_score(export_request, tvm):
 
 @responses.activate
 def test_was_export_vpr_score_and_vpr_v2_score(tvm):
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValueError, match='cannot both be set'):
         tvm.exports.was(vpr_score={'gte': 7}, vpr_v2_score={'gte': 7}, iterator=None)
     assert len(responses.calls) == 0
-
-
-def test_was_export_filters_model_translates_vpr_v2_score():
-    with pytest.warns(DeprecationWarning, match='vpr_v2_score'):
-        filters = models.WASExportFiltersV1(vpr_v2_score={'gte': 7})
-    assert filters.model_dump(mode='json', exclude_none=True) == {
-        'vpr_score': {'gte': 7}
-    }
-
-
-def test_was_export_filters_model_vpr_score_and_vpr_v2_score():
-    with pytest.raises(ValidationError):
-        models.WASExportFiltersV1(vpr_score={'gte': 7}, vpr_v2_score={'gte': 7})

@@ -1,4 +1,3 @@
-import warnings
 from datetime import datetime
 from ipaddress import IPv4Address, IPv4Network, IPv6Address
 from typing import Annotated, Any, Literal, get_args
@@ -197,36 +196,6 @@ class EPSSScores(BaseModel):
     lte: EPSSScore | None = None
 
 
-def translate_vpr_v2_score(data: Any) -> Any:
-    """
-    Move a ``vpr_v2_score`` filter to ``vpr_score``.
-
-    Tenable removed ``vpr_v2_score`` from the export API on 2026-10-01, and
-    ``vpr_score`` now uses the same VPR v2 model.  Without this translation, the
-    filter would be silently dropped, because the filter models ignore unknown
-    fields.
-    """
-    if not isinstance(data, dict) or 'vpr_v2_score' not in data:
-        return data
-    data = dict(data)
-    value = data.pop('vpr_v2_score')
-    if value is None:
-        return data
-    if data.get('vpr_score') is not None:
-        raise ValueError(
-            'vpr_score and vpr_v2_score cannot both be specified.  Use vpr_score.'
-        )
-    warnings.warn(
-        'The vpr_v2_score filter was removed from the export API on 2026-10-01.  '
-        'It is sent as vpr_score, which now uses the same VPR v2 model.  Use '
-        'vpr_score instead.',
-        DeprecationWarning,
-        stacklevel=2,
-    )
-    data['vpr_score'] = value
-    return data
-
-
 class VulnerabilityExportFiltersV1(ExportFilterV1Base):
     # Timestamp filters
     since: Timestamp | None = None
@@ -263,11 +232,6 @@ class VulnerabilityExportFiltersV1(ExportFilterV1Base):
     software_vulns_potential_reasons: (
         Annotated[list[SoftwareVulnsPotentialReason], Field(min_length=1)] | None
     ) = None
-
-    @model_validator(mode='before')
-    @classmethod
-    def _translate_vpr_v2_score(cls, data: Any) -> Any:
-        return translate_vpr_v2_score(data)
 
     @model_validator(mode='after')
     def check_potential_reasons(self):
@@ -363,11 +327,6 @@ class WASExportFiltersV1(BaseModel):
     severity_modification_type: list[SeverityModificationType] | None = None
     state: list[State] | None = None
     vpr_score: CVSSScores | None = None
-
-    @model_validator(mode='before')
-    @classmethod
-    def _translate_vpr_v2_score(cls, data: Any) -> Any:
-        return translate_vpr_v2_score(data)
 
 
 class WASExportV1(BaseModel):

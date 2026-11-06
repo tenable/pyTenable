@@ -10,8 +10,7 @@ from uuid import UUID
 import pytest
 import responses
 from pydantic import ValidationError
-from tenable.errors import RequestConflictError, UnexpectedValueError
-from tenable.io.exports import models
+from tenable.errors import RequestConflictError
 
 from tenable.io.exports.iterator import ExportsIterator
 
@@ -249,7 +248,7 @@ def test_vuln_export_zero_day_invalid(tvm, zero_day):
 
 
 def test_vuln_export_vpr_v2_score_sent_as_vpr_score(export_request, tvm):
-    with pytest.warns(DeprecationWarning, match='vpr_v2_score'):
+    with pytest.warns(UserWarning, match='vpr_v2_score is deprecated'):
         tvm.exports.vulns(vpr_v2_score={'gte': 7}, iterator=None)
     filters = json.loads(export_request.calls[0].request.body)['filters']
     assert filters['vpr_score'] == {'gte': 7}
@@ -258,7 +257,7 @@ def test_vuln_export_vpr_v2_score_sent_as_vpr_score(export_request, tvm):
 
 def test_vuln_export_vpr_score_no_warning(export_request, tvm):
     with warnings.catch_warnings():
-        warnings.simplefilter('error', DeprecationWarning)
+        warnings.simplefilter('error')
         tvm.exports.vulns(vpr_score={'gte': 7}, iterator=None)
     filters = json.loads(export_request.calls[0].request.body)['filters']
     assert filters['vpr_score'] == {'gte': 7}
@@ -266,23 +265,9 @@ def test_vuln_export_vpr_score_no_warning(export_request, tvm):
 
 @responses.activate
 def test_vuln_export_vpr_score_and_vpr_v2_score(tvm):
-    with pytest.raises(UnexpectedValueError):
+    with pytest.raises(ValueError, match='cannot both be set'):
         tvm.exports.vulns(vpr_score={'gte': 7}, vpr_v2_score={'gte': 7}, iterator=None)
     assert len(responses.calls) == 0
-
-
-def test_vuln_export_filters_model_translates_vpr_v2_score():
-    with pytest.warns(DeprecationWarning, match='vpr_v2_score'):
-        filters = models.VulnerabilityExportFiltersV1(vpr_v2_score={'gte': 7})
-    dumped = filters.model_dump(mode='json', exclude_none=True)
-    assert dumped == {'vpr_score': {'gte': 7}}
-
-
-def test_vuln_export_filters_model_vpr_score_and_vpr_v2_score():
-    with pytest.raises(ValidationError):
-        models.VulnerabilityExportFiltersV1(
-            vpr_score={'gte': 7}, vpr_v2_score={'gte': 7}
-        )
 
 
 def test_vuln_export_cve_id_six_digit_sequence(export_request, tvm):
