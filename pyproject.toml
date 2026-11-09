@@ -129,4 +129,5 @@ dev = [
   "rust-just>=1.51.0",
   "pyright>=1.1.414",
   "ty>=0.0.84",
+  "pre-commit>=4.7.0",
 ]
