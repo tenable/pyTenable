@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [26.11.1]
+
+### Added
+
+- Transitioned the release cycle to use trusted publishing #1048
+
+### Updated
+
+- Added name support to scanners.edit #1057
+- Added warnings when unsupported arguments are passed to scanners.edit #1057
+- Added Offset to attack path search #1053
+- Added top_attack_techniques_search method to APA #1053
+
+### Fixed
+
+- Corrected top attack paths in t1 #1053
+- Corrected overly restrictive CVE-ID pattern #1051
+- Added erroneously missing payload to users.edit #1059
+
+### Removed
+
+- Deprecated vpr v2 score filter to match API #1055
+- Deprecated attack path list methods in favor of search methods #1053
+
+
+[26.11.1]: https://github.com/tenable/pyTenable/compare/v26.10.1...v26.11.1
+
 ## [26.10.1]
 
 ### Added
@@ -41,7 +68,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Vendored RESTfly v1 lib no longer supports absolute URLs #1028
 - pytest-vcr no longer required for testing framework #1045
 
-[26.6.1]: https://github.com/tenable/pyTenable/compare/v26.8.1...v26.10.1
+[26.10.1]: https://github.com/tenable/pyTenable/compare/v26.8.1...v26.10.1
 
 ## [26.8.1]
 
@@ -51,7 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Corrected the comparison type mismatch in the scrub utility. #1018
 - Updated dependencies #1011, #1012, #1017 in lockfile.
 
-[26.6.1]: https://github.com/tenable/pyTenable/compare/26.6.1...v26.8.1
+[26.8.1]: https://github.com/tenable/pyTenable/compare/26.6.1...v26.8.1
 
 ## [26.6.1]
 
